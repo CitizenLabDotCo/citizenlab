@@ -24,6 +24,7 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import { getFullName } from 'utils/textUtils';
+import { FormatMessage } from 'typings';
 
 type Props = {
   startAt?: string;
@@ -32,13 +33,30 @@ type Props = {
   projectId?: string;
 };
 
-const toPeriodString = ({
+const getPeriod = ({
   startAt,
   endAt,
+  formatMessage,
 }: {
-  startAt: string;
-  endAt: string;
-}) => `${moment(startAt).format('LL')} - ${moment(endAt).format('LL')}`;
+  startAt?: string;
+  endAt?: string | null;
+  formatMessage: FormatMessage;
+}) => {
+  if (!startAt) return undefined;
+
+  if (endAt) {
+    const startEndDates = `${moment(startAt).format('LL')} - ${moment(
+      endAt
+    ).format('LL')}`;
+
+    return formatMessage(messages.periodLabel, {
+      startEndDates,
+    });
+  }
+
+  const startDate = moment(startAt).format('LL');
+  return formatMessage(messages.start, { startDate });
+};
 
 const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   const { formatMessage } = useIntl();
@@ -62,8 +80,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
     ? ''
     : localize(project.data.attributes.title_multiloc);
 
-  const projectPeriodString =
-    startAt && endAt ? toPeriodString({ startAt, endAt }) : '';
+  const period = getPeriod({ startAt, endAt, formatMessage });
 
   return (
     <PageBreakBox px={px}>
@@ -98,9 +115,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
               <li>${formatMessage(messages.projectLabel, {
                 projectsList: projectName,
               })}</li>
-              <li>${formatMessage(messages.periodLabel, {
-                startEndDates: projectPeriodString,
-              })}</li>
+              ${period ? '<li>${period}</li>' : ''}
               <li>${formatMessage(messages.managerLabel, {
                 managerName: projectModerator,
               })}</li>

@@ -49,7 +49,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
   );
 
   const hasPhases =
-    project.data.attributes.process_type === 'continuous' &&
+    project.data.attributes.process_type === 'timeline' &&
     phases.data.length > 0;
 
   const projectPeriod = hasPhases

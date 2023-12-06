@@ -21,18 +21,19 @@ import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
-
-// types
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
-
-// utils
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import moment from 'moment';
 
 // messages
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import reportBuilderMessages from '../../../messages';
 import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
+
+// hooks
+import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+
+// utils
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import moment from 'moment';
 
 type ReportBuilderToolboxProps = {
   reportId: string;
@@ -54,6 +55,7 @@ const SectionTitle = ({ children }) => (
 
 const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
+  const { projectId } = useReportContext();
 
   // Default end date for charts (today)
   const chartEndDate = moment().format('YYYY-MM-DD');
@@ -94,7 +96,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           <DraggableElement
             id="e2e-draggable-about-report"
             component={
-              <AboutReportWidget reportId={reportId} projectId={undefined} />
+              <AboutReportWidget reportId={reportId} projectId={projectId} />
             }
             icon="section-image-text"
             label={formatMessage(AboutReportWidget.craft.custom.title)}
@@ -140,6 +142,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <SurveyResultsWidget
                 title={formatMessage(SurveyResultsWidget.craft.custom.title)}
+                projectId={projectId}
               />
             }
             icon="survey"
@@ -152,6 +155,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
                 title={formatMessage(MostReactedIdeasWidget.craft.custom.title)}
                 numberOfIdeas={5}
                 collapseLongText={false}
+                projectId={projectId}
               />
             }
             icon="idea"
@@ -172,7 +176,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <VisitorsWidget
                 title={formatMessage(VisitorsWidget.craft.custom.title)}
-                projectId={undefined}
+                projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -187,7 +191,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
                 title={formatMessage(
                   VisitorsTrafficSourcesWidget.craft.custom.title
                 )}
-                projectId={undefined}
+                projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -202,7 +206,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <GenderWidget
                 title={formatMessage(GenderWidget.craft.custom.title)}
-                projectId={undefined}
+                projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -215,7 +219,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <AgeWidget
                 title={formatMessage(AgeWidget.craft.custom.title)}
-                projectId={undefined}
+                projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -228,7 +232,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <ActiveUsersWidget
                 title={formatMessage(ActiveUsersWidget.craft.custom.title)}
-                projectId={undefined}
+                projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -241,7 +245,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <PostsByTimeWidget
                 title={formatMessage(PostsByTimeWidget.craft.custom.title)}
-                projectId={undefined}
+                projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -254,7 +258,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <CommentsByTimeWidget
                 title={formatMessage(CommentsByTimeWidget.craft.custom.title)}
-                projectId={undefined}
+                projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -267,7 +271,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <ReactionsByTimeWidget
                 title={formatMessage(ReactionsByTimeWidget.craft.custom.title)}
-                projectId={undefined}
+                projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />

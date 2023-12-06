@@ -2,12 +2,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import reportLayoutKeys from './keys';
+import phasesKeys from 'api/phases/keys';
 import { ReportLayoutResponse } from './types';
 import { JsonMultiloc } from 'components/admin/ContentBuilder/typings';
 
 type ReportLayoutUpdate = {
   id: string;
   craftMultiloc: JsonMultiloc;
+  projectId?: string;
 };
 
 const updateReportLayout = ({ id, craftMultiloc }: ReportLayoutUpdate) =>
@@ -28,9 +30,17 @@ const useUpdateReportLayout = () => {
   return useMutation<ReportLayoutResponse, CLErrors, ReportLayoutUpdate>({
     mutationFn: updateReportLayout,
     onSuccess: (_data, variables) => {
+      const { id, projectId } = variables;
+
       queryClient.invalidateQueries({
-        queryKey: reportLayoutKeys.item({ id: variables.id }),
+        queryKey: reportLayoutKeys.item({ id }),
       });
+
+      if (projectId) {
+        queryClient.invalidateQueries({
+          queryKey: phasesKeys.list({ projectId }),
+        });
+      }
     },
   });
 };
