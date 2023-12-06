@@ -228,8 +228,7 @@ describe('Homepage builder', () => {
       'background-image',
       'none'
     );
-    const signedOutHeaderEnglish =
-      /Let’s shape the future of New Douglaschester together/gi;
+    const signedOutHeaderEnglish = /Let’s shape the future of/gi;
     const signedOutSubheaderEnglish =
       /Welcome to the participation platform of/gi;
 
