@@ -54,13 +54,12 @@ const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
 
   &.scroll-up-nav {
     ${media.tablet`
-    transition: top 0.3s;
     position: fixed;
     top: 0px;  `}
   }
 `;
 
-export const ContainerInner = styled.div`
+const ContainerInner = styled.div`
   flex-grow: 1;
   flex-shrink: 0;
   flex-basis: 100%;
@@ -80,7 +79,7 @@ export const ContainerInner = styled.div`
   `}
 `;
 
-export const Left = styled.div`
+const Left = styled.div`
   display: flex;
   align-items: center;
   height: ${({ theme }) => theme.menuHeight}px;
