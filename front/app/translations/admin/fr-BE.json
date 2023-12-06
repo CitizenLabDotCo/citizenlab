@@ -2489,8 +2489,6 @@
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.newVisitors": "Nouveaux visiteurs",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.returningVisitors": "Visiteurs de retour",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.type": "Type de visiteur",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Evénements",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Affichez un aperçu des événements à venir sur la page d'accueil.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "Vous pouvez supprimer l'alerte en sélectionnant la publication et en cliquant sur le bouton 'supprimer' en haut. La publication réapparaîtra alors dans les onglets Vus ou Non vus.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Contenu inapproprié détecté.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "Aucune publication n'a été signalée par les utilisateurs, aucun contenu n'a été considéré comme inapproprié par notre Intelligence Artificielle d'analyse sémantique du langage",

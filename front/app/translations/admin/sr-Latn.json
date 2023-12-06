@@ -2489,8 +2489,6 @@
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.newVisitors": "Novi posetioci",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.returningVisitors": "Posetioci koji se vraćaju",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.type": "Tip posetioca",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Događaji",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Prikaži preged predstojećih događaja na početnoj stranici.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "Ovu zastavicu možete ukloniti odabirom ove stavke i klikom na dugme za uklanjanje pri vrhu. Ona će se ponovo pojaviti na karticama pregledanog i nepregledanog sadržaja",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Automatski je otkriven neprikladan sadržaj.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "Nema postova prijavljenih za pregled od strane zajednice niti označenih neprikladnim sadržajem od strane našeg sistema za obradu prirodnog jezika",

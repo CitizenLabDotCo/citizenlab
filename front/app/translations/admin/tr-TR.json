@@ -2489,8 +2489,6 @@
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.newVisitors": "Yeni ziyaretçiler",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.returningVisitors": "Geri dönen ziyaretçiler",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.type": "Ziyaretçi Tipi",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Etkinlikler",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Ana sayfada yaklaşan etkinliklerin önizlemesini görüntüleyin.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "Bu öğeyi seçip üstteki kaldır düğmesine tıklayarak bu içerik bayrağını kaldırabilirsiniz. Ardından Görüldü veya Görülmedi sekmelerinde yeniden görünecektir",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Uygunsuz içerik otomatik olarak algılandı.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "Topluluk tarafından incelenmek üzere bildirilen veya Doğal Dil İşleme sistemimiz tarafından uygunsuz içerik nedeniyle işaretlenen hiçbir yayın yok",

@@ -2489,8 +2489,6 @@
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.newVisitors": "Nya besökare",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.returningVisitors": "Återkommande besökare",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.type": "Typ av besökare",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Evenemang",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Visa en förhandsvisning av kommande evenemang på startsidan.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "Du kan ta bort den här innehållsflaggan genom att välja det här objektet och klicka på knappen Ta bort högst upp. Då visas det sedan på flikarna Visat eller Ej visat",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Olämpligt innehåll har identifierats automatiskt.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "Inga inlägg har rapporterats för granskning av communityn eller flaggats för olämpligt innehåll av vårt naturliga system för behandling av naturligt språk",
