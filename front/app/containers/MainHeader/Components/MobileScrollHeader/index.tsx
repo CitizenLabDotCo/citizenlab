@@ -23,8 +23,8 @@ const Container = styled.header`
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.1);
   z-index: 1004;
   position: fixed;
-  top: -100px; /* Hide navbar outside the top view */
-  width: 100%;
+  top: -100px;
+  width: 100vw;
   display: block;
 
   &.scroll-up-nav {
@@ -51,8 +51,9 @@ const MobileScrollHeader = () => {
   useEffect(() => {
     function onScroll() {
       const currentPosition = document.documentElement.scrollTop;
-
-      if (currentPosition > scrollTop) {
+      if (currentPosition === 0) {
+        showNavBar.current = false; // Don't show if we're at the top already
+      } else if (currentPosition > scrollTop) {
         // downscroll
         showNavBar.current = false;
       } else {
