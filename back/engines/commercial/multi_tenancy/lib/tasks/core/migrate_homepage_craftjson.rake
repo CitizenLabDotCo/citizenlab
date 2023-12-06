@@ -38,13 +38,19 @@ namespace :migrate_craftjson do
         bottominfosection_elts, bottominfosection_success = migrate_bottominfosection
         add_elements craftjs_json, bottominfosection_elts
 
+        needs_manual_migration = (!topinfosection_success || !bottominfosection_success) && (tenant.active? || tenant.host.ends_with?('.template.citizenlab.co'))
+        if needs_manual_migration
+          extracted_elts = extract_image_iframe_button_elements craftjs_json
+          add_elements craftjs_json, extracted_elts
+        end
+
         homepage = HomePage.first
         if !homepage.update(craftjs_json: craftjs_json)
           errors[tenant.host] ||= []
           errors[tenant.host] += ["Failed to update homepage: #{homepage.errors.details}"]
         end
 
-        if topinfosection_success && bottominfosection_success && errors[tenant.host].blank? && tenant.host != 'kobenhavntaler.kk.dk'
+        if !needs_manual_migration && errors[tenant.host].blank? && tenant.host != 'kobenhavntaler.kk.dk'
           SettingsService.new.activate_feature! 'homepage_builder'
         else
           manual += [tenant.host]
@@ -247,4 +253,91 @@ def infosection(text_html_multiloc)
     'linkedNodes' => {}
   }
   [[text_elt], success]
+end
+
+def extract_image_iframe_button_elements(craftjs_json)
+  extracted_elts = []
+  LayoutService.new.select_craftjs_elements_for_types(json, ['TextMultiloc']).each do |text_elt|
+    text_html_multiloc = text_elt.dig 'props', 'text'
+    text_html_multiloc.each do |locale, text_html|
+      html_doc = Nokogiri::HTML.fragment text_html
+      html_doc.css('img').each do |img|
+        text_image = TextImage.find_by(text_reference: button.attr(:'data-cl2-text-image-text-reference'))
+        layout_image = LayoutImage.create!(image: File.open(text_image.image.image))
+        extracted_elts += [{
+          'type': { 'resolvedName': 'ImageMultiloc' },
+          'nodes': [],
+          'props': {
+              'alt': {},
+              'image': { 'dataCode': layout_image.code }
+          },
+          'custom': {
+              'title': {
+                  'id': 'app.containers.admin.ContentBuilder.imageMultiloc',
+                  'defaultMessage': 'Image'
+              }
+          },
+          'hidden': false,
+          'parent': 'ROOT',
+          'isCanvas': false,
+          'displayName': 'Image',
+          'linkedNodes': {}
+        }]
+        img.remove
+      end
+      html_doc.css('iframe').each do |iframe|
+        extracted_elts += [{
+          'type': { 'resolvedName': 'IframeMultiloc' },
+          'nodes': [],
+          'props': {
+              'url': button.attr(:src),
+              'height': 500, # Or perhaps button.attr(:height)?
+              'hasError': false,
+              'errorType': 'invalidUrl',
+              'selectedLocale': 'en' # TODO: Something?
+          },
+          'custom': {
+              'title': {
+                  'id': 'app.containers.admin.ContentBuilder.IframeMultiloc.url',
+                  'defaultMessage': 'Embed'
+              },
+              'noPointerEvents': true
+          },
+          'hidden': false,
+          'parent': 'ROOT',
+          'isCanvas': false,
+          'displayName': 'Iframe',
+          'linkedNodes': {}
+        }]
+        iframe.remove
+      end
+      html_doc.css('a.custom-button').each do |button|
+        extracted_elts += [{
+          'type': { 'resolvedName': 'ButtonMultiloc' },
+          'nodes': [],
+          'props': {
+              'url': button.attr(:href),
+              'text': { locale => button.text },
+              'type': 'primary',
+              'alignment': 'center'
+          },
+          'custom': {
+              'title': {
+                  'id': 'app.containers.admin.ContentBuilder.buttonMultiloc',
+                  'defaultMessage': 'Button'
+              },
+              'noPointerEvents': true
+          },
+          'hidden': false,
+          'parent': 'ROOT',
+          'isCanvas': false,
+          'displayName': 'Button',
+          'linkedNodes': {}
+        }]
+        button.remove
+      end
+      text_elt['props']['text'] = html_doc.to_s
+    end
+  end
+  extracted_elts
 end
