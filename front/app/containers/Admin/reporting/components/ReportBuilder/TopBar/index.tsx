@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 // hooks
-import { useEditor, SerializedNodes } from '@craftjs/core';
+import { useEditor } from '@craftjs/core';
 import useReport from 'api/reports/useReport';
+import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
 
 // context
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
@@ -29,13 +30,11 @@ import styled from 'styled-components';
 import clHistory from 'utils/cl-router/history';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { isEqual } from 'lodash-es';
 
 // types
 import { Locale } from 'typings';
-
-import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
+import { CraftJson } from 'components/admin/ContentBuilder/typings';
 
 const LocaleBadge = styled(Box)`
   display: inline-block;
@@ -49,24 +48,24 @@ const LocaleBadge = styled(Box)`
 `;
 
 type ContentBuilderTopBarProps = {
-  hasPendingState?: boolean;
-  localesWithError: Locale[];
+  hasError: boolean;
+  hasPendingState: boolean;
   previewEnabled: boolean;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: Locale | undefined;
-  draftEditorData?: Record<string, SerializedNodes>;
-  initialData: SerializedNodes | undefined;
+  draftEditorData?: CraftJson;
+  initialData: CraftJson;
   reportId: string;
   templateProjectId?: string;
 };
 
 const ContentBuilderTopBar = ({
+  hasError,
   previewEnabled,
   setPreviewEnabled,
   selectedLocale,
   draftEditorData,
   initialData,
-  localesWithError,
   hasPendingState,
   reportId,
   templateProjectId,
@@ -79,7 +78,7 @@ const ContentBuilderTopBar = ({
   const { mutate: updateReportLayout, isLoading } = useUpdateReportLayout();
   const reportContext = useReportContext();
 
-  const disableSave = localesWithError.length > 0;
+  const disableSave = !!hasError || !!hasPendingState;
 
   const closeModal = () => {
     setShowQuitModal(false);
@@ -218,7 +217,7 @@ const ContentBuilderTopBar = ({
             <FormattedMessage {...messages.reportBuilder} />
           </Text>
           <Title variant="h4" as="h1" color="primary">
-            {isNilOrError(report) ? <></> : report.data.attributes.name}
+            {!report ? <></> : report.data.attributes.name}
             <LocaleBadge>{selectedLocale?.toUpperCase()}</LocaleBadge>
           </Title>
         </Box>

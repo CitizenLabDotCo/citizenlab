@@ -2,7 +2,6 @@ import React from 'react';
 
 // hooks
 import useReportLayout from 'api/report_layout/useReportLayout';
-import useLocale from 'hooks/useLocale';
 
 // components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
@@ -22,13 +21,12 @@ interface Props {
 
 const PhaseReport = ({ reportId }: Props) => {
   const { data: reportLayout } = useReportLayout(reportId);
-  const locale = useLocale();
   const smallerThanTablet = useBreakpoint('tablet');
   const smallerThanPhone = useBreakpoint('phone');
 
   if (!reportLayout) return null;
 
-  const editorData = reportLayout.data.attributes.craftjs_jsonmultiloc[locale];
+  const editorData = reportLayout.data.attributes.craftjs_json;
 
   return (
     <Box

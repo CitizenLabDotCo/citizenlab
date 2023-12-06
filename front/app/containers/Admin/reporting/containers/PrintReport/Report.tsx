@@ -6,16 +6,12 @@ import { ReportContextProvider } from '../../context/ReportContext';
 
 // hooks
 import useReportLayout from 'api/report_layout/useReportLayout';
-import useLocale from 'hooks/useLocale';
 
 // components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import { Spinner, Box } from '@citizenlab/cl2-component-library';
 import Editor from '../../components/ReportBuilder/Editor';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 
 // constants
 import { A4_WIDTH } from '../../constants';
@@ -46,13 +42,9 @@ export interface Props {
 export const Report = ({ reportId }: Props) => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const { data: reportLayout } = useReportLayout(reportId);
-  const platformLocale = useLocale();
 
   const isLoadingLayout = reportLayout === undefined;
-
-  const savedEditorData = !isNilOrError(reportLayout)
-    ? reportLayout.data.attributes.craftjs_jsonmultiloc[platformLocale]
-    : undefined;
+  const savedEditorData = reportLayout?.data.attributes.craftjs_json;
 
   const editorData = draftData || savedEditorData;
 
