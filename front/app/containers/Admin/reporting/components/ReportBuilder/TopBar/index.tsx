@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import useReport from 'api/reports/useReport';
 
+// context
+import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
@@ -54,7 +57,7 @@ type ContentBuilderTopBarProps = {
   draftEditorData?: Record<string, SerializedNodes>;
   initialData: SerializedNodes | undefined;
   reportId: string;
-  projectId?: string;
+  templateProjectId?: string;
 };
 
 const ContentBuilderTopBar = ({
@@ -66,7 +69,7 @@ const ContentBuilderTopBar = ({
   localesWithError,
   hasPendingState,
   reportId,
-  projectId,
+  templateProjectId,
 }: ContentBuilderTopBarProps) => {
   const [initialized, setInitialized] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
@@ -74,6 +77,7 @@ const ContentBuilderTopBar = ({
   const { query } = useEditor();
   const { data: report } = useReport(reportId);
   const { mutate: updateReportLayout, isLoading } = useUpdateReportLayout();
+  const reportContext = useReportContext();
 
   const disableSave = localesWithError.length > 0;
 
@@ -91,8 +95,16 @@ const ContentBuilderTopBar = ({
     }
   };
   const doGoBack = () => {
-    clHistory.push('/admin/reporting/report-builder');
+    const { projectId, phaseId } = reportContext;
+
+    const goBackUrl =
+      projectId && phaseId
+        ? `/admin/projects/${projectId}/timeline/${phaseId}`
+        : '/admin/reporting/report-builder';
+
+    clHistory.push(goBackUrl);
   };
+
   const handleSave = () => {
     if (selectedLocale) {
       setHasChange(false);
@@ -103,6 +115,7 @@ const ContentBuilderTopBar = ({
           ...draftEditorData,
           [selectedLocale]: query.getSerializedNodes(),
         },
+        projectId: reportContext.projectId,
       });
     }
   };
@@ -131,7 +144,7 @@ const ContentBuilderTopBar = ({
   useEffect(() => {
     if (initialized) return;
 
-    if (!projectId) {
+    if (!templateProjectId) {
       setInitialized(true);
       return;
     }
@@ -156,7 +169,7 @@ const ContentBuilderTopBar = ({
 
     setInitialized(true);
   }, [
-    projectId,
+    templateProjectId,
     query,
     draftEditorData,
     initialized,

@@ -4,7 +4,7 @@ import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 
 import jwtDecode from 'jwt-decode';
-import {ParticipationMethod, VotingMethod} from "../../app/api/phases/types";
+import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -1491,6 +1491,7 @@ export function apiUpdateHomepageSettings({
   banner_cta_signed_out_type,
   banner_cta_signed_in_type,
   header_bg,
+  craftjs_json,
 }: {
   top_info_section_enabled?: boolean;
   bottom_info_section_enabled?: boolean;
@@ -1506,6 +1507,7 @@ export function apiUpdateHomepageSettings({
   banner_cta_signed_out_type?: string;
   banner_cta_signed_in_type?: string;
   header_bg?: string;
+  craftjs_json?: Record<string, any>;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1533,6 +1535,7 @@ export function apiUpdateHomepageSettings({
           banner_cta_signed_in_type,
           banner_cta_signed_out_type,
           header_bg,
+          craftjs_json,
         },
       },
     });

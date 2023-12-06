@@ -394,6 +394,7 @@ const HomepageBannerSettings = () => {
               search.get('variant') !== 'signedIn' ? 'white' : 'text'
             }
             fontSize="14px"
+            id="e2e-signed-out-button"
           >
             {formatMessage(messages.nonRegistedredUsersView)}
           </Button>
@@ -407,6 +408,7 @@ const HomepageBannerSettings = () => {
               search.get('variant') === 'signedIn' ? 'white' : 'text'
             }
             fontSize="14px"
+            id="e2e-signed-in-button"
           >
             {formatMessage(messages.registeredUsersView)}
           </Button>
@@ -564,30 +566,35 @@ const HomepageBannerSettings = () => {
               });
             }}
           />
-          <InputMultilocWithLocaleSwitcher
-            label={'Header'}
-            type="text"
-            placeholder={formatMessage(homepageMessages.defaultSignedInMessage)}
-            valueMultiloc={homepageSettings.banner_signed_in_header_multiloc}
-            onChange={(value) => {
-              setProp((props: Props) => {
-                props.homepageSettings.banner_signed_in_header_multiloc = value;
-                props.homepageSettings.banner_cta_signed_in_url = '';
-                const newErrorTypes = props.errors?.filter(
-                  (errorType) => errorType !== 'banner_cta_signed_in_url'
-                );
-                props.errors = newErrorTypes || [];
-                if (newErrorTypes && newErrorTypes.length === 0) {
-                  props.hasError = false;
-                  eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-                    [id]: {
-                      hasError: false,
-                    },
-                  });
-                }
-              });
-            }}
-          />
+          <div data-cy="e2e-signed-in-header-section">
+            <InputMultilocWithLocaleSwitcher
+              label={'Header'}
+              type="text"
+              placeholder={formatMessage(
+                homepageMessages.defaultSignedInMessage
+              )}
+              valueMultiloc={homepageSettings.banner_signed_in_header_multiloc}
+              onChange={(value) => {
+                setProp((props: Props) => {
+                  props.homepageSettings.banner_signed_in_header_multiloc =
+                    value;
+                  props.homepageSettings.banner_cta_signed_in_url = '';
+                  const newErrorTypes = props.errors?.filter(
+                    (errorType) => errorType !== 'banner_cta_signed_in_url'
+                  );
+                  props.errors = newErrorTypes || [];
+                  if (newErrorTypes && newErrorTypes.length === 0) {
+                    props.hasError = false;
+                    eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+                      [id]: {
+                        hasError: false,
+                      },
+                    });
+                  }
+                });
+              }}
+            />
+          </div>
           <Label>{formatMessage(messages.button)}</Label>
           {CTA_SIGNED_IN_TYPES.map((option: CTASignedInType) => {
             const labelMessage = labelMessages[option];
@@ -610,7 +617,7 @@ const HomepageBannerSettings = () => {
                     <Box ml="28px">
                       <Box mb="20px">
                         <InputMultilocWithLocaleSwitcher
-                          data-testid="inputMultilocLocaleSwitcher"
+                          id="customizedButtonText"
                           type="text"
                           valueMultiloc={
                             homepageSettings.banner_cta_signed_in_text_multiloc
@@ -635,7 +642,7 @@ const HomepageBannerSettings = () => {
                         />
                       </Label>
                       <Input
-                        id="buttonConfigInput"
+                        id="customizedButtonUrl"
                         data-testid="buttonConfigInput"
                         type="text"
                         placeholder="https://..."
