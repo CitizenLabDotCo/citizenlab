@@ -96,6 +96,8 @@ de:
     open_idea_project_description_preview: Vielleicht haben Sie eine Idee, die nicht zu einem der bestehenden Projekte passt? Dann posten Sie sie hier, sammeln Sie Unterstützung und bringen Sie sie auf die politische Tagesordnung!
     open_idea_project_description: >
       Die Ideen hier sind nicht mit einem Projekt verknüpft.
+  phases:
+    open_idea_phase_title: Aktuelle Phase
   events:
     council_meeting_title: Ratssitzung
     council_meeting_description: >
