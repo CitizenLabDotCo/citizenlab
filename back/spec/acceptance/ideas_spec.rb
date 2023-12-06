@@ -785,7 +785,7 @@ resource 'Ideas' do
         end
       end
 
-      describe 'when posting an idea in an active ideation phase, the creation_phase is not set' do
+      describe 'when posting an idea in an active ideation phase, the creation_phase is set' do
         let(:project) { create(:project_with_active_ideation_phase) }
         let!(:custom_form) { create(:custom_form, participation_context: project) }
 
@@ -793,7 +793,7 @@ resource 'Ideas' do
           assert_status 201
           json_response = json_parse response_body
           idea = Idea.find(json_response.dig(:data, :id))
-          expect(idea.creation_phase).to be_nil
+          expect(idea.creation_phase).to eq project.phases.first
         end
       end
 
@@ -1016,7 +1016,7 @@ resource 'Ideas' do
           end
         end
 
-        describe 'when posting an idea in an ideation phase, the creation_phase is not set' do
+        describe 'when posting an idea in an ideation phase, the creation_phase is set' do
           let(:project) { create(:project_with_active_ideation_phase) }
           let!(:custom_form) { create(:custom_form, participation_context: project) }
           let(:phase_ids) { [project.phases.first.id] }
@@ -1026,7 +1026,7 @@ resource 'Ideas' do
             assert_status 201
             json_response = json_parse response_body
             idea = Idea.find(json_response.dig(:data, :id))
-            expect(idea.creation_phase).to be_nil
+            expect(idea.creation_phase).to eq project.phases.first
           end
         end
 
