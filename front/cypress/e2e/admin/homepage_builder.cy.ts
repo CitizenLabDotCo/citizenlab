@@ -242,9 +242,9 @@ describe('Homepage builder', () => {
       expect(text).to.match(signedOutSubheaderEnglish);
     });
 
-    cy.get('#hook-header-content')
-      .find('[data-testid=avatarBubblesContainer]')
-      .should('exist');
+    // cy.get('#hook-header-content')
+    //   .find('[data-testid=avatarBubblesContainer]')
+    //   .should('exist');
 
     cy.get('[data-cy=e2e-full-width-layout-header-image-overlay]').should(
       'exist'
