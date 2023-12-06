@@ -1,5 +1,5 @@
 // libraries
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 // components
 import DesktopNavItems from './Components/DesktopNavItems';
@@ -51,6 +51,12 @@ const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
   @media print {
     display: none;
   }
+
+  &.scroll-up-nav {
+    transition: top 0.3s;
+    position: fixed;
+    top: 0px;
+  }
 `;
 
 export const ContainerInner = styled.div`
@@ -90,8 +96,31 @@ const MainHeader = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const locale = useLocale();
 
+  const [showNavBar, setShowNavBar] = useState<boolean>(false);
+  const [scrollTop, setScrollTop] = useState(0);
+
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isDesktopUser = !isSmallerThanTablet;
+
+  // Used to show/hide the mobile navbar on scroll
+  useEffect(() => {
+    function onScroll() {
+      const currentPosition = document.documentElement.scrollTop;
+      if (currentPosition <= 0) {
+        setShowNavBar(false); // Don't show if we're at the top already
+      } else if (currentPosition > scrollTop) {
+        // downscroll
+        setShowNavBar(false);
+      } else {
+        // upscroll
+        setShowNavBar(true);
+      }
+      setScrollTop(currentPosition <= 0 ? 0 : currentPosition);
+    }
+
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [scrollTop]);
 
   // url segments
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
@@ -105,7 +134,9 @@ const MainHeader = () => {
         isIdeaPage(urlSegments) || isInitiativePage(urlSegments)
           ? 'hideNavbar'
           : ''
-      }`}
+      }
+      ${showNavBar ? 'scroll-up-nav' : ''}
+      `}
       ref={containerRef}
       position={isProjectPage(urlSegments, locale) ? 'absolute' : 'fixed'}
     >
