@@ -8,7 +8,6 @@ import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreatePro
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
 import SlugInput from 'components/admin/SlugInput';
-import ProjectTypePicker from './components/ProjectTypePicker';
 import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
@@ -512,28 +511,25 @@ const AdminProjectsProjectGeneral = () => {
 
           <StyledSectionField>
             {!project && (
-              <>
-                <ProjectTypePicker projectType="timeline" />
-                <CSSTransition
-                  classNames="participationcontext"
-                  in={false}
-                  timeout={TIMEOUT}
-                  mountOnEnter={true}
-                  unmountOnExit={true}
-                  enter={true}
-                  exit={false}
-                >
-                  <ParticipationContextWrapper>
-                    <PhaseParticipationConfig
-                      project={project}
-                      onSubmit={handlePhaseParticipationConfigSubmit}
-                      onChange={handlePhaseParticipationConfigChange}
-                      apiErrors={apiErrors}
-                      appConfig={appConfig}
-                    />
-                  </ParticipationContextWrapper>
-                </CSSTransition>
-              </>
+              <CSSTransition
+                classNames="participationcontext"
+                in={false}
+                timeout={TIMEOUT}
+                mountOnEnter={true}
+                unmountOnExit={true}
+                enter={true}
+                exit={false}
+              >
+                <ParticipationContextWrapper>
+                  <PhaseParticipationConfig
+                    project={project}
+                    onSubmit={handlePhaseParticipationConfigSubmit}
+                    onChange={handlePhaseParticipationConfigChange}
+                    apiErrors={apiErrors}
+                    appConfig={appConfig}
+                  />
+                </ParticipationContextWrapper>
+              </CSSTransition>
             )}
           </StyledSectionField>
 
