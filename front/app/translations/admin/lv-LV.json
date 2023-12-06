@@ -2352,6 +2352,7 @@
   "app.containers.admin.ReportBuilder.periodLabel": "Periods: {startEndDates}",
   "app.containers.admin.ReportBuilder.phase": "Fāze: {phaseName}",
   "app.containers.admin.ReportBuilder.projectLabel": "Projekts: {projectsList}",
+  "app.containers.admin.ReportBuilder.start": "Sākums: {startDate}",
   "app.containers.admin.ReportBuilder.surveyChooseQuestions": "Izvēlieties, kuri jautājumi tiks rādīti:",
   "app.containers.admin.ReportBuilder.surveyNoQuestions": "Šim projektam vai posmam nav pieejami jautājumi.",
   "app.containers.admin.ReportBuilder.surveyNoResults": "Jūsu izvēlētajiem filtriem nav aptaujas rezultātu.",
