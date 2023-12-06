@@ -5,20 +5,6 @@ import { SerializedNode } from '@craftjs/core';
 
 export type HomepageSettingsKeys = Keys<typeof homepageSettingsKeys>;
 
-// Enabled values for sections that have a corresponding
-// setting in appConfiguration.ts
-export type TAppConfigSectionSetting = Extract<
-  THomepageEnabledSetting,
-  'events_widget_enabled'
->;
-
-// Enabled values for sections that DON'T have a corresponding
-// setting in appConfiguration.ts (are regular sections)
-export type TSectionSetting = Exclude<
-  THomepageEnabledSetting,
-  TAppConfigSectionSetting
->;
-
 export interface THomepageBannerLayoutMap {
   full_width_banner_layout: 'full_width_banner_layout';
   two_column_layout: 'two_column_layout';
