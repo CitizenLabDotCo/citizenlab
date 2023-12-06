@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { DEFAULT_PADDING } from '../constants';
 
 interface Props {
-  onUpdateDraftData: (serializedNodes: SerializedNodes | undefined) => void;
+  onUpdateDraftData?: (serializedNodes: SerializedNodes | undefined) => void;
   onUpdateLocale?: (locale: Locale) => void;
   children: React.ReactNode;
   padding?: string;
@@ -42,7 +42,7 @@ export const FullScreenPreviewWrapper = ({
     const handleMessage = (e: MessageEvent) => {
       // Make sure there is a root node in the draft data
       if (e.origin === window.location.origin && e.data.ROOT) {
-        onUpdateDraftData(e.data);
+        onUpdateDraftData?.(e.data);
       }
       if (
         onUpdateLocale &&

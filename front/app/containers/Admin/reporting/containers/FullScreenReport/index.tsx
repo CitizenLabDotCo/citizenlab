@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // context
 import { ReportContextProvider } from '../../context/ReportContext';
@@ -14,32 +14,25 @@ import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import Editor from '../../components/ReportBuilder/Editor';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
-// types
-import { SerializedNodes } from '@craftjs/core';
-
 export interface Props {
   reportId: string;
 }
 
 export const FullScreenReport = ({ reportId }: Props) => {
-  const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const { data: reportLayout } = useReportLayout(reportId);
-
   const isLoadingLayout = reportLayout === undefined;
-
-  const savedEditorData = reportLayout?.data.attributes.craftjs_json;
-
-  const editorData = draftData || savedEditorData;
 
   return (
     <ReportContextProvider width="responsive" reportId={reportId}>
-      <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0">
+      <FullScreenWrapper padding="0">
         {isLoadingLayout && <Spinner />}
         {!isLoadingLayout && (
           <Box w="100%" display="flex" justifyContent="center">
             <Box maxWidth="800px" w="100%">
               <Editor isPreview={true}>
-                {editorData && <ContentBuilderFrame editorData={editorData} />}
+                <ContentBuilderFrame
+                  editorData={reportLayout.data.attributes.craftjs_json}
+                />
               </Editor>
             </Box>
           </Box>

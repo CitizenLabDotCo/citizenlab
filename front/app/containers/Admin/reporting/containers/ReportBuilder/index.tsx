@@ -57,6 +57,12 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
   const [draftData, setDraftData] = useState<CraftJson>(
     reportLayout.attributes.craftjs_json
   );
+
+  // Absolutely no idea why we need this initial data stuff.
+  // But without it the whole report builder crashes. Seems to be weird
+  // behaviour from the craftjs library.
+  const [initialData] = useState(isEmpty(draftData) ? undefined : draftData);
+
   const [saved, setSaved] = useState(!templateProjectId);
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
@@ -129,7 +135,7 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
                     contentBuilderLocale={selectedLocale}
                     platformLocale={platformLocale}
                   >
-                    <Frame editorData={previewData}>
+                    <Frame editorData={initialData}>
                       {templateProjectId && (
                         <ProjectTemplate
                           reportId={reportId}
@@ -160,7 +166,7 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
                     contentBuilderLocale={selectedLocale}
                     platformLocale={platformLocale}
                   >
-                    <Frame editorData={draftData} />
+                    <Frame editorData={previewData} />
                   </LanguageProvider>
                 </Editor>
               </Box>

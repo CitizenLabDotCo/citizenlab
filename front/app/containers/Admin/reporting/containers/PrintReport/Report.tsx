@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 // context
@@ -15,9 +15,6 @@ import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
 // constants
 import { A4_WIDTH } from '../../constants';
-
-// types
-import { SerializedNodes } from '@craftjs/core';
 
 const Centerer = styled.div`
   display: flex;
@@ -40,17 +37,12 @@ export interface Props {
 }
 
 export const Report = ({ reportId }: Props) => {
-  const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const { data: reportLayout } = useReportLayout(reportId);
-
   const isLoadingLayout = reportLayout === undefined;
-  const savedEditorData = reportLayout?.data.attributes.craftjs_json;
-
-  const editorData = draftData || savedEditorData;
 
   return (
     <ReportContextProvider width="pdf" reportId={reportId}>
-      <FullScreenWrapper onUpdateDraftData={setDraftData}>
+      <FullScreenWrapper>
         {isLoadingLayout && <Spinner />}
         {!isLoadingLayout && (
           <Centerer>
@@ -63,9 +55,9 @@ export const Report = ({ reportId }: Props) => {
             >
               <Box>
                 <Editor isPreview={true}>
-                  {editorData && (
-                    <ContentBuilderFrame editorData={editorData} />
-                  )}
+                  <ContentBuilderFrame
+                    editorData={reportLayout.data.attributes.craftjs_json}
+                  />
                 </Editor>
               </Box>
             </Box>

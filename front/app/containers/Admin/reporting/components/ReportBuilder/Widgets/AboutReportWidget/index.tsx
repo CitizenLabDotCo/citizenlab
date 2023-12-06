@@ -115,7 +115,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
               <li>${formatMessage(messages.projectLabel, {
                 projectsList: projectName,
               })}</li>
-              ${period ? '<li>${period}</li>' : ''}
+              ${period ? `<li>${period}</li>` : ''}
               <li>${formatMessage(messages.managerLabel, {
                 managerName: projectModerator,
               })}</li>
