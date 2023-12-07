@@ -18,6 +18,7 @@ import { ErrorObject } from 'ajv';
 import { IUserData } from 'api/users/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
+import { FormData } from 'components/Form/typings';
 
 // Todo :
 /*
@@ -27,14 +28,14 @@ import { AuthenticationContext } from 'api/authentication/authentication_require
 - Multi select enum : move options to uischema
 */
 
-export interface UserCustomFieldsFormProps {
+interface UserCustomFieldsFormProps {
   authUser: IUserData;
   authenticationContext: AuthenticationContext;
   onSubmit?: (data: { key: string; formData: Record<string, any> }) => void;
   onChange?: (data: { key: string; formData: Record<string, any> }) => void;
 }
 
-export default ({
+const UserCustomFieldsForm = ({
   authUser,
   authenticationContext,
   onSubmit,
@@ -46,7 +47,7 @@ export default ({
 
   const locale = useLocale();
 
-  const handleOnSubmit = (formData) => {
+  const handleOnSubmit = (formData: FormData) => {
     const sanitizedFormData = {};
 
     forOwn(formData, (value, key) => {
@@ -101,3 +102,5 @@ export default ({
 
   return null;
 };
+
+export default UserCustomFieldsForm;
