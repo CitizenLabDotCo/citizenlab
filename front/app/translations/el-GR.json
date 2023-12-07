@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "Επαλήθευση τώρα",
   "app.containers.landing.verifyYourIdentity": "Επαληθεύστε την ταυτότητά σας",
   "app.containers.landing.viewAllEventsText": "Προβολή όλων των εκδηλώσεων",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Πίσω στο φάκελο",
   "app.errors.after_end_at": "Η ημερομηνία έναρξης εμφανίζεται μετά την ημερομηνία λήξης",
   "app.errors.avatar_carrierwave_download_error": "Δεν ήταν δυνατή η λήψη του αρχείου avatar.",
   "app.errors.avatar_carrierwave_integrity_error": "Το αρχείο avatar δεν ανήκει σε επιτρεπόμενο τύπο.",
