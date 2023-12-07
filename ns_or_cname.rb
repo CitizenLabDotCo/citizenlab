@@ -12,7 +12,7 @@ File.open('ns_or_cname_v2.csv', 'w') do |f|
   table.by_row.each_with_index do |row, i|
     puts i
 
-    next if row[1].include?('citizenlab')
+    next if row[1].include?('citizenlab.co')
 
     approach = 'unknown'
     dig = `dig CNAME #{row[1]}`
