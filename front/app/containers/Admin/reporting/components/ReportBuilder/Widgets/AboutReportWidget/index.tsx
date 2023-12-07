@@ -92,14 +92,10 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
       ) : (
         <Element id="about-title" is={Container} canvas>
           <TextMultiloc
-            text={
-              projectTitle
-                ? formatMultiloc(
-                    projectTitle,
-                    (text) => `<h2>${text ?? ''}</h2>`
-                  )
-                : ''
-            }
+            text={formatMultiloc(
+              projectTitle,
+              (text) => `<h2>${text ?? ''}</h2>`
+            )}
           />
         </Element>
       )}
