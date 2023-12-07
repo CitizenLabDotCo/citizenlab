@@ -1,5 +1,4 @@
 import { ImageSizes, IRelationship, Multiloc } from 'typings';
-import { THomepageBannerLayout } from 'api/home_page/types';
 import { Keys } from 'utils/cl-react-query/types';
 import customPagesKeys from './keys';
 
@@ -55,7 +54,7 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   title_multiloc: Multiloc;
   top_info_section_multiloc: Multiloc;
   slug: string;
-  banner_layout: THomepageBannerLayout;
+  banner_layout: TCustomPageBannerLayout;
   banner_overlay_color: string | null;
   banner_overlay_opacity: number | null;
   banner_cta_button_multiloc: Multiloc;

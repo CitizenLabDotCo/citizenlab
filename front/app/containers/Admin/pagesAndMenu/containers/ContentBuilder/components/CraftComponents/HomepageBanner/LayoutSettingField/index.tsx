@@ -22,8 +22,7 @@ import styled from 'styled-components';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
-
-import { THomepageBannerLayout } from 'api/home_page/types';
+import { THomepageBannerLayout } from '..';
 
 const LayoutPreview = styled.img`
   width: 100%;

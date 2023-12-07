@@ -12,7 +12,6 @@ import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
 } from 'api/custom_pages/types';
-import { THomepageBannerLayout } from 'api/home_page/types';
 import { UploadFile } from 'typings';
 
 const HeaderImageOverlay = styled.div<{
@@ -36,13 +35,13 @@ interface Props {
   headerError: TBannerError;
   header_bg: UploadFile | null;
   previewDevice: TDevice;
-  layout: THomepageBannerLayout;
+  layout: TCustomPageBannerLayout;
 }
 
 // move this to homepage settings resource?
 export const FIXED_RATIO_LAYOUT_ASPECT_RATIO = 3 / 1;
 export const homepageBannerLayoutHeights: {
-  [key in THomepageBannerLayout | TCustomPageBannerLayout]: {
+  [key in TCustomPageBannerLayout]: {
     [key in TDevice]: number;
   };
 } = {
@@ -102,7 +101,7 @@ const HeaderImageDropzone = ({
     const ratio = layoutHeightOnDevice / standardDeviceWidth;
 
     const ratioPerLayoutPerDevice: {
-      [key in THomepageBannerLayout]: {
+      [key in TCustomPageBannerLayout]: {
         [key in TDevice]: number;
       };
     } = {
@@ -140,11 +139,9 @@ const HeaderImageDropzone = ({
     return ratioPerLayoutPerDevice[layout][previewDevice];
   };
 
-  const showPreviewOverlayForLayout = (
-    layout: THomepageBannerLayout | TCustomPageBannerLayout
-  ) => {
+  const showPreviewOverlayForLayout = (layout: TCustomPageBannerLayout) => {
     const conditions: {
-      [key in THomepageBannerLayout | TCustomPageBannerLayout]: boolean;
+      [key in TCustomPageBannerLayout]: boolean;
     } = {
       full_width_banner_layout: true,
       two_row_layout: false,

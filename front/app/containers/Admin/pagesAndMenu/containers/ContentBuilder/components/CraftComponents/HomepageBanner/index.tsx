@@ -24,11 +24,6 @@ import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
 import messages from './messages';
 import SignedInHeader from 'containers/HomePage/SignedInHeader';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import {
-  CTASignedInType,
-  CTASignedOutType,
-  THomepageBannerLayout,
-} from 'api/home_page/types';
 import { ImageSizes, Multiloc, UploadFile } from 'typings';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isValidUrl } from 'utils/validate';
@@ -46,6 +41,30 @@ import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import useAuthUser from 'api/me/useAuthUser';
 import Fragment from 'components/Fragment';
 import useLocale from 'hooks/useLocale';
+
+export type THomepageBannerLayout =
+  THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
+
+export interface THomepageBannerLayoutMap {
+  full_width_banner_layout: 'full_width_banner_layout';
+  two_column_layout: 'two_column_layout';
+  two_row_layout: 'two_row_layout';
+  fixed_ratio_layout: 'fixed_ratio_layout';
+}
+
+interface CTASignedInTypeMap {
+  customized_button: 'customized_button';
+  no_button: 'no_button';
+}
+
+export type CTASignedInType = CTASignedInTypeMap[keyof CTASignedInTypeMap];
+
+interface CTASignedOutTypeMap {
+  sign_up_button: 'sign_up_button';
+  customized_button: 'customized_button';
+  no_button: 'no_button';
+}
+export type CTASignedOutType = CTASignedOutTypeMap[keyof CTASignedOutTypeMap];
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
