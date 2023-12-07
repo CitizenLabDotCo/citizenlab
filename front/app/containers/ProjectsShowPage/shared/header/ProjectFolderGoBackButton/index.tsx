@@ -2,8 +2,9 @@ import React, { memo } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { Button } from '@citizenlab/cl2-component-library';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
-import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 interface Props {
   projectFolderId: string;
@@ -12,8 +13,7 @@ interface Props {
 
 const GoBackButton = memo(({ projectFolderId, className }: Props) => {
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
-  const localize = useLocalize();
-
+  const { formatMessage } = useIntl();
   const onGoBack = (event: React.MouseEvent) => {
     event.preventDefault();
 
@@ -34,7 +34,7 @@ const GoBackButton = memo(({ projectFolderId, className }: Props) => {
         whiteSpace="wrap"
         textDecorationHover="underline"
       >
-        {localize(projectFolder.data.attributes.title_multiloc)}
+        {formatMessage(messages.backToFolder)}
       </Button>
     );
   }
