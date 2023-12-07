@@ -27,14 +27,12 @@ const Container = styled.header`
 
   ${media.tablet`
     position: absolute;
-  `}
 
-  &.scroll-up-nav {
-    ${media.tablet`
+    &.scroll-up-nav {
       position: fixed;
       top: 0px;
-    `}
-  }
+    }
+  `}
 `;
 
 const ContainerInner = styled.div`
@@ -73,7 +71,8 @@ const StyledRightFragment = styled(Fragment)`
 const MainHeader = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [showNavBar, setShowNavBar] = useState<boolean>(false);
+  const [showMobileStickyNav, setShowMobileStickyNav] =
+    useState<boolean>(false);
   const [scrollTop, setScrollTop] = useState(0);
 
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -84,13 +83,13 @@ const MainHeader = () => {
     function onScroll() {
       const currentPosition = document.documentElement.scrollTop;
       if (currentPosition <= 0) {
-        setShowNavBar(false); // Don't show if we're at the top already
+        setShowMobileStickyNav(false); // Don't show if we're at the top already
       } else if (currentPosition > scrollTop) {
         // downscroll
-        setShowNavBar(false);
+        setShowMobileStickyNav(false);
       } else {
         // upscroll
-        setShowNavBar(true);
+        setShowMobileStickyNav(true);
       }
       setScrollTop(currentPosition <= 0 ? 0 : currentPosition);
     }
@@ -102,7 +101,7 @@ const MainHeader = () => {
   return (
     <Container
       id="e2e-navbar"
-      className={showNavBar ? 'scroll-up-nav' : ''}
+      className={showMobileStickyNav ? 'scroll-up-nav' : ''}
       ref={containerRef}
     >
       <ContainerInner>
