@@ -86,10 +86,8 @@ describe('Idea creation', () => {
       'Boulevard Anspach Brussels'
     );
 
-    cy.intercept(
-      `**/location/autocomplete?input=Boulevard%20Anspach%20Brussels&language=en`
-    ).as('locationSearch');
-    cy.wait('@locationSearch', { timeout: 10000 });
+    // wait for the autocomplete to appear. Waiting for the api call doesn't seem to be enough but doing this for now
+    cy.wait(10000);
 
     cy.get('.e2e-idea-form-location-input-field input').type(
       '{downArrow}{enter}'
