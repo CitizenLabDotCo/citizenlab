@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "Verify now",
   "app.containers.landing.verifyYourIdentity": "Verify your identity",
   "app.containers.landing.viewAllEventsText": "View all events",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Back to folder",
   "app.errors.after_end_at": "The start date occurs after the end date",
   "app.errors.avatar_carrierwave_download_error": "Could not download avatar file.",
   "app.errors.avatar_carrierwave_integrity_error": "Avatar file is not of an allowed type.",
