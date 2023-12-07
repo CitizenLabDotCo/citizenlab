@@ -12,10 +12,7 @@ import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
 } from 'api/custom_pages/types';
-import {
-  IHomepageSettingsAttributes,
-  THomepageBannerLayout,
-} from 'api/home_page/types';
+import { THomepageBannerLayout } from 'api/home_page/types';
 import { UploadFile } from 'typings';
 
 const HeaderImageOverlay = styled.div<{
@@ -32,12 +29,8 @@ const HeaderImageOverlay = styled.div<{
 `;
 
 interface Props {
-  overlayOpacity:
-    | IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity']
-    | ICustomPageAttributes['banner_overlay_opacity'];
-  overlayColor:
-    | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
-    | ICustomPageAttributes['banner_overlay_color'];
+  overlayOpacity: ICustomPageAttributes['banner_overlay_opacity'];
+  overlayColor: ICustomPageAttributes['banner_overlay_color'];
   onAdd: (newImage: UploadFile[]) => void;
   onRemove: () => void;
   headerError: TBannerError;

@@ -49,11 +49,13 @@ const Meta: React.SFC<Props & WrappedComponentProps> = ({
   ) {
     const { formatMessage } = intl;
     const tenantLocales = tenant.attributes.settings.core.locales;
-    const headerBg =
-      homepageSettings.data.attributes.header_bg &&
-      homepageSettings.data.attributes.header_bg.large
-        ? homepageSettings.data.attributes.header_bg.large
-        : '';
+
+    const headerBg = homepageSettings.data.attributes.craftjs_json
+      ? Object.values(homepageSettings.data.attributes.craftjs_json).find(
+          (node) => node.displayName === 'HomepageBanner'
+        )?.props.image.imageUrl
+      : '';
+
     const organizationNameMultiLoc =
       tenant.attributes.settings.core.organization_name;
     const organizationName = getLocalized(

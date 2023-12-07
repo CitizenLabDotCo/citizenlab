@@ -26,10 +26,7 @@ import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
 } from 'api/custom_pages/types';
-import {
-  IHomepageSettingsAttributes,
-  THomepageBannerLayout,
-} from 'api/home_page/types';
+import { THomepageBannerLayout } from 'api/home_page/types';
 
 const LayoutPreview = styled.img`
   width: 220px;
@@ -50,9 +47,8 @@ const LayoutOptionTop = styled.div`
 `;
 
 export interface Props {
-  bannerLayout:
-    | ICustomPageAttributes['banner_layout']
-    | IHomepageSettingsAttributes['banner_layout'];
+  bannerLayout: ICustomPageAttributes['banner_layout'];
+
   onChange: (
     bannerLayout: THomepageBannerLayout | TCustomPageBannerLayout
   ) => void;

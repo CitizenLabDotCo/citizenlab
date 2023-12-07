@@ -28,7 +28,6 @@ import { Multiloc } from 'typings';
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 
 // services and hooks
-import { IHomepageSettingsData } from 'api/home_page/types';
 import { ICustomPageData } from 'api/custom_pages/types';
 
 // utils
@@ -36,7 +35,7 @@ import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 interface Props {
-  pageData: IHomepageSettingsData | ICustomPageData;
+  pageData: ICustomPageData;
   updatePage: (data: {
     bottom_info_section_multiloc: Multiloc;
   }) => Promise<any>;

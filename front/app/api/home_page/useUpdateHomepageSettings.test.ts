@@ -26,7 +26,7 @@ describe('useUpdateHomepageSettings', () => {
 
     act(() => {
       result.current.mutate({
-        top_info_section_enabled: false,
+        craftjs_json: {},
       });
     });
 
@@ -46,7 +46,7 @@ describe('useUpdateHomepageSettings', () => {
     });
     act(() => {
       result.current.mutate({
-        top_info_section_enabled: false,
+        craftjs_json: {},
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));
