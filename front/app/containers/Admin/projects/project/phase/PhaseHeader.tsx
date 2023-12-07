@@ -151,20 +151,20 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
                 participationMethodMessage[
                   phase.attributes.participation_method
                 ]
-              )}{' '}
-              ·
+              )}
             </Text>
+            <Box px="8px">·</Box>
             <Icon
               name="calendar"
               width="16px"
-              mx="2px"
+              mr="2px"
               fill={colors.coolGrey600}
             />
             <Text color="coolGrey600" my="0px" variant="bodyS">
               {startAt} → {endAt}
             </Text>
             {participationRequirementsMessage && (
-              <Text color="coolGrey600" my="0px" variant="bodyS" ml="4px">
+              <Text color="coolGrey600" my="0px" variant="bodyS">
                 <Tippy
                   disabled={false}
                   interactive={true}
@@ -174,15 +174,27 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
                   }
                 >
                   <Box display="flex" alignItems="center">
-                    {' '}
-                    ·
-                    <Icon
-                      name="key"
-                      width="16px"
-                      mx="2px"
-                      fill={colors.coolGrey600}
-                    />
-                    {participationRequirementsMessage}
+                    <Box px="8px">·</Box>
+                    <Button
+                      buttonStyle="text"
+                      fontSize="14px"
+                      onClick={() => {
+                        clHistory.push(
+                          `/admin/projects/${projectId}/phases/${phase.id}/access-rights`
+                        );
+                      }}
+                      padding="0"
+                    >
+                      <Box display="flex" alignItems="center">
+                        <Icon
+                          name="key"
+                          width="16px"
+                          mr="2px"
+                          fill={colors.coolGrey600}
+                        />
+                        {participationRequirementsMessage}
+                      </Box>
+                    </Button>
                   </Box>
                 </Tippy>
               </Text>
