@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "تحقق الآن",
   "app.containers.landing.verifyYourIdentity": "فلتصبح مواطنًا تم التحقق من هويته",
   "app.containers.landing.viewAllEventsText": "عرض كل الأحداث",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "العودة إلى المجلد",
   "app.errors.after_end_at": "تاريخ البدء يتلو تاريخ الانتهاء",
   "app.errors.avatar_carrierwave_download_error": "لا يمكن تحميل ملف الصورة الرمزية.",
   "app.errors.avatar_carrierwave_integrity_error": "ملف الصورة الرمزية ليس من النوع المسموح به.",
