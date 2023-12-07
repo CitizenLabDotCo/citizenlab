@@ -98,7 +98,7 @@ const CustomFields = ({
         flexDirection={smallerThanPhone ? 'column' : undefined}
         alignItems={smallerThanPhone ? 'stretch' : 'center'}
         justifyContent={smallerThanPhone ? 'center' : 'space-between'}
-        mt="-16px"
+        mt="8px"
       >
         <Button
           id="e2e-signup-custom-fields-submit-btn"
