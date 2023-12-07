@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 // components
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
@@ -25,16 +26,23 @@ import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 
-// messages
+// i18n
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import reportBuilderMessages from '../../../messages';
+import textMessages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
+import {
+  FormattedMessage,
+  useIntl,
+  useFormatMessageWithLocale,
+  MessageDescriptor,
+} from 'utils/cl-intl';
 
 // hooks
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import moment from 'moment';
+import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
 type ReportBuilderToolboxProps = {
   reportId: string;
@@ -56,10 +64,20 @@ const SectionTitle = ({ children }) => (
 
 const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
+  const formatMessageWithLocale = useFormatMessageWithLocale();
   const { projectId } = useReportContext();
+  const appConfigurationLocales = useAppConfigurationLocales();
+
+  if (!appConfigurationLocales) return null;
 
   // Default end date for charts (today)
   const chartEndDate = moment().format('YYYY-MM-DD');
+
+  const toMultiloc = (message: MessageDescriptor) => {
+    return createMultiloc(appConfigurationLocales, (locale) => {
+      return formatMessageWithLocale(locale, message);
+    });
+  };
 
   return (
     <Container>
@@ -104,13 +122,19 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           />
           <DraggableElement
             id="e2e-draggable-title"
-            component={<TitleMultiloc />}
+            component={
+              <TitleMultiloc
+                text={toMultiloc(TitleMultiloc.craft.custom.title)}
+              />
+            }
             icon="text"
             label={formatMessage(TitleMultiloc.craft.custom.title)}
           />
           <DraggableElement
             id="e2e-draggable-text"
-            component={<TextMultiloc />}
+            component={
+              <TextMultiloc text={toMultiloc(textMessages.textMultiloc)} />
+            }
             icon="text"
             label={formatMessage(TextMultiloc.craft.custom.title)}
           />
@@ -136,7 +160,12 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           }
           <DraggableElement
             id="e2e-draggable-survey-results-widget"
-            component={<SurveyResultsWidget projectId={projectId} />}
+            component={
+              <SurveyResultsWidget
+                title={toMultiloc(SurveyResultsWidget.craft.custom.title)}
+                projectId={projectId}
+              />
+            }
             icon="survey"
             label={formatMessage(SurveyResultsWidget.craft.custom.title)}
           />
@@ -144,6 +173,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-most-reacted-ideas-widget"
             component={
               <MostReactedIdeasWidget
+                title={toMultiloc(MostReactedIdeasWidget.craft.custom.title)}
                 numberOfIdeas={5}
                 collapseLongText={false}
                 projectId={projectId}
@@ -166,6 +196,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-visitors-timeline-widget"
             component={
               <VisitorsWidget
+                title={toMultiloc(VisitorsWidget.craft.custom.title)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
@@ -178,6 +209,9 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-visitors-traffic-sources-widget"
             component={
               <VisitorsTrafficSourcesWidget
+                title={toMultiloc(
+                  VisitorsTrafficSourcesWidget.craft.custom.title
+                )}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
@@ -192,6 +226,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-users-by-gender-widget"
             component={
               <GenderWidget
+                title={toMultiloc(GenderWidget.craft.custom.title)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
@@ -204,6 +239,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-users-by-age-widget"
             component={
               <AgeWidget
+                title={toMultiloc(AgeWidget.craft.custom.title)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
@@ -216,6 +252,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-active-users-widget"
             component={
               <ActiveUsersWidget
+                title={toMultiloc(ActiveUsersWidget.craft.custom.title)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
@@ -228,6 +265,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-posts-by-time-widget"
             component={
               <PostsByTimeWidget
+                title={toMultiloc(PostsByTimeWidget.craft.custom.title)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
@@ -240,6 +278,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-comments-by-time-widget"
             component={
               <CommentsByTimeWidget
+                title={toMultiloc(CommentsByTimeWidget.craft.custom.title)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
@@ -252,6 +291,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-reactions-by-time-widget"
             component={
               <ReactionsByTimeWidget
+                title={toMultiloc(ReactionsByTimeWidget.craft.custom.title)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}

@@ -4,7 +4,7 @@ import { Multiloc, Locale } from 'typings';
 export const formatMultiloc = (
   multiloc: Multiloc,
   format: (value: string | undefined, locale: Locale) => string
-) => {
+): Multiloc => {
   return keys(multiloc).reduce((acc, locale) => {
     return {
       ...acc,
@@ -16,7 +16,7 @@ export const formatMultiloc = (
 export const createMultiloc = (
   locales: Locale[],
   getValue: (locale: Locale) => string
-) => {
+): Multiloc => {
   return locales.reduce((acc, locale) => {
     return {
       ...acc,
