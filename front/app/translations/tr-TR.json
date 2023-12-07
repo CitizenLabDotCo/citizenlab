@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "Şimdi doğrula",
   "app.containers.landing.verifyYourIdentity": "Kimliğinizi doğrulayın",
   "app.containers.landing.viewAllEventsText": "Tüm etkinlikleri görüntüle",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Klasöre geri dön",
   "app.errors.after_end_at": "Başlangıç tarihi bitiş tarihinden sonra",
   "app.errors.avatar_carrierwave_download_error": "Avatar dosyası indirilemedi.",
   "app.errors.avatar_carrierwave_integrity_error": "Avatar dosyası izin verilen bir türde değil.",
