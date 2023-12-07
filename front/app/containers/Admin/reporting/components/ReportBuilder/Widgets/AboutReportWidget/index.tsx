@@ -2,10 +2,11 @@ import React from 'react';
 
 // i18n
 import messages from './messages';
+import { useFormatMessageWithLocale } from 'utils/cl-intl';
 
 // components
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
-// import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
+import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
 import { Element } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
@@ -16,15 +17,16 @@ import TenantLogo from 'containers/MainHeader/Components/TenantLogo';
 import useReport from 'api/reports/useReport';
 import useUserById from 'api/users/useUserById';
 import useProjectById from 'api/projects/useProjectById';
-import useLocalize from 'hooks/useLocalize';
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
 // utils
-import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import moment from 'moment';
+import { isNilOrError, keys } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
-import { FormatMessage } from 'typings';
+import { getPeriod } from './utils';
+import {
+  createMultiloc,
+  formatMultiloc,
+} from 'containers/Admin/reporting/utils/multiloc';
 
 type Props = {
   startAt?: string;
@@ -33,34 +35,8 @@ type Props = {
   projectId?: string;
 };
 
-const getPeriod = ({
-  startAt,
-  endAt,
-  formatMessage,
-}: {
-  startAt?: string;
-  endAt?: string | null;
-  formatMessage: FormatMessage;
-}) => {
-  if (!startAt) return undefined;
-
-  if (endAt) {
-    const startEndDates = `${moment(startAt).format('LL')} - ${moment(
-      endAt
-    ).format('LL')}`;
-
-    return formatMessage(messages.periodLabel, {
-      startEndDates,
-    });
-  }
-
-  const startDate = moment(startAt).format('LL');
-  return formatMessage(messages.start, { startDate });
-};
-
 const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
-  const { formatMessage } = useIntl();
-  const localize = useLocalize();
+  const formatMessageWithLocale = useFormatMessageWithLocale();
   const px = useReportDefaultPadding();
 
   // Title
@@ -76,11 +52,28 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
 
   // Project name & time period
   const { data: project } = useProjectById(projectId);
-  const projectName = !project
-    ? ''
-    : localize(project.data.attributes.title_multiloc);
+  if (!project) return null;
 
-  const period = getPeriod({ startAt, endAt, formatMessage });
+  const projectTitle = project.data.attributes.title_multiloc;
+  const locales = keys(projectTitle);
+
+  const aboutTextMultiloc = createMultiloc(locales, (locale) => {
+    const formatMessage = (message, values) =>
+      formatMessageWithLocale(locale, message, values);
+    const period = getPeriod({ startAt, endAt, formatMessage });
+
+    return `
+      <ul>
+        <li>${formatMessage(messages.projectLabel, {
+          projectsList: projectTitle[locale] ?? '',
+        })}</li>
+        ${period ? `<li>${period}</li>` : ''}
+        <li>${formatMessage(messages.managerLabel, {
+          managerName: projectModerator,
+        })}</li>
+      </ul>
+    `;
+  });
 
   return (
     <PageBreakBox px={px}>
@@ -98,10 +91,15 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
         <></>
       ) : (
         <Element id="about-title" is={Container} canvas>
-          <Text
-            text={`
-              <h2>${reportTitle}</h2>
-            `}
+          <TextMultiloc
+            text={
+              projectTitle
+                ? formatMultiloc(
+                    projectTitle,
+                    (text) => `<h2>${text ?? ''}</h2>`
+                  )
+                : ''
+            }
           />
         </Element>
       )}
@@ -109,19 +107,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
         <></>
       ) : (
         <Element id="about-text" is={Container} canvas>
-          <Text
-            text={`
-            <ul>
-              <li>${formatMessage(messages.projectLabel, {
-                projectsList: projectName,
-              })}</li>
-              ${period ? `<li>${period}</li>` : ''}
-              <li>${formatMessage(messages.managerLabel, {
-                managerName: projectModerator,
-              })}</li>
-            </ul>
-          `}
-          />
+          <TextMultiloc text={aboutTextMultiloc} />
         </Element>
       )}
     </PageBreakBox>

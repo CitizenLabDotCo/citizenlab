@@ -12,7 +12,7 @@ describe.skip('<VisitorsWidget />', () => {
   const startAt = undefined;
   const endAt = undefined;
   const projectId = undefined;
-  const title = 'VISITORS TITLE';
+  const title = { en: 'VISITORS TITLE' };
 
   it('renders a title, line graph and stats box when there is data', () => {
     const validStats = {

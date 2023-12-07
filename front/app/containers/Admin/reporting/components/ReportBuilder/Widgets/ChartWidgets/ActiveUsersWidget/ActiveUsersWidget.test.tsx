@@ -11,7 +11,7 @@ describe.skip('<ActiveUsersWidget />', () => {
   const startAt = undefined;
   const endAt = undefined;
   const projectId = undefined;
-  const title = 'PARTICIPANTS TITLE';
+  const title = { en: 'PARTICIPANTS TITLE' };
 
   it('renders a title, line graph and stats box when there is data', () => {
     const validStats = {

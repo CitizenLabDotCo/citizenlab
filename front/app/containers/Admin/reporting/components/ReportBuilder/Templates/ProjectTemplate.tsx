@@ -4,6 +4,7 @@ import moment from 'moment';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // craft
 import { Element } from '@craftjs/core';
@@ -28,12 +29,13 @@ import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
 
 // i18n
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
 import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
 import { getTemplateData } from './getTemplateData';
+import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
 interface Props {
   reportId: string;
@@ -41,7 +43,8 @@ interface Props {
 }
 
 const ProjectTemplate = ({ reportId, projectId }: Props) => {
-  const { formatMessage } = useIntl();
+  const formatMessageWithLocale = useFormatMessageWithLocale();
+  const appConfigurationLocales = useAppConfigurationLocales();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
@@ -60,6 +63,14 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
     ? getProjectPeriod(phases.data)
     : { startAt: undefined, endAt: moment().format('YYYY-MM-DD') };
 
+  if (!appConfigurationLocales) return null;
+
+  const toMultiloc = (message: MessageDescriptor) => {
+    return createMultiloc(appConfigurationLocales, (locale) => {
+      return formatMessageWithLocale(locale, message);
+    });
+  };
+
   return (
     <Element id="project-report-template" is={Box} canvas>
       <AboutReportWidget
@@ -67,11 +78,11 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
         projectId={projectId}
         {...projectPeriod}
       />
-      {/* <TitleMultiloc text={formatMessage(messages.reportSummary)} /> */}
-      {/* <TextMultiloc text={formatMessage(messages.reportSummaryDescription)} /> */}
+      <TitleMultiloc text={toMultiloc(messages.reportSummary)} />
+      <TextMultiloc text={toMultiloc(messages.reportSummaryDescription)} />
       <WhiteSpace />
-      {/* <TitleMultiloc text={formatMessage(messages.projectResults)} /> */}
-      {/* <TextMultiloc text={formatMessage(messages.descriptionPlaceHolder)} /> */}
+      <TitleMultiloc text={toMultiloc(messages.projectResults)} />
+      <TextMultiloc text={toMultiloc(messages.descriptionPlaceHolder)} />
       <ActiveUsersWidget projectId={projectId} {...projectPeriod} />
       {participationMethod === 'native_survey' && (
         <SurveyResultsWidget projectId={projectId} phaseId={phaseId} />
@@ -85,29 +96,29 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
         />
       )}
       <WhiteSpace />
-      <Title text={formatMessage(messages.participants)} />
-      <TextMultiloc text={formatMessage(messages.descriptionPlaceHolder)} />
+      <TitleMultiloc text={toMultiloc(messages.participants)} />
+      <TextMultiloc text={toMultiloc(messages.descriptionPlaceHolder)} />
       <TwoColumn columnLayout="1-1">
         <Element id="left" is={Container} canvas>
           <GenderWidget
             projectId={projectId}
-            title={formatMessage(GenderWidget.craft.custom.title)}
+            title={toMultiloc(GenderWidget.craft.custom.title)}
             {...projectPeriod}
           />
         </Element>
         <Element id="right" is={Container} canvas>
           <AgeWidget
             projectId={projectId}
-            title={formatMessage(AgeWidget.craft.custom.title)}
+            title={toMultiloc(AgeWidget.craft.custom.title)}
             {...projectPeriod}
           />
         </Element>
       </TwoColumn>
-      <Title text={formatMessage(messages.visitors)} />
-      <TextMultiloc text={formatMessage(messages.descriptionPlaceHolder)} />
+      <TitleMultiloc text={toMultiloc(messages.visitors)} />
+      <TextMultiloc text={toMultiloc(messages.descriptionPlaceHolder)} />
       <VisitorsWidget
         projectId={projectId}
-        title={formatMessage(VisitorsWidget.craft.custom.title)}
+        title={toMultiloc(VisitorsWidget.craft.custom.title)}
         {...projectPeriod}
       />
     </Element>

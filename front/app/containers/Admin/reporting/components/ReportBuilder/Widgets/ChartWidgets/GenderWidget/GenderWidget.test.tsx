@@ -14,7 +14,7 @@ describe.skip('<GenderWidget />', () => {
   const startAt = undefined;
   const endAt = undefined;
   const projectId = undefined;
-  const title = 'GENDER TITLE';
+  const title = { en: 'GENDER TITLE' };
 
   it('renders a title and pie chart when there is data', () => {
     const validData = [
