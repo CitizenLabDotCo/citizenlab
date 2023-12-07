@@ -80,7 +80,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
           inputId={inputId}
           className={className}
           isMulti
-          isSearchable
+          isSearchable={false}
           blurInputOnSelect={autoBlur}
           backspaceRemovesValue={false}
           menuShouldScrollIntoView={false}
