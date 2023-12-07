@@ -8,9 +8,6 @@ import DesktopNavbarContent from './Components/NavbarContent/DesktopNavbarConten
 import Fragment from 'components/Fragment';
 import TenantLogo from './Components/TenantLogo';
 
-// utils
-import { isIdeaPage, isInitiativePage } from './utils';
-
 // style
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
@@ -31,12 +28,6 @@ const Container = styled.header`
   ${media.tablet`
     position: absolute;
   `}
-
-  &.hideNavbar {
-    ${media.tablet`
-      display: none;
-    `}
-  }
 
   &.scroll-up-nav {
     ${media.tablet`
@@ -108,19 +99,10 @@ const MainHeader = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, [scrollTop]);
 
-  // url segments
-  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
-
   return (
     <Container
       id="e2e-navbar"
-      className={`${
-        isIdeaPage(urlSegments) || isInitiativePage(urlSegments)
-          ? 'hideNavbar'
-          : ''
-      }
-      ${showNavBar ? 'scroll-up-nav' : ''}
-      `}
+      className={showNavBar ? 'scroll-up-nav' : ''}
       ref={containerRef}
     >
       <ContainerInner>

@@ -255,6 +255,30 @@ const App = ({ children }: Props) => {
   const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
   const isInitiativeFormPage = isPage('initiative_form', location.pathname);
   const isIdeaFormPage = isPage('idea_form', location.pathname);
+  const isIdeaShowPage = (urlSegments: string[]) => {
+    const firstUrlSegment = urlSegments[0];
+    const secondUrlSegment = urlSegments[1];
+    const lastUrlSegment = urlSegments[urlSegments.length - 1];
+
+    return (
+      urlSegments.length === 3 &&
+      locales.includes(firstUrlSegment) &&
+      secondUrlSegment === 'ideas' &&
+      lastUrlSegment !== 'new'
+    );
+  };
+  const isInitiativeShowPage = (urlSegments: string[]) => {
+    const firstUrlSegment = urlSegments[0];
+    const secondUrlSegment = urlSegments[1];
+    const lastUrlSegment = urlSegments[urlSegments.length - 1];
+
+    return (
+      urlSegments.length === 3 &&
+      locales.includes(firstUrlSegment) &&
+      secondUrlSegment === 'initiatives' &&
+      lastUrlSegment !== 'new'
+    );
+  };
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
   const isEventPage = isPage('event_page', location.pathname);
@@ -268,8 +292,14 @@ const App = ({ children }: Props) => {
     !isIdeaEditPage &&
     !isInitiativeEditPage;
   const { pathname } = removeLocale(location.pathname);
+  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+
   const showFrontOfficeNavbar =
-    (isEventPage && !isSmallerThanTablet) || // Don't show the navbar on (mobile) event page
+    // Don't show the navbar on (mobile) idea/initiative page
+    ((isIdeaShowPage(urlSegments) || isInitiativeShowPage(urlSegments)) &&
+      !isSmallerThanTablet) ||
+    // Don't show the navbar on (mobile) event page
+    (isEventPage && !isSmallerThanTablet) ||
     (!isAdminPage && !isEventPage) ||
     isPagesAndMenuPage;
 
