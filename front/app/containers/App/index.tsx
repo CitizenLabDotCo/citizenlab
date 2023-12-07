@@ -294,14 +294,24 @@ const App = ({ children }: Props) => {
   const { pathname } = removeLocale(location.pathname);
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
 
-  const showFrontOfficeNavbar =
-    // Don't show the navbar on (mobile) idea/initiative page
-    ((isIdeaShowPage(urlSegments) || isInitiativeShowPage(urlSegments)) &&
-      !isSmallerThanTablet) ||
-    // Don't show the navbar on (mobile) event page
-    (isEventPage && !isSmallerThanTablet) ||
-    (!isAdminPage && !isEventPage) ||
-    isPagesAndMenuPage;
+  const showFrontOfficeNavbar = () => {
+    if (isAdminPage) {
+      if (!isPagesAndMenuPage) return false;
+    }
+
+    // citizen
+    if (isSmallerThanTablet) {
+      if (
+        isEventPage ||
+        isIdeaShowPage(urlSegments) ||
+        isInitiativeShowPage(urlSegments)
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  };
 
   // Ensure authUser is loaded before rendering the app
   if (!authUser && isLoading) {
@@ -367,7 +377,7 @@ const App = ({ children }: Props) => {
                   <ConsentManager />
                 </Suspense>
               </ErrorBoundary>
-              {showFrontOfficeNavbar && (
+              {showFrontOfficeNavbar() && (
                 <ErrorBoundary>
                   <MainHeader />
                 </ErrorBoundary>
@@ -379,7 +389,7 @@ const App = ({ children }: Props) => {
                 flex="1"
                 overflowY="auto"
                 pt={
-                  showFrontOfficeNavbar
+                  showFrontOfficeNavbar()
                     ? `${stylingConsts.menuHeight}px`
                     : undefined
                 }
