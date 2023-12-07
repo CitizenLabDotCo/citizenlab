@@ -4,11 +4,11 @@ import {
 } from 'components/LandingPages/citizen/TwoColumnLayout';
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 import React from 'react';
-import { IHomepageSettingsAttributes } from 'api/home_page/types';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
-  homepageSettings: Partial<IHomepageSettingsAttributes>;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
 const TwoColumnLayout = ({ homepageSettings }: Props) => {

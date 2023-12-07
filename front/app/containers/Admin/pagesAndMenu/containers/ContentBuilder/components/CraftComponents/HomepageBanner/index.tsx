@@ -29,7 +29,7 @@ import {
   CTASignedOutType,
   THomepageBannerLayout,
 } from 'api/home_page/types';
-import { Multiloc, UploadFile } from 'typings';
+import { ImageSizes, Multiloc, UploadFile } from 'typings';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isValidUrl } from 'utils/validate';
 import {
@@ -58,9 +58,8 @@ const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
   'customized_button',
 ];
 
-export interface IHomepageSettingsAttributes {
+export interface IHomepageBannerSettings {
   banner_layout: THomepageBannerLayout;
-
   // signed_out
   banner_signed_out_header_multiloc: Multiloc;
   banner_signed_out_subheader_multiloc: Multiloc;
@@ -81,12 +80,13 @@ export interface IHomepageSettingsAttributes {
   banner_cta_signed_in_text_multiloc: Multiloc;
   banner_cta_signed_in_type: CTASignedInType;
   banner_cta_signed_in_url: string | null;
+  header_bg?: ImageSizes | null;
 }
 
 type ErrorType = 'banner_cta_signed_out_url' | 'banner_cta_signed_in_url';
 
 type Props = {
-  homepageSettings: IHomepageSettingsAttributes;
+  homepageSettings: IHomepageBannerSettings;
   image?: {
     dataCode?: string;
     imageUrl?: string;

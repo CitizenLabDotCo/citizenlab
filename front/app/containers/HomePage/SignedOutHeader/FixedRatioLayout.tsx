@@ -10,11 +10,10 @@ import {
   Header,
 } from 'components/LandingPages/citizen/FixedRatioLayout';
 import HeaderContent from './HeaderContent';
-
-import { IHomepageSettingsAttributes } from 'api/home_page/types';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 
 interface Props {
-  homepageSettings: Partial<IHomepageSettingsAttributes>;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
 const FixedRatioLayout = ({ homepageSettings }: Props) => {
