@@ -224,7 +224,7 @@ const MESSAGES_MAP: { [key in TFooterPage]: MessageDescriptor } = {
 
 const PlatformFooter = ({ className }: Props) => {
   const { formatMessage } = useIntl();
-  const isMobileOrSmaller = useBreakpoint('tablet');
+  const isTabletOrSmaller = useBreakpoint('tablet');
   const { data: appConfiguration } = useAppConfiguration();
   const customizedA11yHrefEnabled = useFeatureFlag({
     name: 'custom_accessibility_statement_link',
@@ -241,11 +241,11 @@ const PlatformFooter = ({ className }: Props) => {
 
   useEffect(() => {
     setPaddingBottom(
-      participationBar && isMobileOrSmaller
+      participationBar && isTabletOrSmaller
         ? `${participationBar.offsetHeight}px`
         : undefined
     );
-  }, [participationBar, isMobileOrSmaller]);
+  }, [participationBar, isTabletOrSmaller]);
 
   const getHasCustomizedA11yFooterLink = () => {
     return (

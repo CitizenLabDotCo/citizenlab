@@ -37,17 +37,7 @@ describe('Continuous multiple voting project', () => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
         return cy
-          .apiCreateIdea(
-            projectId,
-            ideaTitle,
-            ideaContent,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            phase?.body.data.id
-          )
+          .apiCreateIdea(projectId, ideaTitle, ideaContent)
           .then((idea) => {
             ideaId = idea.body.data.id;
             ideaSlug = idea.body.data.attributes.slug;

@@ -25,6 +25,7 @@ module MultiTenancy
           banner_cta_signed_out_text_multiloc
           banner_cta_signed_out_type
           banner_cta_signed_out_url
+          craftjs_json
         ]
 
         upload_attribute :header_bg
