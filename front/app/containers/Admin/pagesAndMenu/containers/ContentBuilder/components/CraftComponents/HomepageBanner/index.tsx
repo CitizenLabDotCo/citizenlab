@@ -441,7 +441,6 @@ const HomepageBannerSettings = () => {
           </Text>
           {homepageSettings.banner_layout !== 'two_row_layout' && (
             <OverlayControls
-              variant="signedOut"
               bannerOverlayColor={
                 homepageSettings.banner_signed_out_header_overlay_color
               }
@@ -566,7 +565,6 @@ const HomepageBannerSettings = () => {
             {formatMessage(messages.signedInDescription)}
           </Text>
           <OverlayControls
-            variant="signedIn"
             noOpacitySlider={
               homepageSettings.banner_layout === 'fixed_ratio_layout'
             }
