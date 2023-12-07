@@ -1538,7 +1538,7 @@ export function clickLocaleSwitcherAndType(title: string) {
 export function apiUpdateHomepageSettings({
   craftjs_json,
 }: {
-  craftjs_json?: Record<string, any>;
+  craftjs_json: Record<string, any>;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
