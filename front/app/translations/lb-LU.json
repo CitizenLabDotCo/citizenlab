@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "Elo iwwerpréiwen",
   "app.containers.landing.verifyYourIdentity": "Iwwerpréift Är Identitéit",
   "app.containers.landing.viewAllEventsText": "All Evenementer weisen ",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Zréck an den Dossier",
   "app.errors.after_end_at": "De Startdatum läit no dem Enddatum",
   "app.errors.avatar_carrierwave_download_error": "D’Profilbild konnt net erofgeluede ginn.",
   "app.errors.avatar_carrierwave_integrity_error": "Den Dateityp vum gewielte Profilbild ass net erlaabt. ",
