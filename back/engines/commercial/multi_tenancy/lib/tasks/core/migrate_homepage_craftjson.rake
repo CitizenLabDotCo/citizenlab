@@ -30,19 +30,17 @@ namespace :migrate_craftjson do
         }
 
         add_elements craftjs_json, migrate_homepagebanner
-        topinfosection_elts, topinfosection_success = migrate_topinfosection
+        topinfosection_elts = migrate_topinfosection
+        topinfosection_success = topinfosection_elts.size <= 3 # 2 whitespaces and 1 infosection (no separate image, iframe or button elements)
         add_elements craftjs_json, topinfosection_elts
         add_elements craftjs_json, migrate_projects
         add_elements craftjs_json, migrate_events
         add_elements craftjs_json, migrate_proposals
-        bottominfosection_elts, bottominfosection_success = migrate_bottominfosection
+        bottominfosection_elts = migrate_bottominfosection
+        bottominfosection_success = bottominfosection_elts.size <= 3 # 2 whitespaces and 1 infosection (no separate image, iframe or button elements)
         add_elements craftjs_json, bottominfosection_elts
 
-        needs_manual_migration = (!topinfosection_success || !bottominfosection_success) && (tenant.active? || tenant.host.ends_with?('.template.citizenlab.co'))
-        if needs_manual_migration
-          extracted_elts = extract_image_iframe_button_elements craftjs_json
-          add_elements craftjs_json, extracted_elts
-        end
+        needs_manual_migration = !topinfosection_success || !bottominfosection_success
 
         homepage = HomePage.first
         if !homepage.update(craftjs_json: craftjs_json)
@@ -129,11 +127,9 @@ end
 
 def migrate_topinfosection
   homepage = HomePage.first
-  return [[], true] if !homepage.top_info_section_enabled || homepage.top_info_section_multiloc.blank? || homepage.top_info_section_multiloc.values.all?(&:blank?)
+  return [] if !homepage.top_info_section_enabled || homepage.top_info_section_multiloc.blank? || homepage.top_info_section_multiloc.values.all?(&:blank?)
 
-  infosections, success = infosection(homepage.top_info_section_multiloc)
-
-  [[whitespace, *infosections, whitespace], success]
+  [whitespace, *infosections(homepage.top_info_section_multiloc), whitespace]
 end
 
 def migrate_projects
@@ -207,11 +203,9 @@ end
 
 def migrate_bottominfosection
   homepage = HomePage.first
-  return [[], true] if !homepage.bottom_info_section_enabled || homepage.bottom_info_section_multiloc.blank? || homepage.bottom_info_section_multiloc.values.all?(&:blank?)
+  return [] if !homepage.bottom_info_section_enabled || homepage.bottom_info_section_multiloc.blank? || homepage.bottom_info_section_multiloc.values.all?(&:blank?)
 
-  infosections, success = infosection(homepage.bottom_info_section_multiloc)
-
-  [[whitespace, *infosections, whitespace], success]
+  [whitespace, *infosections(homepage.bottom_info_section_multiloc), whitespace]
 end
 
 def whitespace
@@ -233,9 +227,8 @@ def whitespace
   }
 end
 
-def infosection(text_html_multiloc)
-  success = true
-  success = false if text_html_multiloc.values.any? { |text_html| text_html.match?(/<img|<iframe|custom-button/) }
+def infosections(text_html_multiloc)
+  extra_elts = extract_image_iframe_button_elements text_html_multiloc
   text_elt = {
     'type' => { 'resolvedName' => 'TextMultiloc' },
     'isCanvas' => false,
@@ -252,92 +245,104 @@ def infosection(text_html_multiloc)
     'nodes' => [],
     'linkedNodes' => {}
   }
-  [[text_elt], success]
+  [text_elt, *extra_elts]
 end
 
-def extract_image_iframe_button_elements(craftjs_json)
+def extract_image_iframe_button_elements(text_html_multiloc)
+  tenant = Tenant.current
+  return [] if !tenant.active? && !tenant.host.ends_with?('.template.citizenlab.co') # We will only do manual migrations for active tenants and templates
+
   extracted_elts = []
-  LayoutService.new.select_craftjs_elements_for_types(json, ['TextMultiloc']).each do |text_elt|
-    text_html_multiloc = text_elt.dig 'props', 'text'
-    text_html_multiloc.each do |locale, text_html|
-      html_doc = Nokogiri::HTML.fragment text_html
-      html_doc.css('img').each do |img|
-        text_image = TextImage.find_by(text_reference: button.attr(:'data-cl2-text-image-text-reference'))
-        layout_image = LayoutImage.create!(image: File.open(text_image.image.image))
-        extracted_elts += [{
-          'type': { 'resolvedName': 'ImageMultiloc' },
-          'nodes': [],
-          'props': {
-              'alt': {},
-              'image': { 'dataCode': layout_image.code }
-          },
-          'custom': {
-              'title': {
-                  'id': 'app.containers.admin.ContentBuilder.imageMultiloc',
-                  'defaultMessage': 'Image'
-              }
-          },
-          'hidden': false,
-          'parent': 'ROOT',
-          'isCanvas': false,
-          'displayName': 'Image',
-          'linkedNodes': {}
-        }]
-        img.remove
-      end
-      html_doc.css('iframe').each do |iframe|
-        extracted_elts += [{
-          'type': { 'resolvedName': 'IframeMultiloc' },
-          'nodes': [],
-          'props': {
-              'url': button.attr(:src),
-              'height': 500, # Or perhaps button.attr(:height)?
-              'hasError': false,
-              'errorType': 'invalidUrl',
-              'selectedLocale': 'en' # TODO: Something?
-          },
-          'custom': {
-              'title': {
-                  'id': 'app.containers.admin.ContentBuilder.IframeMultiloc.url',
-                  'defaultMessage': 'Embed'
-              },
-              'noPointerEvents': true
-          },
-          'hidden': false,
-          'parent': 'ROOT',
-          'isCanvas': false,
-          'displayName': 'Iframe',
-          'linkedNodes': {}
-        }]
-        iframe.remove
-      end
-      html_doc.css('a.custom-button').each do |button|
-        extracted_elts += [{
-          'type': { 'resolvedName': 'ButtonMultiloc' },
-          'nodes': [],
-          'props': {
-              'url': button.attr(:href),
-              'text': { locale => button.text },
-              'type': 'primary',
-              'alignment': 'center'
-          },
-          'custom': {
-              'title': {
-                  'id': 'app.containers.admin.ContentBuilder.buttonMultiloc',
-                  'defaultMessage': 'Button'
-              },
-              'noPointerEvents': true
-          },
-          'hidden': false,
-          'parent': 'ROOT',
-          'isCanvas': false,
-          'displayName': 'Button',
-          'linkedNodes': {}
-        }]
-        button.remove
-      end
-      text_elt['props']['text'] = html_doc.to_s
+  text_html_multiloc.each do |locale, text_html|
+    html_doc = Nokogiri::HTML.fragment text_html
+    html_doc.css('img').each do |img_node|
+      extracted_elts += [extract_img_element(img_node)]
+      img_node.remove
     end
+    html_doc.css('iframe').each do |iframe_node|
+      extracted_elts += [extract_iframe_element(iframe_node)]
+      iframe_node.remove
+    end
+    html_doc.css('a.custom-button').each do |button_node|
+      extracted_elts += [extract_button_element(button_node, locale)]
+      button_node.remove
+    end
+    text_html_multiloc[locale] = html_doc.to_s
   end
   extracted_elts
+end
+
+def extract_img_element(img_node)
+  text_image = TextImage.find_by(text_reference: img_node.attr(:'data-cl2-text-image-text-reference'))
+  layout_image = ContentBuilder::LayoutImage.create!(image: text_image.image)
+  {
+    'type' => { 'resolvedName' => 'ImageMultiloc' },
+    'nodes' => [],
+    'props' => {
+        'alt' => {},
+        'image' => { 'dataCode' => layout_image.code }
+    },
+    'custom' => {
+        'title' => {
+            'id' => 'app.containers.admin.ContentBuilder.imageMultiloc',
+            'defaultMessage' => 'Image'
+        }
+    },
+    'hidden' => false,
+    'parent' => 'ROOT',
+    'isCanvas' => false,
+    'displayName' => 'Image',
+    'linkedNodes' => {}
+  }
+end
+
+def extract_iframe_element(iframe_node)
+  {
+    'type' => { 'resolvedName' => 'IframeMultiloc' },
+    'nodes' => [],
+    'props' => {
+        'url' => iframe_node.attr(:src),
+        'height' => (iframe_node.attr(:height)&.to_f || 500),
+        'hasError' => false,
+        'errorType' => 'invalidUrl',
+        'selectedLocale' => 'en' # TODO: Something?
+    },
+    'custom' => {
+        'title' => {
+            'id' => 'app.containers.admin.ContentBuilder.IframeMultiloc.url',
+            'defaultMessage' => 'Embed'
+        },
+        'noPointerEvents' => true
+    },
+    'hidden' => false,
+    'parent' => 'ROOT',
+    'isCanvas' => false,
+    'displayName' => 'Iframe',
+    'linkedNodes' => {}
+  }
+end
+
+def extract_button_element(button_node, locale)
+  {
+    'type' => { 'resolvedName' => 'ButtonMultiloc' },
+    'nodes' => [],
+    'props' => {
+        'url' => button_node.attr(:href),
+        'text' => { locale => button_node.text },
+        'type' => 'primary',
+        'alignment' => 'center'
+    },
+    'custom' => {
+        'title' => {
+            'id' => 'app.containers.admin.ContentBuilder.buttonMultiloc',
+            'defaultMessage' => 'Button'
+        },
+        'noPointerEvents' => true
+    },
+    'hidden' => false,
+    'parent' => 'ROOT',
+    'isCanvas' => false,
+    'displayName' => 'Button',
+    'linkedNodes' => {}
+  }
 end

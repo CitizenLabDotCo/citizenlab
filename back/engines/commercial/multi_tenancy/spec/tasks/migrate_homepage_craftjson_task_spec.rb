@@ -25,8 +25,18 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'linkedNodes' => {}
       }
     end
-    let(:top_info_section_multiloc) { { 'en' => 'top info section en', 'nl-BE' => 'top info section nl' } }
-    let(:bottom_info_section_multiloc) { { 'en' => 'bottom info section en', 'nl-BE' => 'bottom info section nl' } }
+    let(:top_info_section_multiloc) do
+      {
+        'en' => '<p><strong>top info section en</strong><a href="https://citizenlab.co" rel="noreferrer noopener nofollow">link</a></p>',
+        'nl-BE' => "<p><img class=\"ql-alt-text-input-container keepHTML\" alt=\"\" data-cl2-text-image-text-reference=#{create(:text_image).text_reference}></p><iframe class=\"ql-video\" frameborder=\"0\" allowfullscreen=\"true\" src=\"https://www.youtube.com/embed/gw2RiADWfpg?showinfo=0\" width=\"818\" height=\"462.5234567901235\" data-blot-formatter-unclickable-bound=\"true\"></iframe>"
+      }
+    end
+    let(:bottom_info_section_multiloc) do
+      {
+        'en' => '<p>bottom info section en</p><p><strong><a class="custom-button" href="https://www.facebook.com/" rel="noreferrer noopener nofollow" target="_blank">Facebook</a><a class="custom-button" href="https://www.instagram.com/" rel="noreferrer noopener nofollow" target="_blank">Instagram</a></strong></p>',
+        'nl-BE' => '<iframe src="https://player.vimeo.com/video/729539513/"></iframe>'
+      }
+    end
     let(:currently_working_on_text) { { 'en' => 'currently working on en', 'nl-BE' => 'currently working on nl' } }
     let!(:homepage) do
       create(
@@ -40,6 +50,7 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
     end
 
     it 'migrates the homepage craftjs with the expected properties' do
+      initial_layout_image_ids = ContentBuilder::LayoutImage.ids
       config = AppConfiguration.instance
       config.settings['core']['currently_working_on_text'] = currently_working_on_text
       config.save!
@@ -57,7 +68,7 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'nodes' => kind_of(Array),
         'linkedNodes' => {}
       })
-      homepagebanner, whitespace1, topinfosection, whitespace2, projects, events, proposals, whitespace3, bottominfosection, whitespace4 = homepage.craftjs_json['ROOT']['nodes']
+      homepagebanner, whitespace1, topinfosection, topimg, topiframe, whitespace2, projects, events, proposals, whitespace3, bottominfosection, bottombutton1, bottombutton2, bottomiframe, whitespace4 = homepage.craftjs_json['ROOT']['nodes']
       expect(homepage.craftjs_json[homepagebanner]).to match({
         'type' => { 'resolvedName' => 'HomepageBanner' },
         'isCanvas' => false,
@@ -100,7 +111,12 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
       expect(homepage.craftjs_json[topinfosection]).to match({
         'type' => { 'resolvedName' => 'TextMultiloc' },
         'isCanvas' => false,
-        'props' => { 'text' => top_info_section_multiloc },
+        'props' => {
+          'text' => {
+            'en' => '<p><strong>top info section en</strong><a href="https://citizenlab.co" rel="noreferrer noopener nofollow">link</a></p>',
+            'nl-BE' => '<p></p>'
+          }
+        },
         'displayName' => 'TextMultiloc',
         'custom' => {
           'title' => {
@@ -111,6 +127,48 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'parent' => 'ROOT',
         'hidden' => false,
         'nodes' => [],
+        'linkedNodes' => {}
+      })
+      expect(homepage.craftjs_json[topimg]).to match({
+        'type' => { 'resolvedName' => 'ImageMultiloc' },
+        'nodes' => [],
+        'props' => {
+            'alt' => {},
+            'image' => { 'dataCode' => ContentBuilder::LayoutImage.where.not(id: initial_layout_image_ids).first.code }
+        },
+        'custom' => {
+            'title' => {
+                'id' => 'app.containers.admin.ContentBuilder.imageMultiloc',
+                'defaultMessage' => 'Image'
+            }
+        },
+        'hidden' => false,
+        'parent' => 'ROOT',
+        'isCanvas' => false,
+        'displayName' => 'Image',
+        'linkedNodes' => {}
+      })
+      expect(homepage.craftjs_json[topiframe]).to match({
+        'type' => { 'resolvedName' => 'IframeMultiloc' },
+        'nodes' => [],
+        'props' => {
+            'url' => 'https://www.youtube.com/embed/gw2RiADWfpg?showinfo=0',
+            'height' => 462.5234567901235,
+            'hasError' => false,
+            'errorType' => 'invalidUrl',
+            'selectedLocale' => 'en'
+        },
+        'custom' => {
+            'title' => {
+                'id' => 'app.containers.admin.ContentBuilder.IframeMultiloc.url',
+                'defaultMessage' => 'Embed'
+            },
+            'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => 'ROOT',
+        'isCanvas' => false,
+        'displayName' => 'Iframe',
         'linkedNodes' => {}
       })
       expect(homepage.craftjs_json[whitespace2]).to eq whitespace
@@ -172,7 +230,12 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
       expect(homepage.craftjs_json[bottominfosection]).to match({
         'type' => { 'resolvedName' => 'TextMultiloc' },
         'isCanvas' => false,
-        'props' => { 'text' => bottom_info_section_multiloc },
+        'props' => { 
+          'text' => {
+            'en' => '<p>bottom info section en</p><p><strong></strong></p>',
+            'nl-BE' => ''
+          }
+        },
         'displayName' => 'TextMultiloc',
         'custom' => {
           'title' => {
@@ -183,6 +246,73 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'parent' => 'ROOT',
         'hidden' => false,
         'nodes' => [],
+        'linkedNodes' => {}
+      })
+      expect(homepage.craftjs_json[bottombutton1]).to match({
+        'type' => { 'resolvedName' => 'ButtonMultiloc' },
+        'nodes' => [],
+        'props' => {
+            'url' => 'https://www.facebook.com/',
+            'text' => { 'en' => 'Facebook' },
+            'type' => 'primary',
+            'alignment' => 'center'
+        },
+        'custom' => {
+            'title' => {
+                'id' => 'app.containers.admin.ContentBuilder.buttonMultiloc',
+                'defaultMessage' => 'Button'
+            },
+            'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => 'ROOT',
+        'isCanvas' => false,
+        'displayName' => 'Button',
+        'linkedNodes' => {}
+      })
+      expect(homepage.craftjs_json[bottombutton2]).to match({
+        'type' => { 'resolvedName' => 'ButtonMultiloc' },
+        'nodes' => [],
+        'props' => {
+            'url' => 'https://www.instagram.com/',
+            'text' => { 'en' => 'Instagram' },
+            'type' => 'primary',
+            'alignment' => 'center'
+        },
+        'custom' => {
+            'title' => {
+                'id' => 'app.containers.admin.ContentBuilder.buttonMultiloc',
+                'defaultMessage' => 'Button'
+            },
+            'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => 'ROOT',
+        'isCanvas' => false,
+        'displayName' => 'Button',
+        'linkedNodes' => {}
+      })
+      expect(homepage.craftjs_json[bottomiframe]).to match({
+        'type' => { 'resolvedName' => 'IframeMultiloc' },
+        'nodes' => [],
+        'props' => {
+            'url' => 'https://player.vimeo.com/video/729539513/',
+            'height' => 500,
+            'hasError' => false,
+            'errorType' => 'invalidUrl',
+            'selectedLocale' => 'en'
+        },
+        'custom' => {
+            'title' => {
+                'id' => 'app.containers.admin.ContentBuilder.IframeMultiloc.url',
+                'defaultMessage' => 'Embed'
+            },
+            'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => 'ROOT',
+        'isCanvas' => false,
+        'displayName' => 'Iframe',
         'linkedNodes' => {}
       })
       expect(homepage.craftjs_json[whitespace4]).to eq whitespace
