@@ -8,33 +8,29 @@ import DesktopNavbarContent from './Components/NavbarContent/DesktopNavbarConten
 import Fragment from 'components/Fragment';
 import TenantLogo from './Components/TenantLogo';
 
-// hooks
-import useLocale from 'hooks/useLocale';
-
 // utils
-import {
-  isAdminPage,
-  isIdeaPage,
-  isInitiativePage,
-  isProjectPage,
-} from './utils';
+import { isIdeaPage, isInitiativePage } from './utils';
 
 // style
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
-const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
+const Container = styled.header`
   width: 100vw;
   height: ${({ theme }) => theme.menuHeight}px;
   display: flex;
   align-items: stretch;
-  position: ${(props) => props.position};
+  position: fixed;
   top: 0;
   left: 0;
   background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.1);
   z-index: 1004;
+
+  ${media.tablet`
+    position: absolute;
+  `}
 
   &.hideNavbar {
     ${media.tablet`
@@ -42,20 +38,11 @@ const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
     `}
   }
 
-  &.citizenPage {
-    ${media.tablet`
-      position: absolute;
-    `}
-  }
-
-  @media print {
-    display: none;
-  }
-
   &.scroll-up-nav {
     ${media.tablet`
-    position: fixed;
-    top: 0px;  `}
+      position: fixed;
+      top: 0px;
+    `}
   }
 `;
 
@@ -94,7 +81,6 @@ const StyledRightFragment = styled(Fragment)`
 
 const MainHeader = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const locale = useLocale();
 
   const [showNavBar, setShowNavBar] = useState<boolean>(false);
   const [scrollTop, setScrollTop] = useState(0);
@@ -128,7 +114,7 @@ const MainHeader = () => {
   return (
     <Container
       id="e2e-navbar"
-      className={`${!isAdminPage() ? 'citizenPage' : ''} ${
+      className={`${
         isIdeaPage(urlSegments) || isInitiativePage(urlSegments)
           ? 'hideNavbar'
           : ''
@@ -136,7 +122,6 @@ const MainHeader = () => {
       ${showNavBar ? 'scroll-up-nav' : ''}
       `}
       ref={containerRef}
-      position={isProjectPage(urlSegments, locale) ? 'absolute' : 'fixed'}
     >
       <ContainerInner>
         <Left>
