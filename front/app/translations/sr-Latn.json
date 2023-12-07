@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "Potvrdite sada",
   "app.containers.landing.verifyYourIdentity": "Verifikujte vaš identitet.",
   "app.containers.landing.viewAllEventsText": "Pogledaj sve događaje",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Back to folder",
   "app.errors.after_end_at": "Datum početka je postavljen nakon datuma završetka",
   "app.errors.avatar_carrierwave_download_error": "Neuspešno preuzimanje avatar fajla.",
   "app.errors.avatar_carrierwave_integrity_error": "Odabrani avatar ne spada u dozvoljeni tip fajlova.",
