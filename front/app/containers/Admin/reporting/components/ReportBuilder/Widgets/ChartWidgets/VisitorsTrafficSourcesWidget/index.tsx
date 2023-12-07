@@ -41,7 +41,7 @@ const VisitorsTrafficSourcesWidget = ({
 
 VisitorsTrafficSourcesWidget.craft = {
   props: {
-    title: '',
+    title: {},
     projectId: undefined,
     startAtMoment: undefined,
     endAtMoment: null,

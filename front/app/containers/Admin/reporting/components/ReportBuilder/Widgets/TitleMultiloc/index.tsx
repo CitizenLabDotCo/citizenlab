@@ -12,9 +12,15 @@ import { Box, Input } from '@citizenlab/cl2-component-library';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // i18n
-import messages from 'containers/Admin/reporting/components/ReportBuilder/Widgets/Title/messages';
+import messages from 'containers/Admin/reporting/components/ReportBuilder/Widgets/TitleMultiloc/messages';
 import { useIntl } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
+
+// hooks
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
+
+// typings
+import { Multiloc } from 'typings';
 
 const H3 = styled.h3<{ color: string }>`
   color: ${({ color }) => color};
@@ -22,11 +28,12 @@ const H3 = styled.h3<{ color: string }>`
 `;
 
 interface Props {
-  text: string;
+  text?: Multiloc;
 }
 
 const Title = ({ text }: Props) => {
   const px = useReportDefaultPadding();
+  const localize = useLocalize();
 
   return (
     <PageBreakBox
@@ -36,7 +43,7 @@ const Title = ({ text }: Props) => {
       mt="12px"
       px={px}
     >
-      <H3 color={colors.primary}>{text}</H3>
+      <H3 color={colors.primary}>{localize(text)}</H3>
     </PageBreakBox>
   );
 };
@@ -67,7 +74,7 @@ const TitleSettings = () => {
 
 Title.craft = {
   props: {
-    text: '',
+    text: {},
   },
   related: {
     settings: TitleSettings,

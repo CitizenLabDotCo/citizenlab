@@ -5,7 +5,7 @@ import messages from './messages';
 
 // components
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
-import Text from '../Text';
+// import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
 import { Element } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';

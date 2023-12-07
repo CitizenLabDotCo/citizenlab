@@ -38,7 +38,7 @@ const ReactionsByTimeWidget = ({
 
 ReactionsByTimeWidget.craft = {
   props: {
-    title: '',
+    title: {},
     projectId: undefined,
     startAt: undefined,
     endAt: null,

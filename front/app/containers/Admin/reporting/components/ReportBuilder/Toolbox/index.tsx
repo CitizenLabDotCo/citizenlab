@@ -4,12 +4,14 @@ import React from 'react';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
 
+// shared widgets
+import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+
 // widgets
 import TwoColumn from '../Widgets/TwoColumn';
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import TitleWidget from '../Widgets/Title';
-import Text from '../Widgets/Text';
-import Image from '../Widgets/Image';
+import TitleMultiloc from '../Widgets/TitleMultiloc';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
@@ -26,7 +28,6 @@ import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableE
 // messages
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import reportBuilderMessages from '../../../messages';
-import textMessages from 'containers/Admin/reporting/components/ReportBuilder/Widgets/Text/messages';
 
 // hooks
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
@@ -103,25 +104,21 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           />
           <DraggableElement
             id="e2e-draggable-title"
-            component={
-              <TitleWidget
-                text={formatMessage(TitleWidget.craft.custom.title)}
-              />
-            }
+            component={<TitleMultiloc />}
             icon="text"
-            label={formatMessage(TitleWidget.craft.custom.title)}
+            label={formatMessage(TitleMultiloc.craft.custom.title)}
           />
           <DraggableElement
             id="e2e-draggable-text"
-            component={<Text text={formatMessage(textMessages.textValue)} />}
+            component={<TextMultiloc />}
             icon="text"
-            label={formatMessage(Text.craft.custom.title)}
+            label={formatMessage(TextMultiloc.craft.custom.title)}
           />
           <DraggableElement
             id="e2e-draggable-image"
-            component={<Image alt="" />}
+            component={<ImageMultiloc />}
             icon="image"
-            label={formatMessage(Image.craft.custom.title)}
+            label={formatMessage(ImageMultiloc.craft.custom.title)}
           />
         </Accordion>
 
@@ -139,12 +136,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           }
           <DraggableElement
             id="e2e-draggable-survey-results-widget"
-            component={
-              <SurveyResultsWidget
-                title={formatMessage(SurveyResultsWidget.craft.custom.title)}
-                projectId={projectId}
-              />
-            }
+            component={<SurveyResultsWidget projectId={projectId} />}
             icon="survey"
             label={formatMessage(SurveyResultsWidget.craft.custom.title)}
           />
@@ -152,7 +144,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-most-reacted-ideas-widget"
             component={
               <MostReactedIdeasWidget
-                title={formatMessage(MostReactedIdeasWidget.craft.custom.title)}
                 numberOfIdeas={5}
                 collapseLongText={false}
                 projectId={projectId}
@@ -175,7 +166,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-visitors-timeline-widget"
             component={
               <VisitorsWidget
-                title={formatMessage(VisitorsWidget.craft.custom.title)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
@@ -188,9 +178,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-visitors-traffic-sources-widget"
             component={
               <VisitorsTrafficSourcesWidget
-                title={formatMessage(
-                  VisitorsTrafficSourcesWidget.craft.custom.title
-                )}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
@@ -205,7 +192,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-users-by-gender-widget"
             component={
               <GenderWidget
-                title={formatMessage(GenderWidget.craft.custom.title)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
@@ -218,7 +204,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-users-by-age-widget"
             component={
               <AgeWidget
-                title={formatMessage(AgeWidget.craft.custom.title)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
@@ -231,7 +216,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-active-users-widget"
             component={
               <ActiveUsersWidget
-                title={formatMessage(ActiveUsersWidget.craft.custom.title)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
@@ -244,7 +228,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-posts-by-time-widget"
             component={
               <PostsByTimeWidget
-                title={formatMessage(PostsByTimeWidget.craft.custom.title)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
@@ -257,7 +240,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-comments-by-time-widget"
             component={
               <CommentsByTimeWidget
-                title={formatMessage(CommentsByTimeWidget.craft.custom.title)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
@@ -270,7 +252,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-reactions-by-time-widget"
             component={
               <ReactionsByTimeWidget
-                title={formatMessage(ReactionsByTimeWidget.craft.custom.title)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
