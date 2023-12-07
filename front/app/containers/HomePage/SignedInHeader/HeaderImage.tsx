@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Image, Box } from '@citizenlab/cl2-component-library';
 import { media, isRtl } from 'utils/styleUtils';
-import { IHomepageSettingsAttributes } from 'api/home_page/types';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 import { isNumber } from 'lodash-es';
 
 const HeaderImageContainer = styled.div`
@@ -41,7 +41,7 @@ const StyledImage = styled(Image)`
 const HeaderImage = ({
   homepageSettings,
 }: {
-  homepageSettings: Partial<IHomepageSettingsAttributes>;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }) => {
   const theme = useTheme();
 
