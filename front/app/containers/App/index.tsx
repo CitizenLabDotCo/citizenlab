@@ -5,7 +5,12 @@ import { includes, uniq } from 'lodash-es';
 import moment from 'moment';
 import 'moment-timezone';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { endsWith, isPage } from 'utils/helperUtils';
+import {
+  endsWith,
+  isIdeaShowPage,
+  isInitiativeShowPage,
+  isPage,
+} from 'utils/helperUtils';
 
 // constants
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
@@ -255,30 +260,6 @@ const App = ({ children }: Props) => {
   const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
   const isInitiativeFormPage = isPage('initiative_form', location.pathname);
   const isIdeaFormPage = isPage('idea_form', location.pathname);
-  const isIdeaShowPage = (urlSegments: string[]) => {
-    const firstUrlSegment = urlSegments[0];
-    const secondUrlSegment = urlSegments[1];
-    const lastUrlSegment = urlSegments[urlSegments.length - 1];
-
-    return (
-      urlSegments.length === 3 &&
-      locales.includes(firstUrlSegment) &&
-      secondUrlSegment === 'ideas' &&
-      lastUrlSegment !== 'new'
-    );
-  };
-  const isInitiativeShowPage = (urlSegments: string[]) => {
-    const firstUrlSegment = urlSegments[0];
-    const secondUrlSegment = urlSegments[1];
-    const lastUrlSegment = urlSegments[urlSegments.length - 1];
-
-    return (
-      urlSegments.length === 3 &&
-      locales.includes(firstUrlSegment) &&
-      secondUrlSegment === 'initiatives' &&
-      lastUrlSegment !== 'new'
-    );
-  };
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
   const isEventPage = isPage('event_page', location.pathname);
