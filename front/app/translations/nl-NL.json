@@ -337,6 +337,7 @@
   "app.components.PostComponents.OfficialFeedback.postedOn": "Geplaatst op {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Publiceren",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Toon vorige updates",
+  "app.components.PostComponents.OfficialFeedback.testMessage": "Testbericht",
   "app.components.PostComponents.OfficialFeedback.textAreaPlaceholder": "Plaats een update...",
   "app.components.PostComponents.OfficialFeedback.updateButtonError": "Sorry, er deed zich een probleem voor",
   "app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm": "Wijzig je bericht",
