@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
-# to persist changes run: fix_existing_tenants:migrate_continuous_projects[true]
-# to persist changes for one host run: fix_existing_tenants:migrate_continuous_projects[true,localhost]
-namespace :fix_existing_tenants do
+require_relative 'services/continuous_project_migration_service'
+
+# to persist changes run: single_use:migrate_continuous_projects[true]
+# to persist changes for one host run: single_use:migrate_continuous_projects[true,localhost]
+namespace :single_use do
   desc 'Migrate all continuous projects to timeline projects with a single phase'
   task :migrate_continuous_projects, %i[persist_changes specify_host] => [:environment] do |_t, args|
     persist_changes = args[:persist_changes] == 'true'
@@ -16,7 +18,7 @@ namespace :fix_existing_tenants do
 
       Rails.logger.info "PROCESSING TENANT: #{tenant.host}..."
       Apartment::Tenant.switch(tenant.schema_name) do
-        project_migrator = MultiTenancy::Rake::ContinuousProjectMigrationService.new
+        project_migrator = ContinuousProjectMigrationService.new
         project_migrator.migrate(persist_changes)
         stats[tenant.host] = project_migrator.stats
       end
@@ -32,7 +34,7 @@ namespace :fix_existing_tenants do
   end
 end
 
-namespace :fix_existing_tenants do
+namespace :single_use do
   desc 'Fix survey forms on staging'
   task :migrate_continuous_forms_fix, %i[specify_host] => [:environment] do |_t, args|
     specify_host = args[:specify_host]
@@ -41,7 +43,7 @@ namespace :fix_existing_tenants do
 
       Rails.logger.info "PROCESSING TENANT: #{tenant.host}..."
       Apartment::Tenant.switch(tenant.schema_name) do
-        project_migrator = MultiTenancy::Rake::ContinuousProjectMigrationService.new
+        project_migrator = ContinuousProjectMigrationService.new
         project_migrator.fix_survey_custom_forms
       end
     end
