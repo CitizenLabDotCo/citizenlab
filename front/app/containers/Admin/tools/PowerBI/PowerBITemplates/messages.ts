@@ -61,6 +61,4 @@ export default defineMessages({
     id: 'app.containers.Admin.tools.powerBITemplates.supportLinkText',
     defaultMessage: 'support article',
   },
-
-
 });

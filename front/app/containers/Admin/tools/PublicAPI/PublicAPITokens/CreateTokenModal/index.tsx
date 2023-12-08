@@ -18,7 +18,7 @@ import {
 import useAddApiClient from 'api/api_clients/useAddApiClient';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import styled from 'styled-components';
-import Warning from "../../../../../../components/UI/Warning";
+import Warning from "components/UI/Warning";
 
 interface FormValues {
   name: string;
@@ -111,7 +111,7 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
               }}
             />
           </Text>
-          <Box id="e2e-warning-notice" mb="20px">
+          <Box mb="20px">
             <Warning>
               <FormattedMessage
                 {...messages.createTokenModalCreatedImportantText}
