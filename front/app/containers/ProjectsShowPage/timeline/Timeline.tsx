@@ -122,6 +122,10 @@ const PhaseArrow = styled(Arrow)`
   `}
 `;
 
+const PlusIcon = styled(Icon)`
+  fill: ${colors.coolGrey700};
+`;
+
 const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   color: ${darken(0.1, colors.textSecondary)};
   font-size: ${fontSizes.s}px;
@@ -156,6 +160,11 @@ const selectedPhaseBar = css`
   }
   ${PhaseText} {
     color: ${grey};
+  }
+  &:hover {
+    ${PlusIcon} {
+      fill: ${colors.white};
+    }
   }
 `;
 
@@ -421,11 +430,7 @@ const Timeline = ({
                         id="new-phase"
                       >
                         <span aria-hidden>
-                          <Icon
-                            name="plus"
-                            fill={colors.coolGrey700}
-                            height="16px"
-                          />
+                          <PlusIcon name="plus" height="16px" />
                         </span>
                         <ScreenReaderOnly>
                           <FormattedMessage {...messages.newPhase} />

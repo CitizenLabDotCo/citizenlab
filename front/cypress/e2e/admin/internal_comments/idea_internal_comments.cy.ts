@@ -82,7 +82,7 @@ describe('Idea internal comments', () => {
     const internalComment = randomString();
     const editedComment = randomString();
     cy.setAdminLoginCookie();
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideas/${ideaId1}`);
+    cy.visit(`admin/projects/${projectId}/ideas/${ideaId1}`);
     cy.acceptCookies();
     // Create comment and check that comment is created
     cy.get('[data-cy="e2e-comments-tab-internal"]').click();
@@ -122,7 +122,7 @@ describe('Idea internal comments', () => {
     const replyComment = randomString();
     const editedReply = randomString();
     cy.setAdminLoginCookie();
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideas/${ideaId2}`);
+    cy.visit(`admin/projects/${projectId}/ideas/${ideaId2}`);
     cy.acceptCookies();
     // Create comment and check that comment is created
     cy.get('[data-cy="e2e-comments-tab-internal"]').click();

@@ -1,5 +1,5 @@
-import { randomEmail, randomString } from '../support/commands';
 import moment = require('moment');
+import { randomEmail, randomString } from '../support/commands';
 
 describe('Multiple voting project', () => {
   let projectId: string;
@@ -14,7 +14,6 @@ describe('Multiple voting project', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
-  const phaseTitle = randomString();
 
   before(() => {
     cy.apiCreateProject({
@@ -22,25 +21,20 @@ describe('Multiple voting project', () => {
       descriptionPreview: '',
       description: '',
       publicationStatus: 'published',
-    })
-      .then((project) => {
+    }).then((project) => {
+      cy.apiCreatePhase({
+        projectId: project?.body.data.id,
+        title: 'phaseTitle',
+        startAt: moment().subtract(2, 'month').format('DD/MM/YYYY'),
+        endAt: moment().add(2, 'days').format('DD/MM/YYYY'),
+        participationMethod: 'voting',
+        votingMethod: 'multiple_voting',
+        votingMaxVotesPerIdea: 2,
+        votingMaxTotal: 5,
+        votingMinTotal: 1,
+      }).then((phase) => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
-        return cy.apiCreatePhase({
-          projectId,
-          title: phaseTitle,
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'voting',
-          votingMethod: 'multiple_voting',
-          votingMaxVotesPerIdea: 2,
-          votingMaxTotal: 5,
-          canPost: true,
-          canComment: true,
-          canReact: true,
-          allow_anonymous_participation: true,
-        });
-      })
-      .then((phase) => {
         return cy
           .apiCreateIdea({
             projectId,
@@ -62,6 +56,7 @@ describe('Multiple voting project', () => {
             cy.wait(1000);
           });
       });
+    });
   });
 
   beforeEach(() => {
@@ -75,7 +70,7 @@ describe('Multiple voting project', () => {
   });
 
   it('shows the idea cards', () => {
-    cy.get('.e2e-timeline-project-idea-cards');
+    cy.get('#e2e-ideas-container');
   });
 
   it('hides the idea sorting options', () => {
