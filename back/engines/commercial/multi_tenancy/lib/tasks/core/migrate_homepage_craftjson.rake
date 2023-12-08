@@ -279,14 +279,14 @@ def extract_img_element(img_node)
     'type' => { 'resolvedName' => 'ImageMultiloc' },
     'nodes' => [],
     'props' => {
-        'alt' => {},
-        'image' => { 'dataCode' => layout_image.code }
+      'alt' => {},
+      'image' => { 'dataCode' => layout_image.code }
     },
     'custom' => {
-        'title' => {
-            'id' => 'app.containers.admin.ContentBuilder.imageMultiloc',
-            'defaultMessage' => 'Image'
-        }
+      'title' => {
+        'id' => 'app.containers.admin.ContentBuilder.imageMultiloc',
+        'defaultMessage' => 'Image'
+      }
     },
     'hidden' => false,
     'parent' => 'ROOT',
@@ -301,18 +301,18 @@ def extract_iframe_element(iframe_node)
     'type' => { 'resolvedName' => 'IframeMultiloc' },
     'nodes' => [],
     'props' => {
-        'url' => iframe_node.attr(:src),
-        'height' => (iframe_node.attr(:height)&.to_f || 500),
-        'hasError' => false,
-        'errorType' => 'invalidUrl',
-        'selectedLocale' => 'en' # TODO: Something?
+      'url' => iframe_node.attr(:src),
+      'height' => (iframe_node.attr(:height)&.to_f || 500),
+      'hasError' => false,
+      'errorType' => 'invalidUrl',
+      'selectedLocale' => 'en' # TODO: Something?
     },
     'custom' => {
-        'title' => {
-            'id' => 'app.containers.admin.ContentBuilder.IframeMultiloc.url',
-            'defaultMessage' => 'Embed'
-        },
-        'noPointerEvents' => true
+      'title' => {
+        'id' => 'app.containers.admin.ContentBuilder.IframeMultiloc.url',
+        'defaultMessage' => 'Embed'
+      },
+      'noPointerEvents' => true
     },
     'hidden' => false,
     'parent' => 'ROOT',
@@ -327,17 +327,17 @@ def extract_button_element(button_node, locale)
     'type' => { 'resolvedName' => 'ButtonMultiloc' },
     'nodes' => [],
     'props' => {
-        'url' => button_node.attr(:href),
-        'text' => { locale => button_node.text },
-        'type' => 'primary',
-        'alignment' => 'center'
+      'url' => button_node.attr(:href),
+      'text' => { locale => button_node.text },
+      'type' => 'primary',
+      'alignment' => 'center'
     },
     'custom' => {
-        'title' => {
-            'id' => 'app.containers.admin.ContentBuilder.buttonMultiloc',
-            'defaultMessage' => 'Button'
-        },
-        'noPointerEvents' => true
+      'title' => {
+        'id' => 'app.containers.admin.ContentBuilder.buttonMultiloc',
+        'defaultMessage' => 'Button'
+      },
+      'noPointerEvents' => true
     },
     'hidden' => false,
     'parent' => 'ROOT',

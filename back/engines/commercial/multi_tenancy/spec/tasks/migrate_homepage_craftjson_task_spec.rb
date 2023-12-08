@@ -133,14 +133,14 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'type' => { 'resolvedName' => 'ImageMultiloc' },
         'nodes' => [],
         'props' => {
-            'alt' => {},
-            'image' => { 'dataCode' => ContentBuilder::LayoutImage.where.not(id: initial_layout_image_ids).first.code }
+          'alt' => {},
+          'image' => { 'dataCode' => ContentBuilder::LayoutImage.where.not(id: initial_layout_image_ids).first.code }
         },
         'custom' => {
-            'title' => {
-                'id' => 'app.containers.admin.ContentBuilder.imageMultiloc',
-                'defaultMessage' => 'Image'
-            }
+          'title' => {
+            'id' => 'app.containers.admin.ContentBuilder.imageMultiloc',
+            'defaultMessage' => 'Image'
+          }
         },
         'hidden' => false,
         'parent' => 'ROOT',
@@ -152,18 +152,18 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'type' => { 'resolvedName' => 'IframeMultiloc' },
         'nodes' => [],
         'props' => {
-            'url' => 'https://www.youtube.com/embed/gw2RiADWfpg?showinfo=0',
-            'height' => 462.5234567901235,
-            'hasError' => false,
-            'errorType' => 'invalidUrl',
-            'selectedLocale' => 'en'
+          'url' => 'https://www.youtube.com/embed/gw2RiADWfpg?showinfo=0',
+          'height' => 462.5234567901235,
+          'hasError' => false,
+          'errorType' => 'invalidUrl',
+          'selectedLocale' => 'en'
         },
         'custom' => {
-            'title' => {
-                'id' => 'app.containers.admin.ContentBuilder.IframeMultiloc.url',
-                'defaultMessage' => 'Embed'
-            },
-            'noPointerEvents' => true
+          'title' => {
+            'id' => 'app.containers.admin.ContentBuilder.IframeMultiloc.url',
+            'defaultMessage' => 'Embed'
+          },
+          'noPointerEvents' => true
         },
         'hidden' => false,
         'parent' => 'ROOT',
@@ -252,17 +252,17 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'type' => { 'resolvedName' => 'ButtonMultiloc' },
         'nodes' => [],
         'props' => {
-            'url' => 'https://www.facebook.com/',
-            'text' => { 'en' => 'Facebook' },
-            'type' => 'primary',
-            'alignment' => 'center'
+          'url' => 'https://www.facebook.com/',
+          'text' => { 'en' => 'Facebook' },
+          'type' => 'primary',
+          'alignment' => 'center'
         },
         'custom' => {
-            'title' => {
-                'id' => 'app.containers.admin.ContentBuilder.buttonMultiloc',
-                'defaultMessage' => 'Button'
-            },
-            'noPointerEvents' => true
+          'title' => {
+            'id' => 'app.containers.admin.ContentBuilder.buttonMultiloc',
+            'defaultMessage' => 'Button'
+          },
+          'noPointerEvents' => true
         },
         'hidden' => false,
         'parent' => 'ROOT',
@@ -274,17 +274,17 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'type' => { 'resolvedName' => 'ButtonMultiloc' },
         'nodes' => [],
         'props' => {
-            'url' => 'https://www.instagram.com/',
-            'text' => { 'en' => 'Instagram' },
-            'type' => 'primary',
-            'alignment' => 'center'
+          'url' => 'https://www.instagram.com/',
+          'text' => { 'en' => 'Instagram' },
+          'type' => 'primary',
+          'alignment' => 'center'
         },
         'custom' => {
-            'title' => {
-                'id' => 'app.containers.admin.ContentBuilder.buttonMultiloc',
-                'defaultMessage' => 'Button'
-            },
-            'noPointerEvents' => true
+          'title' => {
+            'id' => 'app.containers.admin.ContentBuilder.buttonMultiloc',
+            'defaultMessage' => 'Button'
+          },
+          'noPointerEvents' => true
         },
         'hidden' => false,
         'parent' => 'ROOT',
@@ -296,18 +296,18 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'type' => { 'resolvedName' => 'IframeMultiloc' },
         'nodes' => [],
         'props' => {
-            'url' => 'https://player.vimeo.com/video/729539513/',
-            'height' => 500,
-            'hasError' => false,
-            'errorType' => 'invalidUrl',
-            'selectedLocale' => 'en'
+          'url' => 'https://player.vimeo.com/video/729539513/',
+          'height' => 500,
+          'hasError' => false,
+          'errorType' => 'invalidUrl',
+          'selectedLocale' => 'en'
         },
         'custom' => {
-            'title' => {
-                'id' => 'app.containers.admin.ContentBuilder.IframeMultiloc.url',
-                'defaultMessage' => 'Embed'
-            },
-            'noPointerEvents' => true
+          'title' => {
+            'id' => 'app.containers.admin.ContentBuilder.IframeMultiloc.url',
+            'defaultMessage' => 'Embed'
+          },
+          'noPointerEvents' => true
         },
         'hidden' => false,
         'parent' => 'ROOT',
