@@ -1230,7 +1230,7 @@
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewTooltip": "Visible sur la vignette projet sur la page d'accueil.",
   "app.containers.AdminPage.ProjectDescription.descriptionTooltip": "Visible sur la page du projet. Indiquez clairement sur quoi porte le projet, ce que vous attendez des utilisateurs and ce qu'ils peuvent attendre de vous.",
   "app.containers.AdminPage.ProjectDescription.errorMessage": "Une erreur est survenue. Veuillez réessayer.",
-  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "L'utilisation de l'éditeur sur mesure vous permettra d'utiliser des options de mise en page plus avancées. Pour les langues où aucun contenu n'est disponible dans le constructeur de pages, le contenu normal de la description du projet sera affiché à la place.",
+  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "L'utilisation de l'éditeur de description vous permettra d'utiliser des options de mise en page plus avancées. Si le contenu n'est pas décrit pour certaines langues dans l'éditeur, la description de base du projet sera affichée à la place pour ces langues.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Modifier la description dans l'éditeur sur-mesure",
   "app.containers.AdminPage.ProjectDescription.preview": "Aperçu",
   "app.containers.AdminPage.ProjectDescription.save": "Enregistrer",
