@@ -153,7 +153,7 @@ const OfficialFeedbackFeed = ({
       >
         <FeedbackHeader>
           <FeedbackTitle>
-            <FormattedMessage {...messages.officialUpdates} />
+            <FormattedMessage {...messages.officialUpdatesTest} />
           </FeedbackTitle>
           <FeedbackSubtitle>
             <FormattedMessage

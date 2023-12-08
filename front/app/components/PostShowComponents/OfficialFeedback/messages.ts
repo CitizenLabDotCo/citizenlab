@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'app.components.PostComponents.OfficialFeedback.testMessage',
     defaultMessage: 'Test message',
   },
-  officialUpdates: {
-    id: 'app.components.PostComponents.OfficialFeedback.officialUpdates',
-    defaultMessage: 'Official updates',
+  officialUpdatesTest: {
+    id: 'app.components.PostComponents.OfficialFeedback.officialUpdatesTest',
+    defaultMessage: 'Official updates test',
   },
   lastUpdate: {
     id: 'app.components.PostComponents.OfficialFeedback.lastUpdate',
