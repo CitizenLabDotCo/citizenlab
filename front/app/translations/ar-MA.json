@@ -332,7 +332,6 @@
   "app.components.PostComponents.OfficialFeedback.officialNamePlaceholder": "اختر كيف يمكن للآخرين رؤية اسمك",
   "app.components.PostComponents.OfficialFeedback.officialUpdateAuthor": "اسم مؤلف التحديث الرسمي",
   "app.components.PostComponents.OfficialFeedback.officialUpdateBody": "النص الأساسي للتحديث الرسمي",
-  "app.components.PostComponents.OfficialFeedback.officialUpdates": "التحديثات الرسمية",
   "app.components.PostComponents.OfficialFeedback.postedOn": "تم النشر في {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "نشر",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "اعرض التحديثات السابقة",

@@ -304,7 +304,6 @@
   "app.components.PostComponents.OfficialFeedback.officialNamePlaceholder": "Inuit atit qanoq takussaneraat toqqaruk",
   "app.components.PostComponents.OfficialFeedback.officialUpdateAuthor": "Pisortatigoortumik paasissutissat kingulliit ilanngullugit takussutissiami allagaqartap atia",
   "app.components.PostComponents.OfficialFeedback.officialUpdateBody": "Pisortatigoortumik paasissutissat kingulliit ilanngullugit takussutissiami allakkap allagartaa",
-  "app.components.PostComponents.OfficialFeedback.officialUpdates": "Pisortatigoortumik paasissutissat kingulliit ilanngullugit takussutissiat",
   "app.components.PostComponents.OfficialFeedback.postedOn": "Uunga ilanngunneqarsimavoq {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Saqqummersiguk",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Siusinnerusukkut paasissutissat kingulliit ilanngullugit takussutissiat nuisikkit",

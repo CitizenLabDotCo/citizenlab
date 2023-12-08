@@ -332,7 +332,6 @@
   "app.components.PostComponents.OfficialFeedback.officialNamePlaceholder": "Izvēlieties, kā cilvēki redz jūsu vārdu",
   "app.components.PostComponents.OfficialFeedback.officialUpdateAuthor": "Oficiālā atjauninājuma autora vārds",
   "app.components.PostComponents.OfficialFeedback.officialUpdateBody": "Oficiālais atjauninājuma pamatteksts",
-  "app.components.PostComponents.OfficialFeedback.officialUpdates": "Oficiāli atjauninājumi",
   "app.components.PostComponents.OfficialFeedback.postedOn": "Publicēts {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Publicēt",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Rādīt iepriekšējos atjauninājumus",

@@ -332,7 +332,6 @@
   "app.components.PostComponents.OfficialFeedback.officialNamePlaceholder": "Odaberite kako drugi vide vaše ime",
   "app.components.PostComponents.OfficialFeedback.officialUpdateAuthor": "Ime autora službene obavijesti",
   "app.components.PostComponents.OfficialFeedback.officialUpdateBody": "Tekst službene obavijesti",
-  "app.components.PostComponents.OfficialFeedback.officialUpdates": "Službene obavijesti",
   "app.components.PostComponents.OfficialFeedback.postedOn": "Objavljeno dana {date} ",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Objavi",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Prikaži prethodne obavijesti",

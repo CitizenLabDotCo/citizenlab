@@ -332,7 +332,6 @@
   "app.components.PostComponents.OfficialFeedback.officialNamePlaceholder": "Επιλέξτε πώς θα βλέπουν οι άλλοι το όνομά σας",
   "app.components.PostComponents.OfficialFeedback.officialUpdateAuthor": "Όνομα συντάκτης επίσημης ενημέρωσης",
   "app.components.PostComponents.OfficialFeedback.officialUpdateBody": "Επίσημο κείμενο της ενημέρωσης",
-  "app.components.PostComponents.OfficialFeedback.officialUpdates": "Επίσημες ενημερώσεις",
   "app.components.PostComponents.OfficialFeedback.postedOn": "Δημοσιεύτηκε στις {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Δημοσίευση",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Εμφάνιση προηγούμενων ενημερώσεων",

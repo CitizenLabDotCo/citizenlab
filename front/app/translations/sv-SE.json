@@ -332,7 +332,6 @@
   "app.components.PostComponents.OfficialFeedback.officialNamePlaceholder": "Välj hur andra personer ser ditt namn",
   "app.components.PostComponents.OfficialFeedback.officialUpdateAuthor": "Officiell uppdatering – författarens namn",
   "app.components.PostComponents.OfficialFeedback.officialUpdateBody": "Officiell uppdatering – brödtext",
-  "app.components.PostComponents.OfficialFeedback.officialUpdates": "Officiella uppdateringar",
   "app.components.PostComponents.OfficialFeedback.postedOn": "Publicerades {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Publicera",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Visa tidigare uppdateringar",

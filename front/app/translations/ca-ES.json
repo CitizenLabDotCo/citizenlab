@@ -332,7 +332,6 @@
   "app.components.PostComponents.OfficialFeedback.officialNamePlaceholder": "Trieu com veu la gent el vostre nom",
   "app.components.PostComponents.OfficialFeedback.officialUpdateAuthor": "Nom de l'autor de l'actualització oficial",
   "app.components.PostComponents.OfficialFeedback.officialUpdateBody": "Text del cos de l'actualització oficial",
-  "app.components.PostComponents.OfficialFeedback.officialUpdates": "Actualitzacions oficials",
   "app.components.PostComponents.OfficialFeedback.postedOn": "Publicat el {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Publicar",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Mostrar actualitzacions anteriors",

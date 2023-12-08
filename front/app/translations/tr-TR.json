@@ -332,7 +332,6 @@
   "app.components.PostComponents.OfficialFeedback.officialNamePlaceholder": "Kullanıcıların adınızı nasıl göreceğini seçin",
   "app.components.PostComponents.OfficialFeedback.officialUpdateAuthor": "Resmi bilgilendirmeyi yazanın adı",
   "app.components.PostComponents.OfficialFeedback.officialUpdateBody": "Resmi bilgilendirme metin gövdesi",
-  "app.components.PostComponents.OfficialFeedback.officialUpdates": "Resmi bilgilendirmeler",
   "app.components.PostComponents.OfficialFeedback.postedOn": "{date} tarihinde yayınlandı",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Yayımla",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Daha önceki bilgilendirmeleri göster",

@@ -332,7 +332,6 @@
   "app.components.PostComponents.OfficialFeedback.officialNamePlaceholder": "Velg hvordan folk skal se navnet ditt",
   "app.components.PostComponents.OfficialFeedback.officialUpdateAuthor": "Forfatternavn på offisiell oppdatering",
   "app.components.PostComponents.OfficialFeedback.officialUpdateBody": "Brødtekst på offisiell oppdatering",
-  "app.components.PostComponents.OfficialFeedback.officialUpdates": "Offisielle oppdateringer",
   "app.components.PostComponents.OfficialFeedback.postedOn": "Publisert {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Publiser",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Vis tidligere oppdateringer",

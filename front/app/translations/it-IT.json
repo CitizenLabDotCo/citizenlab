@@ -332,7 +332,6 @@
   "app.components.PostComponents.OfficialFeedback.officialNamePlaceholder": "Scegli come la gente vede il tuo nome",
   "app.components.PostComponents.OfficialFeedback.officialUpdateAuthor": "Nome dell'autore dell'aggiornamento ufficiale",
   "app.components.PostComponents.OfficialFeedback.officialUpdateBody": "Testo ufficiale del corpo dell'aggiornamento",
-  "app.components.PostComponents.OfficialFeedback.officialUpdates": "Aggiornamenti ufficiali",
   "app.components.PostComponents.OfficialFeedback.postedOn": "Postato su {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Pubblica",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Mostra gli aggiornamenti precedenti",

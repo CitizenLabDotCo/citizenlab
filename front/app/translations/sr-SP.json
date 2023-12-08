@@ -332,7 +332,6 @@
   "app.components.PostComponents.OfficialFeedback.officialNamePlaceholder": "Одаберите како људи виде ваше име",
   "app.components.PostComponents.OfficialFeedback.officialUpdateAuthor": "Званично име аутора ажурирања",
   "app.components.PostComponents.OfficialFeedback.officialUpdateBody": "Званични основни текст ажурирања",
-  "app.components.PostComponents.OfficialFeedback.officialUpdates": "Званична ажурирања",
   "app.components.PostComponents.OfficialFeedback.postedOn": "Објављено {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Објавите",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Прикажи претходна ажурирања",

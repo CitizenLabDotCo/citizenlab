@@ -332,7 +332,6 @@
   "app.components.PostComponents.OfficialFeedback.officialNamePlaceholder": "Wielt, wéi d’Leit ären Numm gesinn",
   "app.components.PostComponents.OfficialFeedback.officialUpdateAuthor": "Numm vum Auteur vum offiziellen Update",
   "app.components.PostComponents.OfficialFeedback.officialUpdateBody": "Text vum offiziellen Update",
-  "app.components.PostComponents.OfficialFeedback.officialUpdates": "Offiziell Updaten",
   "app.components.PostComponents.OfficialFeedback.postedOn": "Gepost de(n) {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Verëffentlechen",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Viregt Updates uweisen",

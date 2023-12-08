@@ -333,7 +333,7 @@
   "app.components.PostComponents.OfficialFeedback.officialNamePlaceholder": "Choose how people see your name",
   "app.components.PostComponents.OfficialFeedback.officialUpdateAuthor": "Official update author name",
   "app.components.PostComponents.OfficialFeedback.officialUpdateBody": "Official update body text",
-  "app.components.PostComponents.OfficialFeedback.officialUpdates": "Official updates",
+  "app.components.PostComponents.OfficialFeedback.officialUpdatesTest": "Official updates test",
   "app.components.PostComponents.OfficialFeedback.postedOn": "Posted on {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Publish",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Show previous updates",
