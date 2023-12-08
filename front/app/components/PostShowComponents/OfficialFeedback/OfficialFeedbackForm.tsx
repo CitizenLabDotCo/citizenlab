@@ -349,6 +349,7 @@ const OfficialFeedbackForm = ({
         data-testid="official-feedback-form"
       >
         <Section id="official-feedback-form">
+          <FormattedMessage {...messages.testMessage} />
           <FormLabel>
             <Box
               width="100%"

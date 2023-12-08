@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.components.PostComponents.OfficialFeedback.addOfficalUpdate',
     defaultMessage: 'Add an official update',
   },
+  testMessage: {
+    id: 'app.components.PostComponents.OfficialFeedback.testMessage',
+    defaultMessage: 'Test message',
+  },
   officialUpdates: {
     id: 'app.components.PostComponents.OfficialFeedback.officialUpdates',
     defaultMessage: 'Official updates',
