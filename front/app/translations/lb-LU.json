@@ -337,6 +337,7 @@
   "app.components.PostComponents.OfficialFeedback.postedOn": "Gepost de(n) {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Verëffentlechen",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Viregt Updates uweisen",
+  "app.components.PostComponents.OfficialFeedback.testMessage": "Test Message",
   "app.components.PostComponents.OfficialFeedback.textAreaPlaceholder": "En Update verëffentlechen",
   "app.components.PostComponents.OfficialFeedback.updateButtonError": "Leider gouf et e Problem",
   "app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm": "De Message updaten",
