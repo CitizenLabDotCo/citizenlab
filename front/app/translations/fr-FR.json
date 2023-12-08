@@ -392,7 +392,7 @@
   "app.components.ProjectCard.viewTheOptions": "Voir les options",
   "app.components.ProjectCard.viewTheProjects": "Voir les projets",
   "app.components.ProjectCard.viewTheQuestions": "Voir les questions",
-  "app.components.ProjectCard.vote": "Vote",
+  "app.components.ProjectCard.vote": "Votez",
   "app.components.ProjectCard.xComments": "{commentsCount, plural, one {# commentaires} other {# commentaires}}",
   "app.components.ProjectCard.xContributions": "{ideasCount, plural, no {# suggestions} one {# suggestion} other {# suggestions}}",
   "app.components.ProjectCard.xIdeas": "{IdeasCount, plural, =0 {ingen ideer} one {# idé} other {# ideer}}",
