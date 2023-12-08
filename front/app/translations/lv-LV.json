@@ -337,6 +337,7 @@
   "app.components.PostComponents.OfficialFeedback.postedOn": "Publicēts {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Publicēt",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Rādīt iepriekšējos atjauninājumus",
+  "app.components.PostComponents.OfficialFeedback.testMessage": "Testa ziņojums",
   "app.components.PostComponents.OfficialFeedback.textAreaPlaceholder": "Sniegt atjauninājumu...",
   "app.components.PostComponents.OfficialFeedback.updateButtonError": "Atvainojiet, radās problēma",
   "app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm": "Atjauninājuma ziņojums",
