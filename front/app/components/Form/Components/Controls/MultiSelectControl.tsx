@@ -60,6 +60,7 @@ const MultiSelectControl = ({
             }}
             inputId={sanitizeForClassname(id)}
             disabled={uischema?.options?.readonly}
+            isSearchable={false}
           />
         </Box>
 
