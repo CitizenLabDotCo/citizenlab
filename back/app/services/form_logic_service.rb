@@ -321,6 +321,11 @@ class FormLogicService
       if page_temp_ids_to_ids_mapping.include?(target_id)
         rule['goto_page_id'] = page_temp_ids_to_ids_mapping[target_id]
       end
+
+      # Remove any select options that do not exist
+      if field.input_type == 'select' && field.options.pluck(:id).exclude?(rule['if'])
+        rules.delete(rule)
+      end
     end
     field.update! logic: logic
   end
