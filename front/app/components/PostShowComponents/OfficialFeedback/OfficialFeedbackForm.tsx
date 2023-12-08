@@ -361,7 +361,7 @@ const OfficialFeedbackForm = ({
               <Box my="auto">
                 {formType === 'new' && (
                   <AddOfficialUpdateTitle>
-                    <FormattedMessage {...messages.addOfficalUpdate} />
+                    <FormattedMessage {...messages.addOfficalUpdateTest} />
                   </AddOfficialUpdateTitle>
                 )}
               </Box>
