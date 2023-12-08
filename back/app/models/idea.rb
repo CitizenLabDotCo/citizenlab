@@ -197,10 +197,9 @@ class Idea < ApplicationRecord
     end
   end
 
-  # TODO: JS - Should not be able to have an idea without an ideation or native survey phase
-  # so phases.first should work if admins have created ideas outside a phase
+  # TODO: JS - Will return none as a participation method if the idea has no creation phase? But this may not work - should it be ideation?
   def participation_method_on_creation
-    Factory.instance.participation_method_for creation_phase || project
+    Factory.instance.participation_method_for creation_phase
   end
 
   private
