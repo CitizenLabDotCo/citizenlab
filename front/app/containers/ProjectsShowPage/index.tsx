@@ -18,6 +18,7 @@ import ProjectCTABar from './ProjectCTABar';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 import Centerer from 'components/UI/Centerer';
 import ErrorBoundary from 'components/ErrorBoundary';
+import JSConfetti from 'js-confetti';
 
 // hooks
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
@@ -50,6 +51,8 @@ import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { scrollToElement } from 'utils/scroll';
 import { isError } from 'lodash-es';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+
+const confetti = new JSConfetti();
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -95,7 +98,8 @@ const ProjectsShowPage = ({ project }: Props) => {
   const { data: phases } = usePhases(projectId);
 
   const [search] = useSearchParams();
-  const scrollToEventId = search.get('scrollToEventId');
+  const scrollToStatusModule = search.get('scrollToStatusModule');
+  const scrollToIdeas = search.get('scrollToIdeas');
 
   const { data: events } = useEvents({
     projectIds: [projectId],
@@ -113,13 +117,21 @@ const ProjectsShowPage = ({ project }: Props) => {
 
   // UseEffect to scroll to event when provided
   useEffect(() => {
-    if (scrollToEventId && mounted && !loading) {
+    if (scrollToStatusModule && mounted && !loading) {
       setTimeout(() => {
-        scrollToElement({ id: scrollToEventId });
-        removeSearchParams(['scrollToEventId']);
-      }, 2000);
+        scrollToElement({ id: 'voting-status-module' });
+        confetti.addConfetti();
+        removeSearchParams(['scrollToStatusModule']);
+      }, 500);
     }
-  }, [mounted, loading, scrollToEventId]);
+
+    if (scrollToIdeas && mounted && !loading) {
+      setTimeout(() => {
+        scrollToElement({ id: 'e2e-ideas-container' });
+        removeSearchParams(['scrollToIdeas']);
+      }, 1000);
+    }
+  }, [mounted, loading, scrollToStatusModule, scrollToIdeas]);
 
   let content: JSX.Element | null = null;
 
