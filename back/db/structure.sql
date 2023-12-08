@@ -1656,7 +1656,8 @@ CREATE TABLE public.phases (
     voting_term_plural_multiloc jsonb DEFAULT '{}'::jsonb,
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
-    campaigns_settings jsonb DEFAULT '{}'::jsonb
+    campaigns_settings jsonb DEFAULT '{}'::jsonb,
+    qr_code jsonb
 );
 
 
@@ -8064,6 +8065,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231124090234'),
 ('20231124112723'),
 ('20231124114112'),
-('20231130093345');
+('20231130093345'),
+('20231208155434');
 
 

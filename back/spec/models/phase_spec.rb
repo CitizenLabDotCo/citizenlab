@@ -373,4 +373,28 @@ RSpec.describe Phase do
       end
     end
   end
+
+  describe '#set_qr_code' do
+    it 'does nothing if qr_code is nil' do
+      phase = create(:phase, qr_code: nil)
+      expect(phase.qr_code).to be_nil
+    end
+
+    it 'sets qr_code to nil if enabled = false' do
+      phase = create(:phase, qr_code: { enabled: false })
+      expect(phase.qr_code).to be_nil
+    end
+
+    it 'generates a QR code if enabled = true' do
+      phase = create(:phase, qr_code: { enabled: true })
+      expect(phase.qr_code['key']).not_to be_nil
+      expect(phase.qr_code['key'].length).to eq 32
+    end
+
+    it 'generates a QR code if enabled = true and key is blank' do
+      phase = create(:phase, qr_code: { enabled: true, key: nil })
+      expect(phase.qr_code['key']).not_to be_nil
+      expect(phase.qr_code['key'].length).to eq 32
+    end
+  end
 end

@@ -126,6 +126,7 @@
     "react-mentions": "^4.4.9",
     "react-password-strength-bar": "0.4.1",
     "react-pdf": "7.3.3",
+    "react-qr-code": "^2.0.11",
     "react-range": "1.8.14",
     "react-resize-detector": "8.0.3",
     "react-router-dom": "6.3.0",

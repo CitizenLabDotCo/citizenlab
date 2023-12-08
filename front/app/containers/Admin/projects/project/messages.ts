@@ -18,6 +18,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.setup',
     defaultMessage: 'Setup',
   },
+  qrcode: {
+    id: 'app.containers.AdminPage.ProjectEdit.qrcode',
+    defaultMessage: 'QR code',
+  },
   inputFormTab: {
     id: 'app.containers.AdminPage.ProjectEdit.inputFormTab',
     defaultMessage: 'Input form',

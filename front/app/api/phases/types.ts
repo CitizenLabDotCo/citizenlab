@@ -61,6 +61,7 @@ export interface IPhaseAttributes {
   ideas_count: number;
   baskets_count?: number | null;
   votes_count?: number | null;
+  qr_code?: QrCode | null;
 }
 
 export interface IPhases {
@@ -145,3 +146,8 @@ export type InputTerm =
   | 'contribution';
 
 export type PresentationMode = 'card' | 'map';
+
+export interface QrCode {
+  key: string;
+  max_regs?: number;
+}

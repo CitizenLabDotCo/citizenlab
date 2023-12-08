@@ -21,6 +21,7 @@ const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
 
 const AdminProjectDescription = lazy(() => import('./project/description'));
 const AdminProjectIdeaForm = lazy(() => import('./project/inputForm'));
+const AdminQrCode = lazy(() => import('./project/qrCode'));
 
 const AdminProjectIdeas = lazy(() => import('./project/ideas'));
 const OfflineInputImporter = lazy(() => import('./project/offlineInputs'));
@@ -182,6 +183,14 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <AdminPhaseNewAndEdit />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'phases/:phaseId/qr-code',
+            element: (
+              <PageLoading>
+                <AdminQrCode />
               </PageLoading>
             ),
           },

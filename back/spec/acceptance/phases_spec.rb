@@ -123,6 +123,7 @@ resource 'Phases' do
         parameter :ideas_order, 'The default order of ideas.'
         parameter :input_term, 'The input term for something.'
         parameter :campaigns_settings, "A hash, only including keys in #{Phase::CAMPAIGNS} and with only boolean values", required: true
+        parameter :qr_code, 'JSON object with the configuration of the phase QR code.'
       end
 
       ValidationErrorHelper.new.error_fields(self, Phase)
@@ -405,6 +406,7 @@ resource 'Phases' do
         parameter :end_at, 'The end date of the phase'
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :ideas_order, 'The default order of ideas.'
+        parameter :qr_code, 'JSON object with the configuration of the phase QR code.'
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
@@ -496,6 +498,18 @@ resource 'Phases' do
           ideas_phase.reload
           expect(response_status).to eq 200
           expect(ideas_phase.valid?).to be true
+        end
+      end
+
+      describe 'when updating a qr code' do
+        let(:qr_code) { { key: nil, enabled: true, max_regs: 10, title: 'TEST' } }
+
+        example 'Phase returns a QR code' do
+          do_request
+
+          # TODO: JS - qr_code is not posting for some reason
+          assert_status 200
+          expect(response_data.dig(:attributes, :qr_code)).not_to be_nil
         end
       end
     end

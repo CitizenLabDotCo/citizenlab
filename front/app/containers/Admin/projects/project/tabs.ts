@@ -9,6 +9,11 @@ export const getIntialTabs = (formatMessage: FormatMessage): ITab[] => {
       name: 'setup',
     },
     {
+      label: formatMessage(messages.qrcode),
+      url: 'qr-code',
+      name: 'qr-code',
+    },
+    {
       label: formatMessage(messages.inputManagerTab),
       url: 'ideas',
       name: 'ideas',

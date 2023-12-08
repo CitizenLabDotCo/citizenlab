@@ -9,7 +9,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     :participation_method, :posting_enabled, :posting_method, :posting_limited_max, :commenting_enabled,
     :reacting_enabled, :reacting_like_method, :reacting_like_limited_max,
     :reacting_dislike_enabled, :reacting_dislike_method, :reacting_dislike_limited_max,
-    :allow_anonymous_participation, :presentation_mode, :ideas_order, :input_term
+    :allow_anonymous_participation, :presentation_mode, :ideas_order, :input_term, :qr_code
 
   with_options if: proc { |phase|
     phase.voting?
@@ -42,6 +42,13 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   attribute :previous_phase_end_at_updated do |object|
     object.previous_phase_end_at_updated?
   end
+
+  # TODO: JS - make this work only for moderators
+  # attribute :qr_code, if: proc { |object, params|
+  #   can_moderate? object.project, params
+  # } do |object|
+  #   object.qr_code
+  # end
 
   belongs_to :project
 

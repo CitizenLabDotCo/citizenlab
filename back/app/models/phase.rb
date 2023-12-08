@@ -32,15 +32,16 @@
 #  reacting_dislike_limited_max  :integer          default(10)
 #  posting_method                :string           default("unlimited"), not null
 #  posting_limited_max           :integer          default(1)
-#  document_annotation_embed_url :string
 #  allow_anonymous_participation :boolean          default(FALSE), not null
-#  campaigns_settings            :jsonb
+#  document_annotation_embed_url :string
 #  voting_method                 :string
 #  voting_max_votes_per_idea     :integer
 #  voting_term_singular_multiloc :jsonb
 #  voting_term_plural_multiloc   :jsonb
 #  baskets_count                 :integer          default(0), not null
 #  votes_count                   :integer          default(0), not null
+#  campaigns_settings            :jsonb
+#  qr_code                       :jsonb
 #
 # Indexes
 #
@@ -83,6 +84,7 @@ class Phase < ApplicationRecord
   before_validation :set_participation_method, on: :create
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_presentation_mode, on: :create
+  before_validation :set_qr_code
 
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
@@ -256,6 +258,17 @@ class Phase < ApplicationRecord
 
   def started?
     start_at <= Time.zone.now
+  end
+
+  def set_qr_code
+    # TODO: JS - check for allowed keys and throw out any not allowed
+    return if qr_code.blank?
+
+    if qr_code['enabled'] == false
+      self.qr_code = nil
+    elsif qr_code['key'].blank? # Send a blank key if you want to regenerate the key
+      qr_code['key'] = Array.new(32) { (Array('a'..'z') + Array('0'..'9')).sample }.join
+    end
   end
 
   private

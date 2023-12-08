@@ -122,6 +122,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :document_annotation_embed_url,
       :ideas_order,
       :input_term,
+      :qr_code,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
