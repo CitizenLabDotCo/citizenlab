@@ -245,7 +245,6 @@
   "app.components.PasswordInput.strength5Password": "Foarte puternică",
   "app.components.PostCardsComponents.list": "Listă",
   "app.components.PostCardsComponents.map": "Hartă",
-  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Adăugați o actualizare oficială",
   "app.components.PostComponents.OfficialFeedback.cancel": "Anulare",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Șterge",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Sunteți sigur că doriți să ștergeți această actualizare oficială?",

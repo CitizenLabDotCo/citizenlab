@@ -322,7 +322,6 @@
   "app.components.PasswordInput.strength5Password": "Zeer sterk",
   "app.components.PostCardsComponents.list": "Lijst",
   "app.components.PostCardsComponents.map": "Kaart",
-  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Voeg een update toe",
   "app.components.PostComponents.OfficialFeedback.cancel": "Annuleren",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Verwijder",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Ben je zeker dat je deze update wilt verwijderen?",

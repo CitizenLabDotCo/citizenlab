@@ -322,7 +322,6 @@
   "app.components.PasswordInput.strength5Password": "قوي جداً",
   "app.components.PostCardsComponents.list": "القائمة",
   "app.components.PostCardsComponents.map": "الخريطة",
-  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "أضِف تحديثًا رسميًا",
   "app.components.PostComponents.OfficialFeedback.cancel": "إلغاء",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "حذف",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "هل تريد حذف هذا التحديث الرسمي بالتأكيد؟",

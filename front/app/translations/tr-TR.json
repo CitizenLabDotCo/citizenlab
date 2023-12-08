@@ -322,7 +322,6 @@
   "app.components.PasswordInput.strength5Password": "Çok güçlü",
   "app.components.PostCardsComponents.list": "Liste",
   "app.components.PostCardsComponents.map": "Harita",
-  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Resmi bilgilendirme ekleyin",
   "app.components.PostComponents.OfficialFeedback.cancel": "İptal",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Sil",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Bu resmi bilgilendirmeyi silmek istediğinizden emin misiniz?",

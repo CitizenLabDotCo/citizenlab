@@ -322,7 +322,6 @@
   "app.components.PasswordInput.strength5Password": "Πολύ ισχυρός",
   "app.components.PostCardsComponents.list": "Λίστα",
   "app.components.PostCardsComponents.map": "Χάρτης",
-  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Προσθέστε μια επίσημη ενημέρωση",
   "app.components.PostComponents.OfficialFeedback.cancel": "Ακύρωση",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Διαγραφή",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή την επίσημη ενημέρωση;",

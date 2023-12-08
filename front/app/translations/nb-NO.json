@@ -322,7 +322,6 @@
   "app.components.PasswordInput.strength5Password": "Veldig sterkt",
   "app.components.PostCardsComponents.list": "Liste",
   "app.components.PostCardsComponents.map": "Kart",
-  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Legg til en offisiell oppdatering",
   "app.components.PostComponents.OfficialFeedback.cancel": "Avbryt",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Slett",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Er du sikker på at du vil slette denne offisielle oppdateringen?",
