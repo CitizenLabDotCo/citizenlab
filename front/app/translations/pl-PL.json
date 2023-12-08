@@ -337,6 +337,7 @@
   "app.components.PostComponents.OfficialFeedback.postedOn": "Opublikowane {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Opublikuj",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Pokaż poprzednie aktualizacje",
+  "app.components.PostComponents.OfficialFeedback.testMessage": "Wiadomość testowa",
   "app.components.PostComponents.OfficialFeedback.textAreaPlaceholder": "Zaktualizuj...",
   "app.components.PostComponents.OfficialFeedback.updateButtonError": "Przepraszam, zaistniał pewien problem",
   "app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm": "Zaktualizuj wiadomość",
