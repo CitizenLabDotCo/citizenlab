@@ -48,9 +48,9 @@ const StyledIdeasShow = styled(IdeasShow)`
   padding-left: 60px;
   padding-right: 60px;
 
-  ${media.tablet`
-    min-height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
-      mobileTopBarHeight}px);
+  ${({ theme }) => media.tablet`
+    margin-top: ${theme.menuHeight}px;
+    min-height: calc(100vh - ${theme.mobileTopBarHeight}px);
     padding-top: 35px;
   `}
 

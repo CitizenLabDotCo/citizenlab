@@ -23,7 +23,7 @@ interface Props {
   className?: string;
 }
 
-const InitiativesShow = ({ initiativeId }: Props) => {
+const InitiativesShow = ({ initiativeId, className }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const [searchParams] = useSearchParams();
   const newInitiativeId = searchParams.get('new_initiative_id');
@@ -88,7 +88,7 @@ const InitiativesShow = ({ initiativeId }: Props) => {
   };
 
   return (
-    <Box id="e2e-initiative-show">
+    <Box id="e2e-initiative-show" className={className}>
       <InitiativeMeta initiativeId={initiativeId} />
       {isSmallerThanPhone ? (
         <Phone
