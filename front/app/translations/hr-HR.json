@@ -337,6 +337,7 @@
   "app.components.PostComponents.OfficialFeedback.postedOn": "Objavljeno dana {date} ",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Objavi",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Prikaži prethodne obavijesti",
+  "app.components.PostComponents.OfficialFeedback.testMessage": "Testna poruka",
   "app.components.PostComponents.OfficialFeedback.textAreaPlaceholder": "Objavite novost...",
   "app.components.PostComponents.OfficialFeedback.updateButtonError": "Žao nam je, došlo je do pogreške",
   "app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm": "Poruka obavijesti",
