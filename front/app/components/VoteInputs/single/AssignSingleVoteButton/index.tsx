@@ -146,8 +146,8 @@ const AssignSingleVoteButton = ({
           onClick={vote}
           text={
             ideaInBasket
-              ? formatMessage(messages.voted)
-              : formatMessage(messages.vote)
+              ? formatMessage(messages.selected)
+              : formatMessage(messages.select)
           }
         />
       </div>

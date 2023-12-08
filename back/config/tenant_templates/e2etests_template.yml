@@ -301,7 +301,7 @@ models:
     education:
     registration_completed_at: '2018-03-28 13:34:57'
     password: democracy2.0
-    remote_avatar_url:
+    remote_avatar_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/initials_avatars/sk_avatar.png
     roles:
     - type: admin
     created_at: '2018-03-28 13:34:57'

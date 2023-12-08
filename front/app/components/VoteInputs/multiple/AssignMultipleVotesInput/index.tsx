@@ -241,7 +241,7 @@ const AssignMultipleVotesInput = ({
         <Tippy
           disabled={!plusButtonDisabledExplanation}
           interactive={true}
-          placement="bottom"
+          placement="bottom-end"
           content={plusButtonDisabledExplanation}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -278,7 +278,7 @@ const AssignMultipleVotesInput = ({
           width="100%"
           onClick={onAdd}
         >
-          {formatMessage(messages.vote)}
+          {formatMessage(messages.select)}
         </Button>
       </div>
     </Tippy>

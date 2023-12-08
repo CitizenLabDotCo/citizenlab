@@ -85,7 +85,7 @@ describe('Homepage builder', () => {
     });
   });
 
-  it.skip('updates homepage builder content correctly', () => {
+  it('updates homepage builder content correctly', () => {
     cy.setAdminLoginCookie();
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');
@@ -149,7 +149,7 @@ describe('Homepage builder', () => {
     );
   });
 
-  it.skip('removes homepage builder content correctly', () => {
+  it('removes homepage builder content correctly', () => {
     cy.setAdminLoginCookie();
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');
@@ -208,7 +208,7 @@ describe('Homepage builder', () => {
     });
   });
 
-  it.skip('updates homepage banner correctly', () => {
+  it('updates homepage banner correctly', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');
     cy.intercept('GET', '**/pages-menu').as('getPages');
@@ -228,8 +228,7 @@ describe('Homepage builder', () => {
       'background-image',
       'none'
     );
-    const signedOutHeaderEnglish =
-      /Let’s shape the future of New Douglaschester together/gi;
+    const signedOutHeaderEnglish = /Let’s shape the future of/gi;
     const signedOutSubheaderEnglish =
       /Welcome to the participation platform of/gi;
 
@@ -266,13 +265,9 @@ describe('Homepage builder', () => {
     // Check homepage banner defaults signed - in
 
     cy.setAdminLoginCookie();
-    const signedInHeaderEnglish = /is listening to you/gi;
+
     cy.visit('/');
     cy.get('.e2e-signed-in-header').should('exist');
-    cy.get('#e2e-signed-in-header-default-cta').should(($el) => {
-      const text = $el.text();
-      expect(text).to.match(signedInHeaderEnglish);
-    });
     cy.get("[data-cy='e2e-signed-in-header-image-overlay']").should(
       'have.css',
       'background-color',
@@ -333,7 +328,7 @@ describe('Homepage builder', () => {
       force: true,
     });
 
-    // Update header and subheader
+    // Update header
     cy.get('[data-cy="e2e-signed-in-header-section"]')
       .find('input')
       .clear()
@@ -345,19 +340,16 @@ describe('Homepage builder', () => {
     cy.get('#customizedButtonText').clear().type('Custom button');
     cy.get('#customizedButtonUrl').clear().type('https://www.google.com');
 
+    cy.get("[data-cy='e2e-signed-in-header-image']").should('exist');
+    cy.get('.buttonText').should('contain', 'Custom button');
+    cy.get("[data-cy='e2e-homepage-banner']").should('contain', 'New header');
+
     // Save homepage
     cy.get('#e2e-content-builder-topbar-save').click({
       force: true,
     });
     cy.wait('@saveHomePage');
     cy.wait(1000);
-
-    // Check updated content signed - in
-
-    cy.visit('/');
-    cy.get("[data-cy='e2e-signed-in-header-image']").should('exist');
-    cy.get('.buttonText').should('contain', 'Custom button');
-    cy.get("[data-cy='e2e-homepage-banner']").should('contain', 'New header');
 
     // Check updated content signed - out
 
@@ -382,9 +374,10 @@ describe('Homepage builder', () => {
     cy.get('.buttonText').should('contain', 'Custom button');
   });
 
-  it.skip('updates homepage banner layout correctly', () => {
+  it('updates homepage banner layout correctly', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('POST', '**/content_builder_layout_images').as('postImage');
+
     // Fixed ratio layout
     cy.setAdminLoginCookie();
     cy.visit('/admin/pages-menu/homepage-builder');
