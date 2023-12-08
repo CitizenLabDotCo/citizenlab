@@ -230,7 +230,7 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
       expect(homepage.craftjs_json[bottominfosection]).to match({
         'type' => { 'resolvedName' => 'TextMultiloc' },
         'isCanvas' => false,
-        'props' => { 
+        'props' => {
           'text' => {
             'en' => '<p>bottom info section en</p><p><strong></strong></p>',
             'nl-BE' => ''
