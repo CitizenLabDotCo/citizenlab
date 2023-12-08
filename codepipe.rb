@@ -58,79 +58,79 @@ end
 
 # =>
 # DELETED = actively deleted by me in past week
-# Not on AdminHQ, probably deleted = Not actively deleted by me in past week
+# Not on AdminHQ, probably abandoned custom domain = Not actively deleted by me in past week
 #
 # www.zukunft-pfaffenhausen.de not found in data - DELETED
-# www.meinaugustusburg.de not found in data - Not on AdminHQ, probably deleted
+# www.meinaugustusburg.de not found in data - Not on AdminHQ, probably abandoned custom domain
 # www.demain-mont-saint-guibert.be not found in data - DELETED
 # www.govchat.org.za not found in data - DELETED
-# www.bodobylab.no not found in data - Not on AdminHQ, probably deleted
-# mijnideevoorvlaamsbrabant.be not found in data - Not on AdminHQ, probably deleted
+# www.bodobylab.no not found in data - Not on AdminHQ, probably abandoned custom domain
+# mijnideevoorvlaamsbrabant.be not found in data - Not on AdminHQ, probably abandoned custom domain
 # www.onscranendonck.nu not found in data - DELETED
 # www.reconstruisonsverviers.be not found in data - DELETED
 # www.welklimburgwiljij.be not found in data - DELETED
-# www.mortselinbeweging.be not found in data - Not on AdminHQ, probably deleted
-# wapeisje.be not found in data - Not on AdminHQ, probably deleted
+# www.mortselinbeweging.be not found in data - Not on AdminHQ, probably abandoned custom domain
+# wapeisje.be not found in data - Not on AdminHQ, probably abandoned custom domain
 # inclusiondigitaleinclusie.be not found in data - DELETED
 # bienenroute.brussels not found in data - DELETED
 # participatie.laarne.be not found in data - DELETED
-# idee-wo.be not found in data - Not on AdminHQ, probably deleted
+# idee-wo.be not found in data - Not on AdminHQ, probably abandoned custom domain
 # youth4climate.be not found in data - DELETED
 # kinrooimeemaken.be not found in data - DELETED
-# leuvenmaakhetmee.be not found in data - Not on AdminHQ, probably deleted
+# leuvenmaakhetmee.be not found in data - Not on AdminHQ, probably abandoned custom domain
 # speakup2019.be not found in data - DELETED
 # denkmee-hoogstraten.be not found in data - DELETED
-# innovationshauptplatz.linz.at not found in data - Not on AdminHQ, probably deleted
+# innovationshauptplatz.linz.at not found in data - Not on AdminHQ, probably abandoned custom domain
 # projetmontpellier.fr not found in data - DELETED
 # deltag.voresmaal.dk not found in data - DELETED
 # hecht.haacht.be not found in data - DELETED
-# consultaciudadanalampa.cl not found in data - Not on AdminHQ, probably deleted
-# participatransparente.cl not found in data - Not on AdminHQ, probably deleted
+# consultaciudadanalampa.cl not found in data - Not on AdminHQ, probably abandoned custom domain
+# participatransparente.cl not found in data - Not on AdminHQ, probably abandoned custom domain
 # idee.namensnederland.nl not found in data - DELETED
 # policylab.org.uk not found in data - DELETED
 # involve.winsford.gov.uk not found in data - DELETED
 # meridianoneconsultation.co.uk not found in data - DELETED
-# engage.cityoflancasterpa.com not found in data - Not on AdminHQ, probably deleted
+# engage.cityoflancasterpa.com not found in data - Not on AdminHQ, probably abandoned custom domain
 # derechoshumanoslocales.cl not found in data - DELETED
 # jerico.amigo.community not found in data - DELETED
 # tppcoronel.cl not found in data - DELETED
 # participanoneutrales.cl not found in data - DELETED
 # zuurstof.be not found in data - DELETED
-# udenaanhetwoord.nl not found in data - Not on AdminHQ, probably deleted
+# udenaanhetwoord.nl not found in data - Not on AdminHQ, probably abandoned custom domain
 # doemee.middelburgers.nl not found in data - DELETED
-# convencion.cultura.gob.cl not found in data - Not on AdminHQ, probably deleted
-# backtocampus.ulb.be not found in data - Not on AdminHQ, probably deleted
-# shapingthamesmeadnow.org.uk not found in data - Not on AdminHQ, probably deleted
-# dialog.assens.dk not found in data - Not on AdminHQ, probably deleted
-# mitkbhpoliti.dk not found in data - Not on AdminHQ, probably deleted
+# convencion.cultura.gob.cl not found in data - Not on AdminHQ, probably abandoned custom domain
+# backtocampus.ulb.be not found in data - Not on AdminHQ, probably abandoned custom domain
+# shapingthamesmeadnow.org.uk not found in data - Not on AdminHQ, probably abandoned custom domain
+# dialog.assens.dk not found in data - Not on AdminHQ, probably abandoned custom domain
+# mitkbhpoliti.dk not found in data - Not on AdminHQ, probably abandoned custom domain
 # hilversum2040.nl not found in data - DELETED
-# labo.newb.coop not found in data - Not on AdminHQ, probably deleted
+# labo.newb.coop not found in data - Not on AdminHQ, probably abandoned custom domain
 # denkmee.katwijk.nl not found in data - DELETED
-# plan-velo.charenton.fr not found in data - Not on AdminHQ, probably deleted
-# praatmee.schoten.be not found in data - Not on AdminHQ, probably deleted
+# plan-velo.charenton.fr not found in data - Not on AdminHQ, probably abandoned custom domain
+# praatmee.schoten.be not found in data - Not on AdminHQ, probably abandoned custom domain
 # all-for-zero.be not found in data - DELETED
 # denkmee.zoersel.be not found in data - DELETED
 # ingenuityleeds.com not found in data - DELETED
-# soroedialog.dk not found in data - Not on AdminHQ, probably deleted
+# soroedialog.dk not found in data - Not on AdminHQ, probably abandoned custom domain
 # forum.wichita.gov not found in data - DELETED
-# consulta2021.talcaparticipa.cl not found in data - Not on AdminHQ, probably deleted
-# voresviden.slagelse.dk not found in data - Not on AdminHQ, probably deleted
+# consulta2021.talcaparticipa.cl not found in data - Not on AdminHQ, probably abandoned custom domain
+# voresviden.slagelse.dk not found in data - Not on AdminHQ, probably abandoned custom domain
 # cheltenhamzero.org not found in data - DELETED
-# jesuiseucolo.org not found in data - Not on AdminHQ, probably deleted
-# speakupafrika.net not found in data - Not on AdminHQ, probably deleted
-# borgerdialog.nyborg.dk not found in data - Not on AdminHQ, probably deleted
+# jesuiseucolo.org not found in data - Not on AdminHQ, probably abandoned custom domain
+# speakupafrika.net not found in data - Not on AdminHQ, probably abandoned custom domain
+# borgerdialog.nyborg.dk not found in data - Not on AdminHQ, probably abandoned custom domain
 # citizenlab.seattle.gov not found in data - EXISTS!
-# mitdenken.smart-rhein-neckar.de not found in data - Not on AdminHQ, probably deleted
-# tourismusstrategie-brandenburg.de not found in data - Not on AdminHQ, probably deleted
-# debatenuevaconstitucion.cl not found in data - Not on AdminHQ, probably deleted
-# participa.laregionqueimaginas.cl not found in data - Not on AdminHQ, probably deleted
-# overvechtcentrum.nl not found in data - Not on AdminHQ, probably deleted
-# iesaisties.riga.lv not found in data - Not on AdminHQ, probably deleted
+# mitdenken.smart-rhein-neckar.de not found in data - Not on AdminHQ, probably abandoned custom domain
+# tourismusstrategie-brandenburg.de not found in data - Not on AdminHQ, probably abandoned custom domain
+# debatenuevaconstitucion.cl not found in data - Not on AdminHQ, probably abandoned custom domain
+# participa.laregionqueimaginas.cl not found in data - Not on AdminHQ, probably abandoned custom domain
+# overvechtcentrum.nl not found in data - Not on AdminHQ, probably abandoned custom domain
+# iesaisties.riga.lv not found in data - Not on AdminHQ, probably abandoned custom domain
 # hillerod.citizenlab.co not found in data - EXISTS! NOT A CUSTOM DOMAIN (so why in pipeline?)
 # cqc.citizenlab.co not found in data - EXISTS! NOT A CUSTOM DOMAIN (so why in pipeline?)
 # girlsrights.citizenlab.co not found in data - EXISTS! NOT A CUSTOM DOMAIN (so why in pipeline?)
 # digitalrd.citizenlab.co not found in data - EXISTS! NOT A CUSTOM DOMAIN (so why in pipeline?)
-# doemee.beverwijk.nl not found in data - Not on AdminHQ, probably deleted
+# doemee.beverwijk.nl not found in data - Not on AdminHQ, probably abandoned custom domain
 # gelecekhatay.org not found in data
 
 # Might have noticed an issue here. I have been defining custom domains as those
