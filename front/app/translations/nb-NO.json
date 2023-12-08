@@ -337,6 +337,7 @@
   "app.components.PostComponents.OfficialFeedback.postedOn": "Publisert {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Publiser",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Vis tidligere oppdateringer",
+  "app.components.PostComponents.OfficialFeedback.testMessage": "Testmelding",
   "app.components.PostComponents.OfficialFeedback.textAreaPlaceholder": "Publiser en oppdatering",
   "app.components.PostComponents.OfficialFeedback.updateButtonError": "Beklager, det oppsto et problem.",
   "app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm": "Oppdater melding",
