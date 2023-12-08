@@ -3,7 +3,7 @@
 require 'yaml'
 
 # NOTE: This task should only be need to fix tenants created during summer 2022 when unused translations were removed
-namespace :fixes do
+namespace :single_use do
   desc 'Add missing default locale values from the base template where they have been removed in error.'
   task :add_missing_locales, %i[host locale] => [:environment] do |_t, args|
     locale = args[:locale]

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # NOTE: Only to be used for release that migrates Votes -> Reactions
-namespace :fix_existing_tenants do
+namespace :single_use do
   desc 'Transform all core data relating to votes into reactions'
   task migrate_votes_core: [:environment] do |_t, _args|
     # In priority order - active first

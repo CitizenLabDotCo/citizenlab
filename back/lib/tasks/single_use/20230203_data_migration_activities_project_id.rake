@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :data_migration do
+namespace :single_use do
   desc <<~DESC
     Populates the project_id column of activities (SQL implementation)
 
