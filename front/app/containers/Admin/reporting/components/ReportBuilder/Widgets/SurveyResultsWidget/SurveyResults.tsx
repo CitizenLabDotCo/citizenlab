@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import useLocale from 'hooks/useLocale';
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
-import useFormResults from 'api/survey_results/useSurveyResults';
+import useSurveyResults from './useSurveyResults';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
@@ -22,22 +22,34 @@ import { isNilOrError } from 'utils/helperUtils';
 import { useIntl } from 'utils/cl-intl';
 import { createResultRows } from './utils';
 import { BORDER } from '../constants';
+import { useParams } from 'react-router-dom';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
+import usePhases from 'api/phases/usePhases';
+import { isValidPhase } from 'containers/ProjectsShowPage/phaseParam';
+import { getLatestRelevantPhase } from 'api/phases/utils';
 
 type Props = {
   projectId: string;
   phaseId?: string;
   shownQuestions?: boolean[];
+  reportId?: string;
 };
 
-const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
+const SurveyResults = ({
+  projectId,
+  phaseId,
+  shownQuestions,
+  reportId,
+}: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const localize = useLocalize();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId ?? null);
-  const { data: formResults } = useFormResults({
+  const formResults = useSurveyResults({
     projectId,
     phaseId,
+    reportId,
   });
 
   const resultRows = useMemo(() => {
@@ -116,4 +128,27 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
   );
 };
 
-export default SurveyResults;
+const SurveyResultsWrapper = (props: Props) => {
+  const { slug, phaseNumber } = useParams();
+  const { data: project } = useProjectBySlug(slug);
+  const { data: phases } = usePhases(project?.data.id);
+
+  const selectedPhase = useMemo(() => {
+    if (!phases) return;
+
+    // if a phase parameter was provided, and it is valid, we set that as phase.
+    // otherwise, use the most logical phase
+    if (isValidPhase(phaseNumber, phases.data)) {
+      const phaseIndex = Number(phaseNumber) - 1;
+      return phases.data[phaseIndex];
+    }
+
+    return getLatestRelevantPhase(phases.data);
+  }, [phaseNumber, phases]);
+
+  const reportId = selectedPhase?.relationships.report?.data?.id;
+
+  return <SurveyResults {...props} reportId={reportId} />;
+};
+
+export default SurveyResultsWrapper;

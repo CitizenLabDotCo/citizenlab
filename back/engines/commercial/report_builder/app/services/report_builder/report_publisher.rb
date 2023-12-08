@@ -14,7 +14,8 @@ class ReportBuilder::ReportPublisher
     craftjs_json = @report.layout.craftjs_jsonmultiloc
     return if craftjs_json.blank?
 
-    nodes = craftjs_json['en']
+    # TODO: change when we use multiple locales
+    nodes = craftjs_json.values.first
     return if nodes.blank?
 
     nodes.each do |node_id, node_obj|
