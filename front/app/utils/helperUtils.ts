@@ -6,6 +6,7 @@ import {
 } from 'typings';
 import { trim, isUndefined } from 'lodash-es';
 import { removeUrlLocale } from 'utils/locale';
+import { locales } from 'containers/App/constants';
 
 export function capitalizeParticipationContextType(
   type: IParticipationContextType
@@ -102,6 +103,32 @@ export function isPage(pageKey: pageKeys, pathName: string) {
       return pathnameWithoutLocale.startsWith('/events/');
   }
 }
+
+export const isIdeaShowPage = (urlSegments: string[]) => {
+  const firstUrlSegment = urlSegments[0];
+  const secondUrlSegment = urlSegments[1];
+  const lastUrlSegment = urlSegments[urlSegments.length - 1];
+
+  return (
+    urlSegments.length === 3 &&
+    locales.includes(firstUrlSegment) &&
+    secondUrlSegment === 'ideas' &&
+    lastUrlSegment !== 'new'
+  );
+};
+
+export const isInitiativeShowPage = (urlSegments: string[]) => {
+  const firstUrlSegment = urlSegments[0];
+  const secondUrlSegment = urlSegments[1];
+  const lastUrlSegment = urlSegments[urlSegments.length - 1];
+
+  return (
+    urlSegments.length === 3 &&
+    locales.includes(firstUrlSegment) &&
+    secondUrlSegment === 'initiatives' &&
+    lastUrlSegment !== 'new'
+  );
+};
 
 export function stopPropagation(event) {
   event.stopPropagation();
