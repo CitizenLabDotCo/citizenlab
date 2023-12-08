@@ -322,7 +322,6 @@
   "app.components.PasswordInput.strength5Password": "Ganz sécher",
   "app.components.PostCardsComponents.list": "Lëscht",
   "app.components.PostCardsComponents.map": "Kaart",
-  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "En offiziellen Update afügen",
   "app.components.PostComponents.OfficialFeedback.cancel": "Ofbriechen",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Läschen",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Sidd Dir sécher, datt Dir dësen offiziellen Update läsche wëllt?",

@@ -322,7 +322,7 @@
   "app.components.PasswordInput.strength5Password": "Very strong",
   "app.components.PostCardsComponents.list": "List",
   "app.components.PostCardsComponents.map": "Map",
-  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Add an official update",
+  "app.components.PostComponents.OfficialFeedback.addOfficalUpdateTest": "Add an official update test",
   "app.components.PostComponents.OfficialFeedback.cancel": "Cancel",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Delete",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Are you sure you want to delete this official update?",

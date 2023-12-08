@@ -322,7 +322,6 @@
   "app.components.PasswordInput.strength5Password": "Веома јако",
   "app.components.PostCardsComponents.list": "Листа",
   "app.components.PostCardsComponents.map": "Мапа",
-  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Додајте званично ажурирање",
   "app.components.PostComponents.OfficialFeedback.cancel": "Поништити, отказати",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Избриши",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Да ли сте сигурни да желите да избришете ово званично ажурирање?",

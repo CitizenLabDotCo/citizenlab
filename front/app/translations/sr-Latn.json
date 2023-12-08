@@ -322,7 +322,6 @@
   "app.components.PasswordInput.strength5Password": "Veoma jako",
   "app.components.PostCardsComponents.list": "Lista",
   "app.components.PostCardsComponents.map": "Mapa",
-  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Dodajte zvanično obaveštenje",
   "app.components.PostComponents.OfficialFeedback.cancel": "Prekid",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Izbriši",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Da li ste sigurni da želite da obrišete ovo zvanično obaveštenje?",

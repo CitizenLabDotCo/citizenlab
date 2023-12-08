@@ -322,7 +322,6 @@
   "app.components.PasswordInput.strength5Password": "Bardzo silne",
   "app.components.PostCardsComponents.list": "Lista",
   "app.components.PostCardsComponents.map": "Mapa",
-  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Dodaj oficjalną aktualizację",
   "app.components.PostComponents.OfficialFeedback.cancel": "Anuluj",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Usuń",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Czy na pewno usunąć oficjalną aktualizację?",

@@ -322,7 +322,6 @@
   "app.components.PasswordInput.strength5Password": "Ļoti stipra",
   "app.components.PostCardsComponents.list": "Saraksts",
   "app.components.PostCardsComponents.map": "Karte",
-  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Pievienot oficiālu atjauninājumu",
   "app.components.PostComponents.OfficialFeedback.cancel": "Atcelt",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Dzēst",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Vai esat pārliecināts, ka vēlaties dzēst šo oficiālo atjauninājumu?",

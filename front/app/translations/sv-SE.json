@@ -322,7 +322,6 @@
   "app.components.PasswordInput.strength5Password": "Mycket stark",
   "app.components.PostCardsComponents.list": "Lista",
   "app.components.PostCardsComponents.map": "Karta",
-  "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Lägg till en officiell uppdatering",
   "app.components.PostComponents.OfficialFeedback.cancel": "Avbryt",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Radera",
   "app.components.PostComponents.OfficialFeedback.deletionConfirmation": "Är du säker på att du vill ta bort den här officiella uppdateringen?",
