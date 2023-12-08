@@ -1711,7 +1711,10 @@ resource 'Idea Custom Fields' do
                 }
               ],
               logic: {
-                rules: [{ if: 'TEMP-ID-2', goto_page_id: 'TEMP-ID-1' }]
+                rules: [
+                  { if: 'TEMP-ID-2', goto_page_id: 'TEMP-ID-1' },
+                  { if: 'TEMP-ID-NON-EXISTENT', goto_page_id: 'TEMP-ID-3' }
+                ]
               }
             },
             {
