@@ -1891,7 +1891,7 @@
   "app.utils.votingMethodUtils.submittedBudgetsCountText": "personnes ont soumis un budget",
   "app.utils.votingMethodUtils.submittedVoteCountText": "personne a soumis son vote",
   "app.utils.votingMethodUtils.submittedVotesCountText": "personnes ont soumis leur vote",
-  "app.utils.votingMethodUtils.vote": "Voter",
+  "app.utils.votingMethodUtils.vote": "Vote",
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Vote soumis 🎉",
   "app.utils.votingMethodUtils.votes": "Votes",
   "app.utils.votingMethodUtils.votesCast": "Votes enregistrés",
