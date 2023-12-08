@@ -337,6 +337,7 @@
   "app.components.PostComponents.OfficialFeedback.postedOn": "Publicerades {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Publicera",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Visa tidigare uppdateringar",
+  "app.components.PostComponents.OfficialFeedback.testMessage": "Testmeddelande",
   "app.components.PostComponents.OfficialFeedback.textAreaPlaceholder": "Ge en uppdatering...",
   "app.components.PostComponents.OfficialFeedback.updateButtonError": "Det uppstod tyvärr ett problem",
   "app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm": "Uppdatera meddelande",
