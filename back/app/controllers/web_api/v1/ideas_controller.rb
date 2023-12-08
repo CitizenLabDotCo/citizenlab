@@ -158,7 +158,8 @@ class WebApi::V1::IdeasController < ApplicationController
     verify_profanity input
 
     save_options = {}
-    save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
+    # TODO: JS - This line does not work with publication_status - what is it supposed to do?
+    # save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save save_options
         params_for_file_upload_fields.each do |key, params_for_files_field|
