@@ -337,6 +337,7 @@
   "app.components.PostComponents.OfficialFeedback.postedOn": "Posté le {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Publier",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Afficher les mises à jour précédentes",
+  "app.components.PostComponents.OfficialFeedback.testMessage": "Message de test",
   "app.components.PostComponents.OfficialFeedback.textAreaPlaceholder": "Publier une mise à jour...",
   "app.components.PostComponents.OfficialFeedback.updateButtonError": "Désolé, une erreur est survenue",
   "app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm": "Mettre à jour le message",
