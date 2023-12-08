@@ -337,6 +337,7 @@
   "app.components.PostComponents.OfficialFeedback.postedOn": "تم النشر في {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "نشر",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "اعرض التحديثات السابقة",
+  "app.components.PostComponents.OfficialFeedback.testMessage": "رسالة اختبارية",
   "app.components.PostComponents.OfficialFeedback.textAreaPlaceholder": "أضِف تحديثًا...",
   "app.components.PostComponents.OfficialFeedback.updateButtonError": "نعتذر، حدثت مشكلة ما",
   "app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm": "تحديث الرسالة",
