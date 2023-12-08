@@ -1389,7 +1389,7 @@
   "app.containers.Projects.xContributionsInFinalPhase": "{ideasCount, plural, one {# допринос} other {# доприноса}} у завршној фази",
   "app.containers.Projects.xEvents": "{eventsCount, plural, one {# догађај} other {# догађаја}}",
   "app.containers.Projects.xIdeas": "{ideasCount, plural, one {# идеја} other {# идеје}}",
-  "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, one {# идеја} other {# идеје}} у тренутној фази",
+  "app.containers.Projects.xIdeasInCurrentPhase": "{ideasCount, plural, one {# идеја} other {# идејa}}",
   "app.containers.Projects.xIdeasInFinalPhase": "{ideasCount, plural, one {# идеја} other {# идеје}} у завршној фази",
   "app.containers.Projects.xIssues": "{ideasCount, plural, one {# цоммент} other {# цомментс}}",
   "app.containers.Projects.xIssuesInCurrentPhase": "{ideasCount, plural, one {# цоммент} other {# цомментс}} у тренутној фази",
