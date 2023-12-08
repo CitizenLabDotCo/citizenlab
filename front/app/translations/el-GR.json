@@ -337,6 +337,7 @@
   "app.components.PostComponents.OfficialFeedback.postedOn": "Δημοσιεύτηκε στις {date}",
   "app.components.PostComponents.OfficialFeedback.publishButtonText": "Δημοσίευση",
   "app.components.PostComponents.OfficialFeedback.showPreviousUpdates": "Εμφάνιση προηγούμενων ενημερώσεων",
+  "app.components.PostComponents.OfficialFeedback.testMessage": "Μήνυμα δοκιμής",
   "app.components.PostComponents.OfficialFeedback.textAreaPlaceholder": "Δώστε μια ενημέρωση...",
   "app.components.PostComponents.OfficialFeedback.updateButtonError": "Συγγνώμη, υπήρξε πρόβλημα",
   "app.components.PostComponents.OfficialFeedback.updateButtonSaveEditForm": "Μήνυμα ενημέρωσης",
