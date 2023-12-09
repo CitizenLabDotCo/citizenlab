@@ -1,34 +1,20 @@
 import React, { memo, useCallback } from 'react';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import TopicsFilter from 'components/FilterBoxes/TopicsFilter';
 
-// resources
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-
 // styling
-import styled from 'styled-components';
+import useTopics from 'api/topics/useTopics';
 
-// typings
-
-const Container = styled.div``;
-
-interface InputProps {
+interface Props {
   selectedTopicIds: string[] | null | undefined;
   onChange: (arg: string[] | null) => void;
   className?: string;
 }
 
-interface DataProps {
-  topics: GetTopicsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
 const TopicFilterBox = memo<Props>(
-  ({ selectedTopicIds, topics, onChange, className }) => {
+  ({ selectedTopicIds, onChange, className }) => {
+    const { data: topics } = useTopics({ excludeCode: 'custom' });
     const handleOnChange = useCallback(
       (newsSelectedTopicIds: string[] | null) => {
         onChange(newsSelectedTopicIds);
@@ -37,18 +23,14 @@ const TopicFilterBox = memo<Props>(
       []
     );
 
-    if (
-      !isNilOrError(topics) &&
-      topics.filter((topic) => !isNilOrError(topic)).length > 0
-    ) {
+    if (topics && topics.data.length > 0) {
       return (
-        <Container className={className}>
-          <TopicsFilter
-            topics={topics.filter((topic) => !isNilOrError(topic))}
-            selectedTopicIds={selectedTopicIds}
-            onChange={handleOnChange}
-          />
-        </Container>
+        <TopicsFilter
+          className={className}
+          topics={topics.data}
+          selectedTopicIds={selectedTopicIds}
+          onChange={handleOnChange}
+        />
       );
     }
 
@@ -56,12 +38,4 @@ const TopicFilterBox = memo<Props>(
   }
 );
 
-const Data = adopt<DataProps, InputProps>({
-  topics: <GetTopics excludeCode="custom" />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <TopicFilterBox {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default TopicFilterBox;
