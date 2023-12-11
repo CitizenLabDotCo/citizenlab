@@ -4,29 +4,23 @@ module ContentBuilder
   module WebApi
     module V1
       class ContentBuilderLayoutsController < ApplicationController
-        before_action :project_exists
-        before_action :set_layout, only: %i[show destroy]
+        # before_action :project_exists
         skip_before_action :authenticate_user, only: %i[show]
 
         def show
-          render json: WebApi::V1::LayoutSerializer.new(
-            @layout,
-            params: jsonapi_serializer_params
-          ).serializable_hash
+          render json: WebApi::V1::LayoutSerializer.new(layout, params: jsonapi_serializer_params).serializable_hash
         end
 
         def upsert
-          @layout = Layout.find_by(
-            content_buildable_id: params[:project_id],
-            content_buildable_type: Project.name,
-            code: params[:code]
-          )
+          @layout = Layout.find_by(content_buildable: content_buildable, code: params[:code]).tap do |layout|
+            authorize layout if layout
+          end
           @layout ? update : create
         end
 
         def destroy
-          side_fx_service.before_destroy(@layout, current_user)
-          layout = @layout.destroy
+          side_fx_service.before_destroy(layout, current_user)
+          layout.destroy
           if layout.destroyed?
             side_fx_service.after_destroy(layout, current_user)
             head :ok
@@ -37,17 +31,23 @@ module ContentBuilder
 
         private
 
-        def project_exists
-          Project.find params[:project_id]
+        # def project_exists
+        #   Project.find params[:project_id]
+        # end
+
+        def content_buildable
+          @content_buildable ||= case params[:content_buildable]
+          when 'Project'
+            Project.find params[:project_id]
+          when 'HomePage'
+            HomePage.first
+          end
         end
 
-        def set_layout
-          @layout = Layout.find_by!(
-            content_buildable_id: params[:project_id],
-            content_buildable_type: Project.name,
-            code: params[:code]
-          )
-          authorize @layout
+        def layout
+          @layout ||= Layout.find_by!(content_buildable: content_buildable, code: params[:code]).tap do |layout|
+            authorize layout
+          end
         end
 
         def side_fx_service
@@ -55,13 +55,12 @@ module ContentBuilder
         end
 
         def update
-          set_layout
-          @layout.assign_attributes params_for_update
-          side_fx_service.before_update @layout, current_user
-          if @layout.save
-            side_fx_service.after_update @layout, current_user
+          layout.assign_attributes params_for_update
+          side_fx_service.before_update layout, current_user
+          if layout.save
+            side_fx_service.after_update layout, current_user
             render json: WebApi::V1::LayoutSerializer.new(
-              @layout,
+              layout,
               params: jsonapi_serializer_params
             ).serializable_hash, status: :ok
           else
@@ -71,16 +70,16 @@ module ContentBuilder
 
         def create
           @layout = Layout.new params_for_create
-          authorize @layout
-          side_fx_service.before_create @layout, current_user
-          if @layout.save
-            side_fx_service.after_create @layout, current_user
+          authorize layout
+          side_fx_service.before_create layout, current_user
+          if layout.save
+            side_fx_service.after_create layout, current_user
             render json: WebApi::V1::LayoutSerializer.new(
-              @layout,
+              layout,
               params: jsonapi_serializer_params
             ).serializable_hash, status: :created
           else
-            render json: { errors: @layout.errors.details }, status: :unprocessable_entity
+            render json: { errors: layout.errors.details }, status: :unprocessable_entity
           end
         end
 
