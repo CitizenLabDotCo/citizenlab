@@ -32,7 +32,7 @@ class WebApi::V1::BasketsController < ApplicationController
     save_params = {}
     save_params[:context] = [:basket_submission] if basket.submitted?
     if basket_update_attributes.include? 'submitted_at'
-      Factory.instance.voting_method_for(basket.participation_context).update_before_submission_change! basket
+      Factory.instance.voting_method_for(basket.phase).update_before_submission_change! basket
     end
     if basket.save(save_params)
       SideFxBasketService.new.after_update basket, current_user
@@ -67,8 +67,7 @@ class WebApi::V1::BasketsController < ApplicationController
   def basket_create_attributes
     attributes = params.require(:basket).permit(
       :submitted,
-      :participation_context_id,
-      :participation_context_type
+      :phase_id
     ).to_h
     map_submission attributes
   end

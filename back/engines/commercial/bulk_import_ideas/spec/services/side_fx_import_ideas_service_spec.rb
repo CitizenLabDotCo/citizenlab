@@ -10,7 +10,7 @@ describe BulkImportIdeas::SideFxImportIdeasService do
 
   describe 'after_success' do
     context 'project import' do
-      let(:project) { create(:continuous_project) }
+      let(:project) { create(:single_phase_ideation_project) }
 
       it "logs a 'successful' action job with stats against a project" do
         expect { service.after_success(current_user, project.id, ideas, users) }

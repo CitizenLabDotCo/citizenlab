@@ -4,7 +4,6 @@ import {
   IFlatCustomField,
 } from 'api/custom_fields/types';
 import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -43,14 +42,13 @@ export type FormBuilderConfig = {
 };
 
 export const getIsPostingEnabled = (
-  project: IProjectData,
   phase?: IPhaseData | Error | null | undefined
 ) => {
   if (!isNilOrError(phase)) {
     return phase.attributes.posting_enabled;
   }
 
-  return project.attributes.posting_enabled;
+  return false;
 };
 
 export const builtInFieldKeys = [

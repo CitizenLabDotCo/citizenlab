@@ -46,3 +46,57 @@ export function getExcludedDates(phases: IPhaseData[]): moment.Moment[] {
 
   return excludedDates;
 }
+
+export function getMaxEndDate(
+  phasesWithOutCurrentPhase: IPhaseData[],
+  startDate: moment.Moment | null,
+  currentPhase?: IPhase
+) {
+  const sortedPhases = [
+    ...phasesWithOutCurrentPhase.map((iteratedPhase) => ({
+      startDate: moment(iteratedPhase.attributes.start_at),
+      id: iteratedPhase.id,
+    })),
+    ...(startDate && currentPhase?.data
+      ? [{ id: currentPhase.data.id, startDate }]
+      : []),
+  ].sort((a, b) => a.startDate.diff(b.startDate));
+
+  const currentPhaseIndex = sortedPhases.findIndex(
+    (iteratedPhase) => iteratedPhase.id === currentPhase?.data.id
+  );
+  const hasNextPhase =
+    currentPhaseIndex !== -1 &&
+    sortedPhases &&
+    currentPhaseIndex !== sortedPhases.length - 1;
+  const maxEndDate = hasNextPhase
+    ? sortedPhases[currentPhaseIndex + 1].startDate
+    : undefined;
+  return maxEndDate;
+}
+
+export function getTimelineTab(
+  phase: IPhaseData
+):
+  | 'setup'
+  | 'ideas'
+  | 'native-survey'
+  | 'polls'
+  | 'survey-results'
+  | 'volunteering' {
+  const participationMethod = phase.attributes.participation_method;
+
+  if (participationMethod === 'ideation' || participationMethod === 'voting') {
+    return 'ideas';
+  } else if (participationMethod === 'native_survey') {
+    return 'native-survey';
+  } else if (participationMethod === 'poll') {
+    return 'polls';
+  } else if (participationMethod === 'survey') {
+    return 'survey-results';
+  } else if (participationMethod === 'volunteering') {
+    return 'volunteering';
+  }
+
+  return 'setup';
+}

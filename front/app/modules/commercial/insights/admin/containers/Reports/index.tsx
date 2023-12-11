@@ -31,24 +31,7 @@ const ReportTab = memo(() => {
     canModerate: true,
   });
 
-  const participableProjects = !isNilOrError(projects)
-    ? projects.data.filter((project) => {
-        const processType = project?.attributes.process_type;
-        const participationMethod = project.attributes.participation_method;
-
-        return (
-          (processType === 'continuous' &&
-            ![
-              'information',
-              'survey',
-              'volunteering',
-              'document_annotation',
-              null,
-            ].includes(participationMethod)) ||
-          processType === 'timeline'
-        );
-      })
-    : [];
+  const participableProjects = !isNilOrError(projects) ? projects.data : [];
 
   return (
     <>

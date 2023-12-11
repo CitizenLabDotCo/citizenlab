@@ -53,8 +53,10 @@ resource 'Analytics - FactPosts model' do
 
     example 'does not return survey responses', document: false do
       # Create 2 posts inc 1 ignored survey
-      create(:idea, created_at: @dates[0])
-      create(:native_survey_response, created_at: @dates[0])
+      project = create(:project_with_past_ideation_and_current_native_survey_phase)
+      create(:idea, created_at: @dates[0], project: project, phases: [project.phases.first])
+      create(:native_survey_response, created_at: @dates[0], project: project, phases: [project.phases.last], creation_phase: project.phases.last)
+
       do_request({
         query: {
           fact: 'post',

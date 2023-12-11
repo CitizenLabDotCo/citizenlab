@@ -37,38 +37,8 @@ resource 'Project level Custom Fields' do
     }
   end
 
-  describe 'in a continuous ideation project without custom fields' do
-    let(:project) { create(:continuous_project) }
-    let(:project_id) { project.id }
-
-    before do
-      project.update!(input_term: 'question')
-    end
-
-    get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
-      example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
-        json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
-        %i[en fr-FR nl-NL].each do |locale|
-          expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array(
-            %i[title_multiloc body_multiloc topic_ids location_description idea_images_attributes idea_files_attributes]
-          )
-        end
-        ui_schema = json_attributes[:ui_schema_multiloc][:en]
-        expect(ui_schema.keys).to match_array %i[type options elements]
-        expect(ui_schema[:type]).to eq 'Categorization'
-        expect(ui_schema[:options]).to eq({ formId: 'idea-form', inputTerm: 'question' })
-        expect(ui_schema[:elements].size).to eq 3
-        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
-      end
-    end
-  end
-
-  describe 'in a continuous ideation project with custom fields' do
-    let(:project) { create(:continuous_project) }
+  describe 'in an active ideation phase with custom fields' do
+    let(:project) { create(:project_with_active_ideation_phase) }
     let(:project_id) { project.id }
     let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
     let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
@@ -103,25 +73,12 @@ resource 'Project level Custom Fields' do
     end
   end
 
-  describe 'in a timeline project with an active ideation phase with custom fields' do
+  describe 'in an active ideation phase without custom fields' do
     let(:project) { create(:project_with_active_ideation_phase) }
     let(:project_id) { project.id }
-    let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-    let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
-    let(:enabled_built_in_field_keys) do
-      %i[
-        title_multiloc
-        body_multiloc
-        topic_ids
-        location_description
-        idea_images_attributes
-        idea_files_attributes
-      ]
-    end
-    let(:expected_jsonschema_form_field_keys) { enabled_built_in_field_keys + [custom_field.key.to_sym] }
-    let(:expected_json_forms_field_keys) do
-      invisible_field_keys = %i[proposed_budget]
-      enabled_built_in_field_keys - invisible_field_keys + [custom_field.key.to_sym]
+
+    before do
+      project.phases.first.update!(input_term: 'question')
     end
 
     get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
@@ -132,43 +89,16 @@ resource 'Project level Custom Fields' do
         json_attributes = json_response.dig(:data, :attributes)
         expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
         %i[en fr-FR nl-NL].each do |locale|
-          expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array expected_json_forms_field_keys
+          expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array(
+            %i[title_multiloc body_multiloc topic_ids location_description idea_images_attributes idea_files_attributes]
+          )
         end
+        ui_schema = json_attributes[:ui_schema_multiloc][:en]
+        expect(ui_schema.keys).to match_array %i[type options elements]
+        expect(ui_schema[:type]).to eq 'Categorization'
+        expect(ui_schema[:options]).to eq({ formId: 'idea-form', inputTerm: 'question' })
+        expect(ui_schema[:elements].size).to eq 3
         expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
-      end
-    end
-  end
-
-  describe 'in an active native survey phase with form fields' do
-    let(:project) { create(:project_with_active_native_survey_phase) }
-    let(:project_id) { project.id }
-    let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
-    let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
-
-    get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
-      example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :type)).to eq 'json_forms_schema'
-        json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
-        %i[en fr-FR nl-NL].each do |locale|
-          expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array([custom_field.key.to_sym])
-        end
-        expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
-      end
-    end
-  end
-
-  describe 'in an active phase without form fields' do
-    let(:project) { create(:project_with_active_native_survey_phase) }
-    let(:project_id) { project.id }
-
-    get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
-      example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response).to eq({ data: { type: 'json_forms_schema', attributes: nil } })
       end
     end
   end

@@ -12,11 +12,7 @@ module XlsxExport
     def generate_inputs_for_project(project_id, include_private_attributes)
       project = eager_load_project(project_id)
       create_stream do |workbook|
-        if project.continuous?
-          generate_for_continuous_project(workbook, project, include_private_attributes)
-        else
-          generate_for_timeline_project(workbook, project, include_private_attributes)
-        end
+        generate_for_timeline_project(workbook, project, include_private_attributes)
       end
     end
 
@@ -43,13 +39,6 @@ module XlsxExport
 
     def eager_load_inputs(inputs)
       inputs.includes(:project, :author, :ideas_topics, :topics, :idea_files, :idea_status, :assignee).order(:created_at)
-    end
-
-    def generate_for_continuous_project(workbook, project, include_private_attributes)
-      sheet_name = MultilocService.new.t project.title_multiloc
-      inputs = eager_load_inputs(project.ideas)
-      sheet_generator = InputSheetGenerator.new inputs, project, include_private_attributes
-      sheet_generator.generate_sheet(workbook, sheet_name)
     end
 
     def generate_for_timeline_project(workbook, project, include_private_attributes)

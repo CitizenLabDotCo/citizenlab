@@ -5,28 +5,7 @@ export const project1: IProjectData = {
   id: '1aa8a788-3aee-4ada-a581-6d934e49784b',
   type: 'project',
   attributes: {
-    allow_anonymous_participation: false,
-    survey_embed_url: null,
-    survey_service: null,
-    poll_anonymous: false,
-    participation_method: 'ideation',
-    posting_enabled: true,
     followers_count: 2,
-    // MISMATCH: doesn't seem to exist on our type
-    // posting_method: "unlimited",
-    // posting_limited_max: 1,
-    commenting_enabled: true,
-    reacting_enabled: true,
-    reacting_like_method: 'unlimited',
-    reacting_like_limited_max: 10,
-    reacting_dislike_enabled: false,
-    reacting_dislike_method: 'unlimited',
-    reacting_dislike_limited_max: 10,
-    presentation_mode: 'card',
-    voting_min_total: 0,
-    voting_max_total: null,
-    ideas_order: 'trending',
-    input_term: 'idea',
     description_preview_multiloc: {
       en: 'You can propose anywhere you like, but we will only accept Koekenbakstraat',
     },
@@ -41,7 +20,6 @@ export const project1: IProjectData = {
     ideas_count: 5,
     include_all_areas: false,
     internal_role: null,
-    process_type: 'continuous',
     slug: 'choose-where-to-plant-the-tree',
     visible_to: 'public',
     created_at: '2019-05-11T17:04:13.090Z',
@@ -97,8 +75,6 @@ export const project1: IProjectData = {
     },
     avatars_count: 8,
     participants_count: 8,
-    // MISMATCH: this attribute doesn't exist on our type
-    // allocated_budget: 0
     uses_content_builder: false,
   },
   relationships: {
@@ -154,29 +130,7 @@ export const project2: IProjectData = {
   id: '4b429681-1744-456f-8550-e89a2c2c74b2',
   type: 'project',
   attributes: {
-    allow_anonymous_participation: false,
-    survey_embed_url: null,
-    survey_service: null,
-    poll_anonymous: false,
-    participation_method: 'ideation',
-    posting_enabled: true,
-    // MISMATCH: doesn't seem to exist on our type
-    // posting_method: "unlimited",
-    // MISMATCH: doesn't seem to exist on our type
-    // posting_limited_max: 1,
-    commenting_enabled: true,
-    reacting_enabled: true,
-    reacting_like_method: 'unlimited',
-    reacting_like_limited_max: 10,
     followers_count: 2,
-    reacting_dislike_enabled: true,
-    reacting_dislike_method: 'unlimited',
-    reacting_dislike_limited_max: 10,
-    presentation_mode: 'card',
-    voting_min_total: 0,
-    voting_max_total: null,
-    ideas_order: 'trending',
-    input_term: 'idea',
     description_preview_multiloc: {},
     title_multiloc: {
       en: 'Permissions test',
@@ -191,7 +145,6 @@ export const project2: IProjectData = {
     ideas_count: 4,
     include_all_areas: false,
     internal_role: null,
-    process_type: 'continuous',
     slug: 'permissions-test',
     visible_to: 'public',
     created_at: '2023-05-03T10:23:53.038Z',
@@ -244,8 +197,6 @@ export const project2: IProjectData = {
     },
     avatars_count: 6,
     participants_count: 6,
-    // MISMATCH: doesn't seem to exist on our type
-    // allocated_budget: 0
     uses_content_builder: false,
   },
   relationships: {
@@ -308,37 +259,7 @@ const votingProject: IProject = {
     id: '276fc6c4-5780-45ff-90a0-e6655b67bc23',
     type: 'project',
     attributes: {
-      document_annotation_embed_url: null,
-      poll_anonymous: false,
-      survey_embed_url: null,
-      survey_service: null,
-      participation_method: 'voting',
-      posting_enabled: true,
-      // MISMATCH
-      // posting_method: "unlimited",
-      // posting_limited_max: 1,
-      commenting_enabled: true,
-      reacting_enabled: true,
-      reacting_like_method: 'unlimited',
-      reacting_like_limited_max: 10,
-      reacting_dislike_enabled: true,
-      reacting_dislike_method: 'unlimited',
-      reacting_dislike_limited_max: 10,
-      allow_anonymous_participation: false,
-      presentation_mode: 'card',
-      ideas_order: 'random',
-      input_term: 'idea',
-      voting_method: 'multiple_voting',
-      voting_max_total: 10,
-      voting_min_total: 0,
-      voting_max_votes_per_idea: 1,
       baskets_count: 2,
-      voting_term_singular_multiloc: {
-        en: 'pick',
-      },
-      voting_term_plural_multiloc: {
-        en: 'picks',
-      },
       votes_count: 2,
       description_preview_multiloc: {},
       title_multiloc: {
@@ -349,7 +270,6 @@ const votingProject: IProject = {
       followers_count: 2,
       include_all_areas: false,
       internal_role: null,
-      process_type: 'continuous',
       slug: 'luuc-voting-test',
       visible_to: 'groups',
       created_at: '2023-08-09T09:57:44.129Z',
@@ -407,8 +327,6 @@ const votingProject: IProject = {
       },
       avatars_count: 2,
       participants_count: 2,
-      // MISMATCH
-      // allocated_budget: 0,
       uses_content_builder: true,
     },
     relationships: {

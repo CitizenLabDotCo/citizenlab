@@ -277,9 +277,6 @@ const Phone = ({
               twitterMessage={formatMessage(messages.twitterMessage, {
                 initiativeTitle,
               })}
-              facebookMessage={formatMessage(messages.facebookMessage, {
-                initiativeTitle,
-              })}
               whatsAppMessage={formatMessage(messages.whatsAppMessage, {
                 initiativeTitle,
               })}

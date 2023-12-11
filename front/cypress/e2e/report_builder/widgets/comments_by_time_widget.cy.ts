@@ -1,25 +1,43 @@
 import { randomString } from '../../../support/commands';
+import moment = require('moment');
 
 describe('Report builder Comments By Time widget', () => {
+  let projectId: string;
+  const phaseTitle = randomString();
+
   beforeEach(() => {
     cy.setAdminLoginCookie();
 
     cy.apiCreateProject({
-      type: 'continuous',
       title: randomString(),
       descriptionPreview: randomString(),
       description: randomString(),
       publicationStatus: 'published',
-      participationMethod: 'ideation',
-    }).then((project) => {
-      const projectId = project.body.data.id;
-      cy.wrap(projectId).as('projectId');
-      cy.apiCreateIdea(projectId, randomString(), randomString()).then(
-        (idea) => {
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        return cy.apiCreatePhase({
+          projectId,
+          title: phaseTitle,
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
+      })
+      .then((phase) => {
+        cy.wrap(projectId).as('projectId');
+
+        cy.apiCreateIdea({
+          projectId,
+          ideaTitle: randomString(),
+          ideaContent: randomString(),
+          phaseIds: [phase.body.data.id],
+        }).then((idea) => {
           cy.apiAddComment(idea.body.data.id, 'idea', randomString());
-        }
-      );
-    });
+        });
+      });
 
     cy.apiCreateReportBuilder().then((report) => {
       const reportId = report.body.data.id;

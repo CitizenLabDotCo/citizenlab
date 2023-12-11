@@ -4,7 +4,9 @@ import React, { memo, useState } from 'react';
 import MapLayersList from './MapLayersList';
 import MapLayerConfig from './MapLayerConfig';
 import MapCenterAndZoomConfig from './MapCenterAndZoomConfig';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import { SectionTitle } from 'components/admin/Section';
+import Warning from 'components/UI/Warning';
+import { Text } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -64,9 +66,12 @@ const MapConfigOverview = memo<Props>(({ projectId, className }) => {
             <FormattedMessage {...messages.mapConfigurationTitle} />
           </StyledSectionTitle>
         </TitleContainer>
-        <SectionDescription>
+        <Text color="textSecondary">
           <FormattedMessage {...messages.mapConfigurationDescription} />
-        </SectionDescription>
+        </Text>
+        <Warning>
+          <FormattedMessage {...messages.mapLocationWarning} />
+        </Warning>
       </Header>
 
       {!editedMapLayerId ? (

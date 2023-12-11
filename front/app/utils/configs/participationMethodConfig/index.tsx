@@ -5,10 +5,9 @@ import { FormattedMessage } from '../../cl-intl';
 import messages from '../../messages';
 
 // services
-import { ParticipationMethod, getInputTerm } from 'utils/participationContexts';
-import { getCurrentParticipationContext } from 'api/phases/utils';
+import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
-import { IPhaseData } from 'api/phases/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
@@ -138,14 +137,7 @@ const ideationConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle,
           contribution: messages.contributionFormTitle,
-        }[
-          getInputTerm(
-            props.project?.attributes.process_type,
-            props.project,
-            props.phases,
-            props.phaseFromUrl
-          )
-        ]}
+        }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
   },
@@ -293,14 +285,7 @@ const votingConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle,
           contribution: messages.contributionFormTitle,
-        }[
-          getInputTerm(
-            props.project?.attributes.process_type,
-            props.project,
-            props.phases,
-            props.phaseFromUrl
-          )
-        ]}
+        }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
   },
@@ -376,25 +361,6 @@ export function getMethodConfig(
   return methodToConfig[participationMethod];
 }
 
-/** Given the project and its phases, returns an array of all participation methods
- * used in the project
- */
-export function getAllParticipationMethods(
-  project: IProjectData,
-  phases: IPhaseData[] | null
-): ParticipationMethod[] {
-  const { process_type, participation_method } = project.attributes;
-  if (process_type === 'continuous') {
-    return [participation_method];
-  } else if (process_type === 'timeline' && !phases) {
-    return [];
-  } else if (process_type === 'timeline' && phases) {
-    return phases.map((phase) => phase.attributes.participation_method);
-  } else {
-    throw `Unknown process_type ${project.attributes.process_type}`;
-  }
-}
-
 /** Given the project and its phases, it returns the participation method
  * used in the project, or current phase if phases are provided and phaseId is not provided.
  * If the phaseId is provided, then it returns the participation method of the phase whose
@@ -409,8 +375,7 @@ export const getParticipationMethod = (
   if (!project) return;
 
   const phaseFromId = phases?.find((phase) => phase.id === phaseId);
-  const participationContext =
-    phaseFromId ?? getCurrentParticipationContext(project, phases);
+  const participationContext = phaseFromId ?? getCurrentPhase(phases);
   return participationContext?.attributes.participation_method;
 };
 
@@ -426,24 +391,17 @@ export function getPhase(
  *  should be shown in the back office.
  */
 export function showInputManager(
-  project: IProjectData,
   phases?: Error | IPhaseData[] | null | undefined
 ): boolean {
-  if (project.attributes.process_type === 'continuous') {
-    return getMethodConfig(project.attributes.participation_method)
-      .showInputManager;
-  }
-  if (project.attributes.process_type === 'timeline') {
-    if (!isNilOrError(phases)) {
-      if (
-        phases.some(
-          (phase) =>
-            getMethodConfig(phase.attributes.participation_method)
-              .showInputManager
-        )
-      ) {
-        return true;
-      }
+  if (!isNilOrError(phases)) {
+    if (
+      phases.some(
+        (phase) =>
+          getMethodConfig(phase.attributes.participation_method)
+            .showInputManager
+      )
+    ) {
+      return true;
     }
   }
   return false;

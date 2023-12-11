@@ -43,7 +43,7 @@ const configuration: ModuleConfiguration = {
         <InputAssignment {...props} />
       </FeatureFlag>
     ),
-    'app.containers.Admin.projects.edit': (props) => {
+    'app.containers.Admin.projects.edit.settings': (props) => {
       return (
         <RenderOnTabHideCondition>
           <Tab {...props} />

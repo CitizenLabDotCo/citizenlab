@@ -3,18 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe ParticipationMethod::Voting do
-  subject(:participation_method) { described_class.new context }
+  subject(:participation_method) { described_class.new phase }
 
-  let(:context) { create(:continuous_budgeting_project) }
+  let(:phase) { create(:budgeting_phase) }
 
-  describe '#assign_defaults_for_participation_context' do
+  describe '#assign_defaults_for_phase' do
     context 'budgeting' do
-      let(:context) { build(:continuous_budgeting_project) }
-
       it 'sets the posting method to unlimited and ideas order to random' do
-        participation_method.assign_defaults_for_participation_context
-        expect(context.posting_method).to eq 'unlimited'
-        expect(context.ideas_order).to eq 'random'
+        participation_method.assign_defaults_for_phase
+        expect(phase.posting_method).to eq 'unlimited'
+        expect(phase.ideas_order).to eq 'random'
       end
     end
   end
@@ -41,7 +39,7 @@ RSpec.describe ParticipationMethod::Voting do
   describe '#default_fields' do
     it 'returns the default ideation fields' do
       expect(
-        participation_method.default_fields(create(:custom_form, participation_context: context)).map(&:code)
+        participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
       ).to eq %w[
         ideation_section1
         title_multiloc
@@ -76,20 +74,18 @@ RSpec.describe ParticipationMethod::Voting do
   end
 
   describe '#budget_in_form?' do
-    let(:context) { create(:continuous_budgeting_project) }
-
-    it 'returns false for a resident and a continuous budgeting project' do
+    it 'returns false for a resident and a budgeting phase' do
       expect(participation_method.budget_in_form?(create(:user))).to be false
     end
 
-    it 'returns true for a moderator and a continuous budgeting project' do
+    it 'returns true for a moderator and a budgeting phase' do
       expect(participation_method.budget_in_form?(create(:admin))).to be true
     end
 
     describe do
-      let(:context) { create(:budgeting_phase) }
+      let(:phase) { create(:budgeting_phase) }
 
-      it 'returns true for a moderator and a continuous budgeting project' do
+      it 'returns true for a moderator and a budgeting phase' do
         expect(participation_method.budget_in_form?(create(:admin))).to be true
       end
     end
@@ -130,9 +126,8 @@ RSpec.describe ParticipationMethod::Voting do
   end
 
   describe '#custom_form' do
-    let(:project) { context.project }
-    let(:project_form) { create(:custom_form, participation_context: context.project) }
-    let(:context) { create(:budgeting_phase) }
+    let(:project) { phase.project }
+    let(:project_form) { create(:custom_form, participation_context: project) }
 
     it 'returns the custom form of the project' do
       expect(participation_method.custom_form.participation_context_id).to eq project.id
@@ -147,15 +142,13 @@ RSpec.describe ParticipationMethod::Voting do
 
   describe '#additional_export_columns' do
     context 'voting method is budgeting' do
-      let(:context) { create(:continuous_budgeting_project) }
-
       it 'returns [picks, budget]' do
         expect(participation_method.additional_export_columns).to eq %w[picks budget]
       end
     end
 
     context 'voting method is multiple_voting' do
-      let(:context) { create(:continuous_multiple_voting_project) }
+      let(:phase) { create(:multiple_voting_phase) }
 
       it 'returns [participants, votes]' do
         expect(participation_method.additional_export_columns).to eq %w[participants votes]
@@ -163,7 +156,7 @@ RSpec.describe ParticipationMethod::Voting do
     end
 
     context 'voting method is single_voting' do
-      let(:context) { create(:continuous_single_voting_project) }
+      let(:phase) { create(:single_voting_phase) }
 
       it 'returns [votes] if voting method is single_voting' do
         expect(participation_method.additional_export_columns).to eq %w[votes]

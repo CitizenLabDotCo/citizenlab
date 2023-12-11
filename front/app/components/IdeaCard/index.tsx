@@ -105,9 +105,8 @@ const IdeaCard = ({
   );
   const { data: phase } = usePhase(phaseId);
 
-  const participationContext = phase?.data || project?.data;
-  const participationMethod =
-    participationContext?.attributes.participation_method;
+  const phaseData = phase?.data;
+  const participationMethod = phaseData?.attributes.participation_method;
   const config = participationMethod && getMethodConfig(participationMethod);
   const hideBody = config?.hideAuthorOnIdeas;
 
@@ -151,7 +150,7 @@ const IdeaCard = ({
       onClick={handleClick}
     >
       <CardImage
-        participationContext={participationContext}
+        phase={phaseData}
         image={image}
         hideImagePlaceholder={hideImagePlaceholder}
         innerHeight={innerHeight}
@@ -184,10 +183,7 @@ const IdeaCard = ({
           {!hideBody && <Body idea={idea} />}
         </Box>
         <Box>
-          <Interactions
-            idea={idea}
-            participationContext={participationContext}
-          />
+          <Interactions idea={idea} phase={phaseData || null} />
           <Footer
             project={project}
             idea={idea.data}

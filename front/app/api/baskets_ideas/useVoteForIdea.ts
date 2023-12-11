@@ -6,9 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { IBasketsIdea } from './types';
 import basketsKeys from '../baskets/keys';
 import basketsIdeasKeys from 'api/baskets_ideas/keys';
-import projectsKeys from 'api/projects/keys';
 import phasesKeys from 'api/phases/keys';
-import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
 interface Params {
@@ -44,53 +42,38 @@ const useVoteForIdeaMutation = () => {
       const { basket_id, project_id, phase_id } = variables;
 
       const newBasket = basket_id !== basketId;
-      const continuousProject = !phase_id;
 
       if (newBasket) {
-        if (continuousProject) {
-          queryClient.invalidateQueries({
-            queryKey: projectsKeys.item({ id: project_id }),
-          });
-        }
+        queryClient.invalidateQueries({
+          queryKey: phasesKeys.item({ phaseId: phase_id }),
+        });
 
-        if (!continuousProject) {
-          queryClient.invalidateQueries({
-            queryKey: phasesKeys.item({ phaseId: phase_id }),
-          });
-
-          queryClient.invalidateQueries({
-            queryKey: phasesKeys.list({ projectId: project_id }),
-          });
-        }
+        queryClient.invalidateQueries({
+          queryKey: phasesKeys.list({ projectId: project_id }),
+        });
       }
     },
   });
 };
 
-const useVoteForIdea = (participationContext?: IProjectData | IPhaseData) => {
+const useVoteForIdea = (phase?: IPhaseData) => {
   const [processing, setProcessing] = useState(false);
   const { mutateAsync } = useVoteForIdeaMutation();
 
   const handleVoteForIdea = useCallback(
     async (ideaId: string, votes: number, basketId?: string) => {
-      if (!participationContext) return;
+      if (!phase) return;
 
       await mutateAsync({
         idea_id: ideaId,
         votes: votes === 0 ? null : votes,
         basket_id: basketId,
-        project_id:
-          participationContext.type === 'project'
-            ? participationContext.id
-            : participationContext.relationships.project.data.id,
-        phase_id:
-          participationContext.type === 'phase'
-            ? participationContext.id
-            : undefined,
+        project_id: phase.relationships.project.data.id,
+        phase_id: phase.id,
       });
       setProcessing(false);
     },
-    [mutateAsync, participationContext]
+    [mutateAsync, phase]
   );
 
   const handleVoteForIdeaDebounced = useMemo(() => {
