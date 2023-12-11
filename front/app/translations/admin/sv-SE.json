@@ -953,6 +953,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Besökare",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Inget projekt",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Är du säker på att du vill ta bort {reportName}?",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Är du säker på att du vill radera denna rapport?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Skapades: {date}",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.delete": "Radera",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.edit": "Redigera",
