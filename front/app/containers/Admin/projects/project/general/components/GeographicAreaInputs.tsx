@@ -187,7 +187,6 @@ const GeographicAreaInputs = ({
             options={areaOptions}
             value={selectedAreaValues}
             onChange={handleAreaSelectionChange}
-            disabled={areaType !== 'selection'}
           />
         )}
       </StyledSectionField>
