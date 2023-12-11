@@ -25,7 +25,7 @@ import { getFullName } from 'utils/textUtils';
 import { getPeriod } from './utils';
 import {
   createMultiloc,
-  formatMultiloc,
+  // formatMultiloc,
 } from 'containers/Admin/reporting/utils/multiloc';
 
 type Props = {
