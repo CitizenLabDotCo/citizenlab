@@ -67,7 +67,7 @@ const TopBar = ({ project, event }: Props) => {
             text={formatMessage(messages.editEvent)}
             onClick={() => {
               clHistory.push(
-                `/admin/projects/${project.id}/events/${event.id}`
+                `/admin/projects/${project.id}/settings/events/${event.id}`
               );
             }}
           />
