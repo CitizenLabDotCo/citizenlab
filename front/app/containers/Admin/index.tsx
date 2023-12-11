@@ -109,9 +109,13 @@ const AdminPage = memo<Props & WithRouterProps>(
     if (!userCanViewPath) {
       return null;
     }
-    const isProjectPage = pathname.match(
-      /admin\/projects\/[a-f0-9-]+(\/[\w-]+)*/
+    const isFoldersPage = pathname.match(
+      /admin\/projects\/folders\/[a-f0-9-]+(\/(?!projects(?:\/|$))[\w-]+)*/
     );
+    const isProjectPage =
+      pathname.match(
+        /admin\/projects\/[a-f0-9-]+(\/(?!projects(?:\/|$))[\w-]+)*/
+      ) && !isFoldersPage;
 
     const noPadding =
       pathname.includes('admin/dashboard') ||
