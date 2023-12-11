@@ -37,7 +37,7 @@ namespace :templates do
     )
 
     template_host_suffix = ENV.fetch('TEMPLATE_URL_SUFFIX', '.localhost')
-    template_tenants = Tenant.where("host LIKE '%#{template_host_suffix}'")
+    template_tenants = Tenant.not_deleted.where("host LIKE '%#{template_host_suffix}'")
     puts({ event: 'templates_generation', nb_templates: template_tenants.size }.to_json)
 
     template_tenants.each do |template_tenant|
