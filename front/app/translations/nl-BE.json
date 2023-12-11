@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "Verifieer je nu",
   "app.containers.landing.verifyYourIdentity": "Laat je stem harder weerklinken, verifieer je identiteit",
   "app.containers.landing.viewAllEventsText": "Bekijk alle activiteiten",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Terug naar map",
   "app.errors.after_end_at": "De begindatum start na de einddatum",
   "app.errors.avatar_carrierwave_download_error": "Kon de profielafbeelding niet downloaden.",
   "app.errors.avatar_carrierwave_integrity_error": "Het formaat van de profielafbeelding is niet toegestaan.",
