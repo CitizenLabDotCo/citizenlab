@@ -20,7 +20,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
 // utils
-import { isNilOrError, keys } from 'utils/helperUtils';
+import { keys } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 import { getPeriod } from './utils';
 import {
@@ -41,12 +41,10 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
 
   // Title
   const { data: report } = useReport(reportId);
-  const reportTitle = isNilOrError(report) ? null : report.data.attributes.name;
+  const reportTitle = report?.data.attributes.name;
 
   // Project mod
-  const userId = isNilOrError(report)
-    ? null
-    : report.data.relationships.owner.data.id;
+  const userId = report?.data.relationships.owner.data.id;
   const { data: user } = useUserById(userId);
   const projectModerator = !user ? null : getFullName(user.data);
 
@@ -56,6 +54,11 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
 
   const projectTitle = project.data.attributes.title_multiloc;
   const locales = keys(projectTitle);
+
+  const reportTitleMultiloc = createMultiloc(locales, (_locale) => {
+    // TODO
+    return `<h2>${reportTitle}</h2>`;
+  });
 
   const aboutTextMultiloc = createMultiloc(locales, (locale) => {
     const formatMessage = (message, values) =>
@@ -91,12 +94,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
         <></>
       ) : (
         <Element id="about-title" is={Container} canvas>
-          <TextMultiloc
-            text={formatMultiloc(
-              projectTitle,
-              (text) => `<h2>${text ?? ''}</h2>`
-            )}
-          />
+          <TextMultiloc text={reportTitleMultiloc} />
         </Element>
       )}
       {projectModerator === null ? (
