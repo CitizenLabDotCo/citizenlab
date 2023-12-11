@@ -22,6 +22,7 @@ describe('Project description builder language switch', () => {
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
+        // participationMethod: 'ideation',
         assigneeId: userId,
       }).then((project) => {
         projectSlug = projectTitle;
@@ -60,7 +61,8 @@ describe('Project description builder language switch', () => {
     cy.get('.ql-editor').type('Language 1 text.', { force: true });
     // NL
     cy.get('.nl-BE').last().click();
-    cy.get('.ql-editor').type('Language 2 text.', { force: true });
+    cy.get('.ql-editor').clear().type('Language 2 text.', { force: true });
+    cy.wait(1000);
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 

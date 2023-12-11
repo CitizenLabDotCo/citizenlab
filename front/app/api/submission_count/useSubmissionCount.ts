@@ -27,7 +27,7 @@ const useSubmissionsCount = ({ phaseId }: IParameters) => {
   >({
     queryKey: submissionsCountKeys.item({ phaseId }),
     queryFn: () => fetchSubmissionsCount({ phaseId }),
-    enabled: !!phaseId
+    enabled: !!phaseId,
   });
 };
 

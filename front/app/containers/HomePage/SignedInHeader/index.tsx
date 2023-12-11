@@ -145,10 +145,10 @@ export const Icons = styled.div`
 
 const SignedInHeader = ({
   homepageSettings,
-  isContentBuilderPreview,
+  isContentBuilderDisplay,
 }: {
   homepageSettings: Partial<IHomepageSettingsAttributes>;
-  isContentBuilderPreview?: boolean;
+  isContentBuilderDisplay?: boolean;
 }) => {
   const { data: currentOnboardingCampaign } = useCurrentOnboardingCampaign();
   const { mutate: dismissOnboardingCampaign } = useDismissOnboardingCampaign();
@@ -161,7 +161,7 @@ const SignedInHeader = ({
   };
 
   if (!isNilOrError(currentOnboardingCampaign)) {
-    const onboardingCampaignName = isContentBuilderPreview
+    const onboardingCampaignName = isContentBuilderDisplay
       ? 'default'
       : currentOnboardingCampaign.data.attributes.name;
 

@@ -13,7 +13,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import SharingButtons from 'components/Sharing/SharingButtons';
-import {getInputTerm} from "api/phases/utils";
+import { getInputTerm } from 'api/phases/utils';
 
 interface Props {
   className?: string;
@@ -52,19 +52,6 @@ const Component = ({ ideaId }: Props) => {
     return (
       <SharingButtons
         url={postUrl}
-        facebookMessage={formatMessage(
-          getInputTermMessage(inputTerm, {
-            idea: messages.ideaFacebookMessage,
-            option: messages.optionFacebookMessage,
-            project: messages.projectFacebookMessage,
-            question: messages.questionFacebookMessage,
-            issue: messages.issueFacebookMessage,
-            contribution: messages.contributionFacebookMessage,
-          }),
-          {
-            postTitle,
-          }
-        )}
         whatsAppMessage={formatMessage(
           getInputTermMessage(inputTerm, {
             idea: messages.ideaWhatsAppMessage,

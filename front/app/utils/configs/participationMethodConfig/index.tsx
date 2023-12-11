@@ -5,9 +5,9 @@ import { FormattedMessage } from '../../cl-intl';
 import messages from '../../messages';
 
 // services
-import {getCurrentPhase, getInputTerm} from 'api/phases/utils';
+import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
-import {IPhaseData, ParticipationMethod} from 'api/phases/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
@@ -375,8 +375,7 @@ export const getParticipationMethod = (
   if (!project) return;
 
   const phaseFromId = phases?.find((phase) => phase.id === phaseId);
-  const participationContext =
-    phaseFromId ?? getCurrentPhase(phases);
+  const participationContext = phaseFromId ?? getCurrentPhase(phases);
   return participationContext?.attributes.participation_method;
 };
 

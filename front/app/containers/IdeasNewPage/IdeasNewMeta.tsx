@@ -24,7 +24,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // services
 import useLocalize from 'hooks/useLocalize';
-import {getInputTerm} from "api/phases/utils";
+import { getInputTerm } from 'api/phases/utils';
 
 interface InputProps {}
 

@@ -15,10 +15,6 @@
 #  index_polls_responses_on_phase_id  (phase_id)
 #  index_polls_responses_on_user_id   (user_id)
 #
-# Foreign Keys
-#
-#  fk_rails_...  (phase_id => phases.id) ON DELETE => nullify
-#
 module Polls
   class Response < ApplicationRecord
     belongs_to :user

@@ -12,7 +12,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 // services
-import {getCurrentPhase, getInputTerm, getLastPhase} from 'api/phases/utils';
+import { getCurrentPhase, getInputTerm, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
 
 // components

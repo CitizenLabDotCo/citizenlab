@@ -18,7 +18,7 @@ const Container = styled.div``;
 
 interface Props {
   projectId: string;
-  phaseId: string | null;
+  phaseId: string;
   className?: string;
 }
 

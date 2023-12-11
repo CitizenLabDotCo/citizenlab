@@ -26,16 +26,15 @@ import styled from 'styled-components';
 
 // typings
 import { LatLng } from 'leaflet';
-import {IPhaseData, ParticipationMethod} from 'api/phases/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useAuthUser from 'api/me/useAuthUser';
 import TippyContent from './TippyContent';
-import {getInputTerm} from "api/phases/utils";
+import { getInputTerm } from 'api/phases/utils';
 import { getInputTermMessage } from 'utils/i18n';
 import messages from './messages';
-
 
 const Container = styled.div``;
 

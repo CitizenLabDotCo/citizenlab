@@ -79,7 +79,7 @@ namespace :templates do
 
     if failed_templates.present?
       puts({ event: 'templates_release', status: 'failed', failed_templates: failed_templates }.to_json)
-      next
+      exit(1)
     end
 
     release_prefix = MultiTenancy::Templates::Utils.new.release_templates

@@ -20,7 +20,7 @@ import {
   getMethodConfig,
   getPhase,
 } from 'utils/configs/participationMethodConfig';
-import { getCurrentPhase} from 'api/phases/utils';
+import { getCurrentPhase } from 'api/phases/utils';
 import { isReady } from './utils';
 
 interface Props {

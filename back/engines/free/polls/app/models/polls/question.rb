@@ -17,10 +17,6 @@
 #
 #  index_polls_questions_on_phase_id  (phase_id)
 #
-# Foreign Keys
-#
-#  fk_rails_...  (phase_id => phases.id) ON DELETE => nullify
-#
 module Polls
   class Question < ApplicationRecord
     QUESTION_TYPES = %w[single_option multiple_options]

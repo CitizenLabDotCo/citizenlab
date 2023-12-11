@@ -2,13 +2,17 @@ import React from 'react';
 import type { Preview } from '@storybook/react';
 import contexts from './contexts';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
-import mockServer from './mockServer'
+import mockServer from './mockServer';
 import { reactIntl } from './reactIntl';
 import { MemoryRouter } from 'react-router-dom';
 
 initialize();
 
-const routerDecorator = (Story) => <MemoryRouter><Story /></MemoryRouter>;
+const routerDecorator = (Story) => (
+  <MemoryRouter>
+    <Story />
+  </MemoryRouter>
+);
 
 const preview: Preview = {
   parameters: {
@@ -21,18 +25,14 @@ const preview: Preview = {
     },
 
     msw: Object.values(mockServer),
-    reactIntl
+    reactIntl,
   },
 
-  decorators: [
-    mswDecorator,
-    routerDecorator,
-    contexts
-  ],
+  decorators: [mswDecorator, routerDecorator, contexts],
 
   globals: {
-    locale: reactIntl.defaultLocale
-  }
+    locale: reactIntl.defaultLocale,
+  },
 };
 
 export default preview;

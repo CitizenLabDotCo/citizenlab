@@ -114,7 +114,11 @@ describe('Landing page - signed in', () => {
       .get('.e2e-signed-in-header-complete-skip-btn')
       .click();
     cy.wait(1000);
-    cy.get('#e2e-signed-in-header-default-cta');
+    const signedInHeaderEnglish = /is listening to you/gi;
+    cy.get('#e2e-signed-in-header-default-cta').should(($el) => {
+      const text = $el.text();
+      expect(text).to.match(signedInHeaderEnglish);
+    });
   });
 
   after(() => {

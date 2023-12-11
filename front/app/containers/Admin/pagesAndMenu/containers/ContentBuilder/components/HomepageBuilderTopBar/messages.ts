@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.containers.ContentBuilder.homepage.View',
     defaultMessage: 'View',
   },
+  saveError: {
+    id: 'app.containers.ContentBuilder.homepage.SaveError',
+    defaultMessage: 'Something went wrong while saving the homepage.',
+  },
 });
