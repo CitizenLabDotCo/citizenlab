@@ -18,9 +18,9 @@ import useReport from 'api/reports/useReport';
 import useUserById from 'api/users/useUserById';
 import useProjectById from 'api/projects/useProjectById';
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
-import { keys } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 import { getPeriod } from './utils';
 import {
@@ -38,10 +38,10 @@ type Props = {
 const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const px = useReportDefaultPadding();
+  const locales = useAppConfigurationLocales();
 
   // Title
   const { data: report } = useReport(reportId);
-  const reportTitle = report?.data.attributes.name;
 
   // Project mod
   const userId = report?.data.relationships.owner.data.id;
@@ -50,15 +50,16 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
 
   // Project name & time period
   const { data: project } = useProjectById(projectId);
-  if (!project) return null;
+  if (!report || !locales || !projectModerator) return null;
 
-  const projectTitle = project.data.attributes.title_multiloc;
-  const locales = keys(projectTitle);
+  const reportTitle = report.data.attributes.name;
+  const projectTitle = project?.data.attributes.title_multiloc;
 
-  const reportTitleMultiloc = createMultiloc(locales, (_locale) => {
-    // TODO
-    return `<h2>${reportTitle}</h2>`;
-  });
+  const reportTitleMultiloc = reportTitle
+    ? createMultiloc(locales, (_locale) => {
+        return `<h2>${reportTitle}</h2>`;
+      })
+    : null;
 
   const aboutTextMultiloc = createMultiloc(locales, (locale) => {
     const formatMessage = (message, values) =>
@@ -68,7 +69,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
     return `
       <ul>
         <li>${formatMessage(messages.projectLabel, {
-          projectsList: projectTitle[locale] ?? '',
+          projectsList: projectTitle?.[locale] ?? '',
         })}</li>
         ${period ? `<li>${period}</li>` : ''}
         <li>${formatMessage(messages.managerLabel, {
@@ -90,20 +91,14 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
         <TenantLogo />
       </Box>
 
-      {reportTitle === null ? (
-        <></>
-      ) : (
+      {reportTitleMultiloc && (
         <Element id="about-title" is={Container} canvas>
           <TextMultiloc text={reportTitleMultiloc} />
         </Element>
       )}
-      {projectModerator === null ? (
-        <></>
-      ) : (
-        <Element id="about-text" is={Container} canvas>
-          <TextMultiloc text={aboutTextMultiloc} />
-        </Element>
-      )}
+      <Element id="about-text" is={Container} canvas>
+        <TextMultiloc text={aboutTextMultiloc} />
+      </Element>
     </PageBreakBox>
   );
 };
