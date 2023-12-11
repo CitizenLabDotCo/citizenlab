@@ -25,12 +25,11 @@ import { useSearchParams } from 'react-router-dom';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // types
-import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 interface Props {
-  participationContext: IPhaseData | IProjectData;
+  phase: IPhaseData;
   ideaId: string;
   buttonStyle: 'primary' | 'primary-outlined';
   onIdeaPage?: boolean;
@@ -39,14 +38,14 @@ interface Props {
 const AssignSingleVoteButton = ({
   ideaId,
   buttonStyle,
-  participationContext,
+  phase,
   onIdeaPage,
 }: Props) => {
   const { formatMessage } = useIntl();
 
   const { data: idea } = useIdeaById(ideaId);
   const { data: basket } = useBasket(
-    participationContext.relationships?.user_basket?.data?.id
+    phase.relationships?.user_basket?.data?.id
   );
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const ideaInBasket = !!getVotes?.(ideaId);
@@ -54,7 +53,7 @@ const AssignSingleVoteButton = ({
   const [searchParams] = useSearchParams();
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
-  const maxVotes = participationContext?.attributes.voting_max_total;
+  const maxVotes = phase?.attributes.voting_max_total;
   const maxVotesReached = maxVotes && numberOfVotesCast === maxVotes;
 
   // permissions
@@ -74,21 +73,19 @@ const AssignSingleVoteButton = ({
     }
 
     if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
-      const participationContextId = participationContext.id;
-      const participationContextType = participationContext.type;
+      const phaseId = phase.id;
 
       const context = {
-        type: participationContextType,
+        type: 'phase',
         action: 'voting',
-        id: participationContextId,
+        id: phaseId,
       } as const;
 
       const successAction: SuccessAction = {
         name: 'vote',
         params: {
           ideaId,
-          participationContextId,
-          participationContextType,
+          phaseId,
           votes: 1,
         },
       };
@@ -149,8 +146,8 @@ const AssignSingleVoteButton = ({
           onClick={vote}
           text={
             ideaInBasket
-              ? formatMessage(messages.voted)
-              : formatMessage(messages.vote)
+              ? formatMessage(messages.selected)
+              : formatMessage(messages.select)
           }
         />
       </div>

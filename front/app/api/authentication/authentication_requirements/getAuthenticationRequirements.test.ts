@@ -4,14 +4,12 @@ import { setupServer } from 'msw/node';
 
 import endpoints, {
   initiativeResponse,
-  projectResponse,
   phaseResponse,
   ideaResponse,
 } from './__mocks__/_mockServer';
 
 const server = setupServer(
   endpoints['GET permissions/posting_initiative/requirements'],
-  endpoints['GET projects/:projectId/permissions/posting_idea/requirements'],
   endpoints['GET phases/:phaseId/permissions/posting_idea/requirements'],
   endpoints['GET ideas/:ideaId/permissions/commenting_idea/requirements']
 );
@@ -27,16 +25,6 @@ describe('getAuthenticationRequirements', () => {
     });
 
     expect(result).toEqual(initiativeResponse);
-  });
-
-  it('returns project data correctly', async () => {
-    const result = await getAuthenticationRequirements({
-      type: 'project',
-      action: 'posting_idea',
-      id: '123',
-    });
-
-    expect(result).toEqual(projectResponse);
   });
 
   it('returns phase data correctly', async () => {

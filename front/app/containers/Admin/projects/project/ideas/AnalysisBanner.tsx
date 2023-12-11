@@ -138,7 +138,7 @@ const AnalysisBanner = () => {
       alignItems="center"
       borderRadius={stylingConsts.borderRadius}
       p="8px 16px"
-      mb="36px"
+      mb="24px"
       bgColor={colors.errorLight}
     >
       <Box display="flex" gap="16px" alignItems="center">

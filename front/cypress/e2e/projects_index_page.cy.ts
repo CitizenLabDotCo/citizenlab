@@ -18,7 +18,6 @@ describe('Project overview page', () => {
   before(() => {
     // unique name/title
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitleOne,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -28,7 +27,6 @@ describe('Project overview page', () => {
     });
     // shares content with project three
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitleTwo,
       descriptionPreview: projectDescriptionPreview,
       description: projectTitleThree,
@@ -38,7 +36,6 @@ describe('Project overview page', () => {
     });
     // shares content with project two
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitleThree,
       descriptionPreview: projectDescriptionPreview,
       description: projectTitleTwo,
@@ -48,7 +45,6 @@ describe('Project overview page', () => {
     });
     // archived project
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitleFour,
       descriptionPreview: projectDescriptionPreview,
       description: projectTitleTwo,
@@ -59,7 +55,6 @@ describe('Project overview page', () => {
 
     // project in folder title
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectInFolderTitle,
       descriptionPreview: projectDescriptionPreview,
       description: randomString(),
@@ -69,7 +64,6 @@ describe('Project overview page', () => {
       projectInFolderId = project.body.data.id;
     });
     cy.apiCreateFolder({
-      type: 'continuous',
       title: folderTitle,
       descriptionPreview: randomString(30),
       description: randomString(),

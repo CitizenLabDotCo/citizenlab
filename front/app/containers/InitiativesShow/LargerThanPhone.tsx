@@ -311,9 +311,6 @@ const LargerThanPhone = ({
                     id="e2e-initiative-sharing-component"
                     context="initiative"
                     url={initiativeUrl}
-                    facebookMessage={formatMessage(messages.facebookMessage, {
-                      initiativeTitle,
-                    })}
                     twitterMessage={formatMessage(messages.twitterMessage, {
                       initiativeTitle,
                     })}

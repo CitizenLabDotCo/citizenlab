@@ -1,10 +1,17 @@
 import { randomString } from '../../support/commands';
+import moment = require('moment');
 
 describe('Settings panel options', () => {
   let projectId = '';
+  let phaseId: string;
 
-  before(() => {
+  beforeEach(() => {
     cy.setAdminLoginCookie();
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
+
     cy.getAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
@@ -12,29 +19,39 @@ describe('Settings panel options', () => {
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
-        type: 'continuous',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation',
         assigneeId: userId,
-      }).then((project) => {
-        projectId = project.body.data.id;
-        cy.visit(`/admin/projects/${projectId}/description`);
-        cy.get('#e2e-toggle-enable-project-description-builder').click({
-          force: true,
+      })
+        .then((project) => {
+          projectId = project.body.data.id;
+          return cy.apiCreatePhase({
+            projectId,
+            title: 'firstPhaseTitle',
+            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+            participationMethod: 'ideation',
+            canPost: true,
+            canComment: true,
+            canReact: true,
+          });
+        })
+        .then((phase) => {
+          phaseId = phase.body.data.id;
+          cy.visit(`/admin/projects/${projectId}/settings/description`);
+          cy.get('#e2e-toggle-enable-project-description-builder').click({
+            force: true,
+          });
         });
-      });
     });
   });
 
-  beforeEach(() => {
-    cy.setAdminLoginCookie();
-  });
-
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 
   it('handles close button click correctly', () => {

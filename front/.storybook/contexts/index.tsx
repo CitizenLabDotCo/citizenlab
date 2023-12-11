@@ -8,7 +8,10 @@ const EMPTY_OBJ = {};
 
 const Portals = () => (
   <>
-    <div id="modal-portal" style={{ position: 'absolute', top: 0, left: 0, width: '100%' }} />
+    <div
+      id="modal-portal"
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%' }}
+    />
     <div id="topbar-portal" />
     <div id="mobile-nav-portal" />
   </>
@@ -20,8 +23,8 @@ const ResetCacheContext = ({ children }) => {
   useEffect(() => {
     queryClient.invalidateQueries();
   }, [window.location.search]);
-  return (<>{children}</>);
-}
+  return <>{children}</>;
+};
 
 export default (Story) => {
   return (
@@ -34,6 +37,6 @@ export default (Story) => {
           </ThemeContext>
         </ResetCacheContext>
       </OutletsContext.Provider>
-    </QueryClientProvider >
+    </QueryClientProvider>
   );
 };

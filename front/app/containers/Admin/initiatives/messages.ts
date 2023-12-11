@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.settingsTab',
     defaultMessage: 'Settings',
   },
+  permissions: {
+    id: 'app.containers.Admin.initiatives.permissions',
+    defaultMessage: 'Permissions',
+  },
   settingsTabTitle: {
     id: 'app.containers.Admin.initiatives.settingsTabTitle',
     defaultMessage: 'Configure your proposals',

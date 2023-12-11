@@ -5,7 +5,6 @@ import T from 'components/T';
 import Link from 'utils/cl-router/Link';
 
 // components
-import ContinuousProject from './ContinuousProject';
 import TimelineProject from './TimelineProject';
 
 // hooks
@@ -41,11 +40,8 @@ const Project = ({ projectId, hightestTitle }: Props) => {
               <FormattedMessage {...messages.projectInfo} />
             </Link>
           </li>
-          {project.data.attributes.process_type === 'continuous' ? (
-            <ContinuousProject key={project.data.id} project={project.data} />
-          ) : (
-            <TimelineProject key={project.data.id} project={project.data} />
-          )}
+          <TimelineProject key={project.data.id} project={project.data} />
+
           {!isNilOrError(events) && events.data.length > 0 && (
             <li>
               <Link to={`/projects/${project.data.attributes.slug}/events`}>

@@ -118,7 +118,7 @@ describe PhasePolicy do
   context "for a user on a phase in a private groups project where she's a member of a manual group with access" do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_project, user: user) }
-    let!(:phase) { create(:phase, project: project) }
+    let!(:phase) { project.phases.first }
 
     it { is_expected.to     permit(:show)    }
     it { is_expected.not_to permit(:create)  }

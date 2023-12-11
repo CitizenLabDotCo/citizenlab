@@ -52,7 +52,6 @@ const EventSharingButtons = ({ event, hideTitle, justifyContent }: Props) => {
       return (
         <SharingButtons
           url={eventUrl}
-          facebookMessage={shareEventMessage}
           whatsAppMessage={shareEventMessage}
           twitterMessage={shareEventMessage}
           emailSubject={shareEventMessage}

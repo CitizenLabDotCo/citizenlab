@@ -15,8 +15,7 @@ type UpdatePollQuestion = {
 
 const updatePollQuestion = async ({
   questionId,
-  participationContextId: _id,
-  participationContextType: _type,
+  phaseId: _id,
   ...rest
 }: UpdatePollQuestion) =>
   fetcher<IPollQuestion>({

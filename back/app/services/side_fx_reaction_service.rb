@@ -10,13 +10,13 @@ class SideFxReactionService
       lock_initiative_editing_if_required(reaction)
     end
 
-    action = "#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}" # TODO: Action name
+    action = "#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}"
     log_activity_job(reaction, action, current_user)
     create_followers reaction, current_user
   end
 
   def after_destroy(reaction, current_user)
-    action = "canceled_#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}" # TODO: Action name
+    action = "canceled_#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}"
     log_activity_job(reaction, action, current_user)
   end
 

@@ -52,17 +52,8 @@ resource 'Voting' do
     example_request 'Returns the basket' do
       assert_status 200
       expect(json_response_body[:basket]).to include({ id: id })
-    end
-
-    context 'when the basket is on a phase' do
-      let(:phase) { create(:project_with_active_budgeting_phase).phases.last }
-      let(:basket) { create(:basket, participation_context: phase) }
-      let(:id) { basket.id }
-
-      example_request 'Returns the phase ID in the response' do
-        assert_status 200
-        expect(json_response_body[:basket]).to include({ phase_id: phase.id })
-      end
+      expect(json_response_body[:basket]).to include({ phase_id: baskets.first.phase.id })
+      expect(json_response_body[:basket]).to include({ project_id: baskets.first.phase.project.id })
     end
   end
 

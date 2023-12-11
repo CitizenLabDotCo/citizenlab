@@ -17,7 +17,7 @@ module Volunteering
     private
 
     def create_followers(volunteer, user)
-      project = volunteer.cause.participation_context.project
+      project = volunteer.cause.phase.project
       Follower.find_or_create_by(followable: project, user: user)
       return if !project.in_folder?
 

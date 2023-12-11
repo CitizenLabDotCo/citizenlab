@@ -44,8 +44,8 @@ resource 'Stats - Ideas' do
     AppConfiguration.instance.update!(created_at: now - 3.years)
     @timezone = AppConfiguration.instance.settings('core', 'timezone')
 
-    @project1 = create(:continuous_project)
-    @project2 = create(:continuous_project)
+    @project1 = create(:single_phase_ideation_project)
+    @project2 = create(:single_phase_ideation_project)
     @proposed = create(:idea_status, code: 'proposed')
     @ideas_with_topics = []
     @ideas_with_status = []
@@ -60,7 +60,8 @@ resource 'Stats - Ideas' do
       @ideas_with_topics += create_list(:idea_with_topics, 3, project: @project1, idea_status: @proposed)
       create(:idea, project: @project2, idea_status: @proposed)
     end
-    create(:idea, project: create(:continuous_native_survey_project))
+    native_survey_project = create(:single_phase_native_survey_project)
+    create(:idea, project: native_survey_project, creation_phase: native_survey_project.phases.first)
   end
 
   get 'web_api/v1/stats/ideas_count' do
@@ -137,7 +138,7 @@ resource 'Stats - Ideas' do
 
       before do
         topic = create(:topic)
-        @project = create(:continuous_project, allowed_input_topics: [topic])
+        @project = create(:single_phase_ideation_project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
           create(:idea, project: @project, topics: [topic])
           create(:idea)
@@ -186,7 +187,7 @@ resource 'Stats - Ideas' do
 
       before do
         topic = create(:topic)
-        @project = create(:continuous_project, allowed_input_topics: [topic])
+        @project = create(:single_phase_ideation_project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
           create(:idea, project: @project, topics: [topic])
           create(:idea)
@@ -252,7 +253,7 @@ resource 'Stats - Ideas' do
       let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       before do
-        @project = create(:continuous_project)
+        @project = create(:single_phase_ideation_project)
         travel_to start_at + 2.months do
           create(:idea, project: @project, idea_status: @proposed)
         end
@@ -300,7 +301,7 @@ resource 'Stats - Ideas' do
 
       before do
         topic = create(:topic)
-        @project = create(:continuous_project, allowed_input_topics: [topic])
+        @project = create(:single_phase_ideation_project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
           create(:idea, project: @project, topics: [topic])
           create(:idea)

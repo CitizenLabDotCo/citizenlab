@@ -16,14 +16,14 @@ import Error from 'components/UI/Error';
 import homepageMessages from 'containers/HomePage/messages';
 
 // craft
-import { useEditor, useNode } from '@craftjs/core';
+import { useNode } from '@craftjs/core';
 
 // hooks
 import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
 
 import messages from './messages';
 import SignedInHeader from 'containers/HomePage/SignedInHeader';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import {
   CTASignedInType,
   CTASignedOutType,
@@ -45,6 +45,7 @@ import useAddContentBuilderImage from 'api/content_builder_images/useAddContentB
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import useAuthUser from 'api/me/useAuthUser';
 import Fragment from 'components/Fragment';
+import useLocale from 'hooks/useLocale';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
@@ -95,15 +96,14 @@ type Props = {
 };
 
 const HomepageBanner = ({ homepageSettings, image }: Props) => {
+  const { pathname } = useLocation();
   const { data: authUser } = useAuthUser();
   const [search] = useSearchParams();
-  const editor = useEditor();
-  const isEditorInPreviewMode =
-    (editor.store.getState() as any)?.options.enabled === false;
+  const locale = useLocale();
+
+  const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`;
   const showSignedInHeader =
-    (isEditorInPreviewMode &&
-      authUser?.data !== undefined &&
-      search.get('variant') === null) ||
+    (isHomepage && authUser?.data !== undefined) ||
     search.get('variant') === 'signedIn';
 
   return (
@@ -118,7 +118,7 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
               small: image?.imageUrl || null,
             },
           }}
-          isContentBuilderPreview
+          isContentBuilderDisplay={!isHomepage}
         />
       ) : (
         <Fragment name="signed-out-header">

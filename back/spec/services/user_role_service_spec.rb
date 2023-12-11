@@ -178,12 +178,12 @@ describe UserRoleService do
     end
 
     it 'lists all projects for admins' do
-      map_projects = create_list(:project, 3, presentation_mode: 'map')
-      create(:project, presentation_mode: 'card')
+      public_projects = create_list(:project, 3, visible_to: 'public')
+      create(:project, visible_to: 'admins')
 
       expect(
-        service.moderatable_projects(create(:admin), Project.where(presentation_mode: 'map')).ids
-      ).to match_array map_projects.map(&:id)
+        service.moderatable_projects(create(:admin), Project.where(visible_to: 'public')).ids
+      ).to match_array public_projects.map(&:id)
     end
 
     it 'lists some projects for project moderators' do

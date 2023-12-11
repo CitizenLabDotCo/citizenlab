@@ -154,7 +154,7 @@ describe ActivitiesService do
         now = updated_at + 1.day
         expect { service.create_periodic_activities(now: now) }
           .to have_enqueued_job(LogActivityJob)
-          .with(basket, 'not_submitted', nil, now, project_id: basket.participation_context.project.id)
+          .with(basket, 'not_submitted', nil, now, project_id: basket.phase.project.id)
       end
 
       it 'does not log activity when a basket not_submitted activity is already created' do

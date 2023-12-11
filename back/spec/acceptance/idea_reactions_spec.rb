@@ -10,8 +10,8 @@ resource 'Reactions' do
     @user = create(:admin)
     header_token_for @user
     header 'Content-Type', 'application/json'
-    @project = create(:continuous_project)
-    @idea = create(:idea, project: @project)
+    @project = create(:single_phase_ideation_project)
+    @idea = create(:idea, project: @project, phases: @project.phases)
     @reactions = create_list(:reaction, 2, reactable: @idea)
   end
 
@@ -47,7 +47,7 @@ resource 'Reactions' do
     end
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = ParticipationContextService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
+    disabled_reasons = ParticipationPermissionsService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -81,7 +81,7 @@ resource 'Reactions' do
   post 'web_api/v1/ideas/:idea_id/reactions/up' do
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = ParticipationContextService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
+    disabled_reasons = ParticipationPermissionsService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -110,16 +110,15 @@ resource 'Reactions' do
       expect(@idea.reload.dislikes_count).to eq 0
     end
 
-    describe do
+    describe 'when reacting is disabled' do
       before do
-        project = @idea.project
-        project.update(reacting_enabled: false)
+        @project.phases.first.update(reacting_enabled: false)
       end
 
-      example_request '[error] Like an idea in a project where reactions are disabled' do
+      example_request '[error] Like an idea in a phase where reactions are disabled' do
         expect(status).to eq 401
         json_response = json_parse(response_body)
-        expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::REACTING_DISABLED_REASONS[:reacting_disabled]
+        expect(json_response[:errors][:base][0][:error]).to eq ParticipationPermissionsService::REACTING_DISABLED_REASONS[:reacting_disabled]
         expect(@idea.reload.likes_count).to eq 2
         expect(@idea.reload.dislikes_count).to eq 0
       end
@@ -128,12 +127,11 @@ resource 'Reactions' do
     describe 'when reacting to idea is allowed by moderators/admins' do
       before do
         PermissionsService.new.update_all_permissions
-        project = @idea.project
-        project.permissions.find_by(action: 'reacting_idea').update!(permitted_by: 'admins_moderators')
+        @project.phases.first.permissions.find_by(action: 'reacting_idea').update!(permitted_by: 'admins_moderators')
         @user.update!(roles: [])
       end
 
-      example_request '[error] Like an idea in a project where reacting is not permitted' do
+      example_request '[error] Like an idea in a phase where reacting is not permitted' do
         expect(status).to eq 401
         json_response = json_parse(response_body)
         expect(json_response[:errors][:base][0][:error]).to eq 'not_permitted'
@@ -142,17 +140,16 @@ resource 'Reactions' do
       end
     end
 
-    describe do
+    describe 'when likes are limited' do
       before do
-        project = @idea.project
-        project.update(reacting_like_method: 'limited', reacting_like_limited_max: 1)
-        create(:reaction, mode: 'up', reactable: create(:idea, project: project), user: @user)
+        @project.phases.first.update(reacting_like_method: 'limited', reacting_like_limited_max: 1)
+        create(:reaction, mode: 'up', reactable: create(:idea, project: @project, phases: @project.phases), user: @user)
       end
 
-      example_request '[error] Like an idea in a project where you can like only once' do
+      example_request '[error] Like an idea in a phase where you can like only once' do
         expect(status).to eq 401
         json_response = json_parse(response_body)
-        expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::REACTING_DISABLED_REASONS[:reacting_like_limited_max_reached]
+        expect(json_response[:errors][:base][0][:error]).to eq ParticipationPermissionsService::REACTING_DISABLED_REASONS[:reacting_like_limited_max_reached]
         expect(@idea.reload.likes_count).to eq 2
         expect(@idea.reload.dislikes_count).to eq 0
       end
@@ -162,7 +159,7 @@ resource 'Reactions' do
   post 'web_api/v1/ideas/:idea_id/reactions/down' do
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = ParticipationContextService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
+    disabled_reasons = ParticipationPermissionsService::REACTING_DISABLED_REASONS.values + PermissionsService::DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -192,12 +189,12 @@ resource 'Reactions' do
     end
 
     example '[error] Dislike in a project where disliking is disabled', document: false do
-      @project.update! reacting_dislike_enabled: false
+      @project.phases.first.update! reacting_dislike_enabled: false
       @idea.reactions.create(user: @user, mode: 'down')
       do_request
       expect(status).to eq 401
       json_response = json_parse(response_body)
-      expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::REACTING_DISABLED_REASONS[:reacting_dislike_disabled]
+      expect(json_response[:errors][:base][0][:error]).to eq ParticipationPermissionsService::REACTING_DISABLED_REASONS[:reacting_dislike_disabled]
       expect(@idea.reload.likes_count).to eq 2
       expect(@idea.reload.dislikes_count).to eq 1
     end

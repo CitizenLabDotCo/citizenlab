@@ -301,7 +301,7 @@ models:
     education:
     registration_completed_at: '2018-03-28 13:34:57'
     password: democracy2.0
-    remote_avatar_url:
+    remote_avatar_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/initials_avatars/sk_avatar.png
     roles:
     - type: admin
     created_at: '2018-03-28 13:34:57'
@@ -706,19 +706,11 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: card
-    participation_method: ideation
-    process_type: timeline
     internal_role:
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
   - &Pb
     title_multiloc:
       en: Participatory Budgeting
@@ -732,20 +724,10 @@ models:
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: card
-    participation_method: voting
-    process_type: continuous
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
-    posting_enabled: false
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
-    voting_method: budgeting
-    voting_max_total: 100000
   - &charliesPb
     title_multiloc:
       en: Charlie Participatory Budgeting
@@ -759,20 +741,10 @@ models:
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: card
-    participation_method: voting
-    process_type: continuous
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
-    posting_enabled: false
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
-    voting_method: budgeting
-    voting_max_total: 100000
   - &verifiedPb
     title_multiloc:
       en: Verified Participatory Budgeting
@@ -786,20 +758,10 @@ models:
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: card
-    participation_method: voting
-    process_type: continuous
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
-    posting_enabled: false
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
-    voting_method: budgeting
-    voting_max_total: 100000
   - &project2
     title_multiloc:
       en: Test project 2 timeline
@@ -813,31 +775,16 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: card
-    participation_method: ideation
-    process_type: timeline
     internal_role:
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
   - &76
     title_multiloc: projects.open_idea_project_title
     description_multiloc: projects.open_idea_project_description
     description_preview_multiloc: projects.open_idea_project_description_preview
     internal_role: open_idea_box
-    presentation_mode: card
-    process_type: continuous
-    participation_method: ideation
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     admin_publication_attributes: {}
   - &121
@@ -852,20 +799,12 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: map
-    participation_method: ideation
-    process_type: continuous
     internal_role:
     admin_publication_attributes:
       publication_status: published
       parent_attributes_ref: *a1
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 7
   - &charliesVerifiedPPlproject
     title_multiloc:
       en: Verified Charlie poeple project
@@ -878,19 +817,11 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: map
-    participation_method: ideation
-    process_type: continuous
     internal_role:
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 7
   - &verifiedIdeation
     title_multiloc:
       en: Verified Ideation
@@ -903,17 +834,10 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: card
-    participation_method: ideation
-    process_type: continuous
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
   - &charliesIdeation
     title_multiloc:
       en: Charlie Crew Ideation
@@ -926,17 +850,10 @@ models:
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: card
-    participation_method: ideation
-    process_type: continuous
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
   - &contsurv
     title_multiloc:
       en: Continuous survey
@@ -949,22 +866,12 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: map
-    participation_method: survey
-    process_type: continuous
     internal_role:
     admin_publication_attributes:
       publication_status: published
       parent_attributes_ref: *a1
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 7
-    survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
-    survey_service: typeform
   - &verifiedSurvey
     title_multiloc:
       en: Verified survey
@@ -977,21 +884,11 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: map
-    participation_method: survey
-    process_type: continuous
     internal_role:
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 7
-    survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
-    survey_service: typeform
   - &polling
     title_multiloc:
       en: The big poll
@@ -1004,9 +901,6 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: map
-    participation_method: poll
-    process_type: continuous
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
@@ -1023,9 +917,6 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: map
-    participation_method: poll
-    process_type: continuous
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
@@ -1042,21 +933,11 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: map
-    participation_method: survey
-    process_type: continuous
     internal_role:
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 7
-    survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
-    survey_service: typeform
   - &charliesPoll
     title_multiloc:
       en: Charlie Crew poll
@@ -1069,18 +950,11 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: map
-    participation_method: poll
-    process_type: continuous
     internal_role:
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
   - &90
     title_multiloc:
       en: Timeline ideation map
@@ -1093,19 +967,11 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: map
-    participation_method: ideation
-    process_type: timeline
     internal_role:
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:07'
     updated_at: '2018-03-28 13:35:07'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
   - &85
     title_multiloc:
       en: Timeline ideation card
@@ -1118,19 +984,11 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: card
-    participation_method: ideation
-    process_type: timeline
     internal_role:
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
   - &66
     title_multiloc:
       en: Archived project
@@ -1143,19 +1001,11 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: map
-    participation_method: ideation
-    process_type: timeline
     internal_role:
     admin_publication_attributes:
       publication_status: archived
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
   - &custom_idea_fields_project
     title_multiloc:
       en: Custom idea fields project
@@ -1170,15 +1020,8 @@ models:
         for young and old.
       nl-BE: Test idea custom fields. Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.
-    presentation_mode: card
-    participation_method: native_survey
-    process_type: continuous
     admin_publication_attributes:
       publication_status: published
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
   project_file:
   - project_ref: *project1
     created_at: 2019-01-14 13:46:54 UTC
@@ -2155,7 +1998,8 @@ models:
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:10'
     budget: 800
-  - title_multiloc:
+  - &charliesPb_idea
+    title_multiloc:
       nl-BE: Iure sit eos placeat labore amet.
     body_multiloc:
       en: "<p>Itaque mollitia voluptatum quos architecto quis ipsa reiciendis. Accusantium
@@ -2174,7 +2018,8 @@ models:
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:10'
     budget: 800
-  - title_multiloc:
+  - &Pb_idea
+    title_multiloc:
       nl-BE: Iure sit eos placeat labore amet.
     body_multiloc:
       en: "<p>Itaque mollitia voluptatum quos architecto quis ipsa reiciendis. Accusantium
@@ -7182,42 +7027,283 @@ models:
   - remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png
     initiative_ref: *initiative1
   phase:
-  - &project1current
-    title_multiloc:
-      en: Current phase
-      nl-BE: Current phase
-    description_multiloc:
-      en: "<p>Qui quidem sed inventore in nobis reprehenderit odit. Reiciendis quo
+    - &Pb_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: voting
+      created_at: '2018-03-28 13:35:04'
+      updated_at: '2018-03-28 13:35:04'
+      posting_enabled: false
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 10
+      voting_method: budgeting
+      voting_max_total: 100000
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *Pb
+    - &charliesPb_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: voting
+      created_at: '2018-03-28 13:35:04'
+      updated_at: '2018-03-28 13:35:04'
+      posting_enabled: false
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 10
+      voting_method: budgeting
+      voting_max_total: 100000
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *charliesPb
+    - &verifiedPb_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: voting
+      created_at: '2018-03-28 13:35:04'
+      updated_at: '2018-03-28 13:35:04'
+      posting_enabled: false
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 10
+      voting_method: budgeting
+      voting_max_total: 100000
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *verifiedPb
+    - &76_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: ideation
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *76
+    - &121_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: ideation
+      presentation_mode: map
+      created_at: '2018-03-28 13:35:06'
+      updated_at: '2018-03-28 13:35:06'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 7
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *121
+    - &charliesVerifiedPPlproject_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: ideation
+      presentation_mode: map
+      created_at: '2018-03-28 13:35:06'
+      updated_at: '2018-03-28 13:35:06'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 7
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *charliesVerifiedPPlproject
+    - &verifiedIdeation_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: ideation
+      created_at: '2018-03-28 13:35:06'
+      updated_at: '2018-03-28 13:35:06'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *verifiedIdeation
+    - &charliesIdeation_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: ideation
+      created_at: '2018-03-28 13:35:06'
+      updated_at: '2018-03-28 13:35:06'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *charliesIdeation
+    - &contsurv_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: survey
+      presentation_mode: map
+      created_at: '2018-03-28 13:35:06'
+      updated_at: '2018-03-28 13:35:06'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 7
+      survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
+      survey_service: typeform
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *contsurv
+    - &verifiedSurvey_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: survey
+      presentation_mode: map
+      created_at: '2018-03-28 13:35:06'
+      updated_at: '2018-03-28 13:35:06'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 7
+      survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
+      survey_service: typeform
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *verifiedSurvey
+    - &polling_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: poll
+      presentation_mode: map
+      created_at: '2018-03-28 13:35:06'
+      updated_at: '2018-03-28 13:35:06'
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *polling
+    - &verifiedPoll_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: poll
+      presentation_mode: map
+      created_at: '2018-03-28 13:35:06'
+      updated_at: '2018-03-28 13:35:06'
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *verifiedPoll
+    - &charliesSurvey_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: survey
+      presentation_mode: map
+      created_at: '2018-03-28 13:35:06'
+      updated_at: '2018-03-28 13:35:06'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 7
+      survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
+      survey_service: typeform
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *charliesSurvey
+    - &charliesPoll_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: poll
+      presentation_mode: map
+      created_at: '2018-03-28 13:35:06'
+      updated_at: '2018-03-28 13:35:06'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *charliesPoll
+    - &custom_idea_fields_project_phase
+      title_multiloc:
+        en: Current phase
+      participation_method: native_survey
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      campaigns_settings:
+        project_phase_started: true
+      start_at: '2018-03-28'
+      end_at:
+      project_ref: *custom_idea_fields_project
+    - &project1current
+      title_multiloc:
+        en: Current phase
+        nl-BE: Current phase
+      description_multiloc:
+        en: "<p>Qui quidem sed inventore in nobis reprehenderit odit. Reiciendis quo
         dolorem. Non incidunt soluta ut quae possimus. Libero sunt ullam.</p><p>Sit
         aut iusto at numquam. Aut sit ut voluptate quia qui. Placeat velit dicta.
         Ut porro sed excepturi voluptatem iure eos. Amet qui officiis et dolorum consequuntur
         assumenda.</p><p>Sed quia quidem molestiae omnis libero et soluta. Vitae debitis
         quae qui. Aut omnis qui autem.</p>"
-      nl-BE: "<p>Id adipisci officiis. Dolores autem voluptates sunt excepturi voluptatibus
+        nl-BE: "<p>Id adipisci officiis. Dolores autem voluptates sunt excepturi voluptatibus
         tenetur nihil. Et et consectetur voluptates.</p><p>Neque eligendi iusto hic
         aperiam magni voluptatem asperiores. Et aut sint aut ad maiores. Sint dolorum
         eveniet aperiam dolore.</p><p>Quia iusto veritatis aut velit. Quae tempora
         rerum. Autem deleniti exercitationem non qui eligendi et. Similique iste dolorem
         labore. Corporis nisi voluptatem doloribus laborum.</p>"
-    project_ref: *project1
-    start_at_timediff: -1440
-    end_at_timediff: 1440
-    participation_method: ideation
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:05'
-    updated_at: '2018-03-28 13:35:05'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: limited
-    reacting_like_limited_max: 12
-  - &project1pastIdeation
-    title_multiloc:
-      en: Past ideation
-      nl-BE: Past ideation
-    description_multiloc:
-      en: "<p>Suscipit et dolorem expedita aut quae. Qui ut a nam tempora voluptatem
+      project_ref: *project1
+      start_at_timediff: -1440
+      end_at_timediff: 1440
+      participation_method: ideation
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:05'
+      updated_at: '2018-03-28 13:35:05'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: limited
+      reacting_like_limited_max: 12
+    - &project1pastIdeation
+      title_multiloc:
+        en: Past ideation
+        nl-BE: Past ideation
+      description_multiloc:
+        en: "<p>Suscipit et dolorem expedita aut quae. Qui ut a nam tempora voluptatem
         nihil. Dolores voluptatem fugiat et totam officiis. Accusantium perspiciatis
         sunt sit quia eum deserunt dolores. Dolor impedit illum quo praesentium accusantium
         tenetur ut.</p><p>Ut ut voluptatum enim eum molestiae saepe. Laborum enim
@@ -7225,64 +7311,64 @@ models:
         doloremque esse hic.</p><p>Ullam officia impedit est rerum. Dolores nulla
         qui inventore facere. Occaecati in dolores qui adipisci ipsam aspernatur.
         Aspernatur sunt aut in quam et illum.</p>"
-      nl-BE: "<p>Ut similique id ipsam aut. Quibusdam dolorem non voluptatum repellat.
+        nl-BE: "<p>Ut similique id ipsam aut. Quibusdam dolorem non voluptatum repellat.
         Qui aut fugit et eaque ut. Aut nihil doloribus tenetur aspernatur et facilis.
         Eos odit cumque.</p><p>Sapiente sint ipsa excepturi. Veniam perferendis nulla.
         In totam veritatis quasi aspernatur.</p><p>Quisquam qui suscipit deleniti.
         Eligendi labore et aut veritatis nisi dolore vel. Modi suscipit explicabo
         nihil.</p>"
-    project_ref: *project1
-    start_at_timediff: -4320
-    end_at_timediff: -2880
-    participation_method: ideation
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:05'
-    updated_at: '2018-03-28 13:35:05'
-    posting_enabled: false
-    commenting_enabled: true
-    reacting_enabled: false
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 3
-  - &project1pastSurvey
-    title_multiloc:
-      en: Past survey
-      nl-BE: Past survey
-    description_multiloc:
-      en: "<p>Tempore quis fugiat. Accusantium ipsum dolore optio ab illum aperiam
+      project_ref: *project1
+      start_at_timediff: -4320
+      end_at_timediff: -2880
+      participation_method: ideation
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:05'
+      updated_at: '2018-03-28 13:35:05'
+      posting_enabled: false
+      commenting_enabled: true
+      reacting_enabled: false
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 3
+    - &project1pastSurvey
+      title_multiloc:
+        en: Past survey
+        nl-BE: Past survey
+      description_multiloc:
+        en: "<p>Tempore quis fugiat. Accusantium ipsum dolore optio ab illum aperiam
         doloremque. In voluptatem incidunt recusandae odio. Et incidunt maiores consequatur
         at. Eos fugit nihil cum.</p><p>Quis libero tempore laudantium similique aliquid.
         Necessitatibus aliquid fugiat in deserunt consequatur. Nihil earum quis ut
         et ut molestiae reprehenderit. Quo voluptas ab ut eveniet.</p><p>Perspiciatis
         non rem consectetur. Consequuntur voluptatum qui. Temporibus voluptas ea omnis
         harum porro et. Temporibus quia voluptatem et aut quisquam laboriosam.</p>"
-      nl-BE: "<p>Nam voluptate non et. Et quod repellat quis est ipsa commodi aut. Nemo
+        nl-BE: "<p>Nam voluptate non et. Et quod repellat quis est ipsa commodi aut. Nemo
         illum labore error. Quos voluptas praesentium.</p><p>Distinctio placeat adipisci.
         Ratione sit eius animi. Quis ex officiis dicta dolor et. Est autem maiores
         molestiae enim.</p><p>Expedita est repellat quia et et ut inventore. Perspiciatis
         fugit qui. Autem earum laudantium ut aut. Voluptates at ea dolores aliquam.
         Magni asperiores molestiae doloremque minus fugit.</p>"
-    project_ref: *project1
-    start_at_timediff: -6226
-    end_at_timediff: -5978
-    participation_method: survey
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:05'
-    updated_at: '2018-03-28 13:35:05'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 1
-    survey_service: google_forms
-    survey_embed_url: https://docs.google.com/forms/d/e/1FAIpQLSc4y8oV05wjBtr_Vanvk1PERxRd5wUFLMdgufi9wfTBigORbQ/viewform?embedded=true
-  - &project1pastPB
-    title_multiloc:
-      en: Past pb
-      nl-BE: Past pb
-    description_multiloc:
-      en: "<p>Nihil autem iusto fuga dicta earum officiis veritatis. Distinctio numquam
+      project_ref: *project1
+      start_at_timediff: -6226
+      end_at_timediff: -5978
+      participation_method: survey
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:05'
+      updated_at: '2018-03-28 13:35:05'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 1
+      survey_service: google_forms
+      survey_embed_url: https://docs.google.com/forms/d/e/1FAIpQLSc4y8oV05wjBtr_Vanvk1PERxRd5wUFLMdgufi9wfTBigORbQ/viewform?embedded=true
+    - &project1pastPB
+      title_multiloc:
+        en: Past pb
+        nl-BE: Past pb
+      description_multiloc:
+        en: "<p>Nihil autem iusto fuga dicta earum officiis veritatis. Distinctio numquam
         ut consequatur sint est assumenda. Vel molestiae ea omnis dolores est ipsum.
         Natus quas mollitia nulla id iste. Dolor dolorem amet quo dignissimos fugit
         eos.</p><p>Beatae consequatur quis illo. Voluptatem excepturi accusantium
@@ -7290,117 +7376,117 @@ models:
         tempora dolor accusantium ab.</p><p>Sunt consequatur alias ad voluptates reiciendis
         qui. Consequatur tempore saepe aspernatur explicabo. Accusamus quia nesciunt
         quasi. Vitae qui sunt. Delectus omnis sunt nulla porro corporis eos pariatur.</p>"
-      nl-BE: "<p>Dolorum non mollitia. Sit deserunt maxime delectus amet aut molestias
+        nl-BE: "<p>Dolorum non mollitia. Sit deserunt maxime delectus amet aut molestias
         voluptas. Dolor sunt reiciendis vel minima quaerat aut saepe. Officiis porro
         et voluptatem tempora.</p><p>Enim voluptas aut dignissimos blanditiis. Sunt
         quibusdam aspernatur excepturi. Aut rerum non laborum voluptatum. A est non
         qui culpa. Quo facere qui voluptate nam sit quasi maiores.</p><p>Magnam aspernatur
         porro cumque fugiat. Et ducimus saepe delectus odit quis. Nam ex omnis in
         consequatur modi porro atque. Dolor voluptas est architecto.</p>"
-    project_ref: *project1
-    start_at_timediff: -5678
-    end_at_timediff: -4760
-    participation_method: voting
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:05'
-    updated_at: '2018-03-28 13:35:05'
-    posting_enabled: false
-    commenting_enabled: true
-    reacting_enabled: false
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
-    voting_method: budgeting
-    voting_max_total: 100000
-  - &project1futureIdeation
-    title_multiloc:
-      en: Future Ideation
-      nl-BE: Future Ideation
-    description_multiloc:
-      en: "<p>Commodi autem quo natus doloribus libero qui numquam. Deleniti vel quas.
+      project_ref: *project1
+      start_at_timediff: -5678
+      end_at_timediff: -4760
+      participation_method: voting
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:05'
+      updated_at: '2018-03-28 13:35:05'
+      posting_enabled: false
+      commenting_enabled: true
+      reacting_enabled: false
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 10
+      voting_method: budgeting
+      voting_max_total: 100000
+    - &project1futureIdeation
+      title_multiloc:
+        en: Future Ideation
+        nl-BE: Future Ideation
+      description_multiloc:
+        en: "<p>Commodi autem quo natus doloribus libero qui numquam. Deleniti vel quas.
         Explicabo dolores corporis magni.</p><p>Consectetur assumenda nemo est itaque
         et. Illum vel nostrum voluptatibus. Porro autem ex illo.</p><p>Recusandae
         consequatur id. Tempore eos repudiandae. Consequatur in nostrum et provident.
         Fuga et unde. Quia facilis odit aut cum commodi officiis nostrum.</p>"
-      nl-BE: "<p>Minima provident aut saepe et amet odit. Illo quo cum aut voluptatibus.
+        nl-BE: "<p>Minima provident aut saepe et amet odit. Illo quo cum aut voluptatibus.
         Adipisci illo optio qui ad aut.</p><p>Quisquam eius aut cumque alias est nulla
         inventore. Voluptas qui minus eum. Inventore mollitia quis. Necessitatibus
         neque dolor quia. Necessitatibus ex beatae quia optio quia totam rem.</p><p>Eum
         iste optio ducimus vel debitis libero. Laboriosam et tempore repellendus ut
         ab dignissimos. Voluptatem accusamus quo necessitatibus neque similique quod.</p>"
-    project_ref: *project1
-    start_at_timediff: 2280
-    end_at_timediff: 3798
-    participation_method: ideation
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:05'
-    updated_at: '2018-03-28 13:35:05'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 13
-  - &pastPolling
-    title_multiloc:
-      en: The big polling past
-      nl-BE: De grote polling past
-    description_multiloc:
-      en: "<p>Lots of fun guaranteed!</p>"
-      nl-BE: "<p>Dolle pret gegarandeerd!</p>"
-    project_ref: *project2
-    start_at: 2018-06-22
-    end_at: 2018-08-21
-    participation_method: poll
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:05'
-    updated_at: '2018-03-28 13:35:05'
-  - &42
-    title_multiloc:
-      en: Voluptatem accusantium temporibus mollitia minus quasi.
-      nl-BE: Omnis similique saepe fugiat.
-    description_multiloc:
-      en: "<p>Ipsam officia in ducimus nam tempora odio. Omnis et nemo. Provident
+      project_ref: *project1
+      start_at_timediff: 2280
+      end_at_timediff: 3798
+      participation_method: ideation
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:05'
+      updated_at: '2018-03-28 13:35:05'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 13
+    - &pastPolling
+      title_multiloc:
+        en: The big polling past
+        nl-BE: De grote polling past
+      description_multiloc:
+        en: "<p>Lots of fun guaranteed!</p>"
+        nl-BE: "<p>Dolle pret gegarandeerd!</p>"
+      project_ref: *project2
+      start_at: 2018-06-22
+      end_at: 2018-08-21
+      participation_method: poll
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:05'
+      updated_at: '2018-03-28 13:35:05'
+    - &42
+      title_multiloc:
+        en: Voluptatem accusantium temporibus mollitia minus quasi.
+        nl-BE: Omnis similique saepe fugiat.
+      description_multiloc:
+        en: "<p>Ipsam officia in ducimus nam tempora odio. Omnis et nemo. Provident
         totam nihil alias dolorem suscipit quos consequuntur. In aut omnis vel eum
         voluptatem.</p><p>Nobis occaecati qui. Aut illum voluptatem labore ut. Consequuntur
         ducimus magnam qui voluptatem saepe delectus.</p><p>Praesentium ea optio dolores
         commodi officia impedit et. Quisquam minus nostrum aut facere. Nesciunt accusamus
         deleniti veniam optio nostrum odit reiciendis. Magnam consequatur voluptate
         iste modi eaque sit nam.</p>"
-      nl-BE: "<p>Veniam accusantium est inventore eum nihil consequuntur. Ipsum id alias.
+        nl-BE: "<p>Veniam accusantium est inventore eum nihil consequuntur. Ipsum id alias.
         Impedit voluptate corporis distinctio consequatur nostrum unde.</p><p>Id voluptatem
         aliquam. Cum autem velit nesciunt consequatur dolor. Tempora quasi asperiores
         eum deserunt. Voluptatibus aliquam molestiae eius incidunt cumque dolorum
         culpa.</p><p>Reprehenderit accusamus aut et quis maxime. Eum sed officiis
         voluptas neque. Tempora non consequuntur aut explicabo. Sequi iure itaque
         quia repudiandae ut.</p>"
-    project_ref: *90
-    start_at: 2017-10-22
-    end_at: 2017-10-28
-    participation_method: ideation
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:07'
-    updated_at: '2018-03-28 13:35:07'
-    posting_enabled: false
-    commenting_enabled: true
-    reacting_enabled: false
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 2
-    presentation_mode: map
-  - &55
-    title_multiloc:
-      en: Non praesentium accusamus odit atque iusto culpa occaecati consequatur.
-      nl-BE: Dolor est aut aspernatur libero.
-    description_multiloc:
-      en: "<p>Sit sit expedita unde. Incidunt aut id tempora reiciendis. Quibusdam
+      project_ref: *90
+      start_at: 2017-10-22
+      end_at: 2017-10-28
+      participation_method: ideation
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:07'
+      updated_at: '2018-03-28 13:35:07'
+      posting_enabled: false
+      commenting_enabled: true
+      reacting_enabled: false
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 2
+      presentation_mode: map
+    - &55
+      title_multiloc:
+        en: Non praesentium accusamus odit atque iusto culpa occaecati consequatur.
+        nl-BE: Dolor est aut aspernatur libero.
+      description_multiloc:
+        en: "<p>Sit sit expedita unde. Incidunt aut id tempora reiciendis. Quibusdam
         sit nobis quasi. Recusandae ut illum iusto officia sit maxime ducimus.</p><p>Assumenda
         sed laboriosam soluta debitis tenetur. Qui quisquam et incidunt dolorem qui
         doloribus. Ratione est repellendus. Dolorum aut repellat.</p><p>Eius consequuntur
         blanditiis hic. Nulla neque et quas quia exercitationem officiis omnis. Non
         vitae dignissimos et. Exercitationem velit accusantium fuga sed sunt.</p>"
-      nl-BE: "<p>Corporis ea quia sint iure voluptatem cumque impedit. Nihil eligendi
+        nl-BE: "<p>Corporis ea quia sint iure voluptatem cumque impedit. Nihil eligendi
         ipsam vitae voluptatem dolore dolor. Deleniti ab adipisci sunt cum incidunt.
         Debitis est vero aperiam. Quia reiciendis et et.</p><p>Consequuntur sed sapiente
         at aut. In tempore autem est quas voluptatibus ea. Repudiandae earum omnis
@@ -7408,57 +7494,57 @@ models:
         Quas suscipit id magni.</p><p>Incidunt voluptates esse et cupiditate quis
         dolores. Odit nemo assumenda iste neque odio in tempora. Id accusantium quibusdam
         rerum et vel voluptatum. Laudantium expedita rerum a saepe in in sed.</p>"
-    project_ref: *90
-    start_at_timediff: -1440
-    end_at_timediff: 1440
-    participation_method: ideation
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:07'
-    updated_at: '2018-03-28 13:35:07'
-    posting_enabled: true
-    commenting_enabled: false
-    reacting_enabled: false
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 0
-    presentation_mode: map
-  - title_multiloc:
-      en: Nobis saepe illo soluta.
-      nl-BE: Reiciendis quia natus eius.
-    description_multiloc:
-      en: "<p>Ipsam autem dicta omnis non. Excepturi sint asperiores quas id sequi.
+      project_ref: *90
+      start_at_timediff: -1440
+      end_at_timediff: 1440
+      participation_method: ideation
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:07'
+      updated_at: '2018-03-28 13:35:07'
+      posting_enabled: true
+      commenting_enabled: false
+      reacting_enabled: false
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 0
+      presentation_mode: map
+    - title_multiloc:
+        en: Nobis saepe illo soluta.
+        nl-BE: Reiciendis quia natus eius.
+      description_multiloc:
+        en: "<p>Ipsam autem dicta omnis non. Excepturi sint asperiores quas id sequi.
         Et ut ut sunt odio quia voluptatem in.</p><p>Aut doloremque a. Quis voluptatem
         sunt ex officia quo. Reprehenderit architecto veniam.</p><p>Eligendi nihil
         aut qui ipsam voluptatem. Quia consectetur earum repellat. Expedita laboriosam
         similique eum nostrum.</p>"
-      nl-BE: "<p>Omnis quo magnam. Et voluptatem et eum enim sit. Excepturi temporibus
+        nl-BE: "<p>Omnis quo magnam. Et voluptatem et eum enim sit. Excepturi temporibus
         in nisi.</p><p>Accusantium provident et est quia aut sit. Aut cumque iure
         ratione. Et dignissimos deserunt praesentium. Quibusdam est non ipsa a velit.
         Fugiat quia et qui.</p><p>Soluta voluptatem ut quia cum molestias qui tempora.
         Adipisci sint nulla quas vero sit. Vel qui ea est velit impedit nihil incidunt.</p>"
-    project_ref: *90
-    start_at: 2017-11-20
-    end_at: 2017-12-12
-    participation_method: information
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:07'
-    updated_at: '2018-03-28 13:35:07'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
-  - title_multiloc:
-      en: Dolorum minima labore corrupti.
-      nl-BE: Vel consequatur odio quia voluptatem suscipit magnam.
-    description_multiloc:
-      en: "<p>Aut ducimus maxime aliquam optio. Adipisci dignissimos qui magnam. Quaerat
+      project_ref: *90
+      start_at: 2017-11-20
+      end_at: 2017-12-12
+      participation_method: information
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:07'
+      updated_at: '2018-03-28 13:35:07'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 10
+    - title_multiloc:
+        en: Dolorum minima labore corrupti.
+        nl-BE: Vel consequatur odio quia voluptatem suscipit magnam.
+      description_multiloc:
+        en: "<p>Aut ducimus maxime aliquam optio. Adipisci dignissimos qui magnam. Quaerat
         quia ipsa velit aspernatur. Numquam sit illum quia.</p><p>Sed fugit in excepturi.
         Cum qui voluptas et. Reiciendis et quidem deserunt.</p><p>Cupiditate est maxime
         officiis commodi quasi iure. Omnis dignissimos placeat sunt numquam. Non repellat
         enim voluptate rerum et earum vel.</p>"
-      nl-BE: "<p>Aut est sapiente aut voluptatem nihil consequatur provident. Molestiae
+        nl-BE: "<p>Aut est sapiente aut voluptatem nihil consequatur provident. Molestiae
         eveniet doloremque aut. Voluptatem at in amet autem sit molestiae minima.
         Eum est optio qui et dolor inventore praesentium.</p><p>Eum iste molestiae
         excepturi est tenetur nobis. At maxime voluptate consequatur. Natus similique
@@ -7466,24 +7552,24 @@ models:
         delectus laboriosam.</p><p>Ad labore sunt nemo sed. Laudantium earum nam sed
         ut maxime quia hic. Voluptas rerum neque assumenda voluptatibus quaerat. Repudiandae
         quia sint ad.</p>"
-    project_ref: *66
-    start_at: 2017-12-13
-    end_at: 2017-12-25
-    participation_method: ideation
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:08'
-    updated_at: '2018-03-28 13:35:08'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 6
-  - title_multiloc:
-      en: Voluptatem vitae quia velit voluptate dolor.
-      nl-BE: Error deleniti cumque a.
-    description_multiloc:
-      en: "<p>Explicabo aut qui et voluptatibus omnis et quia. Rerum ut voluptatem
+      project_ref: *66
+      start_at: 2017-12-13
+      end_at: 2017-12-25
+      participation_method: ideation
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:08'
+      updated_at: '2018-03-28 13:35:08'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 6
+    - title_multiloc:
+        en: Voluptatem vitae quia velit voluptate dolor.
+        nl-BE: Error deleniti cumque a.
+      description_multiloc:
+        en: "<p>Explicabo aut qui et voluptatibus omnis et quia. Rerum ut voluptatem
         et molestiae voluptatem. Unde quos sit qui et. Nemo sunt rerum. Libero voluptas
         voluptas dolorum sequi reiciendis nulla et.</p><p>Quos deserunt et architecto.
         Ut vel quia ad facilis quae. Occaecati consectetur voluptas asperiores perferendis
@@ -7492,7 +7578,7 @@ models:
         quisquam. Laboriosam accusantium voluptatibus perferendis consectetur voluptatem
         at. Cumque nihil ut repellendus tempore recusandae delectus impedit. Autem
         ut harum saepe repudiandae laborum. Minima odio voluptas.</p>"
-      nl-BE: "<p>Atque ad vitae esse vel recusandae sed. Non harum sit consequatur et.
+        nl-BE: "<p>Atque ad vitae esse vel recusandae sed. Non harum sit consequatur et.
         Sapiente ad et iusto neque aliquid. Porro et blanditiis ex rem. Nesciunt neque
         aspernatur nihil illo ut.</p><p>Dolorum possimus voluptates maiores numquam
         omnis. Recusandae magnam hic repudiandae dolor qui unde rerum. Voluptas asperiores
@@ -7500,198 +7586,198 @@ models:
         occaecati illum nam voluptas. Voluptates voluptatum quia quos ut expedita
         minus aut. Rerum distinctio enim necessitatibus. Aperiam sed maxime inventore
         mollitia. Quo et natus dolor amet reiciendis cumque at.</p>"
-    project_ref: *66
-    start_at: 2017-12-26
-    end_at: 2018-01-12
-    participation_method: ideation
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:08'
-    updated_at: '2018-03-28 13:35:08'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
-  - title_multiloc:
-      en: A molestiae magnam quo dolor ut.
-      nl-BE: Veritatis quis assumenda tempora.
-    description_multiloc:
-      en: "<p>Qui itaque quo qui culpa aut. Nisi cupiditate doloremque non aut ex
+      project_ref: *66
+      start_at: 2017-12-26
+      end_at: 2018-01-12
+      participation_method: ideation
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:08'
+      updated_at: '2018-03-28 13:35:08'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 10
+    - title_multiloc:
+        en: A molestiae magnam quo dolor ut.
+        nl-BE: Veritatis quis assumenda tempora.
+      description_multiloc:
+        en: "<p>Qui itaque quo qui culpa aut. Nisi cupiditate doloremque non aut ex
         consequatur. Et neque sint temporibus reprehenderit qui exercitationem.</p><p>Rerum
         ut accusamus dolorum ratione nesciunt consequuntur ducimus. Sapiente in officia
         voluptate harum itaque ipsum. Dolor qui quia voluptatem et.</p><p>Harum ipsum
         esse exercitationem sunt illum aliquam. Quas nemo velit officia dolorem. Tempore
         adipisci et sed ratione. Sequi omnis est quasi voluptatum.</p>"
-      nl-BE: "<p>Nostrum sint numquam et. Numquam repellat dicta voluptatum blanditiis.
+        nl-BE: "<p>Nostrum sint numquam et. Numquam repellat dicta voluptatum blanditiis.
         Reprehenderit fuga ipsam quo omnis. Quam delectus nulla tempore.</p><p>Explicabo
         fuga quibusdam dignissimos voluptatem. Aut inventore et quam quas. Qui eaque
         et accusantium quis et quos in.</p><p>Repudiandae rerum est. Fugiat placeat
         numquam. Omnis placeat ratione quis fugit aut ad quidem. Amet itaque saepe
         aut.</p>"
-    project_ref: *66
-    start_at: 2018-01-13
-    end_at: 2018-02-12
-    participation_method: information
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:08'
-    updated_at: '2018-03-28 13:35:08'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
-  - title_multiloc:
-      en: Quia quo similique aut quaerat molestiae dolores mollitia.
-      nl-BE: Perferendis accusantium corporis et.
-    description_multiloc:
-      en: "<p>Et rem incidunt. Dolore deleniti placeat illum provident perferendis.
+      project_ref: *66
+      start_at: 2018-01-13
+      end_at: 2018-02-12
+      participation_method: information
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:08'
+      updated_at: '2018-03-28 13:35:08'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 10
+    - title_multiloc:
+        en: Quia quo similique aut quaerat molestiae dolores mollitia.
+        nl-BE: Perferendis accusantium corporis et.
+      description_multiloc:
+        en: "<p>Et rem incidunt. Dolore deleniti placeat illum provident perferendis.
         Magnam provident aut animi non sunt.</p><p>Laboriosam itaque saepe. Ipsam
         ut tenetur delectus. Reiciendis voluptatem culpa ipsam veritatis fuga et.
         Assumenda eligendi laudantium iusto.</p><p>Autem quia facere suscipit quo
         rerum id. Deleniti similique sed qui laborum quae excepturi. Quas consequuntur
         nihil dignissimos expedita voluptas libero. Aut quisquam repudiandae non.
         Deleniti quaerat et laborum qui culpa.</p>"
-      nl-BE: "<p>Voluptas non odit consectetur ut. Exercitationem ducimus sit nihil dolor.
+        nl-BE: "<p>Voluptas non odit consectetur ut. Exercitationem ducimus sit nihil dolor.
         Accusantium deserunt sequi aliquam rerum repudiandae.</p><p>Fuga quod quam
         quidem. Et distinctio non esse ab. Et architecto laboriosam beatae. Blanditiis
         ut sint excepturi et.</p><p>Soluta ratione sed totam corrupti ut. Quo quisquam
         laboriosam recusandae quis dicta itaque. Deleniti qui sapiente illo blanditiis.
         Impedit ea delectus est numquam nostrum.</p>"
-    project_ref: *66
-    start_at: 2018-02-13
-    end_at: 2018-03-15
-    participation_method: ideation
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:08'
-    updated_at: '2018-03-28 13:35:08'
-    posting_enabled: true
-    commenting_enabled: false
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 1
-  - title_multiloc:
-      en: Rerum minima ea dicta sit.
-      nl-BE: Rerum autem esse molestiae omnis assumenda et.
-    description_multiloc:
-      en: "<p>Non ullam nihil. Quidem ut praesentium eum impedit earum. Ut odit at
+      project_ref: *66
+      start_at: 2018-02-13
+      end_at: 2018-03-15
+      participation_method: ideation
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:08'
+      updated_at: '2018-03-28 13:35:08'
+      posting_enabled: true
+      commenting_enabled: false
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 1
+    - title_multiloc:
+        en: Rerum minima ea dicta sit.
+        nl-BE: Rerum autem esse molestiae omnis assumenda et.
+      description_multiloc:
+        en: "<p>Non ullam nihil. Quidem ut praesentium eum impedit earum. Ut odit at
         esse delectus recusandae.</p><p>Tempore ea magnam deserunt occaecati recusandae
         nostrum. Consectetur perferendis voluptatum ad sint illum. Alias ipsum quisquam
         ut tenetur.</p><p>Assumenda quis eum quidem labore alias. Doloremque culpa
         nulla ut sunt eum. At dolores ipsa in ducimus voluptatem iure.</p>"
-      nl-BE: "<p>Optio recusandae reiciendis ab itaque sapiente aut officiis. Sed accusamus
+        nl-BE: "<p>Optio recusandae reiciendis ab itaque sapiente aut officiis. Sed accusamus
         ullam quidem. Eos impedit repudiandae ut optio ea qui odio. Officia illo veniam
         enim laborum sit fuga aperiam. Voluptatum ducimus iste dolor consequuntur.</p><p>Error
         et reiciendis vero at. Sint dolores quis. Veniam accusantium odit.</p><p>Sed
         ut error incidunt fugit. Excepturi consequatur est. Quae hic sapiente.</p>"
-    project_ref: *66
-    start_at: 2018-03-16
-    end_at: 2018-04-06
-    participation_method: ideation
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:08'
-    updated_at: '2018-03-28 13:35:08'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 9
-  - title_multiloc:
-      en: Ratione temporibus totam molestias quae amet consectetur.
-      nl-BE: Minima tenetur neque modi quidem.
-    description_multiloc:
-      en: "<p>Harum cupiditate fugiat nulla vel veritatis. Dolores error quod ipsam
+      project_ref: *66
+      start_at: 2018-03-16
+      end_at: 2018-04-06
+      participation_method: ideation
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:08'
+      updated_at: '2018-03-28 13:35:08'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 9
+    - title_multiloc:
+        en: Ratione temporibus totam molestias quae amet consectetur.
+        nl-BE: Minima tenetur neque modi quidem.
+      description_multiloc:
+        en: "<p>Harum cupiditate fugiat nulla vel veritatis. Dolores error quod ipsam
         cum enim. Quo officia doloribus et cumque voluptates.</p><p>Eveniet qui sed
         iure occaecati distinctio facilis. Modi cupiditate rerum dolore et beatae
         impedit aut. Nemo nulla reiciendis impedit eum.</p><p>Cum et et earum sint
         esse dolores dignissimos. Laboriosam consequatur vel fuga nihil mollitia.
         Facere beatae est asperiores temporibus.</p>"
-      nl-BE: "<p>Velit nihil eum dignissimos hic iste. Itaque soluta suscipit laudantium
+        nl-BE: "<p>Velit nihil eum dignissimos hic iste. Itaque soluta suscipit laudantium
         aut voluptates dolore voluptas. Voluptas facere eius ex excepturi corrupti
         dolor ab. Laudantium ea ut libero. Qui provident omnis.</p><p>Molestiae voluptatem
         esse architecto rerum vel. Quibusdam ducimus sapiente. Illo rem error qui.
         Vel pariatur minus.</p><p>Perspiciatis in rerum tenetur et quasi. Quia corrupti
         et. Eum sapiente et dolores. Et rerum natus aut aut. Necessitatibus at unde
         quo id dignissimos.</p>"
-    project_ref: *66
-    start_at: 2018-04-07
-    end_at: 2018-04-20
-    participation_method: ideation
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:08'
-    updated_at: '2018-03-28 13:35:08'
-    posting_enabled: false
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: limited
-    reacting_like_limited_max: 9
-  - title_multiloc:
-      en: Quaerat odio adipisci aspernatur amet nihil provident consectetur nostrum.
-      nl-BE: Officiis quia velit est molestias aspernatur soluta.
-    description_multiloc:
-      en: "<p>Laudantium perspiciatis sit qui soluta. Exercitationem corporis ut.
+      project_ref: *66
+      start_at: 2018-04-07
+      end_at: 2018-04-20
+      participation_method: ideation
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:08'
+      updated_at: '2018-03-28 13:35:08'
+      posting_enabled: false
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: limited
+      reacting_like_limited_max: 9
+    - title_multiloc:
+        en: Quaerat odio adipisci aspernatur amet nihil provident consectetur nostrum.
+        nl-BE: Officiis quia velit est molestias aspernatur soluta.
+      description_multiloc:
+        en: "<p>Laudantium perspiciatis sit qui soluta. Exercitationem corporis ut.
         Maiores consequatur labore. Non architecto magnam accusantium iure blanditiis
         ex tempora.</p><p>Repellat quae autem aut ipsum ut eaque ad. Dicta harum consequuntur
         numquam. Est aut vero. In similique officiis illo non minus quam veritatis.</p><p>Est
         et unde dolorem quidem. Hic voluptatem autem possimus at. Non consequuntur
         aut harum nulla quis dolor voluptas. Quo atque mollitia unde sapiente.</p>"
-      nl-BE: "<p>Sunt veritatis aut similique dolores. Officia occaecati reiciendis doloremque
+        nl-BE: "<p>Sunt veritatis aut similique dolores. Officia occaecati reiciendis doloremque
         accusantium consequatur id. Neque qui est hic.</p><p>Quibusdam fugit sint
         accusantium maxime. Qui omnis vel sunt. Ut in qui. Voluptas sit occaecati.
         Perferendis ea laudantium dolores dolor autem dolor culpa.</p><p>Est consequatur
         nemo vel voluptatem voluptatibus. Dolor eaque fugiat dolorum nesciunt. Ut
         sit eum ipsam vel consequuntur.</p>"
-    project_ref: *66
-    start_at: 2018-04-21
-    end_at: 2018-04-26
-    participation_method: ideation
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:08'
-    updated_at: '2018-03-28 13:35:08'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: false
-    reacting_like_method: limited
-    reacting_like_limited_max: 13
-  - title_multiloc:
-      en: Sed quibusdam odio qui beatae doloremque.
-      nl-BE: Quia nam qui eligendi.
-    description_multiloc:
-      en: "<p>Totam id eos id et laboriosam officia iusto. Distinctio sint ut minima
+      project_ref: *66
+      start_at: 2018-04-21
+      end_at: 2018-04-26
+      participation_method: ideation
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:08'
+      updated_at: '2018-03-28 13:35:08'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: false
+      reacting_like_method: limited
+      reacting_like_limited_max: 13
+    - title_multiloc:
+        en: Sed quibusdam odio qui beatae doloremque.
+        nl-BE: Quia nam qui eligendi.
+      description_multiloc:
+        en: "<p>Totam id eos id et laboriosam officia iusto. Distinctio sint ut minima
         pariatur earum. Qui nulla ut.</p><p>Laboriosam consequatur perspiciatis. Provident
         ratione esse magni laboriosam. Quo enim dolorem ex libero. Earum ut cum et.
         Et accusantium optio nam qui dolorem vero quia.</p><p>Et dolorum maxime. Occaecati
         nam quos maxime. Et quas iste officiis qui.</p>"
-      nl-BE: "<p>Omnis atque ipsam officiis eveniet vitae. Amet accusantium alias omnis.
+        nl-BE: "<p>Omnis atque ipsam officiis eveniet vitae. Amet accusantium alias omnis.
         Nesciunt ad necessitatibus tenetur beatae possimus soluta. Ut quod magni sunt.</p><p>Atque
         est quibusdam accusamus ipsa. Blanditiis cupiditate ab quisquam dolores totam
         quidem omnis. In ut id. Odio vero maiores sed iusto. Amet quod sint consequatur
         in.</p><p>Et necessitatibus iusto animi rem. Voluptates quis quaerat consequuntur
         minus enim architecto et. Qui molestias vel sed est porro. Placeat aut nihil
         quas dolores ullam.</p>"
-    project_ref: *85
-    start_at: 2018-02-09
-    end_at: 2018-02-25
-    participation_method: information
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:09'
-    updated_at: '2018-03-28 13:35:09'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
-  - title_multiloc:
-      en: Quod illo sunt nostrum ullam sit sint fugiat odit.
-      nl-BE: Adipisci sunt rerum maiores eaque.
-    description_multiloc:
-      en: "<p>Sint assumenda illo modi sit molestiae. Et voluptatem repellat possimus
+      project_ref: *85
+      start_at: 2018-02-09
+      end_at: 2018-02-25
+      participation_method: information
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:09'
+      updated_at: '2018-03-28 13:35:09'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 10
+    - title_multiloc:
+        en: Quod illo sunt nostrum ullam sit sint fugiat odit.
+        nl-BE: Adipisci sunt rerum maiores eaque.
+      description_multiloc:
+        en: "<p>Sint assumenda illo modi sit molestiae. Et voluptatem repellat possimus
         unde et officia. Quidem eos ratione ipsa eum ut. Cum aut et est.</p><p>Dicta
         sint qui omnis sit est officiis ducimus. Qui vel ratione quis. Omnis officia
         rerum excepturi quas aspernatur soluta. Officiis corporis eum soluta labore
@@ -7699,57 +7785,57 @@ models:
         voluptatem aut. Sunt hic occaecati iusto vero. Sit aliquid quia est consequatur
         ipsam iure. Perspiciatis quisquam dicta aut. Dolor vel nemo perspiciatis voluptates
         voluptate voluptas.</p>"
-      nl-BE: "<p>Recusandae repellat exercitationem quibusdam. Sapiente deleniti nam
+        nl-BE: "<p>Recusandae repellat exercitationem quibusdam. Sapiente deleniti nam
         facilis. Eos dicta dignissimos magnam quis temporibus. Sint accusantium modi
         reprehenderit sit ab.</p><p>Est ut ut soluta. Consequuntur id voluptatem quis.
         Odit voluptas id sed ex voluptate facere vero. Aut dolores ab enim doloribus
         distinctio exercitationem ad.</p><p>Porro nemo dignissimos aliquid aliquam.
         Animi dolor eaque libero. Reiciendis quidem repellendus et est asperiores
         nostrum rem. Maxime quam neque cum eos voluptatem. Qui omnis deleniti eum.</p>"
-    project_ref: *85
-    start_at: 2018-02-26
-    end_at: 2018-03-18
-    participation_method: information
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:09'
-    updated_at: '2018-03-28 13:35:09'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
-  - &001
-    title_multiloc:
-      en: Consequatur sed aut consequatur et similique.
-      nl-BE: Distinctio ullam et excepturi perspiciatis.
-    description_multiloc:
-      en: "<p>Non illo modi necessitatibus. Architecto voluptatem velit hic. Minus
+      project_ref: *85
+      start_at: 2018-02-26
+      end_at: 2018-03-18
+      participation_method: information
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:09'
+      updated_at: '2018-03-28 13:35:09'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 10
+    - &001
+      title_multiloc:
+        en: Consequatur sed aut consequatur et similique.
+        nl-BE: Distinctio ullam et excepturi perspiciatis.
+      description_multiloc:
+        en: "<p>Non illo modi necessitatibus. Architecto voluptatem velit hic. Minus
         facilis quidem error iste aut.</p><p>Aut est voluptatem qui non. Quam voluptatem
         repudiandae ratione. Cupiditate temporibus saepe aut suscipit est. Suscipit
         accusantium est.</p><p>Dolorem ipsum nemo consequatur quisquam fuga. Voluptas
         incidunt deserunt. Qui ab voluptatem repellendus architecto ad aperiam culpa.
         Nesciunt quod veritatis nam nostrum autem iure dolor.</p>"
-      nl-BE: "<p>Amet vel impedit voluptate error deleniti. Veniam fuga numquam quibusdam
+        nl-BE: "<p>Amet vel impedit voluptate error deleniti. Veniam fuga numquam quibusdam
         neque. Fugiat ab nihil placeat. Rerum deserunt quasi alias voluptatem reprehenderit
         rerum nisi.</p><p>Autem id nulla porro exercitationem et. Pariatur nobis et.
         Maiores culpa sit totam aut accusamus. Saepe eaque labore ea exercitationem
         cum ut illo.</p><p>Assumenda soluta sint. Laborum itaque commodi deleniti
         cupiditate. Ex quasi ratione quod adipisci consequatur aut. Repudiandae inventore
         quae tempora quia tempore ut. Non vel et ducimus.</p>"
-    project_ref: *85
-    start_at: 2018-03-19
-    end_at: 2018-04-08
-    participation_method: ideation
-    campaigns_settings:
-      project_phase_started: true
-    created_at: '2018-03-28 13:35:09'
-    updated_at: '2018-03-28 13:35:09'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: false
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 7
+      project_ref: *85
+      start_at: 2018-03-19
+      end_at: 2018-04-08
+      participation_method: ideation
+      campaigns_settings:
+        project_phase_started: true
+      created_at: '2018-03-28 13:35:09'
+      updated_at: '2018-03-28 13:35:09'
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: false
+      reacting_like_method: unlimited
+      reacting_like_limited_max: 7
   event:
   - project_ref: *76
     title_multiloc: events.council_meeting_title
@@ -7942,22 +8028,22 @@ models:
     updated_at: '2018-03-28 13:35:07'
   polls/question:
     - &question-kicker
-      participation_context_ref: *polling
+      phase_ref: *polling_phase
       title_multiloc:
         en: 'Should we get a new kicker?'
       ordering: 1
     - &question-kicker-past
-      participation_context_ref: *pastPolling
+      phase_ref: *pastPolling
       title_multiloc:
         en: 'Should we get a new kicker?'
       ordering: 1
     - &question-kicker-verified
-      participation_context_ref: *verifiedPoll
+      phase_ref: *verifiedPoll_phase
       title_multiloc:
         en: 'Should we get a new kicker?'
       ordering: 1
     - &question-kicker-charlie
-      participation_context_ref: *charliesPoll
+      phase_ref: *charliesPoll_phase
       title_multiloc:
         en: 'Should we get a new kicker?'
       ordering: 1
@@ -8004,7 +8090,7 @@ models:
       ordering: 1
   polls/response:
     - &jordan-response
-      participation_context_ref: *polling
+      phase_ref: *polling_phase
       user_ref: *77
   polls/response_option:
     - response_ref: *jordan-response
@@ -8033,6 +8119,44 @@ models:
     phase_ref: *55
   - idea_ref: *609
     phase_ref: *001
+  - idea_ref: *Pb_idea
+    phase_ref: *Pb_phase
+  - idea_ref: *charliesPb_idea
+    phase_ref: *charliesPb_phase
+  - idea_ref: *206
+    phase_ref: *verifiedPb_phase
+  - idea_ref: *198
+    phase_ref: *verifiedPb_phase
+  - idea_ref: *controversial_idea
+    phase_ref: *76_phase
+  - idea_ref: *oldIdea
+    phase_ref: *76_phase
+  - idea_ref: *newIdea
+    phase_ref: *76_phase
+  - idea_ref: *topic_idea
+    phase_ref: *76_phase
+  - idea_ref: *290
+    phase_ref: *76_phase
+  - idea_ref: *354
+    phase_ref: *76_phase
+  - idea_ref: *328
+    phase_ref: *76_phase
+  - idea_ref: *443
+    phase_ref: *76_phase
+  - idea_ref: *394
+    phase_ref: *76_phase
+  - idea_ref: *1156
+    phase_ref: *76_phase
+  - idea_ref: *854
+    phase_ref: *121_phase
+  - idea_ref: *1259
+    phase_ref: *121_phase
+  - idea_ref: *209
+    phase_ref: *121_phase
+  - idea_ref: *verifiedIdea
+    phase_ref: *verifiedIdeation_phase
+  - idea_ref: *charliesIdea
+    phase_ref: *charliesIdeation_phase
   areas:
     - title_multiloc:
         en: Carrotgem
@@ -8070,63 +8194,63 @@ models:
     - &111
       action: posting_idea
       permitted_by: groups
-      permission_scope_ref: *verifiedIdeation
+      permission_scope_ref: *verifiedIdeation_phase
     - &112
       action: reacting_idea
       permitted_by: groups
-      permission_scope_ref: *verifiedIdeation
+      permission_scope_ref: *verifiedIdeation_phase
     - &113
       action: commenting_idea
       permitted_by: groups
-      permission_scope_ref: *verifiedIdeation
+      permission_scope_ref: *verifiedIdeation_phase
     - &1132
       action: taking_poll
       permitted_by: groups
-      permission_scope_ref: *verifiedPoll
+      permission_scope_ref: *verifiedPoll_phase
     - &114
       action: voting
       permitted_by: groups
-      permission_scope_ref: *verifiedPb
+      permission_scope_ref: *verifiedPb_phase
     - &115
       action: taking_survey
       permitted_by: groups
-      permission_scope_ref: *verifiedSurvey
+      permission_scope_ref: *verifiedSurvey_phase
     - &1111
       action: posting_idea
       permitted_by: groups
-      permission_scope_ref: *charliesIdeation
+      permission_scope_ref: *charliesIdeation_phase
     - &1112
       action: reacting_idea
       permitted_by: groups
-      permission_scope_ref: *charliesIdeation
+      permission_scope_ref: *charliesIdeation_phase
     - &1113
       action: commenting_idea
       permitted_by: everyone_confirmed_email
-      permission_scope_ref: *charliesIdeation
+      permission_scope_ref: *charliesIdeation_phase
     - &1114
       action: voting
       permitted_by: groups
-      permission_scope_ref: *charliesPb
+      permission_scope_ref: *charliesPb_phase
     - &1115
       action: taking_survey
       permitted_by: groups
-      permission_scope_ref: *charliesSurvey
+      permission_scope_ref: *charliesSurvey_phase
     - &1116
       action: taking_poll
       permitted_by: groups
-      permission_scope_ref: *charliesPoll
+      permission_scope_ref: *charliesPoll_phase
     - &1117
       action: posting_idea
       permitted_by: groups
-      permission_scope_ref: *charliesVerifiedPPlproject
+      permission_scope_ref: *charliesVerifiedPPlproject_phase
     - &1118
       action: reacting_idea
       permitted_by: groups
-      permission_scope_ref: *charliesVerifiedPPlproject
+      permission_scope_ref: *charliesVerifiedPPlproject_phase
     - &1119
       action: commenting_idea
       permitted_by: groups
-      permission_scope_ref: *charliesVerifiedPPlproject
+      permission_scope_ref: *charliesVerifiedPPlproject_phase
   groups_permissions:
   - permission_ref: *111
     group_ref: *verified
@@ -15767,7 +15891,7 @@ models:
     updated_at: 2020-03-18 13:32:07 UTC
   custom_form:
   - &custom_idea_fields_custom_form
-    participation_context_ref: *custom_idea_fields_project
+    participation_context_ref: *custom_idea_fields_project_phase
   custom_field:
   - &5
     resource_type: User

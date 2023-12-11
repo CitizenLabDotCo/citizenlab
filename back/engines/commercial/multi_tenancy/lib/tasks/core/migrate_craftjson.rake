@@ -5,7 +5,21 @@ MULTILOC_TYPES = {
   'Button' => 'ButtonMultiloc',
   'Image' => 'ImageMultiloc',
   'Iframe' => 'IframeMultiloc',
-  'Accordion' => 'AccordionMultiloc'
+  'Accordion' => 'AccordionMultiloc',
+  # Report builder components:
+  'Title' => 'TitleMultiloc',
+  'SurveyResultsWidget' => 'SurveyResultsWidget',
+  'MostReactedIdeasWidget' => 'MostReactedIdeasWidget',
+  'MostVotedIdeas' => 'MostReactedIdeasWidget',
+  'ReactionsByTimeWidget' => 'ReactionsByTimeWidget',
+  'VotesByTimeWidget' => 'ReactionsByTimeWidget',
+  'CommentsByTimeWidget' => 'CommentsByTimeWidget',
+  'VisitorsWidget' => 'VisitorsWidget',
+  'VisitorsTrafficSourcesWidget' => 'VisitorsTrafficSourcesWidget',
+  'PostsByTimeWidget' => 'PostsByTimeWidget',
+  'ActiveUsersWidget' => 'ActiveUsersWidget',
+  'GenderWidget' => 'GenderWidget',
+  'AgeWidget' => 'AgeWidget'
 }
 TEXT_PROPS = %w[text alt title]
 CONTAINER_TYPES = %w[TwoColumn Container ThreeColumn]

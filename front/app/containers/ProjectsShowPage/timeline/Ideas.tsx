@@ -20,12 +20,12 @@ import { getInputTermMessage } from 'utils/i18n';
 import styled from 'styled-components';
 
 // utils
-import { ideaDefaultSortMethodFallback } from 'utils/participationContexts';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
+import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
 const Container = styled.div``;
 
