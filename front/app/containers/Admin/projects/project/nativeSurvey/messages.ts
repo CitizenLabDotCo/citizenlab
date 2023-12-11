@@ -21,9 +21,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2',
     defaultMessage: 'No survey responses yet',
   },
-  surveyResults2: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResults2',
-    defaultMessage: 'Survey results',
+  surveyResponses: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResponses',
+    defaultMessage: 'Survey responses',
   },
   downloadResults2: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResults2',
@@ -66,6 +66,10 @@ export default defineMessages({
   editSurveyContent2: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2',
     defaultMessage: 'Edit survey content',
+  },
+  editSurvey: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.editSurvey',
+    defaultMessage: 'Edit survey',
   },
   viewSurveyText2: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2',
@@ -152,8 +156,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.text2',
     defaultMessage: 'Short answer',
   },
-  downloadExcelTemplate: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate',
-    defaultMessage: 'Download an Excel template',
+  downloadExcelTemplate1: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1',
+    defaultMessage: 'Download an excel template',
+  },
+  addOfflineInputs: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.addOfflineInputs',
+    defaultMessage: 'Add offline inputs',
   },
 });

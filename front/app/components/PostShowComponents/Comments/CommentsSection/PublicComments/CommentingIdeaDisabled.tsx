@@ -32,18 +32,14 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
   } = idea.data.attributes.action_descriptor.commenting_idea;
 
   const signUpIn = (flow: 'signin' | 'signup') => {
-    const pcType = phaseId ? 'phase' : 'project';
-    const pcId =
-      pcType === 'phase' && phaseId
-        ? phaseId
-        : idea.data.relationships.project.data.id;
+    if (!phaseId) return;
 
     triggerAuthenticationFlow({
       flow,
       context: {
         action: 'commenting_idea',
-        id: pcId,
-        type: pcType,
+        id: phaseId,
+        type: 'phase',
       },
     });
   };

@@ -454,7 +454,6 @@ const IdeasMap = memo<Props>((props) => {
         >
           <IdeaButton
             projectId={projectId}
-            participationContextType={phaseId ? 'phase' : 'project'}
             latLng={selectedLatLng}
             inMap={true}
             phase={phase?.data}

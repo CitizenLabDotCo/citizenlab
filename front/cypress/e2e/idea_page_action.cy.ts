@@ -1,30 +1,44 @@
 import { randomString, randomEmail } from '../support/commands';
+import moment = require('moment');
 
 describe('Idea show page actions', () => {
   let projectId = '';
   let projectSlug = '';
   let ideaId = '';
   let ideaSlug = '';
+  const phaseTitle = randomString();
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: randomString(20),
       descriptionPreview: randomString(),
       description: randomString(),
       publicationStatus: 'published',
-      participationMethod: 'ideation',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-
-      cy.apiCreateIdea(projectId, randomString(20), randomString()).then(
-        (idea) => {
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+        return cy.apiCreatePhase({
+          projectId,
+          title: phaseTitle,
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
+      })
+      .then((phase) => {
+        cy.apiCreateIdea({
+          projectId,
+          ideaTitle: randomString(20),
+          ideaContent: randomString(),
+          phaseIds: [phase.body.data.id],
+        }).then((idea) => {
           ideaId = idea.body.data.id;
           ideaSlug = idea.body.data.attributes.slug;
-        }
-      );
-    });
+        });
+      });
   });
 
   after(() => {
@@ -160,14 +174,16 @@ describe('Idea show page actions', () => {
         const lastName = randomString();
         cy.apiSignup(firstName, lastName, email, password);
 
-        cy.apiCreateIdea(projectId, randomString(20), randomString()).then(
-          (idea) => {
-            ideaId2 = idea.body.data.id;
-            ideaSlug2 = idea.body.data.attributes.slug;
+        cy.apiCreateIdea({
+          projectId,
+          ideaTitle: randomString(20),
+          ideaContent: randomString(),
+        }).then((idea) => {
+          ideaId2 = idea.body.data.id;
+          ideaSlug2 = idea.body.data.attributes.slug;
 
-            cy.apiAddComment(ideaId2, 'idea', randomString());
-          }
-        );
+          cy.apiAddComment(ideaId2, 'idea', randomString());
+        });
       });
 
       after(() => {

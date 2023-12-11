@@ -93,10 +93,7 @@ const QuestionDetailsFormRow = ({ question, onCancelOptionEditing }: Props) => {
       updatePollQuestion({
         questionId: question.id,
         ...diff,
-        participationContextId:
-          question.relationships.participation_context.data.id,
-        participationContextType:
-          question.relationships.participation_context.data.type,
+        phaseId: question.relationships.phase.data.id,
       });
     }
   };

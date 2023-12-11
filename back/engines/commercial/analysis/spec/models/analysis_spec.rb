@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Analysis::Analysis do
-  subject { build(:analysis) }
+  subject { build(:analysis, project: create(:single_phase_ideation_project)) }
 
   describe 'Default factory' do
     it { is_expected.to be_valid }
@@ -11,55 +11,42 @@ RSpec.describe Analysis::Analysis do
 
   describe 'validate project_or_phase_form_context' do
     it 'is not valid when both a project and phase are set' do
-      analysis = build(:analysis, project: build(:project), phase: build(:phase))
+      analysis = build(:analysis, project: create(:single_phase_ideation_project), phase: create(:phase))
       expect(analysis).to be_invalid
     end
 
-    it 'is valid when only a project is set' do
-      analysis = build(:analysis, project: build(:project), phase: nil)
+    it 'is valid for a single phase ideation project' do
+      analysis = build(:analysis, project: create(:single_phase_ideation_project), phase: nil)
       expect(analysis).to be_valid
     end
 
-    it 'is valid when only a phase is set' do
-      analysis = build(:analysis, project: false, phase: build(:native_survey_phase))
-      expect(analysis).to be_valid
-    end
-  end
-
-  describe 'validates project_or_phase_form_context' do
-    it 'is valid for a continuous ideation project' do
-      project = build(:continuous_project)
-      analysis = build(:analysis, project: project)
+    it 'is valid for a single phase voting project' do
+      analysis = build(:analysis, project: create(:single_phase_budgeting_project), phase: nil)
       expect(analysis).to be_valid
     end
 
-    it 'is valid for a continuous survey project' do
-      project = build(:continuous_native_survey_project)
-      analysis = build(:analysis, project: project, phase: nil)
+    it 'is valid for a native survey phase' do
+      analysis = build(:analysis, project: false, phase: create(:native_survey_phase))
       expect(analysis).to be_valid
     end
 
-    it 'is valid for a survey phase' do
-      phase = build(:native_survey_phase)
-      analysis = build(:analysis, phase: phase, project: nil)
-      expect(analysis).to be_valid
+    it 'is not valid for an single phase survey project' do
+      analysis = build(:analysis, project: create(:single_phase_native_survey_project), phase: nil)
+      expect(analysis).not_to be_valid
     end
 
     it 'is not valid for an ideation phase' do
-      phase = build(:phase)
-      analysis = build(:analysis, phase: phase, project: nil)
+      analysis = build(:analysis, phase: create(:phase), project: nil)
       expect(analysis).to be_invalid
     end
 
     it 'is not valid for a voting phase' do
-      phase = build(:voting_phase)
-      analysis = build(:analysis, phase: phase, project: nil)
+      analysis = build(:analysis, phase: create(:single_voting_phase), project: nil)
       expect(analysis).to be_invalid
     end
 
     it 'is not valid for a non-input phase' do
-      phase = build(:poll_phase)
-      analysis = build(:analysis, phase: phase, project: nil)
+      analysis = build(:analysis, phase: create(:poll_phase), project: nil)
       expect(analysis).to be_invalid
     end
   end

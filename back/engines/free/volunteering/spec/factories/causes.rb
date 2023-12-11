@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :cause, class: 'Volunteering::Cause' do
-    participation_context { create(:continuous_volunteering_project) }
+    phase { create(:volunteering_phase) }
     sequence(:title_multiloc) do |n|
       {
         'en' => "Good cause #{n}",

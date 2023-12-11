@@ -7,36 +7,45 @@ class Factory
   end
 
   def participation_method_for(participation_context)
-    case participation_context&.participation_method
-    when 'information'
-      ::ParticipationMethod::Information.new(participation_context)
-    when 'ideation'
-      ::ParticipationMethod::Ideation.new(participation_context)
-    when 'document_annotation'
-      ::ParticipationMethod::DocumentAnnotation.new(participation_context)
-    when 'survey'
-      ::ParticipationMethod::Survey.new(participation_context)
-    when 'voting'
-      ::ParticipationMethod::Voting.new(participation_context)
-    when 'poll'
-      ::ParticipationMethod::Poll.new(participation_context)
-    when 'volunteering'
-      ::ParticipationMethod::Volunteering.new(participation_context)
-    when 'native_survey'
-      ::ParticipationMethod::NativeSurvey.new(participation_context)
+    # NOTE: if a project is passed to this method, timeline projects used to always return 'Ideation'
+    # as it was never set and defaulted to this when the participation_method was available on the project
+    # The following mimics the same behaviour now that participation method is not available on the project
+    # TODO: Maybe change to find phase with ideation or voting where created date between start and end date?
+    if participation_context.instance_of?(::Project)
+      ::ParticipationMethod::Ideation.new(participation_context.phases.first)
     else
-      ::ParticipationMethod::None.new
+      phase = participation_context
+      case phase&.participation_method
+      when 'information'
+        ::ParticipationMethod::Information.new(phase)
+      when 'ideation'
+        ::ParticipationMethod::Ideation.new(phase)
+      when 'document_annotation'
+        ::ParticipationMethod::DocumentAnnotation.new(phase)
+      when 'survey'
+        ::ParticipationMethod::Survey.new(phase)
+      when 'voting'
+        ::ParticipationMethod::Voting.new(phase)
+      when 'poll'
+        ::ParticipationMethod::Poll.new(phase)
+      when 'volunteering'
+        ::ParticipationMethod::Volunteering.new(phase)
+      when 'native_survey'
+        ::ParticipationMethod::NativeSurvey.new(phase)
+      else
+        ::ParticipationMethod::None.new
+      end
     end
   end
 
-  def voting_method_for(participation_context)
-    case participation_context&.voting_method
+  def voting_method_for(phase)
+    case phase&.voting_method
     when 'budgeting'
-      ::VotingMethod::Budgeting.new(participation_context)
+      ::VotingMethod::Budgeting.new(phase)
     when 'multiple_voting'
-      ::VotingMethod::MultipleVoting.new(participation_context)
+      ::VotingMethod::MultipleVoting.new(phase)
     when 'single_voting'
-      ::VotingMethod::SingleVoting.new(participation_context)
+      ::VotingMethod::SingleVoting.new(phase)
     else
       ::VotingMethod::None.new
     end

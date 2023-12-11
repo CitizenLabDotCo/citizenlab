@@ -20,8 +20,9 @@ const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 const IdeaFormBuilder = () => {
   const [exportModalOpen, setExportModalOpen] = useState(false);
 
-  const { projectId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
 
   const { data: formCustomFields } = useFormCustomFields({
@@ -29,7 +30,7 @@ const IdeaFormBuilder = () => {
   });
   const locale = useLocale();
 
-  const goBackUrl = `/admin/projects/${projectId}/ideaform`;
+  const goBackUrl = `/admin/projects/${projectId}/phases/${phaseId}/ideaform`;
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 

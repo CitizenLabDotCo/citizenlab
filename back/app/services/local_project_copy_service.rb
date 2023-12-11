@@ -48,10 +48,7 @@ class LocalProjectCopyService < ProjectCopyService
   end
 
   def copy_project_and_phases_actions_groups_permissions(source_project, copied_project)
-    # Copy actions groups_permissions of continuous project. For example, groups that can 'React to ideas'.
-    copy_actions_groups_permissions(source_project, copied_project)
-
-    # Copy actions groups_permissions of phases of timeline project. For example, groups that can 'React to ideas'.
+    # Copy actions groups_permissions of project phases. For example, groups that can 'React to ideas'.
     source_phases = source_project.phases.order(:start_at)
     copied_phases = copied_project.phases.order(:start_at)
 
@@ -60,8 +57,8 @@ class LocalProjectCopyService < ProjectCopyService
     end
   end
 
-  def copy_actions_groups_permissions(source_object, copied_object)
-    source_object.permissions.each do |permission|
+  def copy_actions_groups_permissions(phase, copied_object)
+    phase.permissions.each do |permission|
       next unless permission.permitted_by == 'groups'
 
       copied_permission = copied_object.permissions.where(action: permission.action).first

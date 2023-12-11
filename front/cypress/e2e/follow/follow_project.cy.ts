@@ -13,13 +13,10 @@ describe('Follow project', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: '',
       description: '',
       publicationStatus: 'published',
-      allow_anonymous_participation: true,
-      participationMethod: 'ideation',
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;

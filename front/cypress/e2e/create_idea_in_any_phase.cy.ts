@@ -11,7 +11,6 @@ describe('Idea creation', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: description,
       description,
@@ -55,9 +54,8 @@ describe('Idea creation', () => {
   it('allows the admin to add an idea to an old phase', () => {
     const newIdeaTitle = randomString(40);
 
-    cy.visit(`/admin/projects/${projectId}/timeline`);
-    cy.get('#e2e-add-an-input').click();
-    cy.get(`#e2e-phase-${phaseId}`).click({ force: true });
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideas`);
+    cy.get('#e2e-new-idea').click();
 
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
@@ -71,6 +69,10 @@ describe('Idea creation', () => {
     cy.get('#e2e-idea-title-input input').type(`${newIdeaTitle}`);
     cy.get('#e2e-idea-description-input .ql-editor').type(newIdeaContent);
 
+    // verify that image and file upload components are present
+    cy.get('#e2e-idea-image-upload').should('exist');
+    cy.get('#e2e-idea-file-upload').should('exist');
+
     // add a topic
     cy.get('.e2e-topics-picker').find('button').eq(4).click();
 
@@ -83,12 +85,15 @@ describe('Idea creation', () => {
     cy.get('.e2e-idea-form-location-input-field input').type(
       'Boulevard Anspach Brussels'
     );
-    cy.wait(5000);
-    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
 
-    // verify that image and file upload components are present
-    cy.get('#e2e-idea-image-upload');
-    cy.get('#e2e-idea-file-upload');
+    // wait for the autocomplete to appear. Waiting for the api call doesn't seem to be enough but doing this for now
+    cy.wait(10000);
+
+    cy.get('.e2e-idea-form-location-input-field input').type(
+      '{downArrow}{enter}'
+    );
+
+    cy.get('.e2e-idea-form-location-input-field input');
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();

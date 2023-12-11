@@ -1,4 +1,5 @@
 import { randomString, randomEmail } from '../../support/commands';
+import moment = require('moment');
 
 describe('Follow idea', () => {
   const firstName = randomString();
@@ -10,6 +11,7 @@ describe('Follow idea', () => {
   const ideaTitle2 = randomString(40);
   const ideaContent2 = randomString(60);
   const projectTitle = randomString();
+  const phaseTitle = randomString();
   let userId: string;
   let ideaId1: string;
   let ideaSlug1: string;
@@ -21,27 +23,46 @@ describe('Follow idea', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: '',
       description: '',
       publicationStatus: 'published',
-      allow_anonymous_participation: true,
-      participationMethod: 'ideation',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+        return cy.apiCreatePhase({
+          projectId,
+          title: phaseTitle,
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          allow_anonymous_participation: true,
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
+      })
+      .then((phase) => {
+        cy.apiCreateIdea({
+          projectId,
+          ideaTitle: ideaTitle1,
+          ideaContent: ideaContent1,
+          phaseIds: [phase.body.data.id],
+        }).then((idea) => {
+          ideaId1 = idea.body.data.id;
+          ideaSlug1 = idea.body.data.attributes.slug;
+        });
 
-      cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1).then((idea) => {
-        ideaId1 = idea.body.data.id;
-        ideaSlug1 = idea.body.data.attributes.slug;
+        cy.apiCreateIdea({
+          projectId,
+          ideaTitle: ideaTitle2,
+          ideaContent: ideaContent2,
+          phaseIds: [phase.body.data.id],
+        }).then((idea) => {
+          ideaId2 = idea.body.data.id;
+          ideaSlug2 = idea.body.data.attributes.slug;
+        });
       });
-
-      cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2).then((idea) => {
-        ideaId2 = idea.body.data.id;
-        ideaSlug2 = idea.body.data.attributes.slug;
-      });
-    });
 
     cy.apiSignup(firstName, lastName, email, password).then((response) => {
       userId = response.body.data.id;

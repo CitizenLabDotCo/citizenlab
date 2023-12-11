@@ -1,7 +1,9 @@
 import { randomEmail, randomString } from '../support/commands';
+import moment = require('moment');
 
 describe('Idea with anonymous commenting allowed', () => {
   const projectTitle = randomString();
+  const phaseTitle = randomString();
   const ideaTitle = randomString(20);
   const ideaContent = randomString(60);
   const email = randomEmail();
@@ -19,23 +21,38 @@ describe('Idea with anonymous commenting allowed', () => {
     cy.setAdminLoginCookie();
     cy.getAuthUser().then(() => {
       cy.apiCreateProject({
-        type: 'continuous',
         title: projectTitle,
         descriptionPreview: '',
         description: '',
         publicationStatus: 'published',
-        allow_anonymous_participation: true,
-        participationMethod: 'ideation',
-      }).then((project) => {
-        projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
-        return cy
-          .apiCreateIdea(projectId, ideaTitle, ideaContent)
-          .then((idea) => {
-            ideaId = idea.body.data.id;
-            ideaSlug = idea.body.data.attributes.slug;
+      })
+        .then((project) => {
+          projectId = project.body.data.id;
+          projectSlug = project.body.data.attributes.slug;
+          return cy.apiCreatePhase({
+            projectId,
+            title: phaseTitle,
+            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+            participationMethod: 'ideation',
+            canPost: true,
+            canComment: true,
+            canReact: true,
+            allow_anonymous_participation: true,
           });
-      });
+        })
+        .then((phase) => {
+          return cy
+            .apiCreateIdea({
+              projectId,
+              ideaTitle,
+              ideaContent,
+              phaseIds: [phase.body.data.id],
+            })
+            .then((idea) => {
+              ideaId = idea.body.data.id;
+              ideaSlug = idea.body.data.attributes.slug;
+            });
+        });
     });
   });
 

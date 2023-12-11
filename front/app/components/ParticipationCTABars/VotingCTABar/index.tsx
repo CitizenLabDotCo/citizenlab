@@ -33,8 +33,7 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
     return getCurrentPhase(phases) || getLastPhase(phases);
   }, [phases]);
 
-  const participationContext = currentPhase ?? project;
-  const basketId = participationContext.relationships.user_basket?.data?.id;
+  const basketId = currentPhase?.relationships.user_basket?.data?.id;
 
   const { data: basket } = useBasket(basketId);
 
@@ -42,7 +41,7 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
     return null;
   }
 
-  const votingMethod = participationContext.attributes.voting_method;
+  const votingMethod = currentPhase?.attributes.voting_method;
   if (!votingMethod || numberOfVotesCast === undefined) return null;
 
   const currency = appConfig?.data.attributes.settings.core.currency;
@@ -50,7 +49,7 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const votesCounter = getVotesCounter(
     formatMessage,
     localize,
-    participationContext,
+    currentPhase,
     numberOfVotesCast,
     currency
   );
@@ -69,12 +68,7 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
         <ParticipationCTAContent
           currentPhase={currentPhase}
           hasUserParticipated={false}
-          CTAButton={
-            <CTAButton
-              projectId={project.id}
-              participationContext={participationContext}
-            />
-          }
+          CTAButton={<CTAButton projectId={project.id} phase={currentPhase} />}
           participationState={
             <Text color="white" m="0px" fontSize="s" aria-live="polite">
               {votesCounter}

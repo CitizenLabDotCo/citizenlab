@@ -292,13 +292,6 @@ models:
       description_multiloc: projects.open_idea_project_description
       description_preview_multiloc: projects.open_idea_project_description_preview
       internal_role: open_idea_box
-      presentation_mode: card
-      process_type: continuous
-      participation_method: ideation
-      posting_enabled: true
-      commenting_enabled: true
-      reacting_enabled: true
-      reacting_like_method: unlimited
       remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
       admin_publication_attributes: {}
   project_image:
@@ -353,6 +346,19 @@ models:
     - project_ref: *open_idea_project
       topic_ref: *topic-other
       ordering: 15
+  phase:
+    - &open_idea_project_current
+      title_multiloc: phases.open_idea_phase_title
+      project_ref: *open_idea_project
+      start_at_timediff: -1440
+      end_at: null
+      participation_method: ideation
+      campaigns_settings:
+        project_phase_started: true
+      posting_enabled: true
+      commenting_enabled: true
+      reacting_enabled: true
+      reacting_like_method: unlimited
   event:
     - project_ref: *open_idea_project
       title_multiloc: events.council_meeting_title

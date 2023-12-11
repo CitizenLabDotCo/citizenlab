@@ -4,15 +4,14 @@ import PageLoading from 'components/UI/PageLoading';
 import IdeaFormBuilder from './project/inputForm/IdeaFormBuilder';
 import SurveyFormBuilder from './project/nativeSurvey/SurveyFormBuilder';
 import AdminProjectIdeaPreviewIndex from './AdminProjectIdeaPreviewIndex';
+import { Navigate } from 'react-router-dom';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
+const AdminProjectsProjectSettings = lazy(() => import('./project/settings'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
-const AdminProjectTimeline = lazy(() => import('./project/timeline'));
-const AdminProjectTimelineNewAndEdit = lazy(
-  () => import('./project/timeline/edit')
-);
+const AdminPhaseNewAndEdit = lazy(() => import('./project/timeline/edit'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
 const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
 const AdminProjectPermissions = lazy(() => import('./project/permissions'));
@@ -71,13 +70,12 @@ const createAdminProjectsRoutes = () => {
         ),
       },
       {
-        path: ':projectId',
+        path: ':projectId/settings',
         element: (
           <PageLoading>
-            <AdminProjectsProjectIndex />
+            <AdminProjectsProjectSettings />
           </PageLoading>
         ),
-        // all routes under /admin/projects/:projectId
         children: [
           {
             index: true,
@@ -88,34 +86,10 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'timeline',
+            path: 'description',
             element: (
               <PageLoading>
-                <AdminProjectTimeline />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'timeline/new',
-            element: (
-              <PageLoading>
-                <AdminProjectTimelineNewAndEdit />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'timeline/:id/ideas',
-            element: (
-              <PageLoading>
-                <AdminProjectIdeas />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'timeline/:id',
-            element: (
-              <PageLoading>
-                <AdminProjectTimelineNewAndEdit />
+                <AdminProjectDescription />
               </PageLoading>
             ),
           },
@@ -144,15 +118,75 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'permissions',
+            path: 'tags',
+            element: <AdminAllowedTopicsComponent />,
+          },
+          {
+            path: 'access-rights',
             element: (
               <PageLoading>
                 <AdminProjectPermissions />
               </PageLoading>
             ),
           },
+        ],
+      },
+      {
+        path: ':projectId',
+        element: (
+          <PageLoading>
+            <AdminProjectsProjectIndex />
+          </PageLoading>
+        ),
+        // all routes under /admin/projects/:projectId
+        children: [
           {
-            path: 'survey-results',
+            path: '',
+            element: <Navigate to="phases/setup" replace />,
+          },
+          {
+            path: 'phases/setup',
+            element: (
+              <PageLoading>
+                <AdminPhaseNewAndEdit />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'phases/:phaseId/setup',
+            element: (
+              <PageLoading>
+                <AdminPhaseNewAndEdit />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'phases/new',
+            element: (
+              <PageLoading>
+                <AdminPhaseNewAndEdit />
+              </PageLoading>
+            ),
+          },
+          // TODO: Hook up input manager on phase
+          // {
+          //   path: 'timeline/:id/ideas',
+          //   element: (
+          //     <PageLoading>
+          //       <AdminProjectIdeas />
+          //     </PageLoading>
+          //   ),
+          // },
+          {
+            path: 'phases/:phaseId',
+            element: (
+              <PageLoading>
+                <AdminPhaseNewAndEdit />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'phases/:phaseId/survey-results',
             element: (
               <PageLoading>
                 <AdminProjectSurveyResults />
@@ -160,7 +194,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'poll',
+            path: 'phases/:phaseId/polls',
             element: (
               <PageLoading>
                 <AdminProjectPoll />
@@ -168,15 +202,15 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'description',
+            path: 'phases/:phaseId/access-rights',
             element: (
               <PageLoading>
-                <AdminProjectDescription />
+                <AdminProjectPermissions />
               </PageLoading>
             ),
           },
           {
-            path: 'ideas',
+            path: 'phases/:phaseId/ideas',
             element: (
               <PageLoading>
                 <AdminProjectIdeas />
@@ -184,7 +218,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'ideaform',
+            path: 'phases/:phaseId/ideaform',
             element: (
               <PageLoading>
                 <AdminProjectIdeaForm />
@@ -192,7 +226,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'volunteering',
+            path: 'phases/:phaseId/volunteering',
             element: (
               <PageLoading>
                 <AdminProjectVolunteering />
@@ -200,7 +234,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'volunteering/causes/new',
+            path: 'phases/:phaseId/volunteering/causes/new',
             element: (
               <PageLoading>
                 <AdminProjectVolunteeringNew />
@@ -208,15 +242,11 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'native-survey',
+            path: 'phases/:phaseId/native-survey',
             element: <AdminProjectsSurvey />,
           },
           {
-            path: 'native-survey/results',
-            element: <AdminProjectsSurvey />,
-          },
-          {
-            path: 'volunteering/phases/:phaseId/causes/new',
+            path: 'phases/:phaseId/volunteering/causes/new',
             element: (
               <PageLoading>
                 <AdminProjectVolunteeringNew />
@@ -240,30 +270,22 @@ const createAdminProjectsRoutes = () => {
             element: <SurveyFormBuilder />,
           },
           {
-            path: 'volunteering/causes/:causeId',
+            path: 'phases/:phaseId/volunteering/causes/:causeId',
             element: (
               <PageLoading>
                 <AdminProjectVolunteeringEdit />
               </PageLoading>
             ),
           },
-          {
-            path: 'allowed-input-topics',
-            element: <AdminAllowedTopicsComponent />,
-          },
+          // {
+          //   path: 'allowed-input-topics',
+          //   element: <AdminAllowedTopicsComponent />,
+          // },
           {
             path: 'analysis/:analysisId',
             element: (
               <PageLoading>
                 <AdminProjectAnalysis />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'offline-inputs',
-            element: (
-              <PageLoading>
-                <OfflineInputImporter />
               </PageLoading>
             ),
           },

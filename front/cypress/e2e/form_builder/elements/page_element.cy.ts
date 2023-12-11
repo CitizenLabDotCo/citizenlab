@@ -1,4 +1,5 @@
 import { randomString } from '../../../support/commands';
+import moment = require('moment');
 
 describe('Form builder page element', () => {
   const projectTitle = randomString();
@@ -6,6 +7,7 @@ describe('Form builder page element', () => {
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
+  let phaseId: string;
 
   beforeEach(() => {
     if (projectId) {
@@ -13,22 +15,35 @@ describe('Form builder page element', () => {
     }
 
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'native_survey',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-    });
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+        return cy.apiCreatePhase({
+          projectId,
+          title: 'firstPhaseTitle',
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'native_survey',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
+      })
+      .then((phase) => {
+        phaseId = phase.body.data.id;
+      });
 
     cy.setAdminLoginCookie();
   });
 
   it('adds page element and tests settings', () => {
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.visit(
+      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
+    );
     cy.get('[data-cy="e2e-page"]').click();
     cy.get('#e2e-field-group-title-multiloc').type('Page title', {
       force: true,
@@ -47,7 +62,9 @@ describe('Form builder page element', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Reload page
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.visit(
+      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
+    );
     cy.contains('Page title').click();
 
     // Confirm the settings are loaded correctly
@@ -55,7 +72,7 @@ describe('Form builder page element', () => {
     cy.contains('Page description').should('exist');
 
     // Go to the survey page
-    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
     // Go to the next page
     cy.get('[data-cy="e2e-next-page"]').click();
@@ -72,7 +89,9 @@ describe('Form builder page element', () => {
   });
 
   it('does not let the user delete the page if there is only one page', () => {
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.visit(
+      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
+    );
     cy.get('[data-cy="e2e-page"]').click();
     cy.get('#e2e-field-group-title-multiloc').type('Page title', {
       force: true,
