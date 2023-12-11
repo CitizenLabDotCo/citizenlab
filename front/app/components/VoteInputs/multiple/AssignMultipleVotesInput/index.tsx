@@ -40,19 +40,18 @@ import {
 
 // typings
 import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 interface Props {
   ideaId: string;
-  participationContext: IPhaseData | IProjectData;
+  phase: IPhaseData;
   fillWidth?: boolean;
   onIdeaPage?: boolean;
 }
 
 const AssignMultipleVotesInput = ({
   ideaId,
-  participationContext,
+  phase,
   fillWidth,
   onIdeaPage,
 }: Props) => {
@@ -63,7 +62,7 @@ const AssignMultipleVotesInput = ({
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
   // participation context
-  const basketId = participationContext.relationships?.user_basket?.data?.id;
+  const basketId = phase.relationships?.user_basket?.data?.id;
 
   // api
   const { data: basket } = useBasket(basketId);
@@ -91,21 +90,19 @@ const AssignMultipleVotesInput = ({
     }
 
     if (isFixableByAuthentication(actionDescriptor.disabled_reason)) {
-      const participationContextId = participationContext.id;
-      const participationContextType = participationContext.type;
+      const phaseId = phase.id;
 
       const context = {
-        type: participationContextType,
+        type: 'phase',
         action: 'voting',
-        id: participationContextId,
+        id: phaseId,
       } as const;
 
       const successAction: SuccessAction = {
         name: 'vote',
         params: {
           ideaId,
-          participationContextId,
-          participationContextType,
+          phaseId,
           votes: 1,
         },
       };
@@ -140,7 +137,7 @@ const AssignMultipleVotesInput = ({
     voting_term_plural_multiloc,
     voting_max_votes_per_idea,
     voting_max_total,
-  } = participationContext.attributes;
+  } = phase.attributes;
 
   if (isNil(voting_max_votes_per_idea)) return null;
 

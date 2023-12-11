@@ -147,23 +147,20 @@ class ParticipantsService
     # voting
     if actions.include? :voting
       baskets = Basket.submitted
-      baskets = baskets.where(participation_context: projects)
-        .or(baskets.where(participation_context: Phase.where(project: projects)))
+      baskets = baskets.where(phase: Phase.where(project: projects))
       baskets = baskets.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: baskets.select(:user_id)))
     end
     # Polling
     if actions.include? :polling
-      poll_responses = Polls::Response.where(participation_context: projects)
-        .or(Polls::Response.where(participation_context: Phase.where(project: projects)))
+      poll_responses = Polls::Response.where(phase: Phase.where(project: projects))
       poll_responses = poll_responses.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: poll_responses.select(:user_id)))
     end
     # Volunteering
     if actions.include? :volunteering
       volunteering_users = User.joins(volunteers: [:cause])
-      volunteering_users = volunteering_users.where(volunteering_causes: { participation_context: projects })
-        .or(volunteering_users.where(volunteering_causes: { participation_context: Phase.where(project: projects) }))
+      volunteering_users = volunteering_users.where(volunteering_causes: { phase: Phase.where(project: projects) })
       participants = participants.or(User.where(id: volunteering_users))
     end
     participants

@@ -7,7 +7,7 @@ resource 'Creating users for a project import' do
     header 'Content-Type', 'application/json'
   end
 
-  let(:project) { create(:continuous_project) }
+  let(:project) { create(:single_phase_ideation_project) }
 
   post 'web_api/v1/projects/:project_id/create_user' do
     parameter :project_id, 'ID of the project.', required: true

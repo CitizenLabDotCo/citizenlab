@@ -18,7 +18,7 @@ import {
 import useAddApiClient from 'api/api_clients/useAddApiClient';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import styled from 'styled-components';
-import Warning from "components/UI/Warning";
+import Warning from 'components/UI/Warning';
 
 interface FormValues {
   name: string;
@@ -118,7 +118,7 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
                 values={{
                   secret: <span>client_secret</span>,
                   b: (chunks) => (
-                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                   ),
                 }}
               />

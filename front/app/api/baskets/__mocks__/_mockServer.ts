@@ -9,10 +9,10 @@ export const basketData: IBasketData = {
     total_votes: 1000,
   },
   relationships: {
-    participation_context: {
+    phase: {
       data: {
         id: '1',
-        type: 'project',
+        type: 'phase',
       },
     },
     user: {

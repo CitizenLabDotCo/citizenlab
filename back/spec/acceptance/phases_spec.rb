@@ -96,22 +96,22 @@ resource 'Phases' do
       with_options scope: :phase do
         parameter :title_multiloc, 'The title of the phase in nultiple locales', required: true
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.', required: false
-        parameter :participation_method, "The participation method of the project, either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
+        parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :posting_enabled, 'Can citizens post ideas in this phase? Defaults to true', required: false
-        parameter :posting_method, "How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
+        parameter :posting_method, "How does posting work? Either #{Phase::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
         parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase? Defaults to true', required: false
         parameter :reacting_enabled, 'Can citizens react in this phase? Defaults to true', required: false
-        parameter :reacting_like_method, "How does reacting work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_like_method, "How does reacting work? Either #{Phase::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
         parameter :reacting_like_limited_max, 'Number of likes a citizen can perform in this phase, only if the reacting_like_method is limited. Defaults to 10', required: false
         parameter :reacting_dislike_enabled, 'Can citizens dislikes in this phase? Defaults to true', required: false
-        parameter :reacting_dislike_method, "How does disliking work? Either #{ParticipationContext::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :reacting_dislike_method, "How does disliking work? Either #{Phase::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
         parameter :reacting_dislike_limited_max, 'Number of dislikes a citizen can perform in this phase, only if the reacting_dislike_method is limited. Defaults to 10', required: false
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously. Defaults to false', required: false
-        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Phase::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
-        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
-        parameter :voting_method, "Either #{ParticipationContext::VOTING_METHODS.join(',')}. Required when the participation method is voting.", required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyPhase::SURVEY_SERVICES.join(',')}", required: false
+        parameter :voting_method, "Either #{Phase::VOTING_METHODS.join(',')}. Required when the participation method is voting.", required: false
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting. Required when the voting method is budgeting.', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
@@ -380,22 +380,22 @@ resource 'Phases' do
         parameter :project_id, 'The id of the project this phase belongs to'
         parameter :title_multiloc, 'The title of the phase in nultiple locales'
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.'
-        parameter :participation_method, "The participation method of the project, either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
+        parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :posting_enabled, 'Can citizens post ideas in this phase?', required: false
-        parameter :posting_method, "How does posting work? Either #{ParticipationContext::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
+        parameter :posting_method, "How does posting work? Either #{Phase::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
         parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase?', required: false
         parameter :reacting_enabled, 'Can citizens react in this phase?', required: false
-        parameter :reacting_like_method, "How does liking work? Either #{ParticipationContext::REACTING_METHODS.join(',')}", required: false
+        parameter :reacting_like_method, "How does liking work? Either #{Phase::REACTING_METHODS.join(',')}", required: false
         parameter :reacting_like_limited_max, 'Number of likes a citizen can perform in this phase, only if the reacting_like_method is limited', required: false
         parameter :reacting_dislike_enabled, 'Can citizens react in this phase?', required: false
-        parameter :reacting_dislike_method, "How does disliking work? Either #{ParticipationContext::REACTING_METHODS.join(',')}", required: false
+        parameter :reacting_dislike_method, "How does disliking work? Either #{Phase::REACTING_METHODS.join(',')}", required: false
         parameter :reacting_dislike_limited_max, 'Number of dislikes a citizen can perform in this phase, only if the reacting_dislike_method is limited', required: false
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously.', required: false
-        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Phase::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
-        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
-        parameter :voting_method, "Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyPhase::SURVEY_SERVICES.join(',')}", required: false
+        parameter :voting_method, "Either #{Phase::VOTING_METHODS.join(',')}", required: false
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false

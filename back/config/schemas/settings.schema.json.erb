@@ -986,6 +986,18 @@
         }
       },
 
+      "granular_permissions": {
+        "type": "object",
+        "title": "Granular Permissions",
+        "description": "Admin can specify permissions for specific projects and project phases (e.g., who can post, react, etc.).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
       "ideaflow_social_sharing": {
         "type": "object",
         "title": "Share Ideas on Social Media",

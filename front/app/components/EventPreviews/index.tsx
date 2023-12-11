@@ -51,23 +51,18 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const params = useParams<{ slug: string }>();
   const { data: project } = useProjectBySlug(params.slug);
   const projectIdToUse = projectId || project?.data.id;
-  const projectType = project?.data.attributes.process_type;
   const { data: phases } = usePhases(projectIdToUse);
   const { data: events } = useEvents({
     projectIds: projectIdToUse ? [projectIdToUse] : undefined,
     currentAndFutureOnly: true,
     sort: '-start_at',
-    ongoing_during:
-      projectType === 'timeline'
-        ? [
-            moment(
-              getCurrentPhase(phases?.data)?.attributes.start_at
-            ).toString() || null,
-            moment(getCurrentPhase(phases?.data)?.attributes.end_at)
-              .add(1, 'day')
-              .toString() || null,
-          ]
-        : undefined,
+    ongoing_during: [
+      moment(getCurrentPhase(phases?.data)?.attributes.start_at).toString() ||
+        null,
+      moment(getCurrentPhase(phases?.data)?.attributes.end_at)
+        .add(1, 'day')
+        .toString() || null,
+    ],
   });
 
   // scrolling
@@ -106,10 +101,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
           variant="h5"
           style={{ fontWeight: 600 }}
         >
-          {projectType === 'continuous'
-            ? formatMessage(messages.eventPreviewContinuousTitle)
-            : formatMessage(messages.eventPreviewTimelineTitle)}
-          :
+          {formatMessage(messages.eventPreviewTimelineTitle)}
         </Title>
         <Box
           id="e2e-event-previews"

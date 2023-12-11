@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "Pārbaudīt tagad",
   "app.containers.landing.verifyYourIdentity": "Pārbaudiet savu identitāti",
   "app.containers.landing.viewAllEventsText": "Skatīt visus notikumus",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Atpakaļ uz mapi",
   "app.errors.after_end_at": "Sākuma datums ir pēc beigu datuma",
   "app.errors.avatar_carrierwave_download_error": "Nevarēja lejupielādēt avatāra failu.",
   "app.errors.avatar_carrierwave_integrity_error": "Avatāra fails nav atļautā tipa.",

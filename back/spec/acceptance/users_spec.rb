@@ -769,7 +769,7 @@ resource 'Users' do
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
-          let(:project) { create(:continuous_project, with_permissions: true) }
+          let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }) }
 
           before do
             old_timers = create(:smart_group, rules: [
@@ -781,7 +781,7 @@ resource 'Users' do
               }
             ])
 
-            project.permissions.find_by(action: 'posting_idea')
+            project.phases.first.permissions.find_by(action: 'posting_idea')
               .update!(permitted_by: 'groups', groups: [old_timers])
           end
 
@@ -993,7 +993,7 @@ resource 'Users' do
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
-          let(:project) { create(:continuous_project) }
+          let(:project) { create(:single_phase_ideation_project) }
           let(:onboarding) { { topics_and_areas: 'satisfied' } }
 
           example_request 'Update a user' do
@@ -1262,7 +1262,8 @@ resource 'Users' do
           create(:idea, author: @user)
           create(:idea)
           create(:idea, author: @user, publication_status: 'draft')
-          create(:idea, author: @user, project: create(:continuous_native_survey_project))
+          survey_project = create(:single_phase_native_survey_project)
+          create(:idea, author: @user, project: survey_project, creation_phase: survey_project.phases.first)
           do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)

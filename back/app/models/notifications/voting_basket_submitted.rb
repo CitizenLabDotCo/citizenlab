@@ -78,8 +78,8 @@ module Notifications
         [new(
           recipient_id: recipient_id,
           basket: basket,
-          project: basket.participation_context.project,
-          phase: basket.participation_context.phase? ? basket.participation_context : nil
+          project: basket.phase.project,
+          phase: basket.phase
         )]
       else
         []

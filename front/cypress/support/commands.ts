@@ -1,13 +1,10 @@
 import 'cypress-file-upload';
 import './dnd';
-import {
-  ParticipationMethod,
-  VotingMethod,
-} from '../../app/utils/participationContexts';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 
 import jwtDecode from 'jwt-decode';
+import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -66,8 +63,8 @@ declare global {
       apiEnableProjectDescriptionBuilder: typeof apiEnableProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
-      apiSetProjectPermission: typeof apiSetProjectPermission;
-      apiGetProjectPermission: typeof apiGetProjectPermission;
+      apiSetPhasePermission: typeof apiSetPhasePermission;
+      apiGetPhasePermission: typeof apiGetPhasePermission;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
       apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
@@ -526,16 +523,29 @@ export function getUserBySlug(userSlug: string) {
   });
 }
 
-export function apiCreateIdea(
-  projectId: string,
-  ideaTitle: string,
-  ideaContent: string,
-  locationGeoJSON?: { type: string; coordinates: number[] },
-  locationDescription?: string,
-  jwt?: string,
-  budget?: number,
-  anonymous?: boolean
-) {
+type IdeaType = {
+  projectId: string;
+  ideaTitle: string;
+  ideaContent: string;
+  locationGeoJSON?: { type: string; coordinates: number[] };
+  locationDescription?: string;
+  jwt?: string;
+  budget?: number;
+  anonymous?: boolean;
+  phaseIds?: string[];
+};
+
+export function apiCreateIdea({
+  projectId,
+  ideaTitle,
+  ideaContent,
+  locationGeoJSON,
+  locationDescription,
+  jwt,
+  budget,
+  anonymous,
+  phaseIds,
+}: IdeaType) {
   let headers: { 'Content-Type': string; Authorization: string } | null = null;
 
   if (jwt) {
@@ -571,6 +581,7 @@ export function apiCreateIdea(
           location_description: locationDescription,
           budget,
           anonymous,
+          phase_ids: phaseIds,
         },
       },
     });
@@ -807,35 +818,17 @@ export function apiRemoveComment(commentId: string) {
 }
 
 export function apiCreateProject({
-  type,
   title,
   descriptionPreview,
   description,
   publicationStatus = 'published',
-  participationMethod,
-  votingMethod,
   assigneeId,
-  surveyUrl,
-  surveyService,
-  votingMaxTotal,
-  votingMaxVotesPerIdea,
-  postingEnabled,
-  allow_anonymous_participation,
 }: {
-  type: 'timeline' | 'continuous';
   title: string;
   descriptionPreview: string;
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
-  participationMethod?: ParticipationMethod;
-  votingMethod?: VotingMethod;
   assigneeId?: string;
-  surveyUrl?: string;
-  votingMaxTotal?: number;
-  votingMaxVotesPerIdea?: number;
-  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
-  postingEnabled?: boolean;
-  allow_anonymous_participation?: boolean;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -849,7 +842,6 @@ export function apiCreateProject({
       url: 'web_api/v1/projects',
       body: {
         project: {
-          process_type: type,
           admin_publication_attributes: {
             publication_status: publicationStatus,
           },
@@ -868,17 +860,6 @@ export function apiCreateProject({
             'nl-BE': description,
           },
           default_assignee_id: assigneeId,
-          participation_method:
-            type === 'continuous' && !participationMethod
-              ? 'ideation'
-              : participationMethod,
-          voting_method: votingMethod,
-          survey_embed_url: surveyUrl,
-          survey_service: surveyService,
-          voting_max_total: votingMaxTotal,
-          voting_max_votes_per_idea: votingMaxVotesPerIdea,
-          posting_enabled: postingEnabled,
-          allow_anonymous_participation: allow_anonymous_participation,
         },
       },
     });
@@ -887,7 +868,6 @@ export function apiCreateProject({
 
 export function apiEditProject({
   projectId,
-  type,
   title,
   descriptionPreview,
   description,
@@ -898,7 +878,6 @@ export function apiEditProject({
   votingMaxTotal,
 }: {
   projectId: string;
-  type?: 'timeline' | 'continuous';
   title?: string;
   descriptionPreview?: string;
   description?: string;
@@ -920,7 +899,6 @@ export function apiEditProject({
       url: `web_api/v1/projects/${projectId}`,
       body: {
         project: {
-          ...(type && { process_type: type }),
           ...(publicationStatus && {
             admin_publication_attributes: {
               publication_status: publicationStatus,
@@ -945,9 +923,6 @@ export function apiEditProject({
             },
           }),
           ...(assigneeId && { default_assignee_id: assigneeId }),
-          ...(surveyUrl && { survey_embed_url: surveyUrl }),
-          ...(surveyService && { survey_service: surveyService }),
-          ...(votingMaxTotal && { voting_max_total: votingMaxTotal }),
         },
       },
     });
@@ -955,13 +930,11 @@ export function apiEditProject({
 }
 
 export function apiCreateFolder({
-  type,
   title,
   descriptionPreview,
   description,
   publicationStatus = 'published',
 }: {
-  type: 'timeline' | 'continuous';
   title: string;
   descriptionPreview: string;
   description: string;
@@ -980,7 +953,6 @@ export function apiCreateFolder({
       url: 'web_api/v1/project_folders',
       body: {
         project_folder: {
-          process_type: type,
           admin_publication_attributes: {
             publication_status: publicationStatus,
           },
@@ -1091,8 +1063,7 @@ export function apiRemoveCustomPage(customPageId: string) {
 }
 
 export function apiAddPoll(
-  type: 'Project' | 'Phase',
-  id: string,
+  phaseId: string,
   questions: { title: string; type: 'single_option' | 'multiple_options' }[],
   options: string[][]
 ) {
@@ -1108,8 +1079,7 @@ export function apiAddPoll(
         method: 'POST',
         url: 'web_api/v1/poll_questions',
         body: {
-          participation_context_id: id,
-          participation_context_type: type,
+          phase_id: phaseId,
           title_multiloc: { en: question.title },
           question_type: question.type,
           max_options: question.type === 'single_option' ? null : '2',
@@ -1154,7 +1124,7 @@ export function apiCreatePhase({
   projectId: string;
   title: string;
   startAt: string;
-  endAt: string;
+  endAt?: string;
   participationMethod: ParticipationMethod;
   canPost?: boolean;
   canReact?: boolean;
@@ -1407,7 +1377,7 @@ export function apiRemoveReportBuilder(reportId: string) {
   });
 }
 
-export type IParticipationContextPermissionAction =
+export type IPhasePermissionAction =
   | 'posting_idea'
   | 'reacting_idea'
   | 'commenting_idea'
@@ -1417,13 +1387,11 @@ export type IParticipationContextPermissionAction =
   | 'annotating_document';
 
 type ApiSetPermissionTypeProps = {
-  projectId: string;
-  phaseId?: string;
+  phaseId: string;
   permissionBody?: any;
-  action: IParticipationContextPermissionAction;
+  action: IPhasePermissionAction;
 };
-export function apiSetProjectPermission({
-  projectId,
+export function apiSetPhasePermission({
   phaseId,
   permissionBody,
   action,
@@ -1431,63 +1399,39 @@ export function apiSetProjectPermission({
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    if (phaseId) {
-      return cy.request({
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
-        },
-        method: 'PATCH',
-        url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
-        body: permissionBody,
-      });
-    } else {
-      return cy.request({
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
-        },
-        method: 'PATCH',
-        url: `web_api/v1/projects/${projectId}/permissions/${action}`,
-        body: permissionBody,
-      });
-    }
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
+      body: permissionBody,
+    });
   });
 }
 
-export function apiGetProjectPermission({
-  projectId,
+export function apiGetPhasePermission({
   phaseId,
   action,
 }: ApiSetPermissionTypeProps) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    if (phaseId) {
-      return cy.request({
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
-        },
-        method: 'GET',
-        url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
-      });
-    } else {
-      return cy.request({
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
-        },
-        method: 'GET',
-        url: `web_api/v1/projects/${projectId}/permissions/${action}`,
-      });
-    }
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
+    });
   });
 }
 
 export function apiSetPermissionCustomField(
   phaseId: string,
-  action: IParticipationContextPermissionAction,
+  action: IPhasePermissionAction,
   custom_field_id: string
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
@@ -1672,8 +1616,8 @@ Cypress.Commands.add('apiGetUsersCount', apiGetUsersCount);
 Cypress.Commands.add('apiGetSeats', apiGetSeats);
 Cypress.Commands.add('apiGetAppConfiguration', apiGetAppConfiguration);
 Cypress.Commands.add('apiUpdateAppConfiguration', apiUpdateAppConfiguration);
-Cypress.Commands.add('apiGetProjectPermission', apiGetProjectPermission);
-Cypress.Commands.add('apiSetProjectPermission', apiSetProjectPermission);
+Cypress.Commands.add('apiGetPhasePermission', apiGetPhasePermission);
+Cypress.Commands.add('apiSetPhasePermission', apiSetPhasePermission);
 Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('acceptCookies', acceptCookies);
 Cypress.Commands.add('getIdeaById', getIdeaById);

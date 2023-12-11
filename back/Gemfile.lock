@@ -83,13 +83,6 @@ PATH
       rails (~> 7.0)
 
 PATH
-  remote: engines/commercial/granular_permissions
-  specs:
-    granular_permissions (0.1.0)
-      pundit (~> 2.0)
-      rails (~> 7.0)
-
-PATH
   remote: engines/commercial/id_auth0
   specs:
     id_auth0 (0.1.0)
@@ -313,7 +306,6 @@ PATH
   remote: engines/commercial/verification
   specs:
     verification (0.1.0)
-      granular_permissions
       pundit (~> 2.0)
       rails (~> 7.0)
       ros-apartment (>= 2.9.0)
@@ -1269,7 +1261,6 @@ DEPENDENCIES
   geographic_dashboard!
   google-cloud-document_ai
   google_tag_manager!
-  granular_permissions!
   groupdate (~> 4.1)
   icalendar (~> 2.9)
   ice_cube (~> 0.16)

@@ -5,8 +5,8 @@ require 'rails_helper'
 describe BasketsIdeaPolicy do
   subject { described_class.new(user, baskets_idea) }
 
-  let(:context) { create(:continuous_single_voting_project) }
-  let(:basket) { create(:basket, participation_context: context) }
+  let(:context) { create(:single_phase_single_voting_project).phases.first }
+  let(:basket) { create(:basket, phase: context) }
   let!(:baskets_idea) { create(:baskets_idea, basket: basket) }
 
   let(:scope) { BasketsIdeaPolicy::Scope.new(user, basket.baskets_ideas) }

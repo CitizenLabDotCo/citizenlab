@@ -1,6 +1,5 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { IParticipationContextType } from 'typings';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -40,17 +39,10 @@ const Container = styled.div`
 //   projectId: string
 // };
 
-interface InputProps {
-  type: IParticipationContextType;
-  phaseId: string | null;
+interface Props {
+  phaseId: string;
   projectId: string;
 }
-
-interface DataProps {
-  pollQuestions: GetPollQuestionsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
 
 const disabledMessages: { [key in PollDisabledReason] } = {
   project_inactive: messages.pollDisabledProjectInactive,
@@ -64,20 +56,14 @@ const disabledMessages: { [key in PollDisabledReason] } = {
   not_permitted: messages.pollDisabledNotPermitted,
 };
 
-const Poll = ({ projectId, phaseId, type }: Props) => {
+const Poll = ({ projectId, phaseId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const { data: pollQuestions } = usePollQuestions({
-    participationContextId:
-      type === 'project' ? projectId : (phaseId as string),
-    participationContextType: type,
+    phaseId,
   });
 
-  if (
-    isNilOrError(pollQuestions) ||
-    !project ||
-    !(type === 'phase' ? phase : true)
-  ) {
+  if (isNilOrError(pollQuestions) || !project || !phase) {
     return null;
   }
 
@@ -99,10 +85,8 @@ const Poll = ({ projectId, phaseId, type }: Props) => {
         <>
           <PollForm
             projectId={projectId}
-            phaseId={phaseId}
             questions={pollQuestions.data}
-            id={type === 'project' ? projectId : phaseId}
-            type={type}
+            phaseId={phaseId}
             disabled={!enabled}
             disabledMessage={message}
             actionDisabledAndNotFixable={actionDisabledAndNotFixable}

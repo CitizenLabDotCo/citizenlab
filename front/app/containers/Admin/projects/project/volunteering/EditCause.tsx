@@ -17,9 +17,10 @@ import useUpdateCause from 'api/causes/useUpdateCause';
 
 const EditCause = () => {
   const { mutateAsync: updateCause } = useUpdateCause();
-  const { projectId, causeId } = useParams() as {
+  const { projectId, causeId, phaseId } = useParams() as {
     projectId: string;
     causeId: string;
+    phaseId: string;
   };
   const { data: cause } = useCause(causeId);
 
@@ -38,7 +39,9 @@ const EditCause = () => {
         },
         {
           onSuccess: () => {
-            clHistory.push(`/admin/projects/${projectId}/volunteering`);
+            clHistory.push(
+              `/admin/projects/${projectId}/phases/${phaseId}/volunteering`
+            );
           },
         }
       );

@@ -28,32 +28,6 @@ export const initiativeResponse: AuthenticationRequirementsResponse = {
   },
 };
 
-export const projectResponse: AuthenticationRequirementsResponse = {
-  data: {
-    type: 'requirements',
-    attributes: {
-      requirements: {
-        permitted: false,
-        requirements: {
-          built_in: {
-            first_name: 'dont_ask',
-            last_name: 'dont_ask',
-            email: 'require',
-          },
-          custom_fields: {},
-          onboarding: {},
-          special: {
-            password: 'dont_ask',
-            confirmation: 'require',
-            verification: 'dont_ask',
-            group_membership: 'dont_ask',
-          },
-        },
-      },
-    },
-  },
-};
-
 export const phaseResponse: AuthenticationRequirementsResponse = {
   data: {
     type: 'requirements',
@@ -108,7 +82,6 @@ export const ideaResponse: AuthenticationRequirementsResponse = {
 
 const globalPath = `${API_PATH}/permissions/visiting/requirements`;
 export const initiativesPath = `${API_PATH}/permissions/posting_initiative/requirements`;
-export const projectPath = `${API_PATH}/projects/123/permissions/posting_idea/requirements`;
 export const phasePath = `${API_PATH}/phases/456/permissions/posting_idea/requirements`;
 export const ideaPath = `${API_PATH}/ideas/789/permissions/commenting_idea/requirements`;
 
@@ -123,12 +96,6 @@ const endpoints = {
     initiativesPath,
     (_req, res, ctx) => {
       return res(ctx.status(200), ctx.json(initiativeResponse));
-    }
-  ),
-  'GET projects/:projectId/permissions/posting_idea/requirements': rest.get(
-    projectPath,
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json(projectResponse));
     }
   ),
   'GET phases/:phaseId/permissions/posting_idea/requirements': rest.get(
