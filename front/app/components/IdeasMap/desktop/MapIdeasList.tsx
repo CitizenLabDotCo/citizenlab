@@ -13,7 +13,6 @@ import Centerer from 'components/UI/Centerer';
 // hooks
 import useLocale from 'hooks/useLocale';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
-import useProjectById from 'api/projects/useProjectById';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import usePhase from 'api/phases/usePhase';
 
@@ -22,7 +21,6 @@ import { useSearchParams } from 'react-router-dom';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // services
-import { ideaDefaultSortMethodFallback } from 'utils/participationContexts';
 
 // i18n
 import messages from '../messages';
@@ -36,6 +34,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { isFieldEnabled } from 'utils/projectUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
 const Container = styled.div`
   width: 100%;
@@ -124,12 +123,11 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
     projectId,
     phaseId,
   });
-  const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 
   const sort =
     (searchParams.get('sort') as Sort | null) ??
-    project?.data.attributes.ideas_order ??
+    phase?.data.attributes.ideas_order ??
     ideaDefaultSortMethodFallback;
   const search = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
@@ -162,11 +160,7 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
   if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
   const methodConfig =
-    project &&
-    getMethodConfig(
-      phase?.data.attributes?.participation_method ||
-        project?.data.attributes?.participation_method
-    );
+    phase && getMethodConfig(phase.data.attributes?.participation_method);
 
   const topicsEnabled = isFieldEnabled(
     'topic_ids',

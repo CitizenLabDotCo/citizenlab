@@ -7,7 +7,7 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { IFormSubmissionCount } from 'api/submission_count/types';
 
-let apiPath = '*projects/:projectId/submission_count';
+let apiPath = '*phases/:phaseId/submission_count';
 
 const statData: IFormSubmissionCount = {
   data: {
@@ -27,25 +27,9 @@ describe('useSubmissionCount', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
-  it('returns data correctly for project', async () => {
-    const { result, waitFor } = renderHook(
-      () => useSubmissionCount({ projectId: 'projectId' }),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
-
-    expect(result.current.isLoading).toBe(true);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(statData);
-  });
-
   it('returns data correctly for phase', async () => {
     const { result, waitFor } = renderHook(
-      () => useSubmissionCount({ projectId: 'projectId' }),
+      () => useSubmissionCount({ phaseId: 'phaseId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -67,7 +51,7 @@ describe('useSubmissionCount', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useSubmissionCount({ projectId: 'projectId', phaseId: 'phaseId' }),
+      () => useSubmissionCount({ phaseId: 'phaseId' }),
       {
         wrapper: createQueryClientWrapper(),
       }

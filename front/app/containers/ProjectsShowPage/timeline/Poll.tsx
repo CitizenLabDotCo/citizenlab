@@ -33,7 +33,7 @@ const PollContainer = memo<Props>(({ projectId, phaseId, className }) => {
         <ProjectPageSectionTitle>
           <FormattedMessage {...messages.navPoll} />
         </ProjectPageSectionTitle>
-        <Poll phaseId={phaseId} projectId={projectId} type="phase" />
+        <Poll phaseId={phaseId} projectId={projectId} />
       </Container>
     );
   }

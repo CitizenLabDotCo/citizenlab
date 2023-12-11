@@ -6,7 +6,6 @@ import FilterSelector from 'components/FilterSelector';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
@@ -19,16 +18,9 @@ type Props = {
   value: Sort;
   onChange: (value: string) => void;
   phase?: IPhaseData;
-  project?: Error | IProjectData | null;
 };
 
-const SortFilterDropdown = ({
-  alignment,
-  value,
-  onChange,
-  phase,
-  project,
-}: Props) => {
+const SortFilterDropdown = ({ alignment, value, onChange, phase }: Props) => {
   const handleOnChange = (selectedValue: string[]) => {
     onChange(selectedValue[0]);
   };
@@ -41,12 +33,8 @@ const SortFilterDropdown = ({
     { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
   ];
 
-  if (!isNilOrError(project)) {
-    const config = getMethodConfig(
-      phase
-        ? phase.attributes.participation_method
-        : project.attributes.participation_method
-    );
+  if (!isNilOrError(phase)) {
+    const config = getMethodConfig(phase.attributes.participation_method);
     if (config?.postSortingOptions) {
       options = config.postSortingOptions;
     }

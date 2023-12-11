@@ -16,7 +16,6 @@ import FollowUnfollow from 'components/FollowUnfollow';
 
 // services
 import { getProjectUrl } from 'api/projects/utils';
-import { getInputTerm } from 'utils/participationContexts';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 
 // resources
@@ -53,6 +52,7 @@ import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { getInputTerm } from 'api/phases/utils';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -447,10 +447,7 @@ const ProjectCard = memo<InputProps>(
     // With this check, we only fetch the phases if the project has loaded already
     // AND there is no current phase, instead of always fetching all the phases
     // for every project for which we're showing a card.
-    const fetchPhases =
-      project &&
-      project.data.attributes.process_type === 'timeline' &&
-      !currentPhaseId;
+    const fetchPhases = project && !currentPhaseId;
 
     const { data: phases } = usePhases(
       fetchPhases ? project.data.id : undefined
@@ -473,20 +470,16 @@ const ProjectCard = memo<InputProps>(
     };
 
     if (project) {
-      const methodConfig = getMethodConfig(
-        project.data.attributes.participation_method
-      );
+      const methodConfig = phase
+        ? getMethodConfig(phase.data.attributes.participation_method)
+        : null;
       const postingPermission = getIdeaPostingRules({
         project: project?.data,
         phase: phase?.data,
         authUser: authUser?.data,
       });
-      const participationMethod = phase
-        ? phase.data.attributes.participation_method
-        : project.data.attributes.participation_method;
-      const votingMethod = phase
-        ? phase.data.attributes.voting_method
-        : project.data.attributes.voting_method;
+      const participationMethod = phase?.data.attributes.participation_method;
+      const votingMethod = phase?.data.attributes.voting_method;
 
       const canPost = !!postingPermission.enabled;
       const canReact =
@@ -509,10 +502,7 @@ const ProjectCard = memo<InputProps>(
         project.data.relationships.avatars.data &&
         project.data.relationships.avatars.data.length > 0;
       const showIdeasCount =
-        !(
-          project.data.attributes.process_type === 'continuous' &&
-          !methodConfig.showInputCount
-        ) && ideasCount > 0;
+        (!methodConfig || methodConfig.showInputCount) && ideasCount > 0;
       const showCommentsCount = commentsCount > 0;
       const showFooter = hasAvatars || showIdeasCount || showCommentsCount;
       const avatarIds =
@@ -527,13 +517,7 @@ const ProjectCard = memo<InputProps>(
         : null;
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
-      const processType = project.data.attributes.process_type;
-      const inputTerm = getInputTerm(
-        processType,
-        project.data,
-        phases?.data,
-        phase?.data
-      );
+      const inputTerm = getInputTerm(phases?.data);
 
       if (isArchived) {
         countdown = (

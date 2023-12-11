@@ -1,4 +1,5 @@
 import { randomString } from '../../support/commands';
+import moment = require('moment');
 
 describe('Project description builder toggle', () => {
   let projectId = '';
@@ -7,6 +8,7 @@ describe('Project description builder toggle', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
   const projectDescription = 'Original project description.';
+  let phaseId: string;
 
   before(() => {
     cy.setAdminLoginCookie();
@@ -16,24 +18,41 @@ describe('Project description builder toggle', () => {
   });
 
   beforeEach(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
+
     cy.setAdminLoginCookie();
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'ideation',
       assigneeId: userId,
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = projectTitle;
-      cy.visit(`/projects/${projectSlug}`);
-    });
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        projectSlug = projectTitle;
+        return cy.apiCreatePhase({
+          projectId,
+          title: 'firstPhaseTitle',
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
+      })
+      .then((phase) => {
+        phaseId = phase.body.data.id;
+        cy.visit(`/projects/${projectSlug}`);
+      });
   });
 
   afterEach(() => {
     cy.apiRemoveProject(projectId);
+    projectId = '';
   });
 
   it('shows original description by default along with any attachments if project description builder is not used', () => {
@@ -41,7 +60,7 @@ describe('Project description builder toggle', () => {
     cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
 
     // Attach a project file
-    cy.visit(`admin/projects/${projectId}`);
+    cy.visit(`admin/projects/${projectId}/settings`);
     cy.scrollTo('bottom');
     cy.acceptCookies();
     cy.get('#e2e-project-file-uploader').selectFile(
@@ -65,7 +84,7 @@ describe('Project description builder toggle', () => {
   });
 
   it('shows original description when project description builder is enabled but there is no content yet', () => {
-    cy.visit(`/admin/projects/${projectId}/description`);
+    cy.visit(`/admin/projects/${projectId}/settings/description`);
     cy.get('#e2e-toggle-enable-project-description-builder').click({
       force: true,
     });
@@ -81,7 +100,7 @@ describe('Project description builder toggle', () => {
     );
 
     // Attach a project file
-    cy.visit(`admin/projects/${projectId}`);
+    cy.visit(`admin/projects/${projectId}/settings`);
     cy.scrollTo('bottom');
     cy.acceptCookies();
     cy.get('#e2e-project-file-uploader').selectFile(
@@ -95,7 +114,7 @@ describe('Project description builder toggle', () => {
     cy.wait('@saveProjectFiles');
     cy.contains('Your form has been saved!').should('be.visible');
 
-    cy.visit(`/admin/projects/${projectId}/description`);
+    cy.visit(`/admin/projects/${projectId}/settings/description`);
     cy.get('#e2e-toggle-enable-project-description-builder').click({
       force: true,
     });

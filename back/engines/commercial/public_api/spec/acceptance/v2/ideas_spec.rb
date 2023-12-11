@@ -26,14 +26,14 @@ resource 'Posts' do
   end
 
   # 2 surveys
-  let!(:survey_continuous) { create(:native_survey_response, created_at: '2020-01-01') }
   let!(:survey_timeline) do
-    timeline_project = create(:project_with_active_native_survey_phase)
-    create(
+    project = create(:project_with_active_native_survey_phase)
+    create_list(
       :native_survey_response,
+      2,
       created_at: '2020-01-01',
-      project: timeline_project,
-      creation_phase: timeline_project.phases.first
+      project: project,
+      creation_phase: project.phases.first
     )
   end
 

@@ -10,7 +10,7 @@ resource 'Idea Custom Fields' do
   get 'web_api/v1/admin/projects/:project_id/custom_fields' do
     parameter :support_free_text_value, 'Only return custom fields that have a freely written textual answer', type: :boolean, required: false
 
-    let(:context) { create(:project) }
+    let(:context) { create(:single_phase_ideation_project) }
     let(:project_id) { context.id }
     let!(:form) { create(:custom_form, :with_default_fields, participation_context: context) }
     let!(:custom_field) { create(:custom_field_text, resource: form, key: 'extra_field1') }

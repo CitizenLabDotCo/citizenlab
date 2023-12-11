@@ -4,26 +4,18 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import causesKeys from './keys';
 import { ICauses, CausesKeys, ICauseParameters } from './types';
 
-const fetchCauses = ({
-  participationContextType,
-  participationContextId,
-}: ICauseParameters) =>
+const fetchCauses = ({ phaseId }: ICauseParameters) =>
   fetcher<ICauses>({
-    path: `/${participationContextType}s/${participationContextId}/causes`,
+    path: `/phases/${phaseId}/causes`,
     action: 'get',
   });
 
-const useCauses = ({
-  participationContextType,
-  participationContextId,
-}: ICauseParameters) => {
+const useCauses = ({ phaseId }: ICauseParameters) => {
   return useQuery<ICauses, CLErrors, ICauses, CausesKeys>({
     queryKey: causesKeys.list({
-      participationContextType,
-      participationContextId,
+      phaseId,
     }),
-    queryFn: () =>
-      fetchCauses({ participationContextId, participationContextType }),
+    queryFn: () => fetchCauses({ phaseId }),
   });
 };
 

@@ -5,7 +5,7 @@ module MultiTenancy
     module Serializers
       module Volunteering
         class Cause < Base
-          ref_attribute :participation_context
+          ref_attribute :phase
           upload_attribute :image
           attributes %i[description_multiloc ordering title_multiloc]
         end

@@ -8,7 +8,7 @@ describe ProjectImagePolicy do
   let(:scope) { ProjectImagePolicy::Scope.new(user, project.project_images) }
 
   context 'on an image in a public project' do
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:single_phase_ideation_project) }
     let!(:image) { create(:project_image, project: project) }
 
     context 'for a visitor' do

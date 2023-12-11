@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "Verifiera nu",
   "app.containers.landing.verifyYourIdentity": "Verifiera din identitet",
   "app.containers.landing.viewAllEventsText": "Visa alla evenemang",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Tillbaka till mappen",
   "app.errors.after_end_at": "Startdatumet infaller efter slutdatumet",
   "app.errors.avatar_carrierwave_download_error": "Det gick inte att ladda ner avatarfilen.",
   "app.errors.avatar_carrierwave_integrity_error": "Avatarfilen är av en otillåten typ.",

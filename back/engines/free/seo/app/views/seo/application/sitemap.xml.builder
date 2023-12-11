@@ -40,14 +40,12 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
       project.updated_at
     )
 
-    if project.process_type == 'timeline'
-      multilingual_sitemap_entry(
-        xml,
-        "#{front_end_url_for(project)}/process",
-        project.admin_publication.publication_status == 'published' ? 0.6 : 0.2,
-        project.updated_at
-      )
-    end
+    multilingual_sitemap_entry(
+      xml,
+      "#{front_end_url_for(project)}/process",
+      project.admin_publication.publication_status == 'published' ? 0.6 : 0.2,
+      project.updated_at
+    )
   end
 
   @folders.each do |folder|

@@ -13,7 +13,7 @@ import useLocalize from 'hooks/useLocalize';
 import { IAreaData } from 'api/areas/types';
 import { useParams } from 'react-router-dom';
 import { TOnProjectAttributesDiffChangeFunction } from '..';
-import { LabelHeaderDescription } from '../../participationContext/components/shared/labels';
+import { LabelHeaderDescription } from '../../phase/phaseParticipationConfig/components/shared/labels';
 
 // styles
 import styled from 'styled-components';
