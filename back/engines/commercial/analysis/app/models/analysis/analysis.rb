@@ -42,19 +42,15 @@ module Analysis
       scope = Idea.published
       if phase_id
         scope.where(creation_phase_id: phase_id)
-      elsif project.timeline?
+      elsif project_id
         scope.where(project_id: project_id, creation_phase: nil)
-      elsif project.continuous?
-        scope.where(project_id: project_id)
       end
     end
 
     def participation_method
       if phase
         phase.participation_method
-      elsif project&.continuous?
-        project.participation_method
-      elsif project&.timeline?
+      elsif project
         'ideation'
       end
     end
@@ -75,10 +71,10 @@ module Analysis
     # The linked project or phase should be a valid form context (the
     # participation_context the custom_form is associated with)
     def project_or_phase_form_context
-      if phase && (phase.can_contain_ideas? || !phase.can_contain_input?)
+      if phase && !phase.uses_input_form?
         errors.add(:base, :project_or_phase_form_context, message: 'An analysis should be associated with a valid form context. The passed phase is not associated with a form definition.')
-      elsif project && !project.can_contain_input?
-        errors.add(:base, :project_or_phase_form_context, message: 'An analysis should be associated with a valid form context. The passed project is not supporting a participation method that can hold inputs')
+      elsif project && !project.uses_input_form?
+        errors.add(:base, :project_or_phase_form_context, message: 'An analysis should be associated with a valid form context. The passed project has no phases supporting a participation method that can hold inputs')
       end
     end
   end

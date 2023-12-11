@@ -12,13 +12,13 @@ import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 // services
-import { getInputTerm } from 'utils/participationContexts';
 import useLocalize from 'hooks/useLocalize';
 import usePhases from 'api/phases/usePhases';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 import useAuthUser from 'api/me/useAuthUser';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { useParams } from 'react-router-dom';
+import { getInputTerm } from 'api/phases/utils';
 
 const IdeasNewMeta = () => {
   const { formatMessage } = useIntl();
@@ -32,11 +32,8 @@ const IdeasNewMeta = () => {
 
   if (project) {
     const projectName = localize(project.data.attributes.title_multiloc);
-    const inputTerm = getInputTerm(
-      project.data.attributes.process_type,
-      project.data,
-      phases?.data
-    );
+
+    const inputTerm = getInputTerm(phases?.data);
     const ideasIndexTitle = formatMessage(
       getInputTermMessage(inputTerm, {
         idea: messages.ideaNewMetaTitle,

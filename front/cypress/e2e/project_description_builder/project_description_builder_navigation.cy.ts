@@ -12,18 +12,16 @@ describe('Project description builder navigation', () => {
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
-        type: 'continuous',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation',
         assigneeId: userId,
       }).then((project) => {
         projectId = project.body.data.id;
         cy.apiEnableProjectDescriptionBuilder({ projectId }).then(() => {
           cy.visit(
-            `/admin/project-description-builder/projects/${projectId}/description`
+            `/admin/project-description-builder/projects/${projectId}/settings/description`
           );
         });
       });
@@ -39,7 +37,7 @@ describe('Project description builder navigation', () => {
   });
 
   it('navigates to project description builder when edit project description link clicked', () => {
-    cy.visit(`/admin/projects/${projectId}/description`);
+    cy.visit(`/admin/projects/${projectId}/settings/description`);
     cy.acceptCookies();
     cy.get('#e2e-project-description-builder-link').click({ force: true });
     cy.url().should(
@@ -51,7 +49,7 @@ describe('Project description builder navigation', () => {
   });
 
   it.skip('navigates to projects list when project settings goBack clicked', () => {
-    cy.visit(`/admin/projects/${projectId}/description`);
+    cy.visit(`/admin/projects/${projectId}/settings/description`);
     cy.get('#e2e-go-back-button').should('exist');
     cy.get('#e2e-go-back-button').click();
     cy.get('#e2e-projects-admin-container').should('exist');
@@ -59,7 +57,7 @@ describe('Project description builder navigation', () => {
   });
 
   it('navigates to project settings when content builder goBack clicked', () => {
-    cy.visit(`/admin/projects/${projectId}/description`);
+    cy.visit(`/admin/projects/${projectId}/settings/description`);
     cy.acceptCookies();
     cy.get('#e2e-project-description-builder-link').click({ force: true });
     cy.url().should(
@@ -72,7 +70,9 @@ describe('Project description builder navigation', () => {
     cy.get('#e2e-go-back-button').click({ force: true });
     cy.url().should(
       'eq',
-      `${Cypress.config().baseUrl}/en/admin/projects/${projectId}/description`
+      `${
+        Cypress.config().baseUrl
+      }/en/admin/projects/${projectId}/settings/description`
     );
   });
 

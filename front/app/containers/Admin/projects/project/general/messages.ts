@@ -56,19 +56,6 @@ export default defineMessages({
     defaultMessage:
       'Projects with a timeline have a clear beginning and end and can have different phases. Projects without a timeline are continuous.',
   },
-  continuous: {
-    id: 'app.containers.AdminPage.ProjectEdit.continuous',
-    defaultMessage: 'Continuous',
-  },
-  continousProjectDeprecationMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.continousProjectDeprecationMessage',
-    defaultMessage:
-      'Projects without a timeline have been deprecated. Instead, you can now decide not to add an end date to a phase if you want to keep it open indefinitely.',
-  },
-  timeline: {
-    id: 'app.containers.AdminPage.ProjectEdit.timeline',
-    defaultMessage: 'Timeline',
-  },
   areasLabelHint: {
     id: 'app.containers.AdminPage.ProjectEdit.areasLabelHint',
     defaultMessage: 'Area filter',

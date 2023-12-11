@@ -15,9 +15,8 @@ export const causesData: ICauseData[] = [
       ordering: 1,
     },
     relationships: {
-      participation_context: {
+      phase: {
         data: {
-          type: 'phase',
           id: '3',
         },
       },
@@ -37,9 +36,8 @@ export const causesData: ICauseData[] = [
       ordering: 2,
     },
     relationships: {
-      participation_context: {
+      phase: {
         data: {
-          type: 'project',
           id: '1',
         },
       },

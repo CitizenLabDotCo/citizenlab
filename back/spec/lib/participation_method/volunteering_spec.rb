@@ -3,24 +3,24 @@
 require 'rails_helper'
 
 RSpec.describe ParticipationMethod::Volunteering do
-  subject(:participation_method) { described_class.new project }
+  subject(:participation_method) { described_class.new phase }
 
   let(:input) { create(:idea) }
-  let(:project) { create(:continuous_project) }
+  let(:phase) { create(:volunteering_phase) }
 
-  describe '#assign_defaults_for_participation_context' do
-    let(:project) { build(:continuous_project) }
+  describe '#assign_defaults_for_phase' do
+    let(:phase) { build(:volunteering_phase) }
 
     it 'does not change the posting_method' do
       expect do
-        participation_method.assign_defaults_for_participation_context
-      end.not_to change(project, :posting_method)
+        participation_method.assign_defaults_for_phase
+      end.not_to change(phase, :posting_method)
     end
 
     it 'does not change the ideas_order' do
       expect do
-        participation_method.assign_defaults_for_participation_context
-      end.not_to change(project, :ideas_order)
+        participation_method.assign_defaults_for_phase
+      end.not_to change(phase, :ideas_order)
     end
   end
 
@@ -40,7 +40,7 @@ RSpec.describe ParticipationMethod::Volunteering do
   describe '#default_fields' do
     it 'returns an empty list' do
       expect(
-        participation_method.default_fields(create(:custom_form, participation_context: project)).map(&:code)
+        participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
       ).to eq []
     end
   end
@@ -96,9 +96,8 @@ RSpec.describe ParticipationMethod::Volunteering do
   end
 
   describe '#custom_form' do
-    let(:project) { context.project }
-    let(:project_form) { create(:custom_form, participation_context: context.project) }
-    let(:context) { create(:volunteering_phase) }
+    let(:project) { phase.project }
+    let(:project_form) { create(:custom_form, participation_context: project) }
 
     it 'returns the custom form of the project' do
       expect(participation_method.custom_form.participation_context_id).to eq project.id

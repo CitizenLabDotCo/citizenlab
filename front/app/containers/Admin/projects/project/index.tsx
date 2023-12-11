@@ -1,512 +1,239 @@
-import React, { PureComponent } from 'react';
-import { reject, some } from 'lodash-es';
+import React, { useState, useEffect } from 'react';
+import {
+  Outlet as RouterOutlet,
+  useParams,
+  useLocation,
+} from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
-import GoBackButton from 'components/UI/GoBackButton';
-import Button from 'components/UI/Button';
-import TabbedResource from 'components/admin/TabbedResource';
 import Outlet from 'components/Outlet';
-import { Box } from '@citizenlab/cl2-component-library';
-import NewIdeaButton from './ideas/NewIdeaButton';
-import NewIdeaButtonDropdown from './ideas/NewIdeaButtonDropdown';
-
-// resources
-import GetFeatureFlag from 'resources/GetFeatureFlag';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { PreviousPathnameContext } from 'context';
+import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
+import { PhaseHeader } from './phase/PhaseHeader';
+import { ProjectHeader } from './projectHeader';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import messages from './messages';
-
-// tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
-import styled from 'styled-components';
+import { useIntl } from 'utils/cl-intl';
 
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
-import { getInputTerm } from 'utils/participationContexts';
 import { IProjectData } from 'api/projects/types';
 
 // utils
 import { insertConfiguration } from 'utils/moduleUtils';
-import {
-  getAllParticipationMethods,
-  getMethodConfig,
-  showInputManager,
-} from 'utils/configs/participationMethodConfig';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
+import { defaultAdminCardPadding } from 'utils/styleUtils';
 
-const TopContainer = styled.div`
-  width: 100%;
-  margin-top: -5px;
-  margin-bottom: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-`;
-
-const ActionsContainer = styled.div`
-  display: flex;
-  & > *:not(:last-child) {
-    margin-right: 15px;
-  }
-`;
-
-export interface InputProps {}
+// hooks
+import { IPhaseData } from 'api/phases/types';
+import { getCurrentPhase } from 'api/phases/utils';
+import { getIntialTabs } from './tabs';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
+import { getTimelineTab } from './timeline/utils';
 
 interface DataProps {
-  surveys_enabled: boolean;
-  typeform_enabled: boolean;
-  phases: GetPhasesChildProps;
-  project: GetProjectChildProps;
-  previousPathName: string | null;
+  phases: IPhaseData[];
+  project: IProjectData;
+  selectedPhase?: IPhaseData;
+  setSelectedPhase: (phase: IPhaseData) => void;
 }
 
-interface State {
-  showIdeaDropdown: boolean;
-  tabs: ITab[];
-  goBackUrl: string | null;
-  tabHideConditions: {
-    [tabName: string]: (
-      project: IProjectData,
-      phases: GetPhasesChildProps
-    ) => boolean;
-  };
-}
+type TabHideConditions = {
+  [tabName: string]: (project: IProjectData, phases: IPhaseData[]) => boolean;
+};
 
-interface Props extends InputProps, DataProps {}
+export const AdminProjectsProjectIndex = ({
+  project,
+  phases,
+  selectedPhase,
+  setSelectedPhase,
+}: DataProps) => {
+  const { formatMessage } = useIntl();
+  const { pathname } = useLocation();
+  const typeform_enabled = useFeatureFlag({
+    name: 'typeform_surveys',
+  });
+  const surveys_enabled = useFeatureFlag({
+    name: 'surveys',
+  });
+  const isGranularPermissionsEnabled = useFeatureFlag({
+    name: 'granular_permissions',
+  });
+  const isNewPhaseLink = pathname.endsWith(
+    `admin/projects/${project.id}/phases/new`
+  );
+  const initialTabs: ITab[] = getIntialTabs(formatMessage);
+  const [tabs, setTabs] = useState<ITab[]>(initialTabs);
 
-export class AdminProjectsProjectIndex extends PureComponent<
-  Props & WrappedComponentProps & InjectedLocalized & WithRouterProps,
-  State
-> {
-  constructor(
-    props: Props & WrappedComponentProps & InjectedLocalized & WithRouterProps
-  ) {
-    super(props);
-    const {
-      intl: { formatMessage },
-    } = props;
+  const getTabHideConditions = (phase: IPhaseData): TabHideConditions => ({
+    ideas: function isIdeaTabHidden() {
+      return !getMethodConfig(phase.attributes.participation_method)
+        .showInputManager;
+    },
+    ideaform: function isIdeaFormTabHidden() {
+      return (
+        getMethodConfig(phase.attributes.participation_method).formEditor !==
+        'simpleFormEditor'
+      );
+    },
+    poll: function isPollTabHidden() {
+      return phase.attributes.participation_method !== 'poll';
+    },
+    survey: function isSurveyTabHidden() {
+      return phase.attributes.participation_method !== 'native_survey';
+    },
+    'survey-results': function surveyResultsTabHidden() {
+      return (
+        phase.attributes.participation_method !== 'survey' ||
+        !surveys_enabled ||
+        !typeform_enabled ||
+        (surveys_enabled && phase.attributes.survey_service !== 'typeform')
+      );
+    },
+    volunteering: function isVolunteeringTabHidden() {
+      return phase?.attributes.participation_method !== 'volunteering';
+    },
+    'access-rights': function isAccessRightsTabHidden() {
+      return !isGranularPermissionsEnabled;
+    },
+  });
 
-    this.state = {
-      showIdeaDropdown: false,
-      tabs: [
-        {
-          label: formatMessage(messages.generalTab),
-          url: '',
-          name: 'general',
-        },
-        {
-          label: formatMessage(messages.descriptionTab),
-          url: 'description',
-          name: 'description',
-        },
-        {
-          label: formatMessage(messages.inputManagerTab),
-          url: 'ideas',
-          name: 'ideas',
-        },
-        {
-          label: formatMessage(messages.inputFormTab),
-          url: 'ideaform',
-          name: 'ideaform',
-        },
-        {
-          label: formatMessage(messages.pollTab),
-          url: 'poll',
-          feature: 'polls',
-          name: 'poll',
-        },
-        {
-          label: formatMessage(messages.surveyTab),
-          url: 'native-survey',
-          name: 'survey',
-          active: (url: string) =>
-            url.endsWith('native-survey') ||
-            url.endsWith('native-survey/results'),
-        },
-        {
-          label: formatMessage(messages.surveyResultsTab),
-          url: 'survey-results',
-          name: 'survey-results',
-        },
-        {
-          label: formatMessage(messages.allowedInputTopicsTab),
-          name: 'topics',
-          url: 'allowed-input-topics',
-        },
-        {
-          label: formatMessage(messages.phasesTab),
-          url: 'timeline',
-          name: 'phases',
-        },
-        {
-          label: formatMessage(messages.volunteeringTab),
-          url: 'volunteering',
-          feature: 'volunteering',
-          name: 'volunteering',
-        },
-        {
-          label: formatMessage(messages.eventsTab),
-          url: 'events',
-          name: 'events',
-        },
-        {
-          label: formatMessage(messages.permissionsTab),
-          url: `permissions`,
-          feature: 'private_projects',
-          name: 'permissions',
-        },
-      ],
-      tabHideConditions: {
-        general: function isGeneralTabHidden() {
-          return false;
-        },
-        description: function isDescriptionTabHidden() {
-          return false;
-        },
-        ideas: function isIdeaTabHidden(project, phases) {
-          return !showInputManager(project, phases);
-        },
-        ideaform: function isIdeaFormTabHidden(project, phases) {
-          const allParticipationMethods = getAllParticipationMethods(
-            project,
-            phases || null
-          );
-          return !some(
-            allParticipationMethods,
-            (method) =>
-              getMethodConfig(method).formEditor === 'simpleFormEditor'
-          );
-        },
-        poll: function isPollTabHidden(project, phases) {
-          const processType = project?.attributes.process_type;
-          const participationMethod = project.attributes.participation_method;
-
-          if (
-            (processType === 'continuous' && participationMethod !== 'poll') ||
-            (processType === 'timeline' &&
-              phases &&
-              phases.filter((phase) => {
-                return phase.attributes.participation_method === 'poll';
-              }).length === 0)
-          ) {
-            return true;
-          }
-
-          return false;
-        },
-        survey: function isSurveyTabHidden(project, phases) {
-          const processType = project.attributes.process_type;
-          const participationMethod = project.attributes.participation_method;
-          const noNativeSurveyInTimeline =
-            phases &&
-            !phases.some(
-              (phase) =>
-                phase.attributes.participation_method === 'native_survey'
-            );
-
-          // Hide tab when participation method is not native survey in timeline and continuous process types
-          const hideTab =
-            (processType === 'continuous' &&
-              participationMethod !== 'native_survey') ||
-            (processType === 'timeline' && phases && noNativeSurveyInTimeline);
-
-          if (hideTab) {
-            return true;
-          }
-          return false;
-        },
-        'survey-results': function surveyResultsTabHidden(project, phases) {
-          const { typeform_enabled, surveys_enabled } = props;
-
-          const processType = project?.attributes.process_type;
-          const participationMethod = project.attributes.participation_method;
-
-          if (
-            (participationMethod !== 'survey' &&
-              processType === 'continuous') ||
-            !surveys_enabled ||
-            !typeform_enabled ||
-            (surveys_enabled &&
-              typeform_enabled &&
-              processType === 'continuous' &&
-              participationMethod === 'survey' &&
-              project.attributes.survey_service !== 'typeform') ||
-            (processType === 'timeline' &&
-              phases &&
-              phases.filter((phase) => {
-                return (
-                  phase.attributes.participation_method === 'survey' &&
-                  phase.attributes.survey_service === 'typeform'
-                );
-              }).length === 0)
-          ) {
-            return true;
-          }
-
-          return false;
-        },
-        topics: function topicsTabHidden(project, phases) {
-          const processType = project.attributes.process_type;
-          const participationMethod = project.attributes.participation_method;
-          const hideTab =
-            (processType === 'continuous' &&
-              participationMethod !== 'ideation' &&
-              participationMethod !== 'voting') ||
-            (processType === 'timeline' &&
-              phases &&
-              phases.filter((phase) => {
-                return (
-                  phase.attributes.participation_method === 'ideation' ||
-                  phase.attributes.participation_method === 'voting'
-                );
-              }).length === 0);
-
-          if (hideTab) {
-            return true;
-          }
-          return false;
-        },
-        phases: function isPhasesTabHidden(project) {
-          const processType = project?.attributes.process_type;
-
-          if (processType !== 'timeline') {
-            return true;
-          }
-
-          return false;
-        },
-        volunteering: function isVolunteeringTabHidden(project, phases) {
-          const processType = project?.attributes.process_type;
-          const participationMethod = project.attributes.participation_method;
-
-          if (
-            (processType === 'continuous' &&
-              participationMethod !== 'volunteering') ||
-            (processType === 'timeline' &&
-              phases &&
-              phases.filter((phase) => {
-                return phase.attributes.participation_method === 'volunteering';
-              }).length === 0)
-          ) {
-            return true;
-          }
-
-          return false;
-        },
-        events: function isEventsTabHidden() {
-          return false;
-        },
-      },
-      goBackUrl: null,
-    };
-  }
-
-  componentDidMount() {
-    this.setState({
-      goBackUrl: this.props.previousPathName,
-    });
-  }
-
-  getTabs = (projectId: string, project: IProjectData) => {
-    const { tabs, tabHideConditions } = this.state;
-    const { phases } = this.props;
+  const getTabs = (projectId: string) => {
+    if (!selectedPhase) {
+      return [];
+    }
+    const tabHideConditions = getTabHideConditions(selectedPhase);
     const baseTabsUrl = `/admin/projects/${projectId}`;
-
-    const tabNames = tabs.map((tab) => tab.name);
-    let cleanedTabs = tabs;
-
-    tabNames.forEach((tabName) => {
-      if (
-        tabName &&
-        tabHideConditions[tabName] &&
-        tabHideConditions[tabName](project, phases)
-      ) {
-        cleanedTabs = reject(cleanedTabs, { name: tabName });
+    const cleanedTabs = tabs.filter((tab) => {
+      if (tabHideConditions[tab.name]) {
+        return !tabHideConditions[tab.name](project, phases);
       }
+      return true;
     });
 
-    return cleanedTabs.map((tab) => {
-      // the "general" tab url is an empty string, so we don't want to add
-      // a slash to the end of the URL
-      const url =
-        tab.url === '' ? `${baseTabsUrl}` : `${baseTabsUrl}/${tab.url}`;
-      return {
-        ...tab,
-        url,
-      };
-    });
-  };
-
-  goBack = () => {
-    clHistory.push(`/admin/projects/`);
-  };
-
-  onNewIdea = (pathname: string) => (_event) => {
-    trackEventByName(tracks.clickNewIdea.name, {
-      extra: { pathnameFrom: pathname },
-    });
-  };
-
-  handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
-    this.setState(({ tabs }) => ({
-      tabs: insertConfiguration(insertTabOptions)(tabs),
+    return cleanedTabs.map((tab) => ({
+      ...tab,
+      url:
+        tab.url === ''
+          ? `${baseTabsUrl}`
+          : `${baseTabsUrl}/phases/${selectedPhase.id}/${tab.url}`,
     }));
   };
 
-  render() {
-    const {
-      project,
-      phases,
-      intl: { formatMessage },
-      localize,
-      location: { pathname },
-    } = this.props;
+  const handleData = (data: InsertConfigurationOptions<ITab>) => {
+    setTabs((tabs) => insertConfiguration(data)(tabs));
+  };
 
-    const tabbedProps = {
-      resource: {
-        title: !isNilOrError(project)
-          ? localize(project.attributes.title_multiloc)
-          : formatMessage(messages.newProject),
-      },
-      tabs: !isNilOrError(project) ? this.getTabs(project.id, project) : [],
-    };
+  const onRemove = (name: string) => {
+    const updatedTabs = tabs.filter((tab) => tab.name !== name);
+    setTabs(updatedTabs);
+  };
 
-    let numberIdeationPhases = 0;
-    let ideationPhase;
+  return (
+    <>
+      <ProjectHeader project={project} phases={phases} />
+      <Box mt="16px" px="24px">
+        <Timeline
+          projectId={project.id}
+          selectedPhase={selectedPhase}
+          setSelectedPhase={setSelectedPhase}
+          isBackoffice
+        />
+      </Box>
 
-    if (!isNilOrError(project) && phases !== undefined) {
-      const inputTerm = getInputTerm(
-        project?.attributes.process_type,
-        project,
-        phases
-      );
+      <Outlet
+        id="app.containers.Admin.projects.edit"
+        onData={handleData}
+        onRemove={onRemove}
+        project={project}
+        phases={phases}
+        selectedPhase={selectedPhase}
+      />
+      <Box p="8px 24px 24px 24px">
+        {!isNewPhaseLink && selectedPhase && (
+          <PhaseHeader phase={selectedPhase} tabs={getTabs(project.id)} />
+        )}
 
-      if (phases) {
-        phases.map((phase) => {
-          if (
-            getMethodConfig(phase.attributes.participation_method)
-              .showInputManager
-          ) {
-            numberIdeationPhases++;
-            ideationPhase = phase;
-          }
-        });
+        <Box p={`${defaultAdminCardPadding}px`} background={colors.white}>
+          <RouterOutlet />
+        </Box>
+      </Box>
+    </>
+  );
+};
+
+export default () => {
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId?: string;
+  };
+  const { data: project, isLoading: isLoadingProject } =
+    useProjectById(projectId);
+  const {
+    data: phases,
+    isLoading: isLoadingPhases,
+    isFetching: isFetchingPhases,
+  } = usePhases(projectId);
+  const [selectedPhase, setSelectedPhase] = useState<IPhaseData | undefined>(
+    undefined
+  );
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (!phases) return;
+
+    const phase = phaseId
+      ? phases.data.find((phase) => phase.id === phaseId)
+      : undefined;
+    let phaseShown: IPhaseData | undefined = phase;
+    if (!phase && !pathname.endsWith('/phases/new')) {
+      const currentPhase = getCurrentPhase(phases.data);
+      if (currentPhase) {
+        phaseShown = currentPhase;
+      } else {
+        phaseShown = phases.data.length ? phases.data[0] : undefined;
       }
+    }
 
-      const showDropdownButton =
-        project.attributes.process_type === 'timeline' &&
-        numberIdeationPhases > 1;
-      const hasIdeasTab = tabbedProps.tabs.some((tab) => tab.name === 'ideas');
-
-      return (
-        <>
-          <Outlet
-            id="app.containers.Admin.projects.edit"
-            onData={this.handleData}
-            project={project}
-            phases={phases}
-          />
-
-          <TopContainer>
-            <GoBackButton onClick={this.goBack} />
-            <ActionsContainer>
-              {hasIdeasTab && (
-                <>
-                  <Box
-                    onClick={this.onNewIdea(pathname)}
-                    onMouseOver={() => {
-                      if (showDropdownButton) {
-                        this.setState({ showIdeaDropdown: true });
-                      }
-                    }}
-                    onMouseLeave={() => {
-                      if (showDropdownButton) {
-                        this.setState({ showIdeaDropdown: false });
-                      }
-                    }}
-                  >
-                    {project.attributes.process_type === 'continuous' && (
-                      <NewIdeaButton
-                        inputTerm={inputTerm}
-                        linkTo={`/projects/${project.attributes.slug}/ideas/new`}
-                      />
-                    )}
-                    {project.attributes.process_type === 'timeline' &&
-                      numberIdeationPhases === 1 && (
-                        <NewIdeaButton
-                          inputTerm={ideationPhase.attributes.input_term}
-                          linkTo={`/projects/${project.attributes.slug}/ideas/new?phase_id=${ideationPhase.id}`}
-                        />
-                      )}
-                    {showDropdownButton && (
-                      <NewIdeaButtonDropdown
-                        phases={phases}
-                        project={project}
-                        showDropdown={this.state.showIdeaDropdown}
-                      />
-                    )}
-                  </Box>
-                </>
-              )}
-              <Button
-                buttonStyle="cl-blue"
-                icon="eye"
-                id="to-project"
-                linkTo={`/projects/${project.attributes.slug}`}
-              >
-                <FormattedMessage {...messages.viewPublicProject} />
-              </Button>
-            </ActionsContainer>
-          </TopContainer>
-          <TabbedResource {...tabbedProps}>
-            <RouterOutlet />
-          </TabbedResource>
-        </>
+    if (phases.data.length === 0 && !isLoadingPhases && !isFetchingPhases) {
+      clHistory.replace(`/admin/projects/${projectId}/phases/new`);
+    } else if (phaseShown && pathname.endsWith('phases/setup')) {
+      const redirectTab = getTimelineTab(phaseShown);
+      clHistory.replace(
+        `/admin/projects/${projectId}/phases/${phaseShown.id}/${redirectTab}`
       );
     }
 
+    setSelectedPhase(phaseShown);
+  }, [phaseId, phases, projectId, pathname, isLoadingPhases, isFetchingPhases]);
+
+  if (isLoadingProject || isLoadingPhases) {
+    return (
+      <Box
+        width="100%"
+        height="100%"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Spinner />
+      </Box>
+    );
+  }
+
+  if (!project || !phases) {
     return null;
   }
-}
 
-const AdminProjectEditIndexWithHoCs = injectIntl(
-  injectLocalize(AdminProjectsProjectIndex)
-);
-
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  surveys_enabled: <GetFeatureFlag name="surveys" />,
-  typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
-  phases: ({ params, render }) => (
-    <GetPhases projectId={params.projectId}>{render}</GetPhases>
-  ),
-  project: ({ params, render }) => (
-    <GetProject projectId={params.projectId}>{render}</GetProject>
-  ),
-  previousPathName: ({ render }) => (
-    <PreviousPathnameContext.Consumer>
-      {render as any}
-    </PreviousPathnameContext.Consumer>
-  ),
-});
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <AdminProjectEditIndexWithHoCs {...inputProps} {...dataProps} />
-    )}
-  </Data>
-));
+  return (
+    <AdminProjectsProjectIndex
+      project={project?.data}
+      phases={phases?.data}
+      selectedPhase={selectedPhase}
+      setSelectedPhase={setSelectedPhase}
+    />
+  );
+};

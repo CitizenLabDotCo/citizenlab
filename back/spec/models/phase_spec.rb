@@ -140,17 +140,12 @@ RSpec.describe Phase do
 
   describe 'project validation' do
     it 'succeeds when the associated project is a timeline project' do
-      phase = build(:phase, project: build(:project, process_type: 'timeline'))
+      phase = build(:phase, project: build(:project))
       expect(phase).to be_valid
     end
 
-    it 'fails when the associated project is not a timeline project' do
-      phase = build(:phase, project: build(:continuous_project))
-      expect(phase).to be_invalid
-    end
-
     it 'fails when the associated project has overlapping phases' do
-      project = create(:project, process_type: 'timeline')
+      project = create(:project)
       create(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 5.days))
       phase_left_overlap = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now - 3.days))
       expect(phase_left_overlap).to be_invalid
@@ -258,7 +253,7 @@ RSpec.describe Phase do
       'document_annotation' => false
     }
     # Written this way so that additional participation methods will make this spec fail.
-    ParticipationContext::PARTICIPATION_METHODS.each do |participation_method|
+    Phase::PARTICIPATION_METHODS.each do |participation_method|
       expected_result = expected_results[participation_method]
       context "for #{participation_method}" do
         let(:phase) { build(:phase, participation_method: participation_method) }
@@ -303,7 +298,7 @@ RSpec.describe Phase do
     end
 
     it 'allows a single phase project with a blank end_at' do
-      project = create(:project, process_type: 'timeline')
+      project = create(:project)
       phase = create(:phase, project: project, end_at: nil)
       expect(phase).to be_valid
       expect(project.reload.phases.count).to eq 1

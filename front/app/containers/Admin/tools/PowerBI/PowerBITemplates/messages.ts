@@ -50,7 +50,8 @@ export default defineMessages({
   },
   supportLinkDescription: {
     id: 'app.containers.Admin.tools.powerBITemplates.supportLinkDescription',
-    defaultMessage: 'Further details about using your CitizenLab data in Power BI can be found in our {link}.',
+    defaultMessage:
+      'Further details about using your CitizenLab data in Power BI can be found in our {link}.',
   },
   supportLinkUrl: {
     id: 'app.containers.Admin.tools.powerBITemplates.supportLinkUrl',

@@ -16,9 +16,7 @@ module Volunteering
         moderatable_projects = ::UserRoleService.new.moderatable_projects user
         moderatable_phases = Phase.where(project: moderatable_projects)
         joined_scope = scope.joins(:cause)
-        joined_scope
-          .where(volunteering_causes: { participation_context_id: moderatable_projects })
-          .or(joined_scope.where(volunteering_causes: { participation_context_id: moderatable_phases }))
+        joined_scope.where(volunteering_causes: { phase_id: moderatable_phases })
       end
     end
 
@@ -30,7 +28,7 @@ module Volunteering
     def create?
       user&.active? &&
         (record.user_id == user.id) &&
-        ProjectPolicy.new(user, record.cause.participation_context.project).show?
+        ProjectPolicy.new(user, record.cause.phase.project).show?
     end
 
     def destroy?

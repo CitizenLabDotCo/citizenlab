@@ -37,5 +37,5 @@ const writeFilePromise = (fileName, data) =>
 module.exports = {
   globPromise,
   readFilePromise,
-  writeFilePromise
+  writeFilePromise,
 };

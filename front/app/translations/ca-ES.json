@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "Verificar ara",
   "app.containers.landing.verifyYourIdentity": "Verificar la vostra identitat",
   "app.containers.landing.viewAllEventsText": "Veure tots els esdeveniments",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Torna a la carpeta",
   "app.errors.after_end_at": "La data d'inici es produeix després de la data de finalització",
   "app.errors.avatar_carrierwave_download_error": "No s'ha pogut baixar el fitxer avatar.",
   "app.errors.avatar_carrierwave_integrity_error": "El fitxer avatar no és del tipus permès.",

@@ -93,7 +93,7 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
     const selectPhase = useCallback(
       (phase: IPhaseData) => {
         if (!phases || !project) return;
-        setPhaseURL(phase.id, phases.data, project.data);
+        setPhaseURL(phase, phases.data, project.data);
       },
       [phases, project]
     );

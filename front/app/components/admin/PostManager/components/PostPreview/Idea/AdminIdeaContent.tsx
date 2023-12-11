@@ -23,7 +23,6 @@ import {
 } from 'components/admin/PostManager/components/PostPreview';
 
 // services
-import { ProcessType } from 'api/projects/types';
 
 // resources
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -171,11 +170,9 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
 
   if (!idea || !project) return null;
 
-  const handleClickDelete = (processType: ProcessType) => () => {
-    const deleteConfirmationMessage = {
-      continuous: messages.deleteInputConfirmation,
-      timeline: messages.deleteInputInTimelineConfirmation,
-    }[processType];
+  const handleClickDelete = () => () => {
+    const deleteConfirmationMessage =
+      messages.deleteInputInTimelineConfirmation;
 
     if (window.confirm(formatMessage(deleteConfirmationMessage))) {
       deleteIdea(idea.data.id, { onSuccess: closePreview });
@@ -196,9 +193,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
   // AuthorId can be null if user has been deleted
   const authorId = idea.data.relationships.author?.data?.id || null;
   const proposedBudget = idea.data.attributes.proposed_budget;
-  const processType = project.data.attributes.process_type;
   const allowAnonymousParticipation =
-    project.data.attributes.allow_anonymous_participation ||
     currentPhase?.attributes.allow_anonymous_participation;
 
   return (
@@ -215,7 +210,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
         <Button
           icon="delete"
           buttonStyle="delete"
-          onClick={handleClickDelete(processType)}
+          onClick={handleClickDelete()}
         >
           <FormattedMessage {...messages.delete} />
         </Button>

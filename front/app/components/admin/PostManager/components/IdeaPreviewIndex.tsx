@@ -28,7 +28,7 @@ const IdeaPreviewIndex = ({ goBackUrl }: Props) => {
   };
 
   return (
-    <>
+    <Box p="40px">
       <Box mb="24px">
         <GoBackButton
           onClick={handleOnClose}
@@ -42,7 +42,7 @@ const IdeaPreviewIndex = ({ goBackUrl }: Props) => {
         onClose={handleOnClose}
         onSwitchPreviewMode={handleOnSwitchPreviewMode}
       />
-    </>
+    </Box>
   );
 };
 

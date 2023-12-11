@@ -228,7 +228,7 @@ const ImportSectionWrapper = (props: OuterProps) => {
 
   if (!project || isNilOrError(locale)) return null;
 
-  if (project.data.attributes.process_type === 'timeline' && phases) {
+  if (phases) {
     return (
       <ImportSection
         {...props}
@@ -237,10 +237,6 @@ const ImportSectionWrapper = (props: OuterProps) => {
         phases={phases}
       />
     );
-  }
-
-  if (project.data.attributes.process_type === 'continuous') {
-    return <ImportSection {...props} locale={locale} project={project} />;
   }
 
   return null;

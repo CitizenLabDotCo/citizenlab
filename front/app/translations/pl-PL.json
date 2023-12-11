@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "Zweryfikuj teraz",
   "app.containers.landing.verifyYourIdentity": "Zweryfikuj swoją tożsamość",
   "app.containers.landing.viewAllEventsText": "Zobacz wszystkie wydarzenia",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Powrót do folderu",
   "app.errors.after_end_at": "Data rozpoczęcia po dacie zakończenia",
   "app.errors.avatar_carrierwave_download_error": "Nie mogłem pobrać pliku avatara (zdjęcia profilowego).",
   "app.errors.avatar_carrierwave_integrity_error": "Plik avatara (zdj. profilowego) ma niedozwolony typ.",

@@ -6,7 +6,11 @@
 const fs = require('fs');
 const mkdir = require('shelljs').mkdir;
 const babel = require('babel-core');
-const { globPromise, readFilePromise, writeFilePromise } = require('./helpers/promisify');
+const {
+  globPromise,
+  readFilePromise,
+  writeFilePromise,
+} = require('./helpers/promisify');
 const animateProgress = require('./helpers/progress');
 const addCheckmark = require('./helpers/checkmark');
 const constants = require('../../app/containers/App/constants');

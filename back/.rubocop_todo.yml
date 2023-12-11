@@ -265,7 +265,6 @@ RSpec/RepeatedExampleGroupDescription:
 # Offense count: 40
 RSpec/ScatteredSetup:
   Exclude:
-    - 'engines/commercial/granular_permissions/spec/acceptance/permissions_spec.rb'
     - 'engines/commercial/idea_assignment/spec/acceptance/ideas_spec.rb'
     - 'engines/free/polls/spec/acceptance/options_spec.rb'
     - 'engines/free/polls/spec/acceptance/questions_spec.rb'
@@ -273,6 +272,7 @@ RSpec/ScatteredSetup:
     - 'engines/free/volunteering/spec/acceptance/volunteers_spec.rb'
     - 'spec/acceptance/areas_spec.rb'
     - 'spec/acceptance/nav_bar_items_spec.rb'
+    - 'spec/acceptance/permissions_spec.rb'
     - 'spec/acceptance/projects_spec.rb'
     - 'spec/acceptance/users_spec.rb'
     - 'spec/jobs/application_job_spec.rb'
@@ -355,7 +355,7 @@ Rails/I18nLocaleTexts:
     - 'engines/commercial/custom_maps/app/models/custom_maps/layer.rb'
     - 'engines/commercial/insights/app/models/insights/category_assignment.rb'
     - 'engines/commercial/insights/app/models/insights/processed_flag.rb'
-    - 'engines/free/surveys/app/models/surveys/survey_participation_context.rb'
+    - 'engines/free/surveys/app/models/surveys/survey_phase.rb'
 
 # Offense count: 32
 # Configuration parameters: IgnoreScopes, Include.

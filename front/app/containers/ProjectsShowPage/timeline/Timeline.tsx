@@ -1,12 +1,20 @@
-import React, { useCallback, FormEvent, KeyboardEvent, useRef } from 'react';
+import React, {
+  useCallback,
+  FormEvent,
+  KeyboardEvent,
+  useRef,
+  useState,
+  useEffect,
+} from 'react';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import Tippy from '@tippyjs/react';
 
 // tracking
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import PhaseDescription from './PhaseDescription';
 
 // hooks
@@ -24,6 +32,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import setPhaseURL from './setPhaseURL';
+import clHistory from 'utils/cl-router/history';
 
 // style
 import styled, { css } from 'styled-components';
@@ -31,7 +40,7 @@ import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, rgba } from 'polished';
 
-const MIN_PHASE_WIDTH_PX = 110;
+const MIN_PHASE_WIDTH_PX = 44;
 const CONTAINER_PADDING_PX = 20;
 
 const grey = colors.textSecondary;
@@ -113,6 +122,10 @@ const PhaseArrow = styled(Arrow)`
   `}
 `;
 
+const PlusIcon = styled(Icon)`
+  fill: ${colors.coolGrey700};
+`;
+
 const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   color: ${darken(0.1, colors.textSecondary)};
   font-size: ${fontSizes.s}px;
@@ -148,6 +161,11 @@ const selectedPhaseBar = css`
   ${PhaseText} {
     color: ${grey};
   }
+  &:hover {
+    ${PlusIcon} {
+      fill: ${colors.white};
+    }
+  }
 `;
 
 const currentPhaseBar = css`
@@ -171,12 +189,14 @@ const currentSelectedPhaseBar = css`
 `;
 
 const PhaseContainer = styled.div<{
-  width: number;
+  width?: number;
   breakpoint: number;
   last: boolean;
+  isBackoffice?: boolean;
 }>`
-  width: ${(props) => props.width}%;
-  min-width: ${MIN_PHASE_WIDTH_PX}px;
+  width: ${(props) => (props.width ? `${props.width}%` : '100%')};
+  min-width: ${(props) =>
+    props.isBackoffice ? '44px' : `${MIN_PHASE_WIDTH_PX}px`};
   display: flex;
   flex-direction: column;
   position: relative;
@@ -224,8 +244,9 @@ const PhaseContainer = styled.div<{
 interface Props {
   projectId: string;
   className?: string;
-  selectedPhase: IPhaseData;
+  selectedPhase?: IPhaseData;
   setSelectedPhase: (phase: IPhaseData) => void;
+  isBackoffice?: boolean;
 }
 
 const Timeline = ({
@@ -233,11 +254,24 @@ const Timeline = ({
   className,
   selectedPhase,
   setSelectedPhase,
+  isBackoffice = false,
 }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
   const tabsRef = useRef<HTMLButtonElement[]>([]);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+
+  useEffect(() => {
+    const showTooltip = phases?.data?.length === 1;
+    setTooltipVisible(showTooltip);
+
+    const timeout = setTimeout(() => {
+      setTooltipVisible(false);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [phases]);
 
   const handleOnPhaseSelection = useCallback(
     (phase: IPhaseData | undefined) => (event: FormEvent) => {
@@ -245,10 +279,10 @@ const Timeline = ({
       event.preventDefault();
 
       if (phase && phases && project) {
-        setPhaseURL(phase.id, phases.data, project.data);
+        setPhaseURL(phase, phases.data, project.data, isBackoffice);
       }
     },
-    [phases, project]
+    [isBackoffice, phases, project]
   );
 
   const handleTabListOnKeyDown = (e: KeyboardEvent) => {
@@ -256,7 +290,9 @@ const Timeline = ({
     const arrowRightPressed = e.key === 'ArrowRight';
 
     if ((arrowLeftPressed || arrowRightPressed) && phases) {
-      const currentPhaseIndex = phases.data.indexOf(selectedPhase);
+      const currentPhaseIndex = selectedPhase
+        ? phases.data.indexOf(selectedPhase)
+        : 0;
 
       if (arrowRightPressed) {
         // if we're at the end of the timeline, go to start (index 0),
@@ -285,7 +321,7 @@ const Timeline = ({
   if (phases && phases.data.length > 0) {
     const currentPhase = getCurrentPhase(phases.data);
     const currentPhaseId = currentPhase ? currentPhase.id : null;
-    const selectedPhaseId = selectedPhase.id;
+    const selectedPhaseId = selectedPhase?.id;
     const phasesBreakpoint = phases.data.length * MIN_PHASE_WIDTH_PX;
     const phaseSectionWidth = (1 / phases.data.length) * 100;
 
@@ -305,7 +341,8 @@ const Timeline = ({
                 const phaseNumber = phaseIndex + 1;
                 const phaseTitle = localize(phase.attributes.title_multiloc);
                 const isFirst = phaseIndex === 0;
-                const isLast = phaseIndex === phases.data.length - 1;
+                const isLast =
+                  !isBackoffice && phaseIndex === phases.data.length - 1;
                 const isCurrentPhase = phase.id === currentPhaseId;
                 const isSelectedPhase = phase.id === selectedPhaseId;
                 const classNames = [
@@ -316,6 +353,7 @@ const Timeline = ({
                 ]
                   .filter((className) => className)
                   .join(' ');
+                const showArrow = !(phaseIndex === phases.data.length - 1);
 
                 return (
                   <PhaseContainer
@@ -348,7 +386,7 @@ const Timeline = ({
                           }}
                         />
                       </ScreenReaderOnly>
-                      {!isLast && <PhaseArrow />}
+                      {showArrow && <PhaseArrow />}
                     </PhaseBar>
                     <PhaseText
                       current={isCurrentPhase}
@@ -359,11 +397,56 @@ const Timeline = ({
                   </PhaseContainer>
                 );
               })}
+              {isBackoffice && (
+                <Box width="44px" ml="8px">
+                  <PhaseContainer
+                    className="first"
+                    key="new-phase"
+                    breakpoint={phasesBreakpoint}
+                    last
+                  >
+                    <Tippy
+                      interactive={true}
+                      visible={tooltipVisible}
+                      placement="bottom-start"
+                      content={
+                        <Box p="8px 12px">
+                          <FormattedMessage {...messages.createANewPhase} />
+                        </Box>
+                      }
+                      popperOptions={{
+                        strategy: 'fixed',
+                      }}
+                    >
+                      <PhaseBar
+                        onMouseDown={removeFocusAfterMouseClick}
+                        onKeyDown={handleTabListOnKeyDown}
+                        onClick={() => {
+                          clHistory.push(
+                            `/admin/projects/${projectId}/phases/new`
+                          );
+                        }}
+                        role="tab"
+                        id="new-phase"
+                      >
+                        <span aria-hidden>
+                          <PlusIcon name="plus" height="16px" />
+                        </span>
+                        <ScreenReaderOnly>
+                          <FormattedMessage {...messages.newPhase} />
+                        </ScreenReaderOnly>
+                      </PhaseBar>
+                    </Tippy>
+                  </PhaseContainer>
+                </Box>
+              )}
             </RtlBox>
-            <PhaseDescription
-              projectId={projectId}
-              selectedPhaseId={selectedPhaseId}
-            />
+            {!isBackoffice && selectedPhaseId && (
+              <PhaseDescription
+                projectId={projectId}
+                selectedPhaseId={selectedPhaseId}
+              />
+            )}
           </Phases>
         </ContainerInner>
       </Container>

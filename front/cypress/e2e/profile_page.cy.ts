@@ -32,14 +32,7 @@ describe('Profile Page', () => {
       })
       .then((project) => {
         projectId = project.body.data.id;
-        return cy.apiCreateIdea(
-          projectId,
-          ideaTitle,
-          ideaContent,
-          undefined,
-          undefined,
-          jwt
-        );
+        return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent, jwt });
       })
       .then((idea) => {
         ideaId = idea.body.data.id;

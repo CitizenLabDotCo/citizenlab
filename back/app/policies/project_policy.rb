@@ -68,18 +68,6 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
-  def survey_results?
-    active_moderator?
-  end
-
-  def submission_count?
-    show?
-  end
-
-  def delete_inputs?
-    record.continuous? && active_moderator?
-  end
-
   def create?
     return false unless active?
     return true if admin?
@@ -124,26 +112,6 @@ class ProjectPolicy < ApplicationPolicy
       :slug,
       :header_bg,
       :visible_to,
-      :participation_method,
-      :posting_enabled,
-      :posting_method,
-      :posting_limited_max,
-      :commenting_enabled,
-      :reacting_enabled,
-      :reacting_like_method,
-      :reacting_like_limited_max,
-      :allow_anonymous_participation,
-      :survey_embed_url,
-      :survey_service,
-      :voting_method,
-      :voting_max_total,
-      :voting_min_total,
-      :voting_max_votes_per_idea,
-      :document_annotation_embed_url,
-      :presentation_mode,
-      :poll_anonymous,
-      :ideas_order,
-      :input_term,
       :include_all_areas,
       {
         admin_publication_attributes: [:publication_status],
@@ -164,8 +132,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    attrs = shared_permitted_attributes
-    attrs.unshift(:process_type)
+    shared_permitted_attributes
   end
 
   def permitted_attributes_for_update
