@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "Verifique agora",
   "app.containers.landing.verifyYourIdentity": "Confirmar que o seu usuário foi verificado",
   "app.containers.landing.viewAllEventsText": "Ver todos os eventos",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Voltar para a pasta",
   "app.errors.after_end_at": "A data de início ocorre após a data final",
   "app.errors.avatar_carrierwave_download_error": "Não foi possível fazer o download do arquivo avatar.",
   "app.errors.avatar_carrierwave_integrity_error": "O arquivo Avatar não é de um tipo permitido.",
