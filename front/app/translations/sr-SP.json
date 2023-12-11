@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "Потврдите сада",
   "app.containers.landing.verifyYourIdentity": "Потврдите свој идентитет",
   "app.containers.landing.viewAllEventsText": "Погледајте све догађаје",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Back to folder",
   "app.errors.after_end_at": "Датум почетка наступа после датума завршетка",
   "app.errors.avatar_carrierwave_download_error": "Није могуће преузети датотеку аватара.",
   "app.errors.avatar_carrierwave_integrity_error": "Аватар фајл није дозвољеног типа.",
