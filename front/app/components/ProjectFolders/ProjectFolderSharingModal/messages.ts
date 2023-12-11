@@ -10,11 +10,6 @@ export default defineMessages({
     defaultMessage:
       '{projectFolderName} | from the participation platform of {orgName}',
   },
-  facebookMessage: {
-    id: 'app.modules.project_folder.citizen.components.ProjectFolderSharingModal.facebookMessage',
-    defaultMessage:
-      '{projectFolderName} | from the participation platform of {orgName}',
-  },
   emailSharingSubject: {
     id: 'app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject',
     defaultMessage:
