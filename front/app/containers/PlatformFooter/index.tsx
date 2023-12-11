@@ -7,7 +7,13 @@ import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 
 // components
-import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  useBreakpoint,
+  media,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -19,7 +25,6 @@ import { TPolicyPage } from 'api/custom_pages/types';
 
 // style
 import styled, { css } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

@@ -8,7 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 
 const Container = styled(VerticalCenterer)`
   font-size: ${fontSizes.l}px;

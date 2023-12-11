@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media } from '@citizenlab/cl2-component-library';
 
 export default styled.section`
   padding-top: 60px;

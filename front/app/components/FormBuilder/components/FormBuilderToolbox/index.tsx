@@ -12,12 +12,10 @@ import {
   IconTooltip,
   Text,
   Title,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import BuiltInFields from './BuiltInFields';
 import LayoutFields from './LayoutFields';
-
-// styles
-import { colors } from 'utils/styleUtils';
 
 // types
 import {

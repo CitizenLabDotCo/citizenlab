@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import HelmetIntl from 'components/HelmetIntl';
 import NavigationTabs, {
   Tab,
@@ -18,7 +18,7 @@ import { useIntl } from 'utils/cl-intl';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 import Outlet from 'components/Outlet';
-import { colors, defaultAdminCardPadding } from 'utils/styleUtils';
+import { defaultAdminCardPadding } from 'utils/styleUtils';
 import { isTopBarNavActive } from 'utils/helperUtils';
 
 const SettingsPage = () => {

@@ -1,12 +1,14 @@
 import React from 'react';
 
 // components
-import { Table, Tbody } from '@citizenlab/cl2-component-library';
+import {
+  Table,
+  Tbody,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import HeaderRow from './HeaderRow';
 import Row from './Row';
-
-// styling
-import { colors, stylingConsts } from 'utils/styleUtils';
 
 // typings
 import { RepresentativenessData } from '../../../hooks/parseReferenceData';

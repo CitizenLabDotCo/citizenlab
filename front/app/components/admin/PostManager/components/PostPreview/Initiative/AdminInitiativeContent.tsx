@@ -17,7 +17,7 @@ import {
   Container,
 } from 'components/admin/PostManager/components/PostPreview';
 import ReactionIndicator from 'components/InitiativeCard/ReactionIndicator';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from '../messages';
@@ -25,7 +25,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 // hooks
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';

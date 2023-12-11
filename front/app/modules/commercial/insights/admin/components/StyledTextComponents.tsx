@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 export const SectionTitle = styled.h2`
   color: ${colors.primary};

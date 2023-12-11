@@ -1,10 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
-
-// stying
-import { colors, stylingConsts } from 'utils/styleUtils';
+import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 
 interface Props {
   children: React.ReactNode;

@@ -19,7 +19,7 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWi
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Success, Box } from '@citizenlab/cl2-component-library';
+import { Success, Box, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -27,7 +27,7 @@ import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
 
 // Styling
-import { defaultAdminCardPadding, colors } from 'utils/styleUtils';
+import { defaultAdminCardPadding } from 'utils/styleUtils';
 
 // Typing
 import { Multiloc, Locale } from 'typings';

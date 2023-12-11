@@ -7,7 +7,7 @@ import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
 // styles
-import { stylingConsts, media } from 'utils/styleUtils';
+import { stylingConsts, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 // components

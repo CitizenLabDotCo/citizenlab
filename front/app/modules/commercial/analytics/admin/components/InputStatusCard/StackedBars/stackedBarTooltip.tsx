@@ -5,9 +5,6 @@ import { Tooltip } from 'recharts';
 import { Box } from '@citizenlab/cl2-component-library';
 import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
 
-// styling
-// import { colors } from 'utils/styleUtils';
-
 // i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';

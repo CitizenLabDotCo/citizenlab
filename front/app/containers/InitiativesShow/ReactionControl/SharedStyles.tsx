@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 
 export const StatusWrapper = styled.div`
   display: flex;

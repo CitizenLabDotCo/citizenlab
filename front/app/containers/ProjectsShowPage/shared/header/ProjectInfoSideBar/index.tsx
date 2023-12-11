@@ -24,7 +24,15 @@ import { IPhaseData } from 'api/phases/types';
 // components
 import ProjectSharingModal from '../ProjectSharingModal';
 import ProjectActionButtons from '../ProjectActionButtons';
-import { Box, Icon, IconTooltip } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  IconTooltip,
+  fontSizes,
+  colors,
+  isRtl,
+  media,
+} from '@citizenlab/cl2-component-library';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -40,7 +48,6 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
 import Link from 'utils/cl-router/Link';
 
 const Container = styled.div``;

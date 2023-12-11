@@ -1,4 +1,4 @@
-import { Label } from '@citizenlab/cl2-component-library';
+import { Label, colors } from '@citizenlab/cl2-component-library';
 import {
   Section,
   SectionField,
@@ -15,7 +15,6 @@ import styled from 'styled-components';
 import { CLErrors, Multiloc } from 'typings';
 import { FormattedMessage } from 'utils/cl-intl';
 import 'utils/moduleUtils';
-import { colors } from 'utils/styleUtils';
 import messages from './messages';
 
 const SettingsLabel = styled(Label)`

@@ -34,7 +34,7 @@ import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
 import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -76,7 +76,7 @@ import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import useUpdateProject from 'api/projects/useUpdateProject';
 import projectsKeys from 'api/projects/keys';
-import { defaultAdminCardPadding, colors } from 'utils/styleUtils';
+import { defaultAdminCardPadding } from 'utils/styleUtils';
 
 export type TOnProjectAttributesDiffChangeFunction = (
   projectAttributesDiff: IUpdatedProjectProperties,

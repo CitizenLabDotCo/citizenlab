@@ -4,8 +4,7 @@ import DatePicker from 'react-datepicker';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-import { Icon, colors } from '@citizenlab/cl2-component-library';
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { useIntl } from 'utils/cl-intl';

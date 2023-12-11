@@ -3,7 +3,12 @@ import React from 'react';
 // components
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { Icon } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  colors,
+  media,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import Body from 'components/PostShowComponents/Body';
 
 // i18n
@@ -13,7 +18,6 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, media, fontSizes } from 'utils/styleUtils';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';

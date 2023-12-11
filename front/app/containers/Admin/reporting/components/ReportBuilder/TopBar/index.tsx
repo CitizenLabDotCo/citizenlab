@@ -12,7 +12,14 @@ import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Title,
+  fontSizes,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
 import ShareReportButton from '../../ReportBuilderPage/ReportRow/Buttons/ShareReportButton';
@@ -22,7 +29,6 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
-import { fontSizes, colors, stylingConsts } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // routing

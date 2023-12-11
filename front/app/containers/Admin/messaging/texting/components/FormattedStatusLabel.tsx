@@ -7,13 +7,10 @@ import messages from '../../messages';
 import { TTextingCampaignStatus } from 'api/texting_campaigns/types';
 
 // components
-import { StatusLabel } from '@citizenlab/cl2-component-library';
+import { StatusLabel, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-
-// styling
-import { colors } from 'utils/styleUtils';
 
 interface FormattedStatusLabelProps {
   width?: string;

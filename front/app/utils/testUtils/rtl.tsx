@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from 'styled-components';
-import { getTheme } from 'utils/styleUtils';
+import { getTheme } from '@citizenlab/cl2-component-library';
 import GlobalStyle from 'global-styles';
 import { IntlProvider } from 'react-intl';
 import messages from 'i18n/en';

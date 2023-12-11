@@ -9,11 +9,15 @@ import messages from '../../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { fontSizes } from 'utils/styleUtils';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // components
-import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
+import {
+  IconTooltip,
+  Box,
+  Button,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 
 // form

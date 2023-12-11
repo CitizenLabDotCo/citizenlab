@@ -2,13 +2,12 @@ import React from 'react';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, Box, Input } from '@citizenlab/cl2-component-library';
 
 // craft
 import { useNode } from '@craftjs/core';
 
 // components
-import { Box, Input } from '@citizenlab/cl2-component-library';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // i18n

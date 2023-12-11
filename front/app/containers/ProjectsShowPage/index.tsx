@@ -6,7 +6,13 @@ import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
 import ProjectHeader from './shared/header/ProjectHeader';
 import TimelineContainer from './timeline';
-import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  useBreakpoint,
+  media,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Navigate from 'utils/cl-router/Navigate';
 import SuccessModal from './SucessModal';
 import ProjectCTABar from './ProjectCTABar';
@@ -34,7 +40,6 @@ import messages from 'utils/messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
 
 // typings
 import { IProjectData } from 'api/projects/types';

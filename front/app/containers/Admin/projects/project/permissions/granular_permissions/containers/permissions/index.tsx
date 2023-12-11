@@ -8,8 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
-import { colors } from 'utils/styleUtils';
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import { HandlePermissionChangeProps } from '../Granular/utils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useUpdatePermission from 'api/permissions/useUpdatePermission';

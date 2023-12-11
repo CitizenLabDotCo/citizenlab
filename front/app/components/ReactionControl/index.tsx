@@ -17,7 +17,7 @@ import { includes } from 'lodash-es';
 
 // style
 import styled from 'styled-components';
-import { isRtl } from 'utils/styleUtils';
+import { isRtl } from '@citizenlab/cl2-component-library';
 
 // typings
 import useIdeaById from 'api/ideas/useIdeaById';

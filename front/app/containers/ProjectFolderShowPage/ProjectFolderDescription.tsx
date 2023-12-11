@@ -7,9 +7,15 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import ReactResizeDetector from 'react-resize-detector';
 import Button from 'components/UI/Button';
 
-// services
 import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
-import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
+import {
+  useWindowSize,
+  Box,
+  media,
+  fontSizes,
+  isRtl,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
@@ -20,7 +26,6 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 // style
 import styled, { useTheme } from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { media, fontSizes, isRtl, colors } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from 'api/project_folders/types';

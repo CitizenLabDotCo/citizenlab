@@ -14,7 +14,12 @@ import useLocale from 'hooks/useLocale';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  fontSizes,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { ScreenReaderOnly } from 'utils/a11y';

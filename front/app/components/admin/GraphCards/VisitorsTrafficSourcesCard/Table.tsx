@@ -13,6 +13,8 @@ import {
   Tbody,
   Td,
   Text,
+  colors,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/Pagination';
 import ReferrerListLink from './RefferListLink';
@@ -22,7 +24,6 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
-import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

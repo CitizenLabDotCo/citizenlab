@@ -5,7 +5,11 @@ import useReportLayout from 'api/report_layout/useReportLayout';
 import useReportLocale from 'containers/Admin/reporting/hooks/useReportLocale';
 
 // components
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  useBreakpoint,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
@@ -13,7 +17,6 @@ import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 
 // styling
-import { stylingConsts } from 'utils/styleUtils';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 interface Props {

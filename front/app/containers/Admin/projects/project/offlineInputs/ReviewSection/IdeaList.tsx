@@ -5,7 +5,7 @@ import moment from 'moment';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 
 // components
-import { Box, Text, Button } from '@citizenlab/cl2-component-library';
+import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -13,7 +13,6 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // utils
 import { truncate } from 'utils/textUtils';

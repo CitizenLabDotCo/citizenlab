@@ -11,8 +11,7 @@ import messages from '../../messages';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
-import { Box } from '@citizenlab/cl2-component-library';
-import { colors } from 'utils/styleUtils';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 interface Props {
   campaign: ICampaignData;

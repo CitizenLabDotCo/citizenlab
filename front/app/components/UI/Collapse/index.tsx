@@ -1,7 +1,11 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
-import { fontSizes, colors } from 'utils/styleUtils';
+import {
+  Icon,
+  IconTooltip,
+  fontSizes,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';

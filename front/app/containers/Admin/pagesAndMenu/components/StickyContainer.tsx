@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors } from '@citizenlab/cl2-component-library';
 
 const StickyContainer = styled.div`
   background-color: #fcfcfc;

@@ -1,4 +1,10 @@
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  colors,
+  fontSizes,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import { darken } from 'polished';
 import React, { useEffect, useRef } from 'react';
@@ -7,7 +13,6 @@ import { IInviteError } from 'api/invites/types';
 import styled from 'styled-components';
 import { CLError } from 'typings';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import messages from './messages';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

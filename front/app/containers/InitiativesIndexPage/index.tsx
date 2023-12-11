@@ -20,7 +20,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, fontSizes, colors } from '@citizenlab/cl2-component-library';
 
 const Container = styled.main``;
 

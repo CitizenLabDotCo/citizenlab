@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from 'components/UI/Button';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from '../../messages';

@@ -8,7 +8,15 @@ import tracks from './tracks';
 
 // components
 import InitiativesMap from 'components/InitiativesMap';
-import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
+import {
+  Spinner,
+  useWindowSize,
+  media,
+  colors,
+  fontSizes,
+  viewportWidths,
+  defaultCardStyle,
+} from '@citizenlab/cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
 import TopicFilterBox from './TopicFilterBox';
@@ -37,13 +45,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import {
-  media,
-  colors,
-  fontSizes,
-  viewportWidths,
-  defaultCardStyle,
-} from 'utils/styleUtils';
 
 // typings
 import { Sort } from 'components/InitiativeCards/SortFilterDropdown';

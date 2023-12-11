@@ -13,7 +13,12 @@ import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // styles
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
+import {
+  colors,
+  fontSizes,
+  media,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 import styled from 'styled-components';
 import { transparentize } from 'polished';

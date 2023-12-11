@@ -6,12 +6,17 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  fontSizes,
+  colors,
+  media,
+} from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+
 import { darken } from 'polished';
 
 // typings

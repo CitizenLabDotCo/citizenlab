@@ -11,7 +11,6 @@ import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 
 // styling
-import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 import {
   Box,
@@ -19,6 +18,7 @@ import {
   Text,
   Title,
   StatusLabel,
+  colors,
 } from '@citizenlab/cl2-component-library';
 
 // utils

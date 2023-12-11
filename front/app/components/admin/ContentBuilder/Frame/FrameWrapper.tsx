@@ -6,7 +6,7 @@ import Error from 'components/UI/Error';
 
 // styling
 import styled from 'styled-components';
-import { stylingConsts } from 'utils/styleUtils';
+import { stylingConsts } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from '../messages';

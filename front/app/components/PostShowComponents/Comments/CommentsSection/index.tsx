@@ -1,7 +1,7 @@
 import React, { useState, MouseEvent } from 'react';
 
 // components
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { Tab } from 'components/admin/NavigationTabs';
 import PublicComments from './PublicComments';
 import InternalComments from 'components/admin/InternalComments';
@@ -13,7 +13,6 @@ import messages from '../messages';
 
 // style
 import styled, { css } from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { tabBorderSize } from 'components/admin/NavigationTabs/tabsStyleConstants';
 
 // Types

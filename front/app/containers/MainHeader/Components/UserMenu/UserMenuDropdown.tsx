@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
-import { Dropdown } from '@citizenlab/cl2-component-library';
+import { Dropdown, colors } from '@citizenlab/cl2-component-library';
 import HasPermission from 'components/HasPermission';
 
 // services
@@ -18,7 +18,6 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // constants
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';

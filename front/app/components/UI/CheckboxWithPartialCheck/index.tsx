@@ -1,7 +1,11 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { Icon } from '@citizenlab/cl2-component-library';
+import {
+  colors,
+  fontSizes,
+  isRtl,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 

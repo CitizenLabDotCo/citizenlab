@@ -6,7 +6,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { withScope, showReportDialog } from '@sentry/react';
 import messages from './messages';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 import { WrappedComponentProps } from 'react-intl';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';

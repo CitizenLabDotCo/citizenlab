@@ -8,7 +8,7 @@ import DateBlocksMultiYear from './DateBlocksMultiYear';
 
 // styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media } from '@citizenlab/cl2-component-library';
 
 const EventDateBlocks = styled.div`
   flex: 0 0 75px;

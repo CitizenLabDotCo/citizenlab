@@ -14,7 +14,14 @@ import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // components
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  media,
+  colors,
+  fontSizes,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import PhaseDescription from './PhaseDescription';
 
 // hooks
@@ -36,7 +43,6 @@ import clHistory from 'utils/cl-router/history';
 
 // style
 import styled, { css } from 'styled-components';
-import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, rgba } from 'polished';
 

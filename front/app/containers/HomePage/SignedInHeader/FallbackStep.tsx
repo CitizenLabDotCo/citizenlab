@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import T from 'components/T';
 import useAuthUser from 'api/me/useAuthUser';
-import { media, isRtl, fontSizes } from 'utils/styleUtils';
+import { media, isRtl, fontSizes } from '@citizenlab/cl2-component-library';
 import OnboardingStep from './OnboardingStep';
 import CTA from './CTA';
 import { IHomepageSettingsAttributes } from 'api/home_page/types';

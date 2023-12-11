@@ -7,11 +7,10 @@ import * as XLSX from 'xlsx';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 
 // components
 import Button from 'components/UI/Button';
-import { Dropdown } from '@citizenlab/cl2-component-library';
+import { Dropdown, fontSizes } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';

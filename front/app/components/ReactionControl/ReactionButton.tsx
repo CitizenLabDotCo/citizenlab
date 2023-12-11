@@ -1,11 +1,17 @@
 import React from 'react';
 import Tippy from '@tippyjs/react';
 import styled, { keyframes } from 'styled-components';
-import { colors, fontSizes, defaultStyles, isRtl } from 'utils/styleUtils';
+import {
+  colors,
+  fontSizes,
+  defaultStyles,
+  isRtl,
+  Icon,
+  IconNames,
+} from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
 import messages from './messages';
 import globalMessages from 'utils/messages';
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import { IdeaReactingDisabledReason } from 'api/ideas/types';

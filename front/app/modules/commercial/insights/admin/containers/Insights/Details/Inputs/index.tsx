@@ -8,10 +8,14 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import {
+  colors,
+  fontSizes,
+  Box,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 
 // components
-import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import Search from 'components/UI/SearchInput';
 import InputCard from './InputCard';
 import Empty from './Empty';

@@ -8,7 +8,11 @@ import messages from './messages';
 
 // styling
 import { ScreenReaderOnly } from 'utils/a11y';
-import { fontSizes, colors, defaultCardStyle } from 'utils/styleUtils';
+import {
+  fontSizes,
+  colors,
+  defaultCardStyle,
+} from '@citizenlab/cl2-component-library';
 
 // components
 import T from 'components/T';

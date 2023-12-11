@@ -2,10 +2,12 @@ import React from 'react';
 
 // styling
 import styled from 'styled-components';
-import { defaultCardStyle, media, fontSizes } from 'utils/styleUtils';
-
-// components
-import { Image } from '@citizenlab/cl2-component-library';
+import {
+  defaultCardStyle,
+  media,
+  fontSizes,
+  Image,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

@@ -4,13 +4,18 @@ import React from 'react';
 import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 
 // components
-import { Box, Image, Title, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Image,
+  Title,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';

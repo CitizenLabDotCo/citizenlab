@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { FocusOn } from 'react-focus-on';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, media, colors } from '@citizenlab/cl2-component-library';
 import clickOutside from 'utils/containers/clickOutside';
 
 // animations
@@ -17,7 +17,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
 import { hideVisually } from 'polished';
 
 const enterTimeout = 350;

@@ -3,7 +3,7 @@ import { POLICY_PAGES } from 'api/custom_pages/types';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 
 // components
 import Link from 'utils/cl-router/Link';

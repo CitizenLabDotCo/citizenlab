@@ -18,6 +18,7 @@ import {
   Spinner,
   Title,
   Toggle,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import LocationInput, { Option } from 'components/UI/LocationInput';
 import Map from './components/map';
@@ -55,7 +56,7 @@ import { useParams } from 'react-router-dom';
 import { geocode } from 'utils/locationTools';
 import { useTheme } from 'styled-components';
 import useLocale from 'hooks/useLocale';
-import { defaultAdminCardPadding, colors } from 'utils/styleUtils';
+import { defaultAdminCardPadding } from 'utils/styleUtils';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
