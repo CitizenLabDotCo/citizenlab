@@ -63,7 +63,7 @@ import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEma
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import { CampaignName } from 'api/campaigns/types';
 import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
-import { defaultAdminCardPadding } from 'utils/styleUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
