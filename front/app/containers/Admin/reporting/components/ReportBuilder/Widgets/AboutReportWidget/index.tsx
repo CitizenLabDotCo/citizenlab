@@ -23,10 +23,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 // utils
 import { getFullName } from 'utils/textUtils';
 import { getPeriod } from './utils';
-import {
-  createMultiloc,
-  // formatMultiloc,
-} from 'containers/Admin/reporting/utils/multiloc';
+import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
 type Props = {
   startAt?: string;
