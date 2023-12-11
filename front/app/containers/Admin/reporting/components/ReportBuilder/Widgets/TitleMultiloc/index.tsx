@@ -8,8 +8,9 @@ import { colors } from 'utils/styleUtils';
 import { useNode } from '@craftjs/core';
 
 // components
-import { Box, Input } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 // i18n
 import messages from 'containers/Admin/reporting/components/ReportBuilder/Widgets/TitleMultiloc/messages';
@@ -59,11 +60,11 @@ const TitleSettings = () => {
 
   return (
     <Box background="#ffffff" marginBottom="20px">
-      <Input
+      <InputMultilocWithLocaleSwitcher
         id="e2e-title-text-input"
         placeholder={formatMessage(messages.title)}
         type="text"
-        value={text}
+        valueMultiloc={text}
         onChange={(value) => {
           setProp((props) => (props.text = value));
         }}

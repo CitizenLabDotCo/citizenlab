@@ -11,6 +11,7 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
+import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
@@ -42,11 +43,13 @@ type ContentBuilderTopBarProps = {
   previewEnabled: boolean;
   setSaved: React.Dispatch<React.SetStateAction<boolean>>;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedLocale: React.Dispatch<React.SetStateAction<Locale>>;
 };
 
 const ContentBuilderTopBar = ({
   hasError,
   draftEditorData,
+  selectedLocale,
   hasPendingState,
   reportId,
   templateProjectId,
@@ -54,6 +57,7 @@ const ContentBuilderTopBar = ({
   previewEnabled,
   setSaved,
   setPreviewEnabled,
+  setSelectedLocale,
 }: ContentBuilderTopBarProps) => {
   const [initialized, setInitialized] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
@@ -201,6 +205,10 @@ const ContentBuilderTopBar = ({
             <FormattedMessage {...messages.reportBuilder} />
           </Text>
         </Box>
+        <LocaleSwitcher
+          selectedLocale={selectedLocale}
+          onSelectLocale={setSelectedLocale}
+        />
         <Box mx="24px">
           <PreviewToggle
             checked={previewEnabled}

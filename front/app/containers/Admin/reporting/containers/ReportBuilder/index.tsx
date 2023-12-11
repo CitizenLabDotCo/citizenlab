@@ -53,7 +53,7 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
 
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [imageUploading, setImageUploading] = useState(false);
-  const [selectedLocale, _setSelectedLocale] = useState<Locale>(platformLocale);
+  const [selectedLocale, setSelectedLocale] = useState<Locale>(platformLocale);
   const [draftData, setDraftData] = useState<CraftJson>(
     reportLayout.attributes.craftjs_json
   );
@@ -116,6 +116,7 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
             saved={saved}
             setSaved={setSaved}
             setPreviewEnabled={setPreviewEnabled}
+            setSelectedLocale={setSelectedLocale}
           />
           <Box
             mt={`${stylingConsts.menuHeight}px`}
