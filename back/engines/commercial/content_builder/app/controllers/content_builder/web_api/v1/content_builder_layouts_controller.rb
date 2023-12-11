@@ -4,7 +4,6 @@ module ContentBuilder
   module WebApi
     module V1
       class ContentBuilderLayoutsController < ApplicationController
-        # before_action :project_exists
         skip_before_action :authenticate_user, only: %i[show]
 
         def show
@@ -30,10 +29,6 @@ module ContentBuilder
         end
 
         private
-
-        # def project_exists
-        #   Project.find params[:project_id]
-        # end
 
         def content_buildable
           @content_buildable ||= case params[:content_buildable]
@@ -70,6 +65,7 @@ module ContentBuilder
 
         def create
           @layout = Layout.new params_for_create
+          layout.content_buildable = content_buildable
           authorize layout
           side_fx_service.before_create layout, current_user
           if layout.save
@@ -98,11 +94,7 @@ module ContentBuilder
 
         def params_for_create
           layout_params = params_for_upsert
-          {
-            content_buildable_type: Project.name,
-            content_buildable_id: params[:project_id],
-            code: params[:code]
-          }.tap do |attributes|
+          { code: params[:code] }.tap do |attributes|
             attributes[:enabled] = to_boolean(layout_params[:enabled]) if layout_params.key? :enabled
             attributes[:craftjs_json] = layout_params[:craftjs_json] if layout_params.key? :craftjs_json
             attributes[:craftjs_jsonmultiloc] = clean(layout_params[:craftjs_jsonmultiloc]) if layout_params.key? :craftjs_jsonmultiloc

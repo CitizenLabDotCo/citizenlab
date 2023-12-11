@@ -25,13 +25,12 @@ RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
         swapped = { 'swapped_data_images' => {} }
         not_swapped = { 'not_swapped_data_images' => {} }
         attributes = {
-          content_buildable_type: 'Project',
-          content_buildable_id: project_id,
           code: code,
           enabled: true,
           craftjs_json: not_swapped
         }
         layout = ContentBuilder::Layout.new(attributes)
+        layout.content_buildable = project
         expect(ContentBuilder::Layout).to receive(:new).with(attributes).and_return layout
         service = controller.send(:side_fx_service)
 
@@ -84,12 +83,11 @@ RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
     context 'when saving is unsuccessful' do
       it 'triggers the before_create hook before saving, but not the after_create hook after saving' do
         attributes = {
-          content_buildable_id: project.id,
-          content_buildable_type: 'Project',
           code: code,
           enabled: true
         }
         layout = ContentBuilder::Layout.new(attributes)
+        layout.content_buildable = project
         expect(ContentBuilder::Layout).to receive(:new).with(attributes).and_return layout
         service = controller.send(:side_fx_service)
 

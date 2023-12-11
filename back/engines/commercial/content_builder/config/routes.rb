@@ -8,6 +8,11 @@ ContentBuilder::Engine.routes.draw do
           post :upsert, on: :member
         end
       end
+      scope 'home_pages' do
+        resources :content_builder_layouts, param: :code, only: %i[show destroy], defaults: { content_buildable: 'HomePage' } do
+          post :upsert, on: :member
+        end
+      end
       resources :content_builder_layout_images, only: :create, controller: :layout_images
     end
   end
