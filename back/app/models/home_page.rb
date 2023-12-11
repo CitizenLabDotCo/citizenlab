@@ -34,7 +34,7 @@
 class HomePage < ApplicationRecord
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
   has_many :pinned_admin_publications, through: :pins, source: :admin_publication
-  has_many :content_builder_layouts, class_name: 'ContentBuilder::Layout', foreign_key: 'content_buildable_id', dependent: :destroy
+  has_many :content_builder_layouts, class_name: 'ContentBuilder::Layout', foreign_key: 'content_buildable_id', inverse_of: 'content_buildable', dependent: :destroy
 
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
