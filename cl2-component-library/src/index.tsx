@@ -89,6 +89,7 @@ import {
   hexToRgb,
   MainThemeProps,
   Color,
+  isRtl,
 } from './utils/styleUtils';
 import { IGraphPoint, IOption, Locale } from './utils/typings';
 
@@ -133,6 +134,7 @@ export {
   viewportWidths,
   media,
   colors,
+  isRtl,
   fontSizes,
   defaultStyles,
   defaultCardStyle,
