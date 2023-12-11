@@ -69,8 +69,7 @@ export const QuestionText = styled.span`
 interface Props {
   questions: IPollQuestionData[];
   projectId: string;
-  phaseId?: string | null;
-  id: string | null;
+  phaseId: string;
   disabled: boolean;
   disabledMessage?: MessageDescriptor | null;
   actionDisabledAndNotFixable: boolean;
@@ -82,10 +81,9 @@ interface Answers {
 
 const PollForm = ({
   questions,
-  id,
+  phaseId,
   disabled,
   projectId,
-  phaseId,
   disabledMessage,
   actionDisabledAndNotFixable,
 }: Props) => {
@@ -107,34 +105,32 @@ const PollForm = ({
   };
 
   const sendAnswer = () => {
-    if (id) {
-      if (!authUser || (disabled && !actionDisabledAndNotFixable)) {
-        if (!phaseId) return;
+    if (!authUser || (disabled && !actionDisabledAndNotFixable)) {
+      if (!phaseId) return;
 
-        triggerAuthenticationFlow({
-          flow: 'signup',
-          context: {
-            action: 'taking_poll',
-            id: phaseId,
-            type: 'phase',
+      triggerAuthenticationFlow({
+        flow: 'signup',
+        context: {
+          action: 'taking_poll',
+          id: phaseId,
+          type: 'phase',
+        },
+        successAction: {
+          name: 'submit_poll',
+          params: {
+            phaseId,
+            answers: Object.values(answers).flat(),
+            projectId,
+            setIsSubmitting,
           },
-          successAction: {
-            name: 'submit_poll',
-            params: {
-              phaseId,
-              answers: Object.values(answers).flat(),
-              projectId,
-              setIsSubmitting,
-            },
-          },
-        });
-      } else {
-        addPollResponse({
-          phaseId: id,
-          optionIds: Object.values(answers).flat(),
-          projectId,
-        });
-      }
+        },
+      });
+    } else {
+      addPollResponse({
+        phaseId,
+        optionIds: Object.values(answers).flat(),
+        projectId,
+      });
     }
   };
 

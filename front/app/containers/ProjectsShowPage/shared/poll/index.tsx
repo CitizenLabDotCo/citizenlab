@@ -1,15 +1,10 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
-
-// resources
-import GetPollQuestions, {
-  GetPollQuestionsChildProps,
-} from 'resources/GetPollQuestions';
+import usePollQuestions from 'api/poll_questions/usePollQuestions';
 
 // components
 import FormCompleted from './FormCompleted';
@@ -44,16 +39,10 @@ const Container = styled.div`
 //   projectId: string
 // };
 
-interface InputProps {
-  phaseId: string | null;
+interface Props {
+  phaseId: string;
   projectId: string;
 }
-
-interface DataProps {
-  pollQuestions: GetPollQuestionsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
 
 const disabledMessages: { [key in PollDisabledReason] } = {
   project_inactive: messages.pollDisabledProjectInactive,
@@ -67,9 +56,12 @@ const disabledMessages: { [key in PollDisabledReason] } = {
   not_permitted: messages.pollDisabledNotPermitted,
 };
 
-export const Poll = ({ pollQuestions, projectId, phaseId }: Props) => {
+const Poll = ({ projectId, phaseId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+  const { data: pollQuestions } = usePollQuestions({
+    phaseId,
+  });
 
   if (isNilOrError(pollQuestions) || !project || !phase) {
     return null;
@@ -93,9 +85,8 @@ export const Poll = ({ pollQuestions, projectId, phaseId }: Props) => {
         <>
           <PollForm
             projectId={projectId}
+            questions={pollQuestions.data}
             phaseId={phaseId}
-            questions={pollQuestions}
-            id={phaseId}
             disabled={!enabled}
             disabledMessage={message}
             actionDisabledAndNotFixable={actionDisabledAndNotFixable}
@@ -106,14 +97,4 @@ export const Poll = ({ pollQuestions, projectId, phaseId }: Props) => {
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  pollQuestions: ({ phaseId, render }) => (
-    <GetPollQuestions phaseId={phaseId as string}>{render}</GetPollQuestions>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <Poll {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default Poll;
