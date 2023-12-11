@@ -15,10 +15,8 @@ ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f44b1e3c8a;
 ALTER TABLE IF EXISTS ONLY public.insights_text_networks DROP CONSTRAINT IF EXISTS fk_rails_f3e4924881;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_f21a19c203;
-ALTER TABLE IF EXISTS ONLY public.volunteering_causes DROP CONSTRAINT IF EXISTS fk_rails_f069940b5a;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
 ALTER TABLE IF EXISTS ONLY public.insights_zeroshot_classification_tasks_inputs DROP CONSTRAINT IF EXISTS fk_rails_ee8a3a2c3d;
-ALTER TABLE IF EXISTS ONLY public.baskets DROP CONSTRAINT IF EXISTS fk_rails_ee5ff97ee7;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
 ALTER TABLE IF EXISTS ONLY public.areas_ideas DROP CONSTRAINT IF EXISTS fk_rails_e96a71e39f;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
@@ -35,7 +33,6 @@ ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT 
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_d6353758d5;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_d1892257e3;
 ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS fk_rails_d0209b82ff;
-ALTER TABLE IF EXISTS ONLY public.surveys_responses DROP CONSTRAINT IF EXISTS fk_rails_cf189c6bd8;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_locales_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_cd2a592e7b;
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_cc8b68bfb4;
 ALTER TABLE IF EXISTS ONLY public.analysis_insights DROP CONSTRAINT IF EXISTS fk_rails_cc6c7b26fc;
@@ -92,7 +89,6 @@ ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP C
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS fk_rails_7e11bb717f;
 ALTER TABLE IF EXISTS ONLY public.maps_legend_items DROP CONSTRAINT IF EXISTS fk_rails_7c44736f5e;
 ALTER TABLE IF EXISTS ONLY public.insights_zeroshot_classification_tasks_categories DROP CONSTRAINT IF EXISTS fk_rails_7a1b53273b;
-ALTER TABLE IF EXISTS ONLY public.polls_questions DROP CONSTRAINT IF EXISTS fk_rails_7535c7c09c;
 ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS fk_rails_74e779db86;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_74744744a6;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_73e1dee5fd;
@@ -137,7 +133,6 @@ ALTER TABLE IF EXISTS ONLY public.insights_text_network_analysis_tasks_views DRO
 ALTER TABLE IF EXISTS ONLY public.insights_data_sources DROP CONSTRAINT IF EXISTS fk_rails_17b344203a;
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS fk_rails_121f3a2011;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_0e5b472696;
-ALTER TABLE IF EXISTS ONLY public.polls_responses DROP CONSTRAINT IF EXISTS fk_rails_0e1e99632b;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_0b6ac3e1da;
 ALTER TABLE IF EXISTS ONLY public.initiatives DROP CONSTRAINT IF EXISTS fk_rails_06c1835844;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_06b2d7a3a8;
@@ -6628,14 +6623,6 @@ ALTER TABLE ONLY public.invites
 
 
 --
--- Name: polls_responses fk_rails_0e1e99632b; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.polls_responses
-    ADD CONSTRAINT fk_rails_0e1e99632b FOREIGN KEY (phase_id) REFERENCES public.phases(id) ON DELETE SET NULL;
-
-
---
 -- Name: ideas fk_rails_0e5b472696; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6985,14 +6972,6 @@ ALTER TABLE ONLY public.analysis_analyses_custom_fields
 
 ALTER TABLE ONLY public.analysis_questions
     ADD CONSTRAINT fk_rails_74e779db86 FOREIGN KEY (background_task_id) REFERENCES public.analysis_background_tasks(id);
-
-
---
--- Name: polls_questions fk_rails_7535c7c09c; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.polls_questions
-    ADD CONSTRAINT fk_rails_7535c7c09c FOREIGN KEY (phase_id) REFERENCES public.phases(id) ON DELETE SET NULL;
 
 
 --
@@ -7444,14 +7423,6 @@ ALTER TABLE ONLY public.analytics_dimension_locales_fact_visits
 
 
 --
--- Name: surveys_responses fk_rails_cf189c6bd8; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.surveys_responses
-    ADD CONSTRAINT fk_rails_cf189c6bd8 FOREIGN KEY (phase_id) REFERENCES public.phases(id) ON DELETE SET NULL;
-
-
---
 -- Name: static_page_files fk_rails_d0209b82ff; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7580,14 +7551,6 @@ ALTER TABLE ONLY public.static_pages_topics
 
 
 --
--- Name: baskets fk_rails_ee5ff97ee7; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.baskets
-    ADD CONSTRAINT fk_rails_ee5ff97ee7 FOREIGN KEY (phase_id) REFERENCES public.phases(id) ON DELETE SET NULL;
-
-
---
 -- Name: insights_zeroshot_classification_tasks_inputs fk_rails_ee8a3a2c3d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7601,14 +7564,6 @@ ALTER TABLE ONLY public.insights_zeroshot_classification_tasks_inputs
 
 ALTER TABLE ONLY public.idea_files
     ADD CONSTRAINT fk_rails_efb12f53ad FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
-
-
---
--- Name: volunteering_causes fk_rails_f069940b5a; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.volunteering_causes
-    ADD CONSTRAINT fk_rails_f069940b5a FOREIGN KEY (phase_id) REFERENCES public.phases(id) ON DELETE SET NULL;
 
 
 --

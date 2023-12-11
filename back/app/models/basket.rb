@@ -19,7 +19,6 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (phase_id => phases.id) ON DELETE => nullify
 #  fk_rails_...  (user_id => users.id)
 #
 class Basket < ApplicationRecord
