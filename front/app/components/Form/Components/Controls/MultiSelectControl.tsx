@@ -7,7 +7,7 @@ import {
 } from '@jsonforms/core';
 import React, { useState } from 'react';
 import ErrorDisplay from '../ErrorDisplay';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import styled from 'styled-components';
@@ -32,6 +32,7 @@ const MultiSelectControl = ({
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
   const options = getOptions(schema, 'multi');
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   if (!visible) {
     return null;
@@ -60,7 +61,9 @@ const MultiSelectControl = ({
             }}
             inputId={sanitizeForClassname(id)}
             disabled={uischema?.options?.readonly}
-            isSearchable={false}
+            // On phones, the keyboard that appears is too large
+            // and covers the options. So we disable the search functionality
+            isSearchable={!isSmallerThanPhone}
           />
         </Box>
 
