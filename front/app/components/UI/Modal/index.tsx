@@ -1,5 +1,6 @@
 import React, { PureComponent, ReactElement } from 'react';
 import { createPortal } from 'react-dom';
+import { adopt } from 'react-adopt';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import eventEmitter from 'utils/eventEmitter';
@@ -9,9 +10,14 @@ import { FocusOn } from 'react-focus-on';
 import messages from './messages';
 
 // components
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import clickOutside from 'utils/containers/clickOutside';
+
+// resources
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -27,6 +33,7 @@ import {
   colors,
   fontSizes,
   defaultOutline,
+  viewportWidths,
   isRtl,
 } from 'utils/styleUtils';
 
@@ -418,7 +425,11 @@ const ModalContentContainerSwitch = ({
   );
 };
 
-interface InputProps {
+interface DataProps {
+  windowSize: GetWindowSizeChildProps;
+}
+
+export interface InputProps {
   opened: boolean;
   fixedHeight?: boolean;
   width?: number | string;
@@ -437,9 +448,7 @@ interface InputProps {
   hideCloseButton?: boolean;
 }
 
-interface Props extends InputProps {
-  isSmallerThanTablet: boolean;
-}
+interface Props extends InputProps, DataProps {}
 
 interface State {
   windowHeight: number;
@@ -529,7 +538,7 @@ class Modal extends PureComponent<Props, State> {
   render() {
     const { windowHeight } = this.state;
     const {
-      isSmallerThanTablet,
+      windowSize,
       width,
       children,
       opened,
@@ -543,6 +552,9 @@ class Modal extends PureComponent<Props, State> {
       hideCloseButton,
     } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
+    const smallerThanSmallTablet = windowSize
+      ? windowSize <= viewportWidths.tablet
+      : false;
     const modalPortalElement = document?.getElementById('modal-portal');
     let padding: string | undefined = undefined;
 
@@ -558,7 +570,7 @@ class Modal extends PureComponent<Props, State> {
           classNames="modal"
           in={opened}
           timeout={
-            isSmallerThanTablet
+            smallerThanSmallTablet
               ? mobileTransformTimeout
               : desktopTransformTimeout
           }
@@ -633,7 +645,7 @@ class Modal extends PureComponent<Props, State> {
                       </Box>
                     </Box>
                     {!hideCloseButton && (
-                      <Box mr={isSmallerThanTablet ? '0px' : '8px'}>
+                      <Box mr={smallerThanSmallTablet ? '0px' : '8px'}>
                         <StyledCloseIconButton2
                           className="e2e-modal-close-button"
                           iconColor={colors.textSecondary}
@@ -670,8 +682,12 @@ class Modal extends PureComponent<Props, State> {
   }
 }
 
-export default (inputProps: InputProps) => {
-  const isSmallerThanTablet = useBreakpoint('tablet');
+const Data = adopt<DataProps, InputProps>({
+  windowSize: <GetWindowSize />,
+});
 
-  return <Modal {...inputProps} isSmallerThanTablet={isSmallerThanTablet} />;
-};
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <Modal {...inputProps} {...dataProps} />}
+  </Data>
+);
