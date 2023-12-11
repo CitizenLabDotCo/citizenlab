@@ -2145,7 +2145,7 @@
   "app.containers.admin.project.permissions.permissionsAdministrators": "Admins",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaborators": "Nur Admins und Projektmanager*innen",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip": "Nur Plattform-Admins, Ordnermanager*innen und Projektmanager*innen können die Aktion durchführen",
-  "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Jede*r",
+  "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Jede Person",
   "app.containers.admin.project.permissions.permissionsAnyoneLabelDescription": "Jede Person, auch unregistrierte Nutzer*innen, kann teilnehmen.",
   "app.containers.admin.project.permissions.permissionsEmailConfirmLabel": "Nutzer*in mit bestätigter E-Mail-Adresse",
   "app.containers.admin.project.permissions.permissionsEmailConfirmLabelDescription": "Jede Person kann teilnehmen, nachdem er seine/ihre E-Mail-Adresse angegeben und bestätigt hat.",
