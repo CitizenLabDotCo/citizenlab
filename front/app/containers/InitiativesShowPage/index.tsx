@@ -6,7 +6,7 @@ import InitiativesShow from 'containers/InitiativesShow';
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner, media } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -27,6 +27,12 @@ const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
   left: 0;
   right: 0;
   z-index: 1000;
+`;
+
+const StyledInitiativesShow = styled(InitiativesShow)`
+  ${({ theme }) => media.tablet`
+    margin-top: ${theme.menuHeight}px;
+  `}
 `;
 
 const InitiativesShowPage = () => {
@@ -64,7 +70,7 @@ const InitiativesShowPage = () => {
   return (
     <Container>
       <StyledInitiativeShowPageTopBar initiativeId={initiative.data.id} />
-      <InitiativesShow initiativeId={initiative.data.id} />
+      <StyledInitiativesShow initiativeId={initiative.data.id} />
     </Container>
   );
 };

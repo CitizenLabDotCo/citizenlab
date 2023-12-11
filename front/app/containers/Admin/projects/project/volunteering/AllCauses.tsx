@@ -26,23 +26,17 @@ const Buttons = styled.div`
 `;
 
 interface Props {
-  participationContextType: 'project' | 'phase';
-  participationContextId: string;
+  phaseId: string;
   projectId: string;
 }
 
-const AllCauses = ({
-  participationContextType,
-  participationContextId,
-  projectId,
-}: Props) => {
+const AllCauses = ({ phaseId, projectId }: Props) => {
   const { mutate: deleteCause } = useDeleteCause();
   const { mutate: reorderCause } = useReorderCause();
   const { formatMessage } = useIntl();
 
   const { data: causes } = useCauses({
-    participationContextType,
-    participationContextId,
+    phaseId,
   });
   const [itemsWhileDragging, setItemsWhileDragging] = useState<
     ICauseData[] | null
@@ -99,10 +93,7 @@ const AllCauses = ({
     }
   };
 
-  const newCauseLink =
-    participationContextType === 'phase'
-      ? `/admin/projects/${projectId}/volunteering/phases/${participationContextId}/causes/new`
-      : `/admin/projects/${projectId}/volunteering/causes/new`;
+  const newCauseLink = `/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/new`;
 
   if (isNilOrError(causes)) return null;
 
@@ -142,7 +133,7 @@ const AllCauses = ({
                   <FormattedMessage {...messages.deleteButtonLabel} />
                 </Button>
                 <Button
-                  linkTo={`/admin/projects/${projectId}/volunteering/causes/${cause.id}`}
+                  linkTo={`/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/${cause.id}`}
                   icon="edit"
                   buttonStyle="secondary"
                 >

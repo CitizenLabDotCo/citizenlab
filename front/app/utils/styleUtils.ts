@@ -23,6 +23,8 @@ const isRtl = (style, ...args) => css`
   ${(props) => (props.theme.isRtl ? css(style, ...args) : '')}
 `;
 
+const defaultAdminCardPadding = 40;
+
 export {
   viewportWidths,
   media,
@@ -41,4 +43,5 @@ export {
   calculateContrastRatio,
   hexToRgb,
   isRtl,
+  defaultAdminCardPadding,
 };

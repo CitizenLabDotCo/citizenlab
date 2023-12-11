@@ -1,4 +1,5 @@
 import { randomString } from '../../support/commands';
+import moment = require('moment');
 
 describe('Input form builder', () => {
   const projectTitle = randomString();
@@ -10,6 +11,7 @@ describe('Input form builder', () => {
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
+  let phaseId: string;
 
   beforeEach(() => {
     if (projectId) {
@@ -20,20 +22,31 @@ describe('Input form builder', () => {
     questionTitle = randomString();
 
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'ideation',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-    });
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+        return cy.apiCreatePhase({
+          projectId,
+          title: 'firstPhaseTitle',
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
+      })
+      .then((phase) => {
+        phaseId = phase.body.data.id;
+      });
   });
 
   it('has a working idea form with all the defaults', () => {
-    cy.visit(`admin/projects/${projectId}/ideaform`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideaform`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
 
     // Verify no warning is shown when there are no submissions
@@ -68,12 +81,19 @@ describe('Input form builder', () => {
       .find('button.selected')
       .should('have.length', 1);
 
+    cy.intercept(
+      `**/location/autocomplete?input=Boulevard%20Anspach%20Brussels&language=en`
+    ).as('locationSearch');
+
     // add a location
     cy.get('.e2e-idea-form-location-input-field input').type(
       'Boulevard Anspach Brussels'
     );
-    cy.wait(5000);
-    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
+    cy.wait('@locationSearch', { timeout: 10000 });
+
+    cy.get('.e2e-idea-form-location-input-field input').type(
+      '{downArrow}{enter}'
+    );
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload').should('exist');
@@ -98,13 +118,13 @@ describe('Input form builder', () => {
       .contains('Boulevard Anspach');
 
     // Verify warning for altering the form is present in form builder
-    cy.visit(`admin/projects/${projectId}/ideaform`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideaform`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
     cy.get('#e2e-warning-notice').should('exist');
   });
 
   it('can create input form with custom field, save form and user can respond to the form created', () => {
-    cy.visit(`admin/projects/${projectId}/ideaform`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideaform`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
     cy.get('[data-cy="e2e-short-answer"]').should('exist');
     cy.get('[data-cy="e2e-short-answer"]').click();
@@ -138,12 +158,20 @@ describe('Input form builder', () => {
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
+    cy.intercept(
+      `**/location/autocomplete?input=Boulevard%20Anspach%20Brussels&language=en`
+    ).as('locationSearch');
+
     // add a location
     cy.get('.e2e-idea-form-location-input-field input').type(
       'Boulevard Anspach Brussels'
     );
-    cy.wait(5000);
-    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
+
+    cy.wait('@locationSearch', { timeout: 10000 });
+
+    cy.get('.e2e-idea-form-location-input-field input').type(
+      '{downArrow}{enter}'
+    );
 
     // Fill in required custom field
     cy.contains(questionTitle).should('exist');

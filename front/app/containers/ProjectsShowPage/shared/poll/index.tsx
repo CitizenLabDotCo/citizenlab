@@ -1,16 +1,10 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { IParticipationContextType } from 'typings';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
-
-// resources
-import GetPollQuestions, {
-  GetPollQuestionsChildProps,
-} from 'resources/GetPollQuestions';
+import usePollQuestions from 'api/poll_questions/usePollQuestions';
 
 // components
 import FormCompleted from './FormCompleted';
@@ -45,17 +39,10 @@ const Container = styled.div`
 //   projectId: string
 // };
 
-interface InputProps {
-  type: IParticipationContextType;
-  phaseId: string | null;
+interface Props {
+  phaseId: string;
   projectId: string;
 }
-
-interface DataProps {
-  pollQuestions: GetPollQuestionsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
 
 const disabledMessages: { [key in PollDisabledReason] } = {
   project_inactive: messages.pollDisabledProjectInactive,
@@ -69,15 +56,14 @@ const disabledMessages: { [key in PollDisabledReason] } = {
   not_permitted: messages.pollDisabledNotPermitted,
 };
 
-export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
+const Poll = ({ projectId, phaseId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+  const { data: pollQuestions } = usePollQuestions({
+    phaseId,
+  });
 
-  if (
-    isNilOrError(pollQuestions) ||
-    !project ||
-    !(type === 'phase' ? phase : true)
-  ) {
+  if (isNilOrError(pollQuestions) || !project || !phase) {
     return null;
   }
 
@@ -99,10 +85,8 @@ export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
         <>
           <PollForm
             projectId={projectId}
+            questions={pollQuestions.data}
             phaseId={phaseId}
-            questions={pollQuestions}
-            id={type === 'project' ? projectId : phaseId}
-            type={type}
             disabled={!enabled}
             disabledMessage={message}
             actionDisabledAndNotFixable={actionDisabledAndNotFixable}
@@ -113,21 +97,4 @@ export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  pollQuestions: ({ projectId, phaseId, type, render }) => (
-    <GetPollQuestions
-      participationContextId={
-        type === 'project' ? projectId : (phaseId as string)
-      }
-      participationContextType={type}
-    >
-      {render}
-    </GetPollQuestions>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <Poll {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default Poll;

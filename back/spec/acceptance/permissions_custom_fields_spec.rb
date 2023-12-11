@@ -21,9 +21,10 @@ resource 'PermissionsCustomField' do
       parameter :size, 'Number of permissions custom fields per page'
     end
 
-    let(:permission_scope) { create(:continuous_project) }
+    let(:project) { create(:single_phase_ideation_project) }
+    let(:permission_scope) { project.phases.first }
     let(:action) { 'commenting_idea' }
-    let(:idea_id) { create(:idea, project: permission_scope).id }
+    let(:idea_id) { create(:idea, project: project).id }
 
     example 'List all permissions custom fields of a permission' do
       field1, field2 = create_list(:custom_field, 2)

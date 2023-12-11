@@ -1,4 +1,8 @@
 import { randomString } from '../../../support/commands';
+import moment = require('moment');
+
+let projectId: string;
+const phaseTitle = randomString();
 
 describe('Report builder Posts By Time widget', () => {
   beforeEach(() => {
@@ -11,17 +15,33 @@ describe('Report builder Posts By Time widget', () => {
     const ideaContent = randomString();
 
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'ideation',
-    }).then((project) => {
-      const projectId = project.body.data.id;
-      cy.wrap(projectId).as('projectId');
-      cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
-    });
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        return cy.apiCreatePhase({
+          projectId,
+          title: phaseTitle,
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+          allow_anonymous_participation: true,
+        });
+      })
+      .then((phase) => {
+        cy.wrap(projectId).as('projectId');
+        cy.apiCreateIdea({
+          projectId,
+          ideaTitle,
+          ideaContent,
+          phaseIds: [phase.body.data.id],
+        });
+      });
 
     cy.apiCreateReportBuilder().then((report) => {
       const reportId = report.body.data.id;

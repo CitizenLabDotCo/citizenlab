@@ -8,8 +8,8 @@ describe IdeaPolicy do
   let(:scope) { IdeaPolicy::Scope.new(user, project.ideas) }
 
   context 'on an idea in a public project' do
-    let(:project) { create(:continuous_project) }
-    let!(:idea) { create(:idea, project: project) }
+    let(:project) { create(:single_phase_ideation_project) }
+    let!(:idea) { create(:idea, project: project, phases: project.phases) }
 
     context 'for a visitor' do
       let(:user) { nil }
@@ -99,7 +99,7 @@ describe IdeaPolicy do
 
     context 'when there is a posting idea disabled reason' do
       before do
-        allow_any_instance_of(ParticipationContextService)
+        allow_any_instance_of(ParticipationPermissionsService)
           .to receive(:posting_idea_disabled_reason_for_project).and_return(disabled_reason)
       end
 
@@ -270,7 +270,7 @@ describe IdeaPolicy do
 
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:by_slug) }
-    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { is_expected.not_to permit(:create) }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
 
@@ -344,7 +344,7 @@ describe IdeaPolicy do
   end
 
   context 'on idea for a budgeting project' do
-    let(:project) { create(:continuous_budgeting_project) }
+    let(:project) { create(:single_phase_budgeting_project) }
     let(:author) { create(:user) }
     let!(:idea) { create(:idea, project: project, author: author) }
 
@@ -445,7 +445,7 @@ describe IdeaPolicy do
 
   context 'for blocked author' do
     let(:user) { create(:user, block_end_at: 5.days.from_now) }
-    let(:idea) { create(:idea, author: user, project: create(:continuous_project)) }
+    let(:idea) { create(:idea, author: user, project: create(:single_phase_ideation_project)) }
 
     it_behaves_like 'policy for blocked user'
   end
@@ -453,8 +453,66 @@ describe IdeaPolicy do
   # It appears we actually create an idea when a user submits a native survey
   context 'for blocked user submitting a survey' do
     let(:user) { create(:user, block_end_at: 5.days.from_now) }
-    let(:idea) { create(:idea, author: user, project: create(:continuous_survey_project)) }
+    let(:idea) { create(:idea, author: user, project: create(:single_phase_typeform_survey_project)) }
 
     it_behaves_like 'policy for blocked user'
+  end
+
+  context 'with phase permissions' do
+    let(:author) { create(:user) }
+    let(:permitted_by) { 'admins_moderators' }
+    let(:participation_method) { 'ideation' }
+    let(:posting_enabled) { true }
+    let(:project) do
+      create(:single_phase_ideation_project, phase_attrs: { with_permissions: true, posting_enabled: posting_enabled, participation_method: participation_method }).tap do |project|
+        project.phases.first.permissions.find_by(action: 'posting_idea').update!(permitted_by: permitted_by)
+      end
+    end
+    let!(:idea) do
+      IdeaStatus.create_defaults
+      phase = project.phases.first
+      create(:idea, project: project, author: author, creation_phase: phase.native_survey? ? phase : nil)
+    end
+
+    context "for a visitor with posting permissions granted to 'everyone'" do
+      let(:user) { nil }
+      let(:permitted_by) { 'everyone' }
+
+      describe 'in a participation method where everyone can post' do
+        let(:participation_method) { 'native_survey' }
+
+        it { is_expected.not_to permit(:show) }
+        it { is_expected.to permit(:create) }
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:destroy) }
+      end
+
+      describe 'in a participation method where sign-in is required to post' do
+        let(:participation_method) { 'ideation' }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:destroy) }
+
+        it 'indexes the idea' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
+    end
+
+    context 'for the author of an idea in a project where posting is not permitted' do
+      let(:user) { author }
+      let(:posting_enabled) { false }
+
+      it { is_expected.to permit(:show) }
+      it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:destroy) }
+
+      it 'indexes the idea' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
   end
 end

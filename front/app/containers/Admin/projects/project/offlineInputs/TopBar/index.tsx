@@ -44,12 +44,11 @@ const TopBar = ({ onClickPDFImport }: Props) => {
     (phase ? ` - ${localize(phase?.data.attributes.title_multiloc)}` : '');
 
   const isSurvey =
-    phase?.data.attributes.participation_method === 'native_survey' ||
-    project?.data.attributes.participation_method === 'native_survey';
+    phase?.data.attributes.participation_method === 'native_survey';
 
   const backPath = isSurvey
-    ? `/admin/projects/${projectId}/native-survey`
-    : `/admin/projects/${projectId}/ideas`;
+    ? `/admin/projects/${projectId}/phases/${phaseId}/native-survey`
+    : `/admin/projects/${projectId}/phases/${phaseId}/ideas`;
 
   return (
     <Box

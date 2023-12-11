@@ -69,7 +69,7 @@ module EmailCampaigns
       basket = activity.item.basket
       [{
         event_payload: {
-          project_url: Frontend::UrlService.new.model_to_url(basket.participation_context.project, locale: recipient.locale),
+          project_url: Frontend::UrlService.new.model_to_url(basket.phase.project, locale: recipient.locale),
           voted_ideas: EmailCampaigns::PayloadFormatterService.new.format_ideas_list(basket.ideas, recipient)
         }
       }]

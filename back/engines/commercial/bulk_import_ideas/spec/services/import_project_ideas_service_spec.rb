@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::ImportProjectIdeasService do
-  let(:project) { create(:continuous_project) }
+  let(:project) { create(:single_phase_ideation_project) }
   let(:service) { described_class.new create(:admin), project.id, 'en', nil, false }
   let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 

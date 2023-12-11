@@ -6,7 +6,6 @@ import voteInputMessages from 'components/VoteInputs/_shared/messages';
 import { isNil } from 'utils/helperUtils';
 
 // typings
-import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 import { TCurrency } from 'api/app_configuration/types';
 import { FormatMessage } from 'typings';
@@ -15,12 +14,12 @@ import { Localize } from 'hooks/useLocalize';
 export const getDisabledExplanation = (
   formatMessage: FormatMessage,
   localize: Localize,
-  participationContext: IProjectData | IPhaseData,
+  phase: IPhaseData,
   numberOfVotesCast: number,
   currency: TCurrency | undefined
 ) => {
-  const { voting_method } = participationContext.attributes;
-  const maxVotes = participationContext.attributes.voting_max_total;
+  const { voting_method } = phase.attributes;
+  const maxVotes = phase.attributes.voting_max_total;
 
   const votesExceedLimit =
     maxVotes && numberOfVotesCast !== undefined
@@ -55,7 +54,7 @@ export const getDisabledExplanation = (
     }
 
     if (numberOfVotesCast === 0) {
-      const { voting_term_plural_multiloc } = participationContext.attributes;
+      const { voting_term_plural_multiloc } = phase.attributes;
 
       const votesTerm = voting_term_plural_multiloc
         ? localize(voting_term_plural_multiloc)
@@ -79,7 +78,7 @@ export const getDisabledExplanation = (
 
     if (numberOfVotesCast === 0) return formatMessage(messages.nothingInBasket);
 
-    const minBudget = participationContext.attributes.voting_min_total ?? 0;
+    const minBudget = phase.attributes.voting_min_total ?? 0;
     const minBudgetRequired = minBudget > 0;
     const minBudgetReached =
       numberOfVotesCast !== undefined ? numberOfVotesCast >= minBudget : false;
@@ -100,11 +99,11 @@ export const getDisabledExplanation = (
 export const getVotesCounter = (
   formatMessage: FormatMessage,
   localize: Localize,
-  participationContext: IProjectData | IPhaseData,
+  phase: IPhaseData,
   numberOfVotesCast: number,
   currency: TCurrency | undefined
 ) => {
-  const { voting_method, voting_max_total } = participationContext.attributes;
+  const { voting_method, voting_max_total } = phase.attributes;
 
   if (voting_method === 'single_voting') {
     if (isNil(voting_max_total)) {
@@ -129,7 +128,7 @@ export const getVotesCounter = (
     const votesLeft = voting_max_total - numberOfVotesCast;
 
     const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
-      participationContext.attributes;
+      phase.attributes;
 
     const voteTerm = voting_term_singular_multiloc
       ? localize(voting_term_singular_multiloc)

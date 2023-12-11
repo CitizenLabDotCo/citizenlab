@@ -28,7 +28,8 @@ resource 'Ideas' do
 
       example 'Native survey responses are not included' do
         IdeaStatus.create_defaults
-        create(:idea, project: create(:continuous_native_survey_project))
+        project = create(:single_phase_native_survey_project)
+        create(:idea, project: project, creation_phase: project.phases.first)
 
         do_request
 

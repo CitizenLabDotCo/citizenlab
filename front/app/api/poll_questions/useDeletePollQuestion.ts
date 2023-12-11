@@ -5,8 +5,7 @@ import invalidatePollQuestionsCache from './util/invalidatePollQuestionsCache';
 
 const deleteQuestion = async ({
   questionId,
-  participationContextId: _id,
-  participationContextType: _type,
+  phaseId: _id,
 }: IPollQuestionParameters & { questionId: string }) =>
   fetcher({
     path: `/poll_questions/${questionId}`,

@@ -11,28 +11,22 @@ import { FormattedMessage } from 'utils/cl-intl';
 // components
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import InputManager, {
+  TFilterMenu,
+} from 'components/admin/PostManager/InputManager';
 import AnalysisBanner from './AnalysisBanner';
+import NewIdeaButton from './NewIdeaButton';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
+import usePhase from 'api/phases/usePhase';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// styling
-import { colors } from 'utils/styleUtils';
-import InputManager, {
-  TFilterMenu,
-} from 'components/admin/PostManager/InputManager';
-
 const defaultTimelineProjectVisibleFilterMenu = 'phases';
-const defaultContinuousProjectVisibleFilterMenu = 'statuses';
 const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
   defaultTimelineProjectVisibleFilterMenu,
   'statuses',
-  'topics',
-];
-const continuousProjectVisibleFilterMenus: TFilterMenu[] = [
-  defaultContinuousProjectVisibleFilterMenu,
   'topics',
 ];
 
@@ -40,49 +34,60 @@ const AdminProjectIdeas = () => {
   const importPrintedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
   });
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
+  const { data: phase } = usePhase(phaseId);
+
+  if (!project) return null;
 
   return (
     <>
+      <AnalysisBanner />
       <Box mb="30px">
-        <Box display="flex" flexDirection="row" justifyContent="space-between">
-          <Title variant="h2" color="primary" fontWeight="normal" mt="16px">
+        <Box
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Title variant="h3" color="primary" fontWeight="normal" my="0px">
             <FormattedMessage {...messages.titleInputManager} />
           </Title>
-          {importPrintedFormsEnabled && (
-            <Button
-              width="auto"
-              bgColor={colors.primary}
-              linkTo={`/admin/projects/${projectId}/offline-inputs`}
-              icon="page"
-            >
-              <FormattedMessage {...ownMessages.addOfflineInputs} />
-            </Button>
-          )}
+          <Box display="flex" gap="8px">
+            {importPrintedFormsEnabled && (
+              <Button
+                width="auto"
+                linkTo={`/admin/projects/${projectId}/offline-inputs/${phaseId}`}
+                icon="page"
+                buttonStyle="secondary"
+              >
+                <FormattedMessage {...ownMessages.addOfflineInputs} />
+              </Button>
+            )}
+            {phase && (
+              <NewIdeaButton
+                inputTerm={phase.data.attributes.input_term}
+                linkTo={`/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`}
+              />
+            )}
+          </Box>
         </Box>
         <Text color="textSecondary">
           <FormattedMessage {...messages.subtitleInputManager} />
         </Text>
       </Box>
 
-      <AnalysisBanner />
-
       {project && (
         <InputManager
           projectId={project.data.id}
           phases={phases?.data}
-          visibleFilterMenus={
-            project.data.attributes.process_type === 'timeline'
-              ? timelineProjectVisibleFilterMenus
-              : continuousProjectVisibleFilterMenus
-          }
-          defaultFilterMenu={
-            project.data.attributes.process_type === 'timeline'
-              ? defaultTimelineProjectVisibleFilterMenu
-              : defaultContinuousProjectVisibleFilterMenu
-          }
+          phaseId={phaseId}
+          visibleFilterMenus={timelineProjectVisibleFilterMenus}
+          defaultFilterMenu={defaultTimelineProjectVisibleFilterMenu}
         />
       )}
     </>

@@ -3,23 +3,14 @@
 class SideFxProjectService
   include SideFxHelper
 
-  def initialize(sfx_pc = SideFxParticipationContextService.new)
-    @sfx_pc = sfx_pc
-  end
-
-  def before_create(project, user)
-    @sfx_pc.before_create project, user if project.participation_context?
-  end
+  def before_create(project, user); end
 
   def after_create(project, user)
-    participation_method = Factory.instance.participation_method_for(project)
-    participation_method.create_default_form! if participation_method.auto_create_default_form?
     project.set_default_topics!
     project.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(project.description_multiloc, field: :description_multiloc, imageable: project))
 
     LogActivityJob.perform_later(project, 'created', user, project.created_at.to_i)
 
-    @sfx_pc.after_create project, user if project.participation_context?
     after_publish project, user if project.admin_publication.published?
   end
 
@@ -37,25 +28,21 @@ class SideFxProjectService
     )
   end
 
-  def before_update(project, user)
+  def before_update(project, _user)
     @publication_status_was = project.admin_publication.publication_status_was
     @folder_id_was = project.admin_publication.parent_id_was
     project.description_multiloc = TextImageService.new.swap_data_images_multiloc(project.description_multiloc, field: :description_multiloc, imageable: project)
-    @sfx_pc.before_update project, user if project.participation_context?
   end
 
   def after_update(project, user)
     LogActivityJob.perform_later project, 'changed', user, project.updated_at.to_i
 
     after_folder_changed project, user if @folder_id_was != project.folder_id
-    @sfx_pc.after_update project, user if project.participation_context?
     # We don't want to send out the "project published" campaign when e.g. changing from "archived" to "published"
     after_publish project, user if project.admin_publication.published? && @publication_status_was == 'draft'
   end
 
-  def before_destroy(project, user)
-    @sfx_pc.before_destroy project, user if project.participation_context?
-  end
+  def before_destroy(project, user); end
 
   def after_destroy(frozen_project, user)
     serialized_project = clean_time_attributes(frozen_project.attributes)
@@ -64,7 +51,6 @@ class SideFxProjectService
       user, Time.now.to_i,
       payload: { project: serialized_project }
     )
-    @sfx_pc.after_destroy frozen_project, user if frozen_project.participation_context?
   end
 
   def before_delete_inputs(project, user); end

@@ -28,7 +28,7 @@ class PermissionsService
       model_class.constantize.all.each { |scope| update_permissions_for_scope(scope) }
     end
 
-    Permission.select(&:invalid?).each(&:destroy!)
+    # Permission.select(&:invalid?).each(&:destroy!)
   end
 
   def denied_reason_for_resource(user, action, resource = nil)
@@ -87,7 +87,7 @@ class PermissionsService
       Phase.find(scope_id)
     when :idea_id
       idea = Idea.find(scope_id)
-      ParticipationContextService.new.get_participation_context idea.project
+      ParticipationPermissionsService.new.get_current_phase idea.project
     end
   end
 

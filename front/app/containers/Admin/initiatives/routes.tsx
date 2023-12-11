@@ -1,9 +1,14 @@
 import React, { lazy } from 'react';
-import moduleConfiguration from 'modules';
 import PageLoading from 'components/UI/PageLoading';
 import InitiativePreviewIndex from 'components/admin/PostManager/components/InitiativePreviewIndex';
 const AdminInitiativesIndex = lazy(() => import('.'));
 const AdminInitiativesSettings = lazy(() => import('./settings'));
+const AdminGranularPermissionsComponent = lazy(
+  () =>
+    import(
+      'containers/Admin/projects/project/permissions/granular_permissions/containers/permissions'
+    )
+);
 
 const AdminInitiativesManage = lazy(() => import('./manage'));
 const createAdminInitiativesRoutes = () => ({
@@ -38,7 +43,14 @@ const createAdminInitiativesRoutes = () => ({
         </PageLoading>
       ),
     },
-    ...moduleConfiguration.routes['admin.initiatives'],
+    {
+      path: 'permissions',
+      element: (
+        <PageLoading>
+          <AdminGranularPermissionsComponent />
+        </PageLoading>
+      ),
+    },
   ],
 });
 
