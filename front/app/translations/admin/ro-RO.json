@@ -1452,8 +1452,6 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 column",
   "app.containers.admin.ContentBuilder.projectDescription": "Project description",
   "app.containers.admin.ContentBuilder.sections": "SECTIONS",
-  "app.containers.admin.ContentBuilder.text": "Text",
-  "app.containers.admin.ContentBuilder.textValue": "This is some text. You can edit and format it by using the editor in the panel on the right.",
   "app.containers.admin.ContentBuilder.threeColumnLayout": "3 column",
   "app.containers.admin.ContentBuilder.twoColumnLayout": "2 column",
   "app.containers.admin.ContentBuilder.twoColumnLayoutVariant1-2": "2 columns with 30% and 60% width respectively",
