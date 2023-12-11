@@ -33,8 +33,7 @@ describe('useAddCause', () => {
         description_multiloc: {
           en: 'test',
         },
-        participation_context_id: '1',
-        participation_context_type: 'Project',
+        phase_id: '1',
       });
     });
 
@@ -61,8 +60,7 @@ describe('useAddCause', () => {
         description_multiloc: {
           en: 'test',
         },
-        participation_context_id: '1',
-        participation_context_type: 'Project',
+        phase_id: '1',
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

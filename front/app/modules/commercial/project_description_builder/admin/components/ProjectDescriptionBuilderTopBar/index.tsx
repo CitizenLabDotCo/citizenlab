@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -47,31 +47,28 @@ const ProjectDescriptionBuilderTopBar = ({
   hasPendingState,
 }: ProjectDescriptionBuilderTopBarProps) => {
   const { projectId } = useParams() as { projectId: string };
-  const [loading, setLoading] = useState(false);
+
   const { query } = useEditor();
   const localize = useLocalize();
   const { data: project } = useProjectById(projectId);
-  const { mutateAsync: addProjectDescriptionBuilderLayout } =
-    useAddProjectDescriptionBuilderLayout();
+  const {
+    mutate: addProjectDescriptionBuilderLayout,
+    isLoading,
+    isError,
+  } = useAddProjectDescriptionBuilderLayout();
 
   const disableSave = !!hasError || !!hasPendingState;
 
   const goBack = () => {
-    clHistory.push(`/admin/projects/${projectId}/description`);
+    clHistory.push(`/admin/projects/${projectId}/settings/description`);
   };
 
   const handleSave = async () => {
     if (selectedLocale) {
-      try {
-        setLoading(true);
-        await addProjectDescriptionBuilderLayout({
-          projectId,
-          craftjs_json: query.getSerializedNodes(),
-        });
-      } catch {
-        // Do nothing
-      }
-      setLoading(false);
+      addProjectDescriptionBuilderLayout({
+        projectId,
+        craftjs_json: query.getSerializedNodes(),
+      });
     }
   };
 
@@ -124,9 +121,21 @@ const ProjectDescriptionBuilderTopBar = ({
         </Button>
         <SaveButton
           disabled={disableSave}
-          processing={loading}
+          processing={isLoading}
           onClick={handleSave}
         />
+        {isError && (
+          <Text
+            color="error"
+            ml="20px"
+            position="absolute"
+            right="16px"
+            bottom="-18px"
+            fontSize="s"
+          >
+            <FormattedMessage {...messages.saveError} />
+          </Text>
+        )}
       </Box>
     </Container>
   );

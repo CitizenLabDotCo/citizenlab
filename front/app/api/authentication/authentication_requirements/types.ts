@@ -2,7 +2,7 @@ import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import keys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
 import { GLOBAL_CONTEXT } from './constants';
-import { IParticipationContextPermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/permissions/types';
 
 interface InitiativeContext {
   type: 'initiative';
@@ -16,22 +16,22 @@ interface IFollowContext {
   action: IFollowingAction;
 }
 
-export interface ProjectContext {
-  type: 'project' | 'phase';
-  action: IParticipationContextPermissionAction;
-  id: string /* project or phase id, depending on type attribute */;
+export interface PhaseContext {
+  type: 'phase';
+  action: IPhasePermissionAction;
+  id: string /* phase id */;
 }
 
 interface IdeaContext {
   type: 'idea';
-  action: IParticipationContextPermissionAction;
+  action: IPhasePermissionAction;
   id: string /* idea id */;
 }
 
 export type AuthenticationContext =
   | typeof GLOBAL_CONTEXT
   | InitiativeContext
-  | ProjectContext
+  | PhaseContext
   | IdeaContext
   | IFollowContext;
 

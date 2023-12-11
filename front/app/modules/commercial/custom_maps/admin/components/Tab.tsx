@@ -1,17 +1,19 @@
-import { FC, useEffect } from 'react';
-import { WrappedComponentProps } from 'react-intl';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { InsertConfigurationOptions, ITab } from 'typings';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 type Props = {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
+  onRemove: (name: string) => void;
 };
 
-const Tab: FC<Props & WrappedComponentProps> = ({
-  onData,
-  intl: { formatMessage },
-}) => {
+const Tab = ({ onData, onRemove }: Props) => {
+  const { formatMessage } = useIntl();
+  const { phaseId } = useParams() as {
+    phaseId: string;
+  };
   useEffect(() => {
     const tabName = 'map';
     onData({
@@ -21,12 +23,16 @@ const Tab: FC<Props & WrappedComponentProps> = ({
         url: 'map',
         feature: 'custom_maps',
       },
-      insertBeforeName: 'phases',
+      insertAfterName: 'ideaform',
     });
+
+    return () => {
+      onRemove(tabName);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [phaseId]);
 
   return null;
 };
 
-export default injectIntl(Tab);
+export default Tab;

@@ -24,7 +24,6 @@ import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey
 
 // types
 import { IOption, Multiloc } from 'typings';
-import { IProjectData } from 'api/projects/types';
 
 type Props = {
   title?: Multiloc;
@@ -53,10 +52,6 @@ const SurveyResultsWidget = ({
     </Card>
   );
 };
-
-const isContinuousSurveyOrTimelineProject = ({ attributes }: IProjectData) =>
-  attributes.process_type === 'timeline' ||
-  attributes.participation_method === 'survey';
 
 const SurveyResultsWidgetSettings = () => {
   const { formatMessage } = useIntl();
@@ -156,7 +151,6 @@ const SurveyResultsWidgetSettings = () => {
 
       <ProjectFilter
         projectId={projectId}
-        filter={isContinuousSurveyOrTimelineProject}
         emptyValueMessage={widgetMessages.noProject}
         onProjectFilter={handleProjectFilter}
       />

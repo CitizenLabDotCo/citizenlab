@@ -50,14 +50,9 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
 
   if (!project || !phases) return null;
 
-  const { participationMethod, phaseId } = getTemplateData(
-    project.data,
-    phases.data
-  );
+  const { participationMethod, phaseId } = getTemplateData(phases.data);
 
-  const hasPhases =
-    project.data.attributes.process_type === 'timeline' &&
-    phases.data.length > 0;
+  const hasPhases = phases.data.length > 0;
 
   const projectPeriod = hasPhases
     ? getProjectPeriod(phases.data)

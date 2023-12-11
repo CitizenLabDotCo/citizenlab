@@ -28,12 +28,12 @@ module Polls
     validates :response, :option, presence: true
     validates :option, uniqueness: { scope: [:response] }
 
-    validate :validate_same_participation_context
+    validate :validate_same_phase
 
     private
 
-    def validate_same_participation_context
-      return unless response && option && (response.participation_context != option.question.participation_context)
+    def validate_same_phase
+      return unless response && option && (response.phase != option.question.phase)
 
       errors.add(
         :option_id,

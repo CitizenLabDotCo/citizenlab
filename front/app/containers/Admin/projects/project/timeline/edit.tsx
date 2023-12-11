@@ -24,19 +24,20 @@ import DateRangePicker from 'components/admin/DateRangePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
   Section,
-  SectionTitle,
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-import ParticipationContext, {
-  IParticipationContextConfig,
-} from '../participationContext';
+import PhaseParticipationConfig, {
+  IPhaseParticipationConfig,
+} from '../phase/phaseParticipationConfig';
 import FileUploader from 'components/UI/FileUploader';
 import {
   Text,
   Checkbox,
   Box,
+  Title,
   IconTooltip,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import ReportSection from '../information/ReportSection';
@@ -61,7 +62,9 @@ import useLocalize from 'hooks/useLocalize';
 import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import { CampaignName } from 'api/campaigns/types';
-import { getExcludedDates } from './utils';
+import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
+import { defaultAdminCardPadding } from 'utils/styleUtils';
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
@@ -84,16 +87,17 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 
 const CONFIGURABLE_CAMPAIGN_NAMES: CampaignName[] = ['project_phase_started'];
 
-const AdminProjectTimelineEdit = () => {
+const AdminPhaseEdit = () => {
   const { data: appConfig } = useAppConfiguration();
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
-  const { projectId, id: phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
-    id: string | null;
+    phaseId?: string;
   };
-  const { data: phaseFiles } = usePhaseFiles(phaseId);
-  const { data: phase } = usePhase(phaseId || null);
+  const { data: phaseFiles } = usePhaseFiles(phaseId || null);
+  const { data: phaseData } = usePhase(phaseId || null);
+  const phase = phaseId ? phaseData : undefined;
   const { data: phases } = usePhases(projectId);
   const { data: campaigns } = useCampaigns({
     campaignNames: CONFIGURABLE_CAMPAIGN_NAMES,
@@ -115,9 +119,12 @@ const AdminProjectTimelineEdit = () => {
   const { formatMessage } = useIntl();
   const [hasEndDate, setHasEndDate] = useState<boolean>(false);
   const [disableNoEndDate, setDisableNoEndDate] = useState<boolean>(false);
+  const { width, containerRef } = useContainerWidthAndHeight();
 
   useEffect(() => {
     setHasEndDate(phase?.data.attributes.end_at ? true : false);
+    setAttributeDiff({});
+    setSubmitState(phase ? 'enabled' : 'disabled');
   }, [phase]);
 
   useEffect(() => {
@@ -126,7 +133,7 @@ const AdminProjectTimelineEdit = () => {
     }
   }, [phaseFiles]);
 
-  if (!campaigns || !phases) {
+  if (!campaigns) {
     return null;
   }
 
@@ -171,7 +178,7 @@ const AdminProjectTimelineEdit = () => {
     });
     setHasEndDate(!!endDate);
 
-    if (startDate) {
+    if (startDate && phases) {
       const hasPhaseWithLaterStartDate = phases.data.some((iteratedPhase) => {
         const iteratedPhaseStartDate = moment(
           iteratedPhase.attributes.start_at
@@ -220,11 +227,11 @@ const AdminProjectTimelineEdit = () => {
 
   const handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
-    eventEmitter.emit('getParticipationContext');
+    eventEmitter.emit('getPhaseParticipationConfig');
   };
 
   const getAttributeDiff = (
-    participationContextConfig: IParticipationContextConfig
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     return {
       ...attributeDiff,
@@ -232,15 +239,15 @@ const AdminProjectTimelineEdit = () => {
     };
   };
 
-  const handleParticipationContextOnChange = (
-    participationContextConfig: IParticipationContextConfig
+  const handlePhaseParticipationConfigChange = (
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     setSubmitState('enabled');
     setAttributeDiff(getAttributeDiff(participationContextConfig));
   };
 
-  const handleParticipationContextOnSubmit = (
-    participationContextConfig: IParticipationContextConfig
+  const handlePhaseParticipationConfigSubmit = (
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     const attributeDiff = getAttributeDiff(participationContextConfig);
     save(projectId, phase?.data, attributeDiff);
@@ -277,7 +284,11 @@ const AdminProjectTimelineEdit = () => {
         setAttributeDiff({});
 
         if (redirectAfterSave) {
-          clHistory.push(`/admin/projects/${projectId}/timeline/`);
+          const redirectTab = getTimelineTab(phaseResponse);
+          window.scrollTo(0, 0);
+          clHistory.push(
+            `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}`
+          );
         }
       })
       .catch(({ errors }) => {
@@ -378,8 +389,10 @@ const AdminProjectTimelineEdit = () => {
         // If there is no previous end date, then the previous phase is open ended
         // Set the default start date to the previous start date + 2 days to account for single day phases
         startDate = previousPhaseStartDate.add(2, 'day');
+      } else if (!startDate) {
+        // If there is no start date at this point, then set the default start date to today
+        startDate = moment();
       }
-      // Otherwise, there is no date yet and it should remain 'null'
 
       // else there is already a phase (which means we're in the edit form)
       // and we take it from the attrs
@@ -394,9 +407,9 @@ const AdminProjectTimelineEdit = () => {
 
   const startDate = getStartDate();
   const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
-  const phasesWithOutCurrentPhase = phases.data.filter(
-    (iteratedPhase) => iteratedPhase.id !== phase?.data.id
-  );
+  const phasesWithOutCurrentPhase = phases
+    ? phases.data.filter((iteratedPhase) => iteratedPhase.id !== phase?.data.id)
+    : [];
   const excludeDates = getExcludedDates(phasesWithOutCurrentPhase);
 
   const handleCampaignEnabledOnChange = (campaign: CampaignData) => {
@@ -423,13 +436,14 @@ const AdminProjectTimelineEdit = () => {
     setHasEndDate((prevValue) => !prevValue);
   };
 
+  const maxEndDate = getMaxEndDate(phasesWithOutCurrentPhase, startDate, phase);
+
   return (
-    <>
-      <SectionTitle>
+    <Box ref={containerRef}>
+      <Title variant="h3" color="primary">
         {phase && <FormattedMessage {...messages.editPhaseTitle} />}
         {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
-      </SectionTitle>
-
+      </Title>
       <form onSubmit={handleOnSubmit}>
         <Section>
           <SectionField>
@@ -456,6 +470,7 @@ const AdminProjectTimelineEdit = () => {
               startDatePlaceholderText={formatMessage(messages.startDate)}
               endDatePlaceholderText={formatMessage(messages.endDate)}
               excludeDates={excludeDates}
+              maxDate={maxEndDate}
             />
             <Error apiErrors={errors && errors.start_at} />
             <Error apiErrors={errors && errors.end_at} />
@@ -487,23 +502,23 @@ const AdminProjectTimelineEdit = () => {
             )}
           </SectionField>
 
-          {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
+          {/* TODO: After PhaseParticipationConfig refactor, it doesn't refetch phase service anymore
             This caused a bug where phase data was not being used after fetching. This is a temporary fix.
-            ParticipationContext needs to be refactored to functional component. */}
+            PhaseParticipationConfig needs to be refactored to functional component. */}
           {phase && (
-            <ParticipationContext
+            <PhaseParticipationConfig
               phase={phase}
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
+              onSubmit={handlePhaseParticipationConfigSubmit}
+              onChange={handlePhaseParticipationConfigChange}
               apiErrors={errors}
               appConfig={appConfig}
             />
           )}
           {!phase && (
-            <ParticipationContext
+            <PhaseParticipationConfig
               phase={undefined}
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
+              onSubmit={handlePhaseParticipationConfigSubmit}
+              onChange={handlePhaseParticipationConfigChange}
               apiErrors={errors}
               appConfig={appConfig}
             />
@@ -518,7 +533,7 @@ const AdminProjectTimelineEdit = () => {
               <SubSectionTitle>
                 <FormattedMessage {...messages.descriptionLabel} />
               </SubSectionTitle>
-              {phases.data.length < 2 && (
+              {phases && phases.data.length < 2 && (
                 <IconTooltip
                   content={
                     <FormattedMessage {...messages.emptyDescriptionWarning} />
@@ -583,19 +598,32 @@ const AdminProjectTimelineEdit = () => {
           )}
         </Section>
 
-        <SubmitWrapper
-          loading={processing}
-          status={submitState}
-          messages={{
-            buttonSave: messages.saveLabel,
-            buttonSuccess: messages.saveSuccessLabel,
-            messageError: messages.saveErrorMessage,
-            messageSuccess: messages.saveSuccessMessage,
-          }}
-        />
+        <Box
+          position="fixed"
+          borderTop={`1px solid ${colors.divider}`}
+          bottom="0"
+          w={`calc(${width}px + ${defaultAdminCardPadding * 2}px)`}
+          ml={`-${defaultAdminCardPadding}px`}
+          background={colors.white}
+          display="flex"
+          justifyContent="flex-start"
+        >
+          <Box py="8px" px={`${defaultAdminCardPadding}px`}>
+            <SubmitWrapper
+              loading={processing}
+              status={submitState}
+              messages={{
+                buttonSave: messages.saveChangesLabel,
+                buttonSuccess: messages.saveSuccessLabel,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
+          </Box>
+        </Box>
       </form>
-    </>
+    </Box>
   );
 };
 
-export default AdminProjectTimelineEdit;
+export default AdminPhaseEdit;

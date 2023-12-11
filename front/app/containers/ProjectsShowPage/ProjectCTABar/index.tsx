@@ -69,14 +69,17 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     phases: phases?.data,
   });
 
-  if (portalElement && isVisible) {
+  // Always stick to bottom of screen if on phone
+  if (portalElement && (isVisible || isSmallerThanPhone)) {
     return createPortal(
       <Box
         width="100vw"
         position="fixed"
-        top="0px"
+        top={isSmallerThanPhone ? undefined : '0px'}
+        bottom={isSmallerThanPhone ? '0px' : undefined}
         zIndex="1000"
         background="#fff"
+        id="project-cta-bar"
       >
         {!isSmallerThanPhone && (
           <Box height="78px">

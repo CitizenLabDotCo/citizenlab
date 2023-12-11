@@ -4,11 +4,11 @@ module XlsxExport
   class InputSheetGenerator
     US_DATE_TIME_FORMAT = 'mm/dd/yyyy hh:mm:ss'
 
-    def initialize(inputs, participation_context, include_private_attributes)
+    def initialize(inputs, phase, include_private_attributes)
       @inputs = inputs
-      @participation_context = participation_context
+      @phase = phase
       @include_private_attributes = include_private_attributes
-      @participation_method = Factory.instance.participation_method_for participation_context
+      @participation_method = Factory.instance.participation_method_for phase
       @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).reportable_fields
       @multiloc_service = MultilocService.new(app_configuration: AppConfiguration.instance)
       @url_service = Frontend::UrlService.new
@@ -43,7 +43,7 @@ module XlsxExport
 
     private
 
-    attr_reader :inputs, :participation_context, :fields_in_form, :participation_method, :include_private_attributes, :multiloc_service, :url_service
+    attr_reader :inputs, :phase, :fields_in_form, :participation_method, :include_private_attributes, :multiloc_service, :url_service
 
     def input_id_report_field
       ComputedFieldForReport.new(column_header_for('input_id'), ->(input) { input.id })
@@ -94,11 +94,11 @@ module XlsxExport
     end
 
     def baskets_count_report_field(column_header_key)
-      ComputedFieldForReport.new(column_header_for(column_header_key), ->(input) { voting_context(input, participation_context).baskets_count })
+      ComputedFieldForReport.new(column_header_for(column_header_key), ->(input) { voting_context(input, phase).baskets_count })
     end
 
     def votes_count_report_field
-      ComputedFieldForReport.new(column_header_for('votes_count'), ->(input) { voting_context(input, participation_context).votes_count })
+      ComputedFieldForReport.new(column_header_for('votes_count'), ->(input) { voting_context(input, phase).votes_count })
     end
 
     def input_url_report_field
@@ -209,15 +209,8 @@ module XlsxExport
       @user_fields ||= CustomField.with_resource_type('User').includes(:options).order(:ordering).all
     end
 
-    def voting_context(input, participation_context)
-      case participation_context.class.name
-      when 'Phase'
-        participation_context.ideas_phases.find_by(idea_id: input.id)
-      when 'Project'
-        input
-      else
-        raise "Unknown participation context #{participation_context}"
-      end
+    def voting_context(input, phase)
+      phase.ideas_phases.find_by(idea_id: input.id)
     end
 
     def column_header_for(translation_key)

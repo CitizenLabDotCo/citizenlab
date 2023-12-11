@@ -186,7 +186,6 @@ describe('Idea new page for timeline project', () => {
 
     // create new project
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,

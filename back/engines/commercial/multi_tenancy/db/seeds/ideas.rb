@@ -9,10 +9,7 @@ module MultiTenancy
         runner.num_ideas.times do
           created_at = Faker::Date.between(from: Tenant.current.created_at, to: Time.zone.now)
           project = runner.rand_instance Project.all
-          phases = []
-          if project&.timeline?
-            phases = project.phases.sample(rand(project.phases.size)).select(&:can_contain_ideas?)
-          end
+          phases = project.phases.sample(rand(project.phases.size)).select(&:can_contain_ideas?)
           offsets = Array.new(rand(3)) do
             rand(project.allowed_input_topics.count)
           end

@@ -6,13 +6,16 @@ RSpec.describe EmailCampaigns::ModeratorDigestMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::ModeratorDigest.create! }
-    let_it_be(:top_ideas) { create_list(:idea, 3) }
+    let_it_be(:project) { create(:single_phase_ideation_project) }
+    let_it_be(:top_ideas) { create_list(:idea, 3, project: project) }
     let_it_be(:command) do
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
 
       {
         recipient: recipient,
         event_payload: {
+          project_name: project.title_multiloc[recipient.locale],
+          project_id: project.id,
           statistics: {
             activities: {
               new_ideas: {
@@ -86,9 +89,9 @@ RSpec.describe EmailCampaigns::ModeratorDigestMailer do
       expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name', 'en'))
     end
 
-    it 'assigns home url' do
+    it 'assigns project URL to the button' do
       expect(mail.body.encoded)
-        .to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: 'en'))
+        .to match(Frontend::UrlService.new.admin_project_url(project.id))
     end
   end
 end

@@ -1,24 +1,21 @@
 import { addPollResponse } from 'api/poll_responses/useAddPollResponse';
-import { IParticipationContextType } from 'typings';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import pollResponsesKeys from 'api/poll_responses/keys';
 import projectsKeys from 'api/projects/keys';
 
 export interface SubmitPollParams {
-  id: string;
-  type: IParticipationContextType;
+  phaseId: string;
   answers: string[];
   projectId: string;
   setIsSubmitting: (isSubmitting: boolean) => void;
 }
 
 export const submitPoll =
-  ({ id, type, answers, projectId, setIsSubmitting }: SubmitPollParams) =>
+  ({ phaseId, answers, projectId, setIsSubmitting }: SubmitPollParams) =>
   async () => {
     setIsSubmitting(true);
     await addPollResponse({
-      participationContextId: id,
-      participationContextType: type,
+      phaseId,
       optionIds: answers,
       projectId,
     });
@@ -26,8 +23,7 @@ export const submitPoll =
     // Invalidate queries
     queryClient.invalidateQueries({
       queryKey: pollResponsesKeys.item({
-        participationContextId: id,
-        participationContextType: type,
+        phaseId,
       }),
     });
     queryClient.invalidateQueries({

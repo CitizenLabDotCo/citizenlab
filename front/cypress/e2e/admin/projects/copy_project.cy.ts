@@ -8,7 +8,6 @@ describe('Copy projects outside folder', () => {
 
   beforeEach(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -71,7 +70,6 @@ describe('Copy projects inside folder', () => {
 
   beforeEach(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -94,7 +92,6 @@ describe('Copy projects inside folder', () => {
 
   it('allows user to copy project in folder', () => {
     cy.apiCreateFolder({
-      type: 'continuous',
       title: folderTitle,
       descriptionPreview: folderShortDescription,
       description: randomString(),
