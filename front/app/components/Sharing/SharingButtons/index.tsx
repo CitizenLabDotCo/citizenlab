@@ -25,7 +25,6 @@ interface Props {
   context: 'idea' | 'project' | 'initiative' | 'folder' | 'event';
   url: string;
   twitterMessage: string;
-  facebookMessage: string;
   whatsAppMessage: string;
   emailSubject?: string;
   emailBody?: string;
@@ -39,7 +38,6 @@ const SharingButtons = ({
   context,
   twitterMessage,
   whatsAppMessage,
-  facebookMessage,
   emailSubject,
   emailBody,
   id,
@@ -84,10 +82,7 @@ const SharingButtons = ({
         justifyContent={justifyContent}
       >
         <Box display="flex" gap="4px">
-          <Facebook
-            facebookMessage={facebookMessage}
-            url={getUrl('facebook')}
-          />
+          <Facebook url={getUrl('facebook')} />
           {isSmallerThanTablet && <Messenger url={getUrl('messenger')} />}
           <WhatsApp
             whatsAppMessage={whatsAppMessage}
