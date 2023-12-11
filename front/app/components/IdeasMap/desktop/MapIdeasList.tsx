@@ -34,7 +34,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { isFieldEnabled } from 'utils/projectUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import {ideaDefaultSortMethodFallback} from "api/phases/utils";
+import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
 const Container = styled.div`
   width: 100%;

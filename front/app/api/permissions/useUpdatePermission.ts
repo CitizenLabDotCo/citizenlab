@@ -17,11 +17,7 @@ const updatePermission = async ({
 
 const useUpdatePermission = () => {
   const queryClient = useQueryClient();
-  return useMutation<
-    IPhasePermission,
-    CLErrors,
-    Partial<IPermissionUpdate>
-  >({
+  return useMutation<IPhasePermission, CLErrors, Partial<IPermissionUpdate>>({
     mutationFn: updatePermission,
     onSuccess: () => {
       queryClient.invalidateQueries({

@@ -18,7 +18,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalisedDateString } from 'utils/dateUtils';
 
 // types
-import {IPhaseData, VotingMethod} from 'api/phases/types';
+import { IPhaseData, VotingMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { IAppConfiguration } from 'api/app_configuration/types';
 import { FormatMessage } from 'typings';

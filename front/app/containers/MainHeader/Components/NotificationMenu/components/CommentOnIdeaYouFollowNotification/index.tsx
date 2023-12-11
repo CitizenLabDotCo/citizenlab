@@ -20,7 +20,7 @@ import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 
 // services
-import {getInputTerm} from "api/phases/utils";
+import { getInputTerm } from 'api/phases/utils';
 
 interface Props {
   notification: ICommentOnIdeaYouFollowNotificationData;

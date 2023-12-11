@@ -15,7 +15,7 @@ import { getInputTermMessage } from 'utils/i18n';
 import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
-import {getInputTerm} from "api/phases/utils";
+import { getInputTerm } from 'api/phases/utils';
 
 interface Props {
   notification: IOfficialFeedbackOnIdeaYouFollowNotificationData;

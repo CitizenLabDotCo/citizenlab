@@ -8,7 +8,12 @@ import {
 } from 'utils/actionDescriptors';
 import { ILinks, IRelationship, Multiloc } from 'typings';
 import { Keys } from 'utils/cl-react-query/types';
-import {IdeaDefaultSortMethod, InputTerm, ParticipationMethod, TSurveyService} from "../phases/types";
+import {
+  IdeaDefaultSortMethod,
+  InputTerm,
+  ParticipationMethod,
+  TSurveyService,
+} from '../phases/types';
 
 // Keys
 export type ProjectsKeys = Keys<typeof projectsKeys>;

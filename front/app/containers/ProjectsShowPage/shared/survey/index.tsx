@@ -27,7 +27,7 @@ import SurveyXact from './SurveyXact';
 // utils
 import { IProjectData, SurveyDisabledReason } from 'api/projects/types';
 import ParticipationPermission from '../ParticipationPermission';
-import {TSurveyService} from "api/phases/types";
+import { TSurveyService } from 'api/phases/types';
 
 const Container = styled.div`
   position: relative;

@@ -2,7 +2,7 @@ import React from 'react';
 import IdeasList from './IdeasList';
 import IdeasMap from 'components/IdeasMap';
 import { IIdeaData } from 'api/ideas/types';
-import {IdeaDefaultSortMethod} from "api/phases/types";
+import { IdeaDefaultSortMethod } from 'api/phases/types';
 
 interface Props {
   view: 'card' | 'map';

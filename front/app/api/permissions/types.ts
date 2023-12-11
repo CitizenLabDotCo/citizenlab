@@ -64,9 +64,7 @@ export interface IPhasePermissionData {
   };
 }
 
-export type IPermissionData =
-  | IPhasePermissionData
-  | IGlobalPermissionData;
+export type IPermissionData = IPhasePermissionData | IGlobalPermissionData;
 
 export interface IPhasePermission {
   data: IPhasePermissionData;

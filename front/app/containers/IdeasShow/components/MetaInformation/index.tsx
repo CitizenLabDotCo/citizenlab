@@ -18,7 +18,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
-import {getCurrentPhase} from 'api/phases/utils';
+import { getCurrentPhase } from 'api/phases/utils';
 
 const Container = styled.div`
   width: 100%;

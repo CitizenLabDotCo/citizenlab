@@ -1,5 +1,5 @@
-import {IRelationship, Multiloc} from 'typings';
-import {Keys} from 'utils/cl-react-query/types';
+import { IRelationship, Multiloc } from 'typings';
+import { Keys } from 'utils/cl-react-query/types';
 import phasesKeys from './keys';
 import { CampaignName } from 'api/campaigns/types';
 

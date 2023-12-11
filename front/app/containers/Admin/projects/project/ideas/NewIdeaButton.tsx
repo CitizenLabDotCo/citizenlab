@@ -14,7 +14,7 @@ import { getInputTermMessage } from 'utils/i18n';
 // tracking
 import tracks from '../tracks';
 import { trackEventByName } from 'utils/analytics';
-import {InputTerm} from "api/phases/types";
+import { InputTerm } from 'api/phases/types';
 
 interface Props {
   linkTo: string;

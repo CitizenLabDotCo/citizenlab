@@ -16,7 +16,7 @@ import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,
 } from 'api/user_custom_fields/types';
-import {ParticipationMethod} from "api/phases/types";
+import { ParticipationMethod } from 'api/phases/types';
 
 interface Props {
   startAt: string;
