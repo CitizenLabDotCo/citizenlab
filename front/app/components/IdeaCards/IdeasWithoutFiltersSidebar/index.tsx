@@ -38,8 +38,8 @@ import { isFieldEnabled } from 'utils/projectUtils';
 import { IQueryParameters } from 'api/ideas/types';
 import usePhase from 'api/phases/usePhase';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import {IdeaDefaultSortMethod} from "api/phases/types";
-import {ideaDefaultSortMethodFallback} from "api/phases/utils";
+import { IdeaDefaultSortMethod } from 'api/phases/types';
+import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
 const Container = styled.div`
   width: 100%;

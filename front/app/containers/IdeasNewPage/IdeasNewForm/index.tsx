@@ -33,7 +33,7 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getLocationGeojson } from '../utils';
 import { isError, isNilOrError } from 'utils/helperUtils';
-import { getCurrentPhase} from 'api/phases/utils';
+import { getCurrentPhase } from 'api/phases/utils';
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
@@ -45,12 +45,11 @@ import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
-  phases: IPhases | undefined,
+  phases: IPhases | undefined
 ) => {
   const participationMethod = phaseFromUrl
     ? phaseFromUrl.attributes.participation_method
-    : getCurrentPhase(phases?.data)?.attributes
-        .participation_method;
+    : getCurrentPhase(phases?.data)?.attributes.participation_method;
 
   if (!participationMethod) return;
   return getMethodConfig(participationMethod);

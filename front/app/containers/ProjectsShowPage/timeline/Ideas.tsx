@@ -25,7 +25,7 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 // typings
 import { IPhaseData } from 'api/phases/types';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
-import {ideaDefaultSortMethodFallback} from "api/phases/utils";
+import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
 const Container = styled.div``;
 

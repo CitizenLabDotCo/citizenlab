@@ -37,7 +37,7 @@ import usePhases from 'api/phases/usePhases';
 import { useParams } from 'react-router-dom';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeas from 'api/ideas/useIdeas';
-import {ParticipationMethod} from "api/phases/types";
+import { ParticipationMethod } from 'api/phases/types';
 
 const Section = styled.div`
   margin-bottom: 20px;

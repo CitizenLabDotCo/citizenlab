@@ -11,7 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 
 // typings
 import { IOption } from 'typings';
-import {IPhaseData, ParticipationMethod} from 'api/phases/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 interface Props {
   label: string;
