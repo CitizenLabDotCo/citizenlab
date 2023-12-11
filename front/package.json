@@ -196,7 +196,7 @@
     "@types/shelljs": "0.8.12",
     "@types/styled-components": "^5.1.26",
     "@types/webfontloader": "1.6.35",
-    "@typescript-eslint/eslint-plugin": "^5.60.1",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
     "@typescript-eslint/parser": "^5.62.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^29.4.1",
