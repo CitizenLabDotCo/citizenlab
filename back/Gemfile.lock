@@ -573,8 +573,7 @@ GEM
     declarative (0.0.20)
     diff-lcs (1.5.0)
     docile (1.4.0)
-    domain_name (0.5.20190701)
-      unf (>= 0.0.5, < 1.0.0)
+    domain_name (0.6.20231109)
     easy_translate (0.5.1)
       thread
       thread_safe
@@ -790,15 +789,15 @@ GEM
       net-imap
       net-pop
       net-smtp
-    mailgun-ruby (1.2.8)
+    mailgun-ruby (1.2.13)
       rest-client (>= 2.0.2)
     marcel (1.0.2)
     matrix (0.4.2)
     memoist (0.16.2)
     method_source (1.0.0)
-    mime-types (3.4.1)
+    mime-types (3.5.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2023.0218.1)
+    mime-types-data (3.2023.1205)
     mimemagic (0.4.3)
       nokogiri (~> 1)
       rake
@@ -990,7 +989,6 @@ GEM
     rb-fsevent (0.11.2)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rb_sys (0.9.81)
     rbtree (0.4.6)
     redcarpet (3.6.0)
     regexp_parser (2.8.0)
@@ -1161,8 +1159,10 @@ GEM
     thor (1.2.2)
     thread (0.2.2)
     thread_safe (0.3.6)
-    tiktoken_ruby (0.0.5)
-      rb_sys (~> 0.9.68)
+    tiktoken_ruby (0.0.5-aarch64-linux)
+    tiktoken_ruby (0.0.5-arm64-darwin)
+    tiktoken_ruby (0.0.5-x86_64-darwin)
+    tiktoken_ruby (0.0.5-x86_64-linux)
     tilt (2.1.0)
     timeout (0.4.0)
     tomlrb (2.0.3)
@@ -1175,9 +1175,6 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.8.2)
     unicode-display_width (2.4.2)
     uniform_notifier (1.16.0)
     unparser (0.6.7)
@@ -1292,7 +1289,7 @@ DEPENDENCIES
   liquid (~> 5.4)
   listen (>= 3.0.5, < 4.0)
   machine_translations!
-  mailgun-ruby (~> 1.2.8)
+  mailgun-ruby (~> 1.2.13)
   matomo!
   mini_magick (~> 4.12)
   mjml-rails (~> 4.9)
