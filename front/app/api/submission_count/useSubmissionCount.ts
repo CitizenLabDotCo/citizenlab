@@ -8,27 +8,26 @@ import {
   IFormSubmissionCount,
 } from './types';
 
-const getSubmissionCountEndpoint = (projectId: string, phaseId?: string) => {
-  return phaseId
-    ? `phases/${phaseId}/submission_count`
-    : `projects/${projectId}/submission_count`;
+const getSubmissionCountEndpoint = (phaseId?: string) => {
+  return `phases/${phaseId}/submission_count`;
 };
 
-const fetchSubmissionsCount = ({ projectId, phaseId }: IParameters) =>
+const fetchSubmissionsCount = ({ phaseId }: IParameters) =>
   fetcher<IFormSubmissionCount>({
-    path: `/${getSubmissionCountEndpoint(projectId, phaseId)}`,
+    path: `/${getSubmissionCountEndpoint(phaseId)}`,
     action: 'get',
   });
 
-const useSubmissionsCount = ({ projectId, phaseId }: IParameters) => {
+const useSubmissionsCount = ({ phaseId }: IParameters) => {
   return useQuery<
     IFormSubmissionCount,
     CLErrors,
     IFormSubmissionCount,
     SubmissionsCountKeys
   >({
-    queryKey: submissionsCountKeys.item({ projectId, phaseId }),
-    queryFn: () => fetchSubmissionsCount({ projectId, phaseId }),
+    queryKey: submissionsCountKeys.item({ phaseId }),
+    queryFn: () => fetchSubmissionsCount({ phaseId }),
+    enabled: !!phaseId
   });
 };
 

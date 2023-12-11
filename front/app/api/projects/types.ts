@@ -7,14 +7,8 @@ import {
   ActionDescriptorFutureEnabled,
 } from 'utils/actionDescriptors';
 import { ILinks, IRelationship, Multiloc } from 'typings';
-import {
-  TSurveyService,
-  ParticipationMethod,
-  IdeaDefaultSortMethod,
-  InputTerm,
-  ParticipationContext,
-} from 'utils/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
+import {IdeaDefaultSortMethod, InputTerm, ParticipationMethod, TSurveyService} from "../phases/types";
 
 // Keys
 export type ProjectsKeys = Keys<typeof projectsKeys>;
@@ -58,15 +52,21 @@ export interface IProject {
   data: IProjectData;
 }
 
-export interface IProjectAttributes extends ParticipationContext {
+export interface IProjectAttributes {
+  title_multiloc: Multiloc;
+  description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
   slug: string;
+  created_at: string;
+  updated_at: string;
   header_bg: ProjectHeaderBgImageSizes;
   comments_count: number;
   avatars_count: number;
   followers_count: number;
+  ideas_count: number;
+  baskets_count?: number | null;
+  votes_count?: number | null;
   visible_to: Visibility;
-  process_type: ProcessType;
   timeline_active?: 'past' | 'present' | 'future' | null;
   participants_count: number;
   internal_role: 'open_idea_box' | null;
@@ -126,7 +126,6 @@ export interface IProjectData {
 }
 
 type Visibility = 'public' | 'groups' | 'admins';
-export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 
 export type CommentingDisabledReason =
@@ -190,7 +189,6 @@ export interface IUpdatedProjectProperties {
   description_preview_multiloc?: Multiloc;
   area_ids?: string[];
   visible_to?: Visibility;
-  process_type?: ProcessType;
   participation_method?: ParticipationMethod | null;
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;

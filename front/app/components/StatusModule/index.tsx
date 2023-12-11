@@ -14,10 +14,9 @@ import ConfettiSvg from './ConfettiSvg';
 import Warning from 'components/UI/Warning';
 
 // api
-import { VotingMethod } from 'utils/participationContexts';
 import { useTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { IPhaseData } from 'api/phases/types';
+import {IPhaseData, VotingMethod} from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
@@ -43,13 +42,11 @@ type StatusModuleProps = {
 
 const unsubmitBasket = async (
   basketId: string,
-  updateBasket: ReturnType<typeof useUpdateBasket>['mutate'],
-  participation_context_type: 'Phase' | 'Project'
+  updateBasket: ReturnType<typeof useUpdateBasket>['mutate']
 ) => {
   updateBasket({
     id: basketId,
     submitted: false,
-    participation_context_type,
   });
 };
 
@@ -64,7 +61,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  // participation context
+  // phase
   const config = getVotingMethodConfig(votingMethod);
   const phaseHasEnded =
     phase?.attributes && phase?.attributes.end_at
@@ -76,9 +73,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
 
   // basket
   const { data: basket } = useBasket(
-    phase
-      ? phase?.relationships?.user_basket?.data?.id
-      : project.relationships?.user_basket?.data?.id
+    phase?.relationships?.user_basket?.data?.id
   );
   const { mutate: updateBasket } = useUpdateBasket();
   const basketStatus = phaseHasEnded
@@ -163,11 +158,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
               mt="16px"
               id="e2e-modify-votes"
               onClick={() => {
-                unsubmitBasket(
-                  basket?.data.id,
-                  updateBasket,
-                  phase ? 'Phase' : 'Project'
-                );
+                unsubmitBasket(basket?.data.id, updateBasket);
               }}
             >
               {config &&

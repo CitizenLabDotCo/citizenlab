@@ -32,16 +32,14 @@ import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
 
 // constants
-import {
-  ideaDefaultSortMethodFallback,
-  IdeaDefaultSortMethod,
-} from 'utils/participationContexts';
 
 // typings
 import { isFieldEnabled } from 'utils/projectUtils';
 import { IQueryParameters } from 'api/ideas/types';
 import usePhase from 'api/phases/usePhase';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import {IdeaDefaultSortMethod} from "api/phases/types";
+import {ideaDefaultSortMethodFallback} from "api/phases/utils";
 
 const Container = styled.div`
   width: 100%;
@@ -281,7 +279,6 @@ const IdeasWithoutFiltersSidebar = ({
                 <SelectSort
                   value={defaultSortingMethod ?? ideaDefaultSortMethodFallback}
                   phase={phase?.data}
-                  project={project?.data}
                   onChange={handleSortOnChange}
                   alignment={!smallerThanTablet ? 'right' : 'left'}
                 />

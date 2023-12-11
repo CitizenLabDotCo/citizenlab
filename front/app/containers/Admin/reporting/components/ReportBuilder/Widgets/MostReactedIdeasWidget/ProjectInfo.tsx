@@ -23,23 +23,11 @@ const ProjectInfo = ({ projectId, phaseId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 
-  if (!project) return null;
-
-  if (
-    project.data.attributes.process_type === 'continuous' &&
-    project.data.attributes.participation_method !== 'ideation'
-  ) {
-    return null;
-  }
-
-  if (project.data.attributes.process_type === 'timeline' && !phase) {
-    return null;
-  }
+  if (!project || !phase) return null;
 
   const projectTitle = localize(project.data.attributes.title_multiloc);
 
-  const hasPhase = project.data.attributes.process_type === 'timeline' && phase;
-  const ideasCount = hasPhase
+  const ideasCount = phase
     ? phase.data.attributes.ideas_count
     : project.data.attributes.ideas_count;
 
@@ -48,7 +36,7 @@ const ProjectInfo = ({ projectId, phaseId }: Props) => {
       <Text mt="4px" mb="4px" color="primary">
         {'| '}
         {projectTitle}
-        {hasPhase ? ` (${localize(phase.data.attributes.title_multiloc)})` : ''}
+        {phase ? ` (${localize(phase.data.attributes.title_multiloc)})` : ''}
       </Text>
       <Text mt="4px" mb="4px" color="textSecondary" fontSize="s">
         {formatMessage(messages.totalIdeas, { numberOfIdeas: ideasCount })}

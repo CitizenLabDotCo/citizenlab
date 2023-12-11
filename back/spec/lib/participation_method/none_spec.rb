@@ -7,19 +7,19 @@ RSpec.describe ParticipationMethod::None do
 
   let(:input) { create(:idea) }
 
-  describe '#assign_defaults_for_participation_context' do
-    let(:project) { build(:continuous_project) }
+  describe '#assign_defaults_for_phase' do
+    let(:phase) { build(:phase) }
 
     it 'does not change the posting_method' do
       expect do
-        participation_method.assign_defaults_for_participation_context
-      end.not_to change(project, :posting_method)
+        participation_method.assign_defaults_for_phase
+      end.not_to change(phase, :posting_method)
     end
 
     it 'does not change the ideas_order' do
       expect do
-        participation_method.assign_defaults_for_participation_context
-      end.not_to change(project, :ideas_order)
+        participation_method.assign_defaults_for_phase
+      end.not_to change(phase, :ideas_order)
     end
   end
 

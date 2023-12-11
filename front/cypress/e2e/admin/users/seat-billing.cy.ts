@@ -1,5 +1,6 @@
 import { randomString, randomEmail } from '../../../support/commands';
 import { generateProjectFolder } from '../../../fixtures';
+import moment = require('moment');
 
 describe('Seat based billing', () => {
   let createdUserIds: string[] = [];
@@ -218,6 +219,7 @@ describe('Seat based billing', () => {
     const projectDescription = randomString();
     const projectDescriptionPreview = randomString(30);
     let projectId: string;
+    let phaseId: string;
 
     // User 2
     const user2FirstName = randomString();
@@ -259,15 +261,28 @@ describe('Seat based billing', () => {
 
     before(() => {
       cy.apiCreateProject({
-        type: 'continuous',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
         participationMethod: 'native_survey',
-      }).then((project) => {
-        projectId = project.body.data.id;
-      });
+      })
+        .then((project) => {
+          projectId = project.body.data.id;
+          return cy.apiCreatePhase({
+            projectId,
+            title: 'firstPhaseTitle',
+            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+            endAt: moment().subtract(3, 'month').format('DD/MM/YYYY'),
+            participationMethod: 'ideation',
+            canPost: true,
+            canComment: true,
+            canReact: true,
+          });
+        })
+        .then((phase) => {
+          phaseId = phase.body.data.id;
+        });
       createUsers([
         {
           firstName: user2FirstName,
@@ -322,7 +337,7 @@ describe('Seat based billing', () => {
     });
 
     it('allows user to add a moderator and shows a confirmation when needed', () => {
-      cy.visit(`admin/projects/${projectId}/permissions`);
+      cy.visit(`admin/projects/${projectId}/settings/access-rights`);
       cy.acceptCookies();
 
       cy.intercept(`**/projects/${projectId}/moderators`).as(
@@ -380,7 +395,7 @@ describe('Seat based billing', () => {
         );
 
         // Navigate to the project permissions page
-        cy.visit(`admin/projects/${projectId}/permissions`);
+        cy.visit(`admin/projects/${projectId}/settings/access-rights`);
         cy.intercept(`**/projects/${projectId}/moderators`).as(
           'moderatorsRequest'
         );
@@ -426,7 +441,7 @@ describe('Seat based billing', () => {
           cy.get('[data-cy="e2e-moderator-total-seats"]').contains(totalSeats);
 
           // Navigate to the project permissions page
-          cy.visit(`admin/projects/${projectId}/permissions`);
+          cy.visit(`admin/projects/${projectId}/settings/access-rights`);
 
           // Add moderator and check that they are shown in the list
           cy.get('#projectModeratorUserSearch').should('exist');

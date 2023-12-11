@@ -10,7 +10,7 @@ resource 'SEO' do
     let(:sitemap) { Nokogiri::XML(response_body) }
     let(:locales_count) { AppConfiguration.instance.settings.dig('core', 'locales').count }
     let(:base_count) { 27 }
-    let(:url_count_per_project) { 3 }
+    let(:url_count_per_project) { 4 }
     let(:url_count_per_idea) { 1 }
 
     before do
@@ -37,7 +37,7 @@ resource 'SEO' do
 
       before do
         %w[all_input proposals].each { |code| create(:nav_bar_item, code: code) }
-        create_list(:project, project_count, process_type: 'continuous')
+        create_list(:project, project_count)
         do_request
       end
 
@@ -57,7 +57,7 @@ resource 'SEO' do
 
       before do
         %w[all_input proposals].each { |code| create(:nav_bar_item, code: code) }
-        create_list(:project, project_count, process_type: 'continuous')
+        create_list(:project, project_count)
         create(:project_folder)
         create_list(:idea, idea_count, project: Project.first)
         create(:initiative)

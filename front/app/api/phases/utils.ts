@@ -1,11 +1,11 @@
-import { pastPresentOrFuture } from 'utils/dateUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { first, last, sortBy } from 'lodash-es';
-import { IPhaseData } from './types';
-import { IProjectData } from 'api/projects/types';
-import { IIdea } from 'api/ideas/types';
-import { Locale } from 'typings';
-import { hasTextInSpecifiedLocale } from 'utils/locale';
+import {pastPresentOrFuture} from 'utils/dateUtils';
+import {isNilOrError} from 'utils/helperUtils';
+import {first, last, sortBy} from 'lodash-es';
+import {IPhaseData} from './types';
+import {IProjectData} from 'api/projects/types';
+import {IIdea} from 'api/ideas/types';
+import {Locale} from 'typings';
+import {hasTextInSpecifiedLocale} from 'utils/locale';
 
 export function canContainIdeas(phase: IPhaseData) {
   const pm = phase.attributes.participation_method;
@@ -102,25 +102,6 @@ export function getLatestRelevantPhase(phases: IPhaseData[]) {
   }
 }
 
-export function getPhaseInputTerm(phases: IPhaseData[]) {
-  // In practice, this fallback will never be needed.
-  // This function will only get called when phases.length > 0,
-  // so getLatestRelevantPhase will never return null, but the
-  // functions that are used internally by getLatestRelevantPhase
-  // can in theory return null. Hence the fallback || 'idea' for typing purposes.
-  return getLatestRelevantPhase(phases)?.attributes.input_term || 'idea';
-}
-
-export const getCurrentParticipationContext = (
-  project?: IProjectData,
-  phases?: IPhaseData[]
-) => {
-  if (!project) return;
-
-  if (project.attributes.process_type === 'continuous') return project;
-  return getCurrentPhase(phases);
-};
-
 export const isIdeaInParticipationContext = (
   idea: IIdea,
   participationContext: IProjectData | IPhaseData
@@ -148,4 +129,34 @@ export const hideTimelineUI = (
     hasOnePhase && !hasTextInSpecifiedLocale(phaseDescription, currentLocale);
   const hasNoEndDate = hasOnePhase && phasesData[0].attributes.end_at === null;
   return hasEmptyPhaseDescription && hasNoEndDate;
+};
+
+export function getInputTerm(
+  phases: IPhaseData[] | undefined,
+  phase?: IPhaseData | undefined | null | Error
+) {
+  // (2020/12/9): When a new timeline project is created, phases will initially
+  // be []. To make sure we don't break copy that depends on an input_term,
+  // we have the fallback to idea here in that case.
+  if (!isNilOrError(phase)) {
+    return getLatestRelevantPhase([phase])?.attributes.input_term || 'idea';
+  } else if (phases && phases.length > 0) {
+    return getLatestRelevantPhase(phases)?.attributes.input_term || 'idea';
+  }
+  return 'idea';
+}
+
+export const INPUT_TERMS = [
+  'idea',
+  'option',
+  'project',
+  'question',
+  'issue',
+  'contribution',
+];
+
+export const ideaDefaultSortMethodFallback = 'trending';
+
+export const getDefaultSortMethodFallback = (isIdeation: boolean) => {
+  return isIdeation ? 'trending' : 'random';
 };

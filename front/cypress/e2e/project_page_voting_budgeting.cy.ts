@@ -1,7 +1,7 @@
 import moment = require('moment');
 import { randomEmail, randomString } from '../support/commands';
 
-describe('Continuous Budgeting project', () => {
+describe('Budgeting project', () => {
   let projectId: string;
   let projectSlug: string;
   let ideaId: string;
@@ -14,55 +14,62 @@ describe('Continuous Budgeting project', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
+  const phaseTitle = randomString();
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: '',
       description: '',
       publicationStatus: 'published',
-      participationMethod: 'voting',
-      votingMethod: 'budgeting',
-      votingMaxTotal: 500,
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-
-      cy.apiCreateEvent({
-        projectId,
-        title: 'Event title',
-        location: 'Event location',
-        includeLocation: true,
-        description: 'Event description',
-        startDate: moment().subtract(1, 'day').toDate(),
-        endDate: moment().add(1, 'day').toDate(),
-      });
-
-      return cy
-        .apiCreateIdea(
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+        return cy.apiCreatePhase({
           projectId,
-          ideaTitle,
-          ideaContent,
-          undefined,
-          undefined,
-          undefined,
-          100
-        )
-        .then((idea) => {
-          ideaId = idea.body.data.id;
-          ideaSlug = idea.body.data.attributes.slug;
-          cy.apiSignup(firstName, lastName, email, password).then(
-            (response) => {
-              userId = (response as any).body.data.id;
-            }
-          );
-          cy.setLoginCookie(email, password);
-          cy.visit(`/en/projects/${projectSlug}`);
-          cy.acceptCookies();
-          cy.wait(1000);
+          title: phaseTitle,
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'voting',
+          votingMethod: 'budgeting',
+          votingMaxTotal: 500,
+          canPost: true,
+          canComment: true,
+          canReact: true,
         });
-    });
+      })
+      .then((phase) => {
+        cy.apiCreateEvent({
+          projectId,
+          title: 'Event title',
+          location: 'Event location',
+          includeLocation: true,
+          description: 'Event description',
+          startDate: moment().subtract(1, 'day').toDate(),
+          endDate: moment().add(1, 'day').toDate(),
+        });
+        return cy
+          .apiCreateIdea({
+            projectId,
+            ideaTitle,
+            ideaContent,
+            budget: 100,
+            phaseIds: [phase.body.data.id],
+          })
+          .then((idea) => {
+            ideaId = idea.body.data.id;
+            ideaSlug = idea.body.data.attributes.slug;
+            cy.apiSignup(firstName, lastName, email, password).then(
+              (response) => {
+                userId = (response as any).body.data.id;
+              }
+            );
+            cy.setLoginCookie(email, password);
+            cy.visit(`/en/projects/${projectSlug}`);
+            cy.acceptCookies();
+            cy.wait(1000);
+          });
+      });
   });
 
   beforeEach(() => {
@@ -76,7 +83,7 @@ describe('Continuous Budgeting project', () => {
   });
 
   it('shows the idea cards', () => {
-    cy.get('#e2e-continuous-project-idea-cards');
+    cy.get('.e2e-timeline-project-idea-cards');
   });
 
   it('hides the idea sorting options', () => {

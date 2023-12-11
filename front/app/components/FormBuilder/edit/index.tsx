@@ -326,8 +326,7 @@ const FormBuilderPage = ({ builderConfig }: FormBuilderPageProps) => {
     phaseId?: string;
   };
   const { data: submissionCount } = useFormSubmissionCount({
-    projectId,
-    phaseId,
+    phaseId
   });
 
   const formCustomFields = builderConfig.formCustomFields;

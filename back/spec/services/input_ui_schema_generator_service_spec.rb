@@ -18,8 +18,8 @@ RSpec.describe InputUiSchemaGeneratorService do
 
       let(:ui_schema) { generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields }
 
-      context 'for a continuous ideation project with a changed built-in field and an extra section and field' do
-        let(:project) { create(:continuous_project, input_term: input_term) }
+      context 'for a project with an ideation phase, a changed built-in field and an extra section and field' do
+        let(:project) { create(:single_phase_ideation_project, phase_attrs: { input_term: input_term }) }
         let!(:custom_form) do
           create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
             form.custom_fields.find_by(code: 'title_multiloc').update!(
@@ -553,8 +553,8 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
       end
 
-      context 'for a continuous ideation project with an empty custom section' do
-        let(:project) { create(:continuous_project, input_term: input_term) }
+      context 'for a project with an ideation phase and with an empty custom section' do
+        let(:project) { create(:single_phase_ideation_project, phase_attrs: { input_term: input_term }) }
         let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
         let!(:extra_section) do
           create(
@@ -583,9 +583,9 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
       end
 
-      context 'for a continuous ideation project with the default form' do
+      context 'for a project with an ideation phase and with the default form' do
         let(:input_term) { 'option' }
-        let(:project) { create(:continuous_project, input_term: input_term) }
+        let(:project) { create(:single_phase_ideation_project, phase_attrs: { input_term: input_term }) }
         let(:custom_form) { create(:custom_form, participation_context: project) }
 
         it 'returns the schema for the default fields' do
@@ -699,10 +699,10 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
       end
 
-      context 'for a timeline project' do
+      context 'for projects with multiple phases' do
         let(:input_term) { 'contribution' }
         let(:timeline_fields) do
-          project_with_current_phase = create(:project_with_current_phase, input_term: 'issue')
+          project_with_current_phase = create(:project_with_current_phase)
           TimelineService.new.current_phase(project_with_current_phase).update!(input_term: 'option')
           IdeaCustomFieldsService.new(create(:custom_form, participation_context: project_with_current_phase)).all_fields
         end
@@ -719,9 +719,9 @@ RSpec.describe InputUiSchemaGeneratorService do
 
       let(:ui_schema) { generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields }
 
-      context 'for a continuous native survey project without pages' do
-        let(:project) { create(:continuous_native_survey_project) }
-        let(:custom_form) { create(:custom_form, participation_context: project) }
+      context 'for a native survey phase without pages' do
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
         let!(:field) { create(:custom_field, resource: custom_form) }
 
         it 'has an empty extra category label, so that the category label is suppressed in the UI' do
@@ -753,9 +753,9 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
       end
 
-      context 'for a continuous native survey project with pages' do
-        let(:project) { create(:continuous_native_survey_project) }
-        let(:custom_form) { create(:custom_form, participation_context: project) }
+      context 'for a native survey phase with pages' do
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
         let!(:page1) do
           create(
             :custom_field_page,
@@ -876,9 +876,9 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
       end
 
-      context 'for a continuous native survey project with pages and logic' do
-        let(:project) { create(:continuous_native_survey_project) }
-        let(:custom_form) { create(:custom_form, participation_context: project) }
+      context 'for a native survey phase with pages and logic' do
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
         let!(:page1) do
           create(
             :custom_field_page,

@@ -24,8 +24,7 @@ import { saveIdeaFormAsPDF } from './saveIdeaFormAsPDF';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { IPhaseData } from 'api/phases/types';
-import { ParticipationMethod } from 'utils/participationContexts';
+import {IPhaseData, ParticipationMethod} from 'api/phases/types';
 import { requestBlob } from 'utils/requestBlob';
 import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
@@ -44,10 +43,7 @@ export const IdeaForm = () => {
   const { data: phases } = usePhases(projectId);
 
   const phaseToUse = phases ? getCurrentOrLastIdeationPhase(phases.data) : null;
-
-  const ideaFormLink = phaseToUse
-    ? `/admin/projects/${projectId}/phases/${phaseToUse.id}/ideaform/edit`
-    : `/admin/projects/${projectId}/ideaform/edit`;
+  const ideaFormLink = `/admin/projects/${projectId}/phases/${phaseToUse?.id}/ideaform/edit`;
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 

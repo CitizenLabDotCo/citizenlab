@@ -3,11 +3,9 @@ import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
 // typings
-import { IParticipationContextType } from 'typings';
 
 // services
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
-import { getInputTerm, ParticipationMethod } from 'utils/participationContexts';
 
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
@@ -28,14 +26,16 @@ import styled from 'styled-components';
 
 // typings
 import { LatLng } from 'leaflet';
-import { IPhaseData } from 'api/phases/types';
+import {IPhaseData, ParticipationMethod} from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useAuthUser from 'api/me/useAuthUser';
 import TippyContent from './TippyContent';
+import {getInputTerm} from "api/phases/utils";
 import { getInputTermMessage } from 'utils/i18n';
 import messages from './messages';
+
 
 const Container = styled.div``;
 
@@ -47,7 +47,6 @@ export interface Props extends Omit<ButtonProps, 'onClick'> {
   latLng?: LatLng | null;
   inMap?: boolean;
   className?: string;
-  participationContextType: IParticipationContextType;
   phase: IPhaseData | undefined;
   participationMethod: Extract<
     ParticipationMethod,
@@ -58,7 +57,6 @@ export interface Props extends Omit<ButtonProps, 'onClick'> {
 const IdeaButton = memo<Props>(
   ({
     id,
-    participationContextType,
     projectId,
     inMap = false,
     className,
@@ -71,7 +69,7 @@ const IdeaButton = memo<Props>(
     const { data: phases } = usePhases(projectId);
     const { data: authUser } = useAuthUser();
 
-    if (!project) return null;
+    if (!project || !phase) return null;
 
     const { enabled, show, disabledReason, authenticationRequirements } =
       getIdeaPostingRules({
@@ -84,8 +82,8 @@ const IdeaButton = memo<Props>(
 
     const context = {
       action: 'posting_idea',
-      id: participationContextType === 'phase' && phase ? phase.id : projectId,
-      type: participationContextType,
+      id: phase.id,
+      type: 'phase',
     } as const;
 
     const redirectToIdeaForm = () => {
@@ -158,7 +156,6 @@ const IdeaButton = memo<Props>(
           inMap={inMap}
           disabledReason={disabledReason}
           phase={phase}
-          participationContextType={participationContextType}
         />
       );
     }
@@ -176,7 +173,6 @@ const IdeaButton = memo<Props>(
                 inMap={inMap}
                 disabledReason={disabledReason}
                 phase={phase}
-                participationContextType={participationContextType}
               />
             ) : null
           }
@@ -201,21 +197,14 @@ const IdeaButton = memo<Props>(
               <FormattedMessage
                 {...(participationMethod === 'native_survey'
                   ? messages.takeTheSurvey
-                  : getInputTermMessage(
-                      getInputTerm(
-                        project.data.attributes.process_type,
-                        project.data,
-                        phases?.data
-                      ),
-                      {
-                        idea: messages.submitYourIdea,
-                        option: messages.addAnOption,
-                        project: messages.addAProject,
-                        question: messages.addAQuestion,
-                        issue: messages.submitAnIssue,
-                        contribution: messages.addAContribution,
-                      }
-                    ))}
+                  : getInputTermMessage(getInputTerm(phases?.data), {
+                      idea: messages.submitYourIdea,
+                      option: messages.addAnOption,
+                      project: messages.addAProject,
+                      question: messages.addAQuestion,
+                      issue: messages.submitAnIssue,
+                      contribution: messages.addAContribution,
+                    }))}
               />
             </Button>
           </ButtonWrapper>

@@ -10,8 +10,8 @@ resource 'Comment Reactions' do
     @user = create(:admin)
     header_token_for @user
     header 'Content-Type', 'application/json'
-    @project = create(:continuous_project)
-    @idea = create(:idea, project: @project)
+    @project = create(:single_phase_ideation_project)
+    @idea = create(:idea, project: @project, phases: @project.phases)
     @comment = create(:comment, post: @idea)
     @reactions = create_list(:reaction, 2, reactable: @comment)
   end

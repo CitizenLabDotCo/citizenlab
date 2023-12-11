@@ -30,7 +30,7 @@ export interface IGlobalPermissionData {
   };
 }
 
-export type IParticipationContextPermissionAction =
+export type IPhasePermissionAction =
   | 'posting_idea'
   | 'reacting_idea'
   | 'commenting_idea'
@@ -39,11 +39,11 @@ export type IParticipationContextPermissionAction =
   | 'voting'
   | 'annotating_document';
 
-export interface IParticipationContextPermissionData {
+export interface IPhasePermissionData {
   id: string;
   type: string;
   attributes: {
-    action: IParticipationContextPermissionAction;
+    action: IPhasePermissionAction;
     permitted_by:
       | 'everyone'
       | 'users'
@@ -65,11 +65,11 @@ export interface IParticipationContextPermissionData {
 }
 
 export type IPermissionData =
-  | IParticipationContextPermissionData
+  | IPhasePermissionData
   | IGlobalPermissionData;
 
-export interface IParticipationContextPermission {
-  data: IParticipationContextPermissionData;
+export interface IPhasePermission {
+  data: IPhasePermissionData;
 }
 
 export interface IGlobalPermissions {

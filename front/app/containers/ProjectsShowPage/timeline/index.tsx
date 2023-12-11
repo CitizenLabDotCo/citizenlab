@@ -95,7 +95,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
 
   const selectPhase = (phase: IPhaseData) => {
     if (!phases) return;
-    setPhaseURL(phase.id, phases.data, project.data);
+    setPhaseURL(phase, phases.data, project.data);
   };
 
   if (selectedPhase) {
@@ -140,10 +140,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
             <StatusModule
               phase={selectedPhase}
               project={project.data}
-              votingMethod={
-                selectedPhase?.attributes.voting_method ||
-                project?.data.attributes.voting_method
-              }
+              votingMethod={selectedPhase?.attributes.voting_method}
             />
           )}
           <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />

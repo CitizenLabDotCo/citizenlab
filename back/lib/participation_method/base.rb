@@ -2,11 +2,11 @@
 
 module ParticipationMethod
   class Base
-    def initialize(participation_context)
-      @participation_context = participation_context
+    def initialize(phase)
+      @phase = phase
     end
 
-    def assign_defaults_for_participation_context
+    def assign_defaults_for_phase
       # Default is to do nothing.
     end
 
@@ -75,7 +75,7 @@ module ParticipationMethod
     end
 
     def custom_form
-      participation_context.project.custom_form || CustomForm.new(participation_context: participation_context.project)
+      phase.project.custom_form || CustomForm.new(participation_context: phase.project)
     end
 
     def edit_custom_form_allowed?
@@ -149,6 +149,6 @@ module ParticipationMethod
 
     private
 
-    attr_reader :participation_context
+    attr_reader :phase
   end
 end

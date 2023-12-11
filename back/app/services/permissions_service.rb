@@ -87,7 +87,7 @@ class PermissionsService
       Phase.find(scope_id)
     when :idea_id
       idea = Idea.find(scope_id)
-      ParticipationContextService.new.get_participation_context idea.project
+      ParticipationPermissionsService.new.get_current_phase idea.project
     end
   end
 

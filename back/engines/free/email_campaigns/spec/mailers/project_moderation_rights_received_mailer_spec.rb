@@ -40,7 +40,7 @@ RSpec.describe EmailCampaigns::ProjectModerationRightsReceivedMailer do
     end
 
     it 'assigns moderate CTA' do
-      expect(mail.body.encoded).to match(Frontend::UrlService.new.admin_project_ideas_url(project.id))
+      expect(mail.body.encoded).to match(Frontend::UrlService.new.admin_project_url(project.id))
     end
   end
 end

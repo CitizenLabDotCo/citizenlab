@@ -4,47 +4,49 @@
 #
 # Table name: polls_responses
 #
-#  id                         :uuid             not null, primary key
-#  participation_context_id   :uuid             not null
-#  participation_context_type :string           not null
-#  user_id                    :uuid
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
+#  id         :uuid             not null, primary key
+#  phase_id   :uuid             not null
+#  user_id    :uuid
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 # Indexes
 #
-#  index_poll_responses_on_participation_context               (participation_context_type,participation_context_id)
-#  index_polls_responses_on_participation_context_and_user_id  (participation_context_id,participation_context_type,user_id) UNIQUE
-#  index_polls_responses_on_user_id                            (user_id)
+#  index_polls_responses_on_phase_id  (phase_id)
+#  index_polls_responses_on_user_id   (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (phase_id => phases.id) ON DELETE => nullify
 #
 module Polls
   class Response < ApplicationRecord
     belongs_to :user
-    belongs_to :participation_context, polymorphic: true
+    belongs_to :phase
     has_many :response_options, class_name: 'Polls::ResponseOption', dependent: :destroy
 
-    validates :user, :participation_context, presence: true
-    validates :user, uniqueness: { scope: [:participation_context] }
+    validates :user, :phase, presence: true
+    validates :user, uniqueness: { scope: [:phase] }
 
-    validate :validate_participation_context_poll, on: :response_submission
+    validate :validate_phase_poll, on: :response_submission
     validate :validate_option_count, on: :response_submission
 
     accepts_nested_attributes_for :response_options
 
-    def validate_participation_context_poll
-      return unless participation_context && !participation_context.poll?
+    def validate_phase_poll
+      return unless phase && !phase.poll?
 
       errors.add(
-        :participation_context,
+        :phase,
         :not_poll,
-        message: 'the participation_context does not have the "poll" participation_method'
+        message: 'the phase does not have the "poll" participation_method'
       )
     end
 
     def validate_option_count
-      return unless participation_context
+      return unless phase
 
-      participation_context.poll_questions&.each do |question|
+      phase.poll_questions&.each do |question|
         range = case question.question_type
         when 'single_option'
           1..1
@@ -70,7 +72,7 @@ module Polls
     end
 
     def project_id
-      participation_context.try(:project_id)
+      phase.try(:project_id)
     end
   end
 end

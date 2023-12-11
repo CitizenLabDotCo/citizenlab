@@ -18,10 +18,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalisedDateString } from 'utils/dateUtils';
 
 // types
-import { IPhaseData } from 'api/phases/types';
+import {IPhaseData, VotingMethod} from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { IAppConfiguration } from 'api/app_configuration/types';
-import { VotingMethod } from 'utils/participationContexts';
 import { FormatMessage } from 'typings';
 /*
   Configuration Specifications
@@ -53,7 +52,7 @@ export type GetStatusDescriptionProps = {
 
 type IdeaCardVoteInputProps = {
   ideaId: string;
-  participationContext: IPhaseData | IProjectData;
+  phase: IPhaseData;
 };
 
 type IdeaPageVoteInputProps = IdeaCardVoteInputProps & {
@@ -72,12 +71,12 @@ export type VotingMethodConfig = {
   }: GetStatusDescriptionProps) => JSX.Element | null;
   getIdeaCardVoteInput: ({
     ideaId,
-    participationContext,
+    phase,
   }: IdeaCardVoteInputProps) => JSX.Element | null;
   getIdeaPageVoteInput: ({
     ideaId,
     compact,
-    participationContext,
+    phase,
   }: IdeaPageVoteInputProps) => JSX.Element | null;
   getSubmissionTerm: (form: 'singular' | 'plural') => MessageDescriptor;
   preSubmissionWarning: () => MessageDescriptor;
@@ -106,7 +105,6 @@ const budgetingConfig: VotingMethodConfig = {
     }
   },
   getStatusDescription: ({
-    project,
     phase,
     submissionState,
     appConfig,
@@ -114,9 +112,10 @@ const budgetingConfig: VotingMethodConfig = {
     const currency =
       appConfig?.data.attributes.settings.core.currency.toString();
 
+    if (!phase) return null;
+
     if (submissionState === 'hasNotSubmitted') {
-      const participationContext = phase ?? project;
-      const minBudget = participationContext.attributes.voting_min_total;
+      const minBudget = phase.attributes.voting_min_total;
 
       return (
         <>
@@ -126,9 +125,8 @@ const budgetingConfig: VotingMethodConfig = {
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
               currency,
-              optionCount: participationContext.attributes.ideas_count,
-              maxBudget:
-                participationContext.attributes.voting_max_total?.toLocaleString(),
+              optionCount: phase.attributes.ideas_count,
+              maxBudget: phase.attributes.voting_max_total?.toLocaleString(),
             }}
             {...messages.budgetingSubmissionInstructionsTotalBudget}
           />
@@ -226,26 +224,21 @@ const budgetingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.budgetingPreSubmissionWarning;
   },
-  getIdeaCardVoteInput: ({ ideaId, participationContext }) => (
+  getIdeaCardVoteInput: ({ ideaId, phase }) => (
     <AddToBasketButton
       ideaId={ideaId}
-      participationContext={participationContext}
+      phase={phase}
       buttonStyle="primary-outlined"
     />
   ),
-  getIdeaPageVoteInput: ({ ideaId, participationContext, compact }) => {
+  getIdeaPageVoteInput: ({ ideaId, phase, compact }) => {
     if (!compact) {
-      return (
-        <AddToBasketBox
-          ideaId={ideaId}
-          participationContext={participationContext}
-        />
-      );
+      return <AddToBasketBox ideaId={ideaId} phase={phase} />;
     } else {
       return (
         <AddToBasketButton
           ideaId={ideaId}
-          participationContext={participationContext}
+          phase={phase}
           buttonStyle="primary"
         />
       );
@@ -276,16 +269,16 @@ const multipleVotingConfig: VotingMethodConfig = {
     }
   },
   getStatusDescription: ({
-    project,
     phase,
     submissionState,
     localize,
     formatMessage,
   }: GetStatusDescriptionProps) => {
-    const participationContext = phase || project;
     const voteTerm =
-      localize(participationContext?.attributes?.voting_term_plural_multiloc) ||
+      localize(phase?.attributes?.voting_term_plural_multiloc) ||
       formatMessage(messages.votes).toLowerCase();
+
+    if (!phase) return null;
 
     if (submissionState === 'hasNotSubmitted') {
       return (
@@ -296,9 +289,8 @@ const multipleVotingConfig: VotingMethodConfig = {
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
               voteTerm,
-              optionCount: participationContext.attributes.ideas_count,
-              totalVotes:
-                participationContext.attributes.voting_max_total?.toLocaleString(),
+              optionCount: phase.attributes.ideas_count,
+              totalVotes: phase.attributes.voting_max_total?.toLocaleString(),
             }}
             {...messages.cumulativeVotingInstructionsTotalVotes}
           />
@@ -312,8 +304,7 @@ const multipleVotingConfig: VotingMethodConfig = {
               <FormattedMessage
                 {...messages.cumulativeVotingInstructionsMaxVotesPerIdea}
                 values={{
-                  maxVotes:
-                    participationContext.attributes.voting_max_votes_per_idea,
+                  maxVotes: phase.attributes.voting_max_votes_per_idea,
                 }}
               />
             </li>
@@ -398,25 +389,17 @@ const multipleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
-  getIdeaCardVoteInput: ({ ideaId, participationContext }) => (
-    <AssignMultipleVotesInput
-      ideaId={ideaId}
-      participationContext={participationContext}
-    />
+  getIdeaCardVoteInput: ({ ideaId, phase }) => (
+    <AssignMultipleVotesInput ideaId={ideaId} phase={phase} />
   ),
-  getIdeaPageVoteInput: ({ ideaId, participationContext, compact }) => {
+  getIdeaPageVoteInput: ({ ideaId, phase, compact }) => {
     if (!compact) {
-      return (
-        <AssignMultipleVotesBox
-          ideaId={ideaId}
-          participationContext={participationContext}
-        />
-      );
+      return <AssignMultipleVotesBox ideaId={ideaId} phase={phase} />;
     }
     return (
       <AssignMultipleVotesInput
         ideaId={ideaId}
-        participationContext={participationContext}
+        phase={phase}
         fillWidth={true}
       />
     );
@@ -446,12 +429,10 @@ const singleVotingConfig: VotingMethodConfig = {
     }
   },
   getStatusDescription: ({
-    project,
     phase,
     submissionState,
   }: GetStatusDescriptionProps) => {
-    const participationContext = phase || project;
-    const totalVotes = participationContext?.attributes.voting_max_total;
+    const totalVotes = phase?.attributes.voting_max_total;
 
     if (submissionState === 'hasNotSubmitted') {
       const youCanVoteMessage = totalVotes
@@ -472,7 +453,7 @@ const singleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              totalVotes: participationContext?.attributes.voting_max_total,
+              totalVotes: phase?.attributes.voting_max_total,
             }}
             {...youCanVoteMessage}
           />
@@ -590,27 +571,22 @@ const singleVotingConfig: VotingMethodConfig = {
   preSubmissionWarning: () => {
     return messages.votingPreSubmissionWarning;
   },
-  getIdeaCardVoteInput: ({ ideaId, participationContext }) => (
+  getIdeaCardVoteInput: ({ ideaId, phase }) => (
     <AssignSingleVoteButton
       ideaId={ideaId}
-      participationContext={participationContext}
+      phase={phase}
       buttonStyle="primary-outlined"
     />
   ),
-  getIdeaPageVoteInput: ({ ideaId, participationContext, compact }) => {
+  getIdeaPageVoteInput: ({ ideaId, phase, compact }) => {
     if (!compact) {
-      return (
-        <AssignSingleVoteBox
-          ideaId={ideaId}
-          participationContext={participationContext}
-        />
-      );
+      return <AssignSingleVoteBox ideaId={ideaId} phase={phase} />;
     }
 
     return (
       <AssignSingleVoteButton
         ideaId={ideaId}
-        participationContext={participationContext}
+        phase={phase}
         buttonStyle="primary"
       />
     );

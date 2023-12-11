@@ -1,4 +1,5 @@
 import { randomString } from '../../../support/commands';
+import moment = require('moment');
 
 describe('Idea internal comments', () => {
   let projectId: string;
@@ -11,6 +12,7 @@ describe('Idea internal comments', () => {
   const ideaContent1 = randomString();
   const ideaTitle2 = randomString();
   const ideaContent2 = randomString();
+  let phaseId: string;
 
   before(() => {
     cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
@@ -34,20 +36,42 @@ describe('Idea internal comments', () => {
     });
 
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'ideation',
     })
       .then((project) => {
         projectId = project.body.data.id;
-        return cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1);
+        return cy.apiCreatePhase({
+          projectId,
+          title: 'firstPhaseTitle',
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
+      })
+      .then((phase) => {
+        phaseId = phase.body.data.id;
+      })
+      .then(() => {
+        return cy.apiCreateIdea({
+          projectId,
+          ideaTitle: ideaTitle1,
+          ideaContent: ideaContent1,
+          phaseIds: [phaseId],
+        });
       })
       .then((idea1) => {
         ideaId1 = idea1.body.data.id;
-        return cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2);
+        return cy.apiCreateIdea({
+          projectId,
+          ideaTitle: ideaTitle2,
+          ideaContent: ideaContent2,
+          phaseIds: [phaseId],
+        });
       })
       .then((idea2) => {
         ideaId2 = idea2.body.data.id;

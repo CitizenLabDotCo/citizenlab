@@ -41,7 +41,7 @@ import { ModalProps, ErrorCode } from './typings';
 import VerificationSuccess from './steps/VerificationSuccess';
 import T from 'components/T';
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { IParticipationContextPermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/permissions/types';
 import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];
@@ -95,7 +95,7 @@ const getHeaderMessage = (
   action:
     | 'visiting'
     | IInitiativeAction
-    | IParticipationContextPermissionAction
+    | IPhasePermissionAction
     | IFollowingAction
 ) => {
   if (

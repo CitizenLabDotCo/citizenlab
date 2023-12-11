@@ -1,3 +1,4 @@
+import moment = require('moment');
 import { randomString } from '../support/commands';
 
 describe('Project and folder cards on front page', () => {
@@ -11,7 +12,6 @@ describe('Project and folder cards on front page', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: publishedProjectTitle,
       descriptionPreview: publishedProjectDescriptionPreview,
       description: randomString(),
@@ -20,7 +20,6 @@ describe('Project and folder cards on front page', () => {
       publishedProjectId = project.body.data.id;
 
       cy.apiCreateProject({
-        type: 'continuous',
         title: archivedProjectTitle,
         descriptionPreview: archivedProjectDescriptionPreview,
         description: randomString(),
@@ -92,15 +91,24 @@ describe('Native survey project card', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'native_survey',
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
+
+      cy.apiCreatePhase({
+        projectId,
+        title: 'surveyPhaseTitle',
+        startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+        endAt: moment().add(1, 'month').format('DD/MM/YYYY'),
+        participationMethod: 'native_survey',
+        canPost: true,
+        canComment: true,
+        canReact: true,
+      });
     });
   });
 

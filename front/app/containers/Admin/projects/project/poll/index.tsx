@@ -1,29 +1,77 @@
+// Libraries
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import styled from 'styled-components';
+import { isError } from 'lodash-es';
 import { useParams } from 'react-router-dom';
-import AdminContinuousProjectPoll from './AdminContinuousProjectPoll';
-import AdminTimelineProjectPoll from './AdminTimelineProjectPoll';
-import useProjectById from 'api/projects/useProjectById';
+
+// Services / Data loading
+import GetPollQuestions, {
+  GetPollQuestionsChildProps,
+} from 'resources/GetPollQuestions';
+
+// Components
+import ExportPollButton from './ExportPollButton';
+import PollAdminForm from './PollAdminForm';
+import { SectionDescription } from 'components/admin/Section';
+import { Box, Title } from '@citizenlab/cl2-component-library';
+
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
+
+// hooks
+import usePhase from 'api/phases/usePhase';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+const PhaseContainer = styled.div`
+  &:not(:last-child) {
+    margin-bottom: 50px;
+  }
+`;
 
 const AdminProjectPoll = () => {
-  const { projectId } = useParams() as { projectId: string };
-  const { data: project } = useProjectById(projectId);
+  const { phaseId } = useParams() as {
+    phaseId?: string;
+  };
+  const { data: phase } = usePhase(phaseId);
   const isEnabled = useFeatureFlag({ name: 'polls' });
-
-  if (isNilOrError(project) || !isEnabled) return null;
+  const localize = useLocalize();
 
   if (
-    project.data.attributes.process_type === 'continuous' &&
-    project.data.attributes.participation_method === 'poll'
+    !phase ||
+    phase.data.attributes.participation_method !== 'poll' ||
+    !isEnabled
   ) {
-    return <AdminContinuousProjectPoll project={project.data} />;
+    return null;
   }
 
-  if (project.data.attributes.process_type === 'timeline') {
-    return <AdminTimelineProjectPoll projectId={projectId} />;
-  }
-  return null;
+  return (
+    <Box display="flex" flexDirection="column">
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Title variant="h3" color="primary">
+          <FormattedMessage {...messages.titlePollTab} />
+        </Title>
+        <ExportPollButton
+          phaseId={phase.data.id}
+          phaseName={localize(phase.data.attributes.title_multiloc)}
+        />
+      </Box>
+      <SectionDescription>
+        <FormattedMessage {...messages.pollTabSubtitle} />
+      </SectionDescription>
+      <PhaseContainer>
+        <GetPollQuestions phaseId={phase.data.id}>
+          {(pollQuestions: GetPollQuestionsChildProps) => (
+            <PollAdminForm
+              phaseId={phase.data.id}
+              pollQuestions={isError(pollQuestions) ? null : pollQuestions}
+            />
+          )}
+        </GetPollQuestions>
+      </PhaseContainer>
+    </Box>
+  );
 };
 
 export default AdminProjectPoll;

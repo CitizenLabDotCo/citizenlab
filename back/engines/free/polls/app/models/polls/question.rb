@@ -4,27 +4,30 @@
 #
 # Table name: polls_questions
 #
-#  id                         :uuid             not null, primary key
-#  participation_context_id   :uuid             not null
-#  participation_context_type :string           not null
-#  title_multiloc             :jsonb            not null
-#  ordering                   :integer
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
-#  question_type              :string           default("single_option"), not null
-#  max_options                :integer
+#  id             :uuid             not null, primary key
+#  phase_id       :uuid             not null
+#  title_multiloc :jsonb            not null
+#  ordering       :integer
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  question_type  :string           default("single_option"), not null
+#  max_options    :integer
 #
 # Indexes
 #
-#  index_poll_questions_on_participation_context  (participation_context_type,participation_context_id)
+#  index_polls_questions_on_phase_id  (phase_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (phase_id => phases.id) ON DELETE => nullify
 #
 module Polls
   class Question < ApplicationRecord
     QUESTION_TYPES = %w[single_option multiple_options]
 
-    acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: %i[participation_context_type participation_context_id]
+    acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: %i[phase_id]
 
-    belongs_to :participation_context, polymorphic: true
+    belongs_to :phase
     has_many :options, class_name: 'Polls::Option', dependent: :destroy
 
     validates :title_multiloc, presence: true, multiloc: { presence: true }
@@ -40,7 +43,7 @@ module Polls
     end
 
     def project_id
-      participation_context.try(:project_id)
+      phase.try(:project_id)
     end
   end
 end
