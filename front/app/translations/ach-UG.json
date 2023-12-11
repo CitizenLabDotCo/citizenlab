@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "crwdns215794:0crwdne215794:0",
   "app.containers.landing.verifyYourIdentity": "crwdns215796:0crwdne215796:0",
   "app.containers.landing.viewAllEventsText": "crwdns215798:0crwdne215798:0",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "crwdns1442890:0crwdne1442890:0",
   "app.errors.after_end_at": "crwdns215800:0crwdne215800:0",
   "app.errors.avatar_carrierwave_download_error": "crwdns215802:0crwdne215802:0",
   "app.errors.avatar_carrierwave_integrity_error": "crwdns215804:0crwdne215804:0",
