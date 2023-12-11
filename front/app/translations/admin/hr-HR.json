@@ -953,6 +953,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Posjetitelji",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Nema projekta",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Jeste li sigurni da želite izbrisati „{reportName}“?",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Jeste li sigurni da želite izbrisati ovo izvješće?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Kreirano: {date}",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.delete": "Izbriši",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.edit": "Uredi",
