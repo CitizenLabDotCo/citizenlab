@@ -27,7 +27,7 @@ import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
 
 // Styling
-import { defaultAdminCardPadding } from 'utils/styleUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 // Typing
 import { Multiloc, Locale } from 'typings';

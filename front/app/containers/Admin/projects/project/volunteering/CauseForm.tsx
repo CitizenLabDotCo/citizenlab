@@ -18,7 +18,7 @@ import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 // components and styles
 import Button from 'components/UI/Button';
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { defaultAdminCardPadding } from 'utils/styleUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 // intl
 import messages from './messages';

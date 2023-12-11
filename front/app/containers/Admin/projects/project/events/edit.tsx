@@ -56,7 +56,7 @@ import { useParams } from 'react-router-dom';
 import { geocode } from 'utils/locationTools';
 import { useTheme } from 'styled-components';
 import useLocale from 'hooks/useLocale';
-import { defaultAdminCardPadding } from 'utils/styleUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
