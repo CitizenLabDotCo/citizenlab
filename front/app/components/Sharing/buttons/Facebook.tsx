@@ -19,7 +19,6 @@ import tracks from '../tracks';
 
 interface Props {
   url: string;
-  facebookMessage: string;
 }
 
 const StyledBox = styled(Box)`
@@ -38,7 +37,6 @@ const StyledBox = styled(Box)`
 `;
 
 const Facebook = ({
-  facebookMessage,
   url,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
@@ -53,7 +51,6 @@ const Facebook = ({
   return (
     <StyledBox onClick={handleClick}>
       <FacebookShareButton
-        quote={facebookMessage}
         url={url}
         aria-label={formatMessage(messages.shareOnFacebook)}
       >

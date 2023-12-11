@@ -52,19 +52,6 @@ const Component = ({ ideaId }: Props) => {
     return (
       <SharingButtons
         url={postUrl}
-        facebookMessage={formatMessage(
-          getInputTermMessage(inputTerm, {
-            idea: messages.ideaFacebookMessage,
-            option: messages.optionFacebookMessage,
-            project: messages.projectFacebookMessage,
-            question: messages.questionFacebookMessage,
-            issue: messages.issueFacebookMessage,
-            contribution: messages.contributionFacebookMessage,
-          }),
-          {
-            postTitle,
-          }
-        )}
         whatsAppMessage={formatMessage(
           getInputTermMessage(inputTerm, {
             idea: messages.ideaWhatsAppMessage,

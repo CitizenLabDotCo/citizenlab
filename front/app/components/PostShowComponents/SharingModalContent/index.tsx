@@ -194,9 +194,6 @@ const SharingModalContent = ({
         <SharingButtons
           context={postType}
           url={postUrl}
-          facebookMessage={formatMessage(messages.twitterMessage, {
-            postTitle,
-          })}
           twitterMessage={formatMessage(messages.twitterMessage, {
             postTitle,
           })}

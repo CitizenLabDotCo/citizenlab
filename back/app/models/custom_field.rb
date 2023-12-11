@@ -202,7 +202,7 @@ class CustomField < ApplicationRecord
     if code == 'ideation_section1'
       project = resource.participation_context
       phase = TimelineService.new.current_or_last_can_contain_ideas_phase project
-      input_term = phase.input_term || Phase::DEFAULT_INPUT_TERM
+      input_term = phase&.input_term || Phase::DEFAULT_INPUT_TERM
 
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key
