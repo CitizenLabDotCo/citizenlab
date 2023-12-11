@@ -40,7 +40,8 @@ RSpec.describe HomePage do
   describe 'craftjs_json' do
     it 'is uses the .json.erb as default value' do
       homepage = create(:home_page)
-      expect(homepage.craftjs_json['ROOT']).to match({
+      layout = ContentBuilder::Layout.find_by(code: 'homepage')
+      expect(layout.craftjs_json['ROOT']).to match({
         'type' => 'div',
         'isCanvas' => true,
         'props' => { 'id' => 'e2e-content-builder-frame' },
@@ -50,8 +51,8 @@ RSpec.describe HomePage do
         'nodes' => kind_of(Array),
         'linkedNodes' => {}
       })
-      homepagebanner, projects, proposals = homepage.craftjs_json['ROOT']['nodes']
-      expect(homepage.craftjs_json[homepagebanner]).to match({
+      homepagebanner, projects, proposals = layout.craftjs_json['ROOT']['nodes']
+      expect(layout.craftjs_json[homepagebanner]).to match({
         'type' => { 'resolvedName' => 'HomepageBanner' },
         'isCanvas' => false,
         'props' => {
@@ -92,7 +93,7 @@ RSpec.describe HomePage do
         'nodes' => [],
         'linkedNodes' => {}
       })
-      expect(homepage.craftjs_json[projects]).to match({
+      expect(layout.craftjs_json[projects]).to match({
         'type' => { 'resolvedName' => 'Projects' },
         'isCanvas' => false,
         'props' => {
@@ -112,7 +113,7 @@ RSpec.describe HomePage do
         'nodes' => [],
         'linkedNodes' => {}
       })
-      expect(homepage.craftjs_json[proposals]).to match({
+      expect(layout.craftjs_json[proposals]).to match({
         'type' => { 'resolvedName' => 'Proposals' },
         'isCanvas' => false,
         'props' => {},

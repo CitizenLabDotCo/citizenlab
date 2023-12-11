@@ -109,11 +109,13 @@ class HomePage < ApplicationRecord
   end
 
   def set_craftjs_json
-    return if craftjs_json.present?
+    layout = content_builder_layouts.find_by code: 'homepage'
+    layout ||= content_builder_layouts.new code: 'homepage', enabled: true
+    return if layout.craftjs_json.present?
 
     craftjs_filepath = Rails.root.join('config/homepage/default_craftjs.json.erb')
     json_craftjs_str = ERB.new(File.read(craftjs_filepath)).result(binding)
-    self.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(JSON.parse(json_craftjs_str))
+    layout.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(JSON.parse(json_craftjs_str))
   end
 
   # Validates that there is only one homepage. Adds an error in case a homepage record already exists.
