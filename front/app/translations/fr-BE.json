@@ -1648,6 +1648,7 @@
   "app.containers.landing.verifyNow": "Vérifier maintenant",
   "app.containers.landing.verifyYourIdentity": "Devenir un citoyen vérifié",
   "app.containers.landing.viewAllEventsText": "Tous les événements",
+  "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Retour au dossier",
   "app.errors.after_end_at": "La date de début a lieu après la date de fin",
   "app.errors.avatar_carrierwave_download_error": "Impossible de télécharger l'image de profil.",
   "app.errors.avatar_carrierwave_integrity_error": "Le type de fichier choisi pour l'image de profil n'est pas autorisé.",
