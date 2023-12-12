@@ -43,7 +43,11 @@ namespace :migrate_craftjson do
         needs_manual_migration = !topinfosection_success || !bottominfosection_success
 
         homepage = HomePage.first
-        if !homepage.update(craftjs_json: craftjs_json)
+        layout = homepage.content_builder_layouts.find_by(code: 'homepage')
+        if !layout
+          errors[tenant.host] ||= []
+          errors[tenant.host] += ['No homepage layout found']
+        elsif !layout.update(craftjs_json: craftjs_json)
           errors[tenant.host] ||= []
           errors[tenant.host] += ["Failed to update homepage: #{homepage.errors.details}"]
         end

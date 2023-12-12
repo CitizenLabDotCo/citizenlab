@@ -57,8 +57,8 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
 
       Rake::Task['migrate_craftjson:homepage'].invoke
 
-      homepage.reload
-      expect(homepage.craftjs_json['ROOT']).to match({
+      layout = homepage.content_builder_layouts.find_by(code: 'homepage')
+      expect(layout.craftjs_json['ROOT']).to match({
         'type' => 'div',
         'isCanvas' => true,
         'props' => { 'id' => 'e2e-content-builder-frame' },
@@ -68,8 +68,8 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'nodes' => kind_of(Array),
         'linkedNodes' => {}
       })
-      homepagebanner, whitespace1, topinfosection, topimg, topiframe, whitespace2, projects, events, proposals, whitespace3, bottominfosection, bottombutton1, bottombutton2, bottomiframe, whitespace4 = homepage.craftjs_json['ROOT']['nodes']
-      expect(homepage.craftjs_json[homepagebanner]).to match({
+      homepagebanner, whitespace1, topinfosection, topimg, topiframe, whitespace2, projects, events, proposals, whitespace3, bottominfosection, bottombutton1, bottombutton2, bottomiframe, whitespace4 = layout.craftjs_json['ROOT']['nodes']
+      expect(layout.craftjs_json[homepagebanner]).to match({
         'type' => { 'resolvedName' => 'HomepageBanner' },
         'isCanvas' => false,
         'props' => {
@@ -107,8 +107,8 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'nodes' => [],
         'linkedNodes' => {}
       })
-      expect(homepage.craftjs_json[whitespace1]).to eq whitespace
-      expect(homepage.craftjs_json[topinfosection]).to match({
+      expect(layout.craftjs_json[whitespace1]).to eq whitespace
+      expect(layout.craftjs_json[topinfosection]).to match({
         'type' => { 'resolvedName' => 'TextMultiloc' },
         'isCanvas' => false,
         'props' => {
@@ -129,7 +129,7 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'nodes' => [],
         'linkedNodes' => {}
       })
-      expect(homepage.craftjs_json[topimg]).to match({
+      expect(layout.craftjs_json[topimg]).to match({
         'type' => { 'resolvedName' => 'ImageMultiloc' },
         'nodes' => [],
         'props' => {
@@ -148,7 +148,7 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'displayName' => 'Image',
         'linkedNodes' => {}
       })
-      expect(homepage.craftjs_json[topiframe]).to match({
+      expect(layout.craftjs_json[topiframe]).to match({
         'type' => { 'resolvedName' => 'IframeMultiloc' },
         'nodes' => [],
         'props' => {
@@ -171,8 +171,8 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'displayName' => 'Iframe',
         'linkedNodes' => {}
       })
-      expect(homepage.craftjs_json[whitespace2]).to eq whitespace
-      expect(homepage.craftjs_json[projects]).to match({
+      expect(layout.craftjs_json[whitespace2]).to eq whitespace
+      expect(layout.craftjs_json[projects]).to match({
         'type' => { 'resolvedName' => 'Projects' },
         'isCanvas' => false,
         'props' => {
@@ -192,7 +192,7 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'nodes' => [],
         'linkedNodes' => {}
       })
-      expect(homepage.craftjs_json[events]).to match({
+      expect(layout.craftjs_json[events]).to match({
         'type' => { 'resolvedName' => 'Events' },
         'isCanvas' => false,
         'props' => {},
@@ -209,7 +209,7 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'nodes' => [],
         'linkedNodes' => {}
       })
-      expect(homepage.craftjs_json[proposals]).to match({
+      expect(layout.craftjs_json[proposals]).to match({
         'type' => { 'resolvedName' => 'Proposals' },
         'isCanvas' => false,
         'props' => {},
@@ -226,8 +226,8 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'nodes' => [],
         'linkedNodes' => {}
       })
-      expect(homepage.craftjs_json[whitespace3]).to eq whitespace
-      expect(homepage.craftjs_json[bottominfosection]).to match({
+      expect(layout.craftjs_json[whitespace3]).to eq whitespace
+      expect(layout.craftjs_json[bottominfosection]).to match({
         'type' => { 'resolvedName' => 'TextMultiloc' },
         'isCanvas' => false,
         'props' => {
@@ -248,7 +248,7 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'nodes' => [],
         'linkedNodes' => {}
       })
-      expect(homepage.craftjs_json[bottombutton1]).to match({
+      expect(layout.craftjs_json[bottombutton1]).to match({
         'type' => { 'resolvedName' => 'ButtonMultiloc' },
         'nodes' => [],
         'props' => {
@@ -270,7 +270,7 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'displayName' => 'Button',
         'linkedNodes' => {}
       })
-      expect(homepage.craftjs_json[bottombutton2]).to match({
+      expect(layout.craftjs_json[bottombutton2]).to match({
         'type' => { 'resolvedName' => 'ButtonMultiloc' },
         'nodes' => [],
         'props' => {
@@ -292,7 +292,7 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'displayName' => 'Button',
         'linkedNodes' => {}
       })
-      expect(homepage.craftjs_json[bottomiframe]).to match({
+      expect(layout.craftjs_json[bottomiframe]).to match({
         'type' => { 'resolvedName' => 'IframeMultiloc' },
         'nodes' => [],
         'props' => {
@@ -315,7 +315,7 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'displayName' => 'Iframe',
         'linkedNodes' => {}
       })
-      expect(homepage.craftjs_json[whitespace4]).to eq whitespace
+      expect(layout.craftjs_json[whitespace4]).to eq whitespace
     end
   end
 end
