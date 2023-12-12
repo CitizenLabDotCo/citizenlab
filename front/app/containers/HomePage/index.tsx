@@ -26,9 +26,11 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import Viewer from './Viewer';
 import { isEmpty } from 'lodash-es';
 import CityLogoSection from 'components/CityLogoSection';
+import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 export const adminRedirectPath = '/admin';
 
 const HomePage = () => {
+  const { data: homepageLayout } = useHomepageLayout();
   const { data: homepageSettings } = useHomepageSettings();
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
@@ -55,7 +57,7 @@ const HomePage = () => {
 
   if (
     isHomepageBuilderEnabled &&
-    !isEmpty(homepageSettings?.data.attributes.craftjs_json)
+    !isEmpty(homepageLayout?.data.attributes.craftjs_json)
   ) {
     return (
       <div id="e2e-landing-page">

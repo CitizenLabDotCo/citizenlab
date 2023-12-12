@@ -70,7 +70,7 @@ declare global {
       apiGetProjectPermission: typeof apiGetProjectPermission;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
-      apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
+      apiUpdateHomepageLayout: typeof apiUpdateHomepageLayout;
       apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
       clickLocaleSwitcherAndType: typeof clickLocaleSwitcherAndType;
       apiCreateSmartGroupCustomField: typeof apiCreateSmartGroupCustomField;
@@ -1535,7 +1535,7 @@ export function clickLocaleSwitcherAndType(title: string) {
   });
 }
 
-export function apiUpdateHomepageSettings({
+export function apiUpdateHomepageLayout({
   craftjs_json,
 }: {
   craftjs_json: Record<string, any>;
@@ -1548,17 +1548,17 @@ export function apiUpdateHomepageSettings({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${adminJwt}`,
       },
-      method: 'PATCH',
-      url: `web_api/v1/home_page/`,
+      method: 'POST',
+      url: `web_api/v1/home_pages/content_builder_layouts/homepage/upsert`,
       body: {
         home_page: {
+          enabled: true,
           craftjs_json,
         },
       },
     });
   });
 }
-
 export function apiCreateSmartGroupCustomField(
   groupName: string,
   customFieldId: string,
