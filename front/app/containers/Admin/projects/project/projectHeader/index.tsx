@@ -13,6 +13,7 @@ import {
 import NavigationTabs from 'components/admin/NavigationTabs';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import otherProjectMessages from 'containers/Admin/projects/all/messages';
 import useLocalize from 'hooks/useLocalize';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
@@ -35,13 +36,12 @@ const ProjectHeader = ({ projectId }: Props) => {
   const localize = useLocalize();
 
   if (!project) return null;
+  const isOngoingProject = phases?.data.some(
+    (phase) =>
+      !phase.attributes.end_at ||
+      moment(phase.attributes.end_at).isSameOrAfter(moment().startOf('day'))
+  );
 
-  const isOngoingProject = phases?.data.some((phase) => {
-    if (!phase.attributes.end_at) {
-      return true;
-    }
-    return moment(phase.attributes.end_at).isAfter(moment());
-  });
   let visibilityMessage: MessageDescriptor = messages.everyone;
   let visibilityIcon: IconNames = 'lock';
   switch (project.data.attributes.visible_to) {
@@ -62,13 +62,19 @@ const ProjectHeader = ({ projectId }: Props) => {
   let publicationStatusIconColor = colors.orange;
   switch (project.data.attributes.publication_status) {
     case 'published':
-      publicationStatusIcon = isOngoingProject ? 'check-circle' : 'bullseye';
-      publicationStatusIconColor = isOngoingProject
-        ? colors.green500
-        : colors.coolGrey600;
-      statusMessage = isOngoingProject
-        ? messages.publishedActive
-        : messages.publishedFinished;
+      if (phases?.data.length === 0) {
+        publicationStatusIcon = 'check-circle';
+        publicationStatusIconColor = colors.green500;
+        statusMessage = otherProjectMessages.published;
+      } else {
+        publicationStatusIcon = isOngoingProject ? 'check-circle' : 'bullseye';
+        publicationStatusIconColor = isOngoingProject
+          ? colors.green500
+          : colors.coolGrey600;
+        statusMessage = isOngoingProject
+          ? messages.publishedActive
+          : messages.publishedFinished;
+      }
       break;
     case 'draft':
       publicationStatusIcon = 'flag';
