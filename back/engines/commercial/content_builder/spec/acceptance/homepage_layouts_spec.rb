@@ -11,7 +11,7 @@ resource 'ContentBuilderLayouts' do
   context 'when not signed in' do
     let!(:homepage) { create(:home_page) }
     let(:code) { 'homepage' }
-    let!(:layout) { create(:layout, content_buildable: homepage, code: code) }
+    let(:layout) { homepage.content_builder_layouts.find_by(code: code) }
 
     get 'web_api/v1/home_pages/content_builder_layouts/:code' do
       example_request 'Get one layout by code' do
@@ -54,7 +54,7 @@ resource 'ContentBuilderLayouts' do
     let(:code) { 'homepage' }
 
     context 'when the layout exists' do
-      let!(:layout) { create(:layout, content_buildable: homepage, code: code) }
+      let(:layout) { homepage.content_builder_layouts.find_by(code: code) }
 
       get 'web_api/v1/home_pages/content_builder_layouts/:code' do
         example_request 'Get one layout by code' do
@@ -113,6 +113,8 @@ resource 'ContentBuilderLayouts' do
     end
 
     context 'when the layout does not exist' do
+      let!(:homepage) { create(:home_page).tap { |homepage| homepage.content_builder_layouts.find_by(code: 'homepage').destroy! } }
+
       post 'web_api/v1/home_pages/content_builder_layouts/:code/upsert' do
         with_options scope: :content_builder_layout do
           parameter :enabled, 'Indicates that the layout is enabled.'
@@ -154,7 +156,7 @@ resource 'ContentBuilderLayouts' do
       end
 
       delete 'web_api/v1/home_pages/content_builder_layouts/:code' do
-        example_request '[error] Try to delete a layout when the layout does not exist' do
+        example_request '[error] Try to delete a layout' do
           assert_status 404
         end
       end
