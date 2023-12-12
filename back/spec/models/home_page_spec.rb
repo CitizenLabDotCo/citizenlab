@@ -39,7 +39,7 @@ RSpec.describe HomePage do
 
   describe 'craftjs_json' do
     it 'is uses the .json.erb as default value' do
-      homepage = create(:home_page)
+      create(:home_page)
       layout = ContentBuilder::Layout.find_by(code: 'homepage')
       expect(layout.craftjs_json['ROOT']).to match({
         'type' => 'div',
