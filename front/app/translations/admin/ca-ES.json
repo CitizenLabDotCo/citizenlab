@@ -1865,8 +1865,6 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 columna",
   "app.containers.admin.ContentBuilder.projectDescription": "Project description",
   "app.containers.admin.ContentBuilder.sections": "SECCIONS",
-  "app.containers.admin.ContentBuilder.text": "Text",
-  "app.containers.admin.ContentBuilder.textValue": "Aquest és un text. Podeu editar-lo i formatar-lo mitjançant l'editor del tauler de la dreta.",
   "app.containers.admin.ContentBuilder.threeColumnLayout": "3 columna",
   "app.containers.admin.ContentBuilder.twoColumnLayout": "2 columna",
   "app.containers.admin.ContentBuilder.twoColumnLayoutVariant1-2": "2 columnes amb un 30% i un 60% d'amplada respectivament",

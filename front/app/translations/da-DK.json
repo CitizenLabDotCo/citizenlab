@@ -391,6 +391,7 @@
   "app.components.ProjectCard.viewTheOptions": "Se mulighederne",
   "app.components.ProjectCard.viewTheProjects": "Se projekterne",
   "app.components.ProjectCard.viewTheQuestions": "Se spørgsmålene",
+  "app.components.ProjectCard.vote": "Stem",
   "app.components.ProjectCard.xComments": "{commentsCount, plural, no {# kommentarer} one {# kommentar} other {# kommentarer}}",
   "app.components.ProjectCard.xContributions": "{ideasCount, plural, no {# bidrag} one {# bidrag} other {# bidrag}}",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {ingen idéer} one {# idé} other {# idéer}}",

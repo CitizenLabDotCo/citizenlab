@@ -391,6 +391,7 @@
   "app.components.ProjectCard.viewTheOptions": "Optiounen ukucken",
   "app.components.ProjectCard.viewTheProjects": "Projeten ukucken",
   "app.components.ProjectCard.viewTheQuestions": "Froen ukucken",
+  "app.components.ProjectCard.vote": "Stëmmen",
   "app.components.ProjectCard.xComments": "{commentsCount, plural, one {# Kommentaren} other {# Kommentaren}}",
   "app.components.ProjectCard.xContributions": "{ideasCount, plural, one {# Bäitrag} other {# Bäiträg}}",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {nach keng Iddi} one {# Iddi} other {# Iddien}}",

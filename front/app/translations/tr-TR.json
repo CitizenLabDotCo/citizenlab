@@ -391,6 +391,7 @@
   "app.components.ProjectCard.viewTheOptions": "Seçenekleri görüntüleyin",
   "app.components.ProjectCard.viewTheProjects": "Projeleri görüntüleyin",
   "app.components.ProjectCard.viewTheQuestions": "Soruları görüntüleyin",
+  "app.components.ProjectCard.vote": "Oylama",
   "app.components.ProjectCard.xComments": "{commentsCount, plural, one {# yorum} other {# yorum}}",
   "app.components.ProjectCard.xContributions": "{ideasCount, plural, one {# katkı} other {# katkı}}",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {henüz fikir yok} one {# fikir} other {# fikir}}",

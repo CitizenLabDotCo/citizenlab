@@ -391,6 +391,7 @@
   "app.components.ProjectCard.viewTheOptions": "Bekijk de opties",
   "app.components.ProjectCard.viewTheProjects": "Bekijk de projecten",
   "app.components.ProjectCard.viewTheQuestions": "Bekijk de vragen",
+  "app.components.ProjectCard.vote": "Stem",
   "app.components.ProjectCard.xComments": "{commentsCount, plural, no {# reacties} one {# reactie} other {# reacties}}",
   "app.components.ProjectCard.xContributions": "{ideasCount, plural, one {# onderwerp} other {# onderwerpen}}",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {nog geen ideeën} one {# idee} other {# ideeën}}",

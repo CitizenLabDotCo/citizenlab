@@ -1,13 +1,14 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useReportLayout from 'api/report_layout/useReportLayout';
-import useReportLocale from '../../hooks/useReportLocale';
+import useLocale from 'hooks/useLocale';
 
 // context
 import { ReportContextProvider } from '../../context/ReportContext';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -17,10 +18,7 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import Editor from '../../components/ReportBuilder/Editor';
 import TopBar from '../../components/ReportBuilder/TopBar';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
-import {
-  StyledRightColumn,
-  ErrorMessage,
-} from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from 'components/admin/ContentBuilder/Settings';
 
@@ -30,101 +28,70 @@ import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTem
 // styling
 import { stylingConsts } from 'utils/styleUtils';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // constants
 import { A4_WIDTH } from '../../constants';
 
 // typings
-import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
+import {
+  CraftJson,
+  ContentBuilderErrors,
+} from 'components/admin/ContentBuilder/typings';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
-import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-import useLocale from '../../../../../hooks/useLocale';
+import { ReportLayout } from 'api/report_layout/types';
+import { isEmpty } from 'lodash-es';
 
 interface Props {
   reportId: string;
+  reportLayout: ReportLayout;
 }
 
-const ReportBuilder = ({ reportId }: Props) => {
-  const [previewEnabled, setPreviewEnabled] = useState(false);
-  const [contentBuilderErrors, setContentBuilderErrors] =
-    useState<ContentBuilderErrors>({});
-  const [imageUploading, setImageUploading] = useState(false);
-  const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
-  const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
-  const { data: reportLayout } = useReportLayout(reportId);
-  const reportLocale = useReportLocale(reportLayout?.data);
+const ReportBuilder = ({ reportId, reportLayout }: Props) => {
   const platformLocale = useLocale();
-  const [initialized, setInitialized] = useState(false);
-  const [initialData, setInitialData] = useState<SerializedNodes | undefined>();
   const [search] = useSearchParams();
   const templateProjectId = search.get('templateProjectId');
 
-  // Note: selectedLocale is kept to keep compatibility with content builder
-  // although there is currently only one locale allowed per report
-  useEffect(() => {
-    if (!isNilOrError(reportLocale)) {
-      setSelectedLocale(reportLocale);
-    }
-  }, [reportLocale]);
+  const [previewEnabled, setPreviewEnabled] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
+  const [selectedLocale, setSelectedLocale] = useState<Locale>(platformLocale);
+  const [draftData, setDraftData] = useState<CraftJson>(
+    reportLayout.attributes.craftjs_json
+  );
 
-  const localesWithError = useMemo(() => {
-    return Object.values(contentBuilderErrors)
-      .filter((node) => node.hasError)
-      .filter((node) => node.selectedLocale)
-      .map((node) => node.selectedLocale as Locale);
-  }, [contentBuilderErrors]);
+  // Absolutely no idea why we need this initial data stuff.
+  // But without it the whole report builder crashes. Seems to be weird
+  // behaviour from the craftjs library.
+  const [initialData] = useState(isEmpty(draftData) ? undefined : draftData);
 
-  const handleErrors = useCallback((newErrors: ContentBuilderErrors) => {
+  const [saved, setSaved] = useState(!templateProjectId);
+  const [contentBuilderErrors, setContentBuilderErrors] =
+    useState<ContentBuilderErrors>({});
+
+  const handleEditorChange = useCallback((nodes: SerializedNodes) => {
+    if (Object.keys(nodes).length === 1 && nodes.ROOT) return;
+    setDraftData(nodes);
+    setSaved(false);
+  }, []);
+
+  const handleErrors = (newErrors: ContentBuilderErrors) => {
     setContentBuilderErrors((contentBuilderErrors) => ({
       ...contentBuilderErrors,
       ...newErrors,
     }));
-  }, []);
+  };
 
-  const handleDeleteElement = useCallback((id: string) => {
+  const handleDeleteElement = (id: string) => {
     setContentBuilderErrors((contentBuilderErrors) => {
       const { [id]: _id, ...rest } = contentBuilderErrors;
       return rest;
     });
-  }, []);
+  };
 
-  const handleEditorChange = useCallback(
-    (nodes: SerializedNodes) => {
-      if (Object.keys(nodes).length === 1 && nodes.ROOT) return;
-      if (!selectedLocale) return;
-      setDraftData((draftData) => ({
-        ...draftData,
-        [selectedLocale]: nodes,
-      }));
-    },
-    [selectedLocale]
-  );
+  const previewData = isEmpty(draftData) ? undefined : draftData;
 
-  const previewData = useMemo(() => {
-    if (!selectedLocale) return;
-
-    const previewData = draftData ? draftData[selectedLocale] : undefined;
-    return previewData;
-  }, [draftData, selectedLocale]);
-
-  useEffect(() => {
-    if (initialized) return;
-    if (!selectedLocale) return;
-    if (reportLayout === undefined) return;
-
-    if (!isNilOrError(reportLayout)) {
-      setInitialData(
-        reportLayout.data.attributes.craftjs_jsonmultiloc[selectedLocale]
-      );
-    }
-
-    setInitialized(true);
-  }, [initialized, selectedLocale, reportLayout]);
-
-  if (!selectedLocale) return null;
+  const hasError =
+    Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
+    0;
 
   return (
     <ReportContextProvider width="pdf" reportId={reportId}>
@@ -139,24 +106,25 @@ const ReportBuilder = ({ reportId }: Props) => {
           key={selectedLocale}
         >
           <TopBar
-            localesWithError={localesWithError}
+            hasError={hasError}
             hasPendingState={imageUploading}
             previewEnabled={previewEnabled}
-            setPreviewEnabled={setPreviewEnabled}
             selectedLocale={selectedLocale}
-            draftEditorData={draftData}
-            initialData={initialData}
+            draftEditorData={previewData}
             reportId={reportId}
             templateProjectId={templateProjectId ?? undefined}
+            saved={saved}
+            setSaved={setSaved}
+            setPreviewEnabled={setPreviewEnabled}
+            setSelectedLocale={setSelectedLocale}
           />
           <Box
             mt={`${stylingConsts.menuHeight}px`}
             display={previewEnabled ? 'none' : 'flex'}
           >
-            {selectedLocale && <Toolbox reportId={reportId} />}
+            <Toolbox reportId={reportId} />
             <StyledRightColumn>
               <Box width={A4_WIDTH}>
-                <ErrorMessage localesWithError={localesWithError} />
                 <Box
                   background="white"
                   px="30px"
@@ -165,7 +133,7 @@ const ReportBuilder = ({ reportId }: Props) => {
                   height="100%"
                 >
                   <LanguageProvider
-                    contentBuilderLocale={reportLocale}
+                    contentBuilderLocale={selectedLocale}
                     platformLocale={platformLocale}
                   >
                     <Frame editorData={initialData}>
@@ -196,7 +164,7 @@ const ReportBuilder = ({ reportId }: Props) => {
               <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
                 <Editor isPreview={true}>
                   <LanguageProvider
-                    contentBuilderLocale={reportLocale}
+                    contentBuilderLocale={selectedLocale}
                     platformLocale={platformLocale}
                   >
                     <Frame editorData={previewData} />
@@ -215,15 +183,17 @@ const ReportBuilderWrapper = () => {
   const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const { pathname } = useLocation();
   const { reportId } = useParams();
+  const { data: reportLayout } = useReportLayout(reportId);
 
   const renderReportBuilder =
     reportBuilderEnabled &&
     pathname.includes('admin/reporting/report-builder') &&
-    reportId !== undefined;
+    reportId !== undefined &&
+    reportLayout;
 
   if (!renderReportBuilder) return null;
 
-  return <ReportBuilder reportId={reportId} />;
+  return <ReportBuilder reportId={reportId} reportLayout={reportLayout.data} />;
 };
 
 export default ReportBuilderWrapper;
