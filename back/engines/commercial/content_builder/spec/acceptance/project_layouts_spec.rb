@@ -6,19 +6,18 @@ require 'rspec_api_documentation/dsl'
 resource 'ContentBuilderLayouts' do
   explanation 'Content builder layouts for projects.'
 
-  before do
-    header 'Content-Type', 'application/json'
-  end
+  before { header 'Content-Type', 'application/json' }
 
   context 'when not authorized' do
     let(:user) { create(:user) }
-    let(:layout) { create(:layout) }
-    let(:project_id) { layout.content_buildable_id }
+    let(:project) { create(:project) }
+    let!(:layout) { create(:layout, content_buildable: project) }
+    let(:project_id) { project.id }
     let(:code) { layout.code }
 
     get 'web_api/v1/projects/:project_id/content_builder_layouts/:code' do
       example_request 'Get one layout by project_id and code' do
-        expect(status).to eq 200
+        assert_status 200
 
         json_response = json_parse(response_body)
         expect(json_response).to include(

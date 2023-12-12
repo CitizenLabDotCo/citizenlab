@@ -71,7 +71,7 @@ const homepageMinimalData = {
 describe('Homepage builder', () => {
   before(() => {
     cy.setAdminLoginCookie();
-    cy.apiUpdateHomepageSettings({
+    cy.apiUpdateHomepageLayout({
       craftjs_json: homepageMinimalData,
     }).then(() => {
       cy.logout();
@@ -80,7 +80,7 @@ describe('Homepage builder', () => {
 
   after(() => {
     cy.setAdminLoginCookie();
-    cy.apiUpdateHomepageSettings({
+    cy.apiUpdateHomepageLayout({
       craftjs_json: homepageMinimalData,
     });
   });
