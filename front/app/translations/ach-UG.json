@@ -391,6 +391,7 @@
   "app.components.ProjectCard.viewTheOptions": "crwdns213546:0crwdne213546:0",
   "app.components.ProjectCard.viewTheProjects": "crwdns213548:0crwdne213548:0",
   "app.components.ProjectCard.viewTheQuestions": "crwdns213550:0crwdne213550:0",
+  "app.components.ProjectCard.vote": "crwdns1453562:0crwdne1453562:0",
   "app.components.ProjectCard.xComments": "crwdns213554:0commentsCount={commentsCount}crwdne213554:0",
   "app.components.ProjectCard.xContributions": "crwdns213556:0ideasCount={ideasCount}crwdne213556:0",
   "app.components.ProjectCard.xIdeas": "crwdns213558:0ideasCount={ideasCount}crwdne213558:0",
