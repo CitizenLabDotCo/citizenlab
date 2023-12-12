@@ -111,9 +111,9 @@ class HomePage < ApplicationRecord
 
   def set_craftjs_json
     layout = content_builder_layouts.find_by code: 'homepage'
-    layout ||= content_builder_layouts.new code: 'homepage', enabled: true
-    return if layout.craftjs_json.present?
+    return if layout&.craftjs_json.present? || nested_attributes_options.key?(:content_builder_layouts)
 
+    layout ||= content_builder_layouts.new code: 'homepage', enabled: true
     craftjs_filepath = Rails.root.join('config/homepage/default_craftjs.json.erb')
     json_craftjs_str = ERB.new(File.read(craftjs_filepath)).result(binding)
     layout.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(JSON.parse(json_craftjs_str))
