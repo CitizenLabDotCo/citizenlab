@@ -110,7 +110,7 @@ class HomePage < ApplicationRecord
   end
 
   def set_craftjs_json
-    layout = content_builder_layouts.find { |layout| layout.code == 'homepage' }
+    layout = content_builder_layouts.find { |find_layout| find_layout.code == 'homepage' }
     return if layout&.craftjs_json.present?
 
     layout ||= content_builder_layouts.new code: 'homepage', enabled: true
