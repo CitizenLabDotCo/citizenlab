@@ -7,10 +7,8 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import {
   Box,
   LocaleSwitcher as LocaleSwitcherComponent,
+  colors,
 } from '@citizenlab/cl2-component-library';
-
-// styling
-import { colors } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

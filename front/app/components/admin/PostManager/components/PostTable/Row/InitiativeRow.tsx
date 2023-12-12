@@ -11,12 +11,9 @@ import StyledRow from './StyledRow';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
-import { Td } from '@citizenlab/cl2-component-library';
+import { Td, colors } from '@citizenlab/cl2-component-library';
 import SubRow from './SubRow';
 import AssigneeSelect from '../AssigneeSelect';
-
-// styling
-import { colors } from 'utils/styleUtils';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';

@@ -2,11 +2,15 @@ import React, { memo, useCallback, MouseEvent } from 'react';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  IconNames,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;

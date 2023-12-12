@@ -1,6 +1,6 @@
 import React, { PureComponent, createRef } from 'react';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import GetAppConfiguration, {

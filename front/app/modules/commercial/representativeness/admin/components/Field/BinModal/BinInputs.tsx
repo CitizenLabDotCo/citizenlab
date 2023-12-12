@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 
 // components
-import { Box, Text, Input, Icon } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Input,
+  Icon,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import BinInputsHeader from './BinInputsHeader';
 
 // i18n
@@ -11,7 +17,6 @@ import { WrappedComponentProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // utils
 import {

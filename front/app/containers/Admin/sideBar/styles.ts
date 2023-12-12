@@ -1,12 +1,11 @@
 import { rgba } from 'polished';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 export const ItemMenu = styled(Button)`
   color: ${colors.coolGrey600};

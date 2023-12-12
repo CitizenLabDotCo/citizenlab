@@ -8,12 +8,11 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import ReportRow from './ReportRow';
 
 // styling
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

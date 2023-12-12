@@ -2,7 +2,7 @@ import React from 'react';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors, isRtl } from 'utils/styleUtils';
+import { fontSizes, colors, isRtl } from '@citizenlab/cl2-component-library';
 
 // components
 import Button from 'components/UI/Button';

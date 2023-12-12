@@ -13,6 +13,7 @@ import {
   Icon,
   Toggle,
   Spinner,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import FormResults from './FormResults';
@@ -43,7 +44,6 @@ import { requestBlob } from 'utils/requestBlob';
 import { saveSurveyAsPDF } from './saveSurveyAsPDF';
 
 // Styles
-import { colors } from 'utils/styleUtils';
 
 // Services
 import { downloadSurveyResults } from 'api/survey_results/utils';

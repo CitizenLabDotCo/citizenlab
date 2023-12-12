@@ -17,7 +17,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 
 const duration = 300;

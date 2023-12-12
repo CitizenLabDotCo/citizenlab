@@ -12,7 +12,7 @@ import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 
 // Styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media } from '@citizenlab/cl2-component-library';
 
 const Wrapper = styled.div`
   display: flex;

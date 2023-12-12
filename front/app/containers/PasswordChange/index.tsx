@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import { Helmet } from 'react-helmet';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -22,7 +22,6 @@ import { string, object } from 'yup';
 
 // style
 import messages from './messages';
-import { stylingConsts } from 'utils/styleUtils';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';

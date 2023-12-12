@@ -19,7 +19,7 @@ import useUserBySlug from 'api/users/useUserBySlug';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';

@@ -953,6 +953,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visitors",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "No project",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Are you sure you want to delete \"{reportName}\"?",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Are you sure you want to delete this report?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Created on: {date}",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.delete": "Delete",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.edit": "Edit",

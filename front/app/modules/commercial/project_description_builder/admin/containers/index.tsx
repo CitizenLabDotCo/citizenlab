@@ -1,11 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 
-// styles
-import { stylingConsts } from 'utils/styleUtils';
-
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import ProjectDescriptionBuilderEditModePreview from '../components/ProjectDescriptionBuilderEditModePreview';
 
 // craft

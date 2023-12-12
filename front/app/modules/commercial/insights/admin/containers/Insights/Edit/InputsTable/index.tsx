@@ -24,6 +24,7 @@ import {
   Icon,
   Box,
   Spinner,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
@@ -41,7 +42,6 @@ import ScanCategory from './ScanCategory';
 
 // styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';

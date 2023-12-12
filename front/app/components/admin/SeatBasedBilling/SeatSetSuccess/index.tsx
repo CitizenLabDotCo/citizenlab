@@ -8,6 +8,7 @@ import {
   Box,
   Icon,
   Button,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import {
   SeatTypeMessageDescriptor,
@@ -17,9 +18,6 @@ import {
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-// Styling
-import { colors } from 'utils/styleUtils';
 
 type SeatChangeSuccessModalProps = {
   closeModal: () => void;

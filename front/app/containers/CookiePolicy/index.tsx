@@ -18,10 +18,9 @@ import {
   PageContent,
   PageTitle,
 } from 'containers/PagesShowPage';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 // styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 

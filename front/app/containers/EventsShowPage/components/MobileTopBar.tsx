@@ -10,14 +10,18 @@ import messages from '../messages';
 
 // components
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
-import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
+import {
+  useBreakpoint,
+  Box,
+  media,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 // routing
 import clHistory from 'utils/cl-router/history';
 
 // styling
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;

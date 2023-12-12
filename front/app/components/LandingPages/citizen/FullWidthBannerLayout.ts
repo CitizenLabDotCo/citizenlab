@@ -1,6 +1,6 @@
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors } from '@citizenlab/cl2-component-library';
 
 export const Container = styled.div`
   width: 100%;

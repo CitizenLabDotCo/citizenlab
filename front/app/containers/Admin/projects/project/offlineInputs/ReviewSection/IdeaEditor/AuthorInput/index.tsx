@@ -2,11 +2,14 @@ import React from 'react';
 
 // components
 import AuthorSelect from './AuthorSelect';
-import { Icon } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  fontSizes,
+  defaultStyles,
+} from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, defaultStyles } from 'utils/styleUtils';
 
 // typings
 import { SelectedAuthor } from './typings';

@@ -1,7 +1,7 @@
 import React, { ReactElement, FormEvent } from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import FranceConnectLogo from './FranceConnectLogo';
 import { ScreenReaderOnly } from 'utils/a11y';

@@ -5,7 +5,12 @@ import React, { useState, useEffect } from 'react';
 import InternalCommentHeader from './InternalCommentHeader';
 import InternalCommentBody from './InternalCommentBody';
 import InternalCommentFooter from './InternalCommentFooter';
-import { Icon, Box } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  Box,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -13,7 +18,6 @@ import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // style
 import styled, { keyframes, css } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useUserById from 'api/users/useUserById';
 

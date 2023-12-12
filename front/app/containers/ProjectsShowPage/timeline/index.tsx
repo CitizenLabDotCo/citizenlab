@@ -17,7 +17,7 @@ import PhaseDocumentAnnotation from './PhaseDocumentAnnotation';
 import StatusModule from 'components/StatusModule';
 import VotingResults from './VotingResults';
 import PhaseReport from './PhaseReport';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors, isRtl } from '@citizenlab/cl2-component-library';
 
 // router
 import setPhaseURL from './setPhaseURL';
@@ -34,7 +34,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { colors, isRtl } from 'utils/styleUtils';
 
 // utils
 import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';

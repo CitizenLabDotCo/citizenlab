@@ -3,7 +3,7 @@ import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import T from 'components/T';
 import styled from 'styled-components';
 import { transparentize } from 'polished';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div<{ color: string }>`
   color: ${({ color }) => color};

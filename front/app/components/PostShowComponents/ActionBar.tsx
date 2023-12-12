@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 // styles
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors, media } from '@citizenlab/cl2-component-library';
 import { postPageContentMaxWidth } from './styleConstants';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 

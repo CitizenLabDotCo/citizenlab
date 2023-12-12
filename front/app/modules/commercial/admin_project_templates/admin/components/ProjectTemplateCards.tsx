@@ -6,7 +6,7 @@ import useLocalize from 'hooks/useLocalize';
 // components
 import ProjectTemplateCard from './ProjectTemplateCard';
 import SearchInput from 'components/UI/SearchInput';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import DepartmentFilter from '../components/DepartmentFilter';
 import PurposeFilter from './PurposeFilter';
@@ -20,7 +20,6 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   margin-bottom: 15px;

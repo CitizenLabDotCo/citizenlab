@@ -6,6 +6,9 @@ import {
   Icon,
   Dropdown,
   useBreakpoint,
+  colors,
+  fontSizes,
+  isRtl,
 } from '@citizenlab/cl2-component-library';
 
 // services
@@ -17,7 +20,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // style
 import styled, { useTheme } from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 // i18n
 import { shortenedAppLocalePairs } from 'containers/App/constants';

@@ -9,7 +9,7 @@ import Link from 'utils/cl-router/Link';
 import { parse } from 'qs';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import PasswordInput, {
   hasPasswordMinimumLength,
 } from 'components/UI/PasswordInput';
@@ -35,7 +35,6 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // style
 import messages from './messages';
-import { stylingConsts } from 'utils/styleUtils';
 
 // resources
 import GetAppConfiguration, {

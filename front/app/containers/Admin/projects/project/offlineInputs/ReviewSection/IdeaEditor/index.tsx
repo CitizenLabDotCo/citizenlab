@@ -16,7 +16,12 @@ import useUpdateUser from 'api/users/useUpdateUser';
 import useCreateOfflineUser from 'api/import_ideas/useCreateOfflineUser';
 
 // components
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import MetaBox from './MetaBox';
 import IdeaForm from './IdeaForm';
 import UserForm from './UserForm';
@@ -25,9 +30,6 @@ import UserForm from './UserForm';
 import { FormattedMessage } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 import messages from '../messages';
-
-// styling
-import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
 import { isValidData } from 'components/Form/utils';

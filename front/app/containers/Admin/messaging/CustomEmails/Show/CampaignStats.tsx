@@ -1,11 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import {
+  colors,
+  fontSizes,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedNumber } from 'react-intl';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 import useCampaignStats from 'api/campaign_stats/useCampaignStats';
 
 const Container = styled.div`

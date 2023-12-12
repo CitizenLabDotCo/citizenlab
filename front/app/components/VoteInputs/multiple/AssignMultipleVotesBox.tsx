@@ -7,7 +7,7 @@ import useVoting from 'api/baskets_ideas/useVoting';
 // components
 import WhiteBox from '../_shared/WhiteBox';
 import AssignMultipleVotesControl from './AssignMultipleVotesInput';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from '../_shared/messages';
@@ -15,7 +15,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 
 // styles
-import { colors } from 'utils/styleUtils';
 
 // utils
 import { isNil } from 'utils/helperUtils';

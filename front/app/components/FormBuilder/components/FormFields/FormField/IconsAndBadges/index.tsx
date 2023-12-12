@@ -7,10 +7,8 @@ import {
   Text,
   Badge,
   Icon,
+  colors,
 } from '@citizenlab/cl2-component-library';
-
-// styling
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';

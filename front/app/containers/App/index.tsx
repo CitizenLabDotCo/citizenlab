@@ -28,6 +28,8 @@ import {
   Spinner,
   useBreakpoint,
   colors,
+  getTheme,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Navigate from 'utils/cl-router/Navigate';
@@ -55,7 +57,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import { ThemeProvider } from 'styled-components';
-import { getTheme, stylingConsts } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';

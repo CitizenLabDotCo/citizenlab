@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import styled, { useTheme } from 'styled-components';
-import { quillEditedContent } from 'utils/styleUtils';
+import { quillEditedContent } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div<{
   linkColor: Props['linkColor'];

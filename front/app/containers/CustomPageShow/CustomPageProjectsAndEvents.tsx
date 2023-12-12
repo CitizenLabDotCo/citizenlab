@@ -8,7 +8,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { PublicationStatus } from 'api/projects/types';
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 import ProjectAndFolderCardsInner from 'components/ProjectAndFolderCards/ProjectAndFolderCardsInner';
-import { colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
 
 const ProjectCardsContentContainer = styled(ContentContainer)`

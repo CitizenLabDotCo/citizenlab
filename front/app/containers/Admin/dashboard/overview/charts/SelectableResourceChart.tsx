@@ -11,7 +11,13 @@ import {
   sizes,
   DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
-import { media, colors } from 'utils/styleUtils';
+import {
+  Select,
+  Box,
+  Icon,
+  media,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -21,7 +27,6 @@ import {
   GraphCardHeaderWithFilter,
 } from 'components/admin/GraphWrappers';
 import { IResolution } from 'components/admin/ResolutionControl';
-import { Select, Box, Icon } from '@citizenlab/cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
 import BarChart from 'components/admin/Graphs/BarChart';
 

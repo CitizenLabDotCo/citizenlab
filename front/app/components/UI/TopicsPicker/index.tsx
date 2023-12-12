@@ -2,7 +2,7 @@ import React, { memo, MouseEvent } from 'react';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, lighten } from 'polished';
 

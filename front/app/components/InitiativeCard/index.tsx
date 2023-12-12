@@ -2,7 +2,12 @@ import React from 'react';
 
 // components
 import Card from 'components/UI/Card';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  fontSizes,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Author from 'components/Author';
 import ReactionIndicator from './ReactionIndicator';
 import FollowUnfollow from 'components/FollowUnfollow';
@@ -13,7 +18,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // hooks

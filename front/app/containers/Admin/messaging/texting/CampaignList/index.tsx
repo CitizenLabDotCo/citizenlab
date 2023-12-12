@@ -5,7 +5,12 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
-import { Icon, Box } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  Box,
+  fontSizes,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import TextCampaignListRow from './TextCampaignListRow';
 
@@ -18,7 +23,6 @@ import messages from '../../messages';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
 
 const NoCampaignsWrapper = styled.div`
   display: flex;
