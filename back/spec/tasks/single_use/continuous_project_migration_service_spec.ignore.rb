@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require_relative '../services/continuous_project_migration_service'
+require_relative '../../../lib/tasks/single_use/services/continuous_project_migration_service'
 
 RSpec.configure do |config|
   config.before(:suite) do

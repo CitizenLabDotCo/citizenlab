@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'services/continuous_project_migration_service'
-
 # to persist changes run: single_use:migrate_continuous_projects[true]
 # to persist changes for one host run: single_use:migrate_continuous_projects[true,localhost]
 namespace :single_use do
@@ -18,7 +16,7 @@ namespace :single_use do
 
       Rails.logger.info "PROCESSING TENANT: #{tenant.host}..."
       Apartment::Tenant.switch(tenant.schema_name) do
-        project_migrator = Tasks::SingleUse::Services::ContinuousProjectMigrationService.new
+        project_migrator = ContinuousProjectMigrationService.new
         project_migrator.migrate(persist_changes)
         stats[tenant.host] = project_migrator.stats
       end
@@ -43,7 +41,7 @@ namespace :single_use do
 
       Rails.logger.info "PROCESSING TENANT: #{tenant.host}..."
       Apartment::Tenant.switch(tenant.schema_name) do
-        project_migrator = Tasks::SingleUse::Services::ContinuousProjectMigrationService.new
+        project_migrator = ContinuousProjectMigrationService.new
         project_migrator.fix_survey_custom_forms
       end
     end
