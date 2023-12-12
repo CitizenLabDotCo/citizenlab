@@ -1052,7 +1052,7 @@
   "app.containers.IdeasShow.issueEmailSharingBody": "Steun deze reactie '{postTitle}' op {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Steun deze reactie: {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "Ondersteun deze kwestie: {postTitle}",
-  "app.containers.IdeasShow.issueSharingModalTitle": "Bedankt voor het plaatsen en van je reactie!",
+  "app.containers.IdeasShow.issueSharingModalTitle": "Bedankt voor het plaatsen van je reactie!",
   "app.containers.IdeasShow.issueTwitterMessage": "Steun deze reactie: {postTitle}",
   "app.containers.IdeasShow.optionEmailSharingBody": "Ondersteun deze optie '{postTitle}' op {postUrl}!",
   "app.containers.IdeasShow.optionEmailSharingSubject": "Steun deze optie: {postTitle}",
