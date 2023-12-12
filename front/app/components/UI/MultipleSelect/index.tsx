@@ -93,6 +93,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
           isDisabled={disabled}
           styles={selectStyles()}
           menuPlacement="auto"
+          hideSelectedOptions
         />
       </div>
     );
