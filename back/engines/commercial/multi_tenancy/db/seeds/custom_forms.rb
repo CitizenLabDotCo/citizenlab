@@ -6,22 +6,15 @@ module MultiTenancy
   module Seeds
     class CustomForms < Base
       def run
-        # This will add at least one custom form to existing projects
-        %w[continuous timeline].each do |process_type|
-          create_form(process_type, 'ideation')
-          create_form(process_type, 'budgeting')
-        end
+        # This should add at least one custom form to existing projects
+        create_form('ideation')
+        create_form('budgeting')
       end
 
       private
 
-      def create_form(process_type, participation_method)
-        project = case process_type
-        when 'timeline'
-          Phase.where(participation_method: participation_method).all.sample&.project
-        when 'continuous'
-          Project.where(participation_method: participation_method).all.sample
-        end
+      def create_form(participation_method)
+        project = Phase.where(participation_method: participation_method).all.sample&.project
 
         return if !project || project.custom_form
 

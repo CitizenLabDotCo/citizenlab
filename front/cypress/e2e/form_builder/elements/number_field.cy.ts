@@ -1,4 +1,5 @@
 import { randomString } from '../../../support/commands';
+import moment = require('moment');
 
 describe('Form builder number field', () => {
   const projectTitle = randomString();
@@ -7,31 +8,49 @@ describe('Form builder number field', () => {
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
+  let phaseId: string;
 
-  before(() => {
+  beforeEach(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
+
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'native_survey',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-    });
-  });
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+        return cy.apiCreatePhase({
+          projectId,
+          title: 'firstPhaseTitle',
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'native_survey',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
+      })
+      .then((phase) => {
+        phaseId = phase.body.data.id;
+      });
 
-  beforeEach(() => {
     cy.setAdminLoginCookie();
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
   });
 
   it('adds number field and tests validations', () => {
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.visit(
+      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
+    );
     cy.get('[data-cy="e2e-number-field"]').click();
 
     // Save the survey
@@ -48,7 +67,7 @@ describe('Form builder number field', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Try filling in the survey
-    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
@@ -56,9 +75,11 @@ describe('Form builder number field', () => {
     cy.get('[data-cy="e2e-next-page"]').click();
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message');
-    cy.location('pathname').should(
+    cy.url().should(
       'eq',
-      `/en/projects/${projectSlug}/ideas/new`
+      `${
+        Cypress.config().baseUrl
+      }/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`
     );
 
     // Try entering text that isn't a number

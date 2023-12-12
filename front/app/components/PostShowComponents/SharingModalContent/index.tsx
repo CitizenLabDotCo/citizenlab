@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { getInputTerm } from 'utils/participationContexts';
 
 // components
 import SharingButtons from 'components/Sharing/SharingButtons';
@@ -40,6 +39,7 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
+import { getInputTerm } from 'api/phases/utils';
 
 interface InputProps {
   postType: 'idea' | 'initiative';
@@ -107,11 +107,7 @@ const SharingModalContent = ({
     let whatsAppMessage: MessageDescriptor | null = null;
 
     if (project) {
-      const inputTerm = getInputTerm(
-        project.data.attributes.process_type,
-        project.data,
-        phases?.data
-      );
+      const inputTerm = getInputTerm(phases?.data);
 
       emailSharingSubject = getInputTermMessage(inputTerm, {
         idea: messages.ideaEmailSharingSubjectText,
@@ -198,9 +194,6 @@ const SharingModalContent = ({
         <SharingButtons
           context={postType}
           url={postUrl}
-          facebookMessage={formatMessage(messages.twitterMessage, {
-            postTitle,
-          })}
           twitterMessage={formatMessage(messages.twitterMessage, {
             postTitle,
           })}

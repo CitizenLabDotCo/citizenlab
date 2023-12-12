@@ -186,10 +186,8 @@ const config = {
       }),
 
     new CopyPlugin({
-      patterns: [
-        { from: "./security.txt", to: ".well-known/security.txt" }
-      ],
-    })
+      patterns: [{ from: './security.txt', to: '.well-known/security.txt' }],
+    }),
   ].filter(Boolean),
 
   resolve: {

@@ -1,13 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  vote: {
-    id: 'app.components.AssignVoteControl.vote',
-    defaultMessage: 'Vote',
+  select: {
+    id: 'app.components.AssignVoteControl.select',
+    defaultMessage: 'Select',
   },
-  voted: {
-    id: 'app.components.AssignVoteControl.voted',
-    defaultMessage: 'Voted',
+  selected: {
+    id: 'app.components.AssignVoteControl.selected2',
+    defaultMessage: 'Selected',
   },
   votesSubmitted: {
     id: 'app.components.AssignVoteControl.votesSubmitted',

@@ -25,24 +25,50 @@ resource 'Ideas' do
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
         parameter :idea_images_attributes, 'an array of base64 images to create'
         parameter :idea_files_attributes, 'an array of base64 files to create'
+        parameter :custom_field_name1, 'A value for one custom field'
       end
       ValidationErrorHelper.new.error_fields self, Idea
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
-      response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+      response_field :base, "Array containing objects with signature { error: #{ParticipationPermissionsService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
       let(:idea) { build(:idea) }
-      let(:project) { create(:continuous_project) }
+      let(:project) { create(:single_phase_ideation_project) }
       let(:project_id) { project.id }
       let(:publication_status) { 'published' }
       let(:title_multiloc) { idea.title_multiloc }
       let(:body_multiloc) { idea.body_multiloc }
 
-      describe do
+      describe 'default permissions' do
         let(:author_id) { nil }
 
         example '[error] Create an idea without author', document: false do
           do_request
           assert_status 401
+        end
+      end
+
+      describe "native survey response when permission is 'everyone'" do
+        before { IdeaStatus.create_defaults }
+
+        let(:project) do
+          create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true }).tap do |project|
+            project.phases.first.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone'
+          end
+        end
+        let(:project_id) { project.id }
+        let(:extra_field_name) { 'custom_field_name1' }
+        let(:form) { create(:custom_form, participation_context: project.phases.first) }
+        let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name, required: true, resource: form) }
+        let(:custom_field_name1) { 'test value' }
+
+        example_request 'Create a native survey response without author' do
+          assert_status 201
+          json_response = json_parse response_body
+          idea_from_db = Idea.find(json_response[:data][:id])
+          expect(idea_from_db.author_id).to be_nil
+          expect(idea_from_db.custom_field_values.to_h).to eq({
+            extra_field_name => 'test value'
+          })
         end
       end
     end
@@ -80,7 +106,8 @@ resource 'Ideas' do
           @ideas = %w[published published draft published published published].map do |ps|
             create(:idea, publication_status: ps)
           end
-          create(:idea, project: create(:continuous_native_survey_project))
+          survey_project = create(:single_phase_native_survey_project)
+          create(:idea, project: survey_project, creation_phase: survey_project.phases.first)
         end
 
         example_request 'List all published ideas (default behaviour)' do
@@ -147,7 +174,7 @@ resource 'Ideas' do
         end
 
         example 'List all ideas in a project' do
-          l = create(:continuous_project)
+          l = create(:single_phase_ideation_project)
           i = create(:idea, project: l)
 
           do_request projects: [l.id]
@@ -291,16 +318,16 @@ resource 'Ideas' do
           pr = create(:project_with_active_budgeting_phase)
           phase = pr.phases.first
           ideas = create_list(:idea, 2, phases: [phase], project: pr)
-          basket = create(:basket, participation_context: phase, submitted_at: nil)
-          basket2 = create(:basket, participation_context: phase, submitted_at: nil)
+          basket = create(:basket, phase: phase, submitted_at: nil)
+          basket2 = create(:basket, phase: phase, submitted_at: nil)
           basket.update!(ideas: ideas, submitted_at: Time.zone.now)
           basket2.update!(ideas: ideas, submitted_at: Time.zone.now)
           SideFxBasketService.new.after_update basket, user
           SideFxBasketService.new.after_update basket2, user
 
           # Different phase (should be ignored in the counts)
-          phase2 = create(:voting_phase, project: pr)
-          basket3 = create(:basket, participation_context: phase2, submitted_at: nil)
+          phase2 = create(:single_voting_phase, project: pr)
+          basket3 = create(:basket, phase: phase2, submitted_at: nil)
           basket3.update!(ideas: ideas, submitted_at: Time.zone.now)
           SideFxBasketService.new.after_update basket3, user
 
@@ -396,7 +423,7 @@ resource 'Ideas' do
 
         describe do
           before do
-            @project = create(:continuous_project)
+            @project = create(:single_phase_ideation_project)
             @selected_ideas = @ideas.select(&:published?).shuffle.take 3
             @selected_ideas.each do |idea|
               idea.update! project: @project
@@ -495,7 +522,7 @@ resource 'Ideas' do
         before do
           @t1 = create(:topic)
           @t2 = create(:topic)
-          @project = create(:continuous_project, allowed_input_topics: [@t1, @t2])
+          @project = create(:single_phase_ideation_project, allowed_input_topics: [@t1, @t2])
 
           @s1 = create(:idea_status)
           @s2 = create(:idea_status)
@@ -552,8 +579,9 @@ resource 'Ideas' do
     end
 
     get 'web_api/v1/ideas/:id' do
-      let(:idea) { create(:idea) }
-      let!(:baskets) { create_list(:basket, 2, ideas: [idea]) }
+      let(:project) { create(:single_phase_budgeting_project) }
+      let(:idea) { create(:idea, project: project, phases: project.phases) }
+      let!(:baskets) { create_list(:basket, 2, ideas: [idea], phase: project.phases.first) }
       let!(:topic) { create(:topic, ideas: [idea], projects: [idea.project]) }
       let!(:user_reaction) { create(:reaction, user: @user, reactable: idea) }
       let(:id) { idea.id }
@@ -574,17 +602,17 @@ resource 'Ideas' do
               future_enabled: nil
             },
             reacting_idea: {
-              enabled: true,
-              disabled_reason: nil,
-              cancelling_enabled: true,
+              enabled: false,
+              disabled_reason: 'not_ideation',
+              cancelling_enabled: false,
               up: {
-                enabled: true,
-                disabled_reason: nil,
+                enabled: false,
+                disabled_reason: 'not_ideation',
                 future_enabled: nil
               },
               down: {
-                enabled: true,
-                disabled_reason: nil,
+                enabled: false,
+                disabled_reason: 'not_ideation',
                 future_enabled: nil
               }
             },
@@ -594,8 +622,8 @@ resource 'Ideas' do
               future_enabled: nil
             },
             voting: {
-              enabled: false,
-              disabled_reason: 'not_voting',
+              enabled: true,
+              disabled_reason: nil,
               future_enabled: nil
             }
           }
@@ -679,171 +707,162 @@ resource 'Ideas' do
       end
       ValidationErrorHelper.new.error_fields(self, Idea)
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
-      response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+      response_field :base, "Array containing objects with signature { error: #{ParticipationPermissionsService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
-      describe do
-        before { IdeaStatus.create_defaults }
+      let(:idea) { build(:idea) }
+      let(:with_permissions) { false }
+      let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: with_permissions }) }
+      let(:project_id) { project.id }
+      let(:publication_status) { 'published' }
+      let(:title_multiloc) { idea.title_multiloc }
+      let(:body_multiloc) { idea.body_multiloc }
+      let(:topic_ids) { create_list(:topic, 2, projects: [project]).map(&:id) }
+      let(:location_point_geojson) { { type: 'Point', coordinates: [51.11520776293035, 3.921154106874878] } }
+      let(:location_description) { 'Stanley Road 4' }
 
-        let(:idea) { build(:idea) }
-        let(:with_permissions) { false }
-        let(:project) { create(:continuous_project, with_permissions: with_permissions) }
-        let(:project_id) { project.id }
-        let(:publication_status) { 'published' }
-        let(:title_multiloc) { idea.title_multiloc }
-        let(:body_multiloc) { idea.body_multiloc }
-        let(:topic_ids) { create_list(:topic, 2, projects: [project]).map(&:id) }
-        let(:location_point_geojson) { { type: 'Point', coordinates: [51.11520776293035, 3.921154106874878] } }
-        let(:location_description) { 'Stanley Road 4' }
-
-        describe do
-          example_request 'Create an idea' do
-            assert_status 201
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
-            expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-            expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
-            expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
-            expect(project.reload.ideas_count).to eq 1
-          end
-
-          example 'Check for the automatic creation of a like by the author when an idea is created', document: false do
-            do_request
-            json_response = json_parse(response_body)
-            new_idea = Idea.find(json_response.dig(:data, :id))
-            expect(new_idea.reactions.size).to eq 1
-            expect(new_idea.reactions[0].mode).to eq 'up'
-            expect(new_idea.reactions[0].user.id).to eq @user.id
-            expect(json_response[:data][:attributes][:likes_count]).to eq 1
-          end
-
-          describe 'Values for disabled fields are ignored' do
-            let(:proposed_budget) { 12_345 }
-
-            example 'Create an idea with values for disabled fields', document: false do
-              do_request
-              expect(status).to be 201
-              json_response = json_parse(response_body)
-              expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Plant more trees'
-              # proposed_budget is disabled, so its given value was ignored.
-              expect(json_response.dig(:data, :attributes, :proposed_budget)).to be_nil
-              expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-              expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
-              expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
-            end
-          end
+      describe 'creating an idea' do
+        example_request 'Create an idea' do
+          assert_status 201
+          expect(response_data.dig(:relationships, :project, :data, :id)).to eq project_id
+          expect(response_data.dig(:relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(response_data.dig(:attributes, :location_point_geojson)).to eq location_point_geojson
+          expect(response_data.dig(:attributes, :location_description)).to eq location_description
+          expect(project.reload.ideas_count).to eq 1
         end
 
-        describe 'when creating an idea that is a survey response' do
-          let(:project) { create(:continuous_native_survey_project, default_assignee_id: create(:admin).id) }
-          let(:idea) { build(:native_survey_response, project: project) }
-
-          example 'does not assign anyone to the created idea', document: false do
-            do_request
-            assert_status 201
-            idea = Idea.find(json_parse(response_body).dig(:data, :id))
-            expect(idea.assignee_id).to be_nil
-            expect(idea.assigned_at).to be_nil
-          end
+        example 'Check for the automatic creation of a like by the author when an idea is created', document: false do
+          do_request
+          assert_status 201
+          new_idea = Idea.find(response_data[:id])
+          expect(new_idea.reactions.size).to eq 1
+          expect(new_idea.reactions[0].mode).to eq 'up'
+          expect(new_idea.reactions[0].user.id).to eq @user.id
+          expect(response_data[:attributes][:likes_count]).to eq 1
         end
 
-        describe 'when posting an idea in an active ideation phase, the correct form is used' do
-          let(:project) { create(:project_with_active_ideation_phase) }
-          let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-          let(:proposed_budget) { 1234 }
+        describe 'Values for disabled fields are ignored' do
+          let(:proposed_budget) { 12_345 }
 
-          example 'Post an idea in an ideation phase' do
-            custom_form.custom_fields.find_by(code: 'proposed_budget').update!(enabled: true)
-
+          example 'Create an idea with values for disabled fields', document: false do
             do_request
-
             assert_status 201
+            expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq 'Plant more trees'
+            # proposed_budget is disabled, so its given value was ignored.
+            expect(response_data.dig(:attributes, :proposed_budget)).to be_nil
+            expect(response_data.dig(:relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+            expect(response_data.dig(:attributes, :location_point_geojson)).to eq location_point_geojson
+            expect(response_data.dig(:attributes, :location_description)).to eq location_description
+          end
+        end
+      end
+
+      describe 'when creating an idea that is a survey response' do
+        let(:project) { create(:single_phase_native_survey_project, default_assignee_id: create(:admin).id) }
+        let(:idea) { build(:native_survey_response, project: project) }
+
+        example 'does not assign anyone to the created idea', document: false do
+          do_request
+          assert_status 201
+          idea = Idea.find(json_parse(response_body).dig(:data, :id))
+          expect(idea.assignee_id).to be_nil
+          expect(idea.assigned_at).to be_nil
+        end
+      end
+
+      describe 'when posting an idea in an active ideation phase, the correct form is used' do
+        let(:project) { create(:project_with_active_ideation_phase) }
+        let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+        let(:proposed_budget) { 1234 }
+
+        example 'Post an idea in an ideation phase' do
+          custom_form.custom_fields.find_by(code: 'proposed_budget').update!(enabled: true)
+
+          do_request
+
+          assert_status 201
+          idea = Idea.find(response_data[:id])
+          expect(idea.proposed_budget).to eq 1234
+        end
+      end
+
+      describe 'when posting an idea in an active ideation phase, the creation_phase is not set' do
+        let(:project) { create(:project_with_active_ideation_phase) }
+        let!(:custom_form) { create(:custom_form, participation_context: project) }
+
+        example_request 'Post an idea in an ideation phase' do
+          assert_status 201
+          json_response = json_parse response_body
+          idea = Idea.find(json_response.dig(:data, :id))
+          expect(idea.creation_phase).to be_nil
+        end
+      end
+
+      describe 'Creating an idea anonymously' do
+        let(:allow_anonymous_participation) { true }
+        let(:anonymous) { true }
+
+        before { project.phases.first.update! allow_anonymous_participation: allow_anonymous_participation }
+
+        example_request 'Posting an idea anonymously does not save an author id' do
+          assert_status 201
+          expect(response_data.dig(:attributes, :anonymous)).to be true
+          expect(response_data.dig(:attributes, :author_name)).to be_nil
+          expect(response_data.dig(:relationships, :author, :data)).to be_nil
+        end
+
+        example 'Does not log activities for the author', document: false do
+          expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
+        end
+
+        describe 'when anonymous posting is not allowed' do
+          let(:allow_anonymous_participation) { false }
+
+          example_request 'Rejects the anonymous parameter' do
+            assert_status 422
             json_response = json_parse response_body
-            idea = Idea.find(json_response.dig(:data, :id))
-            expect(idea.proposed_budget).to eq 1234
+            expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
           end
         end
+      end
 
-        describe 'when posting an idea in an active ideation phase, the creation_phase is not set' do
-          let(:project) { create(:project_with_active_ideation_phase) }
-          let!(:custom_form) { create(:custom_form, participation_context: project) }
+      describe 'Creating a native survey response when posting anonymously is enabled' do
+        let(:project) { create(:single_phase_native_survey_project, phase_attrs: { allow_anonymous_participation: true }) }
 
-          example_request 'Post an idea in an ideation phase' do
-            assert_status 201
-            json_response = json_parse response_body
-            idea = Idea.find(json_response.dig(:data, :id))
-            expect(idea.creation_phase).to be_nil
-          end
+        example_request 'Posting a survey automatically sets anonymous to true' do
+          assert_status 201
+          expect(response_data.dig(:attributes, :anonymous)).to be true
+          expect(response_data.dig(:attributes, :author_name)).to be_nil
+          expect(response_data.dig(:relationships, :author, :data)).to be_nil
         end
+      end
 
-        describe 'Creating an idea anonymously' do
-          let(:allow_anonymous_participation) { true }
-          let(:anonymous) { true }
+      describe 'Creating a native survey response when posting anonymously is not enabled' do
+        let(:project) { create(:single_phase_native_survey_project, phase_attrs: { allow_anonymous_participation: false }) }
 
-          before { project.update! allow_anonymous_participation: allow_anonymous_participation }
-
-          example_request 'Posting an idea anonymously does not save an author id' do
-            assert_status 201
-            expect(response_data.dig(:attributes, :anonymous)).to be true
-            expect(response_data.dig(:attributes, :author_name)).to be_nil
-            expect(response_data.dig(:relationships, :author, :data)).to be_nil
-          end
-
-          example 'Does not log activities for the author', document: false do
-            expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
-          end
-
-          describe 'when anonymous posting is not allowed' do
-            let(:allow_anonymous_participation) { false }
-
-            example_request 'Rejects the anonymous parameter' do
-              assert_status 422
-              json_response = json_parse response_body
-              expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
-            end
-          end
+        example_request 'Posting a survey does not set the survey to anonymous' do
+          assert_status 201
+          expect(response_data.dig(:attributes, :anonymous)).to be false
+          expect(response_data.dig(:attributes, :author_name)).not_to be_nil
+          expect(response_data.dig(:relationships, :author, :data)).not_to be_nil
         end
+      end
 
-        describe 'Creating a native survey response when posting anonymously is enabled' do
-          let(:project) { create(:continuous_native_survey_project, allow_anonymous_participation: true) }
+      describe 'For projects without ideas_order' do
+        let(:project) { create(:single_phase_ideation_project, phase_attrs: { ideas_order: nil }) }
 
-          example_request 'Posting a survey automatically sets anonymous to true' do
-            assert_status 201
-            expect(response_data.dig(:attributes, :anonymous)).to be true
-            expect(response_data.dig(:attributes, :author_name)).to be_nil
-            expect(response_data.dig(:relationships, :author, :data)).to be_nil
-          end
+        example 'Creates an idea', document: false do
+          do_request
+          assert_status 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+          expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
+          expect(project.reload.ideas_count).to eq 1
         end
+      end
 
-        describe 'Creating a native survey response when posting anonymously is not enabled' do
-          let(:project) { create(:continuous_native_survey_project, allow_anonymous_participation: false) }
-
-          example_request 'Posting a survey does not set the survey to anonymous' do
-            assert_status 201
-            expect(response_data.dig(:attributes, :anonymous)).to be false
-            expect(response_data.dig(:attributes, :author_name)).not_to be_nil
-            expect(response_data.dig(:relationships, :author, :data)).not_to be_nil
-          end
-        end
-
-        describe 'For projects without ideas_order' do
-          let(:project) { create(:continuous_project) }
-
-          before do
-            project.update_attribute(:ideas_order, nil)
-          end
-
-          example 'Creates an idea', document: false do
-            do_request
-            assert_status 201
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
-            expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-            expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
-            expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
-            expect(project.reload.ideas_count).to eq 1
-          end
-        end
-
+      describe 'Errors' do
         describe do
           let(:publication_status) { 'fake_status' }
 
@@ -898,128 +917,128 @@ resource 'Ideas' do
         end
 
         example '[error] Create an idea when there is a posting disabled reason' do
-          expect_any_instance_of(ParticipationContextService)
-            .to receive(:posting_idea_disabled_reason_for_context).with(project, @user).and_return('i_dont_like_you')
+          expect_any_instance_of(ParticipationPermissionsService)
+            .to receive(:posting_idea_disabled_reason_for_phase).with(project.phases.first, @user).and_return('i_dont_like_you')
 
           do_request
 
           assert_status 401
           expect(json_parse(response_body)).to include_response_error(:base, 'i_dont_like_you')
         end
+      end
 
-        example_group 'with granular permissions' do
-          let(:with_permissions) { true }
-          let(:group) { create(:group) }
+      example_group 'with permissions on phase' do
+        let(:with_permissions) { true }
+        let(:group) { create(:group) }
 
-          before do
-            project.permissions.find_by(action: 'posting_idea')
-              .update!(permitted_by: 'groups', groups: [group])
+        before do
+          project.phases.first.permissions.find_by(action: 'posting_idea')
+            .update!(permitted_by: 'groups', groups: [group])
+        end
+
+        example '[error] Create an idea in a project with groups posting permission', document: false do
+          do_request
+          assert_status 401
+        end
+
+        example 'Create an idea in a project with groups posting permission' do
+          group.add_member(@user).save!
+          do_request
+          assert_status 201
+        end
+      end
+
+      describe do
+        before { SettingsService.new.activate_feature! 'blocking_profanity' }
+
+        let(:title_multiloc) { { 'nl-BE' => 'Fuck' } }
+        let(:body_multiloc) { { 'fr-FR' => 'cocksucker' } }
+
+        example_request '[error] Create an idea with blocked words' do
+          assert_status 422
+          json_response = json_parse(response_body)
+          blocked_error = json_response.dig(:errors, :base)&.select { |err| err[:error] == 'includes_banned_words' }&.first
+          expect(blocked_error).to be_present
+          expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to include('title_multiloc', 'body_multiloc')
+        end
+      end
+
+      context 'when admin' do
+        before do
+          @user = create(:admin)
+          header_token_for @user
+        end
+
+        describe do
+          let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcx' }) }
+          let(:phase_ids) { project.phases.sample(1).map(&:id) }
+
+          example_request 'Creating an idea in specific phases' do
+            assert_status 201
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
           end
+        end
 
-          example '[error] Create an idea in a project with groups posting permission', document: false do
-            do_request
-            assert_status 401
+        describe 'when posting an idea in an ideation phase, the form of the project is used for accepting the input' do
+          let(:project) { create(:project_with_active_ideation_phase) }
+          let!(:custom_form) do
+            create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
+              fields = IdeaCustomFieldsService.new(form).all_fields
+              # proposed_budget is disabled by default
+              enabled_field_keys = %w[title_multiloc body_multiloc proposed_budget]
+              fields.each do |field|
+                field.enabled = enabled_field_keys.include? field.code
+                field.save!
+              end
+            end
           end
+          let(:phase_ids) { [project.phases.first.id] }
+          let(:title_multiloc) { { 'nl-BE' => 'An idea with a proposed budget' } }
+          let(:body_multiloc) { { 'nl-BE' => 'An idea with a proposed budget for testing' } }
+          let(:proposed_budget) { 1234 }
 
-          example 'Create an idea in a project with groups posting permission' do
-            group.add_member(@user).save!
+          example_request 'Post an idea in an ideation phase' do
+            assert_status 201
+            json_response = json_parse response_body
+            # Enabled fields have a value
+            expect(json_response.dig(:data, :attributes, :title_multiloc)).to eq({ 'nl-BE': 'An idea with a proposed budget' })
+            expect(json_response.dig(:data, :attributes, :body_multiloc)).to eq({ 'nl-BE': 'An idea with a proposed budget for testing' })
+            expect(json_response.dig(:data, :attributes, :proposed_budget)).to eq proposed_budget
+            # Disabled fields do not have a value
+            expect(json_response.dig(:data, :attributes, :budget)).to be_nil
+            expect(json_response.dig(:data, :attributes, :location_description)).to be_nil
+            expect(json_response.dig(:data, :attributes)).not_to have_key :topic_ids
+            expect(json_response.dig(:data, :attributes)).not_to have_key :idea_images_attributes
+            expect(json_response.dig(:data, :attributes)).not_to have_key :idea_files_attributes
+            # location_point_geojson is not a field and cannot be disabled, so it has a value
+            expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+          end
+        end
+
+        describe 'when posting an idea in an ideation phase, the creation_phase is not set' do
+          let(:project) { create(:project_with_active_ideation_phase) }
+          let!(:custom_form) { create(:custom_form, participation_context: project) }
+          let(:phase_ids) { [project.phases.first.id] }
+
+          example 'Post an idea in an ideation phase', document: false do
             do_request
             assert_status 201
+            json_response = json_parse response_body
+            idea = Idea.find(json_response.dig(:data, :id))
+            expect(idea.creation_phase).to be_nil
           end
         end
 
         describe do
-          before { SettingsService.new.activate_feature! 'blocking_profanity' }
+          let(:project) { create(:project_with_active_ideation_phase) }
+          let(:other_project) { create(:project_with_active_ideation_phase) }
+          let(:phase_ids) { [other_project.phases.first.id] }
 
-          let(:title_multiloc) { { 'nl-BE' => 'Fuck' } }
-          let(:body_multiloc) { { 'fr-FR' => 'cocksucker' } }
-
-          example_request '[error] Create an idea with blocked words' do
+          example_request '[error] Creating an idea linked to a phase from a different project' do
             assert_status 422
-            json_response = json_parse(response_body)
-            blocked_error = json_response.dig(:errors, :base)&.select { |err| err[:error] == 'includes_banned_words' }&.first
-            expect(blocked_error).to be_present
-            expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to include('title_multiloc', 'body_multiloc')
-          end
-        end
-
-        context 'when admin' do
-          before do
-            @user = create(:admin)
-            header_token_for @user
-          end
-
-          describe do
-            let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcx' }) }
-            let(:phase_ids) { project.phases.sample(1).map(&:id) }
-
-            example_request 'Creating an idea in specific phases' do
-              assert_status 201
-              json_response = json_parse(response_body)
-              expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
-            end
-          end
-
-          describe 'when posting an idea in an ideation phase, the form of the project is used for accepting the input' do
-            let(:project) { create(:project_with_active_ideation_phase) }
-            let!(:custom_form) do
-              create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
-                fields = IdeaCustomFieldsService.new(form).all_fields
-                # proposed_budget is disabled by default
-                enabled_field_keys = %w[title_multiloc body_multiloc proposed_budget]
-                fields.each do |field|
-                  field.enabled = enabled_field_keys.include? field.code
-                  field.save!
-                end
-              end
-            end
-            let(:phase_ids) { [project.phases.first.id] }
-            let(:title_multiloc) { { 'nl-BE' => 'An idea with a proposed budget' } }
-            let(:body_multiloc) { { 'nl-BE' => 'An idea with a proposed budget for testing' } }
-            let(:proposed_budget) { 1234 }
-
-            example_request 'Post an idea in an ideation phase' do
-              assert_status 201
-              json_response = json_parse response_body
-              # Enabled fields have a value
-              expect(json_response.dig(:data, :attributes, :title_multiloc)).to eq({ 'nl-BE': 'An idea with a proposed budget' })
-              expect(json_response.dig(:data, :attributes, :body_multiloc)).to eq({ 'nl-BE': 'An idea with a proposed budget for testing' })
-              expect(json_response.dig(:data, :attributes, :proposed_budget)).to eq proposed_budget
-              # Disabled fields do not have a value
-              expect(json_response.dig(:data, :attributes, :budget)).to be_nil
-              expect(json_response.dig(:data, :attributes, :location_description)).to be_nil
-              expect(json_response.dig(:data, :attributes)).not_to have_key :topic_ids
-              expect(json_response.dig(:data, :attributes)).not_to have_key :idea_images_attributes
-              expect(json_response.dig(:data, :attributes)).not_to have_key :idea_files_attributes
-              # location_point_geojson is not a field and cannot be disabled, so it has a value
-              expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
-            end
-          end
-
-          describe 'when posting an idea in an ideation phase, the creation_phase is not set' do
-            let(:project) { create(:project_with_active_ideation_phase) }
-            let!(:custom_form) { create(:custom_form, participation_context: project) }
-            let(:phase_ids) { [project.phases.first.id] }
-
-            example 'Post an idea in an ideation phase', document: false do
-              do_request
-              assert_status 201
-              json_response = json_parse response_body
-              idea = Idea.find(json_response.dig(:data, :id))
-              expect(idea.creation_phase).to be_nil
-            end
-          end
-
-          describe do
-            let(:project) { create(:project_with_active_ideation_phase) }
-            let(:other_project) { create(:project_with_active_ideation_phase) }
-            let(:phase_ids) { [other_project.phases.first.id] }
-
-            example_request '[error] Creating an idea linked to a phase from a different project' do
-              assert_status 422
-              json_response = json_parse response_body
-              expect(json_response).to include_response_error(:ideas_phases, 'invalid')
-            end
+            json_response = json_parse response_body
+            expect(json_response).to include_response_error(:ideas_phases, 'invalid')
           end
         end
       end
@@ -1043,12 +1062,12 @@ resource 'Ideas' do
       end
       ValidationErrorHelper.new.error_fields(self, Idea)
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
-      response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+      response_field :base, "Array containing objects with signature { error: #{ParticipationPermissionsService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
       describe do
         before do
-          @project = create(:continuous_project)
-          @idea = create(:idea, author: @user, project: @project)
+          @project = create(:single_phase_ideation_project)
+          @idea = create(:idea, author: @user, project: @project, phases: @project.phases)
         end
 
         let(:id) { @idea.id }
@@ -1059,7 +1078,7 @@ resource 'Ideas' do
 
         describe do
           example_request 'Update an idea' do
-            expect(status).to be 200
+            assert_status 200
             json_response = json_parse(response_body)
             expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
             expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
@@ -1079,8 +1098,8 @@ resource 'Ideas' do
           end
 
           example '[error] Update an idea when there is a posting disabled reason' do
-            expect_any_instance_of(ParticipationContextService)
-              .to receive(:posting_idea_disabled_reason_for_context).with(@project, @user).and_return('i_dont_like_you')
+            expect_any_instance_of(ParticipationPermissionsService)
+              .to receive(:posting_idea_disabled_reason_for_phase).with(@project.phases.first, @user).and_return('i_dont_like_you')
 
             do_request
 
@@ -1089,7 +1108,7 @@ resource 'Ideas' do
           end
 
           example '[error] Normal resident cannot update an idea in a voting context', document: false do
-            @idea.update!(project: create(:continuous_budgeting_project))
+            @idea.update!(project: create(:single_phase_budgeting_project))
 
             do_request
 
@@ -1103,7 +1122,7 @@ resource 'Ideas' do
 
           example 'Update an idea with values for disabled fields', document: false do
             do_request
-            expect(status).to be 200
+            assert_status 200
             json_response = json_parse(response_body)
             expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
             # proposed_budget is disabled, so its given value was ignored.
@@ -1120,7 +1139,7 @@ resource 'Ideas' do
           example 'Remove the topics', document: false do
             @idea.topics = create_list :topic, 2
             do_request
-            expect(status).to be 200
+            assert_status 200
             json_response = json_parse response_body
             expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
           end
@@ -1131,7 +1150,7 @@ resource 'Ideas' do
 
           example 'Change the idea status as a non-admin does not work', document: false do
             do_request
-            expect(status).to be 200
+            assert_status 200
             json_response = json_parse response_body
             expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq @idea.idea_status_id
           end
@@ -1143,7 +1162,7 @@ resource 'Ideas' do
           example 'Change the participatory budget as a non-admin does not work', document: false do
             previous_value = @idea.budget
             do_request
-            expect(status).to be 200
+            assert_status 200
             json_response = json_parse response_body
             expect(json_response.dig(:data, :attributes, :budget)).to eq previous_value
           end
@@ -1152,7 +1171,7 @@ resource 'Ideas' do
         describe 'Changing an idea to anonymous' do
           let(:anonymous) { true }
 
-          before { @project.update! allow_anonymous_participation: true }
+          before { @project.phases.first.update! allow_anonymous_participation: true }
 
           example 'Change an idea to anonymous as a non-admin', document: false do
             do_request
@@ -1181,7 +1200,7 @@ resource 'Ideas' do
             let(:idea_status_id) { create(:idea_status).id }
 
             example_request 'Change the idea status (as an admin)' do
-              expect(status).to be 200
+              assert_status 200
               json_response = json_parse response_body
               expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq idea_status_id
             end
@@ -1210,7 +1229,7 @@ resource 'Ideas' do
             end
 
             context 'Publishing an imported native survey response' do
-              let(:project) { create(:continuous_native_survey_project) }
+              let(:project) { create(:single_phase_native_survey_project) }
               let(:idea) { create(:native_survey_response, project: project, publication_status: 'draft') }
 
               let(:id) { idea.id }
@@ -1239,7 +1258,7 @@ resource 'Ideas' do
               let(:phase_ids) { [phase].map(&:id) }
 
               example 'returns a 200 status' do
-                expect(status).to be 200
+                assert_status 200
               end
 
               example 'Change the idea phases (as an admin or moderator)' do
@@ -1260,7 +1279,7 @@ resource 'Ideas' do
 
               # TODO: Baskets_ideas
               before do
-                basket = create(:basket, participation_context: project.phases.last)
+                basket = create(:basket, phase: project.phases.last)
                 basket.update!(ideas: [idea], submitted_at: Time.zone.now)
                 basket.baskets_ideas.update_all(votes: 1)
                 basket.update_counts!
@@ -1297,7 +1316,7 @@ resource 'Ideas' do
               end
 
               context 'Moving to a different project' do
-                let(:new_project) { create(:continuous_project) }
+                let(:new_project) { create(:single_phase_ideation_project) }
                 let(:project_id) { new_project.id }
 
                 example 'Move the idea to another (non-voting) project', document: false do
@@ -1317,7 +1336,7 @@ resource 'Ideas' do
               let(:phase_ids) { [] }
 
               example 'returns a 200 status' do
-                expect(status).to be 200
+                assert_status 200
               end
 
               example 'Change the idea phases (as an admin or moderator)' do
@@ -1335,13 +1354,13 @@ resource 'Ideas' do
             let(:budget) { 1800 }
 
             example_request 'Change the participatory budget (as an admin)' do
-              expect(status).to be 200
+              assert_status 200
               json_response = json_parse response_body
               expect(json_response.dig(:data, :attributes, :budget)).to eq budget
             end
 
             example 'Admin can update an idea in a voting context', document: false do
-              @idea.update!(project: create(:continuous_budgeting_project))
+              @idea.update!(project: create(:single_phase_budgeting_project))
 
               do_request
 
@@ -1359,7 +1378,7 @@ resource 'Ideas' do
             let(:project_id) { @project2.id }
 
             example_request 'As an admin' do
-              expect(status).to be 200
+              assert_status 200
               json_response = json_parse response_body
               expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
 
@@ -1384,7 +1403,7 @@ resource 'Ideas' do
           describe 'Changing an idea to anonymous' do
             let(:allow_anonymous_participation) { true }
 
-            before { @project.update! allow_anonymous_participation: allow_anonymous_participation }
+            before { @project.phases.first.update! allow_anonymous_participation: allow_anonymous_participation }
 
             example 'Updating values of an anonymously posted idea', document: false do
               @idea.update! publication_status: 'published', anonymous: true, author: nil
@@ -1470,7 +1489,7 @@ resource 'Ideas' do
 
       describe do
         before do
-          @project = create(:continuous_project)
+          @project = create(:single_phase_ideation_project)
           @idea = create(:idea, author: @user, publication_status: 'draft', project: @project)
         end
 
@@ -1486,22 +1505,7 @@ resource 'Ideas' do
     end
 
     delete 'web_api/v1/ideas/:id' do
-      context 'when the idea belongs to a continuous project' do
-        before do
-          @project = create(:continuous_project)
-          @idea = create(:idea_with_topics, author: @user, publication_status: 'published', project: @project)
-        end
-
-        let(:id) { @idea.id }
-
-        example_request 'Delete an idea' do
-          expect(response_status).to eq 200
-          expect { Idea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-          expect(@idea.project.reload.ideas_count).to eq 0
-        end
-      end
-
-      context 'when the idea belongs to a timeline project' do
+      context 'when the idea belongs to a phase' do
         let!(:idea) { create(:idea, author: user, project: project, publication_status: 'published') }
         let(:project) { create(:project_with_phases) }
         let(:phase) { project.phases.first }
@@ -1519,12 +1523,14 @@ resource 'Ideas' do
         example_request 'Delete an idea' do
           expect(response_status).to eq 200
           expect { Idea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+          expect(project.reload.ideas_count).to eq 0
           expect(phase.reload.ideas_count).to eq 0
         end
       end
 
       context 'when a voting context' do
-        let(:idea) { create(:idea, project: create(:continuous_budgeting_project)) }
+        let(:project) { create(:single_phase_budgeting_project) }
+        let(:idea) { create(:idea, project: project, phases: project.phases) }
         let(:id) { idea.id }
 
         example_request '[error] Normal resident cannot delete an idea in a voting context', document: false do

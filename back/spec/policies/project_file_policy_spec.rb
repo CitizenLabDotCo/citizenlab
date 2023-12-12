@@ -8,7 +8,7 @@ describe ProjectFilePolicy do
   let(:scope) { ProjectFilePolicy::Scope.new(user, project.project_files) }
 
   context 'on a file in a public project' do
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:single_phase_ideation_project) }
     let!(:file) { create(:project_file, project: project) }
 
     context 'for a visitor' do

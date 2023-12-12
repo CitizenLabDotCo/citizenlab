@@ -20,7 +20,7 @@ import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 
 // services
-import { getInputTerm } from 'utils/participationContexts';
+import { getInputTerm } from 'api/phases/utils';
 
 interface Props {
   notification: ICommentOnIdeaYouFollowNotificationData;
@@ -36,11 +36,7 @@ const CommentOnIdeaYouFollowNotification = memo<Props>((props) => {
   const { data: phases } = usePhases(projectId);
 
   if (!isNilOrError(project)) {
-    const inputTerm = getInputTerm(
-      project.data.attributes.process_type,
-      project.data,
-      phases?.data
-    );
+    const inputTerm = getInputTerm(phases?.data);
     const deletedUser =
       isNilOrError(notification.attributes.initiating_user_first_name) ||
       isNilOrError(notification.attributes.initiating_user_slug);

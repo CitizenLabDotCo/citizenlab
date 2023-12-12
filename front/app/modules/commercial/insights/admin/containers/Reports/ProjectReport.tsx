@@ -17,7 +17,6 @@ import { colors } from 'utils/styleUtils';
 import { MessageDescriptor } from 'react-intl';
 
 // services
-import { ParticipationMethod } from 'utils/participationContexts';
 
 // components
 import { SectionTitle, PageTitle } from 'components/admin/Section';
@@ -38,6 +37,7 @@ import usePhases from 'api/phases/usePhases';
 import { useParams } from 'react-router-dom';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeas from 'api/ideas/useIdeas';
+import { ParticipationMethod } from 'api/phases/types';
 
 const Section = styled.div`
   margin-bottom: 20px;
@@ -114,29 +114,16 @@ const ProjectReport = () => {
   const [startAt, setStartAt] = useState<string | null | undefined>(null);
   const [endAt, setEndAt] = useState<string | null>(null);
 
-  const isTimelineProject = isNilOrError(project)
-    ? null
-    : project.data.attributes.process_type === 'timeline';
-
   useEffect(() => {
     if (isNilOrError(project)) return;
 
-    if (isTimelineProject) {
-      if (!isNilOrError(phases) && phases.data.length > 0) {
-        const startAt = phases.data[0].attributes.start_at;
-        const endAt = phases.data[phases.data.length - 1].attributes.end_at;
-        setStartAt(startAt);
-        setEndAt(endAt);
-
-        const resolution = getResolution(moment(startAt), moment(endAt));
-        setResolution(resolution);
-      }
-    } else {
-      const startAt = project.data.attributes.created_at;
+    if (!isNilOrError(phases) && phases.data.length > 0) {
+      const startAt = phases.data[0].attributes.start_at;
+      const endAt = phases.data[phases.data.length - 1].attributes.end_at;
       setStartAt(startAt);
-      setEndAt(moment().toISOString());
+      setEndAt(endAt);
 
-      const resolution = getResolution(moment(startAt), moment());
+      const resolution = getResolution(moment(startAt), moment(endAt));
       setResolution(resolution);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -161,11 +148,9 @@ const ProjectReport = () => {
 
   // deduplicated non-null participations methods in this project
   const participationMethods = (
-    isTimelineProject
-      ? isNilOrError(phases)
-        ? []
-        : phases.data.map((phase) => phase.attributes.participation_method)
-      : [project.data.attributes.participation_method]
+    isNilOrError(phases)
+      ? []
+      : phases.data.map((phase) => phase.attributes.participation_method)
   ).filter((el, i, arr) => el && arr.indexOf(el) === i);
 
   const projectTitle = localize(project.data.attributes.title_multiloc);
@@ -180,54 +165,52 @@ const ProjectReport = () => {
         </PageTitle>
         <ResolutionControl value={resolution} onChange={setResolution} />
       </RowSection>
-      {isTimelineProject && (
-        <Section>
-          <TimelineSection>
-            {!isNilOrError(phases) && phases.data.length > 0 ? (
-              phases.data.map((phase, index) => {
-                return (
-                  <Phase
-                    key={index}
-                    isCurrentPhase={
-                      phase.id ===
-                      project?.data.relationships?.current_phase?.data?.id
-                    }
-                  >
-                    {phase.attributes.end_at ? (
-                      <p>
-                        <FormattedMessage
-                          {...messages.fromTo}
-                          values={{
-                            from: formatDateLabel(phase.attributes.start_at),
-                            to: formatDateLabel(phase.attributes.end_at),
-                          }}
-                        />
-                      </p>
-                    ) : (
-                      <p>
-                        <FormattedMessage
-                          {...messages.fromOnwards}
-                          values={{
-                            from: formatDateLabel(phase.attributes.start_at),
-                          }}
-                        />
-                      </p>
-                    )}
-                    <FormattedMessage
-                      {...PARTICIPATION_METHOD_MESSAGES[
-                        phase.attributes.participation_method
-                      ]}
-                    />
-                    <div>{localize(phase.attributes.title_multiloc)}</div>
-                  </Phase>
-                );
-              })
-            ) : (
-              <FormattedMessage {...messages.noPhase} />
-            )}
-          </TimelineSection>
-        </Section>
-      )}
+      <Section>
+        <TimelineSection>
+          {!isNilOrError(phases) && phases.data.length > 0 ? (
+            phases.data.map((phase, index) => {
+              return (
+                <Phase
+                  key={index}
+                  isCurrentPhase={
+                    phase.id ===
+                    project?.data.relationships?.current_phase?.data?.id
+                  }
+                >
+                  {phase.attributes.end_at ? (
+                    <p>
+                      <FormattedMessage
+                        {...messages.fromTo}
+                        values={{
+                          from: formatDateLabel(phase.attributes.start_at),
+                          to: formatDateLabel(phase.attributes.end_at),
+                        }}
+                      />
+                    </p>
+                  ) : (
+                    <p>
+                      <FormattedMessage
+                        {...messages.fromOnwards}
+                        values={{
+                          from: formatDateLabel(phase.attributes.start_at),
+                        }}
+                      />
+                    </p>
+                  )}
+                  <FormattedMessage
+                    {...PARTICIPATION_METHOD_MESSAGES[
+                      phase.attributes.participation_method
+                    ]}
+                  />
+                  <div>{localize(phase.attributes.title_multiloc)}</div>
+                </Phase>
+              );
+            })
+          ) : (
+            <FormattedMessage {...messages.noPhase} />
+          )}
+        </TimelineSection>
+      </Section>
 
       {!isEqual(participationMethods, ['information']) && timeBoundariesSet && (
         <Section>
@@ -309,32 +292,18 @@ const ProjectReport = () => {
             </Column>
           </GraphsContainer>
         )}
-        {participationMethods.includes('poll') ? (
-          isTimelineProject ? (
-            !isNilOrError(phases) &&
-            phases.data.map(
-              (phase) =>
-                phase.attributes.participation_method === 'poll' && (
-                  <PollReport
-                    key={phase.id}
-                    participationContextType="phase"
-                    participationContextId={phase.id}
-                    participationContextTitle={localize(
-                      phase.attributes.title_multiloc
-                    )}
-                  />
-                )
-            )
-          ) : (
-            <PollReport
-              participationContextType="project"
-              participationContextId={projectId}
-              participationContextTitle={localize(
-                project.data.attributes.title_multiloc
-              )}
-            />
-          )
-        ) : null}
+        {participationMethods.includes('poll') &&
+          !isNilOrError(phases) &&
+          phases.data.map(
+            (phase) =>
+              phase.attributes.participation_method === 'poll' && (
+                <PollReport
+                  key={phase.id}
+                  phaseId={phase.id}
+                  phaseTitle={localize(phase.attributes.title_multiloc)}
+                />
+              )
+          )}
       </Section>
     </>
   );

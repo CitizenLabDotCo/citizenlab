@@ -70,7 +70,6 @@ describe('New timeline project', () => {
   before(() => {
     // create new project
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -182,8 +181,11 @@ describe('New timeline project', () => {
   });
 
   it('shows the next phase', () => {
+    cy.intercept(`**/phases/**`).as('phaseRequests');
     // go to the next (and last) phase
+    cy.get('.e2e-next-phase').should('exist');
     cy.get('.e2e-next-phase').click();
+    cy.wait('@phaseRequests');
     // verify it's not possible to go to a next phase
     // and this is our last phase
     cy.get('.e2e-next-phase').should('have.attr', 'disabled');

@@ -38,6 +38,7 @@ import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
 interface Props {
   // When the PostManager is used in /admin/projects, we pass down the current project id as a prop
   projectId?: string | null;
+  phaseId?: string | null;
   visibleFilterMenus: TFilterMenu[]; // cannot be empty.
   defaultFilterMenu: TFilterMenu;
   phases?: TPhases;
@@ -54,6 +55,7 @@ const InputManager = ({
   projects,
   projectId,
   phases,
+  phaseId,
 }: Props) => {
   const type = projectId ? 'ProjectIdeas' : 'AllIdeas';
   const [queryParameters, setQueryParameters] = useState<IQueryParameters>({
@@ -63,6 +65,7 @@ const InputManager = ({
     // if we have a projectId, we'll return the correct projects (for which we have moderator rights)
     // without a project, we need this filter?
     filter_can_moderate: projectId ? undefined : true,
+    phase: phaseId ? phaseId : undefined,
   });
   const { data: ideas } = useIdeas(queryParameters);
   const { data: ideaStatuses } = useIdeaStatuses();

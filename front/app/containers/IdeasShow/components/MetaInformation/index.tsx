@@ -13,13 +13,12 @@ import PostedBy from './PostedBy';
 import useLocale from 'hooks/useLocale';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import Outlet from 'components/Outlet';
-import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
 
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
-import { getCurrentParticipationContext } from 'api/phases/utils';
+import { getCurrentPhase } from 'api/phases/utils';
 
 const Container = styled.div`
   width: 100%;
@@ -51,14 +50,10 @@ const MetaInformation = ({
     projectId,
     inputId: ideaId,
   });
-  const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
 
-  const participationContext = getCurrentParticipationContext(
-    project?.data,
-    phases?.data
-  );
+  const participationContext = getCurrentPhase(phases?.data);
 
   if (!isNilOrError(locale) && ideaCustomFieldsSchema && idea) {
     const { anonymous } = idea.data.attributes;

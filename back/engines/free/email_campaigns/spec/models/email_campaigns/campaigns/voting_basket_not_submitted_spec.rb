@@ -10,9 +10,9 @@ RSpec.describe EmailCampaigns::Campaigns::VotingBasketNotSubmitted do
   end
 
   describe '#generate_commands' do
-    let(:project) { create(:continuous_budgeting_project) }
-    let!(:basket) { create(:basket, participation_context: project, submitted_at: nil) }
-    let(:notification) { create(:voting_basket_not_submitted, basket: basket, project: project) }
+    let(:project) { create(:single_phase_budgeting_project) }
+    let!(:basket) { create(:basket, phase: project.phases.first, submitted_at: nil) }
+    let(:notification) { create(:voting_basket_not_submitted, basket: basket, project: project, phase: project.phases.first) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
     it 'generates a command with the desired payload and tracked content' do
@@ -25,7 +25,7 @@ RSpec.describe EmailCampaigns::Campaigns::VotingBasketNotSubmitted do
       expect(command.dig(:event_payload, :project_url))
         .to eq Frontend::UrlService.new.model_to_url(project, locale: notification_activity.item.recipient.locale)
       expect(command.dig(:event_payload, :context_title_multiloc))
-        .to eq project.title_multiloc
+        .to eq project.phases.first.title_multiloc
     end
   end
 end

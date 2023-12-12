@@ -18,13 +18,13 @@ describe Volunteering::SideFxVolunteerService do
 
     it 'creates a follower' do
       volunteer = create(:volunteer)
-      folder = create(:project_folder, projects: [volunteer.cause.participation_context.project])
+      folder = create(:project_folder, projects: [volunteer.cause.phase.project])
 
       expect do
         service.after_create volunteer.reload, user
       end.to change(Follower, :count).from(0).to(2)
 
-      expect(user.follows.pluck(:followable_id)).to contain_exactly volunteer.cause.participation_context.project.id, folder.id
+      expect(user.follows.pluck(:followable_id)).to contain_exactly volunteer.cause.phase.project.id, folder.id
     end
   end
 

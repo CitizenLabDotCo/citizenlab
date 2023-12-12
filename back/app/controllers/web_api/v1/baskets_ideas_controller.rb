@@ -55,10 +55,10 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
   def upsert
     # 1. Create or get basket
     idea = Idea.find(params[:idea_id])
-    participation_context = ParticipationContextService.new.get_participation_context(idea.project)
+    phase = ParticipationPermissionsService.new.get_current_phase(idea.project)
 
     basket = Basket.find_or_initialize_by(
-      participation_context: participation_context,
+      phase: phase,
       user: current_user
     )
     if basket.new_record?

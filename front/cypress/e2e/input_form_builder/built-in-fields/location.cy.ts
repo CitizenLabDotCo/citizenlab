@@ -1,4 +1,5 @@
 import { randomString } from '../../../support/commands';
+import moment = require('moment');
 
 describe('Input form builder', () => {
   const projectTitle = randomString();
@@ -6,6 +7,7 @@ describe('Input form builder', () => {
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
+  let phaseId: string;
 
   beforeEach(() => {
     if (projectId) {
@@ -15,26 +17,38 @@ describe('Input form builder', () => {
     cy.setAdminLoginCookie();
 
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'ideation',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-    });
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+        return cy.apiCreatePhase({
+          projectId,
+          title: 'firstPhaseTitle',
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          endAt: moment().subtract(3, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
+      })
+      .then((phase) => {
+        phaseId = phase.body.data.id;
+      });
   });
 
   it('allows user to turn on / off the location default field but not edit its question title', () => {
     // Check that the location field is present on the idea form before turning it off
-    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
     cy.acceptCookies();
 
     cy.get('.e2e-idea-form-location-input-field input').should('exist');
 
-    cy.visit(`admin/projects/${projectId}/ideaform`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideaform`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
 
     // The location tool box item should be disabled as it is already on the canvas

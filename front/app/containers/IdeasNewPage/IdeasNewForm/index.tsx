@@ -33,26 +33,23 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getLocationGeojson } from '../utils';
 import { isError, isNilOrError } from 'utils/helperUtils';
-import { getCurrentParticipationContext } from 'api/phases/utils';
+import { getCurrentPhase } from 'api/phases/utils';
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
 // types
 import { Multiloc } from 'typings';
 import { IPhases, IPhaseData } from 'api/phases/types';
-import { IProject } from 'api/projects/types';
 import useLocale from 'hooks/useLocale';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
-  phases: IPhases | undefined,
-  project: IProject | undefined
+  phases: IPhases | undefined
 ) => {
   const participationMethod = phaseFromUrl
     ? phaseFromUrl.attributes.participation_method
-    : getCurrentParticipationContext(project?.data, phases?.data)?.attributes
-        .participation_method;
+    : getCurrentPhase(phases?.data)?.attributes.participation_method;
 
   if (!participationMethod) return;
   return getMethodConfig(participationMethod);
@@ -97,10 +94,7 @@ const IdeasNewPageWithJSONForm = () => {
   const [processingLocation, setProcessingLocation] = useState(false);
   const [initialFormData, setInitialFormData] = useState({});
   const [postAnonymously, setPostAnonymously] = useState(false);
-  const participationContext = getCurrentParticipationContext(
-    project?.data,
-    phases?.data
-  );
+  const participationContext = getCurrentPhase(phases?.data);
   const allowAnonymousPosting =
     participationContext?.attributes.allow_anonymous_participation;
 
@@ -138,7 +132,7 @@ const IdeasNewPageWithJSONForm = () => {
 
   // get participation method config
   const { data: phaseFromUrl } = usePhase(phaseId);
-  const config = getConfig(phaseFromUrl?.data, phases, project);
+  const config = getConfig(phaseFromUrl?.data, phases);
 
   const handleDisclaimer = (data: FormValues) => {
     const disclamerNeeded =

@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.Projects.invisibleTitlePoll',
     defaultMessage: 'Take the poll',
   },
+  createANewPhase: {
+    id: 'app.containers.Projects.createANewPhase',
+    defaultMessage: 'Create a new phase',
+  },
   invisibleTitlePhaseAbout: {
     id: 'app.containers.Projects.invisibleTitlePhaseAbout',
     defaultMessage: 'About this phase',
@@ -152,11 +156,6 @@ export default defineMessages({
   },
   whatsAppMessage: {
     id: 'app.containers.Projects.whatsAppMessage',
-    defaultMessage:
-      '{projectName} | from the participation platform of {orgName}',
-  },
-  facebookMessage: {
-    id: 'app.containers.Projects.facebookMessage',
     defaultMessage:
       '{projectName} | from the participation platform of {orgName}',
   },
@@ -442,5 +441,9 @@ export default defineMessages({
   noEndDate: {
     id: 'app.containers.Projects.noEndDate',
     defaultMessage: 'No end date',
+  },
+  newPhase: {
+    id: 'app.containers.Projects.newPhase',
+    defaultMessage: 'New phase',
   },
 });

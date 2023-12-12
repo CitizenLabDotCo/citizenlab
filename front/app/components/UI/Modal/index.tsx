@@ -260,13 +260,7 @@ const Overlay = styled.div<{
       padding: 0px;
   `}
 
-  ${media.desktop`
-    justify-content: center;
-  `}
-
   ${media.phone`
-    padding-left: 12px;
-    padding-right: 12px;
     padding: 0px;
   `}
 

@@ -74,12 +74,6 @@ const ProjectFolderSharingModal = memo<Props>(
                       <SharingButtons
                         context="folder"
                         url={folderUrl}
-                        facebookMessage={formatMessage(
-                          messages.facebookMessage,
-                          {
-                            projectFolderName,
-                          }
-                        )}
                         twitterMessage={formatMessage(messages.twitterMessage, {
                           projectFolderName,
                         })}
