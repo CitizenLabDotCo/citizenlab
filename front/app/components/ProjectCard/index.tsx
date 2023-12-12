@@ -562,6 +562,8 @@ const ProjectCard = memo<InputProps>(
 
       if (participationMethod === 'voting' && votingMethod === 'budgeting') {
         ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
+      } else if (participationMethod === 'voting') {
+        ctaMessage = <FormattedMessage {...messages.vote} />;
       } else if (participationMethod === 'information') {
         ctaMessage = <FormattedMessage {...messages.learnMore} />;
       } else if (

@@ -2,8 +2,9 @@ import React from 'react';
 import { ChartWidgetProps } from '../typings';
 
 // components
-import { Box, Input, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import DateRangePicker from 'components/admin/DateRangePicker';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import ProjectFilter from '../../_shared/ProjectFilter';
 
 // hooks
@@ -17,7 +18,7 @@ import moment, { Moment } from 'moment';
 import messages from '../messages';
 
 // typings
-import { IOption } from 'typings';
+import { IOption, Multiloc } from 'typings';
 
 const ChartWidgetSettings = () => {
   const { formatMessage } = useIntl();
@@ -36,7 +37,7 @@ const ChartWidgetSettings = () => {
     endAtMoment: node.data.props.endAt ? moment(node.data.props.endAt) : null,
   }));
 
-  const setTitle = (value: string) => {
+  const setTitle = (value: Multiloc) => {
     setProp((props: ChartWidgetProps) => {
       props.title = value;
     });
@@ -64,7 +65,7 @@ const ChartWidgetSettings = () => {
   return (
     <Box>
       <Box background="#ffffff" marginBottom="20px">
-        <Input
+        <InputMultilocWithLocaleSwitcher
           id="e2e-analytics-chart-widget-title"
           label={
             <Text variant="bodyM" color="textSecondary" mb="0">
@@ -72,7 +73,7 @@ const ChartWidgetSettings = () => {
             </Text>
           }
           type="text"
-          value={title}
+          valueMultiloc={title}
           onChange={setTitle}
         />
       </Box>

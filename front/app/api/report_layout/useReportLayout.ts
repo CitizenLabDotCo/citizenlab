@@ -4,13 +4,13 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import reportLayoutKeys from './keys';
 import { ReportLayoutResponse, ReportLayoutKeys } from './types';
 
-const fetchReportLayout = (id: string) =>
+const fetchReportLayout = (id?: string) =>
   fetcher<ReportLayoutResponse>({
     path: `/reports/${id}/layout`,
     action: 'get',
   });
 
-const useReportLayout = (id: string) => {
+const useReportLayout = (id?: string) => {
   return useQuery<
     ReportLayoutResponse,
     CLErrors,
@@ -19,6 +19,7 @@ const useReportLayout = (id: string) => {
   >({
     queryKey: reportLayoutKeys.item({ id }),
     queryFn: () => fetchReportLayout(id),
+    enabled: !!id,
   });
 };
 

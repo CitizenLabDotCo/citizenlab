@@ -38,7 +38,7 @@ const CommentsByTimeWidget = ({
 
 CommentsByTimeWidget.craft = {
   props: {
-    title: '',
+    title: {},
     projectId: undefined,
     startAt: undefined,
     endAt: null,

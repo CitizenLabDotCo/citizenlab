@@ -1176,4 +1176,20 @@ describe PermissionsService do
       end
     end
   end
+
+  describe '#update_all_permissions' do
+    let(:project) { create(:project) }
+    let!(:invalid_permission) do
+      permission = build(:permission, permission_scope: project)
+      permission.save(validate: false)
+      permission
+    end
+
+    it 'deletes any project scoped permissions' do
+      expect(invalid_permission.permission_scope_type).to eq 'Project'
+
+      service.update_all_permissions
+      expect { invalid_permission.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end

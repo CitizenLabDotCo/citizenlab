@@ -8,8 +8,4 @@ export type ContentBuilderErrors = Record<
 
 export type CraftJson = Record<string, SerializedNode>;
 
-export type JsonMultiloc = {
-  [key in Locale]?: CraftJson;
-};
-
 export type ColumnLayout = '1-1' | '2-1' | '1-2';

@@ -2,7 +2,6 @@ import React from 'react';
 
 // hooks
 import useReportLayout from 'api/report_layout/useReportLayout';
-import useReportLocale from 'containers/Admin/reporting/hooks/useReportLocale';
 
 // components
 import {
@@ -25,14 +24,12 @@ interface Props {
 
 const PhaseReport = ({ reportId }: Props) => {
   const { data: reportLayout } = useReportLayout(reportId);
-  const reportLocale = useReportLocale(reportLayout?.data);
   const smallerThanTablet = useBreakpoint('tablet');
   const smallerThanPhone = useBreakpoint('phone');
 
-  if (!reportLayout || !reportLocale) return null;
+  if (!reportLayout) return null;
 
-  const editorData =
-    reportLayout.data.attributes.craftjs_jsonmultiloc[reportLocale];
+  const editorData = reportLayout.data.attributes.craftjs_json;
 
   return (
     <Box

@@ -6,6 +6,10 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // hooks
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
+import useLocalize from 'hooks/useLocalize';
+
+// typings
+import { Multiloc } from 'typings';
 
 interface SharedProps {
   pagebreak?: boolean;
@@ -19,7 +23,7 @@ interface ContainerProps extends SharedProps {
 }
 
 interface Props extends SharedProps {
-  title?: string;
+  title?: Multiloc;
 }
 
 const Container = ({ pagebreak, children, ...props }: ContainerProps) => {
@@ -32,12 +36,15 @@ const Container = ({ pagebreak, children, ...props }: ContainerProps) => {
 
 const Card = ({ title, children, ...rest }: Props) => {
   const px = useReportDefaultPadding();
+  const localize = useLocalize();
 
   return (
     <Container className="report-widget-card" px={px} {...rest}>
-      <Title variant="h3" color="primary" mb="8px">
-        {title}
-      </Title>
+      {title && (
+        <Title variant="h3" color="primary" mb="8px">
+          {localize(title)}
+        </Title>
+      )}
       <Box>{children}</Box>
     </Container>
   );

@@ -18,8 +18,6 @@ jest.mock('api/reports/useReport', () =>
   jest.fn(() => ({ data: { data: mockReport } }))
 );
 
-jest.mock('../../hooks/useReportLocale', () => jest.fn(() => 'en'));
-
 const surveyResultsNodes = {
   ROOT: {
     type: 'div',

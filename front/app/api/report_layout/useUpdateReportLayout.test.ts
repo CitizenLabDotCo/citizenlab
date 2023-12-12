@@ -26,7 +26,7 @@ describe('useUpdateReportLayout', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        craftMultiloc: { en: {} },
+        craftjs_json: {},
       });
     });
 
@@ -47,7 +47,7 @@ describe('useUpdateReportLayout', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        craftMultiloc: { en: {} },
+        craftjs_json: {},
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));
