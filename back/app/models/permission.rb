@@ -54,6 +54,8 @@ class Permission < ApplicationRecord
   before_validation :update_global_custom_fields, on: :update
 
   def self.available_actions(permission_scope)
+    return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
+
     ACTIONS[permission_scope&.participation_method]
   end
 
