@@ -24,11 +24,14 @@ const ReportRow = ({ report }: Props) => {
   const { formatMessage } = useIntl();
 
   const handleDeleteReport = async () => {
+    const reportName = report.attributes.name;
     if (
       window.confirm(
-        formatMessage(messages.confirmDeleteReport, {
-          reportName: report.attributes.name,
-        })
+        reportName
+          ? formatMessage(messages.confirmDeleteReport, {
+              reportName,
+            })
+          : formatMessage(messages.confirmDeleteThisReport)
       )
     ) {
       deleteReport(report.id);

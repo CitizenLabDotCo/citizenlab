@@ -39,7 +39,7 @@ const VisitorsWidget = ({
 
 VisitorsWidget.craft = {
   props: {
-    title: '',
+    title: {},
     projectId: undefined,
     startAt: undefined,
     endAt: undefined,
