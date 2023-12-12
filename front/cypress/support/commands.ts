@@ -1731,7 +1731,7 @@ Cypress.Commands.add(
   { prevSubject: true },
   notIntersectsViewport
 );
-Cypress.Commands.add('apiUpdateHomepageSettings', apiUpdateHomepageSettings);
+Cypress.Commands.add('apiUpdateHomepageLayout', apiUpdateHomepageLayout);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
