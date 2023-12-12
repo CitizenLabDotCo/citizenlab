@@ -93,7 +93,17 @@ class StaticPage < ApplicationRecord
   validates :bottom_info_section_enabled, inclusion: [true, false]
   validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
   validates :areas, length: { is: 1 }, if: -> { projects_filter_type == self.class.projects_filter_types.fetch(:areas) }
-  validates :topics, length: { minimum: 1 }, if: -> { projects_filter_type == self.class.projects_filter_types.fetch(:topics) }
+  validates(
+    :topics, length: { minimum: 1 },
+    if: lambda do
+      # The validation is skipped when loading a tenant template because it assumes the
+      # existence of StaticPagesTopics records that are not created yet. (When loading a
+      # tenant template, StaticPagesTopics records are created after StaticPage records
+      # because of their `belongs_to :static_page` association that references StaticPage
+      # records.)
+      projects_filter_type == self.class.projects_filter_types.fetch(:topics) && !Current.loading_tenant_template
+    end
+  )
 
   mount_base64_uploader :header_bg, HeaderBgUploader
 
