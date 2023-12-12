@@ -10,7 +10,7 @@ import clHistory from 'utils/cl-router/history';
 import Outlet from 'components/Outlet';
 import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { PhaseHeader } from './phase/PhaseHeader';
-import ProjectHeader from './ProjectHeader';
+import ProjectHeader from './projectHeader';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
