@@ -24,19 +24,19 @@ import { createResultRows } from './utils';
 import { BORDER } from '../constants';
 
 type Props = {
-  projectId: string;
-  phaseId?: string;
+  phaseId: string;
   shownQuestions?: boolean[];
 };
 
-const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
+const SurveyResults = ({ phaseId, shownQuestions }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const localize = useLocalize();
-  const { data: project } = useProjectById(projectId);
-  const { data: phase } = usePhase(phaseId ?? null);
+  const { data: phase } = usePhase(phaseId);
+  const { data: project } = useProjectById(
+    phase?.data.relationships.project.data.id
+  );
   const formResults = useSurveyResults({
-    projectId,
     phaseId,
   });
 

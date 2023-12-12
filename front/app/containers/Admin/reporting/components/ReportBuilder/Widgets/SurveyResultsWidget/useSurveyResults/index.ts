@@ -6,13 +6,7 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 import { useLocation } from 'react-router-dom';
 import { isPage } from 'utils/helperUtils';
 
-const useSurveyResults = ({
-  projectId,
-  phaseId,
-}: {
-  projectId: string;
-  phaseId?: string | null;
-}) => {
+const useSurveyResults = ({ phaseId }: { phaseId: string | null }) => {
   const { pathname } = useLocation();
   const { id: graphId } = useNode();
   const isAdminPage = isPage('admin', pathname);
@@ -21,7 +15,7 @@ const useSurveyResults = ({
   const { data: analyticsLive } = useGraphDataUnitsLive<SurveyResultsType>(
     {
       resolvedName: 'SurveyResultsWidget',
-      props: { projectId, phaseId },
+      props: { phaseId },
     },
     { enabled: isAdminPage }
   );

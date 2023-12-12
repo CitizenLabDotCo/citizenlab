@@ -70,7 +70,6 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
       />
       {participationMethod === 'native_survey' && (
         <SurveyResultsWidget
-          projectId={projectId}
           phaseId={phaseId}
           title={formatMessage(SurveyResultsWidget.craft.custom.title)}
         />

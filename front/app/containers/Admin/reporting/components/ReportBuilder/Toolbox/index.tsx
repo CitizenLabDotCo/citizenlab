@@ -55,7 +55,7 @@ const SectionTitle = ({ children }) => (
 
 const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
-  const { projectId } = useReportContext();
+  const { projectId, phaseId } = useReportContext();
 
   // Default end date for charts (today)
   const chartEndDate = moment().format('YYYY-MM-DD');
@@ -142,7 +142,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <SurveyResultsWidget
                 title={formatMessage(SurveyResultsWidget.craft.custom.title)}
-                projectId={projectId}
+                phaseId={phaseId}
               />
             }
             icon="survey"

@@ -1,4 +1,3 @@
-import { ProjectId } from 'components/admin/GraphCards/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
 
@@ -19,9 +18,8 @@ interface Resolution {
   resolution?: IResolution;
 }
 
-export type PropsLive = ProjectId &
-  Dates &
-  Resolution & { phaseId?: string | null };
+export type PropsLive = Dates &
+  Resolution & { projectId?: string | undefined; phaseId?: string | null };
 
 // published
 export interface ParametersPublished {
