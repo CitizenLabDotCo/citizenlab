@@ -20,7 +20,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     @projects = Project.where(id: publications.select(:publication_id))
       .ordered
-      .includes(:project_images, :phases, :areas, admin_publication: [:children])
+      .includes(:project_images, :areas, :topics, :content_builder_layouts, phases: [:report], admin_publication: [:children])
     @projects = paginate @projects
 
     user_followers = current_user&.follows
