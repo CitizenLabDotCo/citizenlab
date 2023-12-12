@@ -83,7 +83,7 @@ export default class ExportMenu extends PureComponent<Props, State> {
           buttonStyle="admin-dark-text"
           onClick={this.toggleDropdown}
           icon="download"
-          iconPos="right"
+          iconPos="left"
           padding="0px"
         >
           <FormattedMessage {...messages.exports} />

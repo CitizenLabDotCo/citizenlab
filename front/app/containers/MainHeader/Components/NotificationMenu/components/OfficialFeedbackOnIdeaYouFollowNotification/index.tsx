@@ -3,7 +3,6 @@ import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import { isNilOrError } from 'utils/helperUtils';
-import { getInputTerm } from 'utils/participationContexts';
 
 import { IOfficialFeedbackOnIdeaYouFollowNotificationData } from 'api/notifications/types';
 
@@ -16,6 +15,7 @@ import { getInputTermMessage } from 'utils/i18n';
 import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
+import { getInputTerm } from 'api/phases/utils';
 
 interface Props {
   notification: IOfficialFeedbackOnIdeaYouFollowNotificationData;
@@ -31,11 +31,7 @@ const OfficialFeedbackOnIdeaYouFollowNotification = memo<Props>((props) => {
   const { data: phases } = usePhases(projectId);
 
   if (project) {
-    const inputTerm = getInputTerm(
-      project.data.attributes.process_type,
-      project.data,
-      phases?.data
-    );
+    const inputTerm = getInputTerm(phases?.data);
 
     return (
       <NotificationWrapper

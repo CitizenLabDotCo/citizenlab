@@ -3,31 +3,31 @@
 require 'rails_helper'
 
 RSpec.describe VotingMethod::MultipleVoting do
-  subject(:voting_method) { described_class.new project }
+  subject(:voting_method) { described_class.new phase }
 
-  let(:project) { create(:continuous_multiple_voting_project) }
+  let(:phase) { create(:multiple_voting_phase) }
 
-  describe '#assign_defaults_for_participation_context' do
-    let(:context) { build(:continuous_multiple_voting_project) }
+  describe '#assign_defaults_for_phase' do
+    let(:phase) { build(:multiple_voting_phase) }
 
     it 'does not change voting_max_votes_per_idea' do
-      project.voting_max_votes_per_idea = 3
-      voting_method.assign_defaults_for_participation_context
-      expect(project.voting_max_votes_per_idea).to eq 3
+      phase.voting_max_votes_per_idea = 3
+      voting_method.assign_defaults_for_phase
+      expect(phase.voting_max_votes_per_idea).to eq 3
     end
   end
 
-  describe '#validate_participation_context' do
+  describe '#validate_phase' do
     it 'sets no errors when voting_max_total is present' do
-      project.voting_max_total = 10
-      voting_method.validate_participation_context
-      expect(project.errors.details).to be_blank
+      phase.voting_max_total = 10
+      voting_method.validate_phase
+      expect(phase.errors.details).to be_blank
     end
 
     it 'sets an error when voting_max_total is blank' do
-      project.voting_max_total = nil
-      voting_method.validate_participation_context
-      expect(project.errors.details).to eq(
+      phase.voting_max_total = nil
+      voting_method.validate_phase
+      expect(phase.errors.details).to eq(
         voting_max_total: [error: :blank]
       )
     end
@@ -49,8 +49,9 @@ RSpec.describe VotingMethod::MultipleVoting do
 
   describe '#assign_baskets_idea' do
     it 'does not overwrite the votes' do
-      idea = create(:idea, budget: 3, project: project)
-      baskets_idea = create(:baskets_idea, basket: create(:basket, participation_context: project), idea: idea, votes: 10)
+      project = create(:single_phase_multiple_voting_project)
+      idea = create(:idea, budget: 3, project: project, phases: project.phases)
+      baskets_idea = create(:baskets_idea, basket: create(:basket, phase: project.phases.first), idea: idea, votes: 10)
 
       voting_method.assign_baskets_idea(baskets_idea.reload)
       baskets_idea.save!

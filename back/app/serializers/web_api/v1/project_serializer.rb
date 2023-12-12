@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
+class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   attributes(
     :description_preview_multiloc,
     :title_multiloc,
@@ -9,7 +9,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
     :followers_count,
     :include_all_areas,
     :internal_role,
-    :process_type,
     :slug,
     :visible_to,
     :created_at,
@@ -33,7 +32,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
   end
 
   attribute :action_descriptor do |object, params|
-    @participation_context_service ||= ParticipationContextService.new
+    @participation_context_service ||= ParticipationPermissionsService.new
     user = current_user(params)
     posting_disabled_reason = @participation_context_service.posting_idea_disabled_reason_for_project object, user
     commenting_disabled_reason = @participation_context_service.commenting_idea_disabled_reason_for_project object, user
@@ -99,17 +98,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
     @participants_service.project_participants_count(object)
   end
 
-  attribute :allocated_budget do |object, params|
-    if params[:allocated_budgets]
-      params.dig(:allocated_budgets, object.id)
-    else
-      ParticipationContextService.new.allocated_budget object
-    end
-  end
-
-  attribute :timeline_active, if: proc { |object, _params|
-    object.timeline?
-  } do |object, params|
+  attribute :timeline_active do |object, params|
     if params[:timeline_active]
       params.dig(:timeline_active, object.id)
     else
@@ -125,13 +114,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
   has_many :avatars, serializer: WebApi::V1::AvatarSerializer do |object, params|
     avatars_for_project(object, params)[:users]
   end
-  has_many :permissions
-
-  has_one :user_basket, record_type: :basket, if: proc { |object, params|
-    signed_in? object, params
-  } do |object, params|
-    user_basket object, params
-  end
 
   has_one :user_follower, record_type: :follower, if: proc { |object, params|
     signed_in? object, params
@@ -139,9 +121,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
     user_follower object, params
   end
 
-  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase, if: proc { |object, _params|
-    !object.participation_context?
-  } do |object|
+  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |object|
     TimelineService.new.current_phase(object)
   end
 
@@ -149,16 +129,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
     # TODO: call only once (not a second time for counts)
     @participants_service ||= ParticipantsService.new
     AvatarsService.new(@participants_service).avatars_for_project(object, limit: 3)
-  end
-
-  def self.user_basket(object, params)
-    if params[:user_baskets]
-      params.dig(:user_baskets, [object.id, 'Project'])&.first
-    else
-      current_user(params)&.baskets&.find do |basket|
-        basket.participation_context_id == object.id && basket.participation_context_type == 'Project'
-      end
-    end
   end
 
   def self.user_follower(object, params)

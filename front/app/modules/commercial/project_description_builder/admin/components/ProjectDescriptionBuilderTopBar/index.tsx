@@ -60,7 +60,7 @@ const ProjectDescriptionBuilderTopBar = ({
   const disableSave = !!hasError || !!hasPendingState;
 
   const goBack = () => {
-    clHistory.push(`/admin/projects/${projectId}/description`);
+    clHistory.push(`/admin/projects/${projectId}/settings/description`);
   };
 
   const handleSave = async () => {

@@ -23,7 +23,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 import { saveTemplateFile } from './saveTemplateFile';
-import { API_HOST, API_PORT } from "containers/App/constants";
+import { API_HOST, API_PORT } from 'containers/App/constants';
 
 const PowerBITemplates = () => {
   const isPowerBIEnabled = useFeatureFlag({ name: 'power_bi' });
@@ -42,10 +42,11 @@ const PowerBITemplates = () => {
     handleDownloadTemplate('dataflow', 'json');
   };
 
-  const hostName = API_HOST
-  const baseUrl = hostName === 'localhost' ?
-    `http://localhost:${API_PORT}/api/v2/` :
-    `https://${hostName}/api/v2/`;
+  const hostName = API_HOST;
+  const baseUrl =
+    hostName === 'localhost'
+      ? `http://localhost:${API_PORT}/api/v2/`
+      : `https://${hostName}/api/v2/`;
 
   if (!isPowerBIEnabled) return null;
 
@@ -79,7 +80,7 @@ const PowerBITemplates = () => {
             <FormattedMessage
               {...messages.reportTemplateDescription}
               values={{
-                baseUrl: <strong>{baseUrl}</strong>
+                baseUrl: <strong>{baseUrl}</strong>,
               }}
             />
           </Text>
@@ -126,7 +127,6 @@ const PowerBITemplates = () => {
           }}
         />
       </Text>
-
     </>
   );
 };

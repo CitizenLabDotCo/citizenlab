@@ -1,21 +1,40 @@
 import { randomString, randomEmail } from '../../../support/commands';
+import moment = require('moment');
+
+let projectId: string;
+const phaseTitle = randomString();
 
 describe('Report builder Reactions By Time widget', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
 
     cy.apiCreateProject({
-      type: 'continuous',
       title: randomString(),
       descriptionPreview: randomString(),
       description: randomString(),
       publicationStatus: 'published',
-      participationMethod: 'ideation',
-    }).then((project) => {
-      const projectId = project.body.data.id;
-      cy.wrap(projectId).as('projectId');
-      cy.apiCreateIdea(projectId, randomString(), randomString()).then(
-        (idea) => {
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        return cy.apiCreatePhase({
+          projectId,
+          title: phaseTitle,
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+          allow_anonymous_participation: true,
+        });
+      })
+      .then((phase) => {
+        cy.wrap(projectId).as('projectId');
+        cy.apiCreateIdea({
+          projectId,
+          ideaTitle: randomString(),
+          ideaContent: randomString(),
+          phaseIds: [phase.body.data.id],
+        }).then((idea) => {
           const email = randomEmail();
           const password = randomString();
           cy.apiSignup(randomString(), randomString(), email, password).then(
@@ -24,9 +43,8 @@ describe('Report builder Reactions By Time widget', () => {
               cy.apiDislikeIdea(email, password, idea.body.data.id);
             }
           );
-        }
-      );
-    });
+        });
+      });
 
     cy.apiCreateReportBuilder().then((report) => {
       const reportId = report.body.data.id;

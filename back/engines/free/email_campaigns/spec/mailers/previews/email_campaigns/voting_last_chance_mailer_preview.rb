@@ -5,8 +5,7 @@ module EmailCampaigns
     include EmailCampaigns::MailerPreviewRecipient
 
     def campaign_mail
-      project = Project.is_timeline.first || Project.first
-      # TODO: generate commands with campaign#generate_commands method
+      project = Project.first
       command = {
         recipient: recipient_user,
         event_payload: {

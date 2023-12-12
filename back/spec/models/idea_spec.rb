@@ -27,58 +27,28 @@ RSpec.describe Idea do
   end
 
   describe '#participation_method_on_creation' do
-    context 'in a continuous project' do
-      let(:project) { create(:continuous_project) }
-      let(:idea) { build(:idea, project: project) }
-
-      it 'returns the project' do
-        expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::Ideation
-      end
-    end
-
-    context 'in a timeline project when created in a phase' do
+    context 'in a timeline project when a creation phase is present' do
       let(:project) { create(:project_with_future_native_survey_phase) }
       let(:creation_phase) { project.phases.first }
       let(:idea) { build(:idea, project: project, creation_phase: creation_phase) }
 
-      it 'returns the phase on creation' do
+      it 'returns ParticipationMethod::NativeSurvey' do
         expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::NativeSurvey
       end
     end
 
-    context 'in a timeline project when created outside a phase' do
+    context 'in a timeline project when creation phase is NOT present' do
       let(:project) { create(:project_with_future_native_survey_phase) }
       let(:phase) { project.phases.first }
       let(:idea) { build(:idea, project: project) }
 
-      it 'returns the project' do
+      it 'returns ParticipationMethod::Ideation' do
         expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::Ideation
       end
     end
   end
 
   describe '#custom_form' do
-    context 'in a continuous project when the form has been defined' do
-      let(:project) { create(:continuous_project) }
-      let!(:project_form) { create(:custom_form, participation_context: project) }
-      let(:idea) { build(:idea, project: project) }
-
-      it 'returns the form of the project' do
-        expect(idea.custom_form).to eq project_form
-      end
-    end
-
-    context 'in a continuous project when the form has not been defined yet' do
-      let(:project) { create(:continuous_project) }
-      let(:idea) { build(:idea, project: project) }
-
-      it 'returns a new form' do
-        form = idea.custom_form
-        expect(form).to be_instance_of CustomForm
-        expect(form).to be_new_record
-      end
-    end
-
     context 'in a timeline project when created in a phase and a form has been defined' do
       let(:project) { create(:project_with_future_native_survey_phase) }
       let(:phase) { project.phases.first }
@@ -141,16 +111,6 @@ RSpec.describe Idea do
   end
 
   describe '#input_term' do
-    context 'when the idea belongs to a continuous project' do
-      let(:project) { create(:continuous_project, input_term: 'issue') }
-      let!(:project_form) { create(:custom_form, participation_context: project) }
-      let(:idea) { build(:idea, project: project) }
-
-      it 'returns the input_term of the project' do
-        expect(idea.input_term).to eq 'issue'
-      end
-    end
-
     context 'when the idea belongs to a timeline project' do
       context 'when the idea is created in a phase' do
         let(:project) { create(:project_with_future_native_survey_phase) }
@@ -211,8 +171,8 @@ RSpec.describe Idea do
         context 'when the idea does not belong to any phase' do
           # The project and the phase are given an input_term to describe that they
           # do not provide the input_term for the idea without phases.
-          let(:project) { create(:project_with_past_ideation_and_current_information_phase, input_term: 'issue') }
-          let(:phase) { project.phases.first }
+          let(:project) { create(:project_with_past_ideation_and_current_information_phase) }
+          let(:phase) { project.phases.last }
           let(:idea) { build(:idea, project: project, phases: []) }
 
           it 'returns the default input_term' do
@@ -272,13 +232,15 @@ RSpec.describe Idea do
         end
 
         context 'when the idea belongs to an ideation phase, and the current phase is information' do
-          let(:project) { create(:project_with_past_ideation_and_current_information_phase, input_term: 'issue') }
+          let(:project) { create(:project_with_past_ideation_and_current_information_phase) }
           let(:ideation_phase) { project.phases.first }
-          let(:idea) { build(:idea, project: project, phases: [ideation_phase]) }
+          let(:information_phase) { project.phases.last }
+          let(:idea) { create(:idea, project: project, phases: [ideation_phase]) }
 
           it 'returns the input_term of the ideation phase' do
+            information_phase.update!(input_term: 'issue')
             ideation_phase.update!(input_term: 'question')
-            expect(idea.input_term).to eq 'question'
+            expect(idea.reload.input_term).to eq 'question'
           end
         end
       end
@@ -342,19 +304,6 @@ RSpec.describe Idea do
       expect(idea.errors.details).to eq({ creation_phase: [{ error: :invalid_participation_method }] })
     end
 
-    it 'is valid when nil and in a continuous project' do
-      project = create(:continuous_native_survey_project)
-      response = build(:idea, project: project, creation_phase: nil)
-      expect(response).to be_valid
-    end
-
-    it 'is invalid when present and in a continuous project' do
-      project = create(:continuous_native_survey_project)
-      input = build(:idea, project: project, creation_phase: build(:native_survey_phase, project: project))
-      expect(input).to be_invalid
-      expect(input.errors.details).to eq({ creation_phase: [{ error: :not_in_timeline_project }] })
-    end
-
     it 'deleting a phase used as creation phase of an input fails' do
       project = create(:project_with_active_native_survey_phase)
       phase = project.phases.first
@@ -391,7 +340,7 @@ RSpec.describe Idea do
     end
 
     it 'should generate a slug when there is no current phase' do
-      project = create(:project, process_type: 'timeline')
+      project = create(:project)
       create(:phase, project: project, start_at: (Time.zone.today - 10), end_at: (Time.zone.today - 5))
       create(:phase, project: project, start_at: (Time.zone.today + 5), end_at: (Time.zone.today + 10))
       idea = create(:idea, slug: nil, project: project.reload)
@@ -399,7 +348,7 @@ RSpec.describe Idea do
     end
 
     it 'should generate a slug for a timeline project with no phases' do
-      project = create(:project, process_type: 'timeline')
+      project = create(:project)
       idea = create(:idea, slug: nil, project: project)
       expect(idea.slug).to be_present
     end

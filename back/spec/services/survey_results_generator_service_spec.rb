@@ -307,7 +307,7 @@ RSpec.describe SurveyResultsGeneratorService do
   end
 
   context 'for a project' do
-    let(:project) { create(:continuous_native_survey_project) }
+    let(:project) { create(:single_phase_native_survey_project) }
     let(:form) { create(:custom_form, participation_context: project) }
     let(:participation_context) { project }
     let(:phases_of_inputs) { [] }

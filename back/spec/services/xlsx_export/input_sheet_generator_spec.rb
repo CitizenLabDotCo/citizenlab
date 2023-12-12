@@ -7,7 +7,7 @@ describe XlsxExport::InputSheetGenerator do
     before { create(:idea_status_proposed) }
 
     let(:include_private_attributes) { false }
-    let(:service) { described_class.new(inputs, participation_context, include_private_attributes) }
+    let(:service) { described_class.new(inputs, phase, include_private_attributes) }
     let(:sheetname) { 'My sheet' }
     let(:xlsx) do
       package = Axlsx::Package.new
@@ -16,7 +16,7 @@ describe XlsxExport::InputSheetGenerator do
     end
 
     context 'for an ideation context' do
-      let(:participation_context) { create(:phase, participation_method: 'ideation') }
+      let(:phase) { create(:phase, participation_method: 'ideation') }
 
       describe 'when there are no inputs' do
         let(:inputs) { [] }
@@ -55,8 +55,8 @@ describe XlsxExport::InputSheetGenerator do
         let(:ideation_response1) do
           create(
             :idea_with_topics,
-            project: participation_context.project,
-            phases: [participation_context],
+            project: phase.project,
+            phases: [phase],
             author: create(:user, custom_field_values: { create(:custom_field_birthyear).code => 1999 }),
             assignee: assignee
           )
@@ -108,7 +108,7 @@ describe XlsxExport::InputSheetGenerator do
                   2,
                   1,
                   "http://example.org/ideas/#{ideation_response1.slug}",
-                  participation_context.project.title_multiloc['en'],
+                  phase.project.title_multiloc['en'],
                   ideation_response1.idea_status.title_multiloc['en'],
                   1999
                 ]
@@ -119,7 +119,7 @@ describe XlsxExport::InputSheetGenerator do
       end
 
       context 'with persisted form' do
-        let(:project_form) { create(:custom_form, :with_default_fields, participation_context: participation_context.project) }
+        let(:project_form) { create(:custom_form, :with_default_fields, participation_context: phase.project) }
         let!(:extra_idea_field) do
           create(
             :custom_field_extra_custom_form,
@@ -130,8 +130,8 @@ describe XlsxExport::InputSheetGenerator do
         let(:ideation_response1) do
           create(
             :idea_with_topics,
-            project: participation_context.project,
-            phases: [participation_context],
+            project: phase.project,
+            phases: [phase],
             custom_field_values: { extra_idea_field.key => 'Answer' },
             assignee: assignee
           )
@@ -195,7 +195,7 @@ describe XlsxExport::InputSheetGenerator do
                     2,
                     1,
                     "http://example.org/ideas/#{ideation_response1.slug}",
-                    participation_context.project.title_multiloc['en'],
+                    phase.project.title_multiloc['en'],
                     ideation_response1.idea_status.title_multiloc['en']
                   ]
                 ]
@@ -257,7 +257,7 @@ describe XlsxExport::InputSheetGenerator do
                     2,
                     1,
                     "http://example.org/ideas/#{ideation_response1.slug}",
-                    participation_context.project.title_multiloc['en'],
+                    phase.project.title_multiloc['en'],
                     ideation_response1.idea_status.title_multiloc['en'],
                     "#{assignee.first_name} #{assignee.last_name}",
                     assignee.email
@@ -271,8 +271,8 @@ describe XlsxExport::InputSheetGenerator do
     end
 
     context 'for a native survey context' do
-      let(:participation_context) { create(:native_survey_phase) }
-      let(:form) { create(:custom_form, participation_context: participation_context) }
+      let(:phase) { create(:native_survey_phase) }
+      let(:form) { create(:custom_form, participation_context: phase) }
 
       # Create a page to describe that it is not included in the export.
       let!(:page_field) { create(:custom_field_page, resource: form) }
@@ -294,27 +294,27 @@ describe XlsxExport::InputSheetGenerator do
       let(:survey_response1) do
         create(
           :idea,
-          project: participation_context.project,
-          creation_phase: participation_context,
-          phases: [participation_context],
+          project: phase.project,
+          creation_phase: phase,
+          phases: [phase],
           custom_field_values: { multiselect_field.key => %w[cat dog] }
         )
       end
       let(:survey_response2) do
         create(
           :idea,
-          project: participation_context.project,
-          creation_phase: participation_context,
-          phases: [participation_context],
+          project: phase.project,
+          creation_phase: phase,
+          phases: [phase],
           custom_field_values: { multiselect_field.key => %w[cat] }
         )
       end
       let(:survey_response3) do
         create(
           :idea,
-          project: participation_context.project,
-          creation_phase: participation_context,
-          phases: [participation_context],
+          project: phase.project,
+          creation_phase: phase,
+          phases: [phase],
           custom_field_values: { multiselect_field.key => %w[dog] },
           author: nil
         )
@@ -358,19 +358,19 @@ describe XlsxExport::InputSheetGenerator do
                   survey_response1.id,
                   'Cat, Dog',
                   an_instance_of(DateTime), # created_at
-                  participation_context.project.title_multiloc['en']
+                  phase.project.title_multiloc['en']
                 ],
                 [
                   survey_response2.id,
                   'Cat',
                   an_instance_of(DateTime), # created_at
-                  participation_context.project.title_multiloc['en']
+                  phase.project.title_multiloc['en']
                 ],
                 [
                   survey_response3.id,
                   'Dog',
                   an_instance_of(DateTime), # created_at
-                  participation_context.project.title_multiloc['en']
+                  phase.project.title_multiloc['en']
                 ]
               ]
             }
@@ -402,7 +402,7 @@ describe XlsxExport::InputSheetGenerator do
                   survey_response1.author.email,
                   survey_response1.author_id,
                   an_instance_of(DateTime), # created_at
-                  participation_context.project.title_multiloc['en']
+                  phase.project.title_multiloc['en']
                 ],
                 [
                   survey_response2.id,
@@ -411,7 +411,7 @@ describe XlsxExport::InputSheetGenerator do
                   survey_response2.author.email,
                   survey_response2.author_id,
                   an_instance_of(DateTime), # created_at
-                  participation_context.project.title_multiloc['en']
+                  phase.project.title_multiloc['en']
                 ],
                 [
                   survey_response3.id,
@@ -420,7 +420,7 @@ describe XlsxExport::InputSheetGenerator do
                   nil,
                   nil,
                   an_instance_of(DateTime), # created_at
-                  participation_context.project.title_multiloc['en']
+                  phase.project.title_multiloc['en']
                 ]
               ]
             }
@@ -430,7 +430,7 @@ describe XlsxExport::InputSheetGenerator do
     end
 
     context 'for a voting context' do
-      let(:participation_context) { create(:voting_phase) }
+      let(:phase) { create(:single_voting_phase) }
 
       describe 'when there are no inputs' do
         let(:inputs) { [] }
@@ -465,7 +465,7 @@ describe XlsxExport::InputSheetGenerator do
         end
 
         context 'voting method is multiple voting' do
-          let(:participation_context) { create(:voting_phase, voting_method: 'multiple_voting') }
+          let(:phase) { create(:multiple_voting_phase) }
 
           it 'Generates an empty sheet with the correct columns' do
             expect(xlsx).to eq([
@@ -497,7 +497,7 @@ describe XlsxExport::InputSheetGenerator do
         end
 
         context 'voting method is budgeting' do
-          let(:participation_context) { create(:voting_phase, voting_method: 'budgeting') }
+          let(:phase) { create(:budgeting_phase) }
 
           it 'Generates an empty sheet with the correct columns' do
             expect(xlsx).to eq([
@@ -534,8 +534,8 @@ describe XlsxExport::InputSheetGenerator do
         let(:ideation_response1) do
           create(
             :idea_with_topics,
-            project: participation_context.project,
-            phases: [participation_context],
+            project: phase.project,
+            phases: [phase],
             author: create(:user, custom_field_values: { create(:custom_field_birthyear).code => 1999 }),
             assignee: assignee
           )
@@ -544,7 +544,7 @@ describe XlsxExport::InputSheetGenerator do
         let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
         let!(:likes) { create_list(:reaction, 1, reactable: ideation_response1) }
         let!(:baskets) do
-          create_list(:basket, 2, participation_context: participation_context, ideas: [ideation_response1]).each(&:update_counts!)
+          create_list(:basket, 2, phase: phase, ideas: [ideation_response1]).each(&:update_counts!)
         end
         let(:inputs) { [ideation_response1.reload] }
 
@@ -587,7 +587,7 @@ describe XlsxExport::InputSheetGenerator do
                   1,
                   2,
                   "http://example.org/ideas/#{ideation_response1.slug}",
-                  participation_context.project.title_multiloc['en'],
+                  phase.project.title_multiloc['en'],
                   ideation_response1.idea_status.title_multiloc['en'],
                   1999
                 ]
@@ -598,7 +598,7 @@ describe XlsxExport::InputSheetGenerator do
       end
 
       context 'with persisted form' do
-        let(:project_form) { create(:custom_form, :with_default_fields, participation_context: participation_context.project) }
+        let(:project_form) { create(:custom_form, :with_default_fields, participation_context: phase.project) }
         let!(:extra_idea_field) do
           create(
             :custom_field_extra_custom_form,
@@ -609,8 +609,8 @@ describe XlsxExport::InputSheetGenerator do
         let(:ideation_response1) do
           create(
             :idea_with_topics,
-            project: participation_context.project,
-            phases: [participation_context],
+            project: phase.project,
+            phases: [phase],
             custom_field_values: { extra_idea_field.key => 'Answer' },
             assignee: assignee
           )
@@ -627,13 +627,13 @@ describe XlsxExport::InputSheetGenerator do
         let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
         let!(:likes) { create_list(:reaction, 2, reactable: ideation_response1) }
         let!(:baskets) do
-          create_list(:basket, 2, participation_context: participation_context, ideas: [ideation_response1]).each do |basket|
+          create_list(:basket, 2, phase: phase, ideas: [ideation_response1]).each do |basket|
             basket.baskets_ideas.first.update!(votes: 2)
             basket.update_counts!
           end
         end
-        let!(:other_phase) { create(:voting_phase, project: participation_context.project, start_at: (Time.now - 6.months), end_at: (Time.now - 4.months)) }
-        let!(:other_basket) { create(:basket, participation_context: other_phase, ideas: [ideation_response1]) }
+        let!(:other_phase) { create(:single_voting_phase, project: phase.project, start_at: (Time.now - 6.months), end_at: (Time.now - 4.months)) }
+        let!(:other_basket) { create(:basket, phase: other_phase, ideas: [ideation_response1]) }
         let(:inputs) { [ideation_response1.reload] }
 
         context 'without private attributes' do
@@ -679,7 +679,7 @@ describe XlsxExport::InputSheetGenerator do
                     1,
                     4,
                     "http://example.org/ideas/#{ideation_response1.slug}",
-                    participation_context.project.title_multiloc['en'],
+                    phase.project.title_multiloc['en'],
                     ideation_response1.idea_status.title_multiloc['en']
                   ]
                 ]
@@ -739,7 +739,7 @@ describe XlsxExport::InputSheetGenerator do
                     1,
                     4,
                     "http://example.org/ideas/#{ideation_response1.slug}",
-                    participation_context.project.title_multiloc['en'],
+                    phase.project.title_multiloc['en'],
                     ideation_response1.idea_status.title_multiloc['en'],
                     "#{assignee.first_name} #{assignee.last_name}",
                     assignee.email

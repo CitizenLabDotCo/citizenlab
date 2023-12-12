@@ -1,22 +1,7 @@
-import {
-  Locale,
-  Multiloc,
-  GraphqlLocale,
-  IParticipationContextType,
-} from 'typings';
+import { Locale, Multiloc, GraphqlLocale } from 'typings';
 import { trim, isUndefined } from 'lodash-es';
 import { removeUrlLocale } from 'utils/locale';
 import { locales } from 'containers/App/constants';
-
-export function capitalizeParticipationContextType(
-  type: IParticipationContextType
-) {
-  if (type === 'project') {
-    return 'Project';
-  } else {
-    return 'Phase';
-  }
-}
 
 type Nil = undefined | null;
 export type NilOrError = Nil | Error;

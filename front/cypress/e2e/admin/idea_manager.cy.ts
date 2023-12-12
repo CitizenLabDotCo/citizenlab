@@ -1,4 +1,5 @@
 import { randomString, randomEmail } from '../../support/commands';
+import moment = require('moment');
 
 describe('Idea manager', () => {
   beforeEach(() => {
@@ -23,32 +24,50 @@ describe('Idea manager', () => {
         const projectDescriptionPreview = randomString();
         const projectDescription = randomString();
         const userId = user.body.data.id;
+        let projectId: string;
+        const phaseTitle = randomString();
 
         // create project with signed-in admin/user as default assignee
         cy.apiCreateProject({
-          type: 'continuous',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,
           publicationStatus: 'published',
-          participationMethod: 'ideation',
           assigneeId: userId,
-        }).then((project) => {
-          const projectId = project.body.data.id;
-          const ideaTitle = randomString();
-          const ideaContent = randomString();
+        })
+          .then((project) => {
+            projectId = project.body.data.id;
+            return cy.apiCreatePhase({
+              projectId,
+              title: phaseTitle,
+              startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+              participationMethod: 'ideation',
+              canPost: true,
+              canComment: true,
+              canReact: true,
+              allow_anonymous_participation: true,
+            });
+          })
+          .then((phase) => {
+            const ideaTitle = randomString();
+            const ideaContent = randomString();
 
-          cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+            cy.apiCreateIdea({
+              projectId,
+              ideaTitle,
+              ideaContent,
+              phaseIds: [phase.body.data.id],
+            });
 
-          // do a refresh for the new idea to appear
-          cy.visit('/admin/ideas/');
-          // grab and open assignee filter menu
-          cy.get('#e2e-select-assignee-filter').click();
-          // click on Assigned to me filter
-          cy.get('#e2e-assignee-filter-assigned-to-user').click();
-          // Check whether the newly created idea is assigned to the user
-          cy.get('.e2e-idea-manager-idea-row').contains(ideaTitle);
-        });
+            // do a refresh for the new idea to appear
+            cy.visit('/admin/ideas/');
+            // grab and open assignee filter menu
+            cy.get('#e2e-select-assignee-filter').click();
+            // click on Assigned to me filter
+            cy.get('#e2e-assignee-filter-assigned-to-user').click();
+            // Check whether the newly created idea is assigned to the user
+            cy.get('.e2e-idea-manager-idea-row').contains(ideaTitle);
+          });
       });
     });
   });
@@ -60,52 +79,73 @@ describe('Idea manager', () => {
         const projectDescriptionPreview = randomString();
         const projectDescription = randomString();
         const userId = user.body.data.id;
+        let projectId: string;
 
         // create project with signed-in admin/user as default assignee
         cy.apiCreateProject({
-          type: 'continuous',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,
           publicationStatus: 'published',
-          participationMethod: 'ideation',
           assigneeId: userId,
-        }).then((project) => {
-          const projectId = project.body.data.id;
-          const ideaTitle1 = randomString();
-          const ideaTitle2 = randomString();
-          const ideaContent1 = randomString();
-          const ideaContent2 = randomString();
-
-          // Create one idea with official feedback
-          cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1).then((idea) => {
-            const ideaId = idea.body.data.id;
-            const officialFeedbackContent = randomString();
-            const officialFeedbackAuthor = randomString();
-            cy.apiCreateOfficialFeedbackForIdea(
-              ideaId,
-              officialFeedbackContent,
-              officialFeedbackAuthor
-            );
-
-            // Create one idea without official feedback
-            cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2).then(() => {
-              cy.wait(500);
-              cy.visit('/admin/ideas/');
-
-              // Select the newly create project as a filter and check if it just shows our two created ideas
-              cy.get('.e2e-idea-manager-project-filter-item')
-                .contains(projectTitle)
-                .click();
-              cy.get('.e2e-idea-manager-idea-row').should('have.length', 2);
-
-              // Turn the 'need feedback' toggle on and check whether it only shows the idea without official feedback
-              cy.get('#e2e-feedback_needed_filter_toggle').click();
-              cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
+        })
+          .then((project) => {
+            projectId = project.body.data.id;
+            return cy.apiCreatePhase({
+              projectId,
+              title: 'phaseTitle',
+              startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+              participationMethod: 'ideation',
+              canPost: true,
+              canComment: true,
+              canReact: true,
+              allow_anonymous_participation: true,
             });
-            cy.wait(500);
+          })
+          .then((phase) => {
+            const ideaTitle1 = randomString();
+            const ideaTitle2 = randomString();
+            const ideaContent1 = randomString();
+            const ideaContent2 = randomString();
+
+            // Create one idea with official feedback
+            cy.apiCreateIdea({
+              projectId,
+              ideaTitle: ideaTitle1,
+              ideaContent: ideaContent1,
+              phaseIds: [phase.body.data.id],
+            }).then((idea) => {
+              const ideaId = idea.body.data.id;
+              const officialFeedbackContent = randomString();
+              const officialFeedbackAuthor = randomString();
+              cy.apiCreateOfficialFeedbackForIdea(
+                ideaId,
+                officialFeedbackContent,
+                officialFeedbackAuthor
+              );
+
+              // Create one idea without official feedback
+              cy.apiCreateIdea({
+                projectId,
+                ideaTitle: ideaTitle2,
+                ideaContent: ideaContent2,
+              }).then(() => {
+                cy.wait(500);
+                cy.visit('/admin/ideas/');
+
+                // Select the newly create project as a filter and check if it just shows our two created ideas
+                cy.get('.e2e-idea-manager-project-filter-item')
+                  .contains(projectTitle)
+                  .click();
+                cy.get('.e2e-idea-manager-idea-row').should('have.length', 2);
+
+                // Turn the 'need feedback' toggle on and check whether it only shows the idea without official feedback
+                cy.get('#e2e-feedback_needed_filter_toggle').click();
+                cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
+              });
+              cy.wait(500);
+            });
           });
-        });
       });
     });
   });

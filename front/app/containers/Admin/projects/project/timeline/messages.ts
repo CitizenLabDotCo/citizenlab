@@ -21,9 +21,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.datesLabel',
     defaultMessage: 'Dates',
   },
-  saveLabel: {
-    id: 'app.containers.AdminPage.ProjectTimeline.saveLabel',
-    defaultMessage: 'Save',
+  saveChangesLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.saveChangesLabel',
+    defaultMessage: 'Save changes',
   },
   saveSuccessLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.saveSuccessLabel',
@@ -36,26 +36,6 @@ export default defineMessages({
   saveSuccessMessage: {
     id: 'app.containers.AdminPage.ProjectTimeline.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved successfully.',
-  },
-  orderColumnTitle: {
-    id: 'app.containers.AdminPage.ProjectTimeline.orderColumnTitle',
-    defaultMessage: 'Order',
-  },
-  nameColumnTitle: {
-    id: 'app.containers.AdminPage.ProjectTimeline.nameColumnTitle',
-    defaultMessage: 'Name & Dates',
-  },
-  addPhaseButton: {
-    id: 'app.containers.AdminPage.ProjectTimeline.addPhaseButton',
-    defaultMessage: 'Add a phase',
-  },
-  editPhaseButton: {
-    id: 'app.containers.AdminPage.ProjectTimeline.editPhaseButton',
-    defaultMessage: 'Edit',
-  },
-  deletePhaseButton: {
-    id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseButton',
-    defaultMessage: 'Delete',
   },
   deletePhaseConfirmation: {
     id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation',
@@ -73,32 +53,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.fileUploadLabel',
     defaultMessage: 'Attach files to this phase',
   },
-  titleTimeline: {
-    id: 'app.containers.AdminPage.ProjectTimeline.titleTimeline',
-    defaultMessage: 'Manage timeline phases',
-  },
-  subtitleTimeline: {
-    id: 'app.containers.AdminPage.ProjectTimeline.subtitleTimeline',
-    defaultMessage:
-      'Define the different timeline phases for your project and describe what each phase is about. In every phase you can pick a different participation method: idea gathering, surveys, information, reacting, commenting or participatory budgeting.',
-  },
-  deletePhaseConfirmationQuestion: {
-    id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmationQuestion',
-    defaultMessage: 'Are you sure you want to delete this phase?',
-  },
-  deletePhaseInfo: {
-    id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseInfo',
-    defaultMessage:
-      'All data relating to this phase will be deleted. This cannot be undone.',
-  },
-  cancelDeletePhaseText: {
-    id: 'app.containers.AdminPage.ProjectTimeline.cancelDeleteButtonText',
-    defaultMessage: 'Cancel',
-  },
-  deletePhaseButtonText: {
-    id: 'app.containers.AdminPage.ProjectTimeline.deletePhaseButtonText',
-    defaultMessage: 'Yes, delete this phase',
-  },
   uploadAttachments: {
     id: 'app.containers.AdminPage.ProjectTimeline.uploadAttachments',
     defaultMessage: 'Upload attachments',
@@ -106,10 +60,6 @@ export default defineMessages({
   automatedEmails: {
     id: 'app.containers.AdminPage.ProjectTimeline.automatedEmails',
     defaultMessage: 'Automated emails',
-  },
-  noEndDate: {
-    id: 'app.containers.AdminPage.ProjectTimeline.noEndDate',
-    defaultMessage: 'No end date',
   },
   noEndDateCheckbox: {
     id: 'app.containers.AdminPage.ProjectTimeline.noEndDateDescription',

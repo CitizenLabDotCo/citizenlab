@@ -13,7 +13,7 @@ import useBasketsIdeas from './useBasketsIdeas';
 import useVoteForIdea from './useVoteForIdea';
 
 // utils
-import { getCurrentParticipationContext } from 'api/phases/utils';
+import { getCurrentPhase } from 'api/phases/utils';
 import { isNil } from 'utils/helperUtils';
 
 interface Props {
@@ -45,16 +45,13 @@ const useVotingInterface = (projectId?: string) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
-  const participationContext = getCurrentParticipationContext(
-    project?.data,
-    phases?.data
-  );
+  const phase = getCurrentPhase(phases?.data);
 
   const [votesPerIdea, setVotesPerIdea] = useState<Record<string, number>>({});
 
-  const { voteForIdea, processing } = useVoteForIdea(participationContext);
+  const { voteForIdea, processing } = useVoteForIdea(phase);
 
-  const basketId = participationContext?.relationships?.user_basket?.data?.id;
+  const basketId = phase?.relationships?.user_basket?.data?.id;
   const { data: basketIdeas, isFetching: basketIdeasLoading } =
     useBasketsIdeas(basketId);
 
@@ -85,8 +82,7 @@ const useVotingInterface = (projectId?: string) => {
     (ideaId: string) => {
       if (ideaId in votesPerIdea) return votesPerIdea[ideaId];
 
-      const loading =
-        !participationContext || !!(basketId && !remoteVotesPerIdea);
+      const loading = !phase || !!(basketId && !remoteVotesPerIdea);
 
       if (loading) return null;
 
@@ -94,7 +90,7 @@ const useVotingInterface = (projectId?: string) => {
         ? remoteVotesPerIdea[ideaId]
         : 0;
     },
-    [votesPerIdea, remoteVotesPerIdea, participationContext, basketId]
+    [votesPerIdea, remoteVotesPerIdea, phase, basketId]
   );
 
   const setVotes = useCallback(
@@ -109,8 +105,7 @@ const useVotingInterface = (projectId?: string) => {
     [voteForIdea, basketId]
   );
 
-  const numberOfVotesUserHas =
-    participationContext?.attributes.voting_max_total;
+  const numberOfVotesUserHas = phase?.attributes.voting_max_total;
 
   const numberOfVotesCast = useMemo(() => {
     if (remoteVotesPerIdea === undefined) return undefined;

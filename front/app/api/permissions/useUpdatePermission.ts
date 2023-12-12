@@ -3,13 +3,13 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import permissionKeys from './keys';
 
-import { IParticipationContextPermission, IPermissionUpdate } from './types';
+import { IPhasePermission, IPermissionUpdate } from './types';
 
 const updatePermission = async ({
   action,
   ...requestBody
 }: Partial<IPermissionUpdate>) =>
-  fetcher<IParticipationContextPermission>({
+  fetcher<IPhasePermission>({
     path: `/permissions/${action}`,
     action: 'patch',
     body: { permission: requestBody },
@@ -17,11 +17,7 @@ const updatePermission = async ({
 
 const useUpdatePermission = () => {
   const queryClient = useQueryClient();
-  return useMutation<
-    IParticipationContextPermission,
-    CLErrors,
-    Partial<IPermissionUpdate>
-  >({
+  return useMutation<IPhasePermission, CLErrors, Partial<IPermissionUpdate>>({
     mutationFn: updatePermission,
     onSuccess: () => {
       queryClient.invalidateQueries({

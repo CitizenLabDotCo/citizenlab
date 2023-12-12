@@ -32,7 +32,7 @@ class PhasePolicy < ApplicationPolicy
   end
 
   def survey_results?
-    ProjectPolicy.new(user, record.project).survey_results?
+    ProjectPolicy.new(user, record.project).active_moderator?
   end
 
   def submission_count?

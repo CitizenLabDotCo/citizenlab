@@ -152,7 +152,7 @@ DROP INDEX IF EXISTS public.machine_translations_translatable;
 DROP INDEX IF EXISTS public.machine_translations_lookup;
 DROP INDEX IF EXISTS public.index_volunteering_volunteers_on_user_id;
 DROP INDEX IF EXISTS public.index_volunteering_volunteers_on_cause_id_and_user_id;
-DROP INDEX IF EXISTS public.index_volunteering_causes_on_participation_context;
+DROP INDEX IF EXISTS public.index_volunteering_causes_on_phase_id;
 DROP INDEX IF EXISTS public.index_volunteering_causes_on_ordering;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_user_id;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_hashed_uid;
@@ -166,7 +166,7 @@ DROP INDEX IF EXISTS public.index_tenants_on_host;
 DROP INDEX IF EXISTS public.index_tenants_on_deleted_at;
 DROP INDEX IF EXISTS public.index_tenants_on_creation_finalized_at;
 DROP INDEX IF EXISTS public.index_surveys_responses_on_user_id;
-DROP INDEX IF EXISTS public.index_surveys_responses_on_participation_context;
+DROP INDEX IF EXISTS public.index_surveys_responses_on_phase_id;
 DROP INDEX IF EXISTS public.index_static_pages_topics_on_topic_id;
 DROP INDEX IF EXISTS public.index_static_pages_topics_on_static_page_id;
 DROP INDEX IF EXISTS public.index_static_pages_on_slug;
@@ -194,12 +194,11 @@ DROP INDEX IF EXISTS public.index_project_folders_files_on_project_folder_id;
 DROP INDEX IF EXISTS public.index_project_files_on_project_id;
 DROP INDEX IF EXISTS public.index_processed_flags_on_input;
 DROP INDEX IF EXISTS public.index_polls_responses_on_user_id;
-DROP INDEX IF EXISTS public.index_polls_responses_on_participation_context_and_user_id;
+DROP INDEX IF EXISTS public.index_polls_responses_on_phase_id;
 DROP INDEX IF EXISTS public.index_polls_response_options_on_response_id;
 DROP INDEX IF EXISTS public.index_polls_response_options_on_option_id;
+DROP INDEX IF EXISTS public.index_polls_questions_on_phase_id;
 DROP INDEX IF EXISTS public.index_polls_options_on_question_id;
-DROP INDEX IF EXISTS public.index_poll_responses_on_participation_context;
-DROP INDEX IF EXISTS public.index_poll_questions_on_participation_context;
 DROP INDEX IF EXISTS public.index_pins_on_page_id_and_admin_publication_id;
 DROP INDEX IF EXISTS public.index_pins_on_admin_publication_id;
 DROP INDEX IF EXISTS public.index_phases_on_project_id;
@@ -361,6 +360,7 @@ DROP INDEX IF EXISTS public.index_comments_on_author_id;
 DROP INDEX IF EXISTS public.index_campaigns_groups;
 DROP INDEX IF EXISTS public.index_baskets_on_user_id;
 DROP INDEX IF EXISTS public.index_baskets_on_submitted_at;
+DROP INDEX IF EXISTS public.index_baskets_on_phase_id;
 DROP INDEX IF EXISTS public.index_baskets_ideas_on_idea_id;
 DROP INDEX IF EXISTS public.index_baskets_ideas_on_basket_id_and_idea_id;
 DROP INDEX IF EXISTS public.index_areas_static_pages_on_static_page_id;
@@ -1232,36 +1232,10 @@ CREATE TABLE public.projects (
     ideas_count integer DEFAULT 0 NOT NULL,
     visible_to character varying DEFAULT 'public'::character varying NOT NULL,
     description_preview_multiloc jsonb DEFAULT '{}'::jsonb,
-    presentation_mode character varying DEFAULT 'card'::character varying,
-    participation_method character varying DEFAULT 'ideation'::character varying,
-    posting_enabled boolean DEFAULT true,
-    commenting_enabled boolean DEFAULT true,
-    reacting_enabled boolean DEFAULT true NOT NULL,
-    reacting_like_method character varying DEFAULT 'unlimited'::character varying NOT NULL,
-    reacting_like_limited_max integer DEFAULT 10,
-    process_type character varying DEFAULT 'timeline'::character varying NOT NULL,
     internal_role character varying,
-    survey_embed_url character varying,
-    survey_service character varying,
-    voting_max_total integer,
     comments_count integer DEFAULT 0 NOT NULL,
     default_assignee_id uuid,
-    poll_anonymous boolean DEFAULT false NOT NULL,
-    reacting_dislike_enabled boolean DEFAULT true NOT NULL,
-    ideas_order character varying,
-    input_term character varying DEFAULT 'idea'::character varying,
-    voting_min_total integer DEFAULT 0,
-    reacting_dislike_method character varying DEFAULT 'unlimited'::character varying NOT NULL,
-    reacting_dislike_limited_max integer DEFAULT 10,
     include_all_areas boolean DEFAULT false NOT NULL,
-    posting_method character varying DEFAULT 'unlimited'::character varying NOT NULL,
-    posting_limited_max integer DEFAULT 1,
-    allow_anonymous_participation boolean DEFAULT false NOT NULL,
-    document_annotation_embed_url character varying,
-    voting_method character varying,
-    voting_max_votes_per_idea integer,
-    voting_term_singular_multiloc jsonb DEFAULT '{}'::jsonb,
-    voting_term_plural_multiloc jsonb DEFAULT '{}'::jsonb,
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL
@@ -1687,8 +1661,7 @@ CREATE TABLE public.phases (
 
 CREATE TABLE public.polls_responses (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    participation_context_id uuid NOT NULL,
-    participation_context_type character varying NOT NULL,
+    phase_id uuid NOT NULL,
     user_id uuid,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -1716,8 +1689,7 @@ CREATE TABLE public.reactions (
 
 CREATE TABLE public.volunteering_causes (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    participation_context_id uuid NOT NULL,
-    participation_context_type character varying NOT NULL,
+    phase_id uuid NOT NULL,
     title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     volunteers_count integer DEFAULT 0 NOT NULL,
@@ -1750,7 +1722,7 @@ CREATE VIEW public.analytics_fact_participations AS
     i.author_id AS dimension_user_id,
     i.project_id AS dimension_project_id,
         CASE
-            WHEN (((pr.participation_method)::text = 'native_survey'::text) OR ((ph.participation_method)::text = 'native_survey'::text)) THEN survey.id
+            WHEN ((ph.participation_method)::text = 'native_survey'::text) THEN survey.id
             ELSE idea.id
         END AS dimension_type_id,
     (i.created_at)::date AS dimension_date_created_id,
@@ -1808,19 +1780,19 @@ UNION ALL
 UNION ALL
  SELECT pr.id,
     pr.user_id AS dimension_user_id,
-    COALESCE(p.project_id, pr.participation_context_id) AS dimension_project_id,
+    COALESCE(p.project_id, pr.phase_id) AS dimension_project_id,
     adt.id AS dimension_type_id,
     (pr.created_at)::date AS dimension_date_created_id,
     0 AS reactions_count,
     0 AS likes_count,
     0 AS dislikes_count
    FROM ((public.polls_responses pr
-     LEFT JOIN public.phases p ON ((p.id = pr.participation_context_id)))
+     LEFT JOIN public.phases p ON ((p.id = pr.phase_id)))
      JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'poll'::text)))
 UNION ALL
  SELECT vv.id,
     vv.user_id AS dimension_user_id,
-    COALESCE(p.project_id, vc.participation_context_id) AS dimension_project_id,
+    COALESCE(p.project_id, vc.phase_id) AS dimension_project_id,
     adt.id AS dimension_type_id,
     (vv.created_at)::date AS dimension_date_created_id,
     0 AS reactions_count,
@@ -1828,7 +1800,7 @@ UNION ALL
     0 AS dislikes_count
    FROM (((public.volunteering_volunteers vv
      LEFT JOIN public.volunteering_causes vc ON ((vc.id = vv.cause_id)))
-     LEFT JOIN public.phases p ON ((p.id = vc.participation_context_id)))
+     LEFT JOIN public.phases p ON ((p.id = vc.phase_id)))
      JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
 
 
@@ -1891,7 +1863,7 @@ CREATE VIEW public.analytics_fact_posts AS
      LEFT JOIN public.ideas_phases iph ON ((iph.idea_id = i.id)))
      LEFT JOIN public.phases ph ON ((ph.id = iph.phase_id)))
      LEFT JOIN public.projects pr ON ((pr.id = i.project_id)))
-  WHERE (((ph.id IS NULL) OR ((ph.participation_method)::text <> 'native_survey'::text)) AND ((pr.participation_method)::text <> 'native_survey'::text))
+  WHERE ((ph.id IS NULL) OR ((ph.participation_method)::text <> 'native_survey'::text))
 UNION ALL
  SELECT i.id,
     i.author_id AS user_id,
@@ -1933,7 +1905,7 @@ CREATE VIEW public.analytics_fact_project_statuses AS
         )
  SELECT ap.publication_id AS dimension_project_id,
     ap.publication_status AS status,
-    ((((p.process_type)::text = 'continuous'::text) AND ((ap.publication_status)::text = 'archived'::text)) OR ((fsftp.project_id IS NOT NULL) AND ((ap.publication_status)::text <> 'draft'::text))) AS finished,
+    (((ap.publication_status)::text = 'archived'::text) OR ((fsftp.project_id IS NOT NULL) AND ((ap.publication_status)::text <> 'draft'::text))) AS finished,
     COALESCE(fsftp."timestamp", ap.updated_at) AS "timestamp",
     COALESCE((fsftp."timestamp")::date, (ap.updated_at)::date) AS dimension_date_id
    FROM ((public.admin_publications ap
@@ -2113,8 +2085,7 @@ CREATE TABLE public.baskets (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     submitted_at timestamp without time zone,
     user_id uuid,
-    participation_context_id uuid,
-    participation_context_type character varying,
+    phase_id uuid,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -3147,8 +3118,7 @@ CREATE TABLE public.polls_options (
 
 CREATE TABLE public.polls_questions (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    participation_context_id uuid NOT NULL,
-    participation_context_type character varying NOT NULL,
+    phase_id uuid NOT NULL,
     title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     ordering integer,
     created_at timestamp without time zone NOT NULL,
@@ -3457,8 +3427,7 @@ CREATE TABLE public.static_pages_topics (
 
 CREATE TABLE public.surveys_responses (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    participation_context_id uuid NOT NULL,
-    participation_context_type character varying NOT NULL,
+    phase_id uuid NOT NULL,
     survey_service character varying NOT NULL,
     external_survey_id character varying NOT NULL,
     external_response_id character varying NOT NULL,
@@ -5053,6 +5022,13 @@ CREATE INDEX index_baskets_ideas_on_idea_id ON public.baskets_ideas USING btree 
 
 
 --
+-- Name: index_baskets_on_phase_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_baskets_on_phase_id ON public.baskets USING btree (phase_id);
+
+
+--
 -- Name: index_baskets_on_submitted_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6180,24 +6156,17 @@ CREATE UNIQUE INDEX index_pins_on_page_id_and_admin_publication_id ON public.pin
 
 
 --
--- Name: index_poll_questions_on_participation_context; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_poll_questions_on_participation_context ON public.polls_questions USING btree (participation_context_type, participation_context_id);
-
-
---
--- Name: index_poll_responses_on_participation_context; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_poll_responses_on_participation_context ON public.polls_responses USING btree (participation_context_type, participation_context_id);
-
-
---
 -- Name: index_polls_options_on_question_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_polls_options_on_question_id ON public.polls_options USING btree (question_id);
+
+
+--
+-- Name: index_polls_questions_on_phase_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_polls_questions_on_phase_id ON public.polls_questions USING btree (phase_id);
 
 
 --
@@ -6215,10 +6184,10 @@ CREATE INDEX index_polls_response_options_on_response_id ON public.polls_respons
 
 
 --
--- Name: index_polls_responses_on_participation_context_and_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_polls_responses_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_polls_responses_on_participation_context_and_user_id ON public.polls_responses USING btree (participation_context_id, participation_context_type, user_id);
+CREATE INDEX index_polls_responses_on_phase_id ON public.polls_responses USING btree (phase_id);
 
 
 --
@@ -6411,10 +6380,10 @@ CREATE INDEX index_static_pages_topics_on_topic_id ON public.static_pages_topics
 
 
 --
--- Name: index_surveys_responses_on_participation_context; Type: INDEX; Schema: public; Owner: -
+-- Name: index_surveys_responses_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_surveys_responses_on_participation_context ON public.surveys_responses USING btree (participation_context_type, participation_context_id);
+CREATE INDEX index_surveys_responses_on_phase_id ON public.surveys_responses USING btree (phase_id);
 
 
 --
@@ -6509,10 +6478,10 @@ CREATE INDEX index_volunteering_causes_on_ordering ON public.volunteering_causes
 
 
 --
--- Name: index_volunteering_causes_on_participation_context; Type: INDEX; Schema: public; Owner: -
+-- Name: index_volunteering_causes_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_volunteering_causes_on_participation_context ON public.volunteering_causes USING btree (participation_context_type, participation_context_id);
+CREATE INDEX index_volunteering_causes_on_phase_id ON public.volunteering_causes USING btree (phase_id);
 
 
 --
@@ -8043,6 +8012,14 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231103094549'),
 ('20231109101517'),
 ('20231110112415'),
+('20231120090516'),
+('20231123141534'),
+('20231123161330'),
+('20231123173159'),
+('20231124090234'),
+('20231124112723'),
+('20231124114112'),
+('20231130093345'),
 ('20231212151032');
 
 

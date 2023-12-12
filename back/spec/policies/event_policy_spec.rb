@@ -9,7 +9,7 @@ describe EventPolicy do
   let(:attendee_id) { nil }
 
   context 'on event in a public project' do
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:single_phase_ideation_project) }
     let!(:event) { create(:event, project: project) }
 
     context 'for a visitor' do

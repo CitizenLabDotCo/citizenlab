@@ -22,7 +22,6 @@ import { isRtl } from 'utils/styleUtils';
 // typings
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
 import useIdeaReaction from 'api/idea_reactions/useIdeaReaction';
 import usePhases from 'api/phases/usePhases';
 import useAddIdeaReaction from 'api/idea_reactions/useAddIdeaReaction';
@@ -77,9 +76,6 @@ const ReactionControl = ({
   const { mutate: deleteReaction, isLoading: deleteReactionIsLoading } =
     useDeleteIdeaReaction();
   const { data: authUser } = useAuthUser();
-  const { data: project } = useProjectById(
-    idea?.data.relationships.project.data.id
-  );
   const { data: phases } = usePhases(idea?.data.relationships.project.data.id);
   const { data: reactionData } = useIdeaReaction(
     idea?.data.relationships.user_reaction?.data?.id
@@ -156,15 +152,10 @@ const ReactionControl = ({
     phases?.data
       .filter((phase) => includes(ideaPhaseIds, phase.id))
       .map((phase) => phase);
-  const isContinuousProject =
-    project?.data.attributes.process_type === 'continuous';
   const latestRelevantIdeaPhase = ideaPhases
     ? getLatestRelevantPhase(ideaPhases)
     : null;
-  const participationContextType = isContinuousProject ? 'project' : 'phase';
-  const participationContextId = isContinuousProject
-    ? project?.data.id || null
-    : latestRelevantIdeaPhase?.id || null;
+  const phaseId = latestRelevantIdeaPhase?.id || null;
 
   // Reactions count
   const likesCount = ideaAttributes.likes_count;
@@ -195,12 +186,12 @@ const ReactionControl = ({
       myReactionMode && reactionMode === myReactionMode
     );
 
-    if (!participationContextId || !participationContextType) return;
+    if (!phaseId) return;
 
     const context = {
       action: 'reacting_idea',
-      id: participationContextId,
-      type: participationContextType,
+      id: phaseId,
+      type: 'phase',
     } as const;
 
     const successAction: SuccessAction = {

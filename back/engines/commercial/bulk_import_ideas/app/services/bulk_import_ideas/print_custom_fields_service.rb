@@ -11,8 +11,8 @@ class BulkImportIdeas::PrintCustomFieldsService
   QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc number]
   FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|img|a){1}[^>]*/?>}
 
-  def initialize(participation_context, custom_fields, locale, personal_data_enabled)
-    @participation_context = participation_context
+  def initialize(phase, custom_fields, locale, personal_data_enabled)
+    @phase = phase
     @custom_fields = custom_fields
     @locale = locale
     @personal_data_enabled = personal_data_enabled
@@ -98,24 +98,14 @@ class BulkImportIdeas::PrintCustomFieldsService
   end
 
   def write_form_title(pdf)
-    pc_title = @participation_context.title_multiloc[@locale]
+    phase_title = @phase.title_multiloc[@locale]
+    project_title = @phase.project.title_multiloc[@locale]
 
-    if @participation_context.instance_of? Project
-      pdf.text(
-        "<b>#{pc_title}</b>",
-        size: 20,
-        inline_format: true
-      )
-    else
-      project = @participation_context.project
-      project_title = project.title_multiloc[@locale]
-
-      pdf.text(
-        "<b>#{project_title} - #{pc_title}</b>",
-        size: 20,
-        inline_format: true
-      )
-    end
+    pdf.text(
+      "<b>#{project_title} - #{phase_title}</b>",
+      size: 20,
+      inline_format: true
+    )
 
     pdf.move_down 9.mm
   end
@@ -164,7 +154,7 @@ class BulkImportIdeas::PrintCustomFieldsService
     pdf.move_down 4.mm
 
     # Personal data explanation
-    participation_method = @participation_context.participation_method
+    participation_method = @phase.participation_method
     personal_data_explanation_key = "form_builder.pdf_export.personal_data_explanation_#{participation_method}"
     pdf.text I18n.with_locale(@locale) {
       I18n.t(
@@ -275,14 +265,12 @@ class BulkImportIdeas::PrintCustomFieldsService
       paragraphs.each do |paragraph|
         pdf.text(paragraph, inline_format: true)
       end
-
-      # pdf.move_down 2.mm
     end
   end
 
   def write_instructions_and_disclaimers(pdf, custom_field)
     show_multiselect_instructions = custom_field.input_type == 'multiselect'
-    participation_method = Factory.instance.participation_method_for @participation_context
+    participation_method = Factory.instance.participation_method_for @phase
     show_visibility_disclaimer = participation_method.supports_idea_form? && custom_field.answer_visible_to == 'admins'
 
     if show_multiselect_instructions || show_visibility_disclaimer

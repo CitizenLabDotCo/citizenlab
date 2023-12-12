@@ -74,18 +74,18 @@ resource 'Volunteering Volunteers' do
       end
     end
 
-    get 'web_api/v1/projects/:participation_context_id/volunteers/as_xlsx' do
+    get 'web_api/v1/phases/:phase_id/volunteers/as_xlsx' do
       before do
-        @project = create(:continuous_volunteering_project)
-        @cause1 = create(:cause, title_multiloc: { en: 'For sure works with very long titles too!!!' }, participation_context: @project)
+        @phase = create(:volunteering_phase)
+        @cause1 = create(:cause, title_multiloc: { en: 'For sure works with very long titles too!!!' }, phase: @phase)
         @volunteers1 = create_list(:volunteer, 3, cause: @cause1)
-        @cause2 = create(:cause, participation_context: @project)
+        @cause2 = create(:cause, phase: @phase)
         @volunteers2 = create_list(:volunteer, 3, cause: @cause2)
         create(:cause)
         create(:volunteer)
       end
 
-      let(:participation_context_id) { @project.id }
+      let(:phase_id) { @phase.id }
 
       example_request 'XLSX export all volunteers of a project' do
         assert_status 200

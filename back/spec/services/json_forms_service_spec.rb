@@ -213,7 +213,7 @@ describe JsonFormsService do
     # - Add author and budget when admin (in JsonFormsService)
     describe 'input_ui_and_json_multiloc_schemas' do
       let(:input_term) { 'question' }
-      let(:project) { create(:continuous_budgeting_project, input_term: input_term) }
+      let(:project) { create(:single_phase_budgeting_project, phase_attrs: { input_term: input_term }) }
       let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
       let!(:section) do
         create(
