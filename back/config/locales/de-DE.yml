@@ -27,8 +27,8 @@ de:
     threshold_reached_description: Schwelle erreicht
     answered: Grenzwert erreicht und beantwortet
     answered_description: beantwortet
-    ineligible: untauglich
-    ineligible_description: untauglich
+    ineligible: abgelehnt
+    ineligible_description: abgelehnt
   topics:
     nature: Natur und Artenvielfalt
     nature_description: Natur und Artenvielfalt
