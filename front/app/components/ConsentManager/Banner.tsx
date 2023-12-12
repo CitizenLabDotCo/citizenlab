@@ -181,7 +181,6 @@ const Banner = ({ onAccept, onChangePreferences, onClose }: Props) => {
               textColor={colors.white}
               onClick={onClose}
               p="0px"
-              ml="4px"
             >
               <FormattedMessage {...messages.rejectAll} />
             </Button>
