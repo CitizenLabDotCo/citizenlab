@@ -391,6 +391,7 @@
   "app.components.ProjectCard.viewTheOptions": "اعرض الخيارات",
   "app.components.ProjectCard.viewTheProjects": "اعرض المشروعات ",
   "app.components.ProjectCard.viewTheQuestions": "اعرض الأسئلة",
+  "app.components.ProjectCard.vote": "تصويت",
   "app.components.ProjectCard.xComments": "{commentsCount, plural, one {# تعليق} other {# تعليقات}}",
   "app.components.ProjectCard.xContributions": "{ideasCount, plural, no {# contributions} واحدة {# contribution} أخرى {# contributions}}",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {لا توجد أفكار بعد} one {# فكرة} other {# أفكار}}",
