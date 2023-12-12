@@ -181,7 +181,6 @@ const config = {
 
     sourceMapToSentry &&
       new SentryCliPlugin({
-        include: path.join(process.cwd(), 'build'),
         release: process.env.CIRCLE_BUILD_NUM,
       }),
 
