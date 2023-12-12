@@ -160,9 +160,20 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
               mr="2px"
               fill={colors.coolGrey600}
             />
-            <Text color="coolGrey600" my="0px" variant="bodyS">
-              {startAt} → {endAt}
-            </Text>
+            <Button
+              buttonStyle="text"
+              fontSize="14px"
+              onClick={() => {
+                clHistory.push(
+                  `/admin/projects/${projectId}/phases/${phase.id}/setup`
+                );
+              }}
+              padding="0"
+            >
+              <Text color="coolGrey600" my="0px" variant="bodyS">
+                {startAt} → {endAt}
+              </Text>
+            </Button>
             {participationRequirementsMessage && (
               <Text color="coolGrey600" my="0px" variant="bodyS">
                 <Tippy
