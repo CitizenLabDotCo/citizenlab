@@ -391,6 +391,7 @@
   "app.components.ProjectCard.viewTheOptions": "Δείτε τις επιλογές",
   "app.components.ProjectCard.viewTheProjects": "Δείτε τα έργα",
   "app.components.ProjectCard.viewTheQuestions": "Δείτε τις ερωτήσεις",
+  "app.components.ProjectCard.vote": "Ψηφίστε",
   "app.components.ProjectCard.xComments": "{commentsCount, plural, one {# σχόλια} other {# σχόλια}}",
   "app.components.ProjectCard.xContributions": "{ideasCount, plural, one {# συνεισφορά} other {# συνεισφορές}}",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {δεν υπάρχουν ιδέες ακόμα} one {# ιδέα} other {# ιδέες}}",
