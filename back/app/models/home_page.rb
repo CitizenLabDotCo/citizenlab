@@ -110,8 +110,8 @@ class HomePage < ApplicationRecord
   end
 
   def set_craftjs_json
-    layout = content_builder_layouts.find_by code: 'homepage'
-    return if layout&.craftjs_json.present? || nested_attributes_options.key?(:content_builder_layouts)
+    layout = content_builder_layouts.find { |layout| layout.code == 'homepage' }
+    return if layout&.craftjs_json.present?
 
     layout ||= content_builder_layouts.new code: 'homepage', enabled: true
     craftjs_filepath = Rails.root.join('config/homepage/default_craftjs.json.erb')
