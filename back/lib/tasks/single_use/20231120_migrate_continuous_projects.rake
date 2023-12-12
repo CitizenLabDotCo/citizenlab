@@ -18,7 +18,7 @@ namespace :single_use do
 
       Rails.logger.info "PROCESSING TENANT: #{tenant.host}..."
       Apartment::Tenant.switch(tenant.schema_name) do
-        project_migrator = Tasks::SingleUse::Services::ContinuousProjectMigrationService.new
+        project_migrator = ContinuousProjectMigrationService.new
         project_migrator.migrate(persist_changes)
         stats[tenant.host] = project_migrator.stats
       end
@@ -43,7 +43,7 @@ namespace :single_use do
 
       Rails.logger.info "PROCESSING TENANT: #{tenant.host}..."
       Apartment::Tenant.switch(tenant.schema_name) do
-        project_migrator = Tasks::SingleUse::Services::ContinuousProjectMigrationService.new
+        project_migrator = ContinuousProjectMigrationService.new
         project_migrator.fix_survey_custom_forms
       end
     end

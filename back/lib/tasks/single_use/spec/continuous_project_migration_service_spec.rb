@@ -9,7 +9,7 @@ RSpec.configure do |config|
   end
 end
 
-RSpec.describe Tasks::SingleUse::Services::ContinuousProjectMigrationService do
+RSpec.describe ContinuousProjectMigrationService do
   subject(:service) { described_class.new }
 
   shared_examples 'project_settings' do
