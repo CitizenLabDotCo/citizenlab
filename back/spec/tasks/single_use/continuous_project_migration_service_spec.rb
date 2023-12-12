@@ -12,7 +12,7 @@ end
 RSpec.describe Tasks::SingleUse::Services::ContinuousProjectMigrationService do
   subject(:service) { described_class.new }
 
-  before { skip } # Skip tests in CI - may break because single_use only
+  before { skip 'Breaking now single_use task has been run' }
 
   shared_examples 'project_settings' do
     let_it_be(:continuous_project_attributes) { project.attributes.symbolize_keys.clone }
