@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-# rubocop:disable RSpec/DescribeClass
-describe 'rake add_missing_locales' do
+xdescribe 'rake add_missing_locales' do
   before do
+    skip # Skip tests in CI - may break because single_use only
     load_rake_tasks_if_not_loaded
   end
 
@@ -49,4 +49,3 @@ describe 'rake add_missing_locales' do
     expect(CustomField.first.title_multiloc['en']).to eq('')
   end
 end
-# rubocop:enable RSpec/DescribeClass

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'services/continuous_project_migration_service'
-
 # to persist changes run: single_use:migrate_continuous_projects[true]
 # to persist changes for one host run: single_use:migrate_continuous_projects[true,localhost]
 namespace :single_use do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ContinuousProjectMigrationService
+class Tasks::SingleUse::Services::ContinuousProjectMigrationService
   def initialize
     @stats = { projects: 0, success: 0, records_updated: 0, errors: [] }
   end
