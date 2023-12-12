@@ -33,6 +33,7 @@
 #  internal_comments_count  :integer          default(0), not null
 #  votes_count              :integer          default(0), not null
 #  followers_count          :integer          default(0), not null
+#  participation_method     :string           default("ideation"), not null
 #
 # Indexes
 #
@@ -56,6 +57,8 @@ class Idea < ApplicationRecord
   include Post
   include AnonymousParticipation
   extend OrderAsSpecified
+
+  PARTICIPATION_METHODS = %w[ideation native_survey].freeze
 
   belongs_to :project, touch: true
   belongs_to :creation_phase, class_name: 'Phase', optional: true
@@ -94,6 +97,8 @@ class Idea < ApplicationRecord
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
+  before_validation :assign_participation_method, on: :create
+
   with_options unless: :draft? do |post|
     post.before_validation :strip_title
     post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
@@ -107,6 +112,7 @@ class Idea < ApplicationRecord
   end
 
   validate :validate_creation_phase
+  validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
 
   # validates :custom_field_values, json: {
   #   schema: :schema_for_validation,
@@ -168,8 +174,9 @@ class Idea < ApplicationRecord
   end
 
   def input_term
-    return creation_phase.input_term if participation_method_on_creation.creation_phase?
+    return creation_phase.input_term if creation_phase
 
+    # TODO: JS - Refactor into the TimelineService
     current_phase = TimelineService.new.current_phase project
     return current_phase.input_term if current_phase&.can_contain_ideas?
 
@@ -190,8 +197,9 @@ class Idea < ApplicationRecord
     end
   end
 
+  # TODO: JS - Will return none as a participation method if the idea has no creation phase? But this may not work - should it be ideation?
   def participation_method_on_creation
-    Factory.instance.participation_method_for creation_phase || project
+    Factory.instance.participation_method_for creation_phase
   end
 
   private
@@ -240,6 +248,10 @@ class Idea < ApplicationRecord
     end
   end
 
+  def assign_participation_method
+    participation_method_on_creation.assign_input_participation_method self
+  end
+
   def validate_creation_phase
     return unless creation_phase
 
@@ -256,7 +268,7 @@ class Idea < ApplicationRecord
       errors.add(
         :creation_phase,
         :invalid_participation_method,
-        message: 'The creation phase cannot be set for transitive participation methods'
+        message: 'The creation phase cannot be set for this participation method'
       )
     end
   end

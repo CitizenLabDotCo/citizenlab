@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Idea do
+  before { IdeaStatus.create_defaults }
+
   context 'associations' do
     it { is_expected.to have_many(:reactions) }
   end
@@ -27,24 +29,43 @@ RSpec.describe Idea do
   end
 
   describe '#participation_method_on_creation' do
-    context 'in a timeline project when a creation phase is present' do
-      let(:project) { create(:project_with_future_native_survey_phase) }
-      let(:creation_phase) { project.phases.first }
-      let(:idea) { build(:idea, project: project, creation_phase: creation_phase) }
+    context 'an idea has a native_survey creation phase' do
+      let(:project) { create(:single_phase_native_survey_project) }
+      let(:phase) { project.phases.first }
+      let(:idea) { build(:idea, project: project, creation_phase: phase) }
 
       it 'returns ParticipationMethod::NativeSurvey' do
         expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::NativeSurvey
       end
     end
 
-    context 'in a timeline project when creation phase is NOT present' do
-      let(:project) { create(:project_with_future_native_survey_phase) }
+    context 'an idea has an ideation creation phase' do
+      let(:project) { create(:single_phase_ideation_project) }
       let(:phase) { project.phases.first }
-      let(:idea) { build(:idea, project: project) }
+      let(:idea) { build(:idea, project: project, creation_phase: phase) }
 
       it 'returns ParticipationMethod::Ideation' do
         expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::Ideation
       end
+    end
+  end
+
+  describe 'participation_method' do
+    it 'is ideation by default' do
+      idea = create(:idea)
+      expect(idea.participation_method).to eq 'ideation'
+    end
+
+    it 'is ideation when the creation phase is ideation' do
+      project = create(:single_phase_ideation_project)
+      idea = create(:idea, project: project, creation_phase: project.phases.first)
+      expect(idea.participation_method).to eq 'ideation'
+    end
+
+    it 'is native_survey when the creation phase is native_survey' do
+      project = create(:single_phase_native_survey_project)
+      idea = create(:idea, project: project, creation_phase: project.phases.first)
+      expect(idea.participation_method).to eq 'native_survey'
     end
   end
 
@@ -276,8 +297,6 @@ RSpec.describe Idea do
   end
 
   context 'creation_phase' do
-    before { IdeaStatus.create_defaults }
-
     it 'is invalid for a phase that does not belong to the input\'s project' do
       project = create(:project_with_active_native_survey_phase)
       response = build(:idea, project: project, creation_phase: create(:native_survey_phase))
@@ -297,11 +316,10 @@ RSpec.describe Idea do
       expect(response).to be_valid
     end
 
-    it 'is invalid for transitive participation methods in a timeline project' do
-      project = create(:project_with_active_ideation_phase)
+    it 'is valid when the idea participation method matches the creation phase participation method' do
+      project = create(:single_phase_ideation_project)
       idea = build(:idea, project: project, creation_phase: project.phases.first)
-      expect(idea).to be_invalid
-      expect(idea.errors.details).to eq({ creation_phase: [{ error: :invalid_participation_method }] })
+      expect(idea).to be_valid
     end
 
     it 'deleting a phase used as creation phase of an input fails' do

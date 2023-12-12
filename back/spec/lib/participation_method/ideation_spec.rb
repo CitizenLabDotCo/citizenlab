@@ -168,7 +168,7 @@ RSpec.describe ParticipationMethod::Ideation do
 
   describe '#creation_phase?' do
     it 'returns false' do
-      expect(participation_method.creation_phase?).to be false
+      expect(participation_method.creation_phase?).to be true
     end
   end
 
