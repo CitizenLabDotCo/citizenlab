@@ -30,13 +30,5 @@ module Insights
 
     validates :view, :origin, presence: true
     validates :origin_type, inclusion: { in: ORIGIN_TYPES }
-
-    after_destroy :destroy_view
-
-    private
-
-    def destroy_view
-      view.destroy
-    end
   end
 end
