@@ -1134,7 +1134,7 @@
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} wurde benachrichtigt und wird eine Antwort geben. Abstimmung bleibt geöffnet.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "Der Grenzwert wurde erreicht.",
   "app.containers.InitiativesShow.VoteControl.unvoteLink": "Meine Stimme streichen",
-  "app.containers.InitiativesShow.VoteControl.vote": "Stimmen",
+  "app.containers.InitiativesShow.VoteControl.vote": "Abstimmen",
   "app.containers.InitiativesShow.VoteControl.votedText": "Du wirst benachrichtigt, sobald dein Vorschlag in die nächste Stufe kommt. {x, plural, =0 {Es sind {xDays} übrig.} one {Es ist {xDays} Tag übrig.} other {Es sind {xDays} übrig.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Ihre Stimme ist abgegeben worden!",
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Abstimmen ist derzeit nicht möglich",
