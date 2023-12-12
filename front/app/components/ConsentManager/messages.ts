@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Banner.close',
     defaultMessage: 'Close',
   },
+  rejectAll: {
+    id: 'app.components.ConsentManager.Banner.rejectAll',
+    defaultMessage: 'Reject all',
+  },
   mainText: {
     id: 'app.components.ConsentManager.Banner.mainText',
     defaultMessage: 'By navigating the platform, you agree to our {policyLink}',

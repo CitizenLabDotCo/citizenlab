@@ -108,7 +108,7 @@ describe('<ConsentManager />', () => {
 
     it('rejects all cookies except functional if banner is closed', () => {
       const { container } = render(<ConsentManager />);
-      fireEvent.click(container.querySelector('.e2e-close-cookie-banner'));
+      fireEvent.click(container.querySelector('.e2e-reject-all-cookie-banner'));
 
       expect(setConsent).toHaveBeenCalledWith({
         functional: true,

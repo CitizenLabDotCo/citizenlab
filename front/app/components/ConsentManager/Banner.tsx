@@ -1,19 +1,18 @@
 import React from 'react';
 
 // styling
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
-import { rgba } from 'polished';
 
 // components
 import ContentContainer from 'components/ContentContainer';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
-import CloseIconButton from 'components/UI/CloseIconButton';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   position: fixed;
@@ -99,6 +98,8 @@ const StyledLink = styled(Link)`
 
 const ButtonContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -106,37 +107,15 @@ const ButtonContainer = styled.div`
 `;
 
 const AcceptButton = styled(Button)`
-  margin-right: 10px;
-
   ${media.phone`
-    margin-right: 0px;
     order: 2;
-  `}
-
-  ${isRtl`
-    margin-right: 0px;
-    margin-left: 10px;
-
-    ${media.phone`
-      margin-left: 0px;
-    `}
   `}
 `;
 
 const PreferencesButton = styled(Button)`
   ${media.phone`
-    margin-right: 10px;
     order: 1;
   `}
-`;
-
-const StyledCloseIconButton = styled(CloseIconButton)`
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  background: none;
 `;
 
 interface Props {
@@ -146,6 +125,9 @@ interface Props {
 }
 
 const Banner = ({ onAccept, onChangePreferences, onClose }: Props) => {
+  const isPhoneOrSmaller = useBreakpoint('phone');
+  const theme = useTheme();
+
   return (
     <Container tabIndex={0} role="dialog" id="e2e-cookie-banner">
       <ContentContainer mode="page">
@@ -168,34 +150,44 @@ const Banner = ({ onAccept, onChangePreferences, onClose }: Props) => {
             </Line>
           </Left>
           <ButtonContainer>
-            <AcceptButton
-              className="e2e-accept-cookies-btn"
-              buttonStyle="primary-inverse"
-              textColor={colors.primary}
-              textHoverColor={colors.primary}
-              onClick={onAccept}
+            <Box
+              display="flex"
+              gap="16px"
+              justifyContent={theme.isRtl ? 'flex-end' : 'flex-start'}
+              width={isPhoneOrSmaller ? '100%' : undefined}
             >
-              <FormattedMessage {...messages.accept} />
-            </AcceptButton>
-            <PreferencesButton
-              className="integration-open-modal"
-              buttonStyle="primary-inverse"
-              textColor={colors.primary}
-              textHoverColor={colors.primary}
-              onClick={onChangePreferences}
+              <AcceptButton
+                className="e2e-accept-cookies-btn"
+                buttonStyle="primary-inverse"
+                textColor={colors.primary}
+                textHoverColor={colors.primary}
+                onClick={onAccept}
+              >
+                <FormattedMessage {...messages.accept} />
+              </AcceptButton>
+              <PreferencesButton
+                className="integration-open-modal"
+                buttonStyle="primary-inverse"
+                textColor={colors.primary}
+                textHoverColor={colors.primary}
+                onClick={onChangePreferences}
+              >
+                <FormattedMessage {...messages.manage} />
+              </PreferencesButton>
+            </Box>
+            <Button
+              className="e2e-reject-all-cookie-banner"
+              buttonStyle="text"
+              textColor={colors.white}
+              onClick={onClose}
+              p="0px"
+              ml="4px"
             >
-              <FormattedMessage {...messages.manage} />
-            </PreferencesButton>
+              <FormattedMessage {...messages.rejectAll} />
+            </Button>
           </ButtonContainer>
         </ContentContainerInner>
       </ContentContainer>
-      <StyledCloseIconButton
-        className="e2e-close-cookie-banner"
-        a11y_buttonActionMessage={messages.ariaButtonClose}
-        onClick={onClose}
-        iconColor={rgba(255, 255, 255, 0.7)}
-        iconColorOnHover={'#fff'}
-      />
     </Container>
   );
 };
