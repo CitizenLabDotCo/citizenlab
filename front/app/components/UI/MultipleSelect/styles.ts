@@ -36,6 +36,10 @@ function getSelectStyles(borderColor = colors.borderDark) {
       ...base,
       color: '#999',
     }),
+    menuList: (base) => ({
+      ...base,
+      borderRadius: '3px',
+    }),
     option: (base, { isFocused }) => ({
       ...base,
       ':active': null,
