@@ -18,11 +18,12 @@ import {
   Icon,
   colors,
   useBreakpoint,
+  media,
+  isRtl,
 } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
 
 const Container = styled(Box)`
   display: inline-block;

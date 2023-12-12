@@ -16,7 +16,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'containers/Admin/users/tracks';
 
 // styling
-import { colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 
 import Error from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';

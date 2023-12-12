@@ -6,6 +6,7 @@ import {
   Box,
   Text,
   useBreakpoint,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
 
@@ -14,7 +15,6 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import { colors } from 'utils/styleUtils';
 import { ItemMenu, StyledBox } from './styles';
 
 export const SupportMenu = () => {

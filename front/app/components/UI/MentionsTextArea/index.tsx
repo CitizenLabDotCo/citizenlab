@@ -9,7 +9,11 @@ import Error from 'components/UI/Error';
 
 // style
 import styled, { useTheme } from 'styled-components';
-import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
+import {
+  colors,
+  fontSizes,
+  defaultStyles,
+} from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
 
 // Utils

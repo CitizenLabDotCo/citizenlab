@@ -7,7 +7,7 @@ export interface Report {
   id: string;
   type: 'report';
   attributes: {
-    name: string;
+    name: string | null;
     created_at: string;
     updated_at: string;
   };

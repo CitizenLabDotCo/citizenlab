@@ -3,7 +3,12 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import { Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Spinner,
+  useBreakpoint,
+  media,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
@@ -29,8 +34,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
-
 // constants
 
 // typings

@@ -2,8 +2,7 @@ import React from 'react';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // components
 import { TextCell } from 'components/admin/ResourceList';

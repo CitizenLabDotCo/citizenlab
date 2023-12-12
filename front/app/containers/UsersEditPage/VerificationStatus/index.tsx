@@ -8,7 +8,12 @@ import useAuthUser from 'api/me/useAuthUser';
 import FeatureFlag from 'components/FeatureFlag';
 import { FormSection } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
-import { Icon } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  fontSizes,
+  colors,
+  media,
+} from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 
 // events
@@ -20,7 +25,6 @@ import messages from 'containers/UsersEditPage/messages';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Container = styled(FormSection)`

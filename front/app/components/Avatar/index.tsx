@@ -6,7 +6,7 @@
 import React, { memo } from 'react';
 
 // components
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Link from 'utils/cl-router/Link';
 
@@ -16,7 +16,6 @@ import useUserById from 'api/users/useUserById';
 // styles
 import styled, { useTheme } from 'styled-components';
 import { lighten } from 'polished';
-import { colors } from 'utils/styleUtils';
 import BoringAvatar from 'boring-avatars';
 import { isNilOrError } from 'utils/helperUtils';
 

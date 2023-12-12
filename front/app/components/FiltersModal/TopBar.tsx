@@ -9,7 +9,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
 
 const Container = styled.div`

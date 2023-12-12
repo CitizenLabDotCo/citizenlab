@@ -1,7 +1,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Range, getTrackBackground } from 'react-range';
 import styled from 'styled-components';
-import { colors, defaultOutline } from 'utils/styleUtils';
+import { colors, defaultOutline } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   display: flex;

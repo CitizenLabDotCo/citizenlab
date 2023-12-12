@@ -2,7 +2,14 @@ import React from 'react';
 
 // hooks
 import usePhase from 'api/phases/usePhase';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
+import {
+  useWindowSize,
+  media,
+  colors,
+  fontSizes,
+  viewportWidths,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 
 // i18n
@@ -14,13 +21,6 @@ import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
-import {
-  media,
-  colors,
-  fontSizes,
-  viewportWidths,
-  isRtl,
-} from 'utils/styleUtils';
 
 const Container = styled.div<{ descriptionHasContent: boolean }>`
   display: flex;

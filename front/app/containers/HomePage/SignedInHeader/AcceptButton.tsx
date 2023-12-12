@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import Button from 'components/UI/Button';
-import { media } from 'utils/styleUtils';
+import { media } from '@citizenlab/cl2-component-library';
 
 const StyledButton = styled(Button)`
   ${media.tablet`

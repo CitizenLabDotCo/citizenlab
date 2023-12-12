@@ -10,8 +10,7 @@ import TenantLogo from './Components/TenantLogo';
 
 // style
 import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { media, isRtl, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 const Container = styled.header`
   width: 100vw;

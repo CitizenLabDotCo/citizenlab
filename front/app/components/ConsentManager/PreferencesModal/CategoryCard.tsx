@@ -5,11 +5,16 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 // components
-import { Radio, Title } from '@citizenlab/cl2-component-library';
+import {
+  Radio,
+  Title,
+  colors,
+  fontSizes,
+  media,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from '../messages';

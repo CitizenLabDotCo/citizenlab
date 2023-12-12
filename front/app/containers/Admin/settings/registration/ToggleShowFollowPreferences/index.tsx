@@ -1,7 +1,12 @@
 import React from 'react';
-import { Toggle, Box, Text, Title } from '@citizenlab/cl2-component-library';
+import {
+  Toggle,
+  Box,
+  Text,
+  Title,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
-import { colors } from 'utils/styleUtils';
 import messages from './messages';
 import { SubSectionTitle } from 'components/admin/Section';
 

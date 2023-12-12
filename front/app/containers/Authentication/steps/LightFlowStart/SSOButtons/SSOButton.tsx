@@ -5,12 +5,11 @@ import FranceConnectImage from './franceconnect.png';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
-import { Image } from '@citizenlab/cl2-component-library';
+import { Image, colors } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';

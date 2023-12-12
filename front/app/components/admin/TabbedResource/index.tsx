@@ -2,8 +2,13 @@ import React from 'react';
 
 // style
 import styled from 'styled-components';
-import { colors, isRtl } from 'utils/styleUtils';
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Title,
+  colors,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 // typings
 import { ITab } from 'typings';
 

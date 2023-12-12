@@ -1865,8 +1865,6 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 στήλη",
   "app.containers.admin.ContentBuilder.projectDescription": "Project description",
   "app.containers.admin.ContentBuilder.sections": "ΕΝΟΤΗΤΕΣ",
-  "app.containers.admin.ContentBuilder.text": "Κείμενο",
-  "app.containers.admin.ContentBuilder.textValue": "Αυτό είναι κάποιο κείμενο. Μπορείτε να το επεξεργαστείτε και να το μορφοποιήσετε χρησιμοποιώντας τον επεξεργαστή στον πίνακα στα δεξιά.",
   "app.containers.admin.ContentBuilder.threeColumnLayout": "3 στήλες",
   "app.containers.admin.ContentBuilder.twoColumnLayout": "2 στήλες",
   "app.containers.admin.ContentBuilder.twoColumnLayoutVariant1-2": "2 στήλες με πλάτος 30% και 60% αντίστοιχα",

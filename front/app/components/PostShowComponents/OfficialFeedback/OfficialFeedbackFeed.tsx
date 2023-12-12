@@ -6,7 +6,12 @@ import OfficialFeedbackPost from './OfficialFeedbackPost';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
+import {
+  colors,
+  fontSizes,
+  media,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';

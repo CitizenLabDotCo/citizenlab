@@ -10,7 +10,7 @@ import clHistory from 'utils/cl-router/history';
 import Outlet from 'components/Outlet';
 import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { PhaseHeader } from './phase/PhaseHeader';
-import { ProjectHeader } from './projectHeader';
+import ProjectHeader from './projectHeader';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -23,7 +23,7 @@ import { IProjectData } from 'api/projects/types';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
-import { defaultAdminCardPadding } from 'utils/styleUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 // hooks
 import { IPhaseData } from 'api/phases/types';
@@ -134,7 +134,7 @@ export const AdminProjectsProjectIndex = ({
 
   return (
     <>
-      <ProjectHeader project={project} phases={phases} />
+      <ProjectHeader projectId={project.id} />
       <Box mt="16px" px="24px">
         <Timeline
           projectId={project.id}

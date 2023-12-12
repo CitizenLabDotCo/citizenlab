@@ -12,7 +12,12 @@ import CommentsSection from 'components/PostShowComponents/Comments/CommentsSect
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import ReactionPreview from './ReactionPreview';
-import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
+import {
+  IconTooltip,
+  Box,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
@@ -39,7 +44,6 @@ import useLocalize from 'hooks/useLocalize';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import usePhases from 'api/phases/usePhases';

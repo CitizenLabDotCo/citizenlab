@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { fontSizes, colors, Icon } from '@citizenlab/cl2-component-library';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { IIdeaPostingDisabledReason } from 'utils/actionTakingRules';
 import { MessageDescriptor } from 'react-intl';

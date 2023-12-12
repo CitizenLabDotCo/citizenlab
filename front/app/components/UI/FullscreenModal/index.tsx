@@ -18,8 +18,7 @@ import { trackPage } from 'utils/analytics';
 
 // styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, media } from '@citizenlab/cl2-component-library';
 
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';

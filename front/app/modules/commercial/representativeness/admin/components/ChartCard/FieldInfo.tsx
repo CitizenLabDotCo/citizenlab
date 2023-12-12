@@ -1,11 +1,10 @@
 import React from 'react';
 
 // components
-import { Text, Icon } from '@citizenlab/cl2-component-library';
+import { Text, Icon, colors } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';

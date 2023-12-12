@@ -8,7 +8,11 @@ import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  useBreakpoint,
+  colors,
+  defaultStyles,
+} from '@citizenlab/cl2-component-library';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -24,7 +28,6 @@ import { commentReplyButtonClicked$, commentAdded } from './events';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
-import { colors, defaultStyles } from 'utils/styleUtils';
 import useAuthUser from 'api/me/useAuthUser';
 import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
 import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';

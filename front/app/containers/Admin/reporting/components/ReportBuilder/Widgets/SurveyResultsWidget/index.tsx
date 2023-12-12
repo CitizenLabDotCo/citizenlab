@@ -4,30 +4,34 @@ import React, { useCallback } from 'react';
 import { useNode } from '@craftjs/core';
 
 // styling
-import { colors, stylingConsts } from 'utils/styleUtils';
+import {
+  colors,
+  stylingConsts,
+  Box,
+  Icon,
+  Text,
+} from '@citizenlab/cl2-component-library';
 
 // components
-import { Box, Icon, Input, Text } from '@citizenlab/cl2-component-library';
 import Card from '../_shared/Card';
 import SurveyResults from './SurveyResults';
 import NoData from '../_shared/NoData';
 import ProjectFilter from '../_shared/ProjectFilter';
 import PhaseFilter from '../_shared/PhaseFilter';
 import QuestionFilter from './QuestionFilter';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-// messages
+// i18n
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import widgetMessages from '../messages';
 import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
 // types
-import { IOption } from 'typings';
-
-// utils
-import { useIntl } from 'utils/cl-intl';
+import { IOption, Multiloc } from 'typings';
 
 type Props = {
-  title: string | undefined;
+  title?: Multiloc;
   projectId?: string;
   phaseId?: string;
   shownQuestions?: boolean[];
@@ -70,7 +74,7 @@ const SurveyResultsWidgetSettings = () => {
   }));
 
   const setTitle = useCallback(
-    (value: string) => {
+    (value: Multiloc) => {
       setProp((props: Props) => {
         props.title = value;
       });
@@ -141,11 +145,11 @@ const SurveyResultsWidgetSettings = () => {
       </Box>
 
       <Box mb="20px">
-        <Input
+        <InputMultilocWithLocaleSwitcher
           id="e2e-analytics-chart-widget-title"
           label={formatMessage(messages.surveySettingsTitle)}
           type="text"
-          value={title}
+          valueMultiloc={title}
           onChange={setTitle}
         />
       </Box>
@@ -179,7 +183,7 @@ const SurveyResultsWidgetSettings = () => {
 
 SurveyResultsWidget.craft = {
   props: {
-    title: undefined,
+    title: {},
     projectId: undefined,
     phaseId: undefined,
   },

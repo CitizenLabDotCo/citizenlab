@@ -9,7 +9,6 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon, Box } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 import FollowUnfollow from 'components/FollowUnfollow';
@@ -39,13 +38,15 @@ import tracks from './tracks';
 // style
 import styled, { useTheme } from 'styled-components';
 import {
+  Icon,
+  Box,
   media,
   colors,
   fontSizes,
   defaultCardStyle,
   defaultCardHoverStyle,
   isRtl,
-} from 'utils/styleUtils';
+} from '@citizenlab/cl2-component-library';
 import { rgba, darken } from 'polished';
 
 // utils
@@ -561,6 +562,8 @@ const ProjectCard = memo<InputProps>(
 
       if (participationMethod === 'voting' && votingMethod === 'budgeting') {
         ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
+      } else if (participationMethod === 'voting') {
+        ctaMessage = <FormattedMessage {...messages.vote} />;
       } else if (participationMethod === 'information') {
         ctaMessage = <FormattedMessage {...messages.learnMore} />;
       } else if (

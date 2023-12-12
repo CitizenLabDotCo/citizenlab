@@ -8,7 +8,16 @@ import BlotFormatter from 'quill-blot-formatter';
 import 'quill/dist/quill.snow.css';
 
 // components
-import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
+import {
+  Label,
+  IconTooltip,
+  colors,
+  quillEditedContent,
+  media,
+  fontSizes,
+  defaultStyles,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -20,14 +29,6 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import {
-  colors,
-  quillEditedContent,
-  media,
-  fontSizes,
-  defaultStyles,
-  isRtl,
-} from 'utils/styleUtils';
 
 import {
   ImageBlot,

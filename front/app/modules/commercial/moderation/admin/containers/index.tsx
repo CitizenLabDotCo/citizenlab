@@ -14,6 +14,8 @@ import {
   IconTooltip,
   Select,
   Error,
+  colors,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import ModerationRow from './ModerationRow';
 import Pagination from 'components/Pagination';
@@ -42,7 +44,6 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { IOption, InsertConfigurationOptions } from 'typings';

@@ -2,7 +2,12 @@ import React, { memo } from 'react';
 
 // components
 import Button from 'components/UI/Button';
-import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  IconTooltip,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import { SubSectionTitle } from 'components/admin/Section';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
@@ -26,7 +31,6 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import useMapConfig from 'modules/commercial/custom_maps/api/map_config/useMapConfig';
 
 const Container = styled.div``;

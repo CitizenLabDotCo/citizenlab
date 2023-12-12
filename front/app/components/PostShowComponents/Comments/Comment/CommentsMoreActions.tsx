@@ -18,7 +18,7 @@ import { deleteCommentModalClosed } from '../events';
 
 // Styling
 import styled from 'styled-components';
-import { isRtl } from 'utils/styleUtils';
+import { isRtl } from '@citizenlab/cl2-component-library';
 
 import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
 import { DeleteReason, ICommentData } from 'api/comments/types';

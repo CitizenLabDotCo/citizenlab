@@ -8,11 +8,15 @@ import messages from './messages';
 
 // components
 import T from 'components/T';
-import { Icon } from '@citizenlab/cl2-component-library';
-
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors, defaultCardStyle, isRtl } from 'utils/styleUtils';
+import {
+  fontSizes,
+  colors,
+  defaultCardStyle,
+  isRtl,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken } from 'polished';
 import { Header, Title } from './styles';

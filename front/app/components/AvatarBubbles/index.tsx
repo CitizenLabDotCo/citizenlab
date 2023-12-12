@@ -9,7 +9,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 import useRandomAvatars from 'api/avatars/useRandomAvatars';
 import useAvatarsWithIds from 'api/avatars/useAvatarsWithIds';

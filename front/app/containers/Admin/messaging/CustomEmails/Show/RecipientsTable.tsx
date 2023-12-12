@@ -1,9 +1,8 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
-import { StatusLabel } from '@citizenlab/cl2-component-library';
+import { StatusLabel, colors } from '@citizenlab/cl2-component-library';
 import { IDeliveryData } from 'api/campaign_deliveries/types';
-import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import Pagination from 'components/admin/Pagination';

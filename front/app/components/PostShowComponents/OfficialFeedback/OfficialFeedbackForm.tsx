@@ -3,7 +3,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { forOwn, isEmpty } from 'lodash-es';
 
 // components
-import { Box, Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Input,
+  LocaleSwitcher,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import { Section } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -24,7 +30,6 @@ import tracks from './tracks';
 import { Multiloc, Locale } from 'typings';
 
 // stylings
-import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
 import useAddInitiativeOfficialFeedback from 'api/initiative_official_feedback/useAddInitiativeOfficialFeedback';

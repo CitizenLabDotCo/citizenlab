@@ -2,7 +2,7 @@ import React from 'react';
 
 // styles
 import styled, { useTheme } from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

@@ -2,7 +2,7 @@ import React from 'react';
 
 // styles
 import styled from 'styled-components';
-import { stylingConsts, media } from 'utils/styleUtils';
+import { stylingConsts, media } from '@citizenlab/cl2-component-library';
 
 // components
 import TopBar, { topBarHeight } from '../../../components/TopBar';

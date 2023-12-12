@@ -6,10 +6,9 @@ import { FacebookShareButton } from 'react-share';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
 // style
-import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 import styled from 'styled-components';
 

@@ -17,7 +17,7 @@ import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, isRtl } from 'utils/styleUtils';
+import { media, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';

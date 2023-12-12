@@ -1,10 +1,15 @@
 import React from 'react';
 
 // styling
-import { colors, stylingConsts } from 'utils/styleUtils';
+import {
+  colors,
+  stylingConsts,
+  Box,
+  Text,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 
 // components
-import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
 import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 
 // i18n

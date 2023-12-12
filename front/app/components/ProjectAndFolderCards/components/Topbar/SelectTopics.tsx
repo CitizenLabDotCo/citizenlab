@@ -6,8 +6,7 @@ import { capitalize } from 'lodash-es';
 import FilterSelector from 'components/FilterSelector';
 
 // styling
-import { colors } from 'utils/styleUtils';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';

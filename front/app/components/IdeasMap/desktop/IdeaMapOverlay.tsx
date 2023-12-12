@@ -6,7 +6,10 @@ import { useSearchParams } from 'react-router-dom';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
+import {
+  useWindowSize,
+  defaultCardStyle,
+} from '@citizenlab/cl2-component-library';
 
 // components
 import MapIdeasList from './MapIdeasList';
@@ -15,7 +18,6 @@ import IdeasShow from 'containers/IdeasShow';
 
 // styling
 import styled from 'styled-components';
-import { defaultCardStyle } from 'utils/styleUtils';
 
 const timeout = 200;
 

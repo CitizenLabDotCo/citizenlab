@@ -9,6 +9,7 @@ import {
   colors,
   useBreakpoint,
   defaultStyles,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import ConfettiSvg from './ConfettiSvg';
 import Warning from 'components/UI/Warning';
@@ -26,9 +27,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-// styling
-import { fontSizes } from 'utils/styleUtils';
 
 // intl
 import messages from './messages';

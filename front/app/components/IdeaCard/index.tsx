@@ -1,7 +1,14 @@
 import React, { useEffect } from 'react';
 
 // components
-import { useBreakpoint, Box, Title } from '@citizenlab/cl2-component-library';
+import {
+  useBreakpoint,
+  Box,
+  Title,
+  defaultCardStyle,
+  defaultCardHoverStyle,
+  media,
+} from '@citizenlab/cl2-component-library';
 import CardImage from './CardImage';
 import Body from './Body';
 import Footer from './Footer';
@@ -20,11 +27,6 @@ import { IIdea } from 'api/ideas/types';
 
 // styling
 import styled from 'styled-components';
-import {
-  defaultCardStyle,
-  defaultCardHoverStyle,
-  media,
-} from 'utils/styleUtils';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';

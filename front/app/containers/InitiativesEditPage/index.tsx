@@ -31,7 +31,7 @@ import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
 
 // style
-import { media } from 'utils/styleUtils';
+import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`

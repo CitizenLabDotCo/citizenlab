@@ -4,11 +4,17 @@ import React from 'react';
 import { useNode, useEditor } from '@craftjs/core';
 
 // components
-import { Radio, Box, Input, Label } from '@citizenlab/cl2-component-library';
+import {
+  Radio,
+  Box,
+  Input,
+  Label,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import ButtonComponent from 'components/UI/Button';
 
 // styles
-import { colors } from 'utils/styleUtils';
+
 import { darken } from 'polished';
 
 // hooks

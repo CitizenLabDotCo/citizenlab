@@ -391,6 +391,7 @@
   "app.components.ProjectCard.viewTheOptions": "Погледајте опције",
   "app.components.ProjectCard.viewTheProjects": "Погледајте пројекте",
   "app.components.ProjectCard.viewTheQuestions": "Погледајте питања",
+  "app.components.ProjectCard.vote": "Vote",
   "app.components.ProjectCard.xComments": "{commentsCount, plural, one {# цомментс} other {# цомментс}}",
   "app.components.ProjectCard.xContributions": "{ideasCount, plural, one {# допринос} other {# доприноса}}",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {још нема идеја} one {#идеја} other {#идеје}}",
