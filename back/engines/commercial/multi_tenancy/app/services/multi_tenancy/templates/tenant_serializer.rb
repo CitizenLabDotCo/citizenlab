@@ -63,6 +63,7 @@ module MultiTenancy
           ProjectImage => serialize_records(ProjectImage),
           ProjectsAllowedInputTopic => serialize_records(ProjectsAllowedInputTopic),
           ReportBuilder::Report => serialize_records(ReportBuilder::Report),
+          StaticPagesTopic => serialize_records(StaticPagesTopic),
           StaticPage => serialize_records(StaticPage),
           StaticPageFile => serialize_records(StaticPageFile),
           Topic => serialize_records(Topic),
