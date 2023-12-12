@@ -11,11 +11,11 @@ import {
   IconNames,
 } from '@citizenlab/cl2-component-library';
 import NavigationTabs from 'components/admin/NavigationTabs';
-import { GetPhasesChildProps } from 'resources/GetPhases';
-import { GetProjectChildProps } from 'resources/GetProject';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
 
 const StyledTitle = styled(Title)`
   display: -webkit-box;
@@ -25,25 +25,26 @@ const StyledTitle = styled(Title)`
 `;
 
 interface Props {
-  phases: GetPhasesChildProps;
-  project: GetProjectChildProps;
+  projectId: string;
 }
 
-export const ProjectHeader = ({ project, phases }: Props) => {
+const ProjectHeader = ({ projectId }: Props) => {
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const isOngoingProject = phases?.some((phase) => {
+
+  if (!project) return null;
+
+  const isOngoingProject = phases?.data.some((phase) => {
     if (!phase.attributes.end_at) {
       return true;
     }
     return moment(phase.attributes.end_at).isAfter(moment());
   });
-
-  if (!project) return null;
-
   let visibilityMessage: MessageDescriptor = messages.everyone;
   let visibilityIcon: IconNames = 'lock';
-  switch (project.attributes.visible_to) {
+  switch (project.data.attributes.visible_to) {
     case 'public':
       visibilityMessage = messages.everyone;
       visibilityIcon = 'unlock';
@@ -59,7 +60,7 @@ export const ProjectHeader = ({ project, phases }: Props) => {
   let statusMessage = messages.draft;
   let publicationStatusIcon: IconNames = 'flag';
   let publicationStatusIconColor = colors.orange;
-  switch (project.attributes.publication_status) {
+  switch (project.data.attributes.publication_status) {
     case 'published':
       publicationStatusIcon = isOngoingProject ? 'check-circle' : 'bullseye';
       publicationStatusIconColor = isOngoingProject
@@ -92,11 +93,11 @@ export const ProjectHeader = ({ project, phases }: Props) => {
       >
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <StyledTitle color="primary" variant="h4" my="0px">
-            {localize(project.attributes.title_multiloc)}
+            {localize(project.data.attributes.title_multiloc)}
           </StyledTitle>
           <Box display="flex">
             <Button
-              linkTo={`/projects/${project.attributes.slug}`}
+              linkTo={`/projects/${project.data.attributes.slug}`}
               buttonStyle="primary-inverse"
               icon="eye"
               size="s"
@@ -106,7 +107,7 @@ export const ProjectHeader = ({ project, phases }: Props) => {
               {formatMessage(messages.view)}
             </Button>
             <Button
-              linkTo={`/admin/projects/${project.id}/settings`}
+              linkTo={`/admin/projects/${project.data.id}/settings`}
               buttonStyle="secondary"
               icon="settings"
               size="s"
@@ -118,7 +119,7 @@ export const ProjectHeader = ({ project, phases }: Props) => {
         </Box>
         <Box display="flex" gap="8px">
           <Button
-            linkTo={`/admin/projects/${project.id}/settings`}
+            linkTo={`/admin/projects/${project.data.id}/settings`}
             buttonStyle="text"
             size="s"
             padding="0px"
@@ -138,7 +139,7 @@ export const ProjectHeader = ({ project, phases }: Props) => {
             ·
           </Text>
           <Button
-            linkTo={`/admin/projects/${project.id}/settings/access-rights`}
+            linkTo={`/admin/projects/${project.data.id}/settings/access-rights`}
             buttonStyle="text"
             size="s"
             padding="0px"
@@ -161,7 +162,7 @@ export const ProjectHeader = ({ project, phases }: Props) => {
             <Icon name="user" fill={colors.coolGrey600} width="16px" />
             <Text color="coolGrey600" fontSize="s" m="0px">
               {formatMessage(messages.participants, {
-                participantsCount: project.attributes.participants_count,
+                participantsCount: project.data.attributes.participants_count,
               })}
             </Text>
           </Box>
@@ -170,3 +171,5 @@ export const ProjectHeader = ({ project, phases }: Props) => {
     </NavigationTabs>
   );
 };
+
+export default ProjectHeader;

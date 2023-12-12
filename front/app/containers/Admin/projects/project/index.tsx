@@ -10,7 +10,7 @@ import clHistory from 'utils/cl-router/history';
 import Outlet from 'components/Outlet';
 import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { PhaseHeader } from './phase/PhaseHeader';
-import { ProjectHeader } from './projectHeader';
+import ProjectHeader from './ProjectHeader';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -134,7 +134,7 @@ export const AdminProjectsProjectIndex = ({
 
   return (
     <>
-      <ProjectHeader project={project} phases={phases} />
+      <ProjectHeader projectId={project.id} />
       <Box mt="16px" px="24px">
         <Timeline
           projectId={project.id}
