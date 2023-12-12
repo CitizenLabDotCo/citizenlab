@@ -5,7 +5,6 @@ require 'rails_helper'
 # rubocop:disable RSpec/DescribeClass
 describe 'rake add_missing_locales' do
   before do
-    skip 'May break because this is a single_use only task'
     load_rake_tasks_if_not_loaded
   end
 
