@@ -11,7 +11,12 @@ import useDeleteCategory from 'modules/commercial/insights/api/categories/useDel
 
 // styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import {
+  colors,
+  Dropdown,
+  DropdownListItem,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 
 // utils
 import clHistory from 'utils/cl-router/history';
@@ -21,11 +26,7 @@ import { injectIntl } from 'utils/cl-intl';
 
 // components
 import Modal from 'components/UI/Modal';
-import {
-  Dropdown,
-  DropdownListItem,
-  IconTooltip,
-} from '@citizenlab/cl2-component-library';
+
 import {
   TooltipContent,
   SectionTitle,

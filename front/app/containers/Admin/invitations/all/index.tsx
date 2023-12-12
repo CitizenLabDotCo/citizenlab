@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 
 // components
-import { Table, Tbody, Tfoot, Tr, Td } from '@citizenlab/cl2-component-library';
+import {
+  Table,
+  Tbody,
+  Tfoot,
+  Tr,
+  Td,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
 import TableHeader from './TableHeader';
@@ -14,7 +22,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
 import { API_PATH } from 'containers/App/constants';

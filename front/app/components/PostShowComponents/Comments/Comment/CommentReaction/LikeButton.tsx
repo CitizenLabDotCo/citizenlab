@@ -1,7 +1,12 @@
 import React from 'react';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  colors,
+  fontSizes,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
@@ -10,7 +15,6 @@ import messages from '../../messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 const Container = styled.li`
   display: flex;

@@ -1,12 +1,17 @@
 // components
-import { Input, Radio, Select } from '@citizenlab/cl2-component-library';
+import {
+  Input,
+  Radio,
+  Select,
+  fontSizes,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 import { Section, SectionField } from 'components/admin/Section';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
 
 export const Container = styled.div``;
 

@@ -4,11 +4,10 @@ import React, { useState } from 'react';
 import useReports from 'api/reports/useReports';
 
 // styling
-import { colors } from 'utils/styleUtils';
+import { colors, Box, Title, Text } from '@citizenlab/cl2-component-library';
 
 // components
 import EmptyState from '../../components/ReportBuilderPage/EmptyState';
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import ReportRow from '../../components/ReportBuilderPage/ReportRow';
 import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';

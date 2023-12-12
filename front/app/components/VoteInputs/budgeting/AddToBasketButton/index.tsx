@@ -7,7 +7,7 @@ import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 
 // components
-import { Button, Icon } from '@citizenlab/cl2-component-library';
+import { Button, Icon, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // i18n
@@ -15,7 +15,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
-import { colors } from 'utils/styleUtils';
 
 // tracks
 import tracks from './tracks';

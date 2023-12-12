@@ -16,7 +16,12 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
+import {
+  media,
+  fontSizes,
+  colors,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 
 // typings
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';

@@ -2,7 +2,7 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 // resources
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -13,7 +13,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;

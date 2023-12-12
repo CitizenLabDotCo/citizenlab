@@ -8,7 +8,14 @@ import useVoting from 'api/baskets_ideas/useVoting';
 // components
 import AddToBasketButton from './AddToBasketButton';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  fontSizes,
+  colors,
+  defaultCardStyle,
+  media,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -17,7 +24,6 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 
 // utils
 import { isNil } from 'utils/helperUtils';

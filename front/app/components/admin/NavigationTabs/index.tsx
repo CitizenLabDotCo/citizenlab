@@ -1,10 +1,11 @@
 // style
 import styled, { css } from 'styled-components';
-import { colors, defaultStyles } from 'utils/styleUtils';
 import { tabBorderSize } from './tabsStyleConstants';
 import {
   BoxPositionProps,
   BoxPaddingProps,
+  colors,
+  defaultStyles,
 } from '@citizenlab/cl2-component-library';
 
 // components

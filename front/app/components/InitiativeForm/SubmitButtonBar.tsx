@@ -3,7 +3,7 @@ import ContentContainer from 'components/ContentContainer';
 import styled, { useTheme } from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
-import { media } from 'utils/styleUtils';
+import { media } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
 

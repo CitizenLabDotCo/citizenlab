@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
-import { invisibleA11yText } from 'utils/styleUtils';
+import { invisibleA11yText } from '@citizenlab/cl2-component-library';
 
 export const HiddenLabel = styled.label`
   span:first-child {

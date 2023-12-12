@@ -3,7 +3,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   min-height: calc(

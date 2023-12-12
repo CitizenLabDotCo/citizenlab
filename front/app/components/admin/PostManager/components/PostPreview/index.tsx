@@ -7,7 +7,7 @@ import InitiativePostPreview from './Initiative/InitiativePostPreview';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 
 // typings
 import { ManagerType, PreviewMode } from '../..';

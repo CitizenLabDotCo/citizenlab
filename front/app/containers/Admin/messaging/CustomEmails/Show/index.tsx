@@ -18,6 +18,7 @@ import {
   colors,
   Title,
   Box,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
@@ -29,7 +30,6 @@ import Stamp from './Stamp';
 import { isNilOrError } from 'utils/helperUtils';
 
 // styling
-import { fontSizes } from 'utils/styleUtils';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useAuthUser from 'api/me/useAuthUser';

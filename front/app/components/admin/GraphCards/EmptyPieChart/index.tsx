@@ -1,11 +1,10 @@
 import React from 'react';
 
 // components
-import { Box, Image } from '@citizenlab/cl2-component-library';
+import { Box, Image, colors } from '@citizenlab/cl2-component-library';
 import { NoDataContainer } from 'components/admin/GraphWrappers';
 
 import EmptyPieChartImageSrc from './empty.svg';
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from 'components/admin/Graphs/messages';

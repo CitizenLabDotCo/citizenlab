@@ -10,14 +10,19 @@ import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useProjectFiles from 'api/project_files/useProjectFiles';
-import { Title, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Title,
+  Box,
+  useBreakpoint,
+  media,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
 
 // style
 import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;

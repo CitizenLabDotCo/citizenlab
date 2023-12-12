@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, Radio } from '@citizenlab/cl2-component-library';
 
 // components
 import {
@@ -8,7 +8,6 @@ import {
   SubSectionTitle,
   SectionField,
 } from 'components/admin/Section';
-import { Radio } from '@citizenlab/cl2-component-library';
 import ProjectGroupsList from './ProjectGroupsList';
 
 // i18n

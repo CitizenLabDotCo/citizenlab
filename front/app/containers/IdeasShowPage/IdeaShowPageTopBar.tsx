@@ -9,7 +9,12 @@ import useIdeaById from 'api/ideas/useIdeaById';
 // components
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import ReactionControl from 'components/ReactionControl';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  useBreakpoint,
+  media,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -20,7 +25,6 @@ import { useSearchParams } from 'react-router-dom';
 
 // styling
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // utils

@@ -6,12 +6,17 @@ import { ICommentData } from 'api/comments/types';
 
 // style
 import styled from 'styled-components';
-import { colors, media, fontSizes, defaultCardStyle } from 'utils/styleUtils';
+import {
+  colors,
+  media,
+  fontSizes,
+  defaultCardStyle,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken } from 'polished';
 
 // Components
-import { Icon } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import CommentHeader from 'components/PostShowComponents/Comments/Comment/CommentHeader';
 import CommentBody from 'components/PostShowComponents/Comments/Comment/CommentBody';

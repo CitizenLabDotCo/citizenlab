@@ -15,7 +15,7 @@ import usePhase from 'api/phases/usePhase';
 
 // style
 import styled from 'styled-components';
-import { defaultCardStyle, media } from 'utils/styleUtils';
+import { defaultCardStyle, media } from '@citizenlab/cl2-component-library';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 
 // utils

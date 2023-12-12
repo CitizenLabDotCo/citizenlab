@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 
 // components
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon, fontSizes } from '@citizenlab/cl2-component-library';
 import Table from './Table';
 import Button from 'components/UI/Button';
 import TableModal from './TableModal';
-
-// styling
-import { fontSizes } from 'utils/styleUtils';
 
 // i18n
 import messages from '../messages';

@@ -5,7 +5,6 @@ import {
   withJsonFormsLayoutProps,
   useJsonForms,
 } from '@jsonforms/react';
-import { defaultStyles } from 'utils/styleUtils';
 import styled, { useTheme } from 'styled-components';
 import Ajv from 'ajv';
 
@@ -16,6 +15,7 @@ import {
   Title,
   useBreakpoint,
   media,
+  defaultStyles,
 } from '@citizenlab/cl2-component-library';
 import { FormSection } from 'components/UI/FormComponents';
 import QuillEditedContent from 'components/UI/QuillEditedContent';

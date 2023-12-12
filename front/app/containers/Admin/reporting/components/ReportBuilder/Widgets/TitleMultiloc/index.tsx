@@ -2,13 +2,12 @@ import React from 'react';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, Box } from '@citizenlab/cl2-component-library';
 
 // craft
 import { useNode } from '@craftjs/core';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 

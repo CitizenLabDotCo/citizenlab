@@ -21,8 +21,7 @@ import messages from '../messages';
 
 // Style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { Text } from '@citizenlab/cl2-component-library';
+import { colors, Text } from '@citizenlab/cl2-component-library';
 import usePollOptions from 'api/poll_options/usePollOptions';
 import useDeletePollOption from 'api/poll_options/useDeletePollOption';
 

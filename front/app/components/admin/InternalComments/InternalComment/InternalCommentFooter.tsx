@@ -6,7 +6,7 @@ import InternalCommentsMoreActions from './InternalCommentsMoreActions';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useInternalComment from 'api/internal_comments/useInternalComment';

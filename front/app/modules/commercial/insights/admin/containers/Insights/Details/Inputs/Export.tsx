@@ -5,7 +5,7 @@ import { saveAs } from 'file-saver';
 
 // components
 import Button from 'components/UI/Button';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -13,7 +13,6 @@ import messages from '../../messages';
 import { WrappedComponentProps } from 'react-intl';
 
 // utils
-import { colors } from 'utils/styleUtils';
 import { requestBlob } from 'utils/requestBlob';
 import { isNilOrError } from 'utils/helperUtils';
 

@@ -13,13 +13,10 @@ import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
-import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
 import ShareReportButton from '../../ReportBuilderPage/ReportRow/Buttons/ShareReportButton';
-
-// styling
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';

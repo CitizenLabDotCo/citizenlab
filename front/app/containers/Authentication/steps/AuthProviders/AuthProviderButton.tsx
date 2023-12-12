@@ -2,7 +2,7 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // components
-import { IconNames } from '@citizenlab/cl2-component-library';
+import { IconNames, colors } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Consent from './Consent';
 
@@ -16,7 +16,6 @@ import { trackEventByName } from 'utils/analytics';
 // styling
 import styled, { useTheme } from 'styled-components';
 import { darken } from 'polished';
-import { colors } from 'utils/styleUtils';
 
 // typings
 import { SignUpInFlow } from 'containers/Authentication/typings';

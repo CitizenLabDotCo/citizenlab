@@ -1,10 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
-
-// styling
-import { colors } from 'utils/styleUtils';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 const SingleVotingIcon = ({ selected }: { selected: boolean }) => {
   const bgColor = selected ? colors.teal200 : colors.grey500;

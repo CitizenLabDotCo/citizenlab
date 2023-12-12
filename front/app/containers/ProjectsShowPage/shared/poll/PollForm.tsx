@@ -10,11 +10,14 @@ import PollMultipleChoice from './PollMultipleChoice';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import Tippy from '@tippyjs/react';
 import Warning from 'components/UI/Warning';
-import { Box } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  fontSizes,
+  defaultCardStyle,
+} from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, defaultCardStyle } from 'utils/styleUtils';
 
 // hooks
 import useAddPollResponse from 'api/poll_responses/useAddPollResponse';

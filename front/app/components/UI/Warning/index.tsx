@@ -1,8 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import {
+  Icon,
+  IconNames,
+  colors,
+  fontSizes,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   display: flex;

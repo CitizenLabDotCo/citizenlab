@@ -1,7 +1,11 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { colors, defaultOutline, isRtl } from 'utils/styleUtils';
-import { Icon } from '@citizenlab/cl2-component-library';
+import {
+  colors,
+  defaultOutline,
+  isRtl,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 import { isBoolean } from 'lodash-es';
 import { darken, hideVisually } from 'polished';
 

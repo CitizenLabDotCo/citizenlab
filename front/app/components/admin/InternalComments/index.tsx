@@ -5,7 +5,14 @@ import React, { useState } from 'react';
 import InternalParentCommentForm from './InternalParentCommentForm';
 import InternalComments from './InternalComments';
 import InternalCommentSorting from './InternalCommentSorting';
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  colors,
+  fontSizes,
+  media,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -13,7 +20,6 @@ import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';

@@ -1,7 +1,12 @@
 import React, { memo } from 'react';
 
 // components
-import { Spinner, Text } from '@citizenlab/cl2-component-library';
+import {
+  Spinner,
+  Text,
+  colors,
+  media,
+} from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
 
 // hooks
@@ -10,7 +15,6 @@ import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
 
 // style
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
 
 // typings
 import { TVerificationMethod } from 'api/verification_methods/types';

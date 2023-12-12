@@ -1,10 +1,7 @@
 import React from 'react';
 
 // components
-import { Thead, Tr, Th, Text } from '@citizenlab/cl2-component-library';
-
-// styling
-import { colors } from 'utils/styleUtils';
+import { Thead, Tr, Th, Text, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from '../messages';

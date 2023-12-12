@@ -7,7 +7,7 @@ import messages from '../../messages';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   text-align: center;

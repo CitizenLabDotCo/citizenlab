@@ -8,11 +8,10 @@ import {
 } from 'components/ProjectableHeader';
 
 // hooks
-import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
+import { useWindowSize, Box, media } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from 'api/project_folders/types';

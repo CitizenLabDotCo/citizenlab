@@ -1,7 +1,7 @@
 import React from 'react';
 import { isNumber } from 'lodash-es';
 import styled from 'styled-components';
-import { stylingConsts, media } from 'utils/styleUtils';
+import { stylingConsts, media } from '@citizenlab/cl2-component-library';
 import bowser from 'bowser';
 
 const Outer = styled.div`

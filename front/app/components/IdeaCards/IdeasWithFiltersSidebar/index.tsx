@@ -10,7 +10,6 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 // components
-import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import FiltersModal from './FiltersModal';
 import FiltersSideBar from './FiltersSideBar';
 import SortFilterDropdown, { Sort } from '../shared/Filters/SortFilterDropdown';
@@ -30,7 +29,9 @@ import {
   viewportWidths,
   defaultCardStyle,
   isRtl,
-} from 'utils/styleUtils';
+  Spinner,
+  useWindowSize,
+} from '@citizenlab/cl2-component-library';
 
 // typings
 import { QueryParameters } from 'containers/IdeasIndexPage';

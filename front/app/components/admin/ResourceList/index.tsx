@@ -5,7 +5,7 @@ import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { remCalc, fontSizes, colors } from 'utils/styleUtils';
+import { remCalc, fontSizes, colors } from '@citizenlab/cl2-component-library';
 
 // Components
 export { default as SortableList } from './SortableList';

@@ -7,10 +7,7 @@ import useUserById from 'api/users/useUserById';
 
 // components
 import { Button as SemanticButton, Popup } from 'semantic-ui-react';
-import { Tr, Td, Badge } from '@citizenlab/cl2-component-library';
-
-// styling
-import { colors } from 'utils/styleUtils';
+import { Tr, Td, Badge, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

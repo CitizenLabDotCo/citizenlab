@@ -3,7 +3,11 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import Tippy from '@tippyjs/react';
 import { isNilOrError } from 'utils/helperUtils';
-import { colors } from 'utils/styleUtils';
+import {
+  colors,
+  IconTooltip,
+  Spinner,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
@@ -18,7 +22,6 @@ import { IIdeaStatusData } from 'api/idea_statuses/types';
 
 // components
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { IconTooltip, Spinner } from '@citizenlab/cl2-component-library';
 import {
   Section,
   SectionTitle,

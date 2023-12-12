@@ -5,7 +5,7 @@ import usePhases from 'api/phases/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import MetaInformation from '../MetaInformation';
 import ReactionControl from 'components/ReactionControl';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
@@ -15,7 +15,6 @@ import GoToCommentsButton from '../Buttons/GoToCommentsButton';
 
 // styling
 import { rightColumnWidthDesktop } from '../../styleConstants';
-import { colors } from 'utils/styleUtils';
 
 // utils
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';

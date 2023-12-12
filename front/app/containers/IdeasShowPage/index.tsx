@@ -7,6 +7,8 @@ import {
   useBreakpoint,
   Spinner,
   stylingConsts,
+  media,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
@@ -23,7 +25,6 @@ import useProjectById from 'api/projects/useProjectById';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
 
 // utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';

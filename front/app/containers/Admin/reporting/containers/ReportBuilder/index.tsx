@@ -11,7 +11,7 @@ import { ReportContextProvider } from '../../context/ReportContext';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
 // craft
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
@@ -24,9 +24,6 @@ import Settings from 'components/admin/ContentBuilder/Settings';
 
 // templates
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
-
-// styling
-import { stylingConsts } from 'utils/styleUtils';
 
 // constants
 import { A4_WIDTH } from '../../constants';

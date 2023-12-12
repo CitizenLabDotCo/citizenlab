@@ -1,9 +1,8 @@
 import React from 'react';
-import { colors } from 'utils/styleUtils';
+import { colors, Box, Icon } from '@citizenlab/cl2-component-library';
 
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 
-import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 
 import T from 'components/T';

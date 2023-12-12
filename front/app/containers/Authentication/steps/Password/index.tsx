@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
-import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import TextLink from '../_components/TextLink';
 
@@ -15,7 +15,6 @@ import sharedMessages from '../messages';
 import containerMessages from '../../messages';
 
 // styling
-import { colors } from 'utils/styleUtils';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';

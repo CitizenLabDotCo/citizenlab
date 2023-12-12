@@ -7,7 +7,7 @@ import injectIntl from 'utils/cl-intl/injectIntl';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { fontSizes, colors, media } from '@citizenlab/cl2-component-library';
 import FormattedAnchor from 'components/FormattedAnchor';
 
 // images

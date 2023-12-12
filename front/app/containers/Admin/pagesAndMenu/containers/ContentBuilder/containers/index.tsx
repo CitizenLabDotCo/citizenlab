@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 // styles
-import { stylingConsts } from 'utils/styleUtils';
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
 import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
 
 // craft

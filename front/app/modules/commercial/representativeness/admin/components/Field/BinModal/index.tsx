@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
-import { Box, Icon, Text, Button } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  Text,
+  Button,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import BinInputs from './BinInputs';
 import Warning from 'components/UI/Warning';
 
@@ -12,7 +18,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // utils
 import {

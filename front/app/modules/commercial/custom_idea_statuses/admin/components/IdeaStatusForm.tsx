@@ -1,17 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { Multiloc } from 'typings';
-import { ideaStatusCodes, TIdeaStatusCode } from 'api/idea_statuses/types';
-
-// components
-import { Section, SectionField } from 'components/admin/Section';
 import {
+  colors,
+  fontSizes,
   Label,
   IconTooltip,
   Box,
   Button,
 } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
+import { ideaStatusCodes, TIdeaStatusCode } from 'api/idea_statuses/types';
+
+// components
+import { Section, SectionField } from 'components/admin/Section';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
