@@ -953,6 +953,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Odwiedzający",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Brak projektu",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Czy na pewno chcesz usunąć \"{reportName}\"?",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Czy na pewno chcesz usunąć ten raport?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Utworzono: {date}",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.delete": "Usuń",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.edit": "Edycja",
