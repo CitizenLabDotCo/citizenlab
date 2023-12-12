@@ -41,7 +41,7 @@ module MultiTenancy
           AreasProject => serialize_records(AreasProject),
           AreasStaticPage => serialize_records(AreasStaticPage),
           Basket => serialize_records(Basket),
-          ContentBuilder::Layout => serialize_records(ContentBuilder::Layout),
+          ContentBuilder::Layout => serialize_records(ContentBuilder::Layout.where.not(content_buildable_type: 'HomePage')),
           ContentBuilder::LayoutImage => serialize_records(ContentBuilder::LayoutImage),
           CustomField => serialize_records(CustomField),
           CustomForm => serialize_records(CustomForm),
