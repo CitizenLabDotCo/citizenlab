@@ -9,6 +9,12 @@ module Insights
             :insights_data_sources,
             class_name: 'Insights::DataSource',
             foreign_key: :origin_id,
+          )
+          has_many(
+            :insights_views,
+            through: :insights_data_sources,
+            class_name: 'Insights::View',
+            source: :view,
             dependent: :destroy
           )
         end
