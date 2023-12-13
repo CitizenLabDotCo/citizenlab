@@ -27,7 +27,7 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
     end
     let(:top_info_section_multiloc) do
       {
-        'en' => '<p><strong>top info section en</strong><a href="https://citizenlab.co" rel="noreferrer noopener nofollow">link</a></p>',
+        'en' => '<p><strong>top info section en</strong><a href="https://citizenlab.co" rel="noreferrer noopener nofollow">link</a><img class=\"ql-alt-text-input-container keepHTML\" alt=\"\" data-cl2-text-image-text-reference=missing-text-image></p>',
         'nl-BE' => "<p><img class=\"ql-alt-text-input-container keepHTML\" alt=\"\" data-cl2-text-image-text-reference=#{create(:text_image).text_reference}></p><iframe class=\"ql-video\" frameborder=\"0\" allowfullscreen=\"true\" src=\"https://www.youtube.com/embed/gw2RiADWfpg?showinfo=0\" width=\"818\" height=\"462.5234567901235\" data-blot-formatter-unclickable-bound=\"true\"></iframe>"
       }
     end

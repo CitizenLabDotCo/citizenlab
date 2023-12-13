@@ -260,7 +260,8 @@ def extract_image_iframe_button_elements(text_html_multiloc)
   text_html_multiloc.each do |locale, text_html|
     html_doc = Nokogiri::HTML.fragment text_html
     html_doc.css('img').each do |img_node|
-      extracted_elts += [extract_img_element(img_node)]
+      extracted_elt = extract_img_element(img_node)
+      extracted_elts += [extracted_elt] if extracted_elt
       img_node.remove
     end
     html_doc.css('iframe').each do |iframe_node|
@@ -278,6 +279,8 @@ end
 
 def extract_img_element(img_node)
   text_image = TextImage.find_by(text_reference: img_node.attr(:'data-cl2-text-image-text-reference'))
+  return nil if !text_image
+
   layout_image = ContentBuilder::LayoutImage.create!(image: text_image.image)
   {
     'type' => { 'resolvedName' => 'ImageMultiloc' },
