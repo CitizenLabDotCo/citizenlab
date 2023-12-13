@@ -1,12 +1,14 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { IntlProvider } from 'react-intl';
+import { IntlProvider, createIntlCache, createIntl } from 'react-intl';
+import CustomIntlContext from './CustomIntlContext';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { Locale } from 'typings';
+import { AllMessages, IntlShapes } from './types';
 
 interface InputProps {}
 
@@ -18,14 +20,16 @@ interface DataProps {
 interface Props extends DataProps, InputProps {}
 
 interface State {
-  messages: { [key: string]: any };
+  messages: AllMessages;
+  intlShapes: IntlShapes;
 }
 
 class LanguageProvider extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      messages: {},
+      messages: {} as AllMessages,
+      intlShapes: {} as IntlShapes,
     };
   }
 
@@ -51,10 +55,25 @@ class LanguageProvider extends React.PureComponent<Props, State> {
 
   importLocale = (locale: Locale) => {
     import(`i18n/${locale}`).then((translationMessages) => {
+      const intlCache = createIntlCache();
+
+      const intlShape = createIntl(
+        {
+          locale,
+          messages: translationMessages.default,
+        },
+        intlCache
+      );
+
       this.setState((prevState) => ({
         messages: {
           ...prevState.messages,
           [locale]: translationMessages.default,
+        },
+
+        intlShapes: {
+          ...prevState.intlShapes,
+          [locale]: intlShape,
         },
       }));
     });
@@ -64,10 +83,25 @@ class LanguageProvider extends React.PureComponent<Props, State> {
     for (const locale of tenantLocales) {
       if (!this.state.messages[locale]) {
         import(`i18n/${locale}`).then((translationMessages) => {
+          const intlCache = createIntlCache();
+
+          const intlShape = createIntl(
+            {
+              locale,
+              messages: translationMessages.default,
+            },
+            intlCache
+          );
+
           this.setState((prevState) => ({
             messages: {
               ...prevState.messages,
               [locale]: translationMessages.default,
+            },
+
+            intlShapes: {
+              ...prevState.intlShapes,
+              [locale]: intlShape,
             },
           }));
         });
@@ -77,13 +111,19 @@ class LanguageProvider extends React.PureComponent<Props, State> {
 
   render() {
     const { locale } = this.props;
-    const { messages } = this.state;
+    const { messages, intlShapes } = this.state;
 
     if (locale && messages[locale]) {
       return (
-        <IntlProvider locale={locale} key={locale} messages={messages[locale]}>
-          {React.Children.only(this.props.children)}
-        </IntlProvider>
+        <CustomIntlContext.Provider value={intlShapes}>
+          <IntlProvider
+            locale={locale}
+            key={locale}
+            messages={messages[locale]}
+          >
+            {React.Children.only(this.props.children)}
+          </IntlProvider>
+        </CustomIntlContext.Provider>
       );
     }
 

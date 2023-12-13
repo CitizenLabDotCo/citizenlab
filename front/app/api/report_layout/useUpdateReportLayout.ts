@@ -4,22 +4,22 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import reportLayoutKeys from './keys';
 import phasesKeys from 'api/phases/keys';
 import { ReportLayoutResponse } from './types';
-import { JsonMultiloc } from 'components/admin/ContentBuilder/typings';
+import { CraftJson } from 'components/admin/ContentBuilder/typings';
 
 type ReportLayoutUpdate = {
   id: string;
-  craftMultiloc: JsonMultiloc;
+  craftjs_json: CraftJson;
   projectId?: string;
 };
 
-const updateReportLayout = ({ id, craftMultiloc }: ReportLayoutUpdate) =>
+const updateReportLayout = ({ id, craftjs_json }: ReportLayoutUpdate) =>
   fetcher<ReportLayoutResponse>({
     path: `/reports/${id}`,
     action: 'patch',
     body: {
       report: {
         layout: {
-          craftjs_jsonmultiloc: craftMultiloc,
+          craftjs_json,
         },
       },
     },

@@ -391,6 +391,7 @@
   "app.components.ProjectCard.viewTheOptions": "Skatīt iespējas",
   "app.components.ProjectCard.viewTheProjects": "Skatīt projektus",
   "app.components.ProjectCard.viewTheQuestions": "Skatīt jautājumus",
+  "app.components.ProjectCard.vote": "Balsojums",
   "app.components.ProjectCard.xComments": "{commentsCount, plural, one {# komentārs} other {# komentāri}}",
   "app.components.ProjectCard.xContributions": "{ideasCount, plural, one {# ieguldījums} other {# ieguldījumi}}",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {vēl nav ideju} one {# ideja} other {# idejas}}",
