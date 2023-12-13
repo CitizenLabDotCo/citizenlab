@@ -16,7 +16,7 @@ module Insights
       end
 
       def destroy_insights_views
-        insights_data_sources.each do |data_source|
+        insights_data_sources.includes(:view).each do |data_source|
           data_source.view&.destroy
         end
       end
