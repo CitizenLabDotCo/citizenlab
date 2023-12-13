@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :fix_existing_tenants do
+namespace :single_use do
   desc 'Set the default posting limit for native surveys to max one per user'
   task fix_native_surveys: [:environment] do |_t, _args|
     Tenant.all.each do |tenant|

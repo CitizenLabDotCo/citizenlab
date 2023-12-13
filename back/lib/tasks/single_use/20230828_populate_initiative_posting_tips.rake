@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-namespace :data_migrate do
+namespace :single_use do
   block_names = %w[elaborate meaningfulTitle visualise relevantAttachments shareSocialMedia]
   locale_file_url = 'https://raw.githubusercontent.com/CitizenLabDotCo/citizenlab/6e82b854cc8c05a0ea5ab2b5acf5b7ed3f76bf47/front/app/translations/%<locale>s.json'
 
-  # docker-compose run --rm web bin/rails 'data_migrate:populate_initiative_posting_tips'
+  # docker-compose run --rm web bin/rails 'single_use:populate_initiative_posting_tips'
   task populate_initiative_posting_tips: :environment do |_t, _args|
     locale_files = {}
     Tenant.switch_each do |_tenant|
