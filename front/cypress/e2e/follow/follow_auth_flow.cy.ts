@@ -55,7 +55,7 @@ describe('Follow: in auth flow', () => {
     cy.get('#e2e-follow-topics').should('exist');
   });
 
-  it.only('shows working "Complete onboarding" in user menu if onboarding not completed yet', () => {
+  it('shows working "Complete onboarding" in user menu if onboarding not completed yet', () => {
     signUp();
     cy.get('#e2e-follow-topics').should('exist');
 
