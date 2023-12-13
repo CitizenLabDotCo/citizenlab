@@ -469,6 +469,7 @@
   "app.components.SideModal.closeButtonAria": "إغلاق ",
   "app.components.StatusModule.futurePhase": "أنت تشاهد مرحلة لم تبدأ بعد. ستتمكن من المشاركة عندما تبدأ المرحلة.",
   "app.components.StatusModule.modifyYourSubmission": "تعديل الخاص بك {submissionTerm}",
+  "app.components.StatusModule.submittedUntil3": "قد يتم تقديم صوتك حتى",
   "app.components.TopicsPicker.numberOfSelectedTopics": "تم تحديد {numberOfSelectedTopics, plural, =0 {لا يوجد موضوعات} one {موضوع واحد} other {# موضوعات}}. {selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "عرض المزيد من الإجراءات",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "إزالة",
