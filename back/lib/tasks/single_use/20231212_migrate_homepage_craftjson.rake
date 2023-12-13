@@ -122,8 +122,12 @@ def migrate_homepagebanner
   }
 
   if homepage.header_bg.url
-    layout_image = ContentBuilder::LayoutImage.create!(remote_image_url: homepage.header_bg.url)
-    homepagebannerelt['props']['image'] = { 'dataCode' => layout_image.code }
+    begin
+      layout_image = ContentBuilder::LayoutImage.create!(remote_image_url: homepage.header_bg.url)
+      homepagebannerelt['props']['image'] = { 'dataCode' => layout_image.code }
+    rescue StandardError => e
+      Rails.logger.error "Failed to migrate header_bg for #{Tenant.current.host}: #{e.message}"
+    end
   end
 
   [homepagebannerelt]
