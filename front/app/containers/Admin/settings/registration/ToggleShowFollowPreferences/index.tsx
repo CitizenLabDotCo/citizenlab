@@ -31,6 +31,7 @@ const ToggleShowFollowPreferences = ({ isEnabled, onChange }: Props) => {
             checked={isEnabled}
             onChange={handleChange}
             labelTextColor={colors.primary}
+            id="e2e-toggle-follow-onboarding"
           />
         </Box>
 
