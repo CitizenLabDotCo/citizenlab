@@ -55,6 +55,8 @@ const HomePage = () => {
     }
   }, [pressedLetterAKey, userHasAdminAccess]);
 
+  if (!homepageSettings || !homepageLayout) return null;
+
   if (
     isHomepageBuilderEnabled &&
     !isEmpty(homepageLayout?.data.attributes.craftjs_json)
