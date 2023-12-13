@@ -82,8 +82,19 @@ namespace :templates do
       exit(1)
     end
 
-    release_prefix = MultiTenancy::Templates::Utils.new.release_templates
+    template_utils = MultiTenancy::Templates::Utils.new
+    release_prefix = template_utils.release_templates
     puts({ event: 'templates_release', status: 'success', release_prefix: release_prefix }.to_json)
+
+    # Remove files of the previous release (the new test prefix). We do this to ensure
+    # that:
+    # - the next release won't be polluted by files from the previous releases
+    # - templates that no longer exist are removed
+    counts = template_utils.clear_test_templates
+    if counts[:errors_count].positive?
+      puts({ event: 'templates_cleanup', status: 'failed', counts: counts }.to_json)
+      exit(1)
+    end
   end
 
   task :change_locale, %i[template_name locale_from locale_to] => [:environment] do |_t, args|
