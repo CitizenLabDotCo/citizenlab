@@ -469,7 +469,6 @@
   "app.components.SideModal.closeButtonAria": "Lukk",
   "app.components.StatusModule.futurePhase": "Du ser på en fase som ikke har startet ennå. Du vil kunne delta når fasen starter.",
   "app.components.StatusModule.modifyYourSubmission": "Endre din {submissionTerm}",
-  "app.components.StatusModule.submittedUntil2": "kan sendes inn til",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valgte {numberOfSelectedTopics, plural, =0 {zero topics} one {one topic} other {# topics}}. {selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Vis flere handlinger",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Fjern",

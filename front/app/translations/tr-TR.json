@@ -469,7 +469,6 @@
   "app.components.SideModal.closeButtonAria": "Kapat",
   "app.components.StatusModule.futurePhase": "Henüz başlamamış bir aşamayı görüntülüyorsunuz. Aşama başladığında katılabileceksiniz.",
   "app.components.StatusModule.modifyYourSubmission": "{submissionTerm}adresinizi değiştirin",
-  "app.components.StatusModule.submittedUntil2": "kadar sunulabilir",
   "app.components.TopicsPicker.numberOfSelectedTopics": "{numberOfSelectedTopics, plural, =0 {Sıfır etiket} one {bir etiket} other {# etiket}} seçildi. {selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Daha fazla eylem göster",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Kaldır",

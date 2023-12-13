@@ -469,7 +469,6 @@
   "app.components.SideModal.closeButtonAria": "Close",
   "app.components.StatusModule.futurePhase": "You are viewing a phase that has not started yet. You will be able to participate when the phase starts.",
   "app.components.StatusModule.modifyYourSubmission": "Modify your {submissionTerm}",
-  "app.components.StatusModule.submittedUntil2": "may be submitted until",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Selected {numberOfSelectedTopics, plural, =0 {zero tags} one {one tag} other {# tags}}. {selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Show more actions",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Remove",

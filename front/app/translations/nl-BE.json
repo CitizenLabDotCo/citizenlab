@@ -469,7 +469,6 @@
   "app.components.SideModal.closeButtonAria": "Sluiten",
   "app.components.StatusModule.futurePhase": "Je bekijkt een fase die nog niet is begonnen. Je kunt deelnemen wanneer de fase begint.",
   "app.components.StatusModule.modifyYourSubmission": "Pas je {submissionTerm} aan",
-  "app.components.StatusModule.submittedUntil2": "kunnen worden ingediend tot en met",
   "app.components.TopicsPicker.numberOfSelectedTopics": "{numberOfSelectedTopics, plural,=0 {Geen tags} one {Eén tag} other {# tags}} geselecteerd. {selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Meer acties tonen",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Verwijder",
