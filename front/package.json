@@ -156,7 +156,7 @@
     "@cypress/skip-test": "^2.6.1",
     "@cypress/webpack-preprocessor": "^5.16.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
-    "@sentry/webpack-plugin": "^2.10.2",
+    "@sentry/webpack-plugin": "^1.18.8",
     "@storybook/addon-essentials": "^7.6.2",
     "@storybook/addon-interactions": "^7.5.1",
     "@storybook/addon-links": "^7.5.1",
