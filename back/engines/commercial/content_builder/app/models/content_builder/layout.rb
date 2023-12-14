@@ -5,8 +5,8 @@
 # Table name: content_builder_layouts
 #
 #  id                     :uuid             not null, primary key
-#  content_buildable_type :string           not null
-#  content_buildable_id   :uuid             not null
+#  content_buildable_type :string
+#  content_buildable_id   :uuid
 #  code                   :string           not null
 #  enabled                :boolean          default(FALSE), not null
 #  created_at             :datetime         not null

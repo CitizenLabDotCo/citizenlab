@@ -102,7 +102,6 @@ ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk_rails_617a7ea994;
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_604cfbcd8d;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_5ea1f11fd5;
-ALTER TABLE IF EXISTS ONLY public.pins DROP CONSTRAINT IF EXISTS fk_rails_5caeedf2b2;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_5ac7668cd3;
 ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS fk_rails_5ac54ec4a5;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_575368d182;
@@ -199,8 +198,6 @@ DROP INDEX IF EXISTS public.index_polls_response_options_on_response_id;
 DROP INDEX IF EXISTS public.index_polls_response_options_on_option_id;
 DROP INDEX IF EXISTS public.index_polls_questions_on_phase_id;
 DROP INDEX IF EXISTS public.index_polls_options_on_question_id;
-DROP INDEX IF EXISTS public.index_pins_on_page_id_and_admin_publication_id;
-DROP INDEX IF EXISTS public.index_pins_on_admin_publication_id;
 DROP INDEX IF EXISTS public.index_phases_on_project_id;
 DROP INDEX IF EXISTS public.index_phase_files_on_phase_id;
 DROP INDEX IF EXISTS public.index_permissions_on_permission_scope_id;
@@ -450,7 +447,6 @@ ALTER TABLE IF EXISTS ONLY public.polls_responses DROP CONSTRAINT IF EXISTS poll
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS polls_response_options_pkey;
 ALTER TABLE IF EXISTS ONLY public.polls_questions DROP CONSTRAINT IF EXISTS polls_questions_pkey;
 ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS polls_options_pkey;
-ALTER TABLE IF EXISTS ONLY public.pins DROP CONSTRAINT IF EXISTS pins_pkey;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS phases_pkey;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS phase_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.permissions DROP CONSTRAINT IF EXISTS permissions_pkey;
@@ -577,7 +573,6 @@ DROP TABLE IF EXISTS public.project_files;
 DROP TABLE IF EXISTS public.polls_response_options;
 DROP TABLE IF EXISTS public.polls_questions;
 DROP TABLE IF EXISTS public.polls_options;
-DROP TABLE IF EXISTS public.pins;
 DROP TABLE IF EXISTS public.phase_files;
 DROP TABLE IF EXISTS public.permissions_custom_fields;
 DROP TABLE IF EXISTS public.permissions;
@@ -3049,20 +3044,6 @@ CREATE TABLE public.phase_files (
 
 
 --
--- Name: pins; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.pins (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    admin_publication_id uuid NOT NULL,
-    page_type character varying NOT NULL,
-    page_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
 -- Name: polls_options; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4311,14 +4292,6 @@ ALTER TABLE ONLY public.phase_files
 
 ALTER TABLE ONLY public.phases
     ADD CONSTRAINT phases_pkey PRIMARY KEY (id);
-
-
---
--- Name: pins pins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.pins
-    ADD CONSTRAINT pins_pkey PRIMARY KEY (id);
 
 
 --
@@ -6098,20 +6071,6 @@ CREATE INDEX index_phases_on_project_id ON public.phases USING btree (project_id
 
 
 --
--- Name: index_pins_on_admin_publication_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_pins_on_admin_publication_id ON public.pins USING btree (admin_publication_id);
-
-
---
--- Name: index_pins_on_page_id_and_admin_publication_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_pins_on_page_id_and_admin_publication_id ON public.pins USING btree (page_id, admin_publication_id);
-
-
---
 -- Name: index_polls_options_on_question_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6816,14 +6775,6 @@ ALTER TABLE ONLY public.cosponsors_initiatives
 
 ALTER TABLE ONLY public.ideas
     ADD CONSTRAINT fk_rails_5ac7668cd3 FOREIGN KEY (project_id) REFERENCES public.projects(id);
-
-
---
--- Name: pins fk_rails_5caeedf2b2; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.pins
-    ADD CONSTRAINT fk_rails_5caeedf2b2 FOREIGN KEY (admin_publication_id) REFERENCES public.admin_publications(id);
 
 
 --
