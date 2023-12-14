@@ -14,7 +14,6 @@ require_relative 'custom_maps'
 require_relative 'email_campaign_examples'
 require_relative 'followers'
 require_relative 'groups'
-require_relative 'home_pages'
 require_relative 'ideas'
 require_relative 'iniatives'
 require_relative 'internal_comments'
@@ -103,7 +102,6 @@ module MultiTenancy
 
         MultiTenancy::Templates::ApplyService.new.apply_internal_template('base')
 
-        MultiTenancy::Seeds::HomePages.new(runner: self).run
         MultiTenancy::Seeds::Users.new(runner: self).run
         MultiTenancy::Seeds::ApiClients.new(runner: self).run
         MultiTenancy::Seeds::CustomFields.new(runner: self).run

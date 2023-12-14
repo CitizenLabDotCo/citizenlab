@@ -2132,8 +2132,8 @@ CREATE TABLE public.content_builder_layout_images (
 
 CREATE TABLE public.content_builder_layouts (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    content_buildable_type character varying NOT NULL,
-    content_buildable_id uuid NOT NULL,
+    content_buildable_type character varying,
+    content_buildable_id uuid,
     code character varying NOT NULL,
     enabled boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,

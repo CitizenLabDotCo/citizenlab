@@ -21,7 +21,7 @@ module ContentBuilder
   class Layout < ApplicationRecord
     belongs_to :content_buildable, polymorphic: true, optional: true
 
-    before_validation :sanitize_craftjs_json
+    before_validation :set_craftjs_json, :sanitize_craftjs_json
 
     validates :code, presence: true
     validate :validate_iframe_urls
@@ -45,6 +45,14 @@ module ContentBuilder
 
     def sanitize_craftjs_json
       self.craftjs_json = LayoutSanitizationService.new.sanitize craftjs_json
+    end
+
+    def set_craftjs_json
+      return if code != 'homepage' || craftjs_json.present?
+  
+      craftjs_filepath = Rails.root.join('config/homepage/default_craftjs.json.erb')
+      json_craftjs_str = ERB.new(File.read(craftjs_filepath)).result(binding)
+      self.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(JSON.parse(json_craftjs_str))
     end
   end
 end

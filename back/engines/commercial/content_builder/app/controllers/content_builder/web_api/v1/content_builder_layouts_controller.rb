@@ -4,6 +4,7 @@ module ContentBuilder
   module WebApi
     module V1
       class ContentBuilderLayoutsController < ApplicationController
+        # TODO split DB index in two
         skip_before_action :authenticate_user, only: %i[show]
 
         def show
@@ -35,7 +36,7 @@ module ContentBuilder
           when 'Project'
             Project.find params[:project_id]
           when 'HomePage'
-            HomePage.first
+            nil
           end
         end
 
