@@ -61,21 +61,6 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
     return value;
   };
 
-  onMenuOpen = () => {
-    const { inputId } = this.props;
-    // Scroll label to top of screen on menu open
-    const label =
-      typeof inputId === 'string' ? document.getElementById(inputId) : null;
-
-    if (label) {
-      const rect = label.getBoundingClientRect();
-      window.scrollTo({
-        top: rect.top + window.scrollY,
-        behavior: 'smooth',
-      });
-    }
-  };
-
   render() {
     const { id, className, disabled, label, isSearchable = true } = this.props;
     let { value, placeholder, options, max, autoBlur } = this.props;
@@ -108,9 +93,8 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
           isDisabled={disabled}
           styles={selectStyles()}
           menuPosition="fixed"
-          menuPlacement="bottom"
+          menuPlacement="auto"
           hideSelectedOptions
-          onMenuOpen={this.onMenuOpen}
         />
       </div>
     );
