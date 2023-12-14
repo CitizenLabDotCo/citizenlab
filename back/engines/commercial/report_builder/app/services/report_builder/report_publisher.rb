@@ -10,15 +10,11 @@ class ReportBuilder::ReportPublisher
 
     ReportBuilder::PublishedGraphDataUnit.where(report_id: @report.id).destroy_all
 
-    # TODO: change when we use multiple locales
-    craftjs_json = @report.layout.craftjs_jsonmultiloc
+    craftjs_json = @report.layout.craftjs_json
+
     return if craftjs_json.blank?
 
-    # TODO: change when we use multiple locales
-    nodes = craftjs_json.values.first
-    return if nodes.blank?
-
-    nodes.each do |node_id, node_obj|
+    craftjs_json.each do |node_id, node_obj|
       type = node_obj['type']
       resolved_name = type.is_a?(Hash) ? type['resolvedName'] : next
 
