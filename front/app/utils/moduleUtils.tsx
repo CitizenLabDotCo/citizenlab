@@ -113,16 +113,18 @@ export interface OutletsPropertyMap {
     ideaId: string;
     compact?: boolean;
   };
-  'app.containers.Admin.project.edit.permissions.participationRights': {
-    project: IProjectData;
-    projectId: string;
-    children: OutletRenderProps;
-  };
   'app.containers.Admin.project.edit.permissions.moderatorRights': {
     projectId: string;
     children: OutletRenderProps;
   };
   'app.containers.Admin.projects.edit': {
+    onData: (data: InsertConfigurationOptions<ITab>) => void;
+    project: IProjectData;
+    phases: IPhaseData[] | null;
+    selectedPhase?: IPhaseData;
+    onRemove: (name: string) => void;
+  };
+  'app.containers.Admin.projects.edit.settings': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
     project: IProjectData;
     phases: IPhaseData[] | null;

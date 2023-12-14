@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   width: 100%;

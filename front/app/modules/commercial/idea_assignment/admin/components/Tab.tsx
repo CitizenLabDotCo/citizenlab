@@ -1,22 +1,21 @@
-import { FC, useEffect } from 'react';
-import { WrappedComponentProps } from 'react-intl';
+import { useEffect } from 'react';
 import { InsertConfigurationOptions, ITab } from 'typings';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { useParams } from 'react-router-dom';
 
 type Props = {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
-const Tab: FC<Props & WrappedComponentProps> = ({
-  onData,
-  intl: { formatMessage },
-}) => {
+const Tab = ({ onData }: Props) => {
+  const { formatMessage } = useIntl();
+  const { projectId } = useParams() as { projectId: string };
   useEffect(() => {
     onData({
       configuration: {
         label: formatMessage(messages.permissionsTab),
-        url: `permissions`,
+        url: `/admin/projects/${projectId}/settings/access-rights`,
         feature: 'private_projects',
         name: 'permissions',
       },
@@ -28,4 +27,4 @@ const Tab: FC<Props & WrappedComponentProps> = ({
   return null;
 };
 
-export default injectIntl(Tab);
+export default Tab;

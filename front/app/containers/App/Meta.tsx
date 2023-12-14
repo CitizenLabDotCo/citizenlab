@@ -1,22 +1,12 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 
 // libraries
 import { Helmet } from 'react-helmet';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import useHomepageSettings from 'api/home_page/useHomepageSettings';
 
 // i18n
 import messages from './messages';
-import { getLocalized } from 'utils/i18n';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -24,65 +14,53 @@ import { imageSizes } from 'utils/fileUtils';
 import { API_PATH } from 'containers/App/constants';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import useLocalize from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
+import useLocale from 'hooks/useLocale';
+import useAuthUser from 'api/me/useAuthUser';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 
-interface InputProps {}
+const Meta = () => {
+  const locale = useLocale();
+  const { data: tenant } = useAppConfiguration();
+  const { data: homepageLayout } = useHomepageLayout();
+  const { data: authUser } = useAuthUser();
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenant: GetAppConfigurationChildProps;
-  authUser: GetAuthUserChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const Meta: React.SFC<Props & WrappedComponentProps> = ({
-  locale,
-  tenant,
-  authUser,
-  intl,
-}) => {
-  const { data: homepageSettings } = useHomepageSettings();
   if (
     !isNilOrError(locale) &&
     !isNilOrError(tenant) &&
-    !isNilOrError(homepageSettings)
+    !isNilOrError(homepageLayout)
   ) {
-    const { formatMessage } = intl;
-    const tenantLocales = tenant.attributes.settings.core.locales;
+    const tenantLocales = tenant.data.attributes.settings.core.locales;
 
-    const headerBg = homepageSettings.data.attributes.craftjs_json
-      ? Object.values(homepageSettings.data.attributes.craftjs_json).find(
+    const headerBg = homepageLayout.data.attributes.craftjs_json
+      ? Object.values(homepageLayout.data.attributes.craftjs_json).find(
           (node) => node.displayName === 'HomepageBanner'
         )?.props.image.imageUrl
       : '';
 
     const organizationNameMultiLoc =
-      tenant.attributes.settings.core.organization_name;
-    const organizationName = getLocalized(
-      organizationNameMultiLoc,
-      locale,
-      tenantLocales
-    );
-    const url = `https://${tenant.attributes.host}`;
+      tenant.data.attributes.settings.core.organization_name;
+    const organizationName = localize(organizationNameMultiLoc);
+    const url = `https://${tenant.data.attributes.host}`;
     const fbAppId =
-      tenant.attributes.settings.facebook_login &&
-      tenant.attributes.settings.facebook_login.app_id;
+      tenant.data.attributes.settings.facebook_login &&
+      tenant.data.attributes.settings.facebook_login.app_id;
 
-    const metaTitleMultiLoc = tenant.attributes.settings.core.meta_title;
-    let metaTitle = getLocalized(metaTitleMultiLoc, locale, tenantLocales, 50);
+    const metaTitleMultiLoc = tenant.data.attributes.settings.core.meta_title;
+    let metaTitle = localize(metaTitleMultiLoc);
     metaTitle = metaTitle || formatMessage(messages.metaTitle);
 
     const metaDescriptionMultiLoc =
-      tenant.attributes.settings.core.meta_description;
-    let metaDescription = getLocalized(
-      metaDescriptionMultiLoc,
-      locale,
-      tenantLocales
-    );
+      tenant.data.attributes.settings.core.meta_description;
+    let metaDescription = localize(metaDescriptionMultiLoc);
     metaDescription =
       metaDescription || formatMessage(messages.appMetaDescription);
 
-    const lifecycleStage = tenant.attributes.settings.core.lifecycle_stage;
+    const lifecycleStage = tenant.data.attributes.settings.core.lifecycle_stage;
     const blockIndexing = !['active', 'churned'].includes(lifecycleStage);
 
     return (
@@ -91,8 +69,8 @@ const Meta: React.SFC<Props & WrappedComponentProps> = ({
         {blockIndexing && <meta name="robots" content="noindex" />}
         <title>
           {`${
-            authUser && authUser.attributes.unread_notifications
-              ? `(${authUser.attributes.unread_notifications}) `
+            authUser && authUser.data.attributes.unread_notifications
+              ? `(${authUser.data.attributes.unread_notifications}) `
               : ''
           }
             ${metaTitle}`}
@@ -119,30 +97,34 @@ const Meta: React.SFC<Props & WrappedComponentProps> = ({
         <meta property="fb:app_id" content={fbAppId} />
         <meta property="og:site_name" content={organizationName} />
         <meta name="application-name" content={organizationName} />
-        {tenant.attributes.favicon && tenant.attributes.favicon.medium && (
-          <link
-            rel="icon"
-            sizes="32x32"
-            href={tenant.attributes.favicon.medium}
-          />
-        )}
-        {tenant.attributes.favicon && tenant.attributes.favicon.small && (
-          <link
-            rel="icon"
-            sizes="16x16"
-            href={tenant.attributes.favicon.small}
-          />
-        )}
-        {tenant.attributes.favicon && tenant.attributes.favicon.large && (
-          <link
-            rel="apple-touch-icon"
-            sizes="152x152"
-            href={tenant.attributes.favicon.large}
-          />
-        )}
-        {tenant.attributes.favicon && tenant.attributes.favicon.large && (
-          <link rel="manifest" href={`${API_PATH}/manifest.json`} />
-        )}
+        {tenant.data.attributes.favicon &&
+          tenant.data.attributes.favicon.medium && (
+            <link
+              rel="icon"
+              sizes="32x32"
+              href={tenant.data.attributes.favicon.medium}
+            />
+          )}
+        {tenant.data.attributes.favicon &&
+          tenant.data.attributes.favicon.small && (
+            <link
+              rel="icon"
+              sizes="16x16"
+              href={tenant.data.attributes.favicon.small}
+            />
+          )}
+        {tenant.data.attributes.favicon &&
+          tenant.data.attributes.favicon.large && (
+            <link
+              rel="apple-touch-icon"
+              sizes="152x152"
+              href={tenant.data.attributes.favicon.large}
+            />
+          )}
+        {tenant.data.attributes.favicon &&
+          tenant.data.attributes.favicon.large && (
+            <link rel="manifest" href={`${API_PATH}/manifest.json`} />
+          )}
       </Helmet>
     );
   }
@@ -150,16 +132,4 @@ const Meta: React.SFC<Props & WrappedComponentProps> = ({
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  tenant: <GetAppConfiguration />,
-  authUser: <GetAuthUser />,
-});
-
-const MetaWithHoc = injectIntl(Meta);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <MetaWithHoc {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default Meta;

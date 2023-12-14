@@ -106,7 +106,10 @@ const ConsentModal = ({ onClose }: { onClose: () => void }) => {
 
 const AnalysisBanner = () => {
   const [consentModalIsOpened, setConsentModalIsOpened] = useState(false);
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
   const { data: analyses, isLoading: isLoadingAnalyses } = useAnalyses({
     projectId,
   });
@@ -118,7 +121,7 @@ const AnalysisBanner = () => {
   const handleGoToAnalysis = () => {
     if (analyses?.data.length) {
       clHistory.push(
-        `/admin/projects/${projectId}/analysis/${analyses?.data[0].id}`
+        `/admin/projects/${projectId}/analysis/${analyses?.data[0].id}?phase_id=${phaseId}`
       );
     } else {
       setConsentModalIsOpened(true);
@@ -138,7 +141,7 @@ const AnalysisBanner = () => {
       alignItems="center"
       borderRadius={stylingConsts.borderRadius}
       p="8px 16px"
-      mb="36px"
+      mb="24px"
       bgColor={colors.errorLight}
     >
       <Box display="flex" gap="16px" alignItems="center">

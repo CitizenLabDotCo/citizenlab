@@ -47,5 +47,16 @@ RSpec.describe Notifications::OfficialFeedbackOnInitiativeYouFollow do
       notifications = described_class.make_notifications_on(activity)
       expect(notifications).to eq []
     end
+
+    it 'does not make a notification when follow feature is turned off' do
+      initiative = create(:initiative)
+      create(:follower, followable: initiative)
+      official_feedback = create(:official_feedback, post: initiative)
+      activity = create(:activity, item: official_feedback, action: :created)
+
+      SettingsService.new.deactivate_feature! 'follow'
+      notifications = described_class.make_notifications_on activity
+      expect(notifications).to be_empty
+    end
   end
 end

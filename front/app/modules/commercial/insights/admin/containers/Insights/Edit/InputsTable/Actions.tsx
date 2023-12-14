@@ -3,7 +3,13 @@ import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Components
-import { Icon, Dropdown, Checkbox } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  Dropdown,
+  Checkbox,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // api
@@ -21,7 +27,6 @@ import messages from '../../messages';
 
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 const ActionButtons = styled.div`
   display: flex;

@@ -14,6 +14,8 @@ import {
   Button,
   Text,
   Badge,
+  stylingConsts,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -23,7 +25,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // styling
-import { stylingConsts, colors } from 'utils/styleUtils';
 
 interface Props {
   onClickPDFImport: () => void;
@@ -44,12 +45,11 @@ const TopBar = ({ onClickPDFImport }: Props) => {
     (phase ? ` - ${localize(phase?.data.attributes.title_multiloc)}` : '');
 
   const isSurvey =
-    phase?.data.attributes.participation_method === 'native_survey' ||
-    project?.data.attributes.participation_method === 'native_survey';
+    phase?.data.attributes.participation_method === 'native_survey';
 
   const backPath = isSurvey
-    ? `/admin/projects/${projectId}/native-survey`
-    : `/admin/projects/${projectId}/ideas`;
+    ? `/admin/projects/${projectId}/phases/${phaseId}/native-survey`
+    : `/admin/projects/${projectId}/phases/${phaseId}/ideas`;
 
   return (
     <Box

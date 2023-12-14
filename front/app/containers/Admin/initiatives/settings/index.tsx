@@ -22,7 +22,7 @@ import PostingTips from './PostingTips';
 import PageBody from './PageBody';
 import SubmitButton from './SubmitButton';
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import RequireReviewToggle from './RequireReviewToggle';
 import Cosponsors from './Cosponsors';
 
@@ -32,7 +32,6 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // typings
 import { Multiloc } from 'typings';

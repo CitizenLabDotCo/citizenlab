@@ -2,20 +2,22 @@ import React, { useState, useMemo } from 'react';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// components
 import {
+  colors,
+  fontSizes,
   Input,
   Box,
   Icon,
   Spinner,
   Label,
 } from '@citizenlab/cl2-component-library';
+
+// intl
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
+
+// components
+
 import Button from 'components/UI/Button';
 import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';

@@ -23,7 +23,7 @@ interface Props {
   className?: string;
 }
 
-const InitiativesShow = ({ initiativeId }: Props) => {
+const InitiativesShow = ({ initiativeId, className }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const [searchParams] = useSearchParams();
   const newInitiativeId = searchParams.get('new_initiative_id');
@@ -36,7 +36,6 @@ const InitiativesShow = ({ initiativeId }: Props) => {
     setA11y_pronounceLatestOfficialFeedbackPost,
   ] = useState(false);
 
-  const officialFeedbackElement = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
@@ -76,19 +75,15 @@ const InitiativesShow = ({ initiativeId }: Props) => {
   };
 
   const onScrollToOfficialFeedback = () => {
-    if (officialFeedbackElement.current) {
-      officialFeedbackElement.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'center',
-      });
-    }
+    document.getElementById('official-feedback-feed')?.scrollIntoView({
+      behavior: 'smooth',
+    });
 
     setA11y_pronounceLatestOfficialFeedbackPost(true);
   };
 
   return (
-    <Box id="e2e-initiative-show">
+    <Box id="e2e-initiative-show" className={className}>
       <InitiativeMeta initiativeId={initiativeId} />
       {isSmallerThanPhone ? (
         <Phone

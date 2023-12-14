@@ -1,10 +1,7 @@
 import React, { memo } from 'react';
 
 // components
-import { StatusLabel } from '@citizenlab/cl2-component-library';
-
-// styles
-import { colors } from 'utils/styleUtils';
+import { StatusLabel, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

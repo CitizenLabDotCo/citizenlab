@@ -18,8 +18,17 @@ interface Props {
 const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
-  const { data: areas } = useAreas({ forOnboarding: true });
-  const { data: topics } = useTopics({ forOnboarding: true });
+
+  const { data: areas } = useAreas({
+    forOnboarding: true,
+    sort: 'projects_count',
+  });
+
+  const { data: topics } = useTopics({
+    forOnboarding: true,
+    sort: 'projects_count',
+  });
+
   const hasAreas = areas && areas.data.length > 0;
   const hasTopics = topics && topics.data.length > 0;
 

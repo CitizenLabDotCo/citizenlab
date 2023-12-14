@@ -9,13 +9,11 @@ import {
   Input,
   Label,
   Radio,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
-
-// styling
-import { colors } from 'utils/styleUtils';
 
 // utils
 import clHistory from 'utils/cl-router/history';

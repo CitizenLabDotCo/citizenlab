@@ -58,7 +58,7 @@ RSpec.describe Analysis::AutoTaggingTask do
 
   describe 'Sentiment auto_tagging' do
     it 'works' do
-      project = create(:project)
+      project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
       analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'sentiment')
@@ -96,7 +96,7 @@ RSpec.describe Analysis::AutoTaggingTask do
 
   describe 'Language detection auto_tagging' do
     it 'works' do
-      project = create(:project)
+      project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
       analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'language')
@@ -142,7 +142,7 @@ RSpec.describe Analysis::AutoTaggingTask do
 
   describe 'NlpTopic auto_tagging' do
     it 'works' do
-      project = create(:project)
+      project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
       analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'nlp_topic')
@@ -178,7 +178,7 @@ RSpec.describe Analysis::AutoTaggingTask do
 
   describe 'LabelClassification auto_tagging' do
     it 'works' do
-      project = create(:project)
+      project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
       analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
       tags = create_list(:tag, 3, analysis: analysis)
@@ -215,7 +215,7 @@ RSpec.describe Analysis::AutoTaggingTask do
 
   describe 'FewShotClassification auto_tagging' do
     it 'works' do
-      project = create(:project)
+      project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
       analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
       tags = create_list(:tag, 3, analysis: analysis)

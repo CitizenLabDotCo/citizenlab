@@ -10,7 +10,7 @@ import HasPermission from 'components/HasPermission';
 // components
 import Sidebar from './sideBar/';
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors, media } from '@citizenlab/cl2-component-library';
 
 // utils
 import clHistory from 'utils/cl-router/history';
@@ -109,6 +109,13 @@ const AdminPage = memo<Props & WithRouterProps>(
     if (!userCanViewPath) {
       return null;
     }
+    const isFoldersPage = pathname.match(
+      /admin\/projects\/folders\/[a-f0-9-]+(\/(?!projects(?:\/|$))[\w-]+)*/
+    );
+    const isProjectPage =
+      pathname.match(
+        /admin\/projects\/[a-f0-9-]+(\/(?!projects(?:\/|$))[\w-]+)*/
+      ) && !isFoldersPage;
 
     const noPadding =
       pathname.includes('admin/dashboard') ||
@@ -116,7 +123,8 @@ const AdminPage = memo<Props & WithRouterProps>(
       pathname.includes('admin/messaging') ||
       pathname.includes('admin/settings') ||
       pathname.includes('admin/ideas') ||
-      pathname.includes('admin/reporting');
+      pathname.includes('admin/reporting') ||
+      isProjectPage;
 
     const fullWidth =
       pathname.includes('admin/dashboard') ||
@@ -124,7 +132,8 @@ const AdminPage = memo<Props & WithRouterProps>(
       pathname.includes('admin/messaging') ||
       pathname.includes('admin/settings') ||
       pathname.includes('admin/ideas') ||
-      pathname.includes('admin/reporting');
+      pathname.includes('admin/reporting') ||
+      isProjectPage;
 
     return (
       <HasPermission

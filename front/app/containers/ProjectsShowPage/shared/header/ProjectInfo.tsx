@@ -6,19 +6,23 @@ import FileAttachments from 'components/UI/FileAttachments';
 import ProjectInfoSideBar from './ProjectInfoSideBar';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
-import EventPreviews from 'components/EventPreviews';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useProjectFiles from 'api/project_files/useProjectFiles';
-import { Title, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Title,
+  Box,
+  useBreakpoint,
+  media,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
 
 // style
 import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -99,11 +103,6 @@ const ProjectInfo = ({ projectId, className }: Props) => {
             {projectFiles && projectFiles.data.length > 0 && (
               <Box mb="24px">
                 <FileAttachments files={projectFiles.data} />
-              </Box>
-            )}
-            {project?.data.attributes.process_type === 'continuous' && (
-              <Box maxWidth={isSmallerThanTablet ? '100%' : '700px'}>
-                <EventPreviews />
               </Box>
             )}
           </Left>

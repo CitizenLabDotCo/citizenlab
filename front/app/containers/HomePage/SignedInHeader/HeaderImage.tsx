@@ -1,7 +1,6 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
-import { Image, Box } from '@citizenlab/cl2-component-library';
-import { media, isRtl } from 'utils/styleUtils';
+import { Image, Box, media, isRtl } from '@citizenlab/cl2-component-library';
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 import { isNumber } from 'lodash-es';
 

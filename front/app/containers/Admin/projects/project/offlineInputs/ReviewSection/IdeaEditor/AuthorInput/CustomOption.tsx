@@ -1,7 +1,12 @@
 import React, { useMemo } from 'react';
 
 // components
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';
@@ -9,7 +14,6 @@ import { useIntl } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 // utils
 import { optionIsUser } from 'components/UI/UserSelect/utils';

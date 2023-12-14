@@ -13,9 +13,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import Viewer from './Viewer';
 import CityLogoSection from 'components/CityLogoSection';
+import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
+import { Spinner } from '@citizenlab/cl2-component-library';
 export const adminRedirectPath = '/admin';
 
 const HomePage = () => {
+  const { data: homepageLayout } = useHomepageLayout();
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
 
@@ -35,6 +38,7 @@ const HomePage = () => {
     }
   }, [pressedLetterAKey, userHasAdminAccess]);
 
+  if (!homepageLayout) return <Spinner />;
   return (
     <div id="e2e-landing-page">
       <Viewer />

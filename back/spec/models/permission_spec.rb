@@ -38,28 +38,34 @@ RSpec.describe Permission do
   end
 
   describe 'scopes' do
-    let(:project) { create(:project) }
-    let!(:permission_commenting) { create(:permission, action: 'commenting_idea', permission_scope: project) }
-    let!(:permission_posting) { create(:permission, action: 'posting_idea', permission_scope: project) }
-    let!(:permission_reacting) { create(:permission, action: 'reacting_idea', permission_scope: project) }
+    context 'ideation' do
+      let(:phase) { create(:phase) }
+      let!(:permission_commenting) { create(:permission, action: 'commenting_idea', permission_scope: phase) }
+      let!(:permission_posting) { create(:permission, action: 'posting_idea', permission_scope: phase) }
+      let!(:permission_reacting) { create(:permission, action: 'reacting_idea', permission_scope: phase) }
 
-    it 'Returns permissions in the correct order' do
-      permissions = described_class.order_by_action(project)
-      expect(permissions).to eq([permission_posting, permission_commenting, permission_reacting])
+      it 'Returns permissions in the correct order' do
+        permissions = described_class.order_by_action(phase)
+        expect(permissions).to eq([permission_posting, permission_commenting, permission_reacting])
+      end
+
+      it 'Only returns permissions that are enabled in a phase' do
+        phase.update!(reacting_enabled: false)
+        permissions = described_class.filter_enabled_actions(phase)
+        expect(permissions.size).to eq(2)
+        expect(permissions).not_to include(permission_reacting)
+      end
     end
 
-    it 'Only returns permissions that are enabled in a project' do
-      project.update!(reacting_enabled: false)
-      permissions = described_class.filter_enabled_actions(project)
-      expect(permissions.size).to eq(2)
-      expect(permissions).not_to include(permission_reacting)
-    end
+    context 'native survey' do
+      let(:phase) { create(:native_survey_phase, posting_enabled: false) }
+      let!(:permission_posting) { create(:permission, action: 'posting_idea', permission_scope: phase) }
 
-    it 'Returns all permissions for native surveys even if survey is not open to responses' do
-      project.update!(participation_method: 'native_survey', posting_enabled: false)
-      permissions = described_class.filter_enabled_actions(project)
-      expect(permissions.size).to eq(1)
-      expect(permissions).to include(permission_posting)
+      it 'Returns all permissions for native surveys even if survey is not open to responses' do
+        permissions = described_class.filter_enabled_actions(phase)
+        expect(permissions.size).to eq(1)
+        expect(permissions).to include(permission_posting)
+      end
     end
   end
 end

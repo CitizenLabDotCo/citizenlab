@@ -12,7 +12,7 @@ export interface IBasketData {
     total_votes: number;
   };
   relationships: {
-    participation_context: {
+    phase: {
       data: IRelationship;
     };
     user: {

@@ -46,8 +46,6 @@ class InitiativeReactionPolicy < ApplicationPolicy
   private
 
   def reacting_denied_reason(user)
-    :not_signed_in unless user
+    PermissionsService.new.denied_reason_for_resource user, 'reacting_initiative'
   end
 end
-
-InitiativeReactionPolicy.prepend(GranularPermissions::Patches::InitiativeReactionPolicy)

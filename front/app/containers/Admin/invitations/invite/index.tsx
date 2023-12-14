@@ -11,7 +11,7 @@ import { getBase64FromFile } from 'utils/fileUtils';
 
 // components
 import Error from 'components/UI/Error';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import Tabs from 'components/UI/Tabs';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
@@ -47,7 +47,6 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // typings
 import { Locale, IOption } from 'typings';

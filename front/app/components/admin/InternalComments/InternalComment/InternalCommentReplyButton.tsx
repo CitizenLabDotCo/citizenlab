@@ -13,7 +13,7 @@ import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 // types
 import { IInternalCommentData } from 'api/internal_comments/types';

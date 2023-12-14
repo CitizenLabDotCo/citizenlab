@@ -3,7 +3,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import Illustration from './Illustration';
 import styled from 'styled-components';
-import { fontSizes, media, defaultCardStyle } from 'utils/styleUtils';
+import {
+  fontSizes,
+  media,
+  defaultCardStyle,
+} from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   font-size: ${fontSizes.xl}px;

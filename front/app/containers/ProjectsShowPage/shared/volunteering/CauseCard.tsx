@@ -11,7 +11,16 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // components
 import Image from 'components/UI/Image';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  useWindowSize,
+  fontSizes,
+  colors,
+  media,
+  viewportWidths,
+  defaultCardStyle,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -26,14 +35,7 @@ import messages from './messages';
 
 // styling
 import styled, { useTheme } from 'styled-components';
-import {
-  fontSizes,
-  colors,
-  media,
-  viewportWidths,
-  defaultCardStyle,
-  isRtl,
-} from 'utils/styleUtils';
+
 import useAddVolunteer from 'api/causes/useAddVolunteer';
 import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
 

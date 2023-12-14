@@ -7,11 +7,16 @@ import Link from 'utils/cl-router/Link';
 import useEvents from 'api/events/useEvents';
 import { useIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
+import {
+  colors,
+  fontSizes,
+  media,
+  isRtl,
+  Box,
+} from '@citizenlab/cl2-component-library';
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
 import messages from './messages';
 import eventsPageMessages from 'containers/EventsPage/messages';
-import { Box } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 
 const NoEventsText = styled.div`

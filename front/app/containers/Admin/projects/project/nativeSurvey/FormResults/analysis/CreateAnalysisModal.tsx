@@ -29,11 +29,12 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
   const [selectdQuestions, setSelectedQuestions] = useState<string[]>(
     customFieldId ? [customFieldId] : []
   );
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
   const { mutate: createAnalysis, isLoading } = useAddAnalysis();
 
-  const [urlParams] = useSearchParams();
-  const phaseId = urlParams.get('phase_id') || undefined;
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
     phaseId,

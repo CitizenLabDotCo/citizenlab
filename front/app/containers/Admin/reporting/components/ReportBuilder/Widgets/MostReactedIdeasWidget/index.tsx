@@ -39,7 +39,7 @@ const MostReactedIdeasWidget = ({
 
 MostReactedIdeasWidget.craft = {
   props: {
-    title: undefined,
+    title: {},
     projectId: undefined,
     phaseId: undefined,
     numberOfIdeas: 5,

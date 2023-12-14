@@ -5,7 +5,12 @@ import { includes, uniq } from 'lodash-es';
 import moment from 'moment';
 import 'moment-timezone';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { endsWith, isPage } from 'utils/helperUtils';
+import {
+  endsWith,
+  isIdeaShowPage,
+  isInitiativeShowPage,
+  isPage,
+} from 'utils/helperUtils';
 
 // constants
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
@@ -23,6 +28,8 @@ import {
   Spinner,
   useBreakpoint,
   colors,
+  getTheme,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Navigate from 'utils/cl-router/Navigate';
@@ -50,7 +57,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import { ThemeProvider } from 'styled-components';
-import { getTheme, stylingConsts } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -268,10 +274,26 @@ const App = ({ children }: Props) => {
     !isIdeaEditPage &&
     !isInitiativeEditPage;
   const { pathname } = removeLocale(location.pathname);
-  const showFrontOfficeNavbar =
-    (isEventPage && !isSmallerThanTablet) || // Don't show the navbar on (mobile) event page
-    (!isAdminPage && !isEventPage) ||
-    isPagesAndMenuPage;
+  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+
+  const showFrontOfficeNavbar = () => {
+    if (isAdminPage) {
+      if (!isPagesAndMenuPage) return false;
+    }
+
+    // citizen
+    if (isSmallerThanTablet) {
+      if (
+        isEventPage ||
+        isIdeaShowPage(urlSegments) ||
+        isInitiativeShowPage(urlSegments)
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  };
 
   // Ensure authUser is loaded before rendering the app
   if (!authUser && isLoading) {
@@ -337,7 +359,7 @@ const App = ({ children }: Props) => {
                   <ConsentManager />
                 </Suspense>
               </ErrorBoundary>
-              {showFrontOfficeNavbar && (
+              {showFrontOfficeNavbar() && (
                 <ErrorBoundary>
                   <MainHeader />
                 </ErrorBoundary>
@@ -349,7 +371,7 @@ const App = ({ children }: Props) => {
                 flex="1"
                 overflowY="auto"
                 pt={
-                  showFrontOfficeNavbar
+                  showFrontOfficeNavbar()
                     ? `${stylingConsts.menuHeight}px`
                     : undefined
                 }

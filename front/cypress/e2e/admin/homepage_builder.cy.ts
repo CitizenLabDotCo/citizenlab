@@ -69,36 +69,37 @@ const homepageMinimalData = {
 };
 
 describe('Homepage builder', () => {
-  before(() => {
-    cy.setAdminLoginCookie();
-    cy.apiUpdateHomepageSettings({
-      craftjs_json: homepageMinimalData,
-    }).then(() => {
-      cy.logout();
-    });
-  });
-
   after(() => {
     cy.setAdminLoginCookie();
-    cy.apiUpdateHomepageSettings({
+    cy.apiUpdateHomepageLayout({
       craftjs_json: homepageMinimalData,
     });
   });
 
   it('updates homepage builder content correctly', () => {
     cy.setAdminLoginCookie();
-    cy.intercept('PATCH', '**/home_page').as('saveHomePage');
-    cy.intercept('GET', '**/home_page').as('getHomePage');
+    cy.apiUpdateHomepageLayout({
+      craftjs_json: homepageMinimalData,
+    });
+    cy.intercept(
+      'POST',
+      '**/home_pages/content_builder_layouts/homepage/upsert'
+    ).as('saveHomePage');
+    cy.intercept('GET', '**/home_pages/content_builder_layouts/homepage').as(
+      'getHomePage'
+    );
     cy.intercept('GET', '**/pages-menu').as('getPages');
     cy.intercept('GET', '**/nav_bar_items').as('getNavbarItems');
     // go to admin page
     cy.visit('/admin/pages-menu/');
 
     cy.wait('@getPages');
-    cy.wait('@getHomePage');
     cy.wait('@getNavbarItems');
     // go to page with homepage builder
     cy.get('[data-cy="e2e-navbar-item-edit-button"]').first().click();
+
+    cy.wait('@getHomePage');
+    cy.wait(1000);
 
     cy.get('#e2e-draggable-two-column').dragAndDrop('.e2e-signed-out-header', {
       position: 'below',
@@ -151,18 +152,26 @@ describe('Homepage builder', () => {
 
   it('removes homepage builder content correctly', () => {
     cy.setAdminLoginCookie();
-    cy.intercept('PATCH', '**/home_page').as('saveHomePage');
-    cy.intercept('GET', '**/home_page').as('getHomePage');
+    cy.intercept(
+      'POST',
+      '**/home_pages/content_builder_layouts/homepage/upsert'
+    ).as('saveHomePage');
+    cy.intercept('GET', '**/home_pages/content_builder_layouts/homepage').as(
+      'getHomePage'
+    );
     cy.intercept('GET', '**/pages-menu').as('getPages');
     cy.intercept('GET', '**/nav_bar_items').as('getNavbarItems');
     // go to admin page
     cy.visit('/admin/pages-menu/');
 
     cy.wait('@getPages');
-    cy.wait('@getHomePage');
+
     cy.wait('@getNavbarItems');
     // go to page with homepage builder
     cy.get('[data-cy="e2e-navbar-item-edit-button"]').first().click();
+
+    cy.wait('@getHomePage');
+    cy.wait(1000);
 
     cy.get('#e2e-two-column').should('exist');
 
@@ -209,8 +218,14 @@ describe('Homepage builder', () => {
   });
 
   it('updates homepage banner correctly', () => {
-    cy.intercept('PATCH', '**/home_page').as('saveHomePage');
-    cy.intercept('GET', '**/home_page').as('getHomePage');
+    cy.intercept(
+      'POST',
+      '**/home_pages/content_builder_layouts/homepage/upsert'
+    ).as('saveHomePage');
+    cy.intercept('GET', '**/home_pages/content_builder_layouts/homepage').as(
+      'getHomePage'
+    );
+    cy.intercept('GET', '**/home_page').as('getOriginalHomePage');
     cy.intercept('GET', '**/pages-menu').as('getPages');
     cy.intercept('GET', '**/nav_bar_items').as('getNavbarItems');
     cy.intercept('POST', '**/content_builder_layout_images').as('postImage');
@@ -268,6 +283,7 @@ describe('Homepage builder', () => {
 
     cy.visit('/');
     cy.get('.e2e-signed-in-header').should('exist');
+
     cy.get("[data-cy='e2e-signed-in-header-image-overlay']").should(
       'have.css',
       'background-color',
@@ -285,10 +301,13 @@ describe('Homepage builder', () => {
 
     cy.visit('/admin/pages-menu/homepage-builder');
 
+    cy.wait('@getHomePage');
+    cy.wait('@getOriginalHomePage');
+    cy.wait('@getNavbarItems');
+    cy.wait(6000);
+
     // Update homepage banner
 
-    cy.visit('/admin/pages-menu/homepage-builder');
-    cy.wait('@getHomePage');
     cy.get('[data-cy="e2e-homepage-banner"]').click({
       force: true,
     });
@@ -374,13 +393,22 @@ describe('Homepage builder', () => {
     cy.get('.buttonText').should('contain', 'Custom button');
   });
 
-  it('updates homepage banner layout correctly', () => {
-    cy.intercept('PATCH', '**/home_page').as('saveHomePage');
+  it('updates homepage banner layout correctly fixed ratio', () => {
+    cy.intercept(
+      'POST',
+      '**/home_pages/content_builder_layouts/homepage/upsert'
+    ).as('saveHomePage');
     cy.intercept('POST', '**/content_builder_layout_images').as('postImage');
+    cy.intercept('GET', '**/home_pages/content_builder_layouts/homepage').as(
+      'getHomePage'
+    );
 
     // Fixed ratio layout
     cy.setAdminLoginCookie();
     cy.visit('/admin/pages-menu/homepage-builder');
+
+    cy.wait('@getHomePage');
+    cy.wait(1000);
     cy.get('[data-cy="e2e-homepage-banner"]').click({
       force: true,
     });
@@ -393,10 +421,25 @@ describe('Homepage builder', () => {
     cy.visit('/');
     cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
     cy.get('[data-cy="e2e-fixed-ratio-layout-container"]').should('exist');
+  });
+
+  it('updates homepage banner layout correctly two row', () => {
+    cy.intercept(
+      'POST',
+      '**/home_pages/content_builder_layouts/homepage/upsert'
+    ).as('saveHomePage');
+    cy.intercept('POST', '**/content_builder_layout_images').as('postImage');
+    cy.intercept('GET', '**/home_pages/content_builder_layouts/homepage').as(
+      'getHomePage'
+    );
 
     // Two row layout
     cy.setAdminLoginCookie();
     cy.visit('/admin/pages-menu/homepage-builder');
+
+    cy.wait('@getHomePage');
+    cy.wait(1000);
+
     cy.get('[data-cy="e2e-homepage-banner"]').click({
       force: true,
     });

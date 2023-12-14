@@ -1,7 +1,7 @@
 import moment = require('moment');
 import { randomEmail, randomString } from '../support/commands';
 
-describe('Continuous multiple voting project', () => {
+describe('Multiple voting project', () => {
   let projectId: string;
   let projectSlug: string;
   let ideaId: string;
@@ -17,7 +17,6 @@ describe('Continuous multiple voting project', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: '',
       description: '',
@@ -37,7 +36,12 @@ describe('Continuous multiple voting project', () => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
         return cy
-          .apiCreateIdea(projectId, ideaTitle, ideaContent)
+          .apiCreateIdea({
+            projectId,
+            ideaTitle,
+            ideaContent,
+            phaseIds: [phase.body.data.id],
+          })
           .then((idea) => {
             ideaId = idea.body.data.id;
             ideaSlug = idea.body.data.attributes.slug;
@@ -107,8 +111,14 @@ describe('Continuous multiple voting project', () => {
   });
 
   it('can submit the votes', () => {
-    cy.get('#e2e-voting-submit-button').find('button').click();
+    cy.intercept(`**/baskets/**`).as('basketRequest');
+    cy.visit(`/en/projects/${projectSlug}`);
+    cy.wait('@basketRequest');
+    cy.get('#e2e-voting-submit-button')
+      .should('exist')
+      .should('not.have.class', 'disabled');
     cy.wait(1000);
+    cy.get('#e2e-voting-submit-button').find('button').click({ force: true });
 
     cy.contains('Vote submitted');
     cy.contains('Congratulations, your vote has been submitted');

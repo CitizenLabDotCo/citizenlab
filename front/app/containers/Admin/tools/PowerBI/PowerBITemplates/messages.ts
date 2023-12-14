@@ -19,12 +19,13 @@ export default defineMessages({
     defaultMessage: 'Report template',
   },
   reportTemplateDescription: {
-    id: 'app.containers.Admin.tools.powerBITemplates.reportTemplateDescription2',
+    id: 'app.containers.Admin.tools.powerBITemplates.reportTemplateDescription3',
     defaultMessage:
       'This template will create a Power BI report based on your CitizenLab data. ' +
       'It will set up all the data connections to your CitizenLab ' +
       'platform, create the data model and some default dashboards. ' +
-      'When you open the template in Power BI you will be prompted to enter your public API credentials.',
+      'When you open the template in Power BI you will be prompted to enter your public API credentials. ' +
+      'You will also need to enter the Base Url for your platform, which is: {baseUrl}',
   },
   reportTemplateDownload: {
     id: 'app.containers.Admin.tools.powerBITemplates.reportTemplateDownload',
@@ -46,5 +47,19 @@ export default defineMessages({
   dataflowTemplateDownload: {
     id: 'app.containers.Admin.tools.powerBITemplates.dataflowTemplateDownload',
     defaultMessage: 'Download data flow template',
+  },
+  supportLinkDescription: {
+    id: 'app.containers.Admin.tools.powerBITemplates.supportLinkDescription',
+    defaultMessage:
+      'Further details about using your CitizenLab data in Power BI can be found in our {link}.',
+  },
+  supportLinkUrl: {
+    id: 'app.containers.Admin.tools.powerBITemplates.supportLinkUrl',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/8512834-use-citizenlab-data-in-powerbi',
+  },
+  supportLinkText: {
+    id: 'app.containers.Admin.tools.powerBITemplates.supportLinkText',
+    defaultMessage: 'support article',
   },
 });

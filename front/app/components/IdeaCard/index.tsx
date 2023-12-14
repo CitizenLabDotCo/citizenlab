@@ -1,7 +1,14 @@
 import React, { useEffect } from 'react';
 
 // components
-import { useBreakpoint, Box, Title } from '@citizenlab/cl2-component-library';
+import {
+  useBreakpoint,
+  Box,
+  Title,
+  defaultCardStyle,
+  defaultCardHoverStyle,
+  media,
+} from '@citizenlab/cl2-component-library';
 import CardImage from './CardImage';
 import Body from './Body';
 import Footer from './Footer';
@@ -20,11 +27,6 @@ import { IIdea } from 'api/ideas/types';
 
 // styling
 import styled from 'styled-components';
-import {
-  defaultCardStyle,
-  defaultCardHoverStyle,
-  media,
-} from 'utils/styleUtils';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -105,9 +107,8 @@ const IdeaCard = ({
   );
   const { data: phase } = usePhase(phaseId);
 
-  const participationContext = phase?.data || project?.data;
-  const participationMethod =
-    participationContext?.attributes.participation_method;
+  const phaseData = phase?.data;
+  const participationMethod = phaseData?.attributes.participation_method;
   const config = participationMethod && getMethodConfig(participationMethod);
   const hideBody = config?.hideAuthorOnIdeas;
 
@@ -151,7 +152,7 @@ const IdeaCard = ({
       onClick={handleClick}
     >
       <CardImage
-        participationContext={participationContext}
+        phase={phaseData}
         image={image}
         hideImagePlaceholder={hideImagePlaceholder}
         innerHeight={innerHeight}
@@ -184,10 +185,7 @@ const IdeaCard = ({
           {!hideBody && <Body idea={idea} />}
         </Box>
         <Box>
-          <Interactions
-            idea={idea}
-            participationContext={participationContext}
-          />
+          <Interactions idea={idea} phase={phaseData || null} />
           <Footer
             project={project}
             idea={idea.data}

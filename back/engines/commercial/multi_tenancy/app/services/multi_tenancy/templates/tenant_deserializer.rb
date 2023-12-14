@@ -106,6 +106,7 @@ module MultiTenancy
             rescue StandardError => e
               json_info = {
                 error_message: e.message,
+                error_backtrace: e.backtrace,
                 model_class: model_class.name,
                 attributes: attributes
               }.to_json

@@ -3,15 +3,12 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, Icon } from '@citizenlab/cl2-component-library';
 
 // intl
 import messages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
 
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 

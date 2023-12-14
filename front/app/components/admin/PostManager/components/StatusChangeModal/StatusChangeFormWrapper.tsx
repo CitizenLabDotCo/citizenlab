@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash-es';
 
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 // components
 import StatusChangeForm from './StatusChangeForm';

@@ -192,49 +192,8 @@ class ProjectCopyService < TemplateService
     end
   end
 
-  def yml_participation_context(pc, shift_timestamps: 0)
-    yml_pc = {
-      'presentation_mode' => pc.presentation_mode,
-      'participation_method' => pc.participation_method,
-      'posting_enabled' => pc.posting_enabled,
-      'posting_method' => pc.posting_method,
-      'posting_limited_max' => pc.posting_limited_max,
-      'commenting_enabled' => pc.commenting_enabled,
-      'reacting_enabled' => pc.reacting_enabled,
-      'reacting_like_method' => pc.reacting_like_method,
-      'reacting_like_limited_max' => pc.reacting_like_limited_max,
-      'reacting_dislike_enabled' => pc.reacting_dislike_enabled,
-      'reacting_dislike_method' => pc.reacting_dislike_method,
-      'reacting_dislike_limited_max' => pc.reacting_dislike_limited_max,
-      'poll_anonymous' => pc.poll_anonymous,
-      'ideas_order' => pc.ideas_order,
-      'input_term' => pc.input_term,
-      'baskets_count' => pc.baskets_count,
-      'votes_count' => pc.votes_count
-    }
-    if yml_pc['participation_method'] == 'voting'
-      yml_pc['voting_method'] = pc.voting_method
-      yml_pc['voting_max_total'] = pc.voting_max_total
-      yml_pc['voting_min_total'] = pc.voting_min_total
-      yml_pc['voting_max_votes_per_idea'] = pc.voting_max_votes_per_idea
-      yml_pc['voting_term_singular_multiloc'] = pc.voting_term_singular_multiloc
-      yml_pc['voting_term_plural_multiloc'] = pc.voting_term_plural_multiloc
-    end
-    if yml_pc['participation_method'] == 'survey'
-      yml_pc['survey_embed_url'] = pc.survey_embed_url
-      yml_pc['survey_service'] = pc.survey_service
-    end
-
-    if yml_pc['participation_method'] == 'document_annotation'
-      yml_pc['document_annotation_embed_url'] = pc.document_annotation_embed_url
-    end
-
-    yml_pc
-  end
-
   def yml_projects(shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, new_publication_status: nil)
-    yml_project = yml_participation_context @project, shift_timestamps: shift_timestamps
-    yml_project.merge!({
+    yml_project = {
       'title_multiloc' => new_title_multiloc || @project.title_multiloc,
       'description_multiloc' => @project.description_multiloc,
       'created_at' => shift_timestamp(@project.created_at, shift_timestamps)&.iso8601,
@@ -242,7 +201,6 @@ class ProjectCopyService < TemplateService
       'remote_header_bg_url' => @project.header_bg_url,
       'visible_to' => @project.visible_to,
       'description_preview_multiloc' => @project.description_preview_multiloc,
-      'process_type' => @project.process_type,
       'admin_publication_attributes' => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
       'text_images_attributes' => @project.text_images.map do |ti|
         {
@@ -254,7 +212,7 @@ class ProjectCopyService < TemplateService
         }
       end,
       'include_all_areas' => @project.include_all_areas
-    })
+    }
     yml_project['slug'] = new_slug if new_slug.present?
     store_ref yml_project, @project.id, :project
     [yml_project]
@@ -291,8 +249,7 @@ class ProjectCopyService < TemplateService
       shift_timestamps = (Date.parse(timeline_start_at) - kickoff_at).to_i
     end
     @project.phases.map do |phase|
-      yml_phase = yml_participation_context phase, shift_timestamps: shift_timestamps
-      yml_phase.merge!({
+      yml_phase = {
         'project_ref' => lookup_ref(phase.project_id, :project),
         'title_multiloc' => phase.title_multiloc,
         'description_multiloc' => phase.description_multiloc,
@@ -302,15 +259,49 @@ class ProjectCopyService < TemplateService
         'created_at' => shift_timestamp(phase.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(phase.updated_at, shift_timestamps)&.iso8601,
         'text_images_attributes' => phase.text_images.map do |ti|
-          {
-            'imageable_field' => ti.imageable_field,
-            'remote_image_url' => ti.image_url,
-            'text_reference' => ti.text_reference,
-            'created_at' => ti.created_at.to_s,
-            'updated_at' => ti.updated_at.to_s
-          }
-        end
-      })
+                                      {
+                                        'imageable_field' => ti.imageable_field,
+                                        'remote_image_url' => ti.image_url,
+                                        'text_reference' => ti.text_reference,
+                                        'created_at' => ti.created_at.to_s,
+                                        'updated_at' => ti.updated_at.to_s
+                                      }
+                                    end,
+        'presentation_mode' => phase.presentation_mode,
+        'participation_method' => phase.participation_method,
+        'posting_enabled' => phase.posting_enabled,
+        'posting_method' => phase.posting_method,
+        'posting_limited_max' => phase.posting_limited_max,
+        'commenting_enabled' => phase.commenting_enabled,
+        'reacting_enabled' => phase.reacting_enabled,
+        'reacting_like_method' => phase.reacting_like_method,
+        'reacting_like_limited_max' => phase.reacting_like_limited_max,
+        'reacting_dislike_enabled' => phase.reacting_dislike_enabled,
+        'reacting_dislike_method' => phase.reacting_dislike_method,
+        'reacting_dislike_limited_max' => phase.reacting_dislike_limited_max,
+        'poll_anonymous' => phase.poll_anonymous,
+        'ideas_order' => phase.ideas_order,
+        'input_term' => phase.input_term,
+        'baskets_count' => phase.baskets_count,
+        'votes_count' => phase.votes_count
+      }
+      if yml_phase['participation_method'] == 'voting'
+        yml_phase['voting_method'] = phase.voting_method
+        yml_phase['voting_max_total'] = phase.voting_max_total
+        yml_phase['voting_min_total'] = phase.voting_min_total
+        yml_phase['voting_max_votes_per_idea'] = phase.voting_max_votes_per_idea
+        yml_phase['voting_term_singular_multiloc'] = phase.voting_term_singular_multiloc
+        yml_phase['voting_term_plural_multiloc'] = phase.voting_term_plural_multiloc
+      end
+      if yml_phase['participation_method'] == 'survey'
+        yml_phase['survey_embed_url'] = phase.survey_embed_url
+        yml_phase['survey_service'] = phase.survey_service
+      end
+
+      if yml_phase['participation_method'] == 'document_annotation'
+        yml_phase['document_annotation_embed_url'] = phase.document_annotation_embed_url
+      end
+
       store_ref yml_phase, phase.id, :phase
       yml_phase
     end
@@ -330,10 +321,9 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_poll_questions(shift_timestamps: 0)
-    participation_context_ids = [@project.id] + @project.phases.ids
-    Polls::Question.where(participation_context_id: participation_context_ids).map do |q|
+    Polls::Question.where(phase: Phase.where(project: @project)).map do |q|
       yml_question = {
-        'participation_context_ref' => lookup_ref(q.participation_context_id, %i[project phase]),
+        'phase_ref' => lookup_ref(q.phase_id, %i[phase]),
         'title_multiloc' => q.title_multiloc,
         'ordering' => q.ordering,
         'created_at' => shift_timestamp(q.created_at, shift_timestamps)&.iso8601,
@@ -347,8 +337,7 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_poll_options(shift_timestamps: 0)
-    participation_context_ids = [@project.id] + @project.phases.ids
-    Polls::Option.left_outer_joins(:question).where(polls_questions: { participation_context_id: participation_context_ids }).map do |o|
+    Polls::Option.left_outer_joins(:question).where(polls_questions: { phase: Phase.where(project: @project) }).map do |o|
       yml_option = {
         'question_ref' => lookup_ref(o.question_id, :poll_question),
         'title_multiloc' => o.title_multiloc,
@@ -362,10 +351,9 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_volunteering_causes(shift_timestamps: 0)
-    participation_context_ids = [@project.id] + @project.phases.ids
-    Volunteering::Cause.where(participation_context_id: participation_context_ids).map do |c|
+    Volunteering::Cause.where(phase: Phase.where(project: @project)).map do |c|
       yml_cause = {
-        'participation_context_ref' => lookup_ref(c.participation_context_id, %i[project phase]),
+        'phase_ref' => lookup_ref(c.phase_id, %i[phase]),
         'title_multiloc' => c.title_multiloc,
         'description_multiloc' => c.description_multiloc,
         'remote_image_url' => c.image_url,
@@ -430,11 +418,10 @@ class ProjectCopyService < TemplateService
     user_ids += Comment.where(id: comment_ids).pluck(:author_id)
     reaction_ids = Reaction.where(reactable_id: [idea_ids + comment_ids]).ids
     user_ids += Reaction.where(id: reaction_ids).pluck(:user_id)
-    participation_context_ids = [@project.id] + @project.phases.ids
-    user_ids += Basket.where(participation_context_id: participation_context_ids).pluck(:user_id)
+    user_ids += Basket.where(phase: Phase.where(project: @project)).pluck(:user_id)
     user_ids += OfficialFeedback.where(post_id: idea_ids, post_type: 'Idea').pluck(:user_id)
     user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id)
-    user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(participation_context_id: participation_context_ids)).pluck :user_id
+    user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).pluck :user_id
     user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
 
     User.where(id: user_ids.uniq).map do |user|
@@ -475,12 +462,12 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_baskets(shift_timestamps: 0)
-    participation_context_ids = [@project.id] + @project.phases.ids
-    Basket.where(participation_context_id: participation_context_ids).map do |b|
+    phase_ids = @project.phases.ids
+    Basket.where(phase_id: phase_ids).map do |b|
       yml_basket = {
         'submitted_at' => shift_timestamp(b.submitted_at, shift_timestamps)&.iso8601,
         'user_ref' => lookup_ref(b.user_id, :user),
-        'participation_context_ref' => lookup_ref(b.participation_context_id, %i[project phase]),
+        'phase_ref' => lookup_ref(b.phase_id, %i[phase]),
         'created_at' => shift_timestamp(b.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(b.updated_at, shift_timestamps)&.iso8601
       }
@@ -712,8 +699,7 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_volunteers(shift_timestamps: 0)
-    participation_context_ids = [@project.id] + @project.phases.ids
-    Volunteering::Volunteer.where(cause: Volunteering::Cause.where(participation_context_id: participation_context_ids)).map do |volunteer|
+    Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).map do |volunteer|
       {
         'cause_ref' => lookup_ref(volunteer.cause_id, :volunteering_cause),
         'user_ref' => lookup_ref(volunteer.user_id, :user),

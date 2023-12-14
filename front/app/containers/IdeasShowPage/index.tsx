@@ -7,6 +7,8 @@ import {
   useBreakpoint,
   Spinner,
   stylingConsts,
+  media,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
@@ -23,12 +25,11 @@ import useProjectById from 'api/projects/useProjectById';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
 
 // utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentParticipationContext } from 'api/phases/utils';
+import { getCurrentPhase } from 'api/phases/utils';
 import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
@@ -48,9 +49,9 @@ const StyledIdeasShow = styled(IdeasShow)`
   padding-left: 60px;
   padding-right: 60px;
 
-  ${media.tablet`
-    min-height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
-      mobileTopBarHeight}px);
+  ${({ theme }) => media.tablet`
+    margin-top: ${theme.menuHeight}px;
+    min-height: calc(100vh - ${theme.mobileTopBarHeight}px);
     padding-top: 35px;
   `}
 
@@ -69,10 +70,8 @@ const IdeasShowPage = () => {
     idea?.data.relationships.project.data.id
   );
   const { data: phases } = usePhases(project?.data.id);
-  const participationContext = getCurrentParticipationContext(
-    project?.data,
-    phases?.data
-  );
+
+  const phase = getCurrentPhase(phases?.data);
 
   if (status === 'loading') {
     return (
@@ -93,11 +92,11 @@ const IdeasShowPage = () => {
   if (idea && project) {
     const isIdeaInCurrentPhase =
       idea.data.relationships.phases.data.filter(
-        (phase) => phase.id === participationContext?.id
+        (iteratedPhase) => iteratedPhase.id === phase?.id
       ).length > 0;
     const showCTABar =
       isIdeaInCurrentPhase &&
-      participationContext?.attributes.participation_method === 'voting';
+      phase?.attributes.participation_method === 'voting';
     const showCTABarAtTopOfPage = !isSmallerThanTablet && showCTABar;
 
     return (
@@ -112,7 +111,7 @@ const IdeasShowPage = () => {
             <StyledIdeaShowPageTopBar
               projectId={idea.data.relationships.project.data.id}
               ideaId={idea.data.id}
-              participationContext={participationContext}
+              phase={phase}
             />
           )}
           <StyledIdeasShow

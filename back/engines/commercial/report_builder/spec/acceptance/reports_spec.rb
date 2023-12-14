@@ -10,7 +10,7 @@ resource 'Reports' do
 
   # Shared parameter descriptions
   name_param_desc = 'The name of the report.'
-  craftjs_jsonmultiloc_param_desc = 'The craftjs layout configuration, as a multiloc string.'
+  craftjs_json_param_desc = 'The craftjs layout configuration.'
 
   get 'web_api/v1/reports' do
     let_it_be(:reports) { create_list(:report, 3) }
@@ -64,7 +64,7 @@ resource 'Reports' do
         expect(included_layout).to match(
           id: layout.id,
           type: 'content_builder_layout',
-          attributes: hash_including(enabled: true, code: 'report', craftjs_jsonmultiloc: {})
+          attributes: hash_including(enabled: true, code: 'report', craftjs_json: {})
         )
       end
     end
@@ -75,10 +75,10 @@ resource 'Reports' do
 
   post 'web_api/v1/reports' do
     parameter :name, name_param_desc, scope: :report, required: false
-    parameter :craftjs_jsonmultiloc, craftjs_jsonmultiloc_param_desc, scope: %i[report layout]
+    parameter :craftjs_json, craftjs_json_param_desc, scope: %i[report layout]
 
     let(:name) { 'my-report' }
-    let(:craftjs_jsonmultiloc) do
+    let(:craftjs_json) do
       {
         'nl-BE': {
           ROOT: { type: { resolvedName: 'Container' } }
@@ -168,7 +168,7 @@ resource 'Reports' do
 
   patch 'web_api/v1/reports/:id' do
     parameter :name, name_param_desc, scope: :report
-    parameter :craftjs_jsonmultiloc, craftjs_jsonmultiloc_param_desc, scope: %i[report layout]
+    parameter :craftjs_json, craftjs_json_param_desc, scope: %i[report layout]
 
     let_it_be(:report) { create(:report) }
     let(:id) { report.id }
@@ -191,33 +191,16 @@ resource 'Reports' do
       end
 
       describe 'updating the layout of a report' do
-        let(:craftjs_jsonmultiloc) do
-          { 'nl-BE' => { 'ROOT' => {
-            'type' => { 'resolvedName' => 'Container' }
-          } } }
+        let(:craftjs_json) do
+          { 'ROOT' => { 'type' => { 'resolvedName' => 'Container' } } }
         end
 
         example 'Layout successfully updates by report id' do
           do_request
           assert_status 200
-          expect(report.reload.layout.craftjs_jsonmultiloc).to match(
-            craftjs_jsonmultiloc
+          expect(report.reload.layout.craftjs_json).to match(
+            craftjs_json
           )
-        end
-      end
-
-      describe 'reject layouts with more than one locale when updating a report' do
-        let(:craftjs_jsonmultiloc) do
-          {
-            'fr-BE' => { 'ROOT' => { 'type' => { 'resolvedName' => 'Container' } } },
-            'nl-BE' => { 'ROOT' => { 'type' => { 'resolvedName' => 'Container' } } }
-          }
-        end
-
-        example 'Error if more than one locale' do
-          do_request
-          assert_status 422
-          expect(report.reload.layout.craftjs_jsonmultiloc).to match({})
         end
       end
 

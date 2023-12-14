@@ -8,11 +8,11 @@ import {
   Title,
   Text,
   StatusLabel,
+  colors,
 } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';

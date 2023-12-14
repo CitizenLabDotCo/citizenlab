@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import CommentHeader from './CommentHeader';
 import CommentBody from './CommentBody';
 import CommentFooter from './CommentFooter';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -13,7 +13,6 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import useComment from 'api/comments/useComment';
 import useUserById from 'api/users/useUserById';
 

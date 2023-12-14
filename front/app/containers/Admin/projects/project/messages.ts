@@ -14,6 +14,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputManagerTab',
     defaultMessage: 'Input manager',
   },
+  setup: {
+    id: 'app.containers.AdminPage.ProjectEdit.setup',
+    defaultMessage: 'Setup',
+  },
   inputFormTab: {
     id: 'app.containers.AdminPage.ProjectEdit.inputFormTab',
     defaultMessage: 'Input form',
@@ -22,13 +26,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.volunteeringTab',
     defaultMessage: 'Volunteering',
   },
+  phaseAccessRights: {
+    id: 'app.containers.AdminPage.ProjectEdit.phaseAccessRights',
+    defaultMessage: 'Access rights',
+  },
   pollTab: {
     id: 'app.containers.AdminPage.ProjectEdit.pollTab',
     defaultMessage: 'Poll',
-  },
-  phasesTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.phasesTab',
-    defaultMessage: 'Timeline',
   },
   allowedInputTopicsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab',
@@ -46,32 +50,28 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.newProject',
     defaultMessage: 'New Project',
   },
-  addNewIdea: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewIdea',
-    defaultMessage: 'Add an idea',
+  newIdea: {
+    id: 'app.containers.AdminPage.ProjectEdit.newIdea',
+    defaultMessage: 'New idea',
   },
   addNewInput: {
     id: 'app.containers.AdminPage.ProjectEdit.addNewInput',
     defaultMessage: 'Add an input',
   },
-  addNewProject: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
-    defaultMessage: 'Add a project',
-  },
-  addNewIssue: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewIssue',
+  newIssue: {
+    id: 'app.containers.AdminPage.ProjectEdit.newIssue',
     defaultMessage: 'Add an issue',
   },
-  addNewQuestion: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewQuestion',
+  newQuestion: {
+    id: 'app.containers.AdminPage.ProjectEdit.newQuestion',
     defaultMessage: 'Add a question',
   },
-  addNewOption: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewOption',
+  newOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.newOption',
     defaultMessage: 'Add an option',
   },
-  addNewContribution: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewContribution',
+  newContribution: {
+    id: 'app.containers.AdminPage.ProjectEdit.newContribution',
     defaultMessage: 'Add a contribution',
   },
   viewPublicProject: {

@@ -1,12 +1,11 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
 
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, fontSizes, colors } from '@citizenlab/cl2-component-library';
 import ProposalProgressBar from 'containers/InitiativesShow/ReactionControl/ProposalProgressBar';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-import { fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 import { FormattedMessage } from 'utils/cl-intl';

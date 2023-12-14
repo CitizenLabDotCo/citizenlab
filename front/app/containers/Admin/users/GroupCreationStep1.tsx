@@ -2,7 +2,7 @@
 import React, { memo } from 'react';
 
 // Components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // i18n
@@ -13,7 +13,6 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import { darken, transparentize } from 'polished';
 
 const Container = styled.div`

@@ -10,7 +10,15 @@ import { FocusOn } from 'react-focus-on';
 import messages from './messages';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  media,
+  colors,
+  fontSizes,
+  defaultOutline,
+  viewportWidths,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import clickOutside from 'utils/containers/clickOutside';
 
@@ -28,14 +36,6 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import {
-  media,
-  colors,
-  fontSizes,
-  defaultOutline,
-  viewportWidths,
-  isRtl,
-} from 'utils/styleUtils';
 
 const desktopOpacityTimeout = 500;
 const mobileOpacityTimeout = 250;
@@ -260,13 +260,7 @@ const Overlay = styled.div<{
       padding: 0px;
   `}
 
-  ${media.desktop`
-    justify-content: center;
-  `}
-
   ${media.phone`
-    padding-left: 12px;
-    padding-right: 12px;
     padding: 0px;
   `}
 

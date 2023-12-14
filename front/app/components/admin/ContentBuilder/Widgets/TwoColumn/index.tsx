@@ -1,13 +1,17 @@
 import React from 'react';
 
 // components
-import { Box, Radio, Icon, Label } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Radio,
+  Icon,
+  Label,
+  colors,
+  media,
+} from '@citizenlab/cl2-component-library';
 
 // styles
 import styled from 'styled-components';
-
-// utils
-import { colors, media } from 'utils/styleUtils';
 
 // craft
 import { useNode, Element } from '@craftjs/core';

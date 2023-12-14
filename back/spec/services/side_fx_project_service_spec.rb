@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 describe SideFxProjectService do
-  let(:sfx_pc) { instance_double(SideFxParticipationContextService) }
-  let(:service) { described_class.new(sfx_pc) }
+  let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:project) { create(:project) }
 
@@ -13,12 +12,6 @@ describe SideFxProjectService do
       expect { service.after_create(project, user) }
         .to have_enqueued_job(LogActivityJob)
         .with(project, 'created', user, project.created_at.to_i, project_id: project.id)
-    end
-
-    it 'calls after_create on SideFxParticipationContextService for a continuous project' do
-      continuous_project = create(:continuous_project)
-      expect(sfx_pc).to receive(:after_create).with(continuous_project, user)
-      service.after_create(continuous_project, user)
     end
 
     it 'runs the description through the text image service' do
@@ -45,12 +38,6 @@ describe SideFxProjectService do
     it 'runs the description through the text image service' do
       expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(project.description_multiloc, field: :description_multiloc, imageable: project).and_return(project.description_multiloc)
       service.before_update(project, user)
-    end
-
-    it 'calls before_update on SideFxParticipationContextService for a continuous project' do
-      continuous_project = build(:continuous_project)
-      expect(sfx_pc).to receive(:before_update).with(continuous_project, user)
-      service.before_update(continuous_project, user)
     end
   end
 
@@ -84,14 +71,6 @@ describe SideFxProjectService do
       expect { service.after_update(project, user) }
         .not_to have_enqueued_job(LogActivityJob)
         .with(project, 'published', user, project.updated_at.to_i, anything)
-    end
-  end
-
-  describe 'before_destroy' do
-    it 'calls before_destroy on SideFxParticipationContextService for a continuous project' do
-      continuous_project = build(:continuous_project)
-      expect(sfx_pc).to receive(:before_destroy).with(continuous_project, user)
-      service.before_destroy(continuous_project, user)
     end
   end
 

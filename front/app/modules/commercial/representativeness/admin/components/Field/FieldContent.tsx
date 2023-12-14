@@ -4,16 +4,13 @@ import React, { useState } from 'react';
 import useReferenceDistributionData from '../../api/reference_distribution/useReferenceDistributionData';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import Header from './Header';
 import Options from './Options';
 import Tippy from '@tippyjs/react';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
 import BinModal from './BinModal';
-
-// styling
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';

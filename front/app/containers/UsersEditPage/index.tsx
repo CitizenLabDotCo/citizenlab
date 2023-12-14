@@ -20,7 +20,7 @@ import Unauthorized from 'components/Unauthorized';
 
 // Styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // Hooks

@@ -4,12 +4,16 @@ import React from 'react';
 import usePhase from 'api/phases/usePhase';
 
 // components
-import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Icon,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // styling
 import { useTheme } from 'styled-components';
-import { stylingConsts } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 // i18n

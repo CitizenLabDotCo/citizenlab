@@ -47,12 +47,10 @@ resource 'Home Page' do
         parameter :projects_enabled, 'if projects are enabled'
         parameter :projects_header_multiloc, 'multiloc content for the projects header'
         parameter :pinned_admin_publication_ids, 'the IDs of admin publications that are pinned to the page', type: :array
-        parameter :craftjs_json, 'CraftJS json that stores the home page layout'
       end
       ValidationErrorHelper.new.error_fields(self, HomePage)
 
       let(:events_widget_enabled) { true }
-      let(:craftjs_json) { { 'test' => 123 } }
 
       example 'Update the current home page' do
         SettingsService.new.activate_feature! 'homepage_builder'
@@ -61,7 +59,6 @@ resource 'Home Page' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :events_widget_enabled)).to be true
-        expect(json_response.dig(:data, :attributes, :craftjs_json)).to eq({ test: 123 })
       end
 
       describe 'when banner_cta_signed_out_type: \'customized_button\' and button text and url both blank' do

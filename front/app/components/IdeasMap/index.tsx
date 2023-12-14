@@ -15,7 +15,14 @@ import Map, { Point } from 'components/Map';
 import IdeaButton from 'components/IdeaButton';
 import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
 import IdeaMapCard from './IdeaMapCard';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  useWindowSize,
+  media,
+  viewportWidths,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -43,7 +50,6 @@ import messages from './messages';
 import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
-import { media, viewportWidths, colors, fontSizes } from 'utils/styleUtils';
 
 // utils
 import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
@@ -454,7 +460,6 @@ const IdeasMap = memo<Props>((props) => {
         >
           <IdeaButton
             projectId={projectId}
-            participationContextType={phaseId ? 'phase' : 'project'}
             latLng={selectedLatLng}
             inMap={true}
             phase={phase?.data}

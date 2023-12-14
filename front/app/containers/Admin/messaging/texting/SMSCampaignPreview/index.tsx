@@ -5,7 +5,13 @@ import Button from 'components/UI/Button';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import Modal from 'components/UI/Modal';
-import { Box, Text, Error, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Error,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 // utils
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
@@ -20,7 +26,6 @@ import useSendTextingCampaign from 'api/texting_campaigns/useSendTextingCampaign
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 const StyledModalButton = styled(Button)`

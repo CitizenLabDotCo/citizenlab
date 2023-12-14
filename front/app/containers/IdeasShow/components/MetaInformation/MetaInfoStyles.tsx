@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes } from '@citizenlab/cl2-component-library';
 
 export const Item = styled.div<{ compact?: boolean }>`
   padding-top: 18px;

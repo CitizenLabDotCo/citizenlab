@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // services
 
@@ -18,7 +17,13 @@ import SearchInput from 'components/UI/SearchInput';
 
 // styling
 import styled from 'styled-components';
-import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
+import {
+  useBreakpoint,
+  media,
+  isRtl,
+  fontSizes,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';

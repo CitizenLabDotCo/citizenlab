@@ -11,7 +11,6 @@ import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 
 // styling
-import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 import {
   Box,
@@ -19,6 +18,7 @@ import {
   Text,
   Title,
   StatusLabel,
+  colors,
 } from '@citizenlab/cl2-component-library';
 
 // utils
@@ -67,14 +67,10 @@ const FormBuilderTopBar = ({
     return null;
   }
 
-  const isPostingEnabled = getIsPostingEnabled(project.data, phase?.data);
-  let viewFormLink = phaseId
-    ? `/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`
-    : `/projects/${project.data.attributes.slug}/ideas/new`;
-
-  if (builderConfig.viewFormLink) {
-    viewFormLink = builderConfig.viewFormLink;
-  }
+  const isPostingEnabled = getIsPostingEnabled(phase?.data);
+  const viewFormLink =
+    builderConfig.viewFormLink ||
+    `/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`;
 
   const goBack = () => {
     clHistory.push(builderConfig.goBackUrl || `/admin/projects/${projectId}`);

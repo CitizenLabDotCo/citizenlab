@@ -33,7 +33,7 @@ const SurveyFormBuilder = () => {
     phaseId,
   });
 
-  const goBackUrl = `/admin/projects/${projectId}/native-survey`;
+  const goBackUrl = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
   const downloadPdfLink = phaseId
     ? `${API_PATH}/phases/${phaseId}/custom_fields/to_pdf`
     : `${API_PATH}/projects/${projectId}/custom_fields/to_pdf`;

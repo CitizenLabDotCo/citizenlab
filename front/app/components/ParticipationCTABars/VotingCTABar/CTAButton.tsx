@@ -26,7 +26,6 @@ import { getDisabledExplanation } from './utils';
 import clHistory from 'utils/cl-router/history';
 
 // typings
-import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
 const confetti = new JSConfetti();
@@ -55,32 +54,31 @@ const StyledButton = styled(Button)`
   }
 `;
 interface Props {
-  participationContext: IProjectData | IPhaseData;
+  phase: IPhaseData;
   projectId?: string;
 }
 
-const CTAButton = ({ participationContext, projectId }: Props) => {
-  const theme = useTheme();
-  const { formatMessage } = useIntl();
-  const localize = useLocalize();
-  const { data: appConfig } = useAppConfiguration();
+const CTAButton = ({ phase, projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
-
-  const basketId = participationContext.relationships.user_basket?.data?.id;
+  const basketId = phase.relationships.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
   const { numberOfVotesCast, processing: votingProcessing } = useVoting();
-
+  const { data: appConfig } = useAppConfiguration();
+  const theme = useTheme();
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
   const [processing, setProcessing] = useState(false);
-  const currency = appConfig?.data.attributes.settings.core.currency;
 
-  const votingMethod = participationContext.attributes.voting_method;
+  const votingMethod = phase.attributes.voting_method;
   if (!votingMethod || numberOfVotesCast === undefined) return null;
+
+  const currency = appConfig?.data.attributes.settings.core.currency;
 
   const disabledExplanation = getDisabledExplanation(
     formatMessage,
     localize,
-    participationContext,
+    phase,
     numberOfVotesCast,
     currency
   );
@@ -92,8 +90,6 @@ const CTAButton = ({ participationContext, projectId }: Props) => {
           {
             id: basket.data.id,
             submitted: true,
-            participation_context_type:
-              participationContext.type === 'phase' ? 'Phase' : 'Project',
           },
           {
             onSuccess: () => {

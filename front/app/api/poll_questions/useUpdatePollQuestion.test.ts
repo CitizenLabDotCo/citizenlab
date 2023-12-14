@@ -29,8 +29,7 @@ describe('useUpdatePollQuestion', () => {
       result.current.mutate({
         questionId: 'questionId',
         title_multiloc: { en: 'mock title' },
-        participationContextId: '1',
-        participationContextType: 'project',
+        phaseId: '1',
       });
     });
 
@@ -53,8 +52,7 @@ describe('useUpdatePollQuestion', () => {
       result.current.mutate({
         questionId: 'questionId',
         title_multiloc: { en: 'mock title' },
-        participationContextId: '1',
-        participationContextType: 'project',
+        phaseId: '1',
       });
     });
 

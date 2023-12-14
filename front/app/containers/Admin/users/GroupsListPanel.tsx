@@ -18,7 +18,7 @@ import events, { MembershipAdd } from './events';
 // Components
 import Button from 'components/UI/Button';
 import T from 'components/T';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -30,7 +30,6 @@ import tracks from './tracks';
 
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 import Outlet from 'components/Outlet';
 import useGroups from 'api/groups/useGroups';

@@ -15,9 +15,10 @@ def parse_pages(pages)
 end
 
 describe BulkImportIdeas::IdeaPlaintextParserService do
-  let(:project) { create(:continuous_project) }
+  let(:project) { create(:single_phase_ideation_project) }
   let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
   let(:custom_fields) { IdeaCustomFieldsService.new(Factory.instance.participation_method_for(project).custom_form).importable_fields }
+  let(:service) { described_class.new project.phases.first, custom_fields, 'en', 2 }
 
   before do
     project.allowed_input_topics << create(:topic_economy)
@@ -95,9 +96,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
-
       result = [{
         form_pages: [1, 2],
         pdf_pages: [1, 2],
@@ -167,9 +166,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
-
       result = [{
         form_pages: [1, 2],
         pdf_pages: [1, 2],
@@ -312,9 +309,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
-
       result = [{
         form_pages: [1, 2],
         pdf_pages: [1, 2],
@@ -370,7 +365,6 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
 
       service = described_class.new project, custom_fields, 'fr-FR', 2
       docs = service.parse_text text
-
       result = [{
         form_pages: [1, 2],
         pdf_pages: [1, 2],
@@ -390,7 +384,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
   end
 
   describe 'form with number input' do
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:single_phase_ideation_project) }
     let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
     before do
@@ -455,9 +449,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
-
       result = [{
         pdf_pages: [1, 2],
         form_pages: [1, 2],
@@ -502,9 +494,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
-
       result = [{
         pdf_pages: [1, 2],
         form_pages: [1, 2],
@@ -556,7 +546,6 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
 
       service = described_class.new project, custom_fields, 'en', 1
       docs = service.parse_text text
-
       result = [{
         form_pages: [1],
         pdf_pages: [1],
@@ -607,9 +596,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Pizza nutella\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
-
       result = [{
         form_pages: [],
         pdf_pages: [1, 2],
@@ -633,7 +620,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       text = parse_pages [
         "The\n
         City\n
-        Renew West Parc\n
+        Renew West Parc - Idea phase\n
         Instructions\n
         • Write as clearly as you can- these forms might be scanned\n
         • Write your answers in the same language as this form\n
@@ -646,26 +633,24 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Somewhere\n",
         "The\n
         City\n
-        Renew West Parc\n
+        Renew West Parc - Idea phase\n
         Instructions\n
         • Write as clearly as you can- these forms might be scanned\n
         • Write your answers in the same language as this form\n
         Title\n
-        Test\n
+        Another Test\n
         Description\n
         Test description\n
-        with words and things\n
+        with more words and things\n
         Location (optional)\n
-        Somewhere\n",
+        Somewhere else\n",
         "Your favourite name for a swimming pool (optional)\n
         Answer this question with \"Pizza nutella\"\n
         *This answer will only be shared with moderators, and not to the public.\n
         Pizza nutella\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
-
       result = [{
         form_pages: [],
         pdf_pages: [1],
@@ -675,9 +660,9 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       }, {
         form_pages: [],
         pdf_pages: [2, 3],
-        fields: { 'Title' => 'Test',
-                  'Description' => 'Test description with words and things',
-                  'Location (optional)' => 'Somewhere',
+        fields: { 'Title' => 'Another Test',
+                  'Description' => 'Test description with more words and things',
+                  'Location (optional)' => 'Somewhere else',
                   'Your favourite name for a swimming pool (optional)' => 'Pizza nutella' }
       }]
 

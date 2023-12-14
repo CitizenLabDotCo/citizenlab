@@ -21,6 +21,7 @@ import {
   Badge,
   IconTooltip,
   Box,
+  colors,
 } from '@citizenlab/cl2-component-library';
 
 import {
@@ -38,7 +39,6 @@ import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
 // cache
 
 // styling
-import { colors } from 'utils/styleUtils';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useDeleteUserCustomField from 'api/user_custom_fields/useDeleteUserCustomField';
 import useReorderUserCustomField from 'api/user_custom_fields/useReorderUserCustomField';

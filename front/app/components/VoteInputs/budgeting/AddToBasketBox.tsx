@@ -8,7 +8,14 @@ import useVoting from 'api/baskets_ideas/useVoting';
 // components
 import AddToBasketButton from './AddToBasketButton';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  fontSizes,
+  colors,
+  defaultCardStyle,
+  media,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -17,13 +24,11 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 
 // utils
 import { isNil } from 'utils/helperUtils';
 
 // typings
-import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
 const IdeaPageContainer = styled.div`
@@ -60,17 +65,17 @@ const Budget = styled.div`
 
 interface Props {
   ideaId: string;
-  participationContext: IProjectData | IPhaseData;
+  phase: IPhaseData;
 }
 
-const AddToBasketBox = memo(({ ideaId, participationContext }: Props) => {
+const AddToBasketBox = memo(({ ideaId, phase }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { data: appConfig } = useAppConfiguration();
   const { numberOfVotesCast } = useVoting();
 
   const ideaBudget = idea?.data.attributes.budget;
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
-  const { voting_max_total } = participationContext.attributes;
+  const { voting_max_total } = phase.attributes;
 
   if (!actionDescriptor || !ideaBudget || isNil(voting_max_total)) {
     return null;
@@ -105,7 +110,7 @@ const AddToBasketBox = memo(({ ideaId, participationContext }: Props) => {
         <AddToBasketButton
           ideaId={ideaId}
           buttonStyle="primary"
-          participationContext={participationContext}
+          phase={phase}
           onIdeaPage
         />
       </BudgetWithButtonWrapper>

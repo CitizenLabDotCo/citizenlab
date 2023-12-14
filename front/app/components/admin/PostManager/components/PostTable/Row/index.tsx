@@ -9,7 +9,7 @@ import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks

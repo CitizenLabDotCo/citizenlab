@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, isRtl } from '@citizenlab/cl2-component-library';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import IdeaMoreActions from './IdeaMoreActions';
 
@@ -12,7 +12,6 @@ import clHistory from 'utils/cl-router/history';
 
 // styling
 import styled from 'styled-components';
-import { isRtl } from 'utils/styleUtils';
 
 // typings
 import { IProjectData } from 'api/projects/types';

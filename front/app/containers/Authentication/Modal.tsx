@@ -41,7 +41,7 @@ import { ModalProps, ErrorCode } from './typings';
 import VerificationSuccess from './steps/VerificationSuccess';
 import T from 'components/T';
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { IParticipationContextPermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/permissions/types';
 import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];
@@ -95,7 +95,7 @@ const getHeaderMessage = (
   action:
     | 'visiting'
     | IInitiativeAction
-    | IParticipationContextPermissionAction
+    | IPhasePermissionAction
     | IFollowingAction
 ) => {
   if (
@@ -300,24 +300,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
           />
         )}
 
-        {(currentStep === 'sign-up:change-email' ||
-          currentStep === 'missing-data:change-email') && (
-          <ChangeEmail
-            loading={loading}
-            setError={setError}
-            onGoBack={transition(currentStep, 'GO_BACK')}
-            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
-          />
-        )}
-
-        {currentStep === 'sign-up:onboarding' && (
-          <Onboarding
-            authenticationData={authenticationData}
-            onSubmit={transition(currentStep, 'SUBMIT')}
-            onSkip={transition(currentStep, 'SKIP')}
-          />
-        )}
-
         {currentStep === 'sign-up:invite' && (
           <Invitation
             loading={loading}
@@ -387,7 +369,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
           />
         )}
 
-        {/* missing data flow */}
+        {/* missing data flow / shared */}
         {currentStep === 'missing-data:built-in' && (
           <BuiltInFields
             loading={loading}
@@ -410,6 +392,16 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
           />
         )}
 
+        {(currentStep === 'sign-up:change-email' ||
+          currentStep === 'missing-data:change-email') && (
+          <ChangeEmail
+            loading={loading}
+            setError={setError}
+            onGoBack={transition(currentStep, 'GO_BACK')}
+            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
+          />
+        )}
+
         {(currentStep === 'missing-data:verification' ||
           currentStep === 'verification-only' ||
           currentStep === 'sign-up:verification') && (
@@ -426,6 +418,15 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             authenticationData={authenticationData}
             loading={loading}
             setError={setError}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+            onSkip={transition(currentStep, 'SKIP')}
+          />
+        )}
+
+        {(currentStep === 'sign-up:onboarding' ||
+          currentStep === 'missing-data:onboarding') && (
+          <Onboarding
+            authenticationData={authenticationData}
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}
           />

@@ -2,11 +2,8 @@ import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 
-// styling
-import { colors } from 'utils/styleUtils';
-
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // utils
 import { Locale } from 'typings';

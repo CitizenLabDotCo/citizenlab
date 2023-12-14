@@ -6,12 +6,12 @@ import Image from 'components/UI/Image';
 
 // styling
 import styled from 'styled-components';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import {
+  useBreakpoint,
   fontSizes,
   defaultCardStyle,
   defaultCardHoverStyle,
-} from 'utils/styleUtils';
+} from '@citizenlab/cl2-component-library';
 
 const Container = styled(Link)`
   width: 100%;

@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 import setPhaseURL from './setPhaseURL';
 
 // components
-import { Button } from '@citizenlab/cl2-component-library';
+import { Button, colors, isRtl } from '@citizenlab/cl2-component-library';
 
 // api
 import usePhases from 'api/phases/usePhases';
@@ -24,7 +24,6 @@ import { WrappedComponentProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { colors, isRtl } from 'utils/styleUtils';
 
 // utils
 import { getCurrentPhase, getLatestRelevantPhase } from 'api/phases/utils';
@@ -93,7 +92,7 @@ const PhaseNavigation = memo<Props & WrappedComponentProps>(
     const selectPhase = useCallback(
       (phase: IPhaseData) => {
         if (!phases || !project) return;
-        setPhaseURL(phase.id, phases.data, project.data);
+        setPhaseURL(phase, phases.data, project.data);
       },
       [phases, project]
     );

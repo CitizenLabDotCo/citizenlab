@@ -23,7 +23,7 @@ const AgeWidget = ({ title, projectId, startAt, endAt }: ChartWidgetProps) => {
 
 AgeWidget.craft = {
   props: {
-    title: '',
+    title: {},
     projectId: undefined,
     startAt: undefined,
     endAt: null,

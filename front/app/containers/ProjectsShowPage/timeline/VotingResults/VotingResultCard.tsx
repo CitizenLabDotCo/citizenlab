@@ -12,7 +12,13 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
+import {
+  useBreakpoint,
+  Box,
+  defaultCardStyle,
+  defaultCardHoverStyle,
+  media,
+} from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import ImagePlaceholder from './ImagePlaceholder';
 import Rank from './Rank';
@@ -21,11 +27,6 @@ import Footer from 'components/IdeaCard/Footer';
 
 // styling
 import styled from 'styled-components';
-import {
-  defaultCardStyle,
-  defaultCardHoverStyle,
-  media,
-} from 'utils/styleUtils';
 
 // router
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';

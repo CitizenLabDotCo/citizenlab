@@ -5,10 +5,7 @@ import { clickSocialSharingLink, Medium } from '../utils';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
-import { Button } from '@citizenlab/cl2-component-library';
-
-// style
-import { colors } from 'utils/styleUtils';
+import { Button, colors } from '@citizenlab/cl2-component-library';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';

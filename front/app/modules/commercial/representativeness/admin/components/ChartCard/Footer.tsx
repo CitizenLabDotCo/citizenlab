@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import Legend from 'components/admin/Graphs/Legend';
 import Warning from 'components/UI/Warning';
 import FieldInfo, { Props as FieldInfoProps } from './FieldInfo';
@@ -12,7 +12,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
-import { colors } from 'utils/styleUtils';
 
 // typings
 import { View } from 'components/admin/GraphCard/ViewToggle';

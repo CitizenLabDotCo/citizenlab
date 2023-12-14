@@ -82,12 +82,6 @@ const ProjectSharingModal = memo<Props & WrappedComponentProps>(
                             projectName: title,
                           }
                         )}
-                        facebookMessage={formatMessage(
-                          messages.facebookMessage,
-                          {
-                            projectName: title,
-                          }
-                        )}
                         twitterMessage={formatMessage(
                           messages.projectTwitterMessage,
                           {
