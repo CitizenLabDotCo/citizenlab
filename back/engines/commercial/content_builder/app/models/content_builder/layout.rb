@@ -5,7 +5,6 @@
 # Table name: content_builder_layouts
 #
 #  id                     :uuid             not null, primary key
-#  craftjs_jsonmultiloc   :jsonb
 #  content_buildable_type :string           not null
 #  content_buildable_id   :uuid             not null
 #  code                   :string           not null
@@ -24,7 +23,7 @@ module ContentBuilder
 
     before_validation :sanitize_craftjs_json
 
-    validates :content_buildable, :code, presence: true
+    validates :code, presence: true
     validates :craftjs_jsonmultiloc, multiloc: { presence: false, value_type: Hash }
     validates :craftjs_jsonmultiloc, length: { maximum: 1 }, if: lambda { |layout|
       layout.content_buildable_type == 'ReportBuilder::Report' # mvp of report builder only allows 1 locale
