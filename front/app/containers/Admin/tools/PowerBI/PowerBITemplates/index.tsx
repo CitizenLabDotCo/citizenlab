@@ -42,11 +42,10 @@ const PowerBITemplates = () => {
     handleDownloadTemplate('dataflow', 'json');
   };
 
-  const hostName = API_HOST;
   const baseUrl =
-    hostName === 'localhost'
-      ? `http://localhost:${API_PORT}/api/v2/`
-      : `https://${hostName}/api/v2/`;
+    window.location.host === 'localhost'
+      ? `http://localhost:4000/api/v2/`
+      : `${window.location.origin}/api/v2/`;
 
   if (!isPowerBIEnabled) return null;
 
