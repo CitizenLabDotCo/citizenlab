@@ -16,6 +16,7 @@ import {
   Box,
   Title,
   Text,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
@@ -27,7 +28,6 @@ import blockUserMessages from 'components/admin/UserBlockModals/messages';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';

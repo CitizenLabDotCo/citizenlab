@@ -14,11 +14,11 @@ import {
   Icon,
   defaultStyles,
   fontSizes,
+  colors,
 } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // i18n

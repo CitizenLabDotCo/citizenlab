@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Success, Box } from '@citizenlab/cl2-component-library';
+import { Success, Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet';
 import { FormLabel } from 'components/UI/FormComponents';
 import {
@@ -25,7 +25,6 @@ import { injectIntl } from 'utils/cl-intl';
 
 // style
 import messages from './messages';
-import { stylingConsts } from 'utils/styleUtils';
 
 interface Props {}
 

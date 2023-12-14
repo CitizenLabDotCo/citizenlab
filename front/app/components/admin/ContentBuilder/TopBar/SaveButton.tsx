@@ -4,7 +4,7 @@ import React from 'react';
 import Button, { Props as ButtonProps } from 'components/UI/Button';
 
 // styling
-import { colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';

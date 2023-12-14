@@ -14,10 +14,14 @@ import useAddProjectDescriptionBuilderLayout from 'modules/commercial/project_de
 
 // Utils
 import Link from 'utils/cl-router/Link';
-import { fontSizes } from 'utils/styleUtils';
 
 // Components
-import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
+import {
+  Toggle,
+  IconTooltip,
+  Box,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 

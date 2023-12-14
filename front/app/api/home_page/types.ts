@@ -1,7 +1,6 @@
 import { ImageSizes, Multiloc } from 'typings';
 import { Keys } from 'utils/cl-react-query/types';
 import homepageSettingsKeys from './keys';
-import { SerializedNode } from '@craftjs/core';
 
 export type HomepageSettingsKeys = Keys<typeof homepageSettingsKeys>;
 
@@ -64,8 +63,6 @@ export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
   banner_signed_in_header_overlay_color?: string | null;
   // Number between 0 and 100, inclusive
   banner_signed_in_header_overlay_opacity?: number | null;
-  // content builder
-  craftjs_json?: Record<string, SerializedNode>;
 }
 
 export interface IHomepageEnabledSettings {

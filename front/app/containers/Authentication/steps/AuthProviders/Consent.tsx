@@ -4,7 +4,7 @@ import React, { memo } from 'react';
 import Link from 'utils/cl-router/Link';
 import Checkbox from 'components/UI/Checkbox';
 import Error from 'components/UI/Error';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, fontSizes } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
@@ -12,7 +12,6 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;

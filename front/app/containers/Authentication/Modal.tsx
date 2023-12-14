@@ -293,22 +293,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-        {(currentStep === 'sign-up:change-email' ||
-          currentStep === 'missing-data:change-email') && (
-          <ChangeEmail
-            loading={loading}
-            setError={setError}
-            onGoBack={transition(currentStep, 'GO_BACK')}
-            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
-          />
-        )}
-        {currentStep === 'sign-up:onboarding' && (
-          <Onboarding
-            authenticationData={authenticationData}
-            onSubmit={transition(currentStep, 'SUBMIT')}
-            onSkip={transition(currentStep, 'SKIP')}
-          />
-        )}
         {currentStep === 'sign-up:invite' && (
           <Invitation
             loading={loading}
@@ -369,7 +353,8 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
           />
         )}
-        {/* missing data flow */}
+
+        {/* missing data flow / shared */}
         {currentStep === 'missing-data:built-in' && (
           <BuiltInFields
             loading={loading}
@@ -390,6 +375,17 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
           />
         )}
+
+        {(currentStep === 'sign-up:change-email' ||
+          currentStep === 'missing-data:change-email') && (
+          <ChangeEmail
+            loading={loading}
+            setError={setError}
+            onGoBack={transition(currentStep, 'GO_BACK')}
+            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
+          />
+        )}
+
         {(currentStep === 'missing-data:verification' ||
           currentStep === 'verification-only' ||
           currentStep === 'sign-up:verification') && (
@@ -409,6 +405,16 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSkip={transition(currentStep, 'SKIP')}
           />
         )}
+
+        {(currentStep === 'sign-up:onboarding' ||
+          currentStep === 'missing-data:onboarding') && (
+          <Onboarding
+            authenticationData={authenticationData}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+            onSkip={transition(currentStep, 'SKIP')}
+          />
+        )}
+
         {currentStep === 'verification-success' && (
           <VerificationSuccess onClose={transition(currentStep, 'CLOSE')} />
         )}

@@ -1,7 +1,13 @@
 import React from 'react';
 
 import styled, { useTheme } from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import {
+  colors,
+  fontSizes,
+  media,
+  Icon,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 import { StatusExplanation } from './SharedStyles';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
@@ -9,7 +15,6 @@ import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
 import CountDown from './CountDown';
-import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import Button from 'components/UI/Button';
 import ProposalProgressBar from './ProposalProgressBar';

@@ -2,7 +2,7 @@
 
 # to persist changes run: fix_existing_tenants:migrate_flexible_input_forms[true]
 # to persist changes for one host run: fix_existing_tenants:migrate_flexible_input_forms[true,localhost]
-namespace :fix_existing_tenants do
+namespace :single_use do
   desc 'Migrate ideation form custom fields to the new codes and types'
   task :migrate_flexible_input_forms, %i[persist_changes specify_host] => [:environment] do |_t, args|
     persist_changes = args[:persist_changes] == 'true'

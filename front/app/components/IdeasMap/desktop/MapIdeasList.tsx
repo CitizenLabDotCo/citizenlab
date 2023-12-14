@@ -1,7 +1,12 @@
 import React, { memo, useCallback } from 'react';
 
 // components
-import { Icon, Spinner } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  Spinner,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import TopicFilterDropdown from 'components/IdeaCards/shared/Filters/TopicFilterDropdown';
 import SelectSort, {
   Sort,
@@ -28,7 +33,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';

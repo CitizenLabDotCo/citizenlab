@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 
 // Stylings
 import styled, { css } from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 
 const Fallback = styled.div<{ src: string | undefined }>`
   background-repeat: no-repeat;

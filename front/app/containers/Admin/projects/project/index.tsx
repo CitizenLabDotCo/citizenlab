@@ -23,7 +23,7 @@ import { IProjectData } from 'api/projects/types';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
-import { defaultAdminCardPadding } from 'utils/styleUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 // hooks
 import { IPhaseData } from 'api/phases/types';

@@ -953,6 +953,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Besøkende",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Ingen prosjekter",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Er du sikker på at du ønsker å slette «{reportName}»?",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Er du sikker på at du vil slette denne rapporten?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Opprettet: {date}",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.delete": "Slett",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.edit": "Rediger",

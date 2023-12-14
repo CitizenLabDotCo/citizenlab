@@ -14,7 +14,6 @@ import FullMobileNavMenuItem from './FullMobileNavMenuItem';
 
 // styles
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // i18n
@@ -25,7 +24,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import getNavbarItemPropsArray from '../../DesktopNavItems/getNavbarItemPropsArray';
 import { useIntl } from 'utils/cl-intl';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, media, colors } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   height: 100%;

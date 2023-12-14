@@ -1,10 +1,11 @@
 import React from 'react';
 
 // components
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-
-// styling
-import { stylingConsts } from 'utils/styleUtils';
+import {
+  Box,
+  useBreakpoint,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 
 interface Props {
   id?: string;

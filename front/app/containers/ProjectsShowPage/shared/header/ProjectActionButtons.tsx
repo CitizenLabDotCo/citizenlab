@@ -88,6 +88,9 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     scrollTo(scrollParams)();
   };
 
+  const { disabled_reason } =
+    project.data.attributes.action_descriptor.taking_survey;
+
   const handleTakeSurveyClick = () => {
     const { enabled, disabled_reason } =
       project.data.attributes.action_descriptor.taking_survey;
@@ -179,6 +182,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const showTakeNativeSurveyButton =
     generalShowCTAButtonCondition && participationMethod === 'native_survey';
   const showTakeSurveyButton =
+    !disabled_reason &&
     !generalShowCTAButtonCondition &&
     participationMethod === 'survey' &&
     !hasCurrentPhaseEnded;

@@ -1,10 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Text } from '@citizenlab/cl2-component-library';
-
-// styling
-import { colors } from 'utils/styleUtils';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from '../messages';

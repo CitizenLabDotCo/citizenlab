@@ -4,7 +4,11 @@ import {
 } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import styled from 'styled-components';
 
-import { media, colors, stylingConsts } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 
 export const Container = styled.div`
   width: 100%;

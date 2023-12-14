@@ -6,7 +6,7 @@ import { SectionField } from 'components/admin/Section';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 
 // other
 export const TIMEOUT = 350;

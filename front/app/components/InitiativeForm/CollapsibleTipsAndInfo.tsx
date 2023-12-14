@@ -5,7 +5,7 @@ import CollapsibleBox from 'components/UI/CollapsibleBox';
 const TipsContent = React.lazy(() => import('./TipsContent'));
 
 // styling
-import { colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

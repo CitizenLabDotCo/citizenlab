@@ -5,7 +5,13 @@ import { saveAs } from 'file-saver';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
-import { Icon, Dropdown, Box } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  Dropdown,
+  Box,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
@@ -34,7 +40,6 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // Typings

@@ -7,7 +7,13 @@ import ProjectFolderDescription from './ProjectFolderDescription';
 import ProjectFolderProjectCards from './ProjectFolderProjectCards';
 import Button from 'components/UI/Button';
 import PageNotFound from 'components/PageNotFound';
-import { Box, Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  useWindowSize,
+  media,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
 import Centerer from 'components/UI/Centerer';
 import FollowUnfollow from 'components/FollowUnfollow';
@@ -24,7 +30,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import { maxPageWidth } from './styles';
-import { media, colors } from 'utils/styleUtils';
 
 // utils
 import { isError } from 'lodash-es';

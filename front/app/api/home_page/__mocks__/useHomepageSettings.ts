@@ -30,7 +30,6 @@ export const mockHomepageSettingsData: IHomepageSettingsData = {
     banner_cta_signed_out_text_multiloc: {},
     banner_cta_signed_out_type: 'no_button',
     banner_cta_signed_out_url: null,
-    craftjs_json: {},
   },
 };
 

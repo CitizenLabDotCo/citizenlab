@@ -6,6 +6,7 @@ import {
   Box,
   Text,
   StatusLabel,
+  colors,
 } from '@citizenlab/cl2-component-library';
 // import RepresentativenessArticleLink from '../../components/RepresentativenessArticleLink';
 
@@ -15,7 +16,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 const StyledStatusLabel = styled(StatusLabel)`
   margin-left: 8px;

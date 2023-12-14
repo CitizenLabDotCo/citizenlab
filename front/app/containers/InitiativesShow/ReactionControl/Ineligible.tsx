@@ -1,11 +1,17 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import {
+  colors,
+  fontSizes,
+  media,
+  Box,
+  Icon,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
-import { Box, Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 
 import ProposalProgressBar from './ProposalProgressBar';

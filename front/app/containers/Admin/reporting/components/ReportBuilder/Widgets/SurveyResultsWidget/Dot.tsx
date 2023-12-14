@@ -1,6 +1,5 @@
 import React from 'react';
-import { Icon } from '@citizenlab/cl2-component-library';
-import { colors } from 'utils/styleUtils';
+import { Icon, colors } from '@citizenlab/cl2-component-library';
 
 const Dot = () => (
   <Icon

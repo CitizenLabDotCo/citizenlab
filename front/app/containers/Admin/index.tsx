@@ -10,7 +10,7 @@ import HasPermission from 'components/HasPermission';
 // components
 import Sidebar from './sideBar/';
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors, media } from '@citizenlab/cl2-component-library';
 
 // utils
 import clHistory from 'utils/cl-router/history';

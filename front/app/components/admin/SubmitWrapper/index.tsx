@@ -3,7 +3,7 @@ import { omit } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // styles
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 
 // components

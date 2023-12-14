@@ -9,7 +9,12 @@ import {
   SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
-import { Label, ColorPickerInput } from '@citizenlab/cl2-component-library';
+import {
+  Label,
+  ColorPickerInput,
+  calculateContrastRatio,
+  hexToRgb,
+} from '@citizenlab/cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Warning from 'components/UI/Warning';
 
@@ -18,7 +23,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
+
 import { get } from 'lodash-es';
 
 // typings

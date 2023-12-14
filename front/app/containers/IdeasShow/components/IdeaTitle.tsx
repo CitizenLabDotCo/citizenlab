@@ -6,12 +6,11 @@ import useLocalize from 'hooks/useLocalize';
 
 // components
 import Title from 'components/PostShowComponents/Title';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, isRtl, media } from '@citizenlab/cl2-component-library';
 import IdeaMoreActions from './IdeaMoreActions';
 
 // styling
 import styled from 'styled-components';
-import { isRtl, media } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

@@ -2,7 +2,7 @@ import React from 'react';
 
 // styles
 import styled, { css, keyframes } from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { Box, fontSizes, colors } from '@citizenlab/cl2-component-library';
 
 // intl
 import messages from '../../messages';
@@ -10,7 +10,6 @@ import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // hooks

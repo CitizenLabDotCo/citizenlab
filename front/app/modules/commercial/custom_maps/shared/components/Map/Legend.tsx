@@ -7,13 +7,14 @@ import {
   fontSizes,
   colors,
   defaultCardStyle,
-} from 'utils/styleUtils';
+  Icon,
+  IconNames,
+} from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 import {
   getLayerColor,
   getLayerIcon,
 } from 'modules/commercial/custom_maps/utils/map';
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import bowser from 'bowser';
 import useMapConfig from 'modules/commercial/custom_maps/api/map_config/useMapConfig';
 

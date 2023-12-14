@@ -14,11 +14,10 @@ import styled from 'styled-components';
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
 import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
-import { media } from 'utils/styleUtils';
 import messages from '../messages';
 import tracks from '../tracks';
 import CTA from './CTA';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useBreakpoint, media } from '@citizenlab/cl2-component-library';
 import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`

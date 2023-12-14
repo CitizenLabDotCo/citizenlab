@@ -1,7 +1,12 @@
 import React, { useRef, KeyboardEvent } from 'react';
 import { ScreenReaderOnly } from 'utils/a11y';
 import styled from 'styled-components';
-import { fontSizes, isRtl, colors, media } from 'utils/styleUtils';
+import {
+  fontSizes,
+  isRtl,
+  colors,
+  media,
+} from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 import { FormattedMessage } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';

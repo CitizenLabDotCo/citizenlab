@@ -11,6 +11,7 @@ import {
   Text,
   useBreakpoint,
   Button,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import VerificationIcon from '../VerificationIcon';
@@ -20,7 +21,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import { colors } from 'utils/styleUtils';
 import { useTheme } from 'styled-components';
 
 const LinearScaleControl = ({

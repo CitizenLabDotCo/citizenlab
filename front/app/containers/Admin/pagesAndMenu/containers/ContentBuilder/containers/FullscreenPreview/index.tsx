@@ -12,17 +12,17 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // types
 import { SerializedNodes } from '@craftjs/core';
-import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import { useSearchParams } from 'react-router-dom';
 import { Locale } from 'typings';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
+import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 
 export const FullScreenPreview = () => {
   const [search] = useSearchParams();
   const selectedLocale = (search.get('selected_locale') as Locale) || undefined;
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const platformLocale = useLocale();
-  const { data: homepage, isLoading } = useHomepageSettings();
+  const { data: homepage, isLoading } = useHomepageLayout();
 
   if (isNilOrError(platformLocale)) {
     return null;

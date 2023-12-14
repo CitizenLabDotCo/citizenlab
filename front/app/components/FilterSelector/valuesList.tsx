@@ -4,11 +4,15 @@ import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
 import Checkbox from 'components/UI/Checkbox';
-import { Dropdown } from '@citizenlab/cl2-component-library';
+import {
+  Dropdown,
+  colors,
+  fontSizes,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 const List = styled.ul`
   margin: 0;

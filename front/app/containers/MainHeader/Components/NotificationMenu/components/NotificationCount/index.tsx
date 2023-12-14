@@ -7,11 +7,15 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // components
-import { IconButton, Box } from '@citizenlab/cl2-component-library';
+import {
+  IconButton,
+  Box,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 // style
 import styled, { useTheme } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Container = styled.div`

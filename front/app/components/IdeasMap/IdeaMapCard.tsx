@@ -3,7 +3,15 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import CloseIconButton from 'components/UI/CloseIconButton';
-import { Icon, useWindowSize, Box } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  useWindowSize,
+  Box,
+  defaultCardStyle,
+  fontSizes,
+  colors,
+  viewportWidths,
+} from '@citizenlab/cl2-component-library';
 
 // events
 import {
@@ -31,12 +39,7 @@ import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
 // styling
 import styled from 'styled-components';
-import {
-  defaultCardStyle,
-  fontSizes,
-  colors,
-  viewportWidths,
-} from 'utils/styleUtils';
+
 import { darken } from 'polished';
 
 // utils

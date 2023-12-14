@@ -2,10 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
-
-// styles
-import { colors } from 'utils/styleUtils';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // craft
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
@@ -126,7 +123,7 @@ const RenderNode = ({ render }) => {
           ? colors.divider
           : 'transparent'
       }
-      my={invisible ? undefined : '4px'}
+      my={invisible ? undefined : '2px'}
       isRoot={id === ROOT_NODE}
     >
       {nodeLabelIsVisible && (

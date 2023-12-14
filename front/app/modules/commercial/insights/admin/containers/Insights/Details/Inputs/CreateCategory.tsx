@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
-import { Input, Box } from '@citizenlab/cl2-component-library';
+import {
+  Input,
+  Box,
+  fontSizes,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -10,7 +15,6 @@ import Tag from 'modules/commercial/insights/admin/components/Tag';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';

@@ -9,7 +9,7 @@ import styled from 'styled-components';
 // typings
 import { SignUpInFlow } from 'containers/Authentication/typings';
 import { AuthProvider } from '.';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes } from '@citizenlab/cl2-component-library';
 // move to core
 import ClaveUnicaButton from 'components/UI/ClaveUnicaButton';
 import {

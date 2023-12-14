@@ -10,10 +10,9 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { Checkbox, Td, colors } from '@citizenlab/cl2-component-library';
 
 // components
-import { Checkbox, Td } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import Category from 'modules/commercial/insights/admin/components/Category';
 import { IInsightsInputData } from 'modules/commercial/insights/api/inputs/types';

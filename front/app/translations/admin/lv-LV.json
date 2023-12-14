@@ -953,6 +953,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Apmeklētāji",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Nav projekta",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Vai esat pārliecināts, ka vēlaties dzēst \"{reportName}\"?",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Vai esat pārliecināts, ka vēlaties dzēst šo ziņojumu?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Izveidots: {date}",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.delete": "Dzēst",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.edit": "Rediģēt",

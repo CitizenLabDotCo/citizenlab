@@ -10,6 +10,9 @@ import {
   IconButton,
   colors,
   useBreakpoint,
+  media,
+  fontSizes,
+  isRtl,
 } from '@citizenlab/cl2-component-library';
 import NotificationMenu from '../../NotificationMenu';
 import LanguageSelector from '../../LanguageSelector';
@@ -26,7 +29,6 @@ import { isNilOrError, isPage } from 'utils/helperUtils';
 // style
 import styled, { useTheme } from 'styled-components';
 import { darken } from 'polished';
-import { media, fontSizes, isRtl } from 'utils/styleUtils';
 
 // intl
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

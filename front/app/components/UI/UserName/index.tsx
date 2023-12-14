@@ -3,7 +3,12 @@ import Link from 'utils/cl-router/Link';
 
 // styles
 import { darken } from 'polished';
-import { colors, fontSizes } from 'utils/styleUtils';
+import {
+  colors,
+  fontSizes,
+  Box,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 // hooks
@@ -18,7 +23,6 @@ import messages from './messages';
 
 // components
 import Tippy from '@tippyjs/react';
-import { Box, Text } from '@citizenlab/cl2-component-library';
 
 const Name = styled.span<{
   color?: string;

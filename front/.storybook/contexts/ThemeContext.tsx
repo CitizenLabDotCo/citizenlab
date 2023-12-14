@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import { getTheme } from '../../app/utils/styleUtils';
+import { getTheme } from '@citizenlab/cl2-component-library';
 import GlobalStyle from '../../app/global-styles';
 import '../../app/assets/css/reset.min.css';
 // import '../../app/assets/fonts/fonts.css';

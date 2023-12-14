@@ -8,11 +8,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 // styles
 import styled from 'styled-components';
-import { stylingConsts, colors } from 'utils/styleUtils';
 
 // components
 import { RightColumn } from 'containers/Admin';
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  stylingConsts,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
 import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';

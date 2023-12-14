@@ -8,6 +8,7 @@ import {
   Box,
   Title,
   Text,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import DateBlocks from '../DateBlocks';
 import Image from 'components/UI/Image';
@@ -22,7 +23,6 @@ import messages from '../messages';
 
 // styling
 import styled, { useTheme } from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // utils
 import clHistory from 'utils/cl-router/history';

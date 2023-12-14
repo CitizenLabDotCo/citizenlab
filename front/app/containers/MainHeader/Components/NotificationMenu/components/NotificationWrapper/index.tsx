@@ -1,10 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { Icon, IconNames } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  IconNames,
+  fontSizes,
+  colors,
+  media,
+} from '@citizenlab/cl2-component-library';
 
 // utils
-import { fontSizes, colors, media } from 'utils/styleUtils';
+
 import { timeAgo } from 'utils/dateUtils';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';

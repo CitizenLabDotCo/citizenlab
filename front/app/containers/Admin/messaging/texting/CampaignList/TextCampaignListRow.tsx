@@ -8,7 +8,7 @@ import { ITextingCampaignData } from 'api/texting_campaigns/types';
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedTime, FormattedDate } from 'react-intl';

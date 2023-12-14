@@ -2,7 +2,7 @@ import React from 'react';
 
 // hooks
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import useUpdateHomepageSettings from 'api/home_page/useUpdateHomepageSettings';
+import useAddHomepageBuilderLayout from 'api/home_page_layout/useAddHomepageLayout';
 
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
@@ -46,7 +46,7 @@ const BuilderTopBar = ({
     mutate: updateHomepage,
     isError,
     isLoading,
-  } = useUpdateHomepageSettings();
+  } = useAddHomepageBuilderLayout();
   const { formatMessage } = useIntl();
   const disableSave = hasError || hasPendingState;
 

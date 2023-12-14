@@ -5,8 +5,14 @@ import styled from 'styled-components';
 import { useEditor } from '@craftjs/core';
 
 // components
-import { Box, Icon, IconNames, Text } from '@citizenlab/cl2-component-library';
-import { colors } from 'utils/styleUtils';
+import {
+  Box,
+  Icon,
+  IconNames,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
+
 import Tippy from '@tippyjs/react';
 
 const StyledBox = styled(Box)`
