@@ -10,9 +10,6 @@ resource 'Avatars' do
     header 'Content-Type', 'application/json'
     @user_without_avatar = create(:user, avatar: nil)
     @users_with_avatar = create_list(:user, 6)
-    home_page = HomePage.new
-    home_page.banner_avatars_enabled = true
-    home_page.save!
   end
 
   get 'web_api/v1/avatars' do

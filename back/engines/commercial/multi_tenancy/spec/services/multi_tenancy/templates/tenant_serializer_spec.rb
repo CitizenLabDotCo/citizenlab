@@ -21,7 +21,7 @@ describe MultiTenancy::Templates::TenantSerializer do
 
       tenant.switch do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
-        expect(HomePage.count).to be 1
+        expect(ContentBuilder::Layout.count).to be 1
         expect(Area.count).to be > 0
         expect(Comment.count).to be > 0
         expect(InternalComment.count).to be > 0
@@ -75,15 +75,6 @@ describe MultiTenancy::Templates::TenantSerializer do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
         expect(Comment.count).to eq 1
       end
-    end
-
-    it 'includes a reference to an existing home_page header_bg' do
-      create(:home_page, header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
-
-      template = tenant_serializer.run(deserializer_format: true)
-
-      expect(template['models']).to be_present
-      expect(template.dig('models', 'home_page', 0, 'remote_header_bg_url')).to match(%r{/uploads/.*/home_page/header_bg/.*.jpg})
     end
 
     it 'includes a reference to an existing static_page header_bg' do

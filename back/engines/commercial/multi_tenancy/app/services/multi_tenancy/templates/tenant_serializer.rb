@@ -47,7 +47,6 @@ module MultiTenancy
           CustomForm => serialize_records(CustomForm),
           Event => serialize_records(Event),
           EventFile => serialize_records(EventFile),
-          HomePage => serialize_records(HomePage),
           IdeaStatus => serialize_records(IdeaStatus),
           InitiativeStatus => serialize_records(InitiativeStatus),
           NavBarItem => serialize_records(NavBarItem),
