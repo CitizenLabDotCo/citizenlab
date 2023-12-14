@@ -1,6 +1,5 @@
-import { colors } from '@citizenlab/cl2-component-library';
+import { colors, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 export const Container = styled.main`
   height: 100%;

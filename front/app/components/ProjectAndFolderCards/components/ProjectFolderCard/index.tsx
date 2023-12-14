@@ -8,7 +8,6 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon, useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import FollowUnfollow from 'components/FollowUnfollow';
 
@@ -29,7 +28,10 @@ import {
   fontSizes,
   defaultCardStyle,
   defaultCardHoverStyle,
-} from 'utils/styleUtils';
+  Icon,
+  useBreakpoint,
+  Box,
+} from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // hooks

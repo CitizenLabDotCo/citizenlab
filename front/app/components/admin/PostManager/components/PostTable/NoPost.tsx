@@ -5,12 +5,9 @@ import styled from 'styled-components';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styling
-import { colors, fontSizes } from 'utils/styleUtils';
-
 // components
 import Button from 'components/UI/Button';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { ManagerType } from '../..';
 
 export const NoPostPage = styled.div`

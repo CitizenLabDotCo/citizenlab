@@ -7,7 +7,7 @@ import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextAre
 import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/ErrorMessage';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
 import Actions from '../../CommentForm/Actions';
 import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
 
@@ -30,7 +30,6 @@ import { commentAdded } from '../../events';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
-import { colors, defaultStyles } from 'utils/styleUtils';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';

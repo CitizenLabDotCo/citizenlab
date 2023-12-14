@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import {
+  colors,
+  fontSizes,
+  Button,
+  Input,
+} from '@citizenlab/cl2-component-library';
 
 // intl
 import { WrappedComponentProps } from 'react-intl';
@@ -10,15 +15,10 @@ import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
 
 // components
-import { Button, Input } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // services
 import useUpdateCategory from 'modules/commercial/insights/api/categories/useUpdateCategory';
-
-// utils
-
-// types
 
 // tracking
 import { trackEventByName } from 'utils/analytics';

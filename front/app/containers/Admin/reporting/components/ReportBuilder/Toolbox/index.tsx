@@ -6,11 +6,11 @@ import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
 
 // shared widgets
-import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 
 // widgets
+import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 import TitleMultiloc from '../Widgets/TitleMultiloc';
 import AboutReportWidget from '../Widgets/AboutReportWidget';

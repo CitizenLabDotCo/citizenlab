@@ -23,7 +23,8 @@ class WebApi::V1::IdeasController < ApplicationController
       scope: policy_scope(Idea).where(publication_status: 'published'),
       current_user: current_user,
       includes: [
-        :idea_images, :idea_trending_info,
+        :idea_images, :idea_trending_info, :topics,
+        :idea_import, # defined through BulkImportIdeas engine
         {
           project: [:phases, { custom_form: [:custom_fields] }],
           phases: [:permissions],

@@ -20,7 +20,7 @@ import Modal, {
 } from 'components/UI/Modal';
 import { StyledLink } from 'components/admin/Section';
 import VerticalCenterer from 'components/VerticalCenterer';
-import { Spinner, Box } from '@citizenlab/cl2-component-library';
+import { Spinner, Box, fontSizes } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
 // hooks
@@ -29,7 +29,6 @@ import useTopics from 'api/topics/useTopics';
 import useDeleteAllowedProjectInputTopic from 'api/project_allowed_input_topics/useDeleteProjectAllowedInputTopic';
 
 // styles
-import { fontSizes } from 'utils/styleUtils';
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 import useReorderProjectAllowedInputTopics from 'api/project_allowed_input_topics/useReorderProjectAllowedInputTopics';
 import { IProjectAllowedInputTopicData } from 'api/project_allowed_input_topics/types';

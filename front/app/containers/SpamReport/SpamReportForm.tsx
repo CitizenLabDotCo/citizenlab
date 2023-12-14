@@ -9,7 +9,7 @@ import getSubmitState from 'utils/getSubmitState';
 
 // Components
 import { SectionField } from 'components/admin/Section';
-import { Label, Radio } from '@citizenlab/cl2-component-library';
+import { Label, Radio, fontSizes } from '@citizenlab/cl2-component-library';
 import TextArea from 'components/UI/TextArea';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
@@ -24,7 +24,6 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 // Style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 
 const timeout = 300;
 

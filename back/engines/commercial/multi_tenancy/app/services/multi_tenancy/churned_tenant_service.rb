@@ -18,7 +18,7 @@ module MultiTenancy
 
       expired_tenants = send(:expired_tenants, tenants)
       expired_tenants.each do |tenant|
-        tenant.switch { User.destroy_all_async }
+        tenant.switch { User.destroy_all_async(User.not_super_admins) }
       end
     end
 

@@ -59,9 +59,10 @@ class User < ApplicationRecord
   EMAIL_DOMAIN_BLACKLIST = Rails.root.join('config', 'domain_blacklist.txt').readlines.map(&:strip).freeze
 
   class << self
-    # Deletes all users asynchronously (with side effects).
-    def destroy_all_async
-      User.pluck(:id).each { |id| DeleteUserJob.perform_later(id) }
+    # Asynchronously deletes all users in a specified scope with associated side effects.
+    # By default, this method deletes all users on the platform.
+    def destroy_all_async(scope = User)
+      scope.pluck(:id).each { |id| DeleteUserJob.perform_later(id) }
     end
 
     def roles_json_schema
@@ -292,12 +293,16 @@ class User < ApplicationRecord
   }
 
   # https://www.postgresql.org/docs/12/functions-matching.html#FUNCTIONS-POSIX-REGEXP
+  scope :citizenlab_member, -> { where('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT) }
   scope :not_citizenlab_member, -> { where.not('email ~* ?', CITIZENLAB_MEMBER_REGEX_CONTENT) }
   scope :billed_admins, -> { admin.not_citizenlab_member }
   scope :billed_moderators, lambda {
     # use any conditions before `or` very carefully (inspect the generated SQL)
     project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
   }
+
+  scope :super_admins, -> { citizenlab_member.admin }
+  scope :not_super_admins, -> { where.not(id: super_admins) }
 
   def update_merging_custom_fields!(attributes)
     attributes = attributes.deep_stringify_keys

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :data_migrate do
+namespace :single_use do
   # Testing:
   # ProjectFolders::Folder.find('d92dada6-1c1e-4684-9916-3d84b84e11e7').images.each { _1.update!(ordering: 1) }.each { _1.dup.update!(ordering: 100) }
   # Project.find('d9acd994-9907-4443-b913-7697d4508d13').project_images.each { _1.update!(ordering: 1) }.each { _1.dup.update!(ordering: 100) }

@@ -6,12 +6,11 @@ import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 
 // styles
-import { colors } from 'utils/styleUtils';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // components
 import WhiteBox from '../_shared/WhiteBox';
 import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
-import { Box } from '@citizenlab/cl2-component-library';
 
 // intl
 import messages from '../_shared/messages';

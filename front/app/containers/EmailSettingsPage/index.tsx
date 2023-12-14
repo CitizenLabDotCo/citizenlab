@@ -7,7 +7,7 @@ import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 
 // Styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 
 // typings
 import { Multiloc } from 'typings';

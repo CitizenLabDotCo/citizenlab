@@ -5,7 +5,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import PageForm, { FormValues } from 'components/PageForm';
 
 // api
@@ -21,7 +21,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import useAddPagesFile from 'api/page_files/useAddPageFile';
 import useDeletePageFile from 'api/page_files/useDeletePageFile';
 import usePageFiles from 'api/page_files/usePageFiles';

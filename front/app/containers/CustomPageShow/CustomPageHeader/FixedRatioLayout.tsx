@@ -13,7 +13,7 @@ import HeaderContent from './HeaderContent';
 
 import { ICustomPageData } from 'api/custom_pages/types';
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
-import { colors, stylingConsts } from 'utils/styleUtils';
+import { colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 export interface Props {

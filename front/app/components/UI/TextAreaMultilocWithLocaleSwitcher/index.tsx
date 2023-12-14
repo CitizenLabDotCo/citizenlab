@@ -7,6 +7,7 @@ import {
   IconTooltip,
   LocaleSwitcher,
   Label,
+  colors,
 } from '@citizenlab/cl2-component-library';
 
 // hooks
@@ -15,7 +16,6 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // typings
 import { Locale, Multiloc } from 'typings';

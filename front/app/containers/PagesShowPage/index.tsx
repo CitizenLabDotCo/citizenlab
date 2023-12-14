@@ -1,6 +1,11 @@
 import ContentContainer from 'components/ContentContainer';
 import styled from 'styled-components';
-import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  fontSizes,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 
 export const Container = styled.div`
   min-height: calc(

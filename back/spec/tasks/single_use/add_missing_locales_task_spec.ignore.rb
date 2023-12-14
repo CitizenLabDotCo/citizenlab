@@ -9,7 +9,7 @@ describe 'rake add_missing_locales' do
   end
 
   after do
-    Rake::Task['fixes:add_missing_locales'].reenable
+    Rake::Task['single_use:add_missing_locales'].reenable
   end
 
   it 'adds the missing Belgian Dutch title and description for an idea status of accepted' do
@@ -19,7 +19,7 @@ describe 'rake add_missing_locales' do
       title_multiloc: { 'en' => 'accepted' },
       description_multiloc: { en: 'This idea has been accepted and will be implemented by the city' }
     )
-    Rake::Task['fixes:add_missing_locales'].invoke('example.org', 'nl-BE')
+    Rake::Task['single_use:add_missing_locales'].invoke('example.org', 'nl-BE')
 
     expect(IdeaStatus.first.title_multiloc.length).to eq(2)
     expect(IdeaStatus.first.title_multiloc).to include('nl-BE' => 'aangenomen')
@@ -27,7 +27,7 @@ describe 'rake add_missing_locales' do
 
   it 'adds the missing English title for gender custom field' do
     create(:custom_field, key: 'gender', title_multiloc: { 'nl-BE' => 'Geslacht' })
-    Rake::Task['fixes:add_missing_locales'].invoke('example.org', 'en')
+    Rake::Task['single_use:add_missing_locales'].invoke('example.org', 'en')
 
     expect(CustomField.first.title_multiloc.length).to eq(2)
     expect(CustomField.first.title_multiloc).to include('en' => 'Gender')
@@ -35,7 +35,7 @@ describe 'rake add_missing_locales' do
 
   it 'does not overwrite the value for the locale if it exists' do
     create(:custom_field, key: 'gender', title_multiloc: { 'en' => 'TEST_VALUE', 'nl-BE' => 'Geslacht' })
-    Rake::Task['fixes:add_missing_locales'].invoke('example.org', 'en')
+    Rake::Task['single_use:add_missing_locales'].invoke('example.org', 'en')
 
     expect(CustomField.first.title_multiloc.length).to eq(2)
     expect(CustomField.first.title_multiloc['en']).to eq('TEST_VALUE')
@@ -43,7 +43,7 @@ describe 'rake add_missing_locales' do
 
   it 'does nothing if the locale already exists but is empty' do
     create(:custom_field, key: 'gender', title_multiloc: { 'en' => '', 'nl-BE' => 'Geslacht' })
-    Rake::Task['fixes:add_missing_locales'].invoke('example.org', 'en')
+    Rake::Task['single_use:add_missing_locales'].invoke('example.org', 'en')
 
     expect(CustomField.first.title_multiloc.length).to eq(2)
     expect(CustomField.first.title_multiloc['en']).to eq('')

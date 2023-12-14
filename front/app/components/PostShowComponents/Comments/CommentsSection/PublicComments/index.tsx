@@ -13,8 +13,14 @@ import messages from '../../messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  colors,
+  fontSizes,
+  isRtl,
+  Box,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 // typings
 import { CommentsSort } from 'api/comments/types';

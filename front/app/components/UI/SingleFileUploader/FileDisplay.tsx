@@ -2,11 +2,13 @@ import React from 'react';
 
 // styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import {
+  colors,
+  Icon,
+  IconButton,
+  Box,
+} from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
-
-// components
-import { Icon, IconButton, Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';

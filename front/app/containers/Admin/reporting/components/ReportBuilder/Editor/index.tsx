@@ -9,12 +9,12 @@ import RenderNode from './RenderNode';
 
 // shared widgets
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
-import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 // report builder widgets
 import TitleMultiloc from '../Widgets/TitleMultiloc';
+import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';

@@ -11,7 +11,7 @@ import CollapsibleTipsAndInfo from './CollapsibleTipsAndInfo';
 import Fragment from 'components/Fragment';
 
 // style
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 // intl

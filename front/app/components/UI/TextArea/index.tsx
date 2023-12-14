@@ -5,12 +5,16 @@ import { isEmpty } from 'lodash-es';
 import Error from 'components/UI/Error';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
+import {
+  IconTooltip,
+  Label,
+  colors,
+  defaultInputStyle,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
-import { colors, defaultInputStyle, isRtl } from 'utils/styleUtils';
-
 // typings
 import { Locale } from 'typings';
 

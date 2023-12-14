@@ -3,7 +3,7 @@ import { RightColumn } from 'containers/Admin';
 
 // styling
 import styled from 'styled-components';
-import { stylingConsts } from 'utils/styleUtils';
+import { stylingConsts } from '@citizenlab/cl2-component-library';
 
 export const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);

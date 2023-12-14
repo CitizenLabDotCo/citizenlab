@@ -20,7 +20,7 @@ import useUserById from 'api/users/useUserById';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 
 const UserWrapper = styled.div`
   display: flex;

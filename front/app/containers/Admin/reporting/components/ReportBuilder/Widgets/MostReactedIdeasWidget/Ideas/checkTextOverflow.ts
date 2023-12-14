@@ -1,4 +1,4 @@
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes } from '@citizenlab/cl2-component-library';
 
 export const MEDIUM_LINE_HEIGHT = fontSizes.m + 2.45;
 

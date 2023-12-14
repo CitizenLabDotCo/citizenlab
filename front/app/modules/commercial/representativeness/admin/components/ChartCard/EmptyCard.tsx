@@ -12,6 +12,7 @@ import {
   Title,
   Text,
   StatusLabel,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { StyledBackgroundImage } from '../../containers/Dashboard/EmptyState';
 import Button from 'components/UI/Button';
@@ -22,7 +23,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // typings
 import { Multiloc } from 'typings';

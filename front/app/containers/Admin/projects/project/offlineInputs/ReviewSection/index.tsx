@@ -14,7 +14,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Text,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import EmptyState from './EmptyState';
 import IdeaList from './IdeaList';
 import IdeaEditor from './IdeaEditor';
@@ -22,7 +28,6 @@ import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
 
 // styling
-import { colors, stylingConsts } from 'utils/styleUtils';
 
 const ReviewSection = () => {
   const { projectId, phaseId } = useParams() as {

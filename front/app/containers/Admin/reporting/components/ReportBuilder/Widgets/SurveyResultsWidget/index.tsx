@@ -4,10 +4,15 @@ import React, { useCallback } from 'react';
 import { useNode } from '@craftjs/core';
 
 // styling
-import { colors, stylingConsts } from 'utils/styleUtils';
+import {
+  colors,
+  stylingConsts,
+  Box,
+  Icon,
+  Text,
+} from '@citizenlab/cl2-component-library';
 
 // components
-import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 import Card from '../_shared/Card';
 import SurveyResults from './SurveyResults';
 import NoData from '../_shared/NoData';

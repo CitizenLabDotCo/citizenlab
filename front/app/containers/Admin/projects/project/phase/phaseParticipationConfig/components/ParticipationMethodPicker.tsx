@@ -10,6 +10,7 @@ import {
   Text,
   Box,
   Badge,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -22,9 +23,6 @@ import Tippy from '@tippyjs/react';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
 import messages2 from './messages';
-
-// styling
-import { colors } from 'utils/styleUtils';
 
 // utils
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';

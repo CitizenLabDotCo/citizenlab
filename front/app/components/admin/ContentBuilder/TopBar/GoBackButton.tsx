@@ -1,11 +1,8 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
-
-// styling
-import { colors } from 'utils/styleUtils';
 
 interface Props {
   onClick: () => void;

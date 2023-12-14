@@ -53,7 +53,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     object.avatar.versions.to_h { |k, v| [k.to_s, v.url] }
   end
 
-  attribute :unread_notifications do |object|
+  attribute :unread_notifications, if: proc { |object, params| object == current_user(params) } do |object|
     object.unread_notifications.size
   end
 

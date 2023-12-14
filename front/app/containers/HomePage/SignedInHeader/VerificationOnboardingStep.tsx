@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import messages from '../messages';
 import { HeaderContent, Left, Right, Text, Icons, StyledAvatar } from '.';
@@ -8,7 +8,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import { triggerVerificationOnly } from 'containers/Authentication/events';
-import { colors } from 'utils/styleUtils';
 import OnboardingStep from './OnboardingStep';
 import SkipButton from './SkipButton';
 import AcceptButton from './AcceptButton';

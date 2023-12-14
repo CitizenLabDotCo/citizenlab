@@ -14,11 +14,12 @@ import {
   media,
   viewportWidths,
   defaultCardStyle,
-} from 'utils/styleUtils';
+  Icon,
+  useWindowSize,
+} from '@citizenlab/cl2-component-library';
 
 // components
 import Button from 'components/UI/Button';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

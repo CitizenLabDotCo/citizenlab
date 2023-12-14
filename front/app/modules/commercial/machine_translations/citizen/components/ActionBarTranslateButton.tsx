@@ -2,7 +2,7 @@ import React from 'react';
 
 import FeatureFlag from 'components/FeatureFlag';
 import { isNilOrError } from 'utils/helperUtils';
-import { media } from 'utils/styleUtils';
+import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import TranslateButton from 'components/UI/TranslateButton';
 import { GetLocaleChildProps } from 'resources/GetLocale';

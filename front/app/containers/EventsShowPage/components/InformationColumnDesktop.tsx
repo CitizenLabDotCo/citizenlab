@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import EventAttendanceButton from 'components/EventAttendanceButton';
 import EventDateStylized from './MetadataInformation/EventDateStylized';
 import Location from './MetadataInformation/Location';
@@ -11,7 +11,6 @@ import OnlineLink from './MetadataInformation/OnlineLink';
 import ParticipantsCount from './MetadataInformation/ParticipantsCount';
 
 // styling
-import { colors } from 'utils/styleUtils';
 import { rightColumnWidthDesktop } from '../styleConstants';
 
 // typing

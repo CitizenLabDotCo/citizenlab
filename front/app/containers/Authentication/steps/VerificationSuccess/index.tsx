@@ -15,7 +15,7 @@ import useAuthUser from 'api/me/useAuthUser';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 
 // svg
 import illustration from './illustration.svg';

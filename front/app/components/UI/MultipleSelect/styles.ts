@@ -1,4 +1,8 @@
-import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
+import {
+  colors,
+  fontSizes,
+  defaultStyles,
+} from '@citizenlab/cl2-component-library';
 
 export function getSelectStyles(borderColor = colors.borderDark) {
   return {

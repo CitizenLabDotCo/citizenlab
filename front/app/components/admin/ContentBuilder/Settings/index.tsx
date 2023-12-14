@@ -2,10 +2,14 @@ import React from 'react';
 
 // styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // components
-import { Title, Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import {
+  Title,
+  Box,
+  stylingConsts,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import CloseIconButton from 'components/UI/CloseIconButton';
 

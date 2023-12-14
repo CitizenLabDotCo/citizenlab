@@ -1,7 +1,6 @@
 import React from 'react';
 
 // hooks
-import useHomepageSettings from 'api/home_page/useHomepageSettings';
 
 // components
 import Editor from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Editor';
@@ -13,15 +12,16 @@ import eventEmitter from 'utils/eventEmitter';
 
 // constants
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
+import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 
 const handleLoadImages = () => {
   eventEmitter.emit(IMAGES_LOADED_EVENT);
 };
 
 const Preview = () => {
-  const { data: homepageSettings } = useHomepageSettings();
+  const { data: homepageLayout } = useHomepageLayout();
 
-  const homepageContent = homepageSettings?.data.attributes.craftjs_json;
+  const homepageContent = homepageLayout?.data.attributes.craftjs_json;
 
   return (
     <Box>

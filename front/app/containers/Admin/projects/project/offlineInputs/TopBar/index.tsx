@@ -14,6 +14,8 @@ import {
   Button,
   Text,
   Badge,
+  stylingConsts,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -23,7 +25,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // styling
-import { stylingConsts, colors } from 'utils/styleUtils';
 
 interface Props {
   onClickPDFImport: () => void;

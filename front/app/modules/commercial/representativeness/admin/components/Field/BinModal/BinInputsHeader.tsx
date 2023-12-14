@@ -1,14 +1,11 @@
 import React from 'react';
 
 // components
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-
-// styling
-import { colors } from 'utils/styleUtils';
 
 const HEADER_MESSAGES: MessageDescriptor[] = [
   messages.ageGroup,

@@ -12,7 +12,7 @@ import messages from '../../messages';
 import { WrappedComponentProps } from 'react-intl';
 
 // utils
-import { colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 import { requestBlob } from 'utils/requestBlob';
 import { isNilOrError } from 'utils/helperUtils';
 

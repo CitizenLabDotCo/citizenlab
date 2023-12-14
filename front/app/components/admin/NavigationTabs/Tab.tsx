@@ -1,11 +1,15 @@
 import React, { MouseEvent } from 'react';
 
-import { Box, StatusLabel } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  StatusLabel,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // style
 import styled, { css } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import {
   tabLineHeight,
   tabPadding,

@@ -8,7 +8,10 @@ import { IEventData } from 'api/events/types';
 
 // style
 import styled from 'styled-components';
-import { defaultCardHoverStyle, defaultCardStyle } from 'utils/styleUtils';
+import {
+  defaultCardHoverStyle,
+  defaultCardStyle,
+} from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

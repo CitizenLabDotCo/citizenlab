@@ -8,10 +8,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, defaultOutline, isRtl } from 'utils/styleUtils';
-
-// components
-import { Icon } from '@citizenlab/cl2-component-library';
+import {
+  colors,
+  fontSizes,
+  defaultOutline,
+  isRtl,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   margin-bottom: 10px;

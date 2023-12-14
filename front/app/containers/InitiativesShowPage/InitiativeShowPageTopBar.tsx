@@ -1,7 +1,12 @@
 import React, { useCallback, MouseEvent, useState, useEffect } from 'react';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  media,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import ReactionIndicator from 'components/InitiativeCard/ReactionIndicator';
 
 // router
@@ -15,7 +20,6 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // utils

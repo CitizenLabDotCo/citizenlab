@@ -31,7 +31,7 @@ module ImpactTracking
           highest_role: current_user&.highest_role,
           user_id: current_user.id
         )
-          head :ok
+          head :accepted
         else
           head :internal_server_error
         end

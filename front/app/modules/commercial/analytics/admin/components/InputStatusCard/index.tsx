@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
 import DonutChart from './DonutChart';
 import ProgressBars from './ProgressBars';
 import StackedBars from './StackedBars';
@@ -10,7 +10,6 @@ import Button from 'components/UI/Button';
 
 // stylings
 import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
 
 // i18n
 import hookMessages from './usePostsFeedback/messages';

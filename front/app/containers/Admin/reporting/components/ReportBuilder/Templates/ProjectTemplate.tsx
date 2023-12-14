@@ -13,10 +13,10 @@ import { Element } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // shared widgets
-import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 // report builder widgets
+import TextMultiloc from '../Widgets/TextMultiloc';
 import TitleMultiloc from '../Widgets/TitleMultiloc';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import TwoColumn from '../Widgets/TwoColumn';

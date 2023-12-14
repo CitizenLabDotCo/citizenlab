@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Button from 'components/UI/Button';
-import { media, isRtl } from 'utils/styleUtils';
+import { media, isRtl } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 

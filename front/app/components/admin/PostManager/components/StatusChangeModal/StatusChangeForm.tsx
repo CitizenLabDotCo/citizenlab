@@ -19,6 +19,7 @@ import {
   Input,
   LocaleSwitcher,
   Box,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { Section } from 'components/admin/Section';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -27,7 +28,6 @@ import Button from 'components/UI/Button';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // typings
 import { Multiloc, Locale, MultilocFormValues } from 'typings';

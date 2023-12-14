@@ -4,11 +4,14 @@ import { lighten } from 'polished';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import {
+  colors,
+  fontSizes,
+  media,
+  Icon,
+  IconButton,
+} from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
-
-// components
-import { Icon, IconButton } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';

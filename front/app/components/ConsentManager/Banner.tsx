@@ -2,7 +2,12 @@ import React from 'react';
 
 // styling
 import styled from 'styled-components';
-import { media, fontSizes, colors, isRtl } from 'utils/styleUtils';
+import {
+  media,
+  fontSizes,
+  colors,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 
 // components

@@ -10,7 +10,7 @@ import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
 
 // style
 import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
+import { media, isRtl } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

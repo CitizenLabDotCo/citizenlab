@@ -2,11 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import { Box, Icon, IconNames, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  IconNames,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-
-// styles
-import { colors } from 'utils/styleUtils';
 
 // services
 import { ICustomFieldInputType } from 'api/custom_fields/types';

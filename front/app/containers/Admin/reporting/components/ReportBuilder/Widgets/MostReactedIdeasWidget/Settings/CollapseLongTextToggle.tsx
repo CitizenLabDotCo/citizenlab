@@ -1,10 +1,7 @@
 import React from 'react';
 
 // styling
-import { colors } from 'utils/styleUtils';
-
-// components
-import { Toggle } from '@citizenlab/cl2-component-library';
+import { colors, Toggle } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from '../messages';

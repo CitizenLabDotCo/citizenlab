@@ -3,15 +3,17 @@ import { createPortal } from 'react-dom';
 import { parse } from 'qs';
 
 // components
-import { Box, useBreakpoint, Spinner } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  useBreakpoint,
+  Spinner,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
 import VerticalCenterer from 'components/VerticalCenterer';
 import SurveySubmittedNotice from './components/SurveySubmittedNotice';
 import IdeasNewForm from './IdeasNewForm';
-
-// style
-import { colors } from 'utils/styleUtils';
 
 // hooks
 import useProjectBySlug from 'api/projects/useProjectBySlug';

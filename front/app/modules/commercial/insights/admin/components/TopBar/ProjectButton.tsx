@@ -1,7 +1,7 @@
 import React from 'react';
 
 // styles
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes } from '@citizenlab/cl2-component-library';
 
 // components
 import Button from 'components/UI/Button';

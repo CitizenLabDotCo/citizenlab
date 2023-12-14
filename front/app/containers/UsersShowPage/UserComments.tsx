@@ -5,7 +5,13 @@ import { groupBy } from 'lodash-es';
 // components
 import PostCommentGroup from './PostCommentGroup';
 import Button from 'components/UI/Button';
-import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Title,
+  useBreakpoint,
+  media,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import useUserBySlug from 'api/users/useUserBySlug';
 
@@ -15,7 +21,6 @@ import styled, { useTheme } from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { darken, rgba } from 'polished';
-import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import useComments from 'api/comments/useComments';
 import useAuthUser from 'api/me/useAuthUser';

@@ -16,13 +16,17 @@ import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { cloneDeep } from 'lodash-es';
-import { colors } from 'utils/styleUtils';
+import {
+  colors,
+  Box,
+  Spinner,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 import { saveAs } from 'file-saver';
 
 // components
-import { Box, Spinner, IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import {
   TooltipContent,

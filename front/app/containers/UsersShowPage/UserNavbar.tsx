@@ -5,12 +5,14 @@ import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // styles
-import { fontSizes, media } from 'utils/styleUtils';
+import {
+  fontSizes,
+  media,
+  Icon,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { rgba } from 'polished';
-
-// components
-import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

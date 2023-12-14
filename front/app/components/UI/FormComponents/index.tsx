@@ -1,5 +1,9 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
+
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import messages from './messages';
+import { isString } from 'utils/helperUtils';
 import {
   fontSizes,
   colors,
@@ -7,11 +11,6 @@ import {
   media,
   defaultCardStyle,
   isRtl,
-} from 'utils/styleUtils';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import messages from './messages';
-import { isString } from 'utils/helperUtils';
-import {
   Box,
   BoxBackgroundProps,
   BoxBorderProps,

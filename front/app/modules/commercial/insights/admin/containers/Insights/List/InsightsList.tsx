@@ -12,7 +12,7 @@ import Divider from 'components/admin/Divider';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 
 // api

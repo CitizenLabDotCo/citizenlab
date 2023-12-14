@@ -13,7 +13,7 @@ import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/Err
 import Actions from 'components/PostShowComponents/Comments/CommentForm/Actions';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -29,7 +29,6 @@ import { commentReplyButtonClicked$, commentAdded } from '../../../events';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
-import { colors, defaultStyles } from 'utils/styleUtils';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';

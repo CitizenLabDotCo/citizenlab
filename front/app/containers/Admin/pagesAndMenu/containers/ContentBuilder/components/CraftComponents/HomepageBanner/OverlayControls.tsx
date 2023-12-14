@@ -6,11 +6,11 @@ import {
   ColorPickerInput,
   Label,
   Toggle,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { colors } from 'utils/styleUtils';
 import RangeInput from 'components/UI/RangeInput';
 
 const StyledBox = styled(Box)`
