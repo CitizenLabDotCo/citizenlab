@@ -12,4 +12,9 @@ FactoryBot.define do
     code { 'layout-1' }
     enabled { true }
   end
+
+  factory :homepage_layout, class: 'ContentBuilder::Layout' do
+    code { 'homepage' }
+    enabled { true }
+  end
 end
