@@ -160,7 +160,7 @@ const SurveyResultsWidgetSettings = () => {
         onProjectFilter={handleProjectFilter}
       />
 
-      {projectId !== undefined && phaseId !== undefined && (
+      {projectId !== undefined && (
         <>
           <PhaseFilter
             label={formatMessage(messages.surveyPhases)}
@@ -169,11 +169,13 @@ const SurveyResultsWidgetSettings = () => {
             participationMethod="native_survey"
             onPhaseFilter={handlePhaseFilter}
           />
-          <QuestionFilter
-            phaseId={phaseId}
-            shownQuestions={shownQuestions}
-            onToggleQuestion={handleQuestionToggle}
-          />
+          {phaseId && (
+            <QuestionFilter
+              phaseId={phaseId}
+              shownQuestions={shownQuestions}
+              onToggleQuestion={handleQuestionToggle}
+            />
+          )}
         </>
       )}
     </Box>
