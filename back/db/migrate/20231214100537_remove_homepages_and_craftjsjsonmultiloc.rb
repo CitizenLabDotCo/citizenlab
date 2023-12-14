@@ -11,5 +11,6 @@ class RemoveHomepagesAndCraftjsjsonmultiloc < ActiveRecord::Migration[7.0]
       WHERE content_buildable_type = 'HomePage';
     SQL
     drop_table :home_pages
+    drop_table :pins
   end
 end

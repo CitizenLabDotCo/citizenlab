@@ -49,7 +49,7 @@ module ContentBuilder
 
     def set_craftjs_json
       return if code != 'homepage' || craftjs_json.present?
-  
+
       craftjs_filepath = Rails.root.join('config/homepage/default_craftjs.json.erb')
       json_craftjs_str = ERB.new(File.read(craftjs_filepath)).result(binding)
       self.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(JSON.parse(json_craftjs_str))
