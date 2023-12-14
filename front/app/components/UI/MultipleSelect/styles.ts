@@ -6,8 +6,15 @@ import {
 
 function getSelectStyles(borderColor = colors.borderDark) {
   return {
-    container: (base) => ({
+    valueContainer: (base) => ({
       ...base,
+      /* This will ensure that the value does not overflow the container when the value is very long,
+        which makes it impossible to delete on a phone.
+        Assuming here that the selected value of a multiselect will never need to be wider than 80vw,
+        which seems safe.
+        An ellipsis will be used in that case to indicate that the value is too long.
+      */
+      maxWidth: '80vw',
     }),
     input: (base) => ({
       ...base,
