@@ -73,19 +73,19 @@ RSpec.describe ContentBuilder::Patches::Project do
       }
     end
 
-    def create_project(craftjs_jsonmultiloc_props, craftjs_json_props)
+    def create_project(craftjs_json_props)
       create(:project, content_builder_layouts: [build(:layout, craftjs_json: craftjs(craftjs_json_props))])
     end
 
     it 'finds projects by text, title, alt, and url' do
-      p1 = create_project({}, { text: { 'fr-FR' => 'sometext here' } })
-      __ = create_project({}, { text: { 'en' => 'othertext' } })
-      p2 = create_project({}, { title: { 'en' => 'sometitle here', 'fr-FR' => 'othertitle' } })
-      __ = create_project({}, { title: { 'en' => 'othertitle' } })
-      p3 = create_project({}, { url: { 'en' => 'someurl' } })
-      __ = create_project({}, { url: { 'en' => 'otherurl' } })
-      p4 = create_project({}, { alt: { 'en' => 'otheralt', 'nl-NL' => 'somealt' } })
-      __ = create_project({}, { alt: { 'en' => 'otheralt' } })
+      p1 = create_project({ text: { 'fr-FR' => 'sometext here' } })
+      __ = create_project({ text: { 'en' => 'othertext' } })
+      p2 = create_project({ title: { 'en' => 'sometitle here', 'fr-FR' => 'othertitle' } })
+      __ = create_project({ title: { 'en' => 'othertitle' } })
+      p3 = create_project({ url: { 'en' => 'someurl' } })
+      __ = create_project({ url: { 'en' => 'otherurl' } })
+      p4 = create_project({ alt: { 'en' => 'otheralt', 'nl-NL' => 'somealt' } })
+      __ = create_project({ alt: { 'en' => 'otheralt' } })
 
       expect(Project.search_ids_by_all_including_patches('sometext')).to match_array([p1.id])
       expect(Project.search_ids_by_all_including_patches('sometitle')).to match_array([p2.id])
@@ -95,8 +95,8 @@ RSpec.describe ContentBuilder::Patches::Project do
     end
 
     it 'finds projects by both builder content and normal description' do
-      p1 = create_project({}, { text: { 'en' => 'othertext', 'fr-FR' => 'sometext here' } })
-      __ = create_project({}, { text: { 'en' => 'othertext here' } })
+      p1 = create_project({ text: { 'en' => 'othertext', 'fr-FR' => 'sometext here' } })
+      __ = create_project({ text: { 'en' => 'othertext here' } })
       p2 = create(:project, description_multiloc: { en: 'sometext' })
       __ = create(:project, description_multiloc: { en: 'othertext' })
 
@@ -104,7 +104,7 @@ RSpec.describe ContentBuilder::Patches::Project do
     end
 
     it 'does not find projects by internal craftjs fields' do
-      p1 = create_project({}, { text: { 'en' => 'sometext here' } })
+      p1 = create_project({ text: { 'en' => 'sometext here' } })
       expect(Project.search_ids_by_all_including_patches('sometext')).to match_array([p1.id])
 
       expect(Project.search_ids_by_all_including_patches('Container')).to be_empty

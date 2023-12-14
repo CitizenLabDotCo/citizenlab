@@ -725,13 +725,6 @@ class ProjectCopyService < TemplateService
     value && (value + shift_timestamps.days)
   end
 
-  def map_old_codes(craftjs_jsonmultiloc, layout_images_mapping)
-    craftjs_jsonmultiloc.each_value do |craftjs_json|
-      map_codes craftjs_json, layout_images_mapping, ContentBuilder::OldLayoutImageService.new
-    end
-    craftjs_jsonmultiloc
-  end
-
   def map_codes(craftjs_json, layout_images_mapping, layout_service = ContentBuilder::LayoutImageService.new)
     layout_service.image_elements(craftjs_json).each do |props|
       new_image_code = ContentBuilder::LayoutImage.generate_code

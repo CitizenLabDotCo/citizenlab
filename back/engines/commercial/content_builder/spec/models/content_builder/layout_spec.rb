@@ -6,7 +6,6 @@ RSpec.describe ContentBuilder::Layout do
   context 'when the layout is not initialized' do
     subject { build(:default_layout) }
 
-    its(:craftjs_jsonmultiloc) { is_expected.to eq({}) }
     its(:content_buildable_type) { is_expected.to be_nil }
     its(:content_buildable_id) { is_expected.to be_nil }
     its(:code) { is_expected.to be_nil }
@@ -46,7 +45,6 @@ RSpec.describe ContentBuilder::Layout do
   describe '#save' do
     subject { create(:layout) }
 
-    its(:craftjs_jsonmultiloc) { is_expected.to eq({}) }
     its(:content_buildable_type) { is_expected.to eq('Project') }
     its(:content_buildable_id) { is_expected.to eq(Project.last.id) }
     its(:code) { is_expected.to eq('layout-1') }

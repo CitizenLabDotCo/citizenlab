@@ -7,7 +7,6 @@ FactoryBot.define do
     transient do
       project { create(:project) }
     end
-    craftjs_jsonmultiloc { {} }
     content_buildable { project }
     code { 'layout-1' }
     enabled { true }
