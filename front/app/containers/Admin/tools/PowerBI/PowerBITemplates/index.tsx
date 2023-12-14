@@ -23,7 +23,6 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 import { saveTemplateFile } from './saveTemplateFile';
-import { API_HOST, API_PORT } from 'containers/App/constants';
 
 const PowerBITemplates = () => {
   const isPowerBIEnabled = useFeatureFlag({ name: 'power_bi' });
