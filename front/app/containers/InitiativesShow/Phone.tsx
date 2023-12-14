@@ -4,7 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import FileAttachments from 'components/UI/FileAttachments';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import SharingButtons from 'components/Sharing/SharingButtons';
 import Topics from 'components/PostShowComponents/Topics';
 import Title from 'components/PostShowComponents/Title';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
@@ -20,7 +19,7 @@ import Outlet from 'components/Outlet';
 import { getAddressOrFallbackDMS } from 'utils/map';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 
@@ -39,9 +38,7 @@ import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // types
-import useInitiativeReviewRequired from './hooks/useInitiativeReviewRequired';
 import useLocale from 'hooks/useLocale';
-import useAuthUser from 'api/me/useAuthUser';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import { usePermission } from 'utils/permissions';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
@@ -121,13 +118,11 @@ const Phone = ({
   onTranslateInitiative,
   a11y_pronounceLatestOfficialFeedbackPost,
 }: Props) => {
-  const { formatMessage } = useIntl();
   const localize = useLocalize();
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   const locale = useLocale();
   const showCosponsorShipReminder = useShowCosponsorshipReminder(initiativeId);
-  const { data: authUser } = useAuthUser();
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
@@ -140,13 +135,9 @@ const Phone = ({
     pageSize: 1,
   });
   const officialFeedbackElement = useRef<HTMLDivElement>(null);
-  const initiativeReviewRequired = useInitiativeReviewRequired();
   const officialFeedbacksList =
     initiativeFeedbacks?.pages.flatMap((page) => page.data) || [];
   const hasOfficialFeedback = officialFeedbacksList.length > 0;
-  const showSharingOptions = initiativeReviewRequired
-    ? initiative?.data.attributes.public
-    : true;
 
   if (!initiative || isNilOrError(locale) || !initiativeImages) {
     return null;
@@ -163,7 +154,6 @@ const Phone = ({
     initiative.data.attributes.location_description,
     initiative.data.attributes.location_point_geojson
   );
-  const initiativeUrl = location.href;
 
   return (
     <Container className={className}>
@@ -269,39 +259,6 @@ const Phone = ({
             }
           />
         </Box>
-        {showSharingOptions && (
-          <Box mb="48px">
-            <SharingButtons
-              context="initiative"
-              url={initiativeUrl}
-              twitterMessage={formatMessage(messages.twitterMessage, {
-                initiativeTitle,
-              })}
-              whatsAppMessage={formatMessage(messages.whatsAppMessage, {
-                initiativeTitle,
-              })}
-              emailSubject={formatMessage(messages.emailSharingSubject, {
-                initiativeTitle,
-              })}
-              emailBody={formatMessage(messages.emailSharingBody, {
-                initiativeUrl,
-                initiativeTitle,
-              })}
-              utmParams={
-                !isNilOrError(authUser)
-                  ? {
-                      source: 'share_initiative',
-                      campaign: 'share_content',
-                      content: authUser.data.id,
-                    }
-                  : {
-                      source: 'share_initiative',
-                      campaign: 'share_content',
-                    }
-              }
-            />
-          </Box>
-        )}
       </InitiativeContainer>
     </Container>
   );
