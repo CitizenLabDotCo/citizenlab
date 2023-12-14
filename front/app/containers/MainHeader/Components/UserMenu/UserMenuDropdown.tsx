@@ -180,6 +180,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
               iconSize="20px"
               padding="11px 11px"
               justify="space-between"
+              id="e2e-complete-onboarding-link"
             >
               <FormattedMessage {...messages.completeOnboarding} />
             </DropdownListItem>

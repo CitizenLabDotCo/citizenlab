@@ -48,7 +48,13 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
       end
     end
 
-    before_all { churned_tenant.switch { create_list(:user, 2) } }
+    let_it_be(:non_super_admin_count) { 2 }
+    before_all do
+      churned_tenant.switch do
+        create_list(:user, non_super_admin_count)
+        create(:super_admin)
+      end
+    end
 
     context 'when PII retention period is not over' do
       it "doesn't enqueue `DeleteUserJob` for churned tenants" do
@@ -64,8 +70,8 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
       end
 
       it 'enqueues `DeleteUserJob` for churned tenants' do
-        user_count = churned_tenant.switch { User.count }
-        expect { service.remove_expired_pii }.to enqueue_job(DeleteUserJob).exactly(user_count).times
+        expect { service.remove_expired_pii }
+          .to enqueue_job(DeleteUserJob).exactly(non_super_admin_count).times
       end
     end
   end

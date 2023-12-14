@@ -225,6 +225,7 @@ const AdminProjectsProjectGeneral = () => {
   const handleProjectCardImageOnAdd = (projectImages: UploadFile[]) => {
     setSubmitState('enabled');
     setProjectCardImage(projectImages[0]);
+    setCroppedProjectCardBase64(projectImages[0].base64);
   };
 
   const handleProjectCardImageOnRemove = (

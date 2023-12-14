@@ -83,20 +83,6 @@ const InitiativeContainer = styled.div`
   padding-right: ${padding};
 `;
 
-const InitiativeBannerContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 60px;
-  padding-right: 60px;
-`;
-
-const MobileMoreActionContainer = styled.div`
-  position: absolute;
-  top: 40px;
-  right: 60px;
-`;
-
 const StyledDropdownMap = styled(DropdownMap)`
   margin-bottom: 32px;
 `;
@@ -161,16 +147,23 @@ const Phone = ({
         <CosponsorShipReminder initiativeId={initiativeId} />
       )}
       <InitiativeBanner initiativeHeaderImageLarge={initiativeHeaderImageLarge}>
-        <InitiativeBannerContent>
-          <MobileMoreActionContainer>
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          w="100%"
+          px="32px"
+        >
+          <Box top="40px" w="100%" display="flex" justifyContent="flex-end">
             <InitiativeMoreActions
               initiative={initiative.data}
               id="e2e-initiative-more-actions-mobile"
               color="white"
             />
-          </MobileMoreActionContainer>
+          </Box>
           {/* Z-index is needed for when we have a banner image */}
-          <Box position="absolute" zIndex="1">
+          <Box zIndex="1" mb="8px">
             <Box mb="8px">
               <Title
                 postId={initiativeId}
@@ -184,7 +177,7 @@ const Phone = ({
             </Box>
             <PostedByMobile authorId={authorId} />
           </Box>
-        </InitiativeBannerContent>
+        </Box>
       </InitiativeBanner>
       <InitiativeContainer>
         <Box px={isSmallerThanTablet ? '0' : padding}>

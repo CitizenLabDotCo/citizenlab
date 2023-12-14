@@ -71,6 +71,8 @@ module Notifications
     EVENT_NAME = 'Status change on idea you follow'
 
     def self.make_notifications_on(activity)
+      return [] unless AppConfiguration.instance.feature_activated? 'follow'
+
       initiator_id = activity.user_id
       idea = activity.item
       return [] if !idea
