@@ -25,7 +25,7 @@ import { BORDER } from '../constants';
 
 type Props = {
   projectId: string;
-  phaseId?: string;
+  phaseId: string;
   shownQuestions?: boolean[];
 };
 
@@ -36,7 +36,6 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId ?? null);
   const { data: formResults } = useFormResults({
-    projectId,
     phaseId,
   });
 

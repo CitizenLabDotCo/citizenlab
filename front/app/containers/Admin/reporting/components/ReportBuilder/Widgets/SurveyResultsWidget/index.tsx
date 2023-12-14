@@ -45,7 +45,7 @@ const SurveyResultsWidget = ({
 }: Props) => {
   return (
     <Card title={title} data-testid="survey-results-widget">
-      {projectId ? (
+      {projectId && phaseId ? (
         <SurveyResults
           projectId={projectId}
           phaseId={phaseId}
@@ -160,7 +160,7 @@ const SurveyResultsWidgetSettings = () => {
         onProjectFilter={handleProjectFilter}
       />
 
-      {projectId !== undefined && (
+      {projectId !== undefined && phaseId !== undefined && (
         <>
           <PhaseFilter
             label={formatMessage(messages.surveyPhases)}
@@ -170,7 +170,6 @@ const SurveyResultsWidgetSettings = () => {
             onPhaseFilter={handlePhaseFilter}
           />
           <QuestionFilter
-            projectId={projectId}
             phaseId={phaseId}
             shownQuestions={shownQuestions}
             onToggleQuestion={handleQuestionToggle}
