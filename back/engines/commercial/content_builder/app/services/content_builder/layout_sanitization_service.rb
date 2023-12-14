@@ -6,12 +6,6 @@ module ContentBuilder
       sanitize_html_in_text_elements craftjson, text_features
     end
 
-    def sanitize_multiloc(multiloc, text_features: %i[title alignment list decoration link image video])
-      multiloc.transform_values do |craftjson|
-        sanitize craftjson, text_features: text_features
-      end
-    end
-
     private
 
     def sanitize_html_in_text_elements(craftjson, features)

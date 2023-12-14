@@ -47,35 +47,6 @@ RSpec.describe ContentBuilder::Patches::Project do
   end
 
   describe '.search_ids_by_all_including_patches' do
-    def oldcraftjs(props)
-      # TODO: clean up after fully migrated
-      {
-        en: {
-          ROOT: {
-            type: 'div',
-            nodes: %w[nfXxt3641Y Da_X6w7thf 2B2ApMKvLw nUEV-dMfSq],
-            props: { id: 'e2e-content-builder-frame' },
-            custom: {},
-            hidden: false,
-            isCanvas: true,
-            displayName: 'div',
-            linkedNodes: {}
-          },
-          '1pzsxkGIsQ': {
-            type: { resolvedName: 'Container' },
-            nodes: [],
-            props: props,
-            custom: {},
-            hidden: false,
-            parent: 'WSe1D-RM_b',
-            isCanvas: true,
-            displayName: 'Container',
-            linkedNodes: {}
-          }
-        }
-      }
-    end
-
     def craftjs(props)
       {
         ROOT: {
@@ -103,24 +74,7 @@ RSpec.describe ContentBuilder::Patches::Project do
     end
 
     def create_project(craftjs_jsonmultiloc_props, craftjs_json_props)
-      create(:project, content_builder_layouts: [build(:layout, craftjs_jsonmultiloc: oldcraftjs(craftjs_jsonmultiloc_props), craftjs_json: craftjs(craftjs_json_props))])
-    end
-
-    it 'finds projects by text, title, alt, and url in the old craftjs' do # TODO: clean up after fully migrated
-      p1 = create_project({ text: 'sometext here' }, {})
-      __ = create_project({ text: 'othertext' }, {})
-      p2 = create_project({ title: 'sometitle here' }, {})
-      __ = create_project({ title: 'othertitle' }, {})
-      p3 = create_project({ url: 'someurl' }, {})
-      __ = create_project({ url: 'otherurl' }, {})
-      p4 = create_project({ alt: 'somealt' }, {})
-      __ = create_project({ alt: 'otheralt' }, {})
-
-      expect(Project.search_ids_by_all_including_patches('sometext')).to match_array([p1.id])
-      expect(Project.search_ids_by_all_including_patches('sometitle')).to match_array([p2.id])
-      expect(Project.search_ids_by_all_including_patches('someurl')).to match_array([p3.id])
-      expect(Project.search_ids_by_all_including_patches('somealt')).to match_array([p4.id])
-      expect(Project.search_ids_by_all_including_patches('here')).to match_array([p1.id, p2.id])
+      create(:project, content_builder_layouts: [build(:layout, craftjs_json: craftjs(craftjs_json_props))])
     end
 
     it 'finds projects by text, title, alt, and url' do

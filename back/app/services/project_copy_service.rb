@@ -99,7 +99,6 @@ class ProjectCopyService < TemplateService
         'content_buildable_type' => layout.content_buildable_type,
         'code' => layout.code,
         'enabled' => layout.enabled,
-        'craftjs_jsonmultiloc' => map_old_codes(layout.craftjs_jsonmultiloc, layout_images_mapping), # TODO: clean up after fully migrated
         'craftjs_json' => map_codes(layout.craftjs_json, layout_images_mapping),
         'created_at' => shift_timestamp(layout.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(layout.updated_at, shift_timestamps)&.iso8601
