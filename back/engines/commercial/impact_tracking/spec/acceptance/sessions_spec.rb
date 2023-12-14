@@ -88,7 +88,7 @@ resource 'Impact tracking session' do
 
       do_request
 
-      expect(response_status).to eq 200
+      expect(response_status).to eq 202
       expect(ImpactTracking::Session.count).to eq 1
       session = ImpactTracking::Session.first
       expect(session.highest_role).to eq('user')

@@ -123,7 +123,7 @@ const RenderNode = ({ render }) => {
           ? colors.divider
           : 'transparent'
       }
-      my={invisible ? undefined : '4px'}
+      my={invisible ? undefined : '2px'}
       isRoot={id === ROOT_NODE}
     >
       {nodeLabelIsVisible && (

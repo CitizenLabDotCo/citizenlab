@@ -158,15 +158,23 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
             pb="100px"
           >
             <StyledRightColumn>
-              <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
-                <Editor isPreview={true}>
-                  <LanguageProvider
-                    contentBuilderLocale={selectedLocale}
-                    platformLocale={platformLocale}
-                  >
-                    <Frame editorData={previewData} />
-                  </LanguageProvider>
-                </Editor>
+              <Box width={A4_WIDTH}>
+                <Box
+                  background="white"
+                  px="30px"
+                  py="30px"
+                  width="100%"
+                  height="100%"
+                >
+                  <Editor isPreview={true}>
+                    <LanguageProvider
+                      contentBuilderLocale={selectedLocale}
+                      platformLocale={platformLocale}
+                    >
+                      <Frame editorData={previewData} />
+                    </LanguageProvider>
+                  </Editor>
+                </Box>
               </Box>
             </StyledRightColumn>
           </Box>

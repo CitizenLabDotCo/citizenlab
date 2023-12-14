@@ -82,7 +82,7 @@ const ContentBuilderTopBar = ({
 
     const goBackUrl =
       projectId && phaseId
-        ? `/admin/projects/${projectId}/timeline/${phaseId}`
+        ? `/admin/projects/${projectId}/phases/${phaseId}/setup`
         : '/admin/reporting/report-builder';
 
     clHistory.push(goBackUrl);

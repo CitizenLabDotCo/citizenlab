@@ -1495,7 +1495,7 @@ export function apiUpdateHomepageLayout({
       method: 'POST',
       url: `web_api/v1/home_pages/content_builder_layouts/homepage/upsert`,
       body: {
-        home_page: {
+        content_builder_layout: {
           enabled: true,
           craftjs_json,
         },
