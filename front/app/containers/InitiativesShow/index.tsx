@@ -36,7 +36,6 @@ const InitiativesShow = ({ initiativeId, className }: Props) => {
     setA11y_pronounceLatestOfficialFeedbackPost,
   ] = useState(false);
 
-  const officialFeedbackElement = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
@@ -76,13 +75,9 @@ const InitiativesShow = ({ initiativeId, className }: Props) => {
   };
 
   const onScrollToOfficialFeedback = () => {
-    if (officialFeedbackElement.current) {
-      officialFeedbackElement.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'center',
-      });
-    }
+    document.getElementById('official-feedback-feed')?.scrollIntoView({
+      behavior: 'smooth',
+    });
 
     setA11y_pronounceLatestOfficialFeedbackPost(true);
   };
