@@ -468,6 +468,29 @@ RSpec.describe Idea do
     end
   end
 
+  describe 'activity_after' do
+    let_it_be(:recent_idea) { create(:idea, updated_at: 1.day.ago) }
+    let_it_be(:old_idea) { create(:idea, updated_at: 30.days.ago) }
+
+    let(:recent_ideas) { described_class.activity_after(7.days.ago) }
+
+    it 'returns recently updated ideas' do
+      expect(recent_ideas.size).to eq 1
+      expect(recent_ideas.pluck(:id)).to include recent_idea.id
+      expect(recent_ideas.pluck(:id)).not_to include old_idea.id
+    end
+
+    it 'returns ideas with recent comments' do
+      create(:comment, post: old_idea, updated_at: 1.day.ago)
+      expect(recent_ideas.pluck(:id)).to include old_idea.id
+    end
+
+    it 'returns ideas with recent reactions' do
+      create(:reaction, reactable: old_idea, updated_at: 1.day.ago)
+      expect(recent_ideas.pluck(:id)).to include old_idea.id
+    end
+  end
+
   describe 'idea search' do
     it 'should return results with exact prefixes' do
       create(:idea, title_multiloc: { 'nl-BE' => 'Bomen in het park' })

@@ -149,6 +149,11 @@ class Idea < ApplicationRecord
       .order("idea_statuses.ordering #{direction}, ideas.id")
   }
 
+  scope :activity_after, lambda { |time_ago = 7.days.ago|
+    left_joins(:comments, :reactions)
+      .where('ideas.updated_at >= ? OR comments.updated_at >= ? OR reactions.created_at >= ?', time_ago, time_ago, time_ago)
+  }
+
   scope :feedback_needed, lambda {
     joins(:idea_status).where(idea_statuses: { code: 'proposed' })
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
