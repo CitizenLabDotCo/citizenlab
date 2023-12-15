@@ -5,7 +5,8 @@ import { Moment } from 'moment';
 export type ResolvedName =
   | 'ReactionsByTimeWidget'
   | 'SurveyResultsWidget'
-  | 'CommentsByTimeWidget';
+  | 'CommentsByTimeWidget'
+  | 'PostsByTimeWidget';
 
 export interface ParametersLive {
   resolvedName: ResolvedName;

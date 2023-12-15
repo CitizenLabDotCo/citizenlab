@@ -6,6 +6,7 @@ module ReportBuilder
       'GenderWidget' => Queries::Analytics::UsersByGender,
       'ReactionsByTimeWidget' => Queries::Analytics::ReactionsByTime,
       'CommentsByTimeWidget' => Queries::Analytics::CommentsByTime,
+      'PostsByTimeWidget' => Queries::Analytics::PostsByTime,
       'SurveyResultsWidget' => Queries::SurveyResults
     }.freeze
 
