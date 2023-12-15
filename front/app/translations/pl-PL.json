@@ -469,6 +469,7 @@
   "app.components.SideModal.closeButtonAria": "Zamknij",
   "app.components.StatusModule.futurePhase": "Oglądasz fazę, która jeszcze się nie rozpoczęła. Będziesz mógł wziąć w niej udział po jej rozpoczęciu.",
   "app.components.StatusModule.modifyYourSubmission": "Zmodyfikuj swoją stronę {submissionTerm}",
+  "app.components.StatusModule.submittedUntil3": "Twój głos może zostać oddany do",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Zaznaczono {numberOfSelectedTopics, plural, =0 {zero tematów} one {jeden temat} few {# tematy} many {# tematów} other {# tematy}}. {selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Pokaż więcej działań",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Usuń",
