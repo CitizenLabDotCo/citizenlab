@@ -83,6 +83,7 @@
   "app.components.ConsentManager.Banner.accept": "Accept",
   "app.components.ConsentManager.Banner.ariaButtonClose2": "Reject policy and close banner",
   "app.components.ConsentManager.Banner.close": "Close",
+  "app.components.ConsentManager.Banner.cookiesModalTitle": "This site uses cookies",
   "app.components.ConsentManager.Banner.mainText": "This platform uses cookies in accordance with our {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Manage",
   "app.components.ConsentManager.Banner.policyLink": "Cookie policy",
