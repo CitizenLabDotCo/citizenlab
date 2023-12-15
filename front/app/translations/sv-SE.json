@@ -469,7 +469,6 @@
   "app.components.SideModal.closeButtonAria": "Stäng",
   "app.components.StatusModule.futurePhase": "Du tittar på en fas som inte har startat ännu. Du kommer att kunna delta när fasen startar.",
   "app.components.StatusModule.modifyYourSubmission": "Ändra din {submissionTerm}",
-  "app.components.StatusModule.submittedUntil2": "får lämnas in fram till",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valde {numberOfSelectedTopics, plural, =0 {noll ämnen} one {ett ämne} other {# ämnen}}. {selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Visa fler åtgärder",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Ta bort",
