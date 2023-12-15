@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
 
 import {
   SectionTitle,
@@ -9,18 +8,15 @@ import {
 import ProjectTopicSelector from './ProjectTopicSelector';
 import SortableProjectTopicList from './SortableProjectTopicList';
 import HasPermission from 'components/HasPermission';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const Container = styled.div`
-  min-height: 80vh;
-`;
-
 const ProjectAllowedInputTopics = memo(() => {
   return (
-    <Container>
+    <Box minHeight="80vh" mb="40px">
       <SectionTitle>
         <FormattedMessage {...messages.title} />
       </SectionTitle>
@@ -47,7 +43,7 @@ const ProjectAllowedInputTopics = memo(() => {
       </SectionDescription>
       <ProjectTopicSelector />
       <SortableProjectTopicList />
-    </Container>
+    </Box>
   );
 });
 
