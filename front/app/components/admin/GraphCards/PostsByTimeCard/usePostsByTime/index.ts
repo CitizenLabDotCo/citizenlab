@@ -11,9 +11,9 @@ import { parseTimeSeries, parseExcelData } from './parse';
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
 // typings
-import { QueryParameters } from './typings';
+import { QueryParameters, Response } from './typings';
 import { useMemo, useState } from 'react';
-import useLivePostsByTime from './useLivePostsByTime';
+import useGraphDataUnitsLive from 'api/graph_data_units/useGraphDataUnitsLive';
 
 export default function usePostsByTime({
   projectId,
@@ -23,12 +23,15 @@ export default function usePostsByTime({
 }: QueryParameters) {
   const { formatMessage } = useIntl();
   const [currentResolution, setCurrentResolution] = useState(resolution);
-  const { data: analytics } = useLivePostsByTime(
+  const { data: analytics } = useGraphDataUnitsLive<Response>(
     {
-      projectId,
-      startAtMoment,
-      endAtMoment,
-      resolution,
+      resolvedName: 'PostsByTimeWidget',
+      props: {
+        projectId,
+        startAtMoment,
+        endAtMoment,
+        resolution,
+      },
     },
     {
       onSuccess: () => {
