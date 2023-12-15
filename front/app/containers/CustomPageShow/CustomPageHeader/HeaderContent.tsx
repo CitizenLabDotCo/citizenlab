@@ -60,7 +60,6 @@ const HeaderContent = ({
           text={localize(pageAttributes.banner_cta_button_multiloc)}
           linkTo={pageAttributes.banner_cta_button_url}
           openLinkInNewTab={true}
-          data-cy="e2e-banner-button"
         />
       )}
     </Container>
