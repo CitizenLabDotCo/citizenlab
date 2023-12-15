@@ -149,7 +149,7 @@ class Idea < ApplicationRecord
       .order("idea_statuses.ordering #{direction}, ideas.id")
   }
 
-  scope :activity_after, lambda { |time_ago = 7.days.ago|
+  scope :activity_after, lambda { |time_ago|
     left_joins(:comments, :reactions)
       .where('ideas.updated_at >= ? OR comments.updated_at >= ? OR reactions.created_at >= ?', time_ago, time_ago, time_ago)
   }

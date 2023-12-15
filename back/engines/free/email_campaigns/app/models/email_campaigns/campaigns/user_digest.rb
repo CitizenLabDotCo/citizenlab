@@ -104,7 +104,9 @@ module EmailCampaigns
     def content_worth_sending?(_)
       # Check positive? as fetching a non-integer env var would result in zero and this hook would return true,
       # whilst top_ideas would be limited to zero ideas, possibly resulting in no content being sent.
-      @content_worth_sending ||= recent_ideas.size >= N_TOP_IDEAS && N_TOP_IDEAS.positive?
+      @content_worth_sending ||=
+        (recent_ideas.size >= N_TOP_IDEAS && N_TOP_IDEAS.positive?) ||
+        recent_initiatives.any?
     end
 
     private
@@ -129,7 +131,7 @@ module EmailCampaigns
       ideas = IdeaPolicy::Scope.new(nil, Idea).resolve
         .published
         .includes(:comments)
-        .activity_after(7.days.ago)
+        .activity_after(1.week.ago)
 
       input_ideas = IdeasFinder.new({}, scope: ideas).find_records
       ti_service.sort_trending input_ideas
@@ -196,6 +198,12 @@ module EmailCampaigns
         url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
         created_at: project.created_at.iso8601
       }
+    end
+
+    def recent_initiatives
+      InitiativePolicy::Scope.new(nil, Initiative).resolve
+        .published
+        .activity_after(1.week.ago)
     end
 
     def new_initiatives(name_service, time:)

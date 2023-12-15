@@ -100,6 +100,18 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
       create(:reaction, reactable: old_ideas.last, created_at: Time.now - 1.minute)
       expect(campaign.content_worth_sending?({})).to be true
     end
+
+    it 'returns true when there are any initiatives proposed or where the threshold is reached' do
+      proposed_status = create(:initiative_status_proposed)
+      initiative = create(:initiative)
+      create(
+        :initiative_status_change,
+        initiative: initiative,
+        initiative_status: proposed_status,
+        created_at: 1.day.ago
+      )
+      expect(campaign.content_worth_sending?({})).to be true
+    end
   end
 
   describe 'apply_recipient_filters' do
