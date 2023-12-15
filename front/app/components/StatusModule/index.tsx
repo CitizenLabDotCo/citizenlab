@@ -125,8 +125,6 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           </Box>
           {phase && showDate && phase.attributes.end_at && (
             <Text>
-              {config?.getSubmissionTerm &&
-                formatMessage(config.getSubmissionTerm('plural'))}{' '}
               {formatMessage(messages.submittedUntil)}{' '}
               <b>{getLocalisedDateString(phase?.attributes.end_at)}</b>.
             </Text>
