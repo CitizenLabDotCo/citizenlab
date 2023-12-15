@@ -31,7 +31,6 @@ import messages from './messages';
 import { getLocationGeojson, getFormValues } from './utils';
 import { omit } from 'lodash-es';
 import { isError, isNilOrError } from 'utils/helperUtils';
-import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { PreviousPathnameContext } from 'context';
@@ -40,6 +39,7 @@ import { PreviousPathnameContext } from 'context';
 import { IIdeaUpdate } from 'api/ideas/types';
 import { Multiloc } from 'typings';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+import { useParams } from 'react-router-dom';
 
 interface FormValues {
   title_multiloc: Multiloc;
@@ -55,7 +55,8 @@ interface FormValues {
   topic_ids?: string[];
 }
 
-const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
+const IdeasEditForm = () => {
+  const { ideaId } = useParams() as { ideaId: string };
   const previousPathName = useContext(PreviousPathnameContext);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
