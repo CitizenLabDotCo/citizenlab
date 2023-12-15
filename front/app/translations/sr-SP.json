@@ -469,6 +469,7 @@
   "app.components.SideModal.closeButtonAria": "Близу",
   "app.components.StatusModule.futurePhase": "Гледате фазу која још није почела. Моћи ћете да учествујете када фаза почне.",
   "app.components.StatusModule.modifyYourSubmission": "Измените своју {submissionTerm}",
+  "app.components.StatusModule.submittedUntil3": "Your vote may be submitted until",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Изабрано {numberOfSelectedTopics, plural, =0 {зеро тагс} one {једна ознака} other {# ознаке}}. {selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Прикажи још радњи",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Уклони",
