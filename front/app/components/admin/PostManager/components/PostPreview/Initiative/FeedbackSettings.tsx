@@ -130,11 +130,12 @@ const FeedbackSettings = ({ initiativeId, className }: Props) => {
   });
 
   const onStatusChange = (statusOption: IOption) => {
+    const statusId = statusOption.value;
     eventEmitter.emit<StatusChangeModalOpen>(events.statusChangeModalOpen, {
       initiativeId,
-      newStatusId: statusOption.value,
+      newStatusId: statusId,
       feedbackRequired:
-        allowedTransitions?.[statusOption.value]?.feedback_required,
+        allowedTransitions.data.attributes[statusId]?.feedback_required,
     });
 
     trackEventByName(tracks.initiativeStatusChange, {
