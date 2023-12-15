@@ -6,7 +6,7 @@ class RenameContentBuilderFeatureFlag < ActiveRecord::Migration[6.1]
   end
 
   def change
-    app_config = AppConfiguration.first
+    app_config = AppConfiguration.instance
     return unless app_config
 
     settings = app_config.settings

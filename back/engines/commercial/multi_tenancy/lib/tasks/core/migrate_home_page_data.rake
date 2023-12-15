@@ -26,7 +26,7 @@ namespace :fix_existing_tenants do
 
       Apartment::Tenant.switch(tenant.schema_name) do
         host = tenant.schema_name.tr('_', '.')
-        config = AppConfiguration.first
+        config = AppConfiguration.instance
         settings = config.settings
         style = config.style
 
