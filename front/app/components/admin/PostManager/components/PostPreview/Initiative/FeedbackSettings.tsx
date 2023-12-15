@@ -110,7 +110,7 @@ const FeedbackSettings = ({ initiativeId, className }: Props) => {
 
       return null;
     },
-    (initiative: IInitiativeData, statuses) =>
+    (initiative: IInitiativeData, statuses: IInitiativeStatuses) =>
       JSON.stringify({
         initiativeId: initiative.relationships.initiative_status?.data?.id,
         statusesId: statuses.data.map((status) => status.id),
