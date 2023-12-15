@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-module RuboCop
+require 'rubocop'
+
+module Rubocop
   module Cop
     class ForbiddenAppConfigurationMethod < RuboCop::Cop::Base
       # {nil? | (cbase) } allows to match both `AppConfiguration...` (nil?) and
