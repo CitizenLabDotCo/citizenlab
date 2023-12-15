@@ -6,7 +6,8 @@ export type ResolvedName =
   | 'ReactionsByTimeWidget'
   | 'SurveyResultsWidget'
   | 'CommentsByTimeWidget'
-  | 'PostsByTimeWidget';
+  | 'PostsByTimeWidget'
+  | 'ActiveUsersWidget';
 
 export interface ParametersLive {
   resolvedName: ResolvedName;
