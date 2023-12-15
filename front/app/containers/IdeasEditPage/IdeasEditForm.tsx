@@ -39,7 +39,6 @@ import { PreviousPathnameContext } from 'context';
 import { IIdeaUpdate } from 'api/ideas/types';
 import { Multiloc } from 'typings';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
-import { useParams } from 'react-router-dom';
 
 interface FormValues {
   title_multiloc: Multiloc;
@@ -54,9 +53,11 @@ interface FormValues {
   location_point_geojson?: GeoJSON.Point;
   topic_ids?: string[];
 }
+interface Props {
+  ideaId: string;
+}
 
-const IdeasEditForm = () => {
-  const { ideaId } = useParams() as { ideaId: string };
+const IdeasEditForm = ({ ideaId }: Props) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
