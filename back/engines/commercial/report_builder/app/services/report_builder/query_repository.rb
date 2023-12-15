@@ -5,6 +5,7 @@ module ReportBuilder
     GRAPH_RESOLVED_NAMES_CLASSES = {
       'GenderWidget' => Queries::Analytics::UsersByGender,
       'ReactionsByTimeWidget' => Queries::Analytics::ReactionsByTime,
+      'CommentsByTimeWidget' => Queries::Analytics::CommentsByTime,
       'SurveyResultsWidget' => Queries::SurveyResults
     }.freeze
 

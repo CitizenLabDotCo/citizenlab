@@ -2,7 +2,10 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
 
 // live
-export type ResolvedName = 'ReactionsByTimeWidget' | 'SurveyResultsWidget';
+export type ResolvedName =
+  | 'ReactionsByTimeWidget'
+  | 'SurveyResultsWidget'
+  | 'CommentsByTimeWidget';
 
 export interface ParametersLive {
   resolvedName: ResolvedName;

@@ -2,9 +2,6 @@
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
 
-// query
-import { query } from './query';
-
 // parse
 import { parseTimeSeries, parseExcelData } from './parse';
 
@@ -12,9 +9,11 @@ import { parseTimeSeries, parseExcelData } from './parse';
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
 // typings
-import { QueryParameters, Response } from './typings';
-import useAnalytics from 'api/analytics/useAnalytics';
+import { QueryParameters } from './typings';
 import { useMemo, useState } from 'react';
+
+// hooks
+import useLiveCommentsByTime from './useLiveCommentsByTime';
 
 export default function useCommentsByTime({
   projectId,
@@ -23,14 +22,18 @@ export default function useCommentsByTime({
   resolution,
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
-  const { data: analytics } = useAnalytics<Response>(
-    query({
+  const { data: analytics } = useLiveCommentsByTime(
+    {
       projectId,
       startAtMoment,
       endAtMoment,
       resolution,
-    }),
-    () => setCurrentResolution(resolution)
+    },
+    {
+      onSuccess: () => {
+        setCurrentResolution(resolution);
+      },
+    }
   );
 
   const { formatMessage } = useIntl();
