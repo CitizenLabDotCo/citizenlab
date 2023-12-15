@@ -380,10 +380,10 @@ resource 'AdminPublication' do
 
         example 'Search project by content from content builder', document: false do
           project = create(:project, content_builder_layouts: [
-            build(:layout, craftjs_json: { someid: { props: { text: 'sometext' } } })
+            build(:layout, craftjs_json: { someid: { props: { text: { en: 'sometext' } } } })
           ])
           create(:project, content_builder_layouts: [
-            build(:layout, craftjs_json: { sometext: { props: { text: 'othertext' } } })
+            build(:layout, craftjs_json: { sometext: { props: { text: { en: 'othertext' } } } })
           ])
           do_request search: 'sometext'
 
