@@ -11,8 +11,8 @@ import {
   colors,
   useBreakpoint,
   media,
-  fontSizes,
   isRtl,
+  Button,
 } from '@citizenlab/cl2-component-library';
 import NotificationMenu from '../../NotificationMenu';
 import LanguageSelector from '../../LanguageSelector';
@@ -112,40 +112,6 @@ const RightItem = styled.div`
   `}
 `;
 
-const LogInButton = styled.button`
-  height: 100%;
-  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  line-height: normal;
-  font-weight: 500;
-  padding: 0 30px;
-  border: none;
-  border-radius: 0px;
-  cursor: pointer;
-  transition: all 100ms ease-out;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-  ${media.phone`
-    padding: 0 15px;
-  `}
-`;
-
-const NavigationItemBorder = styled.div`
-  height: 6px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: 'transparent';
-`;
-
-const NavigationItemText = styled.span`
-  white-space: nowrap;
-`;
-
 const DesktopNavbarContent = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
@@ -188,12 +154,9 @@ const DesktopNavbarContent = () => {
 
           {isNilOrError(authUser) && (
             <RightItem className="login noLeftMargin">
-              <LogInButton id="e2e-navbar-login-menu-item" onClick={signIn}>
-                <NavigationItemBorder />
-                <NavigationItemText>
-                  <FormattedMessage {...messages.logIn} />
-                </NavigationItemText>
-              </LogInButton>
+              <Button ml="8px" id="e2e-navbar-login-menu-item" onClick={signIn}>
+                <FormattedMessage {...messages.logIn} />
+              </Button>
             </RightItem>
           )}
 
