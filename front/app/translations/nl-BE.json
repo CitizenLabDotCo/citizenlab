@@ -1166,7 +1166,7 @@
   "app.containers.InitiativesShow.whatsAppMessage": "{initiativeTitle} | van het participatieplatform van {orgName}",
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} heeft je uitgenodigd om dit voorstel te steunen.",
   "app.containers.Navbar.completeOnboarding": "Voltooi registratie",
-  "app.containers.Navbar.completeProfile": "Vul je profiel verder aan",
+  "app.containers.Navbar.completeProfile": "Profiel aanvullen",
   "app.containers.Navbar.confirmEmail2": "Bevestig e-mailadres",
   "app.containers.Navbar.unverified": "Niet geverifieerd",
   "app.containers.Navbar.verified": "Geverifieerd",
