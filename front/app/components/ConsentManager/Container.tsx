@@ -1,13 +1,10 @@
 import React, { FormEvent, useState, useCallback } from 'react';
 
-// components
-import PreferencesModal from './PreferencesModal';
-import Banner from './Banner';
-
 // typings
 import { CategorizedDestinations, IPreferences } from './typings';
 import { TCategory } from './destinations';
 import useObserveEvent from 'hooks/useObserveEvent';
+import ConsentModal from './ConsentModal';
 
 interface Props {
   preferences: IPreferences;
@@ -32,17 +29,14 @@ const Container = ({
   reject,
   saveConsent,
 }: Props) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
+  const [showConsentModal, setShowConsentModal] = useState(isConsentRequired);
+  const [consentModalView, setConsentModalView] = useState<
+    'main' | 'preferences'
+  >('main');
 
   const openDialog = useCallback(() => {
     onToggleModal(false);
-    setIsDialogOpen(true);
-  }, [onToggleModal]);
-
-  const closeDialog = useCallback(() => {
-    onToggleModal(true);
-    setIsDialogOpen(false);
   }, [onToggleModal]);
 
   useObserveEvent('openConsentManager', openDialog);
@@ -50,9 +44,8 @@ const Container = ({
   const handleSave = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
-
-      setIsDialogOpen(false);
       saveConsent();
+      setShowConsentModal(false);
     },
     [saveConsent]
   );
@@ -65,18 +58,19 @@ const Container = ({
     if (isConsentRequired && !isEmpty) {
       setIsCancelling(true);
     } else {
-      setIsDialogOpen(false);
+      setConsentModalView('main');
       resetPreferences();
     }
   }, [preferences, isConsentRequired, resetPreferences]);
 
   const handleCancelBack = useCallback(() => {
     setIsCancelling(false);
+    setConsentModalView('preferences');
   }, []);
 
   const handleCancelConfirm = useCallback(() => {
     setIsCancelling(false);
-    setIsDialogOpen(false);
+    setConsentModalView('main');
 
     resetPreferences();
   }, [resetPreferences]);
@@ -93,25 +87,23 @@ const Container = ({
 
   return (
     <>
-      <PreferencesModal
-        opened={isDialogOpen}
-        mode={mode}
-        categorizedDestinations={categorizedDestinations}
-        preferences={preferences}
-        isCancelling={isCancelling}
-        handleCancelBack={handleCancelBack}
-        handleCancelConfirm={handleCancelConfirm}
-        handleCancel={handleCancel}
-        handleSave={handleSave}
-        onClose={closeDialog}
-        updatePreference={updatePreference}
-      />
-
       {isConsentRequired && (
-        <Banner
+        <ConsentModal
           onAccept={accept}
-          onChangePreferences={openDialog}
           onClose={reject}
+          showModal={showConsentModal}
+          setShowModal={setShowConsentModal}
+          categorizedDestinations={categorizedDestinations}
+          updatePreference={updatePreference}
+          preferences={preferences}
+          mode={mode}
+          handleCancelBack={handleCancelBack}
+          handleCancelConfirm={handleCancelConfirm}
+          handleCancel={handleCancel}
+          handleSave={handleSave}
+          isCancelling={isCancelling}
+          view={consentModalView}
+          setView={setConsentModalView}
         />
       )}
     </>

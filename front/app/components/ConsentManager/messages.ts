@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Banner.close',
     defaultMessage: 'Close',
   },
+  cookiesModalTitle: {
+    id: 'app.components.ConsentManager.Banner.cookiesModalTitle',
+    defaultMessage: 'This site uses cookies',
+  },
   rejectAll: {
     id: 'app.components.ConsentManager.Banner.rejectAll',
     defaultMessage: 'Reject all',
