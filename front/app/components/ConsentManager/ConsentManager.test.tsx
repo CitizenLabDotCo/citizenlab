@@ -88,7 +88,7 @@ describe('<ConsentManager />', () => {
 
     it('renders banner', () => {
       const { container } = render(<ConsentManager />);
-      expect(container.querySelector('#e2e-cookie-banner')).toBeInTheDocument();
+      expect(container.querySelector('#e2e-cookie-modal')).toBeInTheDocument();
     });
 
     it('saves correct cookie if all cookies are accepted', () => {
@@ -172,7 +172,7 @@ describe('<ConsentManager />', () => {
     it('does not render banner', () => {
       const { container } = render(<ConsentManager />);
       expect(
-        container.querySelector('#e2e-cookie-banner')
+        container.querySelector('#e2e-cookie-modal')
       ).not.toBeInTheDocument();
     });
 
@@ -225,7 +225,7 @@ describe('<ConsentManager />', () => {
 
       const { container } = render(<ConsentManager />);
       expect(
-        container.querySelector('#e2e-cookie-banner')
+        container.querySelector('#e2e-cookie-modal')
       ).not.toBeInTheDocument();
     });
 
@@ -237,7 +237,7 @@ describe('<ConsentManager />', () => {
       } as any;
 
       const { container } = render(<ConsentManager />);
-      expect(container.querySelector('#e2e-cookie-banner')).toBeInTheDocument();
+      expect(container.querySelector('#e2e-cookie-modal')).toBeInTheDocument();
     });
   });
 });

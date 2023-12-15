@@ -418,8 +418,8 @@ export function logout() {
 }
 
 export function acceptCookies() {
-  cy.get('#e2e-cookie-banner');
-  cy.get('#e2e-cookie-banner .e2e-accept-cookies-btn').click();
+  cy.get('#e2e-cookie-modal');
+  cy.get('#e2e-cookie-modal .e2e-accept-cookies-btn').click();
   cy.wait(200);
 }
 

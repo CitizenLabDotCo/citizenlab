@@ -36,7 +36,7 @@ const Container = ({
   >('main');
 
   const openDialog = useCallback(() => {
-    onToggleModal(false);
+    onToggleModal(false); // TODO: Need to implement that when openConsentManager fired, open the modal to preferences view
   }, [onToggleModal]);
 
   useObserveEvent('openConsentManager', openDialog);

@@ -60,11 +60,11 @@ describe('<Container />', () => {
       container.querySelector('#e2e-preference-dialog')
     ).not.toBeInTheDocument();
     expect(
-      container.querySelector('#e2e-cookie-banner')
+      container.querySelector('#e2e-cookie-modal')
     ).not.toBeInTheDocument();
 
     // wih no destinations allowed, isConsentRequired will be false so no banner
-    // but the modal is still accessible trough the cookie policy
+    // but the modal is still accessible through the cookie policy
     act(() => {
       eventEmitter.emit('openConsentManager');
     });
@@ -73,7 +73,7 @@ describe('<Container />', () => {
       container.querySelector('#e2e-preference-dialog')
     ).toBeInTheDocument();
     expect(
-      container.querySelector('#e2e-cookie-banner')
+      container.querySelector('#e2e-cookie-modal')
     ).not.toBeInTheDocument();
   });
 
@@ -93,7 +93,7 @@ describe('<Container />', () => {
         />
       );
 
-      expect(container.querySelector('#e2e-cookie-banner')).toBeInTheDocument();
+      expect(container.querySelector('#e2e-cookie-modal')).toBeInTheDocument();
     });
 
     it("consent is't required, it doesn't show the banner", () => {
@@ -112,7 +112,7 @@ describe('<Container />', () => {
       );
 
       expect(
-        container.querySelector('#e2e-cookie-banner')
+        container.querySelector('#e2e-cookie-modal')
       ).not.toBeInTheDocument();
     });
   });

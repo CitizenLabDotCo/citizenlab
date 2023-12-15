@@ -100,7 +100,7 @@ const ConsentModal = ({
         padding={view === 'main' ? '32px' : '4px'}
         tabIndex={0}
         role="dialog"
-        id="e2e-cookie-banner"
+        id="e2e-cookie-modal"
       >
         {view === 'main' && (
           <>
