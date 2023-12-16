@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-
+import { Mode } from './StatusChangeFormWrapper';
 // resources
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
@@ -64,7 +64,7 @@ interface InputProps {
     | IIdeaOfficialFeedbackData
     | IInitiativeOfficialFeedbackData
     | null;
-  onChangeMode: (value) => void;
+  onChangeMode: (value: Mode) => void;
   onChangeBody: (value: Multiloc) => void;
   onChangeAuthor: (value: Multiloc) => void;
   submit: () => void;
