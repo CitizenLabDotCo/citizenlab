@@ -73,8 +73,9 @@ describe('Idea creation', () => {
     cy.get('#e2e-idea-image-upload').should('exist');
     cy.get('#e2e-idea-file-upload').should('exist');
 
+    cy.get('.e2e-topics-picker').should('exist');
     // add a topic
-    cy.get('.e2e-topics-picker').find('button').eq(4).click();
+    cy.get('.e2e-topics-picker').find('button').eq(4).click({ force: true });
 
     // verify that the topic has been selected
     cy.get('.e2e-topics-picker')
