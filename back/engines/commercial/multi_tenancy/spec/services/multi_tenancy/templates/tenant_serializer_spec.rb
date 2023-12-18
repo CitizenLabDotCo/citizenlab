@@ -21,6 +21,7 @@ describe MultiTenancy::Templates::TenantSerializer do
 
       tenant.switch do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
         expect(HomePage.count).to be 1
         expect(Area.count).to be > 0
         expect(Comment.count).to be > 0
@@ -29,6 +30,8 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(CustomFieldOption.count).to be > 0
         expect(CustomForm.count).to be > 0
         expect(Event.count).to be > 0
+        expect(EventImage.count).to be > 0
+        expect(Events::Attendance.count).to be > 0
         expect(IdeaStatus.count).to be > 0
         expect(Reaction.count).to be > 0
         expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0

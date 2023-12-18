@@ -4,7 +4,7 @@ require_relative 'base'
 
 module MultiTenancy
   module Seeds
-    class Iniatives < Base
+    class Initiatives < Base
       def run
         runner.num_initiatives.times do
           created_at = Faker::Date.between(from: Tenant.current.created_at, to: Time.zone.now)
