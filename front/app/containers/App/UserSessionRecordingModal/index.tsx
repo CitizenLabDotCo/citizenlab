@@ -30,7 +30,7 @@ const UserSessionRecordingModal = () => {
         userSessionRecodingFeatureFlag &&
         hasSeenModal !== 'true' &&
         Math.random() < 0.01;
-      return true;
+      return show;
     };
 
     if (shouldShowModal()) {
