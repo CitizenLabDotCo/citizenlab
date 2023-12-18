@@ -11,19 +11,14 @@ import { Spinner } from '@citizenlab/cl2-component-library';
 import IdeasEditForm from './IdeasEditForm';
 
 // router
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { useParams } from 'react-router-dom';
 
-interface Props {
-  params: {
-    ideaId: string;
-  };
-}
-
-const IdeasEditPage = withRouter((props: Props & WithRouterProps) => {
-  const { status, error } = useIdeaById(props.params.ideaId);
+const IdeasEditPage = () => {
+  const { ideaId } = useParams() as { ideaId: string };
+  const { status, error } = useIdeaById(ideaId);
 
   if (status === 'loading') {
     return (
@@ -41,7 +36,7 @@ const IdeasEditPage = withRouter((props: Props & WithRouterProps) => {
     return <PageNotFound />;
   }
 
-  return <IdeasEditForm {...props} />;
-});
+  return <IdeasEditForm ideaId={ideaId} />;
+};
 
 export default IdeasEditPage;
