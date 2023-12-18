@@ -12,16 +12,34 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import Modal from 'components/UI/Modal';
 
+import { set } from 'js-cookie';
+import eventEmitter from 'utils/eventEmitter';
+
+// 1 in 100 users
+// just for this session
+// if the feature flag is on
+// if the user has not already seen the modal (cookie)
+
 const UserSessionRecordingModal = () => {
   const [modalOpened, setModalOpened] = useState(true);
   const { formatMessage } = useIntl();
 
+  //   const shouldShowModal = () => {
+  //     const featureFlag = get('user_session_recording');
+  //     const hasSeenModal = get('user_session_recording_modal');
+  //     const show = featureFlag && !hasSeenModal && Math.random() < 0.01;
+  //     return show;
+  //   };
+
   const onClose = () => {
     setModalOpened(false);
+    set('user_session_recording_modal', 'true');
   };
 
   const onAccept = () => {
     setModalOpened(false);
+    eventEmitter.emit('user_session_recording_accepted', true);
+    set('user_session_recording_modal', 'true');
   };
 
   return (
