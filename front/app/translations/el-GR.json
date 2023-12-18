@@ -1600,7 +1600,6 @@
   "app.containers.app.navbar.search": "Αναζήτηση",
   "app.containers.app.navbar.showFullMenu": "Εμφάνιση πλήρους μενού",
   "app.containers.app.navbar.signOut": "Αποσύνδεση",
-  "app.containers.app.navbar.signUp": "Εγγραφείτε",
   "app.containers.eventspage.errorWhenFetchingEvents": "Προέκυψε σφάλμα κατά τη φόρτωση των εκδηλώσεων. Προσπαθήστε να επαναφορτώσετε τη σελίδα.",
   "app.containers.eventspage.events": "Εκδηλώσεις",
   "app.containers.eventspage.eventsPageDescription": "Εμφάνιση όλων των εκδηλώσεων που έχουν δημοσιευθεί στην πλατφόρμα του {orgName}.",
