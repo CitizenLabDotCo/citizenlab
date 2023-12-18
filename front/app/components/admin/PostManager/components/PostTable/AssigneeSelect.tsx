@@ -12,7 +12,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { IUser, IUsers } from 'api/users/types';
 
 interface Props {
-  projectId: string;
+  projectId?: string;
   assigneeId: string | undefined;
   onAssigneeChange: (assigneeId: string | undefined) => void;
 }
@@ -21,7 +21,12 @@ const AssigneeSelect = ({ projectId, assigneeId, onAssigneeChange }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const { data: prospectAssignees } = useUsers({
-    can_moderate_project: projectId,
+    // If we have a projectId, we want to filter the users to only those who
+    // can moderate the project. If we don't have a projectId (proposals), we want to
+    // filter to only admins and mods.
+    ...(typeof projectId === 'string'
+      ? { can_moderate_project: projectId }
+      : { can_admin: true }),
   });
 
   if (!prospectAssignees || !authUser) return null;
