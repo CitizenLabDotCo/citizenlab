@@ -49,7 +49,7 @@ namespace :templates do
 
   task :verify, [:output_file] => [:environment] do |_t, args|
     test_prefix = MultiTenancy::Templates::Utils.new.test_prefix
-    templates = MultiTenancy::Templates::Utils.new.available_external_templates(prefix: test_prefix)
+    templates = MultiTenancy::Templates::Utils.new.external_template_names(prefix: test_prefix)
     puts({ event: 'templates_verification', prefix: test_prefix, nb_templates: templates.size }.to_json)
     next if templates.empty?
 

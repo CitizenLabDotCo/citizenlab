@@ -3,11 +3,12 @@
 require 'rails_helper'
 
 describe MultiTenancy::Templates::Utils do
-  let(:service) { described_class.new(template_bucket: nil) }
+  subject(:service) { described_class.new(template_bucket: nil) }
 
-  describe '#available_internal_templates' do
-    it 'returns a non-empty list' do
-      expect(service.available_internal_templates).not_to be_empty
+  describe '#internal_template_names' do
+    it 'returns expected templates' do
+      expect(service.internal_template_names)
+        .to contain_exactly('base', 'e2etests_template')
     end
   end
 end
