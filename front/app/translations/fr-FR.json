@@ -1600,7 +1600,6 @@
   "app.containers.app.navbar.search": "Rechercher",
   "app.containers.app.navbar.showFullMenu": "Afficher le menu complet",
   "app.containers.app.navbar.signOut": "Se déconnecter",
-  "app.containers.app.navbar.signUp": "S'inscrire",
   "app.containers.eventspage.errorWhenFetchingEvents": "Une erreur s'est produite lors du chargement des événements. Veuillez essayer de recharger la page.",
   "app.containers.eventspage.events": "Événements",
   "app.containers.eventspage.eventsPageDescription": "Afficher tous les événements publiés sur la plateforme de participation de {orgName}.",

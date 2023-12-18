@@ -1210,7 +1210,6 @@
   "app.containers.app.navbar.myProfile": "Profilul meu",
   "app.containers.app.navbar.search": "Căutare",
   "app.containers.app.navbar.signOut": "Deconectează-te",
-  "app.containers.app.navbar.signUp": "Înscrie-te",
   "app.containers.eventspage.errorWhenFetchingEvents": "S-a produs o eroare în timpul încărcării evenimentelor. Vă rugăm să încercați să reîncărcați pagina.",
   "app.containers.eventspage.eventsPageDescription": "Afișează toate evenimentele postate pe platforma {orgName}.",
   "app.containers.eventspage.eventsPageTitle": "Evenimente",

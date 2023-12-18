@@ -1600,7 +1600,6 @@
   "app.containers.app.navbar.search": "Cercar",
   "app.containers.app.navbar.showFullMenu": "Mostra el menú complet",
   "app.containers.app.navbar.signOut": "Tancar sessió",
-  "app.containers.app.navbar.signUp": "Registreu-vos",
   "app.containers.eventspage.errorWhenFetchingEvents": "S'ha produït un error en carregar els esdeveniments. Si us plau, proveu de tornar a carregar la pàgina.",
   "app.containers.eventspage.events": "Esdeveniments",
   "app.containers.eventspage.eventsPageDescription": "Mostrar tots els esdeveniments publicats a la plataforma de {orgName}.",
