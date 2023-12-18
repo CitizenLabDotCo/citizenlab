@@ -469,7 +469,7 @@
   "app.components.SideModal.closeButtonAria": "Zatvori",
   "app.components.StatusModule.futurePhase": "Gledate fazu koja još nije započela. Moći ćete sudjelovati kada faza počne.",
   "app.components.StatusModule.modifyYourSubmission": "Izmijenite svoju {submissionTerm}",
-  "app.components.StatusModule.submittedUntil2": "može se podnijeti do",
+  "app.components.StatusModule.submittedUntil3": "Vaš glas može biti poslan do",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Odabrani {numberOfSelectedTopics, plural, =0 {nula oznaka} one {jedna oznaka} other {# oznaka}}. {selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Prikaži više radnji",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Ukloni",

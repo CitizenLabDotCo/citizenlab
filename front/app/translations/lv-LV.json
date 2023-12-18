@@ -469,7 +469,7 @@
   "app.components.SideModal.closeButtonAria": "Aizvērt",
   "app.components.StatusModule.futurePhase": "Jūs skatāties fāzi, kas vēl nav sākusies. Jūs varēsiet piedalīties, kad posms sāksies.",
   "app.components.StatusModule.modifyYourSubmission": "Mainiet savu {submissionTerm}",
-  "app.components.StatusModule.submittedUntil2": "var iesniegt līdz",
+  "app.components.StatusModule.submittedUntil3": "Jūsu balsojumu var iesniegt līdz",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Izvēlēts {numberOfSelectedTopics, plural, =0 {zero tags} one {one tag} other {# tags}}. {selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Rādīt vairāk darbību",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Noņemt",

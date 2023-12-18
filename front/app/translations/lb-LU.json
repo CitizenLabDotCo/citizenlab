@@ -469,7 +469,7 @@
   "app.components.SideModal.closeButtonAria": "Zoumaachen",
   "app.components.StatusModule.futurePhase": "Dir kuckt eng Phase déi nach net ugefaang huet. Dir kënnt matmaachen wann d'Phase ufänkt.",
   "app.components.StatusModule.modifyYourSubmission": "Änneren Är {submissionTerm}",
-  "app.components.StatusModule.submittedUntil2": "kënne bis",
+  "app.components.StatusModule.submittedUntil3": "Äre Vote kann bis",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Ausgewielt {numberOfSelectedTopics, plural, =0 {null Sujeten} one {ee Sujet} other {# Sujet'en}}. {selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Méi Aktioune weisen",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Ewechhuelen",
