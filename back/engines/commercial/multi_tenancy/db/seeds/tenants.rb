@@ -474,7 +474,11 @@ module MultiTenancy
             homepage_builder: {
               enabled: true,
               allowed: true
-            }
+            },
+            user_session_recording: {
+              enabled: true,
+              allowed: true
+            },
           })
         )
 
