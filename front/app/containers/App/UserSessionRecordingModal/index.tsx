@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Icon,
@@ -12,29 +12,31 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import Modal from 'components/UI/Modal';
 
-import { set } from 'js-cookie';
+import { get, set } from 'js-cookie';
 import eventEmitter from 'utils/eventEmitter';
-
-// 1 in 100 users
-// just for this session
-// if the feature flag is on
-// if the user has not already seen the modal (cookie)
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const UserSessionRecordingModal = () => {
-  const [modalOpened, setModalOpened] = useState(true);
+  const [modalOpened, setModalOpened] = useState(false);
   const { formatMessage } = useIntl();
+  const userSessionRecodingFeatureFlag = useFeatureFlag({
+    name: 'user_session_recording',
+  });
 
-  //   const shouldShowModal = () => {
-  //     const featureFlag = get('user_session_recording');
-  //     const hasSeenModal = get('user_session_recording_modal');
-  //     const show = featureFlag && !hasSeenModal && Math.random() < 0.01;
-  //     return show;
-  //   };
+  useEffect(() => {
+    const shouldShowModal = () => {
+      const hasSeenModal = get('user_session_recording_modal');
+      const show =
+        userSessionRecodingFeatureFlag &&
+        hasSeenModal !== 'true' &&
+        Math.random() < 0.01;
+      return true;
+    };
 
-  const onClose = () => {
-    setModalOpened(false);
-    set('user_session_recording_modal', 'true');
-  };
+    if (shouldShowModal()) {
+      setModalOpened(true);
+    }
+  }, [userSessionRecodingFeatureFlag]);
 
   const onAccept = () => {
     setModalOpened(false);
@@ -42,13 +44,13 @@ const UserSessionRecordingModal = () => {
     set('user_session_recording_modal', 'true');
   };
 
+  const onClose = () => {
+    setModalOpened(false);
+    set('user_session_recording_modal', 'true');
+  };
+
   return (
-    <Modal
-      opened={modalOpened}
-      close={() => {
-        setModalOpened(false);
-      }}
-    >
+    <Modal opened={modalOpened} close={onClose}>
       <Box p="24px">
         <Box display="flex" gap="16px" alignItems="center">
           <Icon

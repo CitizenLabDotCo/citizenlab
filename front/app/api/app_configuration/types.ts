@@ -241,6 +241,7 @@ export interface IAppConfigurationSettings {
   analysis?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
   homepage_builder?: AppConfigurationFeature;
+  user_session_recording?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
