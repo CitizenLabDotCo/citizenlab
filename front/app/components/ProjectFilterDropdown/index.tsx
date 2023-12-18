@@ -1,22 +1,14 @@
 import React, { useState } from 'react';
-import { adopt } from 'react-adopt';
 
 // components
 import FilterSelector from 'components/FilterSelector';
 
-// resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
-
 // i18n
-import injectLocalize from 'utils/localize';
 import useLocalize from 'hooks/useLocalize';
 import { useSearchParams } from 'react-router-dom';
+import useProjects from 'api/projects/useProjects';
 
-type DataProps = {
-  projects: GetProjectsChildProps;
-};
-
-type InputProps = {
+type Props = {
   title: string | JSX.Element;
   onChange: (projectIds: string[]) => void;
   className?: string;
@@ -27,11 +19,8 @@ type InputProps = {
   eventsTime?: 'past' | 'currentAndFuture';
 };
 
-type Props = InputProps & DataProps;
-
 const ProjectFilterDropdown = ({
   onChange,
-  projects,
   title,
   className,
   textColor,
@@ -40,6 +29,10 @@ const ProjectFilterDropdown = ({
   mobileLeft,
   eventsTime,
 }: Props) => {
+  const { data: projects } = useProjects({
+    publicationStatuses: ['published'],
+    sort: 'new',
+  });
   const [searchParams] = useSearchParams();
   const projectIdsParam =
     eventsTime === 'past'
@@ -60,8 +53,8 @@ const ProjectFilterDropdown = ({
     onChange(selectedValues);
   };
 
-  if (projects && projects.length > 0) {
-    const options = projects.map((project) => {
+  if (projects && projects.data.length > 0) {
+    const options = projects.data.map((project) => {
       return {
         text: localize(project.attributes.title_multiloc),
         value: project.id,
@@ -92,16 +85,4 @@ const ProjectFilterDropdown = ({
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  projects: <GetProjects publicationStatuses={['published']} sort="new" />,
-});
-
-const ProjectFilterDropdownWithLocalize = injectLocalize(ProjectFilterDropdown);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <ProjectFilterDropdownWithLocalize {...dataProps} {...inputProps} />
-    )}
-  </Data>
-);
+export default ProjectFilterDropdown;
