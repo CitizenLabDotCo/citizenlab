@@ -2,6 +2,7 @@ import {
   colors,
   fontSizes,
   defaultStyles,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
 function getSelectStyles(borderColor = colors.borderDark) {
@@ -24,7 +25,7 @@ function getSelectStyles(borderColor = colors.borderDark) {
       fontSize: `${fontSizes.base}px`,
       borderWidth: '1px',
       borderColor: isFocused ? colors.black : `${borderColor}`,
-      borderRadius: '3px',
+      borderRadius: stylingConsts.borderRadius,
       minHeight: '48px',
       backgroundColor: '#fff',
       boxShadow: isFocused ? defaultStyles.boxShadowFocused : 'none',
@@ -49,7 +50,7 @@ function getSelectStyles(borderColor = colors.borderDark) {
     }),
     menuList: (base) => ({
       ...base,
-      borderRadius: '3px',
+      borderRadius: stylingConsts.borderRadius,
     }),
     option: (base, { isFocused }) => ({
       ...base,
@@ -61,7 +62,7 @@ function getSelectStyles(borderColor = colors.borderDark) {
     }),
     multiValue: (base) => ({
       ...base,
-      borderRadius: '3px',
+      borderRadius: stylingConsts.borderRadius,
     }),
     multiValueLabel: (base) => ({
       ...base,
