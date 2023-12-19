@@ -15,9 +15,12 @@ import Modal from 'components/UI/Modal';
 import { get, set } from 'js-cookie';
 import eventEmitter from 'utils/eventEmitter';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAuthUser from 'api/me/useAuthUser';
+import { isRegularUser } from 'utils/permissions/roles';
 
 const UserSessionRecordingModal = () => {
-  const [modalOpened, setModalOpened] = useState(true);
+  const { data: authUser } = useAuthUser();
+  const [modalOpened, setModalOpened] = useState(false);
   const { formatMessage } = useIntl();
   const userSessionRecodingFeatureFlag = useFeatureFlag({
     name: 'user_session_recording',
@@ -29,14 +32,15 @@ const UserSessionRecordingModal = () => {
       const show =
         userSessionRecodingFeatureFlag &&
         hasSeenModal !== 'true' &&
-        Math.random() < 0.01;
+        Math.random() < 0.01 &&
+        isRegularUser(authUser);
       return show;
     };
 
     if (shouldShowModal()) {
       setModalOpened(true);
     }
-  }, [userSessionRecodingFeatureFlag]);
+  }, [userSessionRecodingFeatureFlag, authUser]);
 
   const onAccept = () => {
     setModalOpened(false);

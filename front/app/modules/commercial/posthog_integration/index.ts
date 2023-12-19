@@ -6,7 +6,13 @@
  * data for visitors or regular users
  */
 
-import { combineLatest, pairwise, startWith, Subscription } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  pairwise,
+  startWith,
+  Subscription,
+} from 'rxjs';
 import authUserStream from 'api/me/authUserStream';
 import { events$, pageChanges$ } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
@@ -17,7 +23,8 @@ import { IUser } from 'api/users/types';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { IAppConfiguration } from 'api/app_configuration/types';
 import { getFullName } from 'utils/textUtils';
-import eventEmitter from 'utils/eventEmitter';
+import eventEmitter, { IEventEmitterEvent } from 'utils/eventEmitter';
+import { PostHog } from 'posthog-js';
 
 const POSTHOG_API_KEY = process.env.POSTHOG_API_KEY;
 
@@ -38,8 +45,7 @@ const lazyLoadedPosthog = async () => {
 const initializePosthog = async (
   token: string,
   user: IUser | undefined,
-  appConfig: IAppConfiguration,
-  userSessionRecordingsDisabled: boolean
+  appConfig: IAppConfiguration
 ) => {
   const posthog = await lazyLoadedPosthog();
 
@@ -47,7 +53,6 @@ const initializePosthog = async (
     api_host: 'https://eu.posthog.com',
     autocapture: false,
     persistence: 'memory', // no cookies
-    disable_session_recording: userSessionRecordingsDisabled,
     loaded(ph) {
       posthogInitialized = true;
 
@@ -93,23 +98,37 @@ const initializePosthog = async (
       posthog.capture('$pageview');
     });
   }
+
+  return posthog;
 };
+
+// This event emitter wrapper is needed because the native eventEmitter observable does not work when inside `combineLatest`
+const eventEmitterWrapperStream = new BehaviorSubject<
+  IEventEmitterEvent<unknown> | undefined
+>(undefined);
+
+eventEmitter
+  .observeEvent('user_session_recording_accepted')
+  .subscribe((event) => {
+    eventEmitterWrapperStream.next(event);
+  });
 
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     if (!POSTHOG_API_KEY) return;
 
     combineLatest([
+      eventEmitterWrapperStream,
       appConfigurationStream,
       authUserStream.pipe(startWith(null), pairwise()),
-      eventEmitter.observeEvent('user_session_recording_accepted'),
     ]).subscribe(
-      async ([appConfig, [prevUser, user], userSessionRecordingAccepted]) => {
+      async ([userSessionRecordingAccepted, appConfig, [prevUser, user]]) => {
         if (appConfig) {
+          let posthog: PostHog | undefined;
           // USERS
 
           // Initialize posthog for users that accepted the session recording
-          if (userSessionRecordingAccepted.eventValue === true) {
+          if (userSessionRecordingAccepted?.eventValue === true) {
             // Check the feature flag
             const userSessionRecordingSettings =
               appConfig.data.attributes.settings.user_session_recording;
@@ -120,14 +139,13 @@ const configuration: ModuleConfiguration = {
             ) {
               return;
             }
-
-            // Initialize posthog
-            initializePosthog(
-              POSTHOG_API_KEY,
-              user ?? undefined,
-              appConfig,
-              false
-            );
+            if (!posthogInitialized) {
+              posthog = await initializePosthog(
+                POSTHOG_API_KEY,
+                user ?? undefined,
+                appConfig
+              );
+            }
           }
 
           // ADMINS AND MODERATORS
@@ -144,7 +162,7 @@ const configuration: ModuleConfiguration = {
             !isNilOrError(user) &&
             (isAdmin(user) || !isRegularUser(user))
           ) {
-            initializePosthog(POSTHOG_API_KEY, user, appConfig, true);
+            posthog = await initializePosthog(POSTHOG_API_KEY, user, appConfig);
           }
 
           // In case an admin signs out
@@ -152,15 +170,14 @@ const configuration: ModuleConfiguration = {
             prevUser &&
             !user &&
             posthogInitialized &&
-            !userSessionRecordingAccepted.eventValue === true
+            !userSessionRecordingAccepted?.eventValue === true
           ) {
-            const posthog = await lazyLoadedPosthog();
             pagesSubscription?.unsubscribe();
             eventsSubscription?.unsubscribe();
 
             // There seems to be no way to call opt_out_capturing without posthog
             // writing to localstorage. Clearing it, instead, seems to work fine.
-            posthog.clear_opt_in_out_capturing({ enable_persistence: false });
+            posthog?.clear_opt_in_out_capturing({ enable_persistence: false });
 
             posthogInitialized = false;
           }
