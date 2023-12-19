@@ -251,7 +251,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.documentPhase": "Fase de anotación de documentos",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.everyone": "Todo el mundo",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.externalSurveyPhase": "Fase de encuesta externa",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.groups": "{noOfGroups, plural, one {1 group} other {{noOfGroups} groups}}",
+  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.groups": "{noOfGroups, plural, one {1 grupo} other {{noOfGroups} grupos}}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.ideationPhase": "Fase de ideación",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.inPlatformSurveyPhase": "En fase de estudio de la plataforma",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.informationPhase": "Fase de información",
