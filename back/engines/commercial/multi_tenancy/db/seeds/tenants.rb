@@ -478,7 +478,7 @@ module MultiTenancy
             user_session_recording: {
               enabled: true,
               allowed: true
-            },
+            }
           })
         )
 

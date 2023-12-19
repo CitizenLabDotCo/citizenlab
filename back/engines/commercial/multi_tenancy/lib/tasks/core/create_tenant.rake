@@ -360,7 +360,7 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         user_session_recording: {
           enabled: false,
           allowed: false
-        },
+        }
       }
     )
 
