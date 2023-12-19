@@ -17,7 +17,7 @@ import eventEmitter from 'utils/eventEmitter';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const UserSessionRecordingModal = () => {
-  const [modalOpened, setModalOpened] = useState(false);
+  const [modalOpened, setModalOpened] = useState(true);
   const { formatMessage } = useIntl();
   const userSessionRecodingFeatureFlag = useFeatureFlag({
     name: 'user_session_recording',

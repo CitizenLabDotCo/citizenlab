@@ -37,8 +37,9 @@ const lazyLoadedPosthog = async () => {
 
 const initializePosthog = async (
   token: string,
-  user: IUser,
-  appConfig: IAppConfiguration
+  user: IUser | undefined,
+  appConfig: IAppConfiguration,
+  userSessionRecordingsDisabled: boolean
 ) => {
   const posthog = await lazyLoadedPosthog();
 
@@ -46,6 +47,7 @@ const initializePosthog = async (
     api_host: 'https://eu.posthog.com',
     autocapture: false,
     persistence: 'memory', // no cookies
+    disable_session_recording: userSessionRecordingsDisabled,
     loaded(ph) {
       posthogInitialized = true;
 
@@ -53,15 +55,17 @@ const initializePosthog = async (
         posthog.opt_in_capturing({ enable_persistence: false });
       }
 
-      // This sets the user for all subsequent events, and sets/updates her attributes
-      ph.identify(user.data.id, {
-        email: user.data.attributes.email,
-        name: getFullName(user.data),
-        first_name: user.data.attributes.first_name,
-        last_name: user.data.attributes.last_name,
-        locale: user.data.attributes.locale,
-        highest_role: user.data.attributes.highest_role,
-      });
+      if (user) {
+        // This sets the user for all subsequent events, and sets/updates her attributes
+        ph.identify(user.data.id, {
+          email: user.data.attributes.email,
+          name: getFullName(user.data),
+          first_name: user.data.attributes.first_name,
+          last_name: user.data.attributes.last_name,
+          locale: user.data.attributes.locale,
+          highest_role: user.data.attributes.highest_role,
+        });
+      }
 
       // These are the groups we're associating the user with
       ph.group('tenant', appConfig.data.id, {
@@ -101,20 +105,55 @@ const configuration: ModuleConfiguration = {
       eventEmitter.observeEvent('user_session_recording_accepted'),
     ]).subscribe(
       async ([appConfig, [prevUser, user], userSessionRecordingAccepted]) => {
-        console.log({ userSessionRecordingAccepted });
         if (appConfig) {
+          // USERS
+
+          // Initialize posthog for users that accepted the session recording
+          if (userSessionRecordingAccepted.eventValue === true) {
+            // Check the feature flag
+            const userSessionRecordingSettings =
+              appConfig.data.attributes.settings.user_session_recording;
+
+            if (
+              !userSessionRecordingSettings?.allowed ||
+              !userSessionRecordingSettings.enabled
+            ) {
+              return;
+            }
+
+            // Initialize posthog
+            initializePosthog(
+              POSTHOG_API_KEY,
+              user ?? undefined,
+              appConfig,
+              false
+            );
+          }
+
+          // ADMINS AND MODERATORS
+
           // Check the feature flag
           const posthogSettings =
             appConfig.data.attributes.settings.posthog_integration;
+
           if (!posthogSettings?.allowed || !posthogSettings.enabled) return;
 
           // In case the user signs in or visits signed in as an admin/moderator
-          if (!isNilOrError(user) && (isAdmin(user) || !isRegularUser(user))) {
-            initializePosthog(POSTHOG_API_KEY, user, appConfig);
+          if (
+            !posthogInitialized &&
+            !isNilOrError(user) &&
+            (isAdmin(user) || !isRegularUser(user))
+          ) {
+            initializePosthog(POSTHOG_API_KEY, user, appConfig, true);
           }
 
-          // In case the user signs out
-          if (prevUser && !user && posthogInitialized) {
+          // In case an admin signs out
+          if (
+            prevUser &&
+            !user &&
+            posthogInitialized &&
+            !userSessionRecordingAccepted.eventValue === true
+          ) {
             const posthog = await lazyLoadedPosthog();
             pagesSubscription?.unsubscribe();
             eventsSubscription?.unsubscribe();
