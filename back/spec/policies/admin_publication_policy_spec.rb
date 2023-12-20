@@ -106,4 +106,28 @@ describe AdminPublicationPolicy do
       expect(scope.resolve.size).to eq 0
     end
   end
+
+  context 'when a published folder only has draft projects' do
+    let(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+    let(:admin_publication) { create(:project_folder, projects: [draft_project]).admin_publication }
+
+    context 'when visitor' do
+      let(:user) { nil }
+
+      it { is_expected.not_to permit(:show)    }
+    end
+
+    context 'when regular user' do 
+      let(:user) { create(:user) }
+
+      it { is_expected.not_to permit(:show)    }
+    end
+
+    context 'when admin' do 
+      let(:user) { create(:admin) }
+
+      it { is_expected.to permit(:show)    }
+    end
+  end
+
 end
