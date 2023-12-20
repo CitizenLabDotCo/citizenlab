@@ -276,6 +276,7 @@ const App = ({ children }: Props) => {
   const { pathname } = removeLocale(location.pathname);
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
+  const isAuthenticationPending = !authUser && isLoading;
 
   const showFrontOfficeNavbar = () => {
     if (isAdminPage) {
@@ -298,7 +299,7 @@ const App = ({ children }: Props) => {
 
   return (
     <>
-      {!authUser && isLoading && (
+      {isAuthenticationPending && (
         <Box
           display="flex"
           w="100%"
@@ -359,31 +360,33 @@ const App = ({ children }: Props) => {
                   <MainHeader />
                 </ErrorBoundary>
               )}
-              <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="stretch"
-                flex="1"
-                overflowY="auto"
-                pt={
-                  showFrontOfficeNavbar()
-                    ? `${stylingConsts.menuHeight}px`
-                    : undefined
-                }
-              >
-                <HasPermission
-                  item={{
-                    type: 'route',
-                    path: pathname,
-                  }}
-                  action="access"
+              {!isAuthenticationPending && (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="stretch"
+                  flex="1"
+                  overflowY="auto"
+                  pt={
+                    showFrontOfficeNavbar()
+                      ? `${stylingConsts.menuHeight}px`
+                      : undefined
+                  }
                 >
-                  <ErrorBoundary>{children}</ErrorBoundary>
-                  <HasPermission.No>
-                    <Navigate to="/" />
-                  </HasPermission.No>
-                </HasPermission>
-              </Box>
+                  <HasPermission
+                    item={{
+                      type: 'route',
+                      path: pathname,
+                    }}
+                    action="access"
+                  >
+                    <ErrorBoundary>{children}</ErrorBoundary>
+                    <HasPermission.No>
+                      <Navigate to="/" />
+                    </HasPermission.No>
+                  </HasPermission>
+                </Box>
+              )}
               {showFooter && (
                 <Suspense fallback={null}>
                   <PlatformFooter />
