@@ -431,9 +431,9 @@ class User < ApplicationRecord
     if no_password?
       # Allow authentication without password - but only if confirmation is required on the user
       unencrypted_password.empty? && confirmation_required? ? self : false
-    elsif cl1_authenticate(unencrypted_password)
-      self.password_digest = BCrypt::Password.create(unencrypted_password)
-      self
+    # elsif cl1_authenticate(unencrypted_password)
+    #   self.password_digest = BCrypt::Password.create(unencrypted_password)
+    #   self
     else
       original_authenticate(unencrypted_password) && self
     end
