@@ -27,7 +27,7 @@ module Volunteering
       utils = XlsxExport::Utils.new
 
       sheetnames = phase.causes.to_h do |cause|
-        [cause.id, utils.sanitize_sheetname(@@multiloc_service.t(cause.title_multiloc, current_user&.locale))]
+        [cause.id, utils.sanitize_sheetname(@@multiloc_service.t(cause.title_multiloc))]
       end
 
       duplicate_names = (sheetnames.values.uniq.size != sheetnames.size)
