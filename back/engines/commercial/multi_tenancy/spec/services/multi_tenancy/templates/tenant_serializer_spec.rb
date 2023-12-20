@@ -40,6 +40,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(CustomMaps::MapConfig.count).to be 1
         expect(CustomMaps::Layer.count).to be 2
         expect(CustomMaps::LegendItem.count).to be 7
+        expect(StaticPage.count).to be > 0
       end
     end
 
@@ -93,6 +94,8 @@ describe MultiTenancy::Templates::TenantSerializer do
       create(:static_page, header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
 
       template = tenant_serializer.run(deserializer_format: true)
+
+      binding.pry
 
       expect(template['models']).to be_present
       expect(template.dig('models', 'static_page', 0, 'remote_header_bg_url')).to match(%r{/uploads/.*/static_page/header_bg/.*.jpg})
