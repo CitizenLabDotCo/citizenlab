@@ -31,16 +31,14 @@ const POSTHOG_API_KEY = process.env.POSTHOG_API_KEY;
 let eventsSubscription: Subscription | null = null;
 let pagesSubscription: Subscription | null = null;
 
-/** There seems to be no documented way to check whether posthog is initialized
- * already, so we'll just do some manual state management 🤷‍♂️ */
-let posthogInitialized = false;
-
 /** Posthog has a large bundle size, so we don't just import it, but only
  * when we actually need it */
 const lazyLoadedPosthog = async () => {
   const ph = await import('posthog-js');
   return ph.default;
 };
+
+let posthogClient: PostHog | undefined;
 
 const initializePosthog = async (
   token: string,
@@ -51,11 +49,10 @@ const initializePosthog = async (
 
   posthog.init(token, {
     api_host: 'https://eu.posthog.com',
+    disable_session_recording: true,
     autocapture: false,
     persistence: 'memory', // no cookies
     loaded(ph) {
-      posthogInitialized = true;
-
       if (posthog.has_opted_out_capturing({ enable_persistence: false })) {
         posthog.opt_in_capturing({ enable_persistence: false });
       }
@@ -124,7 +121,6 @@ const configuration: ModuleConfiguration = {
     ]).subscribe(
       async ([userSessionRecordingAccepted, appConfig, [prevUser, user]]) => {
         if (appConfig) {
-          let posthog: PostHog | undefined;
           // USERS
 
           // Initialize posthog for users that accepted the session recording
@@ -139,13 +135,15 @@ const configuration: ModuleConfiguration = {
             ) {
               return;
             }
-            if (!posthogInitialized) {
-              posthog = await initializePosthog(
+            if (!posthogClient) {
+              posthogClient = await initializePosthog(
                 POSTHOG_API_KEY,
                 user ?? undefined,
                 appConfig
               );
             }
+
+            posthogClient.startSessionRecording();
           }
 
           // ADMINS AND MODERATORS
@@ -158,28 +156,32 @@ const configuration: ModuleConfiguration = {
 
           // In case the user signs in or visits signed in as an admin/moderator
           if (
-            !posthogInitialized &&
+            !posthogClient &&
             !isNilOrError(user) &&
             (isAdmin(user) || !isRegularUser(user))
           ) {
-            posthog = await initializePosthog(POSTHOG_API_KEY, user, appConfig);
+            posthogClient = await initializePosthog(
+              POSTHOG_API_KEY,
+              user,
+              appConfig
+            );
           }
 
           // In case an admin signs out
           if (
             prevUser &&
             !user &&
-            posthogInitialized &&
-            !userSessionRecordingAccepted?.eventValue === true
+            posthogClient &&
+            userSessionRecordingAccepted?.eventValue !== true
           ) {
             pagesSubscription?.unsubscribe();
             eventsSubscription?.unsubscribe();
 
             // There seems to be no way to call opt_out_capturing without posthog
             // writing to localstorage. Clearing it, instead, seems to work fine.
-            posthog?.clear_opt_in_out_capturing({ enable_persistence: false });
-
-            posthogInitialized = false;
+            posthogClient?.clear_opt_in_out_capturing({
+              enable_persistence: false,
+            });
           }
         }
       }
