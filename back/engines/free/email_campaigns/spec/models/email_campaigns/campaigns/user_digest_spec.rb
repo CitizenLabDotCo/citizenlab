@@ -83,14 +83,34 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
   describe 'before_send_hooks' do
     let(:campaign) { build(:user_digest_campaign) }
 
-    it 'returns true when there are at least 3 trending ideas' do
+    it 'returns true when there are at least 3 ideas updated in the last week' do
       create_list(:idea, 3, published_at: Time.now - 1.minute)
       expect(campaign.content_worth_sending?({})).to be true
     end
 
-    it 'returns false when there are less than 3 trending ideas' do
+    it 'returns false when there are less than 3 ideas updated in the last week' do
       create_list(:idea, 2, published_at: Time.now - 1.minute)
       expect(campaign.content_worth_sending?({})).to be false
+    end
+
+    it 'returns true when there 3 ideas with comments or reactions updated in the last week' do
+      old_ideas = create_list(:idea, 3, published_at: Time.now - 30.days, updated_at: Time.now - 30.days)
+      create(:comment, post: old_ideas.first, created_at: Time.now - 1.minute)
+      create(:comment, post: old_ideas.second, created_at: Time.now - 1.minute)
+      create(:reaction, reactable: old_ideas.last, created_at: Time.now - 1.minute)
+      expect(campaign.content_worth_sending?({})).to be true
+    end
+
+    it 'returns true when there are any initiatives proposed or where the threshold is reached' do
+      proposed_status = create(:initiative_status_proposed)
+      initiative = create(:initiative)
+      create(
+        :initiative_status_change,
+        initiative: initiative,
+        initiative_status: proposed_status,
+        created_at: 1.day.ago
+      )
+      expect(campaign.content_worth_sending?({})).to be true
     end
   end
 
