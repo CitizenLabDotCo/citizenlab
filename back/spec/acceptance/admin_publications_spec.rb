@@ -228,9 +228,13 @@ resource 'AdminPublication' do
         do_request(folder: nil)
         expect(status).to eq(200)
         json_response = json_parse(response_body)
+        # Only 3 of initial 6 projects are not in folder
         expect(json_response[:data].size).to eq 3
+        # Draft folder created at top of file is not visible to resident, so only 1 is expected
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
+        # 3 projects are inside folder, 3 top-level projects remain, of which 1 is not visible (draft)
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 2
+        # Only the two non-draft projects are visible to resident
         expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 2
       end
 
@@ -243,6 +247,18 @@ resource 'AdminPublication' do
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 1
         expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 1
+      end
+
+      example 'Does not include published folder with only draft projects', document: false do
+        draft_project = create(:project, admin_publication_attributes: { publication_status: 'draft' })
+        folder_with_only_draft_project = create(:project_folder, projects:[draft_project])
+        # Resemble default home page request
+        do_request(publication_statuses: ['published', 'archived'])
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        # 1 non-draft folder + 4 non-draft projects
+        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
       end
 
       context 'search param' do
