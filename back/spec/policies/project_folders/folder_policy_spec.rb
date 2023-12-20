@@ -287,7 +287,7 @@ describe ProjectFolders::FolderPolicy do
       it { is_expected.not_to permit(:show)    }
     end
 
-    context 'when regular user' do 
+    context 'when admin' do 
       let(:user) { create(:admin) }
 
       it { is_expected.to permit(:show)    }
