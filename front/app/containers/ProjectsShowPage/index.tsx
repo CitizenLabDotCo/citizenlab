@@ -219,13 +219,14 @@ const ProjectsShowPageWrapper = () => {
   const pending =
     isInitialProjectLoading || isUserLoading || isInitialPhasesLoading;
 
+  const [userWasLoggedIn, setUserWasLoggedIn] = useState(false);
+
   useEffect(() => {
     if (pending) return;
     if (isError(user)) return;
-    if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
-    }
-  }, [error, pending, user]);
+
+    if (user) setUserWasLoggedIn(true);
+  }, [pending, user]);
 
   if (pending) {
     return (
@@ -235,11 +236,10 @@ const ProjectsShowPageWrapper = () => {
     );
   }
 
-  const userJustLoggedOut = localStorage.getItem('user') && user === null;
+  const userJustLoggedOut = userWasLoggedIn && user === null;
   const unauthorized = statusProject === 'error' && isUnauthorizedRQ(error);
 
   if (userJustLoggedOut && unauthorized) {
-    localStorage.removeItem('user');
     return <Navigate to="/" replace />;
   }
 
