@@ -15,8 +15,7 @@ module MultiTenancy
             location_multiloc: { en: '201 Demo Street' },
             start_at: start_at,
             end_at: start_at + rand(10).hours,
-            project: runner.rand_instance(Project.all),
-            address_1: '201 Demo Street'
+            project: runner.rand_instance(Project.all)
           )
 
           ::EventImage.create!({
