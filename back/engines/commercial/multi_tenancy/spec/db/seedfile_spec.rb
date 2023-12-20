@@ -27,7 +27,9 @@ describe 'db/seeds.rb' do
       expect(Area.count).to be > 0
       expect(Project.count).to be > 0
       expect(Phase.count).to be > 0
-      expect(Event.count).to be >= 4
+      expect(Event.count).to be > 4
+      expect(EventImage.count).to be > 0
+      expect(Events::Attendance.count).to be > 0
       expect(Idea.count).to be > 0
       expect(IdeaImage.count).to be > 0
       expect(ProjectImage.count).to be > 0
