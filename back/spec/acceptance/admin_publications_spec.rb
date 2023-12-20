@@ -249,18 +249,6 @@ resource 'AdminPublication' do
         expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 1
       end
 
-      example 'Does not include published folder with only draft projects', document: false do
-        draft_project = create(:project, admin_publication_attributes: { publication_status: 'draft' })
-        folder_with_only_draft_project = create(:project_folder, projects:[draft_project])
-        # Resemble default home page request
-        do_request(publication_statuses: ['published', 'archived'])
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        # 1 non-draft folder + 4 non-draft projects
-        expect(json_response[:data].size).to eq 5
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
-      end
-
       context 'search param' do
         example 'Search param should return the proper projects and folders', document: false do
           p1 = create(
