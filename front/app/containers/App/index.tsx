@@ -275,6 +275,7 @@ const App = ({ children }: Props) => {
     !isInitiativeEditPage;
   const { pathname } = removeLocale(location.pathname);
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+  const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
 
   const showFrontOfficeNavbar = () => {
     if (isAdminPage) {
@@ -295,25 +296,19 @@ const App = ({ children }: Props) => {
     return true;
   };
 
-  // Ensure authUser is loaded before rendering the app
-  if (!authUser && isLoading) {
-    return (
-      <Box
-        display="flex"
-        w="100%"
-        h="100%"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Spinner />
-      </Box>
-    );
-  }
-
-  const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
-
   return (
     <>
+      {!authUser && isLoading && (
+        <Box
+          display="flex"
+          w="100%"
+          h="100%"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner />
+        </Box>
+      )}
       {appConfiguration && (
         <PreviousPathnameContext.Provider value={previousPathname}>
           <ThemeProvider
