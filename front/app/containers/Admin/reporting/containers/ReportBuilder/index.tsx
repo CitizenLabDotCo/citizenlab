@@ -185,13 +185,11 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
 };
 
 const ReportBuilderWrapper = () => {
-  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const { pathname } = useLocation();
   const { reportId } = useParams();
   const { data: reportLayout } = useReportLayout(reportId);
 
   const renderReportBuilder =
-    reportBuilderEnabled &&
     pathname.includes('admin/reporting/report-builder') &&
     reportId !== undefined &&
     reportLayout;
