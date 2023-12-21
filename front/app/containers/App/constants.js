@@ -116,7 +116,7 @@ exports.appGraphqlLocalePairs = {
   elGr: 'el-GR',
   en: 'en',
   enCa: 'en-CA',
-  enCy: 'cy-GB',
+  cyGb: 'cy-GB',
   enGb: 'en-GB',
   es: 'es',
   esCl: 'es-CL',

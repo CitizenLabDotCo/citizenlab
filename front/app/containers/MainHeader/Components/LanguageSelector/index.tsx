@@ -133,8 +133,6 @@ const LanguageSelector = ({ className }: Props) => {
 
     const selectedLocale = getSelectedLocale(locale);
 
-    debugger;
-
     return (
       <Container
         className={className}
