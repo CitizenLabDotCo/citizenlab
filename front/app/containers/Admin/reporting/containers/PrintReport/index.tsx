@@ -96,10 +96,9 @@ export const PrintReport = ({ reportId, _print = true }: Props) => {
 };
 
 const PrintReportWrapper = () => {
-  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const { reportId } = useParams();
 
-  if (!reportBuilderEnabled || reportId === undefined) {
+  if (reportId === undefined) {
     return null;
   }
 
