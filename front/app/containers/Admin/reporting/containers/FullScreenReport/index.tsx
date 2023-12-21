@@ -43,10 +43,9 @@ export const FullScreenReport = ({ reportId }: Props) => {
 };
 
 const FullScreenReportWrapper = () => {
-  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const { reportId } = useParams();
 
-  if (!reportBuilderEnabled || reportId === undefined) {
+  if (reportId === undefined) {
     return null;
   }
 
