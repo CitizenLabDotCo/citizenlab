@@ -1,16 +1,15 @@
-import { useContext } from 'react';
-import { ReportContext } from '../context/ReportContext';
+import { useReportContext } from '../context/ReportContext';
 import { useNode, useEditor } from '@craftjs/core';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Layout } from 'components/admin/GraphCards/typings';
 
 export default function useLayout(): Layout {
   const narrowLayout = useNarrowLayout();
-  const reportContext = useContext(ReportContext);
+  const reportContext = useReportContext();
   const smallerThanPhone = useBreakpoint('phone');
 
   if (narrowLayout) return 'narrow';
-  if (reportContext === 'pdf') return 'wide';
+  if (reportContext.width === 'pdf') return 'wide';
 
   return smallerThanPhone ? 'narrow' : 'wide';
 }

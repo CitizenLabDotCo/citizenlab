@@ -16,7 +16,7 @@ import {
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
 import FollowUnfollow from 'components/FollowUnfollow';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -29,7 +29,6 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 // style
 import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 const Container = styled.div`

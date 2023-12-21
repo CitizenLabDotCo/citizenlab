@@ -25,7 +25,14 @@ import { isAdmin } from 'utils/permissions/roles';
 import useLocalize from 'hooks/useLocalize';
 
 // components
-import { Input, Icon, Select, Box } from '@citizenlab/cl2-component-library';
+import {
+  Input,
+  Icon,
+  Select,
+  Box,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Modal from 'components/UI/Modal';
@@ -44,7 +51,6 @@ import tracks from '../../tracks';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // api

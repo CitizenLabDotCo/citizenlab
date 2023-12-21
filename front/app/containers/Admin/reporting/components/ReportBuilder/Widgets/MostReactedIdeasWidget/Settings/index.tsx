@@ -4,11 +4,12 @@ import React, { useCallback } from 'react';
 import { useNode } from '@craftjs/core';
 
 // components
-import { Box, Input } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import ProjectFilter from '../../_shared/ProjectFilter';
 import PhaseFilter from '../../_shared/PhaseFilter';
 import NumberOfIdeasDropdown from './NumberOfIdeasDropdown';
 import CollapseLongTextToggle from './CollapseLongTextToggle';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 // i18n
 import messages from '../messages';
@@ -17,12 +18,7 @@ import { useIntl } from 'utils/cl-intl';
 
 // typings
 import { Props } from '../typings';
-import { IOption } from 'typings';
-import { IProjectData } from 'api/projects/types';
-
-const isContinuousIdeationOrTimelineProject = ({ attributes }: IProjectData) =>
-  attributes.process_type === 'timeline' ||
-  attributes.participation_method === 'ideation';
+import { IOption, Multiloc } from 'typings';
 
 const Settings = () => {
   const { formatMessage } = useIntl();
@@ -43,7 +39,7 @@ const Settings = () => {
   }));
 
   const setTitle = useCallback(
-    (value: string) => {
+    (value: Multiloc) => {
       setProp((props: Props) => {
         props.title = value;
       });
@@ -91,17 +87,16 @@ const Settings = () => {
   return (
     <Box>
       <Box mb="20px">
-        <Input
+        <InputMultilocWithLocaleSwitcher
           label={formatMessage(messages.title)}
           type="text"
-          value={title}
+          valueMultiloc={title}
           onChange={setTitle}
         />
       </Box>
 
       <ProjectFilter
         projectId={projectId}
-        filter={isContinuousIdeationOrTimelineProject}
         emptyValueMessage={widgetMessages.noProject}
         onProjectFilter={handleProjectFilter}
       />

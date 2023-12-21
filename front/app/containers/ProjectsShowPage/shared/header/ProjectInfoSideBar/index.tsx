@@ -24,7 +24,15 @@ import { IPhaseData } from 'api/phases/types';
 // components
 import ProjectSharingModal from '../ProjectSharingModal';
 import ProjectActionButtons from '../ProjectActionButtons';
-import { Box, Icon, IconTooltip } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  IconTooltip,
+  fontSizes,
+  colors,
+  isRtl,
+  media,
+} from '@citizenlab/cl2-component-library';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -40,7 +48,6 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
 import Link from 'utils/cl-router/Link';
 
 const Container = styled.div``;
@@ -139,7 +146,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const { formatMessage } = useIntl();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const [shareModalOpened, setShareModalOpened] = useState(false);
-  const { data: surveySubmissionCount } = useFormSubmissionCount({ projectId });
   const isAdminUser = !isNilOrError(authUser)
     ? isAdmin({ data: authUser.data })
     : false;
@@ -150,6 +156,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     );
   }, [phases]);
 
+  const phaseId = currentPhase?.id;
+  const { data: surveySubmissionCount } = useFormSubmissionCount({ phaseId });
+
   const scrollTo = useCallback(
     (id: string, shouldSelectCurrentPhase = true) =>
       (event: FormEvent) => {
@@ -157,7 +166,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
         if (!phases || !project) return;
 
         if (currentPhase && shouldSelectCurrentPhase) {
-          setPhaseUrl(currentPhase.id, phases.data, project.data);
+          setPhaseUrl(currentPhase, phases.data, project.data);
         }
 
         setTimeout(() => {
@@ -179,15 +188,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   if (project) {
     const isProjectArchived =
       project.data.attributes.publication_status === 'archived';
-    const postingIsEnabled =
-      project.data.attributes.posting_enabled ||
-      currentPhase?.attributes.posting_enabled;
-    const projectType = project.data.attributes.process_type;
+    const postingIsEnabled = currentPhase?.attributes.posting_enabled;
     const projectParticipantsCount = project.data.attributes.participants_count;
-    const maxBudget =
-      currentPhase?.attributes?.voting_max_total ||
-      project.data.attributes?.voting_max_total ||
-      null;
+    const maxBudget = currentPhase?.attributes?.voting_max_total || null;
     const hasProjectEnded = currentPhase
       ? pastPresentOrFuture([
           currentPhase.attributes.start_at,
@@ -195,29 +198,15 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
         ]) === 'past'
       : false;
 
-    const ideasCount =
-      projectType === 'continuous'
-        ? project.data.attributes.ideas_count
-        : currentPhase?.attributes.ideas_count;
-    const projectParticipationMethod =
-      project.data.attributes.participation_method;
+    const ideasCount = currentPhase?.attributes.ideas_count;
     const currentPhaseParticipationMethod =
       currentPhase?.attributes?.participation_method;
-    const surveyMessage =
-      projectType === 'continuous'
-        ? messages.oneSurvey
-        : messages.oneSurveyInCurrentPhase;
-    const docAnnotationMessage =
-      projectType === 'continuous'
-        ? messages.oneDocToReview
-        : messages.oneDocToReviewInCurrentPhase;
+    const surveyMessage = messages.oneSurveyInCurrentPhase;
+    const docAnnotationMessage = messages.oneDocToReviewInCurrentPhase;
 
     const isParticipatoryBudgeting =
-      projectType === 'continuous'
-        ? project.data.attributes.participation_method === 'voting' &&
-          project.data.attributes.voting_method === 'budgeting'
-        : currentPhase?.attributes.participation_method === 'voting' &&
-          currentPhase?.attributes.voting_method === 'budgeting';
+      currentPhase?.attributes.participation_method === 'voting' &&
+      currentPhase?.attributes.voting_method === 'budgeting';
 
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
@@ -226,8 +215,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             <FormattedMessage {...messages.about} />
           </Title>
           <List>
-            {projectType === 'timeline' &&
-              currentPhase &&
+            {currentPhase &&
               hasProjectEnded &&
               pastPresentOrFuture([
                 currentPhase.attributes.start_at,
@@ -251,35 +239,34 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     {...messages.xParticipants}
                     values={{ participantsCount: projectParticipantsCount }}
                   />
-                  {hasNativeSurvey(project.data, phases?.data) &&
-                    isAdminUser && (
-                      <Box mb="4px" ml="4px">
-                        <IconTooltip
-                          placement="top-start"
-                          maxTooltipWidth={200}
-                          iconColor={colors.coolGrey300}
-                          content={
-                            <FormattedMessage
-                              {...messages.participantsTooltip}
-                              values={{
-                                accessRightsLink: (
-                                  <Link
-                                    to={`/admin/projects/${projectId}/permissions`}
-                                  >
-                                    <FormattedMessage
-                                      {...messages.accessRights}
-                                    />
-                                  </Link>
-                                ),
-                              }}
-                            />
-                          }
-                        />
-                      </Box>
-                    )}
+                  {hasNativeSurvey(phases?.data) && isAdminUser && (
+                    <Box mb="4px" ml="4px">
+                      <IconTooltip
+                        placement="top-start"
+                        maxTooltipWidth={200}
+                        iconColor={colors.coolGrey300}
+                        content={
+                          <FormattedMessage
+                            {...messages.participantsTooltip}
+                            values={{
+                              accessRightsLink: (
+                                <Link
+                                  to={`/admin/projects/${projectId}/permissions`}
+                                >
+                                  <FormattedMessage
+                                    {...messages.accessRights}
+                                  />
+                                </Link>
+                              ),
+                            }}
+                          />
+                        }
+                      />
+                    </Box>
+                  )}
                 </ListItem>
               )}
-            {projectType === 'timeline' && phases && phases.data.length > 1 && (
+            {phases && phases.data.length > 1 && (
               <ListItem>
                 <ListItemIcon ariaHidden name="timeline" className="timeline" />
                 <ListItemButton
@@ -293,9 +280,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 </ListItemButton>
               </ListItem>
             )}
-            {((projectType === 'continuous' &&
-              projectParticipationMethod === 'ideation') ||
-              currentPhaseParticipationMethod === 'ideation' ||
+            {(currentPhaseParticipationMethod === 'ideation' ||
               (currentPhase &&
                 hasProjectEnded &&
                 currentPhase?.attributes.participation_method ===
@@ -306,22 +291,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   <ListItemIcon ariaHidden name="idea" />
                   {project.data.attributes.ideas_count > 0 ? (
                     <ListItemButton onClick={scrollTo('project-ideas')}>
-                      {projectType === 'continuous' && (
-                        <FormattedMessage
-                          {...getInputTermMessage(
-                            project.data.attributes.input_term,
-                            {
-                              idea: messages.xIdeas,
-                              option: messages.xOptions,
-                              project: messages.xProjects,
-                              question: messages.xQuestions,
-                              issue: messages.xIssues,
-                              contribution: messages.xContributions,
-                            }
-                          )}
-                          values={{ ideasCount }}
-                        />
-                      )}
                       {currentPhase &&
                         currentPhaseParticipationMethod === 'ideation' &&
                         !hasProjectEnded && (
@@ -366,10 +335,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   )}
                 </ListItem>
               )}
-            {((projectType === 'continuous' &&
-              projectParticipationMethod === 'native_survey') ||
-              currentPhase?.attributes.participation_method ===
-                'native_survey') &&
+            {currentPhaseParticipationMethod === 'native_survey' &&
               surveySubmissionCount && (
                 <Box>
                   <ListItem>
@@ -379,7 +345,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     <Box ml="4px">
                       <FormattedMessage {...messages.surveySubmissions} />
                     </Box>
-                    {hasEmbeddedSurvey(project.data, phases?.data) && (
+                    {hasEmbeddedSurvey(phases?.data) && (
                       <Box mb="4px" ml="4px">
                         <IconTooltip
                           placement="top-start"
@@ -399,9 +365,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 <FormattedBudget value={maxBudget} />
               </ListItem>
             )}
-            {((projectType === 'continuous' &&
-              projectParticipationMethod === 'survey') ||
-              currentPhaseParticipationMethod === 'survey') &&
+            {currentPhaseParticipationMethod === 'survey' &&
               !isProjectArchived &&
               !hasProjectEnded && (
                 <ListItem id="e2e-project-sidebar-surveys-count">
@@ -409,9 +373,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   <FormattedMessage {...surveyMessage} />
                 </ListItem>
               )}
-            {((projectType === 'continuous' &&
-              projectParticipationMethod === 'document_annotation') ||
-              currentPhaseParticipationMethod === 'document_annotation') &&
+            {currentPhaseParticipationMethod === 'document_annotation' &&
               !isProjectArchived &&
               !hasProjectEnded && (
                 <ListItem>
@@ -419,9 +381,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   <FormattedMessage {...docAnnotationMessage} />
                 </ListItem>
               )}
-            {((projectType === 'continuous' &&
-              projectParticipationMethod === 'native_survey') ||
-              currentPhaseParticipationMethod === 'native_survey') &&
+            {currentPhaseParticipationMethod === 'native_survey' &&
               postingIsEnabled &&
               !isProjectArchived &&
               !hasProjectEnded && (
@@ -430,16 +390,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   <FormattedMessage {...surveyMessage} />
                 </ListItem>
               )}
-            {((projectType === 'continuous' &&
-              projectParticipationMethod === 'poll') ||
-              currentPhaseParticipationMethod === 'poll') && (
+            {currentPhaseParticipationMethod === 'poll' && (
               <ListItem id="e2e-project-sidebar-polls-count">
                 <ListItemIcon ariaHidden name="survey" />
-                <FormattedMessage
-                  {...(projectType === 'continuous'
-                    ? messages.poll
-                    : messages.pollInCurrentPhase)}
-                />
+                <FormattedMessage {...messages.pollInCurrentPhase} />
               </ListItem>
             )}
             {!isNilOrError(events) && events.data.length > 0 && (

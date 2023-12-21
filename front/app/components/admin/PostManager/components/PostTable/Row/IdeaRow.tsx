@@ -70,7 +70,6 @@ const IdeaRow = ({
   phases,
   statuses,
   selectedPhaseId,
-  selectedProjectId,
   idea,
   selection,
   locale,
@@ -172,10 +171,11 @@ const IdeaRow = ({
           onChange: (idea: IIdeaData) => (assigneeId?: string) => void;
         }
       >) => {
+        const projectId = idea.relationships.project.data.id;
         return (
           <AssigneeSelect
             onAssigneeChange={onChange(idea)}
-            projectId={idea.relationships.project.data.id}
+            projectId={projectId}
             assigneeId={idea.relationships.assignee?.data?.id}
           />
         );
@@ -347,10 +347,7 @@ const IdeaRow = ({
   const active = selection.has(idea.id);
   const projectId = idea.relationships.project.data.id;
   const selectedStatus = idea.relationships.idea_status.data?.id;
-  const displayColumns = usePostManagerColumnFilter(
-    selectedProjectId,
-    selectedPhaseId
-  );
+  const displayColumns = usePostManagerColumnFilter(selectedPhaseId);
 
   const renderCell = (
     { idea, selection }: IdeaCellComponentProps,

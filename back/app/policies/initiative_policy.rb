@@ -86,7 +86,7 @@ class InitiativePolicy < ApplicationPolicy
   private
 
   def posting_denied_reason(user)
-    'not_signed_in' unless user
+    PermissionsService.new.denied_reason_for_resource user, 'posting_initiative'
   end
 
   def owner?
@@ -97,5 +97,3 @@ class InitiativePolicy < ApplicationPolicy
     user && record&.cosponsors&.include?(user)
   end
 end
-
-InitiativePolicy.prepend(GranularPermissions::Patches::InitiativePolicy)

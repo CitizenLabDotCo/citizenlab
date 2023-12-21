@@ -20,15 +20,15 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     @projects = Project.where(id: publications.select(:publication_id))
       .ordered
-      .includes(:project_images, :phases, :areas, admin_publication: [:children])
+      .includes(
+        :project_images,
+        :areas,
+        :topics,
+        :content_builder_layouts, # Defined in ContentBuilder engine
+        phases: [:report],
+        admin_publication: [:children]
+      )
     @projects = paginate @projects
-
-    user_baskets = current_user&.baskets
-      &.where(participation_context_type: 'Project')
-      &.group_by do |basket|
-        [basket.participation_context_id, basket.participation_context_type]
-      end
-    user_baskets ||= {}
 
     user_followers = current_user&.follows
       &.where(followable_type: 'Project')
@@ -38,9 +38,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     user_followers ||= {}
 
     instance_options = {
-      user_baskets: user_baskets,
       user_followers: user_followers,
-      allocated_budgets: ParticipationContextService.new.allocated_budgets(@projects),
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects),
       visible_children_count_by_parent_id: {} # projects don't have children
     }
@@ -57,7 +55,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
       params: jsonapi_serializer_params,
-      include: %i[admin_publication project_images current_phase permissions]
+      include: %i[admin_publication project_images current_phase avatars]
     ).serializable_hash
   end
 
@@ -137,31 +135,12 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 
-  def survey_results
-    results = SurveyResultsGeneratorService.new(@project).generate_results
-    render json: raw_json(results)
-  end
-
-  def submission_count
-    count = SurveyResultsGeneratorService.new(@project).generate_submission_count
-    render json: raw_json(count)
-  end
-
   def index_xlsx
     I18n.with_locale(current_user.locale) do
       include_private_attributes = Pundit.policy!(current_user, User).view_private_attributes?
       xlsx = XlsxExport::GeneratorService.new.generate_inputs_for_project @project.id, include_private_attributes
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
-  end
-
-  def delete_inputs
-    sidefx.before_delete_inputs @project, current_user
-    ActiveRecord::Base.transaction do
-      @project.ideas.each(&:destroy!)
-    end
-    sidefx.after_delete_inputs @project, current_user
-    head :ok
   end
 
   private

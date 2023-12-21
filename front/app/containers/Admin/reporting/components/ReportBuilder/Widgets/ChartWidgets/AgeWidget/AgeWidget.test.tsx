@@ -12,7 +12,7 @@ describe.skip('<AgeWidget />', () => {
   const startAt = undefined;
   const endAt = undefined;
   const projectId = undefined;
-  const title = 'GENDER TITLE';
+  const title = { en: 'AGE TITLE' };
 
   it('renders a title and bar chart when there is data', () => {
     const validData = [

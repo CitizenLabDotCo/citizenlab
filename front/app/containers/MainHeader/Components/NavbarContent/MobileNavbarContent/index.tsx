@@ -4,7 +4,7 @@ import React, { Suspense, useRef, useState } from 'react';
 import LanguageSelector from '../../LanguageSelector';
 import NotificationMenu from '../../NotificationMenu';
 import ShowFullMenuButton from './ShowFullMenuButton';
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, media, isRtl } from '@citizenlab/cl2-component-library';
 import FullMobileNavMenu from './FullMobileNavMenu';
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
@@ -16,7 +16,6 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
 
 // utils
-import { media, isRtl } from 'utils/styleUtils';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import bowser from 'bowser';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';

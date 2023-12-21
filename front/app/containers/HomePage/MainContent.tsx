@@ -1,7 +1,12 @@
 import React from 'react';
 import ContentContainer from 'components/ContentContainer';
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  useBreakpoint,
+  media,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 import InitiativesCTABox from './InitiativesCTABox';
 import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
@@ -9,7 +14,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
 
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 

@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, Box, Icon } from '@citizenlab/cl2-component-library';
 
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
-import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import Button from 'components/UI/Button';
 

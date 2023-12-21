@@ -7,7 +7,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*:contextType/:contextId/poll_responses/responses_count';
+const apiPath = '*phases/:phaseId/poll_responses/responses_count';
 
 const data = {
   data: {
@@ -39,8 +39,7 @@ describe('usePollResponses', () => {
     const { result, waitFor } = renderHook(
       () =>
         usePollResponses({
-          participationContextId: 'id',
-          participationContextType: 'project',
+          phaseId: 'id',
         }),
       {
         wrapper: createQueryClientWrapper(),
@@ -65,8 +64,7 @@ describe('usePollResponses', () => {
     const { result, waitFor } = renderHook(
       () =>
         usePollResponses({
-          participationContextId: 'id',
-          participationContextType: 'project',
+          phaseId: 'id',
         }),
       {
         wrapper: createQueryClientWrapper(),

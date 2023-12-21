@@ -24,11 +24,17 @@ RSpec.describe User do
   end
 
   describe '.destroy_all_async' do
-    before { create_list(:user, 2) }
+    before_all { create_list(:user, 2) }
 
-    it 'enqueues a user-deletion job for each user' do
+    it 'enqueues a user-deletion job for each user by default' do
       expect { described_class.destroy_all_async }
         .to have_enqueued_job(DeleteUserJob).exactly(described_class.count).times
+    end
+
+    it 'enqueues a user-deletion job for each user in the given scope' do
+      scope = described_class.where(id: described_class.first.id)
+      expect { described_class.destroy_all_async(scope) }
+        .to have_enqueued_job(DeleteUserJob).exactly(scope.count).times
     end
   end
 
@@ -1304,6 +1310,25 @@ RSpec.describe User do
         create_admin_moderator(:project_folder_moderator)
         expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
       end
+    end
+  end
+
+  context '(super_admins scopes)' do
+    let_it_be(:super_admins) { create_list(:super_admin, 1) }
+    let_it_be(:non_super_admins) do
+      [
+        create(:user),
+        create(:admin),
+        create(:project_moderator, email: 'hello@citizenlab.co')
+      ]
+    end
+
+    it '.super_admins returns super admins only' do
+      expect(described_class.super_admins).to match_array(super_admins)
+    end
+
+    it '.non_super_admins returns non super admins' do
+      expect(described_class.not_super_admins).to match_array(non_super_admins)
     end
   end
 end

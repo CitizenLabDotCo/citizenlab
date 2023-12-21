@@ -47,6 +47,11 @@ export default defineMessages({
     defaultMessage:
       'Customize the map view, including uploading and styling map layers and setting the map center and zoom level.',
   },
+  mapLocationWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning',
+    defaultMessage:
+      "The map configuration is currently shared across phases, you can't create different map configurations per phase.",
+  },
   supportArticle: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.supportArticle',
     defaultMessage: 'support article',

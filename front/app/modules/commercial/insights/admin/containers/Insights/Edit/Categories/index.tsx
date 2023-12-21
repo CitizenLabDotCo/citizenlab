@@ -15,6 +15,8 @@ import {
   DropdownListItem,
   Icon,
   IconTooltip,
+  colors,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
@@ -23,7 +25,6 @@ import Error from 'components/UI/Error';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { colors, fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 import getInputsCategoryFilter from 'modules/commercial/insights/utils/getInputsCategoryFilter';
 

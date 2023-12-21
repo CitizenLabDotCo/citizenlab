@@ -1,6 +1,5 @@
 import React, { lazy, Suspense, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 import useProjectById from 'api/projects/useProjectById';
 
 // components
@@ -24,12 +23,6 @@ import ErrorToast from 'components/ErrorToast';
 import FollowUnfollow from 'components/FollowUnfollow';
 import Tippy from '@tippyjs/react';
 
-// resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPermission, {
-  GetPermissionChildProps,
-} from 'resources/GetPermission';
-
 // i18n
 import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -50,20 +43,15 @@ import { IProjectData } from 'api/projects/types';
 import { IIdeaImages } from 'api/idea_images/types';
 
 // utils
-import { getCurrentParticipationContext } from 'api/phases/utils';
-import { getInputTerm } from 'utils/participationContexts';
+import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
 import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
+import { usePermission } from 'utils/permissions';
 
 const StyledRightColumnDesktop = styled(RightColumnDesktop)`
   margin-left: ${columnsGapDesktop}px;
 `;
 
-interface DataProps {
-  project: GetProjectChildProps;
-  postOfficialFeedbackPermission: GetPermissionChildProps;
-}
-
-interface InputProps {
+interface Props {
   ideaId: string;
   projectId: string;
   setRef?: (element: HTMLDivElement) => void;
@@ -71,11 +59,8 @@ interface InputProps {
   className?: string;
 }
 
-interface Props extends DataProps, InputProps {}
-
 export const IdeasShow = ({
   className,
-  postOfficialFeedbackPermission,
   projectId,
   compact,
   ideaId,
@@ -84,6 +69,10 @@ export const IdeasShow = ({
   const { data: ideaImages } = useIdeaImages(ideaId);
   const { data: idea } = useIdeaById(ideaId);
   const { data: project } = useProjectById(projectId);
+  const postOfficialFeedbackPermission = usePermission({
+    item: !isNilOrError(project) ? project.data : null,
+    action: 'moderate',
+  });
 
   const isLoaded = !!(idea && ideaImages && project);
 
@@ -112,7 +101,7 @@ export const IdeasShow = ({
 };
 
 interface ContentProps {
-  postOfficialFeedbackPermission: GetPermissionChildProps;
+  postOfficialFeedbackPermission: boolean;
   idea: IIdea;
   project: IProjectData;
   ideaImages: IIdeaImages;
@@ -138,16 +127,9 @@ const Content = ({
   const ideaId = idea.data.id;
   const ideaBody = localize(idea.data.attributes?.body_multiloc);
 
-  const participationContext = getCurrentParticipationContext(
-    project,
-    phases?.data
-  );
+  const participationContext = getCurrentPhase(phases?.data);
 
-  const inputTerm = getInputTerm(
-    project.attributes.process_type,
-    project,
-    phases?.data
-  );
+  const inputTerm = getInputTerm(phases?.data);
 
   const wasImported = !!idea.data.relationships.idea_import?.data;
 
@@ -269,22 +251,4 @@ const Content = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  postOfficialFeedbackPermission: ({ project, render }) => (
-    <GetPermission
-      item={!isNilOrError(project) ? project : null}
-      action="moderate"
-    >
-      {render}
-    </GetPermission>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <IdeasShow {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default IdeasShow;

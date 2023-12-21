@@ -4,7 +4,12 @@ import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  colors,
+  fontSizes,
+  defaultOutline,
+} from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // i18n
@@ -17,7 +22,6 @@ import { getBase64FromFile } from 'utils/fileUtils';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, defaultOutline } from 'utils/styleUtils';
 
 // typings
 import { UploadFile } from 'typings';

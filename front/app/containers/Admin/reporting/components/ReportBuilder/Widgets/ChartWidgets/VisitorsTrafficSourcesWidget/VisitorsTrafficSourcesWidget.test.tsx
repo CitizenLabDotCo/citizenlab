@@ -13,7 +13,7 @@ describe.skip('<VisitorsTrafficSourcesWidget />', () => {
   const startAt = undefined;
   const endAt = undefined;
   const projectId = undefined;
-  const title = 'TRAFFIC SOURCES TITLE';
+  const title = { en: 'TRAFFIC SOURCES TITLE' };
 
   it('renders a title and a pie chart if there is data', () => {
     const validData = [

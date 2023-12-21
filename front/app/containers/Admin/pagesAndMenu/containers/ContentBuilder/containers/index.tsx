@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 // styles
-import { stylingConsts } from 'utils/styleUtils';
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
 import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
 
 // craft
@@ -18,7 +17,6 @@ import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
@@ -33,6 +31,7 @@ import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import HomepageBanner from '../components/CraftComponents/HomepageBanner';
 import Projects from '../components/CraftComponents/Projects';
 import { useTheme } from 'styled-components';
+import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 
 const HomepageBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
@@ -43,7 +42,7 @@ const HomepageBuilderPage = () => {
 
   const locale = useLocale();
   const locales = useAppConfigurationLocales();
-  const { data: homepageSettings } = useHomepageSettings();
+  const { data: homepageLayout } = useHomepageLayout();
 
   useEffect(() => {
     if (!isNilOrError(locale)) {
@@ -80,10 +79,10 @@ const HomepageBuilderPage = () => {
 
   const getEditorData = () => {
     if (
-      homepageSettings &&
-      !isEmpty(homepageSettings.data.attributes.craftjs_json)
+      homepageLayout &&
+      !isEmpty(homepageLayout.data.attributes.craftjs_json)
     ) {
-      return homepageSettings.data.attributes.craftjs_json;
+      return homepageLayout.data.attributes.craftjs_json;
     } else {
       return undefined;
     }

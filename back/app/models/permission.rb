@@ -32,7 +32,7 @@ class Permission < ApplicationRecord
     'volunteering' => [],
     'document_annotation' => %w[annotating_document]
   }
-  SCOPE_TYPES = [nil, 'Project', 'Phase'].freeze
+  SCOPE_TYPES = [nil, 'Phase'].freeze
 
   scope :filter_enabled_actions, ->(permission_scope) { where(action: enabled_actions(permission_scope)) }
   scope :order_by_action, lambda { |permission_scope|
@@ -54,6 +54,8 @@ class Permission < ApplicationRecord
   before_validation :update_global_custom_fields, on: :update
 
   def self.available_actions(permission_scope)
+    return [] if permission_scope && !permission_scope.respond_to?(:participation_method)
+
     ACTIONS[permission_scope&.participation_method]
   end
 

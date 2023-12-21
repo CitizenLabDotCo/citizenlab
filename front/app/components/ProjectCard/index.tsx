@@ -9,14 +9,12 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon, Box } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 import FollowUnfollow from 'components/FollowUnfollow';
 
 // services
 import { getProjectUrl } from 'api/projects/utils';
-import { getInputTerm } from 'utils/participationContexts';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 
 // resources
@@ -40,19 +38,22 @@ import tracks from './tracks';
 // style
 import styled, { useTheme } from 'styled-components';
 import {
+  Icon,
+  Box,
   media,
   colors,
   fontSizes,
   defaultCardStyle,
   defaultCardHoverStyle,
   isRtl,
-} from 'utils/styleUtils';
+} from '@citizenlab/cl2-component-library';
 import { rgba, darken } from 'polished';
 
 // utils
 import { getInputTermMessage } from 'utils/i18n';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { getInputTerm } from 'api/phases/utils';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -440,7 +441,19 @@ const ProjectCard = memo<InputProps>(
     const currentPhaseId =
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
-    const { data: phases } = usePhases(projectId);
+
+    // We only need the phases for the input term, and only
+    // in case there is no current phase in a timeline project.
+    // This is quite an edge case.
+    // With this check, we only fetch the phases if the project has loaded already
+    // AND there is no current phase, instead of always fetching all the phases
+    // for every project for which we're showing a card.
+    const fetchPhases = project && !currentPhaseId;
+
+    const { data: phases } = usePhases(
+      fetchPhases ? project.data.id : undefined
+    );
+
     const theme = useTheme();
 
     const [visible, setVisible] = useState(false);
@@ -458,20 +471,16 @@ const ProjectCard = memo<InputProps>(
     };
 
     if (project) {
-      const methodConfig = getMethodConfig(
-        project.data.attributes.participation_method
-      );
+      const methodConfig = phase
+        ? getMethodConfig(phase.data.attributes.participation_method)
+        : null;
       const postingPermission = getIdeaPostingRules({
         project: project?.data,
         phase: phase?.data,
         authUser: authUser?.data,
       });
-      const participationMethod = phase
-        ? phase.data.attributes.participation_method
-        : project.data.attributes.participation_method;
-      const votingMethod = phase
-        ? phase.data.attributes.voting_method
-        : project.data.attributes.voting_method;
+      const participationMethod = phase?.data.attributes.participation_method;
+      const votingMethod = phase?.data.attributes.voting_method;
 
       const canPost = !!postingPermission.enabled;
       const canReact =
@@ -494,10 +503,7 @@ const ProjectCard = memo<InputProps>(
         project.data.relationships.avatars.data &&
         project.data.relationships.avatars.data.length > 0;
       const showIdeasCount =
-        !(
-          project.data.attributes.process_type === 'continuous' &&
-          !methodConfig.showInputCount
-        ) && ideasCount > 0;
+        (!methodConfig || methodConfig.showInputCount) && ideasCount > 0;
       const showCommentsCount = commentsCount > 0;
       const showFooter = hasAvatars || showIdeasCount || showCommentsCount;
       const avatarIds =
@@ -512,8 +518,7 @@ const ProjectCard = memo<InputProps>(
         : null;
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
-      const processType = project.data.attributes.process_type;
-      const inputTerm = getInputTerm(processType, project.data, phases?.data);
+      const inputTerm = getInputTerm(phases?.data);
 
       if (isArchived) {
         countdown = (
@@ -557,6 +562,8 @@ const ProjectCard = memo<InputProps>(
 
       if (participationMethod === 'voting' && votingMethod === 'budgeting') {
         ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
+      } else if (participationMethod === 'voting') {
+        ctaMessage = <FormattedMessage {...messages.vote} />;
       } else if (participationMethod === 'information') {
         ctaMessage = <FormattedMessage {...messages.learnMore} />;
       } else if (

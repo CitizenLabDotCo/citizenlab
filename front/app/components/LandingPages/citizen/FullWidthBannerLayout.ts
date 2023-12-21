@@ -1,11 +1,12 @@
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from '@citizenlab/cl2-component-library';
 
 export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  background-color: ${colors.background};
 `;
 
 export const Header = styled.div`
@@ -45,7 +46,7 @@ export const HeaderImageBackground = styled.div<{ src: string | null }>`
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  background-image: url(${({ src }) => src});
+  ${({ src }) => src && `background-image: url(${src});`}
 `;
 
 export const HeaderImageOverlay = styled.div<{

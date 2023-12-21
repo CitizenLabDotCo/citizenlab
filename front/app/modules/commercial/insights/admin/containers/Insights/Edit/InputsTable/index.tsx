@@ -24,6 +24,7 @@ import {
   Icon,
   Box,
   Spinner,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import InputsTableRow from './InputsTableRow';
@@ -41,7 +42,6 @@ import ScanCategory from './ScanCategory';
 
 // styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -407,12 +407,13 @@ const InputsTable = ({
           </Button>
         </Box>
       </SearchContainer>
-      {inputsCategoryFilter === 'recentlyPosted' && inputs.data.length !== 0 && (
-        <RecentlyPostedInfoBox data-testid="insightsRecentlyAddedInfobox">
-          <Icon name="refresh" />
-          {formatMessage(messages.inputsTableRecentlyPostedInfoBox)}
-        </RecentlyPostedInfoBox>
-      )}
+      {inputsCategoryFilter === 'recentlyPosted' &&
+        inputs.data.length !== 0 && (
+          <RecentlyPostedInfoBox data-testid="insightsRecentlyAddedInfobox">
+            <Icon name="refresh" />
+            {formatMessage(messages.inputsTableRecentlyPostedInfoBox)}
+          </RecentlyPostedInfoBox>
+        )}
       <Box display="flex" justifyContent="space-between">
         <Box display="flex" minHeight="44px">
           <TableTitle />

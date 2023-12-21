@@ -1,0 +1,11 @@
+#Translations for continuous to timeline migration
+pl:
+  phase_title_default:
+    ideation: Zbierz dane wejściowe
+    voting: Głosowanie
+    poll: Sondaż
+    native_survey: Ankieta
+    survey: Ankieta
+    document_annotation: Informacje zwrotne dotyczące dokumentów
+    volunteering: Znajdź wolontariuszy
+    information: Informacje

@@ -1,6 +1,26 @@
 import { randomString, randomEmail, logout } from '../../support/commands';
 
 describe('Sign up - custom fields step', () => {
+  describe('No custom fields', () => {
+    before(() => {
+      const firstName = randomString();
+      const lastName = randomString();
+      const email = randomEmail();
+      const password = randomString();
+      cy.apiSignup(firstName, lastName, email, password);
+      cy.setLoginCookie(email, password);
+    });
+
+    after(() => {
+      logout();
+    });
+
+    it('does not show it when no custom fields are enabled', () => {
+      cy.goToLandingPage();
+      cy.get('#e2e-sign-up-in-modal').should('not.exist');
+    });
+  });
+
   describe('Optional custom field', () => {
     const randomFieldName = randomString();
     let customFieldId: string;
@@ -13,7 +33,8 @@ describe('Sign up - custom fields step', () => {
 
     it('shows the custom field step and can skip it', () => {
       cy.goToLandingPage();
-      cy.get('#e2e-navbar-signup-menu-item').click();
+      cy.get('#e2e-navbar-login-menu-item').click();
+      cy.get('#e2e-goto-signup').click();
       cy.get('#e2e-sign-up-email-password-container');
 
       const firstName = randomString();

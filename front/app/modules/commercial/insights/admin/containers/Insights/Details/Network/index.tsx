@@ -1,11 +1,5 @@
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useMemo,
-  useCallback,
-} from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 
 // graph
 import ForceGraph2D, {
@@ -17,17 +11,22 @@ import { forceCollide } from 'd3-force';
 // hooks
 import useView from 'modules/commercial/insights/api/views/useView';
 import useNetwork from 'modules/commercial/insights/api/network/useNetwork';
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { cloneDeep } from 'lodash-es';
-import { colors } from 'utils/styleUtils';
+import {
+  colors,
+  Box,
+  Spinner,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 import { saveAs } from 'file-saver';
 
 // components
-import { Box, Spinner, IconTooltip } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import {
   TooltipContent,
@@ -81,8 +80,7 @@ const Network = ({
   location: { query, pathname },
 }: WithRouterProps & WrappedComponentProps) => {
   const [initialRender, setInitialRender] = useState(true);
-  const [height, setHeight] = useState(0);
-  const [width, setWidth] = useState(0);
+  const { width, height, containerRef } = useContainerWidthAndHeight();
   const [zoomLevel, setZoomLevel] = useState(0);
 
   const networkRef = useRef<ForceGraphMethods>();
@@ -113,13 +111,6 @@ const Network = ({
       return cloneDeep(network.data.attributes);
     } else return { nodes: [], links: [] };
   }, [network]);
-
-  const containerRef = useCallback((node) => {
-    if (node !== null) {
-      setHeight(node.getBoundingClientRect().height);
-      setWidth(node.getBoundingClientRect().width);
-    }
-  }, []);
 
   const handleEngineStop = () => {
     if (initialRender && networkRef.current) {

@@ -1,7 +1,6 @@
 import React from 'react';
 
 // api
-import { updateProject } from 'api/projects/useUpdateProject';
 import { IProjectData } from 'api/projects/types';
 
 // typing
@@ -10,7 +9,6 @@ import { IPhaseData, UpdatePhaseObject } from 'api/phases/types';
 
 // utils
 import { API_PATH } from 'containers/App/constants';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
@@ -55,7 +53,6 @@ type FormActionsConfig = {
   phaseId?: string;
   editFormLink: string;
   viewFormLink: string;
-  viewFormResults: string;
   offlineInputsLink: string;
   downloadExcelLink: string;
   downloadPdfLink: string;
@@ -64,45 +61,15 @@ type FormActionsConfig = {
   togglePostingEnabled: () => void;
 };
 
-const getSurveyPhases = (phases: IPhaseData[] | Error | null | undefined) => {
-  return !isNilOrError(phases)
-    ? phases.filter(
-        (phase) => phase.attributes.participation_method === 'native_survey'
-      )
-    : [];
-};
-
 export const getFormActionsConfig = (
   project: IProjectData,
   updatePhase: (phaseData: UpdatePhaseObject) => void,
-  phases?: IPhaseData[] | Error | null | undefined
-): FormActionsConfig[] => {
-  const processType = project.attributes.process_type;
-  if (processType === 'continuous') {
-    return [
-      {
-        editFormLink: `/admin/projects/${project.id}/native-survey/edit`,
-        viewFormLink: `/projects/${project.attributes.slug}/ideas/new`,
-        viewFormResults: `/admin/projects/${project.id}/native-survey/results`,
-        offlineInputsLink: `/admin/projects/${project.id}/offline-inputs`,
-        downloadExcelLink: `${API_PATH}/projects/${project.id}/import_ideas/example_xlsx`,
-        downloadPdfLink: `${API_PATH}/projects/${project.id}/custom_fields/to_pdf`,
-        postingEnabled: project.attributes.posting_enabled,
-        togglePostingEnabled: () => {
-          updateProject({
-            projectId: project.id,
-            posting_enabled: !project.attributes.posting_enabled,
-          });
-        },
-      },
-    ];
-  }
-
-  return getSurveyPhases(phases).map((phase) => ({
+  phase: IPhaseData
+): FormActionsConfig => {
+  return {
     phaseId: phase.id,
     editFormLink: `/admin/projects/${project.id}/phases/${phase.id}/native-survey/edit`,
     viewFormLink: `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`,
-    viewFormResults: `/admin/projects/${project.id}/native-survey/results?phase_id=${phase.id}`,
     offlineInputsLink: `/admin/projects/${project.id}/phases/${phase.id}/offline-inputs`,
     downloadExcelLink: `${API_PATH}/phases/${phase.id}/import_ideas/example_xlsx`,
     downloadPdfLink: `${API_PATH}/phases/${phase.id}/custom_fields/to_pdf`,
@@ -114,5 +81,5 @@ export const getFormActionsConfig = (
         posting_enabled: !phase.attributes.posting_enabled,
       });
     },
-  }));
+  };
 };

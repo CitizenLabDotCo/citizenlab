@@ -14,7 +14,8 @@ resource 'Comments' do
     before do
       SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
-      @idea = create(:idea)
+      project = create(:single_phase_ideation_project)
+      @idea = create(:idea, project: project, phases: project.phases)
     end
 
     with_options scope: :comment do

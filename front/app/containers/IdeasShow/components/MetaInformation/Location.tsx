@@ -6,7 +6,14 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isNil } from 'lodash-es';
 
 // components
-import { Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  Text,
+  colors,
+  isRtl,
+  fontSizes,
+  media,
+} from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import Map, { Point } from 'components/Map';
 import {
@@ -20,9 +27,6 @@ import { getAddressOrFallbackDMS } from 'utils/map';
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-// styling
-import { isRtl, fontSizes, media } from 'utils/styleUtils';
 
 // typings
 import { LatLngTuple } from 'leaflet';

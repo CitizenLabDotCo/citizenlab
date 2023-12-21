@@ -1,15 +1,14 @@
 import React from 'react';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, colors } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
 import { transparentize } from 'polished';
-import { colors } from 'utils/styleUtils';
 
 // typings
-import { ParticipationMethod, VotingMethod } from 'utils/participationContexts';
+import { ParticipationMethod, VotingMethod } from 'api/phases/types';
 
 const ImagePlaceholderContainer = styled.div`
   position: absolute;

@@ -7,6 +7,9 @@ import {
   Box,
   Text,
   useBreakpoint,
+  media,
+  colors,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import MenuItem from './MenuItem';
 import Link from 'utils/cl-router/Link';
@@ -20,7 +23,6 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors, stylingConsts } from 'utils/styleUtils';
 
 // resources
 import Outlet from 'components/Outlet';
@@ -87,10 +89,13 @@ const Sidebar = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const { data: authUser } = useAuthUser();
-  const { data: ideasCount } = useIdeasCount({
-    feedback_needed: true,
-    assignee: authUser?.data.id,
-  });
+  const { data: ideasCount } = useIdeasCount(
+    {
+      feedback_needed: true,
+      assignee: authUser?.data.id,
+    },
+    authUser ? isAdmin(authUser) : false
+  );
   const { data: initiativesCount } = useInitiativesCount(
     {
       feedback_needed: true,

@@ -17,7 +17,7 @@ import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, isRtl } from 'utils/styleUtils';
+import { media, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';
@@ -145,10 +145,10 @@ export const Icons = styled.div`
 
 const SignedInHeader = ({
   homepageSettings,
-  isContentBuilderPreview,
+  isContentBuilderDisplay,
 }: {
   homepageSettings: Partial<IHomepageSettingsAttributes>;
-  isContentBuilderPreview?: boolean;
+  isContentBuilderDisplay?: boolean;
 }) => {
   const { data: currentOnboardingCampaign } = useCurrentOnboardingCampaign();
   const { mutate: dismissOnboardingCampaign } = useDismissOnboardingCampaign();
@@ -161,7 +161,7 @@ const SignedInHeader = ({
   };
 
   if (!isNilOrError(currentOnboardingCampaign)) {
-    const onboardingCampaignName = isContentBuilderPreview
+    const onboardingCampaignName = isContentBuilderDisplay
       ? 'default'
       : currentOnboardingCampaign.data.attributes.name;
 

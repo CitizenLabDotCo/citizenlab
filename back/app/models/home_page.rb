@@ -34,6 +34,8 @@
 class HomePage < ApplicationRecord
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
   has_many :pinned_admin_publications, through: :pins, source: :admin_publication
+  has_many :content_builder_layouts, class_name: 'ContentBuilder::Layout', foreign_key: 'content_buildable_id', inverse_of: 'content_buildable', dependent: :destroy
+  accepts_nested_attributes_for :content_builder_layouts
 
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
@@ -42,6 +44,7 @@ class HomePage < ApplicationRecord
 
   before_validation :sanitize_top_info_section_multiloc
   before_validation :sanitize_bottom_info_section_multiloc
+  before_validation :set_craftjs_json
 
   validate :only_one_home_page, on: :create
 
@@ -104,6 +107,17 @@ class HomePage < ApplicationRecord
     self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video])
     self[attribute] = @service.remove_multiloc_empty_trailing_tags(self[attribute])
     self[attribute] = @service.linkify_multiloc(self[attribute])
+  end
+
+  def set_craftjs_json
+    layout = content_builder_layouts.find { |find_layout| find_layout.code == 'homepage' }
+    return if layout&.craftjs_json.present?
+
+    layout ||= content_builder_layouts.new code: 'homepage', enabled: true
+    craftjs_filepath = Rails.root.join('config/homepage/default_craftjs.json.erb')
+    json_craftjs_str = ERB.new(File.read(craftjs_filepath)).result(binding)
+    layout.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(JSON.parse(json_craftjs_str))
+    layout
   end
 
   # Validates that there is only one homepage. Adds an error in case a homepage record already exists.

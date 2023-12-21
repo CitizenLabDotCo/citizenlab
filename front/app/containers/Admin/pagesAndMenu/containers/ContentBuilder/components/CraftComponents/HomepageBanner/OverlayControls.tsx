@@ -6,11 +6,11 @@ import {
   ColorPickerInput,
   Label,
   Toggle,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { colors } from 'utils/styleUtils';
 import RangeInput from 'components/UI/RangeInput';
 
 const StyledBox = styled(Box)`
@@ -43,7 +43,7 @@ const StyledBox = styled(Box)`
 
 interface Props {
   bannerOverlayOpacity: number | null;
-  bannerOverlayColor: string | null;
+  bannerOverlayColor: string;
   onOverlayChange: (opacity: number | null, color: string | null) => void;
   variant: 'signedIn' | 'signedOut';
   noOpacitySlider?: boolean;
@@ -64,7 +64,7 @@ const OverlayControls = ({
 
   const handleOverlayEnabling = () => {
     if (overlayEnabled) {
-      onOverlayChange(0, null);
+      onOverlayChange(0, theme.colors.tenantPrimary);
     } else {
       onOverlayChange(
         bannerOverlayOpacity ||
@@ -123,39 +123,37 @@ const OverlayControls = ({
         />
       </Box>
       {/* We check for typeof of opacity because 0 would coerce to false. */}
-      {overlayEnabled &&
-        typeof bannerOverlayOpacity === 'number' &&
-        bannerOverlayColor && (
-          <StyledBox
-            p="40px"
-            border={`1px solid ${colors.grey300}`}
-            borderRadius={theme.borderRadius}
-          >
-            <Box mb="36px">
-              <ColorPickerInput
-                id="image-overlay-color"
-                label={formatMessage(messages.imageOverlayColor)}
-                type="text"
-                value={bannerOverlayColor}
-                onChange={handleOverlayColorOnChange}
+      {overlayEnabled && typeof bannerOverlayOpacity === 'number' && (
+        <StyledBox
+          p="40px"
+          border={`1px solid ${colors.grey300}`}
+          borderRadius={theme.borderRadius}
+        >
+          <Box mb="36px">
+            <ColorPickerInput
+              id="image-overlay-color"
+              label={formatMessage(messages.imageOverlayColor)}
+              type="text"
+              value={bannerOverlayColor}
+              onChange={handleOverlayColorOnChange}
+            />
+          </Box>
+          {!noOpacitySlider && (
+            <>
+              <Label>
+                <FormattedMessage {...messages.imageOverlayOpacity} />
+              </Label>
+              <RangeInput
+                step={1}
+                min={0}
+                max={100}
+                value={bannerOverlayOpacity}
+                onChange={debouncedHandleOverlayOpacityOnChange}
               />
-            </Box>
-            {!noOpacitySlider && (
-              <>
-                <Label>
-                  <FormattedMessage {...messages.imageOverlayOpacity} />
-                </Label>
-                <RangeInput
-                  step={1}
-                  min={0}
-                  max={100}
-                  value={bannerOverlayOpacity}
-                  onChange={debouncedHandleOverlayOpacityOnChange}
-                />
-              </>
-            )}
-          </StyledBox>
-        )}
+            </>
+          )}
+        </StyledBox>
+      )}
     </>
   );
 };

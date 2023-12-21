@@ -17,7 +17,7 @@ import PhaseDocumentAnnotation from './PhaseDocumentAnnotation';
 import StatusModule from 'components/StatusModule';
 import VotingResults from './VotingResults';
 import PhaseReport from './PhaseReport';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors, isRtl } from '@citizenlab/cl2-component-library';
 
 // router
 import setPhaseURL from './setPhaseURL';
@@ -34,7 +34,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { colors, isRtl } from 'utils/styleUtils';
 
 // utils
 import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
@@ -95,7 +94,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
 
   const selectPhase = (phase: IPhaseData) => {
     if (!phases) return;
-    setPhaseURL(phase.id, phases.data, project.data);
+    setPhaseURL(phase, phases.data, project.data);
   };
 
   if (selectedPhase) {
@@ -140,10 +139,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
             <StatusModule
               phase={selectedPhase}
               project={project.data}
-              votingMethod={
-                selectedPhase?.attributes.voting_method ||
-                project?.data.attributes.voting_method
-              }
+              votingMethod={selectedPhase?.attributes.voting_method}
             />
           )}
           <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />
@@ -159,8 +155,8 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
             <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
           )}
           {showVotingResults && <VotingResults phaseId={selectedPhaseId} />}
-          {showReport && <PhaseReport reportId={reportId} />}
         </ContentContainer>
+        {showReport && <PhaseReport reportId={reportId} />}
       </StyledSectionContainer>
     );
   }

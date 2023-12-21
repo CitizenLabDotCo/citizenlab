@@ -7,7 +7,7 @@ import moment from 'moment';
 import clHistory from 'utils/cl-router/history';
 
 // Components
-import { Tr, Td, Box } from '@citizenlab/cl2-component-library';
+import { Tr, Td, Box, colors } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
@@ -30,7 +30,6 @@ import events from './events';
 
 // Styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';

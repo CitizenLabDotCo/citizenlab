@@ -41,7 +41,7 @@ import { ModalProps, ErrorCode } from './typings';
 import VerificationSuccess from './steps/VerificationSuccess';
 import T from 'components/T';
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { IParticipationContextPermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/permissions/types';
 import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];
@@ -95,7 +95,7 @@ const getHeaderMessage = (
   action:
     | 'visiting'
     | IInitiativeAction
-    | IParticipationContextPermissionAction
+    | IPhasePermissionAction
     | IFollowingAction
 ) => {
   if (
@@ -232,7 +232,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             />
           </Box>
         )}
-
         {helperText && (
           <Box mb="16px">
             <QuillEditedContent
@@ -244,14 +243,12 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             </QuillEditedContent>
           </Box>
         )}
-
         {currentStep === 'success' && (
           <Success
             loading={loading}
             onContinue={transition(currentStep, 'CONTINUE')}
           />
         )}
-
         {/* old sign in flow */}
         {currentStep === 'sign-in:auth-providers' && (
           <AuthProviders
@@ -264,7 +261,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             )}
           />
         )}
-
         {currentStep === 'sign-in:email-password' && (
           <EmailAndPassword
             loading={loading}
@@ -275,7 +271,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             closeModal={transition(currentStep, 'CLOSE')}
           />
         )}
-
         {/* old sign up flow */}
         {currentStep === 'sign-up:auth-providers' && (
           <AuthProviders
@@ -288,7 +283,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             )}
           />
         )}
-
         {currentStep === 'sign-up:email-password' && (
           <EmailAndPasswordSignUp
             state={state}
@@ -299,25 +293,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-
-        {(currentStep === 'sign-up:change-email' ||
-          currentStep === 'missing-data:change-email') && (
-          <ChangeEmail
-            loading={loading}
-            setError={setError}
-            onGoBack={transition(currentStep, 'GO_BACK')}
-            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
-          />
-        )}
-
-        {currentStep === 'sign-up:onboarding' && (
-          <Onboarding
-            authenticationData={authenticationData}
-            onSubmit={transition(currentStep, 'SUBMIT')}
-            onSkip={transition(currentStep, 'SKIP')}
-          />
-        )}
-
         {currentStep === 'sign-up:invite' && (
           <Invitation
             loading={loading}
@@ -325,7 +300,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-
         {currentStep === 'clave-unica:email' && (
           <ClaveUnicaEmail
             loading={loading}
@@ -333,7 +307,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
           />
         )}
-
         {/* light flow */}
         {currentStep === 'light-flow:email' && (
           <LightFlowStart
@@ -343,7 +316,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
           />
         )}
-
         {currentStep === 'light-flow:email-policies' && (
           <EmailPolicies
             state={state}
@@ -352,32 +324,27 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-
         {currentStep === 'light-flow:google-policies' && (
           <GooglePolicies
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-
         {currentStep === 'light-flow:facebook-policies' && (
           <FacebookPolicies
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-
         {currentStep === 'light-flow:azure-ad-policies' && (
           <AzureAdPolicies
             loading={loading}
             onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           />
         )}
-
         {currentStep === 'light-flow:france-connect-login' && (
           <FranceConnectLogin onLogin={transition(currentStep, 'LOGIN')} />
         )}
-
         {currentStep === 'light-flow:password' && (
           <Password
             state={state}
@@ -387,7 +354,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
           />
         )}
 
-        {/* missing data flow */}
+        {/* missing data flow / shared */}
         {currentStep === 'missing-data:built-in' && (
           <BuiltInFields
             loading={loading}
@@ -396,7 +363,6 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SUBMIT')}
           />
         )}
-
         {(currentStep === 'sign-up:email-confirmation' ||
           currentStep === 'light-flow:email-confirmation' ||
           currentStep === 'missing-data:email-confirmation' ||
@@ -410,6 +376,16 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
           />
         )}
 
+        {(currentStep === 'sign-up:change-email' ||
+          currentStep === 'missing-data:change-email') && (
+          <ChangeEmail
+            loading={loading}
+            setError={setError}
+            onGoBack={transition(currentStep, 'GO_BACK')}
+            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
+          />
+        )}
+
         {(currentStep === 'missing-data:verification' ||
           currentStep === 'verification-only' ||
           currentStep === 'sign-up:verification') && (
@@ -419,13 +395,21 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             authenticationData={authenticationData}
           />
         )}
-
         {(currentStep === 'missing-data:custom-fields' ||
           currentStep === 'sign-up:custom-fields') && (
           <CustomFields
             authenticationData={authenticationData}
             loading={loading}
             setError={setError}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+            onSkip={transition(currentStep, 'SKIP')}
+          />
+        )}
+
+        {(currentStep === 'sign-up:onboarding' ||
+          currentStep === 'missing-data:onboarding') && (
+          <Onboarding
+            authenticationData={authenticationData}
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}
           />

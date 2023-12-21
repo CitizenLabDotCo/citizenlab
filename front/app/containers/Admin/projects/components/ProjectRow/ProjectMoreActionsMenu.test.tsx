@@ -140,7 +140,12 @@ describe('ProjectMoreActionsMenu', () => {
             project_folder_id: mockProject.attributes.folder_id,
           },
         ];
-        render(<ProjectMoreActionsMenu {...defaultProps} />);
+        render(
+          <ProjectMoreActionsMenu
+            {...defaultProps}
+            folderId={mockProject.attributes.folder_id}
+          />
+        );
         const user = userEvent.setup();
 
         const threeDotsButton = screen.getByTestId('moreOptionsButton');

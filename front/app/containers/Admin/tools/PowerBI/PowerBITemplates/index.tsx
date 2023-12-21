@@ -41,6 +41,11 @@ const PowerBITemplates = () => {
     handleDownloadTemplate('dataflow', 'json');
   };
 
+  const baseUrl =
+    window.location.host === 'localhost'
+      ? `http://localhost:4000/api/v2/`
+      : `${window.location.origin}/api/v2/`;
+
   if (!isPowerBIEnabled) return null;
 
   return (
@@ -70,7 +75,12 @@ const PowerBITemplates = () => {
         </Title>
         <Box display="flex">
           <Text mr="20px">
-            {formatMessage(messages.reportTemplateDescription)}
+            <FormattedMessage
+              {...messages.reportTemplateDescription}
+              values={{
+                baseUrl: <strong>{baseUrl}</strong>,
+              }}
+            />
           </Text>
           <Button
             icon="download"
@@ -98,6 +108,23 @@ const PowerBITemplates = () => {
           </Button>
         </Box>
       </Box>
+
+      <Text>
+        <FormattedMessage
+          {...messages.supportLinkDescription}
+          values={{
+            link: (
+              <a
+                href={formatMessage(messages.supportLinkUrl)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {formatMessage(messages.supportLinkText)}
+              </a>
+            ),
+          }}
+        />
+      </Text>
     </>
   );
 };

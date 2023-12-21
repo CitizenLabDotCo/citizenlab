@@ -16,7 +16,12 @@ const TwoRowLayout = ({ homepageSettings }: Props) => {
   const headerImage = homepageSettings.header_bg?.large;
 
   return (
-    <Box data-testid="two-row-layout" width="100%" background="white">
+    <Box
+      data-testid="two-row-layout"
+      data-cy="e2e-two-row-layout-container"
+      width="100%"
+      background="white"
+    >
       {headerImage && (
         <Box data-testid="two-row-layout-header-image">
           <HeaderImage

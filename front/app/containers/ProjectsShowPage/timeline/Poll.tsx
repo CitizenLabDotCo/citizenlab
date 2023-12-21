@@ -18,7 +18,7 @@ const Container = styled.div``;
 
 interface Props {
   projectId: string;
-  phaseId: string | null;
+  phaseId: string;
   className?: string;
 }
 
@@ -33,7 +33,7 @@ const PollContainer = memo<Props>(({ projectId, phaseId, className }) => {
         <ProjectPageSectionTitle>
           <FormattedMessage {...messages.navPoll} />
         </ProjectPageSectionTitle>
-        <Poll phaseId={phaseId} projectId={projectId} type="phase" />
+        <Poll phaseId={phaseId} projectId={projectId} />
       </Container>
     );
   }

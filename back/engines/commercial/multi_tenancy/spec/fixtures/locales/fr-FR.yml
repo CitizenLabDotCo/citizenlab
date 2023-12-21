@@ -1,6 +1,6 @@
 # Translations for continuous to timeline migration
 fr-FR:
-  default_phase_title:
+  phase_title_default:
     ideation: Collect input - FR
     voting: Voting - FR
     poll: Poll - FR

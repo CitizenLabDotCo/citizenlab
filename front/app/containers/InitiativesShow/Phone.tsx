@@ -4,7 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import FileAttachments from 'components/UI/FileAttachments';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import SharingButtons from 'components/Sharing/SharingButtons';
 import Topics from 'components/PostShowComponents/Topics';
 import Title from 'components/PostShowComponents/Title';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
@@ -20,7 +19,7 @@ import Outlet from 'components/Outlet';
 import { getAddressOrFallbackDMS } from 'utils/map';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 
@@ -39,9 +38,7 @@ import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // types
-import useInitiativeReviewRequired from './hooks/useInitiativeReviewRequired';
 import useLocale from 'hooks/useLocale';
-import useAuthUser from 'api/me/useAuthUser';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import { usePermission } from 'utils/permissions';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
@@ -86,20 +83,6 @@ const InitiativeContainer = styled.div`
   padding-right: ${padding};
 `;
 
-const InitiativeBannerContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 60px;
-  padding-right: 60px;
-`;
-
-const MobileMoreActionContainer = styled.div`
-  position: absolute;
-  top: 40px;
-  right: 60px;
-`;
-
 const StyledDropdownMap = styled(DropdownMap)`
   margin-bottom: 32px;
 `;
@@ -121,13 +104,11 @@ const Phone = ({
   onTranslateInitiative,
   a11y_pronounceLatestOfficialFeedbackPost,
 }: Props) => {
-  const { formatMessage } = useIntl();
   const localize = useLocalize();
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   const locale = useLocale();
   const showCosponsorShipReminder = useShowCosponsorshipReminder(initiativeId);
-  const { data: authUser } = useAuthUser();
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
@@ -140,13 +121,9 @@ const Phone = ({
     pageSize: 1,
   });
   const officialFeedbackElement = useRef<HTMLDivElement>(null);
-  const initiativeReviewRequired = useInitiativeReviewRequired();
   const officialFeedbacksList =
     initiativeFeedbacks?.pages.flatMap((page) => page.data) || [];
   const hasOfficialFeedback = officialFeedbacksList.length > 0;
-  const showSharingOptions = initiativeReviewRequired
-    ? initiative?.data.attributes.public
-    : true;
 
   if (!initiative || isNilOrError(locale) || !initiativeImages) {
     return null;
@@ -163,7 +140,6 @@ const Phone = ({
     initiative.data.attributes.location_description,
     initiative.data.attributes.location_point_geojson
   );
-  const initiativeUrl = location.href;
 
   return (
     <Container className={className}>
@@ -171,16 +147,23 @@ const Phone = ({
         <CosponsorShipReminder initiativeId={initiativeId} />
       )}
       <InitiativeBanner initiativeHeaderImageLarge={initiativeHeaderImageLarge}>
-        <InitiativeBannerContent>
-          <MobileMoreActionContainer>
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          w="100%"
+          px="32px"
+        >
+          <Box top="40px" w="100%" display="flex" justifyContent="flex-end">
             <InitiativeMoreActions
               initiative={initiative.data}
               id="e2e-initiative-more-actions-mobile"
               color="white"
             />
-          </MobileMoreActionContainer>
+          </Box>
           {/* Z-index is needed for when we have a banner image */}
-          <Box position="absolute" zIndex="1">
+          <Box zIndex="1" mb="8px">
             <Box mb="8px">
               <Title
                 postId={initiativeId}
@@ -194,7 +177,7 @@ const Phone = ({
             </Box>
             <PostedByMobile authorId={authorId} />
           </Box>
-        </InitiativeBannerContent>
+        </Box>
       </InitiativeBanner>
       <InitiativeContainer>
         <Box px={isSmallerThanTablet ? '0' : padding}>
@@ -269,42 +252,6 @@ const Phone = ({
             }
           />
         </Box>
-        {showSharingOptions && (
-          <Box mb="48px">
-            <SharingButtons
-              context="initiative"
-              url={initiativeUrl}
-              twitterMessage={formatMessage(messages.twitterMessage, {
-                initiativeTitle,
-              })}
-              facebookMessage={formatMessage(messages.facebookMessage, {
-                initiativeTitle,
-              })}
-              whatsAppMessage={formatMessage(messages.whatsAppMessage, {
-                initiativeTitle,
-              })}
-              emailSubject={formatMessage(messages.emailSharingSubject, {
-                initiativeTitle,
-              })}
-              emailBody={formatMessage(messages.emailSharingBody, {
-                initiativeUrl,
-                initiativeTitle,
-              })}
-              utmParams={
-                !isNilOrError(authUser)
-                  ? {
-                      source: 'share_initiative',
-                      campaign: 'share_content',
-                      content: authUser.data.id,
-                    }
-                  : {
-                      source: 'share_initiative',
-                      campaign: 'share_content',
-                    }
-              }
-            />
-          </Box>
-        )}
       </InitiativeContainer>
     </Container>
   );

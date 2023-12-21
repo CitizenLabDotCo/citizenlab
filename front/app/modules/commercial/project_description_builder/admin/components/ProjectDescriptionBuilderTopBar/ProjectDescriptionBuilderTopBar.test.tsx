@@ -39,7 +39,7 @@ jest.mock(
 const mockAddProjectDescriptionBuilderLayout = jest.fn();
 jest.mock(
   'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout',
-  () => jest.fn(() => ({ mutateAsync: mockAddProjectDescriptionBuilderLayout }))
+  () => jest.fn(() => ({ mutate: mockAddProjectDescriptionBuilderLayout }))
 );
 
 let mockLocalesData = ['en'];

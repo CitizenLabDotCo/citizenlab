@@ -94,7 +94,7 @@ gem 'activerecord-import', '~> 1.4'
 gem 'json-schema', '~> 4.0'
 gem 'activerecord-postgis-adapter', '~> 8.0'
 
-gem 'carrierwave', '~> 3.0.0.beta'
+gem 'carrierwave', '~> 3.0.5'
 gem 'carrierwave-base64', '~> 2.10'
 gem 'fog-aws', '~> 3.19'
 
@@ -192,7 +192,6 @@ commercial_engines = [
   'flag_inappropriate_content',
   'geographic_dashboard',
   'google_tag_manager',
-  'granular_permissions',
   'idea_assignment',
   'idea_custom_fields',
   'impact_tracking',

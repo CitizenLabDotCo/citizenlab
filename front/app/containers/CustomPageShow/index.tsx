@@ -11,7 +11,12 @@ import CustomPageProjectsAndEvents from './CustomPageProjectsAndEvents';
 import InfoSection from 'components/LandingPages/citizen/InfoSection';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import PageNotFound from 'components/PageNotFound';
-import { Box } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  fontSizes,
+  isRtl,
+  media,
+} from '@citizenlab/cl2-component-library';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -26,7 +31,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, isRtl, media } from 'utils/styleUtils';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};

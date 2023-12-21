@@ -4,10 +4,7 @@ import React, { useState, useEffect } from 'react';
 import useAuthUser from 'api/me/useAuthUser';
 
 // components
-import { Box, Icon, Success } from '@citizenlab/cl2-component-library';
-
-// styling
-import { colors } from 'utils/styleUtils';
+import { Box, Icon, Success, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';

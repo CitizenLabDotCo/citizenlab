@@ -6,10 +6,9 @@ import ImagePlaceholder from './ImagePlaceholder';
 
 // styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media } from '@citizenlab/cl2-component-library';
 
 // typings
-import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
 const IdeaCardImageWrapper = styled.div<{ $cardInnerHeight: string }>`
@@ -36,22 +35,20 @@ const IdeaCardImage = styled(Image)`
 `;
 
 interface Props {
-  participationContext?: IProjectData | IPhaseData;
+  phase?: IPhaseData;
   image: string | null;
   hideImagePlaceholder: boolean;
   innerHeight: string;
 }
 
 const CardImage = ({
-  participationContext,
+  phase,
   image,
   hideImagePlaceholder,
   innerHeight,
 }: Props) => {
-  const participationMethod =
-    participationContext?.attributes.participation_method;
-
-  const votingMethod = participationContext?.attributes.voting_method;
+  const participationMethod = phase?.attributes.participation_method;
+  const votingMethod = phase?.attributes.voting_method;
 
   return (
     <>

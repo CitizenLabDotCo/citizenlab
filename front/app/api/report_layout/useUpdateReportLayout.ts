@@ -2,22 +2,24 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import reportLayoutKeys from './keys';
+import phasesKeys from 'api/phases/keys';
 import { ReportLayoutResponse } from './types';
-import { JsonMultiloc } from 'components/admin/ContentBuilder/typings';
+import { CraftJson } from 'components/admin/ContentBuilder/typings';
 
 type ReportLayoutUpdate = {
   id: string;
-  craftMultiloc: JsonMultiloc;
+  craftjs_json: CraftJson;
+  projectId?: string;
 };
 
-const updateReportLayout = ({ id, craftMultiloc }: ReportLayoutUpdate) =>
+const updateReportLayout = ({ id, craftjs_json }: ReportLayoutUpdate) =>
   fetcher<ReportLayoutResponse>({
     path: `/reports/${id}`,
     action: 'patch',
     body: {
       report: {
         layout: {
-          craftjs_jsonmultiloc: craftMultiloc,
+          craftjs_json,
         },
       },
     },
@@ -28,9 +30,17 @@ const useUpdateReportLayout = () => {
   return useMutation<ReportLayoutResponse, CLErrors, ReportLayoutUpdate>({
     mutationFn: updateReportLayout,
     onSuccess: (_data, variables) => {
+      const { id, projectId } = variables;
+
       queryClient.invalidateQueries({
-        queryKey: reportLayoutKeys.item({ id: variables.id }),
+        queryKey: reportLayoutKeys.item({ id }),
       });
+
+      if (projectId) {
+        queryClient.invalidateQueries({
+          queryKey: phasesKeys.list({ projectId }),
+        });
+      }
     },
   });
 };

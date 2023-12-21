@@ -188,8 +188,8 @@ describe TimelineService do
   end
 
   describe 'timeline_active' do
-    it 'returns nil for a continuous project' do
-      project = create(:continuous_project)
+    it 'returns nil for a project with no phases' do
+      project = create(:project)
       expect(service.timeline_active(project)).to be_nil
     end
 

@@ -2,16 +2,12 @@ import React, { useEffect } from 'react';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
-import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // services
 import { isAdmin, isSuperAdmin, isRegularUser } from 'utils/permissions/roles';
 
 // resources
 import HasPermission from 'components/HasPermission';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { PreviousPathnameContext } from 'context';
 
 // hooks
@@ -21,9 +17,6 @@ import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // components
 import PageNotFound from 'components/PageNotFound';
 import InitiativesEditMeta from './InitiativesEditMeta';
@@ -31,8 +24,10 @@ import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
 
 // style
-import { media } from 'utils/styleUtils';
+import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+import useAuthUser from 'api/me/useAuthUser';
+import useLocale from 'hooks/useLocale';
 
 const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
   width: 100%;
@@ -43,49 +38,42 @@ const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
   `}
 `;
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  locale: GetLocaleChildProps;
-  previousPathName: string | null;
-}
-
-interface Props extends DataProps {}
-
-const InitiativesEditPage = ({ previousPathName, authUser, locale }: Props) => {
+const InitiativesEditPage = () => {
   const { initiativeId } = useParams() as {
     initiativeId: string;
   };
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
+  const { data: authUser } = useAuthUser();
+  const locale = useLocale();
+  const previousPathName = React.useContext(PreviousPathnameContext);
 
   useEffect(() => {
     const isPrivilegedUser =
-      !isNilOrError(authUser) &&
-      (isAdmin({ data: authUser }) ||
-        !isRegularUser({ data: authUser }) ||
-        isSuperAdmin({ data: authUser }));
+      authUser &&
+      (isAdmin({ data: authUser.data }) ||
+        !isRegularUser({ data: authUser.data }) ||
+        isSuperAdmin({ data: authUser.data }));
 
     if (!isPrivilegedUser && authUser === null) {
       clHistory.replace(previousPathName || '/sign-up');
     }
   }, [authUser, previousPathName]);
 
-  if (isNilOrError(authUser) || isNilOrError(locale) || !initiative) {
+  if (!authUser || !initiative) {
     return null;
   }
 
   const onPublished = () => {
-    if (!isNilOrError(initiative)) {
-      clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
-    }
+    clHistory.push(`/initiatives/${initiative.data.attributes.slug}`);
   };
 
   return (
     <HasPermission item={initiative.data} action="edit" context={initiative}>
       <InitiativesEditMeta />
       <PageLayout
-        isAdmin={isAdmin({ data: authUser })}
+        isAdmin={isAdmin({ data: authUser.data })}
         className="e2e-initiative-edit-page"
       >
         <StyledInitiativesEditFormWrapper
@@ -100,26 +88,12 @@ const InitiativesEditPage = ({ previousPathName, authUser, locale }: Props) => {
   );
 };
 
-const Data = adopt<DataProps, WithRouterProps>({
-  authUser: <GetAuthUser />,
-  locale: <GetLocale />,
-  previousPathName: ({ render }) => (
-    <PreviousPathnameContext.Consumer>
-      {render as any}
-    </PreviousPathnameContext.Consumer>
-  ),
-});
-
-export default withRouter((withRouterProps: WithRouterProps) => {
+export default () => {
   const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
 
   if (!initiativesEnabled) {
     return <PageNotFound />;
   }
 
-  return (
-    <Data {...withRouterProps}>
-      {(dataProps) => <InitiativesEditPage {...dataProps} />}
-    </Data>
-  );
-});
+  return <InitiativesEditPage />;
+};

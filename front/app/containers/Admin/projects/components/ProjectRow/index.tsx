@@ -26,7 +26,6 @@ import ManageButton from './ManageButton';
 // resources
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 // types
@@ -59,6 +58,7 @@ export interface Props {
   hidePublicationStatusLabel?: boolean;
   className?: string;
   hideMoreActions?: boolean;
+  folderId?: string | null;
 }
 
 const ProjectRow = ({
@@ -67,15 +67,14 @@ const ProjectRow = ({
   hidePublicationStatusLabel,
   className,
   hideMoreActions = false,
+  folderId,
 }: Props) => {
   const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isBeingCopyied, setIsBeingCopyied] = useState(false);
   const { data: authUser } = useAuthUser();
   const projectId = publication.relationships.publication.data.id;
-  const { data: project } = useProjectById(projectId);
   const publicationStatus = publication.attributes.publication_status;
-  const folderId = project?.data.attributes.folder_id;
 
   if (isNilOrError(authUser)) {
     return null;
@@ -161,6 +160,7 @@ const ProjectRow = ({
           {!hideMoreActions && (
             <ProjectMoreActionsMenu
               projectId={projectId}
+              folderId={folderId ? folderId : undefined}
               setError={setError}
               setIsRunningAction={handleActionLoading}
             />

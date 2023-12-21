@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { fontSizes, colors, Icon } from '@citizenlab/cl2-component-library';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { IIdeaPostingDisabledReason } from 'utils/actionTakingRules';
 import { MessageDescriptor } from 'react-intl';
@@ -13,7 +12,6 @@ import tracks from './tracks';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useProjectById from 'api/projects/useProjectById';
 import { IPhaseData } from 'api/phases/types';
-import { IParticipationContextType } from 'typings';
 
 const TooltipContent = styled.div<{ inMap?: boolean }>`
   display: flex;
@@ -65,7 +63,6 @@ interface Props {
   inMap: boolean;
   disabledReason: IIdeaPostingDisabledReason;
   phase: IPhaseData | undefined;
-  participationContextType: IParticipationContextType;
 }
 
 const disabledMessages: {
@@ -81,24 +78,16 @@ const disabledMessages: {
   notInGroup: globalMessages.notInGroup,
 };
 
-const TippyContent = ({
-  projectId,
-  inMap,
-  disabledReason,
-  phase,
-  participationContextType,
-}: Props) => {
+const TippyContent = ({ projectId, inMap, disabledReason, phase }: Props) => {
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
   if (!project) return null;
 
-  const pcId = participationContextType === 'phase' ? phase?.id : projectId;
-
-  const context = pcId
+  const context = phase?.id
     ? ({
         action: 'posting_idea',
-        id: pcId,
-        type: participationContextType,
+        id: phase?.id,
+        type: 'phase',
       } as const)
     : null;
   const signUpIn =

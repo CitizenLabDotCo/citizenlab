@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 
 // styling
 import styled, { useTheme } from 'styled-components';
-import { fontSizes, isRtl } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 // hooks
@@ -11,7 +10,12 @@ import useTopic from 'api/topics/useTopic';
 import { useIntl } from 'utils/cl-intl';
 
 // components
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  fontSizes,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';

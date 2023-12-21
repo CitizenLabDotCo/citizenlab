@@ -6,16 +6,16 @@ import { Box } from '@citizenlab/cl2-component-library';
 // craft
 import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
 import RenderNode from './RenderNode';
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
-// default widgets
-import Title from '../Widgets/Title';
-import Text from '../Widgets/Text';
-import TwoColumn from '../Widgets/TwoColumn';
-import Image from '../Widgets/Image';
+// shared widgets
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 // report builder widgets
+import TitleMultiloc from '../Widgets/TitleMultiloc';
+import TextMultiloc from '../Widgets/TextMultiloc';
+import TwoColumn from '../Widgets/TwoColumn';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
@@ -41,9 +41,9 @@ const resolver = {
   Box,
   Container,
   TwoColumn,
-  Title,
-  Text,
-  Image,
+  TitleMultiloc,
+  TextMultiloc,
+  ImageMultiloc,
   WhiteSpace,
   AboutReportWidget,
   SurveyResultsWidget,
@@ -53,14 +53,10 @@ const resolver = {
   GenderWidget,
   ActiveUsersWidget,
   MostReactedIdeasWidget,
-  // We point to the same widget as MostReactedIdeasWidget because there is data in production and other places that uses the old name. The resolver should be able to handle both names for backwards compatibility.
-  MostVotedIdeasWidget: MostReactedIdeasWidget,
   ProjectTemplate,
   PostsByTimeWidget,
   CommentsByTimeWidget,
   ReactionsByTimeWidget,
-  // We point to the same widget as ReactionsByTimeWidget because there is data in production and other places that uses the old name. The resolver should be able to handle both names for backwards compatibility.
-  VotesByTimeWidget: ReactionsByTimeWidget,
 };
 
 const Editor: React.FC<EditorProps> = ({

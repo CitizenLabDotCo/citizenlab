@@ -79,31 +79,38 @@ describe('Initiative form page', () => {
   });
 
   it('saves and removes the header/banner image', () => {
-    cy.intercept('PATCH', `**/initiatives/${initiativeId}`).as(
-      'initiativePatchRequest'
-    );
-
     // NOTE: if this test fails, there's a decent chance there is also a main image.
     // Because of that, there will be two buttons with the e2e-remove-image-button.
     cy.get('#header_bg').attachFile('icon.png');
     // save the form
+    cy.intercept('PATCH', `**/initiatives/${initiativeId}`).as(
+      'initiativePatchRequest1'
+    );
+
     cy.get('#e2e-initiative-publish-button').click();
     cy.get('#e2e-accept-disclaimer').click();
+    cy.wait('@initiativePatchRequest1');
 
     // // verify redirect to the initiative page
     cy.location('pathname').should('eq', `/en/initiatives/${initiativeTitle}`);
     // Verify banner image exists
+    cy.wait(2000);
     cy.get('[data-cy="e2e-initiative-banner-image"]').should('exist');
 
     // Back to edit form
     cy.visit(`/initiatives/edit/${initiativeId}`);
     cy.get('[data-cy="e2e-remove-image-button"]').click();
 
+    cy.intercept('PATCH', `**/initiatives/${initiativeId}`).as(
+      'initiativePatchRequest2'
+    );
+
     // save the form
     cy.get('#e2e-initiative-publish-button').click();
-    cy.wait('@initiativePatchRequest');
+    cy.wait('@initiativePatchRequest2');
 
     // Verify banner image does not exist
+    cy.wait(2000);
     cy.get('[data-cy="e2e-initiative-banner-image"]').should('not.exist');
   });
 

@@ -25,9 +25,22 @@ module MultiTenancy
           banner_cta_signed_out_text_multiloc
           banner_cta_signed_out_type
           banner_cta_signed_out_url
+          craftjs_json
         ]
 
         upload_attribute :header_bg
+
+        attribute(:content_builder_layouts_attributes) do |homepage, _serialization_params|
+          homepage.content_builder_layouts.map do |layout|
+            {
+              'code' => layout.code,
+              'enabled' => layout.enabled,
+              'craftjs_json' => layout.craftjs_json,
+              'created_at' => layout.created_at.to_s,
+              'updated_at' => layout.updated_at.to_s
+            }
+          end
+        end
       end
     end
   end

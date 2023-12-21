@@ -3,7 +3,12 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import { Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Spinner,
+  useBreakpoint,
+  media,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
@@ -29,19 +34,15 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
-
 // constants
-import {
-  ideaDefaultSortMethodFallback,
-  IdeaDefaultSortMethod,
-} from 'utils/participationContexts';
 
 // typings
 import { isFieldEnabled } from 'utils/projectUtils';
 import { IQueryParameters } from 'api/ideas/types';
 import usePhase from 'api/phases/usePhase';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { IdeaDefaultSortMethod } from 'api/phases/types';
+import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
 const Container = styled.div`
   width: 100%;
@@ -281,7 +282,6 @@ const IdeasWithoutFiltersSidebar = ({
                 <SelectSort
                   value={defaultSortingMethod ?? ideaDefaultSortMethodFallback}
                   phase={phase?.data}
-                  project={project?.data}
                   onChange={handleSortOnChange}
                   alignment={!smallerThanTablet ? 'right' : 'left'}
                 />

@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash-es';
 
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 // components
 import StatusChangeForm from './StatusChangeForm';
@@ -52,6 +52,7 @@ export interface FormValues extends MultilocFormValues {
   body_multiloc: Multiloc;
 }
 
+export type Mode = 'latest' | 'new';
 const StatusChangeFormWrapper = ({
   initiativeId,
   newStatusId,
@@ -72,7 +73,7 @@ const StatusChangeFormWrapper = ({
     isLoading,
     isError,
   } = useUpdateInitiativeStatus();
-  const [mode, setMode] = useState<'latest' | 'new'>('new');
+  const [mode, setMode] = useState<Mode>('new');
   const [newOfficialFeedback, setNewOfficialFeedback] = useState<FormValues>({
     author_multiloc: {},
     body_multiloc: {},
@@ -80,8 +81,8 @@ const StatusChangeFormWrapper = ({
 
   const { data: initiative } = useInitiativeById(initiativeId);
 
-  const onChangeMode = (event) => {
-    setMode(event);
+  const onChangeMode = (mode: Mode) => {
+    setMode(mode);
   };
 
   const onChangeBody = (value: Multiloc) => {

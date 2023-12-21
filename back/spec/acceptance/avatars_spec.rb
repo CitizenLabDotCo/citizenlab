@@ -34,12 +34,13 @@ resource 'Avatars' do
 
     describe do
       before do
+        SettingsService.new.deactivate_feature! 'homepage_builder'
         home_page = HomePage.first
         home_page.banner_avatars_enabled = false
         home_page.save!
       end
 
-      example_request 'Returns empty response for disabled banner_avatars_enabled' do
+      example_request 'Returns empty response for disabled banner_avatars_enabled when homepage builder is not active' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 0

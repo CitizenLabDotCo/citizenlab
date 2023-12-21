@@ -83,13 +83,6 @@ PATH
       rails (~> 7.0)
 
 PATH
-  remote: engines/commercial/granular_permissions
-  specs:
-    granular_permissions (0.1.0)
-      pundit (~> 2.0)
-      rails (~> 7.0)
-
-PATH
   remote: engines/commercial/id_auth0
   specs:
     id_auth0 (0.1.0)
@@ -313,7 +306,6 @@ PATH
   remote: engines/commercial/verification
   specs:
     verification (0.1.0)
-      granular_permissions
       pundit (~> 2.0)
       rails (~> 7.0)
       ros-apartment (>= 2.9.0)
@@ -539,7 +531,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    carrierwave (3.0.0.beta)
+    carrierwave (3.0.5)
       activemodel (>= 6.0.0)
       activesupport (>= 6.0.0)
       addressable (~> 2.6)
@@ -1098,7 +1090,7 @@ GEM
     ruby-saml (1.14.0)
       nokogiri (>= 1.10.5)
       rexml
-    ruby-vips (2.1.4)
+    ruby-vips (2.2.0)
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
     rubyXL (3.4.25)
@@ -1158,7 +1150,7 @@ GEM
     spring-watcher-listen (2.1.0)
       listen (>= 2.7, < 4.0)
       spring (>= 4)
-    ssrf_filter (1.1.1)
+    ssrf_filter (1.1.2)
     stackprof (0.2.25)
     swd (2.0.2)
       activesupport (>= 3)
@@ -1248,7 +1240,7 @@ DEPENDENCIES
   bunny (>= 2.7.2)
   byebug
   capybara (~> 3.39)
-  carrierwave (~> 3.0.0.beta)
+  carrierwave (~> 3.0.5)
   carrierwave-base64 (~> 2.10)
   cloudfront-rails (~> 0.4)
   combine_pdf
@@ -1269,7 +1261,6 @@ DEPENDENCIES
   geographic_dashboard!
   google-cloud-document_ai
   google_tag_manager!
-  granular_permissions!
   groupdate (~> 4.1)
   icalendar (~> 2.9)
   ice_cube (~> 0.16)

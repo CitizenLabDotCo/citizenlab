@@ -7,7 +7,7 @@ import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 
 // components
-import { Button, Icon } from '@citizenlab/cl2-component-library';
+import { Button, Icon, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // i18n
@@ -15,7 +15,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
-import { colors } from 'utils/styleUtils';
 
 // tracks
 import tracks from './tracks';
@@ -37,11 +36,10 @@ import { isFixableByAuthentication } from 'utils/actionDescriptors';
 // typings
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
 
 interface Props {
   ideaId: string;
-  participationContext: IPhaseData | IProjectData;
+  phase: IPhaseData;
   buttonStyle: 'primary' | 'primary-outlined';
   onIdeaPage?: boolean;
 }
@@ -49,7 +47,7 @@ interface Props {
 const AddToBasketButton = ({
   ideaId,
   buttonStyle,
-  participationContext,
+  phase,
   onIdeaPage,
 }: Props) => {
   const { data: appConfig } = useAppConfiguration();
@@ -57,7 +55,7 @@ const AddToBasketButton = ({
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const { formatMessage } = useIntl();
 
-  const basketId = participationContext.relationships?.user_basket?.data?.id;
+  const basketId = phase.relationships?.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const ideaBudget = idea?.data.attributes.budget;
 
@@ -70,8 +68,7 @@ const AddToBasketButton = ({
     return null;
   }
 
-  const participationContextId = participationContext.id;
-  const participationContextType = participationContext.type;
+  const phaseId = phase.id;
 
   const actionDescriptor = idea.data.attributes.action_descriptor.voting;
   if (!actionDescriptor) return null;
@@ -89,7 +86,7 @@ const AddToBasketButton = ({
     event?.preventDefault();
 
     if (actionDescriptor.enabled) {
-      const maxBudget = participationContext.attributes.voting_max_total;
+      const maxBudget = phase.attributes.voting_max_total;
 
       if (isNil(maxBudget) || numberOfVotesCast === undefined) {
         return;
@@ -114,17 +111,16 @@ const AddToBasketButton = ({
 
     if (isFixableByAuthentication(budgetingDisabledReason)) {
       const context = {
-        type: participationContextType,
+        type: 'phase',
         action: 'voting',
-        id: participationContextId,
+        id: phaseId,
       } as const;
 
       const successAction: SuccessAction = {
         name: 'vote',
         params: {
           ideaId,
-          participationContextId,
-          participationContextType,
+          phaseId,
           votes: ideaBudget,
         },
       };

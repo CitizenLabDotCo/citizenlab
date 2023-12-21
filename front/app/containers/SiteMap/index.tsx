@@ -11,7 +11,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { Spinner } from '@citizenlab/cl2-component-library';
+import {
+  Spinner,
+  colors,
+  fontSizes,
+  media,
+} from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Link from 'utils/cl-router/Link';
@@ -20,7 +25,6 @@ import SiteMapMeta from './SiteMapMeta';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // resources
 import useFeatureFlag from 'hooks/useFeatureFlag';

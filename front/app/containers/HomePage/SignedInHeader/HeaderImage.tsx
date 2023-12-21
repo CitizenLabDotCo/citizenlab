@@ -1,7 +1,6 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
-import { Image, Box } from '@citizenlab/cl2-component-library';
-import { media, isRtl } from 'utils/styleUtils';
+import { Image, Box, media, isRtl } from '@citizenlab/cl2-component-library';
 import { IHomepageSettingsAttributes } from 'api/home_page/types';
 import { isNumber } from 'lodash-es';
 
@@ -69,6 +68,7 @@ const HeaderImage = ({
           {/* Image overlay */}
           <Box
             data-testid="signed-in-header-image-overlay"
+            data-cy="e2e-signed-in-header-image-overlay"
             background={
               homepageSettings.banner_signed_in_header_overlay_color ||
               theme.signedInHeaderOverlayColor ||

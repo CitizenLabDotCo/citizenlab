@@ -8,15 +8,13 @@ import {
   Success,
   Checkbox,
   Text,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import AuthorInput from './AuthorInput';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-// styling
-import { colors } from 'utils/styleUtils';
 
 // typings
 import { UserFormData } from './typings';

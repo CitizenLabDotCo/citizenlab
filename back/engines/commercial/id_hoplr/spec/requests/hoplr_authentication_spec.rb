@@ -11,14 +11,14 @@ context 'hoplr authentication' do
         'provider' => 'hoplr',
         'uid' => '602119',
         'info' => {
-          'name' => 'Alejandro de CitizenLab',
-          'email' => 'alejandro@citizenlab.co',
+          'name' => 'Alexander CitizenLab',
+          'email' => 'alexander@citizenlab.co',
           'email_verified' => nil,
           'nickname' => nil,
-          'first_name' => nil,
-          'last_name' => nil,
+          'first_name' => 'Alexander',
+          'last_name' => 'CitizenLab',
           'gender' => nil,
-          'image' => nil,
+          'image' => 'https://devhoplrstorage.blob.core.windows.net/images/defaultuser.jpg',
           'phone' => nil,
           'urls' => { 'website' => nil }
         },
@@ -32,18 +32,22 @@ context 'hoplr authentication' do
         'extra' => {
           'raw_info' => {
             'sub' => '602119',
-            'email' => 'alejandro@citizenlab.co',
+            'email' => 'alexander@citizenlab.co',
+            'family_name' => 'CitizenLab',
+            'given_name' => 'Alexander',
             'iss' => 'https://test.hoplr.com/',
-            'aud' => 'ncW9MwpSxxxdh5&Ko3wDJ',
-            'oi_au_id' => '69c0b378-xxxx-40ea-adc7-61449ae34d60',
-            'name' => 'Alejandro de CitizenLab',
-            'role' => 'User',
-            'azp' => 'ncW9Mwpxxxtdh5&Ko3wDJ',
-            'nonce' => '9b68944e34406aa6007ee2d4e000083c',
-            'at_hash' => '6kRGQBCXXXXrDCwMLohXKA',
-            'oi_tkn_id' => '60cd647a-xxxx-40c0-9743-2d10bc051605',
-            'exp' => 1_691_493_755,
-            'iat' => 1_691_492_555
+            'aud' => 'ncW9xxxxxxxxxx&Ko3wDJ',
+            'neighbourhood' => '2133',
+            'oi_au_id' => '2ae1e1e0-0000-4bd5-9317-374e6c82cf23',
+            'name' => 'Alexander CitizenLab',
+            'picture' => 'https://devhoplrstorage.blob.core.windows.net/images/defaultuser.jpg',
+            'locale' => 'en',
+            'azp' => 'ncW9xxxxxxxxxx&Ko3wDJ',
+            'nonce' => 'bba2590000000000eeb5e6f1f2c43d93',
+            'at_hash' => 'NXoxxxxxxxxxxZ8kGx2INg',
+            'oi_tkn_id' => '5eef5151-0000-4577-82a4-0f9fb3296dd9',
+            'exp' => 1_701_442_629,
+            'iat' => 1_701_441_429
           }
         }
       }
@@ -56,7 +60,8 @@ context 'hoplr authentication' do
       enabled: true,
       environment: 'test',
       client_id: 'fakeid',
-      client_secret: 'fakesecret'
+      client_secret: 'fakesecret',
+      neighbourhood_custom_field_key: 'neighbourhood'
     }
     configuration.save!
     host! 'example.org'
@@ -70,9 +75,13 @@ context 'hoplr authentication' do
     })
     expect(user).to have_attributes({
       verified: false,
-      first_name: 'Alejandro',
-      last_name: 'de CitizenLab',
-      email: 'alejandro@citizenlab.co'
+      first_name: 'Alexander',
+      last_name: 'CitizenLab',
+      email: 'alexander@citizenlab.co',
+      locale: 'en',
+      custom_field_values: {
+        'neighbourhood' => '2133'
+      }
     })
   end
 
@@ -87,7 +96,7 @@ context 'hoplr authentication' do
   end
 
   context 'when user already exists' do
-    let!(:user) { create(:user, email: 'alejandro@citizenlab.co') }
+    let!(:user) { create(:user, email: 'alexander@citizenlab.co') }
 
     it 'successfully authenticates and updates existing user' do
       get '/auth/hoplr'

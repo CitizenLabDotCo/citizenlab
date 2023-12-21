@@ -16,7 +16,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // style
 import styled from 'styled-components';
 import { HeadingFontStyle } from 'components/LandingPages/citizen/HeaderContent';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes } from '@citizenlab/cl2-component-library';
 
 // components
 import AvatarBubbles from 'components/AvatarBubbles';

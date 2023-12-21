@@ -590,7 +590,7 @@ nl:
         permissions: 'Machtigingen'
         projects: 'Projecten'
         proposals: 'Voorstellen'
-        reactions: 'Reacties'
+        reactions: 'Likes/dislikes'
         voting: 'Stemming'
       trigger:
         comment_is_deleted: 'Reactie is verwijderd'

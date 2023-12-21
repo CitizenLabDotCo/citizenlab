@@ -12,7 +12,12 @@ import CommentsSection from 'components/PostShowComponents/Comments/CommentsSect
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import ReactionPreview from './ReactionPreview';
-import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
+import {
+  IconTooltip,
+  Box,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
@@ -23,7 +28,6 @@ import {
 } from 'components/admin/PostManager/components/PostPreview';
 
 // services
-import { ProcessType } from 'api/projects/types';
 
 // resources
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -40,7 +44,6 @@ import useLocalize from 'hooks/useLocalize';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import usePhases from 'api/phases/usePhases';
@@ -171,11 +174,9 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
 
   if (!idea || !project) return null;
 
-  const handleClickDelete = (processType: ProcessType) => () => {
-    const deleteConfirmationMessage = {
-      continuous: messages.deleteInputConfirmation,
-      timeline: messages.deleteInputInTimelineConfirmation,
-    }[processType];
+  const handleClickDelete = () => () => {
+    const deleteConfirmationMessage =
+      messages.deleteInputInTimelineConfirmation;
 
     if (window.confirm(formatMessage(deleteConfirmationMessage))) {
       deleteIdea(idea.data.id, { onSuccess: closePreview });
@@ -196,9 +197,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
   // AuthorId can be null if user has been deleted
   const authorId = idea.data.relationships.author?.data?.id || null;
   const proposedBudget = idea.data.attributes.proposed_budget;
-  const processType = project.data.attributes.process_type;
   const allowAnonymousParticipation =
-    project.data.attributes.allow_anonymous_participation ||
     currentPhase?.attributes.allow_anonymous_participation;
 
   return (
@@ -215,7 +214,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
         <Button
           icon="delete"
           buttonStyle="delete"
-          onClick={handleClickDelete(processType)}
+          onClick={handleClickDelete()}
         >
           <FormattedMessage {...messages.delete} />
         </Button>

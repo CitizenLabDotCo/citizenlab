@@ -9,13 +9,11 @@ import {
   Input,
   Label,
   Radio,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
-
-// styling
-import { colors } from 'utils/styleUtils';
 
 // utils
 import clHistory from 'utils/cl-router/history';
@@ -81,7 +79,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           const path = `${route}/${report.data.id}/editor`;
           const params =
             template === 'project' && selectedProject
-              ? `?projectId=${selectedProject}`
+              ? `?templateProjectId=${selectedProject}`
               : '';
 
           clHistory.push(path + params);

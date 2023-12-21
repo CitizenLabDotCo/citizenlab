@@ -5,7 +5,12 @@ import { includes, uniq } from 'lodash-es';
 import moment from 'moment';
 import 'moment-timezone';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { endsWith, isPage } from 'utils/helperUtils';
+import {
+  endsWith,
+  isIdeaShowPage,
+  isInitiativeShowPage,
+  isPage,
+} from 'utils/helperUtils';
 
 // constants
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
@@ -23,6 +28,8 @@ import {
   Spinner,
   useBreakpoint,
   colors,
+  getTheme,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Navigate from 'utils/cl-router/Navigate';
@@ -50,7 +57,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import { ThemeProvider } from 'styled-components';
-import { getTheme, stylingConsts } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -268,30 +274,42 @@ const App = ({ children }: Props) => {
     !isIdeaEditPage &&
     !isInitiativeEditPage;
   const { pathname } = removeLocale(location.pathname);
-  const showFrontOfficeNavbar =
-    (isEventPage && !isSmallerThanTablet) || // Don't show the navbar on (mobile) event page
-    (!isAdminPage && !isEventPage) ||
-    isPagesAndMenuPage;
-
-  // Ensure authUser is loaded before rendering the app
-  if (!authUser && isLoading) {
-    return (
-      <Box
-        display="flex"
-        w="100%"
-        h="100%"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Spinner />
-      </Box>
-    );
-  }
-
+  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
+  const isAuthenticationPending = !authUser && isLoading;
+
+  const showFrontOfficeNavbar = () => {
+    if (isAdminPage) {
+      if (!isPagesAndMenuPage) return false;
+    }
+
+    // citizen
+    if (isSmallerThanTablet) {
+      if (
+        isEventPage ||
+        isIdeaShowPage(urlSegments) ||
+        isInitiativeShowPage(urlSegments)
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  };
 
   return (
     <>
+      {isAuthenticationPending && (
+        <Box
+          display="flex"
+          w="100%"
+          h="100%"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner />
+        </Box>
+      )}
       {appConfiguration && (
         <PreviousPathnameContext.Provider value={previousPathname}>
           <ThemeProvider
@@ -337,36 +355,38 @@ const App = ({ children }: Props) => {
                   <ConsentManager />
                 </Suspense>
               </ErrorBoundary>
-              {showFrontOfficeNavbar && (
+              {showFrontOfficeNavbar() && (
                 <ErrorBoundary>
                   <MainHeader />
                 </ErrorBoundary>
               )}
-              <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="stretch"
-                flex="1"
-                overflowY="auto"
-                pt={
-                  showFrontOfficeNavbar
-                    ? `${stylingConsts.menuHeight}px`
-                    : undefined
-                }
-              >
-                <HasPermission
-                  item={{
-                    type: 'route',
-                    path: pathname,
-                  }}
-                  action="access"
+              {!isAuthenticationPending && (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="stretch"
+                  flex="1"
+                  overflowY="auto"
+                  pt={
+                    showFrontOfficeNavbar()
+                      ? `${stylingConsts.menuHeight}px`
+                      : undefined
+                  }
                 >
-                  <ErrorBoundary>{children}</ErrorBoundary>
-                  <HasPermission.No>
-                    <Navigate to="/" />
-                  </HasPermission.No>
-                </HasPermission>
-              </Box>
+                  <HasPermission
+                    item={{
+                      type: 'route',
+                      path: pathname,
+                    }}
+                    action="access"
+                  >
+                    <ErrorBoundary>{children}</ErrorBoundary>
+                    <HasPermission.No>
+                      <Navigate to="/" />
+                    </HasPermission.No>
+                  </HasPermission>
+                </Box>
+              )}
               {showFooter && (
                 <Suspense fallback={null}>
                   <PlatformFooter />

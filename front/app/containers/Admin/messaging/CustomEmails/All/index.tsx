@@ -6,7 +6,14 @@ import { isDraft } from 'api/campaigns/util';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { List } from 'components/admin/ResourceList';
-import { Icon, Box, Title, Text } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  Box,
+  Title,
+  Text,
+  fontSizes,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Pagination from 'components/admin/Pagination';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DraftCampaignRow from './DraftCampaignRow';
@@ -15,7 +22,6 @@ import NewCampaignButton from './NewCampaignButton';
 
 import messages from '../../messages';
 
-import { fontSizes, colors } from 'utils/styleUtils';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 

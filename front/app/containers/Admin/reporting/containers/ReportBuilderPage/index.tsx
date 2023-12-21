@@ -4,11 +4,10 @@ import React, { useState } from 'react';
 import useReports from 'api/reports/useReports';
 
 // styling
-import { colors } from 'utils/styleUtils';
+import { colors, Box, Title, Text } from '@citizenlab/cl2-component-library';
 
 // components
 import EmptyState from '../../components/ReportBuilderPage/EmptyState';
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import ReportRow from '../../components/ReportBuilderPage/ReportRow';
 import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';
@@ -89,21 +88,23 @@ const ReportBuilderPage = () => {
               </Tippy>
             </Box>
           </Box>
-          <Box background="white" px="56px" py="40px" mt="20px">
-            <Title
-              variant="h3"
-              as="h2"
-              color="primary"
-              mt="0px"
-              mb="32px"
-              fontWeight="normal"
-            >
-              <FormattedMessage {...messages.viewReports} />
-            </Title>
-            {reports.data.map((report) => (
-              <ReportRow key={report.id} report={report} />
-            ))}
-          </Box>
+          {isReportBuilderAllowed && (
+            <Box background="white" px="56px" py="40px" mt="20px">
+              <Title
+                variant="h3"
+                as="h2"
+                color="primary"
+                mt="0px"
+                mb="32px"
+                fontWeight="normal"
+              >
+                <FormattedMessage {...messages.viewReports} />
+              </Title>
+              {reports.data.map((report) => (
+                <ReportRow key={report.id} report={report} />
+              ))}
+            </Box>
+          )}
         </>
       )}
       <CreateReportModal open={modalOpen} onClose={closeModal} />

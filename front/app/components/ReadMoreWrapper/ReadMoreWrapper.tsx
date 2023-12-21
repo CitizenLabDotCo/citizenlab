@@ -5,9 +5,6 @@ import { isEmpty } from 'lodash-es';
 import Button from 'components/UI/Button';
 import ReactResizeDetector from 'react-resize-detector';
 
-// hooks
-import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
-
 // i18n
 import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,12 +13,14 @@ import messages from 'containers/ProjectsShowPage/messages';
 // style
 import styled, { useTheme } from 'styled-components';
 import {
+  useWindowSize,
+  Box,
   fontSizes,
   colors,
   media,
   viewportWidths,
   isRtl,
-} from 'utils/styleUtils';
+} from '@citizenlab/cl2-component-library';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { Multiloc } from 'typings';

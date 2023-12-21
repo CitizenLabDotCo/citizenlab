@@ -37,7 +37,7 @@ namespace :templates do
     )
 
     template_host_suffix = ENV.fetch('TEMPLATE_URL_SUFFIX', '.localhost')
-    template_tenants = Tenant.where("host LIKE '%#{template_host_suffix}'")
+    template_tenants = Tenant.not_deleted.where("host LIKE '%#{template_host_suffix}'")
     puts({ event: 'templates_generation', nb_templates: template_tenants.size }.to_json)
 
     template_tenants.each do |template_tenant|
@@ -79,11 +79,22 @@ namespace :templates do
 
     if failed_templates.present?
       puts({ event: 'templates_release', status: 'failed', failed_templates: failed_templates }.to_json)
-      next
+      exit(1)
     end
 
-    release_prefix = MultiTenancy::Templates::Utils.new.release_templates
+    template_utils = MultiTenancy::Templates::Utils.new
+    release_prefix = template_utils.release_templates
     puts({ event: 'templates_release', status: 'success', release_prefix: release_prefix }.to_json)
+
+    # Remove files of the previous release (the new test prefix). We do this to ensure
+    # that:
+    # - the next release won't be polluted by files from the previous releases
+    # - templates that no longer exist are removed
+    counts = template_utils.clear_test_templates
+    if counts[:errors_count].positive?
+      puts({ event: 'templates_cleanup', status: 'failed', counts: counts }.to_json)
+      exit(1)
+    end
   end
 
   task :change_locale, %i[template_name locale_from locale_to] => [:environment] do |_t, args|

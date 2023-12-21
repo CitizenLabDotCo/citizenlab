@@ -6,7 +6,7 @@ import UserName from 'components/UI/UserName';
 
 // styling
 import styled from 'styled-components';
-import { colors, isRtl, fontSizes } from 'utils/styleUtils';
+import { colors, isRtl, fontSizes } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
 
 // i18n

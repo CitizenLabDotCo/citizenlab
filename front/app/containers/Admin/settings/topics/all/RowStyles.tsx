@@ -1,6 +1,6 @@
 // styles
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes } from '@citizenlab/cl2-component-library';
 
 // components
 import T from 'components/T';

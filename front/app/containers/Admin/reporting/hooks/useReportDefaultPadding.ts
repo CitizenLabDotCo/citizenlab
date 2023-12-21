@@ -1,5 +1,4 @@
-import { useContext } from 'react';
-import { ReportContext } from '../context/ReportContext';
+import { useReportContext } from '../context/ReportContext';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { ROOT_NODE, useNode, useEditor } from '@craftjs/core';
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
@@ -16,9 +15,9 @@ const useReportDefaultPadding = () => {
   const { parentId } = useNode((node) => ({
     parentId: node.data.parent,
   }));
-  const reportContext = useContext(ReportContext);
 
-  if (reportContext === 'pdf') return '0px';
+  const { width } = useReportContext();
+  if (width === 'pdf') return '0px';
 
   const parentIsRoot = parentId === ROOT_NODE;
 

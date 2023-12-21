@@ -16,12 +16,16 @@ import { IInsightsCategoryData } from 'modules/commercial/insights/api/categorie
 
 // components
 import Tag from 'modules/commercial/insights/admin/components/Tag';
-import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 // intl
 import messages from '../../messages';

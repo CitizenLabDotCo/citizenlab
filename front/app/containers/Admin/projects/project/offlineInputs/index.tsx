@@ -10,13 +10,17 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 
 // components
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import TopBar from './TopBar';
 import ImportModal from './ImportModal';
 import ReviewSection from './ReviewSection';
 
 // styling
-import { colors, stylingConsts } from 'utils/styleUtils';
 
 const OfflineInputImporter = () => {
   const { projectId, phaseId } = useParams() as {

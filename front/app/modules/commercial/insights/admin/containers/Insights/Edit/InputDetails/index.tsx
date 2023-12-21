@@ -7,7 +7,13 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Category from 'modules/commercial/insights/admin/components/Category';
 import Idea from 'modules/commercial/insights/admin/components/Idea';
-import { Label, Spinner, Icon, Box } from '@citizenlab/cl2-component-library';
+import {
+  Label,
+  Spinner,
+  Icon,
+  Box,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Creatable from 'react-select/creatable';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import Navigation, {
@@ -26,7 +32,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -247,7 +252,7 @@ const InputDetails = ({
             </Label>
             <Creatable
               inputId="categorySelect"
-              styles={selectStyles}
+              styles={selectStyles()}
               placeholder={formatMessage(messages.addCategoryPlaceholder)}
               options={options}
               onCreateOption={handleCreate}

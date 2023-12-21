@@ -27,8 +27,8 @@ de:
     threshold_reached_description: Schwelle erreicht
     answered: Grenzwert erreicht und beantwortet
     answered_description: beantwortet
-    ineligible: untauglich
-    ineligible_description: untauglich
+    ineligible: abgelehnt
+    ineligible_description: abgelehnt
   topics:
     nature: Natur und Artenvielfalt
     nature_description: Natur und Artenvielfalt
@@ -96,6 +96,8 @@ de:
     open_idea_project_description_preview: Vielleicht haben Sie eine Idee, die nicht zu einem der bestehenden Projekte passt? Dann posten Sie sie hier, sammeln Sie Unterstützung und bringen Sie sie auf die politische Tagesordnung!
     open_idea_project_description: >
       Die Ideen hier sind nicht mit einem Projekt verknüpft.
+  phases:
+    open_idea_phase_title: Aktuelle Phase
   events:
     council_meeting_title: Ratssitzung
     council_meeting_description: >

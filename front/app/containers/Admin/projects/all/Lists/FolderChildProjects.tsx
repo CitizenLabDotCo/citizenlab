@@ -6,9 +6,13 @@ import { IAdminPublicationData } from 'api/admin_publications/types';
 
 interface Props {
   folderChildAdminPublications: IAdminPublicationData[];
+  folderId?: string;
 }
 
-const FolderChildProjects = ({ folderChildAdminPublications }: Props) => {
+const FolderChildProjects = ({
+  folderChildAdminPublications,
+  folderId,
+}: Props) => {
   return (
     <Box pl="60px">
       <List>
@@ -21,6 +25,7 @@ const FolderChildProjects = ({ folderChildAdminPublications }: Props) => {
                 <ProjectRow
                   publication={childPublication}
                   actions={['manage']}
+                  folderId={folderId}
                 />
               </Row>
             );

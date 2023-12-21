@@ -3,14 +3,21 @@
 module IdHoplr
   class HoplrOmniauth < OmniauthMethods::Base
     def profile_to_user_attrs(auth)
-      first_name, last_name = auth.info.name.split(' ', 2)
-      locale = AppConfiguration.instance.settings.dig('core', 'locales').first
+      settings = AppConfiguration.instance.settings
+
+      custom_field_values = {}
+
+      neighbourhood = auth.extra.raw_info['neighbourhood']
+      if (neighbourhood_key = settings.dig('hoplr_login', 'neighbourhood_custom_field_key')) && neighbourhood
+        custom_field_values[neighbourhood_key] = neighbourhood
+      end
 
       {
-        first_name: first_name,
-        last_name: last_name,
-        locale: locale,
-        email: auth.info.email
+        first_name: auth.info.first_name,
+        last_name: auth.info.last_name,
+        locale: settings.dig('core', 'locales').first,
+        email: auth.info.email,
+        custom_field_values: custom_field_values
       }
     end
 
@@ -21,7 +28,11 @@ module IdHoplr
       feature = configuration.settings('hoplr_login')
 
       options = env['omniauth.strategy'].options
-      options[:scope] = %i[openid email profile]
+
+      scope = %i[openid email profile]
+      scope << :neighbourhood if feature['neighbourhood_custom_field_key'].present?
+      options[:scope] = scope
+
       # it gets configuration from https://test.hoplr.com/.well-known/openid-configuration
       options[:discovery] = true
 
@@ -52,7 +63,11 @@ module IdHoplr
     end
 
     def updateable_user_attrs
-      %i[first_name last_name]
+      %i[first_name last_name custom_field_values]
+    end
+
+    def locked_custom_fields
+      %i[neighbourhood]
     end
   end
 end

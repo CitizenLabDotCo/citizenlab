@@ -6,7 +6,7 @@ import { SectionField } from 'components/admin/Section';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors } from '@citizenlab/cl2-component-library';
 
 // other
 export const TIMEOUT = 350;
@@ -17,16 +17,6 @@ export const StyledForm = styled.form`
 
 export const StyledInputMultiloc = styled(InputMultilocWithLocaleSwitcher)`
   width: 497px;
-`;
-
-export const ProjectType = styled.div`
-  font-size: ${fontSizes.base}px;
-  line-height: 20px;
-  font-weight: 400;
-
-  &:first-letter {
-    text-transform: uppercase;
-  }
 `;
 
 export const StyledSectionField = styled(SectionField)`

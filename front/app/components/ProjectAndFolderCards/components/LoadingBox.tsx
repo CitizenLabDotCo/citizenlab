@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner, defaultCardStyle } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { defaultCardStyle } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;

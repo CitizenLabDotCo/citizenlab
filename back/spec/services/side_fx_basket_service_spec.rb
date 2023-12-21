@@ -18,13 +18,13 @@ describe SideFxBasketService do
 
     it 'creates a follower' do
       basket = create(:basket)
-      folder = create(:project_folder, projects: [basket.participation_context.project])
+      folder = create(:project_folder, projects: [basket.phase.project])
 
       expect do
         service.after_create basket.reload, user
       end.to change(Follower, :count).from(0).to(2)
 
-      expect(user.follows.pluck(:followable_id)).to contain_exactly basket.participation_context.project.id, folder.id
+      expect(user.follows.pluck(:followable_id)).to contain_exactly basket.phase.project.id, folder.id
     end
   end
 

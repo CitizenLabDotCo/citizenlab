@@ -5,17 +5,19 @@ import useIdeaImages from 'api/idea_images/useIdeaImages';
 
 // styling
 import styled from 'styled-components';
-import { colors, stylingConsts, fontSizes } from 'utils/styleUtils';
-import { BORDER } from '../../constants';
-
-// components
 import {
+  colors,
+  stylingConsts,
+  fontSizes,
   Box,
   Text,
   Title,
   Image,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import { BORDER } from '../../constants';
+
+// components
 import Link from 'utils/cl-router/Link';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import GradientSrc from './gradient.svg';

@@ -6,7 +6,7 @@ import { insertConfiguration } from 'utils/moduleUtils';
 import { InsertConfigurationOptions } from 'typings';
 // components
 import Outlet from 'components/Outlet';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, colors } from '@citizenlab/cl2-component-library';
 import AdminProjectsProjectGeneral from 'containers/Admin/projects/project/general';
 import { HeaderTitle } from './StyledComponents';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
@@ -24,7 +24,6 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // style
-import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 
@@ -189,7 +188,7 @@ const CreateProject = memo<Props & WrappedComponentProps>(
           if (projectId) {
             setTimeout(() => {
               clHistory.push({
-                pathname: `${adminProjectsProjectPath(projectId)}/timeline`,
+                pathname: `${adminProjectsProjectPath(projectId)}/phases/new`,
               });
             }, 1000);
           }

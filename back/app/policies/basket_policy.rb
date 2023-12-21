@@ -4,7 +4,7 @@ class BasketPolicy < ApplicationPolicy
   def create?
     user&.active? &&
       (record.user_id == user.id) &&
-      ProjectPolicy.new(user, record.participation_context.project).show? &&
+      ProjectPolicy.new(user, record.phase&.project).show? &&
       check_voting_allowed(record, user)
   end
 
@@ -28,7 +28,7 @@ class BasketPolicy < ApplicationPolicy
   private
 
   def check_voting_allowed(basket, user)
-    pcs = ParticipationContextService.new
-    !pcs.voting_disabled_reason_for_context pcs.get_participation_context(basket.participation_context.project), user
+    pcs = ParticipationPermissionsService.new
+    !pcs.voting_disabled_reason_for_phase pcs.get_current_phase(basket.phase.project), user
   end
 end

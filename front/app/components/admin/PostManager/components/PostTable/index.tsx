@@ -2,7 +2,15 @@ import React from 'react';
 import { every, isEmpty, isFunction } from 'lodash-es';
 
 // components
-import { Table, Tbody, Tfoot, Tr, Td } from '@citizenlab/cl2-component-library';
+import {
+  Table,
+  Tbody,
+  Tfoot,
+  Tr,
+  Td,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import Row from './Row';
 import Pagination from 'components/admin/Pagination';
 import NoPost from './NoPost';
@@ -17,7 +25,6 @@ import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 
 // styling
 import styled from 'styled-components';
-import { colors, stylingConsts } from 'utils/styleUtils';
 
 // i18n
 import { ManagerType, TFilterMenu } from '../..';

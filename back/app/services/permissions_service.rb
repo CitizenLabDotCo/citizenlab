@@ -87,7 +87,7 @@ class PermissionsService
       Phase.find(scope_id)
     when :idea_id
       idea = Idea.find(scope_id)
-      ParticipationContextService.new.get_participation_context idea.project
+      ParticipationPermissionsService.new.get_current_phase idea.project
     end
   end
 
@@ -176,7 +176,11 @@ class PermissionsService
     when 'everyone'
       everyone
     when 'everyone_confirmed_email'
-      AppConfiguration.instance.feature_activated?('user_confirmation') ? everyone_confirmed_email : users
+      if permission.action == 'following'
+        AppConfiguration.instance.feature_activated?('user_confirmation') && AppConfiguration.instance.feature_activated?('password_login') ? everyone_confirmed_email : users
+      else
+        AppConfiguration.instance.feature_activated?('user_confirmation') ? everyone_confirmed_email : users
+      end
     when 'groups'
       groups
     else # users | admins_moderators'

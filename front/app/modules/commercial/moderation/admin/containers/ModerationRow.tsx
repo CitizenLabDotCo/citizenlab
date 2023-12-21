@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import moment from 'moment';
 
 // components
-import { Tr, Td, Icon } from '@citizenlab/cl2-component-library';
+import { Tr, Td, Icon, colors } from '@citizenlab/cl2-component-library';
 import ModerationContentCell from './ModerationContentCell';
 import Checkbox from 'components/UI/Checkbox';
 import Outlet from 'components/Outlet';
@@ -21,7 +21,6 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // typings
