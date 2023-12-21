@@ -20,15 +20,14 @@ import PageLoading from 'components/UI/PageLoading';
 import { Navigate, useLocation } from 'react-router-dom';
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
+import Unauthorized from 'components/Unauthorized';
 
 // hooks
 import { usePermission } from 'utils/permissions';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
-import { IUserData } from 'api/users/types';
 
 // utils
-import { isRegularUser } from 'utils/permissions/roles';
 import { isNilOrError, isUUID } from 'utils/helperUtils';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
@@ -44,7 +43,6 @@ const isTemplatePreviewPage = (urlSegments: string[]) =>
 
 const getRedirectURL = (
   appConfiguration: IAppConfigurationData,
-  authUser: IUserData | undefined,
   pathname: string | undefined,
   urlLocale: string | null
 ) => {
@@ -52,10 +50,6 @@ const getRedirectURL = (
 
   if (appConfiguration.attributes.settings.core.lifecycle_stage === 'churned') {
     return `${localeSegment}/subscription-ended`;
-  }
-
-  if (!isNilOrError(authUser) && !isRegularUser({ data: authUser })) {
-    return `${localeSegment}/`;
   }
 
   // get array with url segments (e.g. 'admin/projects/all' becomes ['admin', 'projects', 'all'])
@@ -70,11 +64,7 @@ const getRedirectURL = (
     return `${localeSegment}/templates/${templateId}`;
   }
 
-  // if not, redirect them to the sign-in page
-  // TO DO: Here we need to redirect to index
-  // if the user is already signed in. If I want to access the admin as a signed in user
-  // I get redirect => sign in => then index (because I'm already signed in)
-  return `${localeSegment}/`;
+  return null;
 };
 
 const IndexElement = () => {
@@ -93,14 +83,13 @@ const IndexElement = () => {
 
   const redirectURL = accessAuthorized
     ? null
-    : getRedirectURL(
-        appConfiguration.data,
-        authUser?.data,
-        pathname,
-        urlLocale
-      );
+    : getRedirectURL(appConfiguration.data, pathname, urlLocale);
 
-  if (redirectURL) return <Navigate to={redirectURL} />;
+  if (!redirectURL && !accessAuthorized) {
+    return <Unauthorized />;
+  } else if (redirectURL) {
+    return <Navigate to={redirectURL} />;
+  }
 
   return (
     <PageLoading>
