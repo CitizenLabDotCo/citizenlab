@@ -1,0 +1,3 @@
+{
+  "_____why_does_this_file_exist___?": "cy-GB (Welsh) is not hooked up to Crowdin, since we are not supporting translations of hard product copy. In practice, selecting this language will make the system fall back to English. We are supporting Welsh in multilocs, so we need this empty file for the translation system to not crash. See TAN-643"
+}

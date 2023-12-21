@@ -248,7 +248,7 @@ wank
 wanker
 wanky
 whore
-# everything underneath is en-CY
+# everything underneath is cy-GB
 biji-bo
 bogal jobio
 bustachu
