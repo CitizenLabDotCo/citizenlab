@@ -6,7 +6,6 @@ import { ReportContextProvider } from '../../context/ReportContext';
 // hooks
 import useReportLayout from 'api/report_layout/useReportLayout';
 import { useParams } from 'react-router-dom';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';

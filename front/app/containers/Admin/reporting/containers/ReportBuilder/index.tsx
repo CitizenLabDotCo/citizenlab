@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 // hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useReportLayout from 'api/report_layout/useReportLayout';
 import useLocale from 'hooks/useLocale';
 
