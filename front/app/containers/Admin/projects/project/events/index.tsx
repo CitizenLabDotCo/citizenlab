@@ -59,7 +59,7 @@ const AdminProjectEventsIndex = ({
     };
 
   return (
-    <>
+    <Box mb="40px">
       <SectionTitle>
         <FormattedMessage {...messages.titleEvents} />
       </SectionTitle>
@@ -150,7 +150,7 @@ const AdminProjectEventsIndex = ({
           </StyledList>
         )}
       </ListWrapper>
-    </>
+    </Box>
   );
 };
 
