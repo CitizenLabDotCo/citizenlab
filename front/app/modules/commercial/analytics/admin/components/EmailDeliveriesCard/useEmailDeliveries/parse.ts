@@ -17,9 +17,11 @@ import {
   PreparedTimeSeriesResponseRow,
 } from './typings';
 import { Translations } from './translations';
+import {getInterval} from "../../../../../../../components/admin/GraphCards/_utils/query";
 
-export const mergeTimeSeries = (timeSeriesQuery: TimeSeriesResponseRow[]) => {
-  const dateColumn = 'first_dimension_date_sent_date';
+export const mergeTimeSeries = (timeSeriesQuery: TimeSeriesResponseRow[], currentResolution: IResolution) => {
+  const dateColumn = `first_dimension_date_sent_${getInterval(currentResolution)}`;
+  console.log(dateColumn);
   const groupedTimeSerie = groupBy(timeSeriesQuery, dateColumn);
 
   return Object.values(groupedTimeSerie).map((values) => ({
@@ -52,8 +54,9 @@ const parseRow = (
   };
 };
 
-const getDate = (row: PreparedTimeSeriesResponseRow) => {
-  return moment(get(row, 'first_dimension_date_sent_date'));
+const getDate = (row: PreparedTimeSeriesResponseRow, currentResolution: IResolution) => {
+  const dateColumn = `first_dimension_date_sent_${getInterval(currentResolution)}`;
+  return moment(get(row, dateColumn));
 };
 
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);

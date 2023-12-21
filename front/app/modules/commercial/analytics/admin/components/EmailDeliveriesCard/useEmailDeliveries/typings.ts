@@ -38,7 +38,9 @@ interface PreparedBaseRow {
 
 export type PreparedTimeSeriesResponse = PreparedTimeSeriesResponseRow[];
 export interface PreparedTimeSeriesResponseRow extends PreparedBaseRow {
-  first_dimension_date_sent_date: string;
+  first_dimension_date_sent_date?: string;
+  first_dimension_date_sent_week?: string;
+  first_dimension_date_sent_month?: string;
 }
 
 // Hook return value

@@ -39,11 +39,11 @@ describe('mergeTimeSeries', () => {
       },
     ];
 
-    expect(mergeTimeSeries(queryResponse)).toEqual(expectedOutput);
+    expect(mergeTimeSeries(queryResponse, 'day')).toEqual(expectedOutput);
   });
 
   it('returns empty array if input is empty array', () => {
-    expect(mergeTimeSeries([])).toEqual([]);
+    expect(mergeTimeSeries([], 'day')).toEqual([]);
   });
 });
 
