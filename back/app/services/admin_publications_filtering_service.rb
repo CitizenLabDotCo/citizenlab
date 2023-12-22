@@ -26,7 +26,7 @@ class AdminPublicationsFilteringService
     next scope unless ['true', true, '1'].include? options[:remove_not_allowed_parents]
 
     projects_in_folder_publications = AdminPublication.includes(:parent)
-      .where(publication_id: Project.publicly_visible.not_draft.ids).where.not(parent_id: nil)
+    .where(publication_id: Project.publicly_visible.not_draft.ids.uniq).where.not(parent_id: nil)
     visible_or_public_publication_ids = scope.map(&:parent_id)
       .concat(projects_in_folder_publications.map(&:parent_id))
 
