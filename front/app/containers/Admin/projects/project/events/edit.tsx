@@ -307,10 +307,19 @@ const AdminProjectEventEdit = () => {
       if (!isInitialLoading) {
         setSubmitState('enabled');
         setAttributeDiff((previousState) => {
-          return {
+          const newAttributes = {
             ...previousState,
             [name]: moment.toISOString(),
           };
+
+          // If the start time is changed, update the end time by adding 30 minutes
+          if (name === 'start_at' && newAttributes['start_at']) {
+            const startDate = new Date(newAttributes['start_at']);
+            newAttributes['end_at'] =
+              calculateRoundedEndDate(startDate).toISOString();
+          }
+
+          return newAttributes;
         });
         setErrors({});
       }
