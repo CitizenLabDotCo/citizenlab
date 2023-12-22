@@ -60,6 +60,24 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
+function roundToNearestMultipleOfFive(date: Date): Date {
+  const minutes = date.getMinutes();
+  const roundedMinutes = Math.ceil(minutes / 5) * 5;
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    roundedMinutes
+  );
+}
+
+function calculateRoundedEndDate(startDate: Date): Date {
+  const endDate = new Date(startDate);
+  endDate.setMinutes(startDate.getMinutes() + 30);
+  return endDate;
+}
+
 type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
   | Error
@@ -105,7 +123,20 @@ const AdminProjectEventEdit = () => {
   const [saving, setSaving] = useState<boolean>(false);
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
-  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
+
+  const currentDate = new Date();
+  const initialRoundedStartDate = roundToNearestMultipleOfFive(currentDate);
+  const initialRoundedEndDate = calculateRoundedEndDate(
+    initialRoundedStartDate
+  );
+  const initialAttributeDiff = event
+    ? {}
+    : {
+        start_at: initialRoundedStartDate.toISOString(),
+        end_at: initialRoundedEndDate.toISOString(),
+      };
+  const [attributeDiff, setAttributeDiff] =
+    useState<IEventProperties>(initialAttributeDiff);
   const [mapModalVisible, setMapModalVisible] = useState(false);
   const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
     useState(false);
