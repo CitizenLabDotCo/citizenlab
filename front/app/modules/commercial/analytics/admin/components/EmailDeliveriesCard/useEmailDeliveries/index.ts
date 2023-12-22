@@ -39,10 +39,8 @@ export default function useEmailDeliveriesData({
 
   const translations = getTranslations(formatMessage);
   const stats = analytics ? parseStats(analytics.data.attributes) : null;
-  console.log('raw_data', analytics?.data.attributes[3]);
   const preparedTimeSeries =
     analytics && mergeTimeSeries(analytics.data.attributes[3], currentResolution);
-  console.log('merged', preparedTimeSeries);
   const timeSeries =
     analytics?.data && preparedTimeSeries
       ? parseTimeSeries(
@@ -52,7 +50,6 @@ export default function useEmailDeliveriesData({
           currentResolution
         )
       : null;
-  console.log(timeSeries);
   const xlsxData =
     analytics?.data && stats
       ? parseExcelData(stats, timeSeries, translations)

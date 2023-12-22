@@ -8,7 +8,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 export const timeSeriesParser =
   <Row, ParsedRow>(
-    getDate: (row: Row) => Moment,
+    getDate: (row: Row, currentResolution?: IResolution) => Moment,
     parseRow: (date: Moment, row?: Row) => ParsedRow
   ) =>
   (

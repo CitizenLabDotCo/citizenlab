@@ -3,7 +3,7 @@ import moment, { Moment } from 'moment';
 // utils
 import { groupBy } from 'lodash-es';
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
-import { keys, get } from 'utils/helperUtils';
+import { keys } from 'utils/helperUtils';
 
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
@@ -17,11 +17,10 @@ import {
   PreparedTimeSeriesResponseRow,
 } from './typings';
 import { Translations } from './translations';
-import {getInterval} from "../../../../../../../components/admin/GraphCards/_utils/query";
+import { getInterval } from 'components/admin/GraphCards/_utils/query';
 
 export const mergeTimeSeries = (timeSeriesQuery: TimeSeriesResponseRow[], currentResolution: IResolution) => {
   const dateColumn = `first_dimension_date_sent_${getInterval(currentResolution)}`;
-  console.log(dateColumn);
   const groupedTimeSerie = groupBy(timeSeriesQuery, dateColumn);
 
   return Object.values(groupedTimeSerie).map((values) => ({
@@ -54,9 +53,11 @@ const parseRow = (
   };
 };
 
-const getDate = (row: PreparedTimeSeriesResponseRow, currentResolution: IResolution) => {
-  const dateColumn = `first_dimension_date_sent_${getInterval(currentResolution)}`;
-  return moment(get(row, dateColumn));
+// TODO: Improve this
+// This isn't the best way to get the date, but the changing attribute name was causing havoc with typings
+const getDate = (row: PreparedTimeSeriesResponseRow) => {
+  const dateAttribute = Object.values(row)[0];
+  return moment(dateAttribute);
 };
 
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
