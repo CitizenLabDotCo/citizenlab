@@ -83,13 +83,14 @@ class MockAdminPublicationsTree
   end
 
   def create_published_parent_with_draft_children
-    publication = create(:project_folder)
-    @published_parent_with_draft_children = create(:admin_publication,
+    folder_admin_publication = create(:admin_publication,
+      :with_children,
       publication_status: 'published',
-      publication: publication)
-    children = create_list(:admin_publication, 3, :with_parent,
-      publication_status: 'draft',
-      parent: published_parent_with_draft_children)
-    @draft_children_of_published_parent = AdminPublication.where(id: children.map(&:id))
+      publication: create(:project_folder),
+      children: %w[draft draft draft].map do |status|
+        create(:admin_publication, publication_status: status, publication: create(:project))
+      end
+    )
+    @published_parent_with_draft_children = AdminPublication.find(folder_admin_publication.id)
   end
 end

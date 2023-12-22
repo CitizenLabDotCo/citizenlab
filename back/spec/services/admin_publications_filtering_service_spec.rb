@@ -36,7 +36,7 @@ describe AdminPublicationsFilteringService do
     # end
 
     it 'does not include the draft children of a published parent' do
-      expect(result.ids).not_to include(*tree_mock.draft_children_of_published_parent.ids)
+      expect(result.ids).not_to include(*tree_mock.published_parent_with_draft_children.children.ids)
     end
   end
 
