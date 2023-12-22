@@ -36,7 +36,6 @@ class AdminPublicationsFilteringService
 
     parents_with_visible_children.or(parents_without_any_children)
       .or(non_parents)
-      .or(projects_in_folder_publications)
   end
 
   add_filter('by_publication_status') do |scope, options|
