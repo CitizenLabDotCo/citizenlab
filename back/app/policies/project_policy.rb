@@ -26,6 +26,7 @@ class ProjectPolicy < ApplicationPolicy
 
     private
 
+    # ?
     def resolve_for_admin
       user&.admin? ? scope : scope.none
     end
