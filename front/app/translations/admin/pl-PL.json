@@ -2498,6 +2498,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Odwiedziny",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Rodzaje odwiedzających",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Odwiedzający",
+  "app.modules.commercial.analytics.admin.containers.visitors.cookieBannerUpdatedInfo": "Od grudnia 2023 r. użytkownicy mogą łatwiej odrzucać pliki cookie, co ma negatywny wpływ na postrzegany ruch.",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "Nie ma jeszcze danych dotyczących odwiedzających.",
   "app.modules.commercial.analytics.admin.hooks.useActiveUsers.timeSeries": "Aktywni użytkownicy w czasie",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Dostawy wiadomości e-mail w czasie",
