@@ -2498,6 +2498,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Bezoeken",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Bezoekerstypes",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Bezoekers",
+  "app.modules.commercial.analytics.admin.containers.visitors.cookieBannerUpdatedInfo": "Sinds december 2023 is het makkelijker voor gebruikers om cookies te weigeren, wat een negatief effect heeft op het waargenomen verkeer.",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "Er zijn nog geen bezoekersgegevens.",
   "app.modules.commercial.analytics.admin.hooks.useActiveUsers.timeSeries": "Actieve gebruikers in de loop van de tijd",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "E-mails geleverd in loop van tijd",
