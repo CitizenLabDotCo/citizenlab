@@ -2498,7 +2498,6 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Посете",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Типови посетилаца",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Посетиоци",
-  "app.modules.commercial.analytics.admin.containers.visitors.dateInfo": "Јединствени подаци о посетиоцима доступни су од {date} па надаље.",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "There is no visitor data yet.",
   "app.modules.commercial.analytics.admin.hooks.useActiveUsers.timeSeries": "Активни корисници током времена",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Испоруке путем е-поште током времена",
