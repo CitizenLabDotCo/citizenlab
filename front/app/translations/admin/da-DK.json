@@ -2498,6 +2498,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Besøg",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Besøgstyper",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Besøgende",
+  "app.modules.commercial.analytics.admin.containers.visitors.cookieBannerUpdatedInfo": "Siden december 2023 har det været lettere for brugerne at afvise cookies, hvilket har en negativ effekt på den opfattede trafik.",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "Der er endnu ingen besøgsdata.",
   "app.modules.commercial.analytics.admin.hooks.useActiveUsers.timeSeries": "Aktive brugere over tid",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "E-mail-leverancer over tid",
