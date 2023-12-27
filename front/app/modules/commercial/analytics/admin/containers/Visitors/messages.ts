@@ -1,9 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  dateInfo: {
-    id: 'app.modules.commercial.analytics.admin.containers.visitors.dateInfo',
-    defaultMessage: 'Unique visitor data is available from {date} onwards.',
+  cookieBannerUpdatedInfo: {
+    id: 'app.modules.commercial.analytics.admin.containers.visitors.cookieBannerUpdatedInfo',
+    defaultMessage:
+      "Since December 2023 it's easier for users to reject cookies, which has a negative effect on perceived traffic.",
   },
   noData: {
     id: 'app.modules.commercial.analytics.admin.containers.visitors.noData',
