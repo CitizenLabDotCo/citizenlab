@@ -19,8 +19,13 @@ import {
 import { Translations } from './translations';
 import { getInterval } from 'components/admin/GraphCards/_utils/query';
 
-export const mergeTimeSeries = (timeSeriesQuery: TimeSeriesResponseRow[], currentResolution: IResolution) => {
-  const dateColumn = `first_dimension_date_sent_${getInterval(currentResolution)}`;
+export const mergeTimeSeries = (
+  timeSeriesQuery: TimeSeriesResponseRow[],
+  currentResolution: IResolution
+) => {
+  const dateColumn = `first_dimension_date_sent_${getInterval(
+    currentResolution
+  )}`;
   const groupedTimeSerie = groupBy(timeSeriesQuery, dateColumn);
 
   return Object.values(groupedTimeSerie).map((values) => ({
@@ -53,10 +58,12 @@ const parseRow = (
   };
 };
 
-// TODO: Improve this
-// This isn't the best way to get the date, but the changing attribute name was causing havoc with typings
 const getDate = (row: PreparedTimeSeriesResponseRow) => {
-  const dateAttribute = Object.values(row)[0];
+  const dateAttribute =
+    row.first_dimension_date_sent_date ||
+    row.first_dimension_date_sent_week ||
+    row.first_dimension_date_sent_month;
+
   return moment(dateAttribute);
 };
 
