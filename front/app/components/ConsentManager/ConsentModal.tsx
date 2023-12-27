@@ -36,7 +36,6 @@ interface Props {
   onAccept: () => void;
   onClose: () => void;
   showModal: boolean;
-  setShowModal: (showModal: boolean) => void;
   categorizedDestinations: CategorizedDestinations;
   updatePreference: (category: TCategory, value: boolean) => void;
   preferences: IPreferences;

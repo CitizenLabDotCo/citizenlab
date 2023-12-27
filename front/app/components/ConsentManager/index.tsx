@@ -169,6 +169,7 @@ const ConsentManager = () => {
     [cookieConsent, activeDestinations]
   );
 
+  console.log({ isConsentRequired });
   return (
     <Container
       accept={accept}

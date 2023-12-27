@@ -22,7 +22,6 @@ const Container = ({
   preferences,
   categorizedDestinations,
   isConsentRequired,
-  onToggleModal,
   updatePreference,
   resetPreferences,
   accept,
@@ -30,22 +29,24 @@ const Container = ({
   saveConsent,
 }: Props) => {
   const [isCancelling, setIsCancelling] = useState(false);
-  const [showConsentModal, setShowConsentModal] = useState(isConsentRequired);
+  const [userUpdatingPreferences, setUserUpdatingPreferences] = useState(false);
   const [consentModalView, setConsentModalView] = useState<
     'main' | 'preferences'
   >('main');
 
-  const openDialog = useCallback(() => {
-    onToggleModal(false); // TODO: Need to implement that when openConsentManager fired, open the modal to preferences view
-  }, [onToggleModal]);
-
-  useObserveEvent('openConsentManager', openDialog);
+  // If the user enters the preferences view from a button click on the footer or
+  // cookie policy page, we only want to show the preferences view and not the main view.
+  const openUpdatePreferencesView = useCallback(() => {
+    setConsentModalView('preferences');
+    setUserUpdatingPreferences(true);
+  }, []);
+  useObserveEvent('openConsentManager', openUpdatePreferencesView);
 
   const handleSave = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
       saveConsent();
-      setShowConsentModal(false);
+      setUserUpdatingPreferences(false);
     },
     [saveConsent]
   );
@@ -58,10 +59,20 @@ const Container = ({
     if (isConsentRequired && !isEmpty) {
       setIsCancelling(true);
     } else {
-      setConsentModalView('main');
-      resetPreferences();
+      // If we're only viewing cookie preferences, just close the modal
+      if (userUpdatingPreferences) {
+        resetPreferences();
+      } else {
+        setConsentModalView('main');
+        resetPreferences();
+      }
     }
-  }, [preferences, isConsentRequired, resetPreferences]);
+  }, [
+    preferences,
+    isConsentRequired,
+    userUpdatingPreferences,
+    resetPreferences,
+  ]);
 
   const handleCancelBack = useCallback(() => {
     setIsCancelling(false);
@@ -69,11 +80,15 @@ const Container = ({
   }, []);
 
   const handleCancelConfirm = useCallback(() => {
-    setIsCancelling(false);
-    setConsentModalView('main');
-
-    resetPreferences();
-  }, [resetPreferences]);
+    if (userUpdatingPreferences) {
+      setUserUpdatingPreferences(false);
+      resetPreferences();
+    } else {
+      setIsCancelling(false);
+      setConsentModalView('main');
+      resetPreferences();
+    }
+  }, [resetPreferences, userUpdatingPreferences]);
 
   const noDestinations = Object.values(categorizedDestinations).every(
     (array) => array.length === 0
@@ -85,14 +100,15 @@ const Container = ({
     ? 'preferenceForm'
     : 'cancelling';
 
+  const showModal = isConsentRequired || userUpdatingPreferences;
+
   return (
     <>
-      {isConsentRequired && (
+      {showModal && (
         <ConsentModal
           onAccept={accept}
           onClose={reject}
-          showModal={showConsentModal}
-          setShowModal={setShowConsentModal}
+          showModal={showModal}
           categorizedDestinations={categorizedDestinations}
           updatePreference={updatePreference}
           preferences={preferences}
