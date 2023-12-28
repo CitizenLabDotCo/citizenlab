@@ -99,6 +99,13 @@ const MultiBarChart = <Row,>({
         );
     };
 
+  const tickFormatter = (value: string) => {
+    const label = value.toString(); // Value could be a number, so we want to make sure we are using a string here
+    const limit = 42; // maximum characters before ellipses
+    if (label.length < limit) return value;
+    return `${label.substring(0, limit)}...`;
+  };
+
   return (
     <Container
       width={width}
@@ -174,6 +181,7 @@ const MultiBarChart = <Row,>({
           type={layout === 'horizontal' ? 'category' : 'number'}
           stroke={legacyColors.chartLabel}
           fontSize={sizes.chartLabel}
+          tickFormatter={tickFormatter}
           {...yaxis}
         />
       </RechartsBarChart>
