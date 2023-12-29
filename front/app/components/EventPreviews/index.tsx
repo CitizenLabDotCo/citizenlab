@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 // components
 import {
   Box,
-  Button,
   Title,
-  useBreakpoint,
+  LateralScrollControls,
 } from '@citizenlab/cl2-component-library';
 import EventPreviewCard from './EventPreviewCard';
 
@@ -16,7 +15,7 @@ import { getCurrentPhase } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 // style
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
@@ -43,8 +42,6 @@ const EventPreviewContainer = styled(Box)`
 
 const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const { formatMessage } = useIntl();
-  const theme = useTheme();
-  const isSmallerThanPhone = useBreakpoint('phone');
   const ref = useRef<HTMLDivElement>(null);
 
   // project related
@@ -65,32 +62,6 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
     ],
   });
 
-  // scrolling
-  const [atScrollStart, setAtScrollStart] = useState(true);
-  const [atScrollEnd, setAtScrollEnd] = useState(false);
-  const showArrows =
-    ref?.current && ref.current.scrollWidth > ref.current.clientWidth;
-  const [showArrowButtons, setShowArrowButtons] = useState(showArrows);
-
-  useEffect(() => {
-    setShowArrowButtons(
-      ref?.current && ref.current.scrollWidth > ref.current.clientWidth
-    );
-  }, [showArrows]);
-
-  const lateralScroll = (scrollOffset: number) => {
-    if (!ref?.current) return;
-    ref.current.scrollLeft += scrollOffset;
-  };
-
-  const onScroll = () => {
-    // Update scroll states
-    if (!ref?.current) return;
-    setAtScrollStart(ref.current.scrollLeft === 0);
-    const maxScrollLeft = ref.current.scrollWidth - ref.current.clientWidth;
-    setAtScrollEnd(ref.current.scrollLeft >= maxScrollLeft);
-  };
-
   if (events && events?.data?.length > 0) {
     return (
       <>
@@ -103,28 +74,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
         >
           {formatMessage(messages.eventPreviewTimelineTitle)}
         </Title>
-        <Box
-          id="e2e-event-previews"
-          display="flex"
-          flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
-        >
-          <Box
-            aria-hidden="true"
-            my="auto"
-            display={showArrowButtons ? 'inherit' : 'none'}
-          >
-            <Button
-              disabled={atScrollStart}
-              onClick={() => {
-                lateralScroll(isSmallerThanPhone ? -200 : -350);
-              }}
-              icon={theme.isRtl ? 'chevron-right' : 'chevron-left'}
-              buttonStyle="text"
-              p="0px"
-              my="auto"
-              id="e2e-event-previews-scroll-left"
-            />
-          </Box>
+        <LateralScrollControls containerRef={ref}>
           <EventPreviewContainer
             py="8px"
             display="flex"
@@ -135,32 +85,14 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
             flexWrap="nowrap"
             overflow="auto"
             overflowX="scroll"
-            id="eventPreviewContainer"
-            onScroll={onScroll}
+            id="e2e-event-previews"
             ref={ref}
           >
             {events.data.map((event) => (
               <EventPreviewCard key={event.id} event={event} />
             ))}
           </EventPreviewContainer>
-
-          <Box
-            aria-hidden="true"
-            my="auto"
-            display={showArrowButtons ? 'inherit' : 'none'}
-          >
-            <Button
-              disabled={atScrollEnd}
-              onClick={() => {
-                lateralScroll(isSmallerThanPhone ? 200 : 350);
-              }}
-              icon={theme.isRtl ? 'chevron-left' : 'chevron-right'}
-              buttonStyle="text"
-              p="0px"
-              id="e2e-event-previews-scroll-right"
-            />
-          </Box>
-        </Box>
+        </LateralScrollControls>
       </>
     );
   }

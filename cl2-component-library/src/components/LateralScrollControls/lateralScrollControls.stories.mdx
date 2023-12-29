@@ -1,0 +1,38 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { ArgsTable } from '@storybook/addon-docs';
+import LateralScrollControls from './';
+import Box from '../Box';
+
+<Meta
+  title="Components/LateralScrollControls"
+  component={LateralScrollControls}
+/>
+
+# LateralScrollControls
+
+<ArgsTable of={LateralScrollControls} />
+
+<Canvas>
+  <Story name="default">
+    <LateralScrollControls>
+      <Box
+        display="flex"
+        width="200px"
+        height="auto"
+        gap='16px'
+        flexDirection="row"
+        flexWrap="nowrap"
+        overflow="auto"
+        overflowX="scroll"
+        py='24px'
+      >
+        <Box width='200px'>Element 1</Box>
+        <Box width='200px'>Element 2</Box>
+        <Box width='200px'>Element 3</Box>
+        <Box width='200px'>Element 4</Box>
+        <Box width='200px'>Element 5</Box>
+      </Box>
+    </LateralScrollControls>
+
+  </Story>
+</Canvas>
