@@ -4,9 +4,9 @@ import Box from '../Box';
 import Button from '../Button';
 
 interface Props {
-  containerRef?: React.RefObject<HTMLDivElement>;
-  scrollBtnDistanceMobile?: number;
-  scrollBtnDistanceDesktop?: number;
+  containerRef?: React.RefObject<HTMLDivElement>; // Ref of the container with elements which can be laterally scrolled through
+  scrollBtnDistanceMobile?: number; // Lateral scroll distance on arrow click for mobile
+  scrollBtnDistanceDesktop?: number; // Lateral scroll distance on arrow click for desktop
   isSmallerThanPhone?: boolean;
   children: React.ReactNode;
 }
@@ -15,23 +15,22 @@ export const getDefaultTabId = (tab: string) => `tab-${tab}`;
 export const getDefaultTabPanelId = (tab: string) => `tab-panel-${tab}`;
 
 /*
- * LateralScrollControls: Wraps a container with lateral scroll arrow buttons to scroll left and right.
- *
- * containerRef: Ref of the container with elements which can be laterally scrolled through.
- * scrollBtnDistanceMobile & scrollBtnDistanceDesktop: Distances scrolled by arrow buttons on mobile and desktop respectively.
+ * LateralScrollControls:
+ * Wraps a container with lateral scroll arrow buttons to scroll left and right.
  */
 const LateralScrollControls = ({
   containerRef,
-  scrollBtnDistanceMobile = 200, // Default lateral scroll distance  for mobile
-  scrollBtnDistanceDesktop = 350, // Default lateral scroll distance for desktop
+  scrollBtnDistanceMobile = 200,
+  scrollBtnDistanceDesktop = 350,
   isSmallerThanPhone,
   children,
 }: Props) => {
   const theme = useTheme();
 
-  // Used to determine when the scroll buttons should be disabled
+  // Used to determine when the scroll buttons should be disabled (E.g. At scroll end, disable the right button)
   const [atScrollStart, setAtScrollStart] = useState(true);
   const [atScrollEnd, setAtScrollEnd] = useState(false);
+
   containerRef?.current?.addEventListener('scroll', () => {
     // Update scroll states
     if (!containerRef?.current) return;
