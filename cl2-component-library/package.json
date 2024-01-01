@@ -64,7 +64,7 @@
     "@types/react-dom": "^17.0.13",
     "@types/react-transition-group": "4.4.8",
     "@types/styled-components": "^5.1.26",
-    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
     "@typescript-eslint/parser": "^6.13.2",
     "babel-jest": "^29.7.0",
     "babel-plugin-dynamic-import-node": "^2.3.3",
