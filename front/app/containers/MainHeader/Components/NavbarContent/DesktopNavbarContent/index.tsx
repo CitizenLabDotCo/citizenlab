@@ -11,8 +11,8 @@ import {
   colors,
   useBreakpoint,
   media,
-  fontSizes,
   isRtl,
+  Button,
 } from '@citizenlab/cl2-component-library';
 import NotificationMenu from '../../NotificationMenu';
 import LanguageSelector from '../../LanguageSelector';
@@ -20,8 +20,6 @@ import UserMenu from '../../UserMenu';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import tracks from '../../../tracks';
-import { trackEventByName } from 'utils/analytics';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import bowser from 'bowser';
 import { isNilOrError, isPage } from 'utils/helperUtils';
@@ -114,70 +112,6 @@ const RightItem = styled.div`
   `}
 `;
 
-const LogInButton = styled.button`
-  height: 100%;
-  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  line-height: normal;
-  font-weight: 500;
-  padding: 0 30px;
-  border: none;
-  border-radius: 0px;
-  cursor: pointer;
-  transition: all 100ms ease-out;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-  ${media.phone`
-    padding: 0 15px;
-  `}
-`;
-
-const NavigationItemBorder = styled.div`
-  height: 6px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: 'transparent';
-`;
-
-const NavigationItemText = styled.span`
-  white-space: nowrap;
-`;
-
-const SignUpMenuItem = styled.button`
-  height: 100%;
-  color: #fff;
-  font-size: ${fontSizes.base}px;
-  line-height: normal;
-  font-weight: 500;
-  padding: 0 30px;
-  cursor: pointer;
-  border: none;
-  border-radius: 0px;
-  background-color: ${({ theme }) =>
-    theme.colors.tenantPrimary || theme.colors.tenantSecondary};
-  transition: all 100ms ease-out;
-
-  &:hover {
-    color: #fff;
-    text-decoration: underline;
-    background-color: ${({ theme }) =>
-      darken(0.12, theme.colors.tenantPrimary || theme.colors.tenantSecondary)};
-  }
-
-  ${media.phone`
-    padding: 0 15px;
-  `}
-
-  ${media.phone`
-    padding: 0 12px;
-  `}
-`;
-
 const DesktopNavbarContent = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
@@ -192,16 +126,8 @@ const DesktopNavbarContent = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isDesktopUser = !isSmallerThanTablet;
 
-  const trackSignUpLinkClick = () => {
-    trackEventByName(tracks.clickSignUpLink.name);
-  };
-
   const signIn = () => {
     triggerAuthenticationFlow({ flow: 'signin' });
-  };
-
-  const signUp = () => {
-    triggerAuthenticationFlow({ flow: 'signup' });
   };
 
   return (
@@ -228,25 +154,9 @@ const DesktopNavbarContent = () => {
 
           {isNilOrError(authUser) && (
             <RightItem className="login noLeftMargin">
-              <LogInButton id="e2e-navbar-login-menu-item" onClick={signIn}>
-                <NavigationItemBorder />
-                <NavigationItemText>
-                  <FormattedMessage {...messages.logIn} />
-                </NavigationItemText>
-              </LogInButton>
-            </RightItem>
-          )}
-
-          {isNilOrError(authUser) && (
-            <RightItem
-              onClick={trackSignUpLinkClick}
-              className="signup noLeftMargin"
-            >
-              <SignUpMenuItem id="e2e-navbar-signup-menu-item" onClick={signUp}>
-                <NavigationItemText className="sign-up-span">
-                  <FormattedMessage {...messages.signUp} />
-                </NavigationItemText>
-              </SignUpMenuItem>
+              <Button ml="8px" id="e2e-navbar-login-menu-item" onClick={signIn}>
+                <FormattedMessage {...messages.logIn} />
+              </Button>
             </RightItem>
           )}
 

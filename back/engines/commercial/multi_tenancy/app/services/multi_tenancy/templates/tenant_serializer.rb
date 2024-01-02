@@ -47,6 +47,8 @@ module MultiTenancy
           CustomForm => serialize_records(CustomForm),
           Event => serialize_records(Event),
           EventFile => serialize_records(EventFile),
+          EventImage => serialize_records(EventImage),
+          Events::Attendance => serialize_records(Events::Attendance),
           IdeaStatus => serialize_records(IdeaStatus),
           InitiativeStatus => serialize_records(InitiativeStatus),
           NavBarItem => serialize_records(NavBarItem),

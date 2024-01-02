@@ -12,10 +12,11 @@ require_relative 'custom_fields'
 require_relative 'custom_forms'
 require_relative 'custom_maps'
 require_relative 'email_campaign_examples'
+require_relative 'events'
 require_relative 'followers'
 require_relative 'groups'
 require_relative 'ideas'
-require_relative 'iniatives'
+require_relative 'initiatives'
 require_relative 'internal_comments'
 require_relative 'invites'
 require_relative 'permissions'
@@ -110,7 +111,7 @@ module MultiTenancy
         MultiTenancy::Seeds::ProjectFolders.new(runner: self).run
         MultiTenancy::Seeds::Projects.new(runner: self).run
         MultiTenancy::Seeds::Ideas.new(runner: self).run
-        MultiTenancy::Seeds::Iniatives.new(runner: self).run
+        MultiTenancy::Seeds::Initiatives.new(runner: self).run
         MultiTenancy::Seeds::InternalComments.new(runner: self).run
 
         InitiativeStatusService.new.automated_transitions!
@@ -126,6 +127,7 @@ module MultiTenancy
         MultiTenancy::Seeds::CustomMaps.new(runner: self).run
         MultiTenancy::Seeds::Analytics.new(runner: self).run
         MultiTenancy::Seeds::Followers.new(runner: self).run
+        MultiTenancy::Seeds::Events.new(runner: self).run
       end
 
       # @return [Array[String]] default seed locales

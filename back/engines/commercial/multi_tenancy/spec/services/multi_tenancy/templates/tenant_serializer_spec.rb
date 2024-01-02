@@ -29,6 +29,8 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(CustomFieldOption.count).to be > 0
         expect(CustomForm.count).to be > 0
         expect(Event.count).to be > 0
+        expect(EventImage.count).to be > 0
+        expect(Events::Attendance.count).to be > 0
         expect(IdeaStatus.count).to be > 0
         expect(Reaction.count).to be > 0
         expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
@@ -37,6 +39,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(CustomMaps::MapConfig.count).to be 1
         expect(CustomMaps::Layer.count).to be 2
         expect(CustomMaps::LegendItem.count).to be 7
+        expect(StaticPage.count).to be > 0
       end
     end
 
