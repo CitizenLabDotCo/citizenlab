@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
 
 // components
 import SharingButtons from 'components/Sharing/SharingButtons';
@@ -13,17 +11,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
 // i18n
-import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
-import localize, { InjectedLocalized } from 'utils/localize';
+import { MessageDescriptor } from 'react-intl';
+
 import messages from './messages';
 import { getInputTermMessage } from 'utils/i18n';
 
@@ -40,8 +30,12 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import { getInputTerm } from 'api/phases/utils';
+import useLocale from 'hooks/useLocale';
+import { useIntl } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
+import useAuthUser from 'api/me/useAuthUser';
 
-interface InputProps {
+interface Props {
   postType: 'idea' | 'initiative';
   postId: string | null;
   className?: string;
@@ -49,25 +43,14 @@ interface InputProps {
   subtitle: string;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenant: GetAppConfigurationChildProps;
-  authUser: GetAuthUserChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
 const SharingModalContent = ({
   postId,
   postType,
-  localize,
-  locale,
-  intl: { formatMessage },
   className,
-  authUser,
   title,
   subtitle,
-}: Props & WrappedComponentProps & InjectedLocalized) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const initiativeId = postType === 'initiative' && postId ? postId : undefined;
   const ideaId = postType === 'idea' && postId ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -76,6 +59,9 @@ const SharingModalContent = ({
     idea?.data.relationships.project.data.id
   );
   const { data: phases } = usePhases(idea?.data.relationships.project.data.id);
+  const locale = useLocale();
+  const { data: authUser } = useAuthUser();
+  const localize = useLocalize();
 
   useEffect(() => {
     trackEventByName(tracks.sharingModalOpened.name, {
@@ -88,12 +74,12 @@ const SharingModalContent = ({
     let postTitle: string | null = null;
     let postUrl: string | null = null;
 
-    if (postType === 'idea' && !isNilOrError(idea)) {
+    if (postType === 'idea' && idea) {
       postTitle = localize(idea.data.attributes.title_multiloc);
       postUrl = `${location.origin}/${locale}/${postType}s/${idea.data.attributes.slug}`;
     }
 
-    if (postType === 'initiative' && !isNilOrError(initiative)) {
+    if (postType === 'initiative' && initiative) {
       postTitle = localize(initiative.data.attributes.title_multiloc);
       postUrl = `${location.origin}/${locale}/${postType}s/${initiative.data.attributes.slug}`;
     }
@@ -159,8 +145,9 @@ const SharingModalContent = ({
     getMessages();
 
   if (
-    !isNilOrError(authUser) &&
-    postUrl &&
+    authUser &&
+    typeof postUrl === 'string' &&
+    typeof postTitle === 'string' &&
     emailSharingBody &&
     emailSharingSubject &&
     whatsAppMessage
@@ -208,7 +195,7 @@ const SharingModalContent = ({
           utmParams={{
             source: `share_${postType}`,
             campaign: `${postType}flow`,
-            content: authUser.id,
+            content: authUser.data.id,
           }}
         />
       </Box>
@@ -222,18 +209,4 @@ const SharingModalContent = ({
   );
 };
 
-const SharingModalContentWithHoCs = injectIntl(localize(SharingModalContent));
-
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  tenant: <GetAppConfiguration />,
-  authUser: <GetAuthUser />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <SharingModalContentWithHoCs {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+export default SharingModalContent;

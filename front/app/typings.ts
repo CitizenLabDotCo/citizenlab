@@ -5,10 +5,7 @@ import {
   appLocalePairs,
 } from 'containers/App/constants';
 import { TableCellProps } from 'semantic-ui-react';
-import {
-  TAppConfigurationSetting,
-  TAppConfigurationSettingWithEnabled,
-} from 'api/app_configuration/types';
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
 import { WrappedComponentProps } from 'react-intl';
 
 declare global {
@@ -54,7 +51,7 @@ export interface ITab {
   label: string;
   url: string;
   active?: boolean | ((pathname: string) => boolean);
-  feature?: TAppConfigurationSettingWithEnabled;
+  feature?: TAppConfigurationSetting;
   statusLabel?: string;
 }
 

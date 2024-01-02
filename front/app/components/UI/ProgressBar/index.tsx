@@ -26,7 +26,6 @@ const ProgressBarInner: any = styled.div<{ progress: number; color: string }>`
 `;
 
 interface Props {
-  /** Number between 0 and 1 */
   progress: number;
   color: string;
   bgColor: string;
@@ -58,7 +57,7 @@ const ProgressBar = ({
         background={bgShaded === true ? `url("${warningPattern}")` : bgColor}
       >
         <ProgressBarInner
-          progress={progress}
+          progress={progress > 1 ? 1 : progress}
           className={visible ? 'visible' : ''}
           color={color}
         />

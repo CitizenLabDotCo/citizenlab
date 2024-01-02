@@ -9,7 +9,7 @@ import {
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
-import { Box, Title, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
 import Outlet from 'components/Outlet';
 
@@ -84,12 +84,7 @@ const Settings = () => {
             width="100%"
             pr="24px"
           >
-            <Box display="flex">
-              <GoBackButton onClick={goBack} showGoBackText={false} />
-              <Title color="primary" variant="h4" my="0px" ml="8px">
-                {formatMessage(messages.back)}
-              </Title>
-            </Box>
+            <GoBackButton onClick={goBack} customMessage={messages.back} />
           </Box>
         </NavigationTabs>
         <Box mt="58px">

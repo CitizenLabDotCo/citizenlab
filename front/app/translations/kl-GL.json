@@ -1470,7 +1470,6 @@
   "app.containers.app.navbar.myProfile": "Profilera",
   "app.containers.app.navbar.search": "Ujaruk",
   "app.containers.app.navbar.signOut": "Anigit",
-  "app.containers.app.navbar.signUp": "Nalunaarsorit",
   "app.containers.eventspage.errorWhenFetchingEvents": "Pisussat saqqummersinniarneranni kukkuneqarpoq. Qupperneq immiuteqqiuk.",
   "app.containers.eventspage.eventsPageDescription": "Pisussat attaveqatigiittarfimmi {orgName} nassiunneqarsimasut tamaasa saqqummersikkit.",
   "app.containers.eventspage.eventsPageTitle": "Pisimasut",

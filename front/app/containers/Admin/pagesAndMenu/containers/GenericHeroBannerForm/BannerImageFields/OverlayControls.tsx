@@ -51,6 +51,8 @@ interface Props {
   ) => void;
 }
 
+const defaultOverlayOpacity = 90;
+
 const OverlayControls = ({
   bannerOverlayOpacity,
   bannerOverlayColor,
@@ -67,7 +69,7 @@ const OverlayControls = ({
       onOverlayChange(null, null);
     } else {
       onOverlayChange(
-        bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity,
+        bannerOverlayOpacity || defaultOverlayOpacity,
         bannerOverlayColor || theme.colors.tenantPrimary
       );
     }
@@ -82,10 +84,7 @@ const OverlayControls = ({
   };
 
   const handleOverlayColorOnChange = (color: Props['bannerOverlayColor']) => {
-    onOverlayChange(
-      bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity,
-      color
-    );
+    onOverlayChange(bannerOverlayOpacity || defaultOverlayOpacity, color);
   };
 
   const debounceHandleOverlayOpacityOnChange = debounce(

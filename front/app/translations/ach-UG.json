@@ -1600,7 +1600,6 @@
   "app.containers.app.navbar.search": "crwdns215712:0crwdne215712:0",
   "app.containers.app.navbar.showFullMenu": "crwdns1368382:0crwdne1368382:0",
   "app.containers.app.navbar.signOut": "crwdns215716:0crwdne215716:0",
-  "app.containers.app.navbar.signUp": "crwdns215718:0crwdne215718:0",
   "app.containers.eventspage.errorWhenFetchingEvents": "crwdns215720:0crwdne215720:0",
   "app.containers.eventspage.events": "crwdns953657:0crwdne953657:0",
   "app.containers.eventspage.eventsPageDescription": "crwdns215722:0{orgName}crwdne215722:0",

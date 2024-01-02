@@ -1,7 +1,7 @@
 import 'focus-visible';
 import { css } from 'styled-components';
 import { darken, transparentize } from 'polished';
-import { get, isNil } from 'lodash-es';
+import { get } from 'lodash-es';
 import { isNilOrError } from './helperUtils';
 import { InputSize } from './typings';
 
@@ -429,8 +429,6 @@ export interface MainThemeProps extends StylingConstsType {
   fontSizes: {
     [key in FontSizesType]: string;
   };
-  signedOutHeaderOverlayOpacity: number;
-  signedInHeaderOverlayOpacity: number;
   isRtl: boolean;
 }
 
@@ -441,16 +439,6 @@ export function getTheme(tenant: any = null): MainThemeProps {
     tenant,
     'data.attributes.style.customFontName',
     'Public Sans'
-  );
-  // number between 0 and 100, inclusive
-  const signedOutHeaderOverlayOpacity = get(
-    tenant,
-    'data.attributes.style.signedOutHeaderOverlayOpacity'
-  );
-  // number between 0 and 100, inclusive
-  const signedInHeaderOverlayOpacity = get(
-    tenant,
-    'data.attributes.style.signedInHeaderOverlayOpacity'
   );
 
   return {
@@ -463,12 +451,6 @@ export function getTheme(tenant: any = null): MainThemeProps {
     fontFamily,
     fontSizes,
     ...get(tenant, 'data.attributes.style'),
-    signedOutHeaderOverlayOpacity: !isNil(signedOutHeaderOverlayOpacity)
-      ? signedOutHeaderOverlayOpacity
-      : 90,
-    signedInHeaderOverlayOpacity: !isNil(signedInHeaderOverlayOpacity)
-      ? signedInHeaderOverlayOpacity
-      : 90,
     ...stylingConsts,
   };
 }
