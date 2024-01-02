@@ -14,6 +14,7 @@ CL2_SUPPORTED_LOCALES = %i[
   de-DE
   el-GR
   en-CA
+  cy-GB
   en-GB
   es-CL
   es-ES

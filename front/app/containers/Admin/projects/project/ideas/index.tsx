@@ -61,7 +61,7 @@ const AdminProjectIdeas = () => {
             {importPrintedFormsEnabled && (
               <Button
                 width="auto"
-                linkTo={`/admin/projects/${projectId}/offline-inputs/${phaseId}`}
+                linkTo={`/admin/projects/${projectId}/phases/${phaseId}/offline-inputs`}
                 icon="page"
                 buttonStyle="secondary"
               >

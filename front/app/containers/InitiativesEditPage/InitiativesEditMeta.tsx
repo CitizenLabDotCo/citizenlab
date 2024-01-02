@@ -1,71 +1,43 @@
 // libraries
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { adopt } from 'react-adopt';
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import useAuthUser from 'api/me/useAuthUser';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-interface InputProps {}
+const InitiativesEditMeta = () => {
+  const tenantLocales = useAppConfigurationLocales();
+  const { data: authUser } = useAuthUser();
+  const { formatMessage } = useIntl();
+  const initiativesIndexTitle = formatMessage(messages.metaTitle);
+  const initiativesIndexDescription = formatMessage(messages.metaDescription);
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  tenantLocales: GetAppConfigurationLocalesChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const InitiativesNewMeta = React.memo<Props & WrappedComponentProps>(
-  ({ intl, authUser, tenantLocales }) => {
-    const { formatMessage } = intl;
-    const initiativesIndexTitle = formatMessage(messages.metaTitle);
-    const initiativesIndexDescription = formatMessage(messages.metaDescription);
-
-    return (
-      <Helmet>
-        <title>
-          {`
+  return (
+    <Helmet>
+      <title>
+        {`
           ${
-            authUser && authUser.attributes.unread_notifications
-              ? `(${authUser.attributes.unread_notifications}) `
+            authUser && authUser.data.attributes.unread_notifications
+              ? `(${authUser.data.attributes.unread_notifications}) `
               : ''
           }
           ${initiativesIndexTitle}`}
-        </title>
-        {getAlternateLinks(tenantLocales)}
-        {getCanonicalLink()}
-        <meta name="title" content={initiativesIndexTitle} />
-        <meta name="description" content={initiativesIndexDescription} />
-        <meta property="og:title" content={initiativesIndexTitle} />
-        <meta property="og:description" content={initiativesIndexDescription} />
-      </Helmet>
-    );
-  }
-);
+      </title>
+      {getAlternateLinks(tenantLocales)}
+      {getCanonicalLink()}
+      <meta name="title" content={initiativesIndexTitle} />
+      <meta name="description" content={initiativesIndexDescription} />
+      <meta property="og:title" content={initiativesIndexTitle} />
+      <meta property="og:description" content={initiativesIndexDescription} />
+    </Helmet>
+  );
+};
 
-const InitiativesNewMetaWithHoc = injectIntl(InitiativesNewMeta);
-
-const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetAppConfigurationLocales />,
-  authUser: <GetAuthUser />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => (
-      <InitiativesNewMetaWithHoc {...inputProps} {...dataprops} />
-    )}
-  </Data>
-);
+export default InitiativesEditMeta;

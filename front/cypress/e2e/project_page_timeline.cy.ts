@@ -167,7 +167,10 @@ describe('New timeline project', () => {
   });
 
   it('shows the previous phase', () => {
-    cy.get('.e2e-previous-phase').click();
+    cy.intercept(`**/phases/**`).as('phaseRequests');
+    cy.get('.e2e-previous-phase').should('exist');
+    cy.get('.e2e-previous-phase').click({ force: true });
+    cy.wait('@phaseRequests');
     cy.get('.e2e-previous-phase').should('have.attr', 'disabled');
 
     // shows the current phase in the timeline as active, with its title
@@ -184,7 +187,7 @@ describe('New timeline project', () => {
     cy.intercept(`**/phases/**`).as('phaseRequests');
     // go to the next (and last) phase
     cy.get('.e2e-next-phase').should('exist');
-    cy.get('.e2e-next-phase').click();
+    cy.get('.e2e-next-phase').click({ force: true });
     cy.wait('@phaseRequests');
     // verify it's not possible to go to a next phase
     // and this is our last phase
@@ -204,6 +207,8 @@ describe('New timeline project', () => {
   });
 
   it('correctly handles phaseNumber URL parameter', () => {
+    cy.intercept(`**/phases/**`).as('phaseRequests');
+
     const pathWithLocale = `/en/projects/${projectSlug}`;
 
     cy.location('pathname').should('eq', pathWithLocale);
@@ -215,6 +220,7 @@ describe('New timeline project', () => {
 
     // go to next (current) phase
     cy.get('.e2e-next-phase').click();
+    cy.wait('@phaseRequests');
 
     cy.location('pathname').should('eq', pathWithLocale);
 
@@ -222,6 +228,7 @@ describe('New timeline project', () => {
 
     // go to next (last) phase
     cy.get('.e2e-next-phase').click();
+    cy.wait('@phaseRequests');
 
     cy.location('pathname').should('eq', `${pathWithLocale}/3`);
 

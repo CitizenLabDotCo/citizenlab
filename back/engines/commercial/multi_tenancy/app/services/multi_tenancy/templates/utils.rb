@@ -94,6 +94,8 @@ module MultiTenancy
         release_prefix == 'blue' ? 'green' : 'blue'
       end
 
+      # @param [String] prefix The new release prefix (the "folder" that contains the
+      #   templates to be released)
       def release_templates(prefix = nil)
         prefix ||= test_prefix
         raise 'undefined release prefix' unless prefix
@@ -110,6 +112,15 @@ module MultiTenancy
 
       def template_bucket
         @template_bucket ||= raise ArgumentError, 'template_bucket parameter has not been specified'
+      end
+
+      # Removes all the file in the template bucket that start with the test prefix.
+      def clear_test_templates
+        Aws::S3::Utils.new.delete_objects(
+          template_bucket,
+          @s3_client,
+          prefix: test_prefix
+        )
       end
 
       class << self

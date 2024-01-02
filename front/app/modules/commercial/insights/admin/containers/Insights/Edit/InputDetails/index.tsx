@@ -252,7 +252,7 @@ const InputDetails = ({
             </Label>
             <Creatable
               inputId="categorySelect"
-              styles={selectStyles}
+              styles={selectStyles()}
               placeholder={formatMessage(messages.addCategoryPlaceholder)}
               options={options}
               onCreateOption={handleCreate}
