@@ -118,7 +118,7 @@ describe ContentBuilder::LayoutImageService do
         }
       }
 
-      imageable = build(:home_page, craftjs_json: craftjs_json)
+      imageable = build(:homepage_layout, craftjs_json: craftjs_json)
       output = service.swap_data_images imageable.craftjs_json
       expect(output).to eq expected_json
     end
@@ -272,7 +272,7 @@ describe ContentBuilder::LayoutImageService do
         }
       }
 
-      imageable = build(:home_page, craftjs_json: craftjs_json)
+      imageable = build(:homepage_layout, craftjs_json: craftjs_json)
       output = service.render_data_images imageable.craftjs_json
       expect(output).to eq expected_json
     end
@@ -325,7 +325,7 @@ describe ContentBuilder::LayoutImageService do
         }
       }
 
-      imageable = build(:home_page, craftjs_json: craftjs_json)
+      imageable = build(:homepage_layout, craftjs_json: craftjs_json)
       output = service.render_data_images imageable.craftjs_json
       expect(output).to eq craftjs_json
     end
