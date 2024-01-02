@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// services
-
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useTopics from 'api/topics/useTopics';
@@ -192,9 +190,8 @@ const Header = ({
 
   if (isNilOrError(appConfiguration)) return null;
 
-  const customCurrentlyWorkingOn = currentlyWorkingOnText;
   const fallback = formatMessage(messages.currentlyWorkingOn);
-  const currentlyWorkingOn = localize(customCurrentlyWorkingOn, {
+  const currentlyWorkingOn = localize(currentlyWorkingOnText, {
     fallback,
   });
 
