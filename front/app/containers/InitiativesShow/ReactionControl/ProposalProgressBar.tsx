@@ -31,9 +31,7 @@ const ProposalProgressBar = ({
   return (
     <div className={className}>
       <StyledProgressBar
-        progress={
-          reactionCount > reactionLimit ? 1 : reactionCount / reactionLimit
-        } // If the limit is surpassed, set progress bar to 100% to prevent overflow
+        progress={reactionCount / reactionLimit}
         color={barColor || theme.colors.tenantText}
         bgColor={colors.grey200}
         bgShaded={bgShaded}

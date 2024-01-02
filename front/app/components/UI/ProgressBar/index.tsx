@@ -58,7 +58,7 @@ const ProgressBar = ({
         background={bgShaded === true ? `url("${warningPattern}")` : bgColor}
       >
         <ProgressBarInner
-          progress={progress}
+          progress={progress > 1 ? 1 : progress}
           className={visible ? 'visible' : ''}
           color={color}
         />
