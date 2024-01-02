@@ -95,7 +95,7 @@
     "leaflet.markercluster": "1.5.3",
     "lodash-es": "4.17.21",
     "moment": "2.29.4",
-    "moment-timezone": "0.5.39",
+    "moment-timezone": "0.5.44",
     "path-to-regexp": "6.2.1",
     "polished": "4.2.2",
     "posthog-js": "^1.57.2",
