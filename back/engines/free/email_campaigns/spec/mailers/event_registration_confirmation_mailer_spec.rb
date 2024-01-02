@@ -39,7 +39,6 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
       expect(mail.from).to all(end_with('@citizenlab.co'))
     end
 
-    Flaky spec:
     it 'has the correct ics attachment' do
       freeze_time do
         expected_content = Events::IcsGenerator
