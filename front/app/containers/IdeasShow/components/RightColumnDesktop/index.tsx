@@ -51,8 +51,9 @@ const RightColumnDesktop = ({
   const phase = getCurrentPhase(phases?.data);
   const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
 
-  const ideaIsInParticipationContext =
-    phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
+  const ideaIsInParticipationContext = phase
+    ? isIdeaInParticipationContext(idea, phase)
+    : undefined;
 
   const commentingEnabled =
     !!idea?.data.attributes.action_descriptor.commenting_idea.enabled;
@@ -96,32 +97,24 @@ const RightColumnDesktop = ({
             background={colors.background}
             mb="12px"
           >
-            {(ideaIsInParticipationContext || commentingEnabled) && (
-              <>
-                {showReactionControl && (
-                  <Box pb="23px" mb="23px">
-                    <ReactionControl
-                      styleType="shadow"
-                      ideaId={ideaId}
-                      size="4"
-                    />
-                  </Box>
-                )}
-                <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-                  {phase &&
-                    ideaIsInParticipationContext &&
-                    votingConfig?.getIdeaPageVoteInput({
-                      ideaId,
-                      phase,
-                      compact: false,
-                    })}
-                </Box>
-                {commentingEnabled && (
-                  <Box mb="10px">
-                    <GoToCommentsButton />
-                  </Box>
-                )}
-              </>
+            {showReactionControl && (
+              <Box pb="23px" mb="23px">
+                <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
+              </Box>
+            )}
+            {phase && ideaIsInParticipationContext && (
+              <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
+                {votingConfig?.getIdeaPageVoteInput({
+                  ideaId,
+                  phase,
+                  compact: false,
+                })}
+              </Box>
+            )}
+            {commentingEnabled && (
+              <Box mb="10px">
+                <GoToCommentsButton />
+              </Box>
             )}
             <FollowUnfollow
               followableType="ideas"
