@@ -1,1 +1,1 @@
-export default () => jest.fn((multiloc) => multiloc['en']);
+export default () => jest.fn((multiloc) => multiloc?.en || '');

@@ -45,15 +45,15 @@ interface Props {
   bannerOverlayOpacity: number | null;
   bannerOverlayColor: string;
   onOverlayChange: (opacity: number | null, color: string | null) => void;
-  variant: 'signedIn' | 'signedOut';
   noOpacitySlider?: boolean;
 }
+
+const defaultOpacity = 0.9;
 
 const OverlayControls = ({
   bannerOverlayOpacity,
   bannerOverlayColor,
   onOverlayChange,
-  variant,
   noOpacitySlider,
 }: Props) => {
   const [overlayEnabled, setOverlayEnabled] = useState(
@@ -67,15 +67,8 @@ const OverlayControls = ({
       onOverlayChange(0, theme.colors.tenantPrimary);
     } else {
       onOverlayChange(
-        bannerOverlayOpacity ||
-          (variant === 'signedOut'
-            ? theme.signedOutHeaderOverlayOpacity
-            : theme.signedInHeaderOverlayOpacity),
-        bannerOverlayColor ||
-          (variant === 'signedIn'
-            ? theme.colors.tenantPrimary
-            : theme.signedInHeaderOverlayColor) ||
-          null
+        bannerOverlayOpacity || defaultOpacity,
+        bannerOverlayColor || theme.colors.tenantPrimary
       );
     }
 
@@ -89,13 +82,7 @@ const OverlayControls = ({
   };
 
   const handleOverlayColorOnChange = (color: Props['bannerOverlayColor']) => {
-    onOverlayChange(
-      bannerOverlayOpacity ||
-        (variant === 'signedOut'
-          ? theme.signedOutHeaderOverlayOpacity
-          : theme.signedInHeaderOverlayOpacity),
-      color
-    );
+    onOverlayChange(bannerOverlayOpacity || defaultOpacity, color);
   };
 
   const debounceHandleOverlayOpacityOnChange = debounce(
