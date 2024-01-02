@@ -30,11 +30,7 @@ describe('<LateralScrollControls />', () => {
       </LateralScrollControls>
     );
 
-    expect(
-      screen.getByTestId('event-previews-scroll-left')
-    ).toBeInTheDocument();
-    expect(
-      screen.getByTestId('event-previews-scroll-right')
-    ).toBeInTheDocument();
+    expect(screen.getByTestId('scroll-left-arrow')).toBeInTheDocument();
+    expect(screen.getByTestId('scroll-right-arrow')).toBeInTheDocument();
   });
 });
