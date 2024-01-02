@@ -27,6 +27,7 @@ const ProposalProgressBar = ({
   className,
 }: Props) => {
   const theme = useTheme();
+
   return (
     <div className={className}>
       <StyledProgressBar

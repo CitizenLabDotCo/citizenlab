@@ -14,35 +14,33 @@ resource 'Graph data units' do
     @gender = 'female'
 
     participation_date = Date.new(2022, 9, 1)
-    craftjs_jsonmultiloc = {
-      'en' => {
-        'ROOT' => { 'type' => 'div', 'nodes' => ['gJxirq8X7m'], 'props' => { 'id' => 'e2e-content-builder-frame' }, 'custom' => {}, 'hidden' => false, 'isCanvas' => true, 'displayName' => 'div', 'linkedNodes' => {} },
-        'gJxirq8X7m' => {
-          'type' => { 'resolvedName' => 'GenderWidget' },
-          'nodes' => [],
-          'props' => {
-            'endAt' => (participation_date + 1.year).to_time.iso8601,
-            'title' => 'Users by gender',
-            'startAt' => (participation_date - 1.year).to_time.iso8601,
-            'projectId' => project.id
-          },
-          'custom' => {
-            'title' => { 'id' => 'app.containers.admin.ReportBuilder.charts.usersByGender', 'defaultMessage' => 'Users by gender' },
-            'noPointerEvents' => true
-          },
-          'hidden' => false,
-          'parent' => 'ROOT',
-          'isCanvas' => false,
-          'displayName' => 'GenderWidget',
-          'linkedNodes' => {}
-        }
+    craftjs_json = {
+      'ROOT' => { 'type' => 'div', 'nodes' => ['gJxirq8X7m'], 'props' => { 'id' => 'e2e-content-builder-frame' }, 'custom' => {}, 'hidden' => false, 'isCanvas' => true, 'displayName' => 'div', 'linkedNodes' => {} },
+      'gJxirq8X7m' => {
+        'type' => { 'resolvedName' => 'GenderWidget' },
+        'nodes' => [],
+        'props' => {
+          'endAt' => (participation_date + 1.year).to_time.iso8601,
+          'title' => 'Users by gender',
+          'startAt' => (participation_date - 1.year).to_time.iso8601,
+          'projectId' => project.id
+        },
+        'custom' => {
+          'title' => { 'id' => 'app.containers.admin.ReportBuilder.charts.usersByGender', 'defaultMessage' => 'Users by gender' },
+          'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => 'ROOT',
+        'isCanvas' => false,
+        'displayName' => 'GenderWidget',
+        'linkedNodes' => {}
       }
     }
     phase = create(:phase,
       start_at: Time.zone.today - 2.days,
       end_at: Time.zone.today + 2.days,
       project: project)
-    @report = create(:report, layout: build(:layout, craftjs_jsonmultiloc: craftjs_jsonmultiloc), phase: phase)
+    @report = create(:report, layout: build(:layout, craftjs_json: craftjs_json), phase: phase)
 
     create(:dimension_date, date: participation_date)
     create(:dimension_type, name: 'idea', parent: 'post')
