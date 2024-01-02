@@ -2,7 +2,7 @@ require 'rubocop_spec_helper'
 
 require './lib/rubocop/cop/forbidden_app_configuration_method'
 
-RSpec.describe RuboCop::Cop::ForbiddenAppConfigurationMethod, :config do
+RSpec.describe Rubocop::Cop::ForbiddenAppConfigurationMethod, :config do
   it 'registers an offense when using `.find`' do
     expect_offense(<<~RUBY)
       AppConfiguration.find
