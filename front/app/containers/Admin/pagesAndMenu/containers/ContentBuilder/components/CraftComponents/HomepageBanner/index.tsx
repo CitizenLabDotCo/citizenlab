@@ -24,12 +24,7 @@ import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
 import messages from './messages';
 import SignedInHeader from 'containers/HomePage/SignedInHeader';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import {
-  CTASignedInType,
-  CTASignedOutType,
-  THomepageBannerLayout,
-} from 'api/home_page/types';
-import { Multiloc, UploadFile } from 'typings';
+import { ImageSizes, Multiloc, UploadFile } from 'typings';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isValidUrl } from 'utils/validate';
 import {
@@ -47,6 +42,30 @@ import useAuthUser from 'api/me/useAuthUser';
 import Fragment from 'components/Fragment';
 import useLocale from 'hooks/useLocale';
 
+export type THomepageBannerLayout =
+  THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
+
+export interface THomepageBannerLayoutMap {
+  full_width_banner_layout: 'full_width_banner_layout';
+  two_column_layout: 'two_column_layout';
+  two_row_layout: 'two_row_layout';
+  fixed_ratio_layout: 'fixed_ratio_layout';
+}
+
+interface CTASignedInTypeMap {
+  customized_button: 'customized_button';
+  no_button: 'no_button';
+}
+
+export type CTASignedInType = CTASignedInTypeMap[keyof CTASignedInTypeMap];
+
+interface CTASignedOutTypeMap {
+  sign_up_button: 'sign_up_button';
+  customized_button: 'customized_button';
+  no_button: 'no_button';
+}
+export type CTASignedOutType = CTASignedOutTypeMap[keyof CTASignedOutTypeMap];
+
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
   'no_button',
@@ -58,9 +77,8 @@ const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
   'customized_button',
 ];
 
-export interface IHomepageSettingsAttributes {
+export interface IHomepageBannerSettings {
   banner_layout: THomepageBannerLayout;
-
   // signed_out
   banner_signed_out_header_multiloc: Multiloc;
   banner_signed_out_subheader_multiloc: Multiloc;
@@ -81,12 +99,13 @@ export interface IHomepageSettingsAttributes {
   banner_cta_signed_in_text_multiloc: Multiloc;
   banner_cta_signed_in_type: CTASignedInType;
   banner_cta_signed_in_url: string | null;
+  header_bg?: ImageSizes | null;
 }
 
 type ErrorType = 'banner_cta_signed_out_url' | 'banner_cta_signed_in_url';
 
 type Props = {
-  homepageSettings: IHomepageSettingsAttributes;
+  homepageSettings: IHomepageBannerSettings;
   image?: {
     dataCode?: string;
     imageUrl?: string;
@@ -422,7 +441,6 @@ const HomepageBannerSettings = () => {
           </Text>
           {homepageSettings.banner_layout !== 'two_row_layout' && (
             <OverlayControls
-              variant="signedOut"
               bannerOverlayColor={
                 homepageSettings.banner_signed_out_header_overlay_color
               }
@@ -547,7 +565,6 @@ const HomepageBannerSettings = () => {
             {formatMessage(messages.signedInDescription)}
           </Text>
           <OverlayControls
-            variant="signedIn"
             noOpacitySlider={
               homepageSettings.banner_layout === 'fixed_ratio_layout'
             }

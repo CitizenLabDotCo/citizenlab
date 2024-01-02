@@ -1,15 +1,9 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-
-// resources
-import GetAppConfigurationLocales, {
-  GetAppConfigurationLocalesChildProps,
-} from 'resources/GetAppConfigurationLocales';
+import { Mode } from './StatusChangeFormWrapper';
 
 // intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // components
@@ -33,6 +27,8 @@ import styled from 'styled-components';
 import { Multiloc, Locale, MultilocFormValues } from 'typings';
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
 
 const StyledSection = styled(Section)``;
 
@@ -55,7 +51,7 @@ export interface FormValues extends MultilocFormValues {
   body_multiloc: Multiloc;
 }
 
-interface InputProps {
+interface Props {
   loading: boolean;
   error: boolean;
   newOfficialFeedback: FormValues;
@@ -64,42 +60,30 @@ interface InputProps {
     | IIdeaOfficialFeedbackData
     | IInitiativeOfficialFeedbackData
     | null;
-  onChangeMode: (value) => void;
+  onChangeMode: (value: Mode) => void;
   onChangeBody: (value: Multiloc) => void;
   onChangeAuthor: (value: Multiloc) => void;
   submit: () => void;
   valid: boolean;
 }
 
-interface DataProps {
-  tenantLocales: GetAppConfigurationLocalesChildProps;
-}
-
-interface Props extends DataProps, InputProps {}
-
-interface State {
-  selectedLocale: Locale;
-}
-
-class StatusChangeForm extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      selectedLocale: props.intl.locale as Locale,
-    };
-  }
-
-  renderFullForm = () => {
-    const {
-      latestOfficialFeedback,
-      mode,
-      onChangeMode,
-      intl: { formatMessage },
-    } = this.props;
-
+const StatusChangeForm = ({
+  latestOfficialFeedback,
+  submit,
+  loading,
+  error,
+  valid,
+  mode,
+  newOfficialFeedback,
+  onChangeAuthor,
+  onChangeBody,
+  onChangeMode,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const [selectedLocale, setLocale] = React.useState<Locale>(locale);
+  const tenantLocales = useAppConfigurationLocales();
+  const renderFullForm = () => {
     if (!latestOfficialFeedback) return null;
 
     return (
@@ -115,7 +99,7 @@ class StatusChangeForm extends PureComponent<
           />
         </Box>
 
-        {mode === 'new' && this.renderFeedbackForm()}
+        {mode === 'new' && renderFeedbackForm()}
 
         <Box mt="12px">
           <Radio
@@ -138,41 +122,34 @@ class StatusChangeForm extends PureComponent<
     );
   };
 
-  onLocaleChange = (locale: Locale) => {
-    this.setState({ selectedLocale: locale });
+  const onLocaleChange = (locale: Locale) => {
+    setLocale(locale);
   };
 
-  handleBodyOnChange = (value: string, locale: Locale | undefined) => {
-    if (locale && this.props.onChangeBody) {
-      this.props.onChangeBody({
-        ...this.props.newOfficialFeedback.body_multiloc,
+  const handleBodyOnChange = (value: string, locale: Locale | undefined) => {
+    if (locale && onChangeBody) {
+      onChangeBody({
+        ...newOfficialFeedback.body_multiloc,
         [locale]: value,
       });
     }
   };
 
-  handleAuthorOnChange = (value: string, locale: Locale | undefined) => {
-    if (locale && this.props.onChangeAuthor) {
-      this.props.onChangeAuthor({
-        ...this.props.newOfficialFeedback.author_multiloc,
+  const handleAuthorOnChange = (value: string, locale: Locale | undefined) => {
+    if (locale && onChangeAuthor) {
+      onChangeAuthor({
+        ...newOfficialFeedback.author_multiloc,
         [locale]: value,
       });
     }
   };
 
-  renderFeedbackForm = () => {
-    const {
-      intl: { formatMessage },
-      newOfficialFeedback,
-      tenantLocales,
-    } = this.props;
-    const { selectedLocale } = this.state;
-
+  const renderFeedbackForm = () => {
     if (!isNilOrError(tenantLocales)) {
       return (
         <StyledSection>
           <StyledLocaleSwitcher
-            onSelectedLocaleChange={this.onLocaleChange}
+            onSelectedLocaleChange={onLocaleChange}
             locales={tenantLocales}
             selectedLocale={selectedLocale}
             values={newOfficialFeedback}
@@ -187,7 +164,7 @@ class StatusChangeForm extends PureComponent<
             name="body_multiloc"
             value={newOfficialFeedback.body_multiloc?.[selectedLocale] || ''}
             locale={selectedLocale}
-            onChange={this.handleBodyOnChange}
+            onChange={handleBodyOnChange}
           />
 
           <StyledInput
@@ -196,7 +173,7 @@ class StatusChangeForm extends PureComponent<
             locale={selectedLocale}
             placeholder={formatMessage(messages.feedbackAuthorPlaceholder)}
             ariaLabel={formatMessage(messages.officialUpdateAuthor)}
-            onChange={this.handleAuthorOnChange}
+            onChange={handleAuthorOnChange}
           />
         </StyledSection>
       );
@@ -205,47 +182,22 @@ class StatusChangeForm extends PureComponent<
     return null;
   };
 
-  render() {
-    const {
-      latestOfficialFeedback,
-      intl: { formatMessage },
-      submit,
-      loading,
-      error,
-      valid,
-    } = this.props;
+  return (
+    <>
+      {latestOfficialFeedback ? renderFullForm() : renderFeedbackForm()}
+      <ChangeStatusButton
+        processing={loading}
+        disabled={!valid}
+        onClick={submit}
+        bgColor={colors.teal}
+      >
+        <FormattedMessage {...messages.statusChangeSave} />
+      </ChangeStatusButton>
+      {error && (
+        <Error text={formatMessage(messages.statusChangeGenericError)} />
+      )}
+    </>
+  );
+};
 
-    return (
-      <>
-        {latestOfficialFeedback
-          ? this.renderFullForm()
-          : this.renderFeedbackForm()}
-        <ChangeStatusButton
-          processing={loading}
-          disabled={!valid}
-          onClick={submit}
-          bgColor={colors.teal}
-        >
-          <FormattedMessage {...messages.statusChangeSave} />
-        </ChangeStatusButton>
-        {error && (
-          <Error text={formatMessage(messages.statusChangeGenericError)} />
-        )}
-      </>
-    );
-  }
-}
-
-const StatusChangeFormWithHoC = injectIntl(StatusChangeForm);
-
-const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetAppConfigurationLocales />,
-});
-
-const StatusChangeFormWithData = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <StatusChangeFormWithHoC {...dataProps} {...inputProps} />}
-  </Data>
-);
-
-export default StatusChangeFormWithData;
+export default StatusChangeForm;

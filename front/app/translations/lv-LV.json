@@ -1600,7 +1600,6 @@
   "app.containers.app.navbar.search": "Meklēt",
   "app.containers.app.navbar.showFullMenu": "Rādīt pilnu izvēlni",
   "app.containers.app.navbar.signOut": "Izrakstīties",
-  "app.containers.app.navbar.signUp": "Reģistrēties",
   "app.containers.eventspage.errorWhenFetchingEvents": "Ielādējot notikumus, radās kļūda. Lūdzu, mēģiniet pārlādēt lapu.",
   "app.containers.eventspage.events": "Notikumi",
   "app.containers.eventspage.eventsPageDescription": "Rādīt visus {orgName} platformā publicētos notikumus.",

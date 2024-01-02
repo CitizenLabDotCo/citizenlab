@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Image, Box, media, isRtl } from '@citizenlab/cl2-component-library';
-import { IHomepageSettingsAttributes } from 'api/home_page/types';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 import { isNumber } from 'lodash-es';
 
 const HeaderImageContainer = styled.div`
@@ -40,7 +40,7 @@ const StyledImage = styled(Image)`
 const HeaderImage = ({
   homepageSettings,
 }: {
-  homepageSettings: Partial<IHomepageSettingsAttributes>;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }) => {
   const theme = useTheme();
 
@@ -71,7 +71,6 @@ const HeaderImage = ({
             data-cy="e2e-signed-in-header-image-overlay"
             background={
               homepageSettings.banner_signed_in_header_overlay_color ||
-              theme.signedInHeaderOverlayColor ||
               theme.colors.tenantPrimary
             }
             // With this fixed ratio layout, we don't have an image (see above),
@@ -85,7 +84,7 @@ const HeaderImage = ({
                     homepageSettings.banner_signed_in_header_overlay_opacity
                   )
                 ? homepageSettings.banner_signed_in_header_overlay_opacity / 100
-                : theme.signedInHeaderOverlayOpacity / 100
+                : 0.9
             }
             position="absolute"
             top="0"

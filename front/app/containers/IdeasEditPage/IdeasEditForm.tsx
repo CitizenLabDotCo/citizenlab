@@ -31,7 +31,6 @@ import messages from './messages';
 import { getLocationGeojson, getFormValues } from './utils';
 import { omit } from 'lodash-es';
 import { isError, isNilOrError } from 'utils/helperUtils';
-import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { PreviousPathnameContext } from 'context';
@@ -54,8 +53,11 @@ interface FormValues {
   location_point_geojson?: GeoJSON.Point;
   topic_ids?: string[];
 }
+interface Props {
+  ideaId: string;
+}
 
-const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
+const IdeasEditForm = ({ ideaId }: Props) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);

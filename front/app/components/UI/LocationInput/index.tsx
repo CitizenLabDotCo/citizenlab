@@ -90,7 +90,7 @@ const LocationInput = (
     <AsyncSelect
       defaultOptions={defaultOptions}
       loadOptions={promiseOptions}
-      styles={selectStyles}
+      styles={selectStyles()}
       noOptionsMessage={() => formatMessage(messages.noOptions)}
       blurInputOnSelect
       menuShouldScrollIntoView={false}

@@ -10,7 +10,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { media, isRtl, fontSizes } from '@citizenlab/cl2-component-library';
 import OnboardingStep from './OnboardingStep';
 import CTA from './CTA';
-import { IHomepageSettingsAttributes } from 'api/home_page/types';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 
 const HeaderContent = styled.div`
   position: absolute;
@@ -51,7 +51,7 @@ const HeaderContent = styled.div`
 
 interface Props {
   currentOnboardingCampaignName: OnboardingCampaignName;
-  homepageSettings: Partial<IHomepageSettingsAttributes>;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
 const FallbackStep = ({

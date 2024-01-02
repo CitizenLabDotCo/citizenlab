@@ -1600,7 +1600,6 @@
   "app.containers.app.navbar.search": "Search",
   "app.containers.app.navbar.showFullMenu": "Show full menu",
   "app.containers.app.navbar.signOut": "Sign out",
-  "app.containers.app.navbar.signUp": "Sign up",
   "app.containers.eventspage.errorWhenFetchingEvents": "An error occurred while loading events. Please try reloading the page.",
   "app.containers.eventspage.events": "Events",
   "app.containers.eventspage.eventsPageDescription": "Show all events posted on {orgName}'s platform.",
