@@ -96,33 +96,32 @@ const RightColumnDesktop = ({
             background={colors.background}
             mb="12px"
           >
-            {(ideaIsInParticipationContext || commentingEnabled) && (
-              <>
-                {showReactionControl && (
-                  <Box pb="23px" mb="23px">
-                    <ReactionControl
-                      styleType="shadow"
-                      ideaId={ideaId}
-                      size="4"
-                    />
-                  </Box>
-                )}
-                <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-                  {phase &&
-                    ideaIsInParticipationContext &&
-                    votingConfig?.getIdeaPageVoteInput({
-                      ideaId,
-                      phase,
-                      compact: false,
-                    })}
+            <>
+              {showReactionControl && (
+                <Box pb="23px" mb="23px">
+                  <ReactionControl
+                    styleType="shadow"
+                    ideaId={ideaId}
+                    size="4"
+                  />
                 </Box>
-                {commentingEnabled && (
-                  <Box mb="10px">
-                    <GoToCommentsButton />
-                  </Box>
-                )}
-              </>
-            )}
+              )}
+              {phase && ideaIsInParticipationContext && (
+                <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
+                  {votingConfig?.getIdeaPageVoteInput({
+                    ideaId,
+                    phase,
+                    compact: false,
+                  })}
+                </Box>
+              )}
+
+              {commentingEnabled && (
+                <Box mb="10px">
+                  <GoToCommentsButton />
+                </Box>
+              )}
+            </>
             <FollowUnfollow
               followableType="ideas"
               followableId={ideaId}
