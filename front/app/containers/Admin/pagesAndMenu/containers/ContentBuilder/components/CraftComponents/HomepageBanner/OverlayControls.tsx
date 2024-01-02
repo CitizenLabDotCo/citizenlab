@@ -48,6 +48,8 @@ interface Props {
   noOpacitySlider?: boolean;
 }
 
+const defaultOpacity = 0.9;
+
 const OverlayControls = ({
   bannerOverlayOpacity,
   bannerOverlayColor,
@@ -65,7 +67,7 @@ const OverlayControls = ({
       onOverlayChange(0, theme.colors.tenantPrimary);
     } else {
       onOverlayChange(
-        bannerOverlayOpacity || 0.9,
+        bannerOverlayOpacity || defaultOpacity,
         bannerOverlayColor || theme.colors.tenantPrimary
       );
     }
@@ -80,7 +82,7 @@ const OverlayControls = ({
   };
 
   const handleOverlayColorOnChange = (color: Props['bannerOverlayColor']) => {
-    onOverlayChange(bannerOverlayOpacity || 0.9, color);
+    onOverlayChange(bannerOverlayOpacity || defaultOpacity, color);
   };
 
   const debounceHandleOverlayOpacityOnChange = debounce(
