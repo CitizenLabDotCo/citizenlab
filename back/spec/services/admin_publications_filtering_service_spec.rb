@@ -31,7 +31,7 @@ describe AdminPublicationsFilteringService do
     end
 
     # TODO: Cannot seem to get this to pass as base_scope seems to be including draft projects
-    # it 'does not include a parent if all it\'s children are in draft' do
+    # it 'does not include a parent if all its children are in draft' do
     #   expect(result.ids).not_to include(tree_mock.published_parent_with_draft_children.id)
     # end
 
