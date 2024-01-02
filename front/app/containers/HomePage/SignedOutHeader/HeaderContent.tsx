@@ -18,7 +18,7 @@ import messages from '../messages';
 import tracks from '../tracks';
 import CTA from './CTA';
 import { useBreakpoint, media } from '@citizenlab/cl2-component-library';
-import { IHomepageSettingsAttributes } from 'api/home_page/types';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   min-height: 40px;
@@ -32,7 +32,7 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
 interface Props {
   fontColors: 'light' | 'dark';
   align?: TAlign;
-  homepageSettings: Partial<IHomepageSettingsAttributes>;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
 export const getButtonStyle = (fontColors: 'light' | 'dark') => {

@@ -56,9 +56,7 @@ const surveyResultsNodes = {
 
 const surveyResultsLayout = {
   attributes: {
-    craftjs_jsonmultiloc: {
-      en: surveyResultsNodes,
-    },
+    craftjs_json: surveyResultsNodes,
   },
 };
 

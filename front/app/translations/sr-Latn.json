@@ -1600,7 +1600,6 @@
   "app.containers.app.navbar.search": "Pretraga",
   "app.containers.app.navbar.showFullMenu": "Show full menu",
   "app.containers.app.navbar.signOut": "Odjava",
-  "app.containers.app.navbar.signUp": "Registrujte se",
   "app.containers.eventspage.errorWhenFetchingEvents": "Došlo je do greške pri učitavanju događaja. Pokušajte ponovo učitati stranicu.",
   "app.containers.eventspage.events": "Events",
   "app.containers.eventspage.eventsPageDescription": "Prikaži sve događaje objavljene na {orgName} platformi.",

@@ -18,35 +18,19 @@ import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
 } from 'api/custom_pages/types';
-import {
-  IHomepageSettingsAttributes,
-  THomepageBannerLayout,
-} from 'api/home_page/types';
 import ImageInfoTooltip from './ImageInfoTooltip';
 
 export interface Props {
   onAddImage: (newImageBase64: string) => void;
   onRemoveImage: () => void;
   onOverlayChange: (
-    opacity:
-      | IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity']
-      | ICustomPageAttributes['banner_overlay_opacity'],
-    color:
-      | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
-      | ICustomPageAttributes['banner_overlay_color']
+    opacity: ICustomPageAttributes['banner_overlay_opacity'],
+    color: ICustomPageAttributes['banner_overlay_color']
   ) => void;
-  bannerOverlayColor:
-    | IHomepageSettingsAttributes['banner_signed_out_header_overlay_color']
-    | ICustomPageAttributes['banner_overlay_color'];
-  bannerOverlayOpacity:
-    | IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity']
-    | ICustomPageAttributes['banner_overlay_opacity'];
-  bannerLayout:
-    | IHomepageSettingsAttributes['banner_layout']
-    | ICustomPageAttributes['banner_layout'];
-  headerBg:
-    | IHomepageSettingsAttributes['header_bg']
-    | ICustomPageAttributes['header_bg'];
+  bannerOverlayColor: ICustomPageAttributes['banner_overlay_color'];
+  bannerOverlayOpacity: ICustomPageAttributes['banner_overlay_opacity'];
+  bannerLayout: ICustomPageAttributes['banner_layout'];
+  headerBg: ICustomPageAttributes['header_bg'];
 }
 
 export type TLocalHeaderImage = UploadFile | null;
@@ -116,9 +100,9 @@ const BannerImageField = ({
     ? !headerLocalDisplayImage.remote
     : false;
 
-  const showConditions = (bannerLayout: THomepageBannerLayout) => {
+  const showConditions = (bannerLayout: TCustomPageBannerLayout) => {
     const conditions: {
-      [key in THomepageBannerLayout | TCustomPageBannerLayout]: {
+      [key in TCustomPageBannerLayout]: {
         [key in TBannerLayoutComponent]: boolean;
       };
     } = {
