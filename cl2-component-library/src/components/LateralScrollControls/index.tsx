@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
 import Box from '../Box';
 import Button from '../Button';
+import testEnv from '../../utils/testUtils/testEnv';
 
 interface Props {
   containerRef?: React.RefObject<HTMLDivElement>; // Ref of the container with elements which can be laterally scrolled through
@@ -82,6 +83,7 @@ const LateralScrollControls = ({
           p="0px"
           my="auto"
           id="e2e-event-previews-scroll-left"
+          data-testid={testEnv('event-previews-scroll-left')}
         />
       </Box>
       {children}
@@ -99,6 +101,7 @@ const LateralScrollControls = ({
           buttonStyle="text"
           p="0px"
           id="e2e-event-previews-scroll-right"
+          data-testid={testEnv('event-previews-scroll-right')}
         />
       </Box>
     </Box>
