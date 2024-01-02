@@ -11,12 +11,9 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const getDefaultTabId = (tab: string) => `tab-${tab}`;
-export const getDefaultTabPanelId = (tab: string) => `tab-panel-${tab}`;
-
 /*
  * LateralScrollControls:
- * Wraps a container with lateral scroll arrow buttons to scroll left and right.
+ * Wraps a scrollable container with lateral scroll arrow buttons to scroll left and right.
  */
 const LateralScrollControls = ({
   containerRef,
