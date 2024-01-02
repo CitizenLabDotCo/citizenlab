@@ -48,7 +48,8 @@ interface Props {
   noOpacitySlider?: boolean;
 }
 
-const defaultOpacity = 0.9;
+const defaultOpacity = 90;
+const defaultOverlayColor = colors.primary;
 
 const OverlayControls = ({
   bannerOverlayOpacity,
@@ -67,8 +68,8 @@ const OverlayControls = ({
       onOverlayChange(0, theme.colors.tenantPrimary);
     } else {
       onOverlayChange(
-        bannerOverlayOpacity || defaultOpacity,
-        bannerOverlayColor || theme.colors.tenantPrimary
+        defaultOpacity,
+        bannerOverlayColor || theme.colors.tenantPrimary || defaultOverlayColor
       );
     }
 
@@ -78,7 +79,10 @@ const OverlayControls = ({
   const handleOverlayOpacityOnChange = (
     opacity: Props['bannerOverlayOpacity']
   ) => {
-    onOverlayChange(opacity, bannerOverlayColor || theme.colors.tenantPrimary);
+    onOverlayChange(
+      opacity,
+      bannerOverlayColor || theme.colors.tenantPrimary || defaultOverlayColor
+    );
   };
 
   const handleOverlayColorOnChange = (color: Props['bannerOverlayColor']) => {
@@ -121,7 +125,7 @@ const OverlayControls = ({
               id="image-overlay-color"
               label={formatMessage(messages.imageOverlayColor)}
               type="text"
-              value={bannerOverlayColor}
+              value={bannerOverlayColor || defaultOverlayColor}
               onChange={handleOverlayColorOnChange}
             />
           </Box>

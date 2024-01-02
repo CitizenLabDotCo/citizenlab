@@ -225,7 +225,6 @@ describe('Homepage builder', () => {
     cy.intercept('GET', '**/home_pages/content_builder_layouts/homepage').as(
       'getHomePage'
     );
-    cy.intercept('GET', '**/home_page').as('getOriginalHomePage');
     cy.intercept('GET', '**/pages-menu').as('getPages');
     cy.intercept('GET', '**/nav_bar_items').as('getNavbarItems');
     cy.intercept('POST', '**/content_builder_layout_images').as('postImage');
@@ -302,7 +301,6 @@ describe('Homepage builder', () => {
     cy.visit('/admin/pages-menu/homepage-builder');
 
     cy.wait('@getHomePage');
-    cy.wait('@getOriginalHomePage');
     cy.wait('@getNavbarItems');
     cy.wait(6000);
 

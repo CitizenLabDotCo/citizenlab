@@ -404,34 +404,29 @@ const HomepageBannerSettings = () => {
         p="4px"
         background={colors.grey400}
       >
-        <Box flex="1">
-          <Button
-            onClick={() => {
-              setSearchParams({ variant: 'signedOut' });
-            }}
-            buttonStyle={
-              search.get('variant') !== 'signedIn' ? 'white' : 'text'
-            }
-            fontSize="14px"
-            id="e2e-signed-out-button"
-          >
-            {formatMessage(messages.nonRegistedredUsersView)}
-          </Button>
-        </Box>
-        <Box flex="1">
-          <Button
-            onClick={() => {
-              setSearchParams({ variant: 'signedIn' });
-            }}
-            buttonStyle={
-              search.get('variant') === 'signedIn' ? 'white' : 'text'
-            }
-            fontSize="14px"
-            id="e2e-signed-in-button"
-          >
-            {formatMessage(messages.registeredUsersView)}
-          </Button>
-        </Box>
+        <Button
+          onClick={() => {
+            setSearchParams({ variant: 'signedOut' });
+          }}
+          buttonStyle={search.get('variant') !== 'signedIn' ? 'white' : 'text'}
+          fontSize="14px"
+          id="e2e-signed-out-button"
+          whiteSpace="wrap"
+        >
+          {formatMessage(messages.nonRegistedredUsersView)}
+        </Button>
+
+        <Button
+          onClick={() => {
+            setSearchParams({ variant: 'signedIn' });
+          }}
+          buttonStyle={search.get('variant') === 'signedIn' ? 'white' : 'text'}
+          fontSize="14px"
+          id="e2e-signed-in-button"
+          whiteSpace="wrap"
+        >
+          {formatMessage(messages.registeredUsersView)}
+        </Button>
       </Box>
 
       {search.get('variant') !== 'signedIn' && (
