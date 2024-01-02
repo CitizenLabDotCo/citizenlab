@@ -17,10 +17,11 @@ RUN find engines -type f -not -name "*.gemspec" -not -name "version.rb" -print0 
 FROM ruby:2.7.6-slim
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-RUN apt-get update                                           \
-   && apt-get install -qq -y --no-install-recommends           \
+RUN apt-get update                                        \
+   && apt-get install -qq -y --no-install-recommends      \
    build-essential                                        \
    curl                                                   \
+   lsb-release                                            \
    # Required to install git dependencies in Gemfile and by bundle-audit
    git                                                    \
    libgeos-dev                                            \
