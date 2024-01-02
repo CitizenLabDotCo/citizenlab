@@ -3,7 +3,6 @@ import { useTheme } from 'styled-components';
 import Box from '../Box';
 import Button from '../Button';
 import testEnv from '../../utils/testUtils/testEnv';
-
 interface Props {
   containerRef?: React.RefObject<HTMLDivElement>; // Ref of the container with elements which can be laterally scrolled through
   scrollBtnDistanceMobile?: number; // Lateral scroll distance on arrow click for mobile

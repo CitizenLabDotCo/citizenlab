@@ -2,6 +2,8 @@ import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
 import { ArgsTable } from '@storybook/addon-docs';
 import LateralScrollControls from './';
 import Box from '../Box';
+import react, { useRef } from 'react';
+import styled from 'styled-components';
 
 <Meta
   title="Components/LateralScrollControls"
@@ -13,9 +15,23 @@ import Box from '../Box';
 <ArgsTable of={LateralScrollControls} />
 
 <Canvas>
-  <Story name="default">
-    <LateralScrollControls containerRef={undefined}>
-      <Box
+<Story name="default">
+  {() => {
+    const ref = React.createRef(null);
+
+    const StyledBox = styled(Box)`
+      ::-webkit-scrollbar {
+      display: none;
+      }
+      scroll-behavior: smooth;
+      -ms-overflow-style: none !important;
+      scrollbar-width: none !important;
+    `;
+
+
+    return (
+    <LateralScrollControls containerRef={ref}>
+      <StyledBox
         display="flex"
         width="200px"
         height="auto"
@@ -25,15 +41,18 @@ import Box from '../Box';
         overflow="auto"
         overflowX="scroll"
         py='24px'
-        ref={undefined}
+        mx='12px'
+        ref={ref}
       >
         <Box width='200px'>Element 1</Box>
         <Box width='200px'>Element 2</Box>
         <Box width='200px'>Element 3</Box>
         <Box width='200px'>Element 4</Box>
         <Box width='200px'>Element 5</Box>
-      </Box>
-    </LateralScrollControls>
+      </StyledBox>
+    </LateralScrollControls>    );
 
-  </Story>
+}}
+
+</Story>
 </Canvas>
