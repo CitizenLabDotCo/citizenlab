@@ -91,7 +91,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-is": "18.x",
-    "regenerator-runtime": "^0.14.0",
+    "regenerator-runtime": "^0.14.1",
     "rimraf": "^4.4.1",
     "rollup": "^2.79.1",
     "rollup-plugin-dts": "^6.1.0",
