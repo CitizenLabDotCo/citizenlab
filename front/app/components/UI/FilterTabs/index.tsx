@@ -6,14 +6,12 @@ import {
   isRtl,
   colors,
   media,
-  Box,
-  LateralScrollControls,
 } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 import { FormattedMessage } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
 
-const TabsContainer = styled(Box)`
+const TabsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -27,13 +25,6 @@ const TabsContainer = styled(Box)`
   ${isRtl`
     flex-direction: row-reverse;
   `}
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  scroll-behavior: smooth;
-  -ms-overflow-style: none !important;
-  scrollbar-width: none !important;
 `;
 
 const Tab = styled.button<{ active: boolean }>`
@@ -109,7 +100,6 @@ const Tabs = <ShowCount extends boolean>({
   showCount,
 }: Props<ShowCount>) => {
   const tabsRef = useRef({});
-  const scrollableContainerRef = useRef<HTMLDivElement>(null);
 
   const handleClickTab = (tab: string) => () => {
     if (currentTab === tab) return;
@@ -125,45 +115,39 @@ const Tabs = <ShowCount extends boolean>({
   };
 
   return (
-    <LateralScrollControls
-      containerRef={scrollableContainerRef}
-      scrollBtnDistanceMobile={100}
-    >
-      <TabsContainer ref={scrollableContainerRef} role="tablist">
-        {/*
+    <TabsContainer role="tablist">
+      {/*
             These tabs need the role, aria-selected etc to work well with
             screen readers.
             See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
             */}
+      {availableTabs.map((tab) => (
+        <Tab
+          id={getTabId(tab)}
+          data-testid="tab"
+          role="tab"
+          aria-selected={currentTab === tab}
+          tabIndex={currentTab === tab ? 0 : -1}
+          aria-controls={getTabPanelId(tab)}
+          active={currentTab === tab}
+          key={tab}
+          onClick={handleClickTab(tab)}
+          onKeyDown={handleKeyDownTab}
+          ref={(el) => el && (tabsRef.current[tab] = el)}
+        >
+          <div aria-hidden>
+            <FormattedMessage {...tabData[tab].label} />
+            {showCount && <CountText>({tabData[tab].count})</CountText>}
+          </div>
 
-        {availableTabs.map((tab) => (
-          <Tab
-            id={getTabId(tab)}
-            data-testid="tab"
-            role="tab"
-            aria-selected={currentTab === tab}
-            tabIndex={currentTab === tab ? 0 : -1}
-            aria-controls={getTabPanelId(tab)}
-            active={currentTab === tab}
-            key={tab}
-            onClick={handleClickTab(tab)}
-            onKeyDown={handleKeyDownTab}
-            ref={(el) => el && (tabsRef.current[tab] = el)}
-          >
-            <div aria-hidden>
-              <FormattedMessage {...tabData[tab].label} />
-              {showCount && <CountText>({tabData[tab].count})</CountText>}
-            </div>
-
-            {getScreenReaderTextForTab && (
-              <ScreenReaderOnly>
-                {getScreenReaderTextForTab(tab, tabData[tab]?.count)}
-              </ScreenReaderOnly>
-            )}
-          </Tab>
-        ))}
-      </TabsContainer>
-    </LateralScrollControls>
+          {getScreenReaderTextForTab && (
+            <ScreenReaderOnly>
+              {getScreenReaderTextForTab(tab, tabData[tab]?.count)}
+            </ScreenReaderOnly>
+          )}
+        </Tab>
+      ))}
+    </TabsContainer>
   );
 };
 
