@@ -101,11 +101,7 @@ const MultiBarChart = <Row,>({
     };
 
   const tickFormatter = (value: string) => {
-    const limit = 42; // maximum characters before ellipses
-
-    if (value.length < limit) return value;
-
-    return truncate(value, limit);
+    return truncate(value, 42);
   };
 
   return (
