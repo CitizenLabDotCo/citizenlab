@@ -1600,7 +1600,6 @@
   "app.containers.app.navbar.search": "Suche",
   "app.containers.app.navbar.showFullMenu": "Vollständiges Menü anzeigen",
   "app.containers.app.navbar.signOut": "Abmelden",
-  "app.containers.app.navbar.signUp": "Registrieren",
   "app.containers.eventspage.errorWhenFetchingEvents": "Beim Laden von Veranstaltungen ist ein Fehler aufgetreten. Bitte versuchen Sie, die Seite neu zu laden.",
   "app.containers.eventspage.events": "Veranstaltungen",
   "app.containers.eventspage.eventsPageDescription": "Entdecken Sie alle Veranstaltungen, die auf der Beteiligungsplattform {orgName} veröffentlicht wurden.",

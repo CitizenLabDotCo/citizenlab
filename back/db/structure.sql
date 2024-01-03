@@ -102,7 +102,6 @@ ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk_rails_617a7ea994;
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_604cfbcd8d;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_5ea1f11fd5;
-ALTER TABLE IF EXISTS ONLY public.pins DROP CONSTRAINT IF EXISTS fk_rails_5caeedf2b2;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_5ac7668cd3;
 ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS fk_rails_5ac54ec4a5;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_575368d182;
@@ -199,8 +198,6 @@ DROP INDEX IF EXISTS public.index_polls_response_options_on_response_id;
 DROP INDEX IF EXISTS public.index_polls_response_options_on_option_id;
 DROP INDEX IF EXISTS public.index_polls_questions_on_phase_id;
 DROP INDEX IF EXISTS public.index_polls_options_on_question_id;
-DROP INDEX IF EXISTS public.index_pins_on_page_id_and_admin_publication_id;
-DROP INDEX IF EXISTS public.index_pins_on_admin_publication_id;
 DROP INDEX IF EXISTS public.index_phases_on_project_id;
 DROP INDEX IF EXISTS public.index_phase_files_on_phase_id;
 DROP INDEX IF EXISTS public.index_permissions_on_permission_scope_id;
@@ -450,7 +447,6 @@ ALTER TABLE IF EXISTS ONLY public.polls_responses DROP CONSTRAINT IF EXISTS poll
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS polls_response_options_pkey;
 ALTER TABLE IF EXISTS ONLY public.polls_questions DROP CONSTRAINT IF EXISTS polls_questions_pkey;
 ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS polls_options_pkey;
-ALTER TABLE IF EXISTS ONLY public.pins DROP CONSTRAINT IF EXISTS pins_pkey;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS phases_pkey;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS phase_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.permissions DROP CONSTRAINT IF EXISTS permissions_pkey;
@@ -496,7 +492,6 @@ ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS idea_im
 ALTER TABLE IF EXISTS ONLY public.idea_import_files DROP CONSTRAINT IF EXISTS idea_import_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.idea_images DROP CONSTRAINT IF EXISTS idea_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS idea_files_pkey;
-ALTER TABLE IF EXISTS ONLY public.home_pages DROP CONSTRAINT IF EXISTS home_pages_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS groups_projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups DROP CONSTRAINT IF EXISTS groups_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS groups_permissions_pkey;
@@ -578,7 +573,6 @@ DROP TABLE IF EXISTS public.project_files;
 DROP TABLE IF EXISTS public.polls_response_options;
 DROP TABLE IF EXISTS public.polls_questions;
 DROP TABLE IF EXISTS public.polls_options;
-DROP TABLE IF EXISTS public.pins;
 DROP TABLE IF EXISTS public.phase_files;
 DROP TABLE IF EXISTS public.permissions_custom_fields;
 DROP TABLE IF EXISTS public.permissions;
@@ -618,7 +612,6 @@ DROP TABLE IF EXISTS public.idea_import_files;
 DROP TABLE IF EXISTS public.idea_images;
 DROP TABLE IF EXISTS public.idea_files;
 DROP TABLE IF EXISTS public.id_id_card_lookup_id_cards;
-DROP TABLE IF EXISTS public.home_pages;
 DROP TABLE IF EXISTS public.groups_projects;
 DROP TABLE IF EXISTS public.groups_permissions;
 DROP TABLE IF EXISTS public.groups;
@@ -2134,9 +2127,8 @@ CREATE TABLE public.content_builder_layout_images (
 
 CREATE TABLE public.content_builder_layouts (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    craftjs_jsonmultiloc jsonb DEFAULT '{}'::jsonb,
-    content_buildable_type character varying NOT NULL,
-    content_buildable_id uuid NOT NULL,
+    content_buildable_type character varying,
+    content_buildable_id uuid,
     code character varying NOT NULL,
     enabled boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -2395,39 +2387,6 @@ CREATE TABLE public.groups_projects (
     project_id uuid,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: home_pages; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.home_pages (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    top_info_section_enabled boolean DEFAULT false NOT NULL,
-    top_info_section_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    bottom_info_section_enabled boolean DEFAULT false NOT NULL,
-    bottom_info_section_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    events_widget_enabled boolean DEFAULT false NOT NULL,
-    projects_enabled boolean DEFAULT true NOT NULL,
-    projects_header_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    banner_avatars_enabled boolean DEFAULT true NOT NULL,
-    banner_layout character varying DEFAULT 'full_width_banner_layout'::character varying NOT NULL,
-    banner_signed_in_header_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    banner_cta_signed_in_text_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    banner_cta_signed_in_type character varying DEFAULT 'no_button'::character varying NOT NULL,
-    banner_cta_signed_in_url character varying,
-    banner_signed_out_header_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    banner_signed_out_subheader_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    banner_signed_out_header_overlay_color character varying,
-    banner_signed_out_header_overlay_opacity integer,
-    banner_cta_signed_out_text_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    banner_cta_signed_out_type character varying DEFAULT 'sign_up_button'::character varying NOT NULL,
-    banner_cta_signed_out_url character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    header_bg character varying,
-    craftjs_json jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -3081,20 +3040,6 @@ CREATE TABLE public.phase_files (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     name character varying
-);
-
-
---
--- Name: pins; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.pins (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    admin_publication_id uuid NOT NULL,
-    page_type character varying NOT NULL,
-    page_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -3990,14 +3935,6 @@ ALTER TABLE ONLY public.groups_projects
 
 
 --
--- Name: home_pages home_pages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.home_pages
-    ADD CONSTRAINT home_pages_pkey PRIMARY KEY (id);
-
-
---
 -- Name: idea_files idea_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4355,14 +4292,6 @@ ALTER TABLE ONLY public.phase_files
 
 ALTER TABLE ONLY public.phases
     ADD CONSTRAINT phases_pkey PRIMARY KEY (id);
-
-
---
--- Name: pins pins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.pins
-    ADD CONSTRAINT pins_pkey PRIMARY KEY (id);
 
 
 --
@@ -6142,20 +6071,6 @@ CREATE INDEX index_phases_on_project_id ON public.phases USING btree (project_id
 
 
 --
--- Name: index_pins_on_admin_publication_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_pins_on_admin_publication_id ON public.pins USING btree (admin_publication_id);
-
-
---
--- Name: index_pins_on_page_id_and_admin_publication_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_pins_on_page_id_and_admin_publication_id ON public.pins USING btree (page_id, admin_publication_id);
-
-
---
 -- Name: index_polls_options_on_question_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6860,14 +6775,6 @@ ALTER TABLE ONLY public.cosponsors_initiatives
 
 ALTER TABLE ONLY public.ideas
     ADD CONSTRAINT fk_rails_5ac7668cd3 FOREIGN KEY (project_id) REFERENCES public.projects(id);
-
-
---
--- Name: pins fk_rails_5caeedf2b2; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.pins
-    ADD CONSTRAINT fk_rails_5caeedf2b2 FOREIGN KEY (admin_publication_id) REFERENCES public.admin_publications(id);
 
 
 --
@@ -8020,6 +7927,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231124112723'),
 ('20231124114112'),
 ('20231130093345'),
-('20231212151032');
+('20231212151032'),
+('20231214100537');
 
 

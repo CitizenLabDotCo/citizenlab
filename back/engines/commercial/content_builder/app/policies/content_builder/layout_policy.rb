@@ -17,7 +17,7 @@ module ContentBuilder
     private
 
     def moderator?
-      user&.active? && user_role_service.can_moderate?(record.content_buildable, user)
+      user&.active? && (record.content_buildable ? user_role_service.can_moderate?(record.content_buildable, user) : user.admin?)
     end
 
     def user_role_service

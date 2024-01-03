@@ -171,10 +171,11 @@ const IdeaRow = ({
           onChange: (idea: IIdeaData) => (assigneeId?: string) => void;
         }
       >) => {
+        const projectId = idea.relationships.project.data.id;
         return (
           <AssigneeSelect
             onAssigneeChange={onChange(idea)}
-            projectId={idea.relationships.project.data.id}
+            projectId={projectId}
             assigneeId={idea.relationships.assignee?.data?.id}
           />
         );

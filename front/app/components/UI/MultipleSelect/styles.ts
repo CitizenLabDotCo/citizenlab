@@ -2,12 +2,20 @@ import {
   colors,
   fontSizes,
   defaultStyles,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-export function getSelectStyles(borderColor = colors.borderDark) {
+function getSelectStyles(borderColor = colors.borderDark) {
   return {
-    container: (base) => ({
+    valueContainer: (base) => ({
       ...base,
+      /* This will ensure that the selected values do not overflow the container when the value is a very long word,
+        The overflowing makes it impossible to delete the selected value on a phone.
+        Assuming here that the selected value of a multiselect will never need to be wider than 80vw,
+        which seems safe.
+        An ellipsis will be used in that case to indicate that the value is too long.
+      */
+      maxWidth: '80vw',
     }),
     input: (base) => ({
       ...base,
@@ -17,7 +25,7 @@ export function getSelectStyles(borderColor = colors.borderDark) {
       fontSize: `${fontSizes.base}px`,
       borderWidth: '1px',
       borderColor: isFocused ? colors.black : `${borderColor}`,
-      borderRadius: '3px',
+      borderRadius: stylingConsts.borderRadius,
       minHeight: '48px',
       backgroundColor: '#fff',
       boxShadow: isFocused ? defaultStyles.boxShadowFocused : 'none',
@@ -40,6 +48,10 @@ export function getSelectStyles(borderColor = colors.borderDark) {
       ...base,
       color: '#999',
     }),
+    menuList: (base) => ({
+      ...base,
+      borderRadius: stylingConsts.borderRadius,
+    }),
     option: (base, { isFocused }) => ({
       ...base,
       ':active': null,
@@ -50,7 +62,7 @@ export function getSelectStyles(borderColor = colors.borderDark) {
     }),
     multiValue: (base) => ({
       ...base,
-      borderRadius: '3px',
+      borderRadius: stylingConsts.borderRadius,
     }),
     multiValueLabel: (base) => ({
       ...base,
@@ -68,4 +80,4 @@ export function getSelectStyles(borderColor = colors.borderDark) {
   };
 }
 
-export default getSelectStyles();
+export default getSelectStyles;

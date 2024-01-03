@@ -1600,7 +1600,6 @@
   "app.containers.app.navbar.search": "بحث",
   "app.containers.app.navbar.showFullMenu": "عرض القائمة الكاملة",
   "app.containers.app.navbar.signOut": "تسجيل الخروج",
-  "app.containers.app.navbar.signUp": "التسجيل",
   "app.containers.eventspage.errorWhenFetchingEvents": "حدث خطأ أثناء تحميل الأحداث. يرجى إعادة تحميل الصفحة.",
   "app.containers.eventspage.events": "الأحداث",
   "app.containers.eventspage.eventsPageDescription": "اعرض كل الأحداث المنشورة في منصة {orgName}.",

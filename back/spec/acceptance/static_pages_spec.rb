@@ -79,7 +79,6 @@ resource 'StaticPages' do
         parameter :bottom_info_section_enabled, 'if the bottom info section is enabled'
         parameter :bottom_info_section_multiloc, 'The bottom content of the static page, as a multiloc HTML string'
         parameter :header_bg, 'image for the header background'
-        parameter :pinned_admin_publication_ids, 'the IDs of admin publications that are pinned to the page', type: :array
         parameter :topic_ids, 'the IDs of topics that are used to filter the page projects list', type: :array
         parameter :area_ids, 'the ID of an area that is used to filter the page projects list', type: :array
       end
@@ -165,57 +164,6 @@ resource 'StaticPages' do
           end
         end
       end
-
-      describe 'updating pins' do
-        let(:project_one) { create(:project) }
-        let(:project_two) { create(:project) }
-        let(:pinned_admin_publication_ids) do
-          [project_one.admin_publication.id, project_two.admin_publication.id]
-        end
-
-        example_request 'set pins to a page' do
-          json_response = json_parse(response_body)
-          expect(response_status).to eq 200
-          expect(json_response.dig(:data, :relationships, :pinned_admin_publications, :data).length).to eq(2)
-        end
-
-        context 'when the page has pins already' do
-          before do
-            projects = create_list(:project, 3)
-            page.pinned_admin_publications = projects.map(&:admin_publication)
-            page.save!
-          end
-
-          example 'Update existing pins to a page', document: false do
-            do_request
-            json_response = json_parse(response_body)
-            expect(response_status).to eq 200
-            returned_ids = json_response.dig(:data, :relationships, :pinned_admin_publications, :data).pluck(:id)
-            expect(returned_ids).to eq([project_one.admin_publication.id, project_two.admin_publication.id])
-          end
-        end
-      end
-
-      describe 'destroying pins' do
-        let(:pinned_admin_publication_ids) do
-          []
-        end
-
-        context 'when the page has pins already' do
-          before do
-            projects = create_list(:project, 3)
-            page.pinned_admin_publications = projects.map(&:admin_publication)
-            page.save!
-          end
-
-          example 'Removing existing pins from a page', document: false do
-            do_request
-            json_response = json_parse(response_body)
-            expect(response_status).to eq 200
-            expect(json_response.dig(:data, :relationships, :pinned_admin_publications, :data).length).to eq(0)
-          end
-        end
-      end
     end
 
     post 'web_api/v1/static_pages' do
@@ -240,7 +188,6 @@ resource 'StaticPages' do
         parameter :bottom_info_section_enabled, 'if the bottom info section is enabled'
         parameter :bottom_info_section_multiloc, 'The bottom content of the static page, as a multiloc HTML string'
         parameter :header_bg, 'image for the header background'
-        parameter :pinned_admin_publication_ids, 'the IDs of admin publications that are pinned to the page', type: :array
         parameter :nav_bar_item_title_multiloc, 'The title of the corresponding NavBarItem'
       end
 

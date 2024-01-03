@@ -12,21 +12,12 @@ const EditNavbarItemForm = lazy(
   () => import('./containers/EditNavbarItemForm')
 );
 
-// homepage
-const EditHomepage = lazy(() => import('./containers/EditHomepage'));
-const HomepageBottomInfoForm = lazy(
-  () => import('./EditHomepage/BottomInfoSection')
-);
-const HomepageTopInfoSection = lazy(
-  () => import('./EditHomepage/TopInfoSection')
-);
 const CustomPageTopInfoSection = lazy(
   () => import('./containers/CustomPages/Edit/Content/TopInfoSection')
 );
 const CustomPageBottomInfoSection = lazy(
   () => import('./containers/CustomPages/Edit/Content/BottomInfoSection')
 );
-const HomepageHeroBannerForm = lazy(() => import('./EditHomepage/HeroBanner'));
 const ContentBuilder = lazy(
   () => import('./containers/ContentBuilder/containers')
 );
@@ -47,7 +38,6 @@ const CustomPageHeroBannerForm = lazy(
 
 // path utils
 export const ADMIN_PAGES_MENU_PATH = `/admin/pages-menu`;
-const HOMEPAGE_PATH = 'homepage';
 const CUSTOM_PAGES_PATH = 'pages';
 const ADMIN_PAGES_MENU_CUSTOM_PAGE_PATH = `${ADMIN_PAGES_MENU_PATH}/${CUSTOM_PAGES_PATH}`;
 
@@ -80,14 +70,7 @@ export default () => ({
         },
       ],
     },
-    {
-      path: HOMEPAGE_PATH, // /homepage
-      element: (
-        <PageLoading>
-          <EditHomepage />
-        </PageLoading>
-      ),
-    },
+
     {
       path: `homepage-builder`,
       element: (
@@ -101,30 +84,6 @@ export default () => ({
       element: (
         <PageLoading>
           <FullScreenPreview />
-        </PageLoading>
-      ),
-    },
-    {
-      path: `${HOMEPAGE_PATH}/bottom-info-section`, // /homepage/bottom-info-section
-      element: (
-        <PageLoading>
-          <HomepageBottomInfoForm />
-        </PageLoading>
-      ),
-    },
-    {
-      path: `${HOMEPAGE_PATH}/top-info-section`, // /homepage/top-info-section
-      element: (
-        <PageLoading>
-          <HomepageTopInfoSection />
-        </PageLoading>
-      ),
-    },
-    {
-      path: `${HOMEPAGE_PATH}/homepage-banner`, // /homepage/homepage-banner
-      element: (
-        <PageLoading>
-          <HomepageHeroBannerForm />
         </PageLoading>
       ),
     },

@@ -86,7 +86,7 @@ const BaseUserSelect = ({
         getOptionValue={getOptionId}
         getOptionLabel={getOptionLabel}
         menuPlacement="auto"
-        styles={selectStyles}
+        styles={selectStyles()}
         filterOption={() => true}
         components={components}
         onMenuOpen={onMenuOpen}

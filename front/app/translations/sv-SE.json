@@ -1600,7 +1600,6 @@
   "app.containers.app.navbar.search": "Sök",
   "app.containers.app.navbar.showFullMenu": "Visa hela menyn",
   "app.containers.app.navbar.signOut": "Logga ut",
-  "app.containers.app.navbar.signUp": "Registrera dig",
   "app.containers.eventspage.errorWhenFetchingEvents": "Ett fel uppstod när evenemang laddades. Försök ladda om sidan.",
   "app.containers.eventspage.events": "Händelser",
   "app.containers.eventspage.eventsPageDescription": "Visa alla evenemang som har publicerats på {orgName}s plattform.",
