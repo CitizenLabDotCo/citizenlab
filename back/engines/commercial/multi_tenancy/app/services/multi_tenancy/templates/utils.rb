@@ -48,9 +48,11 @@ module MultiTenancy
         "#{prefix.chomp('/')}/#{template_name}"
       end
 
-      def external_template_names(prefix: release_prefix)
-        manifest = read_external_manifest(prefix: prefix)
-        return manifest.keys if manifest
+      def external_template_names(prefix: release_prefix, ignore_manifest: false)
+        unless ignore_manifest
+          manifest = read_external_manifest(prefix: prefix)
+          return manifest.keys if manifest
+        end
 
         Aws::S3::Utils
           .new
@@ -152,7 +154,9 @@ module MultiTenancy
       end
 
       def compute_external_manifest(prefix: release_prefix)
-        external_template_names(prefix: prefix).index_with do |template_name|
+        template_names = external_template_names(prefix: prefix, ignore_manifest: true)
+
+        template_names.index_with do |template_name|
           serialized_models = fetch_external_template_models(template_name, prefix: prefix)
           { required_locales: self.class.user_locales(serialized_models) }
         end
