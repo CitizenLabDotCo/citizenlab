@@ -193,7 +193,7 @@ RSpec.describe Phase do
     end
 
     it 'returns false if the phase has no end date' do
-      phase_without_end_date = create(:phase, start_at: start_date, end_at: nil) 
+      phase_without_end_date = create(:phase, start_at: start_date, end_at: nil)
       expect(phase_without_end_date.ends_before?(start_date + 2.days)).to be false
     end
   end
