@@ -185,7 +185,7 @@ class Phase < ApplicationRecord
 
   def ends_before?(date)
     return false if end_at.blank?
-    
+
     end_at.iso8601 < date.to_date.iso8601
   end
 
