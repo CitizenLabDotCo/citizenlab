@@ -24,6 +24,7 @@ import Legend from '../_components/Legend';
 // utils
 import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
 import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
+import { truncate } from 'utils/textUtils';
 
 // typings
 import { Props } from './typings';
@@ -31,7 +32,6 @@ import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
-import { truncate } from 'utils/textUtils';
 
 export const DEFAULT_LEGEND_OFFSET = 10;
 
