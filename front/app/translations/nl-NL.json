@@ -1600,7 +1600,6 @@
   "app.containers.app.navbar.search": "Zoek",
   "app.containers.app.navbar.showFullMenu": "Toon volledig menu",
   "app.containers.app.navbar.signOut": "Afmelden",
-  "app.containers.app.navbar.signUp": "Registreren",
   "app.containers.eventspage.errorWhenFetchingEvents": "Er is een fout opgetreden. Probeer de pagina opnieuw te laden.",
   "app.containers.eventspage.events": "Activiteiten",
   "app.containers.eventspage.eventsPageDescription": "Bekijk alle activiteiten die op het participatieplatform van {orgName} zijn geplaatst.",

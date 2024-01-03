@@ -23,7 +23,7 @@ import { media, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';
 import useDismissOnboardingCampaign from 'api/onboarding_campaigns/useDismissOnboardingCampaign';
 import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
-import { IHomepageSettingsAttributes } from 'api/home_page/types';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 
 const Header = styled.div`
   width: 100%;
@@ -147,7 +147,7 @@ const SignedInHeader = ({
   homepageSettings,
   isContentBuilderDisplay,
 }: {
-  homepageSettings: Partial<IHomepageSettingsAttributes>;
+  homepageSettings: Partial<IHomepageBannerSettings>;
   isContentBuilderDisplay?: boolean;
 }) => {
   const { data: currentOnboardingCampaign } = useCurrentOnboardingCampaign();

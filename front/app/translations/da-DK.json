@@ -1600,7 +1600,6 @@
   "app.containers.app.navbar.search": "Søg",
   "app.containers.app.navbar.showFullMenu": "Vis hele menuen",
   "app.containers.app.navbar.signOut": "Log ud",
-  "app.containers.app.navbar.signUp": "Registrer dig",
   "app.containers.eventspage.errorWhenFetchingEvents": "Der opstod en fejl under indlæsning af begivenheder. Prøv venligst at genindlæse siden.",
   "app.containers.eventspage.events": "Begivenheder",
   "app.containers.eventspage.eventsPageDescription": "Vis alle begivenheder, der er blevet slået op på bogerinddragelsesplatformen for {orgName}.",

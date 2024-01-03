@@ -1600,7 +1600,6 @@
   "app.containers.app.navbar.search": "Sichen",
   "app.containers.app.navbar.showFullMenu": "Show voll Menü",
   "app.containers.app.navbar.signOut": "Ofmellen",
-  "app.containers.app.navbar.signUp": "Aschreiwen ",
   "app.containers.eventspage.errorWhenFetchingEvents": "Beim Luede vun Evenementer ass e Feeler opgetratt. Probéiert wgl. d'Säit nei ze lueden. ",
   "app.containers.eventspage.events": "Evenementer",
   "app.containers.eventspage.eventsPageDescription": "All Evenementer weisen, déi op der Plattform {orgName} gepost goufen.",

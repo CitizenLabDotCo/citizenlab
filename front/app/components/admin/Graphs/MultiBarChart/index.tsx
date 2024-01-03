@@ -24,6 +24,7 @@ import Legend from '../_components/Legend';
 // utils
 import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
 import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
+import { truncate } from 'utils/textUtils';
 
 // typings
 import { Props } from './typings';
@@ -100,10 +101,11 @@ const MultiBarChart = <Row,>({
     };
 
   const tickFormatter = (value: string) => {
-    const label = value.toString(); // Value could be a number, so we want to make sure we are using a string here
     const limit = 42; // maximum characters before ellipses
-    if (label.length < limit) return value;
-    return `${label.substring(0, limit)}...`;
+
+    if (value.length < limit) return value;
+
+    return truncate(value, limit);
   };
 
   return (

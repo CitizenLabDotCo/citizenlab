@@ -1,43 +1,37 @@
-import * as React from 'react';
-import { isEmpty, isNil } from 'lodash-es';
-import { adopt } from 'react-adopt';
+import React from 'react';
+import { isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { useIntl } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
 import { Box } from '@citizenlab/cl2-component-library';
 import messages from './messages';
-import GetPermission, {
-  GetPermissionChildProps,
-} from 'resources/GetPermission';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
 import { isTopBarNavActive } from 'utils/helperUtils';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { usePermission } from 'utils/permissions';
 
-interface DataProps {
-  canManageAutomatedCampaigns: GetPermissionChildProps;
-  canManageManualCampaigns: GetPermissionChildProps;
-  manualEmailingEnabled: boolean;
-  automatedEmailingEnabled: boolean;
-  textingEnabled: boolean;
-}
-
-interface Props extends DataProps {}
-
-const MessagingDashboard = ({
-  canManageAutomatedCampaigns,
-  canManageManualCampaigns,
-  manualEmailingEnabled,
-  automatedEmailingEnabled,
-  textingEnabled,
-}: Props) => {
+const MessagingDashboard = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
+  const canManageAutomatedCampaigns = usePermission({
+    action: 'manage',
+    item: 'automatedCampaign',
+  });
+  const canManageManualCampaigns = usePermission({
+    action: 'manage',
+    item: 'manualCampaign',
+  });
+  const manualEmailingEnabled = useFeatureFlag({ name: 'manual_emailing' });
+  const automatedEmailingEnabled = useFeatureFlag({
+    name: 'automated_emailing_control',
+  });
+  const textingEnabled = useFeatureFlag({ name: 'texting' });
 
-  if (isNil(canManageAutomatedCampaigns) || isNil(canManageManualCampaigns)) {
+  if (!canManageAutomatedCampaigns || !canManageManualCampaigns) {
     return null;
   }
 
@@ -111,20 +105,4 @@ const MessagingDashboard = ({
   );
 };
 
-const Data = adopt({
-  canManageAutomatedCampaigns: (
-    <GetPermission item="automatedCampaign" action="manage" />
-  ),
-  canManageManualCampaigns: (
-    <GetPermission item="manualCampaign" action="manage" />
-  ),
-  manualEmailingEnabled: <GetFeatureFlag name="manual_emailing" />,
-  automatedEmailingEnabled: (
-    <GetFeatureFlag name="automated_emailing_control" />
-  ),
-  textingEnabled: <GetFeatureFlag name="texting" />,
-});
-
-export default () => (
-  <Data>{(dataProps: DataProps) => <MessagingDashboard {...dataProps} />}</Data>
-);
+export default MessagingDashboard;
