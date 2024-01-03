@@ -24,6 +24,7 @@ import Legend from '../_components/Legend';
 // utils
 import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
 import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
+import { truncate } from 'utils/textUtils';
 
 // typings
 import { Props } from './typings';
@@ -98,6 +99,10 @@ const MultiBarChart = <Row,>({
           event
         );
     };
+
+  const tickFormatter = (value: string) => {
+    return truncate(value, 42);
+  };
 
   return (
     <Container
@@ -174,6 +179,7 @@ const MultiBarChart = <Row,>({
           type={layout === 'horizontal' ? 'category' : 'number'}
           stroke={legacyColors.chartLabel}
           fontSize={sizes.chartLabel}
+          tickFormatter={tickFormatter}
           {...yaxis}
         />
       </RechartsBarChart>
