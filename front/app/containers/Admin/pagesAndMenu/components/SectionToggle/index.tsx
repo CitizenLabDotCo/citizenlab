@@ -10,7 +10,6 @@ import {
 import { Row } from 'components/admin/ResourceList';
 import AdminEditButton from './AdminEditButton';
 
-import { IHomepageSectionToggleData } from '../../containers/EditHomepage';
 import { ICustomPageSectionToggleData } from '../../containers/CustomPages/Edit/Content';
 
 export interface ISectionToggleData {
@@ -21,7 +20,7 @@ export interface ISectionToggleData {
 }
 
 interface Props {
-  sectionToggleData: IHomepageSectionToggleData | ICustomPageSectionToggleData;
+  sectionToggleData: ICustomPageSectionToggleData;
   onChangeSectionToggle: () => void;
   onClickEditButton?: (editLinkPath: string) => void;
   checked: boolean;

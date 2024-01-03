@@ -34,7 +34,6 @@ import IdOostendeRrnConfiguration from './commercial/id_oostende_rrn';
 import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 
 import widgetsConfiguration from './commercial/widgets';
-import eventsWidgetConfiguration from './commercial/events_widget';
 
 import insightsConfiguration from './commercial/insights';
 import analyticsConfiguration from './commercial/analytics';
@@ -132,9 +131,6 @@ export default loadModules([
   },
   {
     configuration: widgetsConfiguration,
-  },
-  {
-    configuration: eventsWidgetConfiguration,
   },
   {
     configuration: insightsConfiguration,

@@ -90,7 +90,6 @@ jest.mock('api/app_configuration/useAppConfiguration', () =>
         attributes: {
           settings: {
             core: {
-              currently_working_on_text: { en: 'Working on text' },
               area_term: { en: 'Area' },
               topic_term: { en: 'Topic' },
             },
