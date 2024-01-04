@@ -20,7 +20,7 @@ class AdminPublicationsFilteringService
     scope.where(publication_type: Project.name)
   end
 
-  # This filter removes AdminPublications that represent folders, 
+  # This filter removes AdminPublications that represent folders,
   # which contain *only* projects which should not be visible to the current user.
   add_filter('remove_not_allowed_parents') do |scope, options|
     next scope unless ['true', true, '1'].include? options[:remove_not_allowed_parents]
