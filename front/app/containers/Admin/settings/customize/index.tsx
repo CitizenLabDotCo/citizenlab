@@ -5,7 +5,6 @@ import { get, has, isEmpty, omitBy } from 'lodash-es';
 import { Section, SectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Branding from './Branding';
-import ProjectHeader from './ProjectHeader';
 
 // style
 import styled from 'styled-components';
@@ -123,16 +122,6 @@ const SettingsCustomizeTab = () => {
   };
 
   if (!isNilOrError(locale) && !isNilOrError(appConfiguration)) {
-    const latestAppConfigSettings = {
-      ...appConfiguration.data.attributes.settings,
-      ...attributesDiff.settings,
-      core: {
-        ...appConfiguration.data.attributes.settings.core,
-        ...attributesDiff.settings?.core,
-      },
-    };
-    const latestAppConfigCoreSettings = latestAppConfigSettings.core;
-
     return (
       <form onSubmit={save}>
         <Branding
@@ -141,13 +130,6 @@ const SettingsCustomizeTab = () => {
           setAttributesDiff={setAttributesDiff}
           setLogo={setLogo}
           getSetting={getSetting}
-        />
-
-        <ProjectHeader
-          currentlyWorkingOnText={
-            latestAppConfigCoreSettings?.['currently_working_on_text']
-          }
-          setAttributesDiff={setAttributesDiff}
         />
 
         <SubmitWrapper

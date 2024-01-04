@@ -132,11 +132,6 @@
             "pattern": "^$|^/.*$",
             "private": true
           },
-          "currently_working_on_text": {
-            "title": "Project Overview Header Title",
-            "description": "Header title shown at the top of all of the projects on the homepage. If left blank, this field defaults to \"{orgName} is currently working on\".",
-            "$ref": "#/definitions/multiloc_string"
-          },
           "signup_helper_text": {
             "title": "Sign-up Helper Text (Step 1)",
             "description": "Optional short text, shown at the top of Step 1 of the sign up form (i.e., email and password). Supports HTML.",
@@ -1331,18 +1326,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "homepage_builder": {
-        "type": "object",
-        "title": "Homepage builder",
-        "description": "Use the new homepage builder. Do not turn this on/off if you're not sure what you're doing.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
         }
       }
     },

@@ -128,6 +128,15 @@ class Initiative < ApplicationRecord
       .where(initiative_status_changes: { initiative_status: InitiativeStatus.find_by(code: 'proposed') })
   end)
 
+  scope :activity_after, lambda { |time_ago|
+    joins(:initiative_status_changes)
+      .where(
+        'initiative_status_changes.initiative_status_id IN (?) AND initiative_status_changes.created_at > ?',
+        InitiativeStatus.where(code: %w[threshold_reached proposed]).ids,
+        time_ago
+      )
+  }
+
   def self.review_required?
     app_config = AppConfiguration.instance
     require_review = app_config.settings('initiatives', 'require_review')

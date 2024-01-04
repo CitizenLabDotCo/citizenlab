@@ -176,7 +176,11 @@ class PermissionsService
     when 'everyone'
       everyone
     when 'everyone_confirmed_email'
-      AppConfiguration.instance.feature_activated?('user_confirmation') ? everyone_confirmed_email : users
+      if permission.action == 'following'
+        AppConfiguration.instance.feature_activated?('user_confirmation') && AppConfiguration.instance.feature_activated?('password_login') ? everyone_confirmed_email : users
+      else
+        AppConfiguration.instance.feature_activated?('user_confirmation') ? everyone_confirmed_email : users
+      end
     when 'groups'
       groups
     else # users | admins_moderators'
