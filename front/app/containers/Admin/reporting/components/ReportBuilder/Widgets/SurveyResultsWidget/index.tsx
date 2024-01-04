@@ -160,12 +160,13 @@ const SurveyResultsWidgetSettings = () => {
             participationMethod="native_survey"
             onPhaseFilter={handlePhaseFilter}
           />
-          <QuestionFilter
-            projectId={projectId}
-            phaseId={phaseId}
-            shownQuestions={shownQuestions}
-            onToggleQuestion={handleQuestionToggle}
-          />
+          {phaseId && (
+            <QuestionFilter
+              phaseId={phaseId}
+              shownQuestions={shownQuestions}
+              onToggleQuestion={handleQuestionToggle}
+            />
+          )}
         </>
       )}
     </Box>
