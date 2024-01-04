@@ -1,5 +1,7 @@
 module ReportBuilder
-  class Queries::UsersByGender < Queries::Base
+  class Queries::Analytics::UsersByGender < Queries::Analytics::Base
+    protected
+
     def query(start_at: nil, end_at: nil, project_id: nil, **_other_props)
       {
         fact: 'participation',

@@ -80,7 +80,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
       <TextMultiloc text={toMultiloc(messages.descriptionPlaceHolder)} />
       <ActiveUsersWidget projectId={projectId} {...projectPeriod} />
       {participationMethod === 'native_survey' && (
-        <SurveyResultsWidget projectId={projectId} phaseId={phaseId} />
+        <SurveyResultsWidget phaseId={phaseId} />
       )}
       {participationMethod === 'ideation' && (
         <MostReactedIdeasWidget

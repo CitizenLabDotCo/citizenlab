@@ -1,5 +1,7 @@
 module ReportBuilder
-  class Queries::ReactionsByTime < Queries::Base
+  class Queries::Analytics::ReactionsByTime < Queries::Analytics::Base
+    protected
+
     def query(start_at: nil, end_at: nil, project_id: nil, resolution: nil, **_other_props)
       time_series_query = {
         fact: 'participation',
