@@ -14,7 +14,7 @@ import Form from './Form';
 
 // services
 import {
-  TAppConfigurationSettingWithEnabled,
+  TAppConfigurationSetting,
   IAppConfigurationSettingsCore,
 } from 'api/app_configuration/types';
 
@@ -93,9 +93,7 @@ const SettingsGeneralTab = () => {
     }
   };
 
-  const handleSettingChange = (
-    settingName: TAppConfigurationSettingWithEnabled
-  ) => {
+  const handleSettingChange = (settingName: TAppConfigurationSetting) => {
     if (!isNilOrError(appConfiguration)) {
       const setting = appConfiguration.data.attributes.settings[settingName];
 

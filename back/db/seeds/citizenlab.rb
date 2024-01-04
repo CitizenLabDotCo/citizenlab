@@ -567,10 +567,8 @@ open_idea_project = Project.create!({
 open_idea_project.project_images.create!(remote_image_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png')
 open_idea_project.set_default_topics!
 
-# Create settings for Home Page.
-HomePage.create!({
-  header_bg: Rails.root.join('spec/fixtures/header.jpg').open
-})
+# Create the default home page layout.
+ContentBuilder::Layout.create!(code: 'homepage', enabled: true)
 
 User.find_each do |user|
   EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)

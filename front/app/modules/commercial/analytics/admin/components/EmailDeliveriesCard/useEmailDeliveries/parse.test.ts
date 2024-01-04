@@ -2,7 +2,7 @@ import moment from 'moment';
 import { mergeTimeSeries, parseTimeSeries } from './parse';
 
 describe('mergeTimeSeries', () => {
-  it('Create time series from grouped results', () => {
+  it('Create time series from day grouped results', () => {
     const queryResponse = [
       {
         first_dimension_date_sent_date: '2022-11-02',
@@ -39,11 +39,91 @@ describe('mergeTimeSeries', () => {
       },
     ];
 
-    expect(mergeTimeSeries(queryResponse)).toEqual(expectedOutput);
+    expect(mergeTimeSeries(queryResponse, 'day')).toEqual(expectedOutput);
+  });
+
+  it('Create time series from week grouped results', () => {
+    const queryResponse = [
+      {
+        first_dimension_date_sent_week: '2022-11-02',
+        automated: true,
+        count: 1,
+      },
+      {
+        first_dimension_date_sent_week: '2022-11-02',
+        automated: false,
+        count: 2,
+      },
+      {
+        first_dimension_date_sent_week: '2022-10-29',
+        automated: true,
+        count: 3,
+      },
+      {
+        first_dimension_date_sent_week: '2022-10-29',
+        automated: false,
+        count: 4,
+      },
+    ];
+
+    const expectedOutput = [
+      {
+        first_dimension_date_sent_week: '2022-11-02',
+        automated: 1,
+        custom: 2,
+      },
+      {
+        first_dimension_date_sent_week: '2022-10-29',
+        automated: 3,
+        custom: 4,
+      },
+    ];
+
+    expect(mergeTimeSeries(queryResponse, 'week')).toEqual(expectedOutput);
+  });
+
+  it('Create time series from week grouped results', () => {
+    const queryResponse = [
+      {
+        first_dimension_date_sent_month: '2022-11-01',
+        automated: true,
+        count: 1,
+      },
+      {
+        first_dimension_date_sent_month: '2022-11-01',
+        automated: false,
+        count: 2,
+      },
+      {
+        first_dimension_date_sent_month: '2022-10-01',
+        automated: true,
+        count: 3,
+      },
+      {
+        first_dimension_date_sent_month: '2022-10-01',
+        automated: false,
+        count: 4,
+      },
+    ];
+
+    const expectedOutput = [
+      {
+        first_dimension_date_sent_month: '2022-11-01',
+        automated: 1,
+        custom: 2,
+      },
+      {
+        first_dimension_date_sent_month: '2022-10-01',
+        automated: 3,
+        custom: 4,
+      },
+    ];
+
+    expect(mergeTimeSeries(queryResponse, 'month')).toEqual(expectedOutput);
   });
 
   it('returns empty array if input is empty array', () => {
-    expect(mergeTimeSeries([])).toEqual([]);
+    expect(mergeTimeSeries([], 'day')).toEqual([]);
   });
 });
 
