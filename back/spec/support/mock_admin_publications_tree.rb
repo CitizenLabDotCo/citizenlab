@@ -96,18 +96,21 @@ class MockAdminPublicationsTree
 
   def create_published_parent_with_draft_children
     publication = build(:project_folder)
-    @published_parent_with_draft_children = build(:admin_publication,
+    parent = build(:admin_publication,
       publication_status: 'published',
       publication: publication)
-    publication.update!(admin_publication: @published_parent_with_draft_children)
-    children = Array.new(3) do
+    publication.update!(admin_publication: parent)
+    Array.new(3) do
       publication = build(:project)
       admin_publication = build(:admin_publication,
-        publication: publication,
-        publication_status: 'draft',
-        parent: published_parent_with_draft_children)
+        :with_parent, 
+        publication_status: 'draft', 
+        publication: publication, 
+        parent: parent)
       publication.update!(admin_publication: admin_publication)
       admin_publication
-    end
+    end 
+
+    @published_parent_with_draft_children = parent
   end
 end
