@@ -25,13 +25,12 @@ class AdminPublicationsFilteringService
   add_filter('remove_not_allowed_parents') do |scope, options|
     next scope unless ['true', true, '1'].include? options[:remove_not_allowed_parents]
 
-    projects_in_folder_publications = AdminPublication.includes(:parent)
+    allowed_parent_publication_ids = AdminPublication.includes(:parent)
       .where(publication_id: Project.publicly_visible.not_draft.ids.uniq)
       .where.not(parent_id: nil)
-    visible_or_public_parent_publication_ids = scope.map(&:parent_id)
-      .concat(projects_in_folder_publications.map(&:parent_id))
+      .map(&:parent_id)
 
-    parents_with_visible_children = scope.where(id: visible_or_public_parent_publication_ids)
+    parents_with_visible_children = scope.where(id: allowed_parent_publication_ids)
     parents_without_any_children  = scope.where(children_allowed: true, children_count: 0)
     non_parents                   = scope.where(children_allowed: false)
 
