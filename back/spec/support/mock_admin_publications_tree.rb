@@ -3,7 +3,7 @@
 class MockAdminPublicationsTree
   attr_reader :empty_parents, :admin_only_parents,
     :public_parents, :admin_only_children, :public_children, :other,
-    :draft_children_of_published_parent, :published_parent_with_draft_children
+    :published_parent_with_draft_children
 
   def self.call
     new.tap(&:call)
@@ -95,14 +95,19 @@ class MockAdminPublicationsTree
   end
 
   def create_published_parent_with_draft_children
-    folder_admin_publication = build(:admin_publication,
-      :with_children,
+    publication = build(:project_folder)
+    @published_parent_with_draft_children = build(:admin_publication,
       publication_status: 'published',
-      publication: build(:project_folder),
-      children: %w[draft draft draft].map do |status|
-        build(:admin_publication, publication_status: status, publication: build(:project))
-      end
-    )
-    @published_parent_with_draft_children = AdminPublication.find(folder_admin_publication.id)
+      publication: publication)
+    publication.update!(admin_publication: @published_parent_with_draft_children)
+    children = Array.new(3) do
+      publication = build(:project)
+      admin_publication = build(:admin_publication,
+        publication: publication,
+        publication_status: 'draft',
+        parent: published_parent_with_draft_children)
+      publication.update!(admin_publication: admin_publication)
+      admin_publication
+    end
   end
 end
