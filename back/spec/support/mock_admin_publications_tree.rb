@@ -3,7 +3,7 @@
 class MockAdminPublicationsTree
   attr_reader :empty_parents, :admin_only_parents,
     :public_parents, :admin_only_children, :public_children, :other,
-    :draft_children_of_published_parent, :published_parent_with_draft_children
+    :published_parent_with_draft_children
 
   def self.call
     new.tap(&:call)
@@ -109,6 +109,5 @@ class MockAdminPublicationsTree
       publication.update!(admin_publication: admin_publication)
       admin_publication
     end
-    @draft_children_of_published_parent = AdminPublication.where(id: children.map(&:id))
   end
 end

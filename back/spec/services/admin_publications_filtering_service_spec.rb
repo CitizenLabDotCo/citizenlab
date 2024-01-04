@@ -26,16 +26,16 @@ describe AdminPublicationsFilteringService do
       expect(result.ids).not_to include(*tree_mock.other.where(publication_status: %w[draft]).ids)
     end
 
-    it 'does not include parents when the user has no access to it\'s children' do
+    it 'does not include parents when the user has no access to its children' do
       expect(result.ids).not_to include(*tree_mock.admin_only_parents.ids)
     end
 
-    it 'does not include a parent if all it\'s children are in draft' do
+    it 'does not include a parent if all its children are in draft' do
       expect(result.ids).not_to include(tree_mock.published_parent_with_draft_children.id)
     end
 
     it 'does not include the draft children of a published parent' do
-      expect(result.ids).not_to include(*tree_mock.draft_children_of_published_parent.ids)
+      expect(result.ids).not_to include(*tree_mock.published_parent_with_draft_children.children.ids)
     end
   end
 
