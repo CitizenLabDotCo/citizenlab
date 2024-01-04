@@ -22,15 +22,7 @@ import styled from 'styled-components';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
-
-import {
-  ICustomPageAttributes,
-  TCustomPageBannerLayout,
-} from 'api/custom_pages/types';
-import {
-  IHomepageSettingsAttributes,
-  THomepageBannerLayout,
-} from 'api/home_page/types';
+import { THomepageBannerLayout } from '..';
 
 const LayoutPreview = styled.img`
   width: 100%;
@@ -46,12 +38,8 @@ const LayoutOption = styled.label`
 `;
 
 export interface Props {
-  bannerLayout:
-    | ICustomPageAttributes['banner_layout']
-    | IHomepageSettingsAttributes['banner_layout'];
-  onChange: (
-    bannerLayout: THomepageBannerLayout | TCustomPageBannerLayout
-  ) => void;
+  bannerLayout: THomepageBannerLayout;
+  onChange: (bannerLayout: THomepageBannerLayout) => void;
 }
 
 const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {

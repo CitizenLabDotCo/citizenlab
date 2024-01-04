@@ -10,6 +10,7 @@ module Analysis
       'ar-MA' => 'ary_Arab', # Arabic (Morocco) is not present
       'ar-SA' => 'arb_Arab',
       'ca-ES' => 'cat_Latn',
+      'cy-GB' => 'cym_Latn',
       'da-DK' => 'dan_Latn',
       'de-DE' => 'deu_Latn',
       'el-GR' => 'ell_Grek',

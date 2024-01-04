@@ -13,14 +13,12 @@ import { Box, Checkbox, Text } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 
 interface Props {
-  projectId: string;
-  phaseId?: string;
+  phaseId: string;
   shownQuestions?: boolean[];
   onToggleQuestion: (questionIndex: number, numberOfQuestions: number) => void;
 }
 
 const QuestionFilter = ({
-  projectId,
   phaseId,
   shownQuestions,
   onToggleQuestion,
@@ -28,7 +26,6 @@ const QuestionFilter = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { data: formResults } = useFormResults({
-    projectId,
     phaseId,
   });
 

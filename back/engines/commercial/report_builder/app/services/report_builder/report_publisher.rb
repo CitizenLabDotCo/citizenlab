@@ -10,11 +10,10 @@ class ReportBuilder::ReportPublisher
 
     ReportBuilder::PublishedGraphDataUnit.where(report_id: @report.id).destroy_all
 
-    craftjs_json = @report.layout.craftjs_json
+    nodes = @report.layout.craftjs_json
+    return if nodes.blank?
 
-    return if craftjs_json.blank?
-
-    craftjs_json.each do |node_id, node_obj|
+    nodes.each do |node_id, node_obj|
       type = node_obj['type']
       resolved_name = type.is_a?(Hash) ? type['resolvedName'] : next
 

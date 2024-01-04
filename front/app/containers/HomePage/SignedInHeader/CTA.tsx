@@ -4,11 +4,11 @@ import BannerButton, {
 import useLocalize from 'hooks/useLocalize';
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { IHomepageSettingsAttributes } from 'api/home_page/types';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 
 interface Props {
   buttonStyle: BannerButtonStyle;
-  homepageSettings: Partial<IHomepageSettingsAttributes>;
+  homepageSettings: Partial<IHomepageBannerSettings>;
 }
 
 const CTA = ({ buttonStyle, homepageSettings }: Props) => {

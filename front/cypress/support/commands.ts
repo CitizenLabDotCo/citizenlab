@@ -132,7 +132,8 @@ export function login(email: string, password: string) {
 
 export function signUp() {
   cy.goToLandingPage();
-  cy.get('#e2e-navbar-signup-menu-item').click();
+  cy.get('#e2e-navbar-login-menu-item').click();
+  cy.get('#e2e-goto-signup').click();
   cy.get('#e2e-sign-up-container');
   cy.get('#e2e-sign-up-email-password-container');
 

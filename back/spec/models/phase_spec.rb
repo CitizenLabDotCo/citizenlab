@@ -191,6 +191,11 @@ RSpec.describe Phase do
     it 'returns true if passing tomorrow\'s date' do
       expect(phase.ends_before?(start_date + 2.days)).to be true
     end
+
+    it 'returns false if the phase has no end date' do
+      phase_without_end_date = create(:phase, start_at: start_date, end_at: nil)
+      expect(phase_without_end_date.ends_before?(start_date + 2.days)).to be false
+    end
   end
 
   # too lazy to split the tests at this stage
