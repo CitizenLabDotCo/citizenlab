@@ -43,7 +43,7 @@ resource 'Areas' do
   end
 
   get 'web_api/v1/areas/:id' do
-    let(:areas) { create_list(:area, 2)}
+    let(:areas) { create_list(:area, 2) }
     let(:id) { areas.first.id }
 
     example_request 'Get one area by id' do
@@ -169,25 +169,6 @@ resource 'Areas' do
         expect(response_status).to eq 200
         expect { Area.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(user.reload.custom_field_values).to eq({})
-      end
-    end
-
-    patch 'web_api/v1/areas/:id/reorder' do
-      with_options scope: :area do
-        parameter :ordering, 'The position, starting from 0, where the area should be at. Publications after will move down.', required: true
-      end
-
-      let!(:id) { create_list(:area, 3).last.id }
-      let(:ordering) { 1 }
-
-      example 'Reorder an Area' do
-        area = Area.find_by(ordering: ordering)
-        do_request
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
-        expect(Area.find(id).ordering).to eq(ordering)
-        expect(area.reload.ordering).to eq 2 # previous second is now third
       end
     end
   end
