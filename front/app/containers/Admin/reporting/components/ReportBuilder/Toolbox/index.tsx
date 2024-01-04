@@ -65,7 +65,7 @@ const SectionTitle = ({ children }) => (
 const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
-  const { projectId } = useReportContext();
+  const { projectId, phaseId } = useReportContext();
   const appConfigurationLocales = useAppConfigurationLocales();
 
   if (!appConfigurationLocales) return null;
@@ -163,7 +163,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <SurveyResultsWidget
                 title={toMultiloc(SurveyResultsWidget.craft.custom.title)}
-                projectId={projectId}
+                phaseId={phaseId}
               />
             }
             icon="survey"

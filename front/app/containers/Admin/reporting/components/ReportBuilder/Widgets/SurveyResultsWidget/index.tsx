@@ -37,20 +37,11 @@ type Props = {
   shownQuestions?: boolean[];
 };
 
-const SurveyResultsWidget = ({
-  title,
-  projectId,
-  phaseId,
-  shownQuestions,
-}: Props) => {
+const SurveyResultsWidget = ({ title, phaseId, shownQuestions }: Props) => {
   return (
     <Card title={title} data-testid="survey-results-widget">
-      {projectId && phaseId ? (
-        <SurveyResults
-          projectId={projectId}
-          phaseId={phaseId}
-          shownQuestions={shownQuestions}
-        />
+      {phaseId ? (
+        <SurveyResults phaseId={phaseId} shownQuestions={shownQuestions} />
       ) : (
         <NoData message={messages.surveyNoResults} />
       )}
