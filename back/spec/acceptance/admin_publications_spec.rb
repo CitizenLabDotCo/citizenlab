@@ -212,6 +212,8 @@ resource 'AdminPublication' do
 
     let(:project_statuses) { %w[published published draft draft published archived] }
     let!(:_custom_folder) { create(:project_folder, projects: projects.take(3)) }
+    let(:draft_project) { create(:project, slug: 'draft-project', admin_publication_attributes: { publication_status: 'draft' }) }
+    let!(:folder_with_draft_project) { create(:project_folder, projects: [draft_project]) }
 
     get 'web_api/v1/admin_publications' do
       with_options scope: :page do
@@ -221,16 +223,17 @@ resource 'AdminPublication' do
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
-      parameter :filter_empty_folders, 'Filter out folders with no visible children for the current user', required: false
+      parameter :remove_not_allowed_parents, 'Filter out folders with no visible children for the current user', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
 
       example 'Listed admin publications have correct visible children count', document: false do
-        do_request(folder: nil)
+        do_request(folder: nil, remove_not_allowed_parents: true)
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         # Only 3 of initial 6 projects are not in folder
         expect(json_response[:data].size).to eq 3
-        # Draft folder created at top of file is not visible to resident, so only 1 is expected
+        # Only 1 folder expected - Draft folder created at top of file is not visible to resident,
+        # nor should a folder with only a draft project in it
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
         # 3 projects are inside folder, 3 top-level projects remain, of which 1 is not visible (draft)
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 2
@@ -240,7 +243,7 @@ resource 'AdminPublication' do
 
       example 'Visible children count should take account with applied filters', document: false do
         projects.first.admin_publication.update! publication_status: 'archived'
-        do_request(folder: nil, publication_statuses: ['published'])
+        do_request(folder: nil, publication_statuses: ['published'], remove_not_allowed_parents: true)
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2

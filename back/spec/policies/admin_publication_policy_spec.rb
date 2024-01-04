@@ -114,20 +114,19 @@ describe AdminPublicationPolicy do
     context 'when visitor' do
       let(:user) { nil }
 
-      it { is_expected.not_to permit(:show)    }
+      it { is_expected.not_to permit(:show) }
     end
 
-    context 'when regular user' do 
+    context 'when regular user' do
       let(:user) { create(:user) }
 
-      it { is_expected.not_to permit(:show)    }
+      it { is_expected.not_to permit(:show) }
     end
 
-    context 'when admin' do 
+    context 'when admin' do
       let(:user) { create(:admin) }
 
-      it { is_expected.to permit(:show)    }
+      it { is_expected.to permit(:show) }
     end
   end
-
 end
