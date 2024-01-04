@@ -27,28 +27,36 @@ class MockAdminPublicationsTree
 
   attr_reader :statuses
 
-  delegate :create, :create_list, to: FactoryBot
+  # we use `build` because we don't want to create any extra records created by default with `create`
+  # (see the factories for details)
+  delegate :build, to: FactoryBot
 
   def create_empty_parents
     records = statuses.map do |status|
-      publication = create(:project_folder)
-      create(:admin_publication, publication_status: status, publication: publication)
+      publication = build(:project_folder)
+      admin_publication = build(:admin_publication, publication_status: status, publication: publication)
+      publication.update!(admin_publication: admin_publication)
+      admin_publication
     end
     @empty_parents = AdminPublication.where(id: records.map(&:id))
   end
 
   def create_admin_only_parents
     records = statuses.map do |status|
-      publication = create(:project_folder)
-      create(:admin_publication, publication_status: status, publication: publication)
+      publication = build(:project_folder)
+      admin_publication = build(:admin_publication, publication_status: status, publication: publication)
+      publication.update!(admin_publication: admin_publication)
+      admin_publication
     end
     @admin_only_parents = AdminPublication.where(id: records.map(&:id))
   end
 
   def create_public_parents
     records = statuses.map do |status|
-      publication = create(:project_folder)
-      create(:admin_publication, publication_status: status, publication: publication)
+      publication = build(:project_folder)
+      admin_publication = build(:admin_publication, publication_status: status, publication: publication)
+      publication.update!(admin_publication: admin_publication)
+      admin_publication
     end
     @public_parents = AdminPublication.where(id: records.map(&:id))
   end
@@ -56,8 +64,9 @@ class MockAdminPublicationsTree
   def create_admin_only_children
     admin_only_parents.each do |parent|
       statuses.each do |status|
-        publication = create(:project, visible_to: 'groups')
-        create(:admin_publication, :with_parent, publication_status: status, publication: publication, parent: parent)
+        publication = build(:project, visible_to: 'groups')
+        admin_publication = build(:admin_publication, :with_parent, publication_status: status, publication: publication, parent: parent)
+        publication.update!(admin_publication: admin_publication)
       end
     end
     @admin_only_children = AdminPublication.where(parent: admin_only_parents)
@@ -66,8 +75,9 @@ class MockAdminPublicationsTree
   def create_public_children
     public_parents.each do |parent|
       statuses.each do |status|
-        publication = create(:project, visible_to: 'groups')
-        create(:admin_publication, :with_parent, publication_status: status, publication: publication, parent: parent)
+        publication = build(:project, visible_to: 'groups')
+        admin_publication = build(:admin_publication, :with_parent, publication_status: status, publication: publication, parent: parent)
+        publication.update!(admin_publication: admin_publication)
       end
     end
     @public_children = AdminPublication.where(parent: public_parents)
@@ -76,19 +86,21 @@ class MockAdminPublicationsTree
   def create_other
     # 5. create some other top level publications
     records = statuses.map do |status|
-      publication = create(:project, visible_to: 'public')
-      create(:admin_publication, publication_status: status, publication: publication)
+      publication = build(:project, visible_to: 'public')
+      admin_publication = build(:admin_publication, publication_status: status, publication: publication)
+      publication.update!(admin_publication: admin_publication)
+      admin_publication
     end
     @other = AdminPublication.where(id: records.map(&:id))
   end
 
   def create_published_parent_with_draft_children
-    folder_admin_publication = create(:admin_publication,
+    folder_admin_publication = build(:admin_publication,
       :with_children,
       publication_status: 'published',
-      publication: create(:project_folder),
+      publication: build(:project_folder),
       children: %w[draft draft draft].map do |status|
-        create(:admin_publication, publication_status: status, publication: create(:project))
+        build(:admin_publication, publication_status: status, publication: build(:project))
       end
     )
     @published_parent_with_draft_children = AdminPublication.find(folder_admin_publication.id)
