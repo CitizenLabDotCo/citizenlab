@@ -98,21 +98,41 @@ resource 'Areas' do
         parameter :title_multiloc, 'The title of the area, as a multiloc string'
         parameter :description_multiloc, 'The description of the area, as a multiloc string'
         parameter :include_in_onboarding, 'Whether or not to include the area in the list presented during onboarding, a boolean'
+        parameter :ordering, 'The position, starting from 0, where the area should be at. Areas after will move down.', required: false
       end
+
       ValidationErrorHelper.new.error_fields(self, Area)
 
-      let(:area) { create(:area) }
+      let!(:area) { create(:area) }
       let(:id) { area.id }
       let(:title_multiloc) { { 'en' => 'Krypton' } }
       let(:description_multiloc) { { 'en' => 'Home planet of Superman' } }
-      let(:include_in_onboarding) { true }
+      let(:include_in_onboarding) { !!area.include_in_onboarding }
 
       example_request 'Update an area' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data, :attributes, :include_in_onboarding)).to be true
+        expect(json_response.dig(:data, :attributes, :include_in_onboarding)).to be include_in_onboarding
+      end
+
+      example 'Update the ordering of an area' do
+        area1, area2 = create_list(:area, 2)
+
+        expect(area.ordering).to eq 0
+        expect(area1.ordering).to eq 1
+        expect(area2.ordering).to eq 2
+
+        do_request(area: { ordering: 1 })
+        assert_status 200
+
+        expect(area.reload.ordering).to eq 1
+        expect(area1.reload.ordering).to eq 0
+        expect(area2.reload.ordering).to eq 2
+
+        # Check the other changes were applied as well
+        expect(area.include_in_onboarding).to eq include_in_onboarding
       end
     end
 
