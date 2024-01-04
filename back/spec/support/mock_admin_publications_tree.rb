@@ -107,7 +107,6 @@ class MockAdminPublicationsTree
         publication: publication,
         parent: parent)
       publication.update!(admin_publication: admin_publication)
-      admin_publication
     end
 
     @published_parent_with_draft_children = parent
