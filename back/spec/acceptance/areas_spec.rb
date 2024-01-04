@@ -6,11 +6,7 @@ require_relative './shared/publication_filtering_model'
 
 resource 'Areas' do
   explanation 'Areas are geographical regions. Each tenant has its own custom set of areas.'
-
-  before do
-    header 'Content-Type', 'application/json'
-    @areas = create_list(:area, 5)
-  end
+  header 'Content-Type', 'application/json'
 
   get 'web_api/v1/areas' do
     with_options scope: :page do
@@ -18,39 +14,42 @@ resource 'Areas' do
       parameter :size, 'Number of areas per page'
     end
 
+    let!(:areas) { create_list(:area, 3) }
+
     example_request 'List all areas' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 5
+      expect(json_response[:data].size).to eq(3)
     end
 
     example 'List all topics for onboarding' do
-      @areas.last.update!(include_in_onboarding: true)
+      areas.last.update!(include_in_onboarding: true)
       do_request for_onboarding: true
       assert_status 200
-      expect(response_data.pluck(:id)).to eq [@areas.last.id]
+      expect(response_data.pluck(:id)).to eq [areas.last.id]
     end
 
     example 'List all areas sorted by project count' do
       projects = create_list(:project, 5)
-      @areas[0].update!(projects: [projects[0], projects[2]])
-      @areas[2].update!(projects: [projects[2], projects[4], projects[3]])
+      areas[0].update!(projects: [projects[0], projects[2]])
+      areas[2].update!(projects: [projects[2], projects[4], projects[3]])
 
       do_request sort: 'projects_count'
 
       assert_status 200
-      expect(response_data.size).to eq 5
-      expect(response_data.pluck(:id)).to eq [@areas[2].id, @areas[0].id, @areas[1].id, @areas[3].id, @areas[4].id]
+      expect(response_data.size).to eq(3)
+      expect(response_data.pluck(:id)).to eq [areas[2].id, areas[0].id, areas[1].id]
     end
   end
 
   get 'web_api/v1/areas/:id' do
-    let(:id) { @areas.first.id }
+    let(:areas) { create_list(:area, 2)}
+    let(:id) { areas.first.id }
 
     example_request 'Get one area by id' do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq @areas.first.id
+      expect(json_response.dig(:data, :id)).to eq(id)
     end
   end
 
@@ -158,7 +157,7 @@ resource 'Areas' do
         parameter :ordering, 'The position, starting from 0, where the area should be at. Publications after will move down.', required: true
       end
 
-      let(:id) { create_list(:area, 4).last.id }
+      let!(:id) { create_list(:area, 3).last.id }
       let(:ordering) { 1 }
 
       example 'Reorder an Area' do
@@ -167,7 +166,7 @@ resource 'Areas' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
-        expect(Area.find_by(ordering: ordering).id).to eq id
+        expect(Area.find(id).ordering).to eq(ordering)
         expect(area.reload.ordering).to eq 2 # previous second is now third
       end
     end
