@@ -103,7 +103,6 @@ class MockAdminPublicationsTree
     Array.new(3) do
       publication = build(:project)
       admin_publication = build(:admin_publication,
-        :with_parent, 
         publication_status: 'draft', 
         publication: publication, 
         parent: parent)
