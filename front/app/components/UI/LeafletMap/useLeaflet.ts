@@ -250,13 +250,13 @@ export default function useLeaflet(
     onInit,
   ]);
 
-  const refreshTile = () => {
-    setTileLayer((prevTileLayer) => {
-      service.removeLayer(map, prevTileLayer);
-      return service.addTileLayer(map, tileProvider, tileOptions);
-    });
-  };
-  useEffect(refreshTile, [map, tileProvider, tileOptions]);
+  // const refreshTile = () => {
+  //   setTileLayer((prevTileLayer) => {
+  //     service.removeLayer(map, prevTileLayer);
+  //     return service.addTileLayer(map, tileProvider, tileOptions);
+  //   });
+  // };
+  // useEffect(refreshTile, [map, tileProvider, tileOptions]);
 
   const centerStr = center ? JSON.stringify(center) : undefined;
 
