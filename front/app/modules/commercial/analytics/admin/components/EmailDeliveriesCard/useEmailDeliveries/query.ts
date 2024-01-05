@@ -51,7 +51,7 @@ export const query = ({
     },
   };
 
-  const date_group = `dimension_date_sent.${getInterval(resolution)}`
+  const date_group = `dimension_date_sent.${getInterval(resolution)}`;
   let timeSeriesQuery: QuerySchema = {
     fact: 'email_delivery',
     filters: { ...dateFilter },
@@ -61,7 +61,6 @@ export const query = ({
       [date_group]: 'first',
     },
   };
-
 
   return {
     query: [
