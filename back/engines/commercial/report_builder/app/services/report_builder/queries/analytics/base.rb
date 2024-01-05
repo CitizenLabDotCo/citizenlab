@@ -1,9 +1,21 @@
-class ReportBuilder::Queries::Base
+class ReportBuilder::Queries::Analytics::Base
   RESOLUTION_TO_INTERVAL = {
     'month' => 'month',
     'week' => 'week',
     'day' => 'date'
   }.freeze
+
+  def run_query(props)
+    json_query = query(**props)
+    results, errors, _paginations = Analytics::MultipleQueries.new.run(json_query)
+    if errors.present?
+      raise "Error processing Analytics query: #{errors.to_json}"
+    end
+
+    results
+  end
+
+  protected
 
   def query(**_props)
     raise NotImplementedError

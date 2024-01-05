@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { useNode } from '@craftjs/core';
 import useLiveReactionsByTime from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/useLiveReactionsByTime';
 import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
+import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
 // routing
 import { useLocation } from 'react-router-dom';
@@ -28,23 +29,19 @@ import {
   Response,
 } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
 
-type Parameters = QueryParameters & {
-  reportId?: string;
-};
-
 export default function useReactionsByTime({
   projectId,
   startAtMoment,
   endAtMoment,
   resolution,
-  reportId,
-}: Parameters) {
+}: QueryParameters) {
   const { formatMessage } = useIntl();
   const [currentResolution] = useState(resolution);
 
   const { pathname } = useLocation();
   const { id: graphId } = useNode();
   const isAdminPage = isPage('admin', pathname);
+  const { reportId } = useReportContext();
 
   const { data: analyticsLive } = useLiveReactionsByTime(
     {
