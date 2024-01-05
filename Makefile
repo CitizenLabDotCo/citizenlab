@@ -58,6 +58,9 @@ psql:
 add-campaign-and-notification:
 	back/bin/add_campaign_and_notification ${source} ${target}
 
+blint back-lint-autocorrect:
+	docker compose run web bundle exec rubocop -P --format simple --autocorrect
+
 # =================
 # E2E tests
 # =================
