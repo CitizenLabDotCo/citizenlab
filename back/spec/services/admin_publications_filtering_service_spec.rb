@@ -7,8 +7,7 @@ describe AdminPublicationsFilteringService do
 
   let_it_be(:tree_mock) { MockAdminPublicationsTree.call }
 
-  shared_examples 'when a normal user searching from the landing page' do
-    let(:base_scope) { Pundit.policy_scope(create(:user), AdminPublication.includes(:parent)) }
+  shared_examples 'when a user searching from the landing page' do
 
     it 'includes truly empty parents' do
       expect(result.ids).to include(*tree_mock.empty_parents.where(publication_status: %w[archived published]).ids)
@@ -41,14 +40,16 @@ describe AdminPublicationsFilteringService do
 
   context 'when a normal user searching from the landing page (passing parsed params)' do
     let(:options) { { depth: 0, remove_not_allowed_parents: true, publication_statuses: %w[archived published] } }
+    let(:base_scope) { Pundit.policy_scope(create(:user), AdminPublication.includes(:parent)) }
 
-    include_examples 'when a normal user searching from the landing page'
+    include_examples 'when a user searching from the landing page'
   end
 
-  context 'when a normal user searching from the landing page (passing params as strings)' do
-    let(:options) { { depth: '0', remove_not_allowed_parents: 'true', publication_statuses: %w[archived published] } }
+  context 'when an admin searching from the landing page (passing parsed params)' do
+    let(:options) { { depth: '0', remove_not_allowed_parents: true, publication_statuses: %w[archived published] } }
+    let(:base_scope) { Pundit.policy_scope(create(:admin), AdminPublication.includes(:parent)) }
 
-    include_examples 'when a normal user searching from the landing page'
+    include_examples 'when a user searching from the landing page'
   end
 
   context 'when an admin searching from the admin dashboard' do
