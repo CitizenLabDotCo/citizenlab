@@ -76,7 +76,6 @@ describe MultiTenancy::Templates::Utils do
         expect(names).to match_array(expected_templates)
       end
     end
-
   end
 
   describe '#external_manifest' do
