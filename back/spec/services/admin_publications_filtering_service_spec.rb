@@ -8,7 +8,6 @@ describe AdminPublicationsFilteringService do
   let_it_be(:tree_mock) { MockAdminPublicationsTree.call }
 
   shared_examples 'when a user searching from the landing page' do
-
     it 'includes truly empty parents' do
       expect(result.ids).to include(*tree_mock.empty_parents.where(publication_status: %w[archived published]).ids)
     end

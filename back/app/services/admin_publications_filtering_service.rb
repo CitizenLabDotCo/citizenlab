@@ -26,7 +26,7 @@ class AdminPublicationsFilteringService
     next scope unless ['true', true, '1'].include? options[:remove_not_allowed_parents]
 
     # We remove parents that have only draft projects
-    parents_with_visible_children = scope.where(id: scope.not_draft.map(&:parent_id).compact.uniq)
+    parents_with_visible_children = scope.where(id: scope.not_draft.filter_map(&:parent_id).uniq)
     parents_without_any_children  = scope.where(children_allowed: true, children_count: 0)
     non_parents                   = scope.where(children_allowed: false)
 
