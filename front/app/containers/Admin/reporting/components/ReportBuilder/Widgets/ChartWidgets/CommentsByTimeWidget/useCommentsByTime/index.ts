@@ -3,11 +3,8 @@ import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/translations';
 
 // hooks
-import useLiveCommentsByTime from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/useLiveCommentsByTime';
-import { useLocation } from 'react-router-dom';
-import { useNode } from '@craftjs/core';
-import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
-import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+import { useMemo, useState } from 'react';
+import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 
 // parse
 import {
@@ -17,14 +14,12 @@ import {
 
 // utils
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
-import { isPage } from 'utils/helperUtils';
 
 // typings
 import {
   QueryParameters,
   Response,
 } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/typings';
-import { useMemo, useState } from 'react';
 
 export default function useCommentsByTime({
   projectId,
@@ -35,30 +30,15 @@ export default function useCommentsByTime({
   const { formatMessage } = useIntl();
   const [currentResolution] = useState(resolution);
 
-  const { pathname } = useLocation();
-  const { id: graphId } = useNode();
-  const isAdminPage = isPage('admin', pathname);
-  const { reportId } = useReportContext();
-
-  const { data: analyticsLive } = useLiveCommentsByTime(
-    {
+  const analytics = useGraphDataUnits<Response>({
+    resolvedName: 'CommentsByTimeWidget',
+    queryParameters: {
       projectId,
       startAtMoment,
       endAtMoment,
       resolution,
     },
-    { enabled: isAdminPage }
-  );
-
-  const { data: analyticsPublished } = useGraphDataUnitsPublished<Response>(
-    {
-      reportId,
-      graphId,
-    },
-    { enabled: !isAdminPage }
-  );
-
-  const analytics = analyticsLive ?? analyticsPublished;
+  });
 
   const timeSeries = useMemo(
     () =>
