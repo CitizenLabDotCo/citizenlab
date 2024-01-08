@@ -1861,7 +1861,7 @@
   "app.utils.votingMethodUtils.castYourVote": "Cast your vote",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea": "You can add a maximum number of {maxVotes} votes per option.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone": "Once you are done, click “Submit” to cast your vote.",
-  "app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions": "Select your preferred options by tapping on “Vote”.",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions": "Select your preferred options by tapping on “Select”.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes": "You have a total of <b>{totalVotes} {voteTerm} to distribute between {optionCount} options</b>.",
   "app.utils.votingMethodUtils.finalResults": "Коначни резултати",
   "app.utils.votingMethodUtils.finalTally": "Final tally",
