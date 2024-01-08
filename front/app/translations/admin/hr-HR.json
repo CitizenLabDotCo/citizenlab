@@ -2494,6 +2494,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Posjeti",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Vrste posjetitelja",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Posjetitelji",
+  "app.modules.commercial.analytics.admin.containers.visitors.cookieBannerUpdatedInfo": "Od prosinca 2023. korisnicima je lakše odbiti kolačiće, što ima negativan učinak na percipirani promet.",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "Još nema podataka o posjetiteljima.",
   "app.modules.commercial.analytics.admin.hooks.useActiveUsers.timeSeries": "Aktivni korisnika kroz vrijeme",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Dostavljeno e-poruka kroz vrijeme",
