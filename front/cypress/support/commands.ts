@@ -2,6 +2,7 @@ import 'cypress-file-upload';
 import './dnd';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
+import { IProjectAttributes } from '../../app/api/projects/types';
 
 import jwtDecode from 'jwt-decode';
 import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
@@ -829,9 +830,9 @@ export function apiCreateProject({
   title: string;
   descriptionPreview: string;
   description: string;
-  publicationStatus?: 'draft' | 'published' | 'archived';
+  publicationStatus?: IProjectAttributes['publication_status'];
   assigneeId?: string;
-  visibleTo?: 'public' | 'groups' | 'admins';
+  visibleTo?: IProjectAttributes['visible_to'];
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -877,15 +878,12 @@ export function apiEditProject({
   description,
   publicationStatus = 'published',
   assigneeId,
-  surveyUrl,
-  surveyService,
-  votingMaxTotal,
 }: {
   projectId: string;
   title?: string;
   descriptionPreview?: string;
   description?: string;
-  publicationStatus?: 'draft' | 'published' | 'archived';
+  publicationStatus?: IProjectAttributes['publication_status'];
   assigneeId?: string;
   surveyUrl?: string;
   votingMaxTotal?: number;
