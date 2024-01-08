@@ -824,12 +824,14 @@ export function apiCreateProject({
   description,
   publicationStatus = 'published',
   assigneeId,
+  visibleTo,
 }: {
   title: string;
   descriptionPreview: string;
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
   assigneeId?: string;
+  visibleTo?: 'public' | 'groups' | 'admins';
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -861,6 +863,7 @@ export function apiCreateProject({
             'nl-BE': description,
           },
           default_assignee_id: assigneeId,
+          visible_to: visibleTo,
         },
       },
     });

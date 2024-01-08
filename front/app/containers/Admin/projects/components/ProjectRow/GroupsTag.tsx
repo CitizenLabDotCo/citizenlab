@@ -43,7 +43,7 @@ const GroupsTag = ({ projectId, userCanModerateProject }: Props) => {
   if (userCanModerateProject) {
     return (
       <Link
-        data-cy="e2e-admin-tag"
+        data-cy="e2e-groups-permissions-tag"
         to={`${adminProjectsProjectPath(projectId)}/settings/access-rights`}
       >
         <StatusLabel groupCount={groupCount} />
