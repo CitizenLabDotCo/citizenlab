@@ -22,7 +22,10 @@ const StatusLabel = () => (
 const AdminTag = ({ userCanModerateProject, projectId }: Props) => {
   if (userCanModerateProject) {
     return (
-      <Link to={`${adminProjectsProjectPath(projectId)}/permissions`}>
+      <Link
+        data-cy="e2e-admin-tag"
+        to={`${adminProjectsProjectPath(projectId)}/settings/access-rights`}
+      >
         <StatusLabel />
       </Link>
     );
