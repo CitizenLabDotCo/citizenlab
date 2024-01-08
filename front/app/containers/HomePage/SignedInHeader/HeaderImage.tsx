@@ -70,10 +70,6 @@ const HeaderImage = ({
               homepageSettings.banner_signed_in_header_overlay_color ||
               theme.colors.tenantPrimary
             }
-            // With this fixed ratio layout, we don't have an image (see above),
-            // so we set opacity to 1.
-            // Ticket: https://citizenlab.atlassian.net/browse/CL-2215
-
             opacity={
               typeof homepageSettings.banner_signed_in_header_overlay_opacity ===
               'number'
