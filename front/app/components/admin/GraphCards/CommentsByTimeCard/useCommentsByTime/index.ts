@@ -9,11 +9,11 @@ import { parseTimeSeries, parseExcelData } from './parse';
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
 // typings
-import { QueryParameters } from './typings';
+import { Response, QueryParameters } from './typings';
 import { useMemo, useState } from 'react';
 
 // hooks
-import useLiveCommentsByTime from './useLiveCommentsByTime';
+import useGraphDataUnitsLive from 'api/graph_data_units/useGraphDataUnitsLive';
 
 export default function useCommentsByTime({
   projectId,
@@ -22,12 +22,15 @@ export default function useCommentsByTime({
   resolution,
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
-  const { data: analytics } = useLiveCommentsByTime(
+  const { data: analytics } = useGraphDataUnitsLive<Response>(
     {
-      projectId,
-      startAtMoment,
-      endAtMoment,
-      resolution,
+      resolvedName: 'CommentsByTimeWidget',
+      props: {
+        projectId,
+        startAtMoment,
+        endAtMoment,
+        resolution,
+      },
     },
     {
       onSuccess: () => {
