@@ -1,23 +1,29 @@
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
+import { getTranslations } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/translations';
 
 // parse
-import { parsePieData, parseExcelData } from './parse';
+import {
+  parsePieData,
+  parseExcelData,
+} from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/parse';
 
 // typings
-import { QueryParameters, Response } from './typings';
+import {
+  QueryParameters,
+  Response,
+} from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
 
-import useGraphDataUnitsLive from 'api/graph_data_units/useGraphDataUnitsLive';
+import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 
 export default function useVisitorsReferrerTypes({
   projectId,
   startAtMoment,
   endAtMoment,
 }: QueryParameters) {
-  const { data: analytics } = useGraphDataUnitsLive<Response>({
+  const analytics = useGraphDataUnits<Response>({
     resolvedName: 'VisitorsTrafficSourcesWidget',
-    props: {
+    queryParameters: {
       projectId,
       startAtMoment,
       endAtMoment,
