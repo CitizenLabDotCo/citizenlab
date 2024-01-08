@@ -1,33 +1,13 @@
 import React from 'react';
-import { colors } from '@citizenlab/cl2-component-library';
-import { StyledStatusLabel } from '.';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 import useProjectGroups from 'api/project_groups/useProjectGroups';
 import Link from 'utils/cl-router/Link';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import PermissionsTag from './PermissionsTag';
 
 interface Props {
   projectId: string;
   userCanModerateProject: boolean;
 }
-
-const StatusLabel = ({ groupCount }: { groupCount: number }) => (
-  <StyledStatusLabel
-    text={
-      groupCount > 0 ? (
-        <FormattedMessage
-          {...messages.xGroupsHaveAccess}
-          values={{ groupCount }}
-        />
-      ) : (
-        <FormattedMessage {...messages.onlyAdminsCanView} />
-      )
-    }
-    backgroundColor={colors.teal}
-    icon="lock"
-  />
-);
 
 const GroupsTag = ({ projectId, userCanModerateProject }: Props) => {
   const { data: projectGroups } = useProjectGroups({
@@ -46,12 +26,12 @@ const GroupsTag = ({ projectId, userCanModerateProject }: Props) => {
         data-cy="e2e-groups-permissions-tag"
         to={`${adminProjectsProjectPath(projectId)}/settings/access-rights`}
       >
-        <StatusLabel groupCount={groupCount} />
+        <PermissionsTag groupCount={groupCount} />
       </Link>
     );
   }
 
-  return <StatusLabel groupCount={groupCount} />;
+  return <PermissionsTag groupCount={groupCount} />;
 };
 
 export default GroupsTag;
