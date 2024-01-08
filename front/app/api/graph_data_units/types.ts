@@ -8,7 +8,8 @@ export type ResolvedName =
   | 'CommentsByTimeWidget'
   | 'PostsByTimeWidget'
   | 'ActiveUsersWidget'
-  | 'VisitorsWidget';
+  | 'VisitorsWidget'
+  | 'VisitorsTrafficSourcesWidget';
 
 export interface ParametersLive {
   resolvedName: ResolvedName;

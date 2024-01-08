@@ -9,6 +9,7 @@ module ReportBuilder
       'PostsByTimeWidget' => Queries::Analytics::PostsByTime,
       'ActiveUsersWidget' => Queries::Analytics::ActiveUsers,
       'VisitorsWidget' => Queries::Analytics::Visitors,
+      'VisitorsTrafficSourcesWidget' => Queries::Analytics::TrafficSources,
       'SurveyResultsWidget' => Queries::SurveyResults
     }.freeze
 
