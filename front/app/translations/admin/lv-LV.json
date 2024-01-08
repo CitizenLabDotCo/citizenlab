@@ -2494,6 +2494,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Apmeklējumi",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Apmeklētāju veidi",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Apmeklētāji",
+  "app.modules.commercial.analytics.admin.containers.visitors.cookieBannerUpdatedInfo": "Kopš 2023. gada decembra lietotājiem ir vieglāk noraidīt sīkfailus, kas negatīvi ietekmē uztverto datplūsmu.",
   "app.modules.commercial.analytics.admin.containers.visitors.noData": "Pagaidām nav apmeklētāju datu.",
   "app.modules.commercial.analytics.admin.hooks.useActiveUsers.timeSeries": "Aktīvie lietotāji laika gaitā",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "E-pasta sūtījumi laika gaitā",
