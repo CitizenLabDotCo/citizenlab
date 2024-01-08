@@ -1,14 +1,12 @@
-// query
-import { query } from './query';
-
 // parse
 import { parseStats, parseTimeSeries } from './parse';
 
 // typings
 import { QueryParameters, Response } from './typings';
-import useAnalytics from 'api/analytics/useAnalytics';
 import { useMemo, useState } from 'react';
 import { IResolution } from 'components/admin/ResolutionControl';
+
+import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 
 export default function useVisitorsData({
   projectId,
@@ -18,15 +16,16 @@ export default function useVisitorsData({
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] =
     useState<IResolution>(resolution);
-  const { data: analytics } = useAnalytics<Response>(
-    query({
+  const analytics = useGraphDataUnits<Response>({
+    resolvedName: 'VisitorsWidget',
+    queryParameters: {
       projectId,
       startAtMoment,
       endAtMoment,
       resolution,
-    }),
-    () => setCurrentResolution(resolution)
-  );
+    },
+    onSuccess: () => setCurrentResolution(resolution),
+  });
 
   const stats = analytics ? parseStats(analytics.data.attributes) : null;
 

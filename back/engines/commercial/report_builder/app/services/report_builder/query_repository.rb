@@ -8,6 +8,7 @@ module ReportBuilder
       'CommentsByTimeWidget' => Queries::Analytics::CommentsByTime,
       'PostsByTimeWidget' => Queries::Analytics::PostsByTime,
       'ActiveUsersWidget' => Queries::Analytics::ActiveUsers,
+      'VisitorsWidget' => Queries::Analytics::Visitors,
       'SurveyResultsWidget' => Queries::SurveyResults
     }.freeze
 
