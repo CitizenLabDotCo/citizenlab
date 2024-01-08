@@ -1786,7 +1786,7 @@
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.twitterMessage": "{projectFolderName}",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.whatsAppMessage": "{projectFolderName} | da plataforma de participação de {orgName}",
   "app.sessionRecording.accept": "Sim, eu aceito",
-  "app.sessionRecording.modalDescription1": "Para entender melhor nossos usuários, solicitamos aleatoriamente a uma pequena porcentagem de visitantes que acompanhem detalhadamente sua sessão de navegação.",
+  "app.sessionRecording.modalDescription1": "Para melhor compreender nossos usuários, pedimos aleatoriamente a uma pequena percentagem de visitantes que rastreie sua sessão de navegação em detalhes.",
   "app.sessionRecording.modalDescription2": "A única finalidade dos dados registrados é melhorar o site. Nenhum dos seus dados será compartilhado com terceiros. Todas as informações confidenciais que você inserir serão filtradas.",
   "app.sessionRecording.modalDescription3": "Você aceita?",
   "app.sessionRecording.modalTitle": "Ajude-nos a melhorar este site",
