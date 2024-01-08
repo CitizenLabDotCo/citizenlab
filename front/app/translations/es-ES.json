@@ -86,6 +86,7 @@
   "app.components.ConsentManager.Banner.mainText": "Esta plataforma utiliza cookies de acuerdo con nuestra {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Administrar",
   "app.components.ConsentManager.Banner.policyLink": "Política de cookies",
+  "app.components.ConsentManager.Banner.reject": "Rechaza",
   "app.components.ConsentManager.Banner.subText": "Haga clic en \"Aceptar\" para permitir el uso de cookies o en \"Administrar\" para cambiar la configuración de las cookies.",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Confirmar",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Si cancelas, se perderán tus preferencias.",

@@ -2,7 +2,7 @@
 
 class WebApi::V1::AreasController < ApplicationController
   before_action :set_area, except: %i[index create]
-  before_action :set_side_effects_service, only: %i[create update reorder destroy]
+  before_action :set_side_effects_service, only: %i[create update destroy]
   skip_before_action :authenticate_user, only: %i[index show]
 
   def index
@@ -86,16 +86,6 @@ class WebApi::V1::AreasController < ApplicationController
     end
   end
 
-  def reorder
-    @side_fx_service.before_update(@area, current_user)
-    if @area.insert_at(permitted_attributes(@area)[:ordering])
-      @side_fx_service.after_update(@area, current_user)
-      render json: WebApi::V1::AreaSerializer.new(@area.reload, params: jsonapi_serializer_params).serializable_hash, status: :ok
-    else
-      render json: { errors: @area.errors.details }, status: :unprocessable_entity
-    end
-  end
-
   private
 
   def set_area
@@ -106,6 +96,7 @@ class WebApi::V1::AreasController < ApplicationController
   def area_params
     params.require(:area).permit(
       :include_in_onboarding,
+      :ordering,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     )
