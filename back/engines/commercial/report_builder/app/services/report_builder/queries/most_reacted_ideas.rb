@@ -1,7 +1,5 @@
 module ReportBuilder
   class Queries::MostReactedIdeas < ReportBuilder::Queries::Base
-    protected
-
     def run_query(project_id:, number_of_ideas:, phase_id: nil, **_other_props)
       project = Project.find(project_id)
       phase = phase_id ? Phase.find(phase_id) : project.phases.first
