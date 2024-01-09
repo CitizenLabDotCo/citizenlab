@@ -8,6 +8,7 @@ import React, {
   useEffect,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+require('esri-leaflet-renderers');
 
 // components
 import {
@@ -262,12 +263,21 @@ const Map = memo<IMapProps & IMapConfigProps>(
         zoom: 2,
       });
 
+      const trailheads = new FeatureLayer({
+        url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0',
+      });
+      const trails = new FeatureLayer({
+        url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trails_Styled/FeatureServer/0',
+      });
+
       const layer = new FeatureLayer({
         // URL to the service
         url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space_Styled/FeatureServer/0',
       });
 
       esriMap.add(layer);
+      esriMap.add(trails);
+      esriMap.add(trailheads);
 
       const legend = new Legend({
         view,
@@ -353,12 +363,12 @@ const Map = memo<IMapProps & IMapConfigProps>(
         // ---------------------------------------------------------------------------------------------------------
         // Try and retrieve a feature layer
         // Legend ? -- https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0?f=pjson
-        // const trailheads = esri.featureLayer({
-        //   url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0',
-        // });
-        // const trails = esri.featureLayer({
-        //   url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trails_Styled/FeatureServer/0',
-        // });
+        const trailheads = esri.featureLayer({
+          url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0',
+        });
+        const trails = esri.featureLayer({
+          url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trails_Styled/FeatureServer/0',
+        });
         const parks = await esri.featureLayer({
           url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space_Styled/FeatureServer/0',
         });
@@ -373,9 +383,8 @@ const Map = memo<IMapProps & IMapConfigProps>(
         //   url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0',
         // }).addTo(map);
 
-        // map.addLayer(trailheads);
-        // map.addLayer(trails);
-
+        map.addLayer(trailheads);
+        map.addLayer(trails);
         map.addLayer(parks);
 
         // Fetch drawing info for feature layer  *******  DRAWING INFO *******
