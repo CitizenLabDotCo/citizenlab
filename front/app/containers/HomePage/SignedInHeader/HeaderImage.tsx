@@ -50,11 +50,6 @@ const HeaderImage = ({
     return (
       <HeaderImageContainer>
         <HeaderImageContainerInner data-cy="e2e-signed-in-header-image-parent">
-          {/*
-            With the fixed ratio layout, the image would be pixeled so we
-            don't show it for that layout.
-            Ticket: https://citizenlab.atlassian.net/browse/CL-2215
-          */}
           {tenantHeaderImage && (
             <StyledImage
               data-cy="e2e-signed-in-header-image"
