@@ -86,6 +86,7 @@
   "app.components.ConsentManager.Banner.mainText": "En naviguant, vous acceptez notre {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Gérer",
   "app.components.ConsentManager.Banner.policyLink": "Politique de cookie",
+  "app.components.ConsentManager.Banner.reject": "Refuser",
   "app.components.ConsentManager.Banner.subText": "Accéder à vos paramètres de cookie à tout moment.",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Confirmer",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Si vous annulez, vos préférences seront perdues.",
