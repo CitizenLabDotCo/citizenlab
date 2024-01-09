@@ -3,18 +3,8 @@ import { useMemo, useState } from 'react';
 // hooks
 import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/translations';
-
 // parse
-import {
-  parseTimeSeries,
-  parseExcelData,
-} from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/parse';
-
-// utils
-import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
+import { parseTimeSeries } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/parse';
 
 // typings
 import {
@@ -28,7 +18,6 @@ export default function useReactionsByTime({
   endAtMoment,
   resolution,
 }: QueryParameters) {
-  const { formatMessage } = useIntl();
   const [currentResolution] = useState(resolution);
 
   const analytics = useGraphDataUnits<Response>({
@@ -55,26 +44,5 @@ export default function useReactionsByTime({
     [analytics?.data, startAtMoment, endAtMoment, currentResolution]
   );
 
-  const xlsxData = useMemo(
-    () =>
-      analytics?.data && timeSeries
-        ? parseExcelData(timeSeries, getTranslations(formatMessage))
-        : null,
-    [analytics?.data, timeSeries, formatMessage]
-  );
-
-  const firstSerieBar =
-    timeSeries && timeSeries.length > 0
-      ? timeSeries[0].likes + timeSeries[0].dislikes
-      : 0;
-
-  const formattedNumbers = timeSeries
-    ? getFormattedNumbers(timeSeries, firstSerieBar)
-    : {
-        totalNumber: null,
-        formattedSerieChange: null,
-        typeOfChange: '',
-      };
-
-  return { currentResolution, timeSeries, xlsxData, formattedNumbers };
+  return { currentResolution, timeSeries };
 }

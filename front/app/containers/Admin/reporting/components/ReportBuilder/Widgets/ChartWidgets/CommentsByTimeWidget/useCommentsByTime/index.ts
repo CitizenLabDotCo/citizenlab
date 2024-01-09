@@ -1,19 +1,9 @@
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/translations';
-
 // hooks
 import { useMemo, useState } from 'react';
 import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 
 // parse
-import {
-  parseTimeSeries,
-  parseExcelData,
-} from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/parse';
-
-// utils
-import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
+import { parseTimeSeries } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/parse';
 
 // typings
 import {
@@ -27,8 +17,7 @@ export default function useCommentsByTime({
   endAtMoment,
   resolution,
 }: QueryParameters) {
-  const { formatMessage } = useIntl();
-  const [currentResolution] = useState(resolution);
+  const [currentResolution, setCurrentResolution] = useState(resolution);
 
   const analytics = useGraphDataUnits<Response>({
     resolvedName: 'CommentsByTimeWidget',
@@ -38,6 +27,7 @@ export default function useCommentsByTime({
       endAtMoment,
       resolution,
     },
+    onSuccess: () => setCurrentResolution(resolution),
   });
 
   const timeSeries = useMemo(
@@ -54,21 +44,5 @@ export default function useCommentsByTime({
     [analytics?.data, startAtMoment, endAtMoment, currentResolution]
   );
 
-  const xlsxData = useMemo(
-    () =>
-      analytics?.data && timeSeries
-        ? parseExcelData(timeSeries, getTranslations(formatMessage))
-        : null,
-    [analytics?.data, timeSeries, formatMessage]
-  );
-
-  const formattedNumbers = timeSeries
-    ? getFormattedNumbers(timeSeries, timeSeries[0].comments)
-    : {
-        totalNumber: null,
-        formattedSerieChange: null,
-        typeOfChange: '',
-      };
-
-  return { currentResolution, timeSeries, xlsxData, formattedNumbers };
+  return { currentResolution, timeSeries };
 }

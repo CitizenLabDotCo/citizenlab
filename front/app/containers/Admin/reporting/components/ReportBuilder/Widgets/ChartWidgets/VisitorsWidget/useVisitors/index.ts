@@ -16,6 +16,7 @@ export default function useVisitorsData({
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] =
     useState<IResolution>(resolution);
+
   const analytics = useGraphDataUnits<Response>({
     resolvedName: 'VisitorsWidget',
     queryParameters: {
