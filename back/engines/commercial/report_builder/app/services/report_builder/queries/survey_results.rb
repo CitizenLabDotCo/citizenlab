@@ -1,5 +1,5 @@
 module ReportBuilder
-  class Queries::SurveyResults
+  class Queries::SurveyResults < ReportBuilder::Queries::Base
     def run_query(phase_id:, **_other_props)
       phase = Phase.find(phase_id)
       SurveyResultsGeneratorService.new(phase).generate_results

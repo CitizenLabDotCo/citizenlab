@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe ReportBuilder::QueryRepository do
-  let(:query_repository) { described_class.new }
+  let(:query_repository) { described_class.new(nil) }
   let(:props) { {} }
 
   describe '#data_by_graph' do

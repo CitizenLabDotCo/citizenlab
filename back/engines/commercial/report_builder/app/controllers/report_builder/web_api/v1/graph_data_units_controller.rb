@@ -9,7 +9,7 @@ module ReportBuilder
         def live
           props = params[:props]&.permit! || {}
           authorize props, policy_class: LiveGraphDataUnitPolicy
-          results = ReportBuilder::QueryRepository.new.data_by_graph(params[:resolved_name], props)
+          results = ReportBuilder::QueryRepository.new(current_user).data_by_graph(params[:resolved_name], props)
           render_results(results)
         end
 
