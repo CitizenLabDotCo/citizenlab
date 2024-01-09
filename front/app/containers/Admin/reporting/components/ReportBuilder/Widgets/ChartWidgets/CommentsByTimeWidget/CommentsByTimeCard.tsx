@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useCommentsByTime from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime';
+import useCommentsByTime from './useCommentsByTime';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
