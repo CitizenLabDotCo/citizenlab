@@ -3,10 +3,7 @@ import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/translations';
 
 // parse
-import {
-  parsePieData,
-  parseExcelData,
-} from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/parse';
+import { parsePieData } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/parse';
 
 // typings
 import {
@@ -36,7 +33,6 @@ export default function useVisitorsReferrerTypes({
   const pieData = analytics
     ? parsePieData(analytics.data.attributes, translations)
     : null;
-  const xlsxData = pieData ? parseExcelData(pieData, translations) : null;
 
-  return { pieData, xlsxData };
+  return { pieData };
 }
