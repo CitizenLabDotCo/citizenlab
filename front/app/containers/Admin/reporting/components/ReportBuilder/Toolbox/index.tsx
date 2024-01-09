@@ -7,12 +7,12 @@ import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
 
 // shared widgets
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 
 // widgets
 import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 import TitleMultiloc from '../Widgets/TitleMultiloc';
+import ImageMultiloc from '../Widgets/ImageMultiloc';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
