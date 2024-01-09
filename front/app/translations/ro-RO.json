@@ -573,8 +573,6 @@
   "app.containers.AccessibilityStatement.title": "Declarație de accesibilitate",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Conținut generat de utilizatori",
   "app.containers.AccessibilityStatement.workshops": "Borgermøder",
-  "app.containers.Admin.Insights.tabInsights": "Repere",
-  "app.containers.Admin.Insights.tabReports": "Rapoarte",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Sfârșitul sondajului",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Creați un grup inteligent",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Utilizatorii care corespund tuturor condițiilor următoare vor fi adăugați automat la grup:",

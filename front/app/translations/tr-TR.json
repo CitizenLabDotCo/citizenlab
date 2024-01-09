@@ -737,8 +737,6 @@
   "app.containers.AccessibilityStatement.title": "Erişilebilirlik Beyanı",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Kullanıcılar tarafından oluşturulan içerikler",
   "app.containers.AccessibilityStatement.workshops": "Atölyeler",
-  "app.containers.Admin.Insights.tabInsights": "Bilgiler",
-  "app.containers.Admin.Insights.tabReports": "Raporlar",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Anket sonu",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Akıllı grup oluşturun",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Aşağıdaki koşulların tümünü karşılayan kullanıcılar otomatik olarak gruba eklenir:",

@@ -737,8 +737,6 @@
   "app.containers.AccessibilityStatement.title": "Изјава о приступачности",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Корисник генерише садржај",
   "app.containers.AccessibilityStatement.workshops": "Радионице",
-  "app.containers.Admin.Insights.tabInsights": "Инсигхтс",
-  "app.containers.Admin.Insights.tabReports": "Извештаји",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Крај анкете",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Направите паметну групу",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Корисници који испуњавају све следеће услове биће аутоматски додати у групу:",

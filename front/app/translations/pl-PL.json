@@ -737,8 +737,6 @@
   "app.containers.AccessibilityStatement.title": "Oświadczenie o dostępności",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Treści generowane przez użytkowników",
   "app.containers.AccessibilityStatement.workshops": "Warsztaty",
-  "app.containers.Admin.Insights.tabInsights": "Wgląd",
-  "app.containers.Admin.Insights.tabReports": "Raporty",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Koniec badania",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Utwórz inteligentną grupę",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Użytkownicy spełniający wszystkie poniższe warunki zostaną automatycznie dodani do grupy:",
