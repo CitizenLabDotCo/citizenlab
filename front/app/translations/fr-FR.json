@@ -1035,7 +1035,6 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Statut actuel",
   "app.containers.IdeasShow.MetaInformation.location": "Lieu",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Publié par",
-  "app.containers.IdeasShow.MetaInformation.similarInputs": "Contributions similaires",
   "app.containers.IdeasShow.MetaInformation.topics": "Étiquettes",
   "app.containers.IdeasShow.commentCTA": "Commenter",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Soutenez cette suggestion « {postTitle} » à {postUrl} !",
