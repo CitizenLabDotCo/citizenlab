@@ -35,7 +35,6 @@ import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 
 import widgetsConfiguration from './commercial/widgets';
 
-import insightsConfiguration from './commercial/insights';
 import analyticsConfiguration from './commercial/analytics';
 import representativenessConfiguration from './commercial/representativeness';
 
@@ -131,9 +130,6 @@ export default loadModules([
   },
   {
     configuration: widgetsConfiguration,
-  },
-  {
-    configuration: insightsConfiguration,
   },
   {
     configuration: analyticsConfiguration,
