@@ -86,6 +86,7 @@
   "app.components.ConsentManager.Banner.mainText": "crwdns1466084:0{policyLink}crwdne1466084:0",
   "app.components.ConsentManager.Banner.manage": "crwdns1466086:0crwdne1466086:0",
   "app.components.ConsentManager.Banner.policyLink": "crwdns1466088:0crwdne1466088:0",
+  "app.components.ConsentManager.Banner.reject": "crwdns1487456:0crwdne1487456:0",
   "app.components.ConsentManager.Banner.subText": "crwdns1466090:0crwdne1466090:0",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "crwdns1466092:0crwdne1466092:0",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "crwdns1466094:0crwdne1466094:0",
