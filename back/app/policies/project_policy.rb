@@ -26,10 +26,6 @@ class ProjectPolicy < ApplicationPolicy
 
     private
 
-    def resolve_for_admin
-      user&.admin? ? scope : scope.none
-    end
-
     # Filter the scope for a user that is not logged in.
     def resolve_for_visitor
       scope.not_draft.publicly_visible

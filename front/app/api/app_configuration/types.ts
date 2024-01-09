@@ -7,7 +7,6 @@ import { API_PATH } from 'containers/App/constants';
 import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
 import { TCategory } from 'components/ConsentManager/destinations';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
-import { THomepageSettingKeyMap } from 'api/home_page/types';
 
 interface AppConfigurationFeature {
   allowed: boolean;
@@ -40,7 +39,6 @@ export type IAppConfigurationSettingsCore = {
   color_menu_bg?: string | null;
   currency: TCurrency;
   reply_to_email: string;
-  currently_working_on_text?: Multiloc | null;
   segment_destinations_blacklist: string[] | null;
   areas_term?: Multiloc;
   area_term?: Multiloc;
@@ -240,7 +238,6 @@ export interface IAppConfigurationSettings {
   power_bi?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
-  homepage_builder?: AppConfigurationFeature;
   user_session_recording?: AppConfigurationFeature;
 }
 
@@ -267,11 +264,6 @@ export interface IAppConfigurationStyle {
   navbarBorderColor?: string;
   signedOutHeaderTitleFontSize?: number;
   signedOutHeaderTitleFontWeight?: number;
-  // These signed in variables are used via the theme in the
-  // component library and can be set via AdminHQ.
-  signedInHeaderOverlayColor?: string;
-  // Number between 0 and 100, inclusive
-  signedInHeaderOverlayOpacity?: number;
   customFontName?: string;
   customFontAdobeId?: string;
   customFontURL?: string;
@@ -296,16 +288,6 @@ export interface IAppConfigurationData {
   type: string;
   attributes: IAppConfigurationAttributes;
 }
-
-// Settings that have their enabled values in homepageSettings.
-// Their allowed value is still in appConfiguration.
-export type THomepageSetting = keyof THomepageSettingKeyMap;
-
-// All appConfig setting names except those in THomepageSetting
-export type TAppConfigurationSettingWithEnabled = Exclude<
-  TAppConfigurationSetting,
-  THomepageSetting
->;
 
 export type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =

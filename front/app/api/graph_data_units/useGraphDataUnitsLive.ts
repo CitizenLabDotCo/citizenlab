@@ -16,6 +16,7 @@ const fetchGraphDataUnitsLive = <Response extends BaseResponseData>({
       resolved_name: resolvedName,
       props: {
         project_id: props.projectId,
+        phase_id: props.phaseId,
         resolution: props.resolution,
         start_at: props.startAtMoment?.format('yyyy-MM-DD'),
         end_at: props.endAtMoment?.format('yyyy-MM-DD'),

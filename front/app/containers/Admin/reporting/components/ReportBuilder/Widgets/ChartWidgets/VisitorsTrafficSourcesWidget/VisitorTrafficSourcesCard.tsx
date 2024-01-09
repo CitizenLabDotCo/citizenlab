@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useVisitorReferrerTypes from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes';
+import useVisitorReferrerTypes from './useVisitorReferrerTypes';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 // components

@@ -4,30 +4,25 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import surveyResultsKeys from './keys';
 import { SurveyResultsKeys, IParameters, SurveyResultsType } from './types';
 
-const getSurveyResultsEndpoint = (
-  projectId: string,
-  phaseId?: string | null
-) => {
-  return phaseId
-    ? `phases/${phaseId}/survey_results`
-    : `projects/${projectId}/survey_results`;
+const getSurveyResultsEndpoint = (phaseId: string | null) => {
+  return `phases/${phaseId}/survey_results`;
 };
 
-const fetchSurveyResults = ({ projectId, phaseId }: IParameters) =>
+const fetchSurveyResults = ({ phaseId }: IParameters) =>
   fetcher<SurveyResultsType>({
-    path: `/${getSurveyResultsEndpoint(projectId, phaseId)}`,
+    path: `/${getSurveyResultsEndpoint(phaseId)}`,
     action: 'get',
   });
 
-const useSurveyResults = ({ projectId, phaseId }: IParameters) => {
+const useSurveyResults = ({ phaseId }: IParameters) => {
   return useQuery<
     SurveyResultsType,
     CLErrors,
     SurveyResultsType,
     SurveyResultsKeys
   >({
-    queryKey: surveyResultsKeys.item({ projectId, phaseId }),
-    queryFn: () => fetchSurveyResults({ projectId, phaseId }),
+    queryKey: surveyResultsKeys.item({ phaseId }),
+    queryFn: () => fetchSurveyResults({ phaseId }),
   });
 };
 

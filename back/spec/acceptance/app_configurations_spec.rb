@@ -75,7 +75,7 @@ resource 'AppConfigurations' do
 
     let(:logo) { png_image_as_base64 'logo.png' }
     let(:favicon) { png_image_as_base64 'favicon.png' }
-    let(:style) { { signedInHeaderOverlayColor: '#db2577' } }
+    let(:style) { { navbarTextColor: '#db2577' } }
     let(:organization_name) do
       {
         'en' => 'TestTown',
@@ -90,7 +90,7 @@ resource 'AppConfigurations' do
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :settings, :core, :organization_name, :en)).to eq 'TestTown'
       expect(json_response.dig(:data, :attributes, :favicon)).to be_present
-      expect(json_response.dig(:data, :attributes, :style, :signedInHeaderOverlayColor)).to eq '#db2577'
+      expect(json_response.dig(:data, :attributes, :style, :navbarTextColor)).to eq '#db2577'
     end
 
     describe do

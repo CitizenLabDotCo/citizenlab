@@ -86,6 +86,7 @@
   "app.components.ConsentManager.Banner.mainText": "Bu platformda {policyLink} ile uyumlu şekilde çerezler kullanılmaktadır.",
   "app.components.ConsentManager.Banner.manage": "Yönet",
   "app.components.ConsentManager.Banner.policyLink": "Çerez politikası",
+  "app.components.ConsentManager.Banner.reject": "Reddet",
   "app.components.ConsentManager.Banner.subText": "Çerez kullanımına izin vermek için \"Kabul et\"i, çerez ayarlarınızı değiştirmek için \"Yönet\"i tıklayın.",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Onayla",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "İptal ederseniz tercihleriniz kaydedilmez.",

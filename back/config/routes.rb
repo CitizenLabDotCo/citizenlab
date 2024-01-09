@@ -131,8 +131,6 @@ Rails.application.routes.draw do
       end
 
       resources :areas do
-        patch 'reorder', on: :member
-
         resources :followers, only: [:create], defaults: { followable: 'Area' }
       end
 
@@ -232,8 +230,6 @@ Rails.application.routes.draw do
         get :example_xlsx, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
-
-      resource :home_page, only: %i[show update]
 
       resources :experiments, only: %i[index create]
 

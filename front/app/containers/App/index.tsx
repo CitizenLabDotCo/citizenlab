@@ -276,6 +276,8 @@ const App = ({ children }: Props) => {
     !isInitiativeEditPage;
   const { pathname } = removeLocale(location.pathname);
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+  const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
+  const isAuthenticationPending = !authUser && isLoading;
 
   const showFrontOfficeNavbar = () => {
     if (isAdminPage) {
@@ -296,25 +298,19 @@ const App = ({ children }: Props) => {
     return true;
   };
 
-  // Ensure authUser is loaded before rendering the app
-  if (!authUser && isLoading) {
-    return (
-      <Box
-        display="flex"
-        w="100%"
-        h="100%"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Spinner />
-      </Box>
-    );
-  }
-
-  const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
-
   return (
     <>
+      {isAuthenticationPending && (
+        <Box
+          display="flex"
+          w="100%"
+          h="100%"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner />
+        </Box>
+      )}
       {appConfiguration && (
         <PreviousPathnameContext.Provider value={previousPathname}>
           <ThemeProvider
@@ -366,31 +362,33 @@ const App = ({ children }: Props) => {
                   <MainHeader />
                 </ErrorBoundary>
               )}
-              <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="stretch"
-                flex="1"
-                overflowY="auto"
-                pt={
-                  showFrontOfficeNavbar()
-                    ? `${stylingConsts.menuHeight}px`
-                    : undefined
-                }
-              >
-                <HasPermission
-                  item={{
-                    type: 'route',
-                    path: pathname,
-                  }}
-                  action="access"
+              {!isAuthenticationPending && (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="stretch"
+                  flex="1"
+                  overflowY="auto"
+                  pt={
+                    showFrontOfficeNavbar()
+                      ? `${stylingConsts.menuHeight}px`
+                      : undefined
+                  }
                 >
-                  <ErrorBoundary>{children}</ErrorBoundary>
-                  <HasPermission.No>
-                    <Navigate to="/" />
-                  </HasPermission.No>
-                </HasPermission>
-              </Box>
+                  <HasPermission
+                    item={{
+                      type: 'route',
+                      path: pathname,
+                    }}
+                    action="access"
+                  >
+                    <ErrorBoundary>{children}</ErrorBoundary>
+                    <HasPermission.No>
+                      <Navigate to="/" />
+                    </HasPermission.No>
+                  </HasPermission>
+                </Box>
+              )}
               {showFooter && (
                 <Suspense fallback={null}>
                   <PlatformFooter />
