@@ -27,9 +27,6 @@ import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrappe
 // templates
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
 
-// constants
-import { A4_WIDTH } from '../../constants';
-
 // typings
 import {
   CraftJson,

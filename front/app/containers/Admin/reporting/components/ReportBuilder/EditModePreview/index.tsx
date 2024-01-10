@@ -17,7 +17,10 @@ import { ReportContextProvider } from 'containers/Admin/reporting/context/Report
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 // constants
-import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
+import {
+  A4_WIDTH,
+  MAX_REPORT_WIDTH,
+} from 'containers/Admin/reporting/constants';
 
 // typings
 import { Locale } from 'typings';
@@ -68,11 +71,17 @@ const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
             platformLocale={platformLocale}
           >
             {view === 'pdf' ? (
-              <PDFWrapper>
-                <Editor isPreview={true}>
-                  <Frame editorData={previewData} />
-                </Editor>
-              </PDFWrapper>
+              <Box
+                width={`calc(${A4_WIDTH} + 40px)`}
+                height="calc(100vh - 200px)"
+                overflowY="scroll"
+              >
+                <PDFWrapper>
+                  <Editor isPreview={true}>
+                    <Frame editorData={previewData} />
+                  </Editor>
+                </PDFWrapper>
+              </Box>
             ) : (
               <Box
                 height="620px"
@@ -81,6 +90,7 @@ const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
                 zIndex="1"
                 mb="12px"
                 width={view === 'mobile' ? '360px' : '1140px'}
+                py={view === 'mobile' ? '20px' : '40px'}
                 borderRadius="20px"
                 overflowY="scroll"
                 background="white"
