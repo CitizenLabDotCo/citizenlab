@@ -737,7 +737,6 @@
   "app.containers.AccessibilityStatement.title": "Toegankelijkheidsverklaring",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Inhoud gegenereerd door gebruikers",
   "app.containers.AccessibilityStatement.workshops": "Workshops",
-  "app.containers.Admin.Insights.tabInsights": "Inzichten",
   "app.containers.Admin.Insights.tabReports": "Rapporten",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Einde vragenlijst",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Maak een slimme groep aan",

@@ -737,7 +737,6 @@
   "app.containers.AccessibilityStatement.title": "Paziņojums par pieejamību",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Lietotāja ģenerēts saturs",
   "app.containers.AccessibilityStatement.workshops": "Semināri",
-  "app.containers.Admin.Insights.tabInsights": "Ieskati",
   "app.containers.Admin.Insights.tabReports": "Ziņojumi",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Aptaujas beigas",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Izveidot viedo grupu",
