@@ -1035,7 +1035,6 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Pašreizējais statuss",
   "app.containers.IdeasShow.MetaInformation.location": "Atrašanās vieta",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Publicēja",
-  "app.containers.IdeasShow.MetaInformation.similarInputs": "Līdzīgs ieguldījums",
   "app.containers.IdeasShow.MetaInformation.topics": "Tagi",
   "app.containers.IdeasShow.commentCTA": "Pievienot komentāru",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Atbalstīt šo ieguldījumu '{postTitle}' {postUrl}!",

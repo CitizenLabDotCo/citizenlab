@@ -6,7 +6,6 @@ import moderationConfiguration from './commercial/moderation';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import machineTranslationsConfiguration from './commercial/machine_translations';
-import similarIdeaConfiguration from './commercial/similar_ideas';
 
 import customMapsConfiguration from './commercial/custom_maps';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
@@ -86,9 +85,6 @@ export default loadModules([
   },
   {
     configuration: adminProjectTemplatesConfiguration,
-  },
-  {
-    configuration: similarIdeaConfiguration,
   },
   {
     configuration: customMapsConfiguration,

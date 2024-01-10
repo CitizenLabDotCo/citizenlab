@@ -4,11 +4,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 
 // styling
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import {
   colors,
   stylingConsts,
-  fontSizes,
   Box,
   Text,
   Title,
@@ -21,6 +20,7 @@ import { BORDER } from '../../constants';
 import Link from 'utils/cl-router/Link';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import GradientSrc from './gradient.svg';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // i18n
 import messages from '../messages';
@@ -42,8 +42,6 @@ interface Props {
 }
 
 const IdeaText = styled.div`
-  font-size: ${fontSizes.m}px;
-  color: ${colors.primary};
   line-height: ${MEDIUM_LINE_HEIGHT}px;
 `;
 
@@ -61,6 +59,8 @@ const IdeaCard = ({
   const textContainerRef = useRef<HTMLDivElement | null>(null);
   const [textOverflow, setTextOverflow] = useState(false);
   const { data: images } = useIdeaImages(id);
+  const theme = useTheme();
+
   const image = images?.data[0]?.attributes?.versions?.medium;
 
   useEffect(() => {
@@ -129,10 +129,17 @@ const IdeaCard = ({
           >
             <Image src={GradientSrc} alt="" width="100%" height="100%" />
           </Box>
-          <IdeaText
-            dangerouslySetInnerHTML={{ __html: body }}
-            ref={textContainerRef}
-          />
+          <Box mt="12px">
+            <QuillEditedContent
+              textColor={theme.colors.tenantText}
+              fontSize="m"
+            >
+              <IdeaText
+                dangerouslySetInnerHTML={{ __html: body }}
+                ref={textContainerRef}
+              />
+            </QuillEditedContent>
+          </Box>
         </Box>
       </Box>
       {hideTextOverflow && (

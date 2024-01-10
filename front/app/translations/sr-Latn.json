@@ -1035,7 +1035,6 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Trenutni status",
   "app.containers.IdeasShow.MetaInformation.location": "Lokacija",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Objava od",
-  "app.containers.IdeasShow.MetaInformation.similarInputs": "Slični unosi",
   "app.containers.IdeasShow.MetaInformation.topics": "Teme",
   "app.containers.IdeasShow.commentCTA": "Dodajte komentar",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Podržite '{postTitle}' na {postUrl}!",
