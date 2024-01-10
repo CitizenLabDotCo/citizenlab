@@ -11,23 +11,25 @@ import Frame from 'components/admin/ContentBuilder/Frame';
 import useLocale from 'hooks/useLocale';
 
 // context
+import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 // constants
-// import { A4_WIDTH } from 'containers/Admin/reporting/constants';
+import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 
 // typings
 import { Locale } from 'typings';
 import { CraftJson } from 'components/admin/ContentBuilder/typings';
 
 interface Props {
+  reportId: string;
   previewData?: CraftJson;
   selectedLocale: Locale;
 }
 
 type View = 'mobile' | 'pdf' | 'desktop';
 
-const EditModePreview = ({ previewData, selectedLocale }: Props) => {
+const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
   const [view, setView] = useState<View>('mobile');
   const platformLocale = useLocale();
 
@@ -52,27 +54,33 @@ const EditModePreview = ({ previewData, selectedLocale }: Props) => {
             }}
           />
         </Box>
-        <LanguageProvider
-          contentBuilderLocale={selectedLocale}
-          platformLocale={platformLocale}
-        >
-          <Box
-            height="620px"
-            border="solid black"
-            borderWidth="40px 20px 20px 20px"
-            zIndex="1"
-            mb="12px"
-            width={view === 'mobile' ? '360px' : '1140px'}
-            borderRadius="20px"
-            overflowY="scroll"
-            px="30px"
-            background="white"
+        <ReportContextProvider reportId={reportId} width={view}>
+          <LanguageProvider
+            contentBuilderLocale={selectedLocale}
+            platformLocale={platformLocale}
           >
-            <Editor isPreview={true}>
-              <Frame editorData={previewData} />
-            </Editor>
-          </Box>
-        </LanguageProvider>
+            <Box
+              height="620px"
+              border="solid black"
+              borderWidth="40px 20px 20px 20px"
+              zIndex="1"
+              mb="12px"
+              width={view === 'mobile' ? '360px' : '1140px'}
+              borderRadius="20px"
+              overflowY="scroll"
+              background="white"
+              display="flex"
+              alignItems="center"
+              flexDirection="column"
+            >
+              <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
+                <Editor isPreview={true}>
+                  <Frame editorData={previewData} />
+                </Editor>
+              </Box>
+            </Box>
+          </LanguageProvider>
+        </ReportContextProvider>
       </Box>
     </Box>
   );

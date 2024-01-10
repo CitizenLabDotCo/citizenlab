@@ -92,35 +92,35 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
     0;
 
   return (
-    <ReportContextProvider width="pdf" reportId={reportId}>
-      <FullscreenContentBuilder
-        onErrors={handleErrors}
-        onDeleteElement={handleDeleteElement}
-        onUploadImage={setImageUploading}
+    <FullscreenContentBuilder
+      onErrors={handleErrors}
+      onDeleteElement={handleDeleteElement}
+      onUploadImage={setImageUploading}
+    >
+      <Editor
+        isPreview={false}
+        onNodesChange={handleEditorChange}
+        key={selectedLocale}
       >
-        <Editor
-          isPreview={false}
-          onNodesChange={handleEditorChange}
-          key={selectedLocale}
+        <TopBar
+          hasError={hasError}
+          hasPendingState={imageUploading}
+          previewEnabled={previewEnabled}
+          selectedLocale={selectedLocale}
+          draftEditorData={previewData}
+          reportId={reportId}
+          templateProjectId={templateProjectId ?? undefined}
+          saved={saved}
+          setSaved={setSaved}
+          setPreviewEnabled={setPreviewEnabled}
+          setSelectedLocale={setSelectedLocale}
+        />
+        <Box
+          mt={`${stylingConsts.menuHeight}px`}
+          display={previewEnabled ? 'none' : 'flex'}
         >
-          <TopBar
-            hasError={hasError}
-            hasPendingState={imageUploading}
-            previewEnabled={previewEnabled}
-            selectedLocale={selectedLocale}
-            draftEditorData={previewData}
-            reportId={reportId}
-            templateProjectId={templateProjectId ?? undefined}
-            saved={saved}
-            setSaved={setSaved}
-            setPreviewEnabled={setPreviewEnabled}
-            setSelectedLocale={setSelectedLocale}
-          />
-          <Box
-            mt={`${stylingConsts.menuHeight}px`}
-            display={previewEnabled ? 'none' : 'flex'}
-          >
-            <Toolbox reportId={reportId} />
+          <Toolbox reportId={reportId} />
+          <ReportContextProvider width="pdf" reportId={reportId}>
             <LanguageProvider
               contentBuilderLocale={selectedLocale}
               platformLocale={platformLocale}
@@ -146,17 +146,18 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
                 </Box>
               </StyledRightColumn>
             </LanguageProvider>
-            <Settings />
-          </Box>
-        </Editor>
-        <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
-          <EditModePreview
-            selectedLocale={selectedLocale}
-            previewData={previewData}
-          />
+          </ReportContextProvider>
+          <Settings />
         </Box>
-      </FullscreenContentBuilder>
-    </ReportContextProvider>
+      </Editor>
+      <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
+        <EditModePreview
+          reportId={reportId}
+          previewData={previewData}
+          selectedLocale={selectedLocale}
+        />
+      </Box>
+    </FullscreenContentBuilder>
   );
 };
 
