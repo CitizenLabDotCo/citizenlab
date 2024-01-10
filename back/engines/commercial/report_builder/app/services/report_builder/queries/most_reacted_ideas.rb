@@ -3,7 +3,7 @@ module ReportBuilder
     def run_query(project_id:, number_of_ideas:, phase_id: nil, **_other_props)
       project = Project.find(project_id)
       phase = phase_id ? Phase.find(phase_id) : project.phases.first
-      ideas = phase.ideas.order(likes_count: :asc).limit(number_of_ideas)
+      ideas = phase.ideas.order(likes_count: :desc).limit(number_of_ideas)
 
       {
         ideas: serialize(ideas, ::WebApi::V1::IdeaSerializer),
