@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useGenderSerie from 'containers/Admin/dashboard/users/Charts/GenderChart/useGenderSerie';
+import useConvertToGraphFormat from 'containers/Admin/dashboard/users/Charts/GenderChart/useConvertToGraphFormat';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 // components
@@ -15,19 +15,23 @@ import messages from '../messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { serieHasValues } from '../utils';
+import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
+import { IUsersByGender } from 'api/users_by_gender/types';
+import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
 
-interface Props {
-  startAt: string | null | undefined;
-  endAt: string | null;
-  projectId: string | undefined;
-}
+type Props = ProjectId & Dates;
 
-const GenderCard = ({ startAt, endAt, projectId }: Props) => {
-  const genderSerie = useGenderSerie({
-    startAt,
-    endAt,
-    projectId,
+const GenderCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
+  const usersByGender = useGraphDataUnits<IUsersByGender>({
+    resolvedName: 'GenderWidget',
+    queryParameters: {
+      startAtMoment,
+      endAtMoment,
+      projectId,
+    },
   });
+
+  const genderSerie = useConvertToGraphFormat(usersByGender);
 
   const layout = useLayout();
 

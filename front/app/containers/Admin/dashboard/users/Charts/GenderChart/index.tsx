@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useGenderSerie from './useGenderSerie';
+import useGenderSerie from './useConvertToGraphFormat';
 
 // components
 import GraphCard from 'components/admin/GraphCard';

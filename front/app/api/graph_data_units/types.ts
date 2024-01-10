@@ -9,7 +9,8 @@ export type ResolvedName =
   | 'PostsByTimeWidget'
   | 'ActiveUsersWidget'
   | 'VisitorsWidget'
-  | 'VisitorsTrafficSourcesWidget';
+  | 'VisitorsTrafficSourcesWidget'
+  | 'GenderWidget';
 
 export interface ParametersLive {
   resolvedName: ResolvedName;
