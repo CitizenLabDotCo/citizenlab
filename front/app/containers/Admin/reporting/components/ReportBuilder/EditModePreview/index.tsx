@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 // components
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import MobileButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/MobileButton';
+import PDFButton from './PDFButton';
 import DesktopButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/DesktopButton';
 import Editor from '../Editor';
 import Frame from 'components/admin/ContentBuilder/Frame';
@@ -45,6 +46,12 @@ const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
             active={view === 'mobile'}
             onClick={() => {
               setView('mobile');
+            }}
+          />
+          <PDFButton
+            active={view === 'pdf'}
+            onClick={() => {
+              setView('pdf');
             }}
           />
           <DesktopButton
