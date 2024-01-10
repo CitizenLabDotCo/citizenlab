@@ -1,7 +1,8 @@
 import React from 'react';
 
 // hooks
-import useAgeSerie from 'containers/Admin/dashboard/users/Charts/AgeChart/useAgeSerie';
+import useConvertToGraphFormat from 'containers/Admin/dashboard/users/Charts/AgeChart/useConvertToGraphFormat';
+import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -15,18 +16,23 @@ import messages from '../messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { serieHasValues } from '../utils';
 
-interface Props {
-  startAt: string | null | undefined;
-  endAt: string | null;
-  projectId: string | undefined;
-}
+// types
+import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
+import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
 
-const AgeCard = ({ startAt, endAt, projectId }: Props) => {
-  const ageSerie = useAgeSerie({
-    startAt,
-    endAt,
-    projectId,
+type Props = ProjectId & Dates;
+
+const AgeCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
+  const IUsersByBirthyear = useGraphDataUnits<IUsersByBirthyear>({
+    resolvedName: 'AgeWidget',
+    queryParameters: {
+      startAtMoment,
+      endAtMoment,
+      projectId,
+    },
   });
+
+  const ageSerie = useConvertToGraphFormat(IUsersByBirthyear);
 
   if (isNilOrError(ageSerie) || !serieHasValues(ageSerie)) {
     return <NoData message={messages.noData} />;

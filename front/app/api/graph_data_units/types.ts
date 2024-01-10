@@ -10,7 +10,8 @@ export type ResolvedName =
   | 'ActiveUsersWidget'
   | 'VisitorsWidget'
   | 'VisitorsTrafficSourcesWidget'
-  | 'GenderWidget';
+  | 'GenderWidget'
+  | 'AgeWidget';
 
 export interface ParametersLive {
   resolvedName: ResolvedName;

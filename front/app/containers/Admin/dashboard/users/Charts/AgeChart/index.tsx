@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useAgeSerie from './useAgeSerie';
+import useConvertToGraphFormat from './useConvertToGraphFormat';
+import useUsersByBirthyear from 'api/users_by_birthyear/useUsersByBirthyear';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -29,11 +30,14 @@ const AgeChart = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
-  const ageSerie = useAgeSerie({
-    startAt,
-    endAt,
-    currentGroupFilter,
+  const { data: usersByBirthyear } = useUsersByBirthyear({
+    start_at: startAt,
+    end_at: endAt,
+    group: currentGroupFilter,
+    enabled: true,
   });
+  const ageSerie = useConvertToGraphFormat(usersByBirthyear);
+
   const cardTitle = formatMessage(messages.usersByAgeTitle);
 
   if (isNilOrError(ageSerie)) return null;

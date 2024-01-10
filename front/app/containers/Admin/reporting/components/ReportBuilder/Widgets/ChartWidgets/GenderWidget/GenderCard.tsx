@@ -17,6 +17,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { serieHasValues } from '../utils';
 import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 import { IUsersByGender } from 'api/users_by_gender/types';
+
+// types
 import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
 
 type Props = ProjectId & Dates;

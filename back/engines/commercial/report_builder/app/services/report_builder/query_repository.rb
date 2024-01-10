@@ -5,6 +5,7 @@ module ReportBuilder
     GRAPH_RESOLVED_NAMES_CLASSES = {
       # 'GenderWidget' => Queries::Analytics::UsersByGender,
       'GenderWidget' => Queries::UsersByCustomField::Gender,
+      'AgeWidget' => Queries::UsersByCustomField::Birthyear,
       'ReactionsByTimeWidget' => Queries::Analytics::ReactionsByTime,
       'CommentsByTimeWidget' => Queries::Analytics::CommentsByTime,
       'PostsByTimeWidget' => Queries::Analytics::PostsByTime,
