@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Banner.manage',
     defaultMessage: 'Manage',
   },
+  reject: {
+    id: 'app.components.ConsentManager.Banner.reject',
+    defaultMessage: 'Reject',
+  },
   accept: {
     id: 'app.components.ConsentManager.Banner.accept',
     defaultMessage: 'Accept',

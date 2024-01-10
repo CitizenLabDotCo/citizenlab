@@ -104,34 +104,10 @@ const StyledLink = styled(Link)`
 
 const ButtonContainer = styled.div`
   display: flex;
+  gap: 12px;
 
   ${isRtl`
     flex-direction: row-reverse;
-  `}
-`;
-
-const AcceptButton = styled(Button)`
-  margin-right: 10px;
-
-  ${media.phone`
-    margin-right: 0px;
-    order: 2;
-  `}
-
-  ${isRtl`
-    margin-right: 0px;
-    margin-left: 10px;
-
-    ${media.phone`
-      margin-left: 0px;
-    `}
-  `}
-`;
-
-const PreferencesButton = styled(Button)`
-  ${media.phone`
-    margin-right: 10px;
-    order: 1;
   `}
 `;
 
@@ -173,7 +149,7 @@ const Banner = ({ onAccept, onChangePreferences, onClose }: Props) => {
             </Line>
           </Left>
           <ButtonContainer>
-            <AcceptButton
+            <Button
               className="e2e-accept-cookies-btn"
               buttonStyle="primary-inverse"
               textColor={colors.primary}
@@ -181,16 +157,25 @@ const Banner = ({ onAccept, onChangePreferences, onClose }: Props) => {
               onClick={onAccept}
             >
               <FormattedMessage {...messages.accept} />
-            </AcceptButton>
-            <PreferencesButton
-              className="integration-open-modal"
+            </Button>
+            <Button
               buttonStyle="primary-inverse"
               textColor={colors.primary}
               textHoverColor={colors.primary}
+              onClick={onClose}
+            >
+              <FormattedMessage {...messages.reject} />
+            </Button>
+            <Button
+              className="integration-open-modal"
+              padding="0px"
+              buttonStyle="text"
+              textColor={colors.white}
+              textHoverColor={colors.white}
               onClick={onChangePreferences}
             >
               <FormattedMessage {...messages.manage} />
-            </PreferencesButton>
+            </Button>
           </ButtonContainer>
         </ContentContainerInner>
       </ContentContainer>

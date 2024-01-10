@@ -19,25 +19,9 @@ describe('useSurveyResults', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
-  it('returns data correctly for project', async () => {
-    const { result, waitFor } = renderHook(
-      () => useSurveyResults({ projectId: 'projectId' }),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
-
-    expect(result.current.isLoading).toBe(true);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(surveyResultsResponse.data);
-  });
-
   it('returns data correctly for phase', async () => {
     const { result, waitFor } = renderHook(
-      () => useSurveyResults({ projectId: 'projectId', phaseId: 'phaseId' }),
+      () => useSurveyResults({ phaseId: 'phaseId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -58,7 +42,7 @@ describe('useSurveyResults', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useSurveyResults({ projectId: 'projectId', phaseId: 'phaseId' }),
+      () => useSurveyResults({ phaseId: 'phaseId' }),
       {
         wrapper: createQueryClientWrapper(),
       }

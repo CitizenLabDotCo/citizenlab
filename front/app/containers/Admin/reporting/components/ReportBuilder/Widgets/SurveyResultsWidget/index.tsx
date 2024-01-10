@@ -37,20 +37,11 @@ type Props = {
   shownQuestions?: boolean[];
 };
 
-const SurveyResultsWidget = ({
-  title,
-  projectId,
-  phaseId,
-  shownQuestions,
-}: Props) => {
+const SurveyResultsWidget = ({ title, phaseId, shownQuestions }: Props) => {
   return (
     <Card title={title} data-testid="survey-results-widget">
-      {projectId ? (
-        <SurveyResults
-          projectId={projectId}
-          phaseId={phaseId}
-          shownQuestions={shownQuestions}
-        />
+      {phaseId ? (
+        <SurveyResults phaseId={phaseId} shownQuestions={shownQuestions} />
       ) : (
         <NoData message={messages.surveyNoResults} />
       )}
@@ -169,12 +160,13 @@ const SurveyResultsWidgetSettings = () => {
             participationMethod="native_survey"
             onPhaseFilter={handlePhaseFilter}
           />
-          <QuestionFilter
-            projectId={projectId}
-            phaseId={phaseId}
-            shownQuestions={shownQuestions}
-            onToggleQuestion={handleQuestionToggle}
-          />
+          {phaseId && (
+            <QuestionFilter
+              phaseId={phaseId}
+              shownQuestions={shownQuestions}
+              onToggleQuestion={handleQuestionToggle}
+            />
+          )}
         </>
       )}
     </Box>

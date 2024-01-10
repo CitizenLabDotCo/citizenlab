@@ -39,7 +39,7 @@ const Meta = () => {
     const headerBg = homepageLayout.data.attributes.craftjs_json
       ? Object.values(homepageLayout.data.attributes.craftjs_json).find(
           (node) => node.displayName === 'HomepageBanner'
-        )?.props.image.imageUrl
+        )?.props.image?.imageUrl
       : '';
 
     const organizationNameMultiLoc =

@@ -5,8 +5,7 @@ import { Keys } from 'utils/cl-react-query/types';
 export type SurveyResultsKeys = Keys<typeof surveyResultsKeys>;
 
 export type IParameters = {
-  projectId: string;
-  phaseId?: string | null;
+  phaseId: string | null;
 };
 
 export interface Answer {

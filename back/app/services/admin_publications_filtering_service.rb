@@ -20,23 +20,19 @@ class AdminPublicationsFilteringService
     scope.where(publication_type: Project.name)
   end
 
-  # This filter removes AdminPublications that represent folders which contain *only* projects which should not be visible to the current user.
-  # Here we are concerned with 'visibility' in terms of the Project.visible_to attribute, which can have one of 3 values: public, groups or admins.
-  add_filter('remove_not_allowed_parents') do |visible_publications, options|
-    next visible_publications unless ['true', true, '1'].include? options[:remove_not_allowed_parents]
+  # This filter removes AdminPublications that represent folders,
+  # which contain *only* projects which should not be visible to the current user.
+  add_filter('remove_not_allowed_parents') do |scope, options|
+    next scope unless ['true', true, '1'].include? options[:remove_not_allowed_parents]
 
-    public_project_ids          = Project.publicly_visible.ids
-    public_project_publications = AdminPublication.includes(:parent).where(publication_id: public_project_ids).where.not(parent_id: nil)
+    # We remove parents that have only draft projects
+    parents_with_visible_children = scope.where(id: scope.not_draft.filter_map(&:parent_id).uniq)
+    parents_without_any_children  = scope.where(children_allowed: true, children_count: 0)
+    non_parents                   = scope.where(children_allowed: false)
 
-    visible_or_public_publication_ids = visible_publications.map(&:parent_id).concat(public_project_publications.map(&:parent_id)).compact.uniq
-
-    parents_with_visible_children = visible_publications.where(id: visible_or_public_publication_ids)
-    parents_without_any_children  = visible_publications.where(children_allowed: true, children_count: 0)
-    non_parents                   = visible_publications.where(children_allowed: false)
-
-    parents_with_visible_children.or(parents_without_any_children)
+    parents_with_visible_children
+      .or(parents_without_any_children)
       .or(non_parents)
-      .or(public_project_publications)
   end
 
   add_filter('by_publication_status') do |scope, options|

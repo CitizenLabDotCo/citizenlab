@@ -16,15 +16,6 @@ describe('GroupsTag', () => {
     expect(screen.getByText('2 groups can view')).toBeInTheDocument();
   });
 
-  it('links to the projects permissions if the user has permission', () => {
-    render(<GroupsTag projectId={projectId} userCanModerateProject={true} />);
-
-    expect(screen.getByRole('link')).toHaveAttribute(
-      'href',
-      `/en/admin/projects/${projectId}/permissions`
-    );
-  });
-
   it('does not link to the projects permissions if the user has no permission', () => {
     render(<GroupsTag projectId={projectId} userCanModerateProject={false} />);
 

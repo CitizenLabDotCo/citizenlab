@@ -11,15 +11,6 @@ describe('AdminTag', () => {
     expect(screen.getByText('Only admins can view')).toBeInTheDocument();
   });
 
-  it('links to the projects permissions if the user has permission', () => {
-    render(<AdminTag projectId={projectId} userCanModerateProject={true} />);
-
-    expect(screen.getByRole('link')).toHaveAttribute(
-      'href',
-      `/en/admin/projects/${projectId}/permissions`
-    );
-  });
-
   it('does not link to the projects permissions if the user has no permission', () => {
     render(<AdminTag projectId={projectId} userCanModerateProject={false} />);
 

@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import useLocale from 'hooks/useLocale';
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
-import useFormResults from 'api/survey_results/useSurveyResults';
+import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
@@ -23,21 +23,28 @@ import { useIntl } from 'utils/cl-intl';
 import { createResultRows } from './utils';
 import { BORDER } from '../constants';
 
+// types
+import { SurveyResultsType } from 'api/survey_results/types';
+
 type Props = {
-  projectId: string;
-  phaseId?: string;
+  phaseId: string;
   shownQuestions?: boolean[];
 };
 
-const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
+const SurveyResults = ({ phaseId, shownQuestions }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const localize = useLocalize();
-  const { data: project } = useProjectById(projectId);
-  const { data: phase } = usePhase(phaseId ?? null);
-  const { data: formResults } = useFormResults({
-    projectId,
-    phaseId,
+  const { data: phase } = usePhase(phaseId);
+  const { data: project } = useProjectById(
+    phase?.data.relationships.project.data.id
+  );
+
+  const formResults = useGraphDataUnits<SurveyResultsType>({
+    resolvedName: 'SurveyResultsWidget',
+    queryParameters: {
+      phaseId,
+    },
   });
 
   const resultRows = useMemo(() => {
