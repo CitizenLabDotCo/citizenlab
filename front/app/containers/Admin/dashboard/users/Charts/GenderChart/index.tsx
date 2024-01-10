@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useGenderSerie from './useConvertToGraphFormat';
+import useUsersByGender from 'api/users_by_gender/useUsersByGender';
+import useConvertToGraphFormat from './useConvertToGraphFormat';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -30,7 +31,14 @@ const GenderChart = ({
   currentGroupFilterLabel,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const serie = useGenderSerie({ startAt, endAt, currentGroupFilter });
+  const { data: usersByGender } = useUsersByGender({
+    start_at: startAt,
+    end_at: endAt,
+    group: currentGroupFilter,
+    enabled: true,
+  });
+
+  const serie = useConvertToGraphFormat(usersByGender);
   const graphRef = useRef();
   const cardTitle = formatMessage(messages.usersByGenderTitle);
 

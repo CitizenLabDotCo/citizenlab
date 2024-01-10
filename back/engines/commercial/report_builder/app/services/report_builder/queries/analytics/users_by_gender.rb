@@ -1,4 +1,5 @@
 module ReportBuilder
+  # Not used atm, the same as dimension_user_custom_field_values
   class Queries::Analytics::UsersByGender < Queries::Analytics::Base
     protected
 
