@@ -20,6 +20,7 @@ import TopBar from '../../components/ReportBuilder/TopBar';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
+import EditModePreview from '../../components/ReportBuilder/EditModePreview';
 import Settings from 'components/admin/ContentBuilder/Settings';
 
 // templates
@@ -120,18 +121,18 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
             display={previewEnabled ? 'none' : 'flex'}
           >
             <Toolbox reportId={reportId} />
-            <StyledRightColumn>
-              <Box width={A4_WIDTH}>
-                <Box
-                  background="white"
-                  px="30px"
-                  py="30px"
-                  width="100%"
-                  height="100%"
-                >
-                  <LanguageProvider
-                    contentBuilderLocale={selectedLocale}
-                    platformLocale={platformLocale}
+            <LanguageProvider
+              contentBuilderLocale={selectedLocale}
+              platformLocale={platformLocale}
+            >
+              <StyledRightColumn>
+                <Box width={A4_WIDTH}>
+                  <Box
+                    background="white"
+                    px="30px"
+                    py="30px"
+                    width="100%"
+                    height="100%"
                   >
                     <Frame editorData={initialData}>
                       {templateProjectId && (
@@ -141,44 +142,19 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
                         />
                       )}
                     </Frame>
-                  </LanguageProvider>
+                  </Box>
                 </Box>
-              </Box>
-            </StyledRightColumn>
+              </StyledRightColumn>
+            </LanguageProvider>
             <Settings />
           </Box>
         </Editor>
-        {previewEnabled && (
-          <Box
-            width="100%"
-            height="100%"
-            display="flex"
-            justifyContent="center"
-            mt={`${stylingConsts.menuHeight}px`}
-            pb="100px"
-          >
-            <StyledRightColumn>
-              <Box width={A4_WIDTH}>
-                <Box
-                  background="white"
-                  px="30px"
-                  py="30px"
-                  width="100%"
-                  height="100%"
-                >
-                  <Editor isPreview={true}>
-                    <LanguageProvider
-                      contentBuilderLocale={selectedLocale}
-                      platformLocale={platformLocale}
-                    >
-                      <Frame editorData={previewData} />
-                    </LanguageProvider>
-                  </Editor>
-                </Box>
-              </Box>
-            </StyledRightColumn>
-          </Box>
-        )}
+        <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
+          <EditModePreview
+            selectedLocale={selectedLocale}
+            previewData={previewData}
+          />
+        </Box>
       </FullscreenContentBuilder>
     </ReportContextProvider>
   );
