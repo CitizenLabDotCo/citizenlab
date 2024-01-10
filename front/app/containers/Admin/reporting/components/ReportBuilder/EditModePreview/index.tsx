@@ -7,6 +7,7 @@ import PDFButton from './PDFButton';
 import DesktopButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/DesktopButton';
 import Editor from '../Editor';
 import Frame from 'components/admin/ContentBuilder/Frame';
+import PDFWrapper from './PDFWrapper';
 
 // hooks
 import useLocale from 'hooks/useLocale';
@@ -66,26 +67,34 @@ const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
             contentBuilderLocale={selectedLocale}
             platformLocale={platformLocale}
           >
-            <Box
-              height="620px"
-              border="solid black"
-              borderWidth="40px 20px 20px 20px"
-              zIndex="1"
-              mb="12px"
-              width={view === 'mobile' ? '360px' : '1140px'}
-              borderRadius="20px"
-              overflowY="scroll"
-              background="white"
-              display="flex"
-              alignItems="center"
-              flexDirection="column"
-            >
-              <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
+            {view === 'pdf' ? (
+              <PDFWrapper>
                 <Editor isPreview={true}>
                   <Frame editorData={previewData} />
                 </Editor>
+              </PDFWrapper>
+            ) : (
+              <Box
+                height="620px"
+                border="solid black"
+                borderWidth="40px 20px 20px 20px"
+                zIndex="1"
+                mb="12px"
+                width={view === 'mobile' ? '360px' : '1140px'}
+                borderRadius="20px"
+                overflowY="scroll"
+                background="white"
+                display="flex"
+                alignItems="center"
+                flexDirection="column"
+              >
+                <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
+                  <Editor isPreview={true}>
+                    <Frame editorData={previewData} />
+                  </Editor>
+                </Box>
               </Box>
-            </Box>
+            )}
           </LanguageProvider>
         </ReportContextProvider>
       </Box>

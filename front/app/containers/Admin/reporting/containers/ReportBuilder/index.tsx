@@ -22,6 +22,7 @@ import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWr
 import Frame from 'components/admin/ContentBuilder/Frame';
 import EditModePreview from '../../components/ReportBuilder/EditModePreview';
 import Settings from 'components/admin/ContentBuilder/Settings';
+import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrapper';
 
 // templates
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
@@ -126,24 +127,16 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
               platformLocale={platformLocale}
             >
               <StyledRightColumn>
-                <Box width={A4_WIDTH}>
-                  <Box
-                    background="white"
-                    px="30px"
-                    py="30px"
-                    width="100%"
-                    height="100%"
-                  >
-                    <Frame editorData={initialData}>
-                      {templateProjectId && (
-                        <ProjectTemplate
-                          reportId={reportId}
-                          projectId={templateProjectId}
-                        />
-                      )}
-                    </Frame>
-                  </Box>
-                </Box>
+                <PDFWrapper>
+                  <Frame editorData={initialData}>
+                    {templateProjectId && (
+                      <ProjectTemplate
+                        reportId={reportId}
+                        projectId={templateProjectId}
+                      />
+                    )}
+                  </Frame>
+                </PDFWrapper>
               </StyledRightColumn>
             </LanguageProvider>
           </ReportContextProvider>
