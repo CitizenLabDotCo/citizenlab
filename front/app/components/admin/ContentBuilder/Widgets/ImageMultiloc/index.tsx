@@ -94,7 +94,7 @@ const Image = ({ alt = {}, image }: Props) => {
   );
 };
 
-const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
+export const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
   const { mutateAsync: addContentBuilderImage } = useAddContentBuilderImage();
   const {
