@@ -17,24 +17,15 @@ interface Props {
 export default ({ onData }: Props) => {
   const { formatMessage } = useIntl();
   const [done, setDone] = useState(false);
-  const insightsEnabled = useFeatureFlag({ name: 'insights_manual_flow' });
   const reportsEnabled = useFeatureFlag({ name: 'project_reports' });
 
   useEffect(() => {
     if (done) return;
-    if (insightsEnabled === undefined || reportsEnabled === undefined) {
+    if (reportsEnabled === undefined) {
       return;
     }
 
     const tabs: ITab[] = [];
-
-    if (insightsEnabled) {
-      tabs.push({
-        name: 'insights',
-        label: formatMessage(messages.tabInsights),
-        url: '/admin/reporting/insights',
-      });
-    }
 
     if (reportsEnabled) {
       tabs.push({
@@ -46,7 +37,7 @@ export default ({ onData }: Props) => {
 
     onData(tabs);
     setDone(true);
-  }, [done, insightsEnabled, reportsEnabled, onData, formatMessage]);
+  }, [done, reportsEnabled, onData, formatMessage]);
 
   return <></>;
 };
