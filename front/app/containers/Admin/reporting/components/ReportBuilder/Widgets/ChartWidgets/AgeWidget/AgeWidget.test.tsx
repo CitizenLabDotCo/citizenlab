@@ -50,10 +50,19 @@ describe.skip('<AgeWidget />', () => {
   });
 
   it('renders a title and no data message if all values are zero', () => {
-    const emptyData = [
-      { name: '10 - 19', value: 0 },
-      { name: '20 - 29', value: 0 },
-    ];
+    const emptyData = {
+      data: {
+        type: 'users_by_custom_field',
+        attributes: {
+          series: {
+            users: {
+              10: 0,
+              20: 0,
+            },
+          },
+        },
+      },
+    };
 
     // @ts-ignore
     useAgeSerie.mockReturnValue(emptyData);
