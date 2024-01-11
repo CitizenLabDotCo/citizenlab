@@ -759,6 +759,7 @@
   "app.containers.Admin.emails.helmetDescription": "Send ut manuelle e-postmeldinger til brukergrupper og aktiver automatiserte kampanjer",
   "app.containers.Admin.emails.manageButtonLabel": "Administrer",
   "app.containers.Admin.emails.message": "Beskjed",
+  "app.containers.Admin.emails.nameVariablesInfo2": "Du kan snakke direkte med innbyggerne ved å bruke variablene {firstName} {lastName}. For eksempel \"Kjære {firstName} {lastName}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Tilpassede e-postkampanjer er e-poster skrevet fra bunnen av. Innholdet og mottakerne deres kan bli valgt, og du kan følge opp på resultatene deres via statistikk.",
   "app.containers.Admin.emails.noCampaignsHeader": "Det er ingen egendefinerte e-postmeldinger ennå",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Ingen SMS-meldinger er kladdet eller sendt ennå",
