@@ -80,7 +80,7 @@ const CampaignForm = ({
   isLoading,
 }: CampaignFormProps) => {
   const { formatMessage } = useIntl();
-  const { data: user } = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { data: groups } = useGroups({});
   const { data: appConfig } = useAppConfiguration();
   const localize = useLocalize();
@@ -107,7 +107,7 @@ const CampaignForm = ({
     resolver: yupResolver(schema),
   });
 
-  if (!user || !appConfig) {
+  if (!authUser || !appConfig) {
     return null;
   }
 
@@ -123,7 +123,7 @@ const CampaignForm = ({
     return [
       {
         value: 'author',
-        label: getFullName(user.data),
+        label: getFullName(authUser.data),
       },
       {
         value: 'organization',
