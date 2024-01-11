@@ -553,7 +553,6 @@
   "app.containers.Admin.emails.groups": "المجموعات",
   "app.containers.Admin.emails.helmetDescription": "أرسل الرسائل الإلكترونية إلى مجموعة مواطنين محددة وفعّل الحملات التلقائية",
   "app.containers.Admin.emails.manageButtonLabel": "إدارة",
-  "app.containers.Admin.emails.nameVariablesInfo": "يمكنك التحدث مباشرة مع المواطنين باستخدام المتغيرات \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. مثال: \" عزيزي \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}، ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "يمكنك إنشاء وإرسال رسائل إلكترونية بالقدر الذي تريده.",
   "app.containers.Admin.emails.noCampaignsHeader": "لا توجد رسائل إلكترونية مخصصة بعد",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "لم تتم صياغة أي رسالة SMS أو إرسالها حتى الآن",
