@@ -76,7 +76,6 @@ const InputManager = ({
         ? projectId
         : undefined,
   });
-  console.log(projectAllowedInputTopics?.data);
 
   const getTopicsData = () => {
     const topicIds = getTopicIds(projectAllowedInputTopics?.data);
