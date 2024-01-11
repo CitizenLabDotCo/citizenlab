@@ -316,9 +316,9 @@ export default defineMessages({
     defaultMessage: 'To:',
   },
   nameVariablesInfo: {
-    id: 'app.containers.Admin.emails.nameVariablesInfo1',
+    id: 'app.containers.Admin.emails.nameVariablesInfo2',
     defaultMessage:
-      "You can speak directly to citizens using the variables {firstName} {lastName}. E.g. 'Dear {firstName} {lastName}, ...'",
+      'You can speak directly to citizens using the variables {firstName} {lastName}. E.g. "Dear {firstName} {lastName}, ..."',
   },
   changeRecipientsButton: {
     id: 'app.containers.Admin.emails.changeRecipientsButton',
