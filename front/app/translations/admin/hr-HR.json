@@ -759,7 +759,7 @@
   "app.containers.Admin.emails.helmetDescription": "Ručno pošaljite e-poruke grupama korisnika i aktivirajte automatske kampanje",
   "app.containers.Admin.emails.manageButtonLabel": "Uredi",
   "app.containers.Admin.emails.message": "Poruka",
-  "app.containers.Admin.emails.nameVariablesInfo": "Primateljima se možete obratiti pomoću varijabli \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. Npr. \"Poštovani \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ...\"",
+  "app.containers.Admin.emails.nameVariablesInfo2": "Možete se obratiti izravno građanima koristeći varijable {firstName} {lastName}. Npr. \"Dragi {firstName} {lastName}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Možete kreirati i poslati onoliko poruka e-pošte koliko želite.",
   "app.containers.Admin.emails.noCampaignsHeader": "Još uvijek nema prilagođenih poruka e-pošte",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Nema radne verzije niti poslanog SMS-a",
