@@ -11,7 +11,8 @@ export type ResolvedName =
   | 'VisitorsWidget'
   | 'VisitorsTrafficSourcesWidget'
   | 'GenderWidget'
-  | 'AgeWidget';
+  | 'AgeWidget'
+  | 'MostReactedIdeasWidget';
 
 export interface ParametersLive {
   resolvedName: ResolvedName;
@@ -28,7 +29,11 @@ interface Resolution {
 }
 
 export type PropsLive = Dates &
-  Resolution & { projectId?: string | undefined; phaseId?: string | null };
+  Resolution & {
+    projectId?: string | undefined;
+    phaseId?: string | null;
+    numberOfIdeas?: number;
+  };
 
 // published
 export interface ParametersPublished {

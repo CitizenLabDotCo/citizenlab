@@ -1,8 +1,8 @@
 import React from 'react';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
+// types
+import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
@@ -13,30 +13,28 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 interface Props {
-  projectId?: string;
-  phaseId?: string;
+  project?: IProjectData;
+  phase?: IPhaseData;
 }
 
-const ProjectInfo = ({ projectId, phaseId }: Props) => {
+const ProjectInfo = ({ project, phase }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { data: project } = useProjectById(projectId);
-  const { data: phase } = usePhase(phaseId);
 
   if (!project || !phase) return null;
 
-  const projectTitle = localize(project.data.attributes.title_multiloc);
+  const projectTitle = localize(project.attributes.title_multiloc);
 
   const ideasCount = phase
-    ? phase.data.attributes.ideas_count
-    : project.data.attributes.ideas_count;
+    ? phase.attributes.ideas_count
+    : project.attributes.ideas_count;
 
   return (
     <Box>
       <Text mt="4px" mb="4px" color="primary">
         {'| '}
         {projectTitle}
-        {phase ? ` (${localize(phase.data.attributes.title_multiloc)})` : ''}
+        {phase ? ` (${localize(phase.attributes.title_multiloc)})` : ''}
       </Text>
       <Text mt="4px" mb="4px" color="textSecondary" fontSize="s">
         {formatMessage(messages.totalIdeas, { numberOfIdeas: ideasCount })}
