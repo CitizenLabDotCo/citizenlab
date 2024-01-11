@@ -759,6 +759,7 @@
   "app.containers.Admin.emails.helmetDescription": "Шаљите ручне е-поруке групама корисника и активирајте аутоматизоване кампање",
   "app.containers.Admin.emails.manageButtonLabel": "Уредити",
   "app.containers.Admin.emails.message": "Порука",
+  "app.containers.Admin.emails.nameVariablesInfo2": "You can speak directly to citizens using the variables {firstName} {lastName}. E.g. \"Dear {firstName} {lastName}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Можете креирати и слати онолико е-порука колико желите.",
   "app.containers.Admin.emails.noCampaignsHeader": "Још увек нема прилагођених имејлова",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Још увек није састављен нити послат СМС",

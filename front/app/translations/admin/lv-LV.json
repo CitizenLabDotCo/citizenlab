@@ -759,6 +759,7 @@
   "app.containers.Admin.emails.helmetDescription": "Izsūtiet manuālus e-pasta ziņojumus lietotāju grupām un aktivizējiet automatizētas kampaņas.",
   "app.containers.Admin.emails.manageButtonLabel": "Rediģēt",
   "app.containers.Admin.emails.message": "Ziņa",
+  "app.containers.Admin.emails.nameVariablesInfo2": "Jūs varat tieši sazināties ar iedzīvotājiem, izmantojot mainīgos lielumus {firstName} {lastName}. Piemēram, \"Dārgais {firstName} {lastName}, ...\".",
   "app.containers.Admin.emails.noCampaignsDescription": "Jūs varat izveidot un nosūtīt tik e-pasta vēstuļu, cik vēlaties.",
   "app.containers.Admin.emails.noCampaignsHeader": "Nav izveidotu pielāgotu e-pasta vēstuļu",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "SMS vēl nav sagatavota vai nosūtīta",
