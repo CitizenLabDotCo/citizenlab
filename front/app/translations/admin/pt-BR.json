@@ -759,7 +759,6 @@
   "app.containers.Admin.emails.helmetDescription": "Envie e-mails manuais para determinados grupos de cidadãos e campanhas automatizadas ativas",
   "app.containers.Admin.emails.manageButtonLabel": "Gerenciar",
   "app.containers.Admin.emails.message": "Mensagem",
-  "app.containers.Admin.emails.nameVariablesInfo": "Você pode falar diretamente com os cidadãos usando as variáveis ​​\\{\\{primeiro nome\\}\\}\\{\\{sobrenome\\} \\}. Por exemplo. \"Caro \\{\\{primeiro nome\\}\\}\\ {\\{sobrenome\\}\\}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Você pode criar e enviar quantos e-mails desejar.",
   "app.containers.Admin.emails.noCampaignsHeader": "Ainda não há e-mails personalizados",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Nenhum SMS foi ainda redigido ou enviado",

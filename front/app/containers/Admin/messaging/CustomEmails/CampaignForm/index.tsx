@@ -3,12 +3,10 @@ import { Multiloc } from 'typings';
 import styled from 'styled-components';
 
 // i18n
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // components
@@ -74,15 +72,15 @@ type CampaignFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
   isLoading: boolean;
-} & WrappedComponentProps;
+};
 
 const CampaignForm = ({
   onSubmit,
   defaultValues,
-  intl: { formatMessage },
   isLoading,
 }: CampaignFormProps) => {
-  const { data: user } = useAuthUser();
+  const { formatMessage } = useIntl();
+  const { data: authUser } = useAuthUser();
   const { data: groups } = useGroups({});
   const { data: appConfig } = useAppConfiguration();
   const localize = useLocalize();
@@ -109,7 +107,7 @@ const CampaignForm = ({
     resolver: yupResolver(schema),
   });
 
-  if (isNilOrError(user) || isNilOrError(appConfig)) {
+  if (!authUser || !appConfig) {
     return null;
   }
 
@@ -125,27 +123,22 @@ const CampaignForm = ({
     return [
       {
         value: 'author',
-        label: !isNilOrError(user) ? getFullName(user.data) : '',
+        label: getFullName(authUser.data),
       },
       {
         value: 'organization',
-        label: !isNilOrError(appConfig)
-          ? localize(appConfig.data.attributes.settings.core.organization_name)
-          : '',
+        label: localize(
+          appConfig.data.attributes.settings.core.organization_name
+        ),
       },
     ];
   };
 
   const groupsOptions = (groups: IGroupData[]) => {
-    const groupList =
-      !isNilOrError(groups) && !isNilOrError(groups)
-        ? groups.map((group) => ({
-            label: localize(group.attributes.title_multiloc),
-            value: group.id,
-          }))
-        : [];
-
-    return groupList;
+    return groups.map((group) => ({
+      label: localize(group.attributes.title_multiloc),
+      value: group.id,
+    }));
   };
 
   return (
@@ -222,7 +215,10 @@ const CampaignForm = ({
             <QuillMultilocWithLocaleSwitcher
               name="body_multiloc"
               label={formatMessage(messages.fieldBody)}
-              labelTooltipText={formatMessage(messages.nameVariablesInfo)}
+              labelTooltipText={formatMessage(messages.nameVariablesInfo, {
+                firstName: '{{first_name}}',
+                lastName: '{{last_name}}',
+              })}
               noVideos
               noAlign
             />
@@ -242,4 +238,4 @@ const CampaignForm = ({
   );
 };
 
-export default injectIntl(CampaignForm);
+export default CampaignForm;

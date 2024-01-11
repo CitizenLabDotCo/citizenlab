@@ -759,7 +759,6 @@
   "app.containers.Admin.emails.helmetDescription": "Send out manual emails to certain citizen group and active automated campaigns",
   "app.containers.Admin.emails.manageButtonLabel": "Beheren",
   "app.containers.Admin.emails.message": "Bericht",
-  "app.containers.Admin.emails.nameVariablesInfo": "Je kan burgers rechtstreeks aanspreken met behulp van de variabelen \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. Bijvoorbeeld \"Beste \\{\\{first_name\\}\\} \\{\\{last_name\\}\\},...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Eigen e-mailcampagnes zijn e-mails die je zelf opstelt. De inhoud en ontvangers kunnen worden gekozen en je kan de resultaten opvolgen bij statistieken.",
   "app.containers.Admin.emails.noCampaignsHeader": "Er zijn nog geen eigen e-mails",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Er is nog geen SMS opgesteld of verstuurd",

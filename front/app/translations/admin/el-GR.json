@@ -690,7 +690,6 @@
   "app.containers.Admin.emails.helmetDescription": "Αποστολή μη αυτόματων μηνυμάτων ηλεκτρονικού ταχυδρομείου σε ομάδες χρηστών και ενεργοποίηση αυτοματοποιημένων εκστρατειών",
   "app.containers.Admin.emails.manageButtonLabel": "Edit",
   "app.containers.Admin.emails.message": "Μήνυμα",
-  "app.containers.Admin.emails.nameVariablesInfo": "Μπορείτε να απευθυνθείτε στους παραλήπτες χρησιμοποιώντας τις μεταβλητές {\\{first_name\\}\\} \\{\\{last_name\\}\\}. Π.χ. \"Αγαπητέ, Αγαπητή \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Μπορείτε να δημιουργήσετε και να στείλετε όσα μηνύματα ηλεκτρονικού ταχυδρομείου θέλετε.",
   "app.containers.Admin.emails.noCampaignsHeader": "Δεν υπάρχουν ακόμα προσαρμοσμένα emails",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Δεν έχει συνταχθεί ή σταλεί ακόμα κανένα SMS",
