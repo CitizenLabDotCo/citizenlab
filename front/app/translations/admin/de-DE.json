@@ -759,7 +759,7 @@
   "app.containers.Admin.emails.helmetDescription": "Versenden Sie manuelle E-Mails an Nutzer*innengruppen und aktivieren Sie automatisierte Kampagnen",
   "app.containers.Admin.emails.manageButtonLabel": "Bearbeiten",
   "app.containers.Admin.emails.message": "Nachricht",
-  "app.containers.Admin.emails.nameVariablesInfo2": "Sie können sich mit der Variablen {firstName} {lastName}direkt an die Bürger wenden. Zum Beispiel: \"Sehr geehrte {firstName} {lastName}, ...\"",
+  "app.containers.Admin.emails.nameVariablesInfo2": "Sie können sich mit den Variablen {firstName} {lastName} direkt an die Bürger*innen wenden. Zum Beispiel: \"Sehr geehrte(r) {firstName} {lastName}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Sie können so viele E-Mails erstellen und versenden, wie Sie möchten.",
   "app.containers.Admin.emails.noCampaignsHeader": "Es sind noch keine benutzerdefinierten E-Mails vorhanden",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Es wurde noch keine SMS verfasst oder verschickt",
