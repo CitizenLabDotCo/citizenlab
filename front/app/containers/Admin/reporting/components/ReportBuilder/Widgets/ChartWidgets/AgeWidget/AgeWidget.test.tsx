@@ -1,11 +1,10 @@
 import React from 'react';
 import AgeWidget from '.';
 import { render } from 'utils/testUtils/rtl';
-import useAgeSerie from 'containers/Admin/dashboard/users/Charts/AgeChart/useAgeSerie';
 
-const mockAgeSerie: any = null;
-jest.mock('containers/Admin/dashboard/users/Charts/AgeChart/useAgeSerie', () =>
-  jest.fn(() => mockAgeSerie)
+const mockUsersByBirthyear: any = null;
+jest.mock('api/users_by_birthyear/useUsersByBirthyear', () =>
+  jest.fn(() => mockUsersByBirthyear)
 );
 
 describe.skip('<AgeWidget />', () => {
@@ -15,10 +14,19 @@ describe.skip('<AgeWidget />', () => {
   const title = { en: 'AGE TITLE' };
 
   it('renders a title and bar chart when there is data', () => {
-    const validData = [
-      { name: '10 - 19', value: 1 },
-      { name: '20 - 29', value: 1 },
-    ];
+    const validData = {
+      data: {
+        type: 'users_by_custom_field',
+        attributes: {
+          series: {
+            users: {
+              10: 1,
+              20: 1,
+            },
+          },
+        },
+      },
+    };
 
     // @ts-ignore
     useAgeSerie.mockReturnValue(validData);
@@ -42,10 +50,19 @@ describe.skip('<AgeWidget />', () => {
   });
 
   it('renders a title and no data message if all values are zero', () => {
-    const emptyData = [
-      { name: '10 - 19', value: 0 },
-      { name: '20 - 29', value: 0 },
-    ];
+    const emptyData = {
+      data: {
+        type: 'users_by_custom_field',
+        attributes: {
+          series: {
+            users: {
+              10: 0,
+              20: 0,
+            },
+          },
+        },
+      },
+    };
 
     // @ts-ignore
     useAgeSerie.mockReturnValue(emptyData);

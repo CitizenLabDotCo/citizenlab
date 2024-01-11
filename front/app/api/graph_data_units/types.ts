@@ -9,7 +9,10 @@ export type ResolvedName =
   | 'PostsByTimeWidget'
   | 'ActiveUsersWidget'
   | 'VisitorsWidget'
-  | 'VisitorsTrafficSourcesWidget';
+  | 'VisitorsTrafficSourcesWidget'
+  | 'GenderWidget'
+  | 'AgeWidget'
+  | 'MostReactedIdeasWidget';
 
 export interface ParametersLive {
   resolvedName: ResolvedName;
@@ -26,7 +29,11 @@ interface Resolution {
 }
 
 export type PropsLive = Dates &
-  Resolution & { projectId?: string | undefined; phaseId?: string | null };
+  Resolution & {
+    projectId?: string | undefined;
+    phaseId?: string | null;
+    numberOfIdeas?: number;
+  };
 
 // published
 export interface ParametersPublished {

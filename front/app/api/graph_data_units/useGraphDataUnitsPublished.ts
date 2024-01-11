@@ -4,6 +4,7 @@ import graphDataUnitKeys from './keys';
 import { ParametersPublished } from './types';
 import { CLErrors } from 'typings';
 
+// TODO: Response should extend not BaseResponseData, but sth more specific to data units
 const fetchGraphDataUnitsPublished = <Response extends BaseResponseData>({
   reportId,
   graphId,
