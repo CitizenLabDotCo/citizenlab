@@ -759,6 +759,7 @@
   "app.containers.Admin.emails.helmetDescription": "Send manuelle e-mails til brugergrupper, og aktiver automatiserede kampagner",
   "app.containers.Admin.emails.manageButtonLabel": "Rediger",
   "app.containers.Admin.emails.message": "Besked",
+  "app.containers.Admin.emails.nameVariablesInfo2": "Du kan tale direkte til borgerne ved hjælp af variablerne {firstName} {lastName}. F.eks. \"Kære {firstName} {lastName}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Du kan oprette og sende så mange e-mails, som du vil.",
   "app.containers.Admin.emails.noCampaignsHeader": "Der er ingen brugerdefinerede e-mails endnu",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Der er endnu ikke blevet udarbejdet eller sendt nogen SMS",
