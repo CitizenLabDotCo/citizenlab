@@ -23,8 +23,10 @@ module ReportBuilder
 
         def render_results(results)
           render json: {
-            data: { type: 'report_builder_data_units', attributes: results },
-            links: 'paginations'
+            data: {
+              type: 'report_builder_data_units',
+              attributes: results
+            }
           }
         end
       end
