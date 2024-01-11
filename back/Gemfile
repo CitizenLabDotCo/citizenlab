@@ -144,6 +144,7 @@ gem 'prawn-grouping', '~> 0.2.0'
 # "undefined method 'mailgun_settings=' for ActionMailer::Base:Class"
 # exception.
 gem 'aws-sdk-s3', '~> 1'
+gem 'aws-sdk-bedrockruntime', '~> 1'
 gem 'bootsnap', '~> 1', require: false
 gem 'dalli', '~> 3.2.4'
 gem 'mailgun-ruby', '~>1.2.8'
