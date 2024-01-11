@@ -78,6 +78,7 @@ const EmptyState = ({
             buttonStyle="secondary"
             linkTo={formatMessage(messages.supportLinkUrl)}
             openLinkInNewTab
+            disabled
           >
             {formatMessage(messages.emptyStateDiscover)}
           </Button>
