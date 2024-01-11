@@ -759,6 +759,7 @@
   "app.containers.Admin.emails.helmetDescription": "Kullanıcı gruplarına manuel e-postalar gönderin ve otomatik kampanyalar etkinleştirin",
   "app.containers.Admin.emails.manageButtonLabel": "Düzenle",
   "app.containers.Admin.emails.message": "Mesaj",
+  "app.containers.Admin.emails.nameVariablesInfo2": "{firstName} {lastName}değişkenlerini kullanarak vatandaşlarla doğrudan konuşabilirsiniz. Örneğin \"Sayın {firstName} {lastName}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "İstediğiniz kadar e-posta oluşturabilir ve gönderebilirsiniz.",
   "app.containers.Admin.emails.noCampaignsHeader": "Henüz özel e-posta yok",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Henüz SMS taslağı hazırlanmadı veya gönderilmedi",
