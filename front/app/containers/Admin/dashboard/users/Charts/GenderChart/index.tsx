@@ -33,14 +33,12 @@ const GenderChart = ({
   currentGroupFilterLabel,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const startAtMoment = startAt ? moment(startAt) : null;
-  const endAtMoment = endAt ? moment(endAt) : null;
 
   const { data: usersByGender } = useGraphDataUnitsLive<IUsersByGender>({
     resolvedName: 'GenderWidget',
     props: {
-      startAtMoment,
-      endAtMoment,
+      startAtMoment: startAt ? moment(startAt) : null,
+      endAtMoment: endAt ? moment(endAt) : null,
       groupId: currentGroupFilter,
     },
   });

@@ -18,6 +18,9 @@ const fetchGraphDataUnitsLive = <Response extends BaseResponseData>({
         project_id: props.projectId,
         phase_id: props.phaseId,
         resolution: props.resolution,
+        // TODO: remove both groupId and numberOfIdeas
+        group_id: props.groupId,
+        number_of_ideas: props.numberOfIdeas,
         start_at: props.startAtMoment?.format('yyyy-MM-DD'),
         end_at: props.endAtMoment?.format('yyyy-MM-DD'),
       },
