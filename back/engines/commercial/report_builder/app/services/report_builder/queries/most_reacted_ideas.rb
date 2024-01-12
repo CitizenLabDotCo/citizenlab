@@ -1,13 +1,11 @@
 module ReportBuilder
   class Queries::MostReactedIdeas < ReportBuilder::Queries::Base
-    def run_query(project_id: nil, phase_id: nil, number_of_ideas: nil, **_other_props)
-      # TODO: remove
-      return {} unless project_id
+    def run_query(phase_id: nil, number_of_ideas: nil, **_other_props)
+      return {} if phase_id.blank?
 
-      project = Project.find(project_id)
-      phase = phase_id ? Phase.find(phase_id) : nil
-      ideas_owner = phase || project
-      ideas = ideas_owner.ideas.order(likes_count: :desc).limit(number_of_ideas)
+      phase = Phase.find(phase_id)
+      project = phase.project
+      ideas = phase.ideas.order(likes_count: :desc).limit(number_of_ideas)
 
       {
         ideas: serialize(ideas, ::WebApi::V1::IdeaSerializer),
