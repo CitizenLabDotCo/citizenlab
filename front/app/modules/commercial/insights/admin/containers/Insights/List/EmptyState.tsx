@@ -71,6 +71,7 @@ const EmptyState = ({
             onClick={openCreateModal}
             mr="12px"
             mb="12px"
+            disabled
           >
             {formatMessage(messages.emptyStateCreate)}
           </Button>
@@ -78,7 +79,6 @@ const EmptyState = ({
             buttonStyle="secondary"
             linkTo={formatMessage(messages.supportLinkUrl)}
             openLinkInNewTab
-            disabled
           >
             {formatMessage(messages.emptyStateDiscover)}
           </Button>
