@@ -12,12 +12,14 @@ import { PropsLive, ResolvedName } from './types';
 interface Props {
   resolvedName: ResolvedName;
   queryParameters: PropsLive;
+  enabled?: boolean;
   onSuccess?: () => void;
 }
 
 const useGraphDataUnits = <Response extends BaseResponseData>({
   resolvedName,
   queryParameters,
+  enabled = true,
   onSuccess,
 }: Props) => {
   const { pathname } = useLocation();
@@ -30,7 +32,7 @@ const useGraphDataUnits = <Response extends BaseResponseData>({
       resolvedName,
       props: queryParameters,
     },
-    { enabled: isAdminPage, onSuccess }
+    { enabled: enabled && isAdminPage, onSuccess }
   );
 
   const { data: analyticsPublished } = useGraphDataUnitsPublished<Response>(
@@ -38,7 +40,7 @@ const useGraphDataUnits = <Response extends BaseResponseData>({
       reportId,
       graphId,
     },
-    { enabled: !isAdminPage }
+    { enabled: enabled && !isAdminPage }
   );
 
   const analytics = analyticsLive ?? analyticsPublished;

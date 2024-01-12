@@ -30,6 +30,7 @@ const MostReactedIdeasWidget = ({
       phaseId,
       numberOfIdeas,
     },
+    enabled: !!projectId,
   });
 
   if (!response) return null;
