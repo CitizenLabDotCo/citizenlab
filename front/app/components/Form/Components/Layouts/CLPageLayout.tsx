@@ -63,7 +63,7 @@ const CLPageLayout = memo(
     enabled,
     data,
   }: LayoutProps) => {
-    const { onSubmit, setShowAllErrors, formSubmitText } =
+    const { onSubmit, setShowAllErrors, formSubmitText, setFormData } =
       useContext(FormContext);
     const topAnchorRef = useRef<HTMLInputElement>(null);
     const [currentStep, setCurrentStep] = useState<number>(0);
@@ -147,6 +147,38 @@ const CLPageLayout = memo(
         setShowAllErrors?.(true);
         setScrollToError(true);
       }
+    };
+
+    const handlePrevious = () => {
+      const currentPageCategorization = uiPages[currentStep];
+      // Get scopes of elements with rules on the current page
+      const ruleElementsScopes = currentPageCategorization.elements
+        .filter((element) => {
+          return element.options?.hasRule;
+        })
+        .flatMap((filteredElement) => {
+          const elementScope = filteredElement.scope?.split('/').pop();
+          return elementScope || '';
+        });
+
+      const dataWithoutRuleValues = Object.fromEntries(
+        Object.entries(data).filter(
+          ([key]) => !ruleElementsScopes.includes(key)
+        )
+      );
+
+      /*
+       * We remove the data of the elements with rules from the data object because it currently
+       * causes an issue with page visibility when going back to a page and selecting different options and then going forward again
+       * In that case, the data from the elements with rules can cause wrong pages being shown or hidden.
+       * We need to find a better solution for this but keeping it like this for now. I'll probably come back to it when I have more time
+       * to think about it. See https://www.notion.so/citizenlab/Bug-in-survey-flow-792a72efc35e44e58e1bb10ab631ecdf
+       */
+      setFormData && setFormData(dataWithoutRuleValues);
+
+      setCurrentStep(currentStep - 1);
+      userPagePath.pop();
+      scrollToTop();
     };
 
     return (
@@ -234,11 +266,7 @@ const CLPageLayout = memo(
             </Button>
             {hasPreviousPage && (
               <Button
-                onClick={() => {
-                  setCurrentStep(currentStep - 1);
-                  userPagePath.pop();
-                  scrollToTop();
-                }}
+                onClick={handlePrevious}
                 data-cy="e2e-previous-page"
                 mb="20px"
                 icon="chevron-left"
