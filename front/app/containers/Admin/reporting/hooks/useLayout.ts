@@ -10,7 +10,7 @@ export default function useLayout(): Layout {
   const { width } = reportContext;
   if (width === 'pdf') return 'wide';
 
-  return width === 'mobile' ? 'narrow' : 'wide';
+  return width === 'phone' ? 'narrow' : 'wide';
 }
 
 function useNarrowLayout() {

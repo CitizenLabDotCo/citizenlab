@@ -2,7 +2,7 @@ import React, { createContext, useContext } from 'react';
 import useReport from 'api/reports/useReport';
 import usePhase from 'api/phases/usePhase';
 
-type ReportWidth = 'mobile' | 'tablet' | 'desktop' | 'pdf';
+type ReportWidth = 'phone' | 'tablet' | 'desktop' | 'pdf';
 
 interface ReportContextBase {
   width: ReportWidth;

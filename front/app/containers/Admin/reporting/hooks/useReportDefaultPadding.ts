@@ -30,7 +30,7 @@ const useReportDefaultPadding = () => {
       ? node(greatGrandParentId).isRoot()
       : false;
 
-  const isSmall = width === 'mobile' || width === 'tablet';
+  const isSmall = width === 'phone' || width === 'tablet';
   const inRoot = parentIsRoot || grandParentIsTemplateAndGreatGrandparentIsRoot;
 
   return isSmall && inRoot ? DEFAULT_PADDING : '0px';
