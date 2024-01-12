@@ -560,9 +560,6 @@ const HomepageBannerSettings = () => {
             {formatMessage(messages.signedInDescription)}
           </Text>
           <OverlayControls
-            noOpacitySlider={
-              homepageSettings.banner_layout === 'fixed_ratio_layout'
-            }
             bannerOverlayColor={
               homepageSettings.banner_signed_in_header_overlay_color
             }
