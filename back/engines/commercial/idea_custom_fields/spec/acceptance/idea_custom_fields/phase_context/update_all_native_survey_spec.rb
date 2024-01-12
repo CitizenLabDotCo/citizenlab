@@ -107,7 +107,7 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 0
       end
 
-      example 'Add a custom field with options and delete a field with options' do
+      example 'Add a custom field with options, including an "other" option and delete a field with options' do
         delete_field = create(:custom_field_select, :with_options, resource: custom_form)
         delete_options = delete_field.options
 
@@ -124,7 +124,8 @@ resource 'Idea Custom Fields' do
                   title_multiloc: { en: 'Option 1' }
                 },
                 {
-                  title_multiloc: { en: 'Option 2' }
+                  title_multiloc: { en: 'Other' },
+                  other: true
                 }
               ]
             }
@@ -187,6 +188,7 @@ resource 'Idea Custom Fields' do
             key: an_instance_of(String),
             title_multiloc: { en: 'Option 1' },
             ordering: 0,
+            other: false,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String)
           }
@@ -196,8 +198,9 @@ resource 'Idea Custom Fields' do
           type: 'custom_field_option',
           attributes: {
             key: an_instance_of(String),
-            title_multiloc: { en: 'Option 2' },
+            title_multiloc: { en: 'Other' },
             ordering: 1,
+            other: true,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String)
           }

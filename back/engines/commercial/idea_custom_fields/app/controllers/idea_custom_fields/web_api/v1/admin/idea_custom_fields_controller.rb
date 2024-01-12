@@ -245,7 +245,7 @@ module IdeaCustomFields
           description_multiloc: CL2_SUPPORTED_LOCALES,
           minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
           maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
-          options: [:id, :temp_id, { title_multiloc: CL2_SUPPORTED_LOCALES }],
+          options: [:id, :temp_id, :other, { title_multiloc: CL2_SUPPORTED_LOCALES }],
           logic: {} }
       ])
     end

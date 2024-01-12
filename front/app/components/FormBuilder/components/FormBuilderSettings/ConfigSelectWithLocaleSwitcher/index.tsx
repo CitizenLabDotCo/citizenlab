@@ -11,6 +11,7 @@ import {
   Label,
   Button,
   LocaleSwitcher,
+  Toggle,
   Icon,
   Input,
 } from '@citizenlab/cl2-component-library';
@@ -91,6 +92,14 @@ const ConfigSelectWithLocaleSwitcher = ({
     newValues.splice(index, 1);
     setValue(name, newValues);
   };
+  const addOtherOption = (value, name) => {
+    const newValues = value;
+    newValues.push({
+      title_multiloc: { 'en': 'Other' },
+      other: true
+    });
+    setValue(name, newValues);
+  };
 
   const defaultOptionValues = [{}];
   const errors = get(formContextErrors, name) as RHFErrors;
@@ -105,11 +114,70 @@ const ConfigSelectWithLocaleSwitcher = ({
           control={control}
           defaultValue={defaultOptionValues}
           render={({ field: { ref: _ref, value: choices, onBlur } }) => {
+            const hasOtherOption = choices.some(choice => choice.other === true);
+            const toggleOtherOption = (value, name) => {
+              if (hasOtherOption) {
+                removeOption(value, name, value.length - 1);
+              } else {
+                addOtherOption(value, name);
+              }
+            };
+            console.log(choices);
+
             const canDeleteLastOption =
               allowDeletingAllOptions || choices.length > 1;
             const validatedValues = choices.map((choice) => ({
               title_multiloc: choice.title_multiloc,
             }));
+
+            const eachOption = (choice, index) => {
+              return (
+                <>
+                  <Box width="100%">
+                    <Input
+                      id={`e2e-option-input-${index}`}
+                      size="small"
+                      type="text"
+                      value={choice.title_multiloc[selectedLocale]}
+                      onChange={(value) => {
+                        const updatedChoices = choices;
+                        updatedChoices[index].title_multiloc[
+                          selectedLocale
+                          ] = value;
+                        if (
+                          !updatedChoices[index].id &&
+                          !updatedChoices[index].temp_id
+                        ) {
+                          updatedChoices[index].temp_id =
+                            generateTempId();
+                        }
+                        setValue(name, updatedChoices);
+                      }}
+                    />
+                  </Box>
+                  {canDeleteLastOption && (
+                    <Button
+                      margin="0px"
+                      padding="0px"
+                      buttonStyle="text"
+                      aria-label={formatMessage(
+                        messages.removeAnswer
+                      )}
+                      onClick={() => {
+                        removeOption(choices, name, index);
+                        trigger();
+                      }}
+                    >
+                      <Icon
+                        name="delete"
+                        fill="coolGrey600"
+                        padding="0px"
+                      />
+                    </Button>
+                  )}
+                </>
+              )
+            }
 
             return (
               <Box
@@ -149,53 +217,12 @@ const ConfigSelectWithLocaleSwitcher = ({
                             <SortableRow
                               id={choice.id}
                               index={index}
-                              moveRow={handleDragRow}
+                              moveRow={choice.other === true ? () => {} : handleDragRow}
                               dropRow={() => {
                                 // Do nothing, no need to handle dropping a row for now
                               }}
                             >
-                              <Box width="100%">
-                                <Input
-                                  id={`e2e-option-input-${index}`}
-                                  size="small"
-                                  type="text"
-                                  value={choice.title_multiloc[selectedLocale]}
-                                  onChange={(value) => {
-                                    const updatedChoices = choices;
-                                    updatedChoices[index].title_multiloc[
-                                      selectedLocale
-                                    ] = value;
-                                    if (
-                                      !updatedChoices[index].id &&
-                                      !updatedChoices[index].temp_id
-                                    ) {
-                                      updatedChoices[index].temp_id =
-                                        generateTempId();
-                                    }
-                                    setValue(name, updatedChoices);
-                                  }}
-                                />
-                              </Box>
-                              {canDeleteLastOption && (
-                                <Button
-                                  margin="0px"
-                                  padding="0px"
-                                  buttonStyle="text"
-                                  aria-label={formatMessage(
-                                    messages.removeAnswer
-                                  )}
-                                  onClick={() => {
-                                    removeOption(choices, name, index);
-                                    trigger();
-                                  }}
-                                >
-                                  <Icon
-                                    name="delete"
-                                    fill="coolGrey600"
-                                    padding="0px"
-                                  />
-                                </Button>
-                              )}
+                              {eachOption(choice, index)}
                             </SortableRow>
                           </Box>
                         );
@@ -209,6 +236,15 @@ const ConfigSelectWithLocaleSwitcher = ({
                     onClick={() => addOption(choices, name)}
                     text={formatMessage(messages.addAnswer)}
                   />
+
+                  <Box mt="24px">
+                    <Toggle
+                      label={formatMessage(messages.otherOption)}
+                      checked={hasOtherOption}
+                      onChange={() => toggleOtherOption(choices, name)}
+                    />
+                  </Box>
+
                   {validationError && (
                     <Error
                       marginTop="8px"

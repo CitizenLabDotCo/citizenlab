@@ -30,6 +30,7 @@ export type ICustomFieldInputType =
 export type IOptionsType = {
   id?: string;
   title_multiloc: Multiloc;
+  other?: boolean;
   temp_id?: string;
 };
 

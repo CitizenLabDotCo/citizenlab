@@ -11,6 +11,7 @@
 #  ordering        :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  other           :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -33,6 +34,7 @@ class CustomFieldOption < ApplicationRecord
   validate :belongs_to_select_field
 
   before_validation :generate_key, on: :create
+  # TODO: JS - Set ordering of other option to be last
 
   # Options of the domicile custom field are associated with an area.
   # The two associated resources are kept in sync: changes to the
@@ -70,7 +72,7 @@ class CustomFieldOption < ApplicationRecord
     title = title_multiloc.values.first
     return unless title
 
-    self.key = CustomFieldService.new.generate_key(self, title) do |key_proposal|
+    self.key = CustomFieldService.new.generate_key(title, other) do |key_proposal|
       self.class.find_by(key: key_proposal, custom_field: custom_field)
     end
   end

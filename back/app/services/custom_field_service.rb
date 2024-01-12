@@ -75,7 +75,10 @@ class CustomFieldService
     end
   end
 
-  def generate_key(_record, title)
+  def generate_key(title, other = false)
+    # binding.pry
+    return 'other' if other == true
+
     keyify(title)
   end
 

@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.components.formBuilder.fieldLabel',
     defaultMessage: 'Answer choices',
   },
+  otherOption: {
+    id: 'app.components.formBuilder.otherOption',
+    defaultMessage: '"Other" option',
+  },
 });

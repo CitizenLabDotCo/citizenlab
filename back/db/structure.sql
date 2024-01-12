@@ -2162,7 +2162,8 @@ CREATE TABLE public.custom_field_options (
     title_multiloc jsonb DEFAULT '{}'::jsonb,
     ordering integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    other boolean DEFAULT false NOT NULL
 );
 
 
@@ -7928,6 +7929,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231124114112'),
 ('20231130093345'),
 ('20231212151032'),
-('20231214100537');
+('20231214100537'),
+('20240112103545');
 
 
