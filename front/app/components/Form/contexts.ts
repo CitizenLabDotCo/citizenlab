@@ -11,12 +11,14 @@ export const FormContext = createContext<{
   formSubmitText?: MessageDescriptor;
   inputId?: string | undefined;
   onSubmit?: (formData?: any) => void | Promise<void>;
+  setFormData?: (formData?: any) => void;
   setShowAllErrors?: (showAllErrors: boolean) => void;
   locale?: Locale;
 }>({
   showAllErrors: false,
   getApiErrorMessage: () => undefined,
   onSubmit: async () => undefined,
+  setFormData: async () => undefined,
   setShowAllErrors: () => undefined,
   inputId: undefined,
   locale: undefined,
