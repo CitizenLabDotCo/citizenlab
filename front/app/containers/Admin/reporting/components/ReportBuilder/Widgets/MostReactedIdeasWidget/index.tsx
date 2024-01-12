@@ -25,7 +25,7 @@ const MostReactedIdeasWidget = ({
 }: Props) => {
   const response = useGraphDataUnits<Response>({
     resolvedName: 'MostReactedIdeasWidget',
-    queryParameters: {
+    props: {
       projectId,
       phaseId,
       numberOfIdeas,

@@ -7,18 +7,16 @@ import { isPage } from 'utils/helperUtils';
 
 import { BaseResponseData } from 'utils/cl-react-query/fetcher';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
-import { PropsLive, ResolvedName } from './types';
+import { ParametersLive } from './types';
 
-interface Props {
-  resolvedName: ResolvedName;
-  queryParameters: PropsLive;
+type Props = ParametersLive & {
   enabled?: boolean;
   onSuccess?: () => void;
-}
+};
 
 const useGraphDataUnits = <Response extends BaseResponseData>({
   resolvedName,
-  queryParameters,
+  props,
   enabled = true,
   onSuccess,
 }: Props) => {
@@ -30,7 +28,7 @@ const useGraphDataUnits = <Response extends BaseResponseData>({
   const { data: analyticsLive } = useGraphDataUnitsLive<Response>(
     {
       resolvedName,
-      props: queryParameters,
+      props,
     },
     { enabled: enabled && isAdminPage, onSuccess }
   );
