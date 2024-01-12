@@ -140,7 +140,8 @@ const FilterSidebar = ({
             */
             type === 'ProjectIdeas' && typeof projectId === 'string'
               ? `/admin/projects/${projectId}/settings/tags`
-              : // Don't show the link to the tag manager if the user is not an admin
+              : // Don't show the link to the tag manager if the user is not an admin (i.e. project manager that has acces to the general input manager at /admin/ideas, but just for their projects)
+              // Both for /admin/ideas and /admin/initiatives, we show the link to the tag manager
               isAdmin({ data: authUser.data })
               ? '/admin/settings/topics'
               : null
