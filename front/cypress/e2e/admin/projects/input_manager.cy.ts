@@ -25,9 +25,9 @@ describe('Admin: project input manager', () => {
 
         cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/ideas`);
         cy.get(
-          '[data-cy="e2e-admin-input-manager-filter-sidebar-topics"]'
+          '[data-cy="e2e-admin-post-manager-filter-sidebar-topics"]'
         ).click();
-        cy.get('[data-cy="e2e-input-manager-topic-filters-edit-tags"]').click();
+        cy.get('[data-cy="e2e-post-manager-topic-filters-edit-tags"]').click();
 
         cy.location('pathname').should(
           'eq',

@@ -230,9 +230,9 @@ describe('Input manager', () => {
     it('navigates to the platform-wide tag settings when the user clicks "Edit tags" in the tags tab', () => {
       cy.visit('/admin/ideas/');
       cy.get(
-        '[data-cy="e2e-admin-input-manager-filter-sidebar-topics"]'
+        '[data-cy="e2e-admin-post-manager-filter-sidebar-topics"]'
       ).click();
-      cy.get('[data-cy="e2e-input-manager-topic-filters-edit-tags"]').click();
+      cy.get('[data-cy="e2e-post-manager-topic-filters-edit-tags"]').click();
 
       cy.location('pathname').should('eq', `/en/admin/settings/topics`);
     });
