@@ -35,7 +35,7 @@
     "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|utils/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')",
     "dependency-cruiser": "depcruise app  --validate",
     "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build"
+    "build-storybook": "storybook build"
   },
   "jest-junit": {
     "addFileAttribute": "true"
