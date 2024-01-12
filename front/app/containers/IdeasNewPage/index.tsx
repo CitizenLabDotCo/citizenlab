@@ -58,7 +58,7 @@ const NewIdeaPage = () => {
   }
 
   const participationMethod = getParticipationMethod(
-    project?.data,
+    project.data,
     phases?.data,
     phase_id
   );
@@ -67,12 +67,12 @@ const NewIdeaPage = () => {
 
   const { enabled, disabledReason, authenticationRequirements } =
     getIdeaPostingRules({
-      project: project?.data,
+      project: project.data,
       phase: getCurrentPhase(phases?.data),
       authUser: authUser?.data,
     });
 
-  if (project && isSurvey && disabledReason === 'postingLimitedMaxReached') {
+  if (isSurvey && disabledReason === 'postingLimitedMaxReached') {
     return <SurveySubmittedNotice project={project.data} />;
   }
 
@@ -112,13 +112,13 @@ const NewIdeaPage = () => {
         h="100vh"
         overflowY="scroll"
       >
-        <IdeasNewForm />
+        <IdeasNewForm project={project} />
       </Box>,
       portalElement
     );
   }
 
-  return <IdeasNewForm />;
+  return <IdeasNewForm project={project} />;
 };
 
 export default NewIdeaPage;
