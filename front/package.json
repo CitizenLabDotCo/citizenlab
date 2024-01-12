@@ -9,7 +9,9 @@
     "node": "16.15.0",
     "npm": ">=8"
   },
-  "author": "CitizenLab",
+  "author": {
+    "name": "CitizenLab"
+  },
   "scripts": {
     "extract-intl": "tsc --skipLibCheck app/containers/App/constants && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
     "prebuild": "npm run build:clean",
@@ -35,7 +37,8 @@
     "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|utils/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')",
     "dependency-cruiser": "depcruise app  --validate",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "npx chromatic --project-token=chpt_899ad5671ea1dce"
   },
   "jest-junit": {
     "addFileAttribute": "true"
@@ -143,7 +146,8 @@
     "util": "^0.12.5",
     "webfontloader": "1.6.28",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.10/xlsx-0.18.10.tgz",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "fsevents": "^2"
   },
   "devDependencies": {
     "@babel/cli": "7.x",
@@ -263,5 +267,7 @@
   },
   "msw": {
     "workerDirectory": ".storybook/public"
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "cl2-front@1.0.0"
 }
