@@ -122,6 +122,8 @@ const ConfigSelectWithLocaleSwitcher = ({
                 addOtherOption(value, name);
               }
             };
+
+            // TODO: other not making it to the frontend on load
             console.log(choices);
 
             const canDeleteLastOption =
