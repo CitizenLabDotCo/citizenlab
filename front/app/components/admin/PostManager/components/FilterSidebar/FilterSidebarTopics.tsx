@@ -54,6 +54,7 @@ const FilterSidebarTopics = ({
       <Divider />
       <Box display="inline-flex">
         <Button
+          data-cy="e2e-input-manager-topic-filters-edit-tags"
           buttonStyle="text"
           icon="edit"
           pl="12px"

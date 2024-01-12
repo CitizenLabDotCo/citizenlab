@@ -188,6 +188,7 @@ const FilterSidebar = ({
             active={activeFilterMenu === item.key}
             onClick={handleItemClick}
             className={`intercom-admin-input-manager-filter-sidebar-${item.key}`}
+            data-cy={`e2e-admin-input-manager-filter-sidebar-${item.key}`}
           >
             {item.name}
           </Menu.Item>
