@@ -32,10 +32,10 @@ interface Props {
   selectedLocale: Locale;
 }
 
-type View = 'mobile' | 'pdf' | 'desktop';
+type View = 'phone' | 'pdf' | 'desktop';
 
 const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
-  const [view, setView] = useState<View>('mobile');
+  const [view, setView] = useState<View>('phone');
   const platformLocale = useLocale();
 
   return (
@@ -47,9 +47,9 @@ const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box display="flex" mb="16px">
           <MobileButton
-            active={view === 'mobile'}
+            active={view === 'phone'}
             onClick={() => {
-              setView('mobile');
+              setView('phone');
             }}
           />
           <PDFButton
@@ -89,8 +89,8 @@ const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
                 borderWidth="40px 20px 20px 20px"
                 zIndex="1"
                 mb="12px"
-                width={view === 'mobile' ? '360px' : '1140px'}
-                py={view === 'mobile' ? '20px' : '40px'}
+                width={view === 'phone' ? '360px' : '1140px'}
+                py={view === 'phone' ? '20px' : '40px'}
                 borderRadius="20px"
                 overflowY="scroll"
                 background="white"
