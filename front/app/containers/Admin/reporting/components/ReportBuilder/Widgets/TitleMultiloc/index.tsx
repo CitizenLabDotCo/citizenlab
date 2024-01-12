@@ -25,6 +25,7 @@ import { Multiloc } from 'typings';
 const H3 = styled.h3<{ color: string }>`
   color: ${({ color }) => color};
   font-size: 20px;
+  margin-top: 0px;
 `;
 
 interface Props {
@@ -36,13 +37,7 @@ const Title = ({ text }: Props) => {
   const localize = useLocalize();
 
   return (
-    <PageBreakBox
-      className="e2e-text-box"
-      minHeight="26px"
-      mb="12px"
-      mt="12px"
-      px={px}
-    >
+    <PageBreakBox className="e2e-text-box" minHeight="26px" mb="12px" px={px}>
       <H3 color={colors.primary}>{localize(text)}</H3>
     </PageBreakBox>
   );
