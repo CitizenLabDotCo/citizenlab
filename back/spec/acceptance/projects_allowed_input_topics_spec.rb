@@ -24,6 +24,15 @@ resource 'ProjectsAllowedInputTopics' do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
     end
+
+    let(:project) { create(:project, allowed_input_topics: create_list(:custom_topic, 3)) }
+    let(:id) { project.id }
+
+    example_request 'List all projects allowed input topics of a project, including custom topics' do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 3
+    end
   end
 
   get 'web_api/v1/projects_allowed_input_topics/:id' do
