@@ -12,7 +12,7 @@ interface Props {
   selectableTopics: ITopicData[];
   selectedTopics?: string[] | null;
   onChangeTopicsFilter?: (topics: string[]) => void;
-  linkToTagManager: string;
+  linkToTagManager: string | null;
 }
 
 const FilterSidebarTopics = ({
@@ -52,21 +52,23 @@ const FilterSidebarTopics = ({
         <FormattedMessage {...messages.allTopics} />
       </Menu.Item>
       <Divider />
-      <Box display="inline-flex">
-        <Button
-          data-cy="e2e-input-manager-topic-filters-edit-tags"
-          buttonStyle="text"
-          icon="edit"
-          pl="12px"
-          linkTo={linkToTagManager}
-          iconPos="right"
-          iconSize="14px"
-        >
-          <Text m="0px" color="coolGrey600" fontSize="s" textAlign="left">
-            <FormattedMessage {...messages.editTags} />
-          </Text>
-        </Button>
-      </Box>
+      {typeof linkToTagManager === 'string' && (
+        <Box display="inline-flex">
+          <Button
+            data-cy="e2e-input-manager-topic-filters-edit-tags"
+            buttonStyle="text"
+            icon="edit"
+            pl="12px"
+            linkTo={linkToTagManager}
+            iconPos="right"
+            iconSize="14px"
+          >
+            <Text m="0px" color="coolGrey600" fontSize="s" textAlign="left">
+              <FormattedMessage {...messages.editTags} />
+            </Text>
+          </Button>
+        </Box>
+      )}
       {selectableTopics.map((topic) => (
         <FilterSidebarTopicsItem
           key={topic.id}

@@ -16,6 +16,8 @@ import { ITopicData } from 'api/topics/types';
 import { useIntl } from 'utils/cl-intl';
 import { ManagerType } from 'components/admin/PostManager';
 import { useParams } from 'react-router-dom';
+import { isAdmin } from 'utils/permissions/roles';
+import useAuthUser from 'api/me/useAuthUser';
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.teal700};
@@ -66,10 +68,13 @@ const FilterSidebar = ({
   type,
 }: Props) => {
   const { projectId } = useParams();
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const handleItemClick = (_event, data) => {
     onChangeActiveFilterMenu(data.id);
   };
+
+  if (!authUser) return null;
 
   const tabName = (
     messageKey: 'statusesTab' | 'timelineTab' | 'topicsTab' | 'projectsTab',
@@ -135,7 +140,10 @@ const FilterSidebar = ({
             */
             type === 'ProjectIdeas' && typeof projectId === 'string'
               ? `/admin/projects/${projectId}/settings/tags`
-              : '/admin/settings/topics'
+              : // Don't show the link to the tag manager if the user is not an admin
+              isAdmin({ data: authUser.data })
+              ? '/admin/settings/topics'
+              : null
           }
         />
       ),
