@@ -1,7 +1,6 @@
 import React from 'react';
 
 // hooks
-import useConvertToGraphFormat from 'containers/Admin/dashboard/users/Charts/AgeChart/useConvertToGraphFormat';
 import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 
 // components
@@ -11,10 +10,12 @@ import BarChart from 'components/admin/Graphs/BarChart';
 
 // i18n
 import messages from '../messages';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { serieHasValues } from '../utils';
+import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/AgeChart/convertToGraphFormat';
 
 // types
 import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
@@ -31,8 +32,9 @@ const AgeCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
       projectId,
     },
   });
+  const { formatMessage } = useIntl();
 
-  const ageSerie = useConvertToGraphFormat(IUsersByBirthyear);
+  const ageSerie = convertToGraphFormat(IUsersByBirthyear, formatMessage);
 
   if (isNilOrError(ageSerie) || !serieHasValues(ageSerie)) {
     return <NoData message={messages.noData} />;

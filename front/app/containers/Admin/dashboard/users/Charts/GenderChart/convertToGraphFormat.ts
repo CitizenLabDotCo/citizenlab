@@ -1,6 +1,5 @@
 // i18n
 import messages from 'containers/Admin/dashboard/messages';
-import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { roundPercentages } from 'utils/math';
@@ -8,6 +7,7 @@ import { roundPercentages } from 'utils/math';
 // typings
 import { GenderSerie } from './typings';
 import { genderOptions } from 'api/users_by_gender/types';
+import { FormatMessage } from 'typings';
 
 interface GraphData {
   data: {
@@ -21,11 +21,10 @@ interface GraphData {
   };
 }
 
-const useConvertToGraphFormat = (
-  data: GraphData | undefined
+const convertToGraphFormat = (
+  data: GraphData | undefined,
+  formatMessage: FormatMessage
 ): GenderSerie | null => {
-  const { formatMessage } = useIntl();
-
   if (!data) return null;
   const users = data.data.attributes.series.users;
 
@@ -41,4 +40,4 @@ const useConvertToGraphFormat = (
   return res.length > 0 ? res : null;
 };
 
-export default useConvertToGraphFormat;
+export default convertToGraphFormat;

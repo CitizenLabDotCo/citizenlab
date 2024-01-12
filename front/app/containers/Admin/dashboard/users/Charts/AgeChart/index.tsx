@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useConvertToGraphFormat from './useConvertToGraphFormat';
+import convertToGraphFormat from './convertToGraphFormat';
 import useUsersByBirthyear from 'api/users_by_birthyear/useUsersByBirthyear';
 
 // components
@@ -36,7 +36,7 @@ const AgeChart = ({
     group: currentGroupFilter,
     enabled: true,
   });
-  const ageSerie = useConvertToGraphFormat(usersByBirthyear);
+  const ageSerie = convertToGraphFormat(usersByBirthyear, formatMessage);
 
   const cardTitle = formatMessage(messages.usersByAgeTitle);
 

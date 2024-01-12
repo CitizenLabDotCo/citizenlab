@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 
 // hooks
 import useUsersByGender from 'api/users_by_gender/useUsersByGender';
-import useConvertToGraphFormat from './useConvertToGraphFormat';
+import convertToGraphFormat from './convertToGraphFormat';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -38,7 +38,7 @@ const GenderChart = ({
     enabled: true,
   });
 
-  const serie = useConvertToGraphFormat(usersByGender);
+  const serie = convertToGraphFormat(usersByGender, formatMessage);
   const graphRef = useRef();
   const cardTitle = formatMessage(messages.usersByGenderTitle);
 

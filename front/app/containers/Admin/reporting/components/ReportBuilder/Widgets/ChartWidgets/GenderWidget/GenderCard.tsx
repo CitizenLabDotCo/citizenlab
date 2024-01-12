@@ -1,7 +1,6 @@
 import React from 'react';
 
 // hooks
-import useConvertToGraphFormat from 'containers/Admin/dashboard/users/Charts/GenderChart/useConvertToGraphFormat';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 // components
@@ -11,12 +10,14 @@ import NoData from '../../_shared/NoData';
 
 // i18n
 import messages from '../messages';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { serieHasValues } from '../utils';
 import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 import { IUsersByGender } from 'api/users_by_gender/types';
+import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/GenderChart/convertToGraphFormat';
 
 // types
 import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
@@ -32,8 +33,9 @@ const GenderCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
       projectId,
     },
   });
+  const { formatMessage } = useIntl();
 
-  const genderSerie = useConvertToGraphFormat(usersByGender);
+  const genderSerie = convertToGraphFormat(usersByGender, formatMessage);
 
   const layout = useLayout();
 
