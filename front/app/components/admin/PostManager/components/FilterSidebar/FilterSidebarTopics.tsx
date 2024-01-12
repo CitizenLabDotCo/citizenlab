@@ -5,29 +5,22 @@ import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { ITopicData } from 'api/topics/types';
-import { isNilOrError } from 'utils/helperUtils';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import { isAdmin } from 'utils/permissions/roles';
-import useAuthUser from 'api/me/useAuthUser';
 
 interface Props {
   selectableTopics: ITopicData[];
   selectedTopics?: string[] | null;
   onChangeTopicsFilter?: (topics: string[]) => void;
+  linkToTagManager: string;
 }
 
 const FilterSidebarTopics = ({
   selectableTopics,
   selectedTopics,
   onChangeTopicsFilter,
+  linkToTagManager,
 }: Props) => {
-  const { data: authUser } = useAuthUser();
-
-  if (isNilOrError(authUser)) {
-    return null;
-  }
-
   const handleItemClick = (id: string) => (event: MouseEvent) => {
     if (event.ctrlKey) {
       onChangeTopicsFilter &&
@@ -59,22 +52,20 @@ const FilterSidebarTopics = ({
         <FormattedMessage {...messages.allTopics} />
       </Menu.Item>
       <Divider />
-      {isAdmin({ data: authUser.data }) && (
-        <Box display="inline-flex">
-          <Button
-            buttonStyle="text"
-            icon="edit"
-            pl="12px"
-            linkTo="/admin/settings/topics"
-            iconPos="right"
-            iconSize="14px"
-          >
-            <Text m="0px" color="coolGrey600" fontSize="s" textAlign="left">
-              <FormattedMessage {...messages.editTags} />
-            </Text>
-          </Button>
-        </Box>
-      )}
+      <Box display="inline-flex">
+        <Button
+          buttonStyle="text"
+          icon="edit"
+          pl="12px"
+          linkTo={linkToTagManager}
+          iconPos="right"
+          iconSize="14px"
+        >
+          <Text m="0px" color="coolGrey600" fontSize="s" textAlign="left">
+            <FormattedMessage {...messages.editTags} />
+          </Text>
+        </Button>
+      </Box>
       {selectableTopics.map((topic) => (
         <FilterSidebarTopicsItem
           key={topic.id}

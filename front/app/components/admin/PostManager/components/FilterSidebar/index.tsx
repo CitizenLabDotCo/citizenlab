@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import { ITopicData } from 'api/topics/types';
 import { useIntl } from 'utils/cl-intl';
 import { ManagerType } from 'components/admin/PostManager';
+import { useParams } from 'react-router-dom';
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.teal700};
@@ -64,6 +65,7 @@ const FilterSidebar = ({
   visibleFilterMenus,
   type,
 }: Props) => {
+  const { projectId } = useParams();
   const { formatMessage } = useIntl();
   const handleItemClick = (_event, data) => {
     onChangeActiveFilterMenu(data.id);
@@ -127,6 +129,14 @@ const FilterSidebar = ({
           selectableTopics={topics}
           selectedTopics={selectedTopics}
           onChangeTopicsFilter={onChangeTopicsFilter}
+          linkToTagManager={
+            /*
+            https://www.notion.so/citizenlab/Customised-tags-don-t-show-up-as-options-to-add-to-input-9c7c39f6af194c8385088878037cd498?pvs=4
+            */
+            type === 'ProjectIdeas' && typeof projectId === 'string'
+              ? `/admin/projects/${projectId}/settings/tags`
+              : '/admin/settings/topics'
+          }
         />
       ),
     }),
