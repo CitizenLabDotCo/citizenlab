@@ -10,6 +10,7 @@ import {
 import { rgba } from 'polished';
 import { FormattedMessage } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
+import { PublicationTab } from 'components/ProjectAndFolderCards';
 
 const TabsContainer = styled.div`
   display: flex;
@@ -76,10 +77,10 @@ export type TabData<ShowCount extends boolean> = {
 };
 
 interface Props<ShowCount extends boolean> {
-  currentTab: string;
-  availableTabs: string[];
+  currentTab: PublicationTab;
+  availableTabs: PublicationTab[];
   tabData: TabData<ShowCount>;
-  onChangeTab: (tab: string) => void;
+  onChangeTab: (tab: PublicationTab) => void;
   getTabId?: (tab: string) => string;
   getTabPanelId?: (tab: string) => string;
   getScreenReaderTextForTab?: (tab: string, count?: number) => JSX.Element;
@@ -101,7 +102,7 @@ const Tabs = <ShowCount extends boolean>({
 }: Props<ShowCount>) => {
   const tabsRef = useRef({});
 
-  const handleClickTab = (tab: string) => () => {
+  const handleClickTab = (tab: PublicationTab) => () => {
     if (currentTab === tab) return;
     onChangeTab(tab);
   };
@@ -154,8 +155,8 @@ const Tabs = <ShowCount extends boolean>({
 export default Tabs;
 
 function getSelectedTab(
-  currentTab: string,
-  availableTabs: string[],
+  currentTab: PublicationTab,
+  availableTabs: PublicationTab[],
   key: 'ArrowLeft' | 'ArrowRight'
 ) {
   const currentTabIndex = availableTabs.indexOf(currentTab);
