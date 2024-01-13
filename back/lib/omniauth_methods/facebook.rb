@@ -16,8 +16,10 @@ module OmniauthMethods
         first_name: auth.info['first_name'],
         last_name: auth.info['last_name'],
         email: auth.info['email'],
-        locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale)
+        locale: app_configuration.closest_locale_to(auth.extra.raw_info.locale),
+        remote_avatar_url: remote_avatar_url(auth)
       }
+
       gender = auth.extra.raw_info&.gender
       if gender
         user_attrs[:gender] = gender
@@ -25,13 +27,20 @@ module OmniauthMethods
         Rails.logger.info "Gender was not provided by facebook, auth instance was #{auth}"
       end
 
-      picture = auth&.extra&.raw_info&.picture&.data
-
-      if picture && !picture.is_silhouette
-        user_attrs[:remote_avatar_url] = picture.url
-      end
-
       user_attrs
+    end
+
+    private
+
+    def remote_avatar_url(auth)
+      return unless app_configuration.feature_activated?('user_avatars')
+
+      picture = auth&.extra&.raw_info&.picture&.data
+      picture.url if picture && !picture.is_silhouette
+    end
+
+    def app_configuration
+      @app_configuration ||= AppConfiguration.instance
     end
   end
 

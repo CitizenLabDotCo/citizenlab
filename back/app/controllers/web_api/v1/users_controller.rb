@@ -129,7 +129,9 @@ class WebApi::V1::UsersController < ApplicationController
 
   def create
     @user = User.new
-    @user.assign_attributes(permitted_attributes(@user))
+    attrs = permitted_attributes(@user)
+    attrs.delete(:avatar) unless app_configuration.feature_activated?('user_avatars')
+    @user.assign_attributes(attrs)
     authorize @user
 
     if @user.save(context: :form_submission)
@@ -150,10 +152,18 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def update
-    user_params = permitted_attributes @user
+    user_params = permitted_attributes(@user)
+
+    # Even if the feature is not activated, we still want to allow the user to remove
+    # their avatar.
+    if !app_configuration.feature_activated?('user_avatars') && !user_params[:avatar].nil?
+      user_params.delete(:avatar)
+    end
+
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
     user_params[:onboarding] = @user.onboarding.merge(user_params[:onboarding] || {})
     user_params = user_params.to_h
+
     CustomFieldService.new.cleanup_custom_field_values! user_params[:custom_field_values]
     @user.assign_attributes user_params
 
@@ -178,7 +188,7 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def block
-    block_end_at = Time.zone.now + AppConfiguration.instance.settings('user_blocking', 'duration').days
+    block_end_at = Time.zone.now + app_configuration.settings('user_blocking', 'duration').days
 
     authorize @user, :block?
     if @user.update(
@@ -264,7 +274,7 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def reset_confirm_on_existing_no_password_user?
-    return false unless AppConfiguration.instance.feature_activated?('user_confirmation')
+    return false unless app_configuration.feature_activated?('user_confirmation')
 
     original_user = @user
     errors = original_user.errors.details[:email]
@@ -286,5 +296,9 @@ class WebApi::V1::UsersController < ApplicationController
 
   def view_private_attributes?
     Pundit.policy!(current_user, (@user || User)).view_private_attributes?
+  end
+
+  def app_configuration
+    @app_configuration ||= AppConfiguration.instance
   end
 end

@@ -447,6 +447,10 @@ module MultiTenancy
               allowed: true,
               duration: 90
             },
+            user_avatars: {
+              enabled: true,
+              allowed: true
+            },
             internal_commenting: {
               enabled: true,
               allowed: true
