@@ -129,9 +129,7 @@ class WebApi::V1::UsersController < ApplicationController
 
   def create
     @user = User.new
-    attrs = permitted_attributes(@user)
-    attrs.delete(:avatar) unless app_configuration.feature_activated?('user_avatars')
-    @user.assign_attributes(attrs)
+    @user.assign_attributes(permitted_attributes(@user))
     authorize @user
 
     if @user.save(context: :form_submission)
