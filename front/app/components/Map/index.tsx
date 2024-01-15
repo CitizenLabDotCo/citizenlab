@@ -8,7 +8,7 @@ import React, {
   useEffect,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-require('esri-leaflet-renderers');
+require('esri-leaflet-renderers'); // Uncomment to show Esri styling
 
 // components
 import {
@@ -45,8 +45,11 @@ import Legend from '@arcgis/core/widgets/Legend.js';
 import MapView from '@arcgis/core/views/MapView.js';
 import EsriMap from '@arcgis/core/Map.js';
 import jsonUtils, * as symbolJsonUtils from '@arcgis/core/symbols/support/jsonUtils.js';
-import { renderPreviewHTML } from '@arcgis/core/symbols/support/symbolUtils.js';
+import symbolUtils, {
+  renderPreviewHTML,
+} from '@arcgis/core/symbols/support/symbolUtils.js';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer.js';
+import html2canvas from 'html2canvas';
 
 export interface Point extends GeoJSON.Point {
   data?: any;
@@ -165,6 +168,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
     const [currentBasemapLayer, setCurrentBasemapLayer] = useState<any | null>(
       null
     );
+    const [legendImage, setLegendImage] = useState<string | null>(null);
 
     const [symbolPreview, setSymbolPreview] = useState<HTMLElement | null>(
       null
@@ -281,6 +285,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
 
       const legend = new Legend({
         view,
+        hideLayersNotInCurrentView: false,
       });
       view.ui.add(legend, 'bottom-right');
 
@@ -363,79 +368,82 @@ const Map = memo<IMapProps & IMapConfigProps>(
         // ---------------------------------------------------------------------------------------------------------
         // Try and retrieve a feature layer
         // Legend ? -- https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0?f=pjson
-        const trailheads = esri.featureLayer({
-          url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0',
-        });
-        const trails = esri.featureLayer({
-          url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trails_Styled/FeatureServer/0',
-        });
-        const parks = await esri.featureLayer({
-          url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space_Styled/FeatureServer/0',
-        });
-
-        // esri
-        //   .dynamicMapLayer({
-        //     url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer',
-        //   })
-        //   .addTo(map);
-
-        // esri.featureLayer({
-        //   url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0',
-        // }).addTo(map);
-
-        map.addLayer(trailheads);
-        map.addLayer(trails);
-        map.addLayer(parks);
-
         // Fetch drawing info for feature layer  *******  DRAWING INFO *******
-        // const url =
-        //   'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space_Styled/FeatureServer/0?f=pjson';
-        // fetch(url)
-        //   .then((res) => res.json())
-        //   .then(async (out) => {
-        //     console.log('Renderer: ', out.drawingInfo.renderer);
-        //     console.log(
-        //       'First layer symbol: ',
-        //       out.drawingInfo.renderer.uniqueValueInfos[0].symbol
-        //     );
-        //     const symbol = symbolJsonUtils.fromJSON(
-        //       out.drawingInfo.renderer.uniqueValueInfos[0].symbol
-        //     );
-        //     const awaitedImage = await renderPreviewHTML(symbol);
+        const url =
+          'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0?f=pjson';
+        fetch(url)
+          .then((res) => res.json())
+          .then(async (out) => {
+            const symbol = out.drawingInfo.renderer.symbol;
+            console.log({ symbol });
+            const icon = L.icon({
+              iconUrl:
+                'data:image/png;base64,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',
+              iconSize: [symbol.width, symbol.height],
+            });
 
-        //     console.log('Image: ', awaitedImage);
-        //     setSymbolPreview(awaitedImage);
-        //   })
-        //   .catch((err) => {
-        //     throw err;
-        //   });
+            const trailheads = await esri.featureLayer({
+              url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0',
+              // pointToLayer(_geojson, latlng) {
+              //   return L.marker(latlng, {
+              //     icon,
+              //   });
+              // },
+            });
 
-        // Legend testing
-        // const legend = new Legend({
-        //   layerInfos: [
-        //     {
-        //       layer: parks,
-        //       title: 'Parks Layer',
-        //     },
-        //   ],
-        // });
+            console.log({ trailheads });
 
-        // console.log({ legend });
+            const trails = await esri.featureLayer({
+              url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trails_Styled/FeatureServer/0',
+            });
+            const parks = await esri.featureLayer({
+              url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space_Styled/FeatureServer/0',
+            });
 
-        // Legend / UI
-        // const info = new L.Control();
+            // esri
+            //   .dynamicMapLayer({
+            //     url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer',
+            //   })
+            //   .addTo(map);
 
-        // info.onAdd = function () {
-        //   this._div = L.DomUtil.create('div', 'info');
-        //   this._div.innerHTML = '<h2>Testing some HTML</h2>';
-        //   return this._div;
-        // };
+            // esri.featureLayer({
+            //   url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0',
+            // }).addTo(map);
 
-        // info.addTo(map);
+            map.addLayer(trailheads);
+            map.addLayer(trails);
+            map.addLayer(parks);
 
-        // Add to map
+            // Legend testing
+            // const legend = new Legend({
+            //   layerInfos: [
+            //     {
+            //       layer: parks,
+            //       title: 'Parks Layer',
+            //     },
+            //   ],
+            // });
 
-        map.setView([34.02, -118.805], 13);
+            // console.log({ legend });
+
+            // Legend / UI
+            // const info = new L.Control();
+
+            // info.onAdd = function () {
+            //   this._div = L.DomUtil.create('div', 'info');
+            //   this._div.innerHTML = '<h2>Testing some HTML</h2>';
+            //   return this._div;
+            // };
+
+            // info.addTo(map);
+
+            // Add to map
+
+            map.setView([34.02, -118.805], 13);
+          })
+          .catch((err) => {
+            throw err;
+          });
       }
     };
 
@@ -526,11 +534,24 @@ const Map = memo<IMapProps & IMapConfigProps>(
       },
     ];
 
-    // Code to move legend above map:
-    // const legendDiv = document.getElementsByClassName('esri-legend')[0];
+    // // Code to move legend above map:
+    const legendDiv = document.getElementsByClassName('esri-legend')[0];
 
     // if (legendDiv) {
-    //   document.getElementById('newLegendDiv')?.appendChild(legendDiv);
+    //   //   html2canvas(legendDiv as HTMLElement, { scale: 1.1 }).then((canvas) => {
+    //   //     const imageDataURL = canvas.toDataURL("image/png");
+    //   //     setLegendImage(imageDataURL);
+    //   // });
+
+    //   html2canvas(legendDiv as HTMLElement, {
+    //     scrollY: -window.scrollY,
+    //     scale: 1.1,
+    //   }).then(function (canvas) {
+    //     const img = canvas.toDataURL();
+    //     if (img.length > 100) {
+    //       setLegendImage(img);
+    //     }
+    //   });
     // }
 
     return (
@@ -577,9 +598,8 @@ const Map = memo<IMapProps & IMapConfigProps>(
             />
           </MapWrapper>
           {/* {!hideLegend && { legend }} */}
-          <>
-            <>Testing Legend Generation: </>
-            <Box id="newLegendDiv" />
+          <Box>
+            {legendImage && <img src={legendImage} alt="Alt text" />}
             <link
               rel="stylesheet"
               href="https://js.arcgis.com/4.28/esri/themes/light/main.css"
@@ -588,11 +608,11 @@ const Map = memo<IMapProps & IMapConfigProps>(
               id="esriMap"
               padding="0px"
               margin="0px"
-              height="600px"
+              height={'600px'}
               width="100%"
               opacity={1}
             />
-          </>
+          </Box>
         </Container>
       </>
     );
