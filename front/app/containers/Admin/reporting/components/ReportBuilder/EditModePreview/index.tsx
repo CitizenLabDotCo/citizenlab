@@ -99,7 +99,13 @@ const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
                 alignItems="center"
                 flexDirection="column"
               >
-                <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
+                <Box
+                  maxWidth={MAX_REPORT_WIDTH}
+                  w="100%"
+                  // TODO REMOVE
+                  borderLeft="1px dotted black"
+                  borderRight="1px dotted black"
+                >
                   <Editor isPreview={true}>
                     <Frame editorData={previewData} />
                   </Editor>
