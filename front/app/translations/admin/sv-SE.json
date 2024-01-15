@@ -759,7 +759,7 @@
   "app.containers.Admin.emails.helmetDescription": "Skicka ut manuella e-postmeddelanden till användargrupper och aktivera automatiserade kampanjer",
   "app.containers.Admin.emails.manageButtonLabel": "Hantera",
   "app.containers.Admin.emails.message": "Meddelande",
-  "app.containers.Admin.emails.nameVariablesInfo": "Du kan tilltala mottagarna med variablerna \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. Exempel: \"Hej \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ...\"",
+  "app.containers.Admin.emails.nameVariablesInfo2": "Du kan vända dig direkt till medborgarna med hjälp av variablerna {firstName} {lastName}. T.ex. \"Kära {firstName} {lastName}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Du kan skapa och skicka hur många e-postmeddelanden du vill.",
   "app.containers.Admin.emails.noCampaignsHeader": "Det finns inga anpassade e-postmeddelanden ännu",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Inget sms har skrivits eller skickats ännu",

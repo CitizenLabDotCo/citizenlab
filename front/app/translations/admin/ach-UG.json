@@ -759,7 +759,7 @@
   "app.containers.Admin.emails.helmetDescription": "crwdns210244:0crwdne210244:0",
   "app.containers.Admin.emails.manageButtonLabel": "crwdns210246:0crwdne210246:0",
   "app.containers.Admin.emails.message": "crwdns568011:0crwdne568011:0",
-  "app.containers.Admin.emails.nameVariablesInfo": "crwdns210248:0crwdne210248:0",
+  "app.containers.Admin.emails.nameVariablesInfo2": "crwdns1497990:0{firstName}crwdnd1497990:0{lastName}crwdnd1497990:0{firstName}crwdnd1497990:0{lastName}crwdne1497990:0",
   "app.containers.Admin.emails.noCampaignsDescription": "crwdns210250:0crwdne210250:0",
   "app.containers.Admin.emails.noCampaignsHeader": "crwdns210252:0crwdne210252:0",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "crwdns210254:0crwdne210254:0",
