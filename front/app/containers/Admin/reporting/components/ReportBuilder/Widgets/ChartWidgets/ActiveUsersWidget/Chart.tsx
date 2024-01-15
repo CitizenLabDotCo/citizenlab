@@ -5,16 +5,15 @@ import { colors } from 'components/admin/Graphs/styling';
 
 // components
 import LineChart from 'components/admin/Graphs/LineChart';
-import renderTooltip from './renderTooltip';
+import renderTooltip from 'components/admin/GraphCards/ActiveUsersCard/renderTooltip';
 
 // i18n
-import messages from './messages';
+import messages from 'components/admin/GraphCards/ActiveUsersCard/messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { toThreeLetterMonth } from 'utils/dateUtils';
-import { generateEmptyData } from './generateEmptyData';
-import { MARGINS } from '../_utils/style';
+import { generateEmptyData } from 'components/admin/GraphCards/ActiveUsersCard/generateEmptyData';
 
 // typings
 import { Dates, Resolution, Layout } from 'components/admin/GraphCards/typings';
@@ -33,6 +32,15 @@ const lineConfig = {
   strokes: [colors.categorical01],
   activeDot: { r: 4 },
 };
+
+const MARGINS = {
+  wide: {
+    top: 10,
+  },
+  narrow: {
+    right: -20,
+  },
+} as const;
 
 const Chart = ({
   timeSeries,
@@ -66,7 +74,7 @@ const Chart = ({
     return null;
   }
 
-  const noData = !!timeSeries;
+  const noData = !timeSeries;
 
   return (
     <LineChart
@@ -81,6 +89,9 @@ const Chart = ({
       lines={noData ? emptyLineConfig : lineConfig}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
+      yaxis={{
+        orientation: layout === 'narrow' ? 'right' : 'left',
+      }}
       tooltip={noData ? undefined : renderTooltip(resolution)}
       legend={{
         marginTop: 16,
