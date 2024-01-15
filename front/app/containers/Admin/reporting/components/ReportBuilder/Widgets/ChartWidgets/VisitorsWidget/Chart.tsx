@@ -25,7 +25,6 @@ import { TimeSeries } from 'components/admin/GraphCards/VisitorsCard/useVisitors
 type Props = Dates &
   Resolution & {
     timeSeries: TimeSeries | NilOrError;
-    innerRef: React.RefObject<any>;
     layout?: Layout;
   };
 
@@ -40,7 +39,6 @@ const Chart = ({
   startAtMoment,
   endAtMoment,
   resolution,
-  innerRef,
   layout = 'wide',
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -105,7 +103,6 @@ const Chart = ({
         marginTop: 16,
         items: legendItems,
       }}
-      innerRef={noData ? undefined : innerRef}
     />
   );
 };

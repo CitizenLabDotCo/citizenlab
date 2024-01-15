@@ -11,11 +11,10 @@ import { Layout } from 'components/admin/GraphCards/typings';
 
 interface Props {
   pieData: PieRow[];
-  innerRef?: React.RefObject<any>;
   layout?: Layout;
 }
 
-const Chart = ({ pieData, innerRef, layout = 'wide' }: Props) => {
+const Chart = ({ pieData, layout = 'wide' }: Props) => {
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => {
@@ -60,7 +59,6 @@ const Chart = ({ pieData, innerRef, layout = 'wide' }: Props) => {
         maintainGraphSize: layout !== 'narrow',
         position: layout === 'narrow' ? 'bottom-center' : 'right-center',
       }}
-      innerRef={innerRef}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     />

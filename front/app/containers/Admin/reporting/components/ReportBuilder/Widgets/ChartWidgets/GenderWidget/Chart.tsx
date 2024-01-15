@@ -12,12 +12,11 @@ import { GenderSerie } from 'containers/Admin/dashboard/users/Charts/GenderChart
 import { Layout } from 'components/admin/GraphCards/typings';
 
 interface Props {
-  innerRef?: React.RefObject<any>;
   layout?: Layout;
   data: GenderSerie;
 }
 
-const Chart = ({ innerRef, layout = 'wide', data }: Props) => {
+const Chart = ({ layout = 'wide', data }: Props) => {
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => setHoverIndex(rowIndex);
@@ -41,7 +40,6 @@ const Chart = ({ innerRef, layout = 'wide', data }: Props) => {
         endAngle: 360,
         outerRadius: 60,
       }}
-      innerRef={innerRef}
       tooltip={renderTooltip()}
       legend={{
         items: data.map(makeLegendItem),

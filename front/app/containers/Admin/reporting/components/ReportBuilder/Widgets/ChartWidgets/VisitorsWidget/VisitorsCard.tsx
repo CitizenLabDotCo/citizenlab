@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 // hooks
 import useVisitors from './useVisitors';
@@ -35,7 +35,6 @@ const VisitorsCard = ({
   resolution,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const graphRef = useRef();
 
   const { currentResolution, stats, timeSeries } = useVisitors({
     projectId,
@@ -99,7 +98,6 @@ const VisitorsCard = ({
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={currentResolution}
-              innerRef={graphRef}
               layout={layout}
             />
           </Box>
