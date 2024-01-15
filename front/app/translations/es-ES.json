@@ -1876,7 +1876,7 @@
   "app.utils.votingMethodUtils.multipleVotingEnded": "La votación se cerró en <b>{endDate}.</b> Los participantes disponían de <b>{maxVotes} {voteTerm} cada uno para distribuir entre las opciones de {optionCount} .</b>",
   "app.utils.votingMethodUtils.results": "Resultados",
   "app.utils.votingMethodUtils.singleVotingEnded": "La votación se cerró en <b>{endDate}.</b> Los participantes podían <b>votar las opciones de {maxVotes} .</b>",
-  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Selecciona las opciones que prefieras pulsando \"Votar\".",
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Selecciona las opciones que prefieras pulsando \"Seleccionar\".",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Tienes <b>{totalVotes} votos</b> que puedes asignar a las opciones.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Cuando hayas terminado, haz clic en \"Enviar\" para emitir tu voto.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "La votación se cerró en <b>{endDate}.</b> Los participantes podían <b>votar por 1 opción.</b>",
