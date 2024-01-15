@@ -79,12 +79,6 @@ class JsonSchemaGeneratorService < FieldVisitorService
     end
   end
 
-  def visit_other_option_text(_field)
-    {
-      type: 'string'
-    }
-  end
-
   def visit_multiselect(field)
     {
       type: 'array',
