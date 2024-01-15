@@ -87,7 +87,6 @@
   "app.components.ConsentManager.Banner.manage": "إدارة",
   "app.components.ConsentManager.Banner.policyLink": "سياسة ملفات تعريف الارتباط ",
   "app.components.ConsentManager.Banner.reject": "يرفض",
-  "app.components.ConsentManager.Banner.subText": "يمكنك الوصول إلى إعدادات ملفات تعريف الارتباط في أي وقت.",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "تأكيد",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "إذا قمت بالإلغاء، فستفقد تفضيلاتك.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "الإعلانات",
