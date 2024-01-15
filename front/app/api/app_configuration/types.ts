@@ -237,6 +237,7 @@ export interface IAppConfigurationSettings {
   power_bi?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
+  user_avatars?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
