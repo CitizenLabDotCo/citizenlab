@@ -462,7 +462,7 @@
   "app.containers.Admin.Insights.createModalSaveView": "Meine Einblicke erstellen",
   "app.containers.Admin.Insights.createModalTitle": "Analysieren Sie Ihre Beiträge",
   "app.containers.Admin.Insights.deprecationWarningDescription": "Diese Funktion wird bald entfernt werden. Das Erstellen neuer Einblicke ist nicht mehr möglich. Sie können Ihre vorhandenen Einblicke jedoch weiterhin anzeigen und exportieren.",
-  "app.containers.Admin.Insights.deprecationWarningTitle": "Diese Funktion ist veraltet",
+  "app.containers.Admin.Insights.deprecationWarningTitle": "Diese Funktion ist nicht mehr verfügbar",
   "app.containers.Admin.Insights.description": "Analysieren Sie effizient die Textbeiträge Ihrer Plattform. Gruppieren Sie einzelne Beiträge, die zusammengehören. Verstehen Sie, was die Teilnehmenden wirklich sagen.",
   "app.containers.Admin.Insights.discover": "Entdecken Sie, wie es funktioniert",
   "app.containers.Admin.Insights.emptyStateAccentText": "über welche Themen",
