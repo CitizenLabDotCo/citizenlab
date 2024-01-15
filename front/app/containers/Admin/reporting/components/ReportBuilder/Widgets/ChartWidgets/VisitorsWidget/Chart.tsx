@@ -104,7 +104,6 @@ const Chart = ({
       legend={{
         marginTop: 16,
         items: legendItems,
-        maintainGraphSize: false,
       }}
       innerRef={noData ? undefined : innerRef}
     />
