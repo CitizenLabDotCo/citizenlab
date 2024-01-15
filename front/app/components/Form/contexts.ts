@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { CLErrors, Locale } from 'typings';
-import { ApiErrorGetter } from './typings';
+import { ApiErrorGetter, FormData } from './typings';
 import { MessageDescriptor } from 'utils/cl-intl';
 
 export const APIErrorsContext = createContext<CLErrors | undefined>(undefined);
@@ -10,8 +10,8 @@ export const FormContext = createContext<{
   getApiErrorMessage: ApiErrorGetter;
   formSubmitText?: MessageDescriptor;
   inputId?: string | undefined;
-  onSubmit?: (formData?: any) => void | Promise<void>;
-  setFormData?: (formData?: any) => void;
+  onSubmit?: (formData?: FormData) => void | Promise<void>;
+  setFormData?: (formData?: FormData) => void;
   setShowAllErrors?: (showAllErrors: boolean) => void;
   locale?: Locale;
 }>({
