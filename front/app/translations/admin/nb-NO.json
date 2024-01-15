@@ -461,6 +461,8 @@
   "app.containers.Admin.Insights.createModalProjectsLabel": "Prosjekt(er)",
   "app.containers.Admin.Insights.createModalSaveView": "Opprett innsikt",
   "app.containers.Admin.Insights.createModalTitle": "Begynn å analysere oppføringer",
+  "app.containers.Admin.Insights.deprecationWarningDescription": "Denne funksjonen vil snart bli fjernet. Det er ikke lenger mulig å skape ny innsikt. Du kan fortsatt se og eksportere eksisterende innsikt.",
+  "app.containers.Admin.Insights.deprecationWarningTitle": "Denne funksjonen er utdatert",
   "app.containers.Admin.Insights.description": "Analyser tekstoppføringer på plattformen på en effektiv måte. Grupper enkeltbidrag som hører sammen. Forstå hva deltakerne virkelig sier.",
   "app.containers.Admin.Insights.discover": "Oppdag hvordan det virker",
   "app.containers.Admin.Insights.emptyStateAccentText": "snakker om",
