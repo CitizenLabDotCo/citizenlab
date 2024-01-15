@@ -759,7 +759,7 @@
   "app.containers.Admin.emails.helmetDescription": "Envieu correus electrònics manuals a grups d'usuaris i activeu campanyes automatitzades",
   "app.containers.Admin.emails.manageButtonLabel": "Edit",
   "app.containers.Admin.emails.message": "Missatge",
-  "app.containers.Admin.emails.nameVariablesInfo": "Podeu adreçar-vos als destinataris mitjançant les variables \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. Per exemple, \"Benvolgut \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ...\"",
+  "app.containers.Admin.emails.nameVariablesInfo2": "Podeu parlar directament amb els ciutadans mitjançant les variables {firstName} {lastName}. Per exemple, \"Estimat {firstName} {lastName},...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Podeu crear i enviar tants correus electrònics com vulgueu.",
   "app.containers.Admin.emails.noCampaignsHeader": "Encara no hi ha correus electrònics personalitzats",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "Encara no s'ha redactat ni enviat cap SMS",
