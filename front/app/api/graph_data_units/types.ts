@@ -32,7 +32,9 @@ export type PropsLive = Dates &
   Resolution & {
     projectId?: string | undefined;
     phaseId?: string | null;
+    // TODO: remove both numberOfIdeas and groupId from this type
     numberOfIdeas?: number;
+    groupId?: string | null;
   };
 
 // published

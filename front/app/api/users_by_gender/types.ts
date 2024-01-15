@@ -14,7 +14,7 @@ export type GenderOption = (typeof genderOptions)[number];
 
 export interface IUsersByGender {
   data: {
-    type: 'users_by_gender';
+    type: 'report_builder_data_units';
     attributes: {
       series: {
         users: {

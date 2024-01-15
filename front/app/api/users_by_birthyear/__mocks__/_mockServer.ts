@@ -6,7 +6,7 @@ export const apiPath = `${API_PATH}/stats/users_by_birthyear`;
 
 export const usersByBirthyear: IUsersByBirthyear = {
   data: {
-    type: 'users_by_custom_field',
+    type: 'report_builder_data_units',
     attributes: {
       series: {
         users: {
