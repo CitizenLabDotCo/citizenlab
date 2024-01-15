@@ -87,7 +87,6 @@
   "app.components.ConsentManager.Banner.manage": "Pārvaldīt",
   "app.components.ConsentManager.Banner.policyLink": "Sīkdatņu politika",
   "app.components.ConsentManager.Banner.reject": "Noraidīt",
-  "app.components.ConsentManager.Banner.subText": "Noklikšķiniet uz \"Piekrist\", lai atļautu sīkdatņu izmantošanu, vai \"Pārvaldīt\", lai mainītu sīkdatņu iestatījumus.",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Apstiprināt",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Ja atcelsiet reģistrāciju, jūsu preferences tiks zaudētas.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Reklāma",
