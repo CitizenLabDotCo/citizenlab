@@ -75,8 +75,7 @@ class CustomFieldService
     end
   end
 
-  def generate_key(title, other = false)
-    # binding.pry
+  def generate_key(title, other)
     return 'other' if other == true
 
     keyify(title)
