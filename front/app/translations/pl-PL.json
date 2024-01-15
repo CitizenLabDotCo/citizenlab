@@ -87,7 +87,6 @@
   "app.components.ConsentManager.Banner.manage": "Zarządzaj",
   "app.components.ConsentManager.Banner.policyLink": "Polityka ciasteczek",
   "app.components.ConsentManager.Banner.reject": "Odrzuć",
-  "app.components.ConsentManager.Banner.subText": "W każdej chwili możesz uzyskać dostęp do swoich ustawień dotyczących plików cookie.",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Potwierdź",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Jeśli anulujesz, Twoje preferencje zostaną utracone.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Reklama",

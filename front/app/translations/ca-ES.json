@@ -87,7 +87,6 @@
   "app.components.ConsentManager.Banner.manage": "Gestionar",
   "app.components.ConsentManager.Banner.policyLink": "Política de galetes",
   "app.components.ConsentManager.Banner.reject": "Rebutjar",
-  "app.components.ConsentManager.Banner.subText": "Feu clic a \"Acceptar\" per permetre que s'utilitzin les galetes o a \"Gestiona\" per canviar la configuració de les galetes.",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Confirmeu",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Si cancel·leu, es perdran les vostres preferències.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Publicitat",
