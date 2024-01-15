@@ -22,7 +22,7 @@ module OmniauthMethods
         email: auth.info['email'],
         remote_avatar_url: remote_avatar_url(auth),
         gender: auth.extra.raw_info.gender,
-        locale: app_configuration.closest_locale_to(auth.extra.raw_info.locale)
+        locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale)
       }
     end
 
@@ -33,7 +33,7 @@ module OmniauthMethods
     private
 
     def remote_avatar_url(auth)
-      return unless app_configuration.feature_activated?('user_avatars')
+      return unless AppConfiguration.instance.feature_activated?('user_avatars')
       return if auth.info.image == GOOGLE_PLACEHOLDER_AVATAR_URL
       return unless image_available?(auth.info.image)
 
@@ -46,10 +46,6 @@ module OmniauthMethods
       req.use_ssl = true
       res = req.request_head(img_url.path)
       res.is_a? Net::HTTPSuccess
-    end
-
-    def app_configuration
-      @app_configuration ||= AppConfiguration.instance
     end
   end
 end

@@ -16,7 +16,7 @@ module OmniauthMethods
         first_name: auth.info['first_name'],
         last_name: auth.info['last_name'],
         email: auth.info['email'],
-        locale: app_configuration.closest_locale_to(auth.extra.raw_info.locale),
+        locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale),
         remote_avatar_url: remote_avatar_url(auth)
       }
 
@@ -33,14 +33,10 @@ module OmniauthMethods
     private
 
     def remote_avatar_url(auth)
-      return unless app_configuration.feature_activated?('user_avatars')
+      return unless AppConfiguration.instance.feature_activated?('user_avatars')
 
       picture = auth&.extra&.raw_info&.picture&.data
       picture.url if picture && !picture.is_silhouette
-    end
-
-    def app_configuration
-      @app_configuration ||= AppConfiguration.instance
     end
   end
 
