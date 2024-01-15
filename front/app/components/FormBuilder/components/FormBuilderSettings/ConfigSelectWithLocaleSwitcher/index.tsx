@@ -16,7 +16,7 @@ import {
   Input,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
-import { List, SortableRow } from 'components/admin/ResourceList';
+import {List, Row, SortableRow} from 'components/admin/ResourceList';
 import Error, { TFieldName } from 'components/UI/Error';
 
 // i18n
@@ -80,9 +80,10 @@ const ConfigSelectWithLocaleSwitcher = ({
   };
 
   // Handles add and remove options
-  const addOption = (value, name) => {
+  const addOption = (value, name, hasOtherOption) => {
     const newValues = value;
-    newValues.push({
+    const optionIndex = hasOtherOption ? value.length - 1 : value.length;
+    newValues.splice(optionIndex, 0, {
       title_multiloc: {},
     });
     setValue(name, newValues);
@@ -123,9 +124,6 @@ const ConfigSelectWithLocaleSwitcher = ({
               }
             };
 
-            // TODO: other not making it to the frontend on load
-            console.log(choices);
-
             const canDeleteLastOption =
               allowDeletingAllOptions || choices.length > 1;
             const validatedValues = choices.map((choice) => ({
@@ -135,7 +133,7 @@ const ConfigSelectWithLocaleSwitcher = ({
             const eachOption = (choice, index) => {
               return (
                 <>
-                  <Box width="100%">
+                  <Box width="100%" pl={ choice.other === true ? '30px' : '0' }>
                     <Input
                       id={`e2e-option-input-${index}`}
                       size="small"
@@ -213,19 +211,30 @@ const ConfigSelectWithLocaleSwitcher = ({
                   </Box>
                   <DndProvider backend={HTML5Backend}>
                     <List key={choices?.length}>
-                      {choices?.map((choice, index) => {
+                      {choices?.sort((a, b) => a.other - b.other)
+                        .map((choice, index) => {
                         return (
                           <Box key={choice.id}>
-                            <SortableRow
-                              id={choice.id}
-                              index={index}
-                              moveRow={choice.other === true ? () => {} : handleDragRow}
-                              dropRow={() => {
-                                // Do nothing, no need to handle dropping a row for now
-                              }}
-                            >
-                              {eachOption(choice, index)}
-                            </SortableRow>
+                            {choice.other === true ? (
+                                <Row
+                                  key={choice.id}
+                                  isLastItem={true}
+                                >
+                                  {eachOption(choice, index)}
+                                </Row>
+
+                              ) : (
+                                <SortableRow
+                                  id={choice.id}
+                                  index={index}
+                                  moveRow={choice.other === true ? () => {} : handleDragRow}
+                                  dropRow={() => {
+                                    // Do nothing, no need to handle dropping a row for now
+                                  }}
+                                >
+                                  {eachOption(choice, index)}
+                                </SortableRow>
+                              )}
                           </Box>
                         );
                       })}
@@ -235,7 +244,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                     icon="plus-circle"
                     buttonStyle="secondary"
                     data-cy="e2e-add-answer"
-                    onClick={() => addOption(choices, name)}
+                    onClick={() => addOption(choices, name, hasOtherOption)}
                     text={formatMessage(messages.addAnswer)}
                   />
 

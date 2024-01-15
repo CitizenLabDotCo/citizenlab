@@ -71,6 +71,7 @@ export interface IAttributes {
   minimum_select_count?: number;
   maximum_select_count?: number;
   select_count_enabled?: boolean;
+  other?: boolean;
 }
 
 export interface ICustomFieldResponse {
