@@ -759,7 +759,7 @@
   "app.containers.Admin.emails.helmetDescription": "E-mailit atuisut gruppiinut nammineerlutit nassiutikkit paasititsiniaanerillu automatiskit atuutsilerlugit",
   "app.containers.Admin.emails.manageButtonLabel": "Manage",
   "app.containers.Admin.emails.message": "Allannertaa",
-  "app.containers.Admin.emails.nameVariablesInfo": "Variabelit uku \\{\\{ateq\\}\\} \\{\\{kinguliaq\\}\\} atorlugit tigusisussat saaffigisinnaavatit. Assersuutigalugu: \"Asasara \\{\\{ateq\\}\\} \\{\\{kinguliaq\\}\\}, ...\"",
+  "app.containers.Admin.emails.nameVariablesInfo2": "You can speak directly to citizens using the variables {firstName} {lastName}. E.g. \"Dear {firstName} {lastName}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "E-mailinik qanorluunniit amerlatigisunik pilersitsisinnaavutit nassiussillutillu.",
   "app.containers.Admin.emails.noCampaignsHeader": "Massakkorpiaq e-mailinik naleqqussakkanik soqanngilaq",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "SMS-imik allaqqitassiatut toqqukkamik nassiussamilluunniit soqanngilaq",
