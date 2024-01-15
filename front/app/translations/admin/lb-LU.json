@@ -759,7 +759,7 @@
   "app.containers.Admin.emails.helmetDescription": "Send out manual emails to user groups and activate automated campaigns",
   "app.containers.Admin.emails.manageButtonLabel": "Edit",
   "app.containers.Admin.emails.message": "Message",
-  "app.containers.Admin.emails.nameVariablesInfo": "Dir kënnt d'Empfänger adresséieren mat de Variabelen \\{\\{Virnumm\\}\\} \\{\\{Numm\\}\\}. Zum Beispill \"Léif \\{\\{Virnumm\\}\\} \\{\\{Numm\\}\\}, ...\"",
+  "app.containers.Admin.emails.nameVariablesInfo2": "Dir kënnt direkt mat de Bierger schwätzen mat de Variablen {firstName} {lastName}. Zum Beispill \"Léif {firstName} {lastName}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "You can create and send as many emails as you want.",
   "app.containers.Admin.emails.noCampaignsHeader": "There are no custom emails yet",
   "app.containers.Admin.emails.noTextingCampaignsHeader": "No SMS has been drafted or sent yet",
