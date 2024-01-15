@@ -79,6 +79,12 @@ class JsonSchemaGeneratorService < FieldVisitorService
     end
   end
 
+  def visit_other_option_text(_field)
+    {
+      type: 'string'
+    }
+  end
+
   def visit_multiselect(field)
     {
       type: 'array',
@@ -203,6 +209,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
       next unless field_schema
 
       accu[field.key] = field_schema
+      accu[field.other_option_text_field.key] = visit(field.other_option_text_field) if field.other_option_text_field
     end
     {
       type: 'object',

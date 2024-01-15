@@ -215,6 +215,17 @@ class CustomField < ApplicationRecord
     resource.project_id if resource_type == 'CustomForm'
   end
 
+  def other_option_text_field
+    return unless options.any?(&:other)
+
+    CustomField.new(
+      key: "#{key}_other",
+      input_type: 'text',
+      title_multiloc: { 'en' => 'Type your answer' },
+      required: true
+    )
+  end
+
   private
 
   def set_default_enabled

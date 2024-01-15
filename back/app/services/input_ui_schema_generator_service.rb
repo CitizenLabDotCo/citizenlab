@@ -79,6 +79,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
         current_page_schema = field_schema
       elsif current_page_schema
         current_page_schema[:elements] << field_schema
+        current_page_schema[:elements] << visit(field.other_option_text_field) if field.other_option_text_field
       else
         field_schemas << field_schema
       end
