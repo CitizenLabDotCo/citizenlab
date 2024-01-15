@@ -18,7 +18,8 @@ class RequestConfirmationCodeJob < ApplicationJob
       user.email_confirmation_code_reset_count = 0
     end
     reset_user_confirmation_code user
-    return if !user.valid?
+
+    raise "User is invalid: #{user.errors.details}" unless user.valid?
 
     ActiveRecord::Base.transaction do
       user.save!
