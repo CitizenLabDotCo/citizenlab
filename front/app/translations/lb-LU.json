@@ -87,7 +87,6 @@
   "app.components.ConsentManager.Banner.manage": "Beaarbechten",
   "app.components.ConsentManager.Banner.policyLink": "Cookie-Richtlinnen",
   "app.components.ConsentManager.Banner.reject": "Refuséieren",
-  "app.components.ConsentManager.Banner.subText": "Klickt op “Akzeptéieren” fir Cookieën z’erlaaben oder “Beaarbechten” fir d’Cookie-Astellungen ze änneren.",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Bestätegen",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Wann Dir ofbriecht, ginn Är Preferenze verluer.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Cookië fir Publicitéit",

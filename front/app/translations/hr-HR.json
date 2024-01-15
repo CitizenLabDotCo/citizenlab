@@ -87,7 +87,6 @@
   "app.components.ConsentManager.Banner.manage": "Upravljanje",
   "app.components.ConsentManager.Banner.policyLink": "Pravila o kolačićima",
   "app.components.ConsentManager.Banner.reject": "Odbiti",
-  "app.components.ConsentManager.Banner.subText": "Kliknite „Prihvati kako biste dopustili korištenje kolačića ili „Upravljanje“ za promjenu postavki kolačića.",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Potvrdi",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Ukoliko odustanete, vaše postavke neće biti spremljene.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Oglašavanje",

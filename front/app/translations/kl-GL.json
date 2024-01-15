@@ -79,7 +79,6 @@
   "app.components.ConsentManager.Banner.mainText": "Iliuuseqarnikkut {policyLink}-erput akuerivat.",
   "app.components.ConsentManager.Banner.manage": "Aqutsinerit",
   "app.components.ConsentManager.Banner.policyLink": "Cookiet pillugit politik",
-  "app.components.ConsentManager.Banner.subText": "Qaqugukkulluunniit cookie-mi aaqqissuussinernut isersinnaavutit.",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Uppernarsaruk",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Taamaatikkukku salliusussaanerit asuliinnassaaq.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Ussassaarutit saqqummiussinerlu",
