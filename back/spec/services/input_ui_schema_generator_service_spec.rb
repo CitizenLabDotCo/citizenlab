@@ -932,6 +932,9 @@ RSpec.describe InputUiSchemaGeneratorService do
         let!(:never_option) do
           create(:custom_field_option, custom_field: field_in_page2, key: 'never', title_multiloc: { 'en' => 'Never' })
         end
+        let!(:other_option) do
+          create(:custom_field_option, custom_field: field_in_page2, key: 'other', other: true, title_multiloc: { 'en' => 'Other' })
+        end
         let!(:page3) do
           create(
             :custom_field_page,
@@ -962,7 +965,7 @@ RSpec.describe InputUiSchemaGeneratorService do
           })
         end
 
-        it 'includes rules for logic' do
+        it 'includes rules for logic & other field for "other" option' do
           ui_schema = generator.generate_for [page1, field_in_page1, page2, field_in_page2, page3] # TODO: Remove this line (include page 4)
           expect(ui_schema['en']).to eq({
             type: 'Categorization',
@@ -1010,7 +1013,18 @@ RSpec.describe InputUiSchemaGeneratorService do
                     description: '',
                     isAdminField: false,
                     hasRule: true,
-                    enumNames: ['Every day', 'Never']
+                    enumNames: ['Every day', 'Never', 'Other']
+                  }
+                }, {
+                  type: 'Control',
+                  scope: "#/properties/#{field_in_page2.key}_other",
+                  label: 'Type your answer',
+                  options: {
+                    description: '',
+                    hasRule: false,
+                    input_type: 'text',
+                    isAdminField: false,
+                    transform: 'trim_on_blur'
                   }
                 }],
                 ruleArray: [

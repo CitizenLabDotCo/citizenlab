@@ -50,6 +50,48 @@ RSpec.describe JsonSchemaGeneratorService do
         }
       })
     end
+
+    it 'returns an additional "other" text field when there is an other option present' do
+      create(:custom_field_option, custom_field: field2, key: 'other', other: true)
+      expect(generator.generate_for([page_field, field1, field2])).to eq({
+        'en' => {
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            field1.key => { type: 'string' },
+            field2.key => {
+              type: 'string',
+              enum: %w[option1 option2 other]
+            },
+            "#{field2.key}_other" => { type: 'string' }
+          }
+        },
+        'fr-FR' => {
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            field1.key => { type: 'string' },
+            field2.key => {
+              type: 'string',
+              enum: %w[option1 option2 other]
+            },
+            "#{field2.key}_other" => { type: 'string' }
+          }
+        },
+        'nl-NL' => {
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            field1.key => { type: 'string' },
+            field2.key => {
+              type: 'string',
+              enum: %w[option1 option2 other]
+            },
+            "#{field2.key}_other" => { type: 'string' }
+          }
+        }
+      })
+    end
   end
 
   describe '#visit_text' do
