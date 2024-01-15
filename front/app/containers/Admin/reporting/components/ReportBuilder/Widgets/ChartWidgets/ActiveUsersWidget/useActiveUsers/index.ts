@@ -15,16 +15,20 @@ export default function useActiveUsers({
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const analytics = useGraphDataUnits<Response>({
-    resolvedName: 'ActiveUsersWidget',
-    queryParameters: {
-      projectId,
-      startAtMoment,
-      endAtMoment,
-      resolution,
+  const analytics = useGraphDataUnits<Response>(
+    {
+      resolvedName: 'ActiveUsersWidget',
+      props: {
+        projectId,
+        startAtMoment,
+        endAtMoment,
+        resolution,
+      },
     },
-    onSuccess: () => setCurrentResolution(resolution),
-  });
+    {
+      onSuccess: () => setCurrentResolution(resolution),
+    }
+  );
 
   const stats = analytics ? parseStats(analytics.data.attributes) : null;
 

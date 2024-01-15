@@ -27,7 +27,7 @@ type Props = ProjectId & Dates;
 const GenderCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
   const usersByGender = useGraphDataUnits<IUsersByGender>({
     resolvedName: 'GenderWidget',
-    queryParameters: {
+    props: {
       startAtMoment,
       endAtMoment,
       projectId,

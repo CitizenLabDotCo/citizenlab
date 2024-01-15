@@ -23,15 +23,19 @@ const MostReactedIdeasWidget = ({
   numberOfIdeas,
   collapseLongText,
 }: Props) => {
-  const response = useGraphDataUnits<Response>({
-    resolvedName: 'MostReactedIdeasWidget',
-    props: {
-      projectId,
-      phaseId,
-      numberOfIdeas,
+  const response = useGraphDataUnits<Response>(
+    {
+      resolvedName: 'MostReactedIdeasWidget',
+      props: {
+        projectId,
+        phaseId,
+        numberOfIdeas,
+      },
     },
-    enabled: !!projectId,
-  });
+    {
+      enabled: !!projectId,
+    }
+  );
 
   if (!response) return null;
 

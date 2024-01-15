@@ -9,29 +9,24 @@ import { BaseResponseData } from 'utils/cl-react-query/fetcher';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
 import { ParametersLive } from './types';
 
-type Props = ParametersLive & {
+type Props = {
   enabled?: boolean;
   onSuccess?: () => void;
 };
 
-const useGraphDataUnits = <Response extends BaseResponseData>({
-  resolvedName,
-  props,
-  enabled = true,
-  onSuccess,
-}: Props) => {
+const useGraphDataUnits = <Response extends BaseResponseData>(
+  parameters: ParametersLive,
+  { enabled, onSuccess }: Props = { enabled: true }
+) => {
   const { pathname } = useLocation();
   const { id: graphId } = useNode();
   const isAdminPage = isPage('admin', pathname);
   const { reportId } = useReportContext();
 
-  const { data: analyticsLive } = useGraphDataUnitsLive<Response>(
-    {
-      resolvedName,
-      props,
-    },
-    { enabled: enabled && isAdminPage, onSuccess }
-  );
+  const { data: analyticsLive } = useGraphDataUnitsLive<Response>(parameters, {
+    enabled: enabled && isAdminPage,
+    onSuccess,
+  });
 
   const { data: analyticsPublished } = useGraphDataUnitsPublished<Response>(
     {
