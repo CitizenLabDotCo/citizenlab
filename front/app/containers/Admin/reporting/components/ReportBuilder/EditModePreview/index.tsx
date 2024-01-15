@@ -92,6 +92,7 @@ const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
                 width={view === 'phone' ? '360px' : '1140px'}
                 py={view === 'phone' ? '20px' : '40px'}
                 borderRadius="20px"
+                overflowX="hidden"
                 overflowY="scroll"
                 background="white"
                 display="flex"

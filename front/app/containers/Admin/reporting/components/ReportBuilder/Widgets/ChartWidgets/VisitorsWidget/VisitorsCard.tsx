@@ -7,7 +7,7 @@ import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import NoData from '../../_shared/NoData';
-import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
+import Chart from './Chart';
 import Statistic from 'components/admin/Graphs/Statistic';
 
 // i18n
@@ -51,7 +51,12 @@ const VisitorsCard = ({
   }
 
   return (
-    <Box width="100%" height="260px" mt="20px" pb="8px">
+    <Box
+      width="100%"
+      height={layout === 'narrow' ? '260px' : '260px'}
+      mt="20px"
+      pb="8px"
+    >
       <Box
         height="100%"
         display="flex"
