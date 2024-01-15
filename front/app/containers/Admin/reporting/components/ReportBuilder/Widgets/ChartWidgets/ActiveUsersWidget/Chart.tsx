@@ -23,7 +23,6 @@ import { TimeSeries } from './useActiveUsers/typings';
 type Props = Dates &
   Resolution & {
     timeSeries: TimeSeries | null;
-    innerRef?: React.RefObject<any>;
     layout?: Layout;
   };
 
@@ -47,7 +46,6 @@ const Chart = ({
   startAtMoment,
   endAtMoment,
   resolution,
-  innerRef,
   layout = 'wide',
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -97,7 +95,6 @@ const Chart = ({
         marginTop: 16,
         items: legendItems,
       }}
-      innerRef={noData ? undefined : innerRef}
     />
   );
 };
