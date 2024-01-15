@@ -87,7 +87,6 @@
   "app.components.ConsentManager.Banner.manage": "Διαχείριση",
   "app.components.ConsentManager.Banner.policyLink": "Πολιτική cookie",
   "app.components.ConsentManager.Banner.reject": "Απόρριψη",
-  "app.components.ConsentManager.Banner.subText": "Κάντε κλικ στο \"Αποδοχή\" για να επιτρέψετε τη χρήση cookies ή στο \"Διαχείριση\" για να αλλάξετε τις ρυθμίσεις των cookies.",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Επιβεβαίωση",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Εάν ακυρώσετε, οι προτιμήσεις σας θα χαθούν.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Διαφήμιση",

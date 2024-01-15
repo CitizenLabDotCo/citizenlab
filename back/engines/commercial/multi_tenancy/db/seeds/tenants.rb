@@ -470,6 +470,10 @@ module MultiTenancy
             import_printed_forms: {
               enabled: true,
               allowed: true
+            },
+            user_session_recording: {
+              enabled: true,
+              allowed: true
             }
           })
         )
