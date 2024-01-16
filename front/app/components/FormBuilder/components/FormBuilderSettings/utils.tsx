@@ -16,6 +16,7 @@ import MultiselectSettings from './MultiselectSettings';
 import { uuid4 } from '@sentry/utils';
 import { MessageDescriptor } from 'react-intl';
 import { builtInFieldKeys } from 'components/FormBuilder/utils';
+import SelectSettings from "./SelectSettings";
 
 export function generateTempId() {
   return `TEMP-ID-${uuid4()}`;
@@ -48,17 +49,24 @@ export function getAdditionalSettings(
             minimumSelectCountName={`customFields.${field.index}.minimum_select_count`}
             maximumSelectCountName={`customFields.${field.index}.maximum_select_count`}
             selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
+          />
+          <SelectSettings
             randomizeName={`customFields.${field.index}.random_option_ordering`}
           />
         </>
       );
     case 'select':
       return (
-        <ConfigSelectWithLocaleSwitcher
-          name={`customFields.${field.index}.options`}
-          locales={locales}
-          platformLocale={platformLocale}
-        />
+        <>
+          <ConfigSelectWithLocaleSwitcher
+            name={`customFields.${field.index}.options`}
+            locales={locales}
+            platformLocale={platformLocale}
+          />
+          <SelectSettings
+            randomizeName={`customFields.${field.index}.random_option_ordering`}
+          />
+        </>
       );
     case 'page':
     case 'section':

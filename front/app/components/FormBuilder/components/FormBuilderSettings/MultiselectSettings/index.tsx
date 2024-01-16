@@ -22,7 +22,6 @@ type Props = {
   maximumSelectCountName: string;
   selectCountToggleName: string;
   selectOptionsName: string;
-  randomizeName: string;
 };
 
 const MultiselectSettings = ({
@@ -30,7 +29,6 @@ const MultiselectSettings = ({
   maximumSelectCountName,
   selectCountToggleName,
   selectOptionsName,
-  randomizeName,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
@@ -87,23 +85,6 @@ const MultiselectSettings = ({
           </Box>
         </Box>
       )}
-
-      <Box mt="24px">
-        <Toggle
-          name={randomizeName}
-          label={
-            <Box display="flex">
-              {formatMessage(messages.randomize)}
-              <Box pl="4px">
-                <IconTooltip
-                  placement="top-start"
-                  content={formatMessage(messages.randomizeToolTip)}
-                />
-              </Box>
-            </Box>
-          }
-        />
-      </Box>
     </Box>
   );
 };
