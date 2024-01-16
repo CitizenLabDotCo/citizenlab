@@ -2469,6 +2469,7 @@ resource 'Idea Custom Fields' do
             key: an_instance_of(String),
             title_multiloc: { en: 'Option 1' },
             ordering: 0,
+            other: false,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String)
           }
@@ -2480,6 +2481,7 @@ resource 'Idea Custom Fields' do
             key: an_instance_of(String),
             title_multiloc: { en: 'Changed option' },
             ordering: 1,
+            other: false,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String)
           }
