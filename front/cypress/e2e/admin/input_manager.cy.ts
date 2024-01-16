@@ -236,5 +236,17 @@ describe('Input manager', () => {
 
       cy.location('pathname').should('eq', `/en/admin/settings/topics`);
     });
+
+    it('does not show "Edit tags" in the tags tab when user is not an admin', () => {
+      cy.setModeratorLoginCookie();
+      cy.visit('/admin/ideas/');
+
+      cy.get(
+        '[data-cy="e2e-admin-post-manager-filter-sidebar-topics"]'
+      ).click();
+      cy.get('[data-cy="e2e-post-manager-topic-filters-edit-tags"]').should(
+        'not.exist'
+      );
+    });
   });
 });
