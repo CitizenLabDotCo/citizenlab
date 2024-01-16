@@ -43,9 +43,6 @@ const Chart = ({ layout = 'wide', data }: Props) => {
       tooltip={renderTooltip()}
       legend={{
         items: data.map(makeLegendItem),
-        // maintainGraphSize: true,
-        // marginLeft: layout === 'narrow' ? 10 : 50,
-        // position: 'right-center',
         marginTop: layout === 'narrow' ? 0 : undefined,
         marginLeft: layout === 'narrow' ? 10 : 50,
         maintainGraphSize: layout !== 'narrow',

@@ -98,6 +98,7 @@ const ContentBuilderTopBar = ({
         id: reportId,
         craftjs_json: query.getSerializedNodes(),
         projectId,
+        phaseId,
       },
       {
         onSuccess: () => {
@@ -208,9 +209,12 @@ const ContentBuilderTopBar = ({
           {project && phase && (
             <Text m="0" color="textSecondary">
               {localize(project.data.attributes.title_multiloc)}{' '}
-              <Text m="0" display="inline" fontWeight="bold">
+              {/* <Text m="0" display="inline" fontWeight="bold">
                 ({localize(phase.data.attributes.title_multiloc)})
-              </Text>
+              </Text> */}
+              <span style={{ color: colors.black, fontWeight: '700' }}>
+                ({localize(phase.data.attributes.title_multiloc)})
+              </span>
             </Text>
           )}
         </Box>
