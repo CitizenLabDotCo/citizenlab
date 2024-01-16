@@ -1,11 +1,7 @@
 import React, { useRef } from 'react';
 
 // components
-import {
-  Box,
-  Title,
-  LateralScrollControls,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import EventPreviewCard from './EventPreviewCard';
 
 // api
@@ -26,6 +22,7 @@ import { useParams } from 'react-router-dom';
 
 // util
 import moment from 'moment';
+import HorizontalScroll from 'components/HorizontalScroll';
 
 type EventPreviewsProps = {
   projectId?: string;
@@ -74,7 +71,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
         >
           {formatMessage(messages.eventPreviewTimelineTitle)}
         </Title>
-        <LateralScrollControls containerRef={ref}>
+        <HorizontalScroll containerRef={ref}>
           <EventPreviewContainer
             py="8px"
             display="flex"
@@ -92,7 +89,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
               <EventPreviewCard key={event.id} event={event} />
             ))}
           </EventPreviewContainer>
-        </LateralScrollControls>
+        </HorizontalScroll>
       </>
     );
   }

@@ -17,7 +17,6 @@ import SearchInput, {
   Props as SearchInputProps,
 } from './components/SearchInput';
 import LocaleSwitcher from './components/LocaleSwitcher';
-import LateralScrollControls from './components/LateralScrollControls';
 import ColorPickerInput, {
   Props as ColorPickerInputProps,
 } from './components/ColorPickerInput';
@@ -121,7 +120,6 @@ export {
   LocaleSwitcher,
   ColorPickerInput,
   ColorPickerInputProps,
-  LateralScrollControls,
   Badge,
   Accordion,
   CardButton,

@@ -7,11 +7,11 @@ import {
   colors,
   media,
   Box,
-  LateralScrollControls,
 } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 import { FormattedMessage } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
+import HorizontalScroll from 'components/HorizontalScroll';
 
 const TabsContainer = styled(Box)`
   display: flex;
@@ -125,10 +125,7 @@ const Tabs = <ShowCount extends boolean>({
   };
 
   return (
-    <LateralScrollControls
-      containerRef={scrollableContainerRef}
-      scrollBtnDistanceMobile={100}
-    >
+    <HorizontalScroll containerRef={scrollableContainerRef}>
       <TabsContainer ref={scrollableContainerRef} role="tablist">
         {/*
             These tabs need the role, aria-selected etc to work well with
@@ -163,7 +160,7 @@ const Tabs = <ShowCount extends boolean>({
           </Tab>
         ))}
       </TabsContainer>
-    </LateralScrollControls>
+    </HorizontalScroll>
   );
 };
 

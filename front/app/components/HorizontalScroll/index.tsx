@@ -1,24 +1,19 @@
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import React, { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
-import Box from '../Box';
-import Button from '../Button';
-import testEnv from '../../utils/testUtils/testEnv';
+
 interface Props {
   containerRef?: React.RefObject<HTMLDivElement>; // Ref of the container with elements which can be laterally scrolled through
-  scrollBtnDistanceMobile?: number; // Lateral scroll distance on arrow click for mobile
-  scrollBtnDistanceDesktop?: number; // Lateral scroll distance on arrow click for desktop
   isSmallerThanPhone?: boolean;
   children: React.ReactNode;
 }
 
 /*
- * LateralScrollControls:
+ * HorizontalScroll:
  * Wraps a scrollable container with lateral scroll arrow buttons to scroll left and right.
  */
-const LateralScrollControls = ({
+const HorizontalScroll = ({
   containerRef,
-  scrollBtnDistanceMobile = 200,
-  scrollBtnDistanceDesktop = 350,
   isSmallerThanPhone,
   children,
 }: Props) => {
@@ -28,13 +23,15 @@ const LateralScrollControls = ({
   const [atScrollStart, setAtScrollStart] = useState(true);
   const [atScrollEnd, setAtScrollEnd] = useState(false);
 
-  containerRef?.current?.addEventListener('scroll', () => {
-    // Update scroll states
-    if (!containerRef?.current) return;
-    setAtScrollStart(containerRef.current.scrollLeft === 0);
-    const maxScrollLeft =
-      containerRef.current.scrollWidth - containerRef.current.clientWidth;
-    setAtScrollEnd(containerRef.current.scrollLeft >= maxScrollLeft);
+  useEffect(() => {
+    containerRef?.current?.addEventListener('scroll', () => {
+      // Update scroll states
+      if (!containerRef?.current) return;
+      setAtScrollStart(containerRef.current.scrollLeft === 0);
+      const maxScrollLeft =
+        containerRef.current.scrollWidth - containerRef.current.clientWidth;
+      setAtScrollEnd(containerRef.current.scrollLeft >= maxScrollLeft);
+    });
   });
 
   // Determine if the width of the container is large enough to require lateral scrolling
@@ -73,8 +70,8 @@ const LateralScrollControls = ({
           onClick={() => {
             lateralScroll(
               isSmallerThanPhone
-                ? -scrollBtnDistanceMobile
-                : -scrollBtnDistanceDesktop
+                ? -200 // Scroll by 200px on mobile
+                : -350 // Scroll by 350px on desktop
             );
           }}
           icon={theme.isRtl ? 'chevron-right' : 'chevron-left'}
@@ -82,7 +79,6 @@ const LateralScrollControls = ({
           p="0px"
           my="auto"
           id="e2e-event-previews-scroll-left"
-          data-testid={testEnv('event-previews-scroll-left')}
         />
       </Box>
       {children}
@@ -100,11 +96,10 @@ const LateralScrollControls = ({
           buttonStyle="text"
           p="0px"
           id="e2e-event-previews-scroll-right"
-          data-testid={testEnv('event-previews-scroll-right')}
         />
       </Box>
     </Box>
   );
 };
 
-export default LateralScrollControls;
+export default HorizontalScroll;
