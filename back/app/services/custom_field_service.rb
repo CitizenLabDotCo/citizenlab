@@ -219,7 +219,8 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: 'string'
     }.tap do |items|
-      options = field.options.order(:ordering)
+      options = field.ordered_options
+
       unless options.empty?
         items[:enum] = options.map(&:key)
         items[:enumNames] = options.map { |o| handle_title(o, locale) }
@@ -243,7 +244,8 @@ class CustomFieldService
       items: {
         type: 'string'
       }.tap do |items|
-        options = field.options.order(:ordering)
+        options = field.ordered_options
+
         unless options.empty?
           items[:enum] = options.map(&:key)
           items[:enumNames] = options.map { |o| handle_title(o, locale) }
