@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "Dieser Vorschlag bedarf noch einiger Änderungen, bevor er genehmigt werden kann.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Im offiziellen Update finden Sie eine Erklärung der gewünschten Änderungen.",
   "app.containers.InitiativesShow.VoteControl.days": "Tage",
-  "app.containers.InitiativesShow.VoteControl.expiredStatusExplanation": "Dieser Vorschlag ist abgelaufen, da sie {expiredStatusExplanationBold}.",
+  "app.containers.InitiativesShow.VoteControl.expiredStatusExplanation": "Dieser Vorschlag ist abgelaufen, da er {expiredStatusExplanationBold}.",
   "app.containers.InitiativesShow.VoteControl.expiredStatusExplanationBold": "nicht rechtzeitig {votingThreshold} Stimmen erhalten",
   "app.containers.InitiativesShow.VoteControl.hours": "Stunden",
   "app.containers.InitiativesShow.VoteControl.ineligibleStatusExplanation": "Dieser Vorschlag erfüllt nicht die Kriterien, {ineligibleStatusExplanationBold}",
