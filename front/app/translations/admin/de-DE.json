@@ -774,7 +774,7 @@
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Kriterien für die Eignung",
   "app.containers.Admin.initiatives.proposalEligibilityCriteriaInfo": "Geben Sie eine klare Beschreibung der Kriterien, nach denen Sie entscheiden, ob ein Vorschlag förderfähig ist oder nicht.",
   "app.containers.Admin.initiatives.proposalSuccessMessage": "Erfolgsmeldung",
-  "app.containers.Admin.initiatives.proposalSuccessMessageInfo": "Geben Sie eine klare Beschreibung dessen, was Initiatoren von Vorschlägen erwarten können, wenn ihr Vorschlag rechtzeitig die Abstimmungsschwelle erreicht.",
+  "app.containers.Admin.initiatives.proposalSuccessMessageInfo": "Geben Sie eine klare Beschreibung dessen, was Initiator*innen von Vorschlägen erwarten können, wenn ihr Vorschlag rechtzeitig die Abstimmungsschwelle erreicht.",
   "app.containers.Admin.initiatives.proposalsPageBody": "Informationsseite der Vorschläge",
   "app.containers.Admin.initiatives.proposalsPageBodyInfo": "Ändern des Inhalts von {proposalsPageLink}.",
   "app.containers.Admin.initiatives.proposalsPageLinkText": "Informationsseite der Vorschläge",
