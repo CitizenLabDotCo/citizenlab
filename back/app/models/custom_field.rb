@@ -26,6 +26,7 @@
 #  select_count_enabled   :boolean          default(FALSE), not null
 #  maximum_select_count   :integer
 #  minimum_select_count   :integer
+#  random_option_ordering :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -224,6 +225,12 @@ class CustomField < ApplicationRecord
       title_multiloc: { 'en' => 'Type your answer' },
       required: true
     )
+  end
+
+  def random_ordered_options
+    return unless options.any?
+
+    options.shuffle.sort_by { |o| o.other ? 1 : 0 }
   end
 
   private

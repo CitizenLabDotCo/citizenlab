@@ -199,6 +199,9 @@ export const FormEdit = ({
             : null,
           select_count_enabled: field.select_count_enabled,
         }),
+        ...(['select', 'multiselect'].includes(field.input_type) && {
+          random_option_ordering: field.random_option_ordering,
+        }),
         ...(field.input_type === 'linear_scale' && {
           minimum_label_multiloc: field.minimum_label_multiloc || {},
           maximum_label_multiloc: field.maximum_label_multiloc || {},

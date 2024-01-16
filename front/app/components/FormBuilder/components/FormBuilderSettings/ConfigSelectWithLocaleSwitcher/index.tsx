@@ -16,7 +16,7 @@ import {
   Input,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
-import {List, Row, SortableRow} from 'components/admin/ResourceList';
+import { List, Row, SortableRow } from 'components/admin/ResourceList';
 import Error, { TFieldName } from 'components/UI/Error';
 
 // i18n

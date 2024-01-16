@@ -72,7 +72,8 @@ class JsonSchemaGeneratorService < FieldVisitorService
     {
       type: 'string'
     }.tap do |json|
-      options = field.options.order(:ordering)
+      options = field.random_option_ordering ? field.random_ordered_options : field.options.order(:ordering)
+
       unless options.empty?
         json[:enum] = options.map(&:key)
       end
@@ -88,7 +89,8 @@ class JsonSchemaGeneratorService < FieldVisitorService
       items: {
         type: 'string'
       }.tap do |items|
-        options = field.options.order(:ordering)
+        options = field.random_option_ordering ? field.random_ordered_options : field.options.order(:ordering)
+
         unless options.empty?
           items[:oneOf] = options.map do |option|
             {
