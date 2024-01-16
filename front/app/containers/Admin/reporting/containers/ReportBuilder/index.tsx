@@ -114,38 +114,39 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
             setPreviewEnabled={setPreviewEnabled}
             setSelectedLocale={setSelectedLocale}
           />
-          <Box
-            mt={`${stylingConsts.menuHeight}px`}
-            display={previewEnabled ? 'none' : 'flex'}
-          >
-            <Toolbox reportId={reportId} />
-            <LanguageProvider
-              contentBuilderLocale={selectedLocale}
-              platformLocale={platformLocale}
-            >
-              <StyledRightColumn>
-                <PDFWrapper>
-                  <Frame editorData={initialData}>
-                    {templateProjectId && (
-                      <ProjectTemplate
-                        reportId={reportId}
-                        projectId={templateProjectId}
-                      />
-                    )}
-                  </Frame>
-                </PDFWrapper>
-              </StyledRightColumn>
-            </LanguageProvider>
-            <Settings />
-          </Box>
+          {!previewEnabled && (
+            <Box mt={`${stylingConsts.menuHeight}px`}>
+              <Toolbox reportId={reportId} />
+              <LanguageProvider
+                contentBuilderLocale={selectedLocale}
+                platformLocale={platformLocale}
+              >
+                <StyledRightColumn>
+                  <PDFWrapper>
+                    <Frame editorData={initialData}>
+                      {templateProjectId && (
+                        <ProjectTemplate
+                          reportId={reportId}
+                          projectId={templateProjectId}
+                        />
+                      )}
+                    </Frame>
+                  </PDFWrapper>
+                </StyledRightColumn>
+              </LanguageProvider>
+              <Settings />
+            </Box>
+          )}
         </Editor>
-        <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
-          <EditModePreview
-            reportId={reportId}
-            previewData={previewData}
-            selectedLocale={selectedLocale}
-          />
-        </Box>
+        {previewEnabled && (
+          <Box justifyContent="center">
+            <EditModePreview
+              reportId={reportId}
+              previewData={previewData}
+              selectedLocale={selectedLocale}
+            />
+          </Box>
+        )}
       </FullscreenContentBuilder>
     </ReportContextProvider>
   );
