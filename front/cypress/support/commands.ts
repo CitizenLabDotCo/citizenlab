@@ -185,7 +185,7 @@ function setAdminLoginCookie() {
 }
 
 function setModeratorLoginCookie() {
-  cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
+  cy.setLoginCookie('moderator@citizenlab.co', 'democracy2.0');
 }
 
 function setConsentCookie() {
