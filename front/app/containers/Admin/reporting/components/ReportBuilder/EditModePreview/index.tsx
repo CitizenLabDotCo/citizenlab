@@ -5,7 +5,6 @@ import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import MobileButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/MobileButton';
 import PDFButton from './PDFButton';
 import DesktopButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/DesktopButton';
-import Editor from '../Editor';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import PDFWrapper from './PDFWrapper';
 
@@ -77,9 +76,7 @@ const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
                 overflowY="scroll"
               >
                 <PDFWrapper>
-                  <Editor isPreview={true}>
-                    <Frame editorData={previewData} />
-                  </Editor>
+                  <Frame editorData={previewData} />
                 </PDFWrapper>
               </Box>
             ) : (
@@ -106,9 +103,7 @@ const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
                   borderLeft="1px dotted black"
                   borderRight="1px dotted black"
                 >
-                  <Editor isPreview={true}>
-                    <Frame editorData={previewData} />
-                  </Editor>
+                  <Frame editorData={previewData} />
                 </Box>
               </Box>
             )}

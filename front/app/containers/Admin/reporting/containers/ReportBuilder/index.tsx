@@ -97,7 +97,7 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
         onUploadImage={setImageUploading}
       >
         <Editor
-          isPreview={false}
+          isPreview={previewEnabled}
           onNodesChange={handleEditorChange}
           key={selectedLocale}
         >
@@ -137,16 +137,16 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
               <Settings />
             </Box>
           )}
+          {previewEnabled && (
+            <Box justifyContent="center">
+              <EditModePreview
+                reportId={reportId}
+                previewData={previewData}
+                selectedLocale={selectedLocale}
+              />
+            </Box>
+          )}
         </Editor>
-        {previewEnabled && (
-          <Box justifyContent="center">
-            <EditModePreview
-              reportId={reportId}
-              previewData={previewData}
-              selectedLocale={selectedLocale}
-            />
-          </Box>
-        )}
       </FullscreenContentBuilder>
     </ReportContextProvider>
   );
