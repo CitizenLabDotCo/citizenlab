@@ -76,6 +76,21 @@ const FilterSidebar = ({
 
   if (!authUser) return null;
 
+  const getLinkToTagManager = () => {
+    // https://www.notion.so/citizenlab/Customised-tags-don-t-show-up-as-options-to-add-to-input-9c7c39f6af194c8385088878037cd498?pvs=4
+    if (type === 'ProjectIdeas' && typeof projectId === 'string') {
+      return `/admin/projects/${projectId}/settings/tags`;
+    } else if (isAdmin({ data: authUser.data })) {
+      // Don't show the link to the platform-wide tag manager if the user is not an admin.
+      // (i.e. project/folder managers that have access to the general input manager at /admin/ideas,
+      // but just for their folders/projects).
+      // Both for /admin/ideas and /admin/initiatives, we show the link to the tag manager
+      return '/admin/settings/topics';
+    } else {
+      return null;
+    }
+  };
+
   const tabName = (
     messageKey: 'statusesTab' | 'timelineTab' | 'topicsTab' | 'projectsTab',
     selection: string | string[] | null | undefined,
@@ -134,18 +149,7 @@ const FilterSidebar = ({
           selectableTopics={topics}
           selectedTopics={selectedTopics}
           onChangeTopicsFilter={onChangeTopicsFilter}
-          linkToTagManager={
-            /*
-            https://www.notion.so/citizenlab/Customised-tags-don-t-show-up-as-options-to-add-to-input-9c7c39f6af194c8385088878037cd498?pvs=4
-            */
-            type === 'ProjectIdeas' && typeof projectId === 'string'
-              ? `/admin/projects/${projectId}/settings/tags`
-              : // Don't show the link to the tag manager if the user is not an admin (i.e. project manager that has acces to the general input manager at /admin/ideas, but just for their projects)
-              // Both for /admin/ideas and /admin/initiatives, we show the link to the tag manager
-              isAdmin({ data: authUser.data })
-              ? '/admin/settings/topics'
-              : null
-          }
+          linkToTagManager={getLinkToTagManager()}
         />
       ),
     }),
