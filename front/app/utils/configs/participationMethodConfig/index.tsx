@@ -96,7 +96,7 @@ const ideationConfig: ParticipationMethodConfig = {
   showInputCount: true,
   showIdeaFilters: true,
   formEditor: 'simpleFormEditor',
-  inputsPageSize: 24,
+  inputsPageSize: 26,
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.inputAndFeedback} />;
   },
