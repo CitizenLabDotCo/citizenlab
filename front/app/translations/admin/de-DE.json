@@ -2058,7 +2058,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.questionsForAllInputs": "Frage für alle Beiträge",
   "app.containers.AdminPage.projects.project.analysis.Insights.rate": "Bewerten Sie die Qualität dieses Einblicks",
   "app.containers.AdminPage.projects.project.analysis.Insights.restoreFilters": "Filter wiederherstellen",
-  "app.containers.AdminPage.projects.project.analysis.Insights.summarize": "Auto-Zusammenfassung",
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarize": "Zusammenfassen",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryAccuracyTooltip": "Die Zusammenfassung von weniger Beiträgen führt zu einer höheren Genauigkeit. Reduzieren Sie die aktuelle Auswahl, indem Sie Tags, Such- oder demografische Filter verwenden.",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": "Zusammenfassung für",
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryForAllInputs": "Zusammenfassung von allen Beiträgen",
