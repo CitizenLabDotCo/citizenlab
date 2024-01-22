@@ -163,6 +163,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <SurveyResultsWidget
                 title={toMultiloc(SurveyResultsWidget.craft.custom.title)}
+                projectId={projectId}
                 phaseId={phaseId}
               />
             }
