@@ -98,7 +98,6 @@ const ContentBuilderTopBar = ({
         id: reportId,
         craftjs_json: query.getSerializedNodes(),
         projectId,
-        phaseId,
       },
       {
         onSuccess: () => {
