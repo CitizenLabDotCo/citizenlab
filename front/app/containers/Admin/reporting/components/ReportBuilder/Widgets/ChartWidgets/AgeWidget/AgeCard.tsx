@@ -19,12 +19,12 @@ import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/AgeCha
 
 // types
 import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
-import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
+import { UsersByBirthyearResponse } from 'containers/Admin/dashboard/users/Charts/AgeChart/typings';
 
 type Props = ProjectId & Dates;
 
 const AgeCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
-  const IUsersByBirthyear = useGraphDataUnits<IUsersByBirthyear>({
+  const usersByBirthyear = useGraphDataUnits<UsersByBirthyearResponse>({
     resolvedName: 'AgeWidget',
     props: {
       startAtMoment,
@@ -34,7 +34,7 @@ const AgeCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
   });
   const { formatMessage } = useIntl();
 
-  const ageSerie = convertToGraphFormat(IUsersByBirthyear, formatMessage);
+  const ageSerie = convertToGraphFormat(usersByBirthyear, formatMessage);
 
   if (isNilOrError(ageSerie) || !serieHasValues(ageSerie)) {
     return <NoData message={messages.noData} />;

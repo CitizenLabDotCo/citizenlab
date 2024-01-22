@@ -16,7 +16,11 @@ export interface IUsersByGender {
   data: {
     type: 'report_builder_data_units';
     attributes: {
-      [key in GenderOption]: number;
+      series: {
+        users: {
+          [key in GenderOption]: number;
+        };
+      };
     };
   };
 }
