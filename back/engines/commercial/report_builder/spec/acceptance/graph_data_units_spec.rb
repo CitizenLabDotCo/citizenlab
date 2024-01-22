@@ -84,7 +84,7 @@ resource 'Graph data units' do
     let(:graph_id) { 'gJxirq8X7m' }
 
     before do
-      ReportBuilder::ReportPublisher.new(@report).publish
+      ReportBuilder::ReportPublisher.new(@report, nil).publish
     end
 
     context 'when user has access to phase' do

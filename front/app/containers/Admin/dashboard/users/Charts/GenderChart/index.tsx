@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useGenderSerie from './useGenderSerie';
+import useGraphDataUnitsLive from 'api/graph_data_units/useGraphDataUnitsLive';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -14,10 +14,13 @@ import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import convertToGraphFormat from './convertToGraphFormat';
 
 // typings
 import { QueryParameters } from './typings';
 import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
+import { IUsersByGender } from 'api/users_by_gender/types';
+import moment from 'moment';
 
 interface Props extends QueryParameters {
   currentGroupFilterLabel?: string;
@@ -30,7 +33,16 @@ const GenderChart = ({
   currentGroupFilterLabel,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const serie = useGenderSerie({ startAt, endAt, currentGroupFilter });
+
+  const { data: usersByGender } = useGraphDataUnitsLive<IUsersByGender>({
+    resolvedName: 'GenderWidget',
+    props: {
+      startAtMoment: startAt ? moment(startAt) : null,
+      endAtMoment: endAt ? moment(endAt) : null,
+      groupId: currentGroupFilter,
+    },
+  });
+  const serie = convertToGraphFormat(usersByGender, formatMessage);
   const graphRef = useRef();
   const cardTitle = formatMessage(messages.usersByGenderTitle);
 

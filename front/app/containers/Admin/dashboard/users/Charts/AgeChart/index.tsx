@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useAgeSerie from './useAgeSerie';
+import useGraphDataUnitsLive from 'api/graph_data_units/useGraphDataUnitsLive';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -16,6 +16,11 @@ import { useIntl } from 'utils/cl-intl';
 import { QueryParameters } from './typings';
 import { isNilOrError } from 'utils/helperUtils';
 import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
+import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
+import moment from 'moment';
+
+// utils
+import convertToGraphFormat from './convertToGraphFormat';
 
 interface Props extends QueryParameters {
   currentGroupFilterLabel?: string | undefined;
@@ -29,11 +34,17 @@ const AgeChart = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
-  const ageSerie = useAgeSerie({
-    startAt,
-    endAt,
-    currentGroupFilter,
+
+  const { data: usersByBirthyear } = useGraphDataUnitsLive<IUsersByBirthyear>({
+    resolvedName: 'AgeWidget',
+    props: {
+      startAtMoment: startAt ? moment(startAt) : null,
+      endAtMoment: endAt ? moment(endAt) : null,
+      groupId: currentGroupFilter,
+    },
   });
+  const ageSerie = convertToGraphFormat(usersByBirthyear, formatMessage);
+
   const cardTitle = formatMessage(messages.usersByAgeTitle);
 
   if (isNilOrError(ageSerie)) return null;

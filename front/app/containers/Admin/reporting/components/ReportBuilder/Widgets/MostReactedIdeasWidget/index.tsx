@@ -11,7 +11,10 @@ import Settings from './Settings';
 import messages from './messages';
 
 // typings
-import { Props } from './typings';
+import { Props, Response } from './typings';
+
+// hooks
+import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 
 const MostReactedIdeasWidget = ({
   title,
@@ -20,14 +23,36 @@ const MostReactedIdeasWidget = ({
   numberOfIdeas,
   collapseLongText,
 }: Props) => {
+  const response = useGraphDataUnits<Response>(
+    {
+      resolvedName: 'MostReactedIdeasWidget',
+      props: {
+        projectId,
+        phaseId,
+        numberOfIdeas,
+      },
+    },
+    {
+      enabled: !!projectId,
+    }
+  );
+
+  if (!response) return null;
+
+  const {
+    ideas,
+    project,
+    phase,
+    idea_images: ideaImages,
+  } = response.data.attributes;
+
   return (
     <Card title={title}>
-      <ProjectInfo projectId={projectId} phaseId={phaseId} />
+      <ProjectInfo project={project} phase={phase} />
       {projectId ? (
         <Ideas
-          projectId={projectId}
-          phaseId={phaseId}
-          numberOfIdeas={numberOfIdeas}
+          ideas={ideas}
+          images={ideaImages}
           collapseLongText={collapseLongText}
         />
       ) : (
