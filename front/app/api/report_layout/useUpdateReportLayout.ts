@@ -10,14 +10,9 @@ type ReportLayoutUpdate = {
   id: string;
   craftjs_json: CraftJson;
   projectId?: string;
-  phaseId?: string;
 };
 
-const updateReportLayout = ({
-  id,
-  craftjs_json,
-  phaseId,
-}: ReportLayoutUpdate) =>
+const updateReportLayout = ({ id, craftjs_json }: ReportLayoutUpdate) =>
   fetcher<ReportLayoutResponse>({
     path: `/reports/${id}`,
     action: 'patch',
@@ -26,7 +21,6 @@ const updateReportLayout = ({
         layout: {
           craftjs_json,
         },
-        phase_id: phaseId,
       },
     },
   });

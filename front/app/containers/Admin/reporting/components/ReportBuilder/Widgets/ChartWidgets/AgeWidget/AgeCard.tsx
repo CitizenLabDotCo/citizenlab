@@ -20,7 +20,7 @@ import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/AgeCha
 // typings
 import { ProjectId, Dates, Layout } from 'components/admin/GraphCards/typings';
 import { Margin } from 'components/admin/Graphs/typings';
-import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
+import { UsersByBirthyearResponse } from 'containers/Admin/dashboard/users/Charts/AgeChart/typings';
 
 const MARGINS: Record<Layout, Margin | undefined> = {
   wide: {
@@ -35,7 +35,7 @@ const MARGINS: Record<Layout, Margin | undefined> = {
 type Props = ProjectId & Dates;
 
 const AgeCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
-  const usersByBirthyear = useGraphDataUnits<IUsersByBirthyear>({
+  const usersByBirthyear = useGraphDataUnits<UsersByBirthyearResponse>({
     resolvedName: 'AgeWidget',
     props: {
       startAtMoment,

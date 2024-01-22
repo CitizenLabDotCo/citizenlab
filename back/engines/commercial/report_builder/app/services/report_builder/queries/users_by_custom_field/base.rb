@@ -3,8 +3,7 @@ module ReportBuilder
     def run_query(start_at: nil, end_at: nil, project_id: nil, group_id: nil, **_other_props)
       users = find_users(start_at, end_at, project_id, group_id)
       custom_field = CustomField.find_by(key: custom_field_key)
-      users = UserCustomFields::FieldValueCounter.counts_by_field_option(users, custom_field)
-      { series: { users: users } }
+      UserCustomFields::FieldValueCounter.counts_by_field_option(users, custom_field)
     end
 
     protected

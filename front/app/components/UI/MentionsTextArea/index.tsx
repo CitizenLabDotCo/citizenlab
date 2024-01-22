@@ -195,7 +195,7 @@ const MentionsTextArea = ({
     return style;
   };
 
-  const mentionDisplayTransform = (_id, display) => {
+  const mentionDisplayTransform = (_id: string, display: string) => {
     // If `allowSpaceInQuery` is not used, `appendSpaceOnAdd` adds a space after a mention and then
     // the space is preserved when a new mention is added.
     // But if `allowSpaceInQuery` is used, a space is added after adding a mention, but then

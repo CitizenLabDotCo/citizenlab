@@ -5,7 +5,7 @@ export type UsersByBirthyearKeys = Keys<typeof usersByBirthyearKeys>;
 
 export interface IUsersByBirthyear {
   data: {
-    type: 'report_builder_data_units';
+    type: 'users_by_custom_field';
     attributes: {
       series: {
         users: {

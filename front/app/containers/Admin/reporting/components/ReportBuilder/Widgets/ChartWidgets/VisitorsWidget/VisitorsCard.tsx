@@ -50,12 +50,7 @@ const VisitorsCard = ({
   }
 
   return (
-    <Box
-      width="100%"
-      height={layout === 'narrow' ? '260px' : '260px'}
-      mt="20px"
-      pb="8px"
-    >
+    <Box width="100%" height="260px" mt="20px" pb="8px">
       <Box
         height="100%"
         display="flex"

@@ -1,5 +1,5 @@
 import moment = require('moment');
-import { randomString, apiRemoveProject } from '../support/commands';
+import { randomString } from '../support/commands';
 
 describe('Existing Timeline project', () => {
   before(() => {
@@ -236,6 +236,6 @@ describe('New timeline project', () => {
   });
 
   after(() => {
-    apiRemoveProject(projectId);
+    cy.apiRemoveProject(projectId);
   });
 });
