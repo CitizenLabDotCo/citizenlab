@@ -18,7 +18,6 @@ import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 
 const MostReactedIdeasWidget = ({
   title,
-  projectId,
   phaseId,
   numberOfIdeas,
   collapseLongText,
@@ -27,13 +26,12 @@ const MostReactedIdeasWidget = ({
     {
       resolvedName: 'MostReactedIdeasWidget',
       props: {
-        projectId,
         phaseId,
         numberOfIdeas,
       },
     },
     {
-      enabled: !!projectId,
+      enabled: !!phaseId,
     }
   );
 

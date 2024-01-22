@@ -48,7 +48,6 @@ interface AnalyticsProps {
 export interface MostReactedIdeasParams extends BaseParams {
   resolvedName: 'MostReactedIdeasWidget';
   props: {
-    projectId?: string | undefined;
     phaseId?: string | null;
     numberOfIdeas?: number;
   };
