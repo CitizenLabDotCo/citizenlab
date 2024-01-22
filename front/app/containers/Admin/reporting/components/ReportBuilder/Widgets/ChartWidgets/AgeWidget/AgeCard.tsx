@@ -26,7 +26,7 @@ type Props = ProjectId & Dates;
 const AgeCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
   const IUsersByBirthyear = useGraphDataUnits<IUsersByBirthyear>({
     resolvedName: 'AgeWidget',
-    queryParameters: {
+    props: {
       startAtMoment,
       endAtMoment,
       projectId,

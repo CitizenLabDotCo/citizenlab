@@ -8,24 +8,26 @@ import { CLErrors } from 'typings';
 const fetchGraphDataUnitsLive = <Response extends BaseResponseData>({
   resolvedName,
   props,
-}: ParametersLive) =>
-  fetcher<Response>({
+}: ParametersLive) => {
+  const _props = props as any;
+
+  return fetcher<Response>({
     path: `/reports/graph_data_units/live`,
     action: 'get',
     queryParams: {
       resolved_name: resolvedName,
       props: {
-        project_id: props.projectId,
-        phase_id: props.phaseId,
-        resolution: props.resolution,
-        // TODO: remove both groupId and numberOfIdeas
-        group_id: props.groupId,
-        number_of_ideas: props.numberOfIdeas,
-        start_at: props.startAtMoment?.format('yyyy-MM-DD'),
-        end_at: props.endAtMoment?.format('yyyy-MM-DD'),
+        project_id: _props.projectId,
+        phase_id: _props.phaseId,
+        resolution: _props.resolution,
+        group_id: _props.groupId,
+        number_of_ideas: _props.numberOfIdeas,
+        start_at: _props.startAtMoment?.format('yyyy-MM-DD'),
+        end_at: _props.endAtMoment?.format('yyyy-MM-DD'),
       },
     },
   });
+};
 
 const useGraphDataUnitsLive = <Response extends BaseResponseData>(
   parameters: ParametersLive,

@@ -22,7 +22,7 @@ export default function useReactionsByTime({
 
   const analytics = useGraphDataUnits<Response>({
     resolvedName: 'ReactionsByTimeWidget',
-    queryParameters: {
+    props: {
       projectId,
       startAtMoment,
       endAtMoment,
