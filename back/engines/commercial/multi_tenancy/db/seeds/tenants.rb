@@ -101,7 +101,8 @@ module MultiTenancy
                 long: '4.3517'
               },
               zoom_level: 12,
-              osm_relation_id: 2_404_021
+              osm_relation_id: 2_404_021,
+              esri_integration: true
             },
             custom_maps: {
               enabled: true,
