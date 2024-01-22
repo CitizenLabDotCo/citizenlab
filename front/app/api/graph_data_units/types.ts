@@ -16,7 +16,7 @@ export type ResolvedName =
 
 export interface BaseParams {
   resolvedName: ResolvedName;
-  props: object;
+  props: Record<string, any>;
 }
 
 export type ParametersLive =
