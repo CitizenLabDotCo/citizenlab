@@ -7,11 +7,7 @@ export interface IUsersByBirthyear {
   data: {
     type: 'report_builder_data_units';
     attributes: {
-      series: {
-        users: {
-          [key: string]: number;
-        };
-      };
+      [key: string]: number;
     };
   };
 }

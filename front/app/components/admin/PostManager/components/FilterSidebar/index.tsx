@@ -15,6 +15,9 @@ import styled from 'styled-components';
 import { ITopicData } from 'api/topics/types';
 import { useIntl } from 'utils/cl-intl';
 import { ManagerType } from 'components/admin/PostManager';
+import { useParams } from 'react-router-dom';
+import { isAdmin } from 'utils/permissions/roles';
+import useAuthUser from 'api/me/useAuthUser';
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.teal700};
@@ -64,9 +67,28 @@ const FilterSidebar = ({
   visibleFilterMenus,
   type,
 }: Props) => {
+  const { projectId } = useParams();
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const handleItemClick = (_event, data) => {
     onChangeActiveFilterMenu(data.id);
+  };
+
+  if (!authUser) return null;
+
+  const getLinkToTagManager = () => {
+    // https://www.notion.so/citizenlab/Customised-tags-don-t-show-up-as-options-to-add-to-input-9c7c39f6af194c8385088878037cd498?pvs=4
+    if (type === 'ProjectIdeas' && typeof projectId === 'string') {
+      return `/admin/projects/${projectId}/settings/tags`;
+    } else if (isAdmin({ data: authUser.data })) {
+      // For admins, both for /admin/ideas (type 'AllIdeas') and /admin/initiatives, we show the link to the platform-wide tag manager
+      return '/admin/settings/topics';
+    } else {
+      // Don't show the link to the platform-wide tag manager if the user is not an admin.
+      // (i.e. project/folder managers that have access to the general input manager at /admin/ideas,
+      // but just for their folders/projects).
+      return null;
+    }
   };
 
   const tabName = (
@@ -127,6 +149,7 @@ const FilterSidebar = ({
           selectableTopics={topics}
           selectedTopics={selectedTopics}
           onChangeTopicsFilter={onChangeTopicsFilter}
+          linkToTagManager={getLinkToTagManager()}
         />
       ),
     }),
@@ -178,6 +201,7 @@ const FilterSidebar = ({
             active={activeFilterMenu === item.key}
             onClick={handleItemClick}
             className={`intercom-admin-input-manager-filter-sidebar-${item.key}`}
+            data-cy={`e2e-admin-post-manager-filter-sidebar-${item.key}`}
           >
             {item.name}
           </Menu.Item>

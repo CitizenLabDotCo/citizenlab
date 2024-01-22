@@ -87,7 +87,6 @@
   "app.components.ConsentManager.Banner.manage": "Gestire",
   "app.components.ConsentManager.Banner.policyLink": "Politica dei cookie",
   "app.components.ConsentManager.Banner.reject": "Rifiuta",
-  "app.components.ConsentManager.Banner.subText": "È possibile accedere alle impostazioni dei cookie in qualsiasi momento.",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Confermare",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Se ti cancelli, le tue preferenze andranno perse.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Pubblicità",

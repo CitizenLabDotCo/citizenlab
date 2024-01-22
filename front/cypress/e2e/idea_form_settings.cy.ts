@@ -1,4 +1,4 @@
-import { randomString, apiRemoveProject } from '../support/commands';
+import { randomString } from '../support/commands';
 import moment = require('moment');
 
 describe('Idea form settings', () => {
@@ -129,6 +129,6 @@ describe('Idea form settings', () => {
   });
 
   afterEach(() => {
-    apiRemoveProject(projectId);
+    cy.apiRemoveProject(projectId);
   });
 });
