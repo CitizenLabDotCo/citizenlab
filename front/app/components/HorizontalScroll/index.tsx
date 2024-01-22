@@ -37,7 +37,7 @@ interface Props {
 
 /*
  * HorizontalScroll:
- * Wraps a children elements with a horizontal scroll container with arrow buttons to scroll left and right.
+ * Wraps children elements with a horizontal scroll container with arrow buttons to scroll left and right.
  */
 const HorizontalScroll = ({ children, containerRole }: Props) => {
   const theme = useTheme();
