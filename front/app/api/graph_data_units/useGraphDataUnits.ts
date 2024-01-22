@@ -23,12 +23,12 @@ const useGraphDataUnits = <Response extends BaseResponseData>(
   const isAdminPage = isPage('admin', pathname);
   const { reportId } = useReportContext();
 
-  const { data: analyticsLive } = useGraphDataUnitsLive<Response>(parameters, {
+  const { data: dataLive } = useGraphDataUnitsLive<Response>(parameters, {
     enabled: enabled && isAdminPage,
     onSuccess,
   });
 
-  const { data: analyticsPublished } = useGraphDataUnitsPublished<Response>(
+  const { data: dataPublished } = useGraphDataUnitsPublished<Response>(
     {
       reportId,
       graphId,
@@ -36,9 +36,9 @@ const useGraphDataUnits = <Response extends BaseResponseData>(
     { enabled: enabled && !isAdminPage }
   );
 
-  const analytics = analyticsLive ?? analyticsPublished;
+  const data = dataLive ?? dataPublished;
 
-  return analytics;
+  return data;
 };
 
 export default useGraphDataUnits;

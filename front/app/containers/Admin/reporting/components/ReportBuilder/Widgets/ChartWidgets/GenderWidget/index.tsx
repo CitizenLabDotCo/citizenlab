@@ -22,7 +22,7 @@ const GenderWidget = ({
   startAt,
   endAt,
 }: ChartWidgetProps) => {
-  const analyticsChartProps = {
+  const props = {
     startAtMoment: startAt ? moment(startAt) : null,
     endAtMoment: endAt ? moment(endAt) : null,
     projectId,
@@ -30,7 +30,7 @@ const GenderWidget = ({
 
   return (
     <Card title={title} pagebreak>
-      <GenderCard {...analyticsChartProps} />
+      <GenderCard {...props} />
     </Card>
   );
 };
