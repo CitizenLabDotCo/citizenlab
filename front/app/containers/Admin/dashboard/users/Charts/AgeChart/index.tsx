@@ -13,10 +13,9 @@ import messages from 'containers/Admin/dashboard/messages';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { QueryParameters } from './typings';
+import { QueryParameters, UsersByBirthyearResponse } from './typings';
 import { isNilOrError } from 'utils/helperUtils';
 import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
-import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
 import moment from 'moment';
 
 // utils
@@ -35,14 +34,15 @@ const AgeChart = ({
   const { formatMessage } = useIntl();
   const graphRef = useRef();
 
-  const { data: usersByBirthyear } = useGraphDataUnitsLive<IUsersByBirthyear>({
-    resolvedName: 'AgeWidget',
-    props: {
-      startAtMoment: startAt ? moment(startAt) : null,
-      endAtMoment: endAt ? moment(endAt) : null,
-      groupId: currentGroupFilter,
-    },
-  });
+  const { data: usersByBirthyear } =
+    useGraphDataUnitsLive<UsersByBirthyearResponse>({
+      resolvedName: 'AgeWidget',
+      props: {
+        startAtMoment: startAt ? moment(startAt) : null,
+        endAtMoment: endAt ? moment(endAt) : null,
+        groupId: currentGroupFilter,
+      },
+    });
   const ageSerie = convertToGraphFormat(usersByBirthyear, formatMessage);
 
   const cardTitle = formatMessage(messages.usersByAgeTitle);

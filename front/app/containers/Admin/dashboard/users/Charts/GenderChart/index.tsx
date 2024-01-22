@@ -17,9 +17,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import convertToGraphFormat from './convertToGraphFormat';
 
 // typings
-import { QueryParameters } from './typings';
+import { UsersByGenderResponse, QueryParameters } from './typings';
 import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
-import { IUsersByGender } from 'api/users_by_gender/types';
 import moment from 'moment';
 
 interface Props extends QueryParameters {
@@ -34,7 +33,7 @@ const GenderChart = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  const { data: usersByGender } = useGraphDataUnitsLive<IUsersByGender>({
+  const { data: usersByGender } = useGraphDataUnitsLive<UsersByGenderResponse>({
     resolvedName: 'GenderWidget',
     props: {
       startAtMoment: startAt ? moment(startAt) : null,

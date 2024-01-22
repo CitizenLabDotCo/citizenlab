@@ -5,16 +5,16 @@ import messages from 'containers/Admin/dashboard/messages';
 import { binBirthyear } from 'utils/dataUtils';
 
 // typings
-import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
 import { FormatMessage } from 'typings';
+import { UsersByBirthyearResponse } from './typings';
 
 const convertToGraphFormat = (
-  data: IUsersByBirthyear | undefined,
+  data: UsersByBirthyearResponse | undefined,
   formatMessage: FormatMessage
 ) => {
   if (!data) return null;
 
-  return binBirthyear(data.data.attributes.series.users, {
+  return binBirthyear(data.data.attributes, {
     missingBin: formatMessage(messages._blank),
   });
 };

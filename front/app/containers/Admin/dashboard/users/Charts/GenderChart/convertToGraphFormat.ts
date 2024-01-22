@@ -12,11 +12,7 @@ import { FormatMessage } from 'typings';
 interface GraphData {
   data: {
     attributes: {
-      series: {
-        users: {
-          [key: string]: number;
-        };
-      };
+      [key: string]: number;
     };
   };
 }
@@ -26,7 +22,7 @@ const convertToGraphFormat = (
   formatMessage: FormatMessage
 ): GenderSerie | null => {
   if (!data) return null;
-  const users = data.data.attributes.series.users;
+  const users = data.data.attributes;
 
   const percentages = roundPercentages(
     genderOptions.map((gender) => users[gender])

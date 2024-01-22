@@ -16,16 +16,16 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { serieHasValues } from '../utils';
 import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
-import { IUsersByGender } from 'api/users_by_gender/types';
 import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/GenderChart/convertToGraphFormat';
 
 // types
 import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
+import { UsersByGenderResponse } from 'containers/Admin/dashboard/users/Charts/GenderChart/typings';
 
 type Props = ProjectId & Dates;
 
 const GenderCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
-  const usersByGender = useGraphDataUnits<IUsersByGender>({
+  const usersByGender = useGraphDataUnits<UsersByGenderResponse>({
     resolvedName: 'GenderWidget',
     props: {
       startAtMoment,
