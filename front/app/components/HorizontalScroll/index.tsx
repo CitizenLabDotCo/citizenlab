@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
 
 interface Props {
-  containerRef?: React.RefObject<HTMLDivElement>; // Ref of the container with elements which can be laterally scrolled through
+  containerRef?: React.RefObject<HTMLDivElement>; // Ref of the container with elements which can be horizontally scrolled through
   isSmallerThanPhone?: boolean;
   children: React.ReactNode;
 }
 
 /*
  * HorizontalScroll:
- * Wraps a scrollable container with lateral scroll arrow buttons to scroll left and right.
+ * Wraps a scrollable container with horizontal scroll arrow buttons to scroll left and right.
  */
 const HorizontalScroll = ({
   containerRef,
@@ -34,13 +34,13 @@ const HorizontalScroll = ({
     });
   });
 
-  // Determine if the width of the container is large enough to require lateral scrolling
+  // Determine if the width of the container is large enough to require horizontal scrolling
   const showArrows =
     containerRef?.current &&
     containerRef.current.scrollWidth > containerRef.current.clientWidth;
   const [showArrowButtons, setShowArrowButtons] = useState(showArrows);
 
-  // Update whether arrows/lateral scrolling is required when the width of the container changes
+  // Update whether arrows/horizontal scrolling is required when the width of the container changes
   useEffect(() => {
     setShowArrowButtons(
       containerRef?.current &&
@@ -49,14 +49,14 @@ const HorizontalScroll = ({
   }, [containerRef, showArrows]);
 
   // Scroll the container by the specified offset
-  const lateralScroll = (scrollOffset: number) => {
+  const horizontalScroll = (scrollOffset: number) => {
     if (!containerRef?.current) return;
     containerRef.current.scrollLeft += scrollOffset;
   };
 
   return (
     <Box
-      id="e2e-event-previews"
+      id="e2e-horizontal-scroll-wrapper"
       display="flex"
       flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
     >
@@ -68,7 +68,7 @@ const HorizontalScroll = ({
         <Button
           disabled={atScrollStart}
           onClick={() => {
-            lateralScroll(
+            horizontalScroll(
               isSmallerThanPhone
                 ? -200 // Scroll by 200px on mobile
                 : -350 // Scroll by 350px on desktop
@@ -90,7 +90,7 @@ const HorizontalScroll = ({
         <Button
           disabled={atScrollEnd}
           onClick={() => {
-            lateralScroll(isSmallerThanPhone ? 200 : 350);
+            horizontalScroll(isSmallerThanPhone ? 200 : 350);
           }}
           icon={theme.isRtl ? 'chevron-left' : 'chevron-right'}
           buttonStyle="text"
