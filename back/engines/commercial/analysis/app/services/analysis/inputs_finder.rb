@@ -13,6 +13,7 @@ module Analysis
       inputs = analysis.inputs
 
       inputs = filter_tags(inputs)
+      inputs = filter_input_custom_field_empty_values(inputs)
       inputs = filter_published_at(inputs)
       inputs = filter_reactions(inputs)
       inputs = filter_comments(inputs)
@@ -30,7 +31,7 @@ module Analysis
       return inputs unless params[:tag_ids]
 
       raise ArgumentError, 'value specified for tag_ids must be an array' unless params[:tag_ids].is_a? Array
-
+      return inputs
       if params[:tag_ids].include?(nil)
         inputs_in_analysis_with_tags = Tagging.joins(:tag).where(tag: { analysis: analysis }).select(:input_id)
         inputs.where.not(id: inputs_in_analysis_with_tags)
@@ -43,6 +44,17 @@ module Analysis
         inputs.where(id: subquery)
       end
     end
+
+    def filter_input_custom_field_empty_values(inputs)
+      scope = inputs
+      if params[:input_custom_field_empty_values]
+        analysis.custom_fields.pluck(:key).each do |key|
+          scope = scope.where.not("custom_field_values->>'#{key}' IS NULL")
+        end
+      end
+      scope
+    end
+
 
     def filter_published_at(inputs)
       scope = inputs

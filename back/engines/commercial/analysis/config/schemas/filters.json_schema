@@ -7,6 +7,9 @@
     "search": {
       "type": "string"
     },
+    "input_custom_field_empty_values": {
+      "type": "boolean"
+    },
     "reactions_from": {
       "type": "number"
     },
