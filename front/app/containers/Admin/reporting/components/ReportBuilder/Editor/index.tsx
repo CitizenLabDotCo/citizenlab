@@ -59,6 +59,8 @@ const resolver = {
   ReactionsByTimeWidget,
 };
 
+// Without this, craftjs sometimes crashes.
+// Not sure why. (Luuc)
 const PlainDiv = ({ render }) => {
   return <div>{render}</div>;
 };
