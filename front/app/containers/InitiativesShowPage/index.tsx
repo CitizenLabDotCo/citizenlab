@@ -63,10 +63,6 @@ const InitiativesShowPage = () => {
     return <PageNotFound />;
   }
 
-  if (!initiative) {
-    return null;
-  }
-
   return (
     <Container>
       <StyledInitiativeShowPageTopBar initiativeId={initiative.data.id} />

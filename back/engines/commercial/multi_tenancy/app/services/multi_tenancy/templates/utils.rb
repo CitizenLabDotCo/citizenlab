@@ -4,6 +4,7 @@ module MultiTenancy
   module Templates
     class Utils
       RELEASE_SPEC_FILE = 'release.json'
+      MANIFEST_FILE = 'manifest.json'
 
       attr_reader :internal_template_dir
 
@@ -18,31 +19,41 @@ module MultiTenancy
         @s3_client = s3_client
       end
 
-      def available_templates(external_prefix: release_prefix)
-        templates = available_internal_templates
+      def template_manifest(prefix: release_prefix)
+        int_manifest = internal_manifest
+        ext_manifest = external_manifest(prefix: prefix)
+        raise_if_duplicates(int_manifest.keys + ext_manifest.keys)
 
-        if template_bucket && external_prefix
-          templates += available_external_templates(prefix: "#{external_prefix}/")
-        end
-
-        raise_if_duplicates(templates)
-        templates.sort
+        int_manifest.merge(ext_manifest)
       end
 
-      def available_internal_templates
+      def template_names(prefix: release_prefix)
+        internal_templates = internal_template_names
+        external_templates = external_template_names(prefix: prefix)
+
+        raise_if_duplicates(internal_templates + external_templates)
+        (internal_templates + external_templates).sort
+      end
+
+      def internal_template_names
         template_glob = File.join(internal_template_dir, '*.yml')
         Dir[template_glob].map { |file| File.basename(file, '.yml') }
       end
 
       def internal_template?(template_name)
-        available_internal_templates.include?(template_name)
+        internal_template_names.include?(template_name)
       end
 
       def template_prefix(template_name, prefix: release_prefix)
         "#{prefix.chomp('/')}/#{template_name}"
       end
 
-      def available_external_templates(prefix: release_prefix)
+      def external_template_names(prefix: release_prefix, ignore_manifest: false)
+        unless ignore_manifest
+          manifest = read_external_manifest(prefix: prefix)
+          return manifest.keys if manifest
+        end
+
         Aws::S3::Utils
           .new
           .common_prefixes(@s3_client, bucket: template_bucket, prefix: prefix, delimiter: '/models.yml')
@@ -100,6 +111,13 @@ module MultiTenancy
         prefix ||= test_prefix
         raise 'undefined release prefix' unless prefix
 
+        manifest = external_manifest(prefix: prefix)
+        @s3_client.put_object(
+          bucket: template_bucket,
+          key: "#{prefix.chomp('/')}/#{MANIFEST_FILE}",
+          body: JSON.pretty_generate(manifest)
+        )
+
         release_json = { release_prefix: prefix }
         @s3_client.put_object(
           bucket: template_bucket,
@@ -121,6 +139,34 @@ module MultiTenancy
           @s3_client,
           prefix: test_prefix
         )
+      end
+
+      def external_manifest(prefix: release_prefix)
+        read_external_manifest(prefix: prefix) || compute_external_manifest(prefix: prefix)
+      end
+
+      def read_external_manifest(prefix: release_prefix)
+        manifest_key = "#{prefix.chomp('/')}/#{MANIFEST_FILE}"
+        manifest = @s3_client.get_object(bucket: template_bucket, key: manifest_key).body.read
+        JSON.parse(manifest)
+      rescue Aws::S3::Errors::NoSuchKey
+        nil
+      end
+
+      def compute_external_manifest(prefix: release_prefix)
+        template_names = external_template_names(prefix: prefix, ignore_manifest: true)
+
+        template_names.index_with do |template_name|
+          serialized_models = fetch_external_template_models(template_name, prefix: prefix)
+          { required_locales: self.class.user_locales(serialized_models) }
+        end
+      end
+
+      def internal_manifest
+        internal_template_names.index_with do |template_name|
+          serialized_models = fetch_internal_template_models(template_name)
+          { required_locales: self.class.user_locales(serialized_models) }
+        end
       end
 
       class << self
@@ -215,7 +261,7 @@ module MultiTenancy
             []
           )
 
-          users.pluck('locale').uniq
+          users.pluck('locale').uniq.sort
         end
 
         private

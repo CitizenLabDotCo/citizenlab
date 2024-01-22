@@ -51,13 +51,14 @@ export const query = ({
     },
   };
 
-  const timeSeriesQuery: QuerySchema = {
+  const date_group = `dimension_date_sent.${getInterval(resolution)}`;
+  let timeSeriesQuery: QuerySchema = {
     fact: 'email_delivery',
     filters: { ...dateFilter },
-    groups: [`dimension_date_sent.${getInterval(resolution)}`, 'automated'],
+    groups: [date_group, 'automated'],
     aggregations: {
       all: 'count',
-      'dimension_date_sent.date': 'first',
+      [date_group]: 'first',
     },
   };
 

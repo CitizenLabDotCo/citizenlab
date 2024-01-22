@@ -30,7 +30,6 @@ const FormResults = () => {
   const locale = useLocale();
   const { data: project } = useProjectById(projectId);
   const { data: formResults } = useFormResults({
-    projectId,
     phaseId,
   });
 

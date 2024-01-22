@@ -131,8 +131,6 @@ Rails.application.routes.draw do
       end
 
       resources :areas do
-        patch 'reorder', on: :member
-
         resources :followers, only: [:create], defaults: { followable: 'Area' }
       end
 

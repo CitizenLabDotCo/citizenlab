@@ -1,4 +1,4 @@
-import { formatTranslationMessages } from './';
+import { formatTranslationMessages } from '.';
 import { registerLocale } from 'react-datepicker';
 import cy from 'date-fns/locale/cy';
 

@@ -39,9 +39,9 @@ export default function useEmailDeliveriesData({
 
   const translations = getTranslations(formatMessage);
   const stats = analytics ? parseStats(analytics.data.attributes) : null;
-
   const preparedTimeSeries =
-    analytics && mergeTimeSeries(analytics.data.attributes[3]);
+    analytics &&
+    mergeTimeSeries(analytics.data.attributes[3], currentResolution);
   const timeSeries =
     analytics?.data && preparedTimeSeries
       ? parseTimeSeries(

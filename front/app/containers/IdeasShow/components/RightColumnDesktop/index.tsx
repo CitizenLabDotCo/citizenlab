@@ -1,8 +1,9 @@
 import React from 'react';
 
-// api
+// hooks
 import usePhases from 'api/phases/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import { Box, colors } from '@citizenlab/cl2-component-library';
@@ -41,6 +42,9 @@ const RightColumnDesktop = ({
 }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
+  const followEnabled = useFeatureFlag({
+    name: 'follow',
+  });
 
   if (!idea) return null;
 
@@ -72,6 +76,9 @@ const RightColumnDesktop = ({
       likesCount > 0 ||
       dislikesCount > 0);
 
+  const showInteractionsContainer =
+    ideaIsInParticipationContext || commentingEnabled || followEnabled;
+
   return (
     <Box
       flex={`0 0 ${rightColumnWidthDesktop}px`}
@@ -82,46 +89,41 @@ const RightColumnDesktop = ({
       className={className}
     >
       <Box display="flex" flexDirection="column">
-        <Box
-          padding="20px"
-          borderRadius="3px"
-          background={colors.background}
-          mb="12px"
-        >
-          {(ideaIsInParticipationContext || commentingEnabled) && (
-            <>
-              {showReactionControl && (
-                <Box pb="23px" mb="23px">
-                  <ReactionControl
-                    styleType="shadow"
-                    ideaId={ideaId}
-                    size="4"
-                  />
-                </Box>
-              )}
-              <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-                {phase &&
-                  ideaIsInParticipationContext &&
-                  votingConfig?.getIdeaPageVoteInput({
-                    ideaId,
-                    phase,
-                    compact: false,
-                  })}
+        {showInteractionsContainer && (
+          <Box
+            padding="20px"
+            borderRadius="3px"
+            background={colors.background}
+            mb="12px"
+          >
+            {showReactionControl && (
+              <Box pb="23px" mb="23px">
+                <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
               </Box>
-              {commentingEnabled && (
-                <Box mb="10px">
-                  <GoToCommentsButton />
-                </Box>
-              )}
-            </>
-          )}
-          <FollowUnfollow
-            followableType="ideas"
-            followableId={ideaId}
-            followersCount={idea.data.attributes.followers_count}
-            followerId={idea.data.relationships.user_follower?.data?.id}
-          />
-        </Box>
+            )}
+            {phase && ideaIsInParticipationContext && (
+              <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
+                {votingConfig?.getIdeaPageVoteInput({
+                  ideaId,
+                  phase,
+                  compact: false,
+                })}
+              </Box>
+            )}
+
+            {commentingEnabled && (
+              <Box mb="10px">
+                <GoToCommentsButton />
+              </Box>
+            )}
+            <FollowUnfollow
+              followableType="ideas"
+              followableId={ideaId}
+              followersCount={idea.data.attributes.followers_count}
+              followerId={idea.data.relationships.user_follower?.data?.id}
+            />
+          </Box>
+        )}
         <Box mb="16px">
           <IdeaSharingButton
             ideaId={ideaId}
