@@ -212,7 +212,7 @@ RSpec.describe JsonSchemaGeneratorService do
         # NOTE: Checking 10 loops to make sure the chance of a flaky test here is very very low
         attempts = []
         10.times do
-          options = generator.visit_select(field).dig(:enum)
+          options = generator.visit_select(field)[:enum]
           expect(options.last).to eq 'other'
           attempts << options
         end
