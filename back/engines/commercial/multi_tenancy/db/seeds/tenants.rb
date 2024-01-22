@@ -102,7 +102,10 @@ module MultiTenancy
               },
               zoom_level: 12,
               osm_relation_id: 2_404_021,
-              esri_integration: true
+              esri_integration: {
+                enabled: true,
+                api_key: '123-placeholder-456'
+              }
             },
             custom_maps: {
               enabled: true,
