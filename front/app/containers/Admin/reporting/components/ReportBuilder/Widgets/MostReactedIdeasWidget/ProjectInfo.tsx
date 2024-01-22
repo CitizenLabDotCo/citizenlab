@@ -13,15 +13,13 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 interface Props {
-  project?: IProjectData;
-  phase?: IPhaseData;
+  project: IProjectData;
+  phase: IPhaseData;
 }
 
 const ProjectInfo = ({ project, phase }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-
-  if (!project || !phase) return null;
 
   const projectTitle = localize(project.attributes.title_multiloc);
 

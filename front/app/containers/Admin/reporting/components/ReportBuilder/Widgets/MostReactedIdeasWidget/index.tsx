@@ -37,7 +37,13 @@ const MostReactedIdeasWidget = ({
     }
   );
 
-  if (!response) return null;
+  if (!response) {
+    return (
+      <Card title={title}>
+        <NoData message={messages.noProjectSelected} />
+      </Card>
+    );
+  }
 
   const {
     ideas,
@@ -49,15 +55,11 @@ const MostReactedIdeasWidget = ({
   return (
     <Card title={title}>
       <ProjectInfo project={project} phase={phase} />
-      {projectId ? (
-        <Ideas
-          ideas={ideas}
-          images={ideaImages}
-          collapseLongText={collapseLongText}
-        />
-      ) : (
-        <NoData message={messages.noProjectSelected} />
-      )}
+      <Ideas
+        ideas={ideas}
+        images={ideaImages}
+        collapseLongText={collapseLongText}
+      />
     </Card>
   );
 };

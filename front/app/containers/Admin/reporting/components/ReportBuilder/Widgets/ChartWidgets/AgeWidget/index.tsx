@@ -17,7 +17,7 @@ import { ChartWidgetProps } from '../typings';
 import moment from 'moment';
 
 const AgeWidget = ({ title, projectId, startAt, endAt }: ChartWidgetProps) => {
-  const analyticsChartProps = {
+  const props = {
     startAtMoment: startAt ? moment(startAt) : null,
     endAtMoment: endAt ? moment(endAt) : null,
     projectId,
@@ -25,7 +25,7 @@ const AgeWidget = ({ title, projectId, startAt, endAt }: ChartWidgetProps) => {
 
   return (
     <Card title={title} pagebreak>
-      <AgeCard {...analyticsChartProps} />
+      <AgeCard {...props} />
     </Card>
   );
 };
