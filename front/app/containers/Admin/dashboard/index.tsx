@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState } from 'react';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
@@ -18,16 +18,13 @@ import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
 
 export const DashboardsPage = memo(
   ({ intl: { formatMessage } }: WrappedComponentProps) => {
     const { data: authUser } = useAuthUser();
-    const [tabs, setTabs] = useState<ITab[]>([
+    const [adminTabs, setAdminTabs] = useState<ITab[]>([
       {
         label: formatMessage(messages.tabOverview),
         url: '/admin/dashboard/overview',
@@ -40,6 +37,10 @@ export const DashboardsPage = memo(
       },
     ]);
 
+    if (!authUser || (!isAdmin(authUser) && !isProjectModerator(authUser))) {
+      return null;
+    }
+
     const moderatorTabs: ITab[] = [
       {
         label: formatMessage(messages.tabOverview),
@@ -48,16 +49,7 @@ export const DashboardsPage = memo(
       },
     ];
 
-    useEffect(() => {
-      if (
-        !isNilOrError(authUser) &&
-        !isAdmin(authUser) &&
-        isProjectModerator(authUser)
-      ) {
-        setTabs(moderatorTabs);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [authUser]);
+    const tabs = isAdmin(authUser) ? adminTabs : moderatorTabs;
 
     const resource = {
       title: formatMessage(messages.titleDashboard),
@@ -65,15 +57,9 @@ export const DashboardsPage = memo(
     };
 
     const handleData = (data: InsertConfigurationOptions<ITab>) => {
-      setTabs((tabs) => insertConfiguration(data)(tabs));
+      if (!isAdmin(authUser)) return;
+      setAdminTabs((tabs) => insertConfiguration(data)(tabs));
     };
-
-    if (
-      isNilOrError(authUser) ||
-      (authUser && !isAdmin(authUser) && !isProjectModerator(authUser))
-    ) {
-      return null;
-    }
 
     return (
       <>
