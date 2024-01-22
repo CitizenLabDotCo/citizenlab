@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: JS - refactor to be ImportService and have ImportIdeasService and ImportCommentsService inherit from it
 module BulkImportIdeas
   class Error < StandardError
     def initialize(key, params = {})
@@ -154,7 +155,7 @@ module BulkImportIdeas
 
     def add_author(idea_row, idea_attributes)
       author = nil
-      if idea_row[:user_email].present? || idea_row[:user_first_name].present?
+      if idea_row[:user_consent] && (idea_row[:user_email].present? || idea_row[:user_first_name].present?)
         author = idea_row[:user_email].present? ? User.find_by_cimail(idea_row[:user_email]) : nil
         unless author
           author = User.new(

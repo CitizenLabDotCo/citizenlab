@@ -15,6 +15,9 @@ BulkImportIdeas::Engine.routes.draw do
         resources :custom_fields, controller: 'project_custom_fields', only: %i[] do
           get 'to_pdf', on: :collection
         end
+        # Import comments
+        post 'import_comments/bulk_create', on: :member, to: 'import_comments#bulk_create'
+        get 'import_comments/example_xlsx', on: :member, to: 'import_comments#example_xlsx'
       end
       resources :phases do
         get 'import_ideas/example_xlsx', on: :member, to: 'import_ideas#example_xlsx'
