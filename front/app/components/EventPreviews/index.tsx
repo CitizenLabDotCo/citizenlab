@@ -55,6 +55,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
           mb="8px"
           variant="h5"
           style={{ fontWeight: 600 }}
+          id="e2e-event-previews"
         >
           {formatMessage(messages.eventPreviewTimelineTitle)}
         </Title>

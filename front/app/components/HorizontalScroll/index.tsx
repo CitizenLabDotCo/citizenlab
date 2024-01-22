@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  media,
   useBreakpoint,
   isRtl,
 } from '@citizenlab/cl2-component-library';
@@ -16,13 +15,8 @@ const StyledContainer = styled(Box)`
   flex-wrap: nowrap;
   overflow: auto;
   overflow-x: scroll;
-  padding-y: 8px;
   height: auto;
   width: 100%;
-
-  ${media.phone`
-  justify-content: space-between;
-`}
 
   ${isRtl`
   flex-direction: row-reverse;
@@ -38,12 +32,12 @@ const StyledContainer = styled(Box)`
 
 interface Props {
   children: React.ReactNode;
-  containerRole?: string;
+  containerRole?: string; // If the scrollable container needs a specific role, pass it in
 }
 
 /*
  * HorizontalScroll:
- * Wraps elements with a horizontal scroll container with arrow buttons to scroll left and right.
+ * Wraps a children elements with a horizontal scroll container with arrow buttons to scroll left and right.
  */
 const HorizontalScroll = ({ children, containerRole }: Props) => {
   const theme = useTheme();
@@ -86,11 +80,7 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
   };
 
   return (
-    <Box
-      id="e2e-horizontal-scroll-wrapper"
-      display="flex"
-      flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
-    >
+    <Box display="flex" flexDirection={theme.isRtl ? 'row-reverse' : 'row'}>
       <Box
         aria-hidden="true"
         my="auto"
