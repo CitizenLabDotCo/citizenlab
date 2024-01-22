@@ -1,17 +1,15 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 // components
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Title } from '@citizenlab/cl2-component-library';
 import EventPreviewCard from './EventPreviewCard';
+import HorizontalScroll from 'components/HorizontalScroll';
 
 // api
 import useEvents from 'api/events/useEvents';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
-
-// style
-import styled from 'styled-components';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
@@ -22,24 +20,13 @@ import { useParams } from 'react-router-dom';
 
 // util
 import moment from 'moment';
-import HorizontalScroll from 'components/HorizontalScroll';
 
 type EventPreviewsProps = {
   projectId?: string;
 };
 
-const EventPreviewContainer = styled(Box)`
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  scroll-behavior: smooth;
-  -ms-overflow-style: none !important;
-  scrollbar-width: none !important;
-`;
-
 const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const { formatMessage } = useIntl();
-  const ref = useRef<HTMLDivElement>(null);
 
   // project related
   const params = useParams<{ slug: string }>();
@@ -71,24 +58,10 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
         >
           {formatMessage(messages.eventPreviewTimelineTitle)}
         </Title>
-        <HorizontalScroll containerRef={ref}>
-          <EventPreviewContainer
-            py="8px"
-            display="flex"
-            gap="16px"
-            width="100%"
-            height="auto"
-            flexDirection="row"
-            flexWrap="nowrap"
-            overflow="auto"
-            overflowX="scroll"
-            id="e2e-event-previews"
-            ref={ref}
-          >
-            {events.data.map((event) => (
-              <EventPreviewCard key={event.id} event={event} />
-            ))}
-          </EventPreviewContainer>
+        <HorizontalScroll>
+          {events.data.map((event) => (
+            <EventPreviewCard key={event.id} event={event} />
+          ))}
         </HorizontalScroll>
       </>
     );

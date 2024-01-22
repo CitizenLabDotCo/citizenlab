@@ -1,23 +1,54 @@
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  media,
+  useBreakpoint,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
 import React, { useEffect, useState } from 'react';
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
+
+const StyledContainer = styled(Box)`
+  display: flex;
+  gap: 16px;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  overflow: auto;
+  overflow-x: scroll;
+  padding-y: 8px;
+  height: auto;
+  width: 100%;
+
+  ${media.phone`
+  justify-content: space-between;
+`}
+
+  ${isRtl`
+  flex-direction: row-reverse;
+`}
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  scroll-behavior: smooth;
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+`;
 
 interface Props {
-  containerRef?: React.RefObject<HTMLDivElement>; // Ref of the container with elements which can be horizontally scrolled through
-  isSmallerThanPhone?: boolean;
   children: React.ReactNode;
+  containerRole?: string;
 }
 
 /*
  * HorizontalScroll:
- * Wraps a scrollable container with horizontal scroll arrow buttons to scroll left and right.
+ * Wraps elements with a horizontal scroll container with arrow buttons to scroll left and right.
  */
-const HorizontalScroll = ({
-  containerRef,
-  isSmallerThanPhone,
-  children,
-}: Props) => {
+const HorizontalScroll = ({ children, containerRole }: Props) => {
   const theme = useTheme();
+  const isSmallerThanPhone = useBreakpoint('phone');
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   // Used to determine when the scroll buttons should be disabled (E.g. At scroll end, disable the right button)
   const [atScrollStart, setAtScrollStart] = useState(true);
@@ -81,7 +112,9 @@ const HorizontalScroll = ({
           id="e2e-event-previews-scroll-left"
         />
       </Box>
-      {children}
+      <StyledContainer ref={containerRef} role={containerRole}>
+        {children}
+      </StyledContainer>
       <Box
         aria-hidden="true"
         my="auto"

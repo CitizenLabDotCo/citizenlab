@@ -1,40 +1,11 @@
 import React, { useRef, KeyboardEvent } from 'react';
 import { ScreenReaderOnly } from 'utils/a11y';
 import styled from 'styled-components';
-import {
-  fontSizes,
-  isRtl,
-  colors,
-  media,
-  Box,
-} from '@citizenlab/cl2-component-library';
+import { fontSizes, colors, media } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 import { FormattedMessage } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
 import HorizontalScroll from 'components/HorizontalScroll';
-
-const TabsContainer = styled(Box)`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  overflow-x: auto;
-
-  ${media.phone`
-    width: 100%;
-    justify-content: space-between;
-  `}
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  scroll-behavior: smooth;
-  -ms-overflow-style: none !important;
-  scrollbar-width: none !important;
-`;
 
 const Tab = styled.button<{ active: boolean }>`
   box-sizing: content-box;
@@ -109,7 +80,6 @@ const Tabs = <ShowCount extends boolean>({
   showCount,
 }: Props<ShowCount>) => {
   const tabsRef = useRef({});
-  const scrollableContainerRef = useRef<HTMLDivElement>(null);
 
   const handleClickTab = (tab: string) => () => {
     if (currentTab === tab) return;
@@ -125,41 +95,38 @@ const Tabs = <ShowCount extends boolean>({
   };
 
   return (
-    <HorizontalScroll containerRef={scrollableContainerRef}>
-      <TabsContainer ref={scrollableContainerRef} role="tablist">
-        {/*
+    <HorizontalScroll containerRole="tablist">
+      {/*
             These tabs need the role, aria-selected etc to work well with
             screen readers.
             See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
             */}
+      {availableTabs.map((tab) => (
+        <Tab
+          id={getTabId(tab)}
+          data-testid="tab"
+          role="tab"
+          aria-selected={currentTab === tab}
+          tabIndex={currentTab === tab ? 0 : -1}
+          aria-controls={getTabPanelId(tab)}
+          active={currentTab === tab}
+          key={tab}
+          onClick={handleClickTab(tab)}
+          onKeyDown={handleKeyDownTab}
+          ref={(el) => el && (tabsRef.current[tab] = el)}
+        >
+          <div aria-hidden>
+            <FormattedMessage {...tabData[tab].label} />
+            {showCount && <CountText>({tabData[tab].count})</CountText>}
+          </div>
 
-        {availableTabs.map((tab) => (
-          <Tab
-            id={getTabId(tab)}
-            data-testid="tab"
-            role="tab"
-            aria-selected={currentTab === tab}
-            tabIndex={currentTab === tab ? 0 : -1}
-            aria-controls={getTabPanelId(tab)}
-            active={currentTab === tab}
-            key={tab}
-            onClick={handleClickTab(tab)}
-            onKeyDown={handleKeyDownTab}
-            ref={(el) => el && (tabsRef.current[tab] = el)}
-          >
-            <div aria-hidden>
-              <FormattedMessage {...tabData[tab].label} />
-              {showCount && <CountText>({tabData[tab].count})</CountText>}
-            </div>
-
-            {getScreenReaderTextForTab && (
-              <ScreenReaderOnly>
-                {getScreenReaderTextForTab(tab, tabData[tab]?.count)}
-              </ScreenReaderOnly>
-            )}
-          </Tab>
-        ))}
-      </TabsContainer>
+          {getScreenReaderTextForTab && (
+            <ScreenReaderOnly>
+              {getScreenReaderTextForTab(tab, tabData[tab]?.count)}
+            </ScreenReaderOnly>
+          )}
+        </Tab>
+      ))}
     </HorizontalScroll>
   );
 };
