@@ -20,13 +20,12 @@ import TopBar from '../../components/ReportBuilder/TopBar';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
+import EditModePreview from '../../components/ReportBuilder/EditModePreview';
 import Settings from 'components/admin/ContentBuilder/Settings';
+import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrapper';
 
 // templates
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
-
-// constants
-import { A4_WIDTH } from '../../constants';
 
 // typings
 import {
@@ -120,65 +119,33 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
             display={previewEnabled ? 'none' : 'flex'}
           >
             <Toolbox reportId={reportId} />
-            <StyledRightColumn>
-              <Box width={A4_WIDTH}>
-                <Box
-                  background="white"
-                  px="30px"
-                  py="30px"
-                  width="100%"
-                  height="100%"
-                >
-                  <LanguageProvider
-                    contentBuilderLocale={selectedLocale}
-                    platformLocale={platformLocale}
-                  >
-                    <Frame editorData={initialData}>
-                      {templateProjectId && (
-                        <ProjectTemplate
-                          reportId={reportId}
-                          projectId={templateProjectId}
-                        />
-                      )}
-                    </Frame>
-                  </LanguageProvider>
-                </Box>
-              </Box>
-            </StyledRightColumn>
+            <LanguageProvider
+              contentBuilderLocale={selectedLocale}
+              platformLocale={platformLocale}
+            >
+              <StyledRightColumn>
+                <PDFWrapper>
+                  <Frame editorData={initialData}>
+                    {templateProjectId && (
+                      <ProjectTemplate
+                        reportId={reportId}
+                        projectId={templateProjectId}
+                      />
+                    )}
+                  </Frame>
+                </PDFWrapper>
+              </StyledRightColumn>
+            </LanguageProvider>
             <Settings />
           </Box>
         </Editor>
-        {previewEnabled && (
-          <Box
-            width="100%"
-            height="100%"
-            display="flex"
-            justifyContent="center"
-            mt={`${stylingConsts.menuHeight}px`}
-            pb="100px"
-          >
-            <StyledRightColumn>
-              <Box width={A4_WIDTH}>
-                <Box
-                  background="white"
-                  px="30px"
-                  py="30px"
-                  width="100%"
-                  height="100%"
-                >
-                  <Editor isPreview={true}>
-                    <LanguageProvider
-                      contentBuilderLocale={selectedLocale}
-                      platformLocale={platformLocale}
-                    >
-                      <Frame editorData={previewData} />
-                    </LanguageProvider>
-                  </Editor>
-                </Box>
-              </Box>
-            </StyledRightColumn>
-          </Box>
-        )}
+        <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
+          <EditModePreview
+            reportId={reportId}
+            previewData={previewData}
+            selectedLocale={selectedLocale}
+          />
+        </Box>
       </FullscreenContentBuilder>
     </ReportContextProvider>
   );
