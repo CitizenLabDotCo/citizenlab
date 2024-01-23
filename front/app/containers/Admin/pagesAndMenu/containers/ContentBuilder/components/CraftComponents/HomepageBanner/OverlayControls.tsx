@@ -45,7 +45,6 @@ interface Props {
   bannerOverlayOpacity: number | null;
   bannerOverlayColor: string;
   onOverlayChange: (opacity: number | null, color: string | null) => void;
-  noOpacitySlider?: boolean;
 }
 
 const defaultOpacity = 90;
@@ -55,7 +54,6 @@ const OverlayControls = ({
   bannerOverlayOpacity,
   bannerOverlayColor,
   onOverlayChange,
-  noOpacitySlider,
 }: Props) => {
   const [overlayEnabled, setOverlayEnabled] = useState(
     typeof bannerOverlayOpacity === 'number' && bannerOverlayOpacity !== 0
@@ -129,20 +127,16 @@ const OverlayControls = ({
               onChange={handleOverlayColorOnChange}
             />
           </Box>
-          {!noOpacitySlider && (
-            <>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayOpacity} />
-              </Label>
-              <RangeInput
-                step={1}
-                min={0}
-                max={100}
-                value={bannerOverlayOpacity}
-                onChange={debouncedHandleOverlayOpacityOnChange}
-              />
-            </>
-          )}
+          <Label>
+            <FormattedMessage {...messages.imageOverlayOpacity} />
+          </Label>
+          <RangeInput
+            step={1}
+            min={0}
+            max={100}
+            value={bannerOverlayOpacity}
+            onChange={debouncedHandleOverlayOpacityOnChange}
+          />
         </StyledBox>
       )}
     </>
