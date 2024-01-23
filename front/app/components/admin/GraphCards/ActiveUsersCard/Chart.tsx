@@ -66,7 +66,7 @@ const Chart = ({
     return null;
   }
 
-  const noData = !!timeSeries;
+  const noData = timeSeries === null;
 
   return (
     <LineChart
