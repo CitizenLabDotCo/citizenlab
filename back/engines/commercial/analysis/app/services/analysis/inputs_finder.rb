@@ -55,7 +55,6 @@ module Analysis
       scope
     end
 
-
     def filter_published_at(inputs)
       scope = inputs
 
