@@ -19,13 +19,22 @@ import { injectIntl } from 'utils/cl-intl';
 // typings
 import { ITab } from 'typings';
 
-const TABS = {
-  overview: {
+const MODERATOR_TABS = [
+  {
     message: messages.tabOverview,
     url: '/admin/dashboard/overview',
     name: 'overview',
   },
-};
+];
+
+const ADMIN_TABS = [
+  ...MODERATOR_TABS,
+  {
+    message: messages.tabUsers,
+    url: '/admin/dashboard/users',
+    name: 'users',
+  },
+];
 
 export const DashboardsPage = memo(
   ({ intl: { formatMessage } }: WrappedComponentProps) => {
@@ -64,7 +73,6 @@ export const DashboardsPage = memo(
 
     return (
       <>
-        {/* Filter out project tab when insights module is active */}
         <DashboardTabs resource={resource} tabs={tabs}>
           <HelmetIntl
             title={messages.helmetTitle}
