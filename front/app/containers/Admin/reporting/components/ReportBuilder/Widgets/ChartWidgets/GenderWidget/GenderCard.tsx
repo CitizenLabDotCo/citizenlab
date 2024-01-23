@@ -15,23 +15,19 @@ import { useIntl } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { serieHasValues } from '../utils';
-import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/GenderChart/convertToGraphFormat';
 
 // types
 import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
-import { UsersByGenderResponse } from 'containers/Admin/dashboard/users/Charts/GenderChart/typings';
+import { useUsersByGender } from 'api/graph_data_units';
 
 type Props = ProjectId & Dates;
 
 const GenderCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
-  const usersByGender = useGraphDataUnits<UsersByGenderResponse>({
-    resolvedName: 'GenderWidget',
-    props: {
-      startAtMoment,
-      endAtMoment,
-      projectId,
-    },
+  const usersByGender = useUsersByGender({
+    startAtMoment,
+    endAtMoment,
+    projectId,
   });
   const { formatMessage } = useIntl();
 

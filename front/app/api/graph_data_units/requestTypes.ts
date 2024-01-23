@@ -67,14 +67,16 @@ export interface VisitorsTrafficSourcesParams extends BaseParams {
   };
 }
 
+export interface GenderProps {
+  projectId?: string | undefined;
+  startAtMoment?: Moment | null | undefined;
+  endAtMoment?: Moment | null;
+  groupId?: string | null;
+}
+
 export interface GenderParams extends BaseParams {
   resolvedName: 'GenderWidget';
-  props: {
-    projectId?: string | undefined;
-    startAtMoment?: Moment | null | undefined;
-    endAtMoment?: Moment | null;
-    groupId?: string | null;
-  };
+  props: GenderProps;
 }
 
 export interface AgeParams extends BaseParams {
