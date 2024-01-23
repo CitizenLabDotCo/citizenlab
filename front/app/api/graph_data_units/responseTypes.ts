@@ -1,7 +1,11 @@
 import { GenderOption } from 'api/users_by_gender/types';
 import {
+  InputsCountRow,
+  TimeSeriesResponseRow as PostsTimeSeriesResponseRow,
+} from 'components/admin/GraphCards/PostsByTimeCard/usePostsByTime/typings';
+import {
   ActiveUsersRow,
-  TimeSeriesResponseRow,
+  TimeSeriesResponseRow as UsersTimeSeriesResponseRow,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget/useActiveUsers/typings';
 
 export type UsersByGenderResponse = {
@@ -25,6 +29,13 @@ export type UsersByBirthyearResponse = {
 export interface ActiveUsersResponse {
   data: {
     type: 'report_builder_data_units';
-    attributes: [TimeSeriesResponseRow[] | [], [ActiveUsersRow] | []];
+    attributes: [UsersTimeSeriesResponseRow[] | [], [ActiveUsersRow] | []];
   };
 }
+
+export type PostsByTimeResponse = {
+  data: {
+    type: 'report_builder_data_units';
+    attributes: [PostsTimeSeriesResponseRow[] | [], [InputsCountRow] | []];
+  };
+};

@@ -1,5 +1,6 @@
 import {
   ActiveUsersResponse,
+  PostsByTimeResponse,
   UsersByBirthyearResponse,
   UsersByGenderResponse,
 } from './responseTypes';
@@ -42,6 +43,26 @@ export const useActiveUsers = (
   return useGraphDataUnits<ActiveUsersResponse>(
     {
       resolvedName: 'ActiveUsersWidget',
+      props,
+    },
+    { onSuccess }
+  );
+};
+
+export const usePostsByTime = (props: AnalyticsProps) => {
+  return useGraphDataUnits<PostsByTimeResponse>({
+    resolvedName: 'PostsByTimeWidget',
+    props,
+  });
+};
+
+export const usePostsByTimeLive = (
+  props: AnalyticsProps,
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnitsLive<PostsByTimeResponse>(
+    {
+      resolvedName: 'PostsByTimeWidget',
       props,
     },
     { onSuccess }
