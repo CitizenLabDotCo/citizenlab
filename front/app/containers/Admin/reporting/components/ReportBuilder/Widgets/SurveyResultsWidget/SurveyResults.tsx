@@ -42,7 +42,7 @@ const SurveyResults = ({ phaseId, shownQuestions }: Props) => {
 
   const formResults = useGraphDataUnits<SurveyResultsType>({
     resolvedName: 'SurveyResultsWidget',
-    queryParameters: {
+    props: {
       phaseId,
     },
   });

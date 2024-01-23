@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useAgeSerie from 'containers/Admin/dashboard/users/Charts/AgeChart/useAgeSerie';
+import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -10,23 +10,31 @@ import BarChart from 'components/admin/Graphs/BarChart';
 
 // i18n
 import messages from '../messages';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { serieHasValues } from '../utils';
+import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/AgeChart/convertToGraphFormat';
 
-interface Props {
-  startAt: string | null | undefined;
-  endAt: string | null;
-  projectId: string | undefined;
-}
+// types
+import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
+import { UsersByBirthyearResponse } from 'containers/Admin/dashboard/users/Charts/AgeChart/typings';
 
-const AgeCard = ({ startAt, endAt, projectId }: Props) => {
-  const ageSerie = useAgeSerie({
-    startAt,
-    endAt,
-    projectId,
+type Props = ProjectId & Dates;
+
+const AgeCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
+  const usersByBirthyear = useGraphDataUnits<UsersByBirthyearResponse>({
+    resolvedName: 'AgeWidget',
+    props: {
+      startAtMoment,
+      endAtMoment,
+      projectId,
+    },
   });
+  const { formatMessage } = useIntl();
+
+  const ageSerie = convertToGraphFormat(usersByBirthyear, formatMessage);
 
   if (isNilOrError(ageSerie) || !serieHasValues(ageSerie)) {
     return <NoData message={messages.noData} />;

@@ -19,29 +19,33 @@ export default function useCommentsByTime({
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const analytics = useGraphDataUnits<Response>({
-    resolvedName: 'CommentsByTimeWidget',
-    queryParameters: {
-      projectId,
-      startAtMoment,
-      endAtMoment,
-      resolution,
+  const dataUnits = useGraphDataUnits<Response>(
+    {
+      resolvedName: 'CommentsByTimeWidget',
+      props: {
+        projectId,
+        startAtMoment,
+        endAtMoment,
+        resolution,
+      },
     },
-    onSuccess: () => setCurrentResolution(resolution),
-  });
+    {
+      onSuccess: () => setCurrentResolution(resolution),
+    }
+  );
 
   const timeSeries = useMemo(
     () =>
-      analytics?.data
+      dataUnits?.data
         ? parseTimeSeries(
-            analytics.data.attributes[0],
+            dataUnits.data.attributes[0],
             startAtMoment,
             endAtMoment,
             currentResolution,
-            analytics.data.attributes[1]
+            dataUnits.data.attributes[1]
           )
         : null,
-    [analytics?.data, startAtMoment, endAtMoment, currentResolution]
+    [dataUnits?.data, startAtMoment, endAtMoment, currentResolution]
   );
 
   return { currentResolution, timeSeries };
