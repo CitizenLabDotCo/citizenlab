@@ -461,6 +461,8 @@
   "app.containers.Admin.Insights.createModalProjectsLabel": "Project(en)",
   "app.containers.Admin.Insights.createModalSaveView": "Maak het inzicht aan",
   "app.containers.Admin.Insights.createModalTitle": "Start met de analyse van je bijdragen",
+  "app.containers.Admin.Insights.deprecationWarningDescription": "Deze functionaliteit wordt binnenkort verwijderd. Het is niet langer mogelijk om nieuwe inzichten te creëren. Je kunt nog wel je bestaande inzichten bekijken en exporteren.",
+  "app.containers.Admin.Insights.deprecationWarningTitle": "Deze functionaliteit wordt niet meer ondersteund",
   "app.containers.Admin.Insights.description": "Analyseer op een efficiënte manier tekstuele bijdragen uit een project. Groepeer via tags individuele bijdragen en begrijp hierdoor beter wat deelnemers zeggen.",
   "app.containers.Admin.Insights.discover": "Ontdek hoe het werkt",
   "app.containers.Admin.Insights.emptyStateAccentText": "zeggen",
