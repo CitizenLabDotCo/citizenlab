@@ -5,10 +5,11 @@ module Analysis
     class AnthropicClaude < Base
       def initialize(**params)
         super()
-        
+
         if !params.key? :region
           raise 'No AWS region specified for Anthropic Claude model.'
         end
+
         @client = Aws::BedrockRuntime::Client.new(params)
       end
 
@@ -22,12 +23,12 @@ module Analysis
         0.4
       end
 
-      def chat(prompt, **params)
+      def chat(prompt, **_params)
         resp = @client.invoke_model invoke_params(prompt)
         body_completion resp.body.string
       end
 
-      def chat_async(prompt, **params)
+      def chat_async(prompt, **_params)
         chunk_handler = Aws::BedrockRuntime::EventStreams::ResponseStream.new
         chunk_handler.on_chunk_event do |event|
           puts body_completion(event.bytes)
@@ -45,10 +46,10 @@ module Analysis
 
       def invoke_params(prompt)
         json = {
-          'prompt': "\n\nHuman: #{prompt}\n\nAssistant:",
-          'max_tokens_to_sample': 300,
-          'temperature': 0.1,
-          'top_p': 0.9,
+          'prompt' => "\n\nHuman: #{prompt}\n\nAssistant:",
+          'max_tokens_to_sample' => 300,
+          'temperature' => 0.1,
+          'top_p' => 0.9
         }
         { model_id: model_id, body: json.to_json }
       end

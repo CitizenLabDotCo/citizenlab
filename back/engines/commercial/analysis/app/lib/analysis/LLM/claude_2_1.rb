@@ -3,7 +3,6 @@
 module Analysis
   module LLM
     class Claude21 < AnthropicClaude
-
       def context_window
         # From https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-claude.html:
         # To avoid timeouts with Anthropic Claude version 2.1, we recommend limiting the input

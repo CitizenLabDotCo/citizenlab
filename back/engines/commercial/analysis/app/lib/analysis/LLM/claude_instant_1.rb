@@ -3,7 +3,6 @@
 module Analysis
   module LLM
     class ClaudeInstant1 < AnthropicClaude
-
       def context_window
         # From https://docs.anthropic.com/claude/reference/input-and-output-sizes
         100_000
