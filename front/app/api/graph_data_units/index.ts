@@ -1,5 +1,6 @@
 import {
   ActiveUsersResponse,
+  CommentsByTimeResponse,
   PostsByTimeResponse,
   UsersByBirthyearResponse,
   UsersByGenderResponse,
@@ -63,6 +64,32 @@ export const usePostsByTimeLive = (
   return useGraphDataUnitsLive<PostsByTimeResponse>(
     {
       resolvedName: 'PostsByTimeWidget',
+      props,
+    },
+    { onSuccess }
+  );
+};
+
+export const useCommentsByTime = (
+  props: AnalyticsProps,
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnits<CommentsByTimeResponse>(
+    {
+      resolvedName: 'CommentsByTimeWidget',
+      props,
+    },
+    { onSuccess }
+  );
+};
+
+export const useCommentsByTimeLive = (
+  props: AnalyticsProps,
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnitsLive<CommentsByTimeResponse>(
+    {
+      resolvedName: 'CommentsByTimeWidget',
       props,
     },
     { onSuccess }
