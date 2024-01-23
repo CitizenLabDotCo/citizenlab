@@ -25,7 +25,10 @@ import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/c
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+
+// utils
 import { showOnboarding } from 'containers/Authentication/useSteps/stepConfig/utils';
+import { isAdmin } from 'utils/permissions/roles';
 
 const DropdownListItem = styled(Button)``;
 
@@ -79,12 +82,16 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
       content={
         <>
           <HasPermission
-            item={{ type: 'route', path: '/admin/dashboard/overview' }}
+            item={{ type: 'route', path: '/admin/projects' }}
             action="access"
           >
             <DropdownListItem
               id="admin-link"
-              linkTo={'/admin/dashboard/overview'}
+              linkTo={
+                isAdmin(authUser)
+                  ? '/admin/dashboard/overview'
+                  : '/admin/projects'
+              }
               onClick={handleCloseDropdown}
               buttonStyle="text"
               bgHoverColor={colors.grey300}

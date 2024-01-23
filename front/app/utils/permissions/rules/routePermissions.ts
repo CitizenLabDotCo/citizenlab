@@ -12,13 +12,11 @@ import { IUser } from 'api/users/types';
 import { IAppConfigurationData } from 'api/app_configuration/types';
 
 const MODERATOR_ROUTES = [
-  '/admin/dashboard',
   '/admin/projects',
   '/admin/ideas',
   '/admin/ideas/import',
   '/admin/tools',
   '/admin/processing',
-  '/admin/dashboard/moderation',
   '/admin/reporting/insights',
   '/admin/reporting/report-builder',
   '/admin/project-description-builder',

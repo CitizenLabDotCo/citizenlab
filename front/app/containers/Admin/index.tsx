@@ -137,7 +137,7 @@ const AdminPage = memo<Props & WithRouterProps>(
 
     return (
       <HasPermission
-        item={{ type: 'route', path: '/admin/dashboard' }}
+        item={{ type: 'route', path: '/admin/projects' }}
         action="access"
       >
         <Container className={className}>
