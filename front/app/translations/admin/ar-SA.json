@@ -461,6 +461,8 @@
   "app.containers.Admin.Insights.createModalProjectsLabel": "مشروع (مشاريع)",
   "app.containers.Admin.Insights.createModalSaveView": "إنشاء الرؤى",
   "app.containers.Admin.Insights.createModalTitle": "بدء تحليل مدخلاتك",
+  "app.containers.Admin.Insights.deprecationWarningDescription": "ستتم إزالة هذه الميزة قريبًا. لم يعد إنشاء رؤى جديدة ممكنا. لا يزال بإمكانك عرض وتصدير الرؤى الموجودة لديك.",
+  "app.containers.Admin.Insights.deprecationWarningTitle": "تم إهمال هذه الميزة",
   "app.containers.Admin.Insights.description": "حلل المدخلات النصية بكفاءة في منصتك. جمِّع المساهمات الفردية المرتبطة ببعضها. افهم ما يقوله المشاركون فعليًا.",
   "app.containers.Admin.Insights.discover": "اكتشف كيفية العمل",
   "app.containers.Admin.Insights.emptyStateAccentText": "التحدث عن",
