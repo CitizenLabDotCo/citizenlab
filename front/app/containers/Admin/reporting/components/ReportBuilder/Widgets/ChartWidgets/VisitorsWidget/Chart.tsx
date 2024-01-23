@@ -5,26 +5,27 @@ import { colors } from 'components/admin/Graphs/styling';
 
 // components
 import LineChart from 'components/admin/Graphs/LineChart';
-import renderTooltip from './renderTooltip';
+import renderTooltip from 'components/admin/GraphCards/VisitorsCard/Chart/renderTooltip';
 
 // i18n
-import messages from '../messages';
+import messages from 'components/admin/GraphCards/VisitorsCard/messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
-import { generateEmptyData } from './generateEmptyData';
+import { formatLargeNumber } from '../utils';
+import { generateEmptyData } from 'components/admin/GraphCards/VisitorsCard/Chart/generateEmptyData';
 
 // typings
-import { Dates, Resolution } from '../../typings';
+import { Dates, Layout, Resolution } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-import { TimeSeries } from '../useVisitors/typings';
+import { TimeSeries } from 'components/admin/GraphCards/VisitorsCard/useVisitors/typings';
 
 type Props = Dates &
   Resolution & {
     timeSeries: TimeSeries | NilOrError;
-    innerRef: React.RefObject<any>;
+    layout?: Layout;
   };
 
 const emptyLineConfig = { strokeWidths: [0, 0] };
@@ -38,7 +39,7 @@ const Chart = ({
   startAtMoment,
   endAtMoment,
   resolution,
-  innerRef,
+  layout = 'wide',
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -80,15 +81,28 @@ const Chart = ({
         x: 'date',
         y: ['visitors', 'visits'],
       }}
+      margin={
+        layout === 'narrow'
+          ? {
+              left: 5,
+              right: -20,
+              top: 0,
+              bottom: 0,
+            }
+          : undefined
+      }
       lines={noData ? emptyLineConfig : lineConfig}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
+      yaxis={{
+        orientation: layout === 'narrow' ? 'right' : 'left',
+        tickFormatter: formatLargeNumber,
+      }}
       tooltip={noData ? undefined : renderTooltip(resolution)}
       legend={{
         marginTop: 16,
         items: legendItems,
       }}
-      innerRef={noData ? undefined : innerRef}
     />
   );
 };

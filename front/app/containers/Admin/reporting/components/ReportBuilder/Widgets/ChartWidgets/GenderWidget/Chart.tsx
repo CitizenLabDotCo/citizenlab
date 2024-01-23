@@ -2,30 +2,21 @@ import React, { useState } from 'react';
 
 // components
 import PieChart from 'components/admin/Graphs/PieChart';
-import renderTooltip from './renderTooltip';
+import renderTooltip from 'containers/Admin/dashboard/users/Charts/GenderChart/renderTooltip';
 
-// styling
-import { categoricalColorScheme } from 'components/admin/Graphs/styling';
+// utils
+import { makeLegendItem } from 'containers/Admin/dashboard/users/Charts/GenderChart/Chart';
 
 // typings
-import { GenderSerie } from './typings';
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import { GenderSerie } from 'containers/Admin/dashboard/users/Charts/GenderChart/typings';
+import { Layout } from 'components/admin/GraphCards/typings';
 
 interface Props {
-  innerRef?: React.RefObject<any>;
+  layout?: Layout;
   data: GenderSerie;
 }
 
-export const makeLegendItem = (
-  row: GenderSerie[number],
-  i: number
-): LegendItem => ({
-  icon: 'circle',
-  color: categoricalColorScheme({ rowIndex: i }),
-  label: `${row.name} (${row.percentage}%)`,
-});
-
-const Chart = ({ innerRef, data }: Props) => {
+const Chart = ({ layout = 'wide', data }: Props) => {
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => setHoverIndex(rowIndex);
@@ -34,7 +25,7 @@ const Chart = ({ innerRef, data }: Props) => {
   return (
     <PieChart
       data={data}
-      width={164}
+      width={layout === 'narrow' ? '100%' : 164}
       height={195}
       mapping={{
         angle: 'value',
@@ -49,13 +40,13 @@ const Chart = ({ innerRef, data }: Props) => {
         endAngle: 360,
         outerRadius: 60,
       }}
-      innerRef={innerRef}
       tooltip={renderTooltip()}
       legend={{
         items: data.map(makeLegendItem),
-        maintainGraphSize: true,
-        marginLeft: 50,
-        position: 'right-center',
+        marginTop: layout === 'narrow' ? 0 : undefined,
+        marginLeft: layout === 'narrow' ? 10 : 50,
+        maintainGraphSize: layout !== 'narrow',
+        position: layout === 'narrow' ? 'bottom-center' : 'right-center',
       }}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}

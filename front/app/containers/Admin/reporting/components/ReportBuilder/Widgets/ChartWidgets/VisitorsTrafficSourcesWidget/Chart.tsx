@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 
 // components
 import PieChart from 'components/admin/Graphs/PieChart';
-import renderTooltip from './renderTooltip';
+import renderTooltip from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/renderTooltip';
 
 // typings
-import { PieRow } from './useVisitorReferrerTypes/typings';
+import { PieRow } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import { Layout } from 'components/admin/GraphCards/typings';
 
 interface Props {
   pieData: PieRow[];
-  innerRef?: React.RefObject<any>;
+  layout?: Layout;
 }
 
-const Chart = ({ pieData, innerRef }: Props) => {
+const Chart = ({ pieData, layout = 'wide' }: Props) => {
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => {
@@ -34,7 +35,7 @@ const Chart = ({ pieData, innerRef }: Props) => {
 
   return (
     <PieChart
-      width={164}
+      width={layout === 'narrow' ? '100%' : 164}
       height={195}
       data={pieData}
       mapping={{
@@ -45,14 +46,19 @@ const Chart = ({ pieData, innerRef }: Props) => {
           return hoverIndex === rowIndex ? 1 : 0.3;
         },
       }}
+      pie={{
+        startAngle: 0,
+        endAngle: 360,
+        outerRadius: 60,
+      }}
       tooltip={renderTooltip()}
       legend={{
         items: legend,
-        marginLeft: 50,
-        maintainGraphSize: true,
-        position: 'right-center',
+        marginTop: layout === 'narrow' ? 0 : undefined,
+        marginLeft: layout === 'narrow' ? 10 : 50,
+        maintainGraphSize: layout !== 'narrow',
+        position: layout === 'narrow' ? 'bottom-center' : 'right-center',
       }}
-      innerRef={innerRef}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     />

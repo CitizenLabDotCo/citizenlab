@@ -5,7 +5,7 @@ import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import Chart from 'containers/Admin/dashboard/users/Charts/GenderChart/Chart';
+import Chart from './Chart';
 import NoData from '../../_shared/NoData';
 
 // i18n

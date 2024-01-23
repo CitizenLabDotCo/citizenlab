@@ -5,40 +5,48 @@ import { colors } from 'components/admin/Graphs/styling';
 
 // components
 import LineChart from 'components/admin/Graphs/LineChart';
-import renderTooltip from './renderTooltip';
+import renderTooltip from 'components/admin/GraphCards/ActiveUsersCard/renderTooltip';
 
 // i18n
-import messages from '../messages';
+import messages from 'components/admin/GraphCards/ActiveUsersCard/messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
-import { generateEmptyData } from './generateEmptyData';
+import { generateEmptyData } from 'components/admin/GraphCards/ActiveUsersCard/generateEmptyData';
 
 // typings
-import { Dates, Resolution } from '../../typings';
+import { Dates, Resolution, Layout } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-import { TimeSeries } from '../useVisitors/typings';
+import { TimeSeries } from './useActiveUsers/typings';
 
 type Props = Dates &
   Resolution & {
-    timeSeries: TimeSeries | NilOrError;
-    innerRef: React.RefObject<any>;
+    timeSeries: TimeSeries | null;
+    layout?: Layout;
   };
 
-const emptyLineConfig = { strokeWidths: [0, 0] };
+const emptyLineConfig = { strokeWidths: [0] };
 const lineConfig = {
-  strokes: [colors.categorical01, colors.categorical03],
+  strokes: [colors.categorical01],
   activeDot: { r: 4 },
 };
+
+const MARGINS = {
+  wide: {
+    top: 10,
+  },
+  narrow: {
+    right: -20,
+  },
+} as const;
 
 const Chart = ({
   timeSeries,
   startAtMoment,
   endAtMoment,
   resolution,
-  innerRef,
+  layout = 'wide',
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -51,12 +59,7 @@ const Chart = ({
     {
       icon: 'circle',
       color: colors.categorical01,
-      label: formatMessage(messages.visitors),
-    },
-    {
-      icon: 'circle',
-      color: colors.categorical03,
-      label: formatMessage(messages.visits),
+      label: formatMessage(messages.activeUsers),
     },
   ];
 
@@ -69,7 +72,7 @@ const Chart = ({
     return null;
   }
 
-  const noData = isNilOrError(timeSeries);
+  const noData = timeSeries === null;
 
   return (
     <LineChart
@@ -78,17 +81,20 @@ const Chart = ({
       data={noData ? emptyData : timeSeries}
       mapping={{
         x: 'date',
-        y: ['visitors', 'visits'],
+        y: ['activeUsers'],
       }}
+      margin={MARGINS[layout]}
       lines={noData ? emptyLineConfig : lineConfig}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
+      yaxis={{
+        orientation: layout === 'narrow' ? 'right' : 'left',
+      }}
       tooltip={noData ? undefined : renderTooltip(resolution)}
       legend={{
         marginTop: 16,
         items: legendItems,
       }}
-      innerRef={noData ? undefined : innerRef}
     />
   );
 };

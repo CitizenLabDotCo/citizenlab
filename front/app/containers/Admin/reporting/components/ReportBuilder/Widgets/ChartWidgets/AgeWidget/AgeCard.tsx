@@ -1,6 +1,7 @@
 import React from 'react';
 
 // hooks
+import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 
 // components
@@ -13,13 +14,23 @@ import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { serieHasValues } from '../utils';
+import { serieHasValues, formatLargeNumber } from '../utils';
 import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/AgeChart/convertToGraphFormat';
 
-// types
-import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
+// typings
+import { ProjectId, Dates, Layout } from 'components/admin/GraphCards/typings';
+import { Margin } from 'components/admin/Graphs/typings';
 import { UsersByBirthyearResponse } from 'containers/Admin/dashboard/users/Charts/AgeChart/typings';
+
+const MARGINS: Record<Layout, Margin | undefined> = {
+  wide: {
+    left: -20,
+    right: 20,
+  },
+  narrow: {
+    right: -20,
+  },
+};
 
 type Props = ProjectId & Dates;
 
@@ -36,7 +47,9 @@ const AgeCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
 
   const ageSerie = convertToGraphFormat(usersByBirthyear, formatMessage);
 
-  if (isNilOrError(ageSerie) || !serieHasValues(ageSerie)) {
+  const layout = useLayout();
+
+  if (!ageSerie || !serieHasValues(ageSerie)) {
     return <NoData message={messages.noData} />;
   }
 
@@ -44,13 +57,14 @@ const AgeCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
     <Box width="100%" height="220px" mt="20px" pb="10px">
       <BarChart
         data={ageSerie}
-        margin={{
-          left: -20,
-          right: 20,
-        }}
+        margin={MARGINS[layout]}
         mapping={{
           category: 'name',
           length: 'value',
+        }}
+        yaxis={{
+          orientation: 'right',
+          tickFormatter: formatLargeNumber,
         }}
         labels
         tooltip
