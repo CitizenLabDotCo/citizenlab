@@ -1,8 +1,9 @@
 import {
+  ActiveUsersResponse,
   UsersByBirthyearResponse,
   UsersByGenderResponse,
 } from './responseTypes';
-import { AgeProps, GenderProps } from './requestTypes';
+import { AgeProps, AnalyticsProps, GenderProps } from './requestTypes';
 import useGraphDataUnits from './useGraphDataUnits';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
 
@@ -32,4 +33,17 @@ export const useUsersByAgeLive = (props: AgeProps) => {
     resolvedName: 'AgeWidget',
     props,
   });
+};
+
+export const useActiveUsers = (
+  props: AnalyticsProps,
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnits<ActiveUsersResponse>(
+    {
+      resolvedName: 'ActiveUsersWidget',
+      props,
+    },
+    { onSuccess }
+  );
 };

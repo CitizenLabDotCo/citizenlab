@@ -38,7 +38,7 @@ export interface SurveyResultsParams extends BaseParams {
   };
 }
 
-interface AnalyticsProps {
+export interface AnalyticsProps {
   projectId?: string | undefined;
   startAtMoment?: Moment | null | undefined;
   endAtMoment?: Moment | null;
