@@ -2,7 +2,7 @@ import React from 'react';
 
 // hooks
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
-import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
+import { useUsersByAge } from 'api/graph_data_units';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -20,7 +20,6 @@ import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/AgeCha
 // typings
 import { ProjectId, Dates, Layout } from 'components/admin/GraphCards/typings';
 import { Margin } from 'components/admin/Graphs/typings';
-import { UsersByBirthyearResponse } from 'containers/Admin/dashboard/users/Charts/AgeChart/typings';
 
 const MARGINS: Record<Layout, Margin | undefined> = {
   wide: {
@@ -35,13 +34,10 @@ const MARGINS: Record<Layout, Margin | undefined> = {
 type Props = ProjectId & Dates;
 
 const AgeCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
-  const usersByBirthyear = useGraphDataUnits<UsersByBirthyearResponse>({
-    resolvedName: 'AgeWidget',
-    props: {
-      startAtMoment,
-      endAtMoment,
-      projectId,
-    },
+  const usersByBirthyear = useUsersByAge({
+    startAtMoment,
+    endAtMoment,
+    projectId,
   });
   const { formatMessage } = useIntl();
 

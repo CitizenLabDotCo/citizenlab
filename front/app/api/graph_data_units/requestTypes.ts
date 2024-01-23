@@ -79,14 +79,16 @@ export interface GenderParams extends BaseParams {
   props: GenderProps;
 }
 
+export interface AgeProps {
+  projectId?: string | undefined;
+  startAtMoment?: Moment | null | undefined;
+  endAtMoment?: Moment | null;
+  groupId?: string | null;
+}
+
 export interface AgeParams extends BaseParams {
   resolvedName: 'AgeWidget';
-  props: {
-    projectId?: string | undefined;
-    startAtMoment?: Moment | null | undefined;
-    endAtMoment?: Moment | null;
-    groupId?: string | null;
-  };
+  props: AgeProps;
 }
 
 export interface ActiveUsersParams extends BaseParams {
