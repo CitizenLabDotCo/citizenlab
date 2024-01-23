@@ -11,6 +11,10 @@ module Analysis
         180_000
       end
 
+      def accuracy
+        0.5
+      end
+
       protected
 
       def model_id
