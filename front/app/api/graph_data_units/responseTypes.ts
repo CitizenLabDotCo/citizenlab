@@ -20,6 +20,10 @@ import { IIdeaImageData } from 'api/idea_images/types';
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
+import {
+  TotalsRow as VisitorsTotalsRow,
+  TimeSeriesResponseRow as VisitorsTimeSeriesResponseRow,
+} from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/VisitorsWidget/useVisitors/typings';
 
 export type SurveyResultsResponse = {
   data: {
@@ -37,6 +41,16 @@ export type MostReactedIdeasResponse = {
       phase: IPhaseData;
       idea_images: IIdeaImageData[];
     };
+  };
+};
+
+export type VisitorsResponse = {
+  data: {
+    type: 'report_builder_data_units';
+    attributes: [
+      [VisitorsTotalsRow] | [],
+      VisitorsTimeSeriesResponseRow[] | []
+    ];
   };
 };
 

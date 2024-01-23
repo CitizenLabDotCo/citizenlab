@@ -7,6 +7,7 @@ import {
   SurveyResultsResponse,
   UsersByBirthyearResponse,
   UsersByGenderResponse,
+  VisitorsResponse,
 } from './responseTypes';
 import {
   AgeProps,
@@ -35,6 +36,19 @@ export const useMostReactedIdeas = (
       props,
     },
     { enabled }
+  );
+};
+
+export const useVisitors = (
+  props: AnalyticsProps,
+  { onSuccess }: { onSuccess?: () => void }
+) => {
+  return useGraphDataUnits<VisitorsResponse>(
+    {
+      resolvedName: 'VisitorsWidget',
+      props,
+    },
+    { onSuccess }
   );
 };
 
