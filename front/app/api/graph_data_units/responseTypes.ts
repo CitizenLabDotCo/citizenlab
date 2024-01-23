@@ -24,6 +24,7 @@ import {
   TotalsRow as VisitorsTotalsRow,
   TimeSeriesResponseRow as VisitorsTimeSeriesResponseRow,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/VisitorsWidget/useVisitors/typings';
+import { TrafficSourcesRow } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
 
 export type SurveyResultsResponse = {
   data: {
@@ -53,6 +54,13 @@ export type VisitorsResponse = {
     ];
   };
 };
+
+export interface VisitorsTrafficSourcesResponse {
+  data: {
+    type: 'report_builder_data_units';
+    attributes: TrafficSourcesRow[];
+  };
+}
 
 export type UsersByGenderResponse = {
   data: {

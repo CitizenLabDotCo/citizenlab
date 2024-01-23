@@ -8,6 +8,7 @@ import {
   UsersByBirthyearResponse,
   UsersByGenderResponse,
   VisitorsResponse,
+  VisitorsTrafficSourcesResponse,
 } from './responseTypes';
 import {
   AgeProps,
@@ -15,6 +16,7 @@ import {
   GenderProps,
   MostReactedIdeasProps,
   SurveyResultsProps,
+  VisitorsTrafficSourcesProps,
 } from './requestTypes';
 import useGraphDataUnits from './useGraphDataUnits';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
@@ -50,6 +52,24 @@ export const useVisitors = (
     },
     { onSuccess }
   );
+};
+
+export const useVisitorsTrafficSources = (
+  props: VisitorsTrafficSourcesProps
+) => {
+  return useGraphDataUnits<VisitorsTrafficSourcesResponse>({
+    resolvedName: 'VisitorsTrafficSourcesWidget',
+    props,
+  });
+};
+
+export const useVisitorsTrafficSourcesLive = (
+  props: VisitorsTrafficSourcesProps
+) => {
+  return useGraphDataUnitsLive<VisitorsTrafficSourcesResponse>({
+    resolvedName: 'VisitorsTrafficSourcesWidget',
+    props,
+  });
 };
 
 export const useUsersByGender = (props: GenderProps) => {

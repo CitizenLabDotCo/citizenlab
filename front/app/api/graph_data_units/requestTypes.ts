@@ -60,13 +60,14 @@ export interface VisitorsParams extends BaseParams {
   props: AnalyticsProps;
 }
 
+export interface VisitorsTrafficSourcesProps {
+  projectId?: string | undefined;
+  startAtMoment?: Moment | null | undefined;
+  endAtMoment?: Moment | null;
+}
 export interface VisitorsTrafficSourcesParams extends BaseParams {
   resolvedName: 'VisitorsTrafficSourcesWidget';
-  props: {
-    projectId?: string | undefined;
-    startAtMoment?: Moment | null | undefined;
-    endAtMoment?: Moment | null;
-  };
+  props: VisitorsTrafficSourcesProps;
 }
 
 export interface GenderProps {
