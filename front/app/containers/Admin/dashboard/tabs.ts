@@ -2,16 +2,12 @@ import { MessageDescriptor } from 'react-intl';
 import messages from './messages';
 import { FormatMessage } from 'typings';
 
-export const BASE_MODERATOR_TABS = [
+const BASE_ADMIN_TABS = [
   {
     message: messages.tabOverview,
     url: '/admin/dashboard/overview',
     name: 'overview',
   },
-];
-
-const BASE_ADMIN_TABS = [
-  ...BASE_MODERATOR_TABS,
   {
     message: messages.tabUsers,
     url: '/admin/dashboard/users',
@@ -37,11 +33,10 @@ const MODERATION_TAB = {
   url: '/admin/dashboard/moderation',
 };
 
-export const getAdminTabs = ({
-  visitorsEnabled,
-  representativenessEnabled,
-  moderationEnabled,
-}) => {
+export const getAdminTabs = (
+  { visitorsEnabled, representativenessEnabled, moderationEnabled },
+  formatMessage: FormatMessage
+) => {
   const tabs = [...BASE_ADMIN_TABS];
 
   if (visitorsEnabled) {
@@ -56,7 +51,7 @@ export const getAdminTabs = ({
     tabs.push(MODERATION_TAB);
   }
 
-  return tabs;
+  return translateTabs(tabs, formatMessage);
 };
 
 type UntranslatedTab = {
@@ -65,7 +60,7 @@ type UntranslatedTab = {
   url: string;
 };
 
-export const translateTabs = (
+const translateTabs = (
   untranslatedTabs: UntranslatedTab[],
   formatMessage: FormatMessage
 ) => {

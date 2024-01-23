@@ -10,14 +10,14 @@ import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // permissions
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 
 // i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
-import { getAdminTabs, BASE_MODERATOR_TABS, translateTabs } from './tabs';
+import { getAdminTabs } from './tabs';
 
 export const DashboardsPage = memo(() => {
   const { formatMessage } = useIntl();
@@ -29,21 +29,22 @@ export const DashboardsPage = memo(() => {
   });
   const moderationEnabled = useFeatureFlag({ name: 'moderation' });
 
-  if (!authUser || (!isAdmin(authUser) && !isProjectModerator(authUser))) {
+  if (!authUser || !isAdmin(authUser)) {
     return null;
   }
 
-  const tabs = isAdmin(authUser)
-    ? getAdminTabs({
-        visitorsEnabled,
-        representativenessEnabled,
-        moderationEnabled,
-      })
-    : BASE_MODERATOR_TABS;
+  const tabs = getAdminTabs(
+    {
+      visitorsEnabled,
+      representativenessEnabled,
+      moderationEnabled,
+    },
+    formatMessage
+  );
 
   return (
     <>
-      <DashboardTabs tabs={translateTabs(tabs, formatMessage)}>
+      <DashboardTabs tabs={tabs}>
         <HelmetIntl
           title={messages.helmetTitle}
           description={messages.helmetDescription}

@@ -13,13 +13,14 @@ export type NavItem = {
   showAtBottom?: boolean;
 };
 
+export const dashboardItem = {
+  name: 'dashboard',
+  link: '/admin/dashboard/overview',
+  iconName: 'dashboard',
+  message: 'dashboard',
+};
+
 const navItems: NavItem[] = [
-  {
-    name: 'dashboard',
-    link: '/admin/dashboard/overview',
-    iconName: 'dashboard',
-    message: 'dashboard',
-  },
   {
     name: 'projects',
     link: '/admin/projects',
