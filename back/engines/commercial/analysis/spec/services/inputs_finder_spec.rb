@@ -313,6 +313,32 @@ describe Analysis::InputsFinder do
     end
   end
 
+  describe 'input_custom_field_empty_values' do
+    let_it_be(:analysis) { create(:analysis) }
+    let_it_be(:custom_form) { create(:custom_form) }
+    let_it_be(:custom_field_select) { create(:custom_field_select, :with_options, resource: custom_form) }
+
+    let_it_be(:input0) { create(:idea, project: analysis.source_project) }
+    let_it_be(:input1) do
+      create(:idea, project: analysis.source_project, custom_field_values: {
+        custom_field_select.key => custom_field_select.options[0].key,
+      })
+    end
+
+    let_it_be(:input2) do
+      create(:idea, project: analysis.source_project, custom_field_values: {
+        custom_field_select.key => custom_field_select.options[1].key,
+      })
+    end
+
+    it 'filters out custom_field with no empty values correctly' do
+      @params = { input_custom_field_empty_values: true }
+      expect(output).to contain_exactly(input1, input2)
+    end
+
+  end
+
+
   describe 'input_custom_<uuid>from/to' do
     let_it_be(:analysis) { create(:analysis) }
     let_it_be(:custom_form) { create(:custom_form) }
