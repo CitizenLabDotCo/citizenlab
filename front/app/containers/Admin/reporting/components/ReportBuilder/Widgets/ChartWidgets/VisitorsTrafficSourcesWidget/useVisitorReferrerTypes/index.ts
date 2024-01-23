@@ -20,7 +20,7 @@ export default function useVisitorsReferrerTypes({
 }: QueryParameters) {
   const analytics = useGraphDataUnits<Response>({
     resolvedName: 'VisitorsTrafficSourcesWidget',
-    queryParameters: {
+    props: {
       projectId,
       startAtMoment,
       endAtMoment,

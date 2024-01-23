@@ -21,7 +21,7 @@ export default function usePostsByTime({
 
   const analytics = useGraphDataUnits<Response>({
     resolvedName: 'PostsByTimeWidget',
-    queryParameters: {
+    props: {
       projectId,
       startAtMoment,
       endAtMoment,

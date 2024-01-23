@@ -17,16 +17,20 @@ export default function useVisitorsData({
   const [currentResolution, setCurrentResolution] =
     useState<IResolution>(resolution);
 
-  const analytics = useGraphDataUnits<Response>({
-    resolvedName: 'VisitorsWidget',
-    queryParameters: {
-      projectId,
-      startAtMoment,
-      endAtMoment,
-      resolution,
+  const analytics = useGraphDataUnits<Response>(
+    {
+      resolvedName: 'VisitorsWidget',
+      props: {
+        projectId,
+        startAtMoment,
+        endAtMoment,
+        resolution,
+      },
     },
-    onSuccess: () => setCurrentResolution(resolution),
-  });
+    {
+      onSuccess: () => setCurrentResolution(resolution),
+    }
+  );
 
   const stats = analytics ? parseStats(analytics.data.attributes) : null;
 

@@ -57,7 +57,6 @@
   "app.components.ConsentManager.Banner.mainText": "Prin navigare, sunteți de acord cu {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Administrează",
   "app.components.ConsentManager.Banner.policyLink": "Politica Cookie",
-  "app.components.ConsentManager.Banner.subText": "Puteți accesa setările pentru cookie-uri în orice moment.",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Confirmă",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Dacă anulați, preferințele vor fi pierdute.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Reclamă",

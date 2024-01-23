@@ -1,3 +1,5 @@
+import { GenderOption } from 'api/users_by_gender/types';
+
 export interface QueryParameters {
   startAt: string | undefined | null;
   endAt: string | null;
@@ -11,3 +13,12 @@ export type GenderSerie = {
   code: string;
   percentage: number;
 }[];
+
+export type UsersByGenderResponse = {
+  data: {
+    type: 'report_builder_data_units';
+    attributes: {
+      [key in GenderOption]: number;
+    };
+  };
+};
