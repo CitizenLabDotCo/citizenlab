@@ -46,12 +46,13 @@ export interface AnalyticsProps {
   resolution?: IResolution;
 }
 
+export interface MostReactedIdeasProps {
+  phaseId?: string | null;
+  numberOfIdeas?: number;
+}
 export interface MostReactedIdeasParams extends BaseParams {
   resolvedName: 'MostReactedIdeasWidget';
-  props: {
-    phaseId?: string | null;
-    numberOfIdeas?: number;
-  };
+  props: MostReactedIdeasProps;
 }
 
 export interface VisitorsParams extends BaseParams {

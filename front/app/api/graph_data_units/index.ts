@@ -1,6 +1,7 @@
 import {
   ActiveUsersResponse,
   CommentsByTimeResponse,
+  MostReactedIdeasResponse,
   PostsByTimeResponse,
   ReactionsByTimeResponse,
   SurveyResultsResponse,
@@ -11,6 +12,7 @@ import {
   AgeProps,
   AnalyticsProps,
   GenderProps,
+  MostReactedIdeasProps,
   SurveyResultsProps,
 } from './requestTypes';
 import useGraphDataUnits from './useGraphDataUnits';
@@ -21,6 +23,19 @@ export const useSurveyResults = (props: SurveyResultsProps) => {
     resolvedName: 'SurveyResultsWidget',
     props,
   });
+};
+
+export const useMostReactedIdeas = (
+  props: MostReactedIdeasProps,
+  { enabled }: { enabled: boolean }
+) => {
+  return useGraphDataUnits<MostReactedIdeasResponse>(
+    {
+      resolvedName: 'MostReactedIdeasWidget',
+      props,
+    },
+    { enabled }
+  );
 };
 
 export const useUsersByGender = (props: GenderProps) => {
