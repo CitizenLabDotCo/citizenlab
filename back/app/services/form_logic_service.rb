@@ -8,7 +8,7 @@ class FormLogicService
   end
 
   def ui_schema_rules_for(target_field)
-    target_field_rules[target_field.id]
+    target_field_rules[target_field.id] || target_field_rules[target_field.key]
   end
 
   def replace_temp_ids!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
@@ -200,6 +200,21 @@ class FormLogicService
     }
   end
 
+  def ui_schema_show_rule_for(field, value)
+    if field.input_type == 'select' || field.input_type == 'multiselect'
+      value = option_index[value].key
+    end
+    {
+      effect: 'SHOW',
+      condition: {
+        scope: "#/properties/#{field.key}",
+        schema: {
+          enum: [value]
+        }
+      }
+    }
+  end
+
   def ui_schema_next_page_rule_for(field)
     {
       effect: 'HIDE',
@@ -243,6 +258,7 @@ class FormLogicService
 
   def add_rules_for_field(field, index, next_page_id, rules_accu)
     rules = field.logic['rules']
+
     return if rules.blank?
 
     # Question-level logic trumps page-level logic.
@@ -270,14 +286,21 @@ class FormLogicService
         end
       end
     end
+
     # Finally add the rules for the collected logic.
     logic.each do |value, target_page_id|
+      if target_page_id.end_with? 'other'
+        # It's target field in this case, not target page
+        rules_accu[target_page_id] ||= []
+        rules_accu[target_page_id] << ui_schema_show_rule_for(field, value)
+      end
+
       pages_to_hide = if target_page_id == 'survey_end'
         pages_after(index)
-      else
+      elsif !target_page_id.end_with? 'other'
         pages_in_between(index, target_page_id)
       end
-      pages_to_hide.each do |page|
+      pages_to_hide&.each do |page|
         rules_accu[page.id] ||= []
         rules_accu[page.id] << ui_schema_hide_rule_for(field, value)
       end
