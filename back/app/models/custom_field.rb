@@ -219,7 +219,8 @@ class CustomField < ApplicationRecord
     return unless options.any?(&:other)
 
     other_field_key = "#{key}_other"
-    set_other_option_logic other_field_key
+    other_option = options.find(&:other)
+    (logic['rules'] ||= []) << { 'if' => other_option.id, 'goto_page_id' => other_field_key }
 
     CustomField.new(
       key: other_field_key,
@@ -230,11 +231,6 @@ class CustomField < ApplicationRecord
   end
 
   private
-
-  def set_other_option_logic(field_key)
-    other_option = options.find(&:other)
-    (logic['rules'] ||= []) << { 'if' => other_option.id, 'goto_page_id' => field_key }
-  end
 
   def set_default_enabled
     self.enabled = true if enabled.nil?
