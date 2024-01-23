@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
@@ -7,84 +7,53 @@ import DashboardTabs from './components/DashboardTabs';
 
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // permissions
 import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 
 // i18n
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
-// typings
-import { ITab } from 'typings';
+// utils
+import { getAdminTabs, BASE_MODERATOR_TABS, translateTabs } from './tabs';
 
-const MODERATOR_TABS = [
-  {
-    message: messages.tabOverview,
-    url: '/admin/dashboard/overview',
-    name: 'overview',
-  },
-];
+export const DashboardsPage = memo(() => {
+  const { formatMessage } = useIntl();
+  const { data: authUser } = useAuthUser();
 
-const ADMIN_TABS = [
-  ...MODERATOR_TABS,
-  {
-    message: messages.tabUsers,
-    url: '/admin/dashboard/users',
-    name: 'users',
-  },
-];
+  const visitorsEnabled = useFeatureFlag({ name: 'analytics' });
+  const representativenessEnabled = useFeatureFlag({
+    name: 'representativeness',
+  });
+  const moderationEnabled = useFeatureFlag({ name: 'moderation' });
 
-export const DashboardsPage = memo(
-  ({ intl: { formatMessage } }: WrappedComponentProps) => {
-    const { data: authUser } = useAuthUser();
-    const [adminTabs, setAdminTabs] = useState<ITab[]>([
-      {
-        label: formatMessage(messages.tabOverview),
-        url: '/admin/dashboard/overview',
-        name: 'overview',
-      },
-      {
-        label: formatMessage(messages.tabUsers),
-        url: '/admin/dashboard/users',
-        name: 'users',
-      },
-    ]);
-
-    if (!authUser || (!isAdmin(authUser) && !isProjectModerator(authUser))) {
-      return null;
-    }
-
-    const moderatorTabs: ITab[] = [
-      {
-        label: formatMessage(messages.tabOverview),
-        url: '/admin/dashboard/overview',
-        name: 'overview',
-      },
-    ];
-
-    const tabs = isAdmin(authUser) ? adminTabs : moderatorTabs;
-
-    const resource = {
-      title: formatMessage(messages.titleDashboard),
-      subtitle: formatMessage(messages.subtitleDashboard),
-    };
-
-    return (
-      <>
-        <DashboardTabs resource={resource} tabs={tabs}>
-          <HelmetIntl
-            title={messages.helmetTitle}
-            description={messages.helmetDescription}
-          />
-          <div id="e2e-dashboard-container">
-            <RouterOutlet />
-          </div>
-        </DashboardTabs>
-      </>
-    );
+  if (!authUser || (!isAdmin(authUser) && !isProjectModerator(authUser))) {
+    return null;
   }
-);
 
-export default injectIntl(DashboardsPage);
+  const tabs = isAdmin(authUser)
+    ? getAdminTabs({
+        visitorsEnabled,
+        representativenessEnabled,
+        moderationEnabled,
+      })
+    : BASE_MODERATOR_TABS;
+
+  return (
+    <>
+      <DashboardTabs tabs={translateTabs(tabs, formatMessage)}>
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
+        />
+        <div id="e2e-dashboard-container">
+          <RouterOutlet />
+        </div>
+      </DashboardTabs>
+    </>
+  );
+});
+
+export default DashboardsPage;
