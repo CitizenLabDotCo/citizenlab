@@ -37,7 +37,7 @@ module IdeaCustomFields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         fields,
         params: serializer_params(@custom_form),
-        include: [:options]
+        include: %i[options options.image]
       ).serializable_hash
     end
 
@@ -45,7 +45,7 @@ module IdeaCustomFields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         @custom_field,
         params: jsonapi_serializer_params,
-        include: [:options]
+        include: %i[options options.image]
       ).serializable_hash
     end
 
@@ -193,7 +193,10 @@ module IdeaCustomFields
       end
     end
 
+    # TODO: JS - Need to work out how to remove images
     def update_option_image!(option, options_params)
+      return unless options_params[:image]
+
       if option.image
         option.image.update(image: options_params[:image])
       else

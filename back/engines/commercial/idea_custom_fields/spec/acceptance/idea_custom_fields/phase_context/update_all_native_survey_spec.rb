@@ -194,7 +194,8 @@ resource 'Idea Custom Fields' do
             other: false,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String)
-          }
+          },
+          relationships: { image: { data: nil } }
         })
         expect(json_option2).to match({
           id: options.last.id,
@@ -206,7 +207,8 @@ resource 'Idea Custom Fields' do
             other: true,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String)
-          }
+          },
+          relationships: { image: { data: nil } }
         })
       end
 
@@ -239,9 +241,6 @@ resource 'Idea Custom Fields' do
         expect(CustomField.all.count).to eq 2
         expect(CustomFieldOption.all.count).to eq 2
         expect(CustomFieldOptionImage.all.count).to eq 2
-
-        binding.pry
-
         expect(response_data.size).to eq 2
         expect(response_data[1]).to match({
           attributes: {
@@ -279,6 +278,9 @@ resource 'Idea Custom Fields' do
             }
           }
         })
+        expect(json_response_body[:included].pluck(:type)).to match_array(
+          %w[image custom_field_option image custom_field_option]
+        )
       end
 
       example 'Remove all custom fields' do
@@ -2602,7 +2604,8 @@ resource 'Idea Custom Fields' do
             other: false,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String)
-          }
+          },
+          relationships: { image: { data: nil } }
         })
         expect(json_option2).to match({
           id: change_option.id,
@@ -2614,7 +2617,8 @@ resource 'Idea Custom Fields' do
             other: false,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String)
-          }
+          },
+          relationships: { image: { data: nil } }
         })
       end
 
