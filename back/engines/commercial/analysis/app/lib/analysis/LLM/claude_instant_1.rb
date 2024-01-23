@@ -5,9 +5,9 @@ module Analysis
     class ClaudeInstant1 < Base
       def initialize(**params)
         super
+        
         if !params.key? :region
-          ErrorReporter.report_msg('No AWS region specified for Claude Instant 1. Falling back to us-east-1.')
-          params[:region] ||= 'us-east-1'
+          raise 'No AWS region specified for Claude Instant 1. Falling back to us-east-1.'
         end
         @client = Aws::BedrockRuntime::Client.new(params)
       end

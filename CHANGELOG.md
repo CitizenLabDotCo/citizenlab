@@ -1,9 +1,5 @@
 # Changelog
 
-### Added
-
-- [TAN-830] Added Claude Instant 1 LLM in the backend.
-
 ## 2023-02-28
 
 ### Fixed
