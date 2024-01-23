@@ -3,12 +3,25 @@ import {
   CommentsByTimeResponse,
   PostsByTimeResponse,
   ReactionsByTimeResponse,
+  SurveyResultsResponse,
   UsersByBirthyearResponse,
   UsersByGenderResponse,
 } from './responseTypes';
-import { AgeProps, AnalyticsProps, GenderProps } from './requestTypes';
+import {
+  AgeProps,
+  AnalyticsProps,
+  GenderProps,
+  SurveyResultsProps,
+} from './requestTypes';
 import useGraphDataUnits from './useGraphDataUnits';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
+
+export const useSurveyResults = (props: SurveyResultsProps) => {
+  return useGraphDataUnits<SurveyResultsResponse>({
+    resolvedName: 'SurveyResultsWidget',
+    props,
+  });
+};
 
 export const useUsersByGender = (props: GenderProps) => {
   return useGraphDataUnits<UsersByGenderResponse>({

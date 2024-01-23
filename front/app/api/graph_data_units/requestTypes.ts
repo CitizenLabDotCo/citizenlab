@@ -31,11 +31,12 @@ export type ParametersLive =
   | CommentsByTimeParams
   | ReactionsByTimeParams;
 
+export interface SurveyResultsProps {
+  phaseId?: string | null;
+}
 export interface SurveyResultsParams extends BaseParams {
   resolvedName: 'SurveyResultsWidget';
-  props: {
-    phaseId?: string | null;
-  };
+  props: SurveyResultsProps;
 }
 
 export interface AnalyticsProps {
@@ -73,7 +74,6 @@ export interface GenderProps {
   endAtMoment?: Moment | null;
   groupId?: string | null;
 }
-
 export interface GenderParams extends BaseParams {
   resolvedName: 'GenderWidget';
   props: GenderProps;
@@ -85,7 +85,6 @@ export interface AgeProps {
   endAtMoment?: Moment | null;
   groupId?: string | null;
 }
-
 export interface AgeParams extends BaseParams {
   resolvedName: 'AgeWidget';
   props: AgeProps;

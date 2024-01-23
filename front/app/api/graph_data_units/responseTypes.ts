@@ -1,3 +1,4 @@
+import { SurveyResultAttributes } from 'api/survey_results/types';
 import { GenderOption } from 'api/users_by_gender/types';
 import {
   CommentsCountRow,
@@ -15,6 +16,13 @@ import {
   ActiveUsersRow,
   TimeSeriesResponseRow as UsersTimeSeriesResponseRow,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget/useActiveUsers/typings';
+
+export type SurveyResultsResponse = {
+  data: {
+    type: 'report_builder_data_units';
+    attributes: SurveyResultAttributes;
+  };
+};
 
 export type UsersByGenderResponse = {
   data: {

@@ -22,14 +22,14 @@ export interface Result {
   customFieldId: string;
 }
 
-export interface SurveyResultData {
-  type: 'survey_results';
-  attributes: {
-    results: Result[];
-    totalSubmissions: number;
-  };
+export interface SurveyResultAttributes {
+  results: Result[];
+  totalSubmissions: number;
 }
 
 export interface SurveyResultsType {
-  data: SurveyResultData;
+  data: {
+    type: 'survey_results';
+    attributes: SurveyResultAttributes;
+  };
 }
