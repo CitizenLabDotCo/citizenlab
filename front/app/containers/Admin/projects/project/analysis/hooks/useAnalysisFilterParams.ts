@@ -13,7 +13,7 @@ const STATIC_SCALAR_FILTERS = [
   'votes_to',
   'comments_from',
   'comments_to',
-  'input_custom_field_empty_values',
+  'input_custom_field_no_empty_values',
 ];
 
 const STATIC_ARRAY_FILTERS = ['tag_ids'];

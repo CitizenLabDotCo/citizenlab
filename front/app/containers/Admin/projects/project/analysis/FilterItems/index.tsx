@@ -71,7 +71,7 @@ const translationKeys: Record<
     translationKey: messages.comments,
     predicate: '<',
   },
-  input_custom_field_empty_values: {
+  input_custom_field_no_empty_values: {
     translationKey: messages.emptyCustomFields,
     predicate: '=',
   },
