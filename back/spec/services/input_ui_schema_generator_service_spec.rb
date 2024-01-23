@@ -1025,7 +1025,16 @@ RSpec.describe InputUiSchemaGeneratorService do
                     input_type: 'text',
                     isAdminField: false,
                     transform: 'trim_on_blur'
-                  }
+                  },
+                  ruleArray: [{
+                    effect: 'SHOW',
+                    condition: {
+                      scope: "#/properties/#{field_in_page2.key}",
+                      schema: {
+                        enum: [other_option.key]
+                      }
+                    }
+                  }]
                 }],
                 ruleArray: [
                   {

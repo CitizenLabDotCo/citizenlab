@@ -219,8 +219,11 @@ class CustomField < ApplicationRecord
   def other_option_text_field
     return unless options.any?(&:other)
 
+    other_field_key = "#{key}_other"
+    set_other_option_logic other_field_key
+
     CustomField.new(
-      key: "#{key}_other",
+      key: other_field_key,
       input_type: 'text',
       title_multiloc: { 'en' => 'Type your answer' },
       required: true
@@ -238,6 +241,11 @@ class CustomField < ApplicationRecord
   end
 
   private
+
+  def set_other_option_logic(field_key)
+    other_option = options.find(&:other)
+    (logic['rules'] ||= []) << { 'if' => other_option.id, 'goto_page_id' => field_key }
+  end
 
   def set_default_enabled
     self.enabled = true if enabled.nil?
