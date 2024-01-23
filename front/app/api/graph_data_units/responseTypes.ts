@@ -8,6 +8,10 @@ import {
   TimeSeriesResponseRow as PostsTimeSeriesResponseRow,
 } from 'components/admin/GraphCards/PostsByTimeCard/usePostsByTime/typings';
 import {
+  ReactionsCountRow,
+  TimeSeriesResponseRow as ReactionsTimeSeriesResponseRow,
+} from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
+import {
   ActiveUsersRow,
   TimeSeriesResponseRow as UsersTimeSeriesResponseRow,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ActiveUsersWidget/useActiveUsers/typings';
@@ -48,5 +52,15 @@ export type CommentsByTimeResponse = {
   data: {
     type: 'report_builder_data_units';
     attributes: [CommentsTimeSeriesResponseRow[] | [], [CommentsCountRow] | []];
+  };
+};
+
+export type ReactionsByTimeResponse = {
+  data: {
+    type: 'report_builder_data_units';
+    attributes: [
+      ReactionsTimeSeriesResponseRow[] | [],
+      [ReactionsCountRow] | []
+    ];
   };
 };
