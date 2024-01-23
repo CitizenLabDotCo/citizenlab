@@ -4,7 +4,10 @@ export type QueryParameters = ProjectId & Dates;
 
 // Response
 export interface Response {
-  data: { type: 'analytics'; attributes: TrafficSourcesRow[] };
+  data: {
+    type: 'report_builder_data_units';
+    attributes: TrafficSourcesRow[];
+  };
 }
 
 export interface TrafficSourcesRow {

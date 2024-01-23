@@ -36,7 +36,7 @@ export const FullScreenReport = ({ reportId }: Props) => {
         {isLoadingLayout && <Spinner />}
         {!isLoadingLayout && (
           <Box w="100%" display="flex" justifyContent="center">
-            <Box maxWidth="800px" w="100%">
+            <Box maxWidth="800px" w="100%" pt="20px">
               <Editor isPreview={true}>
                 <ContentBuilderFrame
                   editorData={reportLayout.data.attributes.craftjs_json}

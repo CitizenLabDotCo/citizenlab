@@ -13,16 +13,16 @@ resource 'Graph data units' do
   before do
     @gender = 'female'
 
-    participation_date = Date.new(2022, 9, 1)
+    filtered_date = Date.new(2022, 9, 1)
     craftjs_json = {
       'ROOT' => { 'type' => 'div', 'nodes' => ['gJxirq8X7m'], 'props' => { 'id' => 'e2e-content-builder-frame' }, 'custom' => {}, 'hidden' => false, 'isCanvas' => true, 'displayName' => 'div', 'linkedNodes' => {} },
       'gJxirq8X7m' => {
         'type' => { 'resolvedName' => 'GenderWidget' },
         'nodes' => [],
         'props' => {
-          'endAt' => (participation_date + 1.year).to_time.iso8601,
+          'endAt' => (filtered_date + 1.year).to_time.iso8601,
           'title' => 'Users by gender',
-          'startAt' => (participation_date - 1.year).to_time.iso8601,
+          'startAt' => (filtered_date - 1.year).to_time.iso8601,
           'projectId' => project.id
         },
         'custom' => {
@@ -42,18 +42,20 @@ resource 'Graph data units' do
       project: project)
     @report = create(:report, layout: build(:layout, craftjs_json: craftjs_json), phase: phase)
 
-    create(:dimension_date, date: participation_date)
-    create(:dimension_type, name: 'idea', parent: 'post')
-    create(:custom_field, key: :gender, resource_type: 'User')
-    create(:idea, project: project, created_at: participation_date, author: create(:user, gender: @gender))
-    _not_returned_idea = create(:idea, project: create(:project), created_at: participation_date, author: create(:user, gender: @gender))
+    # This is used if the data query is implemented with Analytics API
+    # create(:dimension_date, date: filtered_date)
+    # create(:dimension_type, name: 'idea', parent: 'post')
+
+    # With the current implementation, registration_completed_at is used to filter users by startAt/endAt.
+    # But the participation date can be used instead in the future (Idea#created_at).
+    participant = create(:user, gender: @gender, registration_completed_at: filtered_date)
+    create(:custom_field_select, key: :gender, resource_type: 'User', options: [create(:custom_field_option, key: 'female')])
+    create(:idea, project: project, created_at: filtered_date, author: participant)
+    _not_returned_idea = create(:idea, project: create(:project), created_at: filtered_date, author: create(:user, gender: @gender))
   end
 
   def expected_attributes
-    [{
-      count_dimension_user_custom_field_values_dimension_user_id: 1,
-      'dimension_user_custom_field_values.value': @gender
-    }]
+    { :_blank => 0, @gender => 1 }.symbolize_keys
   end
 
   get '/web_api/v1/reports/graph_data_units/live' do
@@ -80,16 +82,19 @@ resource 'Graph data units' do
     parameter :report_id, 'Report ID', required: true
     parameter :graph_id, 'Graph ID provided by Craftjs', required: true
 
+    # parameters
     let(:report_id) { @report.id }
     let(:graph_id) { 'gJxirq8X7m' }
 
+    # used for test setup
+    let(:user) { create(:admin) }
+
     before do
-      ReportBuilder::ReportPublisher.new(@report).publish
+      ReportBuilder::ReportPublisher.new(@report, user).publish
     end
 
     context 'when user has access to phase' do
       before do
-        user = create(:user)
         group = create(:group)
         create(:membership, user: user, group: group)
         project.update!(visible_to: 'groups', groups: [group])

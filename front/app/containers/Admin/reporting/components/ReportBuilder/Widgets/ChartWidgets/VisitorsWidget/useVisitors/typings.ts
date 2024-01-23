@@ -9,7 +9,7 @@ export type QueryParameters = ProjectId & Dates & Resolution;
 // Response
 export type Response = {
   data: {
-    type: 'analytics';
+    type: 'report_builder_data_units';
     attributes: [[TotalsRow] | [], TimeSeriesResponse | []];
   };
 };

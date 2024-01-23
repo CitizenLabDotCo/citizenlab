@@ -5,7 +5,6 @@ import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import MobileButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/MobileButton';
 import PDFButton from './PDFButton';
 import DesktopButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/DesktopButton';
-import Editor from '../Editor';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import PDFWrapper from './PDFWrapper';
 
@@ -77,9 +76,7 @@ const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
                 overflowY="scroll"
               >
                 <PDFWrapper>
-                  <Editor isPreview={true}>
-                    <Frame editorData={previewData} />
-                  </Editor>
+                  <Frame editorData={previewData} />
                 </PDFWrapper>
               </Box>
             ) : (
@@ -92,6 +89,7 @@ const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
                 width={view === 'phone' ? '360px' : '1140px'}
                 py={view === 'phone' ? '20px' : '40px'}
                 borderRadius="20px"
+                overflowX="hidden"
                 overflowY="scroll"
                 background="white"
                 display="flex"
@@ -99,9 +97,7 @@ const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
                 flexDirection="column"
               >
                 <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
-                  <Editor isPreview={true}>
-                    <Frame editorData={previewData} />
-                  </Editor>
+                  <Frame editorData={previewData} />
                 </Box>
               </Box>
             )}

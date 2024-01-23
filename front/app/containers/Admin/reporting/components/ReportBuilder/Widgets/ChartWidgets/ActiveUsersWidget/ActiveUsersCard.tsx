@@ -7,7 +7,7 @@ import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import NoData from '../../_shared/NoData';
-import Chart from 'components/admin/GraphCards/ActiveUsersCard/Chart';
+import Chart from './Chart';
 import Statistic from 'components/admin/Graphs/Statistic';
 
 // i18n
@@ -20,9 +20,6 @@ import {
   Dates,
   Resolution,
 } from 'components/admin/GraphCards/typings';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 
 type Props = ProjectId & Dates & Resolution;
 
@@ -43,7 +40,7 @@ const ActiveUsers = ({
 
   const layout = useLayout();
 
-  if (isNilOrError(stats) || stats.activeUsers.value === '0') {
+  if (!stats || stats.activeUsers.value === '0') {
     return <NoData message={messages.noData} />;
   }
 
