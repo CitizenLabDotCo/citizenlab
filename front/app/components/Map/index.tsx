@@ -42,8 +42,16 @@ import styled from 'styled-components';
 import L, { LatLngTuple, Map as ILeafletMap } from 'leaflet';
 import { vectorBasemapLayer } from 'esri-leaflet-vector';
 import Legend from '@arcgis/core/widgets/Legend.js';
+import LayerList from '@arcgis/core/widgets/LayerList.js';
 import MapView from '@arcgis/core/views/MapView.js';
 import EsriMap from '@arcgis/core/Map.js';
+import Expand from '@arcgis/core/widgets/Expand.js';
+import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer.js';
+import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer.js';
+import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol.js';
+import WebTileLayer from '@arcgis/core/layers/WebTileLayer.js';
+import Basemap from '@arcgis/core/Basemap.js';
+import EsriPoint from '@arcgis/core/geometry/Point.js';
 import jsonUtils, * as symbolJsonUtils from '@arcgis/core/symbols/support/jsonUtils.js';
 import symbolUtils, {
   renderPreviewHTML,
@@ -267,6 +275,18 @@ const Map = memo<IMapProps & IMapConfigProps>(
         zoom: 2,
       });
 
+      // create from a third party source
+      const basemap = new Basemap({
+        baseLayers: [
+          new WebTileLayer({
+            urlTemplate:
+              'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=R0U21P01bsRLx7I7ZRqp',
+          }),
+        ],
+      });
+
+      esriMap.basemap = basemap;
+
       const trailheads = new FeatureLayer({
         url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0',
       });
@@ -279,15 +299,95 @@ const Map = memo<IMapProps & IMapConfigProps>(
         url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space_Styled/FeatureServer/0',
       });
 
-      esriMap.add(layer);
-      esriMap.add(trails);
-      esriMap.add(trailheads);
+      // esriMap.add(layer);
+      // esriMap.add(trails);
+      // esriMap.add(trailheads);
 
-      const legend = new Legend({
-        view,
-        hideLayersNotInCurrentView: false,
+      // GeoJSON Layer test:
+      // create a geojson layer from geojson feature collection
+      const geojson = {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            id: 1,
+            geometry: {
+              type: 'Polygon',
+              coordinates: [
+                [
+                  [100.0, 0.0],
+                  [101.0, 0.0],
+                  [101.0, 1.0],
+                  [100.0, 1.0],
+                  [100.0, 0.0],
+                ],
+              ],
+            },
+            properties: {
+              type: 'single',
+              recordedDate: '2018-02-07T22:45:00-08:00',
+            },
+          },
+        ],
+      };
+
+      // create a new blob from geojson featurecollection
+      const blob = new Blob([JSON.stringify(geojson)], {
+        type: 'application/json',
       });
+
+      // URL reference to the blob
+      const url = URL.createObjectURL(blob);
+      // create new geojson layer using the blob url
+      const geoJsonLayer = new GeoJSONLayer({
+        url,
+      });
+      geoJsonLayer.title = 'Custom legend title'; // Custom legend title
+      geoJsonLayer.renderer = new SimpleRenderer({
+        // Custom polygon renderer
+        symbol: new SimpleFillSymbol({
+          color: 'rgba(0,76,115,0.2)',
+          // outline: undefined
+        }),
+      });
+      esriMap.add(geoJsonLayer);
+
+      const legend = new Expand({
+        content: new Legend({
+          view,
+          hideLayersNotInCurrentView: false,
+          style: { type: 'card', layout: 'stack' },
+        }),
+        view,
+        expanded: true,
+      });
+
       view.ui.add(legend, 'bottom-right');
+
+      const layerList = new Expand({
+        content: new LayerList({
+          view,
+        }),
+        view,
+        expanded: false,
+      });
+      view.ui.add(layerList, {
+        position: 'top-right',
+      });
+
+      view.popupEnabled = false;
+      view.on('click', (event) => {
+        view.openPopup({
+          // Set the popup's title to the coordinates of the clicked location
+          title: 'This is a title',
+          location: event.mapPoint, // Set the location of the popup to the clicked location
+        });
+      });
+
+      view.center = new EsriPoint({ latitude: 0, longitude: 100 });
+      view.zoom = 8;
+
+      // Esri ^
 
       // esri.get(
       //   'https://www.arcgis.com/sharing/content/items/62914b2820c24d4e95710ebae77937cb/data',
@@ -598,22 +698,23 @@ const Map = memo<IMapProps & IMapConfigProps>(
             />
           </MapWrapper>
           {/* {!hideLegend && { legend }} */}
-          <Box>
-            {legendImage && <img src={legendImage} alt="Alt text" />}
-            <link
-              rel="stylesheet"
-              href="https://js.arcgis.com/4.28/esri/themes/light/main.css"
-            />
-            <Box
-              id="esriMap"
-              padding="0px"
-              margin="0px"
-              height={'600px'}
-              width="100%"
-              opacity={1}
-            />
-          </Box>
         </Container>
+
+        <Box>
+          {legendImage && <img src={legendImage} alt="Alt text" />}
+          <link
+            rel="stylesheet"
+            href="https://js.arcgis.com/4.28/esri/themes/light/main.css"
+          />
+          <Box
+            id="esriMap"
+            padding="0px"
+            margin="0px"
+            height={'600px'}
+            width="100%"
+            opacity={1}
+          />
+        </Box>
       </>
     );
   }
