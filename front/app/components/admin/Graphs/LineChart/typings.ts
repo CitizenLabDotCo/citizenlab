@@ -1,6 +1,7 @@
 import {
   BaseProps,
-  AxisProps,
+  XAxisProps,
+  YAxisProps,
   KeyOfType,
   // BaseLabels,
 } from '../typings';
@@ -9,8 +10,8 @@ import {
 export interface Props<Row> extends BaseProps<Row, Payload> {
   mapping: Mapping<Row>;
   lines?: Lines;
-  xaxis?: AxisProps;
-  yaxis?: AxisProps;
+  xaxis?: XAxisProps;
+  yaxis?: YAxisProps;
   grid?: GridProps;
 }
 

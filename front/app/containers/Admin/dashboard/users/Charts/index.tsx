@@ -1,7 +1,5 @@
 import React from 'react';
 
-// services
-
 // hooks
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
@@ -15,8 +13,6 @@ import AreaChart from './AreaChart';
 import GenderChart from './GenderChart';
 import AgeChart from './AgeChart';
 import { Box } from '@citizenlab/cl2-component-library';
-
-// utils
 
 // typings
 import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';

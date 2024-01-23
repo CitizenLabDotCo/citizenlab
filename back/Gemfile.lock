@@ -278,6 +278,7 @@ PATH
       analytics
       content_builder
       rails (~> 7.0)
+      user_custom_fields
 
 PATH
   remote: engines/commercial/smart_groups

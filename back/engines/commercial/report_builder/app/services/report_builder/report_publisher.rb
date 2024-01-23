@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class ReportBuilder::ReportPublisher
-  def initialize(report)
+  def initialize(report, current_user)
     @report = report
+    @current_user = current_user
   end
 
   def publish
@@ -17,7 +18,7 @@ class ReportBuilder::ReportPublisher
       type = node_obj['type']
       resolved_name = type.is_a?(Hash) ? type['resolvedName'] : next
 
-      data = ReportBuilder::QueryRepository.new.data_by_graph(resolved_name, node_obj['props'])
+      data = ReportBuilder::QueryRepository.new(@current_user).data_by_graph(resolved_name, node_obj['props'])
       next unless data
 
       ReportBuilder::PublishedGraphDataUnit.create!(
