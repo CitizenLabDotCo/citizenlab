@@ -7,7 +7,7 @@
     "search": {
       "type": "string"
     },
-    "input_custom_field_empty_values": {
+    "input_custom_field_no_empty_values": {
       "type": "boolean"
     },
     "reactions_from": {

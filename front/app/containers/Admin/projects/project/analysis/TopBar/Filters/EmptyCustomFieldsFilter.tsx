@@ -13,12 +13,14 @@ const EmptyCustomFieldsFilter = () => {
   return (
     <Toggle
       label={formatMessage(messages.filterOutEmptyCustomFields)}
-      checked={searchParams.get('input_custom_field_empty_values') === 'true'}
+      checked={
+        searchParams.get('input_custom_field_no_empty_values') === 'true'
+      }
       onChange={() => {
-        if (searchParams.get('input_custom_field_empty_values') === 'true') {
-          removeSearchParams(['input_custom_field_empty_values']);
+        if (searchParams.get('input_custom_field_no_empty_values') === 'true') {
+          removeSearchParams(['input_custom_field_no_empty_values']);
         } else {
-          updateSearchParams({ input_custom_field_empty_values: true });
+          updateSearchParams({ input_custom_field_no_empty_values: true });
         }
       }}
     />

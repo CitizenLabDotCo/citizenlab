@@ -313,7 +313,7 @@ describe Analysis::InputsFinder do
     end
   end
 
-  describe 'input_custom_field_empty_values' do
+  describe 'input_custom_field_no_empty_values' do
     let_it_be(:analysis) { create(:analysis) }
     let_it_be(:custom_form) { create(:custom_form) }
     let_it_be(:custom_field_select) { create(:custom_field_select, :with_options, resource: custom_form) }
@@ -332,7 +332,7 @@ describe Analysis::InputsFinder do
     end
 
     it 'filters out custom_field with no empty values correctly' do
-      @params = { input_custom_field_empty_values: true }
+      @params = { input_custom_field_no_empty_values: true }
       expect(output).to contain_exactly(input1, input2)
     end
 

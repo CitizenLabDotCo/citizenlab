@@ -132,7 +132,7 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
                       clHistory.push(
                         `/admin/projects/${projectId}/analysis/${
                           analysis.id
-                        }?input_custom_field_empty_values=true${
+                        }?input_custom_field_no_empty_values=true${
                           phaseId ? `&phase_id=${phaseId}` : ''
                         }`
                       )
