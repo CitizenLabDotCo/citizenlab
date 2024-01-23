@@ -64,8 +64,10 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
             extra: { projectId },
           });
           clHistory.push(
-            `/admin/projects/${projectId}/analysis/${analysis.data.id}${
-              phaseId ? `?phase_id=${phaseId}` : ''
+            `/admin/projects/${projectId}/analysis/${
+              analysis.data.id
+            }?input_custom_field_empty_values=true${
+              phaseId ? `&phase_id=${phaseId}` : ''
             }`
           );
           onClose();

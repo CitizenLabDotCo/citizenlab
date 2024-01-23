@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.inputsWIthoutTags',
     defaultMessage: 'Inputs without tags',
   },
+  emptyCustomFields: {
+    id: 'app.containers.AdminPage.projects.project.analysis.emptyCustomFields',
+    defaultMessage: 'Hide empty responses',
+  },
 });

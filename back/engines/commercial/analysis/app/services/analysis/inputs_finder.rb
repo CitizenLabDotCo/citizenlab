@@ -31,7 +31,7 @@ module Analysis
       return inputs unless params[:tag_ids]
 
       raise ArgumentError, 'value specified for tag_ids must be an array' unless params[:tag_ids].is_a? Array
-      return inputs
+
       if params[:tag_ids].include?(nil)
         inputs_in_analysis_with_tags = Tagging.joins(:tag).where(tag: { analysis: analysis }).select(:input_id)
         inputs.where.not(id: inputs_in_analysis_with_tags)
