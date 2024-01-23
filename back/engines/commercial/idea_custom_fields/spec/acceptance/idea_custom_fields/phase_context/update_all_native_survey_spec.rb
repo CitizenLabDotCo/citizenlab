@@ -210,6 +210,77 @@ resource 'Idea Custom Fields' do
         })
       end
 
+      example 'Add a custom field with image options' do
+        request = {
+          custom_fields: [
+            { input_type: 'page' },
+            {
+              input_type: 'multiselect',
+              title_multiloc: { en: 'Inserted field' },
+              required: false,
+              enabled: true,
+              options: [
+                {
+                  title_multiloc: { en: 'Option 1' },
+                  image: png_image_as_base64('image14.png')
+                },
+                {
+                  title_multiloc: { en: 'Option 2' },
+                  image: png_image_as_base64('image13.png')
+                }
+              ]
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 200
+
+        expect(CustomField.all.count).to eq 2
+        expect(CustomFieldOption.all.count).to eq 2
+        expect(CustomFieldOptionImage.all.count).to eq 2
+
+        binding.pry
+
+        expect(response_data.size).to eq 2
+        expect(response_data[1]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: {},
+            enabled: true,
+            input_type: 'multiselect',
+            key: Regexp.new('inserted_field'),
+            ordering: 1,
+            required: false,
+            select_count_enabled: false,
+            maximum_select_count: nil,
+            minimum_select_count: nil,
+            title_multiloc: { en: 'Inserted field' },
+            updated_at: an_instance_of(String),
+            logic: {},
+            constraints: {},
+            random_option_ordering: false
+          },
+          id: an_instance_of(String),
+          type: 'custom_field',
+          relationships: {
+            options: {
+              data: [
+                {
+                  id: an_instance_of(String),
+                  type: 'custom_field_option'
+                },
+                {
+                  id: an_instance_of(String),
+                  type: 'custom_field_option'
+                }
+              ]
+            }
+          }
+        })
+      end
+
       example 'Remove all custom fields' do
         create_list(:custom_field_select, 2, :with_options, resource: custom_form)
 

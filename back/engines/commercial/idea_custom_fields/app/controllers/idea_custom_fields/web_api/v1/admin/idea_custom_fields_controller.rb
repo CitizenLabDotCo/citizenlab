@@ -63,7 +63,7 @@ module IdeaCustomFields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         IdeaCustomFieldsService.new(@custom_form).all_fields,
         params: serializer_params(@custom_form),
-        include: [:options]
+        include: %i[options options.image]
       ).serializable_hash
     rescue UpdateAllFailedError => e
       render json: { errors: e.errors }, status: :unprocessable_entity
@@ -173,13 +173,14 @@ module IdeaCustomFields
             option = create_option! option_params, field, errors, option_temp_ids_to_ids_mapping, field_index, option_index
             next unless option
           end
+          update_option_image!(option, option_params)
           option.move_to_bottom
         end
       end
     end
 
     def create_option!(option_params, field, errors, option_temp_ids_to_ids_mapping, field_index, option_index)
-      create_params = option_params.except('temp_id')
+      create_params = option_params.except('temp_id', 'image')
       option = CustomFieldOption.new create_params.merge(custom_field: field)
       SideFxCustomFieldOptionService.new.before_create option, current_user
       if option.save
@@ -189,6 +190,14 @@ module IdeaCustomFields
       else
         add_options_errors option.errors.details, errors, field_index, option_index
         false
+      end
+    end
+
+    def update_option_image!(option, options_params)
+      if option.image
+        option.image.update(image: options_params[:image])
+      else
+        option.create_image(image: options_params[:image])
       end
     end
 
@@ -246,7 +255,15 @@ module IdeaCustomFields
           description_multiloc: CL2_SUPPORTED_LOCALES,
           minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
           maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
-          options: [:id, :temp_id, :other, { title_multiloc: CL2_SUPPORTED_LOCALES }],
+          options: [
+            :id,
+            :temp_id,
+            :other,
+            {
+              title_multiloc: CL2_SUPPORTED_LOCALES
+            },
+            :image
+          ],
           logic: {} }
       ])
     end
