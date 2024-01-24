@@ -31,26 +31,28 @@ export type ParametersLive =
   | CommentsByTimeParams
   | ReactionsByTimeParams;
 
+export interface SurveyResultsProps {
+  phaseId?: string | null;
+}
 export interface SurveyResultsParams extends BaseParams {
   resolvedName: 'SurveyResultsWidget';
-  props: {
-    phaseId?: string | null;
-  };
+  props: SurveyResultsProps;
 }
 
-interface AnalyticsProps {
+export interface AnalyticsProps {
   projectId?: string | undefined;
   startAtMoment?: Moment | null | undefined;
   endAtMoment?: Moment | null;
   resolution?: IResolution;
 }
 
+export interface MostReactedIdeasProps {
+  phaseId?: string | null;
+  numberOfIdeas?: number;
+}
 export interface MostReactedIdeasParams extends BaseParams {
   resolvedName: 'MostReactedIdeasWidget';
-  props: {
-    phaseId?: string | null;
-    numberOfIdeas?: number;
-  };
+  props: MostReactedIdeasProps;
 }
 
 export interface VisitorsParams extends BaseParams {
@@ -58,33 +60,36 @@ export interface VisitorsParams extends BaseParams {
   props: AnalyticsProps;
 }
 
+export interface VisitorsTrafficSourcesProps {
+  projectId?: string | undefined;
+  startAtMoment?: Moment | null | undefined;
+  endAtMoment?: Moment | null;
+}
 export interface VisitorsTrafficSourcesParams extends BaseParams {
   resolvedName: 'VisitorsTrafficSourcesWidget';
-  props: {
-    projectId?: string | undefined;
-    startAtMoment?: Moment | null | undefined;
-    endAtMoment?: Moment | null;
-  };
+  props: VisitorsTrafficSourcesProps;
 }
 
+export interface GenderProps {
+  projectId?: string | undefined;
+  startAtMoment?: Moment | null | undefined;
+  endAtMoment?: Moment | null;
+  groupId?: string | null;
+}
 export interface GenderParams extends BaseParams {
   resolvedName: 'GenderWidget';
-  props: {
-    projectId?: string | undefined;
-    startAtMoment?: Moment | null | undefined;
-    endAtMoment?: Moment | null;
-    groupId?: string | null;
-  };
+  props: GenderProps;
 }
 
+export interface AgeProps {
+  projectId?: string | undefined;
+  startAtMoment?: Moment | null | undefined;
+  endAtMoment?: Moment | null;
+  groupId?: string | null;
+}
 export interface AgeParams extends BaseParams {
   resolvedName: 'AgeWidget';
-  props: {
-    projectId?: string | undefined;
-    startAtMoment?: Moment | null | undefined;
-    endAtMoment?: Moment | null;
-    groupId?: string | null;
-  };
+  props: AgeProps;
 }
 
 export interface ActiveUsersParams extends BaseParams {

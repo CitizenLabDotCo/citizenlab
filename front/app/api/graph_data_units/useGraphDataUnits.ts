@@ -7,7 +7,7 @@ import { isPage } from 'utils/helperUtils';
 
 import { BaseResponseData } from 'utils/cl-react-query/fetcher';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
-import { ParametersLive, Options } from './types';
+import { ParametersLive, Options } from './requestTypes';
 
 const useGraphDataUnits = <Response extends BaseResponseData>(
   parameters: ParametersLive,
