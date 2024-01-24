@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // context
 import { ReportContextProvider } from '../../context/ReportContext';
@@ -10,21 +10,20 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Editor from '../../components/ReportBuilder/Editor';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
 // utils
 import { getReportWidth } from '../../utils/getReportWidth';
-import { ReportLayoutResponse } from 'api/report_layout/types';
 
 export interface Props {
   reportId: string;
-  reportLayout: ReportLayoutResponse;
 }
 
-export const FullScreenReport = ({ reportId, reportLayout }: Props) => {
-  const [initialData] = useState(reportLayout.data.attributes.craftjs_json);
+export const FullScreenReport = ({ reportId }: Props) => {
+  const { data: reportLayout } = useReportLayout(reportId);
+  const isLoadingLayout = reportLayout === undefined;
   const smallerThanPhone = useBreakpoint('phone');
   const smallerThanTablet = useBreakpoint('tablet');
 
@@ -34,13 +33,18 @@ export const FullScreenReport = ({ reportId, reportLayout }: Props) => {
       reportId={reportId}
     >
       <FullScreenWrapper padding="0">
-        <Box w="100%" display="flex" justifyContent="center">
-          <Box maxWidth="800px" w="100%" pt="20px">
-            <Editor isPreview={true}>
-              <ContentBuilderFrame editorData={initialData} />
-            </Editor>
+        {isLoadingLayout && <Spinner />}
+        {!isLoadingLayout && (
+          <Box w="100%" display="flex" justifyContent="center">
+            <Box maxWidth="800px" w="100%" pt="20px">
+              <Editor isPreview={true}>
+                <ContentBuilderFrame
+                  editorData={reportLayout.data.attributes.craftjs_json}
+                />
+              </Editor>
+            </Box>
           </Box>
-        </Box>
+        )}
       </FullScreenWrapper>
     </ReportContextProvider>
   );
@@ -49,13 +53,12 @@ export const FullScreenReport = ({ reportId, reportLayout }: Props) => {
 const FullScreenReportWrapper = () => {
   const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const { reportId } = useParams();
-  const { data: reportLayout } = useReportLayout(reportId);
 
-  if (!reportBuilderEnabled || !reportId || !reportLayout) {
+  if (!reportBuilderEnabled || reportId === undefined) {
     return null;
   }
 
-  return <FullScreenReport reportId={reportId} reportLayout={reportLayout} />;
+  return <FullScreenReport reportId={reportId} />;
 };
 
 export default FullScreenReportWrapper;
