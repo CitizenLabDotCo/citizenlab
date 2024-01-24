@@ -2,6 +2,7 @@ import React, { useMemo, useCallback } from 'react';
 
 // hooks
 import useProjects from 'api/projects/useProjects';
+import useAuthUser from 'api/me/useAuthUser';
 
 // styling
 import styled from 'styled-components';
@@ -15,10 +16,10 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import dashboardFilterMessages from 'containers/Admin/dashboard/components/filters/messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isAdmin } from 'utils/permissions/roles';
 
 // typings
-import { IOption, FormatMessage } from 'typings';
+import { IOption } from 'typings';
 import { IProjectData, PublicationStatus } from 'api/projects/types';
 
 interface Option {
@@ -28,7 +29,6 @@ interface Option {
 
 interface Props {
   projectId?: string;
-  filter?: (project: IProjectData) => boolean;
   emptyValueMessage?: MessageDescriptor;
   onProjectFilter: (filter: Option) => void;
 }
@@ -42,23 +42,14 @@ const StyledSelect = styled(Select)`
 const generateProjectOptions = (
   projects: IProjectData[],
   localize: Localize,
-  formatMessage: FormatMessage,
-  emptyValueMessage?: MessageDescriptor
+  allProjects: IOption | null
 ): IOption[] => {
   const projectOptions = projects.map((project) => ({
     value: project.id,
     label: localize(project.attributes.title_multiloc),
   }));
 
-  return [
-    {
-      value: '',
-      label: formatMessage(
-        emptyValueMessage ?? dashboardFilterMessages.allProjects
-      ),
-    },
-    ...projectOptions,
-  ];
+  return [...(allProjects ? [allProjects] : []), ...projectOptions];
 };
 
 const PUBLICATION_STATUSES: PublicationStatus[] = [
@@ -69,7 +60,6 @@ const PUBLICATION_STATUSES: PublicationStatus[] = [
 
 const ProjectFilter = ({
   projectId,
-  filter = () => true,
   emptyValueMessage,
   onProjectFilter,
 }: Props) => {
@@ -79,17 +69,22 @@ const ProjectFilter = ({
     publicationStatuses: PUBLICATION_STATUSES,
     canModerate: true,
   });
+  const { data: authUser } = useAuthUser();
 
   const projectFilterOptions = useMemo(() => {
-    if (isNilOrError(projects)) return null;
+    if (!projects || !authUser) return null;
 
-    return generateProjectOptions(
-      projects.data.filter(filter),
-      localize,
-      formatMessage,
-      emptyValueMessage
-    );
-  }, [projects, filter, localize, formatMessage, emptyValueMessage]);
+    const allProjects = isAdmin(authUser)
+      ? {
+          value: '',
+          label: formatMessage(
+            emptyValueMessage ?? dashboardFilterMessages.allProjects
+          ),
+        }
+      : null;
+
+    return generateProjectOptions(projects.data, localize, allProjects);
+  }, [projects, authUser, localize, formatMessage, emptyValueMessage]);
 
   const handleProjectFilter = useCallback(
     (option: Option) => {
