@@ -28,9 +28,9 @@ module FlagInappropriateContent
         end
         return
       end
-      toxicity_labels = texts.filter_map { |text| classify_toxicity(text) }
-      if toxicity_labels.present?
-        flag_service.introduce_flag! flaggable, toxicity_label: toxicity_labels.first
+      toxicity_attrs = texts.filter_map { |text| classify_toxicity(text) }
+      if toxicity_attrs.present?
+        flag_service.introduce_flag! flaggable, toxicity_attrs.first
       elsif (flag = flaggable.inappropriate_content_flag)
         flag.update! toxicity_label: nil
         flag_service.maybe_delete! flag
@@ -58,10 +58,14 @@ module FlagInappropriateContent
       return if !@llm # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
 
       prompt = Analysis::LLM::Prompt.new.fetch('claude_toxicity_detection', text: text)
-      response = @llm.chat(prompt, assistant_prefix: 'My answer is (')
-      MAP_TOXICITY_LABEL.find do |class_id, _|
-        response.strip.starts_with? "#{class_id})"
+      response = @llm.chat(prompt, assistant_prefix: 'My answer is (').strip
+      toxicity_label = MAP_TOXICITY_LABEL.find do |class_id, _|
+        response.starts_with? "#{class_id})"
       end&.last
+      if toxicity_label
+        ai_reason = response[2, response.length].strip
+        { toxicity_label: toxicity_label, ai_reason: ai_reason }
+      end
     end
   end
 end

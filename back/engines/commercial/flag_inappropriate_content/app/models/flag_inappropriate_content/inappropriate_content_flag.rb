@@ -11,6 +11,7 @@
 #  toxicity_label :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  ai_reason      :string
 #
 # Indexes
 #

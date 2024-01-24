@@ -2330,7 +2330,8 @@ CREATE TABLE public.flag_inappropriate_content_inappropriate_content_flags (
     deleted_at timestamp without time zone,
     toxicity_label character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    ai_reason character varying
 );
 
 
@@ -7928,6 +7929,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231124114112'),
 ('20231130093345'),
 ('20231212151032'),
-('20231214100537');
+('20231214100537'),
+('20240124173411');
 
 
