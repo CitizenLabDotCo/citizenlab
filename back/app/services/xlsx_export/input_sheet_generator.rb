@@ -141,6 +141,7 @@ module XlsxExport
             input_fields << longitude_report_field
           end
           input_fields << CustomFieldForReport.new(field)
+          input_fields << CustomFieldForReport.new(field.other_option_text_field) if field.other_option_text_field
         end
       end
     end
