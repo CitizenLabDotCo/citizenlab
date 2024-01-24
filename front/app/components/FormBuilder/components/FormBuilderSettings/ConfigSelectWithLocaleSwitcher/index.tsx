@@ -18,6 +18,7 @@ import {
 import { SectionField } from 'components/admin/Section';
 import { List, Row, SortableRow } from 'components/admin/ResourceList';
 import Error, { TFieldName } from 'components/UI/Error';
+import ImagesDropzone from "components/UI/ImagesDropzone";
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -25,7 +26,7 @@ import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // Typings
-import { Locale, CLError, RHFErrors } from 'typings';
+import {Locale, CLError, RHFErrors } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -154,6 +155,27 @@ const ConfigSelectWithLocaleSwitcher = ({
                         setValue(name, updatedChoices);
                       }}
                     />
+
+                    <ImagesDropzone
+                      id={`e2e-option-image-${index}`}
+                      images={choice.image}
+                      imagePreviewRatio={135 / 298}
+                      acceptedFileTypes={{
+                        'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+                      }}
+                      onAdd={(images) => {
+                        // console.log(images[0].base64);
+                        const updatedChoices = choices;
+                        updatedChoices[index].image = images[0].base64
+                        setValue(name, updatedChoices);
+                      }}
+                      onRemove={() => {
+                        const updatedChoices = choices;
+                        updatedChoices[index].image = null
+                        setValue(name, updatedChoices);
+                      }}
+                    />
+
                   </Box>
                   {canDeleteLastOption && (
                     <Button
@@ -222,7 +244,6 @@ const ConfigSelectWithLocaleSwitcher = ({
                                 >
                                   {eachOption(choice, index)}
                                 </Row>
-
                               ) : (
                                 <SortableRow
                                   id={choice.id}
