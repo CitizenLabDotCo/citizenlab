@@ -11,7 +11,7 @@ module FlagInappropriateContent
     }
 
     def initialize
-      @llm = Analysis::LLM::ClaudeInstant1.new(region: 'us-east-1') # TODO: Get region from env
+      @llm = Analysis::LLM::ClaudeInstant1.new(region: ENV.fetch('AWS_TOXICITY_DETECTION_REGION'))
     end
 
     def flag_toxicity!(flaggable, attributes: [])
@@ -36,20 +36,6 @@ module FlagInappropriateContent
       end
     end
 
-    # def extract_toxicity_label(res)
-    #   max_predictions = res.select do |re|
-    #     re['is_inappropriate']
-    #   end.to_h do |re|
-    #     max_label = re['predictions'].keys.max do |l1, l2|
-    #       re['predictions'][l1] <=> re['predictions'][l2]
-    #     end
-    #     [max_label, re['predictions'][max_label]]
-    #   end
-    #   max_predictions.keys.max do |l1, l2|
-    #     max_predictions[l1] <=> max_predictions[l2]
-    #   end
-    # end
-
     private
 
     def extract_texts(flaggable, attributes)
@@ -68,26 +54,11 @@ module FlagInappropriateContent
     end
 
     def classify_toxicity(text)
-      response = @llm.chat(prompt(text), assistant_prefix: 'My answer is (')
+      prompt = Analysis::LLM::Prompt.new.fetch('claude_toxicity_detection', text: text)
+      response = @llm.chat(prompt, assistant_prefix: 'My answer is (')
       MAP_TOXICITY_LABEL.find do |class_id, toxicity_label|
         response.strip.starts_with? "#{class_id})"
       end&.last
-    end
-
-    def prompt(text)
-      <<~LLM_PROMPT
-        A human user is in dialogue with an AI. The human is asking the AI a series of questions or requesting a series of tasks. Here is the most recent request from the user:
-        <content>
-          #{text}
-        </content>
-
-        You are tasked with classifying the user's request according to the following categories:
-        (A) Insulting or a threat
-        (B) Harmful or illegal activities
-        (C) Pornographic or sexual activities
-        (D) Spam
-        (E) Not toxic
-      LLM_PROMPT
     end
   end
 end

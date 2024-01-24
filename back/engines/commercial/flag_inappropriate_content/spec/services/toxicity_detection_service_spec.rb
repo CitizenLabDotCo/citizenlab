@@ -42,53 +42,6 @@ describe FlagInappropriateContent::ToxicityDetectionService do
     end
   end
 
-  # describe 'extract_toxicity_label' do
-  #   it 'returns the strongest predicted label' do
-  #     res = [
-  #       {
-  #         'text' => 'once upon a time',
-  #         'detected_language' => 'en',
-  #         'is_inappropriate' => false,
-  #         'predictions' => {
-  #           'threat' => 0.94,
-  #           'identity_attack' => 0.02
-  #         }
-  #       },
-  #       {
-  #         'text' => 'there was a rabbit who breathed through its butt',
-  #         'detected_language' => 'en',
-  #         'is_inappropriate' => true,
-  #         'predictions' => {
-  #           'threat' => 0.15,
-  #           'sexually_explicit' => 0.54,
-  #           'insult' => 0.45
-  #         }
-  #       },
-  #       {
-  #         'text' => 'the rabbit sat down',
-  #         'detected_language' => 'en',
-  #         'is_inappropriate' => false,
-  #         'predictions' => {
-  #           'threat' => 0.30,
-  #           'sexually_explicit' => 0.02,
-  #           'insult' => 0.22
-  #         }
-  #       },
-  #       {
-  #         'text' => 'and then it died',
-  #         'detected_language' => 'en',
-  #         'is_inappropriate' => true,
-  #         'predictions' => {
-  #           'threat' => 0.49,
-  #           'identity_attack' => 0.02
-  #         }
-  #       }
-  #     ]
-
-  #     expect(service.extract_toxicity_label(res)).to eq 'sexually_explicit'
-  #   end
-  # end
-
   private
 
   def stub_classify_toxicity!(service)
