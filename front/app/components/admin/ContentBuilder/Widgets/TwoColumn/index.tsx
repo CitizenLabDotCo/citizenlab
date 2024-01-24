@@ -161,4 +161,6 @@ export const twoColumnCraftConfig = {
 
 TwoColumn.craft = twoColumnCraftConfig;
 
+export const twoColumnTitle = messages.twoColumn;
+
 export default TwoColumn;
