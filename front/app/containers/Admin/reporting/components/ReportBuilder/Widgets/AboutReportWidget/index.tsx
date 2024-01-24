@@ -105,9 +105,8 @@ AboutReportWidget.craft = {
   related: {
     settings: NoWidgetSettings,
   },
-  custom: {
-    title: messages.aboutThisReport,
-  },
 };
+
+export const aboutReportTitle = messages.aboutThisReport;
 
 export default AboutReportWidget;

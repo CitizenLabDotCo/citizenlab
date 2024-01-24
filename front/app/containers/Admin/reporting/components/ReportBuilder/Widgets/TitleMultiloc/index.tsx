@@ -75,9 +75,8 @@ Title.craft = {
   related: {
     settings: TitleSettings,
   },
-  custom: {
-    title: messages.title,
-  },
 };
+
+export const titleMultilocTitle = messages.title;
 
 export default Title;

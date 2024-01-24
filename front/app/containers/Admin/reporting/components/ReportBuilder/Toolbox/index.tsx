@@ -9,12 +9,16 @@ import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 // widgets
-import TextMultiloc from '../Widgets/TextMultiloc';
-import TwoColumn from '../Widgets/TwoColumn';
-import TitleMultiloc from '../Widgets/TitleMultiloc';
-import ImageMultiloc from '../Widgets/ImageMultiloc';
-import AboutReportWidget from '../Widgets/AboutReportWidget';
-import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
+import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
+import TwoColumn, { twoColumnTitle } from '../Widgets/TwoColumn';
+import TitleMultiloc, { titleMultilocTitle } from '../Widgets/TitleMultiloc';
+import ImageMultiloc, { imageMultilocTitle } from '../Widgets/ImageMultiloc';
+import AboutReportWidget, {
+  aboutReportTitle,
+} from '../Widgets/AboutReportWidget';
+import SurveyResultsWidget, {
+  surveyResultsTitle,
+} from '../Widgets/SurveyResultsWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
@@ -29,7 +33,6 @@ import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableE
 // i18n
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import reportBuilderMessages from '../../../messages';
-import textMessages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
 import {
   FormattedMessage,
   useIntl,
@@ -94,7 +97,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-two-column"
             component={<TwoColumn columnLayout="1-1" />}
             icon="layout-2column-1"
-            label={formatMessage(TwoColumn.craft.custom.title)}
+            label={formatMessage(twoColumnTitle)}
           />
           <DraggableElement
             id="e2e-draggable-white-space"
@@ -118,31 +121,25 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
               <AboutReportWidget reportId={reportId} projectId={projectId} />
             }
             icon="section-image-text"
-            label={formatMessage(AboutReportWidget.craft.custom.title)}
+            label={formatMessage(aboutReportTitle)}
           />
           <DraggableElement
             id="e2e-draggable-title"
-            component={
-              <TitleMultiloc
-                text={toMultiloc(TitleMultiloc.craft.custom.title)}
-              />
-            }
+            component={<TitleMultiloc text={toMultiloc(titleMultilocTitle)} />}
             icon="text"
-            label={formatMessage(TitleMultiloc.craft.custom.title)}
+            label={formatMessage(titleMultilocTitle)}
           />
           <DraggableElement
             id="e2e-draggable-text"
-            component={
-              <TextMultiloc text={toMultiloc(textMessages.textMultiloc)} />
-            }
+            component={<TextMultiloc text={toMultiloc(textMultilocTitle)} />}
             icon="text"
-            label={formatMessage(TextMultiloc.craft.custom.title)}
+            label={formatMessage(textMultilocTitle)}
           />
           <DraggableElement
             id="e2e-draggable-image"
             component={<ImageMultiloc />}
             icon="image"
-            label={formatMessage(ImageMultiloc.craft.custom.title)}
+            label={formatMessage(imageMultilocTitle)}
           />
         </Accordion>
 
@@ -162,12 +159,12 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-survey-results-widget"
             component={
               <SurveyResultsWidget
-                title={toMultiloc(SurveyResultsWidget.craft.custom.title)}
+                title={toMultiloc(surveyResultsTitle)}
                 phaseId={phaseId}
               />
             }
             icon="survey"
-            label={formatMessage(SurveyResultsWidget.craft.custom.title)}
+            label={formatMessage(surveyResultsTitle)}
           />
           <DraggableElement
             id="e2e-most-reacted-ideas-widget"

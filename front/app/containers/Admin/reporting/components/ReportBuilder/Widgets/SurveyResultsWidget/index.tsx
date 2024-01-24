@@ -183,9 +183,10 @@ SurveyResultsWidget.craft = {
     settings: SurveyResultsWidgetSettings,
   },
   custom: {
-    title: messages.surveyResults,
     noPointerEvents: true,
   },
 };
+
+export const surveyResultsTitle = messages.surveyResults;
 
 export default SurveyResultsWidget;

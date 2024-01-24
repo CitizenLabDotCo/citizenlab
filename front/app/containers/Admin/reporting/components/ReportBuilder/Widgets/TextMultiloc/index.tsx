@@ -75,9 +75,8 @@ TextMultiloc.craft = {
   related: {
     settings: TextMultilocSettings,
   },
-  custom: {
-    title: messages.textMultiloc,
-  },
 };
+
+export const textMultilocTitle = messages.textMultiloc;
 
 export default TextMultiloc;

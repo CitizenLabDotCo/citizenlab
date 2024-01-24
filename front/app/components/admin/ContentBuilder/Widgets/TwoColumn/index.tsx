@@ -146,7 +146,7 @@ export const TwoColumnSettings = () => {
   );
 };
 
-export const twoColumnCraftConfig = {
+const twoColumnCraftConfig = {
   props: {
     columnLayout: '',
   },
@@ -160,7 +160,5 @@ export const twoColumnCraftConfig = {
 };
 
 TwoColumn.craft = twoColumnCraftConfig;
-
-export const twoColumnTitle = messages.twoColumn;
 
 export default TwoColumn;

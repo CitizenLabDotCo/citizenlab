@@ -88,9 +88,8 @@ Image.craft = {
   related: {
     settings: ImageSettings,
   },
-  custom: {
-    title: messages.imageMultiloc,
-  },
 };
+
+export const imageMultilocTitle = messages.imageMultiloc;
 
 export default Image;

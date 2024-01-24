@@ -9,10 +9,13 @@ import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportD
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 // craft
-import { twoColumnCraftConfig } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import { TwoColumnSettings } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import { Element } from '@craftjs/core';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
+
+// i18n
+import messages from 'components/admin/ContentBuilder/Widgets/TwoColumn/messages';
 
 // typings
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
@@ -80,6 +83,18 @@ export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
   );
 };
 
-TwoColumn.craft = twoColumnCraftConfig;
+TwoColumn.craft = {
+  props: {
+    columnLayout: '',
+  },
+  related: {
+    settings: TwoColumnSettings,
+  },
+  custom: {
+    hasChildren: true,
+  },
+};
+
+export const twoColumnTitle = messages.twoColumn;
 
 export default TwoColumn;
