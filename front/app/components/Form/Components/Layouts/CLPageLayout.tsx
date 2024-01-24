@@ -174,7 +174,7 @@ const CLPageLayout = memo(
        * We need to find a better solution for this but keeping it like this for now. I'll probably come back to it when I have more time
        * to think about it. See https://www.notion.so/citizenlab/Bug-in-survey-flow-792a72efc35e44e58e1bb10ab631ecdf
        */
-      setFormData && setFormData(dataWithoutRuleValues);
+      setFormData?.(dataWithoutRuleValues);
 
       setCurrentStep(currentStep - 1);
       userPagePath.pop();
