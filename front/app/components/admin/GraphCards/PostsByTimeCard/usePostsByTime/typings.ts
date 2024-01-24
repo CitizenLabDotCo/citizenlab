@@ -7,21 +7,11 @@ import {
 
 export type QueryParameters = ProjectId & Dates & Resolution;
 
-// Response
-export type Response = {
-  data: {
-    type: 'report_builder_data_units';
-    attributes: [TimeSeriesResponse | [], [InputsCountRow] | []];
-  };
-};
-
-type TimeSeriesResponse = TimeSeriesResponseRow[];
-
 export interface TimeSeriesResponseRow extends InputsCountRow {
   first_dimension_date_created_date: string;
 }
 
-interface InputsCountRow {
+export interface InputsCountRow {
   count: number;
 }
 

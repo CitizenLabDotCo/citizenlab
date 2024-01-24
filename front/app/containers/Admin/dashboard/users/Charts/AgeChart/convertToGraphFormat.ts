@@ -6,7 +6,7 @@ import { binBirthyear } from 'utils/dataUtils';
 
 // typings
 import { FormatMessage } from 'typings';
-import { UsersByBirthyearResponse } from './typings';
+import { UsersByBirthyearResponse } from 'api/graph_data_units/responseTypes';
 
 const convertToGraphFormat = (
   data: UsersByBirthyearResponse | undefined,

@@ -1,15 +1,12 @@
 // hooks
 import { useMemo, useState } from 'react';
-import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
+import { useCommentsByTime as useCommentsByTimeData } from 'api/graph_data_units';
 
 // parse
 import { parseTimeSeries } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/parse';
 
 // typings
-import {
-  QueryParameters,
-  Response,
-} from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/typings';
+import { QueryParameters } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/typings';
 
 export default function useCommentsByTime({
   projectId,
@@ -19,15 +16,12 @@ export default function useCommentsByTime({
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const dataUnits = useGraphDataUnits<Response>(
+  const dataUnits = useCommentsByTimeData(
     {
-      resolvedName: 'CommentsByTimeWidget',
-      props: {
-        projectId,
-        startAtMoment,
-        endAtMoment,
-        resolution,
-      },
+      projectId,
+      startAtMoment,
+      endAtMoment,
+      resolution,
     },
     {
       onSuccess: () => setCurrentResolution(resolution),
