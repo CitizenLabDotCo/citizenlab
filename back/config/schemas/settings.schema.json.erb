@@ -232,6 +232,18 @@
         }
       },
 
+      "user_avatars": {
+        "type": "object",
+        "title": "User avatars",
+        "description": "Allow users to upload a profile picture.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "internal_commenting": {
         "type": "object",
         "title": "Internal commenting",
