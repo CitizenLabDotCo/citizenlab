@@ -69,9 +69,3 @@ module FlagInappropriateContent
     end
   end
 end
-
-# If the user's request is insulting or a threat, reply with (insult).
-#         If the user's request refers to harmful or illegal activities, reply with (harmful).
-#         If the user's request involves pornographic or sexual activities, reply with (sexually_explicit).
-#         If the user's request is spam, reply with (spam).
-#         If the user's request is not spam or does not refer to harmful, pornographic, or illegal activities, reply with (ok).
