@@ -18,6 +18,7 @@ module ReportBuilder
     end
 
     def write?
+      # TODO: check action descriptor?
       record.phase? ? PhasePolicy.new(user, record.phase).update? : (admin? && active?)
     end
 
