@@ -3,6 +3,8 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import Divider from 'components/admin/Divider';
 import React from 'react';
 import styled from 'styled-components';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 const Item = styled.div<{ start: number }>`
   position: absolute;
@@ -20,6 +22,7 @@ type TextResponsesProps = {
 
 const TextResponses = ({ textResponses }: TextResponsesProps) => {
   const parentRef = React.useRef(null);
+  const { formatMessage } = useIntl();
 
   // The virtualizer
   const { measureElement, getTotalSize, getVirtualItems } = useVirtualizer({
@@ -32,7 +35,7 @@ const TextResponses = ({ textResponses }: TextResponsesProps) => {
     <Box bg={colors.background}>
       <Box borderBottom={`1px solid ${colors.divider}`} p="24px">
         <Text fontWeight="bold" m="0px">
-          All responses ({textResponses.length})
+          {formatMessage(messages.allResponses)} ({textResponses.length})
         </Text>
       </Box>
 

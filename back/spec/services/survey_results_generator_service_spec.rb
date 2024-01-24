@@ -157,14 +157,21 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'What is your favourite colour?' },
           required: false,
           totalResponses: 4,
-          customFieldId: text_field.id
+          customFieldId: text_field.id,
+          textResponses: [
+            {:answer => 'Red' }, 
+            {:answer=> 'Blue' }, 
+            {:answer=> 'Green' }, 
+            {:answer=> 'Pink' }
+          ]
         },
         {
           inputType: 'multiline_text',
           question: { 'en' => 'What is your favourite recipe?' },
           required: false,
           totalResponses: 0,
-          customFieldId: multiline_text_field.id
+          customFieldId: multiline_text_field.id,
+          textResponses: []
         },
         {
           inputType: 'multiselect',
@@ -343,8 +350,9 @@ RSpec.describe SurveyResultsGeneratorService do
   context 'for a phase' do
     let(:project) { create(:project_with_active_native_survey_phase) }
     let(:active_phase) { project.phases.first }
-    let(:form) { create(:custom_form, participation_context: active_phase) }
     let(:participation_context) { active_phase }
+    let(:form) { create(:custom_form, participation_context: active_phase) }
+  
     let(:phases_of_inputs) { [active_phase] }
 
     describe '#generate_submission_count' do
