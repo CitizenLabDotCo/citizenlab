@@ -64,7 +64,7 @@ class IdeaCustomFieldsService
   def allowed_extra_field_keys
     fields_with_simple_keys = []
     fields_with_array_keys = {}
-    submittable_fields.reject(&:built_in?).each do |field|
+    submittable_fields_with_other_options.reject(&:built_in?).each do |field|
       case field.input_type
       when 'multiselect'
         fields_with_array_keys[field.key.to_sym] = []
