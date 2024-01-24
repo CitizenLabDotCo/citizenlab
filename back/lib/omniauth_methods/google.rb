@@ -2,6 +2,8 @@
 
 module OmniauthMethods
   class Google < OmniauthMethods::Base
+    GOOGLE_PLACEHOLDER_AVATAR_URL = 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s640-c/photo.jpg'
+
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('google_login')
@@ -12,26 +14,16 @@ module OmniauthMethods
       env['omniauth.strategy'].options[:image_aspect_ratio] = 'square'
     end
 
+    # @param [OmniAuth::AuthHash] auth
     def profile_to_user_attrs(auth)
-      user_attrs = {
+      {
         first_name: auth.info['first_name'],
         last_name: auth.info['last_name'],
         email: auth.info['email'],
-        remote_avatar_url: auth.info['image'],
+        remote_avatar_url: remote_avatar_url(auth),
         gender: auth.extra.raw_info.gender,
         locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale)
       }
-
-      # Currently, the only way to detect if the google account
-      # does not have an avatar, is by comparison of URL or by
-      # checking if the image URL is available.
-      if !image_available?(auth.info.image) || [
-        'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s640-c/photo.jpg'
-      ].include?(auth.info.image)
-        user_attrs[:remote_avatar_url] = nil
-      end
-
-      user_attrs
     end
 
     def updateable_user_attrs
@@ -39,6 +31,14 @@ module OmniauthMethods
     end
 
     private
+
+    def remote_avatar_url(auth)
+      return unless AppConfiguration.instance.feature_activated?('user_avatars')
+      return if auth.info.image == GOOGLE_PLACEHOLDER_AVATAR_URL
+      return unless image_available?(auth.info.image)
+
+      auth.info.image
+    end
 
     def image_available?(img_url_s)
       img_url = URI.parse(img_url_s)
