@@ -53,6 +53,7 @@ const resolver = {
   GenderWidget,
   ActiveUsersWidget,
   MostReactedIdeasWidget,
+  MostVotedIdeasWidget: MostReactedIdeasWidget, // TODO REMOVE TEMP FIX
   ProjectTemplate,
   PostsByTimeWidget,
   CommentsByTimeWidget,
@@ -80,9 +81,9 @@ const Editor: React.FC<EditorProps> = ({
       }}
       onRender={isPreview ? PlainDiv : RenderNode}
       enabled={isPreview ? false : true}
-      onNodesChange={(data) =>
-        onNodesChange && onNodesChange(data.getSerializedNodes())
-      }
+      onNodesChange={(data) => {
+        onNodesChange && onNodesChange(data.getSerializedNodes());
+      }}
     >
       {children}
     </CraftEditor>
