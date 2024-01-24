@@ -50,9 +50,10 @@ VisitorsTrafficSourcesWidget.craft = {
     settings: ChartWidgetSettings,
   },
   custom: {
-    title: messages.trafficSources,
     noPointerEvents: true,
   },
 };
+
+export const visitorsTrafficSourcesTitle = messages.trafficSources;
 
 export default VisitorsTrafficSourcesWidget;

@@ -48,9 +48,10 @@ VisitorsWidget.craft = {
     settings: ChartWidgetSettings,
   },
   custom: {
-    title: messages.visitorTimeline,
     noPointerEvents: true,
   },
 };
+
+export const visitorsTitle = messages.visitorTimeline;
 
 export default VisitorsWidget;

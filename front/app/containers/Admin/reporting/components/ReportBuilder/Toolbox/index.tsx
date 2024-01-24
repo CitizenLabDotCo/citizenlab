@@ -9,16 +9,12 @@ import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 // widgets
-import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
-import TwoColumn, { twoColumnTitle } from '../Widgets/TwoColumn';
-import TitleMultiloc, { titleMultilocTitle } from '../Widgets/TitleMultiloc';
-import ImageMultiloc, { imageMultilocTitle } from '../Widgets/ImageMultiloc';
-import AboutReportWidget, {
-  aboutReportTitle,
-} from '../Widgets/AboutReportWidget';
-import SurveyResultsWidget, {
-  surveyResultsTitle,
-} from '../Widgets/SurveyResultsWidget';
+import TextMultiloc from '../Widgets/TextMultiloc';
+import TwoColumn from '../Widgets/TwoColumn';
+import TitleMultiloc from '../Widgets/TitleMultiloc';
+import ImageMultiloc from '../Widgets/ImageMultiloc';
+import AboutReportWidget from '../Widgets/AboutReportWidget';
+import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
@@ -33,6 +29,7 @@ import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableE
 // i18n
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import reportBuilderMessages from '../../../messages';
+import { WIDGET_TITLES } from 'containers/Admin/reporting/constants';
 import {
   FormattedMessage,
   useIntl,
@@ -97,13 +94,13 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-two-column"
             component={<TwoColumn columnLayout="1-1" />}
             icon="layout-2column-1"
-            label={formatMessage(twoColumnTitle)}
+            label={formatMessage(WIDGET_TITLES.TwoColumn)}
           />
           <DraggableElement
             id="e2e-draggable-white-space"
             component={<WhiteSpace size="small" />}
             icon="layout-white-space"
-            label={formatMessage(WhiteSpace.craft.custom.title)}
+            label={formatMessage(WIDGET_TITLES.WhiteSpace)}
           />
         </Accordion>
 
@@ -121,25 +118,29 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
               <AboutReportWidget reportId={reportId} projectId={projectId} />
             }
             icon="section-image-text"
-            label={formatMessage(aboutReportTitle)}
+            label={formatMessage(WIDGET_TITLES.AboutReportWidget)}
           />
           <DraggableElement
             id="e2e-draggable-title"
-            component={<TitleMultiloc text={toMultiloc(titleMultilocTitle)} />}
+            component={
+              <TitleMultiloc text={toMultiloc(WIDGET_TITLES.TitleMultiloc)} />
+            }
             icon="text"
-            label={formatMessage(titleMultilocTitle)}
+            label={formatMessage(WIDGET_TITLES.TitleMultiloc)}
           />
           <DraggableElement
             id="e2e-draggable-text"
-            component={<TextMultiloc text={toMultiloc(textMultilocTitle)} />}
+            component={
+              <TextMultiloc text={toMultiloc(WIDGET_TITLES.TextMultiloc)} />
+            }
             icon="text"
-            label={formatMessage(textMultilocTitle)}
+            label={formatMessage(WIDGET_TITLES.TextMultiloc)}
           />
           <DraggableElement
             id="e2e-draggable-image"
             component={<ImageMultiloc />}
             icon="image"
-            label={formatMessage(imageMultilocTitle)}
+            label={formatMessage(WIDGET_TITLES.ImageMultiloc)}
           />
         </Accordion>
 
@@ -159,25 +160,25 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-survey-results-widget"
             component={
               <SurveyResultsWidget
-                title={toMultiloc(surveyResultsTitle)}
+                title={toMultiloc(WIDGET_TITLES.SurveyResultsWidget)}
                 phaseId={phaseId}
               />
             }
             icon="survey"
-            label={formatMessage(surveyResultsTitle)}
+            label={formatMessage(WIDGET_TITLES.SurveyResultsWidget)}
           />
           <DraggableElement
             id="e2e-most-reacted-ideas-widget"
             component={
               <MostReactedIdeasWidget
-                title={toMultiloc(MostReactedIdeasWidget.craft.custom.title)}
+                title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
                 numberOfIdeas={5}
                 collapseLongText={false}
                 projectId={projectId}
               />
             }
             icon="idea"
-            label={formatMessage(MostReactedIdeasWidget.craft.custom.title)}
+            label={formatMessage(WIDGET_TITLES.MostReactedIdeasWidget)}
           />
         </Accordion>
 
@@ -193,109 +194,105 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-draggable-visitors-timeline-widget"
             component={
               <VisitorsWidget
-                title={toMultiloc(VisitorsWidget.craft.custom.title)}
+                title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
             }
             icon="chart-bar"
-            label={formatMessage(VisitorsWidget.craft.custom.title)}
+            label={formatMessage(WIDGET_TITLES.VisitorsWidget)}
           />
           <DraggableElement
             id="e2e-draggable-visitors-traffic-sources-widget"
             component={
               <VisitorsTrafficSourcesWidget
-                title={toMultiloc(
-                  VisitorsTrafficSourcesWidget.craft.custom.title
-                )}
+                title={toMultiloc(WIDGET_TITLES.VisitorsTrafficSourcesWidget)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
             }
             icon="chart-bar"
-            label={formatMessage(
-              VisitorsTrafficSourcesWidget.craft.custom.title
-            )}
+            label={formatMessage(WIDGET_TITLES.VisitorsTrafficSourcesWidget)}
           />
           <DraggableElement
             id="e2e-draggable-users-by-gender-widget"
             component={
               <GenderWidget
-                title={toMultiloc(GenderWidget.craft.custom.title)}
+                title={toMultiloc(WIDGET_TITLES.GenderWidget)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
             }
             icon="chart-bar"
-            label={formatMessage(GenderWidget.craft.custom.title)}
+            label={formatMessage(WIDGET_TITLES.GenderWidget)}
           />
           <DraggableElement
             id="e2e-draggable-users-by-age-widget"
             component={
               <AgeWidget
-                title={toMultiloc(AgeWidget.craft.custom.title)}
+                title={toMultiloc(WIDGET_TITLES.AgeWidget)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
             }
             icon="chart-bar"
-            label={formatMessage(AgeWidget.craft.custom.title)}
+            label={formatMessage(WIDGET_TITLES.AgeWidget)}
           />
           <DraggableElement
             id="e2e-draggable-active-users-widget"
             component={
               <ActiveUsersWidget
-                title={toMultiloc(ActiveUsersWidget.craft.custom.title)}
+                title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
             }
             icon="chart-bar"
-            label={formatMessage(ActiveUsersWidget.craft.custom.title)}
+            label={formatMessage(WIDGET_TITLES.ActiveUsersWidget)}
           />
           <DraggableElement
             id="e2e-draggable-posts-by-time-widget"
             component={
               <PostsByTimeWidget
-                title={toMultiloc(PostsByTimeWidget.craft.custom.title)}
+                title={toMultiloc(WIDGET_TITLES.PostsByTimeWidget)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
             }
             icon="chart-bar"
-            label={formatMessage(PostsByTimeWidget.craft.custom.title)}
+            label={formatMessage(WIDGET_TITLES.PostsByTimeWidget)}
           />
           <DraggableElement
             id="e2e-draggable-comments-by-time-widget"
             component={
               <CommentsByTimeWidget
-                title={toMultiloc(CommentsByTimeWidget.craft.custom.title)}
+                title={toMultiloc(WIDGET_TITLES.CommentsByTimeWidget)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
             }
             icon="chart-bar"
-            label={formatMessage(CommentsByTimeWidget.craft.custom.title)}
+            label={formatMessage(WIDGET_TITLES.CommentsByTimeWidget)}
           />
           <DraggableElement
             id="e2e-draggable-reactions-by-time-widget"
             component={
               <ReactionsByTimeWidget
-                title={toMultiloc(ReactionsByTimeWidget.craft.custom.title)}
+                title={toMultiloc(WIDGET_TITLES.ReactionsByTimeWidget)}
                 projectId={projectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
             }
             icon="chart-bar"
-            label={formatMessage(ReactionsByTimeWidget.craft.custom.title)}
+            label={formatMessage(WIDGET_TITLES.ReactionsByTimeWidget)}
           />
         </Accordion>
       </Box>

@@ -41,9 +41,10 @@ AgeWidget.craft = {
     settings: ChartWidgetSettings,
   },
   custom: {
-    title: messages.usersByAge,
     noPointerEvents: true,
   },
 };
+
+export const ageWidgetTitle = messages.usersByAge;
 
 export default AgeWidget;

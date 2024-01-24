@@ -47,9 +47,10 @@ PostsByTimeWidget.craft = {
     settings: ChartWidgetSettings,
   },
   custom: {
-    title: messages.inputs,
     noPointerEvents: true,
   },
 };
+
+export const postsByTimeTitle = messages.inputs;
 
 export default PostsByTimeWidget;

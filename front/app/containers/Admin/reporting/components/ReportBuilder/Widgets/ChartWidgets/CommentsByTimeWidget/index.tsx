@@ -47,9 +47,10 @@ CommentsByTimeWidget.craft = {
     settings: ChartWidgetSettings,
   },
   custom: {
-    title: messages.comments,
     noPointerEvents: true,
   },
 };
+
+export const commentsByTimeTitle = messages.comments;
 
 export default CommentsByTimeWidget;
