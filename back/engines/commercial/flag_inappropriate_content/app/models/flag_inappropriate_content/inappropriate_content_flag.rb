@@ -26,7 +26,7 @@ module FlagInappropriateContent
     has_many :notifications, dependent: :nullify
 
     validates :flaggable, presence: true
-    validates :toxicity_label, inclusion: { in: TOXICITY_LABELS }
+    validates :toxicity_label, inclusion: { in: TOXICITY_LABELS }, allow_nil: true
 
     def deleted?
       !!deleted_at
