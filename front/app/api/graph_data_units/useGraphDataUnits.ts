@@ -7,16 +7,11 @@ import { isPage } from 'utils/helperUtils';
 
 import { BaseResponseData } from 'utils/cl-react-query/fetcher';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
-import { ParametersLive } from './types';
-
-type Props = {
-  enabled?: boolean;
-  onSuccess?: () => void;
-};
+import { ParametersLive, Options } from './types';
 
 const useGraphDataUnits = <Response extends BaseResponseData>(
   parameters: ParametersLive,
-  { enabled, onSuccess }: Props = { enabled: true }
+  { enabled = true, onSuccess }: Options = { enabled: true }
 ) => {
   const { pathname } = useLocation();
   const { id: graphId } = useNode();

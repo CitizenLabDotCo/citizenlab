@@ -26,6 +26,7 @@ export default function useActiveUsers({
       },
     },
     {
+      // enabled: true,
       onSuccess: () => setCurrentResolution(resolution),
     }
   );

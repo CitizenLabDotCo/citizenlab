@@ -112,3 +112,8 @@ export interface ParametersPublished {
   reportId?: string;
   graphId: string;
 }
+
+export type Options = {
+  enabled?: boolean;
+  onSuccess?: () => void;
+};
