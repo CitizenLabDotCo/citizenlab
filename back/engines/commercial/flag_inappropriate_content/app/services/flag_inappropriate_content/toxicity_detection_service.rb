@@ -11,7 +11,8 @@ module FlagInappropriateContent
     }
 
     def initialize
-      @llm = Analysis::LLM::ClaudeInstant1.new(region: ENV.fetch('AWS_TOXICITY_DETECTION_REGION'))
+      region = ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil) # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
+      @llm = Analysis::LLM::ClaudeInstant1.new(region: region) if region
     end
 
     def flag_toxicity!(flaggable, attributes: [])
@@ -27,7 +28,7 @@ module FlagInappropriateContent
         end
         return
       end
-      toxicity_labels = texts.map { |text| classify_toxicity(text) }.compact
+      toxicity_labels = texts.filter_map { |text| classify_toxicity(text) }
       if toxicity_labels.present?
         flag_service.introduce_flag! flaggable, toxicity_label: toxicity_labels.first
       elsif (flag = flaggable.inappropriate_content_flag)
@@ -54,6 +55,8 @@ module FlagInappropriateContent
     end
 
     def classify_toxicity(text)
+      return if !@llm # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
+
       prompt = Analysis::LLM::Prompt.new.fetch('claude_toxicity_detection', text: text)
       response = @llm.chat(prompt, assistant_prefix: 'My answer is (')
       MAP_TOXICITY_LABEL.find do |class_id, _|
