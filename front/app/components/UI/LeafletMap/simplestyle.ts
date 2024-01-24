@@ -60,7 +60,7 @@
     const size = fp['marker-size'] || 'medium';
     const symbol =
       'marker-symbol' in fp && fp['marker-symbol'] !== ''
-        ? `-${fp['marker-symbol']}`
+        ? `${fp['marker-symbol']}`
         : '';
     const color = (fp['marker-color'] || '7e7e7e').replace('#', '');
 
@@ -83,23 +83,47 @@
       popupAnchor: [0, -sizes[size][1] / 2],
     };
 
-    if (useMakiMarkers) {
-      const makiSizes = {
-        small: [20, 50],
-        medium: [30, 70],
-        large: [35, 90],
-      };
-      let protocol = window.document.location.protocol;
-      if (protocol.indexOf('http') === -1) protocol = 'https:';
-      iconOptions.iconUrl = `${protocol}//a.tiles.mapbox.com/v3/marker/pin-${size.charAt(
-        0
-      )}${symbol.toLowerCase()}+${color}${L.Browser.retina ? '@2x' : ''}.png`;
-      iconOptions.iconSize = makiSizes[size];
-      iconOptions.iconAnchor = [makiSizes[size][0] / 2, makiSizes[size][1] / 2];
-      iconOptions.popupAnchor = [0, -makiSizes[size][1] / 2];
+    if (useMakiMarkers && symbol) {
+      fetch(
+        `https://unpkg.com/@icon/maki-icons/icons/${symbol.toLowerCase()}.svg`
+      )
+        .then((response) => response.text())
+        .then((svg) => {
+          // Insert correct color
+          const endOfFirst = svg.indexOf('>');
+          const newSvg = `${svg.slice(
+            0,
+            endOfFirst
+          )} fill="#${color}" ${svg.slice(endOfFirst)}`;
+          // Get a URL
+          // const blob = new Blob([newSvg], { type: 'image/svg+xml' });
+          // const url = URL.createObjectURL(blob);
+          const makiSizes = {
+            small: [20, 50],
+            medium: [30, 70],
+            large: [35, 90],
+          };
+          // iconOptions.iconUrl = `${protocol}//a.tiles.mapbox.com/v3/marker/pin-${size.charAt(
+          //   0
+          // )}${symbol.toLowerCase()}+${color}${L.Browser.retina ? '@2x' : ''}.png`;
+          iconOptions.url = undefined;
+          iconOptions.iconSize = makiSizes[size];
+          iconOptions.iconAnchor = [
+            makiSizes[size][0] / 2,
+            makiSizes[size][1] / 2,
+          ];
+          iconOptions.popupAnchor = [0, -makiSizes[size][1] / 2];
+        })
+        .catch(console.error.bind(console));
     }
 
-    return L.icon(iconOptions);
+    return L.divIcon(
+      {
+        className: 'leafletSvg',
+        html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" width="30px" height="30px"><path fill='#${color}' d="M2 1S1 1 1 2v5.158C1 8.888 1.354 11 4.5 11H5V8L2.5 9s0-2.5 2.5-2.5V5c0-.708.087-1.32.5-1.775.381-.42 1.005-1.258 2.656-.471L9 3.303V2s0-1-1-1c-.708 0-1.978 1-3 1S2.787 1 2 1zm1 2a1 1 0 110 2 1 1 0 010-2zm4 1S6 4 6 5v5c0 2 1 4 4 4s4-2 4-4V5c0-1-1-1-1-1-.708 0-1.978 1-3 1S7.787 4 7 4zm1 2a1 1 0 110 2 1 1 0 010-2zm4 0a1 1 0 110 2 1 1 0 010-2zm-4.5 4h5s0 2.5-2.5 2.5S7.5 10 7.5 10z"/></svg>`,
+      },
+      iconOptions
+    );
   }
 
   L.GeoJSON.include({

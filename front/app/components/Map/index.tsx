@@ -49,6 +49,7 @@ import Expand from '@arcgis/core/widgets/Expand.js';
 import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer.js';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer.js';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol.js';
+import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol.js';
 import WebTileLayer from '@arcgis/core/layers/WebTileLayer.js';
 import Basemap from '@arcgis/core/Basemap.js';
 import EsriPoint from '@arcgis/core/geometry/Point.js';
@@ -331,17 +332,48 @@ const Map = memo<IMapProps & IMapConfigProps>(
         ],
       };
 
+      const geojsonPoint = {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [100, 0],
+        },
+        properties: {
+          name: 'Dinagat Islands',
+          'marker-symbol': 'bicycle',
+        },
+      };
+
       // create a new blob from geojson featurecollection
       const blob = new Blob([JSON.stringify(geojson)], {
+        type: 'application/json',
+      });
+      const blobPoint = new Blob([JSON.stringify(geojsonPoint)], {
         type: 'application/json',
       });
 
       // URL reference to the blob
       const url = URL.createObjectURL(blob);
+      const urlPoint = URL.createObjectURL(blobPoint);
+
       // create new geojson layer using the blob url
       const geoJsonLayer = new GeoJSONLayer({
         url,
       });
+
+      const picRenderer = {
+        type: 'simple', // autocasts as new SimpleRenderer()
+        symbol: {
+          type: 'picture-marker',
+          url: 'https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png',
+        },
+      } as RendererProperties;
+
+      const geoJsonLayerPoint = new GeoJSONLayer({
+        url: urlPoint,
+        renderer: picRenderer,
+      });
+
       geoJsonLayer.title = 'Custom legend title'; // Custom legend title
       geoJsonLayer.renderer = new SimpleRenderer({
         // Custom polygon renderer
@@ -351,6 +383,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
         }),
       });
       esriMap.add(geoJsonLayer);
+      esriMap.add(geoJsonLayerPoint);
 
       const legend = new Expand({
         content: new Legend({
