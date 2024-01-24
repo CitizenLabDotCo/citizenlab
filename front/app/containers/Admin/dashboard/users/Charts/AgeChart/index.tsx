@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useGraphDataUnitsLive from 'api/graph_data_units/useGraphDataUnitsLive';
+import { useUsersByAgeLive } from 'api/graph_data_units';
 
 // components
 import GraphCard from 'components/admin/GraphCard';
@@ -13,7 +13,7 @@ import messages from 'containers/Admin/dashboard/messages';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { QueryParameters, UsersByBirthyearResponse } from './typings';
+import { QueryParameters } from './typings';
 import { isNilOrError } from 'utils/helperUtils';
 import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
 import moment from 'moment';
@@ -34,15 +34,11 @@ const AgeChart = ({
   const { formatMessage } = useIntl();
   const graphRef = useRef();
 
-  const { data: usersByBirthyear } =
-    useGraphDataUnitsLive<UsersByBirthyearResponse>({
-      resolvedName: 'AgeWidget',
-      props: {
-        startAtMoment: startAt ? moment(startAt) : null,
-        endAtMoment: endAt ? moment(endAt) : null,
-        groupId: currentGroupFilter,
-      },
-    });
+  const { data: usersByBirthyear } = useUsersByAgeLive({
+    startAtMoment: startAt ? moment(startAt) : null,
+    endAtMoment: endAt ? moment(endAt) : null,
+    groupId: currentGroupFilter,
+  });
   const ageSerie = convertToGraphFormat(usersByBirthyear, formatMessage);
 
   const cardTitle = formatMessage(messages.usersByAgeTitle);

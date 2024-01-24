@@ -1,15 +1,12 @@
 import { useMemo, useState } from 'react';
 
 // hooks
-import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
 // parse
 import { parseTimeSeries } from 'components/admin/GraphCards/PostsByTimeCard/usePostsByTime/parse';
 
 // typings
-import {
-  QueryParameters,
-  Response,
-} from 'components/admin/GraphCards/PostsByTimeCard/usePostsByTime/typings';
+import { QueryParameters } from 'components/admin/GraphCards/PostsByTimeCard/usePostsByTime/typings';
+import { usePostsByTime as usePostsByTimeData } from 'api/graph_data_units';
 
 export default function usePostsByTime({
   projectId,
@@ -19,14 +16,11 @@ export default function usePostsByTime({
 }: QueryParameters) {
   const [currentResolution] = useState(resolution);
 
-  const analytics = useGraphDataUnits<Response>({
-    resolvedName: 'PostsByTimeWidget',
-    props: {
-      projectId,
-      startAtMoment,
-      endAtMoment,
-      resolution,
-    },
+  const analytics = usePostsByTimeData({
+    projectId,
+    startAtMoment,
+    endAtMoment,
+    resolution,
   });
 
   const timeSeries = useMemo(

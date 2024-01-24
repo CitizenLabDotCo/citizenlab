@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import fetcher, { BaseResponseData } from 'utils/cl-react-query/fetcher';
 import graphDataUnitKeys from './keys';
-import { ParametersLive } from './types';
+import { ParametersLive } from './requestTypes';
 import { CLErrors } from 'typings';
 
 const fetchGraphDataUnitsLive = <Response extends BaseResponseData>({
