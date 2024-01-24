@@ -8,7 +8,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import styled from 'styled-components';
 
 // components
-import { Select, Box } from '@citizenlab/cl2-component-library';
+import { Select, Box, Label, Spinner } from '@citizenlab/cl2-component-library';
 
 // i18n
 import useLocalize, { Localize } from 'hooks/useLocalize';
@@ -21,6 +21,7 @@ import { isAdmin } from 'utils/permissions/roles';
 // typings
 import { IOption } from 'typings';
 import { IProjectData, PublicationStatus } from 'api/projects/types';
+import { format } from 'path';
 
 interface Option {
   value: string | undefined;
@@ -97,17 +98,24 @@ const ProjectFilter = ({
     [onProjectFilter]
   );
 
-  if (projectFilterOptions === null) return null;
-
   return (
     <Box id="e2e-report-builder-project-filter-box" width="100%" mb="20px">
-      <StyledSelect
-        id="projectFilter"
-        label={formatMessage(dashboardFilterMessages.labelProjectFilter)}
-        onChange={handleProjectFilter}
-        value={projectId}
-        options={projectFilterOptions}
-      />
+      {projectFilterOptions ? (
+        <StyledSelect
+          id="projectFilter"
+          label={formatMessage(dashboardFilterMessages.labelProjectFilter)}
+          onChange={handleProjectFilter}
+          value={projectId}
+          options={projectFilterOptions}
+        />
+      ) : (
+        <>
+          <Label>
+            {formatMessage(dashboardFilterMessages.labelProjectFilter)}
+          </Label>
+          <Spinner />
+        </>
+      )}
     </Box>
   );
 };
