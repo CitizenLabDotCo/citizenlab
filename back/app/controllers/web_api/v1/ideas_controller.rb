@@ -211,7 +211,7 @@ class WebApi::V1::IdeasController < ApplicationController
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
     update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
     update_params[:custom_field_values] = input.custom_field_values.merge(update_params[:custom_field_values] || {})
-    CustomFieldService.new.cleanup_custom_field_values! update_params[:custom_field_values]
+    CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     input.assign_attributes update_params
     authorize input
     if anonymous_not_allowed?(phase)
