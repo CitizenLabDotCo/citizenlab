@@ -16,7 +16,7 @@ type Props = {
 
 const useGraphDataUnits = <Response extends BaseResponseData>(
   parameters: ParametersLive,
-  { enabled, onSuccess }: Props = { enabled: true }
+  { enabled = true, onSuccess }: Props = { enabled: true }
 ) => {
   const { pathname } = useLocation();
   const { id: graphId } = useNode();
