@@ -29,28 +29,29 @@ const TextResponses = ({ textResponses }: TextResponsesProps) => {
   });
 
   return (
-    <Box
-      ref={parentRef}
-      height="400px"
-      overflow="auto"
-      p="24px"
-      bg={colors.background}
-    >
-      <Text fontWeight="bold" m="0px">
-        All responses ({textResponses.length})
-      </Text>
-      <Box height={`${getTotalSize()}px`} width="100%" position="relative">
-        {getVirtualItems().map((virtualItem) => (
-          <Item
-            ref={measureElement}
-            data-index={virtualItem.index}
-            key={virtualItem.key}
-            start={virtualItem.start}
-          >
-            <Divider />
-            <Text>{textResponses[virtualItem.index].answer}</Text>
-          </Item>
-        ))}
+    <Box bg={colors.background}>
+      <Box borderBottom={`1px solid ${colors.divider}`} p="24px">
+        <Text fontWeight="bold" m="0px">
+          All responses ({textResponses.length})
+        </Text>
+      </Box>
+
+      <Box ref={parentRef} height="400px" overflow="auto" pt="12px">
+        <Box height={`${getTotalSize()}px`} width="100%" position="relative">
+          {getVirtualItems().map((virtualItem) => (
+            <Item
+              ref={measureElement}
+              data-index={virtualItem.index}
+              key={virtualItem.key}
+              start={virtualItem.start}
+            >
+              <Text m="0px" px="24px">
+                {textResponses[virtualItem.index].answer}
+              </Text>
+              <Divider />
+            </Item>
+          ))}
+        </Box>
       </Box>
     </Box>
   );
