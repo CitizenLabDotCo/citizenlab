@@ -264,7 +264,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def extract_custom_field_values_from_params!(custom_form)
     return unless custom_form
 
-    all_fields = IdeaCustomFieldsService.new(custom_form).submittable_fields
+    all_fields = IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
     extra_field_values = all_fields.each_with_object({}) do |field, accu|
       next if field.built_in?
 
@@ -283,7 +283,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_attributes(custom_form, user_can_moderate_project)
-    submittable_field_keys = IdeaCustomFieldsService.new(custom_form).submittable_fields.map { |field| field.key.to_sym }
+    submittable_field_keys = IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options.map { |field| field.key.to_sym }
     attributes = idea_simple_attributes(submittable_field_keys)
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?

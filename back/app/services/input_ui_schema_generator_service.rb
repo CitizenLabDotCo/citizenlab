@@ -67,6 +67,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def schema_elements_for(fields)
+    # fields = insert_other_option_text_fields(fields)
     form_logic = FormLogicService.new(fields)
     current_page_schema = nil
     field_schemas = []
@@ -85,6 +86,15 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     end
     field_schemas << end_page_schema
     field_schemas
+  end
+
+  def insert_other_option_text_fields(fields)
+    all_fields = []
+    fields.each do |field|
+      all_fields << field
+      all_fields << field.other_option_text_field if field.other_option_text_field
+    end
+    all_fields
   end
 
   def end_page_schema

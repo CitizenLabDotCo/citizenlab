@@ -28,9 +28,11 @@ class IdeaCustomFieldsService
 
   def submittable_fields
     unsubbmittable_input_types = %w[page section]
-    insert_other_option_text_fields(
-      enabled_fields.reject { |field| unsubbmittable_input_types.include? field.input_type }
-    )
+    enabled_fields.reject { |field| unsubbmittable_input_types.include? field.input_type }
+  end
+
+  def submittable_fields_with_other_options
+    insert_other_option_text_fields(submittable_fields)
   end
 
   def printable_fields
@@ -44,7 +46,11 @@ class IdeaCustomFieldsService
   end
 
   def enabled_fields
-    insert_other_option_text_fields(all_fields.select(&:enabled?))
+    all_fields.select(&:enabled?)
+  end
+
+  def enabled_fields_with_other_options
+    insert_other_option_text_fields(enabled_fields)
   end
 
   def enabled_public_fields
