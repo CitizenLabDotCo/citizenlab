@@ -27,7 +27,7 @@ module FlagInappropriateContent
         end
         return
       end
-      toxicity_labels = texts.map(&method(:classify_toxicity)).compact
+      toxicity_labels = texts.map { |text| classify_toxicity(text) }.compact
       if toxicity_labels.present?
         flag_service.introduce_flag! flaggable, toxicity_label: toxicity_labels.first
       elsif (flag = flaggable.inappropriate_content_flag)
