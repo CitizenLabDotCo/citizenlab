@@ -222,7 +222,7 @@ class CustomField < ApplicationRecord
     CustomField.new(
       key: other_field_key,
       input_type: 'text',
-      title_multiloc: { 'en' => 'Type your answer' },
+      title_multiloc: { 'en' => 'Type your answer' }, # TODO: JS - Get from i18n
       required: true,
       enabled: true
     )
