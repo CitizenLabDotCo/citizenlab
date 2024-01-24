@@ -21,7 +21,6 @@ import { isAdmin } from 'utils/permissions/roles';
 // typings
 import { IOption } from 'typings';
 import { IProjectData, PublicationStatus } from 'api/projects/types';
-import { format } from 'path';
 
 interface Option {
   value: string | undefined;
