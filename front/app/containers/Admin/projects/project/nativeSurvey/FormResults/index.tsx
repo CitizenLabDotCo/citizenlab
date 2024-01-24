@@ -79,7 +79,7 @@ const FormResults = () => {
         </Box>
       </Box>
 
-      <Box maxWidth="524px">
+      <Box>
         {results.map(
           (
             {
@@ -89,6 +89,7 @@ const FormResults = () => {
               totalResponses,
               required,
               customFieldId,
+              textResponses,
             },
             index
           ) => {
@@ -102,6 +103,7 @@ const FormResults = () => {
                 totalResponses={totalResponses}
                 required={required}
                 customFieldId={customFieldId}
+                textResponses={textResponses}
               />
             );
           }
