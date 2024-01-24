@@ -9,7 +9,7 @@ describe FlagInappropriateContent::ToxicityDetectionService do
     before do
       SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
-      stub_check_toxic! service
+      stub_classify_toxicity! service
     end
 
     it 'creates a new flag if toxicity was detected' do
@@ -91,9 +91,9 @@ describe FlagInappropriateContent::ToxicityDetectionService do
 
   private
 
-  def stub_check_toxic!(service)
-    service.stub(:check_toxic?) do |text|
-      text.downcase.include? 'wanker'
+  def stub_classify_toxicity!(service)
+    service.stub(:classify_toxicity) do |text|
+      'insult' if text.downcase.include? 'wanker'
     end
   end
 end

@@ -18,12 +18,15 @@
 #
 module FlagInappropriateContent
   class InappropriateContentFlag < ApplicationRecord
+    TOXICITY_LABELS = %w[insult harmful sexually_explicit spam].freeze
+
     belongs_to :flaggable, polymorphic: true
 
     before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
     has_many :notifications, dependent: :nullify
 
     validates :flaggable, presence: true
+    validates :toxicity_label, inclusion: { in: TOXICITY_LABELS }
 
     def deleted?
       !!deleted_at

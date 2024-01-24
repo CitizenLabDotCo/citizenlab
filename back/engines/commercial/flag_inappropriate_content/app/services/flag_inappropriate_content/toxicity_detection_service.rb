@@ -2,6 +2,14 @@
 
 module FlagInappropriateContent
   class ToxicityDetectionService
+    MAP_TOXICITY_LABEL = {
+      'A' => 'insult',
+      'B' => 'harmful',
+      'C' => 'sexually_explicit',
+      'D' => 'spam',
+      'E' => nil
+    }
+
     def initialize
       @llm = Analysis::LLM::ClaudeInstant1.new(region: 'us-east-1') # TODO: Get region from env
     end
@@ -19,8 +27,9 @@ module FlagInappropriateContent
         end
         return
       end
-      if texts.any?(&method(:check_toxic?))
-        flag_service.introduce_flag! flaggable, toxicity_label: 'toxicity'
+      toxicity_labels = texts.map(&method(:classify_toxicity)).compact
+      if toxicity_labels.present?
+        flag_service.introduce_flag! flaggable, toxicity_label: toxicity_labels.first
       elsif (flag = flaggable.inappropriate_content_flag)
         flag.update! toxicity_label: nil
         flag_service.maybe_delete! flag
@@ -58,10 +67,11 @@ module FlagInappropriateContent
       texts
     end
 
-    def check_toxic?(text)
-      raw_label = @llm.chat(prompt(text))
-      puts raw_label
-      raw_label.strip == '(Y)'
+    def classify_toxicity(text)
+      response = @llm.chat(prompt(text), assistant_prefix: 'My answer is (')
+      MAP_TOXICITY_LABEL.find do |class_id, toxicity_label|
+        response.strip.starts_with? "#{class_id})"
+      end&.last
     end
 
     def prompt(text)
@@ -71,8 +81,19 @@ module FlagInappropriateContent
           #{text}
         </content>
 
-        If the user's request refers to harmful, pornographic, or illegal activities, reply with (Y). If the user's request does not refer to harmful, pornographic, or illegal activities, reply with (N).
+        You are tasked with classifying the user's request according to the following categories:
+        (A) Insulting or a threat
+        (B) Harmful or illegal activities
+        (C) Pornographic or sexual activities
+        (D) Spam
+        (E) Not toxic
       LLM_PROMPT
     end
   end
 end
+
+# If the user's request is insulting or a threat, reply with (insult).
+#         If the user's request refers to harmful or illegal activities, reply with (harmful).
+#         If the user's request involves pornographic or sexual activities, reply with (sexually_explicit).
+#         If the user's request is spam, reply with (spam).
+#         If the user's request is not spam or does not refer to harmful, pornographic, or illegal activities, reply with (ok).
