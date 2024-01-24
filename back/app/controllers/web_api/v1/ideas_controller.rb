@@ -264,7 +264,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def extract_custom_field_values_from_params!(custom_form)
     return unless custom_form
 
-    all_fields = IdeaCustomFieldsService.new(custom_form).all_fields
+    all_fields = IdeaCustomFieldsService.new(custom_form).submittable_fields
     extra_field_values = all_fields.each_with_object({}) do |field, accu|
       next if field.built_in?
 

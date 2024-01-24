@@ -28,7 +28,9 @@ class IdeaCustomFieldsService
 
   def submittable_fields
     unsubbmittable_input_types = %w[page section]
-    enabled_fields.reject { |field| unsubbmittable_input_types.include? field.input_type }
+    insert_other_option_text_fields(
+      enabled_fields.reject { |field| unsubbmittable_input_types.include? field.input_type }
+    )
   end
 
   def printable_fields
@@ -42,7 +44,7 @@ class IdeaCustomFieldsService
   end
 
   def enabled_fields
-    all_fields.select(&:enabled?)
+    insert_other_option_text_fields(all_fields.select(&:enabled?))
   end
 
   def enabled_public_fields
@@ -125,6 +127,15 @@ class IdeaCustomFieldsService
   end
 
   private
+
+  def insert_other_option_text_fields(fields)
+    all_fields = []
+    fields.each do |field|
+      all_fields << field
+      all_fields << field.other_option_text_field if field.other_option_text_field
+    end
+    all_fields
+  end
 
   # Check required as it doesn't matter what is saved in title for section 1
   # Constraints required for the front-end but response will always return input specific method

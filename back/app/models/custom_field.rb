@@ -226,7 +226,8 @@ class CustomField < ApplicationRecord
       key: other_field_key,
       input_type: 'text',
       title_multiloc: { 'en' => 'Type your answer' },
-      required: true
+      required: true,
+      enabled: true
     )
   end
 
