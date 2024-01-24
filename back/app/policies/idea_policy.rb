@@ -30,7 +30,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def index_mini?
-    admin? && active?
+    active_admin?
   end
 
   def create?
