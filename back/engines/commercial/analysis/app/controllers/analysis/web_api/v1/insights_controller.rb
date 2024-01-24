@@ -6,7 +6,7 @@ module Analysis
       class InsightsController < ApplicationController
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
-        before_action :set_insight, only: [:destroy]
+        before_action :set_insight, only: %i[toggle_bookmark destroy rate]
 
         def index
           insights = @analysis.insights
@@ -25,13 +25,12 @@ module Analysis
         end
 
         def toggle_bookmark
-          insight = @analysis.insights.find(params[:id])
           # toggle the bookmarked attribute
-          insight.bookmarked = !insight.bookmarked
-          if insight.save
+          @insight.bookmarked = !@insight.bookmarked
+          if @insight.save
             head :ok
           else
-            render json: { errors: insight.errors.details }, status: :unprocessable_entity
+            render json: { errors: @insight.errors.details }, status: :unprocessable_entity
           end
         end
 
@@ -47,9 +46,8 @@ module Analysis
         end
 
         def rate
-          insight = @analysis.insights.find(params[:id])
           rating = params[:rating]
-          side_fx_service.after_rate(insight, current_user, rating)
+          side_fx_service.after_rate(@insight, current_user, rating)
           head :created
         end
 
