@@ -56,7 +56,7 @@ module FlagInappropriateContent
     def classify_toxicity(text)
       prompt = Analysis::LLM::Prompt.new.fetch('claude_toxicity_detection', text: text)
       response = @llm.chat(prompt, assistant_prefix: 'My answer is (')
-      MAP_TOXICITY_LABEL.find do |class_id, toxicity_label|
+      MAP_TOXICITY_LABEL.find do |class_id, _|
         response.strip.starts_with? "#{class_id})"
       end&.last
     end
