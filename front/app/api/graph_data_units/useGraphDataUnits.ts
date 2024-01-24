@@ -7,7 +7,7 @@ import { isPage } from 'utils/helperUtils';
 
 import { BaseResponseData } from 'utils/cl-react-query/fetcher';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
-import { ParametersLive } from './types';
+import { ParametersLive } from './requestTypes';
 
 type Props = {
   enabled?: boolean;

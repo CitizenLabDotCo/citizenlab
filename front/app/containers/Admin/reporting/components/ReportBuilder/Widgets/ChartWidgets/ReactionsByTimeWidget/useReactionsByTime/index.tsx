@@ -1,18 +1,15 @@
 import { useMemo, useState } from 'react';
 
 // hooks
-import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
+import { useReactionsByTime } from 'api/graph_data_units';
 
 // parse
 import { parseTimeSeries } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/parse';
 
 // typings
-import {
-  QueryParameters,
-  Response,
-} from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
+import { QueryParameters } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
 
-export default function useReactionsByTime({
+export default function useReactionsByTime123({
   projectId,
   startAtMoment,
   endAtMoment,
@@ -20,14 +17,11 @@ export default function useReactionsByTime({
 }: QueryParameters) {
   const [currentResolution] = useState(resolution);
 
-  const analytics = useGraphDataUnits<Response>({
-    resolvedName: 'ReactionsByTimeWidget',
-    props: {
-      projectId,
-      startAtMoment,
-      endAtMoment,
-      resolution,
-    },
+  const analytics = useReactionsByTime({
+    projectId,
+    startAtMoment,
+    endAtMoment,
+    resolution,
   });
 
   const timeSeries = useMemo(
