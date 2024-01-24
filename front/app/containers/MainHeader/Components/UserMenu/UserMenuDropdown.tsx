@@ -28,7 +28,6 @@ import messages from './messages';
 
 // utils
 import { showOnboarding } from 'containers/Authentication/useSteps/stepConfig/utils';
-import { isAdmin } from 'utils/permissions/roles';
 
 const DropdownListItem = styled(Button)``;
 
@@ -82,16 +81,12 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
       content={
         <>
           <HasPermission
-            item={{ type: 'route', path: '/admin/projects' }}
+            item={{ type: 'route', path: '/admin' }}
             action="access"
           >
             <DropdownListItem
               id="admin-link"
-              linkTo={
-                isAdmin(authUser)
-                  ? '/admin/dashboard/overview'
-                  : '/admin/projects'
-              }
+              linkTo={'/admin'}
               onClick={handleCloseDropdown}
               buttonStyle="text"
               bgHoverColor={colors.grey300}
