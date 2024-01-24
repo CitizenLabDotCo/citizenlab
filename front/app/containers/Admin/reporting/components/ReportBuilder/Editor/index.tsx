@@ -53,7 +53,6 @@ const resolver = {
   GenderWidget,
   ActiveUsersWidget,
   MostReactedIdeasWidget,
-  MostVotedIdeasWidget: MostReactedIdeasWidget, // TODO REMOVE TEMP FIX
   ProjectTemplate,
   PostsByTimeWidget,
   CommentsByTimeWidget,
