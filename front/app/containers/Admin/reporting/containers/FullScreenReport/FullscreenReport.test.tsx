@@ -599,6 +599,13 @@ jest.mock(
 );
 
 describe('<FullscreenReport />', () => {
+  // I used this test to debug an issue (https://www.notion.so/Closing-the-Loop-II-Report-builder-Improvements-c87635531bb24f05ae2ffd39171a7b04?p=864d29a558f1406aafc78e6809669354&pm=s)
+  // Turns out the issue was that one of the nodes in the mockReportLayout
+  // had a `resolvedName` that didn't match any of the components in the resolver.
+  // This was because of a small bug in a migration script
+  // (back/engines/commercial/multi_tenancy/lib/tasks/core/migrate_craftjson.rake).
+  // In the mock data above, I fixed the `resolvedName` of the mismatched node.
+  // Now the test passes.
   it('renders if report layout is valid', () => {
     const { container } = render(<FullScreenReport />);
     expect(
