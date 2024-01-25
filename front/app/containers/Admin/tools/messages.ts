@@ -92,4 +92,26 @@ export default defineMessages({
     defaultMessage:
       'Power BI is a Premium-only feature. Contact your GovSuccess Manager if you want more info on this.',
   },
+  esriIntegration: {
+    id: 'app.containers.Admin.tools.esriIntegration',
+    defaultMessage: 'Esri Integration',
+  },
+  esriIntegrationDescription: {
+    id: 'app.containers.Admin.tools.esriIntegrationDescription',
+    defaultMessage:
+      'Connect your Esri ArcGIS Online account and import your layers directly into your mapping projects.',
+  },
+  esriIntegrationButton: {
+    id: 'app.containers.Admin.tools.esriIntegrationButton',
+    defaultMessage: 'Enable Esri',
+  },
+  esriIntegrationImageAlt: {
+    id: 'app.containers.Admin.tools.esriIntegrationImageAlt',
+    defaultMessage: 'Esri logo',
+  },
+  esriDisabled: {
+    id: 'app.containers.Admin.tools.esriDisabled',
+    defaultMessage:
+      'The Esri integration is an add-on feature. Contact your GovSuccess Manager if you want more information on this.',
+  },
 });
