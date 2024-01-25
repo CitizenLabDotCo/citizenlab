@@ -922,6 +922,7 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Ten projekt nie zawiera żadnych faz, które mogą zawierać pomysły.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Wybierz fazę, do której chcesz dodać te wejścia.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Importer danych wejściowych",
+  "app.containers.Admin.projects.project.survey.allResponses": "Wszystkie odpowiedzi",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Wybierz powiązane pytania do analizy",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Czy chcesz uwzględnić inne powiązane pytania w swojej analizie {question}?",
   "app.containers.Admin.projects.project.survey.cancel": "Anuluj",
