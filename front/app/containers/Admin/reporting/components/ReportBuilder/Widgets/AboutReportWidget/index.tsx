@@ -21,11 +21,11 @@ import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportD
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
-import { getFullName } from 'utils/textUtils';
+import { getFullName, withoutSpacing } from 'utils/textUtils';
 import { getPeriod } from './utils';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
-type Props = {
+export type Props = {
   startAt?: string;
   endAt?: string | null;
   reportId: string;
@@ -63,7 +63,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
       formatMessageWithLocale(locale, message, values);
     const period = getPeriod({ startAt, endAt, formatMessage });
 
-    return `
+    return withoutSpacing`
       <ul>
         <li>${formatMessage(messages.projectLabel, {
           projectsList: projectTitle?.[locale] ?? '',
@@ -105,9 +105,8 @@ AboutReportWidget.craft = {
   related: {
     settings: NoWidgetSettings,
   },
-  custom: {
-    title: messages.aboutThisReport,
-  },
 };
+
+export const aboutReportTitle = messages.aboutThisReport;
 
 export default AboutReportWidget;

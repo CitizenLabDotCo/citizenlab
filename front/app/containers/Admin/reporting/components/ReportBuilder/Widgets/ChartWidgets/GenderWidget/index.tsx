@@ -13,19 +13,24 @@ import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 // types
 import { ChartWidgetProps } from '../typings';
 
+// utils
+import moment from 'moment';
+
 const GenderWidget = ({
   title,
   projectId,
   startAt,
   endAt,
 }: ChartWidgetProps) => {
+  const props = {
+    startAtMoment: startAt ? moment(startAt) : null,
+    endAtMoment: endAt ? moment(endAt) : null,
+    projectId,
+  };
+
   return (
     <Card title={title} pagebreak>
-      <GenderCard
-        projectId={projectId}
-        startAt={startAt}
-        endAt={endAt ?? null}
-      />
+      <GenderCard {...props} />
     </Card>
   );
 };
@@ -40,10 +45,8 @@ GenderWidget.craft = {
   related: {
     settings: ChartWidgetSettings,
   },
-  custom: {
-    title: messages.usersByGender,
-    noPointerEvents: true,
-  },
 };
+
+export const genderTitle = messages.usersByGender;
 
 export default GenderWidget;

@@ -39,6 +39,7 @@ const PhaseReport = ({ reportId }: Props) => {
     <Box
       w="100%"
       p={smallerThanPhone ? '0px' : '30px'}
+      pt={smallerThanPhone ? '20px' : '0px'}
       display="flex"
       justifyContent="center"
     >
@@ -50,6 +51,7 @@ const PhaseReport = ({ reportId }: Props) => {
         borderRadius={stylingConsts.borderRadius}
         boxShadow="0px 2px 4px -1px rgba(0,0,0,0.06)"
         p={smallerThanTablet ? '0px' : '30px'}
+        pt={smallerThanPhone ? '20px' : '0px'}
       >
         <ReportContextProvider
           width={getReportWidth({ smallerThanPhone, smallerThanTablet })}

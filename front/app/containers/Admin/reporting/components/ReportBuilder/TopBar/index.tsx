@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 // hooks
 import { useEditor } from '@craftjs/core';
 import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
+import useProjectById from 'api/projects/useProjectById';
+import usePhase from 'api/phases/usePhase';
 
 // context
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
@@ -21,31 +23,29 @@ import ShareReportButton from '../../ReportBuilderPage/ReportRow/Buttons/ShareRe
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
 
 // routing
 import clHistory from 'utils/cl-router/history';
 
 // types
 import { Locale } from 'typings';
-import { CraftJson } from 'components/admin/ContentBuilder/typings';
 
 type ContentBuilderTopBarProps = {
   hasError: boolean;
   hasPendingState: boolean;
   selectedLocale: Locale;
-  draftEditorData?: CraftJson;
   reportId: string;
   templateProjectId?: string;
   saved: boolean;
   previewEnabled: boolean;
   setSaved: React.Dispatch<React.SetStateAction<boolean>>;
-  setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  setPreviewEnabled: () => void;
   setSelectedLocale: React.Dispatch<React.SetStateAction<Locale>>;
 };
 
 const ContentBuilderTopBar = ({
   hasError,
-  draftEditorData,
   selectedLocale,
   hasPendingState,
   reportId,
@@ -60,7 +60,10 @@ const ContentBuilderTopBar = ({
   const [showQuitModal, setShowQuitModal] = useState(false);
   const { query } = useEditor();
   const { mutate: updateReportLayout, isLoading } = useUpdateReportLayout();
-  const reportContext = useReportContext();
+  const { projectId, phaseId } = useReportContext();
+  const { data: project } = useProjectById(projectId);
+  const { data: phase } = usePhase(phaseId);
+  const localize = useLocalize();
 
   const disableSave = !!hasError || !!hasPendingState || saved;
 
@@ -78,8 +81,6 @@ const ContentBuilderTopBar = ({
     }
   };
   const doGoBack = () => {
-    const { projectId, phaseId } = reportContext;
-
     const goBackUrl =
       projectId && phaseId
         ? `/admin/projects/${projectId}/phases/${phaseId}/setup`
@@ -93,7 +94,7 @@ const ContentBuilderTopBar = ({
       {
         id: reportId,
         craftjs_json: query.getSerializedNodes(),
-        projectId: reportContext.projectId,
+        projectId,
       },
       {
         onSuccess: () => {
@@ -134,7 +135,7 @@ const ContentBuilderTopBar = ({
           {
             id: reportId,
             craftjs_json: query.getSerializedNodes(),
-            projectId: reportContext.projectId,
+            projectId,
           },
           {
             onSuccess: () => {
@@ -149,17 +150,12 @@ const ContentBuilderTopBar = ({
   }, [
     templateProjectId,
     query,
-    draftEditorData,
     initialized,
     reportId,
     updateReportLayout,
-    reportContext.projectId,
+    projectId,
     setSaved,
   ]);
-
-  const handleTogglePreview = () => {
-    setPreviewEnabled((previewEnabled) => !previewEnabled);
-  };
 
   return (
     <Container>
@@ -198,9 +194,17 @@ const ContentBuilderTopBar = ({
       <GoBackButton onClick={goBack} />
       <Box display="flex" p="15px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
-          <Text mb="0px" color="textSecondary">
+          <Title variant="h3" as="h1" mb="0px" mt="0px">
             <FormattedMessage {...messages.reportBuilder} />
-          </Text>
+          </Title>
+          {project && phase && (
+            <Text m="0" color="textSecondary">
+              {localize(project.data.attributes.title_multiloc)}{' '}
+              <span style={{ color: colors.black, fontWeight: '700' }}>
+                ({localize(phase.data.attributes.title_multiloc)})
+              </span>
+            </Text>
+          )}
         </Box>
         <LocaleSwitcher
           selectedLocale={selectedLocale}
@@ -209,7 +213,7 @@ const ContentBuilderTopBar = ({
         <Box mx="24px">
           <PreviewToggle
             checked={previewEnabled}
-            onChange={handleTogglePreview}
+            onChange={setPreviewEnabled}
           />
         </Box>
         <Box mr="20px">

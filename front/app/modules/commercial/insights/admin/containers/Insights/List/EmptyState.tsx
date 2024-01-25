@@ -71,6 +71,7 @@ const EmptyState = ({
             onClick={openCreateModal}
             mr="12px"
             mb="12px"
+            disabled
           >
             {formatMessage(messages.emptyStateCreate)}
           </Button>
