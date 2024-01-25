@@ -922,6 +922,7 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Bu proje fikir içerebilecek herhangi bir aşama içermemektedir.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Lütfen bu girişleri hangi faza eklemek istediğinizi seçin.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Girdi ithalatçısı",
+  "app.containers.Admin.projects.project.survey.allResponses": "Tüm yanıtlar",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Analiz için ilgili soruları seçin",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "{question}adresindeki analizinize ilgili başka sorular da eklemek ister misiniz?",
   "app.containers.Admin.projects.project.survey.cancel": "İptal",
