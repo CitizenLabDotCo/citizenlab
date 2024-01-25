@@ -21,7 +21,7 @@ import messages from 'components/admin/ContentBuilder/Widgets/TwoColumn/messages
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
 import { Layout } from 'components/admin/GraphCards/typings';
 
-type TwoColumnProps = {
+export type TwoColumnProps = {
   columnLayout: ColumnLayout;
   children?: React.ReactNode;
 };

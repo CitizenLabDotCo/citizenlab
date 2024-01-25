@@ -18,7 +18,7 @@ import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
 
-interface Props {
+export interface Props {
   text?: Multiloc;
 }
 

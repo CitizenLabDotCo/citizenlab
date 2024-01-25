@@ -29,7 +29,7 @@ import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableE
 // i18n
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import reportBuilderMessages from '../../../messages';
-import { WIDGET_TITLES } from 'containers/Admin/reporting/constants';
+import { WIDGET_TITLES } from '../Widgets';
 import {
   FormattedMessage,
   useIntl,

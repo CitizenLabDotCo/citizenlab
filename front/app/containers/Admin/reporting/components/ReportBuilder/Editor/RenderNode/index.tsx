@@ -10,7 +10,7 @@ import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'components/admin/ContentBuilder/Editor/RenderNode/messages';
-import { WIDGET_TITLES } from 'containers/Admin/reporting/constants';
+import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>

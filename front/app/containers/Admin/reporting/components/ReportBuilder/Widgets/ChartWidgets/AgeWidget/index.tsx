@@ -45,6 +45,6 @@ AgeWidget.craft = {
   },
 };
 
-export const ageWidgetTitle = messages.usersByAge;
+export const ageTitle = messages.usersByAge;
 
 export default AgeWidget;

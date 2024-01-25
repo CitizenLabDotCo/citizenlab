@@ -11,7 +11,7 @@ import eventEmitter from 'utils/eventEmitter';
 import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from 'components/admin/ContentBuilder/constants';
 
 // constants
-import { WIDGET_TITLES } from 'containers/Admin/reporting/constants';
+import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 
 // typings
 import { SelectedNode } from 'components/admin/ContentBuilder/Settings/typings';

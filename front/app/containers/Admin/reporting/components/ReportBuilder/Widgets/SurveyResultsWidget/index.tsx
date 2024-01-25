@@ -30,7 +30,7 @@ import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey
 // types
 import { IOption, Multiloc } from 'typings';
 
-type Props = {
+export type Props = {
   title?: Multiloc;
   projectId?: string;
   phaseId?: string;

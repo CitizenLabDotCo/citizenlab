@@ -50,6 +50,6 @@ GenderWidget.craft = {
   },
 };
 
-export const genderWidgetTitle = messages.usersByGender;
+export const genderTitle = messages.usersByGender;
 
 export default GenderWidget;

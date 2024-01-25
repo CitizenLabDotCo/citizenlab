@@ -31,14 +31,14 @@ import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
 // i18n
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import messages from './messages';
-import { WIDGET_TITLES } from 'containers/Admin/reporting/constants';
+import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 
 // utils
 import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
 import { getTemplateData } from './getTemplateData';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
-interface Props {
+export interface Props {
   reportId: string;
   projectId: string;
 }
