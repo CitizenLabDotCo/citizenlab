@@ -951,6 +951,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Lägg till projektets mål, metoder som använts för deltagande och resultatet",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Besökare",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Inget projekt",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport": "Du kan inte redigera denna rapport eftersom den innehåller data som du inte har tillgång till.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Är du säker på att du vill ta bort {reportName}?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Är du säker på att du vill radera denna rapport?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Skapades: {date}",
