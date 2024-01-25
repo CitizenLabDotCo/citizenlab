@@ -5,8 +5,10 @@ import { reportLayout } from 'api/report_layout/__mocks__/_mockServer';
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 
+const mockReportLayout = JSON.parse(JSON.stringify(reportLayout));
+
 jest.mock('api/report_layout/useReportLayout', () =>
-  jest.fn(() => ({ data: reportLayout }))
+  jest.fn(() => ({ data: mockReportLayout }))
 );
 
 jest.mock('react-router-dom', () => ({
