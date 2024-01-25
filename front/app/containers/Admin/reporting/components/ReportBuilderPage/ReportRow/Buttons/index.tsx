@@ -37,7 +37,7 @@ const Buttons = ({
         buttonStyle="white"
         onClick={onDelete}
         processing={isLoading}
-        disabled={isLoading}
+        disabled={isLoading || !canEdit}
         iconSize="18px"
       >
         {formatMessage(messages.delete)}
