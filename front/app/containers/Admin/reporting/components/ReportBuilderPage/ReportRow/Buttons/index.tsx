@@ -1,4 +1,5 @@
 import React from 'react';
+import Tippy from '@tippyjs/react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -12,12 +13,20 @@ import messages from '../messages';
 interface Props {
   reportId: string;
   isLoading: boolean;
+  canEdit?: boolean;
   onDelete: () => void;
   onEdit: () => void;
   onView: () => void;
 }
 
-const Buttons = ({ reportId, isLoading, onDelete, onEdit, onView }: Props) => {
+const Buttons = ({
+  reportId,
+  isLoading,
+  canEdit = true,
+  onDelete,
+  onEdit,
+  onView,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -33,16 +42,25 @@ const Buttons = ({ reportId, isLoading, onDelete, onEdit, onView }: Props) => {
       >
         {formatMessage(messages.delete)}
       </Button>
-      <Button
-        mr="8px"
-        icon="edit"
-        buttonStyle="secondary"
-        onClick={onEdit}
-        disabled={isLoading}
-        iconSize="18px"
+      <Tippy
+        disabled={canEdit}
+        interactive={true}
+        placement="bottom"
+        content={formatMessage(messages.cannotEditReport)}
       >
-        {formatMessage(messages.edit)}
-      </Button>
+        <div>
+          <Button
+            mr="8px"
+            icon="edit"
+            buttonStyle="secondary"
+            onClick={onEdit}
+            disabled={isLoading || !canEdit}
+            iconSize="18px"
+          >
+            {formatMessage(messages.edit)}
+          </Button>
+        </div>
+      </Tippy>
       <Button
         mr="8px"
         icon="eye"

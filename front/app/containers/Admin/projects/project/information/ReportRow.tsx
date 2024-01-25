@@ -29,7 +29,6 @@ const ReportRow = ({ report }: Props) => {
     }
   };
 
-  // TODO link to correct instance
   const reportPath = `/admin/reporting/report-builder/${report.id}`;
 
   const handleEditReport = () => {
@@ -62,6 +61,7 @@ const ReportRow = ({ report }: Props) => {
         <ReportRowButtons
           reportId={report.id}
           isLoading={isLoading}
+          canEdit={report.attributes.action_descriptor.editing_report.enabled}
           onDelete={handleDeleteReport}
           onEdit={handleEditReport}
           onView={handleViewReport}

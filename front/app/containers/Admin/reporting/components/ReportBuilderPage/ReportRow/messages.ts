@@ -34,4 +34,9 @@ export default defineMessages({
     defaultMessage:
       'Last update: {days, plural, no {# days} one {# day} other {# days}} ago by {author}',
   },
+  cannotEditReport: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport',
+    defaultMessage:
+      "You cannot edit this report because it contains data that you do'nt have access to.",
+  },
 });
