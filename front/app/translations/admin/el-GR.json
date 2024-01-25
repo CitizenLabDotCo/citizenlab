@@ -951,7 +951,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Add the goal of the project, participation methods used, and the outcome",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visitors",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "No project",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport": "Δεν μπορείτε να επεξεργαστείτε αυτή την έκθεση επειδή περιέχει δεδομένα στα οποία δεν έχετε πρόσβαση.",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "Δεν μπορείτε να επεξεργαστείτε αυτή την αναφορά, επειδή περιέχει δεδομένα στα οποία δεν έχετε πρόσβαση.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Είστε βέβαιοι ότι θέλετε να διαγράψετε το \"{reportName}\";",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Σίγουρα θέλετε να διαγράψετε αυτή την αναφορά;",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Δημιουργήθηκε στις: {date}",
