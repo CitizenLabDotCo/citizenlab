@@ -1,5 +1,7 @@
 // @ts-nocheck
 
+import { isNilOrError } from 'utils/helperUtils';
+
 // This is a direct copy of the source code of https://github.com/rowanwins/leaflet-simplestyle.
 // Installing it through npm and importing it as a normal package unfortunatly crashes IE11.
 // Therefore it's added directly to the codebase, which fixes the IE11 issue.
@@ -60,7 +62,7 @@
     const size = fp['marker-size'] || 'medium';
     const symbol =
       'marker-symbol' in fp && fp['marker-symbol'] !== ''
-        ? `-${fp['marker-symbol']}`
+        ? `${fp['marker-symbol']}`
         : '';
     const color = (fp['marker-color'] || '7e7e7e').replace('#', '');
 
@@ -83,20 +85,40 @@
       popupAnchor: [0, -sizes[size][1] / 2],
     };
 
-    if (useMakiMarkers) {
-      const makiSizes = {
-        small: [20, 50],
-        medium: [30, 70],
-        large: [35, 90],
-      };
-      let protocol = window.document.location.protocol;
-      if (protocol.indexOf('http') === -1) protocol = 'https:';
-      iconOptions.iconUrl = `${protocol}//a.tiles.mapbox.com/v3/marker/pin-${size.charAt(
-        0
-      )}${symbol.toLowerCase()}+${color}${L.Browser.retina ? '@2x' : ''}.png`;
-      iconOptions.iconSize = makiSizes[size];
-      iconOptions.iconAnchor = [makiSizes[size][0] / 2, makiSizes[size][1] / 2];
-      iconOptions.popupAnchor = [0, -makiSizes[size][1] / 2];
+    if (useMakiMarkers && symbol) {
+      return fetch(
+        `https://unpkg.com/@icon/maki-icons/icons/${symbol.toLowerCase()}.svg`
+      )
+        .then((response) => response.text())
+        .then((svg) => {
+          let makiSvgIcon = undefined;
+
+          // Insert the correct color into the fetched SVG
+          const pathElementIndex = svg.indexOf('d='); // Find the start of the svg path data
+          makiSvgIcon = `${svg.slice(
+            0,
+            pathElementIndex
+          )} fill="#${color}" ${svg.slice(pathElementIndex)}`;
+
+          // Insert icon width/height into the fetched SVG
+          const svgElementIndex = makiSvgIcon.indexOf('>');
+          makiSvgIcon = `${makiSvgIcon.slice(
+            0,
+            svgElementIndex
+          )} width="28px" height="28px" ${makiSvgIcon.slice(svgElementIndex)} `;
+
+          iconOptions.iconSize = [28, 28];
+          iconOptions.iconAnchor = [7, 7];
+          iconOptions.popupAnchor = [0, 14];
+
+          return new L.DivIcon(
+            {
+              className: 'leafletSvg',
+              html: makiSvgIcon,
+            },
+            iconOptions
+          );
+        });
     }
 
     return L.icon(iconOptions);
@@ -123,7 +145,19 @@
       const that = this;
       this.eachLayer(function (l) {
         if ('icon' in l.options) {
-          l.setIcon(getIcon(l.feature.properties, that.options.useMakiMarkers));
+          if (l.feature.properties['marker-symbol'] !== '') {
+            // If a specific icon is used, we need to wait for the async call to fetch the svg
+            getIcon(l.feature.properties, that.options.useMakiMarkers).then(
+              (icon) => {
+                l.setIcon(icon);
+              }
+            );
+          } else {
+            // otherwise, we use the local pin icon svg (no async needed)
+            l.setIcon(
+              getIcon(l.feature.properties, that.options.useMakiMarkers)
+            );
+          }
         }
       });
       this.setStyle(style);
