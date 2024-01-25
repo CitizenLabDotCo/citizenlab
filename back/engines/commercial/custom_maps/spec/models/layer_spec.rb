@@ -20,4 +20,21 @@ RSpec.describe CustomMaps::Layer do
       expect(layer).to be_invalid
     end
   end
+
+  describe 'layer_type validation' do
+    it 'validates a layer_type of geojson' do
+      layer = build(:layer, layer_type: 'geojson')
+      expect(layer).to be_valid
+    end
+
+    it 'validates a layer_type of esri_feature_service' do
+      layer = build(:layer, layer_type: 'esri_feature_service')
+      expect(layer).to be_valid
+    end
+
+    it 'invalidates a invalid layer_type' do
+      layer = build(:layer, layer_type: 'invalid_layer_type')
+      expect(layer).to be_invalid
+    end
+  end
 end
