@@ -55,6 +55,8 @@ module CustomMaps
         def layer_params
           params.require(:layer)
             .permit(
+              :layer_type,
+              :url,
               :default_enabled,
               :marker_svg_url,
               geojson_file: %i[filename base64],
