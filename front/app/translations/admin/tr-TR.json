@@ -951,6 +951,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Projenin amacını, kullanılan katılım yöntemlerini ve sonucu ekleyin",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Ziyaretçiler",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Proje yok",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport": "Erişiminiz olmayan veriler içerdiği için bu raporu düzenleyemezsiniz.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "\"{reportName}\" adresini silmek istediğinizden emin misiniz?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Bu raporu silmek istediğinizden emin misiniz?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Oluşturulma tarihi: {date}",
