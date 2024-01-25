@@ -15,6 +15,8 @@ module IdViennaSaml
       }
     }.freeze
 
+    USERID_KEY = 'urn:oid:0.9.2342.19200300.100.1.1'
+
     # Extracts user attributes from the Omniauth response auth.
     # @param [OmniAuth::AuthHash] auth
     # @return [Hash] The user attributes
@@ -32,6 +34,10 @@ module IdViennaSaml
         last_name: last_name,
         locale: locale
       }
+    end
+
+    def profile_to_uid(auth)
+      auth.dig('extra', 'raw_info', USERID_KEY)&.first
     end
 
     # Configures the SAML endpoint to authenticate with Vienna's StandardPortal
