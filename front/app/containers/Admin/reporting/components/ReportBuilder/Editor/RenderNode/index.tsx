@@ -8,8 +8,13 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 
 // intl
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'components/admin/ContentBuilder/Editor/RenderNode/messages';
+import {
+  WIDGET_TITLES,
+  hasNoPointerEvents,
+  hasChildren,
+} from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
@@ -42,13 +47,15 @@ const RenderNode = ({ render }) => {
     if (!node.data) return {};
     if (!node.events) return {};
 
+    const name = node.data.name;
+
     return {
       props: node.data.props,
       isHover: node.events.hovered,
-      name: node.data.name,
+      name,
       hasError: node.data.props?.hasError,
-      title: node.data.custom?.title as MessageDescriptor | undefined,
-      noPointerEvents: node.data.custom?.noPointerEvents as boolean | undefined,
+      title: WIDGET_TITLES[name],
+      noPointerEvents: hasNoPointerEvents(name),
     };
   });
 
@@ -67,7 +74,10 @@ const RenderNode = ({ render }) => {
   });
 
   const parentNode = parentId ? node(parentId).get() : undefined;
-  const isChildOfComplexComponent = !!parentNode?.data?.custom?.hasChildren;
+  const parentName = parentNode?.data?.name;
+  const isChildOfComplexComponent = parentName
+    ? hasChildren(parentName)
+    : false;
 
   // Handle multi-column hover state
   useEffect(() => {

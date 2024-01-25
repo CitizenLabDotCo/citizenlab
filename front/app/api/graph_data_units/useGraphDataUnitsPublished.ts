@@ -20,7 +20,7 @@ const fetchGraphDataUnitsPublished = <Response extends BaseResponseData>({
 
 const useGraphDataUnitsPublished = <Response extends BaseResponseData>(
   parameters: ParametersPublished,
-  { enabled = true }: { enabled?: boolean } = {}
+  { enabled = true }: { enabled?: boolean } = { enabled: true }
 ) => {
   return useQuery<Response, CLErrors, Response, any>({
     queryKey: graphDataUnitKeys.item(parameters),

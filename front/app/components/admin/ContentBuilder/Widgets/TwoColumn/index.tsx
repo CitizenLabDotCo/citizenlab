@@ -146,7 +146,7 @@ export const TwoColumnSettings = () => {
   );
 };
 
-export const twoColumnCraftConfig = {
+const twoColumnCraftConfig = {
   props: {
     columnLayout: '',
   },
