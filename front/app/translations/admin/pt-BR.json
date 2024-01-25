@@ -461,6 +461,8 @@
   "app.containers.Admin.Insights.createModalProjectsLabel": "Projeto(s)",
   "app.containers.Admin.Insights.createModalSaveView": "Criar as minhas percepções",
   "app.containers.Admin.Insights.createModalTitle": "Comece a analisar as suas contribuições",
+  "app.containers.Admin.Insights.deprecationWarningDescription": "Esse recurso será removido em breve. Você não poderá mais criar novos insights. Você ainda pode visualizar e exportar seus insights existentes.",
+  "app.containers.Admin.Insights.deprecationWarningTitle": "Esse recurso está obsoleto",
   "app.containers.Admin.Insights.description": "Analise eficientemente a entrada de textos na sua plataforma. Agrupe as contribuições individuais que pertencem a um grupo. Entenda o que os participantes estão realmente dizendo.",
   "app.containers.Admin.Insights.discover": "Descubra como funciona",
   "app.containers.Admin.Insights.emptyStateAccentText": "falando sobre",

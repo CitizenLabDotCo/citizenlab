@@ -70,9 +70,8 @@ MostReactedIdeasWidget.craft = {
   related: {
     settings: Settings,
   },
-  custom: {
-    title: messages.mostReactedIdeas,
-  },
 };
+
+export const mostReactedIdeasTitle = messages.mostReactedIdeas;
 
 export default MostReactedIdeasWidget;

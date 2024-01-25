@@ -21,7 +21,7 @@ import Toolbox from '../../components/ReportBuilder/Toolbox';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import EditModePreview from '../../components/ReportBuilder/EditModePreview';
-import Settings from 'components/admin/ContentBuilder/Settings';
+import Settings from '../../components/ReportBuilder/Settings';
 import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrapper';
 
 // templates
