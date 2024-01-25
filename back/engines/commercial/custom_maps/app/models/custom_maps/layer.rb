@@ -30,6 +30,8 @@ module CustomMaps
 
     attribute :geojson_file
 
+    LAYER_TYPES = %w[geojson esri_feature_service].freeze
+
     GEOJSON_SCHEMA = CustomMaps::Engine.root.join('config', 'schemas', 'geojson.json_schema').to_s
 
     acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: [:map_config_id]
@@ -42,6 +44,7 @@ module CustomMaps
     validates :marker_svg_url,
       format: { with: %r{\Ahttps://.*\z}, message: 'should start with https://' },
       allow_nil: true
+    validates :layer_type, presence: true, inclusion: { in: LAYER_TYPES }
 
     before_validation :set_default_enabled, :decode_geojson_file
 
