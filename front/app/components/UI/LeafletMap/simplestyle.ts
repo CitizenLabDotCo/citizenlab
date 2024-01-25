@@ -90,6 +90,11 @@
         .then((response) => response.text())
         .then((svg) => {
           let makiSvgIcon = undefined;
+          const makiSizes = {
+            small: [20, 50],
+            medium: [30, 70],
+            large: [35, 90],
+          };
 
           // Insert the correct color into the fetched SVG
           const pathElementIndex = svg.indexOf('d='); // Find the start of the svg path data
@@ -101,8 +106,8 @@
           // Insert icon width/height into the fetched SVG
           const svgElementIndex = makiSvgIcon.indexOf('>');
           makiSvgIcon = `${makiSvgIcon.slice(0, svgElementIndex)} width="${
-            sizes[size][0]
-          }px" height="${sizes[size][1]}px" ${makiSvgIcon.slice(
+            makiSizes[size][0]
+          }px" height="${makiSizes[size][1]}px" ${makiSvgIcon.slice(
             svgElementIndex
           )} `;
 
