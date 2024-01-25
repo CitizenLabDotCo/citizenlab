@@ -509,7 +509,9 @@ const surveyReportLayout: ReportLayoutResponse = {
           },
           nodes: [],
           props: {
-            title: 'Survey results',
+            title: {
+              en: 'Survey results',
+            },
             projectId: '1',
           },
           custom: {},
