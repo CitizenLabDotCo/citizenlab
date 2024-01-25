@@ -17,7 +17,7 @@ import { useNode } from '@craftjs/core';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-interface Props {
+export interface Props {
   size?: 'small' | 'medium' | 'large';
   withDivider?: boolean;
 }

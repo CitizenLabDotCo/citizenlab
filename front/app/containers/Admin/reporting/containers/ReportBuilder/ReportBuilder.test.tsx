@@ -1,9 +1,6 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
+import { render, screen, waitFor } from 'utils/testUtils/rtl';
 import ReportBuilder from '.';
-import { reportsData } from 'api/reports/__mocks__/_mockServer';
-
-// service mocks
 
 // hook mocks
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
@@ -13,9 +10,43 @@ jest.mock('api/report_layout/useReportLayout', () =>
   jest.fn(() => ({ data: mockReportLayout }))
 );
 
-const mockReport = reportsData[0];
+const mockReport = {
+  id: '1',
+  type: 'report',
+  attributes: {
+    name: 'Report 1',
+    created_at: '2020-10-20T09:00:00.000Z',
+    updated_at: '2020-10-20T09:00:00.000Z',
+  },
+  relationships: {
+    layout: {
+      data: {
+        id: 'layoutId',
+        type: 'content-builder-layout',
+      },
+    },
+    owner: {
+      data: {
+        id: 'userId',
+        type: 'user',
+      },
+    },
+    phase: { data: { id: 'ph1' } },
+  },
+};
+
 jest.mock('api/reports/useReport', () =>
-  jest.fn(() => ({ data: { data: mockReport } }))
+  jest.fn(() => ({
+    data: {
+      data: mockReport,
+    },
+  }))
+);
+
+jest.mock('api/phases/usePhase', () =>
+  jest.fn(() => ({
+    data: { data: { relationships: { project: { data: { id: 'pr1' } } } } },
+  }))
 );
 
 const surveyResultsNodes = {
@@ -37,16 +68,12 @@ const surveyResultsNodes = {
     },
     isCanvas: false,
     props: {
-      title: 'Survey results',
+      title: {
+        en: 'Survey results',
+      },
     },
     displayName: 'SurveyResultsWidget',
-    custom: {
-      title: {
-        id: 'app.containers.admin.ReportBuilder.surveyResults',
-        defaultMessage: 'Survey results',
-      },
-      noPointerEvents: true,
-    },
+    custom: {},
     parent: 'ROOT',
     hidden: false,
     nodes: [],
@@ -60,6 +87,8 @@ const surveyResultsLayout = {
   },
 };
 
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
+
 // other mocks
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -69,25 +98,20 @@ jest.mock('react-router-dom', () => ({
   useParams: jest.fn(() => ({ reportId: 'r1' })),
 }));
 
-describe.skip('<ReportBuilder />', () => {
-  it('renders if no report layout', () => {
-    mockReportLayout = undefined;
-    render(<ReportBuilder />);
+jest.mock(
+  'components/admin/ContentBuilder/FullscreenContentBuilder',
+  () =>
+    ({ children }) =>
+      <>{children}</>
+);
 
-    expect(screen.getByText('Report 1')).toBeInTheDocument();
-  });
-
-  it('renders if report layout', () => {
+describe('<ReportBuilder />', () => {
+  it('renders layout to canvas if it exists', async () => {
     mockReportLayout = { data: surveyResultsLayout };
     render(<ReportBuilder />);
 
-    expect(screen.getByText('Report 1')).toBeInTheDocument();
-  });
-
-  it('renders layout to canvas if it exists', () => {
-    mockReportLayout = { data: surveyResultsLayout };
-    render(<ReportBuilder />);
-
-    expect(screen.getByTestId('survey-results-widget')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('survey-results-widget')).toBeInTheDocument();
+    });
   });
 });

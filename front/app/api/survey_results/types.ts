@@ -20,6 +20,7 @@ export interface Result {
   answers?: Answer[];
   required: boolean;
   customFieldId: string;
+  textResponses?: { answer: string }[];
 }
 
 export interface SurveyResultAttributes {
