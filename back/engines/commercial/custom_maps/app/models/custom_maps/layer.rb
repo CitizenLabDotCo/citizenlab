@@ -40,11 +40,12 @@ module CustomMaps
 
     validates :title_multiloc, presence: true, multiloc: { presence: true }
     validates :default_enabled, inclusion: { in: [true, false] }
-    validates :geojson, presence: true, json: { schema: GEOJSON_SCHEMA }
+    validates :geojson, presence: true, json: { schema: GEOJSON_SCHEMA }, if: :layer_type_is_geojson?
     validates :marker_svg_url,
       format: { with: %r{\Ahttps://.*\z}, message: 'should start with https://' },
       allow_nil: true
     validates :layer_type, presence: true, inclusion: { in: LAYER_TYPES }
+    validates :url, presence: true, if: :layer_type_is_not_geojson?
     validates :url,
       format: { with: %r{\Ahttp(s)?://.+\z}, message: 'should start with http:// or https://' },
       allow_nil: true
@@ -62,6 +63,14 @@ module CustomMaps
       return unless default_enabled.nil?
 
       self.default_enabled = true
+    end
+
+    def layer_type_is_geojson?
+      layer_type == 'geojson'
+    end
+
+    def layer_type_is_not_geojson?
+      !layer_type_is_geojson?
     end
   end
 end

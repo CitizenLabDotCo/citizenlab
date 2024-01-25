@@ -54,4 +54,38 @@ RSpec.describe CustomMaps::Layer do
       expect(layer).to be_invalid
     end
   end
+
+  describe 'when layer_type is geojson' do
+    it 'validates presence of geojson data' do
+      layer = build(:layer) # layer_type: 'geojson', with valid layer.geojson is default factory
+      expect(layer).to be_valid
+    end
+
+    it 'invalidates nil geojson data' do
+      layer = build(:layer, layer_type: 'geojson', geojson: nil)
+      expect(layer).to be_invalid
+    end
+
+    it 'invalidates empty geojson data' do
+      layer = build(:layer, layer_type: 'geojson', geojson: '')
+      expect(layer).to be_invalid
+    end
+  end
+
+  describe 'when layer_type is NOT geojson' do
+    it 'validates presence of url' do
+      layer = build(:layer, layer_type: 'esri_feature_service', url: 'https://some.domain.com/some_layer')
+      expect(layer).to be_valid
+    end
+
+    it 'invalidates nil url' do
+      layer = build(:layer, layer_type: 'esri_feature_service', url: nil)
+      expect(layer).to be_invalid
+    end
+
+    it 'invalidates empty url' do
+      layer = build(:layer, layer_type: 'esri_feature_service', url: '')
+      expect(layer).to be_invalid
+    end
+  end
 end
