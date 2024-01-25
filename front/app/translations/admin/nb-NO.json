@@ -951,6 +951,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Legg til målet med prosjektet, deltakermetoder som brukes og utfallet",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Besøkende",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Ingen prosjekter",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport": "Du kan ikke redigere denne rapporten fordi den inneholder data du ikke har tilgang til.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Er du sikker på at du ønsker å slette «{reportName}»?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Er du sikker på at du vil slette denne rapporten?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Opprettet: {date}",
