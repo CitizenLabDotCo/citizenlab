@@ -35,14 +35,22 @@ const RenderNode = ({ render }) => {
     title,
     noPointerEvents,
     connectors: { connect, drag },
-  } = useNode((node) => ({
-    props: node.data.props,
-    isHover: node.events.hovered,
-    name: node.data.name,
-    hasError: node.data.props.hasError,
-    title: node.data.custom?.title as MessageDescriptor | undefined,
-    noPointerEvents: node.data.custom?.noPointerEvents as boolean | undefined,
-  }));
+  } = useNode((node) => {
+    // This can sometimes be undefined, even though
+    // craftjs says it can't
+    if (!node) return {};
+    if (!node.data) return {};
+    if (!node.events) return {};
+
+    return {
+      props: node.data.props,
+      isHover: node.events.hovered,
+      name: node.data.name,
+      hasError: node.data.props?.hasError,
+      title: node.data.custom?.title as MessageDescriptor | undefined,
+      noPointerEvents: node.data.custom?.noPointerEvents as boolean | undefined,
+    };
+  });
 
   const {
     isActive,

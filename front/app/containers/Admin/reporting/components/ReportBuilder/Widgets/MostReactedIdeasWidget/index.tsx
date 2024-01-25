@@ -13,26 +13,48 @@ import messages from './messages';
 // typings
 import { Props } from './typings';
 
+// hooks
+import { useMostReactedIdeas } from 'api/graph_data_units';
+
 const MostReactedIdeasWidget = ({
   title,
-  projectId,
   phaseId,
   numberOfIdeas,
   collapseLongText,
 }: Props) => {
+  const response = useMostReactedIdeas(
+    {
+      phaseId,
+      numberOfIdeas,
+    },
+    {
+      enabled: !!phaseId,
+    }
+  );
+
+  if (!response) {
+    return (
+      <Card title={title}>
+        <NoData message={messages.noProjectSelected} />
+      </Card>
+    );
+  }
+
+  const {
+    ideas,
+    project,
+    phase,
+    idea_images: ideaImages,
+  } = response.data.attributes;
+
   return (
     <Card title={title}>
-      <ProjectInfo projectId={projectId} phaseId={phaseId} />
-      {projectId ? (
-        <Ideas
-          projectId={projectId}
-          phaseId={phaseId}
-          numberOfIdeas={numberOfIdeas}
-          collapseLongText={collapseLongText}
-        />
-      ) : (
-        <NoData message={messages.noProjectSelected} />
-      )}
+      <ProjectInfo project={project} phase={phase} />
+      <Ideas
+        ideas={ideas}
+        images={ideaImages}
+        collapseLongText={collapseLongText}
+      />
     </Card>
   );
 };

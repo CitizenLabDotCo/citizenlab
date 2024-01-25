@@ -7,43 +7,38 @@ import { isPage } from 'utils/helperUtils';
 
 import { BaseResponseData } from 'utils/cl-react-query/fetcher';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
-import { PropsLive, ResolvedName } from './types';
+import { ParametersLive } from './requestTypes';
 
-interface Props {
-  resolvedName: ResolvedName;
-  queryParameters: PropsLive;
+type Props = {
+  enabled?: boolean;
   onSuccess?: () => void;
-}
+};
 
-const useGraphDataUnits = <Response extends BaseResponseData>({
-  resolvedName,
-  queryParameters,
-  onSuccess,
-}: Props) => {
+const useGraphDataUnits = <Response extends BaseResponseData>(
+  parameters: ParametersLive,
+  { enabled = true, onSuccess }: Props = { enabled: true }
+) => {
   const { pathname } = useLocation();
   const { id: graphId } = useNode();
   const isAdminPage = isPage('admin', pathname);
   const { reportId } = useReportContext();
 
-  const { data: analyticsLive } = useGraphDataUnitsLive<Response>(
-    {
-      resolvedName,
-      props: queryParameters,
-    },
-    { enabled: isAdminPage, onSuccess }
-  );
+  const { data: dataLive } = useGraphDataUnitsLive<Response>(parameters, {
+    enabled: enabled && isAdminPage,
+    onSuccess,
+  });
 
-  const { data: analyticsPublished } = useGraphDataUnitsPublished<Response>(
+  const { data: dataPublished } = useGraphDataUnitsPublished<Response>(
     {
       reportId,
       graphId,
     },
-    { enabled: !isAdminPage }
+    { enabled: enabled && !isAdminPage }
   );
 
-  const analytics = analyticsLive ?? analyticsPublished;
+  const data = dataLive ?? dataPublished;
 
-  return analytics;
+  return data;
 };
 
 export default useGraphDataUnits;

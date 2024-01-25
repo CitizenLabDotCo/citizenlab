@@ -13,10 +13,19 @@ import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 // types
 import { ChartWidgetProps } from '../typings';
 
+// utils
+import moment from 'moment';
+
 const AgeWidget = ({ title, projectId, startAt, endAt }: ChartWidgetProps) => {
+  const props = {
+    startAtMoment: startAt ? moment(startAt) : null,
+    endAtMoment: endAt ? moment(endAt) : null,
+    projectId,
+  };
+
   return (
     <Card title={title} pagebreak>
-      <AgeCard projectId={projectId} startAt={startAt} endAt={endAt ?? null} />
+      <AgeCard {...props} />
     </Card>
   );
 };

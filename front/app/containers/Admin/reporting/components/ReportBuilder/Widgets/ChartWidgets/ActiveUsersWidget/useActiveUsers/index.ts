@@ -2,10 +2,10 @@
 import { parseTimeSeries, parseStats } from './parse';
 
 // typings
-import { QueryParameters, Response } from './typings';
+import { QueryParameters } from './typings';
 import { useMemo, useState } from 'react';
 
-import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
+import { useActiveUsers as useActiveUsersData } from 'api/graph_data_units';
 
 export default function useActiveUsers({
   projectId,
@@ -15,16 +15,17 @@ export default function useActiveUsers({
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const analytics = useGraphDataUnits<Response>({
-    resolvedName: 'ActiveUsersWidget',
-    queryParameters: {
+  const analytics = useActiveUsersData(
+    {
       projectId,
       startAtMoment,
       endAtMoment,
       resolution,
     },
-    onSuccess: () => setCurrentResolution(resolution),
-  });
+    {
+      onSuccess: () => setCurrentResolution(resolution),
+    }
+  );
 
   const stats = analytics ? parseStats(analytics.data.attributes) : null;
 
