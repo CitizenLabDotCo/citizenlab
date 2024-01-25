@@ -951,7 +951,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Add the goal of the project, participation methods used, and the outcome",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visitors",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "No project",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport": "No podeu editar aquest informe perquè conté dades a les quals no teniu accés.",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "No podeu editar aquest informe perquè conté dades a les quals no teniu accés.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Esteu segur que voleu suprimir \"{reportName}\"?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Esteu segur que voleu suprimir aquest informe?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Creat el: {date}",
