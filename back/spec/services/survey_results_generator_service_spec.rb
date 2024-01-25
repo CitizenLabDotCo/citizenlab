@@ -45,7 +45,7 @@ RSpec.describe SurveyResultsGeneratorService do
       enabled: false
     )
   end
-  let(:multiselect_field) do
+  let!(:multiselect_field) do
     create(
       :custom_field_multiselect,
       resource: form,
@@ -119,7 +119,7 @@ RSpec.describe SurveyResultsGeneratorService do
       required: true
     )
   end
-  let(:select_field) do
+  let!(:select_field) do
     create(
       :custom_field_select,
       resource: form,
@@ -158,12 +158,12 @@ RSpec.describe SurveyResultsGeneratorService do
           required: false,
           totalResponses: 4,
           customFieldId: text_field.id,
-          textResponses: [
-            { :answer => 'Red' }, 
-            { :answer=> 'Blue' }, 
-            { :answer=> 'Green' }, 
-            { :answer=> 'Pink' }
-          ]
+          textResponses: a_collection_containing_exactly(
+            { answer: 'Red' },
+            { answer: 'Blue' },
+            { answer: 'Green' },
+            { answer: 'Pink' }
+          )
         },
         {
           inputType: 'multiline_text',
@@ -330,7 +330,7 @@ RSpec.describe SurveyResultsGeneratorService do
         # These locales are a prerequisite for the test.
         expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
 
-        expect(generator.generate_results).to eq expected_result
+        expect(generator.generate_results).to match expected_result
       end
 
       context 'when not all minimum and maximum labels are configured' do
@@ -341,7 +341,7 @@ RSpec.describe SurveyResultsGeneratorService do
           # These locales are a prerequisite for the test.
           expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
 
-          expect(generator.generate_results).to eq expected_result_without_minimum_and_maximum_labels
+          expect(generator.generate_results).to match expected_result_without_minimum_and_maximum_labels
         end
       end
     end
@@ -364,8 +364,7 @@ RSpec.describe SurveyResultsGeneratorService do
       it 'returns the results' do
         # These locales are a prerequisite for the test.
         expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
-
-        expect(generator.generate_results).to eq expected_result
+        expect(generator.generate_results).to match expected_result
       end
 
       context 'when not all minimum and maximum labels are configured' do
@@ -375,8 +374,7 @@ RSpec.describe SurveyResultsGeneratorService do
         it 'returns minimum and maximum labels as numbers' do
           # These locales are a prerequisite for the test.
           expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
-
-          expect(generator.generate_results).to eq expected_result_without_minimum_and_maximum_labels
+          expect(generator.generate_results).to match expected_result_without_minimum_and_maximum_labels
         end
       end
     end
