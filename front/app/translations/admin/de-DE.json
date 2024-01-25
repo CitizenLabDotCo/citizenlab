@@ -951,6 +951,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Fügen Sie das Projektziel, die verwendeten Beteiligungsmethoden und das Ergebnis hinzu",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Besucher*innen",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Kein Projekt",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport": "Sie können diesen Bericht nicht bearbeiten, da er Daten enthält, auf die Sie keinen Zugriff haben.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Sind Sie sicher, dass Sie \"{reportName}\" löschen wollen?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Sind Sie sicher, dass Sie diesen Bericht löschen möchten?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Erstellt am: {date}",
