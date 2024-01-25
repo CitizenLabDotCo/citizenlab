@@ -2177,7 +2177,7 @@
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsTitle": "Verberg lege reacties",
   "app.containers.AdminPage.projects.project.analysis.end": "Einde",
   "app.containers.AdminPage.projects.project.analysis.filter": "Toon alleen bijdragen met deze waarde",
-  "app.containers.AdminPage.projects.project.analysis.filterOutEmptyCustomFields": "Antwoorden verbergen als er geen antwoord is op een vraag die is opgenomen in de analyse",
+  "app.containers.AdminPage.projects.project.analysis.filterOutEmptyCustomFields": "Verberg reacties waarbij er geen antwoord is op een vraag die is opgenomen in de analyse",
   "app.containers.AdminPage.projects.project.analysis.inputsWIthoutTags": "Bijdragen zonder tags",
   "app.containers.AdminPage.projects.project.analysis.manageIdea": "Beheer idee",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Geen antwoord",
