@@ -234,6 +234,12 @@ const Moderation = () => {
     },
   ]);
 
+  const handleData = useCallback(
+    (data: InsertConfigurationOptions<ITabItem>) =>
+      setTabs((tabs) => insertConfiguration(data)(tabs)),
+    []
+  );
+
   const moderationStatus = selectedTab === 'warnings' ? undefined : selectedTab;
 
   const { data: moderations } = useModerations({
@@ -390,12 +396,6 @@ const Moderation = () => {
       }
     }
   };
-
-  const handleData = useCallback(
-    (data: InsertConfigurationOptions<ITabItem>) =>
-      setTabs((tabs) => insertConfiguration(data)(tabs)),
-    []
-  );
 
   if (moderations) {
     const lastPage = getPageNumberFromUrl(moderations.links?.last) || 1;
