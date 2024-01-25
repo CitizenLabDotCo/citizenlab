@@ -14,15 +14,15 @@ import eventEmitter from 'utils/eventEmitter';
 import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from 'components/admin/ContentBuilder/constants';
 
 // typings
-import { Selected } from './typings';
+import { SelectedNode } from './typings';
 
 const ContentBuilderSettings = () => {
-  const { actions, selected, isEnabled } = useEditor((state, query) => {
+  const { actions, selectedNode, isEnabled } = useEditor((state, query) => {
     const currentNodeId: string = query.getEvent('selected').last();
-    let selected: Selected | undefined;
+    let selectedNode: SelectedNode | undefined;
 
     if (currentNodeId) {
-      selected = {
+      selectedNode = {
         id: currentNodeId,
         name: state.nodes[currentNodeId].data.name,
         title: state.nodes[currentNodeId].data.custom?.title as
@@ -35,7 +35,7 @@ const ContentBuilderSettings = () => {
     }
 
     return {
-      selected,
+      selectedNode,
       isEnabled: state.options.enabled,
     };
   });
@@ -44,16 +44,19 @@ const ContentBuilderSettings = () => {
     actions.selectNode();
   };
 
-  return selected &&
+  return selectedNode &&
     isEnabled &&
-    selected.id !== ROOT_NODE &&
-    selected.name !== 'Box' ? (
+    selectedNode.id !== ROOT_NODE &&
+    selectedNode.name !== 'Box' ? (
     <Settings
-      selected={selected}
+      selectedNode={selectedNode}
       onClose={closeSettings}
       onDelete={() => {
-        actions.delete(selected.id);
-        eventEmitter.emit(CONTENT_BUILDER_DELETE_ELEMENT_EVENT, selected.id);
+        actions.delete(selectedNode.id);
+        eventEmitter.emit(
+          CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
+          selectedNode.id
+        );
       }}
     />
   ) : null;

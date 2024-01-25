@@ -10,22 +10,24 @@ import Settings from 'components/admin/ContentBuilder/Settings/Settings';
 import eventEmitter from 'utils/eventEmitter';
 import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from 'components/admin/ContentBuilder/constants';
 
+// constants
+import { WIDGET_TITLES } from 'containers/Admin/reporting/constants';
+
 // typings
-import { Selected } from 'components/admin/ContentBuilder/Settings/typings';
-import { MessageDescriptor } from 'utils/cl-intl';
+import { SelectedNode } from 'components/admin/ContentBuilder/Settings/typings';
 
 const ReportBuilderSettings = () => {
-  const { actions, selected, isEnabled } = useEditor((state, query) => {
+  const { actions, selectedNode, isEnabled } = useEditor((state, query) => {
     const currentNodeId: string = query.getEvent('selected').last();
-    let selected: Selected | undefined;
+    let selectedNode: SelectedNode | undefined;
 
     if (currentNodeId) {
-      selected = {
+      const name = state.nodes[currentNodeId].data.name;
+
+      selectedNode = {
         id: currentNodeId,
-        name: state.nodes[currentNodeId].data.name,
-        title: state.nodes[currentNodeId].data.custom?.title as
-          | MessageDescriptor
-          | undefined,
+        name,
+        title: WIDGET_TITLES[name],
         settings: state.nodes[currentNodeId].related?.settings,
         isDeletable: query.node(currentNodeId).isDeletable(),
         custom: state.nodes[currentNodeId].data.custom,
@@ -33,7 +35,7 @@ const ReportBuilderSettings = () => {
     }
 
     return {
-      selected,
+      selectedNode,
       isEnabled: state.options.enabled,
     };
   });
@@ -43,20 +45,23 @@ const ReportBuilderSettings = () => {
   };
 
   const showSettings =
-    selected &&
+    selectedNode &&
     isEnabled &&
-    selected.id !== ROOT_NODE &&
-    selected.name !== 'Box';
+    selectedNode.id !== ROOT_NODE &&
+    selectedNode.name !== 'Box';
 
   if (!showSettings) return null;
 
   return (
     <Settings
-      selected={selected}
+      selectedNode={selectedNode}
       onClose={closeSettings}
       onDelete={() => {
-        actions.delete(selected.id);
-        eventEmitter.emit(CONTENT_BUILDER_DELETE_ELEMENT_EVENT, selected.id);
+        actions.delete(selectedNode.id);
+        eventEmitter.emit(
+          CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
+          selectedNode.id
+        );
       }}
     />
   );

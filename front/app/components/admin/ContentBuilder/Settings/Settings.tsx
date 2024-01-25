@@ -18,7 +18,7 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { Selected } from './typings';
+import { SelectedNode } from './typings';
 
 const StyledBox = styled(Box)`
   box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);
@@ -30,12 +30,12 @@ const StyledCloseIconButton = styled(CloseIconButton)`
 `;
 
 interface Props {
-  selected: Selected;
+  selectedNode: SelectedNode;
   onClose: () => void;
   onDelete: () => void;
 }
 
-const Settings = ({ selected, onClose, onDelete }: Props) => {
+const Settings = ({ selectedNode, onClose, onDelete }: Props) => {
   return (
     <StyledBox
       position="fixed"
@@ -55,13 +55,13 @@ const Settings = ({ selected, onClose, onDelete }: Props) => {
         iconColor={colors.textSecondary}
         iconColorOnHover={'#000'}
       />
-      {selected.title && (
+      {selectedNode.title && (
         <Title variant="h2">
-          <FormattedMessage {...selected.title} />
+          <FormattedMessage {...selectedNode.title} />
         </Title>
       )}
-      {selected.settings && React.createElement(selected.settings)}
-      {selected.isDeletable && !selected.custom?.noDelete ? (
+      {selectedNode.settings && React.createElement(selectedNode.settings)}
+      {selectedNode.isDeletable && !selectedNode.custom?.noDelete ? (
         <Box display="flex">
           <Button
             id="e2e-delete-button"

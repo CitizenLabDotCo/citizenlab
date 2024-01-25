@@ -1,6 +1,6 @@
 import { MessageDescriptor } from 'utils/cl-intl';
 
-export interface Selected {
+export interface SelectedNode {
   id: string;
   name: string;
   title: MessageDescriptor | undefined;
