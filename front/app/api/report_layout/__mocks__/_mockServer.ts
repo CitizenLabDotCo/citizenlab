@@ -475,3 +475,51 @@ export const reportLayout: ReportLayoutResponse = {
     },
   },
 };
+
+export const surveyReportHandler = rest.get(apiPath, (_req, res, ctx) => {
+  return res(ctx.status(200), ctx.json(surveyReportLayout));
+});
+
+const surveyReportLayout: ReportLayoutResponse = {
+  data: {
+    id: 'b5382874-fcd7-49c8-afe8-d07eeb637acb',
+    type: 'content_builder_layout',
+    attributes: {
+      enabled: true,
+      code: 'report',
+      created_at: '2023-11-03T16:06:55.423Z',
+      updated_at: '2023-11-03T16:14:32.103Z',
+      craftjs_json: {
+        ROOT: {
+          type: 'div',
+          nodes: ['2Fc0uXw11H'],
+          props: {
+            id: 'e2e-content-builder-frame',
+          },
+          custom: {},
+          hidden: false,
+          isCanvas: true,
+          displayName: 'div',
+          linkedNodes: {},
+          parent: undefined as any, // craft-js' own types are incorrect
+        },
+        '2Fc0uXw11H': {
+          type: {
+            resolvedName: 'SurveyResultsWidget',
+          },
+          nodes: [],
+          props: {
+            title: 'Survey results',
+            projectId: '1',
+          },
+          custom: {},
+          hidden: false,
+          parent: 'ROOT',
+          isCanvas: false,
+          displayName: 'f',
+          linkedNodes: {},
+        },
+      },
+    },
+  },
+};
