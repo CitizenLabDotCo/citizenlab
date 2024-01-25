@@ -951,7 +951,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Dodaj cel projektu, zastosowane metody uczestnictwa oraz wynik.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Odwiedzający",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Brak projektu",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport": "Nie możesz edytować tego raportu, ponieważ zawiera on dane, do których nie masz dostępu.",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "Nie możesz edytować tego raportu, ponieważ zawiera on dane, do których nie masz dostępu.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Czy na pewno chcesz usunąć \"{reportName}\"?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Czy na pewno chcesz usunąć ten raport?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Utworzono: {date}",
