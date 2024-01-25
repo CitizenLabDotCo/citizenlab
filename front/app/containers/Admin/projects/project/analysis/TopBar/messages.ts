@@ -75,12 +75,11 @@ export default defineMessages({
       'https://support.citizenlab.co/en/articles/8316692-ai-analysis',
   },
   emptyCustomFields: {
-    id: 'app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsTitle',
-    defaultMessage: 'Hide empty responses',
+    id: 'app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel',
+    defaultMessage: 'Responses',
   },
   filterOutEmptyCustomFields: {
-    id: 'app.containers.AdminPage.projects.project.analysis.filterOutEmptyCustomFields',
-    defaultMessage:
-      'Hide responses where there is no answer to a question included in the analysis',
+    id: 'app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields',
+    defaultMessage: 'Hide responses with no answer',
   },
 });

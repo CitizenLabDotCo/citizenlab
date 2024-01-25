@@ -34,7 +34,7 @@ export default defineMessages({
     defaultMessage: 'Inputs without tags',
   },
   emptyCustomFields: {
-    id: 'app.containers.AdminPage.projects.project.analysis.emptyCustomFields',
-    defaultMessage: 'Hide empty responses',
+    id: 'app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsFilter',
+    defaultMessage: 'Hide responses with no answer',
   },
 });
