@@ -8,8 +8,9 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 
 // intl
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'components/admin/ContentBuilder/Editor/RenderNode/messages';
+import { WIDGET_TITLES } from 'containers/Admin/reporting/constants';
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
@@ -42,12 +43,14 @@ const RenderNode = ({ render }) => {
     if (!node.data) return {};
     if (!node.events) return {};
 
+    const name = node.data.name;
+
     return {
       props: node.data.props,
       isHover: node.events.hovered,
-      name: node.data.name,
+      name,
       hasError: node.data.props?.hasError,
-      title: node.data.custom?.title as MessageDescriptor | undefined,
+      title: WIDGET_TITLES[name],
       noPointerEvents: node.data.custom?.noPointerEvents as boolean | undefined,
     };
   });
