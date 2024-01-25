@@ -951,7 +951,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Tilføj projektets mål, de anvendte deltagelsesmetoder og resultatet",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Besøgende",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Intet projekt",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport": "Du kan ikke redigere denne rapport, fordi den indeholder data, som du ikke har adgang til.",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "Du kan ikke redigere denne rapport, fordi den indeholder data, som du ikke har adgang til.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Er du sikker på, at du ønsker at slette \"{reportName}\"?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Er du sikker på, at du vil slette denne rapport?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Oprettet den: {date}",
