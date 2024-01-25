@@ -951,7 +951,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Pievienojiet projekta mērķi, izmantotās līdzdalības metodes un rezultātu",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Apmeklētāji",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Nav projekta",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport": "Šo pārskatu nevarat rediģēt, jo tajā ir iekļauti dati, kuriem jums nav piekļuves.",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "Šo pārskatu nevarat rediģēt, jo tajā ir iekļauti dati, kuriem jums nav piekļuves.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Vai esat pārliecināts, ka vēlaties dzēst \"{reportName}\"?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Vai esat pārliecināts, ka vēlaties dzēst šo ziņojumu?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Izveidots: {date}",
