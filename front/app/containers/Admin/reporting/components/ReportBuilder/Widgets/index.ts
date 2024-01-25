@@ -73,3 +73,27 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   CommentsByTimeWidget: commentsByTimeTitle,
   ReactionsByTimeWidget: reactionsByTimeTitle,
 };
+
+const WIDGETS_WITH_CHILDREN = new Set<string>([
+  'TwoColumn',
+] satisfies WidgetName[]);
+
+export const hasChildren = (nodeName: string) => {
+  return WIDGETS_WITH_CHILDREN.has(nodeName);
+};
+
+const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
+  'ActiveUsersWidget',
+  'AgeWidget',
+  'CommentsByTimeWidget',
+  'GenderWidget',
+  'PostsByTimeWidget',
+  'ReactionsByTimeWidget',
+  'VisitorsTrafficSourcesWidget',
+  'VisitorsWidget',
+  'SurveyResultsWidget',
+] satisfies WidgetName[]);
+
+export const hasNoPointerEvents = (nodeName: string) => {
+  return WIDGETS_WITHOUT_POINTER_EVENTS.has(nodeName);
+};
