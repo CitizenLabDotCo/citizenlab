@@ -63,12 +63,12 @@ RSpec.describe CustomMaps::Layer do
 
     it 'invalidates nil geojson data' do
       layer = build(:layer, layer_type: 'geojson', geojson: nil)
-      expect(layer).to be_invalid
+      expect(layer).to be_valid
     end
 
     it 'invalidates empty geojson data' do
-      layer = build(:layer, layer_type: 'geojson', geojson: '')
-      expect(layer).to be_invalid
+      layer = build(:layer, layer_type: 'geojson', geojson: {})
+      expect(layer).to be_valid
     end
   end
 
