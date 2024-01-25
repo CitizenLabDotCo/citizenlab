@@ -148,6 +148,15 @@ RSpec.describe SurveyResultsGeneratorService do
       title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }
     )
   end
+  let!(:other_option) do
+    create(
+      :custom_field_option,
+      custom_field: select_field,
+      other: true,
+      key: 'other',
+      title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' }
+    )
+  end
 
   let(:expected_result) do
     {
@@ -231,10 +240,15 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: true,
           totalResponses: 4,
-          answers: [
-            { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 3 },
-            { answer: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }, responses: 1 }
-          ],
+          answers: a_collection_containing_exactly(
+            { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 1 },
+            { answer: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }, responses: 1 },
+            { answer: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' }, responses: 2 }
+          ),
+          textResponses: a_collection_containing_exactly(
+            { answer: 'Austin' },
+            { answer: 'Miami' }
+          ),
           customFieldId: select_field.id
         }
       ],
@@ -286,7 +300,8 @@ RSpec.describe SurveyResultsGeneratorService do
       custom_field_values: {
         text_field.key => 'Green',
         multiselect_field.key => %w[cat dog],
-        select_field.key => 'la'
+        select_field.key => 'other',
+        "#{select_field.key}_other" => 'Austin'
       }
     )
     create(
@@ -296,7 +311,8 @@ RSpec.describe SurveyResultsGeneratorService do
       custom_field_values: {
         text_field.key => 'Pink',
         multiselect_field.key => %w[dog cat cow],
-        select_field.key => 'la'
+        select_field.key => 'other',
+        "#{select_field.key}_other" => 'Miami'
       }
     )
     create(:idea, project: project, phases: phases_of_inputs, custom_field_values: {})
