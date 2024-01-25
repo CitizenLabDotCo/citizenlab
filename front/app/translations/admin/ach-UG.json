@@ -951,7 +951,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "crwdns1535528:0crwdne1535528:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "crwdns1535530:0crwdne1535530:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "crwdns1535532:0crwdne1535532:0",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport": "crwdns1535534:0crwdne1535534:0",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "crwdns1540326:0crwdne1540326:0",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "crwdns1535536:0{reportName}crwdne1535536:0",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "crwdns1535538:0crwdne1535538:0",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "crwdns1535540:0{date}crwdne1535540:0",
