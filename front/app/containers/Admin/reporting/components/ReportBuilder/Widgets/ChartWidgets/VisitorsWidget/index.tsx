@@ -47,9 +47,6 @@ VisitorsWidget.craft = {
   related: {
     settings: ChartWidgetSettings,
   },
-  custom: {
-    noPointerEvents: true,
-  },
 };
 
 export const visitorsTitle = messages.visitorTimeline;

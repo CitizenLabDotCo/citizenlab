@@ -46,9 +46,6 @@ ReactionsByTimeWidget.craft = {
   related: {
     settings: ChartWidgetSettings,
   },
-  custom: {
-    noPointerEvents: true,
-  },
 };
 
 export const reactionsByTimeTitle = messages.reactions;

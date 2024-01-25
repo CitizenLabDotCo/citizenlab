@@ -182,9 +182,6 @@ SurveyResultsWidget.craft = {
   related: {
     settings: SurveyResultsWidgetSettings,
   },
-  custom: {
-    noPointerEvents: true,
-  },
 };
 
 export const surveyResultsTitle = messages.surveyResults;

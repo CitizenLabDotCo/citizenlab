@@ -90,9 +90,6 @@ TwoColumn.craft = {
   related: {
     settings: TwoColumnSettings,
   },
-  custom: {
-    hasChildren: true,
-  },
 };
 
 export const twoColumnTitle = messages.twoColumn;

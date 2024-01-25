@@ -47,9 +47,6 @@ ActiveUsersWidget.craft = {
   related: {
     settings: ChartWidgetSettings,
   },
-  custom: {
-    noPointerEvents: true,
-  },
 };
 
 export const activeUsersTitle = messages.activeUsersTimeline;

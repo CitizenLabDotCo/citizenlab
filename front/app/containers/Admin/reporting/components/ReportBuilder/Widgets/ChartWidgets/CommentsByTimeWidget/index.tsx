@@ -46,9 +46,6 @@ CommentsByTimeWidget.craft = {
   related: {
     settings: ChartWidgetSettings,
   },
-  custom: {
-    noPointerEvents: true,
-  },
 };
 
 export const commentsByTimeTitle = messages.comments;

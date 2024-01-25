@@ -49,9 +49,6 @@ VisitorsTrafficSourcesWidget.craft = {
   related: {
     settings: ChartWidgetSettings,
   },
-  custom: {
-    noPointerEvents: true,
-  },
 };
 
 export const visitorsTrafficSourcesTitle = messages.trafficSources;
