@@ -951,7 +951,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "أضف هدف المشروع وطرق المشاركة المتبعة والنتيجة",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "زوار",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "لا يوجد مشروع",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport": "لا يمكنك تعديل هذا التقرير لأنه يحتوي على بيانات لا يمكنك الوصول إليها.",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "لا يمكنك تعديل هذا التقرير لأنه يحتوي على بيانات لا يمكنك الوصول إليها.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "هل تريد بالتأكيد حذف \"{reportName}\"؟",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "هل أنت متأكد أنك تريد حذف هذا التقرير؟",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "تاريخ الإنشاء: {date}",
