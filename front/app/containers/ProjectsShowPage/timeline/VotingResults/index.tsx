@@ -6,18 +6,21 @@ import useIdeas from 'api/ideas/useIdeas';
 // components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import VotingResultCard from './VotingResultCard';
+import { VotingMethod } from 'api/phases/types';
 
 interface Props {
   phaseId: string;
+  votingMethod: VotingMethod;
 }
 
-const VotingResults = ({ phaseId }: Props) => {
+const VotingResults = ({ phaseId, votingMethod }: Props) => {
   const { data: ideas } = useIdeas({
     phase: phaseId,
-    sort: 'votes_count',
+    sort: votingMethod === 'budgeting' ? 'baskets_count' : 'votes_count',
   });
-
   const smallerThanPhone = useBreakpoint('phone');
+
+  if (!ideas) return null;
 
   const getMx = (i: number) =>
     smallerThanPhone ? {} : i % 2 ? { ml: '8px' } : { mr: '8px' };
@@ -30,7 +33,7 @@ const VotingResults = ({ phaseId }: Props) => {
       flexWrap="wrap"
       justifyContent="space-between"
     >
-      {ideas?.data.map((idea, i) => (
+      {ideas.data.map((idea, i) => (
         <Box
           key={idea.id}
           mb={smallerThanPhone ? '8px' : '20px'}
