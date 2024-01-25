@@ -461,7 +461,7 @@
   "app.containers.Admin.Insights.createModalProjectsLabel": "Projet(s)",
   "app.containers.Admin.Insights.createModalSaveView": "Créer mes aperçus",
   "app.containers.Admin.Insights.createModalTitle": "Commencez à analyser vos contributions",
-  "app.containers.Admin.Insights.deprecationWarningDescription": "Cette fonctionnalité sera bientôt supprimée. Il n'est plus possible de créer de nouveaux aperçus. Vous pouvez toujours consulter et exporter vos données existantes.",
+  "app.containers.Admin.Insights.deprecationWarningDescription": "Cette fonctionnalité sera bientôt supprimée. Il n'est plus possible de créer de nouveaux aperçus. Vous pouvez toujours afficher et exporter vos analyses existantes.",
   "app.containers.Admin.Insights.deprecationWarningTitle": "Cette fonctionnalité est obsolète",
   "app.containers.Admin.Insights.description": "Analysez efficacement les contributions textuelles de votre plateforme. Regroupez les contributions individuelles qui vont ensemble. Comprenez ce que les participants veulent vraiment dire.",
   "app.containers.Admin.Insights.discover": "Découvrez comment cela fonctionne",
