@@ -951,7 +951,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Añada el objetivo del proyecto, los métodos de participación utilizados y el resultado",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visitantes",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Ningún proyecto",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport": "No puedes editar este informe porque contiene datos a los que no tienes acceso.",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "No puedes editar este informe porque contiene datos a los que no tienes acceso.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "¿Está seguro de que desea suprimir \"{reportName}\"?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "¿Estás seguro de que quieres borrar este informe?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Creado el: {date}",
