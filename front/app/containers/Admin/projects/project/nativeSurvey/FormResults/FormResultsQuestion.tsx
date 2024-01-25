@@ -54,13 +54,6 @@ const FormResultsQuestion = ({
     inputTypeText
   )} - ${requiredOrOptionalText.toLowerCase()}`;
 
-  if (
-    !isAnalysisEnabled &&
-    (inputType === 'text' || inputType === 'multiline_text')
-  ) {
-    return null;
-  }
-
   return (
     <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
       <Title variant="h3" mt="12px" mb="12px">
@@ -96,7 +89,7 @@ const FormResultsQuestion = ({
             <TextResponses textResponses={textResponses} />
           </Box>
           <Box flex="1">
-            <Analysis customFieldId={customFieldId} />
+            {isAnalysisEnabled && <Analysis customFieldId={customFieldId} />}
           </Box>
         </Box>
       )}
