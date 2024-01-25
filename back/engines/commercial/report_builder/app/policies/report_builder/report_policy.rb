@@ -11,7 +11,11 @@ module ReportBuilder
       end
 
       def resolve
-        raise Pundit::NotAuthorizedError unless user&.active? && user&.admin?
+        raise Pundit::NotAuthorizedError unless user&.active? && (
+          user&.admin? ||
+          user&.project_folder_moderator? ||
+          user&.project_moderator?
+        )
 
         @scope.all
       end
