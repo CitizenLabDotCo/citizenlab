@@ -461,6 +461,8 @@
   "app.containers.Admin.Insights.createModalProjectsLabel": "Projekt",
   "app.containers.Admin.Insights.createModalSaveView": "Skapa mina insikter",
   "app.containers.Admin.Insights.createModalTitle": "Börja analysera dina indata",
+  "app.containers.Admin.Insights.deprecationWarningDescription": "Denna funktion kommer snart att tas bort. Det är inte längre möjligt att skapa nya insikter. Du kan fortfarande visa och exportera dina befintliga insikter.",
+  "app.containers.Admin.Insights.deprecationWarningTitle": "Denna funktion är föråldrad",
   "app.containers.Admin.Insights.description": "Analysera effektivt textindata på din plattform. Gruppera individuella bidrag som hör ihop. Förstå vad deltagare verkligen säger.",
   "app.containers.Admin.Insights.discover": "Upptäck hur det fungerar",
   "app.containers.Admin.Insights.emptyStateAccentText": "pratar om",

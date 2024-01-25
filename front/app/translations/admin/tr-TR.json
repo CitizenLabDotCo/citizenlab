@@ -461,6 +461,8 @@
   "app.containers.Admin.Insights.createModalProjectsLabel": "Projeler",
   "app.containers.Admin.Insights.createModalSaveView": "Bilgilerimi oluştur",
   "app.containers.Admin.Insights.createModalTitle": "Girdilerinizi analiz etmeye başlayın",
+  "app.containers.Admin.Insights.deprecationWarningDescription": "Bu özellik yakında kaldırılacaktır. Yeni içgörüler oluşturmak artık mümkün değildir. Mevcut içgörülerinizi görüntülemeye ve dışa aktarmaya devam edebilirsiniz.",
+  "app.containers.Admin.Insights.deprecationWarningTitle": "Bu özellik kullanımdan kaldırılmıştır",
   "app.containers.Admin.Insights.description": "Platformunuzdaki metin girdilerini verimli bir şekilde analiz edin. Bir araya gelebilecek bireysel katkıları gruplandırın. Katılımcıların gerçekten neler söylediğini anlayın.",
   "app.containers.Admin.Insights.discover": "İşleyiş biçimini inceleyin",
   "app.containers.Admin.Insights.emptyStateAccentText": "neler hakkında konuştuğunu",
