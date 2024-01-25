@@ -37,4 +37,21 @@ RSpec.describe CustomMaps::Layer do
       expect(layer).to be_invalid
     end
   end
+
+  describe 'url validation' do
+    it 'validates a url starting with https://' do
+      layer = build(:layer, url: 'https://some.domain.com/some_layer')
+      expect(layer).to be_valid
+    end
+
+    it 'validates a url starting with http://' do
+      layer = build(:layer, url: 'http://some.domain.com/some_layer')
+      expect(layer).to be_valid
+    end
+
+    it 'invalidates a url starting with neither http:// or https://' do
+      layer = build(:layer, url: 'ftp://some.domain.com/some_layer')
+      expect(layer).to be_invalid
+    end
+  end
 end

@@ -45,6 +45,9 @@ module CustomMaps
       format: { with: %r{\Ahttps://.*\z}, message: 'should start with https://' },
       allow_nil: true
     validates :layer_type, presence: true, inclusion: { in: LAYER_TYPES }
+    validates :url,
+      format: { with: %r{\Ahttp(s)?://.+\z}, message: 'should start with http:// or https://' },
+      allow_nil: true
 
     before_validation :set_default_enabled, :decode_geojson_file
 
