@@ -461,6 +461,8 @@
   "app.containers.Admin.Insights.createModalProjectsLabel": "пројекат(и)",
   "app.containers.Admin.Insights.createModalSaveView": "Створи моје увиде",
   "app.containers.Admin.Insights.createModalTitle": "Почните да анализирате свој допринос",
+  "app.containers.Admin.Insights.deprecationWarningDescription": "This feature will be removed soon. Creating new insights is no longer possible. You can still view and export your existing insights.",
+  "app.containers.Admin.Insights.deprecationWarningTitle": "This feature is deprecated",
   "app.containers.Admin.Insights.description": "Ефикасно анализирајте текстуални унос на својој платформи. Групирајте појединачне доприносе који припадају заједно. Схватите шта учесници заиста говоре.",
   "app.containers.Admin.Insights.discover": "Откријте како то функционише",
   "app.containers.Admin.Insights.emptyStateAccentText": "причати о",
