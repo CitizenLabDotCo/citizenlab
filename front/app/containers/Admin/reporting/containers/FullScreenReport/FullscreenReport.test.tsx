@@ -3,7 +3,6 @@ import FullScreenReport from '.';
 import { render } from 'utils/testUtils/rtl';
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
-jest.mock('js-confetti', () => jest.fn(() => ({ addConfetti: jest.fn() })));
 
 const mockReportLayout = {
   data: {
