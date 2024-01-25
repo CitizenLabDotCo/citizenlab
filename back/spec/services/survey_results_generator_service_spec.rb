@@ -159,10 +159,10 @@ RSpec.describe SurveyResultsGeneratorService do
           totalResponses: 4,
           customFieldId: text_field.id,
           textResponses: [
-            {:answer => 'Red' }, 
-            {:answer=> 'Blue' }, 
-            {:answer=> 'Green' }, 
-            {:answer=> 'Pink' }
+            { 'answer' => 'Red' }, 
+            { 'answer' => 'Blue' }, 
+            { 'answer' => 'Green' }, 
+            { 'answer' => 'Pink' }
           ]
         },
         {
