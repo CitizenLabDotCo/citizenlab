@@ -951,7 +951,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Füügt d’Projetszil, genotzte Bedeelegungsmethoden an d’Resultat bäi",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visitors",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "No project",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport": "Dir kënnt dëse Bericht net änneren, well en Daten enthält op déi Dir keen Zougang hutt.",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "Dir kënnt dëse Bericht net änneren, well en Daten enthält op déi Dir keen Zougang hutt.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Sidd Dir sécher, datt Dir \"{reportName}\" läsche wëllt?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteThisReport": "Sidd Dir sécher, datt Dir dëse Rapport läsche wëllt?",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.createdOn": "Ugeluecht den: {date}",
