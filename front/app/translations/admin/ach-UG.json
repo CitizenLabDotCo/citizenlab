@@ -922,6 +922,7 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "crwdns1160078:0crwdne1160078:0",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "crwdns1160080:0crwdne1160080:0",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "crwdns1160082:0crwdne1160082:0",
+  "app.containers.Admin.projects.project.survey.allResponses": "crwdns1529776:0crwdne1529776:0",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "crwdns992737:0crwdne992737:0",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "crwdns992987:0{question}crwdne992987:0",
   "app.containers.Admin.projects.project.survey.cancel": "crwdns787397:0crwdne787397:0",
