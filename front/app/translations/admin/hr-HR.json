@@ -922,6 +922,7 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Ovaj projekt ne sadrži nijednu fazu koja može sadržavati ideje.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Odaberite u koju fazu želite dodati ove ulaze.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Uvoznik unosa",
+  "app.containers.Admin.projects.project.survey.allResponses": "Svi odgovori",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Odaberite povezana pitanja za analizu",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Želite li uključiti neka druga povezana pitanja u svoju analizu {question}?",
   "app.containers.Admin.projects.project.survey.cancel": "Otkazati",

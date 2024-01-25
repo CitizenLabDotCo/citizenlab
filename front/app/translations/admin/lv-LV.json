@@ -922,6 +922,7 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Šajā projektā nav fāžu, kurās var būt idejas.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Lūdzu, izvēlieties, kurai fāzei vēlaties pievienot šos ievades datus.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Ievades importētājs",
+  "app.containers.Admin.projects.project.survey.allResponses": "Visas atbildes",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Izvēlieties saistītus jautājumus analīzei",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Vai {question}analīzē vēlaties iekļaut arī citus saistītus jautājumus?",
   "app.containers.Admin.projects.project.survey.cancel": "Atcelt",

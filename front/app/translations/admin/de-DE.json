@@ -922,6 +922,7 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dieses Projekt enthält keine Phasen, die Beitrage enthalten können.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Bitte wählen Sie aus, zu welcher Phase Sie diese Beiträge hinzufügen möchten.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Eingabe-Importeur",
+  "app.containers.Admin.projects.project.survey.allResponses": "Alle Antworten",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Fragen für die Analyse auswählen",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Möchten Sie noch andere Fragen in Ihre Analyse von {question} aufnehmen?",
   "app.containers.Admin.projects.project.survey.cancel": "Abbrechen",

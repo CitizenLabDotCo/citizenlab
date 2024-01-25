@@ -922,6 +922,7 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Detta projekt innehåller inga faser som kan innehålla idéer.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Välj till vilken fas du vill lägga till dessa ingångar.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Importör av indata",
+  "app.containers.Admin.projects.project.survey.allResponses": "Alla svar",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Välj relaterade frågor för analys",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Vill du inkludera andra relaterade frågor i din analys av {question}?",
   "app.containers.Admin.projects.project.survey.cancel": "Avbryt",
