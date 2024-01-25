@@ -29,19 +29,19 @@ interface Props {
   children: React.ReactElement;
 }
 
-// const warn = console.warn.bind(console);
-// function wrapWarn(...args) {
-//   if (
-//     typeof args[0] === 'string' &&
-//     (args[0].includes('ResponsiveContainer') ||
-//       args[0].includes('minWidth(undefined) or minHeight(undefined) '))
-//   ) {
-//     return;
-//   }
-//   warn(...args);
-// }
+const warn = console.warn.bind(console);
+function wrapWarn(...args) {
+  if (
+    typeof args[0] === 'string' &&
+    (args[0].includes('ResponsiveContainer') ||
+      args[0].includes('minWidth(undefined) or minHeight(undefined) '))
+  ) {
+    return;
+  }
+  warn(...args);
+}
 
-// console.warn = wrapWarn;
+console.warn = wrapWarn;
 
 const Container = ({
   width,
