@@ -1,7 +1,5 @@
 // @ts-nocheck
 
-import { isNilOrError } from 'utils/helperUtils';
-
 // This is a direct copy of the source code of https://github.com/rowanwins/leaflet-simplestyle.
 // Installing it through npm and importing it as a normal package unfortunatly crashes IE11.
 // Therefore it's added directly to the codebase, which fixes the IE11 issue.
@@ -102,14 +100,18 @@ import { isNilOrError } from 'utils/helperUtils';
 
           // Insert icon width/height into the fetched SVG
           const svgElementIndex = makiSvgIcon.indexOf('>');
-          makiSvgIcon = `${makiSvgIcon.slice(
-            0,
+          makiSvgIcon = `${makiSvgIcon.slice(0, svgElementIndex)} width="${
+            sizes[size][0]
+          }px" height="${sizes[size][1]}px" ${makiSvgIcon.slice(
             svgElementIndex
-          )} width="28px" height="28px" ${makiSvgIcon.slice(svgElementIndex)} `;
+          )} `;
 
-          iconOptions.iconSize = [28, 28];
-          iconOptions.iconAnchor = [7, 7];
-          iconOptions.popupAnchor = [0, 14];
+          iconOptions.iconSize = makiSizes[size];
+          iconOptions.iconAnchor = [
+            makiSizes[size][0] / 2,
+            makiSizes[size][1] / 2,
+          ];
+          iconOptions.popupAnchor = [0, -makiSizes[size][1] / 2];
 
           return new L.DivIcon(
             {
