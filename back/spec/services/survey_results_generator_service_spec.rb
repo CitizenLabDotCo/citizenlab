@@ -159,9 +159,9 @@ RSpec.describe SurveyResultsGeneratorService do
           totalResponses: 4,
           customFieldId: text_field.id,
           textResponses: [
-            { 'answer' => 'Red' }, 
-            { 'answer' => 'Blue' }, 
-            { 'answer' => 'Green' }, 
+            { 'answer' => 'Red' },
+            { 'answer' => 'Blue' },
+            { 'answer' => 'Green' },
             { 'answer' => 'Pink' }
           ]
         },
@@ -352,7 +352,6 @@ RSpec.describe SurveyResultsGeneratorService do
     let(:active_phase) { project.phases.first }
     let(:participation_context) { active_phase }
     let(:form) { create(:custom_form, participation_context: active_phase) }
-  
     let(:phases_of_inputs) { [active_phase] }
 
     describe '#generate_submission_count' do
