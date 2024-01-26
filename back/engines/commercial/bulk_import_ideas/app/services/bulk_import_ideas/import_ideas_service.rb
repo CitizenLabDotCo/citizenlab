@@ -54,8 +54,6 @@ module BulkImportIdeas
         end
       end
 
-      # To ensure the latest ideas are available in NLP stack
-      DumpTenantJob.perform_later Tenant.current
       ideas
     end
 
