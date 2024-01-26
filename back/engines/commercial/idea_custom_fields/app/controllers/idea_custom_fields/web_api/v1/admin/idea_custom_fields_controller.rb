@@ -193,14 +193,19 @@ module IdeaCustomFields
       end
     end
 
-    # TODO: JS - Need to work out how to remove images
     def update_option_image!(option, options_params)
       return unless options_params[:image]
 
+      # Image should always be set by the front end if there is any change - if no change the image param should not be set
+      # TODO: Might need to change 'image' param to image_base64 or something similar to avoid active record errors
       if option.image
-        option.image.update(image: options_params[:image])
+        if options_params[:image][:image] == ''
+          option.image.destroy!
+        elsif options_params[:image][:image]
+          option.image.update(image: options_params[:image][:image])
+        end
       else
-        option.create_image(image: options_params[:image])
+        option.create_image(image: options_params[:image][:image])
       end
     end
 
@@ -265,7 +270,7 @@ module IdeaCustomFields
             {
               title_multiloc: CL2_SUPPORTED_LOCALES
             },
-            :image
+            { image: %i[id image] }
           ],
           logic: {} }
       ])

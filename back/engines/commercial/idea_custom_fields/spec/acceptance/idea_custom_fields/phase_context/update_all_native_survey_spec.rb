@@ -224,15 +224,11 @@ resource 'Idea Custom Fields' do
               options: [
                 {
                   title_multiloc: { en: 'Option 1' },
-                  image: {
-                    image: png_image_as_base64('image14.png')
-                  }
+                  image: { image: png_image_as_base64('image14.png') }
                 },
                 {
                   title_multiloc: { en: 'Option 2' },
-                  image: {
-                    image: png_image_as_base64('image14.png')
-                  }
+                  image: { image: png_image_as_base64('image14.png') }
                 }
               ]
             }
@@ -285,6 +281,61 @@ resource 'Idea Custom Fields' do
         expect(json_response_body[:included].pluck(:type)).to match_array(
           %w[image custom_field_option image custom_field_option]
         )
+      end
+
+      context 'Update custom field options with images' do
+        let!(:page) { create(:custom_field_page, resource: custom_form) }
+        let!(:field) { create(:custom_field_select, resource: custom_form) }
+        let!(:option1) { create(:custom_field_option, key: 'option1', custom_field: field) }
+        let!(:option2) { create(:custom_field_option, key: 'option2', custom_field: field) }
+        let!(:image1) { create(:custom_field_option_image, custom_field_option: option1) }
+        let!(:image2) { create(:custom_field_option_image, custom_field_option: option2) }
+
+        example 'Remove an image from a custom field option' do
+          request = {
+            custom_fields: [
+              {
+                id: page.id,
+                input_type: 'page'
+              },
+              {
+                id: field.id,
+                input_type: 'multiselect',
+                title_multiloc: { en: 'Inserted field' },
+                required: false,
+                enabled: true,
+                options: [
+                  {
+                    id: option1.id,
+                    title_multiloc: { en: 'Option 1' },
+                    image: {
+                      id: image1.id,
+                      image: ''
+                    }
+                  },
+                  {
+                    id: option2.id,
+                    title_multiloc: { en: 'Option 2' },
+                    image: {
+                      id: image2.id
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+          do_request request
+
+          assert_status 200
+
+          expect(CustomField.all.count).to eq 2
+          expect(CustomFieldOption.all.count).to eq 2
+          expect(CustomFieldOptionImage.all.count).to eq 1
+          expect(response_data.size).to eq 2
+          expect(json_response_body[:included].pluck(:type)).to match_array(
+            %w[image custom_field_option custom_field_option]
+          )
+        end
       end
 
       example 'Remove all custom fields' do
