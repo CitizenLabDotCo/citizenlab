@@ -267,7 +267,5 @@
   },
   "msw": {
     "workerDirectory": ".storybook/public"
-  },
-  "readme": "ERROR: No README data found!",
-  "_id": "cl2-front@1.0.0"
+  }
 }
