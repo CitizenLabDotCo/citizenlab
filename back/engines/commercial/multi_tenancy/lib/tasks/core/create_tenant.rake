@@ -100,14 +100,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           allowed: true,
           enabled: true
         },
-        similar_ideas: {
-          enabled: false,
-          allowed: true
-        },
-        geographic_dashboard: {
-          enabled: true,
-          allowed: true
-        },
         intercom: {
           enabled: true,
           allowed: true

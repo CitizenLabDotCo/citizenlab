@@ -195,14 +195,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            similar_ideas: {
-              enabled: false,
-              allowed: true
-            },
-            geographic_dashboard: {
-              enabled: true,
-              allowed: true
-            },
             intercom: {
               enabled: true,
               allowed: true

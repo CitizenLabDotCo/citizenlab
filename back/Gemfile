@@ -192,7 +192,6 @@ commercial_engines = [
   'custom_idea_statuses',
   'custom_maps',
   'flag_inappropriate_content',
-  'geographic_dashboard',
   'google_tag_manager',
   'idea_assignment',
   'idea_custom_fields',

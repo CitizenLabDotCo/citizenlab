@@ -914,30 +914,6 @@
         }
       },
 
-      "clustering": {
-        "type": "object",
-        "title": "Clustering",
-        "description":  "Allows admins to analyze ideas by creating clustered visualizations.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "similar_ideas": {
-        "type": "object",
-        "title": "Similar Ideas",
-        "description":  "Show links to similar ideas when viewing an idea. Still in beta.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "admin_project_templates": {
         "type": "object",
         "title": "Project Templates",
