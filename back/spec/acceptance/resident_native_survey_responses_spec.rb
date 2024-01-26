@@ -62,6 +62,7 @@ resource 'Ideas' do
       parameter :phase_ids, 'The identifiers of the phases that host the input. None is allowed for normal users.', required: false
       parameter :custom_field_name1, 'A value for one custom field'
       parameter :custom_field_name2, 'A value for another custom field'
+      parameter :custom_field_name2_other, 'A custom text value for an "other" option in custom fields'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
 
@@ -173,6 +174,24 @@ resource 'Ideas' do
             expect(inputs.first.phase_ids).to eq [active_phase.id]
             expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
             expect(input.creation_phase_id).to eq active_phase.id
+          end
+
+          context 'when there is an "other" option for a custom field' do
+            let!(:custom_field2) { create(:custom_field_select, :with_options, key: 'custom_field_name2', resource: custom_form) }
+            let!(:other_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
+
+            let(:custom_field_name2) { 'other' }
+            let(:custom_field_name2_other) { 'a text value here' }
+
+            example_request 'Create an input with an other option' do
+              assert_status 201
+              input = project.reload.ideas.first
+              expect(input.custom_field_values).to match({
+                'custom_field_name1' => 'Cat',
+                'custom_field_name2' => 'other',
+                'custom_field_name2_other' => 'a text value here'
+              })
+            end
           end
         end
       end

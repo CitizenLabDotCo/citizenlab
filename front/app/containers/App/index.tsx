@@ -65,6 +65,7 @@ import { Locale } from 'typings';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import useAuthUser from 'api/me/useAuthUser';
 import { configureScope } from '@sentry/react';
+import UserSessionRecordingModal from './UserSessionRecordingModal';
 
 interface Props {
   children: React.ReactNode;
@@ -332,6 +333,7 @@ const App = ({ children }: Props) => {
               minHeight="100vh"
             >
               <Meta />
+              <UserSessionRecordingModal />
               <ErrorBoundary>
                 <Suspense fallback={null}>
                   <UserDeletedModal

@@ -19,6 +19,7 @@ import { Locale, Multiloc } from 'typings';
 import { Answer } from 'api/survey_results/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import Analysis from './analysis';
+import TextResponses from './TextResponses';
 
 type FormResultsQuestionProps = {
   locale: Locale;
@@ -28,6 +29,7 @@ type FormResultsQuestionProps = {
   totalResponses: number;
   required: boolean;
   customFieldId: string;
+  textResponses?: { answer: string }[];
 };
 
 const FormResultsQuestion = ({
@@ -38,6 +40,7 @@ const FormResultsQuestion = ({
   totalResponses,
   required,
   customFieldId,
+  textResponses = [],
 }: FormResultsQuestionProps) => {
   const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
   const { formatMessage } = useIntl();
@@ -51,13 +54,6 @@ const FormResultsQuestion = ({
     inputTypeText
   )} - ${requiredOrOptionalText.toLowerCase()}`;
 
-  if (
-    !isAnalysisEnabled &&
-    (inputType === 'text' || inputType === 'multiline_text')
-  ) {
-    return null;
-  }
-
   return (
     <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
       <Title variant="h3" mt="12px" mb="12px">
@@ -68,26 +64,35 @@ const FormResultsQuestion = ({
           {inputTypeLabel}
         </Text>
       )}
-      {answers ? (
+      {answers && (
         answers.map(({ answer, responses }, index) => {
           const percentage =
             Math.round((responses / totalResponses) * 1000) / 10;
 
           return (
-            <CompletionBar
-              key={index}
-              bgColor={colors.primary}
-              completed={percentage}
-              leftLabel={answer}
-              rightLabel={formatMessage(messages.choiceCount2, {
-                choiceCount: responses,
-                percentage,
-              })}
-            />
+            <Box key={index} maxWidth="524px">
+              <CompletionBar
+                bgColor={colors.primary}
+                completed={percentage}
+                leftLabel={answer}
+                rightLabel={formatMessage(messages.choiceCount2, {
+                  choiceCount: responses,
+                  percentage,
+                })}
+              />
+            </Box>
           );
         })
-      ) : (
-        <Analysis customFieldId={customFieldId} />
+      )}
+      {textResponses && textResponses.length > 0 && (
+        <Box display="flex" gap="24px" mt={answers ? '20px' : '0'}>
+          <Box flex="1">
+            <TextResponses textResponses={textResponses} />
+          </Box>
+          <Box flex="1">
+            {isAnalysisEnabled && <Analysis customFieldId={customFieldId} />}
+          </Box>
+        </Box>
       )}
     </Box>
   );

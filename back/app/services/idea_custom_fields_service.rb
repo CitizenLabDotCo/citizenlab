@@ -31,6 +31,10 @@ class IdeaCustomFieldsService
     enabled_fields.reject { |field| unsubbmittable_input_types.include? field.input_type }
   end
 
+  def submittable_fields_with_other_options
+    insert_other_option_text_fields(submittable_fields)
+  end
+
   def printable_fields
     ignore_field_types = %w[section date files image_files point linear_scale file_upload]
     enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
@@ -45,6 +49,10 @@ class IdeaCustomFieldsService
     all_fields.select(&:enabled?)
   end
 
+  def enabled_fields_with_other_options
+    insert_other_option_text_fields(enabled_fields)
+  end
+
   def enabled_public_fields
     enabled_fields.select { |field| field.answer_visible_to == CustomField::VISIBLE_TO_PUBLIC }
   end
@@ -56,7 +64,7 @@ class IdeaCustomFieldsService
   def allowed_extra_field_keys
     fields_with_simple_keys = []
     fields_with_array_keys = {}
-    submittable_fields.reject(&:built_in?).each do |field|
+    submittable_fields_with_other_options.reject(&:built_in?).each do |field|
       case field.input_type
       when 'multiselect'
         fields_with_array_keys[field.key.to_sym] = []
@@ -125,6 +133,15 @@ class IdeaCustomFieldsService
   end
 
   private
+
+  def insert_other_option_text_fields(fields)
+    all_fields = []
+    fields.each do |field|
+      all_fields << field
+      all_fields << field.other_option_text_field if field.other_option_text_field
+    end
+    all_fields
+  end
 
   # Check required as it doesn't matter what is saved in title for section 1
   # Constraints required for the front-end but response will always return input specific method

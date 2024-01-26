@@ -1,49 +1,44 @@
+// craft
 import { useNode } from '@craftjs/core';
-import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
+// routing
 import { useLocation } from 'react-router-dom';
 import { isPage } from 'utils/helperUtils';
 
-import { BaseResponseData } from 'utils/cl-react-query/fetcher';
+// hooks
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
-import { PropsLive, ResolvedName } from './types';
+import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
 
-interface Props {
-  resolvedName: ResolvedName;
-  queryParameters: PropsLive;
-  onSuccess?: () => void;
-}
+// typins
+import { BaseResponseData } from 'utils/cl-react-query/fetcher';
+import { ParametersLive, Options } from './requestTypes';
 
-const useGraphDataUnits = <Response extends BaseResponseData>({
-  resolvedName,
-  queryParameters,
-  onSuccess,
-}: Props) => {
+const useGraphDataUnits = <Response extends BaseResponseData>(
+  parameters: ParametersLive,
+  { enabled = true, onSuccess }: Options = { enabled: true }
+) => {
   const { pathname } = useLocation();
   const { id: graphId } = useNode();
   const isAdminPage = isPage('admin', pathname);
   const { reportId } = useReportContext();
 
-  const { data: analyticsLive } = useGraphDataUnitsLive<Response>(
-    {
-      resolvedName,
-      props: queryParameters,
-    },
-    { enabled: isAdminPage, onSuccess }
-  );
+  const { data: dataLive } = useGraphDataUnitsLive<Response>(parameters, {
+    enabled: enabled && isAdminPage,
+    onSuccess,
+  });
 
-  const { data: analyticsPublished } = useGraphDataUnitsPublished<Response>(
+  const { data: dataPublished } = useGraphDataUnitsPublished<Response>(
     {
       reportId,
       graphId,
     },
-    { enabled: !isAdminPage }
+    { enabled: enabled && !isAdminPage }
   );
 
-  const analytics = analyticsLive ?? analyticsPublished;
+  const data = dataLive ?? dataPublished;
 
-  return analytics;
+  return data;
 };
 
 export default useGraphDataUnits;

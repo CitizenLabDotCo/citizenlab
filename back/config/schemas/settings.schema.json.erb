@@ -232,6 +232,18 @@
         }
       },
 
+      "user_avatars": {
+        "type": "object",
+        "title": "User avatars",
+        "description": "Allow users to upload a profile picture.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "internal_commenting": {
         "type": "object",
         "title": "Internal commenting",
@@ -1325,6 +1337,18 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "user_session_recording": {
+        "type": "object",
+        "title": "User session recording",
+        "description": "Enables the recording of a small fraction of user sessions for analysis and product research purposes. Requires active consent from the customer.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": false }
         }
       }

@@ -438,26 +438,6 @@ describe FormLogicService do
         }])
       end
     end
-
-    context 'when a question has an "other" option' do
-      before do
-        create(:custom_field_option, other: true, custom_field: question2, key: 'other')
-      end
-
-      let(:other_field) { question2.other_option_text_field }
-
-      it 'returns a UI schema with rules for the other field page' do
-        expect(form_logic.ui_schema_rules_for(other_field)).to eq([{
-          effect: 'SHOW',
-          condition: {
-            scope: "#/properties/#{question2.key}",
-            schema: {
-              enum: ['other']
-            }
-          }
-        }])
-      end
-    end
   end
 
   describe '#valid?' do

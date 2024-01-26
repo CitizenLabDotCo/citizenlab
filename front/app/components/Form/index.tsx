@@ -199,6 +199,7 @@ const Form = memo(
             formSubmitText={formSubmitText}
             config={config}
             locale={locale}
+            setFormData={setData}
             onChange={handleChange}
             onSubmit={handleSubmit}
           />

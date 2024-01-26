@@ -2,7 +2,7 @@ module ReportBuilder
   class Queries::Analytics::TrafficSources < Queries::Analytics::Base
     protected
 
-    def query(start_at: nil, end_at: nil, project_id: nil, resolution: nil, **_other_props)
+    def query(start_at: nil, end_at: nil, project_id: nil, **_other_props)
       {
         fact: 'visit',
         filters: {

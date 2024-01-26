@@ -53,6 +53,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     if @supports_answer_visible_to
       defaults[:answer_visible_to] = field.answer_visible_to
     end
+    defaults[:otherField] = field.other_option_text_field&.key if field.other_option_text_field
     super.merge(defaults).tap do |options|
       options[:description] = description_option field
     end
@@ -67,15 +68,14 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def schema_elements_for(fields)
-    fields = insert_other_option_text_fields(fields)
     form_logic = FormLogicService.new(fields)
     current_page_schema = nil
     field_schemas = []
     fields.each do |field|
       field_schema = visit field
-      rules = form_logic.ui_schema_rules_for(field)
-      field_schema[:ruleArray] = rules if rules.present?
       if field.page?
+        rules = form_logic.ui_schema_rules_for(field)
+        field_schema[:ruleArray] = rules if rules.present?
         field_schemas << field_schema
         current_page_schema = field_schema
       elsif current_page_schema
@@ -86,15 +86,6 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     end
     field_schemas << end_page_schema
     field_schemas
-  end
-
-  def insert_other_option_text_fields(fields)
-    all_fields = []
-    fields.each do |field|
-      all_fields << field
-      all_fields << field.other_option_text_field if field.other_option_text_field
-    end
-    all_fields
   end
 
   def end_page_schema

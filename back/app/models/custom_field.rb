@@ -220,14 +220,15 @@ class CustomField < ApplicationRecord
     return unless options.any?(&:other)
 
     other_field_key = "#{key}_other"
-    other_option = options.find(&:other)
-    (logic['rules'] ||= []) << { 'if' => other_option.id, 'goto_page_id' => other_field_key }
-
     CustomField.new(
       key: other_field_key,
       input_type: 'text',
-      title_multiloc: { 'en' => 'Type your answer' },
-      required: true
+      title_multiloc: MultilocService.new.i18n_to_multiloc(
+        'custom_fields.ideas.other.title',
+        locales: CL2_SUPPORTED_LOCALES
+      ),
+      required: true,
+      enabled: true
     )
   end
 

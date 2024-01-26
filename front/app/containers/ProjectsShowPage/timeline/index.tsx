@@ -38,10 +38,10 @@ import styled from 'styled-components';
 // utils
 import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
 import { isValidPhase } from '../phaseParam';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 
 const StyledSectionContainer = styled(SectionContainer)`
   display: flex;
@@ -109,9 +109,14 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
     const showVotingResults = isVotingPhase && isPastPhase;
 
     const reportId = selectedPhase.relationships.report?.data?.id;
+
+    const phaseHasStarted =
+      pastPresentOrFuture(selectedPhase.attributes.start_at) !== 'future';
+
     const showReport =
       selectedPhase.attributes.participation_method === 'information' &&
-      !!reportId;
+      !!reportId &&
+      phaseHasStarted;
 
     return (
       <StyledSectionContainer

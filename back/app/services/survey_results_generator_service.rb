@@ -39,14 +39,17 @@ class SurveyResultsGeneratorService < FieldVisitorService
     answers = inputs
       .select("custom_field_values->'#{field.key}' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map(&:value)
+      .map do |answer|
+        { answer: answer.value }
+      end
     answer_count = answers.size
     {
       inputType: field.input_type,
       question: field.title_multiloc,
       required: field.required,
       totalResponses: answer_count,
-      customFieldId: field.id
+      customFieldId: field.id,
+      textResponses: answers
     }
   end
 
@@ -54,14 +57,17 @@ class SurveyResultsGeneratorService < FieldVisitorService
     answers = inputs
       .select("custom_field_values->'#{field.key}' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map(&:value)
+      .map do |answer|
+        { answer: answer.value }
+      end
     answer_count = answers.size
     {
       inputType: field.input_type,
       question: field.title_multiloc,
       required: field.required,
       totalResponses: answer_count,
-      customFieldId: field.id
+      customFieldId: field.id,
+      textResponses: answers
     }
   end
 
@@ -110,7 +116,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       }
     end
     answer_count = distribution.sum { |(_value, count)| count }
-    {
+    answers = {
       inputType: field.input_type,
       question: field.title_multiloc,
       required: field.required,
@@ -118,5 +124,16 @@ class SurveyResultsGeneratorService < FieldVisitorService
       answers: answers,
       customFieldId: field.id
     }
+    answers[:textResponses] = collect_other_text_responses(field) if field.other_option_text_field
+    answers
+  end
+
+  def collect_other_text_responses(field)
+    inputs
+      .select("custom_field_values->'#{field.key}_other' as value")
+      .where("custom_field_values->'#{field.key}_other' IS NOT NULL")
+      .map do |answer|
+        { answer: answer.value }
+      end
   end
 end

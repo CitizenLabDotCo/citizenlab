@@ -1,4 +1,4 @@
-import { randomString, randomEmail, logout } from '../../support/commands';
+import { randomString, randomEmail } from '../../support/commands';
 
 describe('Sign up - custom fields step', () => {
   describe('No custom fields', () => {
@@ -12,7 +12,7 @@ describe('Sign up - custom fields step', () => {
     });
 
     after(() => {
-      logout();
+      cy.logout();
     });
 
     it('does not show it when no custom fields are enabled', () => {
