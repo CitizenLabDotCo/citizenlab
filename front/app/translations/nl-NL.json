@@ -1776,7 +1776,7 @@
   "app.modules.id_oostende_rrn.invalidRrnError": "Dit rijksregisternummer is ongeldig. Gelieve te controleren op typefouten en probeer het opnieuw.",
   "app.modules.id_oostende_rrn.noMatchFormError": "We konden geen informatie vinden over jouw rijksregisternummer",
   "app.modules.id_oostende_rrn.notEntitledLivesOutsideFormError1": "We kunnen niet verifiëren dat jij het bent, omdat je buiten Oostende woont",
-  "app.modules.id_oostende_rrn.notEntitledTooYoungFormError": "Enkel personen ouder dan 14 jaar mogen deelnemen aan dit project. Contacteer support@citizenlab.co voor meer informatie.",
+  "app.modules.id_oostende_rrn.notEntitledTooYoungFormError": "Enkel personen ouder dan 16 jaar mogen deelnemen aan dit project. Contacteer support@citizenlab.co voor meer informatie.",
   "app.modules.id_oostende_rrn.oostendeRrnHelp": "We vragen je Rijksregisternummer op om te verifiëren dat je een inwoner bent van Oostende, en ouder bent dan 14 jaar. Zo weten we dat je voldoet aan de criteria voor deelname aan dit project.",
   "app.modules.id_oostende_rrn.rrnLabel": "Rijksregisternummer",
   "app.modules.id_oostende_rrn.rrnTooltip": "We vragen om je burgerservicenummer om te verifiëren of je een inwoner van Oostende en ouder dan 14 jaar bent.",
