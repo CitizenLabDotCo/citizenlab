@@ -31,16 +31,16 @@ const Esri = () => {
         h="240px"
         background={colors.teal200}
         display="flex"
-        justifyContent="center"
+        // justifyContent="center"
       >
         <Box
           background={colors.white}
           display="flex"
           p="10px"
-          width="100%"
-          borderRadius="5px"
-          justifyContent="center"
-          alignContent="center"
+          // width="100%"
+          // borderRadius="5px"
+          // justifyContent="center"
+          // alignContent="center"
         >
           <Box my="auto">
             <img
@@ -68,14 +68,14 @@ const Esri = () => {
           <div>
             <Button
               disabled={!isEsriEnabled}
-              bgColor={colors.primary}
+              // bgColor={colors.primary}
               height="45px"
               icon={isEsriEnabled ? 'arrow-right' : 'lock'}
-              iconColor={colors.white}
+              // iconColor={colors.white}
               iconPos="right"
               width="fit-content"
               linkTo="/admin/tools/esri-integration"
-              textColor="white"
+              // textColor="white"
             >
               {formatMessage(messages.esriIntegrationButton)}
             </Button>
