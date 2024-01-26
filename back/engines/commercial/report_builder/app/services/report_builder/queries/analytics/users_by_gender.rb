@@ -1,4 +1,5 @@
 module ReportBuilder
+  # Not used atm, the same as dimension_user_custom_field_values
   class Queries::Analytics::UsersByGender < Queries::Analytics::Base
     protected
 
@@ -7,7 +8,6 @@ module ReportBuilder
         fact: 'participation',
         groups: 'dimension_user_custom_field_values.value',
         filters: {
-          'dimension_user.role': ['citizen', 'admin', nil],
           'dimension_user_custom_field_values.key': 'gender',
           **date_filter('dimension_date_created', start_at, end_at),
           **project_filter('dimension_project_id', project_id)

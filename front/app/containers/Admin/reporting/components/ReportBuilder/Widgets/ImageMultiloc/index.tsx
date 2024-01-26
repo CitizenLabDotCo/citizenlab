@@ -26,7 +26,7 @@ import { IMAGE_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 
-interface Props {
+export interface Props {
   image?: {
     dataCode?: string;
     imageUrl?: string;
@@ -88,9 +88,8 @@ Image.craft = {
   related: {
     settings: ImageSettings,
   },
-  custom: {
-    title: messages.imageMultiloc,
-  },
 };
+
+export const imageMultilocTitle = messages.imageMultiloc;
 
 export default Image;

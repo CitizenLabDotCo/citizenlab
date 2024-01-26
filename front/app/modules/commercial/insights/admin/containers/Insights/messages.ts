@@ -495,4 +495,13 @@ export default defineMessages({
     defaultMessage:
       'No categories detected. Please go back to define your own.',
   },
+  deprecationWarningTitle: {
+    id: 'app.containers.Admin.Insights.deprecationWarningTitle',
+    defaultMessage: 'This feature is deprecated',
+  },
+  deprecationWarningDescription: {
+    id: 'app.containers.Admin.Insights.deprecationWarningDescription',
+    defaultMessage:
+      'This feature will be removed soon. Creating new insights is no longer possible. You can still view and export your existing insights.',
+  },
 });

@@ -12,7 +12,7 @@ import {
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, KeyboardEvent } from 'react';
 import ErrorDisplay from '../ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
 import { sanitizeForClassname } from 'utils/JSONFormUtils';
@@ -68,6 +68,13 @@ export const InputControl = ({
     return null;
   }
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    // We want to prevent the form from being closed when pressing enter
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   return (
     <>
       <Box>
@@ -100,6 +107,7 @@ export const InputControl = ({
             setDidBlur(true);
           }}
           disabled={uischema?.options?.readonly}
+          onKeyDown={handleKeyDown}
         />
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
