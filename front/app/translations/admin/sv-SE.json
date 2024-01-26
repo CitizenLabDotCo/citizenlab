@@ -1130,7 +1130,6 @@
   "app.containers.AdminPage.DashboardPage.inputs": "Inlägg",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Inlägg efter status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Välj användargrupp",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Välj projekt",
   "app.containers.AdminPage.DashboardPage.male": "man",
   "app.containers.AdminPage.DashboardPage.month": "månad",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "Rangordningen baseras på antalet input (5 poäng per input), kommentarer (3 poäng per kommentar) och reaktioner (1 poäng per reaktion) som varje deltagare har lämnat in.",

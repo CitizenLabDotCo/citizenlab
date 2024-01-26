@@ -972,7 +972,6 @@
   "app.containers.AdminPage.DashboardPage.inputs": "Posts",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Posts by status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Seleccioneu el grup d'usuaris",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Seleccioneu el projecte",
   "app.containers.AdminPage.DashboardPage.male": "home",
   "app.containers.AdminPage.DashboardPage.month": "month",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "La classificació es basa en el nombre d'entrades (5 punts per entrada), comentaris (3 punts per comentari) i reaccions (1 punt per reacció) enviades per cada participant.",

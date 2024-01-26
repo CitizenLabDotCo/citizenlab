@@ -1130,7 +1130,6 @@
   "app.containers.AdminPage.DashboardPage.inputs": "Objave",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Objave po statusu",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Odaberite grupu korisnika",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Odaberite projekt",
   "app.containers.AdminPage.DashboardPage.male": "muški",
   "app.containers.AdminPage.DashboardPage.month": "mjesec",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "Poredak se temelji na broju unosa (5 bodova po unosu), komentara (3 boda po komentaru) i reakcija (1 bod po reakciji) koje je poslao svaki sudionik.",

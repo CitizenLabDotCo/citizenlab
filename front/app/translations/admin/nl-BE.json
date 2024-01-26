@@ -1130,7 +1130,6 @@
   "app.containers.AdminPage.DashboardPage.inputs": "Bijdragen",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Bijdragen volgens status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Selecteer gebruikersgroep",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Selecteer project",
   "app.containers.AdminPage.DashboardPage.male": "man",
   "app.containers.AdminPage.DashboardPage.month": "maand",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "De ranglijst is gebaseerd op het aantal bijdragen (5 punten per bijdrage), likes (3 punten per like) en reacties (1 punt per reactie) die door elke deelnemer zijn ingediend.",

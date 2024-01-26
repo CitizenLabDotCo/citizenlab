@@ -1130,7 +1130,6 @@
   "app.containers.AdminPage.DashboardPage.inputs": "Indlæg",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Indlæg efter status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Vælg brugergruppe",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Vælg projekt",
   "app.containers.AdminPage.DashboardPage.male": "mandlige",
   "app.containers.AdminPage.DashboardPage.month": "måned",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "Rangeringen er baseret på antallet af input (5 point pr. input), kommentarer (3 point pr. kommentar) og stemmer (1 point pr. stemme), som hver deltager har indsendt.",

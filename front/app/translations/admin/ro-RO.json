@@ -731,7 +731,6 @@
   "app.containers.AdminPage.DashboardPage.inputs": "Postări",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Posts by status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Select user group",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Select project",
   "app.containers.AdminPage.DashboardPage.male": "masculin",
   "app.containers.AdminPage.DashboardPage.month": "lună",
   "app.containers.AdminPage.DashboardPage.noData": "There is no data to be shown.",

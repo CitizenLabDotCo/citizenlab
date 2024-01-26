@@ -731,7 +731,6 @@
   "app.containers.AdminPage.DashboardPage.inputs": "الأفكار",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "منشورات حسب الحالة",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "تحديد مجموعة مستخدمين",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "تحديد مشروع",
   "app.containers.AdminPage.DashboardPage.male": "ذكر",
   "app.containers.AdminPage.DashboardPage.month": "شهر",
   "app.containers.AdminPage.DashboardPage.noData": "لا توجد بيانات لعرضها",

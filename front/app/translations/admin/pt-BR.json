@@ -1130,7 +1130,6 @@
   "app.containers.AdminPage.DashboardPage.inputs": "Informações",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Entradas por status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Selecionar grupo de usuários",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Selecionar projeto",
   "app.containers.AdminPage.DashboardPage.male": "Masculino",
   "app.containers.AdminPage.DashboardPage.month": "mês",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "A classificação baseia-se no número de contribuições (5 pontos por contribuição), comentários (3 pontos por comentário) e reacções (1 ponto por reação) apresentados por cada participante.",

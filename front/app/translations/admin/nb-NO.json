@@ -1130,7 +1130,6 @@
   "app.containers.AdminPage.DashboardPage.inputs": "Innlegg",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Innlegg etter status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Velg brukergruppe",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Velg prosjekt",
   "app.containers.AdminPage.DashboardPage.male": "mann ",
   "app.containers.AdminPage.DashboardPage.month": "måned",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "Rangeringen er basert på antall innspill (5 poeng per innspill), kommentarer (3 poeng per kommentar) og reaksjoner (1 poeng per reaksjon) levert av hver deltaker.",

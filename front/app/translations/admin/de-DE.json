@@ -1130,7 +1130,6 @@
   "app.containers.AdminPage.DashboardPage.inputs": "Beiträge",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Beiträge nach Status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "NutzerInnengruppe auswählen",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Projekt auswählen",
   "app.containers.AdminPage.DashboardPage.male": "männlich",
   "app.containers.AdminPage.DashboardPage.month": "Monat",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "Die Rangliste basiert auf der Anzahl der Beiträge (5 Punkte pro Beitrag), Kommentare (3 Punkte pro Kommentar) und Reaktionen (1 Punkt pro Reaktion), die von jedem Teilnehmenden eingereicht wurden.",

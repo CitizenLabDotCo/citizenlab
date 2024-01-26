@@ -773,7 +773,6 @@
   "app.containers.AdminPage.DashboardPage.inputs": "Posten",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Posts by status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Benotzergrupp auswielen",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Projet auswielen",
   "app.containers.AdminPage.DashboardPage.male": "male",
   "app.containers.AdminPage.DashboardPage.month": "month",
   "app.containers.AdminPage.DashboardPage.noData": "There is no data to be shown.",

@@ -1130,7 +1130,6 @@
   "app.containers.AdminPage.DashboardPage.inputs": "Publikācijas",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Ieraksti pēc statusa",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Izvēlēties lietotāju grupu",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Izvēlēties projektu",
   "app.containers.AdminPage.DashboardPage.male": "vīrietis",
   "app.containers.AdminPage.DashboardPage.month": "mēnesis",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "Rangu veido, pamatojoties uz katra dalībnieka iesniegto ievades datu (5 punkti par ievades datiem), komentāru (3 punkti par komentāru) un reakciju (1 punkts par reakciju) skaitu.",

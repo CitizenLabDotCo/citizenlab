@@ -1130,7 +1130,6 @@
   "app.containers.AdminPage.DashboardPage.inputs": "Posts",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Posts by status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Select user group",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Select project",
   "app.containers.AdminPage.DashboardPage.male": "male",
   "app.containers.AdminPage.DashboardPage.month": "month",
   "app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription2": "The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and reactions (1 point per reaction) submitted by each participant.",

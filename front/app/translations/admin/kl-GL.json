@@ -773,7 +773,6 @@
   "app.containers.AdminPage.DashboardPage.inputs": "Ilanngussat",
   "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Posts by status",
   "app.containers.AdminPage.DashboardPage.labelGroupFilter": "Atuisoqatigiikkaat toqqakkit",
-  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Suliniut toqqaruk",
   "app.containers.AdminPage.DashboardPage.male": "angut",
   "app.containers.AdminPage.DashboardPage.month": "måned",
   "app.containers.AdminPage.DashboardPage.noData": "There is no data to be shown.",
