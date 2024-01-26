@@ -120,6 +120,7 @@ Rails/CreateTableWithTimestamps:
     - "db/migrate/20191210205216_create_id_cards.id_id_card_lookup.rb"
     - "db/migrate/20191218161144_create_unsubscription_tokens.email_campaigns.rb"
     - "db/migrate/20200807132541_create_common_passwords.rb"
+    - "db/migrate/20210619133856_create_zeroshot_classification_tables.insights.rb"
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
