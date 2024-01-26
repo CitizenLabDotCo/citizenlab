@@ -3,6 +3,9 @@ import React from 'react';
 // components
 import BaseProjectFilter from 'components/UI/ProjectFilter';
 
+// i18n
+import messages from './messages';
+
 // typings
 import { IOption } from 'typings';
 
@@ -23,6 +26,7 @@ const ProjectFilter = ({
     <BaseProjectFilter
       className="intercom-admin-project-filter"
       projectId={currentProjectFilter ?? undefined}
+      emptyOptionMessage={messages.allProjects}
       hideLabel={hideLabel}
       placeholder={placeholder}
       onProjectFilter={onProjectFilter}
