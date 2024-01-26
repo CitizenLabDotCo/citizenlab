@@ -139,7 +139,7 @@ const CampaignConsentForm = ({
     });
   };
 
-  const onFormSubmit = async () => {
+  const onFormSubmit = () => {
     const consentChanges = originalCampaignConsents.data
       .filter(
         (consent: ICampaignConsentData): boolean =>
@@ -167,7 +167,7 @@ const CampaignConsentForm = ({
 
     setShowFeedback(false);
     setLoading(true);
-    await updateCampaignConsents(
+    updateCampaignConsents(
       { consentChanges },
       {
         onSuccess: () => {
