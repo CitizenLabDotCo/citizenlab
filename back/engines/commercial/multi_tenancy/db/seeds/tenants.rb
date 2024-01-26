@@ -397,8 +397,8 @@ module MultiTenancy
               allowed: true
             },
             flag_inappropriate_content: {
-              enabled: true,
-              allowed: true
+              enabled: false,
+              allowed: false
             },
             project_management: {
               enabled: true,
