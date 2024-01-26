@@ -224,11 +224,15 @@ resource 'Idea Custom Fields' do
               options: [
                 {
                   title_multiloc: { en: 'Option 1' },
-                  image: png_image_as_base64('image14.png')
+                  image: {
+                    image: png_image_as_base64('image14.png')
+                  }
                 },
                 {
                   title_multiloc: { en: 'Option 2' },
-                  image: png_image_as_base64('image13.png')
+                  image: {
+                    image: png_image_as_base64('image14.png')
+                  }
                 }
               ]
             }
