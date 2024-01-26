@@ -10,7 +10,7 @@ export const Workshops = () => {
 
   return (
     <Box background={colors.white} display="flex" p="20px">
-      <Box w="320px" h="240px">
+      <Box w="320px" h="240px" borderRadius="3px">
         <img
           src={workshopsImage}
           alt={formatMessage(messages.workshopsImage)}

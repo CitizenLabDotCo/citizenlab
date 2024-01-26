@@ -18,6 +18,7 @@ export const PublicAPI = () => {
         height="240px"
         src={apiImage}
         alt={formatMessage(messages.publicAPIImage)}
+        style={{ borderRadius: '3px' }}
       />
 
       <Box ml="32px" display="flex" flexDirection="column">

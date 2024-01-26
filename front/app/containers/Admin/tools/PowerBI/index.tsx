@@ -35,14 +35,9 @@ const PowerBI = () => {
         background={colors.teal500}
         display="flex"
         justifyContent="center"
+        borderRadius="3px"
       >
-        <Box
-          background={colors.white}
-          display="flex"
-          p="10px"
-          width="100%"
-          borderRadius="5px"
-        >
+        <Box background={colors.white} display="flex" p="10px" width="100%">
           <img
             width="220px"
             height="140px"

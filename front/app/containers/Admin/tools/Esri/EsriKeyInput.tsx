@@ -76,27 +76,28 @@ const EsriKeyInput = () => {
                 placeholder={formatMessage(messages.esriKeyInputPlaceholder)}
                 label={formatMessage(messages.esriKeyInputLabel)}
               />
-              <Button
-                bgColor={colors.primary}
-                processing={isLoading}
-                mt="32px"
-                width="fit-content"
-                text={formatMessage(messages.esriSaveButtonText)}
-                onClick={() => {
-                  saveApiKey();
-                }}
-              />
-              {isSuccess && (
-                <Text color="success" mb="0px">
-                  {formatMessage(messages.esriSaveButtonSuccess)}
-                </Text>
-              )}
-              {error && (
-                <Text color="error">
-                  {formatMessage(messages.esriSaveButtonError)}
-                </Text>
-              )}
             </Box>
+
+            <Button
+              bgColor={colors.primary}
+              processing={isLoading}
+              mt="32px"
+              width="fit-content"
+              text={formatMessage(messages.esriSaveButtonText)}
+              onClick={() => {
+                saveApiKey();
+              }}
+            />
+            {isSuccess && (
+              <Text color="success" mb="0px">
+                {formatMessage(messages.esriSaveButtonSuccess)}
+              </Text>
+            )}
+            {error && (
+              <Text color="error">
+                {formatMessage(messages.esriSaveButtonError)}
+              </Text>
+            )}
           </Box>
         </>
       )}

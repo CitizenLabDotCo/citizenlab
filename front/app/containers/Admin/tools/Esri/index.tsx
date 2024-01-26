@@ -31,17 +31,9 @@ const Esri = () => {
         h="240px"
         background={colors.teal200}
         display="flex"
-        justifyContent="center"
+        borderRadius="3px"
       >
-        <Box
-          background={colors.white}
-          display="flex"
-          p="10px"
-          width="100%"
-          borderRadius="5px"
-          justifyContent="center"
-          alignContent="center"
-        >
+        <Box background={colors.white} display="flex" p="10px">
           <Box my="auto">
             <img
               width="220px"
@@ -69,13 +61,10 @@ const Esri = () => {
             <Button
               disabled={!isEsriEnabled}
               bgColor={colors.primary}
-              height="45px"
               icon={isEsriEnabled ? 'arrow-right' : 'lock'}
-              iconColor={colors.white}
               iconPos="right"
               width="fit-content"
               linkTo="/admin/tools/esri-integration"
-              textColor="white"
             >
               {formatMessage(messages.esriIntegrationButton)}
             </Button>

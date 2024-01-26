@@ -24,6 +24,7 @@ export const Widget = () => {
         display="flex"
         alignItems="flex-end"
         justifyContent="center"
+        borderRadius="3px"
       >
         <img src={widgetImage} alt={formatMessage(messages.widgetImage)} />
       </Box>
