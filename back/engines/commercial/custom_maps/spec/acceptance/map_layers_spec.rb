@@ -32,7 +32,9 @@ resource 'Map Layers' do
       example_request 'Get a map layer of a project' do
         assert_status 200
         expect(attributes['title_multiloc']).to   eq layer.title_multiloc
+        expect(attributes['layer_type']).to       eq layer.layer_type
         expect(attributes['geojson']).to          eq layer.geojson
+        expect(attributes['url']).to              eq layer.url
         expect(attributes['default_enabled']).to  eq layer.default_enabled
         expect(attributes['marker_svg_url']).to   eq layer.marker_svg_url
         expect(attributes['ordering']).to         eq layer.ordering
@@ -97,8 +99,10 @@ resource 'Map Layers' do
     post 'web_api/v1/projects/:project_id/map_config/layers' do
       with_options scope: :layer, required: true, with_example: true do
         parameter :title_multiloc,  'The name of the layer in multiple locales'
+        parameter :layer_type,      'The type of the layer (geojson or esri_feature_service)', required: true
         parameter :geojson,         '[Option 1] The GeoJSON object with all the specs for the layer', required: false
-        parameter :geojson_file,    '[Option 2] The GeoJSON file with all the specs for the layer', required: false
+        parameter :url,             'url layer of non-geojson layer type (required, if non-geojson type)', required: false
+        parameter :geojson_file,    '[Option 2] The GeoJSON file with all the specs for the layer (required if geojson type)', required: false
         parameter :default_enabled, 'The setting that determines whether a label is visible'
         parameter :marker_svg_url,  'The url for an svg marker [DEPRECATED, prefer GeoJSON properties instead]'
       end
