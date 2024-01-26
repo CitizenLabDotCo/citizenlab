@@ -204,14 +204,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
             locales: CL2_SUPPORTED_LOCALES
           )
         },
-        insights_manual_flow: {
-          enabled: false,
-          allowed: false
-        },
-        insights_nlp_flow: {
-          enabled: false,
-          allowed: false
-        },
         polls: {
           enabled: true,
           allowed: true

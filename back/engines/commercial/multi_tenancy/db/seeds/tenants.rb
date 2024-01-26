@@ -316,14 +316,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            insights_manual_flow: {
-              enabled: true,
-              allowed: true
-            },
-            insights_nlp_flow: {
-              enabled: true,
-              allowed: true
-            },
             verification: {
               enabled: true,
               allowed: true,
