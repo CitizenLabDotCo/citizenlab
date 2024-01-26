@@ -8,7 +8,7 @@
 #  map_config_id   :uuid             not null
 #  title_multiloc  :jsonb            not null
 #  ordering        :integer          not null
-#  geojson         :jsonb            not null
+#  geojson         :jsonb
 #  default_enabled :boolean          default(TRUE), not null
 #  marker_svg_url  :string
 #  created_at      :datetime         not null

@@ -2780,7 +2780,7 @@ CREATE TABLE public.maps_layers (
     map_config_id uuid NOT NULL,
     title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     ordering integer NOT NULL,
-    geojson jsonb NOT NULL,
+    geojson jsonb,
     default_enabled boolean DEFAULT true NOT NULL,
     marker_svg_url character varying,
     created_at timestamp(6) without time zone NOT NULL,
@@ -7931,6 +7931,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231130093345'),
 ('20231212151032'),
 ('20231214100537'),
-('20240125121031');
+('20240126095830');
 
 
