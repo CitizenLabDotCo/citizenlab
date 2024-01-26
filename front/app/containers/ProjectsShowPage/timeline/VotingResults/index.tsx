@@ -25,6 +25,34 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
   const getMx = (i: number) =>
     smallerThanPhone ? {} : i % 2 ? { ml: '8px' } : { mr: '8px' };
 
+  const getRanking = (
+    index: number,
+    attributeName: 'baskets_count' | 'votes_count'
+  ): number => {
+    let currentRank = 1;
+    let prevCount = ideas.data[0].attributes[attributeName];
+
+    for (let i = 0; i <= index; i++) {
+      const currentCount = ideas.data[i].attributes[attributeName];
+
+      if (
+        typeof prevCount === 'number' &&
+        typeof currentCount === 'number' &&
+        currentCount < prevCount
+      ) {
+        currentRank++;
+        prevCount = currentCount;
+      }
+    }
+
+    return currentRank;
+  };
+
+  const getBasketsRanking = (index: number): number =>
+    getRanking(index, 'baskets_count');
+  const getVotesRank = (index: number): number =>
+    getRanking(index, 'votes_count');
+
   return (
     <Box
       mt={smallerThanPhone ? '4px' : '8px'}
@@ -41,7 +69,15 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
           width={smallerThanPhone ? '100%' : 'calc(50% - 16px)'}
           {...getMx(i)}
         >
-          <VotingResultCard idea={idea} phaseId={phaseId} rank={i + 1} />
+          <VotingResultCard
+            idea={idea}
+            phaseId={phaseId}
+            rank={
+              votingMethod === 'budgeting'
+                ? getBasketsRanking(i)
+                : getVotesRank(i)
+            }
+          />
         </Box>
       ))}
     </Box>
