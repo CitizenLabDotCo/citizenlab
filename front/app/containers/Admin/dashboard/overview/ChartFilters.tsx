@@ -67,7 +67,6 @@ const ChartFilters = ({
             currentProjectFilter={currentProjectFilter}
             hideLabel
             placeholder={formatMessage(messages.selectProject)}
-            padding="11px"
             onProjectFilter={onProjectFilter}
           />
         </Box>

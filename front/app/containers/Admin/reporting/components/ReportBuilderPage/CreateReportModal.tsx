@@ -143,7 +143,6 @@ const CreateReportModal = ({ open, onClose }: Props) => {
             <ProjectFilter
               currentProjectFilter={selectedProject}
               onProjectFilter={handleProjectFilter}
-              width="100%"
             />
           </Box>
         )}

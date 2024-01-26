@@ -1,26 +1,16 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
-// hooks
-import useProjects from 'api/projects/useProjects';
 import useAuthUser from 'api/me/useAuthUser';
 
-// styling
-import styled from 'styled-components';
-
 // components
-import { Select, Box, Label, Spinner } from '@citizenlab/cl2-component-library';
+import BaseProjectFilter from 'components/UI/ProjectFilter';
 
 // i18n
-import useLocalize, { Localize } from 'hooks/useLocalize';
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { MessageDescriptor } from 'utils/cl-intl';
 import dashboardFilterMessages from 'containers/Admin/dashboard/components/filters/messages';
 
 // utils
 import { isAdmin } from 'utils/permissions/roles';
-
-// typings
-import { IOption } from 'typings';
-import { IProjectData, PublicationStatus } from 'api/projects/types';
 
 interface Option {
   value: string | undefined;
@@ -33,58 +23,12 @@ interface Props {
   onProjectFilter: (filter: Option) => void;
 }
 
-const StyledSelect = styled(Select)`
-  select {
-    padding: 11px;
-  }
-`;
-
-const generateProjectOptions = (
-  projects: IProjectData[],
-  localize: Localize,
-  allProjects: IOption | null
-): IOption[] => {
-  const projectOptions = projects.map((project) => ({
-    value: project.id,
-    label: localize(project.attributes.title_multiloc),
-  }));
-
-  return [...(allProjects ? [allProjects] : []), ...projectOptions];
-};
-
-const PUBLICATION_STATUSES: PublicationStatus[] = [
-  'draft',
-  'published',
-  'archived',
-];
-
 const ProjectFilter = ({
   projectId,
   emptyValueMessage,
   onProjectFilter,
 }: Props) => {
-  const localize = useLocalize();
-  const { formatMessage } = useIntl();
-  const { data: projects } = useProjects({
-    publicationStatuses: PUBLICATION_STATUSES,
-    canModerate: true,
-  });
   const { data: authUser } = useAuthUser();
-
-  const projectFilterOptions = useMemo(() => {
-    if (!projects || !authUser) return null;
-
-    const allProjects = isAdmin(authUser)
-      ? {
-          value: '',
-          label: formatMessage(
-            emptyValueMessage ?? dashboardFilterMessages.allProjects
-          ),
-        }
-      : null;
-
-    return generateProjectOptions(projects.data, localize, allProjects);
-  }, [projects, authUser, localize, formatMessage, emptyValueMessage]);
 
   const handleProjectFilter = useCallback(
     (option: Option) => {
@@ -97,25 +41,21 @@ const ProjectFilter = ({
     [onProjectFilter]
   );
 
+  const getEmptyOptionMessage = () => {
+    if (emptyValueMessage) return emptyValueMessage;
+    if (isAdmin(authUser)) return dashboardFilterMessages.allProjects;
+    return undefined;
+  };
+
   return (
-    <Box id="e2e-report-builder-project-filter-box" width="100%" mb="20px">
-      {projectFilterOptions ? (
-        <StyledSelect
-          id="projectFilter"
-          label={formatMessage(dashboardFilterMessages.labelProjectFilter)}
-          onChange={handleProjectFilter}
-          value={projectId}
-          options={projectFilterOptions}
-        />
-      ) : (
-        <>
-          <Label>
-            {formatMessage(dashboardFilterMessages.labelProjectFilter)}
-          </Label>
-          <Spinner />
-        </>
-      )}
-    </Box>
+    <BaseProjectFilter
+      id="e2e-report-builder-project-filter-box"
+      width="100%"
+      mb="20px"
+      projectId={projectId}
+      emptyOptionMessage={getEmptyOptionMessage()}
+      onProjectFilter={handleProjectFilter}
+    />
   );
 };
 
