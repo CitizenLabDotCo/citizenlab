@@ -1,4 +1,4 @@
-class ReportBuilder::Queries::Analytics::Base
+class ReportBuilder::Queries::Analytics::Base < ReportBuilder::Queries::Base
   RESOLUTION_TO_INTERVAL = {
     'month' => 'month',
     'week' => 'week',

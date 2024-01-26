@@ -14,6 +14,7 @@ import { colors, media } from '@citizenlab/cl2-component-library';
 
 // utils
 import clHistory from 'utils/cl-router/history';
+import { isAdmin, isModerator } from 'utils/permissions/roles';
 
 // stlying
 import 'assets/semantic/semantic.min.css';
@@ -104,7 +105,17 @@ const AdminPage = memo<Props & WithRouterProps>(
       if (authUser === null || (authUser !== undefined && !userCanViewPath)) {
         clHistory.push('/');
       }
-    }, [authUser, userCanViewPath]);
+
+      if (pathname.endsWith('/admin') || pathname.endsWith('/admin/')) {
+        if (isAdmin(authUser)) {
+          clHistory.push('/admin/dashboard/overview');
+        }
+
+        if (isModerator(authUser)) {
+          clHistory.push('/admin/projects');
+        }
+      }
+    }, [authUser, userCanViewPath, pathname]);
 
     if (!userCanViewPath) {
       return null;
@@ -136,10 +147,7 @@ const AdminPage = memo<Props & WithRouterProps>(
       isProjectPage;
 
     return (
-      <HasPermission
-        item={{ type: 'route', path: '/admin/dashboard' }}
-        action="access"
-      >
+      <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
         <Container className={className}>
           <Sidebar />
           <RightColumn

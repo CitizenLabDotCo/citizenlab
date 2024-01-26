@@ -966,7 +966,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
 
         it 'includes rules for logic & other field for "other" option' do
-          ui_schema = generator.generate_for [page1, field_in_page1, page2, field_in_page2, page3] # TODO: Remove this line (include page 4)
+          ui_schema = generator.generate_for [page1, field_in_page1, page2, field_in_page2, field_in_page2.other_option_text_field, page3]
           expect(ui_schema['en']).to eq({
             type: 'Categorization',
             options: {
@@ -1013,7 +1013,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                     description: '',
                     isAdminField: false,
                     hasRule: true,
-                    enumNames: ['Every day', 'Never', 'Other']
+                    enumNames: ['Every day', 'Never', 'Other'],
+                    otherField: "#{field_in_page2.key}_other"
                   }
                 }, {
                   type: 'Control',
@@ -1025,16 +1026,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     input_type: 'text',
                     isAdminField: false,
                     transform: 'trim_on_blur'
-                  },
-                  ruleArray: [{
-                    effect: 'SHOW',
-                    condition: {
-                      scope: "#/properties/#{field_in_page2.key}",
-                      schema: {
-                        enum: [other_option.key]
-                      }
-                    }
-                  }]
+                  }
                 }],
                 ruleArray: [
                   {

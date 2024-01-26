@@ -447,6 +447,10 @@ module MultiTenancy
               allowed: true,
               duration: 90
             },
+            user_avatars: {
+              enabled: true,
+              allowed: true
+            },
             internal_commenting: {
               enabled: true,
               allowed: true
@@ -468,6 +472,10 @@ module MultiTenancy
               allowed: true
             },
             import_printed_forms: {
+              enabled: true,
+              allowed: true
+            },
+            user_session_recording: {
               enabled: true,
               allowed: true
             }

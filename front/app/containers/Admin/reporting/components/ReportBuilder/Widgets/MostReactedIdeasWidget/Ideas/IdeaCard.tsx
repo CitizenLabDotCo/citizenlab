@@ -1,8 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-// hooks
-import useIdeaImages from 'api/idea_images/useIdeaImages';
-
 // styling
 import styled, { useTheme } from 'styled-components';
 import {
@@ -29,12 +26,15 @@ import { FormattedMessage } from 'utils/cl-intl';
 // utils
 import checkTextOverflow, { MEDIUM_LINE_HEIGHT } from './checkTextOverflow';
 
+// types
+import { IIdeaImageData } from 'api/idea_images/types';
+
 interface Props {
   rank: number;
   title: string;
   body: string;
   url: string;
-  id: string;
+  images: IIdeaImageData[];
   likes: number;
   dislikes: number;
   comments: number;
@@ -50,7 +50,7 @@ const IdeaCard = ({
   title,
   body,
   url,
-  id,
+  images,
   likes,
   dislikes,
   comments,
@@ -58,10 +58,9 @@ const IdeaCard = ({
 }: Props) => {
   const textContainerRef = useRef<HTMLDivElement | null>(null);
   const [textOverflow, setTextOverflow] = useState(false);
-  const { data: images } = useIdeaImages(id);
   const theme = useTheme();
 
-  const image = images?.data[0]?.attributes?.versions?.medium;
+  const image = images[0]?.attributes?.versions?.medium;
 
   useEffect(() => {
     if (!textContainerRef.current) return;

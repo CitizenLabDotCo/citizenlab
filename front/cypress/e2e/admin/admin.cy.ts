@@ -3,7 +3,7 @@ describe('/admin route', () => {
     cy.setAdminLoginCookie();
     cy.visit('/admin');
     cy.wait(1000);
-    cy.location('pathname').should('eq', '/en/admin/dashboard/visitors');
+    cy.location('pathname').should('eq', '/en/admin/dashboard/overview');
     cy.get('#e2e-dashboard-container');
   });
 });

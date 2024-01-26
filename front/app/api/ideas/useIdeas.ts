@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import ideasKeys from './keys';
 import { IIdeas, IQueryParameters, IdeasKeys } from './types';
 
-export const defaultPageSize = 24;
+export const defaultPageSize = 26;
 
 const fetchIdeas = (queryParameters: IQueryParameters) =>
   fetcher<IIdeas>({

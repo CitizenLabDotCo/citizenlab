@@ -31,13 +31,14 @@ import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
 // i18n
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import messages from './messages';
+import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 
 // utils
 import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
 import { getTemplateData } from './getTemplateData';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
-interface Props {
+export interface Props {
   reportId: string;
   projectId: string;
 }
@@ -97,14 +98,14 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
         <Element id="left" is={Container} canvas>
           <GenderWidget
             projectId={projectId}
-            title={toMultiloc(GenderWidget.craft.custom.title)}
+            title={toMultiloc(WIDGET_TITLES.GenderWidget)}
             {...projectPeriod}
           />
         </Element>
         <Element id="right" is={Container} canvas>
           <AgeWidget
             projectId={projectId}
-            title={toMultiloc(AgeWidget.craft.custom.title)}
+            title={toMultiloc(WIDGET_TITLES.AgeWidget)}
             {...projectPeriod}
           />
         </Element>
@@ -113,7 +114,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
       <TextMultiloc text={toMultiloc(messages.descriptionPlaceHolder)} />
       <VisitorsWidget
         projectId={projectId}
-        title={toMultiloc(VisitorsWidget.craft.custom.title)}
+        title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
         {...projectPeriod}
       />
     </Element>

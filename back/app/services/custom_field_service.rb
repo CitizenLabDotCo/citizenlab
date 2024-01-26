@@ -90,15 +90,15 @@ class CustomFieldService
     str.dup.concat('_', [*('a'..'z'), *('0'..'9')].sample(3).join)
   end
 
-  def cleanup_custom_field_values!(custom_field_values)
-    custom_field_values.each_key do |key|
-      value = custom_field_values[key]
-      is_boolean = !!value == value
-      next if is_boolean || value.present?
-
-      custom_field_values.delete key
+  # Removes all blank values from the values hash in place, except for `false` values,
+  # and returns self.
+  # @example
+  #  compact_custom_field_values!({a: 1, b: '', c: false, d: nil})
+  #  # => {a: 1, c: false}
+  def compact_custom_field_values!(cf_values)
+    cf_values.keep_if do |_key, value|
+      value.present? || value == false
     end
-    custom_field_values
   end
 
   # @param [Hash<String, _>] custom_field_values

@@ -25,10 +25,11 @@ import { Multiloc } from 'typings';
 const H3 = styled.h3<{ color: string }>`
   color: ${({ color }) => color};
   font-size: 20px;
-  margin-top: 0px;
+  margin-top: 4px;
+  margin-bottom: 4px;
 `;
 
-interface Props {
+export interface Props {
   text?: Multiloc;
 }
 
@@ -37,7 +38,7 @@ const Title = ({ text }: Props) => {
   const localize = useLocalize();
 
   return (
-    <PageBreakBox className="e2e-text-box" minHeight="26px" mb="12px" px={px}>
+    <PageBreakBox className="e2e-text-box" minHeight="26px" px={px}>
       <H3 color={colors.primary}>{localize(text)}</H3>
     </PageBreakBox>
   );
@@ -74,9 +75,8 @@ Title.craft = {
   related: {
     settings: TitleSettings,
   },
-  custom: {
-    title: messages.title,
-  },
 };
+
+export const titleMultilocTitle = messages.title;
 
 export default Title;

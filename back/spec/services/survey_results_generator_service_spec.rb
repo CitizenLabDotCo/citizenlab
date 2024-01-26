@@ -45,7 +45,7 @@ RSpec.describe SurveyResultsGeneratorService do
       enabled: false
     )
   end
-  let(:multiselect_field) do
+  let!(:multiselect_field) do
     create(
       :custom_field_multiselect,
       resource: form,
@@ -119,7 +119,7 @@ RSpec.describe SurveyResultsGeneratorService do
       required: true
     )
   end
-  let(:select_field) do
+  let!(:select_field) do
     create(
       :custom_field_select,
       resource: form,
@@ -148,6 +148,15 @@ RSpec.describe SurveyResultsGeneratorService do
       title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }
     )
   end
+  let!(:other_option) do
+    create(
+      :custom_field_option,
+      custom_field: select_field,
+      other: true,
+      key: 'other',
+      title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' }
+    )
+  end
 
   let(:expected_result) do
     {
@@ -157,14 +166,21 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'What is your favourite colour?' },
           required: false,
           totalResponses: 4,
-          customFieldId: text_field.id
+          customFieldId: text_field.id,
+          textResponses: a_collection_containing_exactly(
+            { answer: 'Red' },
+            { answer: 'Blue' },
+            { answer: 'Green' },
+            { answer: 'Pink' }
+          )
         },
         {
           inputType: 'multiline_text',
           question: { 'en' => 'What is your favourite recipe?' },
           required: false,
           totalResponses: 0,
-          customFieldId: multiline_text_field.id
+          customFieldId: multiline_text_field.id,
+          textResponses: []
         },
         {
           inputType: 'multiselect',
@@ -224,10 +240,15 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: true,
           totalResponses: 4,
-          answers: [
-            { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 3 },
-            { answer: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }, responses: 1 }
-          ],
+          answers: a_collection_containing_exactly(
+            { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 1 },
+            { answer: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }, responses: 1 },
+            { answer: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' }, responses: 2 }
+          ),
+          textResponses: a_collection_containing_exactly(
+            { answer: 'Austin' },
+            { answer: 'Miami' }
+          ),
           customFieldId: select_field.id
         }
       ],
@@ -279,7 +300,8 @@ RSpec.describe SurveyResultsGeneratorService do
       custom_field_values: {
         text_field.key => 'Green',
         multiselect_field.key => %w[cat dog],
-        select_field.key => 'la'
+        select_field.key => 'other',
+        "#{select_field.key}_other" => 'Austin'
       }
     )
     create(
@@ -289,7 +311,8 @@ RSpec.describe SurveyResultsGeneratorService do
       custom_field_values: {
         text_field.key => 'Pink',
         multiselect_field.key => %w[dog cat cow],
-        select_field.key => 'la'
+        select_field.key => 'other',
+        "#{select_field.key}_other" => 'Miami'
       }
     )
     create(:idea, project: project, phases: phases_of_inputs, custom_field_values: {})
@@ -323,7 +346,7 @@ RSpec.describe SurveyResultsGeneratorService do
         # These locales are a prerequisite for the test.
         expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
 
-        expect(generator.generate_results).to eq expected_result
+        expect(generator.generate_results).to match expected_result
       end
 
       context 'when not all minimum and maximum labels are configured' do
@@ -334,7 +357,7 @@ RSpec.describe SurveyResultsGeneratorService do
           # These locales are a prerequisite for the test.
           expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
 
-          expect(generator.generate_results).to eq expected_result_without_minimum_and_maximum_labels
+          expect(generator.generate_results).to match expected_result_without_minimum_and_maximum_labels
         end
       end
     end
@@ -343,8 +366,8 @@ RSpec.describe SurveyResultsGeneratorService do
   context 'for a phase' do
     let(:project) { create(:project_with_active_native_survey_phase) }
     let(:active_phase) { project.phases.first }
-    let(:form) { create(:custom_form, participation_context: active_phase) }
     let(:participation_context) { active_phase }
+    let(:form) { create(:custom_form, participation_context: active_phase) }
     let(:phases_of_inputs) { [active_phase] }
 
     describe '#generate_submission_count' do
@@ -357,8 +380,7 @@ RSpec.describe SurveyResultsGeneratorService do
       it 'returns the results' do
         # These locales are a prerequisite for the test.
         expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
-
-        expect(generator.generate_results).to eq expected_result
+        expect(generator.generate_results).to match expected_result
       end
 
       context 'when not all minimum and maximum labels are configured' do
@@ -368,8 +390,7 @@ RSpec.describe SurveyResultsGeneratorService do
         it 'returns minimum and maximum labels as numbers' do
           # These locales are a prerequisite for the test.
           expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
-
-          expect(generator.generate_results).to eq expected_result_without_minimum_and_maximum_labels
+          expect(generator.generate_results).to match expected_result_without_minimum_and_maximum_labels
         end
       end
     end

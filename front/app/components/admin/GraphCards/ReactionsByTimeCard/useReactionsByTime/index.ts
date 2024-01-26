@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 
 // hooks
-import useGraphDataUnitsLive from 'api/graph_data_units/useGraphDataUnitsLive';
+import { useReactionsByTimeLive } from 'api/graph_data_units';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -14,7 +14,7 @@ import { parseTimeSeries, parseExcelData } from './parse';
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
 // typings
-import { Response, QueryParameters } from './typings';
+import { QueryParameters } from './typings';
 
 export default function useReactionsByTime({
   projectId,
@@ -25,15 +25,12 @@ export default function useReactionsByTime({
   const { formatMessage } = useIntl();
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const { data: analytics } = useGraphDataUnitsLive<Response>(
+  const { data: analytics } = useReactionsByTimeLive(
     {
-      resolvedName: 'ReactionsByTimeWidget',
-      props: {
-        projectId,
-        startAtMoment,
-        endAtMoment,
-        resolution,
-      },
+      projectId,
+      startAtMoment,
+      endAtMoment,
+      resolution,
     },
     {
       onSuccess: () => {

@@ -1,7 +1,7 @@
 import { randomString, randomEmail } from '../../support/commands';
 import moment = require('moment');
 
-describe('Idea manager', () => {
+describe('Input manager', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
@@ -223,6 +223,18 @@ describe('Idea manager', () => {
         .click({ force: true });
       // Check if idea is there
       cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
+    });
+  });
+
+  describe('Tag filter', () => {
+    it('navigates to the platform-wide tag settings when the user clicks "Edit tags" in the tags tab', () => {
+      cy.visit('/admin/ideas/');
+      cy.get(
+        '[data-cy="e2e-admin-post-manager-filter-sidebar-topics"]'
+      ).click();
+      cy.get('[data-cy="e2e-post-manager-topic-filters-edit-tags"]').click();
+
+      cy.location('pathname').should('eq', `/en/admin/settings/topics`);
     });
   });
 });
