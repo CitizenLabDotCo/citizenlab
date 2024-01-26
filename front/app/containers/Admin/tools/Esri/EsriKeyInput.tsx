@@ -8,14 +8,13 @@ import {
   colors,
   Input,
   Button,
-  Success,
-  Error,
 } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 
 // hooks
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import clHistory from 'utils/cl-router/history';
@@ -23,16 +22,14 @@ import clHistory from 'utils/cl-router/history';
 // intl
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const EsriKeyInput = () => {
   const { data: appConfig } = useAppConfiguration();
   const isEsriIntegrationEnabled = useFeatureFlag({ name: 'esri_integration' });
-  const { formatMessage } = useIntl();
   const [apiKey, setApiKey] = useState(
     appConfig?.data.attributes.settings.esri_integration?.api_key || ''
   );
-
+  const { formatMessage } = useIntl();
   const {
     mutate: updateAppConfiguration,
     isLoading,
@@ -71,8 +68,6 @@ const EsriKeyInput = () => {
           <Box background={colors.white} p="36px">
             <Box width="400px">
               <Input
-                id="buttonConfigInput"
-                data-testid="buttonConfigInput"
                 type="text"
                 onChange={(value) => {
                   setApiKey(value);
