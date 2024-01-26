@@ -101,8 +101,8 @@ resource 'Map Layers' do
         parameter :title_multiloc,  'The name of the layer in multiple locales'
         parameter :layer_type,      'The type of the layer (geojson or esri_feature_service)', required: true
         parameter :geojson,         '[Option 1] The GeoJSON object with all the specs for the layer', required: false
-        parameter :url,             'url layer of non-geojson layer type (required, if non-geojson type)', required: false
         parameter :geojson_file,    '[Option 2] The GeoJSON file with all the specs for the layer (required if geojson type)', required: false
+        parameter :url,             'url layer of non-geojson layer type (required, if non-geojson type)', required: false
         parameter :default_enabled, 'The setting that determines whether a label is visible'
         parameter :marker_svg_url,  'The url for an svg marker [DEPRECATED, prefer GeoJSON properties instead]'
       end
@@ -114,61 +114,96 @@ resource 'Map Layers' do
       let(:title_multiloc)  { layer_attributes[:title_multiloc] }
       let(:ordering)        { map_config.layers.length - 1 }
 
-      context 'when passing a geojson object' do
-        let(:geojson) { layer_attributes[:geojson] }
+      context 'when layer_type is geojson' do
+        let(:layer_type) { 'geojson' }
 
-        example_request 'Creates a map layer successfully using a geojson object' do
-          assert_status 200
-          expect(attributes['title_multiloc']).to  eq title_multiloc
-          expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to be true
-          expect(attributes['marker_svg_url']).to  eq marker_svg_url
-          expect(attributes['ordering']).to        eq ordering
+        context 'when passing a geojson object' do
+          let(:geojson) { layer_attributes[:geojson] }
+
+          example_request 'Creates a map layer successfully using a geojson object' do
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'geojson'
+            expect(attributes['geojson']).to         eq geojson
+            expect(attributes['url']).to             be_nil
+            expect(attributes['default_enabled']).to be true
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
+        end
+
+        context 'when passing a geojson file' do
+          let(:geojson_file) do
+            {
+              base64: encode_json_file_as_base64('seattle.geojson'),
+              filename: 'seattle.geojson'
+            }
+          end
+
+          example_request 'Creates a map layer successfully using a geojson file' do
+            geojson = JSON.parse(Base64.decode64(geojson_file[:base64].gsub('data:application/json;base64,', '')))
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'geojson'
+            expect(attributes['geojson']).to         eq geojson
+            expect(attributes['url']).to             be_nil
+            expect(attributes['default_enabled']).to be true
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
+        end
+
+        context 'when passing both a geojson object and file' do
+          let(:geojson) { layer_attributes[:geojson] }
+
+          let(:geojson_file) do
+            {
+              base64: encode_json_file_as_base64('brussels-districts.geojson'),
+              filename: 'brussels-districts.geojson'
+            }
+          end
+
+          example_request 'Creates a map layer successfully using the geojson object' do
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'geojson'
+            expect(attributes['geojson']).to         eq geojson
+            expect(attributes['url']).to             be_nil
+            expect(attributes['default_enabled']).to be true
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
+        end
+
+        context 'when passing no geojson object or file' do
+          example_request 'Fails to create a map layer' do
+            assert_status 422
+          end
         end
       end
 
-      context 'when passing a geojson file' do
-        let(:geojson_file) do
-          {
-            base64: encode_json_file_as_base64('seattle.geojson'),
-            filename: 'seattle.geojson'
-          }
+      context 'when layer_type is esri_feature_service' do
+        let(:layer_type) { 'esri_feature_service' }
+
+        context 'when passing a url' do
+          let(:url) { 'https://some.domain.com/some_layer' }
+
+          example_request 'Creates a map layer successfully using a url' do
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'esri_feature_service'
+            expect(attributes['geojson']).to         be_nil
+            expect(attributes['url']).to             eq url
+            expect(attributes['default_enabled']).to be true
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
         end
 
-        example_request 'Creates a map layer successfully using a geojson file' do
-          geojson = JSON.parse(Base64.decode64(geojson_file[:base64].gsub('data:application/json;base64,', '')))
-          assert_status 200
-          expect(attributes['title_multiloc']).to  eq title_multiloc
-          expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to be true
-          expect(attributes['marker_svg_url']).to  eq marker_svg_url
-          expect(attributes['ordering']).to        eq ordering
-        end
-      end
-
-      context 'when passing both a geojson object and file' do
-        let(:geojson) { layer_attributes[:geojson] }
-
-        let(:geojson_file) do
-          {
-            base64: encode_json_file_as_base64('brussels-districts.geojson'),
-            filename: 'brussels-districts.geojson'
-          }
-        end
-
-        example_request 'Creates a map layer successfully using the geojson object' do
-          assert_status 200
-          expect(attributes['title_multiloc']).to  eq title_multiloc
-          expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to be true
-          expect(attributes['marker_svg_url']).to  eq marker_svg_url
-          expect(attributes['ordering']).to        eq ordering
-        end
-      end
-
-      context 'when passing no geojson object or file' do
-        example_request 'Fails to update a map layer' do
-          assert_status 422
+        context 'when passing no url' do
+          example_request 'Fails to create a map layer' do
+            assert_status 422
+          end
         end
       end
     end
@@ -176,8 +211,10 @@ resource 'Map Layers' do
     patch 'web_api/v1/projects/:project_id/map_config/layers/:id' do
       with_options scope: :layer, required: true, with_example: true do
         parameter :title_multiloc,  'The name of the layer in multiple locales'
+        parameter :layer_type,      'The type of the layer (geojson or esri_feature_service)', required: true
         parameter :geojson,         'The GeoJSON object with all the specs for the layer', required: false
         parameter :geojson_file,    'The GeoJSON file with all the specs for the layer', required: false
+        parameter :url,             'url layer of non-geojson layer type (required, if non-geojson type)', required: false
         parameter :default_enabled, 'The setting that determines whether a label is visible'
         parameter :marker_svg_url,  'The url for an svg marker [DEPRECATED, prefer GeoJSON properties instead]'
       end
@@ -192,61 +229,99 @@ resource 'Map Layers' do
       let(:title_multiloc)  { { 'en' => 'new layer title' } }
       let(:ordering)        { 0 }
 
-      context 'when passing a geojson object' do
-        let(:geojson) { JSON.parse(File.read(CustomMaps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
+      context 'when layer_type is geojson' do
+        let(:layer_type) { 'geojson' }
+        let(:url) { nil }
 
-        example_request 'Updates a map layer successfully using a geojson object' do
-          assert_status 200
-          expect(attributes['title_multiloc']).to  eq title_multiloc
-          expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to eq default_enabled
-          expect(attributes['marker_svg_url']).to  eq marker_svg_url
-          expect(attributes['ordering']).to        eq ordering
+        context 'when passing a geojson object' do
+          let(:geojson) { JSON.parse(File.read(CustomMaps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
+
+          example_request 'Updates a map layer successfully using a geojson object' do
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'geojson'
+            expect(attributes['geojson']).to         eq geojson
+            expect(attributes['url']).to             be_nil
+            expect(attributes['default_enabled']).to eq default_enabled
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
+        end
+
+        context 'when passing a geojson file' do
+          let(:geojson_file) do
+            {
+              base64: encode_json_file_as_base64('brussels-districts.geojson'),
+              filename: 'seattle.geojson'
+            }
+          end
+
+          example_request 'Updates a map layer successfully using a geojson file' do
+            geojson = JSON.parse(Base64.decode64(geojson_file[:base64].gsub('data:application/json;base64,', '')))
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'geojson'
+            expect(attributes['geojson']).to         eq geojson
+            expect(attributes['url']).to             be_nil
+            expect(attributes['default_enabled']).to eq default_enabled
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
+        end
+
+        context 'when passing both a geojson object and file' do
+          let(:geojson) { JSON.parse(File.read(CustomMaps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
+
+          let(:geojson_file) do
+            {
+              base64: encode_json_file_as_base64('bruxelles_toilettes_publiques.geojson'),
+              filename: 'brussels-public-toilets.geojson'
+            }
+          end
+
+          example_request 'Updates a map layer successfully using the geojson object' do
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'geojson'
+            expect(attributes['geojson']).to         eq geojson
+            expect(attributes['url']).to             be_nil
+            expect(attributes['default_enabled']).to eq default_enabled
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
+        end
+
+        context 'when passing no geojson object or file' do
+          example_request 'Fails to update a map layer' do
+            assert_status 422
+          end
         end
       end
 
-      context 'when passing a geojson file' do
-        let(:geojson_file) do
-          {
-            base64: encode_json_file_as_base64('brussels-districts.geojson'),
-            filename: 'seattle.geojson'
-          }
+      context 'when layer_type is esri_feature_service' do
+        let(:layer_type) { 'esri_feature_service' }
+
+        context 'when passing a url' do
+          let(:url) { 'https://some.domain.com/some_layer' }
+
+          example_request 'Updates a map layer successfully using a url' do
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'esri_feature_service'
+            expect(attributes['geojson']).to         be_nil
+            expect(attributes['url']).to             eq url
+            expect(attributes['default_enabled']).to be default_enabled
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
         end
 
-        example_request 'Updates a map layer successfully using a geojson file' do
-          geojson = JSON.parse(Base64.decode64(geojson_file[:base64].gsub('data:application/json;base64,', '')))
-          assert_status 200
-          expect(attributes['title_multiloc']).to  eq title_multiloc
-          expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to eq default_enabled
-          expect(attributes['marker_svg_url']).to  eq marker_svg_url
-          expect(attributes['ordering']).to        eq ordering
-        end
-      end
+        context 'when passing no url' do
+          let(:url) { nil }
 
-      context 'when passing both a geojson object and file' do
-        let(:geojson) { JSON.parse(File.read(CustomMaps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
-
-        let(:geojson_file) do
-          {
-            base64: encode_json_file_as_base64('bruxelles_toilettes_publiques.geojson'),
-            filename: 'brussels-public-toilets.geojson'
-          }
-        end
-
-        example_request 'Updates a map layer successfully using the geojson object' do
-          assert_status 200
-          expect(attributes['title_multiloc']).to  eq title_multiloc
-          expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to eq default_enabled
-          expect(attributes['marker_svg_url']).to  eq marker_svg_url
-          expect(attributes['ordering']).to        eq ordering
-        end
-      end
-
-      context 'when passing no geojson object or file' do
-        example_request 'Fails to create a map layer' do
-          assert_status 422
+          example_request 'Fails to update a map layer' do
+            assert_status 422
+          end
         end
       end
     end
@@ -311,8 +386,10 @@ resource 'Map Layers' do
     post 'web_api/v1/projects/:project_id/map_config/layers' do
       with_options scope: :layer, required: true, with_example: true do
         parameter :title_multiloc,  'The name of the layer in multiple locales'
+        parameter :layer_type,      'The type of the layer (geojson or esri_feature_service)', required: true
         parameter :geojson,         '[Option 1] The GeoJSON object with all the specs for the layer', required: false
-        parameter :geojson_file,    '[Option 2] The GeoJSON file with all the specs for the layer', required: false
+        parameter :geojson_file,    '[Option 2] The GeoJSON file with all the specs for the layer (required if geojson type)', required: false
+        parameter :url,             'url layer of non-geojson layer type (required, if non-geojson type)', required: false
         parameter :default_enabled, 'The setting that determines whether a label is visible'
         parameter :marker_svg_url,  'The url for an svg marker [DEPRECATED, prefer GeoJSON properties instead]'
       end
@@ -324,61 +401,98 @@ resource 'Map Layers' do
       let(:title_multiloc)  { layer_attributes[:title_multiloc] }
       let(:ordering)        { map_config.layers.length - 1 }
 
-      context 'when passing a geojson object' do
-        let(:geojson) { layer_attributes[:geojson] }
+      context 'when layer_type is geojson' do
+        let(:layer_type) { 'geojson' }
 
-        example_request 'Creates a map layer successfully using a geojson object' do
-          assert_status 200
-          expect(attributes['title_multiloc']).to  eq title_multiloc
-          expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to be true
-          expect(attributes['marker_svg_url']).to  eq marker_svg_url
-          expect(attributes['ordering']).to        eq ordering
+        context 'when passing a geojson object' do
+          let(:geojson) { layer_attributes[:geojson] }
+
+          example_request 'Creates a map layer successfully using a geojson object' do
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'geojson'
+            expect(attributes['geojson']).to         eq geojson
+            expect(attributes['url']).to             be_nil
+            expect(attributes['default_enabled']).to be true
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
+        end
+
+        context 'when passing a geojson file' do
+          let(:geojson_file) do
+            {
+              base64: encode_json_file_as_base64('seattle.geojson'),
+              filename: 'seattle.geojson'
+            }
+          end
+
+          example_request 'Creates a map layer successfully using a geojson file' do
+            geojson = JSON.parse(Base64.decode64(geojson_file[:base64].gsub('data:application/json;base64,', '')))
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'geojson'
+            expect(attributes['geojson']).to         eq geojson
+            expect(attributes['url']).to             be_nil
+            expect(attributes['default_enabled']).to be true
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
+        end
+
+        context 'when passing both a geojson object and file' do
+          let(:geojson) { layer_attributes[:geojson] }
+
+          let(:geojson_file) do
+            {
+              base64: encode_json_file_as_base64('brussels-districts.geojson'),
+              filename: 'brussels-districts.geojson'
+            }
+          end
+
+          example_request 'Creates a map layer successfully using the geojson object' do
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'geojson'
+            expect(attributes['geojson']).to         eq geojson
+            expect(attributes['url']).to             be_nil
+            expect(attributes['default_enabled']).to be true
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
+        end
+
+        context 'when passing no geojson object or file' do
+          example_request 'Fails to update a map layer' do
+            assert_status 422
+          end
         end
       end
 
-      context 'when passing a geojson file' do
-        let(:geojson_file) do
-          {
-            base64: encode_json_file_as_base64('seattle.geojson'),
-            filename: 'seattle.geojson'
-          }
+      context 'when layer_type is esri_feature_service' do
+        let(:layer_type) { 'esri_feature_service' }
+
+        context 'when passing a url' do
+          let(:url) { 'https://some.domain.com/some_layer' }
+
+          example_request 'Creates a map layer successfully using a url' do
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'esri_feature_service'
+            expect(attributes['geojson']).to         be_nil
+            expect(attributes['url']).to             eq url
+            expect(attributes['default_enabled']).to be true
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
         end
 
-        example_request 'Creates a map layer successfully using a geojson file' do
-          geojson = JSON.parse(Base64.decode64(geojson_file[:base64].gsub('data:application/json;base64,', '')))
-          assert_status 200
-          expect(attributes['title_multiloc']).to  eq title_multiloc
-          expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to be true
-          expect(attributes['marker_svg_url']).to  eq marker_svg_url
-          expect(attributes['ordering']).to        eq ordering
-        end
-      end
+        context 'when passing no url' do
+          let(:url) { nil }
 
-      context 'when passing both a geojson object and file' do
-        let(:geojson) { layer_attributes[:geojson] }
-
-        let(:geojson_file) do
-          {
-            base64: encode_json_file_as_base64('brussels-districts.geojson'),
-            filename: 'brussels-districts.geojson'
-          }
-        end
-
-        example_request 'Creates a map layer successfully using the geojson object' do
-          assert_status 200
-          expect(attributes['title_multiloc']).to  eq title_multiloc
-          expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to be true
-          expect(attributes['marker_svg_url']).to  eq marker_svg_url
-          expect(attributes['ordering']).to        eq ordering
-        end
-      end
-
-      context 'when passing no geojson object or file' do
-        example_request 'Fails to update a map layer' do
-          assert_status 422
+          example_request 'Fails to create a map layer' do
+            assert_status 422
+          end
         end
       end
     end
@@ -386,8 +500,10 @@ resource 'Map Layers' do
     patch 'web_api/v1/projects/:project_id/map_config/layers/:id' do
       with_options scope: :layer, required: true, with_example: true do
         parameter :title_multiloc,  'The name of the layer in multiple locales'
+        parameter :layer_type,      'The type of the layer (geojson or esri_feature_service)', required: true
         parameter :geojson,         'The GeoJSON object with all the specs for the layer', required: false
         parameter :geojson_file,    'The GeoJSON file with all the specs for the layer', required: false
+        parameter :url,             'url layer of non-geojson layer type (required, if non-geojson type)', required: false
         parameter :default_enabled, 'The setting that determines whether a label is visible'
         parameter :marker_svg_url,  'The url for an svg marker [DEPRECATED, prefer GeoJSON properties instead]'
       end
@@ -402,61 +518,99 @@ resource 'Map Layers' do
       let(:title_multiloc)  { { 'en' => 'new layer title' } }
       let(:ordering)        { 0 }
 
-      context 'when passing a geojson object' do
-        let(:geojson) { JSON.parse(File.read(CustomMaps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
+      context 'when layer_type is geojson' do
+        let(:layer_type) { 'geojson' }
+        let(:url) { nil }
 
-        example_request 'Updates a map layer successfully using a geojson object' do
-          assert_status 200
-          expect(attributes['title_multiloc']).to  eq title_multiloc
-          expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to eq default_enabled
-          expect(attributes['marker_svg_url']).to  eq marker_svg_url
-          expect(attributes['ordering']).to        eq ordering
+        context 'when passing a geojson object' do
+          let(:geojson) { JSON.parse(File.read(CustomMaps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
+
+          example_request 'Updates a map layer successfully using a geojson object' do
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'geojson'
+            expect(attributes['geojson']).to         eq geojson
+            expect(attributes['url']).to             be_nil
+            expect(attributes['default_enabled']).to eq default_enabled
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
+        end
+
+        context 'when passing a geojson file' do
+          let(:geojson_file) do
+            {
+              base64: encode_json_file_as_base64('brussels-districts.geojson'),
+              filename: 'seattle.geojson'
+            }
+          end
+
+          example_request 'Updates a map layer successfully using a geojson file' do
+            geojson = JSON.parse(Base64.decode64(geojson_file[:base64].gsub('data:application/json;base64,', '')))
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'geojson'
+            expect(attributes['geojson']).to         eq geojson
+            expect(attributes['url']).to             be_nil
+            expect(attributes['default_enabled']).to eq default_enabled
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
+        end
+
+        context 'when passing both a geojson object and file' do
+          let(:geojson) { JSON.parse(File.read(CustomMaps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
+
+          let(:geojson_file) do
+            {
+              base64: encode_json_file_as_base64('bruxelles_toilettes_publiques.geojson'),
+              filename: 'brussels-public-toilets.geojson'
+            }
+          end
+
+          example_request 'Updates a map layer successfully using the geojson object' do
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'geojson'
+            expect(attributes['geojson']).to         eq geojson
+            expect(attributes['url']).to             be_nil
+            expect(attributes['default_enabled']).to eq default_enabled
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
+        end
+
+        context 'when passing no geojson object or file' do
+          example_request 'Fails to update a map layer' do
+            assert_status 422
+          end
         end
       end
 
-      context 'when passing a geojson file' do
-        let(:geojson_file) do
-          {
-            base64: encode_json_file_as_base64('brussels-districts.geojson'),
-            filename: 'seattle.geojson'
-          }
+      context 'when layer_type is esri_feature_service' do
+        let(:layer_type) { 'esri_feature_service' }
+
+        context 'when passing a url' do
+          let(:url) { 'https://some.domain.com/some_layer' }
+
+          example_request 'Updates a map layer successfully using a url' do
+            assert_status 200
+            expect(attributes['title_multiloc']).to  eq title_multiloc
+            expect(attributes['layer_type']).to      eq 'esri_feature_service'
+            expect(attributes['geojson']).to         be_nil
+            expect(attributes['url']).to             eq url
+            expect(attributes['default_enabled']).to be default_enabled
+            expect(attributes['marker_svg_url']).to  eq marker_svg_url
+            expect(attributes['ordering']).to        eq ordering
+          end
         end
 
-        example_request 'Updates a map layer successfully using a geojson file' do
-          geojson = JSON.parse(Base64.decode64(geojson_file[:base64].gsub('data:application/json;base64,', '')))
-          assert_status 200
-          expect(attributes['title_multiloc']).to  eq title_multiloc
-          expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to eq default_enabled
-          expect(attributes['marker_svg_url']).to  eq marker_svg_url
-          expect(attributes['ordering']).to        eq ordering
-        end
-      end
+        context 'when passing no url' do
+          let(:url) { nil }
 
-      context 'when passing both a geojson object and file' do
-        let(:geojson) { JSON.parse(File.read(CustomMaps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
-
-        let(:geojson_file) do
-          {
-            base64: encode_json_file_as_base64('bruxelles_toilettes_publiques.geojson'),
-            filename: 'brussels-public-toilets.geojson'
-          }
-        end
-
-        example_request 'Updates a map layer successfully using the geojson object' do
-          assert_status 200
-          expect(attributes['title_multiloc']).to  eq title_multiloc
-          expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to eq default_enabled
-          expect(attributes['marker_svg_url']).to  eq marker_svg_url
-          expect(attributes['ordering']).to        eq ordering
-        end
-      end
-
-      context 'when passing no geojson object or file' do
-        example_request 'Fails to create a map layer' do
-          assert_status 422
+          example_request 'Fails to update a map layer' do
+            assert_status 422
+          end
         end
       end
     end
