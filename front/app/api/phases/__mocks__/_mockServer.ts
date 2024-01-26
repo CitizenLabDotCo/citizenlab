@@ -305,7 +305,7 @@ const endpoints = {
   ),
 };
 
-const votingPhase: any = {
+const votingPhase: IPhaseData = {
   id: 'voting-phase',
   type: 'phase',
   attributes: {
@@ -327,8 +327,6 @@ const votingPhase: any = {
       project_phase_started: true,
     },
     posting_enabled: true,
-    posting_method: 'unlimited',
-    posting_limited_max: 1,
     commenting_enabled: true,
     reacting_enabled: true,
     reacting_like_method: 'unlimited',
@@ -362,7 +360,17 @@ const votingPhase: any = {
       'da-DK': 'afstemninger',
     },
     votes_count: 0,
-    previous_phase_end_at_updated: false,
+  },
+  relationships: {
+    permissions: {
+      data: [],
+    },
+    project: {
+      data: {
+        id: 'projectId',
+        type: 'project',
+      },
+    },
   },
 };
 
