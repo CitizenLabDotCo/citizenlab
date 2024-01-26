@@ -212,6 +212,9 @@ export interface IAppConfigurationSettings {
       target: string;
     }[];
   };
+  esri_integration?: AppConfigurationFeature & {
+    api_key: string;
+  };
   disable_user_bios?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   project_description_builder?: AppConfigurationFeature;
@@ -224,7 +227,6 @@ export interface IAppConfigurationSettings {
   permission_option_email_confirmation?: AppConfigurationFeature;
   permissions_custom_fields?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
-  esri_integration?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
   user_blocking?: AppConfigurationFeature & {

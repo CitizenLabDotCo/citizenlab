@@ -70,6 +70,7 @@ const Esri = () => {
           <div>
             <Button
               disabled={!isEsriEnabled}
+              bgColor={colors.primary}
               height="45px"
               icon={isEsriEnabled ? 'arrow-right' : 'lock'}
               iconColor={colors.white}

@@ -43,6 +43,7 @@ export const PublicAPI = () => {
               width="fit-content"
               linkTo="/admin/tools/public-api-tokens"
               textColor="white"
+              bgColor={colors.primary}
             >
               {formatMessage(messages.managePublicAPIKeys)}
             </Button>

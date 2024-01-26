@@ -74,6 +74,7 @@ const PowerBI = () => {
               width="fit-content"
               linkTo="/admin/tools/power-bi"
               textColor="white"
+              bgColor={colors.primary}
             >
               {formatMessage(messages.powerBIDownloadTemplates)}
             </Button>

@@ -114,4 +114,33 @@ export default defineMessages({
     defaultMessage:
       'The Esri integration is an add-on feature. Contact your GovSuccess Manager if you want more information on this.',
   },
+  esriMaps: {
+    id: 'app.containers.Admin.tools.esriMaps',
+    defaultMessage: 'Esri Maps',
+  },
+  esriKeyInputDescription: {
+    id: 'app.containers.Admin.tools.esriKeyInputDescription',
+    defaultMessage:
+      'Add your Esri API key to allow importing your Esri layers from ArcGIS Online in the map tabs in projects.',
+  },
+  esriKeyInputPlaceholder: {
+    id: 'app.containers.Admin.tools.esriKeyInputPlaceholder',
+    defaultMessage: 'Paste API key here',
+  },
+  esriKeyInputLabel: {
+    id: 'app.containers.Admin.tools.esriKeyInputLabel',
+    defaultMessage: 'Esri API key',
+  },
+  esriSaveButtonText: {
+    id: 'app.containers.Admin.tools.esriSaveButtonText',
+    defaultMessage: 'Save key',
+  },
+  esriSaveButtonSuccess: {
+    id: 'app.containers.Admin.tools.esriSaveButtonSuccess',
+    defaultMessage: 'API key saved',
+  },
+  esriSaveButtonError: {
+    id: 'app.containers.Admin.tools.esriSaveButtonError',
+    defaultMessage: 'There was an error saving your key, please try again.',
+  },
 });

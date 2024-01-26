@@ -33,6 +33,7 @@ export const Workshops = () => {
             linkTo={`${window.location.origin}/workshops`}
             openLinkInNewTab
             textColor="white"
+            bgColor={colors.primary}
           >
             {formatMessage(messages.manageWorkshops)}
           </Button>
