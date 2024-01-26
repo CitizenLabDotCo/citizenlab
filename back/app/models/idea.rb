@@ -269,7 +269,6 @@ end
 
 Idea.include(SmartGroups::Concerns::ValueReferenceable)
 Idea.include(FlagInappropriateContent::Concerns::Flaggable)
-Idea.include(Insights::Concerns::Input)
 Idea.include(Moderation::Concerns::Moderatable)
 Idea.include(MachineTranslations::Concerns::Translatable)
 Idea.include(IdeaAssignment::Extensions::Idea)
