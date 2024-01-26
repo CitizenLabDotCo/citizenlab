@@ -20,7 +20,7 @@ interface Props {
   startAtMoment?: Moment | null | undefined;
   endAtMoment: Moment | null;
   minDate?: Moment;
-  currentProjectFilter: string | undefined;
+  projectId: string | undefined;
   resolution: IResolution;
   onChangeTimeRange: (
     startAtMoment: Moment | null,
@@ -35,7 +35,7 @@ const ChartFilters = ({
   startAtMoment,
   endAtMoment,
   minDate,
-  currentProjectFilter,
+  projectId,
   resolution,
   onChangeTimeRange,
   onProjectFilter,
@@ -64,7 +64,7 @@ const ChartFilters = ({
         />
         <Box ml="12px" maxWidth="350px">
           <ProjectFilter
-            currentProjectFilter={currentProjectFilter}
+            projectId={projectId}
             hideLabel
             placeholder={formatMessage(messages.selectProject)}
             onProjectFilter={onProjectFilter}

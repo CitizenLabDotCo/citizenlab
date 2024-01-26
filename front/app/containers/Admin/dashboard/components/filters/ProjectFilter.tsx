@@ -10,14 +10,14 @@ import messages from './messages';
 import { IOption } from 'typings';
 
 interface Props {
-  currentProjectFilter?: string | null;
+  projectId?: string;
   hideLabel?: boolean;
   placeholder?: string;
   onProjectFilter: (filter: IOption) => void;
 }
 
 const ProjectFilter = ({
-  currentProjectFilter,
+  projectId,
   hideLabel,
   placeholder,
   onProjectFilter,
@@ -25,7 +25,7 @@ const ProjectFilter = ({
   return (
     <BaseProjectFilter
       className="intercom-admin-project-filter"
-      projectId={currentProjectFilter ?? undefined}
+      projectId={projectId}
       emptyOptionMessage={messages.allProjects}
       hideLabel={hideLabel}
       placeholder={placeholder}

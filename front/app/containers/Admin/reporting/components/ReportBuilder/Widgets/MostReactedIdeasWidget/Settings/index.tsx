@@ -97,7 +97,7 @@ const Settings = () => {
 
       <ProjectFilter
         projectId={projectId}
-        emptyValueMessage={widgetMessages.noProject}
+        emptyOptionMessage={widgetMessages.noProject}
         onProjectFilter={handleProjectFilter}
       />
 

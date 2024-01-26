@@ -19,13 +19,13 @@ interface Option {
 
 interface Props {
   projectId?: string;
-  emptyValueMessage?: MessageDescriptor;
+  emptyOptionMessage?: MessageDescriptor;
   onProjectFilter: (filter: Option) => void;
 }
 
 const ProjectFilter = ({
   projectId,
-  emptyValueMessage,
+  emptyOptionMessage,
   onProjectFilter,
 }: Props) => {
   const { data: authUser } = useAuthUser();
@@ -42,7 +42,7 @@ const ProjectFilter = ({
   );
 
   const getEmptyOptionMessage = () => {
-    if (emptyValueMessage) return emptyValueMessage;
+    if (emptyOptionMessage) return emptyOptionMessage;
     if (isAdmin(authUser)) return dashboardFilterMessages.allProjects;
     return undefined;
   };
