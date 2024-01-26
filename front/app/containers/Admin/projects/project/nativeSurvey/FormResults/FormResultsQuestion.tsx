@@ -64,7 +64,7 @@ const FormResultsQuestion = ({
           {inputTypeLabel}
         </Text>
       )}
-      {answers ? (
+      {answers && (
         answers.map(({ answer, responses }, index) => {
           const percentage =
             Math.round((responses / totalResponses) * 1000) / 10;
@@ -83,8 +83,9 @@ const FormResultsQuestion = ({
             </Box>
           );
         })
-      ) : (
-        <Box display="flex" gap="24px">
+      )}
+      {textResponses && textResponses.length > 0 && (
+        <Box display="flex" gap="24px" mt={answers ? '20px' : '0'}>
           <Box flex="1">
             <TextResponses textResponses={textResponses} />
           </Box>
