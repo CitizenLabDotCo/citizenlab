@@ -41,24 +41,24 @@ import {
 import { trackEventByName } from 'utils/analytics';
 
 // routing
-import { useSearchParams } from 'react-router-dom';
 import { internalCommentNotificationTypes } from 'api/campaigns/types';
 
 type Props = {
   trackEventName?: string;
   runOnSave?: () => void;
+  unsubscriptionToken?: string | null;
 };
+
 const CampaignConsentForm = ({
   trackEventName = 'Default email notification settings changed',
   runOnSave,
+  unsubscriptionToken,
 }: Props) => {
   const localize = useLocalize();
   const isInternalCommentingEnabled = useFeatureFlag({
     name: 'internal_commenting',
   });
   const { formatMessage } = useIntl();
-  const [searchParams, _] = useSearchParams();
-  const unsubscriptionToken = searchParams.get('unsubscription_token');
 
   const { data: originalCampaignConsents } = useCampaignConsents({
     unsubscriptionToken,
