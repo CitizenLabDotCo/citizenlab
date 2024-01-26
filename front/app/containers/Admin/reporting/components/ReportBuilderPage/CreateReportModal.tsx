@@ -13,7 +13,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
+import ProjectFilter from 'components/UI/ProjectFilter';
 
 // utils
 import clHistory from 'utils/cl-router/history';
@@ -141,7 +141,8 @@ const CreateReportModal = ({ open, onClose }: Props) => {
         {template === 'project' && (
           <Box width="100%" mt="12px">
             <ProjectFilter
-              currentProjectFilter={selectedProject}
+              projectId={selectedProject}
+              emptyOptionMessage={messages.noProjectSelected}
               onProjectFilter={handleProjectFilter}
             />
           </Box>
