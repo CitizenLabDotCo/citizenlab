@@ -50,7 +50,9 @@ import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer.js';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer.js';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol.js';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol.js';
+import WebMap from '@arcgis/core/WebMap.js';
 import WebTileLayer from '@arcgis/core/layers/WebTileLayer.js';
+import WMTSLayer from '@arcgis/core/layers/WMTSLayer.js';
 import Basemap from '@arcgis/core/Basemap.js';
 import EsriPoint from '@arcgis/core/geometry/Point.js';
 import jsonUtils, * as symbolJsonUtils from '@arcgis/core/symbols/support/jsonUtils.js';
@@ -270,11 +272,11 @@ const Map = memo<IMapProps & IMapConfigProps>(
        */
       const esriMap = new EsriMap();
 
-      const view = new MapView({
-        container: 'esriMap', // Reference to the DOM node that will contain the view
-        map: esriMap,
-        zoom: 2,
-      });
+      // const view = new MapView({
+      //   container: 'esriMap', // Reference to the DOM node that will contain the view
+      //   map: esriMap,
+      //   zoom: 2,
+      // });
 
       // create from a third party source
       const basemap = new Basemap({
@@ -286,7 +288,24 @@ const Map = memo<IMapProps & IMapConfigProps>(
         ],
       });
 
-      esriMap.basemap = basemap;
+      // esriMap.basemap = basemap;
+
+      // const wmtsLayer = new WMTSLayer({
+      //   url: 'https://gibs.earthdata.nasa.gov/wmts/epsg4326/best', // url to the service
+      // })
+
+      const webmap = new WebMap({
+        portalItem: {
+          // autocasts as new PortalItem()
+          id: '967e2a76237946a48cef2ab3d18b8b2e',
+        },
+      });
+
+      const view = new MapView({
+        map: webmap, // The WebMap instance created above
+        container: 'esriMap',
+        zoom: 2,
+      });
 
       const trailheads = new FeatureLayer({
         url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0',
@@ -382,8 +401,8 @@ const Map = memo<IMapProps & IMapConfigProps>(
           // outline: undefined
         }),
       });
-      esriMap.add(geoJsonLayer);
-      esriMap.add(geoJsonLayerPoint);
+      webmap.add(geoJsonLayer);
+      webmap.add(geoJsonLayerPoint);
 
       const legend = new Expand({
         content: new Legend({
