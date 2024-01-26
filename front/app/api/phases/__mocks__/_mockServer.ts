@@ -305,4 +305,69 @@ const endpoints = {
   ),
 };
 
+const votingPhase: any = {
+  id: 'voting-phase',
+  type: 'phase',
+  attributes: {
+    allow_anonymous_participation: false,
+    title_multiloc: { en: 'A Mock voting phase' },
+    description_multiloc: { en: 'For testing purposes' },
+    participation_method: 'voting',
+    voting_method: 'single_voting',
+    poll_anonymous: false,
+    survey_embed_url: null,
+    survey_service: null,
+    document_annotation_embed_url: null,
+    start_at: '2023-11-12',
+    end_at: '2025-11-19',
+    created_at: '2023-11-12T11:05:43.934Z',
+    updated_at: '2024-01-25T17:29:22.242Z',
+    ideas_count: 0,
+    campaigns_settings: {
+      project_phase_started: true,
+    },
+    posting_enabled: true,
+    posting_method: 'unlimited',
+    posting_limited_max: 1,
+    commenting_enabled: true,
+    reacting_enabled: true,
+    reacting_like_method: 'unlimited',
+    reacting_like_limited_max: 10,
+    reacting_dislike_enabled: true,
+    reacting_dislike_method: 'unlimited',
+    reacting_dislike_limited_max: 10,
+    presentation_mode: 'card',
+    ideas_order: 'random',
+    input_term: 'idea',
+    voting_max_total: 1,
+    voting_min_total: 0,
+    voting_max_votes_per_idea: 1,
+    baskets_count: 0,
+    voting_term_singular_multiloc: {
+      en: 'vote',
+      'nl-BE': 'stem',
+      'fr-BE': 'vote',
+      'de-DE': 'Stimme',
+      'es-CL': 'votar',
+      'sr-Latn': 'vote',
+      'da-DK': 'stem',
+    },
+    voting_term_plural_multiloc: {
+      en: 'votes',
+      'nl-BE': 'stemmen',
+      'fr-BE': 'votes',
+      'de-DE': 'Stimmen',
+      'es-CL': 'votos',
+      'sr-Latn': 'votes',
+      'da-DK': 'afstemninger',
+    },
+    votes_count: 0,
+    previous_phase_end_at_updated: false,
+  },
+};
+
+export const votingPhaseHandler = rest.get(apiPathPhase, (_req, res, ctx) => {
+  return res(ctx.status(200), ctx.json({ data: votingPhase }));
+});
+
 export default endpoints;

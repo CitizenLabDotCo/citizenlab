@@ -4,6 +4,7 @@ import mockEndpoints from 'utils/storybook/mockEndpoints';
 import { votingProjectHandler } from 'api/projects/__mocks__/_mockServer';
 import { votingIdeaHandler } from 'api/ideas/__mocks__/_mockServer';
 import { VotingContext } from 'api/baskets_ideas/useVoting';
+import { votingPhaseHandler } from 'api/phases/__mocks__/_mockServer';
 
 import IdeaCard from '.';
 
@@ -42,6 +43,7 @@ export const Voting: Story = {
   ),
   args: {
     ideaId: '1',
+    phaseId: 'ph1',
     hideImage: false,
     hideImagePlaceholder: false,
   },
@@ -49,6 +51,7 @@ export const Voting: Story = {
     msw: mockEndpoints({
       'GET projects/:id': votingProjectHandler,
       'GET ideas/:id': votingIdeaHandler,
+      'GET phases/:id': votingPhaseHandler,
     }),
   },
 };

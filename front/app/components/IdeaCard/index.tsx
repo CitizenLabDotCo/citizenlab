@@ -105,6 +105,7 @@ const IdeaCard = ({
   const { data: project } = useProjectById(
     idea.data.relationships.project.data.id
   );
+
   const { data: phase } = usePhase(phaseId);
 
   const phaseData = phase?.data;
