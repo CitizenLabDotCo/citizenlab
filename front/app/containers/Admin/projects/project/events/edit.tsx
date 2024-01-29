@@ -72,9 +72,9 @@ function roundToNearestMultipleOfFive(date: Date): Date {
   );
 }
 
-function calculateRoundedEndDate(startDate: Date): Date {
+function calculateRoundedEndDate(startDate: Date, minutes = 30): Date {
   const endDate = new Date(startDate);
-  endDate.setMinutes(startDate.getMinutes() + 30);
+  endDate.setMinutes(startDate.getMinutes() + minutes);
   return endDate;
 }
 
@@ -303,20 +303,31 @@ const AdminProjectEventEdit = () => {
   };
 
   const handleDateTimePickerOnChange =
-    (name: 'start_at' | 'end_at') => (moment: moment.Moment) => {
+    (name: 'start_at' | 'end_at') => (time: moment.Moment) => {
       if (!isInitialLoading) {
         setSubmitState('enabled');
         setAttributeDiff((previousState) => {
           const newAttributes = {
             ...previousState,
-            [name]: moment.toISOString(),
+            [name]: time.toISOString(),
           };
 
-          // If the start time is changed, update the end time by adding 30 minutes
+          // If the start time is changed, update the end time
           if (name === 'start_at' && newAttributes['start_at']) {
+            const duration = newAttributes['end_at']
+              ? moment
+                  .duration(
+                    moment(newAttributes['end_at']).diff(
+                      moment(previousState['start_at'])
+                    )
+                  )
+                  .asMinutes()
+              : 30;
             const startDate = new Date(newAttributes['start_at']);
-            newAttributes['end_at'] =
-              calculateRoundedEndDate(startDate).toISOString();
+            newAttributes['end_at'] = calculateRoundedEndDate(
+              startDate,
+              duration
+            ).toISOString();
           }
 
           return newAttributes;
