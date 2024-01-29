@@ -941,6 +941,7 @@
   "app.containers.Admin.projects.project.survey.newAnalysis": "Нова анализа",
   "app.containers.Admin.projects.project.survey.nextInsight": "Следећи увид",
   "app.containers.Admin.projects.project.survey.openAnalysis": "Отворена АИ анализа",
+  "app.containers.Admin.projects.project.survey.otherResponses": "Other responses",
   "app.containers.Admin.projects.project.survey.previousInsight": "Претходни увид",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Поглед",
   "app.containers.Admin.reporting.chartsSection": "ЦАРТС",
