@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import reactStringReplace from 'react-string-replace';
 
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
 import { IInsightData } from 'api/analysis_insights/types';
 
 import {
   Box,
-  Icon,
   IconButton,
   Spinner,
   colors,
@@ -20,7 +18,6 @@ import {
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import styled from 'styled-components';
-import { useSelectedInputContext } from '../SelectedInputContext';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';
 import FilterItems from '../FilterItems';
@@ -30,17 +27,16 @@ import Rate from './Rate';
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
 
-import { deleteTrailingIncompleteIDs, refRegex, removeRefs } from './util';
+import {
+  deleteTrailingIncompleteIDs,
+  removeRefs,
+  replaceIdRefsWithLinks,
+} from './util';
 import useToggleInsightBookmark from 'api/analysis_insights/useBookmarkAnalysisInsight';
 
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
   word-break: break-word;
-`;
-
-const StyledButton = styled.button`
-  padding: 0px;
-  cursor: pointer;
 `;
 
 type Props = {
@@ -50,9 +46,8 @@ type Props = {
 const Summary = ({ insight }: Props) => {
   const [isCopied, setIsCopied] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage, formatDate } = useIntl();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId } = useParams() as { analysisId };
   const { mutate: deleteSummary } = useDeleteAnalysisInsight();
   const { mutate: toggleBookmark } = useToggleInsightBookmark();
 
@@ -85,30 +80,6 @@ const Summary = ({ insight }: Props) => {
         }
       );
     }
-  };
-
-  const handleClickInput = (inputId: string) => {
-    setSelectedInputId(inputId);
-    const element = document.getElementById(`input-${inputId}`);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const replaceIdRefsWithLinks = (summary) => {
-    return reactStringReplace(summary, refRegex, (match, i) => (
-      <StyledButton
-        onClick={() => {
-          handleClickInput(match);
-          trackEventByName(tracks.inputPreviewedFromSummary.name, {
-            extra: { analysisId },
-          });
-        }}
-        key={i}
-      >
-        <Icon name="idea" />
-      </StyledButton>
-    ));
   };
 
   if (!summary) return null;
@@ -191,11 +162,12 @@ const Summary = ({ insight }: Props) => {
         </Text>
         <Box>
           <StyledSummaryText>
-            {replaceIdRefsWithLinks(
-              processing
+            {replaceIdRefsWithLinks({
+              insight: processing
                 ? deleteTrailingIncompleteIDs(summaryText)
-                : summaryText
-            )}
+                : summaryText,
+              analysisId,
+            })}
           </StyledSummaryText>
           {processing && <Spinner />}
         </Box>
