@@ -941,6 +941,7 @@
   "app.containers.Admin.projects.project.survey.newAnalysis": "Yeni analiz",
   "app.containers.Admin.projects.project.survey.nextInsight": "Sonraki içgörü",
   "app.containers.Admin.projects.project.survey.openAnalysis": "Açık yapay zeka analizi",
+  "app.containers.Admin.projects.project.survey.otherResponses": "Diğer yanıtlar",
   "app.containers.Admin.projects.project.survey.previousInsight": "Önceki içgörü",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Görünüm",
   "app.containers.Admin.reporting.chartsSection": "ÇİZELGELER",
