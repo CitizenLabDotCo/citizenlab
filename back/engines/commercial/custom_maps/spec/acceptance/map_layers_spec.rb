@@ -192,7 +192,7 @@ resource 'Map Layers' do
             assert_status 200
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'esri_feature_service'
-            expect(attributes['geojson']).to         be_nil
+            expect(attributes['geojson']).to         eq({})
             expect(attributes['layer_url']).to       eq layer_url
             expect(attributes['default_enabled']).to be true
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
@@ -308,7 +308,7 @@ resource 'Map Layers' do
             assert_status 200
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'esri_feature_service'
-            expect(attributes['geojson']).to         be_nil
+            expect(attributes['geojson']).to         eq({})
             expect(attributes['layer_url']).to       eq layer_url
             expect(attributes['default_enabled']).to be default_enabled
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
@@ -479,7 +479,7 @@ resource 'Map Layers' do
             assert_status 200
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'esri_feature_service'
-            expect(attributes['geojson']).to         be_nil
+            expect(attributes['geojson']).to         eq({})
             expect(attributes['layer_url']).to       eq layer_url
             expect(attributes['default_enabled']).to be true
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
@@ -597,7 +597,7 @@ resource 'Map Layers' do
             assert_status 200
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'esri_feature_service'
-            expect(attributes['geojson']).to         be_nil
+            expect(attributes['geojson']).to         eq({})
             expect(attributes['layer_url']).to       eq layer_url
             expect(attributes['default_enabled']).to be default_enabled
             expect(attributes['marker_svg_url']).to  eq marker_svg_url

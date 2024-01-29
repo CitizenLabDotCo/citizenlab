@@ -8,7 +8,7 @@
 #  map_config_id   :uuid             not null
 #  title_multiloc  :jsonb            not null
 #  ordering        :integer          not null
-#  geojson         :jsonb
+#  geojson         :jsonb            not null
 #  default_enabled :boolean          default(TRUE), not null
 #  marker_svg_url  :string
 #  created_at      :datetime         not null
@@ -51,6 +51,7 @@ module CustomMaps
       allow_nil: true
 
     before_validation :set_default_enabled, :decode_geojson_file
+    before_validation :set_geojson_empty_hash_for_nil
 
     # If there's a geojson file being passed, but not geojson, read the file and set it as geojson.
     def decode_geojson_file
@@ -71,6 +72,10 @@ module CustomMaps
 
     def layer_type_is_not_geojson?
       !layer_type_is_geojson?
+    end
+
+    def set_geojson_empty_hash_for_nil
+      self.geojson = {} if geojson.nil?
     end
   end
 end
