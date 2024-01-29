@@ -2,14 +2,6 @@ import { ProjectId, Dates } from '../../typings';
 
 export type QueryParameters = ProjectId & Dates;
 
-// Response
-export interface Response {
-  data: {
-    type: 'report_builder_data_units';
-    attributes: TrafficSourcesRow[];
-  };
-}
-
 export interface TrafficSourcesRow {
   count: number;
   'dimension_referrer_type.id': string;

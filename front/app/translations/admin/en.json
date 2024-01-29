@@ -922,6 +922,7 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "This project does not contain any phases that can contain ideas.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Please select to which phase you want to add these inputs.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Input importer",
+  "app.containers.Admin.projects.project.survey.allResponses": "All responses",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Select related questions for analysis",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Do you want to include any other related questions in your analysis of {question}?",
   "app.containers.Admin.projects.project.survey.cancel": "Cancel",

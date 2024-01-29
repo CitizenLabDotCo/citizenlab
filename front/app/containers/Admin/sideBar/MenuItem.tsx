@@ -12,7 +12,7 @@ import {
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import CountBadge from 'components/UI/CountBadge';
-import HasPermission from 'components/HasPermission';
+import { usePermission } from 'utils/permissions';
 import useFeatureFlags from 'hooks/useFeatureFlags';
 
 const Text = styled.div`
@@ -81,31 +81,38 @@ type Props = {
 };
 
 const MenuItem = ({ navItem }: Props) => {
-  return useFeatureFlags({
+  const featuresEnabled = useFeatureFlags({
     names: navItem.featureNames ?? [],
     onlyCheckAllowed: navItem.onlyCheckAllowed,
-  }) ? (
-    <HasPermission action="access" item={{ type: 'route', path: navItem.link }}>
-      <MenuItemLink
-        to={navItem.link}
-        className={`intercom-admin-menu-item-${navItem.name}`}
+  });
+
+  const hasPermission = usePermission({
+    action: 'access',
+    item: { type: 'route', path: navItem.link },
+  });
+
+  if (!featuresEnabled || !hasPermission) return null;
+
+  return (
+    <MenuItemLink
+      to={navItem.link}
+      className={`intercom-admin-menu-item-${navItem.name}`}
+    >
+      <Box
+        display="flex"
+        flex="0 0 auto"
+        alignItems="center"
+        justifyContent="center"
+        className={navItem.iconName}
       >
-        <Box
-          display="flex"
-          flex="0 0 auto"
-          alignItems="center"
-          justifyContent="center"
-          className={navItem.iconName}
-        >
-          <Icon name={navItem.iconName} />
-        </Box>
-        <Text>
-          <FormattedMessage {...messages[navItem.message]} />
-          {!!navItem.count && <CountBadge count={navItem.count} />}
-        </Text>
-      </MenuItemLink>
-    </HasPermission>
-  ) : null;
+        <Icon name={navItem.iconName} />
+      </Box>
+      <Text>
+        <FormattedMessage {...messages[navItem.message]} />
+        {!!navItem.count && <CountBadge count={navItem.count} />}
+      </Text>
+    </MenuItemLink>
+  );
 };
 
 export default MenuItem;

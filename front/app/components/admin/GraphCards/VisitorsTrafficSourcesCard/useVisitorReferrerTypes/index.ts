@@ -6,22 +6,19 @@ import { getTranslations } from './translations';
 import { parsePieData, parseExcelData } from './parse';
 
 // typings
-import { QueryParameters, Response } from './typings';
+import { QueryParameters } from './typings';
 
-import useGraphDataUnitsLive from 'api/graph_data_units/useGraphDataUnitsLive';
+import { useVisitorsTrafficSourcesLive } from 'api/graph_data_units';
 
 export default function useVisitorsReferrerTypes({
   projectId,
   startAtMoment,
   endAtMoment,
 }: QueryParameters) {
-  const { data: analytics } = useGraphDataUnitsLive<Response>({
-    resolvedName: 'VisitorsTrafficSourcesWidget',
-    props: {
-      projectId,
-      startAtMoment,
-      endAtMoment,
-    },
+  const { data: analytics } = useVisitorsTrafficSourcesLive({
+    projectId,
+    startAtMoment,
+    endAtMoment,
   });
 
   const { formatMessage } = useIntl();

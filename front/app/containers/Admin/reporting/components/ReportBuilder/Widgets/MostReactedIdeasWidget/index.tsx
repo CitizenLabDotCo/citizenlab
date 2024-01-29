@@ -11,10 +11,10 @@ import Settings from './Settings';
 import messages from './messages';
 
 // typings
-import { Props, Response } from './typings';
+import { Props } from './typings';
 
 // hooks
-import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
+import { useMostReactedIdeas } from 'api/graph_data_units';
 
 const MostReactedIdeasWidget = ({
   title,
@@ -22,13 +22,10 @@ const MostReactedIdeasWidget = ({
   numberOfIdeas,
   collapseLongText,
 }: Props) => {
-  const response = useGraphDataUnits<Response>(
+  const response = useMostReactedIdeas(
     {
-      resolvedName: 'MostReactedIdeasWidget',
-      props: {
-        phaseId,
-        numberOfIdeas,
-      },
+      phaseId,
+      numberOfIdeas,
     },
     {
       enabled: !!phaseId,
@@ -73,9 +70,8 @@ MostReactedIdeasWidget.craft = {
   related: {
     settings: Settings,
   },
-  custom: {
-    title: messages.mostReactedIdeas,
-  },
 };
+
+export const mostReactedIdeasTitle = messages.mostReactedIdeas;
 
 export default MostReactedIdeasWidget;

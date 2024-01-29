@@ -25,7 +25,7 @@ import { getFullName, withoutSpacing } from 'utils/textUtils';
 import { getPeriod } from './utils';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
-type Props = {
+export type Props = {
   startAt?: string;
   endAt?: string | null;
   reportId: string;
@@ -105,9 +105,8 @@ AboutReportWidget.craft = {
   related: {
     settings: NoWidgetSettings,
   },
-  custom: {
-    title: messages.aboutThisReport,
-  },
 };
+
+export const aboutReportTitle = messages.aboutThisReport;
 
 export default AboutReportWidget;
