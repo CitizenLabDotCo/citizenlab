@@ -239,20 +239,21 @@ RSpec.describe SurveyResultsGeneratorService do
             'nl-NL' => 'Welke stad vind jij het leukst?'
           },
           required: true,
-          totalResponses: 4,
+          totalResponses: 6,
           answers: a_collection_containing_exactly(
-            { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 1 },
+            { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 2 },
             { answer: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }, responses: 1 },
-            { answer: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' }, responses: 2 }
+            { answer: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' }, responses: 3 }
           ),
           textResponses: a_collection_containing_exactly(
             { answer: 'Austin' },
-            { answer: 'Miami' }
+            { answer: 'Miami' },
+            { answer: 'Seattle' }
           ),
           customFieldId: select_field.id
         }
       ],
-      totalSubmissions: 20
+      totalSubmissions: 22
     }
   end
 
@@ -315,6 +316,23 @@ RSpec.describe SurveyResultsGeneratorService do
         "#{select_field.key}_other" => 'Miami'
       }
     )
+    create(
+      :idea,
+      project: project,
+      phases: phases_of_inputs,
+      custom_field_values: {
+        select_field.key => 'la'
+      }
+    )
+    create(
+      :idea,
+      project: project,
+      phases: phases_of_inputs,
+      custom_field_values: {
+        select_field.key => 'other',
+        "#{select_field.key}_other" => 'Seattle'
+      }
+    )
     create(:idea, project: project, phases: phases_of_inputs, custom_field_values: {})
 
     { 1 => 2, 2 => 5, 3 => 7, 4 => 0, 5 => 1 }.each do |value, count|
@@ -338,7 +356,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
     describe '#generate_submission_count' do
       it 'returns the count' do
-        expect(generator.generate_submission_count).to eq({ totalSubmissions: 20 })
+        expect(generator.generate_submission_count).to eq({ totalSubmissions: 22 })
       end
     end
 
@@ -347,6 +365,12 @@ RSpec.describe SurveyResultsGeneratorService do
         # These locales are a prerequisite for the test.
         expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
         expect(generator.generate_results).to match expected_result
+      end
+
+      it 'returns select answers in order of the number of responses, with other always last' do
+        answers = generator.generate_results.dig(:results, 4, :answers)
+        expect(answers.map { |a| a[:answer]['en'] }).to eq ['Los Angeles', 'New York', 'Other']
+        expect(answers.pluck(:responses)).to eq [2, 1, 3]
       end
 
       context 'when not all minimum and maximum labels are configured' do
