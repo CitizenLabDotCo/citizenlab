@@ -92,4 +92,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.allResponses',
     defaultMessage: 'All responses',
   },
+  otherResponses: {
+    id: 'app.containers.Admin.projects.project.survey.otherResponses',
+    defaultMessage: 'Other responses',
+  },
 });

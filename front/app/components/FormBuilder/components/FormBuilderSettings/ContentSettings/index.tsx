@@ -91,7 +91,7 @@ export const ContentSettings = ({
                 name={`customFields.${field.index}.required`}
                 disabled={get(lockedAttributes, 'required', hasRules)}
                 label={
-                  <Text as="span" color="primary" variant="bodyM" my="0px">
+                  <Text as="span" variant="bodyM" my="0px">
                     <FormattedMessage {...messages.requiredToggleLabel} />
                   </Text>
                 }
