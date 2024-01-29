@@ -941,6 +941,7 @@
   "app.containers.Admin.projects.project.survey.newAnalysis": "تحليل جديد",
   "app.containers.Admin.projects.project.survey.nextInsight": "البصيرة القادمة",
   "app.containers.Admin.projects.project.survey.openAnalysis": "فتح تحليل الذكاء الاصطناعي",
+  "app.containers.Admin.projects.project.survey.otherResponses": "ردود أخرى",
   "app.containers.Admin.projects.project.survey.previousInsight": "البصيرة السابقة",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "منظر",
   "app.containers.Admin.reporting.chartsSection": "مخططات",
