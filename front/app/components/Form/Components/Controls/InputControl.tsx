@@ -21,6 +21,7 @@ import VerificationIcon from '../VerificationIcon';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { getSubtextElement } from './controlUtils';
+import { getOtherControlKey } from 'components/Form/utils';
 
 export const InputControl = ({
   data,
@@ -68,17 +69,21 @@ export const InputControl = ({
     return null;
   }
 
+  const isOtherField = !!getOtherControlKey(uischema.scope);
+
   return (
     <>
-      <Box>
-        <FormLabel
-          htmlFor={sanitizeForClassname(id)}
-          labelValue={<FieldLabel />}
-          optional={!required}
-          subtextValue={getSubtextElement(uischema.options?.description)}
-          subtextSupportsHtml
-        />
-      </Box>
+      {!isOtherField && (
+        <Box>
+          <FormLabel
+            htmlFor={sanitizeForClassname(id)}
+            labelValue={<FieldLabel />}
+            optional={!required}
+            subtextValue={getSubtextElement(uischema.options?.description)}
+            subtextSupportsHtml
+          />
+        </Box>
+      )}
       {answerNotPublic && (
         <Text mb="8px" mt="0px" fontSize="s">
           <FormattedMessage {...messages.notPublic} />
@@ -100,6 +105,7 @@ export const InputControl = ({
             setDidBlur(true);
           }}
           disabled={uischema?.options?.readonly}
+          placeholder={isOtherField ? label : undefined}
         />
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
