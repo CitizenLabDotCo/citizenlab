@@ -673,6 +673,7 @@
   "app.components.formBuilder.number": "Nombre",
   "app.components.formBuilder.open": "Ouvrir",
   "app.components.formBuilder.optional": "Facultatif",
+  "app.components.formBuilder.otherOption": "\"Option \"Autre",
   "app.components.formBuilder.page": "Page",
   "app.components.formBuilder.pageRuleLabel": "La page suivante est :",
   "app.components.formBuilder.pagesLogicHelperTextDefault": "Si aucune logique n'est ajoutée, le formulaire suivra son cours normal. Pour plus d'informations, visitez {supportPageLink}",
