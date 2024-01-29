@@ -57,26 +57,9 @@ import { geocode } from 'utils/locationTools';
 import { useTheme } from 'styled-components';
 import useLocale from 'hooks/useLocale';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
+import { roundToNearestMultipleOfFive, calculateRoundedEndDate } from './utils';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
-
-function roundToNearestMultipleOfFive(date: Date): Date {
-  const minutes = date.getMinutes();
-  const roundedMinutes = Math.ceil(minutes / 5) * 5;
-  return new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    date.getHours(),
-    roundedMinutes
-  );
-}
-
-function calculateRoundedEndDate(startDate: Date, minutes = 30): Date {
-  const endDate = new Date(startDate);
-  endDate.setMinutes(startDate.getMinutes() + minutes);
-  return endDate;
-}
 
 type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
