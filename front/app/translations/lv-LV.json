@@ -673,6 +673,7 @@
   "app.components.formBuilder.number": "Numurs",
   "app.components.formBuilder.open": "Atvērt",
   "app.components.formBuilder.optional": "Pēc izvēles",
+  "app.components.formBuilder.otherOption": "\"Cita\" opcija",
   "app.components.formBuilder.page": "Lapa",
   "app.components.formBuilder.pageRuleLabel": "Nākamā lapa ir:",
   "app.components.formBuilder.pagesLogicHelperTextDefault": "Ja loģika nav pievienota, veidlapa darbosies saskaņā ar parasto plūsmu. Lai iegūtu vairāk informācijas, apmeklējiet vietni {supportPageLink}.",
