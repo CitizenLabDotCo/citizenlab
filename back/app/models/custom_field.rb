@@ -182,9 +182,9 @@ class CustomField < ApplicationRecord
     when 'multiselect'
       visitor.visit_multiselect self
     when 'select_image'
-      visitor.visit_select self
+      visitor.visit_select_image self
     when 'multiselect_image'
-      visitor.visit_multiselect self
+      visitor.visit_multiselect_image self
     when 'checkbox'
       visitor.visit_checkbox self
     when 'date'
