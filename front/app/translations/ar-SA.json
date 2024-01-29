@@ -673,6 +673,7 @@
   "app.components.formBuilder.number": "الرقم",
   "app.components.formBuilder.open": "مفتوح",
   "app.components.formBuilder.optional": "اختياري",
+  "app.components.formBuilder.otherOption": "\"خيار آخر",
   "app.components.formBuilder.page": "الصفحة",
   "app.components.formBuilder.pageRuleLabel": "الصفحة التالية هي:",
   "app.components.formBuilder.pagesLogicHelperTextDefault": "إذا لم يُضاف أساس منطقي، فسيتبع النموذج مساره العادي. لمزيد من المعلومات، تفضل بزيارة {supportPageLink}",
