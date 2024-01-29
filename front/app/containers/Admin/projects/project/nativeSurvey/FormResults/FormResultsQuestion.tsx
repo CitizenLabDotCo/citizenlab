@@ -87,7 +87,7 @@ const FormResultsQuestion = ({
       {textResponses && textResponses.length > 0 && (
         <Box display="flex" gap="24px" mt={answers ? '20px' : '0'}>
           <Box flex="1">
-            <TextResponses textResponses={textResponses} />
+            <TextResponses textResponses={textResponses} selectField={answers !== undefined} />
           </Box>
           <Box flex="1">
             {isAnalysisEnabled && <Analysis customFieldId={customFieldId} />}

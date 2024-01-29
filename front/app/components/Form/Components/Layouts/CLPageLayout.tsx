@@ -36,7 +36,10 @@ import {
   PageType,
   getFilteredDataForUserPath,
 } from 'components/Form/Components/Layouts/utils';
-import { isVisible } from '../Controls/visibilityUtils';
+import {
+  extractElementsByOtherOptionLgic,
+  isVisible,
+} from '../Controls/visibilityUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 const StyledFormSection = styled(FormSection)`
@@ -199,6 +202,7 @@ const CLPageLayout = memo(
           margin="auto"
         >
           {uiPages.map((page, index) => {
+            const pageElements = extractElementsByOtherOptionLgic(page, data);
             return (
               currentStep === index && (
                 <StyledFormSection key={index}>
@@ -208,7 +212,7 @@ const CLPageLayout = memo(
                     </Title>
                   )}
                   {page.options.description && (
-                    <Box mb={page.elements.length >= 1 ? '48px' : '28px'}>
+                    <Box mb={pageElements.length >= 1 ? '48px' : '28px'}>
                       <QuillEditedContent
                         fontWeight={400}
                         textColor={theme.colors.tenantText}
@@ -221,18 +225,28 @@ const CLPageLayout = memo(
                       </QuillEditedContent>
                     </Box>
                   )}
-                  {page.elements.map((elementUiSchema, index) => (
-                    <Box width="100%" mb="28px" key={index}>
-                      <JsonFormsDispatch
-                        renderers={renderers}
-                        cells={cells}
-                        uischema={elementUiSchema}
-                        schema={schema}
-                        path={path}
-                        enabled={enabled}
-                      />
-                    </Box>
-                  ))}
+                  {pageElements.map((elementUiSchema, index) => {
+                    const key = elementUiSchema.scope.split('/').pop();
+                    const bottomMargin =
+                      key &&
+                      data[key] === 'other' &&
+                      elementUiSchema.options?.otherField
+                        ? undefined
+                        : '28px';
+
+                    return (
+                      <Box width="100%" mb={bottomMargin} key={index}>
+                        <JsonFormsDispatch
+                          renderers={renderers}
+                          cells={cells}
+                          uischema={elementUiSchema}
+                          schema={schema}
+                          path={path}
+                          enabled={enabled}
+                        />
+                      </Box>
+                    );
+                  })}
                 </StyledFormSection>
               )
             );
