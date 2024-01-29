@@ -429,7 +429,6 @@
   "app.containers.AccessibilityStatement.technologiesIntro": "The accessibility of this site relies on the following technologies to work:",
   "app.containers.AccessibilityStatement.technologiesTitle": "Technologies",
   "app.containers.AccessibilityStatement.title": "Accessibility Statement",
-  "app.containers.Admin.Insights.tabInsights": "Insights",
   "app.containers.Admin.Insights.tabReports": "Reports",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Create a smart group",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Users matching all of the following conditions will be automatically added to the group:",

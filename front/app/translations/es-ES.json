@@ -736,7 +736,6 @@
   "app.containers.AccessibilityStatement.title": "Declaración de accesibilidad",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Contenido generado por el usuario",
   "app.containers.AccessibilityStatement.workshops": "Talleres",
-  "app.containers.Admin.Insights.tabInsights": "Tendencias",
   "app.containers.Admin.Insights.tabReports": "Reportes",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Fin de la encuesta",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Crear un grupo smart",

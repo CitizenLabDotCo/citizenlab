@@ -736,7 +736,6 @@
   "app.containers.AccessibilityStatement.title": "Declaració d'accessibilitat",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Contingut generat per l'usuari",
   "app.containers.AccessibilityStatement.workshops": "Tallers",
-  "app.containers.Admin.Insights.tabInsights": "Informació",
   "app.containers.Admin.Insights.tabReports": "Informes",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Final de l'enquesta",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Creeu un grup intel·ligent",

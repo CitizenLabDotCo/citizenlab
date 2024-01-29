@@ -2,20 +2,12 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const Tabs = React.lazy(() => import('./admin/components/Tabs'));
-const AdminInsightsListComponent = React.lazy(
-  () => import('./admin/containers/Insights/List')
-);
+
 const AdminInsightsReportsComponent = React.lazy(
   () => import('./admin/containers/Reports')
 );
 const AdminInsightsProjectReportComponent = React.lazy(
   () => import('./admin/containers/Reports/ProjectReport')
-);
-const AdminInsightsViewComponent = React.lazy(
-  () => import('./admin/containers/Insights/Details')
-);
-const AdminInsightsViewEditComponent = React.lazy(
-  () => import('./admin/containers/Insights/Edit')
 );
 
 declare module 'components/UI/Error' {
@@ -27,21 +19,7 @@ declare module 'components/UI/Error' {
 
 const configuration: ModuleConfiguration = {
   routes: {
-    admin: [
-      {
-        path: 'reporting/insights/:viewId',
-        element: <AdminInsightsViewComponent />,
-      },
-      {
-        path: 'reporting/insights/:viewId/edit',
-        element: <AdminInsightsViewEditComponent />,
-      },
-    ],
     'admin.reporting': [
-      {
-        path: 'insights',
-        element: <AdminInsightsListComponent />,
-      },
       {
         path: 'reports',
         element: <AdminInsightsReportsComponent />,
