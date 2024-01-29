@@ -146,6 +146,8 @@ el:
       section3:
         title: Λεπτομέρειες
         description:
+      other:
+        title: Πληκτρολογήστε την απάντησή σας
   custom_forms:
     categories:
       main_content:
