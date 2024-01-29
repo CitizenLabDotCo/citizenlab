@@ -329,40 +329,6 @@ RSpec.describe SurveyResultsGeneratorService do
     end
   end
 
-  context 'for a project' do
-    let(:project) { create(:single_phase_native_survey_project) }
-    let(:form) { create(:custom_form, participation_context: project) }
-    let(:participation_context) { project }
-    let(:phases_of_inputs) { [] }
-
-    describe '#generate_submission_count' do
-      it 'returns the count' do
-        expect(generator.generate_submission_count).to eq({ totalSubmissions: 20 })
-      end
-    end
-
-    describe '#generate_results' do
-      it 'returns the results' do
-        # These locales are a prerequisite for the test.
-        expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
-
-        expect(generator.generate_results).to match expected_result
-      end
-
-      context 'when not all minimum and maximum labels are configured' do
-        let(:minimum_label_multiloc) { { 'fr-FR' => "Pas du tout d'accord" } }
-        let(:maximum_label_multiloc) { { 'en' => 'Strongly agree' } }
-
-        it 'returns minimum and maximum labels as numbers' do
-          # These locales are a prerequisite for the test.
-          expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
-
-          expect(generator.generate_results).to match expected_result_without_minimum_and_maximum_labels
-        end
-      end
-    end
-  end
-
   context 'for a phase' do
     let(:project) { create(:project_with_active_native_survey_phase) }
     let(:active_phase) { project.phases.first }
