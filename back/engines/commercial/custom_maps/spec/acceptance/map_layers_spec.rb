@@ -34,7 +34,7 @@ resource 'Map Layers' do
         expect(attributes['title_multiloc']).to   eq layer.title_multiloc
         expect(attributes['layer_type']).to       eq layer.layer_type
         expect(attributes['geojson']).to          eq layer.geojson
-        expect(attributes['url']).to              eq layer.url
+        expect(attributes['layer_url']).to        eq layer.layer_url
         expect(attributes['default_enabled']).to  eq layer.default_enabled
         expect(attributes['marker_svg_url']).to   eq layer.marker_svg_url
         expect(attributes['ordering']).to         eq layer.ordering
@@ -102,7 +102,7 @@ resource 'Map Layers' do
         parameter :layer_type,      'The type of the layer (geojson or esri_feature_service)', required: true
         parameter :geojson,         '[Option 1] The GeoJSON object with all the specs for the layer', required: false
         parameter :geojson_file,    '[Option 2] The GeoJSON file with all the specs for the layer (required if geojson type)', required: false
-        parameter :url,             'url layer of non-geojson layer type (required, if non-geojson type)', required: false
+        parameter :layer_url,       'url layer of non-geojson layer type (required, if non-geojson type)', required: false
         parameter :default_enabled, 'The setting that determines whether a label is visible'
         parameter :marker_svg_url,  'The url for an svg marker [DEPRECATED, prefer GeoJSON properties instead]'
       end
@@ -125,7 +125,7 @@ resource 'Map Layers' do
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'geojson'
             expect(attributes['geojson']).to         eq geojson
-            expect(attributes['url']).to             be_nil
+            expect(attributes['layer_url']).to       be_nil
             expect(attributes['default_enabled']).to be true
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -146,7 +146,7 @@ resource 'Map Layers' do
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'geojson'
             expect(attributes['geojson']).to         eq geojson
-            expect(attributes['url']).to             be_nil
+            expect(attributes['layer_url']).to       be_nil
             expect(attributes['default_enabled']).to be true
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -168,7 +168,7 @@ resource 'Map Layers' do
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'geojson'
             expect(attributes['geojson']).to         eq geojson
-            expect(attributes['url']).to             be_nil
+            expect(attributes['layer_url']).to       be_nil
             expect(attributes['default_enabled']).to be true
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -186,14 +186,14 @@ resource 'Map Layers' do
         let(:layer_type) { 'esri_feature_service' }
 
         context 'when passing a url' do
-          let(:url) { 'https://some.domain.com/some_layer' }
+          let(:layer_url) { 'https://some.domain.com/some_layer' }
 
           example_request 'Creates a map layer successfully using a url' do
             assert_status 200
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'esri_feature_service'
             expect(attributes['geojson']).to         be_nil
-            expect(attributes['url']).to             eq url
+            expect(attributes['layer_url']).to       eq layer_url
             expect(attributes['default_enabled']).to be true
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -214,7 +214,7 @@ resource 'Map Layers' do
         parameter :layer_type,      'The type of the layer (geojson or esri_feature_service)', required: true
         parameter :geojson,         'The GeoJSON object with all the specs for the layer', required: false
         parameter :geojson_file,    'The GeoJSON file with all the specs for the layer', required: false
-        parameter :url,             'url layer of non-geojson layer type (required, if non-geojson type)', required: false
+        parameter :layer_url,       'url layer of non-geojson layer type (required, if non-geojson type)', required: false
         parameter :default_enabled, 'The setting that determines whether a label is visible'
         parameter :marker_svg_url,  'The url for an svg marker [DEPRECATED, prefer GeoJSON properties instead]'
       end
@@ -231,7 +231,7 @@ resource 'Map Layers' do
 
       context 'when layer_type is geojson' do
         let(:layer_type) { 'geojson' }
-        let(:url) { nil }
+        let(:layer_url) { nil }
 
         context 'when passing a geojson object' do
           let(:geojson) { JSON.parse(File.read(CustomMaps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
@@ -241,7 +241,7 @@ resource 'Map Layers' do
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'geojson'
             expect(attributes['geojson']).to         eq geojson
-            expect(attributes['url']).to             be_nil
+            expect(attributes['layer_url']).to       be_nil
             expect(attributes['default_enabled']).to eq default_enabled
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -262,7 +262,7 @@ resource 'Map Layers' do
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'geojson'
             expect(attributes['geojson']).to         eq geojson
-            expect(attributes['url']).to             be_nil
+            expect(attributes['layer_url']).to       be_nil
             expect(attributes['default_enabled']).to eq default_enabled
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -284,7 +284,7 @@ resource 'Map Layers' do
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'geojson'
             expect(attributes['geojson']).to         eq geojson
-            expect(attributes['url']).to             be_nil
+            expect(attributes['layer_url']).to       be_nil
             expect(attributes['default_enabled']).to eq default_enabled
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -302,14 +302,14 @@ resource 'Map Layers' do
         let(:layer_type) { 'esri_feature_service' }
 
         context 'when passing a url' do
-          let(:url) { 'https://some.domain.com/some_layer' }
+          let(:layer_url) { 'https://some.domain.com/some_layer' }
 
           example_request 'Updates a map layer successfully using a url' do
             assert_status 200
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'esri_feature_service'
             expect(attributes['geojson']).to         be_nil
-            expect(attributes['url']).to             eq url
+            expect(attributes['layer_url']).to       eq layer_url
             expect(attributes['default_enabled']).to be default_enabled
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -317,7 +317,7 @@ resource 'Map Layers' do
         end
 
         context 'when passing no url' do
-          let(:url) { nil }
+          let(:layer_url) { nil }
 
           example_request 'Fails to update a map layer' do
             assert_status 422
@@ -389,7 +389,7 @@ resource 'Map Layers' do
         parameter :layer_type,      'The type of the layer (geojson or esri_feature_service)', required: true
         parameter :geojson,         '[Option 1] The GeoJSON object with all the specs for the layer', required: false
         parameter :geojson_file,    '[Option 2] The GeoJSON file with all the specs for the layer (required if geojson type)', required: false
-        parameter :url,             'url layer of non-geojson layer type (required, if non-geojson type)', required: false
+        parameter :layer_url,       'url layer of non-geojson layer type (required, if non-geojson type)', required: false
         parameter :default_enabled, 'The setting that determines whether a label is visible'
         parameter :marker_svg_url,  'The url for an svg marker [DEPRECATED, prefer GeoJSON properties instead]'
       end
@@ -412,7 +412,7 @@ resource 'Map Layers' do
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'geojson'
             expect(attributes['geojson']).to         eq geojson
-            expect(attributes['url']).to             be_nil
+            expect(attributes['layer_url']).to       be_nil
             expect(attributes['default_enabled']).to be true
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -433,7 +433,7 @@ resource 'Map Layers' do
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'geojson'
             expect(attributes['geojson']).to         eq geojson
-            expect(attributes['url']).to             be_nil
+            expect(attributes['layer_url']).to       be_nil
             expect(attributes['default_enabled']).to be true
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -455,7 +455,7 @@ resource 'Map Layers' do
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'geojson'
             expect(attributes['geojson']).to         eq geojson
-            expect(attributes['url']).to             be_nil
+            expect(attributes['layer_url']).to       be_nil
             expect(attributes['default_enabled']).to be true
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -473,14 +473,14 @@ resource 'Map Layers' do
         let(:layer_type) { 'esri_feature_service' }
 
         context 'when passing a url' do
-          let(:url) { 'https://some.domain.com/some_layer' }
+          let(:layer_url) { 'https://some.domain.com/some_layer' }
 
           example_request 'Creates a map layer successfully using a url' do
             assert_status 200
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'esri_feature_service'
             expect(attributes['geojson']).to         be_nil
-            expect(attributes['url']).to             eq url
+            expect(attributes['layer_url']).to       eq layer_url
             expect(attributes['default_enabled']).to be true
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -488,7 +488,7 @@ resource 'Map Layers' do
         end
 
         context 'when passing no url' do
-          let(:url) { nil }
+          let(:layer_url) { nil }
 
           example_request 'Fails to create a map layer' do
             assert_status 422
@@ -503,7 +503,7 @@ resource 'Map Layers' do
         parameter :layer_type,      'The type of the layer (geojson or esri_feature_service)', required: true
         parameter :geojson,         'The GeoJSON object with all the specs for the layer', required: false
         parameter :geojson_file,    'The GeoJSON file with all the specs for the layer', required: false
-        parameter :url,             'url layer of non-geojson layer type (required, if non-geojson type)', required: false
+        parameter :layer_url,       'url layer of non-geojson layer type (required, if non-geojson type)', required: false
         parameter :default_enabled, 'The setting that determines whether a label is visible'
         parameter :marker_svg_url,  'The url for an svg marker [DEPRECATED, prefer GeoJSON properties instead]'
       end
@@ -520,7 +520,7 @@ resource 'Map Layers' do
 
       context 'when layer_type is geojson' do
         let(:layer_type) { 'geojson' }
-        let(:url) { nil }
+        let(:layer_url) { nil }
 
         context 'when passing a geojson object' do
           let(:geojson) { JSON.parse(File.read(CustomMaps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
@@ -530,7 +530,7 @@ resource 'Map Layers' do
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'geojson'
             expect(attributes['geojson']).to         eq geojson
-            expect(attributes['url']).to             be_nil
+            expect(attributes['layer_url']).to       be_nil
             expect(attributes['default_enabled']).to eq default_enabled
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -551,7 +551,7 @@ resource 'Map Layers' do
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'geojson'
             expect(attributes['geojson']).to         eq geojson
-            expect(attributes['url']).to             be_nil
+            expect(attributes['layer_url']).to       be_nil
             expect(attributes['default_enabled']).to eq default_enabled
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -573,7 +573,7 @@ resource 'Map Layers' do
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'geojson'
             expect(attributes['geojson']).to         eq geojson
-            expect(attributes['url']).to             be_nil
+            expect(attributes['layer_url']).to       be_nil
             expect(attributes['default_enabled']).to eq default_enabled
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -591,14 +591,14 @@ resource 'Map Layers' do
         let(:layer_type) { 'esri_feature_service' }
 
         context 'when passing a url' do
-          let(:url) { 'https://some.domain.com/some_layer' }
+          let(:layer_url) { 'https://some.domain.com/some_layer' }
 
           example_request 'Updates a map layer successfully using a url' do
             assert_status 200
             expect(attributes['title_multiloc']).to  eq title_multiloc
             expect(attributes['layer_type']).to      eq 'esri_feature_service'
             expect(attributes['geojson']).to         be_nil
-            expect(attributes['url']).to             eq url
+            expect(attributes['layer_url']).to       eq layer_url
             expect(attributes['default_enabled']).to be default_enabled
             expect(attributes['marker_svg_url']).to  eq marker_svg_url
             expect(attributes['ordering']).to        eq ordering
@@ -606,7 +606,7 @@ resource 'Map Layers' do
         end
 
         context 'when passing no url' do
-          let(:url) { nil }
+          let(:layer_url) { nil }
 
           example_request 'Fails to update a map layer' do
             assert_status 422

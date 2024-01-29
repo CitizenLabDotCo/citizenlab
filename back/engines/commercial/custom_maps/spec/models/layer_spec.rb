@@ -40,17 +40,17 @@ RSpec.describe CustomMaps::Layer do
 
   describe 'url validation' do
     it 'validates a url starting with https://' do
-      layer = build(:layer, url: 'https://some.domain.com/some_layer')
+      layer = build(:layer, layer_url: 'https://some.domain.com/some_layer')
       expect(layer).to be_valid
     end
 
     it 'validates a url starting with http://' do
-      layer = build(:layer, url: 'http://some.domain.com/some_layer')
+      layer = build(:layer, layer_url: 'http://some.domain.com/some_layer')
       expect(layer).to be_valid
     end
 
     it 'invalidates a url starting with neither http:// or https://' do
-      layer = build(:layer, url: 'ftp://some.domain.com/some_layer')
+      layer = build(:layer, layer_url: 'ftp://some.domain.com/some_layer')
       expect(layer).to be_invalid
     end
   end
@@ -74,17 +74,17 @@ RSpec.describe CustomMaps::Layer do
 
   describe 'when layer_type is NOT geojson' do
     it 'validates presence of url' do
-      layer = build(:layer, layer_type: 'esri_feature_service', url: 'https://some.domain.com/some_layer')
+      layer = build(:layer, layer_type: 'esri_feature_service', layer_url: 'https://some.domain.com/some_layer')
       expect(layer).to be_valid
     end
 
     it 'invalidates nil url' do
-      layer = build(:layer, layer_type: 'esri_feature_service', url: nil)
+      layer = build(:layer, layer_type: 'esri_feature_service', layer_url: nil)
       expect(layer).to be_invalid
     end
 
     it 'invalidates empty url' do
-      layer = build(:layer, layer_type: 'esri_feature_service', url: '')
+      layer = build(:layer, layer_type: 'esri_feature_service', layer_url: '')
       expect(layer).to be_invalid
     end
   end

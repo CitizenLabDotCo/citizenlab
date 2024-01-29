@@ -14,7 +14,7 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  layer_type      :string           default("geojson"), not null
-#  url             :string
+#  layer_url       :string
 #
 # Indexes
 #
@@ -45,8 +45,8 @@ module CustomMaps
     validates :marker_svg_url,
       format: { with: %r{\Ahttps://.*\z}, message: 'should start with https://' },
       allow_nil: true
-    validates :url, presence: true, if: :layer_type_is_not_geojson?
-    validates :url,
+    validates :layer_url, presence: true, if: :layer_type_is_not_geojson?
+    validates :layer_url,
       format: { with: %r{\Ahttp(s)?://.+\z}, message: 'should start with http:// or https://' },
       allow_nil: true
 

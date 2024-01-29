@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :layer, class: 'CustomMaps::Layer' do
     map_config
     layer_type { 'geojson' }
-    url { 'https://some.domain.com/some_layer' }
+    layer_url { 'https://some.domain.com/some_layer' }
     title_multiloc do
       {
         'en' => 'Social equity regions'
