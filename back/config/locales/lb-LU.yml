@@ -146,6 +146,8 @@ lb:
       section3:
         title: Detailer
         description:
+      other:
+        title: Typ Är Äntwert
   custom_forms:
     categories:
       main_content:
