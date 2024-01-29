@@ -108,18 +108,7 @@ const AdminProjectEventEdit = () => {
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
 
   const currentDate = new Date();
-  const initialRoundedStartDate = roundToNearestMultipleOfFive(currentDate);
-  const initialRoundedEndDate = calculateRoundedEndDate(
-    initialRoundedStartDate
-  );
-  const initialAttributeDiff = event
-    ? {}
-    : {
-        start_at: initialRoundedStartDate.toISOString(),
-        end_at: initialRoundedEndDate.toISOString(),
-      };
-  const [attributeDiff, setAttributeDiff] =
-    useState<IEventProperties>(initialAttributeDiff);
+  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
   const [mapModalVisible, setMapModalVisible] = useState(false);
   const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
     useState(false);
@@ -138,6 +127,20 @@ const AdminProjectEventEdit = () => {
   const eventAttrs = event
     ? { ...event?.data.attributes, ...attributeDiff }
     : { ...attributeDiff };
+
+  useEffect(() => {
+    if (!event && !isInitialLoading) {
+      const initialRoundedStartDate = roundToNearestMultipleOfFive(currentDate);
+      const initialRoundedEndDate = calculateRoundedEndDate(
+        initialRoundedStartDate
+      );
+
+      setAttributeDiff({
+        start_at: initialRoundedStartDate.toISOString(),
+        end_at: initialRoundedEndDate.toISOString(),
+      });
+    }
+  }, [event]);
 
   // Set image value to remote image if present
   useEffect(() => {
