@@ -11,6 +11,7 @@ import { forOwn, isEmpty } from 'lodash-es';
 import {
   ExtendedRule,
   ExtendedUISchema,
+  extractElementsByOtherOptionLgic,
   isVisible,
 } from '../Controls/visibilityUtils';
 
@@ -99,6 +100,7 @@ export const getPageSchema = (
     .filter((pageElementWithRule) => {
       return !isVisible(pageElementWithRule, data, '', ajv);
     })
+    .concat(extractElementsByOtherOptionLgic(pageCategorization, data, true))
     .map((element) => element['scope'].split('/').pop());
 
   const pageSchema = Object.assign({}, schema, {
