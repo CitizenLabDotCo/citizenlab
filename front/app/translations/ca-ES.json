@@ -673,6 +673,7 @@
   "app.components.formBuilder.number": "Número",
   "app.components.formBuilder.open": "Obert",
   "app.components.formBuilder.optional": "Opcional",
+  "app.components.formBuilder.otherOption": "Opció \"Altre\".",
   "app.components.formBuilder.page": "Pàgina",
   "app.components.formBuilder.pageRuleLabel": "La pàgina següent és:",
   "app.components.formBuilder.pagesLogicHelperTextDefault": "Si no s'afegeix cap lògica, el formulari seguirà el seu flux normal. Per a més informació, visiteu {supportPageLink}",
