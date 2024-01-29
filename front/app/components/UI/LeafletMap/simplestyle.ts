@@ -1,5 +1,7 @@
 // @ts-nocheck
 
+import { isNilOrError } from 'utils/helperUtils';
+
 // This is a direct copy of the source code of https://github.com/rowanwins/leaflet-simplestyle.
 // Installing it through npm and importing it as a normal package unfortunatly crashes IE11.
 // Therefore it's added directly to the codebase, which fixes the IE11 issue.
@@ -152,7 +154,8 @@
       const that = this;
       this.eachLayer(function (l) {
         if ('icon' in l.options) {
-          if (l.feature.properties['marker-symbol'] !== '') {
+          const markerSymbol = l.feature.properties['marker-symbol'];
+          if (!isNilOrError(markerSymbol) && markerSymbol !== '') {
             // If a specific icon is used, we need to wait for the async call to fetch the svg
             getIcon(l.feature.properties, that.options.useMakiMarkers).then(
               (icon) => {
