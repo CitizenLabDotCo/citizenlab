@@ -673,6 +673,7 @@
   "app.components.formBuilder.number": "Αριθμός",
   "app.components.formBuilder.open": "Ανοίξτε το",
   "app.components.formBuilder.optional": "Προαιρετικό",
+  "app.components.formBuilder.otherOption": "Επιλογή \"Άλλο\"",
   "app.components.formBuilder.page": "Σελίδα",
   "app.components.formBuilder.pageRuleLabel": "Η επόμενη σελίδα είναι:",
   "app.components.formBuilder.pagesLogicHelperTextDefault": "Εάν δεν προστεθεί καμία λογική, η φόρμα θα ακολουθήσει την κανονική της ροή. Για περισσότερες πληροφορίες, επισκεφθείτε τη διεύθυνση {supportPageLink}",
