@@ -673,7 +673,7 @@
   "app.components.formBuilder.number": "Zahl",
   "app.components.formBuilder.open": "Geöffnet",
   "app.components.formBuilder.optional": "Optional",
-  "app.components.formBuilder.otherOption": "Option \"Andere\"",
+  "app.components.formBuilder.otherOption": "Option \"Sonstiges\"",
   "app.components.formBuilder.page": "Seite",
   "app.components.formBuilder.pageRuleLabel": "Die nächste Seite ist:",
   "app.components.formBuilder.pagesLogicHelperTextDefault": "Wenn keine Logik hinzugefügt wird, folgt das Formular seinem normalen Ablauf. Weitere Informationen finden Sie in {supportPageLink}.",
