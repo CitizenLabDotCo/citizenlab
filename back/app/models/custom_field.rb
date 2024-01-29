@@ -49,7 +49,7 @@ class CustomField < ApplicationRecord
   has_many :permissions, through: :permissions_custom_fields
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
-  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point linear_scale file_upload page section topic_ids].freeze
+  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect select_image multiselect_image checkbox date files image_files point linear_scale file_upload page section topic_ids].freeze
   CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget ideation_section1 ideation_section2 ideation_section3].freeze
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
@@ -94,11 +94,15 @@ class CustomField < ApplicationRecord
   end
 
   def support_options?
-    %w[select multiselect].include?(input_type)
+    %w[select multiselect select_image multiselect_image].include?(input_type)
   end
 
   def support_free_text_value?
     %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type)
+  end
+
+  def support_option_images?
+    %w[select_image multiselect_image].include?(input_type)
   end
 
   def built_in?
@@ -134,7 +138,7 @@ class CustomField < ApplicationRecord
   end
 
   def multiselect?
-    input_type == 'multiselect'
+    %w[multiselect multiselect_image].include?(input_type)
   end
 
   def page_or_section?
@@ -172,6 +176,10 @@ class CustomField < ApplicationRecord
     when 'select'
       visitor.visit_select self
     when 'multiselect'
+      visitor.visit_multiselect self
+    when 'select_image'
+      visitor.visit_select self
+    when 'multiselect_image'
       visitor.visit_multiselect self
     when 'checkbox'
       visitor.visit_checkbox self

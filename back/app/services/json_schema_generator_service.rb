@@ -74,7 +74,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
     }.tap do |json|
       options = field.ordered_options
 
-      # TODO: JS - Can we do this as a oneOf instead?
+      # TODO: JS - Can we do this as a oneOf instead to support images?
       unless options.empty?
         json[:enum] = options.map(&:key)
       end
@@ -99,7 +99,9 @@ class JsonSchemaGeneratorService < FieldVisitorService
               title: multiloc_service.t(option.title_multiloc)
             }
             # TODO: JS - this is not standard JSON Schema + also check no n+1 issues
-            option_details[:image] = option.image.image.versions.transform_values(&:url) if option.image
+            if field.support_option_images? && option.image
+              option_details[:image] = option.image.image.versions.transform_values(&:url)
+            end
             option_details
           end
         end

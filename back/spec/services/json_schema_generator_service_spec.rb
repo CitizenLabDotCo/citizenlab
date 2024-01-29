@@ -307,7 +307,7 @@ RSpec.describe JsonSchemaGeneratorService do
     end
 
     context 'when there are images associated with options' do
-      let(:field) { create(:custom_field_select, input_type: 'multiselect', key: 'field_key', required: true) }
+      let(:field) { create(:custom_field_select, input_type: 'multiselect_image', key: 'field_key', required: true) }
       let!(:option) { create(:custom_field_option, custom_field: field, key: 'image_option', title_multiloc: { 'en' => 'Image option' }) }
       let!(:option_image) { create(:custom_field_option_image, custom_field_option: option) }
 
@@ -324,11 +324,30 @@ RSpec.describe JsonSchemaGeneratorService do
                 const: 'image_option',
                 title: 'Image option',
                 image: hash_including(
-                  fb: end_with('.png'),
+                  fb: end_with('.png'), # Alt-text
                   small: end_with('.png'),
                   medium: end_with('.png'),
                   large: end_with('.png')
                 )
+              }
+            ]
+          }
+        })
+      end
+
+      it 'does not return images if the select is not an "_image" select' do
+        field.update!(input_type: 'multiselect')
+        expect(generator.visit_multiselect(field)).to match({
+          type: 'array',
+          uniqueItems: true,
+          maxItems: 1,
+          minItems: 1,
+          items: {
+            type: 'string',
+            oneOf: [
+              {
+                const: 'image_option',
+                title: 'Image option'
               }
             ]
           }
