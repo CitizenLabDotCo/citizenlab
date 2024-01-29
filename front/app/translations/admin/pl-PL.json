@@ -941,6 +941,7 @@
   "app.containers.Admin.projects.project.survey.newAnalysis": "Nowa analiza",
   "app.containers.Admin.projects.project.survey.nextInsight": "Następny wgląd",
   "app.containers.Admin.projects.project.survey.openAnalysis": "Otwarta analiza sztucznej inteligencji",
+  "app.containers.Admin.projects.project.survey.otherResponses": "Inne odpowiedzi",
   "app.containers.Admin.projects.project.survey.previousInsight": "Poprzedni wgląd",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Zobacz",
   "app.containers.Admin.reporting.chartsSection": "CHARAKTERYSTYKA",
