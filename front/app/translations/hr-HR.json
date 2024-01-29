@@ -673,6 +673,7 @@
   "app.components.formBuilder.number": "Broj",
   "app.components.formBuilder.open": "Otvoreno",
   "app.components.formBuilder.optional": "Nije obavezno",
+  "app.components.formBuilder.otherOption": "Opcija \"Ostalo\".",
   "app.components.formBuilder.page": "Stranica",
   "app.components.formBuilder.pageRuleLabel": "Sljedeća stranica je:",
   "app.components.formBuilder.pagesLogicHelperTextDefault": "Ako se ne doda nikakva logika, obrazac će slijediti svoj uobičajeni tijek. Za više informacija posjetite {supportPageLink}",
