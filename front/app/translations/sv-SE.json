@@ -673,6 +673,7 @@
   "app.components.formBuilder.number": "Tal",
   "app.components.formBuilder.open": "Öppna",
   "app.components.formBuilder.optional": "Valfritt",
+  "app.components.formBuilder.otherOption": "Alternativet \"Annat\"",
   "app.components.formBuilder.page": "Sida",
   "app.components.formBuilder.pageRuleLabel": "Nästa sida är:",
   "app.components.formBuilder.pagesLogicHelperTextDefault": "Om ingen logik läggs till kommer formuläret att följa sitt normala flöde. Om du vill ha mer information kan du besöka {supportPageLink}",
