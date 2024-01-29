@@ -20,13 +20,12 @@ import TopBar from '../../components/ReportBuilder/TopBar';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
-import Settings from 'components/admin/ContentBuilder/Settings';
+import EditModePreview from '../../components/ReportBuilder/EditModePreview';
+import Settings from '../../components/ReportBuilder/Settings';
+import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrapper';
 
 // templates
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
-
-// constants
-import { A4_WIDTH } from '../../constants';
 
 // typings
 import {
@@ -55,11 +54,6 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
     reportLayout.attributes.craftjs_json
   );
 
-  // Absolutely no idea why we need this initial data stuff.
-  // But without it the whole report builder crashes. Seems to be weird
-  // behaviour from the craftjs library.
-  const [initialData] = useState(isEmpty(draftData) ? undefined : draftData);
-
   const [saved, setSaved] = useState(!templateProjectId);
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
@@ -84,6 +78,35 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
     });
   };
 
+  // initialData is needed for the Frame, to have the correct initial data
+  // when it first loads. After this initial render, craftjs maintains its state
+  // internally, so we don't need to update it anymore.
+  // If you try to update initial data after this initial render, it will just lead
+  // to an infinite state update loop.
+  // HOWEVER, when switching back and forth between the preview, the Frame
+  // will unmount and remount. At this moment, it needs to have the latest data.
+  // So only in this case do we need to update initialData.
+  // That's why we do it when you switch to preview mode, so that when you switch
+  // back later, it's already up to date.
+  // Very tricky behavior of craftjs. Ask me (Luuc) if you have any questions.
+  const [initialData, setInitialData] = useState(
+    isEmpty(draftData) ? undefined : draftData
+  );
+
+  const handlePreview = () => {
+    setPreviewEnabled((previewEnabled) => {
+      const nextState = !previewEnabled;
+      const userSwitchingToPreview = nextState === true;
+
+      if (userSwitchingToPreview) {
+        setInitialData(draftData);
+      }
+
+      return nextState;
+    });
+  };
+
+  // Create stable reference
   const previewData = isEmpty(draftData) ? undefined : draftData;
 
   const hasError =
@@ -98,7 +121,7 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
         onUploadImage={setImageUploading}
       >
         <Editor
-          isPreview={false}
+          isPreview={previewEnabled}
           onNodesChange={handleEditorChange}
           key={selectedLocale}
         >
@@ -107,32 +130,22 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
             hasPendingState={imageUploading}
             previewEnabled={previewEnabled}
             selectedLocale={selectedLocale}
-            draftEditorData={previewData}
             reportId={reportId}
             templateProjectId={templateProjectId ?? undefined}
             saved={saved}
             setSaved={setSaved}
-            setPreviewEnabled={setPreviewEnabled}
+            setPreviewEnabled={handlePreview}
             setSelectedLocale={setSelectedLocale}
           />
-          <Box
-            mt={`${stylingConsts.menuHeight}px`}
-            display={previewEnabled ? 'none' : 'flex'}
-          >
-            <Toolbox reportId={reportId} />
-            <StyledRightColumn>
-              <Box width={A4_WIDTH}>
-                <Box
-                  background="white"
-                  px="30px"
-                  py="30px"
-                  width="100%"
-                  height="100%"
-                >
-                  <LanguageProvider
-                    contentBuilderLocale={selectedLocale}
-                    platformLocale={platformLocale}
-                  >
+          {!previewEnabled && (
+            <Box mt={`${stylingConsts.menuHeight}px`}>
+              <Toolbox reportId={reportId} />
+              <LanguageProvider
+                contentBuilderLocale={selectedLocale}
+                platformLocale={platformLocale}
+              >
+                <StyledRightColumn>
+                  <PDFWrapper>
                     <Frame editorData={initialData}>
                       {templateProjectId && (
                         <ProjectTemplate
@@ -141,44 +154,22 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
                         />
                       )}
                     </Frame>
-                  </LanguageProvider>
-                </Box>
-              </Box>
-            </StyledRightColumn>
-            <Settings />
-          </Box>
+                  </PDFWrapper>
+                </StyledRightColumn>
+              </LanguageProvider>
+              <Settings />
+            </Box>
+          )}
+          {previewEnabled && (
+            <Box justifyContent="center">
+              <EditModePreview
+                reportId={reportId}
+                previewData={previewData}
+                selectedLocale={selectedLocale}
+              />
+            </Box>
+          )}
         </Editor>
-        {previewEnabled && (
-          <Box
-            width="100%"
-            height="100%"
-            display="flex"
-            justifyContent="center"
-            mt={`${stylingConsts.menuHeight}px`}
-            pb="100px"
-          >
-            <StyledRightColumn>
-              <Box width={A4_WIDTH}>
-                <Box
-                  background="white"
-                  px="30px"
-                  py="30px"
-                  width="100%"
-                  height="100%"
-                >
-                  <Editor isPreview={true}>
-                    <LanguageProvider
-                      contentBuilderLocale={selectedLocale}
-                      platformLocale={platformLocale}
-                    >
-                      <Frame editorData={previewData} />
-                    </LanguageProvider>
-                  </Editor>
-                </Box>
-              </Box>
-            </StyledRightColumn>
-          </Box>
-        )}
       </FullscreenContentBuilder>
     </ReportContextProvider>
   );

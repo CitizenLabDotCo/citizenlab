@@ -104,21 +104,19 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    [:email] + shared_permitted_attributes
-  end
-
-  def permitted_attributes_for_update
-    shared_permitted_attributes.tap do |attrs|
-      attrs.push :email if !AppConfiguration.instance.feature_activated?('user_confirmation')
+    permitted_attributes_for_update.tap do |attributes|
+      attributes.delete(:avatar) unless AppConfiguration.instance.feature_activated?('user_avatar')
     end
   end
 
-  private
-
-  def shared_permitted_attributes
+  def permitted_attributes_for_update
+    # avatar is allowed even if the feature "user_avatars" is not activated to allow
+    # users to remove their avatar.
     shared = [:email, :first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
     admin? ? shared + [roles: %i[type project_id project_folder_id]] : shared
   end
+
+  private
 
   def allowed_custom_field_keys
     allowed_fields = allowed_custom_fields

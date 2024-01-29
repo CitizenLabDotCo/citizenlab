@@ -15,8 +15,12 @@ import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 // context
 import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 
-// styling
+// constants
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
+
+// utils
+import { getReportWidth } from 'containers/Admin/reporting/utils/getReportWidth';
 
 interface Props {
   reportId: string;
@@ -24,8 +28,8 @@ interface Props {
 
 const PhaseReport = ({ reportId }: Props) => {
   const { data: reportLayout } = useReportLayout(reportId);
-  const smallerThanTablet = useBreakpoint('tablet');
   const smallerThanPhone = useBreakpoint('phone');
+  const smallerThanTablet = useBreakpoint('tablet');
 
   if (!reportLayout) return null;
 
@@ -35,6 +39,7 @@ const PhaseReport = ({ reportId }: Props) => {
     <Box
       w="100%"
       p={smallerThanPhone ? '0px' : '30px'}
+      pt={smallerThanPhone ? '20px' : '0px'}
       display="flex"
       justifyContent="center"
     >
@@ -46,12 +51,23 @@ const PhaseReport = ({ reportId }: Props) => {
         borderRadius={stylingConsts.borderRadius}
         boxShadow="0px 2px 4px -1px rgba(0,0,0,0.06)"
         p={smallerThanTablet ? '0px' : '30px'}
+        pt={smallerThanPhone ? '20px' : '0px'}
       >
-        <ReportContextProvider width="responsive" reportId={reportId}>
-          <Box maxWidth="800px" w="100%">
-            <Editor isPreview={true}>
-              {editorData && <ContentBuilderFrame editorData={editorData} />}
-            </Editor>
+        <ReportContextProvider
+          width={getReportWidth({ smallerThanPhone, smallerThanTablet })}
+          reportId={reportId}
+        >
+          <Box
+            w="100%"
+            display="flex"
+            alignItems="center"
+            flexDirection="column"
+          >
+            <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
+              <Editor isPreview={true}>
+                {editorData && <ContentBuilderFrame editorData={editorData} />}
+              </Editor>
+            </Box>
           </Box>
         </ReportContextProvider>
       </Box>

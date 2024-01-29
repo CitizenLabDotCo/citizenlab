@@ -48,3 +48,26 @@ interface IFullNameableUser {
 export function getFullName(user: IFullNameableUser) {
   return `${user.attributes.first_name} ${user.attributes.last_name}`;
 }
+
+const removeSpace = (str: string) => str.replace(/\s/g, '');
+
+// For use with template strings. E.g.
+// withoutSpacing`<ul>  \n  <li>${'text with spaces'}    </li> \n   </ul>`
+// => '<ul><li>text with spaces</li></ul>'
+// See corresponding test
+export function withoutSpacing(
+  strings: TemplateStringsArray,
+  ...expressions: string[]
+) {
+  if (strings.length === 1) return removeSpace(strings[0]);
+
+  return strings.reduce((acc, str, i) => {
+    let newAcc = acc + removeSpace(str);
+
+    if (i < expressions.length) {
+      newAcc += expressions[i];
+    }
+
+    return newAcc;
+  }, '');
+}

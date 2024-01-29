@@ -1,8 +1,5 @@
 import React from 'react';
 
-// components
-const Tab = React.lazy(() => import('./admin/components/Tab'));
-
 // typings
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
@@ -26,9 +23,6 @@ const configuration: ModuleConfiguration = {
         element: <ReferenceDataInterface />,
       },
     ],
-  },
-  outlets: {
-    'app.containers.Admin.dashboards.tabs': (props) => <Tab {...props} />,
   },
 };
 

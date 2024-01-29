@@ -175,7 +175,6 @@ export interface IAppConfigurationSettings {
   initiativeflow_social_sharing?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
   custom_maps?: AppConfigurationFeature;
-  similar_ideas?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
@@ -238,6 +237,8 @@ export interface IAppConfigurationSettings {
   power_bi?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
+  user_session_recording?: AppConfigurationFeature;
+  user_avatars?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

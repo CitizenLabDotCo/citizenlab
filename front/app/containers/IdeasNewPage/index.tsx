@@ -1,14 +1,8 @@
 import React from 'react';
-import { createPortal } from 'react-dom';
 import { parse } from 'qs';
 
 // components
-import {
-  Box,
-  useBreakpoint,
-  Spinner,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
 import VerticalCenterer from 'components/VerticalCenterer';
@@ -32,8 +26,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();
-
-  const isSmallerThanPhone = useBreakpoint('phone');
   const { data: project, status, error } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(project?.data.id);
@@ -58,21 +50,20 @@ const NewIdeaPage = () => {
   }
 
   const participationMethod = getParticipationMethod(
-    project?.data,
+    project.data,
     phases?.data,
     phase_id
   );
-  const portalElement = document?.getElementById('modal-portal');
   const isSurvey = participationMethod === 'native_survey';
 
   const { enabled, disabledReason, authenticationRequirements } =
     getIdeaPostingRules({
-      project: project?.data,
+      project: project.data,
       phase: getCurrentPhase(phases?.data),
       authUser: authUser?.data,
     });
 
-  if (project && isSurvey && disabledReason === 'postingLimitedMaxReached') {
+  if (isSurvey && disabledReason === 'postingLimitedMaxReached') {
     return <SurveySubmittedNotice project={project.data} />;
   }
 
@@ -100,25 +91,7 @@ const NewIdeaPage = () => {
     );
   }
 
-  if (isSurvey && portalElement && isSmallerThanPhone) {
-    return createPortal(
-      <Box
-        display="flex"
-        flexDirection="column"
-        w="100%"
-        zIndex="10000"
-        position="fixed"
-        bgColor={colors.background}
-        h="100vh"
-        overflowY="scroll"
-      >
-        <IdeasNewForm />
-      </Box>,
-      portalElement
-    );
-  }
-
-  return <IdeasNewForm />;
+  return <IdeasNewForm project={project} />;
 };
 
 export default NewIdeaPage;

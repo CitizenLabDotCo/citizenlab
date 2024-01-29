@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import fetcher, { BaseResponseData } from 'utils/cl-react-query/fetcher';
 import graphDataUnitKeys from './keys';
-import { ParametersPublished } from './types';
+import { ParametersPublished } from './requestTypes';
 import { CLErrors } from 'typings';
 
+// TODO: Response should extend not BaseResponseData, but sth more specific to data units
 const fetchGraphDataUnitsPublished = <Response extends BaseResponseData>({
   reportId,
   graphId,
@@ -19,7 +20,7 @@ const fetchGraphDataUnitsPublished = <Response extends BaseResponseData>({
 
 const useGraphDataUnitsPublished = <Response extends BaseResponseData>(
   parameters: ParametersPublished,
-  { enabled = true }: { enabled?: boolean } = {}
+  { enabled = true }: { enabled?: boolean } = { enabled: true }
 ) => {
   return useQuery<Response, CLErrors, Response, any>({
     queryKey: graphDataUnitKeys.item(parameters),

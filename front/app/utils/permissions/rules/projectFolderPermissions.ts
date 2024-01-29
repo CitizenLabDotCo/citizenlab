@@ -38,7 +38,6 @@ export function isProjectFolderModerator(user: IUserData) {
 }
 
 // rules
-
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,
   user: IUser | null,
