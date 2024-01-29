@@ -673,6 +673,7 @@
   "app.components.formBuilder.number": "Nummer",
   "app.components.formBuilder.open": "Åbn",
   "app.components.formBuilder.optional": "Valgfrit",
+  "app.components.formBuilder.otherOption": "Valgmuligheden \"Andet\"",
   "app.components.formBuilder.page": "Side",
   "app.components.formBuilder.pageRuleLabel": "Næste side er:",
   "app.components.formBuilder.pagesLogicHelperTextDefault": "Hvis der ikke er tilføjet nogen logik, følger formularen sit normale forløb. Du kan få flere oplysninger på {supportPageLink}",
