@@ -30,25 +30,22 @@ import clHistory from 'utils/cl-router/history';
 
 // types
 import { Locale } from 'typings';
-import { CraftJson } from 'components/admin/ContentBuilder/typings';
 
 type ContentBuilderTopBarProps = {
   hasError: boolean;
   hasPendingState: boolean;
   selectedLocale: Locale;
-  draftEditorData?: CraftJson;
   reportId: string;
   templateProjectId?: string;
   saved: boolean;
   previewEnabled: boolean;
   setSaved: React.Dispatch<React.SetStateAction<boolean>>;
-  setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  setPreviewEnabled: () => void;
   setSelectedLocale: React.Dispatch<React.SetStateAction<Locale>>;
 };
 
 const ContentBuilderTopBar = ({
   hasError,
-  draftEditorData,
   selectedLocale,
   hasPendingState,
   reportId,
@@ -153,17 +150,12 @@ const ContentBuilderTopBar = ({
   }, [
     templateProjectId,
     query,
-    draftEditorData,
     initialized,
     reportId,
     updateReportLayout,
     projectId,
     setSaved,
   ]);
-
-  const handleTogglePreview = () => {
-    setPreviewEnabled((previewEnabled) => !previewEnabled);
-  };
 
   return (
     <Container>
@@ -221,7 +213,7 @@ const ContentBuilderTopBar = ({
         <Box mx="24px">
           <PreviewToggle
             checked={previewEnabled}
-            onChange={handleTogglePreview}
+            onChange={setPreviewEnabled}
           />
         </Box>
         <Box mr="20px">

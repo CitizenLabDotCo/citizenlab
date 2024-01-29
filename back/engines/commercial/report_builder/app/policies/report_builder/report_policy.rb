@@ -11,19 +11,44 @@ module ReportBuilder
       end
 
       def resolve
-        raise Pundit::NotAuthorizedError unless user&.active? && user&.admin?
+        raise Pundit::NotAuthorizedError unless user&.active?
 
-        @scope.all
+        if user.admin?
+          @scope.all
+        elsif user.project_or_folder_moderator?
+          @scope.where(owner: user)
+        else
+          raise Pundit::NotAuthorizedError
+        end
       end
     end
 
     def write?
-      # TODO: check action descriptor?
-      record.phase? ? PhasePolicy.new(user, record.phase).update? : (admin? && active?)
+      return false unless active?
+
+      if record.phase?
+        PhasePolicy.new(user, record.phase).update?
+      elsif admin?
+        true
+      elsif user.project_or_folder_moderator?
+        record.owner == user
+      else
+        false
+      end
     end
 
     def read?
-      record.phase? ? PhasePolicy.new(user, record.phase).show? : (admin? && active?)
+      return false unless active?
+
+      if record.phase?
+        PhasePolicy.new(user, record.phase).show?
+      elsif admin?
+        true
+      elsif user.project_or_folder_moderator?
+        record.owner == user
+      else
+        false
+      end
     end
 
     alias show? read?

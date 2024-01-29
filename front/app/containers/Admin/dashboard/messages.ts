@@ -19,6 +19,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabReports',
     defaultMessage: 'Reports',
   },
+  tabRepresentativeness: {
+    id: 'app.containers.AdminPage.DashboardPage.tabRepresentativeness2',
+    defaultMessage: 'Representation',
+  },
+  feed: {
+    id: 'app.Admin.Moderation.feed',
+    defaultMessage: 'Feed',
+  },
+  tabVisitors: {
+    id: 'app.modules.commercial.analytics.admin.components.Tab',
+    defaultMessage: 'Visitors',
+  },
   helmetTitle: {
     id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
     defaultMessage: 'Admin dashboard page',

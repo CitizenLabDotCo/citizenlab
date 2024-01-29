@@ -18,7 +18,7 @@ import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
 
-interface Props {
+export interface Props {
   text?: Multiloc;
 }
 
@@ -75,9 +75,8 @@ TextMultiloc.craft = {
   related: {
     settings: TextMultilocSettings,
   },
-  custom: {
-    title: messages.textMultiloc,
-  },
 };
+
+export const textMultilocTitle = messages.textMultiloc;
 
 export default TextMultiloc;

@@ -10,7 +10,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
 
   let(:scope) { described_class::Scope.new(user, ReportBuilder::Report) }
 
-  context 'when the user has admin rights' do
+  context 'when user has admin rights' do
     let_it_be(:user) { build(:admin) }
 
     it { is_expected.to permit(:show) }
@@ -19,6 +19,50 @@ RSpec.describe ReportBuilder::ReportPolicy do
     it { is_expected.to permit(:destroy) }
     it { is_expected.to permit(:update) }
     it { expect(scope.resolve.count).to eq(3) }
+  end
+
+  context 'when user has moderator rights' do
+    let_it_be(:user) { build(:project_moderator) }
+
+    context 'when user owns the report' do
+      let_it_be(:all_reports) { create_list(:report, 3) }
+      let_it_be(:report) do
+        all_reports.first.tap { |r| r.update!(owner: user) }
+      end
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:layout) }
+      it { is_expected.to permit(:create) }
+      it { is_expected.to permit(:destroy) }
+      it { is_expected.to permit(:update) }
+      it { expect(scope.resolve.count).to eq(1) }
+    end
+
+    context 'when user does not own the report' do
+      it { is_expected.not_to permit(:show) }
+      it { is_expected.not_to permit(:layout) }
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:update) }
+      it { expect(scope.resolve.count).to eq(0) }
+
+      context 'when report belongs to phase moderated by this user' do
+        let_it_be(:all_reports) { create_list(:report, 3) }
+        let_it_be(:report) do
+          project = Project.find(user.moderatable_project_ids.first)
+          phase = build(:phase)
+          project.update!(phases: [phase])
+          all_reports.first.tap { |r| r.update!(phase: phase) }
+        end
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:layout) }
+        it { is_expected.to permit(:create) }
+        it { is_expected.to permit(:destroy) }
+        it { is_expected.to permit(:update) }
+        it { expect(scope.resolve.count).to eq(0) }
+      end
+    end
   end
 
   context 'when user is a visitor' do
