@@ -193,18 +193,28 @@ const CLPageLayout = memo(
                       </QuillEditedContent>
                     </Box>
                   )}
-                  {pageElements.map((elementUiSchema, index) => (
-                    <Box width="100%" mb="28px" key={index}>
-                      <JsonFormsDispatch
-                        renderers={renderers}
-                        cells={cells}
-                        uischema={elementUiSchema}
-                        schema={schema}
-                        path={path}
-                        enabled={enabled}
-                      />
-                    </Box>
-                  ))}
+                  {pageElements.map((elementUiSchema, index) => {
+                    const key = elementUiSchema.scope.split('/').pop();
+                    const bottomMargin =
+                      key &&
+                      data[key] === 'other' &&
+                      elementUiSchema.options?.otherField
+                        ? undefined
+                        : '28px';
+
+                    return (
+                      <Box width="100%" mb={bottomMargin} key={index}>
+                        <JsonFormsDispatch
+                          renderers={renderers}
+                          cells={cells}
+                          uischema={elementUiSchema}
+                          schema={schema}
+                          path={path}
+                          enabled={enabled}
+                        />
+                      </Box>
+                    );
+                  })}
                 </StyledFormSection>
               )
             );
