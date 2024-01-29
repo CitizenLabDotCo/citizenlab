@@ -146,6 +146,8 @@ ca:
       section3:
         title: Detalls
         description:
+      other:
+        title: Escriu la teva resposta
   custom_forms:
     categories:
       main_content:
