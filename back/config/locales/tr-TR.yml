@@ -146,6 +146,8 @@ tr:
       section3:
         title: Detaylar
         description:
+      other:
+        title: Cevabınızı yazın
   custom_forms:
     categories:
       main_content:
