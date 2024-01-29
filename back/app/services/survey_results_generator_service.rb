@@ -101,7 +101,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
   def visit_select_base(field, values)
     option_keys = field.options.pluck(:key)
     distribution = Idea.select(:value).from(values).group(:value).order(Arel.sql('COUNT(value) DESC')).count.to_a
-    filtered_distribution = distribution.select { |(value, _count)| option_keys.include? value }
+    sorted_distribution = distribution.sort_by { |k, _v| k == 'other' ? 1 : 0 } # other should always be last
+    filtered_distribution = sorted_distribution.select { |(value, _count)| option_keys.include? value }
     option_titles = field.options.each_with_object({}) do |option, accu|
       accu[option.key] = option.title_multiloc
     end

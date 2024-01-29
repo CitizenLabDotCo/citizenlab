@@ -96,7 +96,7 @@ const ConfigSelectWithLocaleSwitcher = ({
   const addOtherOption = (value, name) => {
     const newValues = value;
     newValues.push({
-      title_multiloc: { 'en': 'Other' },
+      title_multiloc: { en: 'Other' },
       other: true
     });
     setValue(name, newValues);
