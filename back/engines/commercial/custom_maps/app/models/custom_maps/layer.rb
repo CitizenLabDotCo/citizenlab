@@ -74,6 +74,8 @@ module CustomMaps
       !layer_type_is_geojson?
     end
 
+    # Metabase doesn't work well when null values can occur for json attributes, so we enforce NOT NULL at db level.
+    # This ensures that the geojson attribute is never nil, without forcing the FE to include '{}' in the payload.
     def set_geojson_empty_hash_for_nil
       self.geojson = {} if geojson.nil?
     end
