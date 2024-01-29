@@ -146,6 +146,8 @@ nl:
       section3:
         title: Details
         description:
+      other:
+        title: Typ je antwoord
   custom_forms:
     categories:
       main_content:
