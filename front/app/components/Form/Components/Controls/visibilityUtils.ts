@@ -19,6 +19,7 @@ import {
 } from '@jsonforms/core';
 import { has } from 'lodash-es';
 import { PageType } from '../Layouts/utils';
+import { getOtherControlKey } from 'components/Form/utils';
 
 interface ConditionWithPageId
   extends Condition,
@@ -164,12 +165,16 @@ export const isVisible = (
     return evalVisibility(uischema, data, path, ajv, pages);
   }
 
-  return true;
+  const otherControlKey = getOtherControlKey(uischema.scope);
+
+  return otherControlKey ? data[otherControlKey] === 'other' : true;
 };
 
-export const getVisibleElementsOnPage = (
+// This returns the elements on a page that are visible based on the data and the other option selection. You can pass returnHidden as true to get the hidden elements
+export const extractElementsByOtherOptionLgic = (
   page: PageType,
-  data: any
+  data: any,
+  returnHidden: boolean = false
 ): ExtendedUISchema[] => {
   const otherFieldValues = page.elements
     .filter((element) => element.options?.otherField)
@@ -182,8 +187,16 @@ export const getVisibleElementsOnPage = (
     const key = element.scope.split('/').pop();
     const field = otherFieldValues.find((item) => item?.otherFieldKey === key);
 
-    return (
-      !field || (field.parentFieldKey && data[field.parentFieldKey] === 'other')
-    );
+    if (returnHidden) {
+      return (
+        field &&
+        (!field.parentFieldKey || data[field.parentFieldKey] !== 'other')
+      );
+    } else {
+      return (
+        !field ||
+        (field.parentFieldKey && data[field.parentFieldKey] === 'other')
+      );
+    }
   });
 };

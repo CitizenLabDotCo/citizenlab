@@ -37,7 +37,7 @@ import {
   getFilteredDataForUserPath,
 } from 'components/Form/Components/Layouts/utils';
 import {
-  getVisibleElementsOnPage,
+  extractElementsByOtherOptionLgic,
   isVisible,
 } from '../Controls/visibilityUtils';
 import { isNilOrError } from 'utils/helperUtils';
@@ -170,7 +170,7 @@ const CLPageLayout = memo(
           margin="auto"
         >
           {uiPages.map((page, index) => {
-            const pageElements = getVisibleElementsOnPage(page, data);
+            const pageElements = extractElementsByOtherOptionLgic(page, data);
             return (
               currentStep === index && (
                 <StyledFormSection key={index}>
