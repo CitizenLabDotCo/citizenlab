@@ -141,6 +141,10 @@ class CustomField < ApplicationRecord
     %w[multiselect multiselect_image].include?(input_type)
   end
 
+  def linear_scale?
+    input_type == 'linear_scale'
+  end
+
   def page_or_section?
     page? || section?
   end

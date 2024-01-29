@@ -173,7 +173,7 @@ module IdeaCustomFields
             option = create_option! option_params, field, errors, option_temp_ids_to_ids_mapping, field_index, option_index
             next unless option
           end
-          update_option_image!(option, option_params)
+          update_option_image!(option, option_params[:image])
           option.move_to_bottom
         end
       end
@@ -193,24 +193,24 @@ module IdeaCustomFields
       end
     end
 
-    def update_option_image!(option, options_params)
-      return unless options_params[:image]
+    def update_option_image!(option, image_base64)
+      return unless image_base64
 
       # Image should always be set by the front end if there is any change - if no change the image param should not be set
-      # TODO: Might need to change 'image' param to image_base64 or something similar to avoid active record errors
       if option.image
-        if options_params[:image][:image] == ''
+        if image_base64 == ''
           option.image.destroy!
-        elsif options_params[:image][:image]
-          option.image.update(image: options_params[:image][:image])
+        elsif image_base64
+          option.image.update(image: image_base64)
         end
       else
-        option.create_image(image: options_params[:image][:image])
+        option.create_image(image: image_base64)
       end
     end
 
     def update_option!(option, option_params, errors, field_index, option_index)
-      option.assign_attributes option_params
+      update_params = option_params.except('image')
+      option.assign_attributes update_params
       SideFxCustomFieldOptionService.new.before_update option, current_user
       if option.save
         SideFxCustomFieldOptionService.new.after_update option, current_user
@@ -267,10 +267,10 @@ module IdeaCustomFields
             :id,
             :temp_id,
             :other,
+            :image,
             {
               title_multiloc: CL2_SUPPORTED_LOCALES
-            },
-            { image: %i[id image] }
+            }
           ],
           logic: {} }
       ])
