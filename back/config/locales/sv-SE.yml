@@ -146,6 +146,8 @@ sv:
       section3:
         title: Detaljer
         description:
+      other:
+        title: Skriv ditt svar
   custom_forms:
     categories:
       main_content:
