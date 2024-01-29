@@ -673,6 +673,7 @@
   "app.components.formBuilder.number": "Nummer",
   "app.components.formBuilder.open": "Opmaachen",
   "app.components.formBuilder.optional": "Optionell",
+  "app.components.formBuilder.otherOption": "\"Aner\" Optioun",
   "app.components.formBuilder.page": "Säit",
   "app.components.formBuilder.pageRuleLabel": "Nächst Säit ass:",
   "app.components.formBuilder.pagesLogicHelperTextDefault": "Wa keng Logik bäigefüügt ass, gëllt deen normalen Oflaf fir de Formulaire. Weider Informatioune fannd Dir op {supportPageLink}",
