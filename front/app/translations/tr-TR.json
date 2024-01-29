@@ -673,6 +673,7 @@
   "app.components.formBuilder.number": "Sayı",
   "app.components.formBuilder.open": "Açık",
   "app.components.formBuilder.optional": "Opsiyonel",
+  "app.components.formBuilder.otherOption": "\"Diğer\" seçeneği",
   "app.components.formBuilder.page": "Sayfa",
   "app.components.formBuilder.pageRuleLabel": "Sonraki sayfa:",
   "app.components.formBuilder.pagesLogicHelperTextDefault": "Herhangi bir mantık eklenmezse, form normal akışını izleyecektir. Daha fazla bilgi için {supportPageLink}adresini ziyaret edin.",
