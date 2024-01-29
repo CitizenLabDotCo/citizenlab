@@ -45,10 +45,8 @@ GenderWidget.craft = {
   related: {
     settings: ChartWidgetSettings,
   },
-  custom: {
-    title: messages.usersByGender,
-    noPointerEvents: true,
-  },
 };
+
+export const genderTitle = messages.usersByGender;
 
 export default GenderWidget;

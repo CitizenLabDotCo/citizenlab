@@ -30,7 +30,7 @@ import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey
 // types
 import { IOption, Multiloc } from 'typings';
 
-type Props = {
+export type Props = {
   title?: Multiloc;
   projectId?: string;
   phaseId?: string;
@@ -182,10 +182,8 @@ SurveyResultsWidget.craft = {
   related: {
     settings: SurveyResultsWidgetSettings,
   },
-  custom: {
-    title: messages.surveyResults,
-    noPointerEvents: true,
-  },
 };
+
+export const surveyResultsTitle = messages.surveyResults;
 
 export default SurveyResultsWidget;

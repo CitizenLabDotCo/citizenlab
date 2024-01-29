@@ -23,6 +23,7 @@ export default function useActiveUsers({
       resolution,
     },
     {
+      // enabled: true,
       onSuccess: () => setCurrentResolution(resolution),
     }
   );
