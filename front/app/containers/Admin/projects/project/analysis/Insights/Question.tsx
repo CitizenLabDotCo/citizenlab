@@ -46,7 +46,10 @@ const Question = ({ insight }: Props) => {
   const [isCopied, setIsCopied] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const { formatMessage, formatDate } = useIntl();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId, projectId } = useParams() as {
+    analysisId: string;
+    projectId: string;
+  };
   const { mutate: deleteQuestion } = useDeleteAnalysisInsight();
   const { mutate: toggleBookmark } = useToggleInsightBookmark();
 
@@ -167,6 +170,8 @@ const Question = ({ insight }: Props) => {
                 ? deleteTrailingIncompleteIDs(answer)
                 : answer,
               analysisId,
+              projectId,
+              phaseId,
             })}
           </StyledAnswerText>
           {processing && <Spinner />}

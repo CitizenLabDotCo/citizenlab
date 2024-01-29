@@ -19,7 +19,7 @@ const Context = createContext<{
 const SelectedInputContext = ({ children }) => {
   const [selectedInputId, setSelectedInputId] = useState<string | null>(null);
   const [search] = useSearchParams();
-  const inputId = search.get('selected-input-id');
+  const inputId = search.get('selected_input_id');
 
   useEffect(() => {
     if (inputId) {
@@ -29,7 +29,7 @@ const SelectedInputContext = ({ children }) => {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
-    removeSearchParams(['selected-input-id']);
+    removeSearchParams(['selected_input_id']);
   }, [inputId]);
 
   const contextValue = { selectedInputId, setSelectedInputId };
