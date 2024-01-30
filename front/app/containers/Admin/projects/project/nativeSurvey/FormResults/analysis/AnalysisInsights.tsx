@@ -15,6 +15,7 @@ import messages from '../messages';
 import { replaceIdRefsWithLinks } from '../../../analysis/Insights/util';
 import { useParams } from 'react-router-dom';
 import FilterItems from '../../../analysis/FilterItems';
+import Button from 'components/UI/Button';
 
 type AnalysisInsight = {
   analysisId: string;
@@ -63,6 +64,9 @@ const Summary = ({
           phaseId,
         })}
       </Text>
+      <Button buttonStyle="secondary" icon="eye">
+        Explore
+      </Button>
     </>
   );
 };
@@ -86,26 +90,38 @@ const Question = ({
     return null;
   }
   return (
-    <>
-      {filters && (
-        <FilterItems
-          filters={filters}
-          isEditable={false}
-          analysisId={analysisId}
-        />
-      )}
-      <Text fontWeight="bold">
-        {question} <Icon name="question-bubble" />
-      </Text>
-      <Text mt="0px">
-        {replaceIdRefsWithLinks({
-          insight: answer,
-          analysisId,
-          projectId,
-          phaseId,
-        })}
-      </Text>
-    </>
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+      h="100%"
+    >
+      <Box>
+        {filters && (
+          <FilterItems
+            filters={filters}
+            isEditable={false}
+            analysisId={analysisId}
+          />
+        )}
+        <Text fontWeight="bold">
+          {question} <Icon name="question-bubble" />
+        </Text>
+        <Text mt="0px">
+          {replaceIdRefsWithLinks({
+            insight: answer,
+            analysisId,
+            projectId,
+            phaseId,
+          })}
+        </Text>
+      </Box>
+      <Box display="flex">
+        <Button buttonStyle="secondary" icon="eye">
+          Explore
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

@@ -49,7 +49,7 @@ module Analysis
       scope = inputs
       if params[:input_custom_field_no_empty_values]
         analysis.custom_fields.pluck(:key).each do |key|
-          scope = scope.where.not("custom_field_values->>'#{key}' IS NULL")
+          scope = scope.where.not("ideas.custom_field_values->>'#{key}' IS NULL")
         end
       end
       scope
