@@ -70,6 +70,7 @@ const ReportRow = ({ report }: Props) => {
         <Buttons
           reportId={report.id}
           isLoading={isLoading}
+          canEdit={report.attributes.action_descriptor.editing_report.enabled}
           onDelete={handleDeleteReport}
           onEdit={handleEditReport}
           onView={handleViewReport}
