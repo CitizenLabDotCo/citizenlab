@@ -1477,7 +1477,7 @@
   "app.containers.SignUp.viennaConsentEmail": "E-Mail-Adresse",
   "app.containers.SignUp.viennaConsentFirstName": "Vorname (sofern vorhanden)",
   "app.containers.SignUp.viennaConsentFooter": "Sie können Ihre Informationen nachträglich im Profil ändern. Wenn Sie bereits ein Konto mit der selben E-Mail-Adresse auf mitgestalten.wien.gv.at haben, können Sie es jetzt mit Ihrem Stadt Wien Konto verknüpfen.",
-  "app.containers.SignUp.viennaConsentHeader": "Die Anmeldung ist ab 30. März 2023 nur noch mit Stadt Wien Konto möglich.{br}{br}Folgende Daten werden bei der Anmeldung einmalig übernommen:",
+  "app.containers.SignUp.viennaConsentHeader": "Folgende Daten werden bei der Anmeldung einmalig übernommen:",
   "app.containers.SignUp.viennaConsentLastName": "Familienname (sofern vorhanden)",
   "app.containers.SignUp.viennaConsentUserName": "Nutzer*innenname",
   "app.containers.SignUp.viennaDataProtection": "den Datenschutzbedingungen",
