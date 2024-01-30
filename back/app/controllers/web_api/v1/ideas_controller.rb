@@ -275,7 +275,20 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     return if extra_field_values.empty?
 
+    extra_field_values = reject_other_text_values(extra_field_values)
     params[:idea][:custom_field_values] = extra_field_values
+  end
+
+  def reject_other_text_values(extra_field_values)
+    extra_field_values.each do |key, _value|
+      if key.end_with? '_other'
+        parent_field_key = key.delete_suffix '_other'
+        parent_field_values = extra_field_values[parent_field_key].is_a?(Array) ? extra_field_values[parent_field_key] : [extra_field_values[parent_field_key]]
+        if parent_field_values.exclude? 'other'
+          extra_field_values.delete key
+        end
+      end
+    end
   end
 
   def service

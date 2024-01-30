@@ -49,6 +49,7 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 // style
 import styled from 'styled-components';
 import Link from 'utils/cl-router/Link';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 const Container = styled.div``;
 
@@ -251,7 +252,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                             values={{
                               accessRightsLink: (
                                 <Link
-                                  to={`/admin/projects/${projectId}/permissions`}
+                                  to={`${adminProjectsProjectPath(
+                                    projectId
+                                  )}/settings/access-rights`}
                                 >
                                   <FormattedMessage
                                     {...messages.accessRights}

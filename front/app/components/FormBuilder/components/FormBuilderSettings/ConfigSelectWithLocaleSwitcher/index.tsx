@@ -97,8 +97,8 @@ const ConfigSelectWithLocaleSwitcher = ({
   const addOtherOption = (value, name) => {
     const newValues = value;
     newValues.push({
-      title_multiloc: { 'en': 'Other' },
-      other: true
+      title_multiloc: { en: 'Other' },
+      other: true,
     });
     setValue(name, newValues);
   };
@@ -108,6 +108,13 @@ const ConfigSelectWithLocaleSwitcher = ({
   const apiError = errors?.error && ([errors] as CLError[]);
   const validationError = errors?.message;
 
+  const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
+    // We want to prevent the form builder from being closed when enter is pressed
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   if (selectedLocale) {
     return (
       <>
@@ -116,7 +123,9 @@ const ConfigSelectWithLocaleSwitcher = ({
           control={control}
           defaultValue={defaultOptionValues}
           render={({ field: { ref: _ref, value: choices, onBlur } }) => {
-            const hasOtherOption = choices.some(choice => choice.other === true);
+            const hasOtherOption = choices.some(
+              (choice) => choice.other === true
+            );
             const toggleOtherOption = (value, name) => {
               if (hasOtherOption) {
                 removeOption(value, name, value.length - 1);
@@ -134,23 +143,22 @@ const ConfigSelectWithLocaleSwitcher = ({
             const eachOption = (choice, index) => {
               return (
                 <>
-                  <Box width="100%" pl={ choice.other === true ? '30px' : '0' }>
+                  <Box width="100%" pl={choice.other === true ? '30px' : '0'}>
                     <Input
                       id={`e2e-option-input-${index}`}
                       size="small"
                       type="text"
                       value={choice.title_multiloc[selectedLocale]}
+                      onKeyDown={handleKeyDown}
                       onChange={(value) => {
                         const updatedChoices = choices;
-                        updatedChoices[index].title_multiloc[
-                          selectedLocale
-                          ] = value;
+                        updatedChoices[index].title_multiloc[selectedLocale] =
+                          value;
                         if (
                           !updatedChoices[index].id &&
                           !updatedChoices[index].temp_id
                         ) {
-                          updatedChoices[index].temp_id =
-                            generateTempId();
+                          updatedChoices[index].temp_id = generateTempId();
                         }
                         setValue(name, updatedChoices);
                       }}
@@ -182,24 +190,18 @@ const ConfigSelectWithLocaleSwitcher = ({
                       margin="0px"
                       padding="0px"
                       buttonStyle="text"
-                      aria-label={formatMessage(
-                        messages.removeAnswer
-                      )}
+                      aria-label={formatMessage(messages.removeAnswer)}
                       onClick={() => {
                         removeOption(choices, name, index);
                         trigger();
                       }}
                     >
-                      <Icon
-                        name="delete"
-                        fill="coolGrey600"
-                        padding="0px"
-                      />
+                      <Icon name="delete" fill="coolGrey600" padding="0px" />
                     </Button>
                   )}
                 </>
-              )
-            }
+              );
+            };
 
             return (
               <Box
@@ -233,22 +235,24 @@ const ConfigSelectWithLocaleSwitcher = ({
                   </Box>
                   <DndProvider backend={HTML5Backend}>
                     <List key={choices?.length}>
-                      {choices?.sort((a, b) => a.other - b.other)
+                      {choices
+                        ?.sort((a, b) => a.other - b.other)
                         .map((choice, index) => {
-                        return (
-                          <Box key={choice.id}>
-                            {choice.other === true ? (
-                                <Row
-                                  key={choice.id}
-                                  isLastItem={true}
-                                >
+                          return (
+                            <Box key={choice.id}>
+                              {choice.other === true ? (
+                                <Row key={choice.id} isLastItem={true}>
                                   {eachOption(choice, index)}
                                 </Row>
                               ) : (
                                 <SortableRow
                                   id={choice.id}
                                   index={index}
-                                  moveRow={choice.other === true ? () => {} : handleDragRow}
+                                  moveRow={
+                                    choice.other === true
+                                      ? () => {}
+                                      : handleDragRow
+                                  }
                                   dropRow={() => {
                                     // Do nothing, no need to handle dropping a row for now
                                   }}
@@ -256,9 +260,9 @@ const ConfigSelectWithLocaleSwitcher = ({
                                   {eachOption(choice, index)}
                                 </SortableRow>
                               )}
-                          </Box>
-                        );
-                      })}
+                            </Box>
+                          );
+                        })}
                     </List>
                   </DndProvider>
                   <Button
@@ -269,7 +273,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                     text={formatMessage(messages.addAnswer)}
                   />
 
-                  <Box mt="24px">
+                  <Box mt="24px" data-cy="e2e-other-option-toggle">
                     <Toggle
                       label={formatMessage(messages.otherOption)}
                       checked={hasOtherOption}

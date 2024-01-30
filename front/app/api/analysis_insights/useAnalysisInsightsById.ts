@@ -7,18 +7,15 @@ type AnalysisInsightsWithIdsReturnType = UseQueryOptions<IInsights>[];
 
 const useAnalysisInsightsWithIds = ({
   analysisIds,
-  bookmarked,
 }: {
   analysisIds: string[];
-  bookmarked?: boolean;
 }) => {
   const queries = analysisIds
     ? analysisIds.map((analysisIds) => ({
         queryKey: insightsKeys.list({
           analysisId: analysisIds,
-          bookmarked,
         }),
-        queryFn: () => fetchInsights({ analysisId: analysisIds, bookmarked }),
+        queryFn: () => fetchInsights({ analysisId: analysisIds }),
       }))
     : [];
   return useQueries<AnalysisInsightsWithIdsReturnType>({

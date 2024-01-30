@@ -13,6 +13,7 @@ module Analysis
       inputs = analysis.inputs
 
       inputs = filter_tags(inputs)
+      inputs = filter_input_custom_field_no_empty_values(inputs)
       inputs = filter_published_at(inputs)
       inputs = filter_reactions(inputs)
       inputs = filter_comments(inputs)
@@ -42,6 +43,16 @@ module Analysis
         subquery = inputs.select(:id).joins(:taggings).where(taggings: { tag_id: params[:tag_ids] })
         inputs.where(id: subquery)
       end
+    end
+
+    def filter_input_custom_field_no_empty_values(inputs)
+      scope = inputs
+      if params[:input_custom_field_no_empty_values]
+        analysis.custom_fields.pluck(:key).each do |key|
+          scope = scope.where.not("ideas.custom_field_values->>'#{key}' IS NULL")
+        end
+      end
+      scope
     end
 
     def filter_published_at(inputs)
