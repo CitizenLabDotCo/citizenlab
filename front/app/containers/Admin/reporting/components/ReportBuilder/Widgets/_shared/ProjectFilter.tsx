@@ -42,8 +42,10 @@ const ProjectFilter = ({
   );
 
   const getEmptyOptionMessage = () => {
-    if (emptyOptionMessage) return emptyOptionMessage;
-    if (isAdmin(authUser)) return dashboardFilterMessages.allProjects;
+    if (isAdmin(authUser)) {
+      return emptyOptionMessage ?? dashboardFilterMessages.allProjects;
+    }
+
     return undefined;
   };
 

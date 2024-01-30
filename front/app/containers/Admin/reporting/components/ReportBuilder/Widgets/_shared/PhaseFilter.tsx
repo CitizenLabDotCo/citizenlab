@@ -28,8 +28,6 @@ const isCorrectPhase =
     return phase.attributes.participation_method === participationMethod;
   };
 
-const noop = () => {};
-
 const PhaseFilter = ({
   label,
   projectId,
@@ -66,20 +64,6 @@ const PhaseFilter = ({
         <Text color="red600">
           <FormattedMessage {...messages.noAppropriatePhases} />
         </Text>
-      </Box>
-    );
-  }
-
-  if (phaseOptions.length === 1) {
-    return (
-      <Box mb="20px">
-        <Select
-          label={label}
-          value={phaseOptions[0].value}
-          options={phaseOptions}
-          disabled
-          onChange={noop}
-        />
       </Box>
     );
   }
