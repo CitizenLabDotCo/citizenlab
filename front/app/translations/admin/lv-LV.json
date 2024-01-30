@@ -950,6 +950,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Ziņojuma kopsavilkums",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Pievienojiet projekta mērķi, izmantotās līdzdalības metodes un rezultātu",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Apmeklētāji",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Šajā projektā nav atrasti atbilstoši posmi",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Nav projekta",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "Šo pārskatu nevarat rediģēt, jo tajā ir iekļauti dati, kuriem jums nav piekļuves.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Vai esat pārliecināts, ka vēlaties dzēst \"{reportName}\"?",
