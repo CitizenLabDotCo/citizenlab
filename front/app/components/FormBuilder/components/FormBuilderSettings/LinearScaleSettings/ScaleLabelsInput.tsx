@@ -63,6 +63,13 @@ const ScaleLabelsInput = ({
     [onSelectedLocaleChange]
   );
 
+  const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
+    // We want to prevent the form builder from being closed when enter is pressed
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   if (selectedLocale) {
     return (
       <Controller
@@ -116,6 +123,7 @@ const ScaleLabelsInput = ({
                           updatedMultiloc[selectedLocale] = value;
                           setValue(minimumLabelName, updatedMultiloc);
                         }}
+                        onKeyDown={handleKeyDown}
                       />
                     </Box>
                     <Box display="flex" gap="36px" marginBottom="16px">
@@ -130,6 +138,7 @@ const ScaleLabelsInput = ({
                           updatedMultiloc[selectedLocale] = value;
                           setValue(maximumLabelName, updatedMultiloc);
                         }}
+                        onKeyDown={handleKeyDown}
                       />
                     </Box>
                   </>

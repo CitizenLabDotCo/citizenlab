@@ -11,7 +11,8 @@ import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import React, { useState } from 'react';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { removeRefs } from '../../../analysis/Insights/util';
+import { replaceIdRefsWithLinks } from '../../../analysis/Insights/util';
+import { useParams } from 'react-router-dom';
 
 type AnalysisInsight = {
   analysisId: string;
@@ -28,6 +29,10 @@ const Summary = ({
   summaryId: string;
   analysisId: string;
 }) => {
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
   const { data } = useAnalysisSummary({ analysisId, id: summaryId });
 
   const summary = data?.data.attributes.summary;
@@ -36,7 +41,12 @@ const Summary = ({
   }
   return (
     <Text fontSize="s" mt="0px">
-      {removeRefs(summary)}
+      {replaceIdRefsWithLinks({
+        insight: summary,
+        analysisId,
+        projectId,
+        phaseId,
+      })}
     </Text>
   );
 };
@@ -49,14 +59,29 @@ const Question = ({
   analysisId: string;
 }) => {
   const { data } = useAnalysisQuestion({ analysisId, id: summaryId });
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
   const question = data?.data.attributes.question;
-  if (!question) {
+  const answer = data?.data.attributes.answer;
+  if (!question || !answer) {
     return null;
   }
   return (
-    <Text fontSize="s" mt="0px">
-      {removeRefs(question)}
-    </Text>
+    <>
+      <Text fontSize="s" mt="0px" fontWeight="bold">
+        {question}
+      </Text>
+      <Text fontSize="s" mt="0px">
+        {replaceIdRefsWithLinks({
+          insight: answer,
+          analysisId,
+          projectId,
+          phaseId,
+        })}
+      </Text>
+    </>
   );
 };
 
