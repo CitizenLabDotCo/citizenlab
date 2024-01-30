@@ -33,6 +33,13 @@ const MultiselectSettings = ({
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
 
+  const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
+    // We want to prevent the form builder from being closed when enter is pressed
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   return (
     <Box mb="24px">
       <Box mb="16px">
@@ -65,6 +72,7 @@ const MultiselectSettings = ({
               max={watch(selectOptionsName).length}
               min="0"
               size="small"
+              onKeyDown={handleKeyDown}
             />
           </Box>
           <Box display="flex">
@@ -81,6 +89,7 @@ const MultiselectSettings = ({
               size="small"
               min={watch(minimumSelectCountName)}
               max={watch(selectOptionsName).length}
+              onKeyDown={handleKeyDown}
             />
           </Box>
         </Box>
