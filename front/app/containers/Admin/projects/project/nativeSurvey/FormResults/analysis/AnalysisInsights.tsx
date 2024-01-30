@@ -3,6 +3,7 @@ import {
   IconButton,
   colors,
   Text,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 import { IAnalysisData } from 'api/analyses/types';
 import useAnalysisInsightsWithIds from 'api/analysis_insights/useAnalysisInsightsById';
@@ -51,6 +52,9 @@ const Summary = ({
           analysisId={analysisId}
         />
       )}
+      <Text fontWeight="bold">
+        AI Summary <Icon name="flash" />
+      </Text>
       <Text>
         {replaceIdRefsWithLinks({
           insight: summary,
@@ -90,7 +94,9 @@ const Question = ({
           analysisId={analysisId}
         />
       )}
-      <Text fontWeight="bold">{question}</Text>
+      <Text fontWeight="bold">
+        {question} <Icon name="question-bubble" />
+      </Text>
       <Text mt="0px">
         {replaceIdRefsWithLinks({
           insight: answer,
