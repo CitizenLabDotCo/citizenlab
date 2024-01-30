@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :layer, class: 'CustomMaps::Layer' do
+    type { 'CustomMaps::GeojsonLayer' }
     map_config
     title_multiloc do
       {

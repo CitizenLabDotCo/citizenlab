@@ -13,7 +13,7 @@
 #  marker_svg_url  :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  type            :string           default("CustomMaps::GeojsonLayer"), not null
+#  type            :string
 #  layer_url       :string
 #
 # Indexes

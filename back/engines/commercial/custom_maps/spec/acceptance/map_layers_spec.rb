@@ -456,6 +456,7 @@ resource 'Map Layers' do
         with_options scope: :layer, required: true, with_example: true do
           parameter :type,            'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriLayer)', required: true
           parameter :geojson_file,    'The GeoJSON file with all the specs for the layer', required: false
+          parameter :title_multiloc,  'The name of the layer in multiple locales'
         end
 
         let(:layer) { esri_map_config.layers.first }
@@ -469,18 +470,23 @@ resource 'Map Layers' do
               filename: 'seattle.geojson'
             }
           end
+          let(:title_multiloc) { { 'en' => 'new layer title' } }
 
           example 'Fails to update the map layer', document: false do
             do_request
-            assert_status 422
+            assert_status 200
+
+            updated_layer = CustomMaps::Layer.find(layer.id)
+            expect(updated_layer.type).to eq 'CustomMaps::EsriLayer'
+            expect(updated_layer.title_multiloc).to eq({ 'en' => 'new layer title' })
           end
         end
       end
 
       patch 'web_api/v1/projects/:geojson_map_project_id/map_config/layers/:id' do
         with_options scope: :layer, required: true, with_example: true do
-          parameter :type,            'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriLayer)', required: true
-          parameter :layer_url,       'url layer of non-geojson layer type (required, if non-geojson type)', required: false
+          parameter :type,      'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriLayer)', required: true
+          parameter :layer_url, 'url layer of non-geojson layer type (required, if non-geojson type)', required: false
         end
 
         let(:layer) { geojson_map_config.layers.first }
@@ -493,6 +499,9 @@ resource 'Map Layers' do
           example 'Fails to update the map layer', document: false do
             do_request
             assert_status 422
+
+            updated_layer = CustomMaps::Layer.find(layer.id)
+            expect(updated_layer.type).to eq 'CustomMaps::GeojsonLayer'
           end
         end
       end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# This migration comes from custom_maps (originally 20240125113316)
 class AddTypeAndLayerUrlToMapsLayers < ActiveRecord::Migration[7.0]
   # rubocop:disable Rails/ApplicationRecord
   class StubMapsLayer < ActiveRecord::Base
