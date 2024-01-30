@@ -1070,8 +1070,7 @@ CREATE TABLE public.analysis_insights (
     filters jsonb DEFAULT '{}'::jsonb NOT NULL,
     inputs_ids jsonb,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    bookmarked boolean DEFAULT false NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -7928,6 +7927,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231124114112'),
 ('20231130093345'),
 ('20231212151032'),
-('20231214100537');
+('20231214100537'),
+('20240130142750');
 
 
