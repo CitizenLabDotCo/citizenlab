@@ -3,7 +3,13 @@ import moment from 'moment';
 
 // components
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
-import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Accordion,
+  Spinner,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 
 // shared widgets
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
@@ -83,8 +89,21 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
     }
   );
 
-  if (!appConfigurationLocales || !authUser) return null;
-  if (isModerator && !projects) return null;
+  if (!appConfigurationLocales || !authUser || (isModerator && !projects)) {
+    return (
+      <Container>
+        <Box
+          h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+          w="100%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Spinner />
+        </Box>
+      </Container>
+    );
+  }
 
   // Default end date for charts (today)
   const chartEndDate = moment().format('YYYY-MM-DD');
