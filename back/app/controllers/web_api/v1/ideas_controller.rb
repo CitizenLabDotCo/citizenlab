@@ -283,7 +283,7 @@ class WebApi::V1::IdeasController < ApplicationController
     extra_field_values.each do |key, _value|
       if key.end_with? '_other'
         parent_field_key = key.delete_suffix '_other'
-        parent_field_values = extra_field_values[parent_field_key]&.is_a?(Array) ? extra_field_values[parent_field_key] : [extra_field_values[parent_field_key]]
+        parent_field_values = extra_field_values[parent_field_key].is_a?(Array) ? extra_field_values[parent_field_key] : [extra_field_values[parent_field_key]]
         if parent_field_values.exclude? 'other'
           extra_field_values.delete key
         end
