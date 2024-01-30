@@ -72,7 +72,7 @@ describe('Form builder single choice field', () => {
       .click({ force: true });
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('#e2e-option-input-0').type('Car', { force: true });
-    cy.get('#e2e-option-input-1').type(otherText, { force: true });
+    cy.get('#e2e-option-input-1').clear().type(otherText, { force: true });
     cy.contains('Save').click();
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
     cy.contains(questionTitle).should('exist');
