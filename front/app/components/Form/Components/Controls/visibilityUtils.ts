@@ -171,7 +171,7 @@ export const isVisible = (
 };
 
 // This returns the elements on a page that are visible based on the data and the other option selection. You can pass returnHidden as true to get the hidden elements
-export const extractElementsByOtherOptionLgic = (
+export const extractElementsByOtherOptionLogic = (
   page: PageType,
   data: any,
   returnHidden: boolean = false
@@ -190,12 +190,18 @@ export const extractElementsByOtherOptionLgic = (
     if (returnHidden) {
       return (
         field &&
-        (!field.parentFieldKey || data[field.parentFieldKey] !== 'other')
+        (!field.parentFieldKey ||
+          (Array.isArray(data[field.parentFieldKey])
+            ? !data[field.parentFieldKey].includes('other')
+            : data[field.parentFieldKey] !== 'other'))
       );
     } else {
       return (
         !field ||
-        (field.parentFieldKey && data[field.parentFieldKey] === 'other')
+        (field.parentFieldKey &&
+          (Array.isArray(data[field.parentFieldKey])
+            ? data[field.parentFieldKey].includes('other')
+            : data[field.parentFieldKey] === 'other'))
       );
     }
   });
