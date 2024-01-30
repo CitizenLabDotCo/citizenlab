@@ -13,11 +13,6 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.surveySettingsTitle',
     defaultMessage: 'Survey title',
   },
-  surveyNoResults: {
-    id: 'app.containers.admin.ReportBuilder.surveyNoResults',
-    defaultMessage:
-      'There are no survey results for the filters you have selected.',
-  },
   surveyNoQuestions: {
     id: 'app.containers.admin.ReportBuilder.surveyNoQuestions',
     defaultMessage:

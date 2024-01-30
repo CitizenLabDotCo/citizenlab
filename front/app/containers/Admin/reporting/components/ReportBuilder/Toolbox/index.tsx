@@ -48,6 +48,7 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjects from 'api/projects/useProjects';
+import usePhase from 'api/phases/usePhase';
 
 // utils
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
@@ -89,7 +90,14 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
     }
   );
 
-  if (!appConfigurationLocales || !authUser || (isModerator && !projects)) {
+  const { data: phase } = usePhase(phaseId);
+
+  if (
+    !appConfigurationLocales ||
+    !authUser ||
+    (isModerator && !projects) ||
+    (phaseId && !phase)
+  ) {
     return (
       <Container>
         <Box
@@ -118,6 +126,9 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   // AND the user is moderator (i.e. projects is defined),
   // we use the first project in the list of projects as the default project.
   const selectedProjectId = projectId ?? projects?.data[0]?.id;
+
+  // Participation method if the report is in a phase context
+  const participationMethod = phase?.data.attributes.participation_method;
 
   return (
     <Container>
@@ -205,7 +216,9 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
               <SurveyResultsWidget
                 title={toMultiloc(WIDGET_TITLES.SurveyResultsWidget)}
                 projectId={selectedProjectId}
-                phaseId={phaseId}
+                phaseId={
+                  participationMethod === 'native_survey' ? phaseId : undefined
+                }
               />
             }
             icon="survey"
@@ -219,7 +232,9 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
                 numberOfIdeas={5}
                 collapseLongText={false}
                 projectId={selectedProjectId}
-                phaseId={phaseId}
+                phaseId={
+                  participationMethod === 'ideation' ? phaseId : undefined
+                }
               />
             }
             icon="idea"

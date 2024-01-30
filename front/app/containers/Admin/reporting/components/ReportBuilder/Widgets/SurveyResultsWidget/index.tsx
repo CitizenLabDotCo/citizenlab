@@ -29,6 +29,7 @@ import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey
 
 // types
 import { IOption, Multiloc } from 'typings';
+import { getEmptyMessage } from '../utils';
 
 export type Props = {
   title?: Multiloc;
@@ -37,13 +38,22 @@ export type Props = {
   shownQuestions?: boolean[];
 };
 
-const SurveyResultsWidget = ({ title, phaseId, shownQuestions }: Props) => {
+const SurveyResultsWidget = ({
+  title,
+  projectId,
+  phaseId,
+  shownQuestions,
+}: Props) => {
+  const emptyMessage = getEmptyMessage({ projectId, phaseId });
+
   return (
     <Card title={title} data-testid="survey-results-widget">
-      {phaseId ? (
+      {emptyMessage ? (
+        <NoData message={emptyMessage} />
+      ) : phaseId ? (
         <SurveyResults phaseId={phaseId} shownQuestions={shownQuestions} />
       ) : (
-        <NoData message={messages.surveyNoResults} />
+        <></>
       )}
     </Card>
   );
