@@ -450,6 +450,53 @@ resource 'Map Layers' do
     include_examples 'POST Esri map layer'
     include_examples 'PATCH Esri map layer'
     include_examples 'DELETE GeoJSON map layer'
+
+    context 'when attempting to update layer type' do
+      patch 'web_api/v1/projects/:esri_map_project_id/map_config/layers/:id' do
+        with_options scope: :layer, required: true, with_example: true do
+          parameter :type,            'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriLayer)', required: true
+          parameter :geojson_file,    'The GeoJSON file with all the specs for the layer', required: false
+        end
+
+        let(:layer) { esri_map_config.layers.first }
+        let(:id)    { layer.id }
+
+        context 'when attempting to change to an Geojson layer' do
+          let(:type) { 'CustomMaps::GeojsonLayer' }
+          let(:geojson_file) do
+            {
+              base64: encode_json_file_as_base64('brussels-districts.geojson'),
+              filename: 'seattle.geojson'
+            }
+          end
+
+          example 'Fails to update the map layer', document: false do
+            do_request
+            assert_status 422
+          end
+        end
+      end
+
+      patch 'web_api/v1/projects/:geojson_map_project_id/map_config/layers/:id' do
+        with_options scope: :layer, required: true, with_example: true do
+          parameter :type,            'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriLayer)', required: true
+          parameter :layer_url,       'url layer of non-geojson layer type (required, if non-geojson type)', required: false
+        end
+
+        let(:layer) { geojson_map_config.layers.first }
+        let(:id)    { layer.id }
+
+        context 'when attempting to change to an Esri layer' do
+          let(:type) { 'CustomMaps::EsriLayer' }
+          let(:layer_url) { 'https://some.domain.com/some_layer' }
+
+          example 'Fails to update the map layer', document: false do
+            do_request
+            assert_status 422
+          end
+        end
+      end
+    end
   end
 
   context 'when logged in as a project manager' do
