@@ -950,6 +950,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "ملخص التقرير",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "أضف هدف المشروع وطرق المشاركة المتبعة والنتيجة",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "زوار",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "لم يتم العثور على مراحل مناسبة في هذا المشروع",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "لا يوجد مشروع",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "لا يمكنك تعديل هذا التقرير لأنه يحتوي على بيانات لا يمكنك الوصول إليها.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "هل تريد بالتأكيد حذف \"{reportName}\"؟",
