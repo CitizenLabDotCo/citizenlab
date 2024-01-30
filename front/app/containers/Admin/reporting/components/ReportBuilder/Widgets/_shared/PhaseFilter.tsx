@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 
 // hooks
 import usePhases from 'api/phases/usePhases';
@@ -52,11 +52,6 @@ const PhaseFilter = ({
         }))
       : null;
   }, [correctPhases, localize]);
-
-  useEffect(() => {
-    if (!phaseOptions || phaseOptions.length === 0) return;
-    onPhaseFilter(phaseOptions[0]);
-  }, [phaseOptions, onPhaseFilter]);
 
   if (!phaseOptions || phaseOptions.length === 0) {
     return (

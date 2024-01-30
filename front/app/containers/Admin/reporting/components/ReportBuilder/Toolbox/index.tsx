@@ -219,6 +219,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
                 numberOfIdeas={5}
                 collapseLongText={false}
                 projectId={selectedProjectId}
+                phaseId={phaseId}
               />
             }
             icon="idea"
