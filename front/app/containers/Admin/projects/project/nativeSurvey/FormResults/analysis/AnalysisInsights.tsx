@@ -32,6 +32,7 @@ const Summary = ({
   summaryId: string;
   analysisId: string;
 }) => {
+  const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -45,29 +46,38 @@ const Summary = ({
     return null;
   }
   return (
-    <>
-      {filters && (
-        <FilterItems
-          filters={filters}
-          isEditable={false}
-          analysisId={analysisId}
-        />
-      )}
-      <Text fontWeight="bold">
-        AI Summary <Icon name="flash" />
-      </Text>
-      <Text>
-        {replaceIdRefsWithLinks({
-          insight: summary,
-          analysisId,
-          projectId,
-          phaseId,
-        })}
-      </Text>
-      <Button buttonStyle="secondary" icon="eye">
-        Explore
-      </Button>
-    </>
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+      h="100%"
+    >
+      <Box>
+        {filters && (
+          <FilterItems
+            filters={filters}
+            isEditable={false}
+            analysisId={analysisId}
+          />
+        )}
+        <Text fontWeight="bold">
+          {formatMessage(messages.aiSummary)} <Icon name="flash" />
+        </Text>
+        <Text>
+          {replaceIdRefsWithLinks({
+            insight: summary,
+            analysisId,
+            projectId,
+            phaseId,
+          })}
+        </Text>
+      </Box>
+      <Box display="flex">
+        <Button buttonStyle="secondary" icon="eye">
+          {formatMessage(messages.explore)}
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
@@ -78,6 +88,7 @@ const Question = ({
   summaryId: string;
   analysisId: string;
 }) => {
+  const { formatMessage } = useIntl();
   const { data } = useAnalysisQuestion({ analysisId, id: summaryId });
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -118,7 +129,7 @@ const Question = ({
       </Box>
       <Box display="flex">
         <Button buttonStyle="secondary" icon="eye">
-          Explore
+          {formatMessage(messages.explore)}
         </Button>
       </Box>
     </Box>
