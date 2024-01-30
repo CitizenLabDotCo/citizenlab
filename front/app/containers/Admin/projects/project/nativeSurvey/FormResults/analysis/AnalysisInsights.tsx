@@ -141,6 +141,7 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
           justifyContent="center"
           alignItems="center"
           w="100%"
+          mb="20px"
         >
           <IconButton
             iconName="chevron-left"
@@ -167,23 +168,25 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
           />
         </Box>
       )}
-      {selectedInsight && (
-        <>
-          {selectedInsight.relationship.type === 'analysis_question' ? (
-            <Question
-              key={selectedInsight.relationship.id}
-              summaryId={selectedInsight.relationship.id}
-              analysisId={selectedInsight.analysisId}
-            />
-          ) : (
-            <Summary
-              key={selectedInsight.relationship.id}
-              summaryId={selectedInsight.relationship.id}
-              analysisId={selectedInsight.analysisId}
-            />
-          )}
-        </>
-      )}
+      <Box h="450px" overflowY="auto">
+        {selectedInsight && (
+          <>
+            {selectedInsight.relationship.type === 'analysis_question' ? (
+              <Question
+                key={selectedInsight.relationship.id}
+                summaryId={selectedInsight.relationship.id}
+                analysisId={selectedInsight.analysisId}
+              />
+            ) : (
+              <Summary
+                key={selectedInsight.relationship.id}
+                summaryId={selectedInsight.relationship.id}
+                analysisId={selectedInsight.analysisId}
+              />
+            )}
+          </>
+        )}
+      </Box>
     </Box>
   );
 };

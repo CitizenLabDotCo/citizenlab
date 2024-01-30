@@ -39,7 +39,7 @@ const TextResponses = ({ textResponses }: TextResponsesProps) => {
         </Text>
       </Box>
 
-      <Box ref={parentRef} height="400px" overflow="auto" pt="12px">
+      <Box ref={parentRef} height="450px" overflow="auto" pt="12px">
         <Box height={`${getTotalSize()}px`} width="100%" position="relative">
           {getVirtualItems().map((virtualItem) => (
             <Item
