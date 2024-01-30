@@ -41,7 +41,7 @@ const Results = ({
     >
       {phase &&
         phase.data.attributes.voting_method === 'budgeting' &&
-        budget && (
+        typeof budget === 'number' && (
           <Text mb="8px" mt="8px" color="tenantPrimary">
             {formatMessage(messages.cost)} <FormattedBudget value={budget} />
           </Text>
