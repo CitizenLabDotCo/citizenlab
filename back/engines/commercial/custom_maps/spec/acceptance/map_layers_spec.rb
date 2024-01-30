@@ -11,7 +11,7 @@ resource 'Map Layers' do
     create(:map_config,
       :with_positioning,
       :with_tile_provider,
-      :with_layers,
+      :with_geojson_layers,
       :with_legend,
       project: geojson_map_project)
   end
@@ -472,7 +472,7 @@ resource 'Map Layers' do
           end
           let(:title_multiloc) { { 'en' => 'new layer title' } }
 
-          example 'Fails to update the map layer', document: false do
+          example 'Fails to update the map layer type', document: false do
             do_request
             assert_status 200
 
@@ -496,7 +496,7 @@ resource 'Map Layers' do
           let(:type) { 'CustomMaps::EsriLayer' }
           let(:layer_url) { 'https://some.domain.com/some_layer' }
 
-          example 'Fails to update the map layer', document: false do
+          example 'Fails to update the map layer type', document: false do
             do_request
             assert_status 422
 
