@@ -33,11 +33,7 @@ class Identity < ApplicationRecord
         auth
       end
 
-      uid = if authver_method.respond_to?(:profile_to_uid)
-        authver_method.profile_to_uid(auth)
-      else
-        auth['uid']
-      end
+      uid = authver_method.profile_to_uid(auth)
       find_with_omniauth(uid, auth) || build_with_omniauth(uid, auth_to_persist)
     end
 

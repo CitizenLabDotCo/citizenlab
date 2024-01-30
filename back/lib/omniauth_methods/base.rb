@@ -14,6 +14,10 @@ module OmniauthMethods
       {}
     end
 
+    def profile_to_uid(auth)
+      auth['uid']
+    end
+
     # @return [Array<Symbol>] Returns a list of user attributes that can be updated from the auth response hash
     def updateable_user_attrs
       []
