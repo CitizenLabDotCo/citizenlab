@@ -633,7 +633,7 @@ const AdminProjectEventEdit = () => {
                     <Map
                       position={locationPoint}
                       projectId={projectId}
-                      mapHeight="160px"
+                      mapHeight="210px"
                       hideLegend={true}
                       singleClickEnabled={false}
                     />

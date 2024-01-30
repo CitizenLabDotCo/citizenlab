@@ -1,14 +1,12 @@
 import React, { memo } from 'react';
 
 // components
-import Map from 'components/Map';
+import EsriMap from 'components/EsriMap';
 
-// styles
-import styled from 'styled-components';
-
-// types
-import { LatLngTuple } from 'leaflet';
-
+// esri
+import Graphic from '@arcgis/core/Graphic';
+import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
+import Point from '@arcgis/core/geometry/Point';
 export interface Props {
   position: GeoJSON.Point;
   projectId?: string | null;
@@ -17,31 +15,36 @@ export interface Props {
   singleClickEnabled?: boolean;
 }
 
-const StyledMap = styled(Map)`
-  .leaflet-container {
-    cursor: pointer !important;
-    interactive: false !important;
-  }
-`;
+const MapComponent = memo<Props>(({ position, mapHeight }) => {
+  // Generate a point graphic for the event location
+  const simpleMarkerSymbol = {
+    type: 'simple-marker',
+    color: [255, 255, 255], // Orange
+    outline: {
+      color: [255, 255, 255], // White
+      width: 1,
+    },
+  };
 
-const MapComponent = memo<Props>(
-  ({ position, projectId, mapHeight, hideLegend, singleClickEnabled }) => {
-    const center = position.coordinates;
-    const centerLatLng = [center[1], center[0]] as LatLngTuple;
+  const pointGraphic = new Graphic({
+    geometry: new Point({
+      longitude: position.coordinates[0],
+      latitude: position.coordinates[1],
+    }),
+    symbol: simpleMarkerSymbol,
+  });
 
-    return (
-      <StyledMap
-        points={[{ ...position, id: 'markerPosition' }]}
-        centerLatLng={centerLatLng}
-        projectId={projectId}
-        mapHeight={mapHeight ? mapHeight : '600px'}
-        noMarkerClustering={false}
-        zoomLevel={20}
-        hideLegend={hideLegend}
-        singleClickEnabled={singleClickEnabled}
-      />
-    );
-  }
-);
+  const graphicsLayer = new GraphicsLayer();
+  graphicsLayer.add(pointGraphic);
+
+  return (
+    <EsriMap
+      center={position}
+      height={mapHeight}
+      zoom={18}
+      layers={[graphicsLayer]}
+    />
+  );
+});
 
 export default MapComponent;
