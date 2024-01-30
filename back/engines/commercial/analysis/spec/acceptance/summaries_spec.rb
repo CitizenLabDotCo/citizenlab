@@ -26,8 +26,7 @@ resource 'Summaries' do
           filters: {},
           accuracy: nil,
           created_at: kind_of(String),
-          updated_at: kind_of(String),
-          bookmarked: false
+          updated_at: kind_of(String)
         },
         relationships: {
           background_task: {
@@ -81,8 +80,7 @@ resource 'Summaries' do
           },
           accuracy: 0.8,
           created_at: kind_of(String),
-          updated_at: kind_of(String),
-          bookmarked: false
+          updated_at: kind_of(String)
         },
         relationships: {
           background_task: {

@@ -12,7 +12,6 @@
 #  inputs_ids       :jsonb
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  bookmarked       :boolean          default(FALSE), not null
 #
 # Indexes
 #

@@ -32,8 +32,6 @@ import {
   removeRefs,
   replaceIdRefsWithLinks,
 } from './util';
-import useToggleInsightBookmark from 'api/analysis_insights/useBookmarkAnalysisInsight';
-
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
   word-break: break-word;
@@ -52,8 +50,6 @@ const Summary = ({ insight }: Props) => {
     projectId: string;
   };
   const { mutate: deleteSummary } = useDeleteAnalysisInsight();
-  const { mutate: toggleBookmark } = useToggleInsightBookmark();
-
   const { data: summary } = useAnalysisSummary({
     analysisId,
     id: insight.relationships.insightable.data.id,
@@ -214,17 +210,6 @@ const Summary = ({ insight }: Props) => {
             iconSize="24px"
             iconColor={colors.teal400}
             placement="left-end"
-          />
-          <IconButton
-            iconName={
-              summary.data.attributes.bookmarked
-                ? 'bookmark'
-                : 'bookmark-outline'
-            }
-            iconColor={colors.teal400}
-            iconColorOnHover={colors.teal700}
-            a11y_buttonActionMessage={formatMessage(messages.bookmarkSummary)}
-            onClick={() => toggleBookmark({ analysisId, id: insight.id })}
           />
         </Box>
       </Box>
