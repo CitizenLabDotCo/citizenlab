@@ -950,6 +950,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Résumé du rapport",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Ajoutez le but du projet, les méthodes de participation utilisées et le résultat",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visiteurs",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Aucune phase appropriée n'a été trouvée dans ce projet",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Aucun projet",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "Vous ne pouvez pas modifier ce rapport, car il contient des données auxquelles vous n'avez pas accès.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Etes-vous sûr de vouloir supprimer \"{reportName}\" ?",
