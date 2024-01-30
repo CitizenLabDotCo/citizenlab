@@ -202,8 +202,11 @@ export function roundToNearestMultipleOfFive(date: Date): Date {
   );
 }
 
-export function calculateRoundedEndDate(startDate: Date, minutes = 30): Date {
+export function calculateRoundedEndDate(
+  startDate: Date,
+  durationInMinutes = 30
+): Date {
   const endDate = new Date(startDate);
-  endDate.setMinutes(startDate.getMinutes() + minutes);
+  endDate.setMinutes(startDate.getMinutes() + durationInMinutes);
   return endDate;
 }
