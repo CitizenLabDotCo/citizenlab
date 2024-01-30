@@ -13,8 +13,9 @@ const STATIC_SCALAR_FILTERS = [
   'votes_to',
   'comments_from',
   'comments_to',
-  'input_custom_field_no_empty_values',
 ];
+
+const STATIC_BOOLEAN_FILTERS = ['input_custom_field_no_empty_values'];
 
 const STATIC_ARRAY_FILTERS = ['tag_ids'];
 
@@ -27,7 +28,7 @@ const useAnalysisFilterParams = () => {
 
   const filters = Object.entries(allParams).reduce(
     (accumulator, [key, value]) => {
-      if (key === 'input_custom_field_no_empty_values') {
+      if (STATIC_BOOLEAN_FILTERS.includes(key)) {
         accumulator[key] = value === 'true' ? true : false;
       } else if (
         key.match(/^(author|input)_custom_([a-f0-9-]+)$/) ||

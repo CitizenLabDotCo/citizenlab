@@ -21,7 +21,6 @@ export interface IQuestionData {
     accuracy: number | null;
     created_at: string;
     updated_at: string;
-    bookmarked: boolean;
   };
   relationships: {
     background_task: {
