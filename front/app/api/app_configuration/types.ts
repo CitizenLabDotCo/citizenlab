@@ -224,6 +224,7 @@ export interface IAppConfigurationSettings {
   permission_option_email_confirmation?: AppConfigurationFeature;
   permissions_custom_fields?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
+  esri_integration?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
   user_blocking?: AppConfigurationFeature & {
