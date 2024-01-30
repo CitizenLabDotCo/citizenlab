@@ -4,10 +4,12 @@ import React, { useMemo, useEffect } from 'react';
 import usePhases from 'api/phases/usePhases';
 
 // components
-import { Box, Text, Select } from '@citizenlab/cl2-component-library';
+import { Box, Select, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 // typings
 import { IOption } from 'typings';
@@ -25,6 +27,8 @@ const isCorrectPhase =
   (participationMethod: ParticipationMethod) => (phase: IPhaseData) => {
     return phase.attributes.participation_method === participationMethod;
   };
+
+const noop = () => {};
 
 const PhaseFilter = ({
   label,
@@ -56,14 +60,26 @@ const PhaseFilter = ({
     onPhaseFilter(phaseOptions[0]);
   }, [phaseOptions, onPhaseFilter]);
 
-  if (!phaseOptions || phaseOptions.length === 0) return null;
+  if (!phaseOptions || phaseOptions.length === 0) {
+    return (
+      <Box mb="20px">
+        <Text color="red600">
+          <FormattedMessage {...messages.noAppropriatePhases} />
+        </Text>
+      </Box>
+    );
+  }
 
   if (phaseOptions.length === 1) {
     return (
-      <Box>
-        <Text variant="bodyM" color="textSecondary">
-          {phaseOptions[0].label}
-        </Text>
+      <Box mb="20px">
+        <Select
+          label={label}
+          value={phaseOptions[0].value}
+          options={phaseOptions}
+          disabled
+          onChange={noop}
+        />
       </Box>
     );
   }
