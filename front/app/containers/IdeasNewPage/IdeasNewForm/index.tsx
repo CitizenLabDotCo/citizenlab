@@ -10,6 +10,7 @@ import usePhase from 'api/phases/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
 import { useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
+import useUpdateIdea from "api/ideas/useUpdateIdea";
 
 // i18n
 import messages from '../messages';
@@ -78,6 +79,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
   const { mutateAsync: addIdea } = useAddIdea();
+  const { mutateAsync: updateIdea } = useUpdateIdea();
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const [queryParams] = useSearchParams();
@@ -160,6 +162,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
   };
 
   const onSubmit = async (data: FormValues) => {
+    console.log(data);
     let location_point_geojson;
 
     if (data.location_description && !data.location_point_geojson) {
@@ -177,14 +180,29 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
         ? [phaseId]
         : null;
 
-    const idea = await addIdea({
-      ...data,
-      location_point_geojson,
-      project_id: project.data.id,
-      publication_status: 'published',
-      phase_ids,
-      anonymous: postAnonymously ? true : undefined,
-    });
+    // Update the idea if id is present
+    // TODO: JS - Strip out 'last_submitted_page' from the formData - use this to set where they got to and load that data
+
+    const idea = false ?
+      await updateIdea({
+        id: '2345',
+        requestBody: {
+          ...data,
+          location_point_geojson,
+          project_id: project.data.id,
+          publication_status: data['publication_status'] ?? 'published',
+          phase_ids,
+          anonymous: postAnonymously ? true : undefined,
+        }
+      }) :
+      await addIdea({
+        ...data,
+        location_point_geojson,
+        project_id: project.data.id,
+        publication_status: data['publication_status'] ?? 'published',
+        phase_ids,
+        anonymous: postAnonymously ? true : undefined,
+      });
 
     const ideaId = idea.data.id;
     config?.onFormSubmission({ project: project.data, ideaId, idea });

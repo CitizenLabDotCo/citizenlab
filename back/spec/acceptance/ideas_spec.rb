@@ -767,6 +767,17 @@ resource 'Ideas' do
           expect(idea.assignee_id).to be_nil
           expect(idea.assigned_at).to be_nil
         end
+
+        context 'creating a draft survey response' do
+          let(:publication_status) { 'draft' }
+
+          example 'sets the publication status to draft' do
+            do_request
+            assert_status 201
+            idea = Idea.find(json_parse(response_body).dig(:data, :id))
+            expect(idea.publication_status).to eq 'draft'
+          end
+        end
       end
 
       describe 'when posting an idea in an active ideation phase, the correct form is used' do
@@ -800,6 +811,8 @@ resource 'Ideas' do
       describe 'Creating an idea anonymously' do
         let(:allow_anonymous_participation) { true }
         let(:anonymous) { true }
+
+        # TODO: JS - Don't allow draft responses for anonymous posting?
 
         before { project.phases.first.update! allow_anonymous_participation: allow_anonymous_participation }
 
@@ -1187,6 +1200,20 @@ resource 'Ideas' do
             do_request
             assert_status 200
             expect(response_data.dig(:relationships, :author, :data, :id)).not_to eq author_id
+          end
+        end
+
+        describe 'Submitting a final native survey response' do
+          let(:project) { create(:single_phase_native_survey_project) }
+          let(:idea) { create(:native_survey_response, project: project, publication_status: 'draft', author: @user) }
+
+          let(:id) { idea.id }
+          let(:publication_status) { 'published' }
+          # let(:title_multiloc) { { 'en' => 'New title' } }
+
+          example_request 'Can change a survey response from draft to published (as the author)' do
+            assert_status 200
+            expect(response_data[:attributes][:publication_status]).to eq 'published'
           end
         end
 

@@ -121,6 +121,7 @@ const CLPageLayout = memo(
 
     const handleNextAndSubmit = async () => {
       if (showSubmit && onSubmit) {
+        console.log('Submitting form');
         setIsLoading(true);
         await onSubmit(getFilteredDataForUserPath(userPagePath, data));
         return;
@@ -143,6 +144,14 @@ const CLPageLayout = memo(
         scrollToTop();
         setCurrentStep(currentStep + 1);
         setIsLoading(false);
+
+        // TODO: JS - Separate function here for saving draft - without the filtered data bit - that can happen on final submit
+        if (onSubmit) {
+          data['publication_status'] = 'draft';
+          console.log('Going to next page:', data);
+          await onSubmit(getFilteredDataForUserPath(userPagePath, data));
+          return;
+        }
       } else {
         setShowAllErrors?.(true);
         setScrollToError(true);
