@@ -950,6 +950,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Streszczenie sprawozdania",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Dodaj cel projektu, zastosowane metody uczestnictwa oraz wynik.",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Odwiedzający",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "W tym projekcie nie znaleziono odpowiednich faz",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Brak projektu",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "Nie możesz edytować tego raportu, ponieważ zawiera on dane, do których nie masz dostępu.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Czy na pewno chcesz usunąć \"{reportName}\"?",
