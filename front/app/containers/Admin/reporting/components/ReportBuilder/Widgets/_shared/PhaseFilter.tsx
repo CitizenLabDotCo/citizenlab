@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import usePhases from 'api/phases/usePhases';
 
 // components
-import { Box, Select, Text } from '@citizenlab/cl2-component-library';
+import { Box, Select, Spinner, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -53,7 +53,15 @@ const PhaseFilter = ({
       : null;
   }, [correctPhases, localize]);
 
-  if (!phaseOptions || phaseOptions.length === 0) {
+  if (!phaseOptions) {
+    return (
+      <Box mb="20px">
+        <Spinner />
+      </Box>
+    );
+  }
+
+  if (phaseOptions.length === 0) {
     return (
       <Box mb="20px">
         <Text color="red600">
