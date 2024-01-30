@@ -131,15 +131,19 @@ const AdminProjectEventEdit = () => {
     : { ...attributeDiff };
 
   useEffect(() => {
-    if (!event && !isInitialLoading) {
+    if (!isInitialLoading) {
       const initialRoundedStartDate = roundToNearestMultipleOfFive(new Date());
       const initialRoundedEndDate = calculateRoundedEndDate(
         initialRoundedStartDate
       );
 
       setAttributeDiff({
-        start_at: initialRoundedStartDate.toISOString(),
-        end_at: initialRoundedEndDate.toISOString(),
+        start_at: event
+          ? event.data.attributes.start_at
+          : initialRoundedStartDate.toISOString(),
+        end_at: event
+          ? event.data.attributes.end_at
+          : initialRoundedEndDate.toISOString(),
       });
     }
   }, [event, isInitialLoading]);
@@ -300,21 +304,42 @@ const AdminProjectEventEdit = () => {
             [name]: time.toISOString(),
           };
 
+          const isStartDateAfterEndDate =
+            newAttributes['start_at'] && newAttributes['end_at']
+              ? newAttributes['start_at'] > newAttributes['end_at']
+              : false;
+
           // If the start time is changed, update the end time
           if (name === 'start_at' && newAttributes['start_at']) {
-            const duration = newAttributes['end_at']
+            const { end_at } = newAttributes;
+            const duration = end_at
               ? moment
                   .duration(
-                    moment(newAttributes['end_at']).diff(
-                      moment(previousState['start_at'])
-                    )
+                    moment(end_at).diff(moment(previousState['start_at']))
                   )
                   .asMinutes()
               : 30;
-            const startDate = new Date(newAttributes['start_at']);
+
             newAttributes['end_at'] = calculateRoundedEndDate(
-              startDate,
+              new Date(newAttributes['start_at']),
               duration
+            ).toISOString();
+          } else if (
+            name === 'end_at' &&
+            newAttributes['end_at'] &&
+            isStartDateAfterEndDate
+          ) {
+            const duration = moment
+              .duration(
+                moment(previousState['end_at']).diff(
+                  moment(newAttributes['start_at'])
+                )
+              )
+              .asMinutes();
+
+            newAttributes['start_at'] = calculateRoundedEndDate(
+              new Date(newAttributes['end_at']),
+              -duration
             ).toISOString();
           }
 
