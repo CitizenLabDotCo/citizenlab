@@ -21,7 +21,5 @@
 #
 class CustomFieldOptionImage < ApplicationRecord
   mount_base64_uploader :image, CustomFieldOptionImageUploader
-  belongs_to :custom_field_option
-
-  validates :custom_field_option, presence: true
+  belongs_to :custom_field_option, optional: true
 end

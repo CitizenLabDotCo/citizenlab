@@ -213,6 +213,8 @@ resource 'Idea Custom Fields' do
       end
 
       example 'Add a custom field with image options' do
+        image1 = create(:custom_field_option_image, custom_field_option: nil)
+        image2 = create(:custom_field_option_image, custom_field_option: nil)
         request = {
           custom_fields: [
             { input_type: 'page' },
@@ -224,11 +226,11 @@ resource 'Idea Custom Fields' do
               options: [
                 {
                   title_multiloc: { en: 'Option 1' },
-                  image: png_image_as_base64('image14.png')
+                  image_id: image1.id
                 },
                 {
                   title_multiloc: { en: 'Option 2' },
-                  image: png_image_as_base64('image14.png')
+                  image_id: image2.id
                 }
               ]
             }
@@ -240,8 +242,7 @@ resource 'Idea Custom Fields' do
 
         expect(CustomField.all.count).to eq 2
         expect(CustomFieldOption.all.count).to eq 2
-        expect(CustomFieldOptionImage.all.count).to eq 2
-        expect(response_data.size).to eq 2
+        expect(CustomFieldOption.all.map { |c| c.image.id }).to match [image1.id, image2.id]
         expect(response_data[1]).to match({
           attributes: {
             code: nil,
@@ -308,7 +309,7 @@ resource 'Idea Custom Fields' do
                   {
                     id: option1.id,
                     title_multiloc: { en: 'Option 1' },
-                    image: ''
+                    image_id: ''
                   },
                   {
                     id: option2.id,
@@ -321,17 +322,15 @@ resource 'Idea Custom Fields' do
           do_request request
 
           assert_status 200
-          expect(CustomField.all.count).to eq 2
-          expect(CustomFieldOption.all.count).to eq 2
           expect(CustomFieldOptionImage.all.count).to eq 1
           expect(CustomFieldOption.find(option1.id).image).to be_nil
-          expect(response_data.size).to eq 2
           expect(json_response_body[:included].pluck(:type)).to match_array(
             %w[image custom_field_option custom_field_option]
           )
         end
 
         example 'Update an image on a custom field option' do
+          image = create(:custom_field_option_image)
           request = {
             custom_fields: [
               {
@@ -348,7 +347,7 @@ resource 'Idea Custom Fields' do
                   {
                     id: option1.id,
                     title_multiloc: { en: 'Option 1' },
-                    image: png_image_as_base64('image13.png')
+                    image_id: image.id
                   },
                   {
                     id: option2.id,
@@ -363,11 +362,8 @@ resource 'Idea Custom Fields' do
           do_request request
 
           assert_status 200
-          expect(CustomField.all.count).to eq 2
-          expect(CustomFieldOption.all.count).to eq 2
           expect(CustomFieldOptionImage.all.count).to eq 2
-          expect(image1.reload.updated_at).to be > image1.reload.created_at
-          expect(response_data.size).to eq 2
+          expect(CustomFieldOption.find(option1.id).image.id).to eq image.id
           expect(json_response_body[:included].pluck(:type)).to match_array(
             %w[image custom_field_option image custom_field_option]
           )

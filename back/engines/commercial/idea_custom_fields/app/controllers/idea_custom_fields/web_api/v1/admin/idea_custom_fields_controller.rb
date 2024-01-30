@@ -173,14 +173,14 @@ module IdeaCustomFields
             option = create_option! option_params, field, errors, option_temp_ids_to_ids_mapping, field_index, option_index
             next unless option
           end
-          update_option_image!(option, option_params[:image])
+          update_option_image!(option, option_params[:image_id])
           option.move_to_bottom
         end
       end
     end
 
     def create_option!(option_params, field, errors, option_temp_ids_to_ids_mapping, field_index, option_index)
-      create_params = option_params.except('temp_id', 'image')
+      create_params = option_params.except('temp_id', 'image_id')
       option = CustomFieldOption.new create_params.merge(custom_field: field)
       SideFxCustomFieldOptionService.new.before_create option, current_user
       if option.save
@@ -193,23 +193,19 @@ module IdeaCustomFields
       end
     end
 
-    def update_option_image!(option, image_base64)
-      return unless image_base64
+    def update_option_image!(option, image_id)
+      return unless image_id
 
-      # Image should always be set by the front end if there is any change - if no change the image param should not be set
-      if option.image
-        if image_base64 == ''
-          option.image.destroy!
-        elsif image_base64
-          option.image.update(image: image_base64)
-        end
+      if image_id == ''
+        option.image.destroy!
       else
-        option.create_image(image: image_base64)
+        image = CustomFieldOptionImage.find image_id
+        option.update!(image: image)
       end
     end
 
     def update_option!(option, option_params, errors, field_index, option_index)
-      update_params = option_params.except('image')
+      update_params = option_params.except('image_id')
       option.assign_attributes update_params
       SideFxCustomFieldOptionService.new.before_update option, current_user
       if option.save
@@ -266,8 +262,8 @@ module IdeaCustomFields
           options: [
             :id,
             :temp_id,
+            :image_id,
             :other,
-            :image,
             {
               title_multiloc: CL2_SUPPORTED_LOCALES
             }
