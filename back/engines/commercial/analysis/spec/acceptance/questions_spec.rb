@@ -28,7 +28,8 @@ resource 'Questions' do
           accuracy: nil,
           created_at: kind_of(String),
           updated_at: kind_of(String),
-          bookmarked: false
+          bookmarked: false,
+          missing_inputs_count: 0
         },
         relationships: {
           background_task: {
