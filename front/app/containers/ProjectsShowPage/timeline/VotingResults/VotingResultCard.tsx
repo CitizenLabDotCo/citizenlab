@@ -185,7 +185,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.id });
 
-    clHistory.push(`/ideas/${slug}${params}?go_back=true`, {
+    clHistory.push(`/ideas/${slug}${params}`, {
       scrollToTop: true,
     });
   };
