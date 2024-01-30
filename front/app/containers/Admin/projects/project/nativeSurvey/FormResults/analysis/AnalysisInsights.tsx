@@ -38,7 +38,7 @@ const Summary = ({
 
   const summary = data?.data.attributes.summary;
   const filters = data?.data.attributes.filters;
-  console.log(filters);
+
   if (!summary) {
     return null;
   }
@@ -51,7 +51,7 @@ const Summary = ({
           analysisId={analysisId}
         />
       )}
-      <Text fontSize="s" mt="0px">
+      <Text>
         {replaceIdRefsWithLinks({
           insight: summary,
           analysisId,
@@ -90,10 +90,8 @@ const Question = ({
           analysisId={analysisId}
         />
       )}
-      <Text fontSize="s" mt="0px" fontWeight="bold">
-        {question}
-      </Text>
-      <Text fontSize="s" mt="0px">
+      <Text fontWeight="bold">{question}</Text>
+      <Text mt="0px">
         {replaceIdRefsWithLinks({
           insight: answer,
           analysisId,
