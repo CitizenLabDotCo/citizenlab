@@ -131,6 +131,7 @@ const AdminProjectEventEdit = () => {
     : { ...attributeDiff };
 
   useEffect(() => {
+    // Check that the event has loaded and only then can we be sure if we are creating a new one or using an existing one
     if (!isInitialLoading) {
       const initialRoundedStartDate = roundToNearestMultipleOfFive(new Date());
       const initialRoundedEndDate = calculateRoundedEndDate(
