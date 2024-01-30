@@ -950,6 +950,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Rezime izveštaja",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Dodaj cilj projekta, korišćene metode učešća i ishod",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Posetioci",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "No appropriate phases found in this project",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Nema projekta",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "You cannot edit this report because it contains data that you don't have access to.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Da li ste sigurni da želite da izbrišete \"{reportName}\"?",
