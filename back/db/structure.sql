@@ -819,7 +819,7 @@ WITH (fillfactor='90');
 -- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON TABLE public.que_jobs IS '4';
+COMMENT ON TABLE public.que_jobs IS '5';
 
 
 --
