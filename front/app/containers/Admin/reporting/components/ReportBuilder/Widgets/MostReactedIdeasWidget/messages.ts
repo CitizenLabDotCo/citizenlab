@@ -25,9 +25,9 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.title',
     defaultMessage: 'Title',
   },
-  ideationPhases: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhases',
-    defaultMessage: 'Ideation phases',
+  ideationPhase: {
+    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhase',
+    defaultMessage: 'Ideation phase',
   },
   noIdeasAvailable: {
     id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable',

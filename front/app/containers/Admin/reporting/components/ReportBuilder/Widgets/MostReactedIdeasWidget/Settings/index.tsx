@@ -103,7 +103,7 @@ const Settings = () => {
 
       {projectId !== undefined && (
         <PhaseFilter
-          label={formatMessage(messages.ideationPhases)}
+          label={formatMessage(messages.ideationPhase)}
           projectId={projectId}
           phaseId={phaseId}
           participationMethod="ideation"

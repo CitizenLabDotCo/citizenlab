@@ -22,9 +22,9 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.surveyChooseQuestions',
     defaultMessage: 'Choose which questions to display:',
   },
-  surveyPhases: {
-    id: 'app.containers.admin.ReportBuilder.surveyPhases',
-    defaultMessage: 'Survey phases',
+  surveyPhase: {
+    id: 'app.containers.admin.ReportBuilder.surveyPhase',
+    defaultMessage: 'Survey phase',
   },
   totalParticipants: {
     id: 'app.containers.admin.ReportBuilder.totalParticipants',

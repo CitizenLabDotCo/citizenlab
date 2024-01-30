@@ -164,7 +164,7 @@ const SurveyResultsWidgetSettings = () => {
       {projectId !== undefined && (
         <>
           <PhaseFilter
-            label={formatMessage(messages.surveyPhases)}
+            label={formatMessage(messages.surveyPhase)}
             projectId={projectId}
             phaseId={phaseId}
             participationMethod="native_survey"
