@@ -23,6 +23,12 @@ FactoryBot.define do
       end
     end
 
+    trait :with_esri_layers do
+      after(:create) do |map_config, _evaluator|
+        create(:esri_layer, :with_marker_svg, map_config: map_config)
+      end
+    end
+
     trait :with_legend do
       after(:create) do |map_config, _evaluator|
         create_list(:legend_item, 2, map_config: map_config)

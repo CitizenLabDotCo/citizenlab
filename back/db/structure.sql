@@ -2785,7 +2785,7 @@ CREATE TABLE public.maps_layers (
     marker_svg_url character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    layer_type character varying DEFAULT 'geojson'::character varying NOT NULL,
+    type character varying DEFAULT 'CustomMaps::GeojsonLayer'::character varying NOT NULL,
     layer_url character varying
 );
 
@@ -7931,6 +7931,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231130093345'),
 ('20231212151032'),
 ('20231214100537'),
-('20240129140613');
+('20240129220510');
 
 

@@ -384,7 +384,7 @@ class ProjectCopyService < TemplateService
     (@project.map_config&.layers || []).map do |layer|
       yml_layer = {
         'map_config_ref' => lookup_ref(layer.map_config_id, :maps_map_config),
-        'layer_type' => layer.layer_type,
+        'type' => layer.type,
         'layer_url' => layer.layer_url,
         'title_multiloc' => layer.title_multiloc,
         'geojson' => layer.geojson,

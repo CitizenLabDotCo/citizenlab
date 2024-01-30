@@ -55,7 +55,7 @@ module CustomMaps
         def layer_params
           params.require(:layer)
             .permit(
-              :layer_type,
+              :type,
               :layer_url,
               :default_enabled,
               :marker_svg_url,
@@ -68,7 +68,7 @@ module CustomMaps
         end
 
         def serialized_layer
-          CustomMaps::WebApi::V1::LayerSerializer.new(@layer).serializable_hash.to_json
+          "CustomMaps::WebApi::V1::#{@layer.type.demodulize}Serializer".constantize.new(@layer).serializable_hash.to_json
         end
 
         def layer_errors

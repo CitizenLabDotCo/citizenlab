@@ -8,7 +8,7 @@ class CustomMaps::WebApi::V1::MapConfigSerializer < WebApi::V1::BaseSerializer
     map_config.layers.map do |layer|
       {
         title_multiloc: layer.title_multiloc,
-        layer_type: layer.layer_type,
+        type: layer.type,
         layer_url: layer.layer_url,
         geojson: layer.geojson,
         default_enabled: layer.default_enabled,

@@ -9,6 +9,23 @@ RSpec.describe CustomMaps::Layer do
     end
   end
 
+  describe 'type validation' do
+    it 'invalidates a nil type' do
+      layer = build(:layer, type: nil)
+      expect(layer).to be_invalid
+    end
+
+    it 'invalidates an empty type' do
+      layer = build(:layer, type: '')
+      expect(layer).to be_invalid
+    end
+
+    it 'invalidates an invalid type' do
+      layer = build(:layer, type: 'CustomMaps::Layer')
+      expect(layer).to be_invalid
+    end
+  end
+
   describe 'marker_svg_url https:// validation' do
     it 'validates a url starting with https://' do
       layer = build(:layer, marker_svg_url: 'https://some.icon.svg')
@@ -17,74 +34,6 @@ RSpec.describe CustomMaps::Layer do
 
     it 'invalidates a url starting with http://' do
       layer = build(:layer, marker_svg_url: 'http://some.icon.svg')
-      expect(layer).to be_invalid
-    end
-  end
-
-  describe 'layer_type validation' do
-    it 'validates a layer_type of geojson' do
-      layer = build(:layer, layer_type: 'geojson')
-      expect(layer).to be_valid
-    end
-
-    it 'validates a layer_type of esri_feature_service' do
-      layer = build(:layer, layer_type: 'esri_feature_service')
-      expect(layer).to be_valid
-    end
-
-    it 'invalidates an invalid layer_type' do
-      layer = build(:layer, layer_type: 'invalid_layer_type')
-      expect(layer).to be_invalid
-    end
-  end
-
-  describe 'url validation' do
-    it 'validates a url starting with https://' do
-      layer = build(:layer, layer_url: 'https://some.domain.com/some_layer')
-      expect(layer).to be_valid
-    end
-
-    it 'validates a url starting with http://' do
-      layer = build(:layer, layer_url: 'http://some.domain.com/some_layer')
-      expect(layer).to be_valid
-    end
-
-    it 'invalidates a url starting with neither http:// or https://' do
-      layer = build(:layer, layer_url: 'ftp://some.domain.com/some_layer')
-      expect(layer).to be_invalid
-    end
-  end
-
-  describe 'when layer_type is geojson' do
-    it 'validates presence of geojson data' do
-      layer = build(:layer) # layer_type: 'geojson', with valid layer.geojson is default factory
-      expect(layer).to be_valid
-    end
-
-    it 'invalidates nil geojson data' do
-      layer = build(:layer, layer_type: 'geojson', geojson: nil)
-      expect(layer).to be_invalid
-    end
-
-    it 'invalidates empty geojson data' do
-      layer = build(:layer, layer_type: 'geojson', geojson: {})
-      expect(layer).to be_invalid
-    end
-  end
-
-  describe 'when layer_type is NOT geojson' do
-    it 'validates presence of url' do
-      layer = build(:layer, layer_type: 'esri_feature_service', layer_url: 'https://some.domain.com/some_layer')
-      expect(layer).to be_valid
-    end
-
-    it 'invalidates nil url' do
-      layer = build(:layer, layer_type: 'esri_feature_service', layer_url: nil)
-      expect(layer).to be_invalid
-    end
-
-    it 'invalidates empty url' do
-      layer = build(:layer, layer_type: 'esri_feature_service', layer_url: '')
       expect(layer).to be_invalid
     end
   end
