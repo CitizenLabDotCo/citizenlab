@@ -57,7 +57,10 @@ import { geocode } from 'utils/locationTools';
 import { useTheme } from 'styled-components';
 import useLocale from 'hooks/useLocale';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
-import { roundToNearestMultipleOfFive, calculateRoundedEndDate } from './utils';
+import {
+  roundToNearestMultipleOfFive,
+  calculateRoundedEndDate,
+} from 'utils/dateUtils';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 

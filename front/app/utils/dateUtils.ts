@@ -189,3 +189,21 @@ export function getEventDateString(event: IEventData) {
 export function getLocalisedDateString(dateString: string | null | undefined) {
   return dateString && moment(dateString, 'YYYY-MM-DD').format('LL');
 }
+
+export function roundToNearestMultipleOfFive(date: Date): Date {
+  const minutes = date.getMinutes();
+  const roundedMinutes = Math.ceil(minutes / 5) * 5;
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    roundedMinutes
+  );
+}
+
+export function calculateRoundedEndDate(startDate: Date, minutes = 30): Date {
+  const endDate = new Date(startDate);
+  endDate.setMinutes(startDate.getMinutes() + minutes);
+  return endDate;
+}
