@@ -311,11 +311,12 @@ const AdminProjectEventEdit = () => {
 
           // If the start time is changed, update the end time
           if (name === 'start_at' && newAttributes['start_at']) {
-            const { end_at } = newAttributes;
-            const duration = end_at
+            const duration = newAttributes['end_at']
               ? moment
                   .duration(
-                    moment(end_at).diff(moment(previousState['start_at']))
+                    moment(newAttributes['end_at']).diff(
+                      moment(previousState['start_at'])
+                    )
                   )
                   .asMinutes()
               : 30;
