@@ -950,6 +950,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Samenvatting van het verslag",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Voeg het doel van het project, de gebruikte participatiemethoden en het resultaat toe",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Bezoekers",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "Geen geschikte fasen gevonden in dit project",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Geen project",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.cannotEditReport2": "Je kunt dit rapport niet bewerken omdat het gegevens bevat waartoe je geen toegang hebt.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport": "Weet je zeker dat je \"{reportName}\" wilt verwijderen?",
