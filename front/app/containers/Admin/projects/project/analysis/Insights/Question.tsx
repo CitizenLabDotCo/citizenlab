@@ -149,6 +149,7 @@ const Question = ({ insight }: Props) => {
               <FilterItems
                 filters={question.data.attributes.filters}
                 isEditable={false}
+                analysisId={analysisId}
               />
             </>
           )}

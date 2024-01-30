@@ -27,7 +27,9 @@ const useAnalysisFilterParams = () => {
 
   const filters = Object.entries(allParams).reduce(
     (accumulator, [key, value]) => {
-      if (
+      if (key === 'input_custom_field_no_empty_values') {
+        accumulator[key] = value === 'true' ? true : false;
+      } else if (
         key.match(/^(author|input)_custom_([a-f0-9-]+)$/) ||
         STATIC_ARRAY_FILTERS.includes(key)
       ) {

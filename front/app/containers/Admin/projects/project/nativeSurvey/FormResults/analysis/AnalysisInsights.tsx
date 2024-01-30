@@ -13,6 +13,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { replaceIdRefsWithLinks } from '../../../analysis/Insights/util';
 import { useParams } from 'react-router-dom';
+import FilterItems from '../../../analysis/FilterItems';
 
 type AnalysisInsight = {
   analysisId: string;
@@ -36,18 +37,29 @@ const Summary = ({
   const { data } = useAnalysisSummary({ analysisId, id: summaryId });
 
   const summary = data?.data.attributes.summary;
+  const filters = data?.data.attributes.filters;
+  console.log(filters);
   if (!summary) {
     return null;
   }
   return (
-    <Text fontSize="s" mt="0px">
-      {replaceIdRefsWithLinks({
-        insight: summary,
-        analysisId,
-        projectId,
-        phaseId,
-      })}
-    </Text>
+    <>
+      {filters && (
+        <FilterItems
+          filters={filters}
+          isEditable={false}
+          analysisId={analysisId}
+        />
+      )}
+      <Text fontSize="s" mt="0px">
+        {replaceIdRefsWithLinks({
+          insight: summary,
+          analysisId,
+          projectId,
+          phaseId,
+        })}
+      </Text>
+    </>
   );
 };
 
@@ -65,11 +77,19 @@ const Question = ({
   };
   const question = data?.data.attributes.question;
   const answer = data?.data.attributes.answer;
+  const filters = data?.data.attributes.filters;
   if (!question || !answer) {
     return null;
   }
   return (
     <>
+      {filters && (
+        <FilterItems
+          filters={filters}
+          isEditable={false}
+          analysisId={analysisId}
+        />
+      )}
       <Text fontSize="s" mt="0px" fontWeight="bold">
         {question}
       </Text>
