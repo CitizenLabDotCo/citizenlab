@@ -40,9 +40,12 @@ import {
 // hooks
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjects from 'api/projects/useProjects';
 
 // utils
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
+import { isAdmin } from 'utils/permissions/roles';
 
 type ReportBuilderToolboxProps = {
   reportId: string;
@@ -67,8 +70,21 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const { projectId, phaseId } = useReportContext();
   const appConfigurationLocales = useAppConfigurationLocales();
+  const { data: authUser } = useAuthUser();
+  const isModerator = !!authUser && !isAdmin(authUser);
 
-  if (!appConfigurationLocales) return null;
+  const { data: projects } = useProjects(
+    {
+      publicationStatuses: ['published', 'archived'],
+      canModerate: true,
+    },
+    {
+      enabled: isModerator,
+    }
+  );
+
+  if (!appConfigurationLocales || !authUser) return null;
+  if (isModerator && !projects) return null;
 
   // Default end date for charts (today)
   const chartEndDate = moment().format('YYYY-MM-DD');
@@ -78,6 +94,11 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
       return formatMessageWithLocale(locale, message);
     });
   };
+
+  // If this report is not in a phase context (i.e. projectId is undefined),
+  // AND the user is moderator (i.e. projects is defined),
+  // we use the first project in the list of projects as the default project.
+  const selectedProjectId = projectId ?? projects?.data[0]?.id;
 
   return (
     <Container>
@@ -115,7 +136,10 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           <DraggableElement
             id="e2e-draggable-about-report"
             component={
-              <AboutReportWidget reportId={reportId} projectId={projectId} />
+              <AboutReportWidget
+                reportId={reportId}
+                projectId={selectedProjectId}
+              />
             }
             icon="section-image-text"
             label={formatMessage(WIDGET_TITLES.AboutReportWidget)}
@@ -161,7 +185,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <SurveyResultsWidget
                 title={toMultiloc(WIDGET_TITLES.SurveyResultsWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 phaseId={phaseId}
               />
             }
@@ -175,7 +199,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
                 title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
                 numberOfIdeas={5}
                 collapseLongText={false}
-                projectId={projectId}
+                projectId={selectedProjectId}
               />
             }
             icon="idea"
@@ -196,7 +220,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <VisitorsWidget
                 title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -209,7 +233,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <VisitorsTrafficSourcesWidget
                 title={toMultiloc(WIDGET_TITLES.VisitorsTrafficSourcesWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -222,7 +246,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <GenderWidget
                 title={toMultiloc(WIDGET_TITLES.GenderWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -235,7 +259,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <AgeWidget
                 title={toMultiloc(WIDGET_TITLES.AgeWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -248,7 +272,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <ActiveUsersWidget
                 title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -261,7 +285,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <PostsByTimeWidget
                 title={toMultiloc(WIDGET_TITLES.PostsByTimeWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -274,7 +298,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <CommentsByTimeWidget
                 title={toMultiloc(WIDGET_TITLES.CommentsByTimeWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -287,7 +311,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <ReactionsByTimeWidget
                 title={toMultiloc(WIDGET_TITLES.ReactionsByTimeWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
