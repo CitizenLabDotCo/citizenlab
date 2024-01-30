@@ -304,18 +304,14 @@ const AdminProjectEventEdit = () => {
             [name]: time.toISOString(),
           };
 
-          const isStartDateAfterEndDate =
-            newAttributes['start_at'] && newAttributes['end_at']
-              ? newAttributes['start_at'] > newAttributes['end_at']
-              : false;
-
           // If the start time is changed, update the end time
           if (name === 'start_at' && newAttributes['start_at']) {
-            const { end_at } = newAttributes;
-            const duration = end_at
+            const duration = newAttributes['end_at']
               ? moment
                   .duration(
-                    moment(end_at).diff(moment(previousState['start_at']))
+                    moment(newAttributes['end_at']).diff(
+                      moment(previousState['start_at'])
+                    )
                   )
                   .asMinutes()
               : 30;
@@ -324,23 +320,26 @@ const AdminProjectEventEdit = () => {
               new Date(newAttributes['start_at']),
               duration
             ).toISOString();
-          } else if (
-            name === 'end_at' &&
-            newAttributes['end_at'] &&
-            isStartDateAfterEndDate
-          ) {
-            const duration = moment
-              .duration(
-                moment(previousState['end_at']).diff(
-                  moment(newAttributes['start_at'])
-                )
-              )
-              .asMinutes();
+          } else if (name === 'end_at' && newAttributes['end_at']) {
+            const isStartDateAfterEndDate =
+              newAttributes['start_at'] && newAttributes['end_at']
+                ? newAttributes['start_at'] > newAttributes['end_at']
+                : false;
 
-            newAttributes['start_at'] = calculateRoundedEndDate(
-              new Date(newAttributes['end_at']),
-              -duration
-            ).toISOString();
+            if (isStartDateAfterEndDate) {
+              const duration = moment
+                .duration(
+                  moment(previousState['end_at']).diff(
+                    moment(newAttributes['start_at'])
+                  )
+                )
+                .asMinutes();
+
+              newAttributes['start_at'] = calculateRoundedEndDate(
+                new Date(newAttributes['end_at']),
+                -duration
+              ).toISOString();
+            }
           }
 
           return newAttributes;
