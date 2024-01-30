@@ -201,13 +201,13 @@ resource 'Ideas' do
             let!(:first_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'first', title_multiloc: { 'en' => 'First' }) }
             let!(:other_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
 
-            let!(:custom_field3) { create(:custom_field_select, key: 'custom_field_name3', resource: custom_form) }
+            let!(:custom_field3) { create(:custom_field_multiselect, key: 'custom_field_name3', resource: custom_form) }
             let!(:an_option) { create(:custom_field_option, custom_field: custom_field3, other: true, key: 'something', title_multiloc: { 'en' => 'Something' }) }
             let!(:other_other_option) { create(:custom_field_option, custom_field: custom_field3, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
 
             let(:custom_field_name2) { 'first' }
             let(:custom_field_name2_other) { 'a text value here' }
-            let(:custom_field_name3) { 'something' }
+            let(:custom_field_name3) { ['something'] }
             let(:custom_field_name3_other) { 'another text value here' }
 
             example_request 'Create an input without other text fields' do
