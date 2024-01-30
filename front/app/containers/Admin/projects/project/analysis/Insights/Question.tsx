@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import reactStringReplace from 'react-string-replace';
 
 import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
@@ -8,7 +7,6 @@ import { IInsightData } from 'api/analysis_insights/types';
 
 import {
   Box,
-  Icon,
   IconButton,
   Spinner,
   colors,
@@ -20,7 +18,6 @@ import {
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
-import { useSelectedInputContext } from '../SelectedInputContext';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import FilterItems from '../FilterItems';
@@ -29,17 +26,16 @@ import Rate from './Rate';
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
 import messages from './messages';
-import { deleteTrailingIncompleteIDs, refRegex, removeRefs } from './util';
+import {
+  deleteTrailingIncompleteIDs,
+  removeRefs,
+  replaceIdRefsWithLinks,
+} from './util';
 import useToggleInsightBookmark from 'api/analysis_insights/useBookmarkAnalysisInsight';
 
 const StyledAnswerText = styled.div`
   white-space: pre-wrap;
   word-break: break-word;
-`;
-
-const StyledButton = styled.button`
-  padding: 0px;
-  cursor: pointer;
 `;
 
 type Props = {
@@ -49,9 +45,11 @@ type Props = {
 const Question = ({ insight }: Props) => {
   const [isCopied, setIsCopied] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage, formatDate } = useIntl();
-  const { analysisId } = useParams() as { analysisId: string };
+  const { analysisId, projectId } = useParams() as {
+    analysisId: string;
+    projectId: string;
+  };
   const { mutate: deleteQuestion } = useDeleteAnalysisInsight();
   const { mutate: toggleBookmark } = useToggleInsightBookmark();
 
@@ -84,30 +82,6 @@ const Question = ({ insight }: Props) => {
         }
       );
     }
-  };
-
-  const handleClickInput = (inputId: string) => {
-    setSelectedInputId(inputId);
-    const element = document.getElementById(`input-${inputId}`);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const replaceIdRefsWithLinks = (question) => {
-    return reactStringReplace(question, refRegex, (match, i) => (
-      <StyledButton
-        onClick={() => {
-          handleClickInput(match);
-          trackEventByName(tracks.inputPreviewedFromQuestion.name, {
-            extra: { analysisId },
-          });
-        }}
-        key={i}
-      >
-        <Icon name="idea" />
-      </StyledButton>
-    ));
   };
 
   if (!question) return null;
@@ -191,9 +165,14 @@ const Question = ({ insight }: Props) => {
         <Text fontWeight="bold">{question.data.attributes.question}</Text>
         <Box>
           <StyledAnswerText>
-            {replaceIdRefsWithLinks(
-              processing ? deleteTrailingIncompleteIDs(answer) : answer
-            )}
+            {replaceIdRefsWithLinks({
+              insight: processing
+                ? deleteTrailingIncompleteIDs(answer)
+                : answer,
+              analysisId,
+              projectId,
+              phaseId,
+            })}
           </StyledAnswerText>
           {processing && <Spinner />}
         </Box>
