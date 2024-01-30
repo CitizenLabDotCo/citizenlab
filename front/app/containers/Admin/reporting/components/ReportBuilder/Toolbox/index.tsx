@@ -125,7 +125,8 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   // If this report is not in a phase context (i.e. projectId is undefined),
   // AND the user is moderator (i.e. projects is defined),
   // we use the first project in the list of projects as the default project.
-  const selectedProjectId = projectId ?? projects?.data[0]?.id;
+  const selectedProjectId =
+    projectId ?? isModerator ? projects?.data[0]?.id : undefined;
 
   // Participation method if the report is in a phase context
   const participationMethod = phase?.data.attributes.participation_method;
