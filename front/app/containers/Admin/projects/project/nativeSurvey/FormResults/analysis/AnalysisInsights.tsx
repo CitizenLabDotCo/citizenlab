@@ -50,9 +50,10 @@ const Summary = ({
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
-      h="100%"
+      h="460px"
+      gap="20px"
     >
-      <Box>
+      <Box overflowY="auto">
         {filters && (
           <FilterItems
             filters={filters}
@@ -105,9 +106,9 @@ const Question = ({
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
-      h="100%"
+      h="450px"
     >
-      <Box>
+      <Box overflowY="auto">
         {filters && (
           <FilterItems
             filters={filters}
@@ -160,7 +161,7 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
   }
 
   return (
-    <Box>
+    <Box position="relative">
       {insights.length > 1 && (
         <Box
           display="flex"
@@ -168,6 +169,8 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
           alignItems="center"
           w="100%"
           mb="20px"
+          position="absolute"
+          top="-50px"
         >
           <IconButton
             iconName="chevron-left"
@@ -194,7 +197,7 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
           />
         </Box>
       )}
-      <Box h="450px" overflowY="auto">
+      <Box>
         {selectedInsight && (
           <>
             {selectedInsight.relationship.type === 'analysis_question' ? (
