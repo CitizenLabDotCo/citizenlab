@@ -11,7 +11,7 @@ module Analysis
         def index
           insights = @analysis.insights
             .order(created_at: :desc)
-            .includes(insightable: :background_task)
+            .includes(insightable: [:background_task, :insight])
 
           if params[:bookmarked].present?
             insights = insights.where(bookmarked: true)

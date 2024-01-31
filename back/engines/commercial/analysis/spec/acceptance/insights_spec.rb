@@ -49,7 +49,7 @@ resource 'Insights' do
 
       expect do
         do_request
-      end.not_to exceed_query_limit(1).with(/SELECT.*insights/)
+      end.not_to exceed_query_limit(1).with(/SELECT.*analysis_insights/)
 
       assert_status 200
     end
