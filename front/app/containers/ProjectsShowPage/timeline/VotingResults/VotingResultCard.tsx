@@ -33,9 +33,6 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
-// utils
-import { roundPercentage } from 'utils/math';
-
 // typings
 import { IIdeaData } from 'api/ideas/types';
 
@@ -171,7 +168,6 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const { slug } = idea.attributes;
   const params = '?go_back=true';
   const votingMethod = phase?.data.attributes.voting_method;
-  const baskets = idea.attributes.baskets_count;
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -238,11 +234,8 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
           <Results
             phaseId={phaseId}
             budget={idea.attributes.budget ?? undefined}
+            idea={idea}
             votes={votingMethod === 'budgeting' ? undefined : ideaVotes}
-            votesPercentage={votesPercentage}
-            baskets={
-              votingMethod === 'single_voting' ? undefined : baskets ?? 0
-            }
             tooltip={
               votingMethod === 'budgeting'
                 ? formatMessage(messages.budgetingTooltip)

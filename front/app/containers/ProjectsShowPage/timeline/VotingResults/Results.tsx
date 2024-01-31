@@ -18,13 +18,11 @@ interface Props {
   budget?: number;
   // undefined for budgetting
   votes?: number;
-  // undefined for voting
-  baskets?: number;
   tooltip?: string;
   idea: IIdeaData;
 }
 
-const Results = ({ phaseId, budget, votes, baskets, tooltip, idea }: Props) => {
+const Results = ({ phaseId, budget, votes, tooltip, idea }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
 
@@ -46,7 +44,6 @@ const Results = ({ phaseId, budget, votes, baskets, tooltip, idea }: Props) => {
         idea={idea}
         phaseId={phaseId}
         votes={votes}
-        baskets={baskets}
         tooltip={tooltip}
       />
     </Box>

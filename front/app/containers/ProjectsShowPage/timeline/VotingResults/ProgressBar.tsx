@@ -26,12 +26,11 @@ import { IIdeaData } from 'api/ideas/types';
 interface Props {
   phaseId: string;
   votes?: number;
-  baskets?: number;
   tooltip?: string;
   idea: IIdeaData;
 }
 
-const ProgressBar = ({ phaseId, votes, baskets, tooltip, idea }: Props) => {
+const ProgressBar = ({ phaseId, votes, tooltip, idea }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -39,6 +38,11 @@ const ProgressBar = ({ phaseId, votes, baskets, tooltip, idea }: Props) => {
 
   if (!phase) return null;
 
+  const votingMethod = phase.data.attributes.voting_method;
+  const baskets =
+    votingMethod === 'single_voting'
+      ? undefined
+      : idea.attributes.baskets_count ?? 0;
   const ideaVotes = idea.attributes.votes_count ?? 0;
   // for budgetting, this is total budget spent?
   const totalVotes = phase?.data.attributes.votes_count;
