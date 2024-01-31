@@ -6,6 +6,7 @@ import MapView from '@arcgis/core/views/MapView';
 import Basemap from '@arcgis/core/Basemap';
 import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
 import Layer from '@arcgis/core/layers/Layer';
+import Graphic from '@arcgis/core/Graphic';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -22,9 +23,10 @@ type Props = {
   width?: string;
   zoom?: number;
   layers?: Layer[];
+  graphics?: Graphic[];
 };
 
-const EsriMap = ({ center, zoom, layers, height, width }: Props) => {
+const EsriMap = ({ center, zoom, layers, graphics, height, width }: Props) => {
   const { data: appConfig } = useAppConfiguration();
 
   useEffect(() => {
@@ -34,12 +36,19 @@ const EsriMap = ({ center, zoom, layers, height, width }: Props) => {
     // Create a new map and view
     const esriMap = new Map();
 
-    new MapView({
+    const mapView = new MapView({
       container: 'esriMap', // Reference to DOM node that will contain the view
       map: esriMap,
       zoom: zoom || globalMapSettings?.zoom_level,
       center: [center.coordinates[0], center.coordinates[1]],
     });
+
+    // Add any graphics that were passed in
+    if (graphics) {
+      graphics.forEach((graphic) => {
+        mapView.graphics.add(graphic);
+      });
+    }
 
     // Set the basemap
     const webTileLayerFromUrl = new WebTileLayer({
