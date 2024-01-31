@@ -37,22 +37,22 @@ const EventMap = memo<Props>(
     });
 
     const onClick = (event: any, mapView: MapView) => {
-      // Create a graphic and add the geometry and symbol to it
-
       // Update the locationPoint ref
       locationPoint.current = {
         type: 'Point',
         coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
       };
 
-      // Add a pin to the clicked location and delete the old one
+      // Create a graphic and add the point and symbol to it
       const graphic = new Graphic({
         geometry: new Point({
-          longitude: locationPoint?.current?.coordinates[0],
-          latitude: locationPoint?.current?.coordinates[1],
+          longitude: locationPoint.current.coordinates[0],
+          latitude: locationPoint.current.coordinates[1],
         }),
         symbol: getMapPinSymbol(theme.colors.tenantPrimary),
       });
+
+      // Add a pin to the clicked location and delete the old one
       mapView.graphics.removeAll();
       mapView.graphics.add(graphic);
 

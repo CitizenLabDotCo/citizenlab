@@ -97,9 +97,9 @@ const EsriMap = ({
       mapView.ui.add(fullscreen, 'top-right');
     }
 
-    // On map click, pass event to handler if it was passed in
+    // On map click, pass event to onClick handler if it was provided
     mapView.on('click', function (event) {
-      // By passing the mapview to the onClick function, we can easily change map data from that function
+      // By passing the mapview to onClick functions, we can easily change the map from that function
       onClick && onClick(event, mapView);
     });
   }, [
