@@ -79,7 +79,12 @@ module CustomMaps
         end
 
         def serialized_layer
-          "CustomMaps::WebApi::V1::#{@layer.type.demodulize}Serializer".constantize.new(@layer).serializable_hash.to_json
+          case @layer.type
+          when 'CustomMaps::GeojsonLayer'
+            CustomMaps::WebApi::V1::GeojsonLayerSerializer.new(@layer).serializable_hash.to_json
+          when 'CustomMaps::EsriLayer'
+            CustomMaps::WebApi::V1::EsriLayerSerializer.new(@layer).serializable_hash.to_json
+          end
         end
 
         def layer_errors
