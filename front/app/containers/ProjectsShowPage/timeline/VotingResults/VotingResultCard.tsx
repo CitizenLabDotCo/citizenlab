@@ -8,8 +8,6 @@ import useIdeaImage from 'api/idea_images/useIdeaImage';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
 // components
 import {
@@ -232,7 +230,6 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
             phaseId={phaseId}
             budget={idea.attributes.budget ?? undefined}
             idea={idea}
-            votes={votingMethod === 'budgeting' ? undefined : ideaVotes}
           />
         </Body>
         <Footer

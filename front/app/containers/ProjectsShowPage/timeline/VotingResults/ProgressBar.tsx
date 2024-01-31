@@ -27,11 +27,10 @@ import { IIdeaData } from 'api/ideas/types';
 
 interface Props {
   phaseId: string;
-  votes?: number;
   idea: IIdeaData;
 }
 
-const ProgressBar = ({ phaseId, votes, idea }: Props) => {
+const ProgressBar = ({ phaseId, idea }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -56,6 +55,7 @@ const ProgressBar = ({ phaseId, votes, idea }: Props) => {
     votingMethod === 'budgeting'
       ? formatMessage(messages.budgetingTooltip)
       : undefined;
+  const votes = votingMethod === 'budgeting' ? undefined : ideaVotes;
   const votingTermSingular =
     localize(voting_term_singular_multiloc) ||
     formatMessage(assignMultipleVotesInputMessages.vote).toLowerCase();
