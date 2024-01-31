@@ -15,14 +15,16 @@ import { IIdeaData } from 'api/ideas/types';
 
 interface Props {
   phaseId: string;
-  budget?: number;
-  // undefined for budgetting
   idea: IIdeaData;
 }
 
-const Results = ({ phaseId, budget, idea }: Props) => {
+const Results = ({ phaseId, idea }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
+
+  if (!phase) return null;
+
+  const budget = idea.attributes.budget ?? undefined;
 
   return (
     <Box
@@ -31,8 +33,7 @@ const Results = ({ phaseId, budget, idea }: Props) => {
       flexDirection="column"
       justifyContent="flex-end"
     >
-      {phase &&
-        phase.data.attributes.voting_method === 'budgeting' &&
+      {phase.data.attributes.voting_method === 'budgeting' &&
         typeof budget === 'number' && (
           <Text mb="8px" mt="8px" color="tenantPrimary">
             {formatMessage(messages.cost)} <FormattedBudget value={budget} />
