@@ -18,11 +18,10 @@ interface Props {
   budget?: number;
   // undefined for budgetting
   votes?: number;
-  tooltip?: string;
   idea: IIdeaData;
 }
 
-const Results = ({ phaseId, budget, votes, tooltip, idea }: Props) => {
+const Results = ({ phaseId, budget, votes, idea }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
 
@@ -40,12 +39,7 @@ const Results = ({ phaseId, budget, votes, tooltip, idea }: Props) => {
             {formatMessage(messages.cost)} <FormattedBudget value={budget} />
           </Text>
         )}
-      <ProgressBar
-        idea={idea}
-        phaseId={phaseId}
-        votes={votes}
-        tooltip={tooltip}
-      />
+      <ProgressBar idea={idea} phaseId={phaseId} votes={votes} />
     </Box>
   );
 };

@@ -19,18 +19,19 @@ import { transparentize } from 'polished';
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
-import messages from 'components/VoteInputs/multiple/AssignMultipleVotesInput/messages';
+import messages from './messages';
+import assignMultipleVotesInputMessages from 'components/VoteInputs/multiple/AssignMultipleVotesInput/messages';
+
 import { roundPercentage } from 'utils/math';
 import { IIdeaData } from 'api/ideas/types';
 
 interface Props {
   phaseId: string;
   votes?: number;
-  tooltip?: string;
   idea: IIdeaData;
 }
 
-const ProgressBar = ({ phaseId, votes, tooltip, idea }: Props) => {
+const ProgressBar = ({ phaseId, votes, idea }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -51,13 +52,16 @@ const ProgressBar = ({ phaseId, votes, tooltip, idea }: Props) => {
     : 0;
   const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
     phase.data.attributes;
-
+  const tooltip =
+    votingMethod === 'budgeting'
+      ? formatMessage(messages.budgetingTooltip)
+      : undefined;
   const votingTermSingular =
     localize(voting_term_singular_multiloc) ||
-    formatMessage(messages.vote).toLowerCase();
+    formatMessage(assignMultipleVotesInputMessages.vote).toLowerCase();
   const votingTermPlural =
     localize(voting_term_plural_multiloc) ||
-    formatMessage(messages.votes).toLowerCase();
+    formatMessage(assignMultipleVotesInputMessages.votes).toLowerCase();
 
   return (
     <Tippy
@@ -97,7 +101,7 @@ const ProgressBar = ({ phaseId, votes, tooltip, idea }: Props) => {
             {votes ? (
               <>
                 {`${votesPercentage}% (${votes} ${formatMessage(
-                  messages.xVotes,
+                  assignMultipleVotesInputMessages.xVotes,
                   {
                     votes,
                     singular: votingTermSingular,

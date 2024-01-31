@@ -162,8 +162,6 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
     idea.relationships.idea_images.data?.[0]?.id
   );
   const smallerThanPhone = useBreakpoint('phone');
-  const { formatMessage } = useIntl();
-
   const ideaTitle = localize(idea.attributes.title_multiloc);
   const votingMethod = phase?.data.attributes.voting_method;
   const url = `/ideas/${idea.attributes.slug}?go_back=true`;
@@ -235,11 +233,6 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
             budget={idea.attributes.budget ?? undefined}
             idea={idea}
             votes={votingMethod === 'budgeting' ? undefined : ideaVotes}
-            tooltip={
-              votingMethod === 'budgeting'
-                ? formatMessage(messages.budgetingTooltip)
-                : undefined
-            }
           />
         </Body>
         <Footer
