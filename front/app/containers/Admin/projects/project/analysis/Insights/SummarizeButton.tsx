@@ -25,7 +25,7 @@ const SummarizeButton = () => {
     useAddAnalysisSummaryPreCheck();
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
-  console.log(filters);
+
   const handleSummaryCreate = () => {
     addSummary(
       {
