@@ -1664,7 +1664,6 @@
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Archivos adjuntos (máximo 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Los archivos adjuntos se mostrarán en la tarjeta del evento directamente.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Ubicación",
-  "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Afina dónde se muestra el marcador de localización de tu evento haciendo clic en el mapa:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Crear un nuevo evento",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Enlace del evento en línea",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "Si tu evento es en línea, agrega un enlace aquí.",

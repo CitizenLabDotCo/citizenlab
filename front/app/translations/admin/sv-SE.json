@@ -1664,7 +1664,6 @@
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Bilagor (max 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Bilagor visas under evenemangsbeskrivningen.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Plats",
-  "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Förfina var din evenemangsplatsmarkör visas genom att klicka på kartan:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Skapa ett nytt evenemang",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Länk till evenemang online",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "Om ditt evenemang är online, lägg till en länk till det här.",

@@ -1664,7 +1664,6 @@
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Attachments (max 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Attachments are shown below the event description.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Location",
-  "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Refine where your event location marker is shown by clicking on the map:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Create a new event",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Online event link",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "If your event is online, add a link to it here.",
