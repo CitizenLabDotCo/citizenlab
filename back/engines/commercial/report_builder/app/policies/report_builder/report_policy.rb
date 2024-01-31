@@ -30,7 +30,7 @@ module ReportBuilder
         true
       elsif user.project_or_folder_moderator?
         if record.phase?
-          PhasePolicy.new(user, record.phase).show?
+          PhasePolicy.new(user, record.phase).active_moderator?
         else
           record.owner == user
         end
