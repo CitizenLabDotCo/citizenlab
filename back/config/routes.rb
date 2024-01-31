@@ -231,9 +231,9 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
-      resources :experiments, only: %i[index create]
+      resources :custom_field_option_images, only: %i[create update destroy], controller: :images, defaults: { container_type: 'CustomFieldOption' }
 
-      resources :handwritten_ideas, only: %i[create]
+      resources :experiments, only: %i[index create]
 
       scope 'stats' do
         route_params = { controller: 'stats_users' }

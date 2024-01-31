@@ -38,6 +38,13 @@ class WebApi::V1::ImagesController < ApplicationController
       policy_scope_class: ProjectFolders::ImagePolicy::Scope,
       image_relationship: :images,
       container_id: :project_folder_id
+    },
+    'CustomFieldOption' => {
+      container_class: CustomFieldOption,
+      image_class: CustomFieldOptionImage,
+      policy_scope_class: CustomFieldOptionImagePolicy::Scope,
+      image_relationship: :image,
+      container_id: :custom_field_option_id
     }
   }
 
@@ -57,7 +64,11 @@ class WebApi::V1::ImagesController < ApplicationController
   end
 
   def create
-    @image = @container.send(secure_constantize(:image_relationship)).create(image_params)
+    @image = if @container
+      @container.send(secure_constantize(:image_relationship)).create(image_params)
+    else
+      secure_constantize(:image_class).new(image_params)
+    end
     authorize @image
     if @image.save
       render json: WebApi::V1::ImageSerializer.new(
@@ -108,7 +119,7 @@ class WebApi::V1::ImagesController < ApplicationController
 
   def set_container
     container_id = params[secure_constantize(:container_id)]
-    @container = secure_constantize(:container_class).find(container_id)
+    @container = container_id ? secure_constantize(:container_class).find(container_id) : nil
   end
 
   def secure_constantize(key)
