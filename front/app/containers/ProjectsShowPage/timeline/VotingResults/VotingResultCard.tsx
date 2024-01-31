@@ -220,8 +220,9 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
         <IdeaCardImageWrapper>
           <Box w="100%" h="100%" flex="1" position="relative">
             <ImagePlaceholder
-              participationMethod="voting"
-              votingMethod={votingMethod}
+              placeholderIconName={
+                votingMethod === 'budgeting' ? 'money-bag' : 'idea'
+              }
             />
             <Box position="absolute" mt="12px" ml="12px">
               <Rank rank={rank} />
