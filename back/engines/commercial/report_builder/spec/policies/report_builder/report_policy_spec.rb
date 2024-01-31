@@ -231,46 +231,6 @@ RSpec.describe ReportBuilder::ReportPolicy do
         end
       end
     end
-
-    # context 'when user owns the report' do
-    #   let_it_be(:all_reports) { create_list(:report, 3) }
-    #   let_it_be(:report) do
-    #     all_reports.first.tap { |r| r.update!(owner: user) }
-    #   end
-
-    #   it { is_expected.to permit(:show) }
-    #   it { is_expected.to permit(:layout) }
-    #   it { is_expected.to permit(:create) }
-    #   it { is_expected.to permit(:destroy) }
-    #   it { is_expected.to permit(:update) }
-    #   it { expect(scope.resolve.count).to eq(1) }
-    # end
-
-    # context 'when user does not own the report' do
-    #   it { is_expected.not_to permit(:show) }
-    #   it { is_expected.not_to permit(:layout) }
-    #   it { is_expected.not_to permit(:create) }
-    #   it { is_expected.not_to permit(:destroy) }
-    #   it { is_expected.not_to permit(:update) }
-    #   it { expect(scope.resolve.count).to eq(0) }
-
-    #   context 'when report belongs to phase moderated by this user' do
-    #     let_it_be(:all_reports) { create_list(:report, 3) }
-    #     let_it_be(:report) do
-    #       project = Project.find(user.moderatable_project_ids.first)
-    #       phase = build(:phase)
-    #       project.update!(phases: [phase])
-    #       all_reports.first.tap { |r| r.update!(phase: phase) }
-    #     end
-
-    #     it { is_expected.to permit(:show) }
-    #     it { is_expected.to permit(:layout) }
-    #     it { is_expected.to permit(:create) }
-    #     it { is_expected.to permit(:destroy) }
-    #     it { is_expected.to permit(:update) }
-    #     it { expect(scope.resolve.count).to eq(0) }
-    #   end
-    # end
   end
 
   context 'when user is a visitor' do
@@ -300,17 +260,5 @@ RSpec.describe ReportBuilder::ReportPolicy do
       it { is_expected.not_to permit(:update) }
       it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
     end
-
-    # context 'when report belongs to phase' do
-    #   let_it_be(:project) { create(:project) }
-    #   let_it_be(:phase) { create(:phase, project: project) }
-
-    #   before do
-    #     allow(report).to receive(:phase?).and_return(true)
-    #     allow(PhasePolicy).to receive(:new).and_return(phase_policy)
-    #   end
-
-    #   # TODO
-    # end
   end
 end
