@@ -171,15 +171,6 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const { slug } = idea.attributes;
   const params = '?go_back=true';
   const votingMethod = phase?.data.attributes.voting_method;
-
-  const ideaVotes = idea.attributes.votes_count ?? 0;
-  // for budgetting, this is total budget spent?
-  const totalVotes = phase?.data.attributes.votes_count;
-
-  const votesPercentage = totalVotes
-    ? roundPercentage(ideaVotes, totalVotes)
-    : 0;
-
   const baskets = idea.attributes.baskets_count;
 
   const handleClick = (e: React.MouseEvent) => {

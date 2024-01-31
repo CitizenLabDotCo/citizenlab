@@ -20,22 +20,18 @@ import { transparentize } from 'polished';
 import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 import messages from 'components/VoteInputs/multiple/AssignMultipleVotesInput/messages';
+import { roundPercentage } from 'utils/math';
+import { IIdeaData } from 'api/ideas/types';
 
 interface Props {
   phaseId: string;
   votes?: number;
-  votesPercentage: number;
   baskets?: number;
   tooltip?: string;
+  idea: IIdeaData;
 }
 
-const ProgressBar = ({
-  phaseId,
-  votes,
-  votesPercentage,
-  baskets,
-  tooltip,
-}: Props) => {
+const ProgressBar = ({ phaseId, votes, baskets, tooltip, idea }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -43,6 +39,12 @@ const ProgressBar = ({
 
   if (!phase) return null;
 
+  const ideaVotes = idea.attributes.votes_count ?? 0;
+  // for budgetting, this is total budget spent?
+  const totalVotes = phase?.data.attributes.votes_count;
+  const votesPercentage = totalVotes
+    ? roundPercentage(ideaVotes, totalVotes)
+    : 0;
   const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
     phase.data.attributes;
 

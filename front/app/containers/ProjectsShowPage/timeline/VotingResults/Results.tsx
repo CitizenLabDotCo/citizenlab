@@ -11,6 +11,7 @@ import ProgressBar from './ProgressBar';
 import { useIntl } from 'utils/cl-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import messages from './messages';
+import { IIdeaData } from 'api/ideas/types';
 
 interface Props {
   phaseId: string;
@@ -19,18 +20,11 @@ interface Props {
   votes?: number;
   // undefined for voting
   baskets?: number;
-  votesPercentage: number;
   tooltip?: string;
+  idea: IIdeaData;
 }
 
-const Results = ({
-  phaseId,
-  budget,
-  votes,
-  votesPercentage,
-  baskets,
-  tooltip,
-}: Props) => {
+const Results = ({ phaseId, budget, votes, baskets, tooltip, idea }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
 
@@ -49,9 +43,9 @@ const Results = ({
           </Text>
         )}
       <ProgressBar
+        idea={idea}
         phaseId={phaseId}
         votes={votes}
-        votesPercentage={votesPercentage}
         baskets={baskets}
         tooltip={tooltip}
       />
