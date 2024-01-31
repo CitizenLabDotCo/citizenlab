@@ -172,15 +172,10 @@ const ConfigSelectWithLocaleSwitcher = ({
                         'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
                       }}
                       onAdd={(images) => {
-                        // console.log(images[0].base64);
-                        const updatedChoices = choices;
-                        updatedChoices[index].image = images[0].base64
-                        setValue(name, updatedChoices);
+                        console.log(images[0].base64);
                       }}
                       onRemove={() => {
-                        const updatedChoices = choices;
-                        updatedChoices[index].image = null
-                        setValue(name, updatedChoices);
+                        console.log('Removing image');
                       }}
                     />
 
