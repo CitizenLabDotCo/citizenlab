@@ -922,7 +922,7 @@
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dette projekt indeholder ikke nogen faser, der kan indeholde ideer.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Vælg venligst hvilken fase du vil tilføje disse input til.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Import af input",
-  "app.containers.Admin.projects.project.survey.aiSummary": "AI-oversigt",
+  "app.containers.Admin.projects.project.survey.aiSummary": "AI-opsummering",
   "app.containers.Admin.projects.project.survey.allResponses": "Alle svar",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Nøjagtighed: {accuracy}{percentage}",
   "app.containers.Admin.projects.project.survey.analysis.generated": "Genereret:",
