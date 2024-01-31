@@ -21,6 +21,12 @@ type Props = {
 
 const FieldGroupSettings = ({ field, locale }: Props) => {
   const lockedAttributes = field?.constraints?.locks;
+  const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
+    // We want to prevent the form builder from being closed when enter is pressed
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
 
   return (
     <>
@@ -31,6 +37,7 @@ const FieldGroupSettings = ({ field, locale }: Props) => {
             id="e2e-field-group-title-multiloc"
             name={`customFields.${field.index}.title_multiloc`}
             label={<FormattedMessage {...messages.titleLabel} />}
+            onKeyDown={handleKeyDown}
           />
         </SectionField>
       )}

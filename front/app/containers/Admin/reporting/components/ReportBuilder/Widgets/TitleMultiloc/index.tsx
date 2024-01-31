@@ -29,7 +29,7 @@ const H3 = styled.h3<{ color: string }>`
   margin-bottom: 4px;
 `;
 
-interface Props {
+export interface Props {
   text?: Multiloc;
 }
 
@@ -75,9 +75,8 @@ Title.craft = {
   related: {
     settings: TitleSettings,
   },
-  custom: {
-    title: messages.title,
-  },
 };
+
+export const titleMultilocTitle = messages.title;
 
 export default Title;
