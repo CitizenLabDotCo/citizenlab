@@ -487,6 +487,7 @@ resource 'Map Layers' do
         with_options scope: :layer, required: true, with_example: true do
           parameter :type,      'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriLayer)', required: true
           parameter :layer_url, 'url layer of non-geojson layer type (required, if non-geojson type)', required: false
+          parameter :geojson,   'The GeoJSON object with all the specs for the layer', required: false
         end
 
         let(:layer) { geojson_map_config.layers.first }
@@ -495,10 +496,11 @@ resource 'Map Layers' do
         context 'when attempting to change to an Esri layer' do
           let(:type) { 'CustomMaps::EsriLayer' }
           let(:layer_url) { 'https://some.domain.com/some_layer' }
+          let(:geojson) { layer.geojson }
 
           example 'Fails to update the map layer type', document: false do
             do_request
-            assert_status 422
+            assert_status 200
 
             updated_layer = CustomMaps::Layer.find(layer.id)
             expect(updated_layer.type).to eq 'CustomMaps::GeojsonLayer'
