@@ -106,7 +106,6 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
     });
   };
 
-  // Create stable reference
   const previewData = isEmpty(draftData) ? undefined : draftData;
 
   const hasError =
