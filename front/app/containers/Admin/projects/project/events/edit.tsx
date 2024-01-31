@@ -22,7 +22,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import LocationInput, { Option } from 'components/UI/LocationInput';
-import Map from './components/map';
+import EventMap from './components/EventMap';
 import Button from 'components/UI/Button';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 
@@ -33,8 +33,7 @@ import clHistory from 'utils/cl-router/history';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// react query
-import { IEvent, IEventProperties } from 'api/events/types';
+// hooks
 import useAddEvent from 'api/events/useAddEvent';
 import useUpdateEvent from 'api/events/useUpdateEvent';
 import useEvent from 'api/events/useEvent';
@@ -44,20 +43,20 @@ import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
 import useEventImage from 'api/event_images/useEventImage';
 import useAddEventImage from 'api/event_images/useAddEventImage';
 import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
+import useLocale from 'hooks/useLocale';
+import { useTheme } from 'styled-components';
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 // typings
 import { Multiloc, CLError, UploadFile } from 'typings';
+import { IEvent, IEventProperties } from 'api/events/types';
 
 // utils
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
 import { geocode } from 'utils/locationTools';
-import { useTheme } from 'styled-components';
-import useLocale from 'hooks/useLocale';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
-
-import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 export type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
@@ -622,7 +621,7 @@ const AdminProjectEventEdit = () => {
                   </Box>
 
                   <Box>
-                    <Map
+                    <EventMap
                       mapHeight="230px"
                       setSubmitState={setSubmitState}
                       setLocationPoint={setLocationPoint}

@@ -8,6 +8,7 @@ import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
 import Layer from '@arcgis/core/layers/Layer';
 import Graphic from '@arcgis/core/Graphic';
 import { Box } from '@citizenlab/cl2-component-library';
+import Fullscreen from '@arcgis/core/widgets/Fullscreen';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -27,6 +28,7 @@ type Props = {
   setLocationPoint?: (locationPoint: GeoJSON.Point) => void;
   locationPoint?: GeoJSON.Point;
   graphics?: Graphic[];
+  showFullscreenOption?: boolean;
 };
 
 const EsriMap = ({
@@ -38,6 +40,7 @@ const EsriMap = ({
   height,
   width,
   graphics,
+  showFullscreenOption,
 }: Props) => {
   const { data: appConfig } = useAppConfiguration();
 
@@ -56,7 +59,6 @@ const EsriMap = ({
         ? [center.coordinates[0], center.coordinates[1]]
         : undefined,
     });
-
     mapView.constraints = {
       maxZoom: maxZoom || 22,
       minZoom: 8,
@@ -87,8 +89,17 @@ const EsriMap = ({
       });
     }
 
-    // // On map click, pass event to handler if it exists
+    // Add fullscreen widget if applicable
+    if (showFullscreenOption) {
+      const fullscreen = new Fullscreen({
+        view: mapView,
+      });
+      mapView.ui.add(fullscreen, 'top-right');
+    }
+
+    // On map click, pass event to handler if it was passed in
     mapView.on('click', function (event) {
+      // By passing the mapview to the onClick function, we can easily change map data from that function
       onClick && onClick(event, mapView);
     });
   }, [
@@ -98,6 +109,7 @@ const EsriMap = ({
     layers,
     maxZoom,
     onClick,
+    showFullscreenOption,
     zoom,
   ]);
 

@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useRef } from 'react';
+import React, { memo, useRef } from 'react';
 
 // components
 import EsriMap from 'components/EsriMap';
@@ -14,6 +14,7 @@ import { SubmitState } from '../edit';
 
 // hooks
 import { useTheme } from 'styled-components';
+
 export interface Props {
   mapHeight?: string;
   setSubmitState?: (state: SubmitState) => void;
@@ -21,7 +22,7 @@ export interface Props {
   setLocationPoint?: (locationPoint: GeoJSON.Point) => void;
 }
 
-const MapComponent = memo<Props>(
+const EventMap = memo<Props>(
   ({ position, mapHeight, setLocationPoint, setSubmitState }: Props) => {
     const theme = useTheme();
     const locationPoint = useRef<GeoJSON.Point | null>(position || null);
@@ -37,11 +38,14 @@ const MapComponent = memo<Props>(
 
     const onClick = (event: any, mapView: MapView) => {
       // Create a graphic and add the geometry and symbol to it
+
+      // Update the locationPoint ref
       locationPoint.current = {
         type: 'Point',
         coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
       };
 
+      // Add a pin to the clicked location and delete the old one
       const graphic = new Graphic({
         geometry: new Point({
           longitude: locationPoint?.current?.coordinates[0],
@@ -49,10 +53,10 @@ const MapComponent = memo<Props>(
         }),
         symbol: getMapPinSymbol(theme.colors.tenantPrimary),
       });
-
       mapView.graphics.removeAll();
       mapView.graphics.add(graphic);
 
+      // Update the locationPoint and submitState in the form component
       setSubmitState && setSubmitState('enabled');
       setLocationPoint &&
         setLocationPoint({
@@ -73,4 +77,4 @@ const MapComponent = memo<Props>(
   }
 );
 
-export default MapComponent;
+export default EventMap;

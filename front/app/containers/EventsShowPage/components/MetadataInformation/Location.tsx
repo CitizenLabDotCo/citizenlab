@@ -1,40 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // components
-import {
-  Box,
-  Button,
-  Text,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import Map from 'components/Map';
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 // styling
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
 
 // types
 import { IEventData } from 'api/events/types';
-import { LatLngTuple } from 'leaflet';
 
 // hooks
 import useLocale from 'hooks/useLocale';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import LocationMap from './LocationMap';
 
 export interface Props {
   event: IEventData | null;
 }
 
 const Location = ({ event }: Props) => {
-  const [mapModalVisible, setMapModalVisible] = useState(false);
   const currentLocale = useLocale();
-  const isMobile = useBreakpoint('phone');
-  const projectId = event?.relationships.project.data.id;
   const position = event?.attributes.location_point_geojson;
-  const center = position?.coordinates;
-  const centerLatLng = center && ([center[1], center[0]] as LatLngTuple);
   const address1 = event?.attributes?.address_1;
 
   if (isNilOrError(currentLocale) || !address1) {
@@ -56,7 +44,9 @@ const Location = ({ event }: Props) => {
                 fontSize="m"
                 buttonStyle="text"
                 onClick={() => {
-                  setMapModalVisible(true);
+                  window.open(
+                    `http://maps.google.com/maps?z=12&t=m&q=loc:${position.coordinates[1]}+${position.coordinates[0]}`
+                  );
                 }}
                 pl="0px"
                 style={{
@@ -91,33 +81,12 @@ const Location = ({ event }: Props) => {
               {address2}
             </Text>
           )}
-        </Content>
-
-        <Modal
-          opened={mapModalVisible}
-          close={() => {
-            setMapModalVisible(false);
-          }}
-          header={
-            <Box mt="8px" mb="8px">
-              {address1}
+          {position && (
+            <Box ml="-30px" width="300">
+              <LocationMap eventLocation={position} mapHeight={'140px'} />
             </Box>
-          }
-          width={900}
-        >
-          <Box p="12px" id="e2e-event-map-modal">
-            {position && projectId && centerLatLng && (
-              <Map
-                points={[{ ...position, id: 'markerPosition' }]}
-                centerLatLng={centerLatLng}
-                projectId={projectId}
-                mapHeight={isMobile ? '460px' : '600px'}
-                noMarkerClustering={false}
-                zoomLevel={19}
-              />
-            )}
-          </Box>
-        </Modal>
+          )}
+        </Content>
       </Container>
     );
   }
