@@ -10,10 +10,8 @@ FactoryBot.define do
       }
     end
 
-    # Because layers type column has null: false constraint & default value of 'CustomMaps::GeojsonLayer',
+    # Because we need to choose a whielisted type, and we choose 'CustomMaps::GeojsonLayer',
     # we need to satisfy the GeojsonLayer validation of presence of a valid geojson object.
-    # Without the null:false db constraints, we couldn't ensure the use of a type and its related validations.
-    # i.e. Although the base Layer class is useful, we don't want to use it directly to create a layer.
     geojson { JSON.parse(File.read(CustomMaps::Engine.root.join('spec', 'fixtures', 'seattle.geojson'))) }
 
     trait :with_marker_svg do
