@@ -4,7 +4,7 @@ import Tippy from '@tippyjs/react';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import ShareReportButton from './ShareReportButton';
+import PrintReportButton from './PrintReportButton';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -16,7 +16,6 @@ interface Props {
   canEdit?: boolean;
   onDelete: () => void;
   onEdit: () => void;
-  onView: () => void;
 }
 
 const Buttons = ({
@@ -25,7 +24,6 @@ const Buttons = ({
   canEdit = true,
   onDelete,
   onEdit,
-  onView,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -61,17 +59,7 @@ const Buttons = ({
           </Button>
         </div>
       </Tippy>
-      <Button
-        mr="8px"
-        icon="eye"
-        buttonStyle="secondary"
-        onClick={onView}
-        disabled={isLoading}
-        iconSize="18px"
-      >
-        {formatMessage(messages.view)}
-      </Button>
-      <ShareReportButton reportId={reportId} />
+      <PrintReportButton reportId={reportId} />
     </Box>
   );
 };

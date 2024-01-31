@@ -35,10 +35,6 @@ const ReportRow = ({ report }: Props) => {
     clHistory.push(`${reportPath}/editor`);
   };
 
-  const handleViewReport = () => {
-    window.open(`${reportPath}/viewer`, '_blank');
-  };
-
   return (
     <ListItem>
       <Box
@@ -64,7 +60,6 @@ const ReportRow = ({ report }: Props) => {
           canEdit={report.attributes.action_descriptor.editing_report.enabled}
           onDelete={handleDeleteReport}
           onEdit={handleEditReport}
-          onView={handleViewReport}
         />
       </Box>
     </ListItem>

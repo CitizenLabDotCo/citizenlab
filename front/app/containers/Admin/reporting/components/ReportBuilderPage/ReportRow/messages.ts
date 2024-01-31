@@ -9,13 +9,9 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.edit',
     defaultMessage: 'Edit',
   },
-  view: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.view',
-    defaultMessage: 'View',
-  },
-  share: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.share',
-    defaultMessage: 'Share',
+  print: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.print',
+    defaultMessage: 'Print',
   },
   confirmDeleteReport: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.ReportRow.confirmDeleteReport',
