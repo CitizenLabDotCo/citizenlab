@@ -163,7 +163,6 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
           {previewEnabled && (
             <Box justifyContent="center">
               <EditModePreview
-                reportId={reportId}
                 previewData={previewData}
                 selectedLocale={selectedLocale}
               />

@@ -29,15 +29,14 @@ import { Locale } from 'typings';
 import { CraftJson } from 'components/admin/ContentBuilder/typings';
 
 interface Props {
-  reportId: string;
   previewData?: CraftJson;
   selectedLocale: Locale;
 }
 
 type View = 'phone' | 'pdf' | 'desktop';
 
-const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
-  const { phaseId } = useReportContext();
+const EditModePreview = ({ previewData, selectedLocale }: Props) => {
+  const { phaseId, reportId } = useReportContext();
   const isPhaseContext = !!phaseId;
 
   const [view, setView] = useState<View>(isPhaseContext ? 'phone' : 'pdf');
