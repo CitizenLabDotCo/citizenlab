@@ -68,19 +68,11 @@ const EsriMap = ({
     const webTileLayerFromUrl = new WebTileLayer({
       urlTemplate: globalMapSettings?.tile_provider,
       copyright: getTileAttribution(globalMapSettings?.tile_provider || ''),
-      maxScale: 10,
     });
     const basemap = new Basemap({
       baseLayers: [webTileLayerFromUrl],
     });
     esriMap.basemap = basemap;
-
-    // Add any graphics that were passed in
-    if (graphics) {
-      graphics.forEach((graphic) => {
-        mapView.graphics.add(graphic);
-      });
-    }
 
     // Add any layers that were passed in
     if (layers) {
@@ -89,7 +81,14 @@ const EsriMap = ({
       });
     }
 
-    // Add fullscreen widget if applicable
+    // Add any graphics that were passed in. These should sit on top of any map layers.
+    if (graphics) {
+      graphics.forEach((graphic) => {
+        mapView.graphics.add(graphic);
+      });
+    }
+
+    // Add fullscreen widget if set
     if (showFullscreenOption) {
       const fullscreen = new Fullscreen({
         view: mapView,
@@ -97,7 +96,7 @@ const EsriMap = ({
       mapView.ui.add(fullscreen, 'top-right');
     }
 
-    // On map click, pass event to onClick handler if it was provided
+    // On map click, pass the event to onClick handler if it was provided
     mapView.on('click', function (event) {
       // By passing the mapview to onClick functions, we can easily change the map from that function
       onClick && onClick(event, mapView);

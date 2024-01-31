@@ -144,7 +144,7 @@ const AdminProjectEventEdit = () => {
   // If there is already a remote point, set successful geocode value to true
   useEffect(() => {
     if (!isNilOrError(remotePoint)) {
-      setLocationPoint(remotePoint);
+      setLocationPoint(() => remotePoint);
       setSuccessfulGeocode(true);
     }
   }, [remotePoint]);
@@ -626,7 +626,7 @@ const AdminProjectEventEdit = () => {
                       setSubmitState={setSubmitState}
                       setLocationPoint={setLocationPoint}
                       position={
-                        geocodedPoint ||
+                        geocodedPoint || // Present when an address is geocoded but hasn't been saved yet
                         event?.data?.attributes?.location_point_geojson
                       }
                     />

@@ -56,7 +56,7 @@ const EventMap = memo<Props>(
       mapView.graphics.removeAll();
       mapView.graphics.add(graphic);
 
-      // Update the locationPoint and submitState in the form component
+      // Update the locationPoint and submitState in the parent form component
       setSubmitState && setSubmitState('enabled');
       setLocationPoint &&
         setLocationPoint({
