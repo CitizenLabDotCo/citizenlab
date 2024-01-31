@@ -10,7 +10,7 @@ import useAnalysisInsightsWithIds from 'api/analysis_insights/useAnalysisInsight
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import React, { useState } from 'react';
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { replaceIdRefsWithLinks } from '../../../analysis/Insights/util';
 import { useParams } from 'react-router-dom';
@@ -28,7 +28,8 @@ type AnalysisInsight = {
 };
 
 // Convert all values in the filters object to strings
-const filterValuesToString = (filters?: IInputsFilterParams) => {
+// This is necessary because the filters are passed as query params
+const convertFilterValuesToString = (filters?: IInputsFilterParams) => {
   return (
     filters &&
     Object.entries(filters).reduce((acc, [key, value]) => {
@@ -47,7 +48,7 @@ const Summary = ({
   summaryId: string;
   analysisId: string;
 }) => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatDate } = useIntl();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -56,6 +57,8 @@ const Summary = ({
 
   const summary = data?.data.attributes.summary;
   const filters = data?.data.attributes.filters;
+  const accuracy = data?.data.attributes.accuracy;
+  const generatedAt = data?.data.attributes.created_at;
 
   if (!summary) {
     return null;
@@ -67,9 +70,9 @@ const Summary = ({
       flexDirection="column"
       justifyContent="space-between"
       h="460px"
-      gap="20px"
+      gap="16px"
     >
-      <Box overflowY="auto">
+      <Box overflowY="auto" h="100%">
         {filters && (
           <FilterItems
             filters={filters}
@@ -89,12 +92,32 @@ const Summary = ({
           })}
         </Text>
       </Box>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        w="100%"
+      >
+        <Text m="0px" fontSize="s">
+          <FormattedMessage
+            {...messages.accuracy}
+            values={{
+              accuracy: accuracy ? accuracy * 100 : 0,
+              percentage: formatMessage(messages.percentage),
+            }}
+          />
+        </Text>
+
+        <Text m="0px" fontSize="s">
+          {formatMessage(messages.generated)} {formatDate(generatedAt)}
+        </Text>
+      </Box>
       <Box display="flex">
         <Button
           buttonStyle="secondary"
           icon="eye"
           linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
-            { ...filterValuesToString(filters), phase_id: phaseId }
+            { ...convertFilterValuesToString(filters), phase_id: phaseId }
           )}`}
         >
           {formatMessage(messages.explore)}
@@ -111,7 +134,7 @@ const Question = ({
   summaryId: string;
   analysisId: string;
 }) => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatDate } = useIntl();
   const { data } = useAnalysisQuestion({ analysisId, id: summaryId });
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -120,6 +143,9 @@ const Question = ({
   const question = data?.data.attributes.question;
   const answer = data?.data.attributes.answer;
   const filters = data?.data.attributes.filters;
+  const accuracy = data?.data.attributes.accuracy;
+  const generatedAt = data?.data.attributes.created_at;
+
   if (!question || !answer) {
     return null;
   }
@@ -129,9 +155,10 @@ const Question = ({
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
-      h="450px"
+      h="460px"
+      gap="16px"
     >
-      <Box overflowY="auto">
+      <Box overflowY="auto" h="100%">
         {filters && (
           <FilterItems
             filters={filters}
@@ -151,12 +178,32 @@ const Question = ({
           })}
         </Text>
       </Box>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        w="100%"
+      >
+        <Text m="0px" fontSize="s">
+          <FormattedMessage
+            {...messages.accuracy}
+            values={{
+              accuracy: accuracy ? accuracy * 100 : 0,
+              percentage: formatMessage(messages.percentage),
+            }}
+          />
+        </Text>
+
+        <Text m="0px" fontSize="s">
+          {formatMessage(messages.generated)} {formatDate(generatedAt)}
+        </Text>
+      </Box>
       <Box display="flex">
         <Button
           buttonStyle="secondary"
           icon="eye"
           linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
-            { ...filterValuesToString(filters), phase_id: phaseId }
+            { ...convertFilterValuesToString(filters), phase_id: phaseId }
           )}`}
         >
           {formatMessage(messages.explore)}
