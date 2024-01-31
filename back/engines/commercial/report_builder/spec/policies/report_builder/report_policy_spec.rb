@@ -35,25 +35,35 @@ RSpec.describe ReportBuilder::ReportPolicy do
       end
 
       context 'when user did create report' do
-        let_it_be(:project) { create(:project) }
+        let_it_be(:project1) { create(:project) }
+        let_it_be(:project2) { create(:project) }
+        let_it_be(:phase) {  create(:phase, project: project2) }
         let_it_be(:layout) do
           create(:layout, craftjs_json: {
             ROOT: {
               type: 'div',
               props: {}
             },
-            some_node: {
+            visitors_widget: {
               type: {
                 resolvedName: 'VisitorsWidget'
               },
               props: {
-                projectId: project.id
+                projectId: project1.id
+              }
+            },
+            most_reacted_ideas: {
+              type: {
+                resolvedName: 'MostReactedIdeasWidget'
+              },
+              props: {
+                phaseId: phase.id
               }
             }
           })
         end
 
-        context 'when user cannot access all data in report' do
+        context 'when user cannot access any data in report' do
           let_it_be(:another_project) { create(:project) }
           let_it_be(:user) { create(:project_moderator, projects: [another_project]) }
           let_it_be(:report) do
@@ -70,8 +80,24 @@ RSpec.describe ReportBuilder::ReportPolicy do
           it { expect(scope.resolve.count).to eq(1) }
         end
 
+        context 'when user cannot access all data in report' do
+          let_it_be(:user) { create(:project_moderator, projects: [project1]) }
+          let_it_be(:report) do
+            all_reports.first.tap do |r|
+              r.update!(owner: user, layout: layout)
+            end
+          end
+
+          it { is_expected.to permit(:show) }
+          it { is_expected.not_to permit(:layout) }
+          it { is_expected.not_to permit(:create) }
+          it { is_expected.not_to permit(:destroy) }
+          it { is_expected.not_to permit(:update) }
+          it { expect(scope.resolve.count).to eq(1) }
+        end
+
         context 'when user can access all data in report' do
-          let_it_be(:user) { create(:project_moderator, projects: [project]) }
+          let_it_be(:user) { create(:project_moderator, projects: [project1, project2]) }
           let_it_be(:report) do
             all_reports.first.tap do |r|
               r.update!(owner: user, layout: layout)
@@ -157,6 +183,9 @@ RSpec.describe ReportBuilder::ReportPolicy do
     end
 
     context 'when report belongs to phase' do
+      let_it_be(:project) { create(:project) }
+      let_it_be(:phase) { create(:phase, project: project) }
+
       before do
         allow(report).to receive(:phase?).and_return(true)
         allow(PhasePolicy).to receive(:new).and_return(phase_policy)
