@@ -82,8 +82,8 @@ module CustomMaps
           case @layer.type
           when 'CustomMaps::GeojsonLayer'
             CustomMaps::WebApi::V1::GeojsonLayerSerializer.new(@layer).serializable_hash.to_json
-          when 'CustomMaps::EsriLayer'
-            CustomMaps::WebApi::V1::EsriLayerSerializer.new(@layer).serializable_hash.to_json
+          when 'CustomMaps::EsriFeatureLayer'
+            CustomMaps::WebApi::V1::EsriFeatureLayerSerializer.new(@layer).serializable_hash.to_json
           end
         end
 

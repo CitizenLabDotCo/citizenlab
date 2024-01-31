@@ -22,7 +22,7 @@ resource 'Map Layers' do
     create(:map_config,
       :with_positioning,
       :with_tile_provider,
-      :with_esri_layers,
+      :with_esri_feature_layers,
       :with_legend,
       project: esri_map_project)
   end
@@ -53,16 +53,16 @@ resource 'Map Layers' do
     end
   end
 
-  shared_examples 'successful GET map Esri layers' do
+  shared_examples 'successful GET map Esri feature layers' do
     get 'web_api/v1/projects/:esri_map_project_id/map_config/layers/:id' do
       let(:layer) { esri_map_config.layers.first }
       let(:id)    { layer.id }
 
-      example_request 'Get a Esri map layer of a project' do
+      example_request 'Get an Esri feature map layer of a project' do
         assert_status 200
         expect(attributes['title_multiloc']).to   eq layer.title_multiloc
         expect(attributes['type']).to             eq layer.type
-        expect(attributes['geojson']).to          be_nil # Not serialized for EsriLayer
+        expect(attributes['geojson']).to          be_nil # Not serialized for EsriFeatureLayer
         expect(attributes['layer_url']).to        eq layer.layer_url
         expect(attributes['default_enabled']).to  eq layer.default_enabled
         expect(attributes['marker_svg_url']).to   eq layer.marker_svg_url
@@ -110,7 +110,7 @@ resource 'Map Layers' do
     post 'web_api/v1/projects/:geojson_map_project_id/map_config/layers' do
       with_options scope: :layer, required: true, with_example: true do
         parameter :title_multiloc,  'The name of the layer in multiple locales'
-        parameter :type,            'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriLayer)', required: true
+        parameter :type,            'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriFeatureLayer)', required: true
         parameter :geojson,         '[Option 1] The GeoJSON object with all the specs for the layer', required: false
         parameter :geojson_file,    '[Option 2] The GeoJSON file with all the specs for the layer (required if geojson type)', required: false
         parameter :layer_url,       'url layer of non-geojson layer type (required, if non-geojson type)', required: false
@@ -196,7 +196,7 @@ resource 'Map Layers' do
     patch 'web_api/v1/projects/:geojson_map_project_id/map_config/layers/:id' do
       with_options scope: :layer, required: true, with_example: true do
         parameter :title_multiloc,  'The name of the layer in multiple locales'
-        parameter :type,            'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriLayer)', required: true
+        parameter :type,            'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriFeatureLayer)', required: true
         parameter :geojson,         'The GeoJSON object with all the specs for the layer', required: false
         parameter :geojson_file,    'The GeoJSON file with all the specs for the layer', required: false
         parameter :layer_url,       'url layer of non-geojson layer type (required, if non-geojson type)', required: false
@@ -312,11 +312,11 @@ resource 'Map Layers' do
     end
   end
 
-  shared_examples 'POST Esri map layer' do
+  shared_examples 'POST Esri feature map layer' do
     post 'web_api/v1/projects/:esri_map_project_id/map_config/layers' do
       with_options scope: :layer, required: true, with_example: true do
         parameter :title_multiloc,  'The name of the layer in multiple locales'
-        parameter :type,            'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriLayer)', required: true
+        parameter :type,            'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriFeatureLayer)', required: true
         parameter :geojson,         '[Option 1] The GeoJSON object with all the specs for the layer', required: false
         parameter :geojson_file,    '[Option 2] The GeoJSON file with all the specs for the layer (required if geojson type)', required: false
         parameter :layer_url,       'url layer of non-geojson layer type (required, if non-geojson type)', required: false
@@ -324,7 +324,7 @@ resource 'Map Layers' do
         parameter :marker_svg_url,  'The url for an svg marker [DEPRECATED, prefer GeoJSON properties instead]'
       end
 
-      let!(:layer_attributes) { attributes_for(:esri_layer, :with_marker_svg) }
+      let!(:layer_attributes) { attributes_for(:esri_feature_layer, :with_marker_svg) }
 
       let(:type)            { layer_attributes[:type] }
       let(:default_enabled) { layer_attributes[:default_enabled] }
@@ -338,8 +338,8 @@ resource 'Map Layers' do
         example_request 'Creates a map layer successfully using a url' do
           assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
-          expect(attributes['type']).to            eq 'CustomMaps::EsriLayer'
-          expect(attributes['geojson']).to         be_nil # Not serialized for EsriLayer
+          expect(attributes['type']).to            eq 'CustomMaps::EsriFeatureLayer'
+          expect(attributes['geojson']).to         be_nil # Not serialized for EsriFeatureLayer
           expect(attributes['layer_url']).to       eq layer_url
           expect(attributes['default_enabled']).to be true
           expect(attributes['marker_svg_url']).to  eq marker_svg_url
@@ -355,11 +355,11 @@ resource 'Map Layers' do
     end
   end
 
-  shared_examples 'PATCH Esri map layer' do
+  shared_examples 'PATCH Esri feature map layer' do
     patch 'web_api/v1/projects/:esri_map_project_id/map_config/layers/:id' do
       with_options scope: :layer, required: true, with_example: true do
         parameter :title_multiloc,  'The name of the layer in multiple locales'
-        parameter :type,            'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriLayer)', required: true
+        parameter :type,            'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriFeatureLayer)', required: true
         parameter :geojson,         'The GeoJSON object with all the specs for the layer', required: false
         parameter :geojson_file,    'The GeoJSON file with all the specs for the layer', required: false
         parameter :layer_url,       'url layer of non-geojson layer type (required, if non-geojson type)', required: false
@@ -370,7 +370,7 @@ resource 'Map Layers' do
       let(:layer) { esri_map_config.layers.first }
       let(:id)    { layer.id }
 
-      let!(:layer_attributes) { attributes_for(:esri_layer, :with_marker_svg) }
+      let!(:layer_attributes) { attributes_for(:esri_feature_layer, :with_marker_svg) }
 
       let(:default_enabled) { false }
       let(:marker_svg_url)  { 'https://some_new_url.com' }
@@ -383,8 +383,8 @@ resource 'Map Layers' do
         example_request 'Updates a map layer successfully using a url' do
           assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
-          expect(attributes['type']).to            eq 'CustomMaps::EsriLayer'
-          expect(attributes['geojson']).to         be_nil # Not serialized for EsriLayer
+          expect(attributes['type']).to            eq 'CustomMaps::EsriFeatureLayer'
+          expect(attributes['geojson']).to         be_nil # Not serialized for EsriFeatureLayer
           expect(attributes['layer_url']).to       eq layer_url
           expect(attributes['default_enabled']).to be default_enabled
           expect(attributes['marker_svg_url']).to  eq marker_svg_url
@@ -425,7 +425,7 @@ resource 'Map Layers' do
 
   context 'when not logged in' do
     include_examples 'successful GET map GeoJSON layers'
-    include_examples 'successful GET map Esri layers'
+    include_examples 'successful GET map Esri feature layers'
     include_examples 'unauthorized POST, PATCH and DELETE map layer'
   end
 
@@ -433,7 +433,7 @@ resource 'Map Layers' do
     before { resident_header_token }
 
     include_examples 'successful GET map GeoJSON layers'
-    include_examples 'successful GET map Esri layers'
+    include_examples 'successful GET map Esri feature layers'
     include_examples 'unauthorized POST, PATCH and DELETE map layer'
   end
 
@@ -443,18 +443,18 @@ resource 'Map Layers' do
     end
 
     include_examples 'successful GET map GeoJSON layers'
-    include_examples 'successful GET map Esri layers'
+    include_examples 'successful GET map Esri feature layers'
     include_examples 'POST GeoJSON map layer'
     include_examples 'PATCH GeoJSON map layer'
     include_examples 'Reorder GeoJSON map layer'
-    include_examples 'POST Esri map layer'
-    include_examples 'PATCH Esri map layer'
+    include_examples 'POST Esri feature map layer'
+    include_examples 'PATCH Esri feature map layer'
     include_examples 'DELETE GeoJSON map layer'
 
     context 'when attempting to update layer type' do
       patch 'web_api/v1/projects/:esri_map_project_id/map_config/layers/:id' do
         with_options scope: :layer, required: true, with_example: true do
-          parameter :type,            'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriLayer)', required: true
+          parameter :type,            'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriFeatureLayer)', required: true
           parameter :geojson_file,    'The GeoJSON file with all the specs for the layer', required: false
           parameter :title_multiloc,  'The name of the layer in multiple locales'
         end
@@ -477,7 +477,7 @@ resource 'Map Layers' do
             assert_status 200
 
             updated_layer = CustomMaps::Layer.find(layer.id)
-            expect(updated_layer.type).to eq 'CustomMaps::EsriLayer'
+            expect(updated_layer.type).to eq 'CustomMaps::EsriFeatureLayer'
             expect(updated_layer.title_multiloc).to eq({ 'en' => 'new layer title' })
           end
         end
@@ -485,7 +485,7 @@ resource 'Map Layers' do
 
       patch 'web_api/v1/projects/:geojson_map_project_id/map_config/layers/:id' do
         with_options scope: :layer, required: true, with_example: true do
-          parameter :type,      'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriLayer)', required: true
+          parameter :type,      'The type of the layer (CustomMaps::GeojsonLayer or CustomMaps::EsriFeatureLayer)', required: true
           parameter :layer_url, 'url layer of non-geojson layer type (required, if non-geojson type)', required: false
           parameter :geojson,   'The GeoJSON object with all the specs for the layer', required: false
         end
@@ -493,8 +493,8 @@ resource 'Map Layers' do
         let(:layer) { geojson_map_config.layers.first }
         let(:id)    { layer.id }
 
-        context 'when attempting to change to an Esri layer' do
-          let(:type) { 'CustomMaps::EsriLayer' }
+        context 'when attempting to change to an Esri feature layer' do
+          let(:type) { 'CustomMaps::EsriFeatureLayer' }
           let(:layer_url) { 'https://some.domain.com/some_layer' }
           let(:geojson) { layer.geojson }
 
@@ -521,12 +521,12 @@ resource 'Map Layers' do
     end
 
     include_examples 'successful GET map GeoJSON layers'
-    include_examples 'successful GET map Esri layers'
+    include_examples 'successful GET map Esri feature layers'
     include_examples 'POST GeoJSON map layer'
     include_examples 'PATCH GeoJSON map layer'
     include_examples 'Reorder GeoJSON map layer'
-    include_examples 'POST Esri map layer'
-    include_examples 'PATCH Esri map layer'
+    include_examples 'POST Esri feature map layer'
+    include_examples 'PATCH Esri feature map layer'
     include_examples 'DELETE GeoJSON map layer'
 
     context 'when not manager of the respective project' do

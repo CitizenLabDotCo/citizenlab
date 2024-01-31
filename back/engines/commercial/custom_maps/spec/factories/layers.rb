@@ -24,8 +24,8 @@ FactoryBot.define do
     geojson { JSON.parse(File.read(CustomMaps::Engine.root.join('spec', 'fixtures', 'seattle.geojson'))) }
   end
 
-  factory :esri_layer, parent: :layer, class: 'CustomMaps::EsriLayer' do
-    type { 'CustomMaps::EsriLayer' }
+  factory :esri_feature_layer, parent: :layer, class: 'CustomMaps::EsriFeatureLayer' do
+    type { 'CustomMaps::EsriFeatureLayer' }
     layer_url { 'https://some.domain.com/some_layer' }
   end
 end

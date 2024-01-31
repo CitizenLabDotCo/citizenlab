@@ -30,7 +30,7 @@ module CustomMaps
 
     attribute :geojson_file
 
-    LAYER_TYPES = %w[CustomMaps::GeojsonLayer CustomMaps::EsriLayer].freeze
+    LAYER_TYPES = %w[CustomMaps::GeojsonLayer CustomMaps::EsriFeatureLayer].freeze
 
     acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: [:map_config_id]
 

@@ -120,7 +120,7 @@ resource 'Map Configs' do
           create(:map_config,
             :with_positioning,
             :with_tile_provider,
-            :with_esri_layers,
+            :with_esri_feature_layers,
             :with_legend,
             project: project)
         end

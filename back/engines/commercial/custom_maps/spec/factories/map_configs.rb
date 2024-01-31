@@ -23,9 +23,9 @@ FactoryBot.define do
       end
     end
 
-    trait :with_esri_layers do
+    trait :with_esri_feature_layers do
       after(:create) do |map_config, _evaluator|
-        create(:esri_layer, :with_marker_svg, map_config: map_config)
+        create(:esri_feature_layer, :with_marker_svg, map_config: map_config)
       end
     end
 

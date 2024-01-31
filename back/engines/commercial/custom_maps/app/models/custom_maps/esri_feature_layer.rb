@@ -25,7 +25,7 @@
 #  fk_rails_...  (map_config_id => maps_map_configs.id)
 #
 module CustomMaps
-  class EsriLayer < Layer
+  class EsriFeatureLayer < Layer
     validates :layer_url,
       presence: true,
       format: { with: %r{\Ahttp(s)?://.+\z}, message: 'should start with http:// or https://' } # rubocop:disable Rails/I18nLocaleTexts
