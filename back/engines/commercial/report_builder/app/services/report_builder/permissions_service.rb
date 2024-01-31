@@ -24,8 +24,8 @@ class ReportBuilder::PermissionsService
       next unless ReportBuilder::QueryRepository::GRAPH_RESOLVED_NAMES_CLASSES.key?(resolved_name)
 
       props = node_obj['props']
-
       phase_id = props['phaseId']
+
       if phase_id.present?
         phase = Phase.find(phase_id)
 
