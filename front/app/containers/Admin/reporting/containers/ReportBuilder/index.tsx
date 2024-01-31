@@ -36,6 +36,8 @@ import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import { ReportLayout } from 'api/report_layout/types';
 import { isEmpty } from 'lodash-es';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 interface Props {
   reportId: string;
@@ -46,8 +48,8 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
   const platformLocale = useLocale();
   const [search] = useSearchParams();
   const templateProjectId = search.get('templateProjectId');
+  const previewEnabled = search.get('preview') === 'true';
 
-  const [previewEnabled, setPreviewEnabled] = useState(false);
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale>(platformLocale);
   const [draftData, setDraftData] = useState<CraftJson>(
@@ -94,16 +96,16 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
   );
 
   const handlePreview = () => {
-    setPreviewEnabled((previewEnabled) => {
-      const nextState = !previewEnabled;
-      const userSwitchingToPreview = nextState === true;
+    const nextState = !previewEnabled;
+    const userSwitchingToPreview = nextState === true;
 
-      if (userSwitchingToPreview) {
-        setInitialData(draftData);
-      }
+    if (userSwitchingToPreview) {
+      setInitialData(draftData);
+    }
 
-      return nextState;
-    });
+    nextState
+      ? updateSearchParams({ preview: 'true' })
+      : removeSearchParams(['preview']);
   };
 
   const previewData = isEmpty(draftData) ? undefined : draftData;
