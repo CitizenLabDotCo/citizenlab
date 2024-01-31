@@ -43,6 +43,16 @@ resource 'Insights' do
       })
       expect(json_response_body[:included].pluck(:id)).to match_array([summary.id, summary.background_task.id, question.id, question.background_task.id])
     end
+
+    example_request 'Listing insights does not cause N+1 queries' do
+      create_list(:summary, 3, insight_attributes: { analysis: analysis })
+
+      expect do
+        do_request
+      end.not_to exceed_query_limit(1).with(/SELECT.*insights/)
+
+      assert_status 200
+    end
   end
 
   delete 'web_api/v1/analyses/:analysis_id/insights/:id' do
