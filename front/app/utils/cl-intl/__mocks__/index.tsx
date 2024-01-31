@@ -83,4 +83,9 @@ Intl.FormattedMessage.displayName = 'FormattedMessage';
 // Special hook for tests, real package does not export this
 Intl.intl = intlReplacement;
 
+Intl.useFormatMessageWithLocale =
+  () => (_locale, messageDescriptor, values) => {
+    return formatMessageReplacement(messageDescriptor, values);
+  };
+
 module.exports = Intl;

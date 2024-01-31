@@ -57,6 +57,10 @@ import { geocode } from 'utils/locationTools';
 import { useTheme } from 'styled-components';
 import useLocale from 'hooks/useLocale';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
+import {
+  roundToNearestMultipleOfFive,
+  calculateRoundedEndDate,
+} from 'utils/dateUtils';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
@@ -105,6 +109,7 @@ const AdminProjectEventEdit = () => {
   const [saving, setSaving] = useState<boolean>(false);
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
+
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
   const [mapModalVisible, setMapModalVisible] = useState(false);
   const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
@@ -124,6 +129,25 @@ const AdminProjectEventEdit = () => {
   const eventAttrs = event
     ? { ...event?.data.attributes, ...attributeDiff }
     : { ...attributeDiff };
+
+  useEffect(() => {
+    // Check that the event has loaded and only then can we be sure if we are creating a new one or using an existing one
+    if (!isInitialLoading) {
+      const initialRoundedStartDate = roundToNearestMultipleOfFive(new Date());
+      const initialRoundedEndDate = calculateRoundedEndDate(
+        initialRoundedStartDate
+      );
+
+      setAttributeDiff({
+        start_at: event
+          ? event.data.attributes.start_at
+          : initialRoundedStartDate.toISOString(),
+        end_at: event
+          ? event.data.attributes.end_at
+          : initialRoundedEndDate.toISOString(),
+      });
+    }
+  }, [event, isInitialLoading]);
 
   // Set image value to remote image if present
   useEffect(() => {
@@ -272,14 +296,54 @@ const AdminProjectEventEdit = () => {
   };
 
   const handleDateTimePickerOnChange =
-    (name: 'start_at' | 'end_at') => (moment: moment.Moment) => {
+    (name: 'start_at' | 'end_at') => (time: moment.Moment) => {
       if (!isInitialLoading) {
         setSubmitState('enabled');
         setAttributeDiff((previousState) => {
-          return {
+          const newAttributes = {
             ...previousState,
-            [name]: moment.toISOString(),
+            [name]: time.toISOString(),
           };
+
+          // If the start time is changed, update the end time
+          if (name === 'start_at' && newAttributes['start_at']) {
+            const duration = newAttributes['end_at']
+              ? moment
+                  .duration(
+                    moment(newAttributes['end_at']).diff(
+                      moment(previousState['start_at'])
+                    )
+                  )
+                  .asMinutes()
+              : 30;
+
+            newAttributes['end_at'] = calculateRoundedEndDate(
+              new Date(newAttributes['start_at']),
+              duration
+            ).toISOString();
+          } else if (name === 'end_at' && newAttributes['end_at']) {
+            const isStartDateAfterEndDate =
+              newAttributes['start_at'] && newAttributes['end_at']
+                ? newAttributes['start_at'] > newAttributes['end_at']
+                : false;
+
+            if (isStartDateAfterEndDate) {
+              const duration = moment
+                .duration(
+                  moment(previousState['end_at']).diff(
+                    moment(newAttributes['start_at'])
+                  )
+                )
+                .asMinutes();
+
+              newAttributes['start_at'] = calculateRoundedEndDate(
+                new Date(newAttributes['end_at']),
+                -duration
+              ).toISOString();
+            }
+          }
+
+          return newAttributes;
         });
         setErrors({});
       }

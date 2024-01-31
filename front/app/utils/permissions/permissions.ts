@@ -117,7 +117,6 @@ const usePermission = ({
 
   const resourceType = isResource(item) ? item.type : item;
   const rule = getPermissionRule(resourceType, action);
-
   if (rule) {
     return (
       !isNilOrError(user) &&

@@ -11,7 +11,7 @@ const useReportDefaultPadding = () => {
     query: { node },
   } = useEditor();
   const { parentId } = useNode((node) => ({
-    parentId: node.data.parent,
+    parentId: node?.data?.parent,
   }));
 
   const { width } = useReportContext();

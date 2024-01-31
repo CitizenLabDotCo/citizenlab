@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import useLocale from 'hooks/useLocale';
 
 // components
-import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from '../messages';
@@ -54,32 +54,7 @@ const FormResults = () => {
         </Text>
       </Box>
 
-      <Box
-        bgColor={colors.teal100}
-        borderRadius="3px"
-        px="12px"
-        py="4px"
-        mt="0px"
-        mb="32px"
-        role="alert"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Box display="flex" gap="16px" alignItems="center">
-          <Icon
-            name="info-outline"
-            width="24px"
-            height="24px"
-            fill="textSecondary"
-          />
-          <Text variant="bodyM" color="textSecondary">
-            {formatMessage(messages.informationText2)}
-          </Text>
-        </Box>
-      </Box>
-
-      <Box maxWidth="524px">
+      <Box>
         {results.map(
           (
             {
@@ -89,6 +64,7 @@ const FormResults = () => {
               totalResponses,
               required,
               customFieldId,
+              textResponses,
             },
             index
           ) => {
@@ -102,6 +78,7 @@ const FormResults = () => {
                 totalResponses={totalResponses}
                 required={required}
                 customFieldId={customFieldId}
+                textResponses={textResponses}
               />
             );
           }
