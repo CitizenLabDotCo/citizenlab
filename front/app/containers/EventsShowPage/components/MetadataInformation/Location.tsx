@@ -81,8 +81,8 @@ const Location = ({ event }: Props) => {
               {address2}
             </Text>
           )}
-          {position && (
-            <Box ml="-30px" width="300">
+          {position && ( // Using a negative margin here so we can extend the map outside of the container
+            <Box ml="-30px" width="300" mt="8px">
               <LocationMap eventLocation={position} mapHeight={'140px'} />
             </Box>
           )}
