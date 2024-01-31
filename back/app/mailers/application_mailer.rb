@@ -134,7 +134,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def raw_from_email
-    app_settings.core.from_email.presence || default_from_email
+    app_settings.core['from_email'].presence || default_from_email
   end
 
   def to_email
@@ -142,7 +142,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def reply_to_email
-    app_settings.core.reply_to_email.presence || default_from_email
+    app_settings.core['reply_to_email'].presence || default_from_email
   end
 
   def domain
@@ -203,9 +203,13 @@ class ApplicationMailer < ActionMailer::Base
 
   def to_deep_struct(obj)
     case obj
-    when Hash  then WhinyOpenStruct.new(obj.transform_values { |nested_object| to_deep_struct(nested_object) }, raise_exception: false)
-    when Array then obj.map { |nested_object| to_deep_struct(nested_object) }
-    else            obj
+    when Hash
+      struct_obj = obj.transform_values { |nested_object| to_deep_struct(nested_object) }
+      WhinyOpenStruct.new(struct_obj, raise_exception: false)
+    when Array
+      obj.map { |nested_object| to_deep_struct(nested_object) }
+    else
+      obj
     end
   end
 end
