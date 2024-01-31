@@ -32,21 +32,29 @@ const ProgressBar = ({ phase, idea }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const votingMethod = phase.data.attributes.voting_method;
+
+  // both for pb and multiple voting, this is defined?
   const baskets =
     votingMethod === 'single_voting'
       ? undefined
       : idea.attributes.baskets_count ?? 0;
+
+  // confusingly, for PB we use the budget of the idea times the number of picks/baskets
   const ideaVotes = idea.attributes.votes_count ?? 0;
-  // for budgetting, this is total budget spent?
+  const votes = votingMethod === 'budgeting' ? undefined : ideaVotes;
+
+  // for PB, this is the sum of all ideaVotes?
   const totalVotes = phase.data.attributes.votes_count;
-  const votesPercentage = totalVotes
-    ? roundPercentage(ideaVotes, totalVotes)
-    : 0;
+
+  const votesPercentage =
+    typeof totalVotes === 'number' ? roundPercentage(ideaVotes, totalVotes) : 0;
+
   const tooltip =
     votingMethod === 'budgeting'
-      ? formatMessage(messages.budgetingTooltip)
+      ? // Content is currently wrong. It's not the average percentage of people's budgets spent on this option
+        // Rather, it's the percentage of the total budget spent on this option
+        formatMessage(messages.budgetingTooltip)
       : undefined;
-  const votes = votingMethod === 'budgeting' ? undefined : ideaVotes;
 
   // Voting terms
   const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
