@@ -15,9 +15,11 @@ import messages from './messages';
 interface Props {
   phaseId: string;
   budget?: number;
+  // undefined for budgetting
   votes?: number;
-  votesPercentage: number;
+  // undefined for voting
   baskets?: number;
+  votesPercentage: number;
   tooltip?: string;
 }
 

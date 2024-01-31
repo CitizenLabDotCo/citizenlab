@@ -173,6 +173,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const votingMethod = phase?.data.attributes.voting_method;
 
   const ideaVotes = idea.attributes.votes_count ?? 0;
+  // for budgetting, this is total budget spent?
   const totalVotes = phase?.data.attributes.votes_count;
 
   const votesPercentage = totalVotes
