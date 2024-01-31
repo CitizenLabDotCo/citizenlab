@@ -111,6 +111,9 @@ const AdminProjectEventEdit = () => {
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
     event?.data?.attributes?.location_point_geojson || null
   );
+  const [geocodedPoint, setGeocodedPoint] = useState<GeoJSON.Point | null>(
+    null
+  );
   const [eventFilesToRemove, setEventFilesToRemove] = useState<UploadFile[]>(
     []
   );
@@ -159,6 +162,7 @@ const AdminProjectEventEdit = () => {
     if (eventAttrs.address_1 !== event?.data.attributes.address_1) {
       const delayDebounceFn = setTimeout(async () => {
         const point = await geocode(eventAttrs.address_1);
+        setGeocodedPoint(point);
         setLocationPoint(point);
         setSuccessfulGeocode(!!point);
       }, 500);
@@ -622,7 +626,10 @@ const AdminProjectEventEdit = () => {
                       mapHeight="230px"
                       setSubmitState={setSubmitState}
                       setLocationPoint={setLocationPoint}
-                      position={locationPoint}
+                      position={
+                        geocodedPoint ||
+                        event?.data?.attributes?.location_point_geojson
+                      }
                     />
                   </Box>
                 </Box>
