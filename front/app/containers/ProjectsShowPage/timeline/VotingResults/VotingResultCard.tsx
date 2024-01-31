@@ -160,8 +160,11 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
     idea.relationships.idea_images.data?.[0]?.id
   );
   const smallerThanPhone = useBreakpoint('phone');
+
+  if (!phase || !project) return null;
+
   const ideaTitle = localize(idea.attributes.title_multiloc);
-  const votingMethod = phase?.data.attributes.voting_method;
+  const votingMethod = phase.data.attributes.voting_method;
   const url = `/ideas/${idea.attributes.slug}?go_back=true`;
 
   const handleClick = (e: React.MouseEvent) => {
