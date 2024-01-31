@@ -17,8 +17,7 @@ RSpec.describe Analysis::Summary do
     let(:project) { create(:project_with_active_ideation_phase) }
     let(:inputs) { create_list(:idea, 2, project: project) }
     let(:analysis) { create(:analysis, project: project) }
-    let(:insight) { build(:insight, inputs_ids: inputs.map(&:id), analysis: analysis) }
-    let(:summary) { create(:summary, insight: insight) }
+    let(:summary) { create(:summary, insight_attributes: { inputs_ids: inputs.map(&:id), analysis: analysis }) }
 
     context 'when the inputs didn\'t change' do
       it { is_expected.to eq 0 }
