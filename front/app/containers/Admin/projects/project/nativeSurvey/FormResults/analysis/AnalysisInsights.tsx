@@ -16,6 +16,8 @@ import { replaceIdRefsWithLinks } from '../../../analysis/Insights/util';
 import { useParams } from 'react-router-dom';
 import FilterItems from '../../../analysis/FilterItems';
 import Button from 'components/UI/Button';
+import { stringify } from 'qs';
+import { IInputsFilterParams } from 'api/analysis_inputs/types';
 
 type AnalysisInsight = {
   analysisId: string;
@@ -23,6 +25,19 @@ type AnalysisInsight = {
     id: string;
     type: 'summary' | 'analysis_question';
   };
+};
+
+// Convert all values in the filters object to strings
+const filterValuesToString = (filters?: IInputsFilterParams) => {
+  return (
+    filters &&
+    Object.entries(filters).reduce((acc, [key, value]) => {
+      return {
+        ...acc,
+        [key]: JSON.stringify(value),
+      };
+    }, {})
+  );
 };
 
 const Summary = ({
@@ -45,6 +60,7 @@ const Summary = ({
   if (!summary) {
     return null;
   }
+
   return (
     <Box
       display="flex"
@@ -74,7 +90,13 @@ const Summary = ({
         </Text>
       </Box>
       <Box display="flex">
-        <Button buttonStyle="secondary" icon="eye">
+        <Button
+          buttonStyle="secondary"
+          icon="eye"
+          linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
+            { ...filterValuesToString(filters), phase_id: phaseId }
+          )}`}
+        >
           {formatMessage(messages.explore)}
         </Button>
       </Box>
@@ -101,6 +123,7 @@ const Question = ({
   if (!question || !answer) {
     return null;
   }
+
   return (
     <Box
       display="flex"
@@ -129,7 +152,13 @@ const Question = ({
         </Text>
       </Box>
       <Box display="flex">
-        <Button buttonStyle="secondary" icon="eye">
+        <Button
+          buttonStyle="secondary"
+          icon="eye"
+          linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
+            { ...filterValuesToString(filters), phase_id: phaseId }
+          )}`}
+        >
           {formatMessage(messages.explore)}
         </Button>
       </Box>
@@ -148,7 +177,6 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
     .flatMap(({ data }, i) =>
       data?.data.map((insight) => ({
         analysisId: analyses[i].id,
-
         relationship: insight.relationships.insightable.data,
       }))
     )
