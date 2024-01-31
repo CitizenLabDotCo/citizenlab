@@ -138,8 +138,8 @@ RSpec.describe ReportBuilder::ReportPolicy do
         })
       end
 
-      context 'phase started' do
-        let_it_be(:phase) { create(:phase, project: project, start_at: 1.day.ago) }
+      context 'phase not started' do
+        let_it_be(:phase) { create(:phase, project: project, start_at: 1.day.from_now) }
 
         context 'when user can moderate phase, and has access to all data in report' do
           let_it_be(:user) { create(:project_moderator, projects: [project, another_project]) }
@@ -157,6 +157,44 @@ RSpec.describe ReportBuilder::ReportPolicy do
           it { is_expected.to permit(:update) }
           it { expect(scope.resolve.count).to eq(0) }
         end
+
+        context 'when user can moderate phase, but does not have access to all data in report' do
+          let_it_be(:user) { create(:project_moderator, projects: [project]) }
+          let_it_be(:all_reports) { create_list(:report, 3) }
+          let_it_be(:report) do
+            all_reports.first.tap do |r|
+              r.update!(phase: phase, layout: layout)
+            end
+          end
+
+          it { is_expected.to permit(:show) }
+          it { is_expected.not_to permit(:layout) }
+          it { is_expected.not_to permit(:create) }
+          it { is_expected.not_to permit(:destroy) }
+          it { is_expected.not_to permit(:update) }
+          it { expect(scope.resolve.count).to eq(0) }
+        end
+
+        context 'when user cannot moderate phase' do
+          let_it_be(:user) { create(:project_moderator) }
+          let_it_be(:all_reports) { create_list(:report, 3) }
+          let_it_be(:report) do
+            all_reports.first.tap do |r|
+              r.update!(phase: phase, layout: layout)
+            end
+          end
+
+          it { is_expected.not_to permit(:show) }
+          it { is_expected.not_to permit(:layout) }
+          it { is_expected.not_to permit(:create) }
+          it { is_expected.not_to permit(:destroy) }
+          it { is_expected.not_to permit(:update) }
+          it { expect(scope.resolve.count).to eq(0) }
+        end
+      end
+
+      context 'phase started' do
+        let_it_be(:phase) { create(:phase, project: project, start_at: 1.day.ago) }
 
         context 'when user can moderate phase, but does not have access to all data in report' do
           let_it_be(:user) { create(:project_moderator, projects: [project]) }
