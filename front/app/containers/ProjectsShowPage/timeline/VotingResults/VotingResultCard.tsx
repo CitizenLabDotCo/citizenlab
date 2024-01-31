@@ -165,15 +165,14 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const { formatMessage } = useIntl();
 
   const ideaTitle = localize(idea.attributes.title_multiloc);
-  const { slug } = idea.attributes;
-  const params = '?go_back=true';
   const votingMethod = phase?.data.attributes.voting_method;
+  const url = `/ideas/${idea.attributes.slug}?go_back=true`;
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.id });
 
-    clHistory.push(`/ideas/${slug}${params}`, {
+    clHistory.push(url, {
       scrollToTop: true,
     });
   };
@@ -183,7 +182,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   return (
     <Container
       id={idea.id}
-      to={`/ideas/${slug}${params}`}
+      to={url}
       onClick={handleClick}
       className={`e2e-card ${
         !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
