@@ -229,7 +229,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
         </Header>
 
         <Body>
-          <Results phaseId={phaseId} idea={idea} />
+          <Results phase={phase} idea={idea} />
         </Body>
         <Footer
           project={project}

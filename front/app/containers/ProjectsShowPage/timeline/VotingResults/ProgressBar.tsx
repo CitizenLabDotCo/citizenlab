@@ -1,8 +1,4 @@
 import React from 'react';
-
-// api
-import usePhase from 'api/phases/usePhase';
-
 // components
 import {
   Box,
@@ -24,20 +20,17 @@ import assignMultipleVotesInputMessages from 'components/VoteInputs/multiple/Ass
 
 import { roundPercentage } from 'utils/math';
 import { IIdeaData } from 'api/ideas/types';
+import { IPhase } from 'api/phases/types';
 
 interface Props {
-  phaseId: string;
+  phase: IPhase;
   idea: IIdeaData;
 }
 
-const ProgressBar = ({ phaseId, idea }: Props) => {
+const ProgressBar = ({ phase, idea }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { data: phase } = usePhase(phaseId);
-
-  if (!phase) return null;
-
   const votingMethod = phase.data.attributes.voting_method;
   const baskets =
     votingMethod === 'single_voting'
@@ -45,7 +38,7 @@ const ProgressBar = ({ phaseId, idea }: Props) => {
       : idea.attributes.baskets_count ?? 0;
   const ideaVotes = idea.attributes.votes_count ?? 0;
   // for budgetting, this is total budget spent?
-  const totalVotes = phase?.data.attributes.votes_count;
+  const totalVotes = phase.data.attributes.votes_count;
   const votesPercentage = totalVotes
     ? roundPercentage(ideaVotes, totalVotes)
     : 0;

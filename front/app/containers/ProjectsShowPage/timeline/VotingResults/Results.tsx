@@ -1,8 +1,5 @@
 import React from 'react';
 
-// api
-import usePhase from 'api/phases/usePhase';
-
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import ProgressBar from './ProgressBar';
@@ -12,18 +9,15 @@ import { useIntl } from 'utils/cl-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import messages from './messages';
 import { IIdeaData } from 'api/ideas/types';
+import { IPhase } from 'api/phases/types';
 
 interface Props {
-  phaseId: string;
+  phase: IPhase;
   idea: IIdeaData;
 }
 
-const Results = ({ phaseId, idea }: Props) => {
+const Results = ({ phase, idea }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: phase } = usePhase(phaseId);
-
-  if (!phase) return null;
-
   const budget = idea.attributes.budget ?? undefined;
 
   return (
@@ -39,7 +33,7 @@ const Results = ({ phaseId, idea }: Props) => {
             {formatMessage(messages.cost)} <FormattedBudget value={budget} />
           </Text>
         )}
-      <ProgressBar idea={idea} phaseId={phaseId} />
+      <ProgressBar idea={idea} phase={phase} />
     </Box>
   );
 };
