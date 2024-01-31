@@ -49,13 +49,15 @@ const ProgressBar = ({ phaseId, idea }: Props) => {
   const votesPercentage = totalVotes
     ? roundPercentage(ideaVotes, totalVotes)
     : 0;
-  const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
-    phase.data.attributes;
   const tooltip =
     votingMethod === 'budgeting'
       ? formatMessage(messages.budgetingTooltip)
       : undefined;
   const votes = votingMethod === 'budgeting' ? undefined : ideaVotes;
+
+  // Voting terms
+  const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
+    phase.data.attributes;
   const votingTermSingular =
     localize(voting_term_singular_multiloc) ||
     formatMessage(assignMultipleVotesInputMessages.vote).toLowerCase();
