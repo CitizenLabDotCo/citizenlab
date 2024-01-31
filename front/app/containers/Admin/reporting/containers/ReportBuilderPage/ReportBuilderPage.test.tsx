@@ -41,6 +41,12 @@ const reports = [
       name: 'Report 1',
       created_at: '2022-12-18',
       updated_at: '2022-12-19',
+      action_descriptor: {
+        editing_report: {
+          enabled: true,
+          disabled_reason: null,
+        },
+      },
     },
     relationships: {
       owner: {
@@ -56,6 +62,12 @@ const reports = [
       name: 'Report 2',
       created_at: '2022-12-20',
       updated_at: '2022-12-21',
+      action_descriptor: {
+        editing_report: {
+          enabled: true,
+          disabled_reason: null,
+        },
+      },
     },
     relationships: {
       owner: {
@@ -151,16 +163,12 @@ describe('<ReportBuilderPage />', () => {
       );
     });
 
-    it('calls window.open with correct args when clicking "view"', () => {
+    it('has print buttons', () => {
       mockReports = reports;
       render(<ReportBuilderPage />);
-      const viewButtonSecondReport = screen.getAllByText('View')[1];
-      fireEvent.click(viewButtonSecondReport);
+      const printButtons = screen.getAllByText('Print');
 
-      expect(mockOpen).toHaveBeenCalledWith(
-        '/admin/reporting/report-builder/r2/viewer',
-        '_blank'
-      );
+      expect(printButtons).toHaveLength(2);
     });
   });
 });
