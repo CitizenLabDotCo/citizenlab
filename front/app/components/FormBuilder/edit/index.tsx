@@ -53,16 +53,6 @@ import {
 } from 'api/custom_fields/types';
 import { isNewCustomFieldObject } from 'api/custom_fields/util';
 
-const StyledRightColumn = styled(RightColumn)`
-  height: calc(100vh - ${stylingConsts.menuHeight}px);
-  z-index: 2;
-  margin: 0;
-  max-width: 100%;
-  align-items: center;
-  padding-bottom: 100px;
-  overflow-y: auto;
-`;
-
 interface FormValues {
   customFields: IFlatCustomField[];
 }
@@ -259,13 +249,24 @@ export const FormEdit = ({
                 builderConfig={builderConfig}
               />
               <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
-                <FormBuilderToolbox
-                  onAddField={onAddField}
-                  builderConfig={builderConfig}
-                  move={move}
-                />
-                <StyledRightColumn>
-                  <Box width="1000px">
+                <Box width="210px">
+                  <FormBuilderToolbox
+                    onAddField={onAddField}
+                    builderConfig={builderConfig}
+                    move={move}
+                  />
+                </Box>
+                <Box
+                  flex="1.8"
+                  border="1px solid #ccc"
+                  overflowY="auto"
+                  zIndex="2"
+                  margin="0px"
+                  paddingBottom="100px"
+                  height={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+                  px="30px"
+                >
+                  <Box mt="16px">
                     {hasErrors && (
                       <Box mb="16px">
                         <Error
@@ -298,17 +299,21 @@ export const FormEdit = ({
                       />
                     </Box>
                   </Box>
-                </StyledRightColumn>
-                {!isNilOrError(selectedField) && (
-                  <FormBuilderSettings
-                    key={selectedField.id}
-                    field={selectedField}
-                    onDelete={handleDelete}
-                    onClose={closeSettings}
-                    isDeleteDisabled={isDeleteDisabled}
-                    builderConfig={builderConfig}
-                  />
-                )}
+                </Box>
+                <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
+                  {!isNilOrError(selectedField) && (
+                    <Box>
+                      <FormBuilderSettings
+                        key={selectedField.id}
+                        field={selectedField}
+                        onDelete={handleDelete}
+                        onClose={closeSettings}
+                        isDeleteDisabled={isDeleteDisabled}
+                        builderConfig={builderConfig}
+                      />
+                    </Box>
+                  )}
+                </Box>
               </Box>
             </form>
           </FormProvider>

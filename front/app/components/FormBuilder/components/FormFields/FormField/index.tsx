@@ -176,9 +176,12 @@ export const FormField = ({
           justifyContent="space-between"
           className="expand"
           width="100%"
+          h="100%"
+          alignItems="center"
+          flexWrap="wrap"
           ml={isFieldGrouping ? '8px' : '32px'}
         >
-          <Box display="flex" alignItems="center" height="100%">
+          <Box display="flex" alignItems="center" height="100%" flex="2">
             <Box display="block">
               <FieldTitle
                 hasErrors={hasErrors}
@@ -195,25 +198,32 @@ export const FormField = ({
               )}
             </Box>
           </Box>
-          <IconsAndBadges
-            field={field}
-            displayBuiltInFields={displayBuiltInFields}
-          />
           <Box
-            mr="32px"
-            ml="12px"
+            flex="1"
             display="flex"
+            justifyContent="flex-end"
             alignItems="center"
-            justifyContent="center"
-            h="100%"
           >
-            <MoreActionsMenu
-              showLabel={false}
-              color={colors.textSecondary}
-              actions={actions}
-              onClick={(event) => event.stopPropagation()}
+            <IconsAndBadges
+              field={field}
+              displayBuiltInFields={displayBuiltInFields}
             />
           </Box>
+        </Box>
+        <Box
+          mr="32px"
+          ml="12px"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          h="100%"
+        >
+          <MoreActionsMenu
+            showLabel={false}
+            color={colors.textSecondary}
+            actions={actions}
+            onClick={(event) => event.stopPropagation()}
+          />
         </Box>
       </FlexibleRow>
     </FormFieldsContainer>

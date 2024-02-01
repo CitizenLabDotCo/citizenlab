@@ -154,121 +154,117 @@ const FormBuilderSettings = ({
   );
 
   return (
-    <>
-      <Box
-        position="fixed"
-        right="0"
-        top={`${stylingConsts.menuHeight}px`}
-        bottom="0"
-        zIndex="99999"
-        p="20px"
-        w="400px"
-        background="white"
-        boxShadow="-2px 0px 1px 0px rgba(0, 0, 0, 0.06)"
-        overflowY="auto"
-        overflowX="hidden"
-      >
-        <Box position="absolute" right="10px">
-          <CloseIconButton
-            a11y_buttonActionMessage={messages.close}
-            onClick={onClose}
-            iconColor={colors.textSecondary}
-            iconColorOnHover={'#000'}
-          />
-        </Box>
-        {translatedStringKey && (
-          <Title variant="h4" as="h2" mb="8px">
-            <FormattedMessage {...translatedStringKey} />
-          </Title>
-        )}
-        {showTabbedSettings && builderConfig.isLogicEnabled && (
-          <Box display="flex" width="100%" mb="40px">
-            <Box
-              flexGrow={1}
-              borderBottom={
-                currentTab === 'content' ? tabActiveBorder : tabNotActiveBorder
-              }
-              onClick={() => {
-                setCurrentTab('content');
-              }}
-              style={{ cursor: 'pointer' }}
-            >
-              <Text mb="12px" textAlign="center" color="coolGrey600">
-                <FormattedMessage {...messages.content} />
-              </Text>
-            </Box>
-            <Box
-              flexGrow={1}
-              borderBottom={
-                currentTab === 'logic' ? tabActiveBorder : tabNotActiveBorder
-              }
-              onClick={() => {
-                setCurrentTab('logic');
-              }}
-              style={{ cursor: 'pointer' }}
-              data-cy="e2e-form-builder-logic-tab"
-            >
-              <Text mb="12px" textAlign="center" color="coolGrey600">
-                <FormattedMessage {...messages.logic} />
-              </Text>
-            </Box>
-          </Box>
-        )}
-        {(!showTabbedSettings ||
-          !builderConfig.isLogicEnabled ||
-          (showTabbedSettings && currentTab === 'content')) && (
-          <ContentSettings
-            field={field}
-            locales={locales}
-            onClose={onClose}
-            isDeleteDisabled={isDeleteDisabled}
-            onDelete={deleteField}
-          />
-        )}
-        {showTabbedSettings && currentTab === 'logic' && (
-          <LogicSettings
-            pageOptions={getPageList()}
-            field={field}
-            key={field.index}
-            builderConfig={builderConfig}
-          />
-        )}
-        <Modal opened={showDeleteModal} close={closeModal}>
-          <Box display="flex" flexDirection="column" width="100%" p="20px">
-            <Box mb="40px">
-              <Title variant="h3" color="primary">
-                {formatMessage(
-                  messages.deleteFieldWithLogicConfirmationQuestion
-                )}
-              </Title>
-              <Text color="primary" fontSize="l">
-                {formatMessage(messages.deleteResultsInfo)}
-              </Text>
-            </Box>
-            <Box
-              display="flex"
-              flexDirection="row"
-              width="100%"
-              alignItems="center"
-            >
-              <Button
-                icon="delete"
-                data-cy="e2e-confirm-delete-page-and-logic"
-                buttonStyle="delete"
-                width="auto"
-                mr="20px"
-                onClick={removeLogicAndDelete}
-              >
-                {formatMessage(messages.confirmDeleteFieldWithLogicButtonText)}
-              </Button>
-              <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
-                {formatMessage(messages.cancelDeleteButtonText)}
-              </Button>
-            </Box>
-          </Box>
-        </Modal>
+    <Box
+      right="0"
+      top={`${stylingConsts.menuHeight}px`}
+      bottom="0"
+      zIndex="99999"
+      p="20px"
+      w="100%"
+      background="white"
+      boxShadow="-2px 0px 1px 0px rgba(0, 0, 0, 0.06)"
+      overflowY="auto"
+      overflowX="hidden"
+      height={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+    >
+      <Box position="absolute" right="10px">
+        <CloseIconButton
+          a11y_buttonActionMessage={messages.close}
+          onClick={onClose}
+          iconColor={colors.textSecondary}
+          iconColorOnHover={'#000'}
+        />
       </Box>
-    </>
+      {translatedStringKey && (
+        <Title variant="h4" as="h2" mb="8px">
+          <FormattedMessage {...translatedStringKey} />
+        </Title>
+      )}
+      {showTabbedSettings && builderConfig.isLogicEnabled && (
+        <Box display="flex" width="100%" mb="40px">
+          <Box
+            flexGrow={1}
+            borderBottom={
+              currentTab === 'content' ? tabActiveBorder : tabNotActiveBorder
+            }
+            onClick={() => {
+              setCurrentTab('content');
+            }}
+            style={{ cursor: 'pointer' }}
+          >
+            <Text mb="12px" textAlign="center" color="coolGrey600">
+              <FormattedMessage {...messages.content} />
+            </Text>
+          </Box>
+          <Box
+            flexGrow={1}
+            borderBottom={
+              currentTab === 'logic' ? tabActiveBorder : tabNotActiveBorder
+            }
+            onClick={() => {
+              setCurrentTab('logic');
+            }}
+            style={{ cursor: 'pointer' }}
+            data-cy="e2e-form-builder-logic-tab"
+          >
+            <Text mb="12px" textAlign="center" color="coolGrey600">
+              <FormattedMessage {...messages.logic} />
+            </Text>
+          </Box>
+        </Box>
+      )}
+      {(!showTabbedSettings ||
+        !builderConfig.isLogicEnabled ||
+        (showTabbedSettings && currentTab === 'content')) && (
+        <ContentSettings
+          field={field}
+          locales={locales}
+          onClose={onClose}
+          isDeleteDisabled={isDeleteDisabled}
+          onDelete={deleteField}
+        />
+      )}
+      {showTabbedSettings && currentTab === 'logic' && (
+        <LogicSettings
+          pageOptions={getPageList()}
+          field={field}
+          key={field.index}
+          builderConfig={builderConfig}
+        />
+      )}
+      <Modal opened={showDeleteModal} close={closeModal}>
+        <Box display="flex" flexDirection="column" width="100%" p="20px">
+          <Box mb="40px">
+            <Title variant="h3" color="primary">
+              {formatMessage(messages.deleteFieldWithLogicConfirmationQuestion)}
+            </Title>
+            <Text color="primary" fontSize="l">
+              {formatMessage(messages.deleteResultsInfo)}
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            width="100%"
+            alignItems="center"
+          >
+            <Button
+              icon="delete"
+              data-cy="e2e-confirm-delete-page-and-logic"
+              buttonStyle="delete"
+              width="auto"
+              mr="20px"
+              onClick={removeLogicAndDelete}
+            >
+              {formatMessage(messages.confirmDeleteFieldWithLogicButtonText)}
+            </Button>
+            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
+              {formatMessage(messages.cancelDeleteButtonText)}
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+    </Box>
   );
 };
 
