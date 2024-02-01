@@ -13,6 +13,7 @@
 #  accuracy           :float
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  generated_at       :datetime
 #
 # Indexes
 #
