@@ -1,8 +1,3 @@
-export type TileInfo = {
-  tileSize?: number;
-  attribution: string;
-};
-
 export const MAPTILER_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors';
 
