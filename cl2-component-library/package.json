@@ -50,7 +50,7 @@
     "@storybook/addons": "^7.5.2",
     "@storybook/preset-typescript": "3.0.0",
     "@storybook/react": "^7.6.7",
-    "@storybook/react-webpack5": "^7.6.2",
+    "@storybook/react-webpack5": "^7.6.12",
     "@storybook/theming": "^7.6.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
