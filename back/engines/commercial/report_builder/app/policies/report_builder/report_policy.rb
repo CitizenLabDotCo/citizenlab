@@ -40,11 +40,9 @@ module ReportBuilder
     end
 
     def layout?
-      return false unless active?
-
       if admin?
         true
-      elsif user.project_or_folder_moderator?
+      elsif user.present? && user.project_or_folder_moderator?
         if record.phase?
           if PhasePolicy.new(user, record.phase).show?
             record.phase.started? || access_to_data?
@@ -55,7 +53,7 @@ module ReportBuilder
           record.owner == user && access_to_data?
         end
       else
-        record.phase? && PhasePolicy.new(user, record.phase).show? && record.phase.started?
+        phase_started_and_accessible?
       end
     end
 
@@ -81,6 +79,10 @@ module ReportBuilder
 
     def access_to_data?
       ReportBuilder::PermissionsService.new.editing_disabled_reason_for_report(record, user).blank?
+    end
+
+    def phase_started_and_accessible?
+      record.phase? && PhasePolicy.new(user, record.phase).show? && record.phase.started?
     end
   end
 end

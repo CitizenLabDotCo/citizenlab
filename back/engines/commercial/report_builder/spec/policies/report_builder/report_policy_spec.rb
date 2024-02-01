@@ -190,14 +190,54 @@ RSpec.describe ReportBuilder::ReportPolicy do
 
   context 'when user is a visitor' do
     let_it_be(:user) { nil }
-    let_it_be(:report) { create(:report) }
 
-    it { is_expected.not_to permit(:show) }
-    it { is_expected.not_to permit(:layout) }
-    it { is_expected.not_to permit(:create) }
-    it { is_expected.not_to permit(:destroy) }
-    it { is_expected.not_to permit(:update) }
-    it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
+    context 'when report does not belong to phase' do
+      let_it_be(:report) { create(:report) }
+
+      it { is_expected.not_to permit(:show) }
+      it { is_expected.not_to permit(:layout) }
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:update) }
+      it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
+    end
+
+    context 'when visitors cannot see phase' do
+      let_it_be(:project) { create(:project, visible_to: 'groups') }
+      let_it_be(:phase) { create(:phase, project: project) }
+      let_it_be(:report) { create(:report, phase: phase) }
+
+      it { is_expected.not_to permit(:show) }
+      it { is_expected.not_to permit(:layout) }
+      it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:update) }
+      it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
+    end
+
+    context 'when visitors can see phase' do
+      context 'phase not started' do
+        let_it_be(:report) { create(:report, phase: future_phase) }
+
+        it { is_expected.not_to permit(:show) }
+        it { is_expected.not_to permit(:layout) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:destroy) }
+        it { is_expected.not_to permit(:update) }
+        it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
+      end
+
+      context 'phase started' do
+        let_it_be(:report) { create(:report, phase: current_phase) }
+
+        it { is_expected.not_to permit(:show) }
+        it { is_expected.to permit(:layout) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:destroy) }
+        it { is_expected.not_to permit(:update) }
+        it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
+      end
+    end
   end
 
   context 'when user is a normal user' do
