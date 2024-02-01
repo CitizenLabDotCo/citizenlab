@@ -47,7 +47,7 @@
     "@storybook/addon-docs": "^7.6.6",
     "@storybook/addon-knobs": "^7.0.2",
     "@storybook/addon-links": "^7.6.12",
-    "@storybook/addons": "^7.5.2",
+    "@storybook/addons": "^7.6.12",
     "@storybook/preset-typescript": "3.0.0",
     "@storybook/react": "^7.6.7",
     "@storybook/react-webpack5": "^7.6.12",
