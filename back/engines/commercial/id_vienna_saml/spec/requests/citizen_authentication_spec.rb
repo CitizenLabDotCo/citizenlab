@@ -30,8 +30,8 @@ describe 'Vienna SAML citizen authentication' do
 
   context 'when the SAML response does not include first name and last name' do
     before do
-      saml_auth_response.extra.raw_info.delete('urn:oid:1.2.40.0.10.2.1.1.261.20')
-      saml_auth_response.extra.raw_info.delete('urn:oid:2.5.4.42')
+      delete_raw_info_attribute('urn:oid:1.2.40.0.10.2.1.1.261.20')
+      delete_raw_info_attribute('urn:oid:2.5.4.42')
       send_auth_request
     end
 

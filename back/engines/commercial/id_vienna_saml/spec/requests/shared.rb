@@ -21,6 +21,16 @@ RSpec.shared_context 'with Vienna SAML authentication enabled' do |provider_name
     follow_redirect!
   end
 
+  def set_raw_info_attribute(attribute_name, value)
+    saml_auth_response.extra.raw_info[attribute_name] = value
+  end
+
+  def delete_raw_info_attribute(attribute_name)
+    info = saml_auth_response.extra.raw_info
+    new_raw_info = OneLogin::RubySaml::Attributes.new(info.reject { |attr, _value| attr == attribute_name })
+    saml_auth_response.extra.raw_info = new_raw_info
+  end
+
   let(:user) { create(:user) }
   let(:saml_auth_response) do
     OmniAuth::AuthHash.new(
@@ -29,26 +39,28 @@ RSpec.shared_context 'with Vienna SAML authentication enabled' do |provider_name
         'uid' => @uid,
         'info' => { 'name' => nil, 'email' => nil, 'first_name' => nil, 'last_name' => nil },
         'credentials' => {},
-        'extra' =>
-        { 'raw_info' =>
-         { 'urn:oid:1.2.40.0.10.2.1.1.71' => ['AT:VKZ:L9'],
-           'http://lfrz.at/stdportal/names/pvp2/txid' => ['101840$tkhx@7009p1'],
-           'urn:oid:2.5.4.11' => ['MA 01'],
-           'urn:oid:1.2.40.0.10.2.1.1.261.20' => ['Preß'],
-           'urn:oid:0.9.2342.19200300.100.1.3' => ['philipp.test@extern.wien.gv.at'],
-           'urn:oid:1.2.40.0.10.2.1.1.261.10' => ['2.1'],
-           'urn:oid:1.2.40.0.10.2.1.1.153' => ['L9-M01'],
-           'urn:oid:0.9.2342.19200300.100.1.1' => ['wien1.prp9002@wien.gv.at'],
-           'urn:oid:1.2.40.0.10.2.1.1.261.30' => ['access()'],
-           'urn:oid:1.2.40.0.10.2.1.1.261.24' => ['L9'],
-           'urn:oid:1.2.40.0.10.2.1.1.261.110' => ['1'],
-           'urn:oid:2.5.4.42' => ['Philipp'],
-           'urn:oid:1.2.40.0.10.2.1.1.3' => ['AT:VKZ:L9-M01'],
-           'urn:oid:1.2.40.0.10.2.1.1.1' => ['AT:L9:1:magwien.gv.at/prp9002'],
-           'http://lfrz.at/stdportal/names/pvp/gvoudomain' => ['magwien.gv.at'],
-           'fingerprint' => '09:ED:23:7D:BC:95:A7:37:15:F6:76:4B:0A:AF:D5:CB:36:0D:47:14' },
+        'extra' => {
+          'raw_info' => OneLogin::RubySaml::Attributes.new({
+            'urn:oid:1.2.40.0.10.2.1.1.71' => ['AT:VKZ:L9'],
+            'http://lfrz.at/stdportal/names/pvp2/txid' => ['101840$tkhx@7009p1'],
+            'urn:oid:2.5.4.11' => ['MA 01'],
+            'urn:oid:1.2.40.0.10.2.1.1.261.20' => ['Preß'],
+            'urn:oid:0.9.2342.19200300.100.1.3' => ['philipp.test@extern.wien.gv.at'],
+            'urn:oid:1.2.40.0.10.2.1.1.261.10' => ['2.1'],
+            'urn:oid:1.2.40.0.10.2.1.1.153' => ['L9-M01'],
+            'urn:oid:0.9.2342.19200300.100.1.1' => ['wien1.prp9002@wien.gv.at'],
+            'urn:oid:1.2.40.0.10.2.1.1.261.30' => ['access()'],
+            'urn:oid:1.2.40.0.10.2.1.1.261.24' => ['L9'],
+            'urn:oid:1.2.40.0.10.2.1.1.261.110' => ['1'],
+            'urn:oid:2.5.4.42' => ['Philipp'],
+            'urn:oid:1.2.40.0.10.2.1.1.3' => ['AT:VKZ:L9-M01'],
+            'urn:oid:1.2.40.0.10.2.1.1.1' => ['AT:L9:1:magwien.gv.at/prp9002'],
+            'http://lfrz.at/stdportal/names/pvp/gvoudomain' => ['magwien.gv.at'],
+            'fingerprint' => '09:ED:23:7D:BC:95:A7:37:15:F6:76:4B:0A:AF:D5:CB:36:0D:47:14'
+          }),
           'session_index' => '_45ff99f6f7b2bc6553cd9a7868b96e33',
-          'response_object' => OneLogin::RubySaml::Response.new('fakeresponse') }
+          'response_object' => OneLogin::RubySaml::Response.new('fakeresponse')
+        }
       }
     )
   end
@@ -93,7 +105,7 @@ RSpec.shared_examples 'authenticates when the user was already registered with V
 
     context 'when the user changed their email address' do
       before do
-        saml_auth_response.extra.raw_info['urn:oid:0.9.2342.19200300.100.1.3'] = ['test@citizenlab.co']
+        set_raw_info_attribute('urn:oid:0.9.2342.19200300.100.1.3', 'test@citizenlab.co')
       end
 
       it 'does not create another identity and user account' do
