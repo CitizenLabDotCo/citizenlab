@@ -24,7 +24,15 @@ class ReportBuilder::PermissionsService
       next unless ReportBuilder::QueryRepository::GRAPH_RESOLVED_NAMES_CLASSES.key?(resolved_name)
 
       props = node_obj['props']
-      if props['projectId'].blank? || project_ids.exclude?(props['projectId'])
+      phase_id = props['phaseId']
+
+      if phase_id.present?
+        phase = Phase.find(phase_id)
+
+        if project_ids.exclude?(phase.project_id)
+          return true
+        end
+      elsif props['projectId'].blank? || project_ids.exclude?(props['projectId'])
         return true
       end
     end
