@@ -40,11 +40,11 @@ import { isVisible } from '../Controls/visibilityUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // API
-import useAddIdea from "api/ideas/useAddIdea";
-import useUpdateIdea from "api/ideas/useUpdateIdea";
-import {useSearchParams} from "react-router-dom";
-import usePhase from "../../../../api/phases/usePhase";
-import useAuthUser from "../../../../api/me/useAuthUser";
+// import useAddIdea from "api/ideas/useAddIdea";
+// import useUpdateIdea from "api/ideas/useUpdateIdea";
+// import {useSearchParams} from "react-router-dom";
+// import usePhase from "../../../../api/phases/usePhase";
+// import useAuthUser from "../../../../api/me/useAuthUser";
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
@@ -73,17 +73,8 @@ const CLPageLayout = memo(
     const { onSubmit, setShowAllErrors, formSubmitText, setFormData } =
       useContext(FormContext);
     const topAnchorRef = useRef<HTMLInputElement>(null);
-    const { mutateAsync: addIdea } = useAddIdea();
-    const { mutateAsync: updateIdea } = useUpdateIdea();
-    const [queryParams] = useSearchParams();
-    const phaseId = queryParams.get('phase_id');
-    const { data: phase } = usePhase(phaseId);
-    const projectId = phase?.data.relationships.project.data.id;
-    const { data: authUser } = useAuthUser();
-
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
-    const [ideaId, setIdeaId] = useState<string|undefined>();
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization)
@@ -136,30 +127,10 @@ const CLPageLayout = memo(
       }
     };
 
-    const saveDraft = async (lastCompletePage: number) => {
-      if (isNilOrError(authUser)) {
-        return;
-      }
-
-      data.latest_complete_page = lastCompletePage;
-      const idea = ideaId ?
-        await updateIdea({
-          id: ideaId,
-          requestBody: data
-        }) :
-        await addIdea({
-          ...data,
-          publication_status: 'draft',
-          project_id: projectId,
-          phase_ids: [phaseId],
-        });
-      setIdeaId(idea.data.id);
-    }
-
     const handleNextAndSubmit = async () => {
       if (showSubmit && onSubmit) {
         setIsLoading(true);
-        data.id = ideaId;
+        data.publication_status = 'published';
         await onSubmit(getFilteredDataForUserPath(userPagePath, data));
         return;
       }
@@ -179,7 +150,10 @@ const CLPageLayout = memo(
       ) {
         setShowAllErrors?.(false);
         scrollToTop();
-        await saveDraft(currentStep)
+        data.publication_status = 'draft';
+        data.latest_complete_page = currentStep;
+        await onSubmit?.(getFilteredDataForUserPath(userPagePath, data));
+        // await saveDraft(currentStep)
         setCurrentStep(currentStep + 1);
 ;
         setIsLoading(false);

@@ -659,6 +659,44 @@ resource 'Ideas' do
       end
     end
 
+    get 'web_api/v1/ideas/draft/:phase_id' do
+      let(:phase) { create(:native_survey_phase) }
+      let(:phase_id) { phase.id }
+
+      context 'idea authored by user' do
+        let!(:idea) do
+          create(:idea, project: phase.project, phases: [phase], creation_phase: phase, author: @user, publication_status: 'draft')
+        end
+
+        example_request 'Get a single draft idea by phase' do
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to eq idea.id
+        end
+      end
+
+      # TODO: JS - Get these tests to work
+      context 'idea authored by another user' do
+        let!(:idea) { create(:idea, project: phase.project, phases: [phase]) }
+
+        example '[error] No draft ideas for current author', document: false do
+          do_request
+          expect(status).to eq 404
+        end
+      end
+
+      context 'Idea is not draft' do
+        let!(:idea) { create(:idea, project: phase.project, phases: [phase]) }
+
+        example '[error] No draft ideas', document: false do
+          do_request
+          expect(status).to eq 404
+        end
+      end
+
+      context 'TODO: Idea is not native survey' do; end
+    end
+
     get 'web_api/v1/ideas/:idea_id/json_forms_schema' do
       let(:project) { create(:project_with_active_ideation_phase) }
       let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }

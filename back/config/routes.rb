@@ -67,6 +67,7 @@ Rails.application.routes.draw do
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
         get :json_forms_schema, on: :member
+        get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
       end
 
       resources :initiatives,

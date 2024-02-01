@@ -83,7 +83,7 @@ interface Props {
   /**
    * Idea id for update form, used to load and udpate image and files.
    */
-  inputId?: string;
+  inputId?: string | undefined;
   formSubmitText?: MessageDescriptor;
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
@@ -117,7 +117,6 @@ const Form = memo(
     const [data, setData] = useState<FormData>(() => {
       return parseRequiredMultilocsData(schema, locale, initialFormData);
     });
-
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
     const [scrollToError, setScrollToError] = useState(false);

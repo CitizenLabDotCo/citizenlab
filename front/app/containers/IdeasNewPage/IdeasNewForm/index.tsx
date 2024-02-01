@@ -11,6 +11,7 @@ import useInputSchema from 'hooks/useInputSchema';
 import { useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
 import useUpdateIdea from "api/ideas/useUpdateIdea";
+import useDraftIdeaByPhaseId from "api/ideas/useDraftIdeaByPhaseId";
 
 // i18n
 import messages from '../messages';
@@ -43,6 +44,8 @@ import { IPhases, IPhaseData } from 'api/phases/types';
 import useLocale from 'hooks/useLocale';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import { IProject } from 'api/projects/types';
+import {getFormValues} from "../../IdeasEditPage/utils";
+import {IdeaPublicationStatus} from "../../../api/ideas/types";
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -68,7 +71,7 @@ interface FormValues {
   location_description?: string;
   location_point_geojson?: GeoJSON.Point;
   topic_ids?: string[];
-  id?: string;
+  publication_status?: IdeaPublicationStatus;
 }
 
 interface Props {
@@ -84,12 +87,14 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const [queryParams] = useSearchParams();
-  const phaseId = queryParams.get('phase_id');
+  const phaseId = queryParams.get('phase_id') || undefined;
   const { data: phases } = usePhases(project.data.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
     projectId: project.data.id,
     phaseId,
   });
+  const { data: idea } = useDraftIdeaByPhaseId(phaseId, false);
+  const [ideaId, setIdeaId] = useState<string|undefined>();
 
   const search = location.search;
 
@@ -102,11 +107,20 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
   const allowAnonymousPosting =
     participationContext?.attributes.allow_anonymous_participation;
 
+  // TODO: JS - Need to get the idea id into the data
+  const initialFormDataNew =
+    isNilOrError(idea) || !schema
+      ? null
+      : getFormValues(idea, schema);
+  // if (!isNilOrError(idea)) {
+  //   setIdeaId(idea.data.id);
+  // }
+  console.log('Set initial form data:', initialFormDataNew);
+
   useEffect(() => {
     // Click on map flow :
     // clicked location is passed in url params
-    // reverse goecode them and use them as initial data
-
+    // reverse geocode them and use them as initial data
     const { lat, lng } = parse(search, {
       ignoreQueryPrefix: true,
       decoder: (str, _defaultEncoder, _charset, type) => {
@@ -132,9 +146,6 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
         setProcessingLocation(false);
       });
     }
-
-    // TODO: JS - Set the initial values from a draft idea - query by phase ID and user ID
-
   }, [search, locale]);
 
   // get participation method config
@@ -151,13 +162,29 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     if (disclaimerNeeded) {
       return setIsDisclaimerOpened(true);
     } else {
-      return onSubmit(data);
+      return onSubmit(data, true);
     }
   };
 
+  // Handle draft ideas for native surveys
+  const handleDraftIdeas = async (data: FormValues) => {
+    if (data.publication_status === 'draft') {
+      if (isNilOrError(authUser)) {
+        // Anonymous surveys should not save drafts
+        return;
+      }
+
+      console.log('DRAFT');
+      return onSubmit(data, false);
+    } else {
+      console.log('PUBLISHED');
+      return onSubmit(data, true);
+    }
+  }
+
   const onAcceptDisclaimer = (data: FormValues | null) => {
     if (!data) return;
-    onSubmit(data);
+    onSubmit(data, true);
     setIsDisclaimerOpened(false);
   };
 
@@ -165,7 +192,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     setIsDisclaimerOpened(false);
   };
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: FormValues, published?: boolean) => {
     let location_point_geojson;
 
     if (data.location_description && !data.location_point_geojson) {
@@ -183,10 +210,11 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
         ? [phaseId]
         : null;
 
-    // Update the idea if id is present
-    const idea = data.id ?
+    // Update the idea if we have an existing draft idea
+    console.log(data);
+    const idea = ideaId ?
       await updateIdea({
-        id: data.id,
+        id: ideaId,
         requestBody: {
           ...data,
           location_point_geojson,
@@ -205,8 +233,11 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
         anonymous: postAnonymously ? true : undefined,
       });
 
-    const ideaId = idea.data.id;
-    config?.onFormSubmission({ project: project.data, ideaId, idea });
+    setIdeaId(idea.data.id);
+
+    if (published) {
+      config?.onFormSubmission({project: project.data, ideaId, idea});
+    }
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
@@ -262,17 +293,17 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
-      {!processingLocation && schema && uiSchema && config ? (
+      {!processingLocation && schema && uiSchema && config && initialFormDataNew ? (
         <>
           <IdeasNewMeta />
           <Form
             schema={schema}
             uiSchema={uiSchema}
-            onSubmit={isSurvey ? onSubmit : handleDisclaimer}
-            initialFormData={initialFormData}
+            onSubmit={isSurvey ? handleDraftIdeas : handleDisclaimer}
+            initialFormData={initialFormDataNew}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
-            inputId={undefined}
+            inputId={idea?.data.id || undefined}
             title={
               <>
                 <Heading

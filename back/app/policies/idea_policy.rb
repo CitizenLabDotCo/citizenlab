@@ -46,7 +46,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def show?
-    return false if record.participation_method_on_creation.never_show?
+    return false if !record.draft? && record.participation_method_on_creation.never_show?
 
     project_show = ProjectPolicy.new(user, record.project).show?
     return true if project_show && %w[draft published].include?(record.publication_status)
@@ -55,6 +55,10 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def by_slug?
+    show?
+  end
+
+  def draft_by_phase?
     show?
   end
 

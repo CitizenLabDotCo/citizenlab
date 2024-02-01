@@ -44,7 +44,7 @@ export const keyPresentInPageRoute = (
   key: string,
   userPageRoute: PageType[]
 ) => {
-  if (key == 'publication_status' || key == 'id') {
+  if (key == 'publication_status') {
     return true;
   }
   let isFound = false;
