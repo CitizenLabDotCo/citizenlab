@@ -2,26 +2,26 @@ import { colors } from '@citizenlab/cl2-component-library';
 
 // constants
 import {
-  BASEMAP_AT_DEFAULT_OPTIONS,
-  DEFAULT_TILE_OPTIONS,
-  MAPTILER_DEFAULT_OPTIONS,
+  BASEMAP_AT_ATTRIBUTION,
+  DEFAULT_TILE_ATTRIBUTION,
+  MAPTILER_ATTRIBUTION,
 } from './types';
 
 // components
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 
-// getTileAttribution
-// Description: Gets the correct Copyright attribution given a certain tileProvider URL.
-export const getTileAttribution = (tileProvider: string) => {
+// getTileInfo
+// Description: Gets the correct tile information given a certain tileProvider URL.
+export const getTileAttribution = (tileProvider: string): string => {
   if (tileProvider?.includes('maptiler')) {
-    return MAPTILER_DEFAULT_OPTIONS.attribution;
+    return MAPTILER_ATTRIBUTION;
   }
 
   if (tileProvider?.includes('wien.gv.at/basemap')) {
-    return BASEMAP_AT_DEFAULT_OPTIONS.attribution;
+    return BASEMAP_AT_ATTRIBUTION;
   }
 
-  return DEFAULT_TILE_OPTIONS.attribution;
+  return DEFAULT_TILE_ATTRIBUTION;
 };
 
 // getMapPinSymbol
