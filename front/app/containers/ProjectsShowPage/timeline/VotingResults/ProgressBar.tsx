@@ -1,8 +1,4 @@
 import React from 'react';
-
-// api
-import usePhase from 'api/phases/usePhase';
-
 // components
 import {
   Box,
@@ -19,39 +15,48 @@ import { transparentize } from 'polished';
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
-import messages from 'components/VoteInputs/multiple/AssignMultipleVotesInput/messages';
+import messages from './messages';
+import assignMultipleVotesInputMessages from 'components/VoteInputs/multiple/AssignMultipleVotesInput/messages';
+
+import { roundPercentage } from 'utils/math';
+import { IIdeaData } from 'api/ideas/types';
+import { IPhase } from 'api/phases/types';
 
 interface Props {
-  phaseId: string;
-  votes?: number;
-  votesPercentage: number;
-  baskets?: number;
-  tooltip?: string;
+  phase: IPhase;
+  idea: IIdeaData;
 }
 
-const ProgressBar = ({
-  phaseId,
-  votes,
-  votesPercentage,
-  baskets,
-  tooltip,
-}: Props) => {
+const ProgressBar = ({ phase, idea }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { data: phase } = usePhase(phaseId);
+  const votingMethod = phase.data.attributes.voting_method;
+  const baskets =
+    votingMethod === 'single_voting'
+      ? undefined
+      : idea.attributes.baskets_count ?? 0;
+  const ideaVotes = idea.attributes.votes_count ?? 0;
+  // for budgetting, this is total budget spent?
+  const totalVotes = phase.data.attributes.votes_count;
+  const votesPercentage = totalVotes
+    ? roundPercentage(ideaVotes, totalVotes)
+    : 0;
+  const tooltip =
+    votingMethod === 'budgeting'
+      ? formatMessage(messages.budgetingTooltip)
+      : undefined;
+  const votes = votingMethod === 'budgeting' ? undefined : ideaVotes;
 
-  if (!phase) return null;
-
+  // Voting terms
   const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
     phase.data.attributes;
-
   const votingTermSingular =
     localize(voting_term_singular_multiloc) ||
-    formatMessage(messages.vote).toLowerCase();
+    formatMessage(assignMultipleVotesInputMessages.vote).toLowerCase();
   const votingTermPlural =
     localize(voting_term_plural_multiloc) ||
-    formatMessage(messages.votes).toLowerCase();
+    formatMessage(assignMultipleVotesInputMessages.votes).toLowerCase();
 
   return (
     <Tippy
@@ -91,7 +96,7 @@ const ProgressBar = ({
             {votes ? (
               <>
                 {`${votesPercentage}% (${votes} ${formatMessage(
-                  messages.xVotes,
+                  assignMultipleVotesInputMessages.xVotes,
                   {
                     votes,
                     singular: votingTermSingular,
