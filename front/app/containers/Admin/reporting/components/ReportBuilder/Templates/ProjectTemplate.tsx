@@ -99,6 +99,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
           messages.descriptionPlaceHolder
         )}
       />
+      <WhiteSpace />
       <ActiveUsersWidget
         projectId={projectId}
         title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
@@ -127,6 +128,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
           messages.descriptionPlaceHolder
         )}
       />
+      <WhiteSpace />
       <TwoColumn columnLayout="1-1">
         <Element id="left" is={Container} canvas>
           <GenderWidget
@@ -149,6 +151,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
           messages.descriptionPlaceHolder
         )}
       />
+      <WhiteSpace />
       <VisitorsWidget
         projectId={projectId}
         title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
