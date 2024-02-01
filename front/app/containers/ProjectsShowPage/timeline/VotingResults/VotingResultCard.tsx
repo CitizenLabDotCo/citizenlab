@@ -8,8 +8,6 @@ import useIdeaImage from 'api/idea_images/useIdeaImage';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
 // components
 import {
@@ -32,9 +30,6 @@ import styled from 'styled-components';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
-
-// utils
-import { roundPercentage } from 'utils/math';
 
 // typings
 import { IIdeaData } from 'api/ideas/types';
@@ -165,27 +160,18 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
     idea.relationships.idea_images.data?.[0]?.id
   );
   const smallerThanPhone = useBreakpoint('phone');
-  const { formatMessage } = useIntl();
+
+  if (!phase || !project) return null;
 
   const ideaTitle = localize(idea.attributes.title_multiloc);
-  const { slug } = idea.attributes;
-  const params = '?go_back=true';
-  const votingMethod = phase?.data.attributes.voting_method;
-
-  const ideaVotes = idea.attributes.votes_count ?? 0;
-  const totalVotes = phase?.data.attributes.votes_count;
-
-  const votesPercentage = totalVotes
-    ? roundPercentage(ideaVotes, totalVotes)
-    : 0;
-
-  const baskets = idea.attributes.baskets_count;
+  const votingMethod = phase.data.attributes.voting_method;
+  const url = `/ideas/${idea.attributes.slug}?go_back=true`;
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.id });
 
-    clHistory.push(`/ideas/${slug}${params}?go_back=true`, {
+    clHistory.push(url, {
       scrollToTop: true,
     });
   };
@@ -195,7 +181,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   return (
     <Container
       id={idea.id}
-      to={`/ideas/${slug}${params}`}
+      to={url}
       onClick={handleClick}
       className={`e2e-card ${
         !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
@@ -220,8 +206,9 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
         <IdeaCardImageWrapper>
           <Box w="100%" h="100%" flex="1" position="relative">
             <ImagePlaceholder
-              participationMethod="voting"
-              votingMethod={votingMethod}
+              placeholderIconName={
+                votingMethod === 'budgeting' ? 'money-bag' : 'idea'
+              }
             />
             <Box position="absolute" mt="12px" ml="12px">
               <Rank rank={rank} />
@@ -242,20 +229,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
         </Header>
 
         <Body>
-          <Results
-            phaseId={phaseId}
-            budget={idea.attributes.budget ?? undefined}
-            votes={votingMethod === 'budgeting' ? undefined : ideaVotes}
-            votesPercentage={votesPercentage}
-            baskets={
-              votingMethod === 'single_voting' ? undefined : baskets ?? 0
-            }
-            tooltip={
-              votingMethod === 'budgeting'
-                ? formatMessage(messages.budgetingTooltip)
-                : undefined
-            }
-          />
+          <Results phase={phase} idea={idea} />
         </Body>
         <Footer
           project={project}
