@@ -3,6 +3,8 @@ import React from 'react';
 // components
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import esriLogo from './esri-logo.png';
+import Tippy from '@tippyjs/react';
 
 // intl
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -11,13 +13,8 @@ import messages from '../messages';
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// utils
-import Tippy from '@tippyjs/react';
-
-import powerBIImage from './power-bi.png';
-
-const PowerBI = () => {
-  const isPowerBIEnabled = useFeatureFlag({ name: 'power_bi' });
+const Esri = () => {
+  const isEsriEnabled = useFeatureFlag({ name: 'esri_integration' });
   const { formatMessage } = useIntl();
 
   return (
@@ -32,46 +29,44 @@ const PowerBI = () => {
         p="40px"
         w="320px"
         h="240px"
-        background={colors.teal500}
+        background={colors.teal200}
         display="flex"
-        justifyContent="center"
         borderRadius="3px"
       >
-        <Box background={colors.white} display="flex" p="10px" width="100%">
-          <img
-            width="220px"
-            height="140px"
-            src={powerBIImage}
-            alt={formatMessage(messages.powerBIImage)}
-          />
+        <Box background={colors.white} display="flex" p="10px">
+          <Box my="auto">
+            <img
+              width="220px"
+              height="80px"
+              src={esriLogo}
+              alt={formatMessage(messages.esriIntegrationImageAlt)}
+            />
+          </Box>
         </Box>
       </Box>
       <Box ml="32px" display="flex" flexDirection="column">
         <Text variant="bodyL" color="primary" my="0px">
-          {formatMessage(messages.powerBITitle)}
+          {formatMessage(messages.esriIntegration)}
         </Text>
         <Text color="coolGrey700">
-          {formatMessage(messages.powerBIDescription)}
+          {formatMessage(messages.esriIntegrationDescription)}
         </Text>
         <Tippy
-          content={<FormattedMessage {...messages.powerBIDisabled} />}
-          disabled={isPowerBIEnabled}
+          content={<FormattedMessage {...messages.esriDisabled} />}
+          disabled={isEsriEnabled}
           placement="top"
           theme="dark"
         >
           <div>
             <Button
-              disabled={!isPowerBIEnabled}
-              height="45px"
-              icon={isPowerBIEnabled ? 'arrow-right' : 'lock'}
-              iconColor={colors.white}
+              disabled={!isEsriEnabled}
+              bgColor={colors.primary}
+              icon={isEsriEnabled ? 'arrow-right' : 'lock'}
               iconPos="right"
               width="fit-content"
-              linkTo="/admin/tools/power-bi"
-              textColor="white"
-              bgColor={colors.primary}
+              linkTo="/admin/tools/esri-integration"
             >
-              {formatMessage(messages.powerBIDownloadTemplates)}
+              {formatMessage(messages.esriIntegrationButton)}
             </Button>
           </div>
         </Tippy>
@@ -80,4 +75,4 @@ const PowerBI = () => {
   );
 };
 
-export default PowerBI;
+export default Esri;
