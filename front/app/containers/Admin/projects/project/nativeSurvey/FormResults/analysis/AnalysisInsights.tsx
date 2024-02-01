@@ -8,11 +8,14 @@ import { IAnalysisData } from 'api/analyses/types';
 import useAnalysisInsightsWithIds from 'api/analysis_insights/useAnalysisInsightsById';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { replaceIdRefsWithLinks } from '../../../analysis/Insights/util';
 import { useParams } from 'react-router-dom';
+import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
+import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
+import useAnalysisBackgroundTasks from 'api/analysis_background_tasks/useAnalysisBackgroundTasks';
 
 type AnalysisInsight = {
   analysisId: string;
@@ -86,6 +89,18 @@ const Question = ({
 };
 
 const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
+  const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
+  const singleCustomFieldAnalysisId = analyses.find(
+    (analysis) => analysis.relationships.custom_fields.data.length === 1
+  )?.id;
+
+  const { data: singleCustomFieldAnalysisInsights } = useAnalysisInsights({
+    analysisId: singleCustomFieldAnalysisId,
+  });
+  const { mutate: addAnalysisSummary } = useAddAnalysisSummary();
+  const { data: tasks } = useAnalysisBackgroundTasks(
+    singleCustomFieldAnalysisId
+  );
   const { formatMessage } = useIntl();
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
   const result = useAnalysisInsightsWithIds({
@@ -96,13 +111,33 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
     .flatMap(({ data }, i) =>
       data?.data.map((insight) => ({
         analysisId: analyses[i].id,
-
         relationship: insight.relationships.insightable.data,
       }))
     )
     .filter((relationship) => relationship !== undefined) as AnalysisInsight[];
 
   const selectedInsight = insights[selectedInsightIndex];
+
+  // Create a summary if there are no insights yet
+
+  useEffect(() => {
+    if (
+      singleCustomFieldAnalysisId &&
+      singleCustomFieldAnalysisInsights?.data.length === 0 &&
+      !automaticSummaryCreated
+    ) {
+      setAutomaticSummaryCreated(true);
+      addAnalysisSummary({
+        analysisId: singleCustomFieldAnalysisId,
+        filters: {},
+      });
+    }
+  }, [
+    singleCustomFieldAnalysisId,
+    addAnalysisSummary,
+    singleCustomFieldAnalysisInsights,
+    automaticSummaryCreated,
+  ]);
 
   if (insights.length === 0) {
     return null;
