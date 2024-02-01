@@ -877,9 +877,9 @@ workflows:
               only:
                 - production
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-          compose_file: docker-compose-production-benelux.yml
+          compose_file: docker-compose-production.yml
           stack_name: cl2-prd-bnlx-stack
-          env_file: ".env-production-benelux"
+          env_file: ".env-web"
           cluster_name: "eu"
       - back-deploy-to-swarm:
           name: Deploy to Canada
