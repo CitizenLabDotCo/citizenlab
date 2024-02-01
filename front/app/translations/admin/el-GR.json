@@ -1609,7 +1609,6 @@
   "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Ανίχνευση ακατάλληλου περιεχομένου",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Αυτόματος εντοπισμός ακατάλληλου περιεχομένου που δημοσιεύεται στην πλατφόρμα.",
-  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "Σε Beta: επί του παρόντος διαθέσιμο στα αγγλικά, γαλλικά, γερμανικά, πορτογαλικά και ισπανικά. Όσο αυτή η λειτουργία είναι ενεργοποιημένη, οι εισηγήσεις, οι προτάσεις και τα σχόλια που δημοσιεύονται από τους συμμετέχοντες θα εξετάζονται αυτόματα με τη χρήση επεξεργασίας φυσικής γλώσσας. Οι δημοσιεύσεις που επισημαίνονται ως ενδεχομένως περιέχουσες ακατάλληλο περιεχόμενο δεν θα αποκλείονται, αλλά θα επισημαίνονται για επανεξέταση στη σελίδα {linkToActivityPage}.",
   "app.containers.AdminPage.SettingsPage.languages": "Γλώσσες",
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Μπορείτε να επιλέξετε πολλαπλές γλώσσες στις οποίες θέλετε να προσφέρετε την πλατφόρμα σας στους χρήστες. Θα χρειαστεί να δημιουργήσετε περιεχόμενο για κάθε επιλεγμένη γλώσσα.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Activity",

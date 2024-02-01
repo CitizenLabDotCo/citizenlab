@@ -1256,7 +1256,6 @@
   "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "اكتشاف محتوى غير لائق",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "اكتشاف تلقائي لمحتوى غير لائق منشور في المنصة.",
-  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "في بيتا: متوفر حاليًا باللغات الإنجليزية والفرنسية والألمانية والبرتغالية والإسبانية. عندما تكون هذه الميزة ممكَّنة، ستتم بشكل تلقائي مراجعة المدخلات والمقترحات والتعليقات المنشورة من قِبل المشاركين باستخدام نظام معالجة اللغات الطبيعية. لن يتم حظر المنشورات الموضوعة عليها علامات باعتبارها قد تتضمن محتوى غير لائق، لكن سيتم تحديدها تمهيدًا لمراجعتها في صفحة {linkToActivityPage}.",
   "app.containers.AdminPage.SettingsPage.languages": "اللغات",
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "يمكنك تحديد عدة لغات للمنصة الخاصة بك. وسيتعين عليك إنشاء محتوى لكل لغة محددة.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "النشاط",

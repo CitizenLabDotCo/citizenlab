@@ -1330,7 +1330,6 @@
   "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Imarisanik naapertuutinngitsunik ujaasigit",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Imarisat naapertuutinngitsut quppernermut ilanngunneqartut automatiskimik paasisakkit.",
-  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "Betami: massakkut tuluttut, franskisut, tyskisut, portugaalimiusut, spanskisullu tamanna atuuppoq. Tamanna atuutsillugu ilanngussat, siunnersuutit oqaaseqaatillu peqataasunit nassiunneqartut Natural Language Processing ikiortigalugu misissorneqartassapput. Ilanngussat naapertuutinngitsunik imaqarsinnaasutut nalunaaqutserneqartut blokererneqassanngillat, quppernermili {linkToActivityPage}-imi misissugassatut ersarissitinneqassallutik.",
   "app.containers.AdminPage.SettingsPage.languages": "Oqaatsit",
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Oqaatsinik arlalinnik assigiinngitsunik, atuisunnut neqeroorutigerusutannik toqqaasinnaavutit. Oqaatsit toqqakkavit tamarmik imassaannik immikkut sanassaatit.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Activity",
