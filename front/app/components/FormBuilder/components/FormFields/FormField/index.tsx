@@ -24,6 +24,7 @@ import messages from './messages';
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
+  IOptionsType,
 } from 'api/custom_fields/types';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import { generateTempId } from '../../FormBuilderSettings/utils';
@@ -85,14 +86,33 @@ export const FormField = ({
     Object.keys(title_multiloc).forEach((lang) => {
       const originalTitle = title_multiloc[lang];
       copiedTitle_multiloc[lang] =
-        originalTitle !== '' ? `${originalTitle}_copy` : '';
+        originalTitle !== ''
+          ? `${originalTitle} (${formatMessage(messages.copy)})`
+          : '';
     });
     return copiedTitle_multiloc;
   }
 
   function duplicateField(originalField: IFlatCustomField) {
-    const { id, temp_id, logic, isLocalOnly, title_multiloc, key, ...rest } =
-      originalField;
+    const {
+      id,
+      temp_id,
+      logic,
+      isLocalOnly,
+      title_multiloc,
+      key,
+      code,
+      options,
+      ...rest
+    } = originalField;
+
+    let duplicatedOptions: IOptionsType[] = [];
+    if (options) {
+      duplicatedOptions = options.map(({ id, temp_id, ...rest }) => ({
+        temp_id: generateTempId(),
+        ...rest,
+      }));
+    }
 
     const duplicatedField = {
       id: `${Math.floor(Date.now() * Math.random())}`,
@@ -100,11 +120,13 @@ export const FormField = ({
       logic: {
         ...(originalField.input_type !== 'page' ? { rules: [] } : undefined),
       },
+      ...(duplicatedOptions.length > 0
+        ? { options: duplicatedOptions }
+        : undefined),
       isLocalOnly: true,
       title_multiloc: addCopyIndicatorToTitle(title_multiloc),
       ...rest,
     };
-    console.log('duplicatedField', duplicatedField);
 
     return duplicatedField;
   }
