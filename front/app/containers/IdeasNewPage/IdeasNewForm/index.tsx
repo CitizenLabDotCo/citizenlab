@@ -303,7 +303,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
             initialFormData={initialFormDataNew}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
-            inputId={idea?.data.id || undefined}
+            inputId={ideaId}
             title={
               <>
                 <Heading
