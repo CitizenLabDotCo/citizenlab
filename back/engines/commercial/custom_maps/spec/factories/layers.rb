@@ -10,8 +10,8 @@ FactoryBot.define do
       }
     end
 
-    # Because we need to choose a whielisted type, and we choose 'CustomMaps::GeojsonLayer',
-    # we need to satisfy the GeojsonLayer validation of presence of a valid geojson object.
+    # Because we need to choose a whitelisted type, and we choose 'CustomMaps::GeojsonLayer',
+    # we also need to satisfy the GeojsonLayer validation of presence of a valid geojson object.
     geojson { JSON.parse(File.read(CustomMaps::Engine.root.join('spec', 'fixtures', 'seattle.geojson'))) }
 
     trait :with_marker_svg do
