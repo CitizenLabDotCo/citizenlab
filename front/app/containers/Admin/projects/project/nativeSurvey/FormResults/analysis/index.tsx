@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Box,
@@ -28,8 +28,10 @@ import { trackEventByName } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
 import Divider from 'components/admin/Divider';
 import AnalysisInsights from './AnalysisInsights';
+import useAddAnalysis from 'api/analyses/useAddAnalysis';
 
 const Analysis = ({ customFieldId }: { customFieldId: string }) => {
+  const { mutate: addAnalysis } = useAddAnalysis();
   const [dropdownIsOpened, setDropdownIsOpened] = useState(false);
   const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams() as {
@@ -47,6 +49,26 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
     projectId,
     phaseId,
   });
+
+  const relevantAnalyses =
+    analyses?.data &&
+    analyses?.data?.filter((analysis) =>
+      analysis.relationships.custom_fields.data.some(
+        (field) => field.id === customFieldId
+      )
+    );
+  const hasAnalyses = relevantAnalyses && relevantAnalyses.length > 0;
+
+  // Create an analysis if there are no analyses yet
+  useEffect(() => {
+    if (analyses && customFieldId && !hasAnalyses) {
+      addAnalysis({
+        projectId: phaseId ? undefined : projectId,
+        phaseId,
+        customFieldIds: [customFieldId],
+      });
+    }
+  }, [customFieldId, hasAnalyses, analyses, projectId, phaseId, addAnalysis]);
 
   const handleDeleteAnalysis = (analysisId: string) => {
     if (window.confirm(formatMessage(messages.deleteAnalysisConfirmation))) {
@@ -80,15 +102,6 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
     setConsentModalIsOpened(false);
     setIsCreateAnalysisModalOpened(true);
   };
-
-  const relevantAnalyses =
-    analyses?.data &&
-    analyses?.data?.filter((analysis) =>
-      analysis.relationships.custom_fields.data.some(
-        (field) => field.id === customFieldId
-      )
-    );
-  const hasAnalyses = relevantAnalyses && relevantAnalyses.length > 0;
 
   return (
     <Box>
