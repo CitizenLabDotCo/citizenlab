@@ -99,12 +99,21 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
           messages.descriptionPlaceHolder
         )}
       />
-      <ActiveUsersWidget projectId={projectId} {...projectPeriod} />
+      <ActiveUsersWidget
+        projectId={projectId}
+        title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
+        {...projectPeriod}
+      />
+
       {participationMethod === 'native_survey' && (
-        <SurveyResultsWidget phaseId={phaseId} />
+        <SurveyResultsWidget
+          title={toMultiloc(WIDGET_TITLES.SurveyResultsWidget)}
+          phaseId={phaseId}
+        />
       )}
       {participationMethod === 'ideation' && (
         <MostReactedIdeasWidget
+          title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
           projectId={projectId}
           phaseId={phaseId}
           numberOfIdeas={5}
