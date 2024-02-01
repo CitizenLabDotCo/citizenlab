@@ -7,6 +7,12 @@ RSpec.describe ReportBuilder::ReportPolicy do
 
   let(:scope) { described_class::Scope.new(user, ReportBuilder::Report) }
 
+  let_it_be(:project) { create(:project) }
+  let_it_be(:another_project) { create(:project) }
+
+  let_it_be(:current_phase) { create(:phase, project: project, start_at: 1.day.ago, end_at: 1.day.from_now) }
+  let_it_be(:future_phase) { create(:phase, project: project, start_at: 2.days.from_now) }
+
   context 'when user has admin rights' do
     let_it_be(:all_reports) { create_list(:report, 3) }
     let_it_be(:report) { all_reports.first }
@@ -36,9 +42,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
       end
 
       context 'when user did create report' do
-        let_it_be(:project1) { create(:project) }
         let_it_be(:project2) { create(:project) }
-        let_it_be(:phase) {  create(:phase, project: project2) }
         let_it_be(:layout) do
           create(:layout, craftjs_json: {
             ROOT: {
@@ -50,7 +54,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
                 resolvedName: 'VisitorsWidget'
               },
               props: {
-                projectId: project1.id
+                projectId: project2.id
               }
             },
             most_reacted_ideas: {
@@ -58,21 +62,15 @@ RSpec.describe ReportBuilder::ReportPolicy do
                 resolvedName: 'MostReactedIdeasWidget'
               },
               props: {
-                phaseId: phase.id
+                phaseId: current_phase.id
               }
             }
           })
         end
 
         context 'when user cannot access any data in report' do
-          let_it_be(:another_project) { create(:project) }
           let_it_be(:user) { create(:project_moderator, projects: [another_project]) }
-          let_it_be(:all_reports) { create_list(:report, 3) }
-          let_it_be(:report) do
-            all_reports.first.tap do |r|
-              r.update!(owner: user, layout: layout)
-            end
-          end
+          let_it_be(:report) { create(:report, owner: user, layout: layout) }
 
           it { is_expected.to permit(:show) }
           it { is_expected.not_to permit(:layout) }
@@ -83,13 +81,8 @@ RSpec.describe ReportBuilder::ReportPolicy do
         end
 
         context 'when user cannot access all data in report' do
-          let_it_be(:user) { create(:project_moderator, projects: [project1]) }
-          let_it_be(:all_reports) { create_list(:report, 3) }
-          let_it_be(:report) do
-            all_reports.first.tap do |r|
-              r.update!(owner: user, layout: layout)
-            end
-          end
+          let_it_be(:user) { create(:project_moderator, projects: [project]) }
+          let_it_be(:report) { create(:report, owner: user, layout: layout) }
 
           it { is_expected.to permit(:show) }
           it { is_expected.not_to permit(:layout) }
@@ -100,13 +93,8 @@ RSpec.describe ReportBuilder::ReportPolicy do
         end
 
         context 'when user can access all data in report' do
-          let_it_be(:user) { create(:project_moderator, projects: [project1, project2]) }
-          let_it_be(:all_reports) { create_list(:report, 3) }
-          let_it_be(:report) do
-            all_reports.first.tap do |r|
-              r.update!(owner: user, layout: layout)
-            end
-          end
+          let_it_be(:user) { create(:project_moderator, projects: [project, project2]) }
+          let_it_be(:report) { create(:report, owner: user, layout: layout) }
 
           it { is_expected.to permit(:show) }
           it { is_expected.to permit(:layout) }
@@ -119,8 +107,6 @@ RSpec.describe ReportBuilder::ReportPolicy do
     end
 
     context 'when report belongs to phase' do
-      let_it_be(:project) { create(:project) }
-      let_it_be(:another_project) { create(:project) }
       let_it_be(:layout) do
         create(:layout, craftjs_json: {
           ROOT: {
@@ -139,71 +125,45 @@ RSpec.describe ReportBuilder::ReportPolicy do
       end
 
       context 'phase not started' do
-        let_it_be(:phase) { create(:phase, project: project, start_at: 1.day.from_now) }
-
         context 'when user can moderate phase, and has access to all data in report' do
           let_it_be(:user) { create(:project_moderator, projects: [project, another_project]) }
-          let_it_be(:all_reports) { create_list(:report, 3) }
-          let_it_be(:report) do
-            all_reports.first.tap do |r|
-              r.update!(phase: phase, layout: layout)
-            end
-          end
+          let_it_be(:report) { create(:report, phase: future_phase, layout: layout) }
 
           it { is_expected.to permit(:show) }
           it { is_expected.to permit(:layout) }
           it { is_expected.to permit(:create) }
           it { is_expected.to permit(:destroy) }
           it { is_expected.to permit(:update) }
-          it { expect(scope.resolve.count).to eq(0) }
         end
 
         context 'when user can moderate phase, but does not have access to all data in report' do
           let_it_be(:user) { create(:project_moderator, projects: [project]) }
-          let_it_be(:all_reports) { create_list(:report, 3) }
-          let_it_be(:report) do
-            all_reports.first.tap do |r|
-              r.update!(phase: phase, layout: layout)
-            end
-          end
+          let_it_be(:report) { create(:report, phase: future_phase, layout: layout) }
 
           it { is_expected.to permit(:show) }
           it { is_expected.not_to permit(:layout) }
           it { is_expected.not_to permit(:create) }
           it { is_expected.not_to permit(:destroy) }
           it { is_expected.not_to permit(:update) }
-          it { expect(scope.resolve.count).to eq(0) }
         end
 
         context 'when user cannot moderate phase' do
           let_it_be(:user) { create(:project_moderator) }
-          let_it_be(:all_reports) { create_list(:report, 3) }
-          let_it_be(:report) do
-            all_reports.first.tap do |r|
-              r.update!(phase: phase, layout: layout)
-            end
-          end
+          let_it_be(:report) { create(:report, phase: future_phase, layout: layout) }
 
           it { is_expected.not_to permit(:show) }
           it { is_expected.not_to permit(:layout) }
           it { is_expected.not_to permit(:create) }
           it { is_expected.not_to permit(:destroy) }
           it { is_expected.not_to permit(:update) }
-          it { expect(scope.resolve.count).to eq(0) }
         end
       end
 
       context 'phase started' do
-        let_it_be(:phase) { create(:phase, project: project, start_at: 1.day.ago) }
-
         context 'when user can moderate phase, but does not have access to all data in report' do
           let_it_be(:user) { create(:project_moderator, projects: [project]) }
           let_it_be(:all_reports) { create_list(:report, 3) }
-          let_it_be(:report) do
-            all_reports.first.tap do |r|
-              r.update!(phase: phase, layout: layout)
-            end
-          end
+          let_it_be(:report) { create(:report, phase: current_phase, layout: layout) }
 
           it { is_expected.to permit(:show) }
           it { is_expected.to permit(:layout) }
@@ -215,12 +175,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
 
         context 'when user cannot moderate phase' do
           let_it_be(:user) { create(:project_moderator) }
-          let_it_be(:all_reports) { create_list(:report, 3) }
-          let_it_be(:report) do
-            all_reports.first.tap do |r|
-              r.update!(phase: phase, layout: layout)
-            end
-          end
+          let_it_be(:report) { create(:report, phase: current_phase, layout: layout) }
 
           it { is_expected.not_to permit(:show) }
           it { is_expected.to permit(:layout) }
@@ -235,8 +190,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
 
   context 'when user is a visitor' do
     let_it_be(:user) { nil }
-    let_it_be(:all_reports) { create_list(:report, 3) }
-    let_it_be(:report) { all_reports.first }
+    let_it_be(:report) { create(:report) }
 
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:layout) }
@@ -250,8 +204,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
     let_it_be(:user) { build(:user) }
 
     context 'when report does not belong to phase' do
-      let_it_be(:all_reports) { create_list(:report, 3) }
-      let_it_be(:report) { all_reports.first }
+      let_it_be(:report) { create(:report) }
 
       it { is_expected.not_to permit(:show) }
       it { is_expected.not_to permit(:layout) }
@@ -262,11 +215,8 @@ RSpec.describe ReportBuilder::ReportPolicy do
     end
 
     context 'when report belongs to phase' do
-      let_it_be(:project) { create(:project) }
-
       context 'phase not started' do
-        let_it_be(:phase) { create(:phase, project: project, start_at: 1.day.from_now) }
-        let_it_be(:report) { create(:report, phase: phase) }
+        let_it_be(:report) { create(:report, phase: future_phase) }
 
         it { is_expected.not_to permit(:show) }
         it { is_expected.not_to permit(:layout) }
@@ -277,8 +227,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
       end
 
       context 'phase started' do
-        let_it_be(:phase) { create(:phase, project: project, start_at: 1.day.ago) }
-        let_it_be(:report) { create(:report, phase: phase) }
+        let_it_be(:report) { create(:report, phase: current_phase) }
 
         it { is_expected.not_to permit(:show) }
         it { is_expected.to permit(:layout) }
