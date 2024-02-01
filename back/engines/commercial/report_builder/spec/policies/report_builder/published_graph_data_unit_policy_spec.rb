@@ -17,9 +17,32 @@ RSpec.describe ReportBuilder::PublishedGraphDataUnitPolicy do
   end
 
   context 'when user is moderator' do
-    let_it_be(:user) { build(:project_moderator, projects: [project]) }
+    context 'when user can moderate project' do
+      let_it_be(:user) { build(:project_moderator, projects: [project]) }
+      it { is_expected.to permit(:published) }
+    end
 
-    it { is_expected.to permit(:published) }
+    context 'when user cannot moderate project' do
+      let_it_be(:user) { build(:project_moderator) }
+
+      context 'phase not started' do
+        let_it_be(:project) { create(:project) }
+        let_it_be(:phase) { create(:phase, project: project, start_at: 1.day.from_now) }
+        let_it_be(:report) { create(:report, phase: phase) }
+        let_it_be(:data_unit) { create(:published_graph_data_unit, report: report) }
+
+        it { is_expected.not_to permit(:published) }
+      end
+
+      context 'phase started' do
+        let_it_be(:project) { create(:project) }
+        let_it_be(:phase) { create(:phase, project: project, start_at: 1.day.ago) }
+        let_it_be(:report) { create(:report, phase: phase) }
+        let_it_be(:data_unit) { create(:published_graph_data_unit, report: report) }
+
+        it { is_expected.to permit(:published) }
+      end
+    end
   end
 
   context 'when user is normal user' do
@@ -40,7 +63,23 @@ RSpec.describe ReportBuilder::PublishedGraphDataUnitPolicy do
         allow(PhasePolicy).to receive(:new).and_return(instance_double(PhasePolicy, show?: true))
       end
 
-      it { is_expected.to permit(:published) }
+      context 'phase not started' do
+        let_it_be(:project) { create(:project) }
+        let_it_be(:phase) { create(:phase, project: project, start_at: 1.day.from_now) }
+        let_it_be(:report) { create(:report, phase: phase) }
+        let_it_be(:data_unit) { create(:published_graph_data_unit, report: report) }
+
+        it { is_expected.not_to permit(:published) }
+      end
+
+      context 'phase started' do
+        let_it_be(:project) { create(:project) }
+        let_it_be(:phase) { create(:phase, project: project, start_at: 1.day.ago) }
+        let_it_be(:report) { create(:report, phase: phase) }
+        let_it_be(:data_unit) { create(:published_graph_data_unit, report: report) }
+
+        it { is_expected.to permit(:published) }
+      end
     end
   end
 
