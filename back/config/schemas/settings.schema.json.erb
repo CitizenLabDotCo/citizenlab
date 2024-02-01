@@ -1238,6 +1238,18 @@
         }
       },
 
+      "native_surveys_mapping_question": {
+        "type": "object",
+        "title": "Allow mapping_questions in in-platform surveys. Currently limited to one type: Select a point on a map.",
+        "description":  "",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "seat_based_billing": {
         "type": "object",
         "title": "Seat based billing",
