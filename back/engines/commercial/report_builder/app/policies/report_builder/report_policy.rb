@@ -55,7 +55,7 @@ module ReportBuilder
           record.owner == user && access_to_data?
         end
       else
-        record.phase? && PhasePolicy.new(user, record.phase).show?
+        record.phase? && PhasePolicy.new(user, record.phase).show? && record.phase.started?
       end
     end
 

@@ -260,5 +260,33 @@ RSpec.describe ReportBuilder::ReportPolicy do
       it { is_expected.not_to permit(:update) }
       it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
     end
+
+    context 'when report belongs to phase' do
+      let_it_be(:project) { create(:project) }
+
+      context 'phase not started' do
+        let_it_be(:phase) { create(:phase, project: project, start_at: 1.day.from_now) }
+        let_it_be(:report) { create(:report, phase: phase) }
+
+        it { is_expected.not_to permit(:show) }
+        it { is_expected.not_to permit(:layout) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:destroy) }
+        it { is_expected.not_to permit(:update) }
+        it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
+      end
+
+      context 'phase started' do
+        let_it_be(:phase) { create(:phase, project: project, start_at: 1.day.ago) }
+        let_it_be(:report) { create(:report, phase: phase) }
+
+        it { is_expected.not_to permit(:show) }
+        it { is_expected.to permit(:layout) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:destroy) }
+        it { is_expected.not_to permit(:update) }
+        it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
+      end
+    end
   end
 end
