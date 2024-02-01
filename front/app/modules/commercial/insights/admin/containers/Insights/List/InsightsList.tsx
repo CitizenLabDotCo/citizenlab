@@ -128,6 +128,7 @@ const InsightsList: React.FC<InsightsList & WrappedComponentProps> = ({
             className="intercom-admin-create-insights-button"
             bgColor={colors.primary}
             onClick={openCreateModal}
+            disabled
           >
             {formatMessage(messages.listCreate)}
           </Button>

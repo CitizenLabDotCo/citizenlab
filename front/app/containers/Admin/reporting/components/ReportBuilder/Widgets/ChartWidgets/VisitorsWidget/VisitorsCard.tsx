@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 // hooks
 import useVisitors from './useVisitors';
@@ -7,7 +7,7 @@ import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import NoData from '../../_shared/NoData';
-import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
+import Chart from './Chart';
 import Statistic from 'components/admin/Graphs/Statistic';
 
 // i18n
@@ -35,7 +35,6 @@ const VisitorsCard = ({
   resolution,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const graphRef = useRef();
 
   const { currentResolution, stats, timeSeries } = useVisitors({
     projectId,
@@ -94,7 +93,6 @@ const VisitorsCard = ({
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={currentResolution}
-              innerRef={graphRef}
               layout={layout}
             />
           </Box>

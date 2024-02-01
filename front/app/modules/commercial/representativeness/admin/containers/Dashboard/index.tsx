@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
+import useAuthUser from 'api/me/useAuthUser';
 
 // typings
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
@@ -16,6 +17,7 @@ import ChartCards from './ChartCards';
 
 // utils
 import { hasReferenceData } from './utils';
+import { isAdmin } from 'utils/permissions/roles';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
@@ -25,6 +27,8 @@ const hasAnyReferenceData = (userCustomFields: IUserCustomFieldData[]) =>
   userCustomFields.some(hasReferenceData);
 
 const RepresentativenessDashboard = () => {
+  const { data: authUser } = useAuthUser();
+
   const { data: userCustomFields } = useUserCustomFields({
     inputTypes: ['select', 'number'],
   });
@@ -39,7 +43,7 @@ const RepresentativenessDashboard = () => {
     setCurrentProjectFilter(value);
   };
 
-  if (!userCustomFields) {
+  if (!userCustomFields || !authUser || !isAdmin(authUser)) {
     return null;
   }
 

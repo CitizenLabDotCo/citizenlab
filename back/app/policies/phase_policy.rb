@@ -32,7 +32,7 @@ class PhasePolicy < ApplicationPolicy
   end
 
   def survey_results?
-    ProjectPolicy.new(user, record.project).active_moderator?
+    active_moderator?
   end
 
   def submission_count?
@@ -44,8 +44,10 @@ class PhasePolicy < ApplicationPolicy
   end
 
   def delete_inputs?
-    return false unless active?
+    active_moderator?
+  end
 
-    UserRoleService.new.can_moderate_project? record.project, user
+  def active_moderator?
+    ProjectPolicy.new(user, record.project).active_moderator?
   end
 end

@@ -49,6 +49,14 @@ export interface AxisProps {
   domain?: Domain;
 }
 
+export interface XAxisProps extends AxisProps {
+  orientation?: 'top' | 'bottom';
+}
+
+export interface YAxisProps extends AxisProps {
+  orientation?: 'left' | 'right';
+}
+
 type Domain = [d1: DomainBound, d2: DomainBound];
 
 type DomainBound = 'dataMin' | 'dataMax' | 'auto' | number;
