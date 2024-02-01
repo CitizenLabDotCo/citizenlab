@@ -42,7 +42,7 @@ module Analysis
     before_validation :set_default_state
 
     def insightable
-      [Summary Question].any? do |insightable_class|
+      [Summary, Question].any? do |insightable_class|
         insightable_class.find_by(background_task_id: id)
       end
     end
