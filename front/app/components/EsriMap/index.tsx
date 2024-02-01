@@ -16,6 +16,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 // utils
 import { getTileAttribution } from './utils';
 import { isNil } from 'utils/helperUtils';
+import { DEFAULT_TILE_PROVIDER } from './types';
 
 type Props = {
   center?: GeoJSON.Point | null;
@@ -66,7 +67,7 @@ const EsriMap = ({
 
     // Set the basemap
     const webTileLayerFromUrl = new WebTileLayer({
-      urlTemplate: globalMapSettings?.tile_provider,
+      urlTemplate: globalMapSettings?.tile_provider || DEFAULT_TILE_PROVIDER,
       copyright: getTileAttribution(globalMapSettings?.tile_provider || ''),
     });
     const basemap = new Basemap({
