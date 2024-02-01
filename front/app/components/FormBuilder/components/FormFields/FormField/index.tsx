@@ -1,8 +1,9 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useFieldArray } from 'react-hook-form';
 
 // components
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import FieldTitle from './FieldTitle';
 import Logic from './Logic';
 import IconsAndBadges from './IconsAndBadges';
@@ -15,12 +16,17 @@ import { rgba } from 'polished';
 // utils
 import { getFieldBackgroundColor } from '../utils';
 
+// Translation
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
+
 // typings
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { generateTempId } from '../../FormBuilderSettings/utils';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
@@ -35,6 +41,8 @@ type Props = {
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
   fieldNumbers: Record<string, number>;
+  onDelete: (fieldIndex: number) => void;
+  isDeleteDisabled: boolean;
 };
 
 export const FormField = ({
@@ -43,15 +51,22 @@ export const FormField = ({
   selectedFieldId,
   builderConfig,
   fieldNumbers,
+  onDelete,
+  isDeleteDisabled,
 }: Props) => {
   const {
     watch,
     formState: { errors },
     trigger,
   } = useFormContext();
-
+  const { formatMessage } = useIntl();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
+  const { insert } = useFieldArray({
+    name: 'customFields',
+  });
+  const { formEndPageLogicOption, displayBuiltInFields, groupingType } =
+    builderConfig;
 
   const hasErrors = !!errors.customFields?.[index];
 
@@ -64,6 +79,64 @@ export const FormField = ({
     onEditField({ ...field, index });
     trigger();
   };
+
+  function addCopyIndicatorToTitle(title_multiloc) {
+    const copiedTitle_multiloc = {};
+    Object.keys(title_multiloc).forEach((lang) => {
+      const originalTitle = title_multiloc[lang];
+      copiedTitle_multiloc[lang] =
+        originalTitle !== '' ? `${originalTitle}_copy` : '';
+    });
+    return copiedTitle_multiloc;
+  }
+
+  function duplicateField(originalField: IFlatCustomField) {
+    const { id, temp_id, logic, isLocalOnly, title_multiloc, key, ...rest } =
+      originalField;
+
+    const duplicatedField = {
+      id: `${Math.floor(Date.now() * Math.random())}`,
+      temp_id: generateTempId(),
+      logic: {
+        ...(originalField.input_type !== 'page' ? { rules: [] } : undefined),
+      },
+      isLocalOnly: true,
+      title_multiloc: addCopyIndicatorToTitle(title_multiloc),
+      ...rest,
+    };
+    console.log('duplicatedField', duplicatedField);
+
+    return duplicatedField;
+  }
+
+  const actions = [
+    ...(field.input_type !== groupingType
+      ? [
+          {
+            handler: (event: React.MouseEvent) => {
+              event.stopPropagation();
+              const duplicatedField = duplicateField(field);
+              insert(index + 1, duplicatedField);
+              trigger();
+            },
+            label: formatMessage(messages.duplicate),
+            icon: 'copy' as const,
+          },
+        ]
+      : []),
+    ...(!isDeleteDisabled
+      ? [
+          {
+            handler: (event: React.MouseEvent) => {
+              event.stopPropagation();
+              onDelete(index);
+            },
+            label: formatMessage(messages.delete),
+            icon: 'delete' as const,
+          },
+        ]
+      : []),
+  ];
 
   return (
     <FormFieldsContainer
@@ -95,15 +168,30 @@ export const FormField = ({
                   field={field}
                   formCustomFields={formCustomFields}
                   fieldNumbers={fieldNumbers}
-                  formEndPageLogicOption={builderConfig.formEndPageLogicOption}
+                  formEndPageLogicOption={formEndPageLogicOption}
                 />
               )}
             </Box>
           </Box>
           <IconsAndBadges
             field={field}
-            displayBuiltInFields={builderConfig.displayBuiltInFields}
+            displayBuiltInFields={displayBuiltInFields}
           />
+          <Box
+            mr="32px"
+            ml="12px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            h="100%"
+          >
+            <MoreActionsMenu
+              showLabel={false}
+              color={colors.textSecondary}
+              actions={actions}
+              onClick={(event) => event.stopPropagation()}
+            />
+          </Box>
         </Box>
       </FlexibleRow>
     </FormFieldsContainer>

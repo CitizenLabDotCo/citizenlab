@@ -293,6 +293,8 @@ export const FormEdit = ({
                         selectedFieldId={selectedField?.id}
                         handleDragEnd={reorderFields}
                         builderConfig={builderConfig}
+                        onDelete={handleDelete}
+                        isDeleteDisabled={isDeleteDisabled}
                       />
                     </Box>
                   </Box>
