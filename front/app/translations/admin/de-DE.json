@@ -1445,7 +1445,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Das Projekt wird in dem/den ausgewählten Gebietsfilter(n) angezeigt.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Liste",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Wählen Sie eine Abstimmungsmethode und lassen Sie die Nutzer*innen zwischen verschiedenen Optionen wählen.",
-  "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Abstimmung oder Prioritätensetzung durchführen",
+  "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Abstimmung oder Budgetzuweisung durchführen",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Ein Projekt erstellen",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Erstellen eines Projekts aus einer Vorlage",
   "app.containers.AdminPage.ProjectEdit.createExternalSurveyText": "Externe Umfrage einbetten",
