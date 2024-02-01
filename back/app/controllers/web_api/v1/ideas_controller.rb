@@ -116,7 +116,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   # Return a single draft idea for a phase - for native survey autosave
   def draft_by_phase
-    render_show Idea.find_by(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')
+    render_show Idea.find_by!(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')
   end
 
   #   Normal users always post in an active phase. They should never provide a phase id.

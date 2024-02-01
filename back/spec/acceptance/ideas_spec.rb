@@ -675,18 +675,17 @@ resource 'Ideas' do
         end
       end
 
-      # TODO: JS - Get these tests to work
-      context 'idea authored by another user' do
-        let!(:idea) { create(:idea, project: phase.project, phases: [phase]) }
+      context 'Idea authored by another user' do
+        let!(:idea) { create(:idea, project: phase.project, phases: [phase], creation_phase: phase, publication_status: 'draft') }
 
-        example '[error] No draft ideas for current author', document: false do
+        example '[error] No draft ideas for current user', document: false do
           do_request
           expect(status).to eq 404
         end
       end
 
       context 'Idea is not draft' do
-        let!(:idea) { create(:idea, project: phase.project, phases: [phase]) }
+        let!(:idea) { create(:idea, project: phase.project, phases: [phase], creation_phase: phase, author: @user) }
 
         example '[error] No draft ideas', document: false do
           do_request
