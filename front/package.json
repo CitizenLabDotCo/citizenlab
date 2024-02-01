@@ -154,7 +154,7 @@
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "7.x",
     "@cypress/skip-test": "^2.6.1",
-    "@cypress/webpack-preprocessor": "^5.16.1",
+    "@cypress/webpack-preprocessor": "^6.0.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@sentry/webpack-plugin": "^1.18.8",
     "@storybook/addon-essentials": "^7.6.2",
