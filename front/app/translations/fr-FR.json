@@ -684,7 +684,7 @@
   "app.components.formBuilder.questionLogicHelperTextDefault": "Si aucune logique n'est ajoutée à une réponse, le formulaire suivra son déroulement normal. L'ajout d'une logique à une question la rendra obligatoire par défaut. Pour plus d'informations, visitez le site {supportPageLink}",
   "app.components.formBuilder.questionTitle": "Titre de la question",
   "app.components.formBuilder.randomize": "Aléatoire",
-  "app.components.formBuilder.randomizeToolTip": "L'ordre des réponses sera aléatoire pour chaque utilisateur.",
+  "app.components.formBuilder.randomizeToolTip": "L'ordre des réponses sera aléatoire et différent pour chaque utilisateur",
   "app.components.formBuilder.range": "Gamme",
   "app.components.formBuilder.removeAnswer": "Supprimer la réponse",
   "app.components.formBuilder.required": "Requis",
