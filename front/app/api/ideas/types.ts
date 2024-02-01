@@ -155,8 +155,8 @@ export interface IIdeaAdd {
   // Required
   project_id: string;
   publication_status: IdeaPublicationStatus;
-  title_multiloc: Multiloc;
   // Optional
+  title_multiloc?: Multiloc;
   author_id?: string | null;
   assignee_id?: string | null;
   idea_status_id?: string | null;

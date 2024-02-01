@@ -68,6 +68,7 @@ interface FormValues {
   location_description?: string;
   location_point_geojson?: GeoJSON.Point;
   topic_ids?: string[];
+  id?: string;
 }
 
 interface Props {
@@ -131,6 +132,9 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
         setProcessingLocation(false);
       });
     }
+
+    // TODO: JS - Set the initial values from a draft idea - query by phase ID and user ID
+
   }, [search, locale]);
 
   // get participation method config
@@ -138,13 +142,13 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
   const config = getConfig(phaseFromUrl?.data, phases);
 
   const handleDisclaimer = (data: FormValues) => {
-    const disclamerNeeded =
+    const disclaimerNeeded =
       data.idea_files_attributes ||
       data.idea_images_attributes ||
       Object.values(data.body_multiloc).some((value) => value.includes('<img'));
 
     setFormData(data);
-    if (disclamerNeeded) {
+    if (disclaimerNeeded) {
       return setIsDisclaimerOpened(true);
     } else {
       return onSubmit(data);
@@ -162,7 +166,6 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
   };
 
   const onSubmit = async (data: FormValues) => {
-    console.log(data);
     let location_point_geojson;
 
     if (data.location_description && !data.location_point_geojson) {
@@ -181,16 +184,14 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
         : null;
 
     // Update the idea if id is present
-    // TODO: JS - Strip out 'last_submitted_page' from the formData - use this to set where they got to and load that data
-
-    const idea = false ?
+    const idea = data.id ?
       await updateIdea({
-        id: '2345',
+        id: data.id,
         requestBody: {
           ...data,
           location_point_geojson,
           project_id: project.data.id,
-          publication_status: data['publication_status'] ?? 'published',
+          publication_status: 'published',
           phase_ids,
           anonymous: postAnonymously ? true : undefined,
         }
@@ -199,7 +200,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
         ...data,
         location_point_geojson,
         project_id: project.data.id,
-        publication_status: data['publication_status'] ?? 'published',
+        publication_status: 'published',
         phase_ids,
         anonymous: postAnonymously ? true : undefined,
       });
