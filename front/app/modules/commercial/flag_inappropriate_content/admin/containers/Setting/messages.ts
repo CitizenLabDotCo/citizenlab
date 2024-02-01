@@ -9,8 +9,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription',
     defaultMessage: 'Auto-detect inappropriate content posted on the platform.',
   },
-  inappropriateContentDetectionTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip',
+  inappropriateContentDetectionToggleTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.inappropriateContentDetectionToggleTooltip',
     defaultMessage:
       'While this feature is enabled, input, proposals and comments posted by participants will be automatically reviewed. Posts flagged as potentially containing inappropriate content will not be blocked, but will be highlighted for review on the {linkToActivityPage} page.',
   },
