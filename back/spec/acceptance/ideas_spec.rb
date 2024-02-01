@@ -693,7 +693,14 @@ resource 'Ideas' do
         end
       end
 
-      context 'TODO: Idea is not native survey' do; end
+      context 'Idea is not native survey' do
+        let!(:idea) { create(:idea, project: phase.project, phases: [phase], author: @user, publication_status: 'draft') }
+
+        example '[error] No native survey idea found', document: false do
+          do_request
+          expect(status).to eq 404
+        end
+      end
     end
 
     get 'web_api/v1/ideas/:idea_id/json_forms_schema' do
