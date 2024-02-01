@@ -6,11 +6,7 @@ import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import { object, boolean, array, string, number } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-// styles
-import styled from 'styled-components';
-
 // components
-import { RightColumn } from 'containers/Admin';
 import {
   Box,
   Spinner,
