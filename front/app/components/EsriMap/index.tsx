@@ -49,7 +49,7 @@ const EsriMap = ({
     // Get global map settings from the app config
     const globalMapSettings = appConfig?.data.attributes.settings.maps;
 
-    // Create a new map and view
+    // Create a new map and map view
     const esriMap = new Map();
 
     const mapView = new MapView({
@@ -59,21 +59,21 @@ const EsriMap = ({
       center: !isNil(center)
         ? [center.coordinates[0], center.coordinates[1]]
         : undefined,
+      constraints: {
+        maxZoom: maxZoom || 22,
+        minZoom: 8,
+      },
     });
-    mapView.constraints = {
-      maxZoom: maxZoom || 22,
-      minZoom: 8,
-    };
 
     // Set the basemap
     const webTileLayerFromUrl = new WebTileLayer({
       urlTemplate: globalMapSettings?.tile_provider || DEFAULT_TILE_PROVIDER,
       copyright: getTileAttribution(globalMapSettings?.tile_provider || ''),
     });
-    const basemap = new Basemap({
+
+    esriMap.basemap = new Basemap({
       baseLayers: [webTileLayerFromUrl],
     });
-    esriMap.basemap = basemap;
 
     // Add any layers that were passed in
     if (layers) {

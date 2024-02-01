@@ -62,7 +62,7 @@ const EventMap = memo<Props>(
         setLocationPoint({
           type: 'Point',
           coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
-        } as GeoJSON.Point);
+        });
     };
 
     return (
