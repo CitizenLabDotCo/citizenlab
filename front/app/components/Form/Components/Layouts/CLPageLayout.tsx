@@ -39,13 +39,6 @@ import {
 import { isVisible } from '../Controls/visibilityUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
-// API
-// import useAddIdea from "api/ideas/useAddIdea";
-// import useUpdateIdea from "api/ideas/useUpdateIdea";
-// import {useSearchParams} from "react-router-dom";
-// import usePhase from "../../../../api/phases/usePhase";
-// import useAuthUser from "../../../../api/me/useAuthUser";
-
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
   width: 100%;

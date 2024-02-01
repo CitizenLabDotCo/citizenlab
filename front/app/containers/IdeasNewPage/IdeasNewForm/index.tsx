@@ -44,8 +44,8 @@ import { IPhases, IPhaseData } from 'api/phases/types';
 import useLocale from 'hooks/useLocale';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import { IProject } from 'api/projects/types';
-import {getFormValues} from "../../IdeasEditPage/utils";
-import {IdeaPublicationStatus} from "../../../api/ideas/types";
+import { getFormValues } from "../../IdeasEditPage/utils";
+import { IdeaPublicationStatus } from "api/ideas/types";
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
