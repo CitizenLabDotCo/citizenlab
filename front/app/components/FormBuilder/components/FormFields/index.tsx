@@ -36,8 +36,7 @@ interface FormFieldsProps {
   ) => void;
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
-  onDelete: (fieldIndex: number) => void;
-  isDeleteDisabled: boolean;
+  closeSettings: () => void;
 }
 
 const FormFields = ({
@@ -45,8 +44,7 @@ const FormFields = ({
   selectedFieldId,
   handleDragEnd,
   builderConfig,
-  onDelete,
-  isDeleteDisabled,
+  closeSettings,
 }: FormFieldsProps) => {
   const { watch, trigger } = useFormContext();
   const locale = useLocale();
@@ -100,8 +98,7 @@ const FormFields = ({
                   onEditField={onEditField}
                   builderConfig={builderConfig}
                   fieldNumbers={fieldNumbers}
-                  onDelete={onDelete}
-                  isDeleteDisabled={isDeleteDisabled}
+                  closeSettings={closeSettings}
                 />
                 <Drop key={grouping.id} id={grouping.id} type={questionDNDType}>
                   <Box height="100%">
@@ -123,8 +120,7 @@ const FormFields = ({
                                 onEditField={onEditField}
                                 builderConfig={builderConfig}
                                 fieldNumbers={fieldNumbers}
-                                onDelete={onDelete}
-                                isDeleteDisabled={isDeleteDisabled}
+                                closeSettings={closeSettings}
                               />
                             </Drag>
                           ) : (

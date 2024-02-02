@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
-import {
-  useForm,
-  useFieldArray,
-  FormProvider,
-  useFormContext,
-} from 'react-hook-form';
+import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import { object, boolean, array, string, number } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -79,8 +74,7 @@ export const FormEdit = ({
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
-  const { groupingType, formSavedSuccessMessage, isFormPhaseSpecific } =
-    builderConfig;
+  const { formSavedSuccessMessage, isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const showWarningNotice = totalSubmissions > 0;
 
@@ -116,35 +110,15 @@ export const FormEdit = ({
     handleSubmit,
     control,
     formState: { isSubmitting, errors },
-    trigger,
   } = methods;
 
-  const { fields, append, remove, move, replace } = useFieldArray({
+  const { append, move, replace } = useFieldArray({
     name: 'customFields',
     control,
   });
 
   const closeSettings = () => {
     setSelectedField(undefined);
-  };
-
-  const handleDelete = (fieldIndex: number) => {
-    const field = fields[fieldIndex];
-
-    // When the first group is deleted, it's questions go to the next group
-    if (fieldIndex === 0 && field.input_type === groupingType) {
-      const nextGroupIndex = fields.findIndex(
-        (field, fieldIndex) =>
-          field.input_type === groupingType && fieldIndex !== 0
-      );
-      move(nextGroupIndex, 0);
-      remove(1);
-    } else {
-      remove(fieldIndex);
-    }
-
-    closeSettings();
-    trigger();
   };
 
   const onAddField = (field: IFlatCreateCustomField, index: number) => {
@@ -205,13 +179,6 @@ export const FormEdit = ({
       handleHookFormSubmissionError(error, setError, 'customFields');
     }
   };
-
-  // Group is only deletable when we have more than one group
-  const isGroupDeletable =
-    fields.filter((field) => field.input_type === groupingType).length > 1;
-  const isDeleteDisabled = !(
-    selectedField?.input_type !== groupingType || isGroupDeletable
-  );
 
   const reorderFields = (
     result: DragAndDropResult,
@@ -295,8 +262,7 @@ export const FormEdit = ({
                         selectedFieldId={selectedField?.id}
                         handleDragEnd={reorderFields}
                         builderConfig={builderConfig}
-                        onDelete={handleDelete}
-                        isDeleteDisabled={isDeleteDisabled}
+                        closeSettings={closeSettings}
                       />
                     </Box>
                   </Box>
@@ -306,11 +272,8 @@ export const FormEdit = ({
                     <Box>
                       <FormBuilderSettings
                         key={selectedField.id}
-                        // key={Math.floor(Date.now() * Math.random())}
                         field={selectedField}
-                        onDelete={handleDelete}
-                        onClose={closeSettings}
-                        isDeleteDisabled={isDeleteDisabled}
+                        closeSettings={closeSettings}
                         builderConfig={builderConfig}
                       />
                     </Box>

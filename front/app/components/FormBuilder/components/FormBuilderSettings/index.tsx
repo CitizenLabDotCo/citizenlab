@@ -7,12 +7,10 @@ import {
   Text,
   stylingConsts,
   colors,
-  Button,
 } from '@citizenlab/cl2-component-library';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import { LogicSettings } from './LogicSettings';
 import { ContentSettings } from './ContentSettings';
-import Modal from 'components/UI/Modal';
 
 // intl
 import messages from '../messages';
@@ -38,88 +36,24 @@ import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;
-  onDelete: (fieldIndex: number) => void;
-  onClose: () => void;
-  isDeleteDisabled?: boolean;
+  closeSettings: () => void;
   builderConfig: FormBuilderConfig;
 }
 
 const FormBuilderSettings = ({
   field,
-  onDelete,
-  onClose,
-  isDeleteDisabled = false,
+  closeSettings,
   builderConfig,
 }: Props) => {
   const locales = useAppConfigurationLocales();
   const [currentTab, setCurrentTab] = useState<'content' | 'logic'>('content');
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [fieldIndexToDelete, setFieldIndexToDelete] = useState<number>();
   const { formatMessage } = useIntl();
-  const { watch, setValue } = useFormContext();
+  const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
-
-  const closeModal = () => {
-    setShowDeleteModal(false);
-  };
-  const openModal = () => {
-    setShowDeleteModal(true);
-  };
 
   if (isNilOrError(locales)) {
     return null;
   }
-
-  const deleteField = (fieldIndex: number) => {
-    setFieldIndexToDelete(fieldIndex);
-
-    // Check if deleted field has linked logic
-    const doesPageHaveLinkedLogic = formCustomFields.some((formField) => {
-      if (formField.logic && formField.logic.rules) {
-        return formField.logic.rules.some(
-          (rule) =>
-            rule.goto_page_id === field.id ||
-            rule.goto_page_id === field.temp_id
-        );
-      } else if (formField.logic && formField.logic?.next_page_id) {
-        return (
-          formField.logic?.next_page_id === field.id ||
-          formField.logic?.next_page_id === field.temp_id
-        );
-      }
-      return false;
-    });
-
-    if (doesPageHaveLinkedLogic) {
-      openModal();
-    } else {
-      onDelete(fieldIndex);
-    }
-  };
-
-  const removeLogicAndDelete = () => {
-    if (fieldIndexToDelete !== undefined) {
-      formCustomFields.map((formField, i) => {
-        if (formField.logic && formField.logic.rules) {
-          const updatedRules = formField.logic.rules.filter(
-            (rule) =>
-              rule.goto_page_id !== field.id &&
-              rule.goto_page_id !== field.temp_id
-          );
-          setValue(`customFields.${i}.logic.rules`, updatedRules);
-        } else if (formField.logic && formField.logic.next_page_id) {
-          if (
-            formField.logic.next_page_id === field.id ||
-            formField.logic.next_page_id === field.temp_id
-          ) {
-            setValue(`customFields.${i}.logic`, {});
-          }
-        }
-      });
-      onDelete(fieldIndexToDelete);
-    }
-    setFieldIndexToDelete(undefined);
-  };
 
   const getPageList = () => {
     const fieldNumbers = getFieldNumbers(formCustomFields);
@@ -170,7 +104,7 @@ const FormBuilderSettings = ({
       <Box position="absolute" right="10px">
         <CloseIconButton
           a11y_buttonActionMessage={messages.close}
-          onClick={onClose}
+          onClick={closeSettings}
           iconColor={colors.textSecondary}
           iconColorOnHover={'#000'}
         />
@@ -216,13 +150,7 @@ const FormBuilderSettings = ({
       {(!showTabbedSettings ||
         !builderConfig.isLogicEnabled ||
         (showTabbedSettings && currentTab === 'content')) && (
-        <ContentSettings
-          field={field}
-          locales={locales}
-          onClose={onClose}
-          isDeleteDisabled={isDeleteDisabled}
-          onDelete={deleteField}
-        />
+        <ContentSettings field={field} locales={locales} />
       )}
       {showTabbedSettings && currentTab === 'logic' && (
         <LogicSettings
@@ -232,38 +160,6 @@ const FormBuilderSettings = ({
           builderConfig={builderConfig}
         />
       )}
-      <Modal opened={showDeleteModal} close={closeModal}>
-        <Box display="flex" flexDirection="column" width="100%" p="20px">
-          <Box mb="40px">
-            <Title variant="h3" color="primary">
-              {formatMessage(messages.deleteFieldWithLogicConfirmationQuestion)}
-            </Title>
-            <Text color="primary" fontSize="l">
-              {formatMessage(messages.deleteResultsInfo)}
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            width="100%"
-            alignItems="center"
-          >
-            <Button
-              icon="delete"
-              data-cy="e2e-confirm-delete-page-and-logic"
-              buttonStyle="delete"
-              width="auto"
-              mr="20px"
-              onClick={removeLogicAndDelete}
-            >
-              {formatMessage(messages.confirmDeleteFieldWithLogicButtonText)}
-            </Button>
-            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
-              {formatMessage(messages.cancelDeleteButtonText)}
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
     </Box>
   );
 };
