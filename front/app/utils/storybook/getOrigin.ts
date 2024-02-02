@@ -3,5 +3,5 @@ export const getOrigin = () => {
     return window.location.origin;
   }
 
-  return 'http://localhost:6006';
+  return '';
 };
