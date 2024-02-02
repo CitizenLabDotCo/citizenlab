@@ -93,7 +93,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     projectId: project.data.id,
     phaseId,
   });
-  const { data: idea } = useDraftIdeaByPhaseId(phaseId, false);
+  const { data: draftIdea, status: draftIdeaStatus } = useDraftIdeaByPhaseId(phaseId, false);
   const [ideaId, setIdeaId] = useState<string|undefined>();
 
   const search = location.search;
@@ -107,15 +107,12 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
   const allowAnonymousPosting =
     participationContext?.attributes.allow_anonymous_participation;
 
-  // TODO: JS - Need to get the idea id into the data
-  const initialFormDataNew =
-    isNilOrError(idea) || !schema
-      ? null
-      : getFormValues(idea, schema);
-  // if (!isNilOrError(idea)) {
-  //   setIdeaId(idea.data.id);
-  // }
-  console.log('Set initial form data:', initialFormDataNew);
+  // Try and load in a draft idea
+  const draftIdeaLoading = draftIdeaStatus === 'loading';
+  if (draftIdeaStatus === 'success' && !isNilOrError(draftIdea) && !ideaId && schema) {
+    setInitialFormData(getFormValues(draftIdea, schema));
+    setIdeaId(draftIdea.data.id);
+  }
 
   useEffect(() => {
     // Click on map flow :
@@ -168,16 +165,15 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
 
   // Handle draft ideas for native surveys
   const handleDraftIdeas = async (data: FormValues) => {
+    console.log('handleDraftIdeas', data);
     if (data.publication_status === 'draft') {
       if (isNilOrError(authUser)) {
         // Anonymous surveys should not save drafts
         return;
       }
 
-      console.log('DRAFT');
       return onSubmit(data, false);
     } else {
-      console.log('PUBLISHED');
       return onSubmit(data, true);
     }
   }
@@ -210,29 +206,17 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
         ? [phaseId]
         : null;
 
-    // Update the idea if we have an existing draft idea
-    console.log(data);
-    const idea = ideaId ?
-      await updateIdea({
-        id: ideaId,
-        requestBody: {
-          ...data,
-          location_point_geojson,
-          project_id: project.data.id,
-          publication_status: 'published',
-          phase_ids,
-          anonymous: postAnonymously ? true : undefined,
-        }
-      }) :
-      await addIdea({
-        ...data,
-        location_point_geojson,
-        project_id: project.data.id,
-        publication_status: 'published',
-        phase_ids,
-        anonymous: postAnonymously ? true : undefined,
-      });
+    const requestBody = {
+      ...data,
+      location_point_geojson,
+      project_id: project.data.id,
+      publication_status: data.publication_status || 'published',
+      phase_ids,
+      anonymous: postAnonymously ? true : undefined,
+    };
 
+    // Update or add the idea depending on if we have an existing draft idea
+    const idea = ideaId ? await updateIdea({ id: ideaId, requestBody }) : await addIdea(requestBody);
     setIdeaId(idea.data.id);
 
     if (published) {
@@ -293,14 +277,14 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
-      {!processingLocation && schema && uiSchema && config && initialFormDataNew ? (
+      {!processingLocation && !draftIdeaLoading && schema && uiSchema && config ? (
         <>
           <IdeasNewMeta />
           <Form
             schema={schema}
             uiSchema={uiSchema}
             onSubmit={isSurvey ? handleDraftIdeas : handleDisclaimer}
-            initialFormData={initialFormDataNew}
+            initialFormData={initialFormData}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
             inputId={ideaId}
