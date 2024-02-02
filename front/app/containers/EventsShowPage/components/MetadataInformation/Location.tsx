@@ -45,7 +45,7 @@ const Location = ({ event }: Props) => {
                 buttonStyle="text"
                 onClick={() => {
                   window.open(
-                    `http://maps.google.com/maps?z=12&t=m&q=loc:${position.coordinates[1]}+${position.coordinates[0]}`
+                    `https://www.google.com/maps/search/?api=1&query=${position.coordinates[1]},${position.coordinates[0]}`
                   );
                 }}
                 pl="0px"
