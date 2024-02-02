@@ -672,8 +672,8 @@ jobs:
       - shallow-clone
       - run: cd .. && .circleci/install_lpass.sh v1.3.5
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
-      - run: cd .. && lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
       - run: cd .. && lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
+      - run: cd .. && set -a && source env_files/front-secret.env  && set +a
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
