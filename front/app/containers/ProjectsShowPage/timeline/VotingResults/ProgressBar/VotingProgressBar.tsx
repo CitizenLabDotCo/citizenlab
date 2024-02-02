@@ -18,32 +18,36 @@ interface Props {
 const VotingProgressBar = ({ phase, idea }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const ideaVotes = idea.attributes.votes_count;
   const totalVotes = phase.data.attributes.votes_count;
-  const ideaVotes = idea.attributes.votes_count ?? 0;
-  const votesPercentage =
-    typeof totalVotes === 'number' ? roundPercentage(ideaVotes, totalVotes) : 0;
-  const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
-    phase.data.attributes;
-  const votingTermSingular =
-    localize(voting_term_singular_multiloc) ||
-    formatMessage(assignMultipleVotesInputMessages.vote).toLowerCase();
-  const votingTermPlural =
-    localize(voting_term_plural_multiloc) ||
-    formatMessage(assignMultipleVotesInputMessages.votes).toLowerCase();
-  const tooltip = 'STILL TO CHANGE';
 
-  return (
-    <ProgressBarWrapper votesPercentage={votesPercentage} tooltip={tooltip}>
-      {`${votesPercentage}% (${ideaVotes} ${formatMessage(
-        assignMultipleVotesInputMessages.xVotes,
-        {
-          votes: ideaVotes,
-          singular: votingTermSingular,
-          plural: votingTermPlural,
-        }
-      )})`}
-    </ProgressBarWrapper>
-  );
+  if (typeof ideaVotes === 'number' && typeof totalVotes === 'number') {
+    const votesPercentage = roundPercentage(ideaVotes, totalVotes);
+    const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
+      phase.data.attributes;
+    const votingTermSingular =
+      localize(voting_term_singular_multiloc) ||
+      formatMessage(assignMultipleVotesInputMessages.vote).toLowerCase();
+    const votingTermPlural =
+      localize(voting_term_plural_multiloc) ||
+      formatMessage(assignMultipleVotesInputMessages.votes).toLowerCase();
+    const tooltip = 'STILL TO CHANGE';
+
+    return (
+      <ProgressBarWrapper votesPercentage={votesPercentage} tooltip={tooltip}>
+        {`${votesPercentage}% (${ideaVotes} ${formatMessage(
+          assignMultipleVotesInputMessages.xVotes,
+          {
+            votes: ideaVotes,
+            singular: votingTermSingular,
+            plural: votingTermPlural,
+          }
+        )})`}
+      </ProgressBarWrapper>
+    );
+  }
+
+  return null;
 };
 
 export default VotingProgressBar;
