@@ -9,10 +9,8 @@ module Analysis
     ]
 
     LLMS = [
-      LLM::GPT48k.new,
-      LLM::GPT432k.new,
       LLM::GPT4Turbo.new,
-      LLM::GPT3516k.new
+      LLM::GPT35Turbo.new
     ]
 
     class QAndAFailedError < StandardError; end
@@ -75,7 +73,7 @@ module Analysis
 
     # For now, we assume GPT tokenization for all llms
     def token_count(str)
-      LLM::OpenAIGPT.token_count(str)
+      LLM::AzureOpenAI.token_count(str)
     end
   end
 end

@@ -66,7 +66,7 @@ RSpec.describe Analysis::QAndAMethod do
         ]
       end
 
-      mock_llm = instance_double(Analysis::LLM::GPT48k)
+      mock_llm = instance_double(Analysis::LLM::GPT4Turbo)
       plan = Analysis::QAndAMethod::OnePassLLM.new(question).generate_plan
 
       expect(plan).to have_attributes({
