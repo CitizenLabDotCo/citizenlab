@@ -83,7 +83,7 @@ export interface IIdeaData {
     official_feedbacks_count: number;
     /** Both for phase voting_method's budgeting AND multiple_voting this is defined */
     baskets_count?: number | null;
-    /** For phase voting_method's budgeting PB we use the budget of the idea
+    /** For voting_method budgeting we use the budget of the idea
      * times the number of picks/baskets */
     votes_count?: number | null;
     location_point_geojson: GeoJSON.Point | null;
