@@ -665,12 +665,12 @@ jobs:
 
   front-storybook:
     docker:
-      - image: circleci/node:16
-    resource_class: large
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: medium
     working_directory: ~/citizenlab/front
     steps:
       - shallow-clone
-      - run: cd .. && sudo .circleci/install_lpass.sh v1.3.5
+      - run: cd .. && .circleci/install_lpass.sh v1.3.5
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
       - run: cd .. && lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
       - run: cd .. && lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
