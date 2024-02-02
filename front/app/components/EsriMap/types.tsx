@@ -6,3 +6,6 @@ export const BASEMAP_AT_ATTRIBUTION =
 
 export const DEFAULT_TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors';
+
+export const DEFAULT_TILE_PROVIDER =
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
