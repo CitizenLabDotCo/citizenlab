@@ -139,9 +139,9 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#never_update?' do
-    it 'returns true' do
-      expect(participation_method.never_update?).to be true
+  describe '#update_if_published?' do
+    it 'returns false' do
+      expect(participation_method.update_if_published?).to be false
     end
   end
 

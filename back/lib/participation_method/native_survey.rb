@@ -60,10 +60,9 @@ module ParticipationMethod
       true
     end
 
-    # TODO: JS - Should this be never_update_when_published?
-    # def never_update?
-    #   true
-    # end
+    def update_if_published?
+      false
+    end
 
     def creation_phase?
       true
