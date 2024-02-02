@@ -118,7 +118,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   // AND the user is moderator (i.e. projects is defined),
   // we use the first project in the list of projects as the default project.
   const selectedProjectId =
-    projectId ?? isModerator ? projects?.data[0]?.id : undefined;
+    projectId ?? (isModerator ? projects?.data[0]?.id : undefined);
 
   return (
     <Container>
