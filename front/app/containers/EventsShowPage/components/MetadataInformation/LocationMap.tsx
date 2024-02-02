@@ -10,14 +10,15 @@ import { getMapPinSymbol } from 'components/EsriMap/utils';
 
 // hooks
 import { useTheme } from 'styled-components';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 export interface Props {
-  mapHeight?: string;
   eventLocation?: GeoJSON.Point | null;
 }
 
-const LocationMap = memo<Props>(({ eventLocation, mapHeight }: Props) => {
+const LocationMap = memo<Props>(({ eventLocation }: Props) => {
   const theme = useTheme();
+  const isPhoneOrSmaller = useBreakpoint('phone');
   const locationPoint = useRef<GeoJSON.Point | null>(eventLocation || null);
 
   // Create point graphic for event location
@@ -32,10 +33,10 @@ const LocationMap = memo<Props>(({ eventLocation, mapHeight }: Props) => {
   return (
     <EsriMap
       center={eventLocation}
-      height={mapHeight}
+      height={isPhoneOrSmaller ? '180px' : '140px'}
       zoom={18}
       graphics={[pointGraphic]}
-      showFullscreenOption={true}
+      showFullscreenOption={isPhoneOrSmaller ? false : true}
     />
   );
 });
