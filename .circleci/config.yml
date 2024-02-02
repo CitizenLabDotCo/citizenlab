@@ -667,7 +667,7 @@ jobs:
     docker:
       - image: circleci/node:16
     resource_class: large
-    working_directory: ~/citizenlab/front
+    working_directory: ~/citizenlab
     steps:
       - shallow-clone
       - copy_secrets_from_lastpass
@@ -681,7 +681,7 @@ jobs:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
-          command: npm run chromatic
+          command: cd front && npm run chromatic
 
   # E2E TESTS
   e2e-tests:
