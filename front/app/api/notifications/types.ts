@@ -389,6 +389,18 @@ export interface IVotingBasketSubmittedNotificationData
   };
 }
 
+export interface INativeSurveyNotSubmittedNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'native_survey_not_submitted';
+    read_at: string | null;
+    created_at: string;
+    project_slug: string;
+    project_title_multiloc: Multiloc;
+    phase_title_multiloc: Multiloc;
+  };
+}
+
 export interface IVotingBasketNotSubmittedNotificationData
   extends IBaseNotificationData {
   attributes: {
@@ -451,6 +463,7 @@ export interface INotificationDataMap {
   IThresholdReachedForAdminNotificationData: IThresholdReachedForAdminNotificationData;
   IProjectFolderModerationRightsReceivedNotificationData: IProjectFolderModerationRightsReceivedNotificationData;
   IVotingBasketSubmittedNotificationData: IVotingBasketSubmittedNotificationData;
+  INativeSurveyNotSubmittedNotificationData: INativeSurveyNotSubmittedNotificationData;
   IVotingBasketNotSubmittedNotificationData: IVotingBasketNotSubmittedNotificationData;
   IVotingLastChanceNotificationData: IVotingLastChanceNotificationData;
   IVotingResultsNotificationData: IVotingResultsNotificationData;

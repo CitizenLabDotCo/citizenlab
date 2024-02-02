@@ -30,6 +30,7 @@ import StatusChangeOnInitiativeYouFollowNotification from '../StatusChangeOnInit
 import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
 import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
 import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';
+import NativeSurveyNotSubmittedNotification from '../NativeSurveyNotSubmittedNotification';
 import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNotification';
 import VotingLastChanceNotification from '../VotingLastChanceNotification';
 import VotingResultsNotification from '../VotingResultsNotification';
@@ -64,6 +65,7 @@ import {
   IThresholdReachedForAdminNotificationData,
   IProjectFolderModerationRightsReceivedNotificationData,
   IVotingBasketSubmittedNotificationData,
+  INativeSurveyNotSubmittedNotificationData,
   IVotingBasketNotSubmittedNotificationData,
   IVotingLastChanceNotificationData,
   IVotingResultsNotificationData,
@@ -288,6 +290,14 @@ const Notification = ({ notification }: Props) => {
         <VotingBasketSubmittedNotification
           notification={notification as IVotingBasketSubmittedNotificationData}
         />
+      );
+    case 'native_survey_not_submitted':
+      return (
+        <NativeSurveyNotSubmittedNotification
+            notification={
+            notification as INativeSurveyNotSubmittedNotificationData
+          }
+            />
       );
     case 'voting_basket_not_submitted':
       return (

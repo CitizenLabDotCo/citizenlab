@@ -207,6 +207,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :native_survey_not_submitted_campaign, class: EmailCampaigns::Campaigns::NativeSurveyNotSubmitted do
+    enabled { true }
+  end
+
   factory :voting_basket_not_submitted_campaign, class: EmailCampaigns::Campaigns::VotingBasketNotSubmitted do
     enabled { true }
   end

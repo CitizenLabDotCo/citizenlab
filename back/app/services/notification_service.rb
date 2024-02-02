@@ -37,6 +37,7 @@ class NotificationService
     Notifications::StatusChangeOnInitiativeYouFollow,
     Notifications::ThresholdReachedForAdmin,
     Notifications::VotingBasketSubmitted,
+    Notifications::NativeSurveyNotSubmitted,
     Notifications::VotingBasketNotSubmitted,
     Notifications::VotingLastChance,
     Notifications::VotingResultsPublished

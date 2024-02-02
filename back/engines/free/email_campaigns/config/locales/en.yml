@@ -50,6 +50,7 @@ en:
       "assignee_digest": Weekly overview of assigned ideas
       "user_digest": Weekly overview
       "voting_basket_submitted": Confirmation of voting
+      "native_survey_not_submitted": Survey not submitted
       "voting_basket_not_submitted": Votes not submitted
       "voting_last_chance": Last chance to vote
       "voting_phase_started": New project phase with voting
@@ -505,6 +506,13 @@ en:
       event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
       cta_see_votes_submitted: 'See votes submitted'
       cta_message: 'Click the button below to participate'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: You didn''t submit your survey response'
+      preheader: 'You didn''t submit your survey response on the participation platform of %{organizationName}'
+      title_native_survey_not_submitted: 'You didn''t submit your survey response'
+      event_description: 'You answered a few questions for %{contextTitle} but you didn''t submit your response.'
+      cta_message: 'Click the button below to complete your survey response'
+      cta_complete_your_survey_response: 'Complete your survey response'
     voting_basket_not_submitted:
       subject: '%{organizationName}: You didn''t submit your votes'
       preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'

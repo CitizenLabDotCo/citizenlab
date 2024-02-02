@@ -234,6 +234,11 @@ FactoryBot.define do
     basket
   end
 
+  factory :native_survey_not_submitted, parent: :notification, class: 'Notifications::NativeSurveyNotSubmitted' do
+    project
+    phase
+  end
+
   factory :voting_basket_not_submitted, parent: :notification, class: 'Notifications::VotingBasketNotSubmitted' do
     project
     phase
