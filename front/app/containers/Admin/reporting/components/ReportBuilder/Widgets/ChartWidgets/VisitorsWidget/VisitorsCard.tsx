@@ -78,6 +78,7 @@ const VisitorsCard = ({
               <Statistic
                 name={formatMessage(visitorsCardMessages.visits)}
                 value={stats.visits.value}
+                nameColor="black"
               />
             </Box>
           </Box>
