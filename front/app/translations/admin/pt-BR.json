@@ -1682,6 +1682,7 @@
   "app.containers.AdminPage.ProjectEvents.preview": "Pré-visualização",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Refinar a localização do mapa",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Refinar a localização no mapa",
+  "app.containers.AdminPage.ProjectEvents.refineOnMapInstructions": "Você pode refinar onde o marcador de local do evento é mostrado clicando no mapa abaixo.",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Salvar",
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "Não foi possível salvar suas alterações, tente novamente.",
   "app.containers.AdminPage.ProjectEvents.saveSuccessLabel": "Sucesso!",
