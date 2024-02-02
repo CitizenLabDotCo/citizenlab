@@ -12,6 +12,10 @@ jest.mock('api/reports/useReports', () =>
   jest.fn(() => ({ data: { data: mockReports } }))
 );
 
+jest.mock('api/reports/useReport', () =>
+  jest.fn(() => ({ data: { data: mockReports[0] } }))
+);
+
 const mockCreateReport = jest.fn();
 
 jest.mock('api/reports/useAddReport', () =>
