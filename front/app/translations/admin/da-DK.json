@@ -1682,6 +1682,7 @@
   "app.containers.AdminPage.ProjectEvents.preview": "Eksempel",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Forfin kortets placering",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Forfin placering på kort",
+  "app.containers.AdminPage.ProjectEvents.refineOnMapInstructions": "Du kan præcisere, hvor markøren for din begivenhed vises, ved at klikke på kortet nedenfor.",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Gem",
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "Vi kunne ikke gemme dine ændringer, prøv venligst igen.",
   "app.containers.AdminPage.ProjectEvents.saveSuccessLabel": "Succes!",
