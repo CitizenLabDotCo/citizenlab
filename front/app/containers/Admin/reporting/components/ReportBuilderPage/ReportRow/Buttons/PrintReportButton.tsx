@@ -1,5 +1,8 @@
 import React from 'react';
 
+// api
+import useReport from 'api/reports/useReport';
+
 // components
 import Button from 'components/UI/Button';
 
@@ -15,7 +18,13 @@ interface Props {
 }
 
 const PrintReportButton = ({ reportId }: Props) => {
+  const { data: report } = useReport(reportId);
   const printReportPath = `/admin/reporting/report-builder/${reportId}/print`;
+
+  if (!report) return null;
+
+  const canEdit =
+    report.data.attributes.action_descriptor.editing_report.enabled;
 
   return (
     <>
@@ -25,6 +34,7 @@ const PrintReportButton = ({ reportId }: Props) => {
         bgColor={colors.primary}
         iconSize="18px"
         linkTo={printReportPath}
+        disabled={!canEdit}
         openLinkInNewTab
       >
         <FormattedMessage {...messages.print} />
