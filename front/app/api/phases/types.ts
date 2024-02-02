@@ -60,6 +60,8 @@ export interface IPhaseAttributes {
   voting_max_votes_per_idea?: number | null;
   ideas_count: number;
   baskets_count?: number | null;
+  /** For budgeting it's: loop over all ideas
+   * and sum the following: (price of idea * times it was submitted in different baskets)  */
   votes_count?: number | null;
 }
 

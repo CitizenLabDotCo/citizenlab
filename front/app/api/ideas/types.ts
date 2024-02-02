@@ -81,7 +81,8 @@ export interface IIdeaData {
     comments_count: number;
     internal_comments_count: number;
     official_feedbacks_count: number;
-    /** Both for phase voting_method's budgeting AND multiple_voting this is defined */
+    /** The number of basket submissions the idea was part of.
+     * Both for phase voting_method's budgeting AND multiple_voting this is defined. */
     baskets_count?: number | null;
     /** For voting_method budgeting we use the budget of the idea
      * times the number of picks/baskets */
