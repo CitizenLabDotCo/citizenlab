@@ -60,6 +60,10 @@ parameters:
     type: boolean
     default: false
 
+  storybook:
+    type: boolean
+    default: false
+
 executors:
   cl2-back:
     parameters:
@@ -658,6 +662,26 @@ jobs:
       - store_artifacts:
           path: /tmp/report.html
           destination: lighthouse
+
+  front-storybook:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: large
+    working_directory: ~/citizenlab/front
+    steps:
+      - shallow-clone
+      - copy_secrets_from_lastpass
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - <<: *install-front-dependencies
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run:
+          command: npm run chromatic
 
   # E2E TESTS
   e2e-tests:
@@ -1284,3 +1308,14 @@ workflows:
             - "Canada"
             - "US West"
       #     - "UK"
+
+  manual-storybook:
+    when: << pipeline.parameters.storybook >>
+    jobs:
+      - front-storybook:
+          context:
+            - docker-hub-access
+            - lastpass
+
+  # nightly-storybook:
+    # TODO
