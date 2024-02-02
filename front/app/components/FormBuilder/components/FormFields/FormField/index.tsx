@@ -103,7 +103,7 @@ export const FormField = ({
       const originalTitle = title_multiloc[lang];
       copiedTitle_multiloc[lang] =
         originalTitle !== ''
-          ? `${originalTitle} (${formatMessage(messages.copy)})`
+          ? `${originalTitle} (${formatMessage(messages.copyNoun)})`
           : '';
     });
     return copiedTitle_multiloc;
@@ -234,7 +234,7 @@ export const FormField = ({
               insert(index + 1, duplicatedField);
               trigger();
             },
-            label: formatMessage(messages.duplicate),
+            label: formatMessage(messages.copyVerb),
             icon: 'copy' as const,
           },
         ]

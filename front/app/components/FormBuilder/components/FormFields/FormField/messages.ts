@@ -1,16 +1,16 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  duplicate: {
-    id: 'app.components.formBuilder.formField.duplicate',
-    defaultMessage: 'Duplicate',
+  copyVerb: {
+    id: 'app.components.formBuilder.formField.copyVerb',
+    defaultMessage: 'Copy',
   },
   delete: {
     id: 'app.components.formBuilder.formField.delete',
     defaultMessage: 'Delete',
   },
-  copy: {
-    id: 'app.components.formBuilder.formField.copy',
+  copyNoun: {
+    id: 'app.components.formBuilder.formField.copyNoun',
     defaultMessage: 'Copy',
   },
   deleteFieldWithLogicConfirmationQuestion: {
