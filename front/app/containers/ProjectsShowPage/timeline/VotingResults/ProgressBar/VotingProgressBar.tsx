@@ -34,20 +34,14 @@ const VotingProgressBar = ({ phase, idea }: Props) => {
 
   return (
     <ProgressBarWrapper votesPercentage={votesPercentage} tooltip={tooltip}>
-      {ideaVotes ? (
-        <>
-          {`${votesPercentage}% (${ideaVotes} ${formatMessage(
-            assignMultipleVotesInputMessages.xVotes,
-            {
-              votes: ideaVotes,
-              singular: votingTermSingular,
-              plural: votingTermPlural,
-            }
-          )})`}
-        </>
-      ) : (
-        <>{votesPercentage}%</>
-      )}
+      {`${votesPercentage}% (${ideaVotes} ${formatMessage(
+        assignMultipleVotesInputMessages.xVotes,
+        {
+          votes: ideaVotes,
+          singular: votingTermSingular,
+          plural: votingTermPlural,
+        }
+      )})`}
     </ProgressBarWrapper>
   );
 };
