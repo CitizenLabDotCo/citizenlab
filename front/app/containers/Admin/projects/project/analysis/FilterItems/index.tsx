@@ -71,6 +71,10 @@ const translationKeys: Record<
     translationKey: messages.comments,
     predicate: '<',
   },
+  input_custom_field_no_empty_values: {
+    translationKey: messages.emptyCustomFields,
+    predicate: '=',
+  },
 };
 
 const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
@@ -148,7 +152,7 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
             >
               <Box>{formatMessage(translationKeys[key].translationKey)}</Box>
               <Box mx="3px">{translationKeys[key].predicate}</Box>
-              <EllipsisFilterValue>{value}</EllipsisFilterValue>
+              <EllipsisFilterValue>{value?.toString()}</EllipsisFilterValue>
               {isEditable && (
                 <IconButton
                   iconName="close"

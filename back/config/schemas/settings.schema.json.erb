@@ -516,6 +516,23 @@
         }
       },
 
+      "esri_integration": {
+        "type": "object",
+        "title": "Esri Integration",
+        "description":  "Esri integration for maps. In development. DO NOT ENABLE ON COMMERCIAL PLATFORM!",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "api_key": {
+            "title": "API Key",
+            "description": "The API key for the Esri integration. (TODO: add more useful information)",
+            "type": "string"
+          }
+        }
+      },
+
       "intercom": {
         "type": "object",
         "title": "Intercom Integration",

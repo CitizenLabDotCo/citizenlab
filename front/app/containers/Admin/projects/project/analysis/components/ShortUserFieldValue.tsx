@@ -10,7 +10,7 @@ import messages from '../messages';
 
 type Props = {
   customField: IUserCustomField;
-  rawValue?: string | string[] | null[] | number;
+  rawValue?: string | string[] | null[] | number | boolean;
 };
 
 const SelectOptionText = ({
