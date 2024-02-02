@@ -1,11 +1,7 @@
 import { colors } from '@citizenlab/cl2-component-library';
 
 // constants
-import {
-  BASEMAP_AT_ATTRIBUTION,
-  DEFAULT_TILE_ATTRIBUTION,
-  MAPTILER_ATTRIBUTION,
-} from './types';
+import { BASEMAP_AT_ATTRIBUTION, MAPTILER_ATTRIBUTION } from './types';
 
 // components
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
@@ -21,7 +17,7 @@ export const getTileAttribution = (tileProvider: string): string => {
     return BASEMAP_AT_ATTRIBUTION;
   }
 
-  return DEFAULT_TILE_ATTRIBUTION;
+  return MAPTILER_ATTRIBUTION; // MapTiler Basic is the default map
 };
 
 // getMapPinSymbol
