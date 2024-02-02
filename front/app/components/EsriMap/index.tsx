@@ -26,6 +26,7 @@ type Props = {
   maxZoom?: number;
   layers?: Layer[];
   onClick?: (event: any, mapView: MapView) => void;
+  onHover?: (event: any, mapView: MapView) => void;
   graphics?: Graphic[];
   showFullscreenOption?: boolean;
 };
@@ -36,6 +37,7 @@ const EsriMap = ({
   maxZoom,
   layers,
   onClick,
+  onHover,
   height,
   width,
   graphics,
@@ -56,7 +58,11 @@ const EsriMap = ({
       zoom: zoom || globalMapSettings?.zoom_level,
       center: !isNil(center)
         ? [center.coordinates[0], center.coordinates[1]]
-        : undefined,
+        : [
+            // Otherwise use the default from map settings OR 0,0 if there is no map settings center.
+            Number(globalMapSettings?.map_center?.lat) || 0,
+            Number(globalMapSettings?.map_center?.long) || 0,
+          ],
       constraints: {
         maxZoom: maxZoom || 22,
         minZoom: 5,
@@ -100,6 +106,11 @@ const EsriMap = ({
       // By passing the mapview to onClick functions, we can easily change the map from that function
       onClick && onClick(event, mapView);
     });
+
+    // On map hover, pass the event to onHover handler if it was provided
+    mapView.on('pointer-move', function (event) {
+      onHover && onHover(event, mapView);
+    });
   }, [
     appConfig?.data.attributes.settings.maps,
     center,
@@ -107,6 +118,7 @@ const EsriMap = ({
     layers,
     maxZoom,
     onClick,
+    onHover,
     showFullscreenOption,
     zoom,
   ]);

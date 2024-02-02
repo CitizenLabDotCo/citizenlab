@@ -5,6 +5,7 @@ import { BASEMAP_AT_ATTRIBUTION, MAPTILER_ATTRIBUTION } from './constants';
 
 // components
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
+import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
 
 // getTileAttribution
 // Description: Gets the correct tile attribution given a certain tileProvider URL.
@@ -32,5 +33,58 @@ export const getMapPinSymbol = (color?: string) => {
     xoffset: 0,
     yoffset: 15,
     path: 'M16,3.5c-4.142,0-7.5,3.358-7.5,7.5c0,4.143,7.5,18.121,7.5,18.121S23.5,15.143,23.5,11C23.5,6.858,20.143,3.5,16,3.5z M16,14.584c-1.979,0-3.584-1.604-3.584-3.584S14.021,7.416,16,7.416S19.584,9.021,19.584,11S17.979,14.584,16,14.584z',
+  });
+};
+
+// getShapeSymbol
+// Description: Get a circle symbol (with an optional color value)
+type SimpleShape = 'circle' | 'square' | 'cross' | 'diamond' | 'triangle' | 'x';
+export const getShapeSymbol = (
+  shape: SimpleShape,
+  color?: string,
+  outlineWidth?: number
+) => {
+  return new SimpleMarkerSymbol({
+    style: shape,
+    color: color || colors.white,
+    outline: {
+      color: 'rgba(255, 255, 255, 0.5)',
+      width: outlineWidth || 1,
+    },
+  });
+};
+
+// getClusterConfiguration
+// Description: Gets the configuration needed to render a FeatureLayer with clustering on zoom in/out
+export const getClusterConfiguration = (clusterSymbolColor?: string) => {
+  return new FeatureReductionCluster({
+    clusterRadius: '60px',
+    clusterMinSize: '28px',
+    clusterMaxSize: '48px',
+    symbol: getShapeSymbol(
+      'circle',
+      clusterSymbolColor || colors.coolGrey700,
+      4
+    ),
+    labelingInfo: [
+      {
+        deconflictionStrategy: 'none',
+        labelExpressionInfo: {
+          // {cluster_count} is a field containing
+          // the number of features in the cluster
+          expression: "Text($feature.cluster_count, '#,###')",
+        },
+        symbol: {
+          type: 'text',
+          color: colors.white,
+          font: {
+            weight: 'bold',
+            family: 'Noto Sans',
+            size: '14px',
+          },
+        },
+        labelPlacement: 'center-center',
+      },
+    ],
   });
 };
