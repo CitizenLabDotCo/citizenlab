@@ -1,13 +1,13 @@
 import { colors } from '@citizenlab/cl2-component-library';
 
 // constants
-import { BASEMAP_AT_ATTRIBUTION, MAPTILER_ATTRIBUTION } from './types';
+import { BASEMAP_AT_ATTRIBUTION, MAPTILER_ATTRIBUTION } from './constants';
 
 // components
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 
-// getTileInfo
-// Description: Gets the correct tile information given a certain tileProvider URL.
+// getTileAttribution
+// Description: Gets the correct tile attribution given a certain tileProvider URL.
 export const getTileAttribution = (tileProvider: string): string => {
   if (tileProvider?.includes('maptiler')) {
     return MAPTILER_ATTRIBUTION;
@@ -21,7 +21,7 @@ export const getTileAttribution = (tileProvider: string): string => {
 };
 
 // getMapPinSymbol
-// Description: Get a map pin symbol with a given color
+// Description: Get a map pin symbol (with an optional color value)
 export const getMapPinSymbol = (color?: string) => {
   return new SimpleMarkerSymbol({
     color,

@@ -16,7 +16,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 // utils
 import { getTileAttribution } from './utils';
 import { isNil } from 'utils/helperUtils';
-import { DEFAULT_TILE_PROVIDER } from './types';
+import { DEFAULT_TILE_PROVIDER } from './constants';
 
 type Props = {
   center?: GeoJSON.Point | null;
@@ -26,8 +26,6 @@ type Props = {
   maxZoom?: number;
   layers?: Layer[];
   onClick?: (event: any, mapView: MapView) => void;
-  setLocationPoint?: (locationPoint: GeoJSON.Point) => void;
-  locationPoint?: GeoJSON.Point;
   graphics?: Graphic[];
   showFullscreenOption?: boolean;
 };
@@ -61,7 +59,7 @@ const EsriMap = ({
         : undefined,
       constraints: {
         maxZoom: maxZoom || 22,
-        minZoom: 8,
+        minZoom: 5,
       },
     });
 
@@ -121,8 +119,8 @@ const EsriMap = ({
       />
       <Box
         id="esriMap"
-        width={`${width}` || '100%'}
-        height={`${height}` || '400px'}
+        width={width ? `${width}` : '100%'}
+        height={height ? `${height}` : '400px'}
       />
     </>
   );
