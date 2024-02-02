@@ -89,14 +89,14 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
   const [queryParams] = useSearchParams();
   const phaseId = queryParams.get('phase_id') || undefined;
   const { data: phases } = usePhases(project.data.id);
+  const { data: phaseFromUrl } = usePhase(phaseId);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
     projectId: project.data.id,
     phaseId,
   });
+  const search = location.search;
   const { data: draftIdea, status: draftIdeaStatus } = useDraftIdeaByPhaseId(phaseId, false);
   const [ideaId, setIdeaId] = useState<string|undefined>();
-
-  const search = location.search;
 
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
@@ -104,20 +104,20 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
   const [initialFormData, setInitialFormData] = useState({});
   const [postAnonymously, setPostAnonymously] = useState(false);
   const participationContext = getCurrentPhase(phases?.data);
+  const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
   const allowAnonymousPosting =
     participationContext?.attributes.allow_anonymous_participation;
 
-  // Try and load in a draft idea
+  // Try and load in a draft idea - for native surveys only
+  // TODO: JS - Seems to be caching previous responses
   const draftIdeaLoading = draftIdeaStatus === 'loading';
   if (draftIdeaStatus === 'success' && !isNilOrError(draftIdea) && !ideaId && schema) {
     setInitialFormData(getFormValues(draftIdea, schema));
     setIdeaId(draftIdea.data.id);
   }
 
+  // Click on map flow : Reverse geocode the location if it's in the url params - ideation only
   useEffect(() => {
-    // Click on map flow :
-    // clicked location is passed in url params
-    // reverse geocode them and use them as initial data
     const { lat, lng } = parse(search, {
       ignoreQueryPrefix: true,
       decoder: (str, _defaultEncoder, _charset, type) => {
@@ -145,10 +145,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     }
   }, [search, locale]);
 
-  // get participation method config
-  const { data: phaseFromUrl } = usePhase(phaseId);
-  const config = getConfig(phaseFromUrl?.data, phases);
-
+  // Handle image disclaimer - ideation only
   const handleDisclaimer = (data: FormValues) => {
     const disclaimerNeeded =
       data.idea_files_attributes ||
@@ -163,7 +160,17 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     }
   };
 
-  // Handle draft ideas for native surveys
+  const onAcceptDisclaimer = (data: FormValues | null) => {
+    if (!data) return;
+    onSubmit(data, true);
+    setIsDisclaimerOpened(false);
+  };
+
+  const onCancelDisclaimer = () => {
+    setIsDisclaimerOpened(false);
+  };
+
+  // Handle draft ideas - native surveys only
   const handleDraftIdeas = async (data: FormValues) => {
     if (data.publication_status === 'draft') {
       if (isNilOrError(authUser)) {
@@ -176,16 +183,6 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
       return onSubmit(data, true);
     }
   }
-
-  const onAcceptDisclaimer = (data: FormValues | null) => {
-    if (!data) return;
-    onSubmit(data, true);
-    setIsDisclaimerOpened(false);
-  };
-
-  const onCancelDisclaimer = () => {
-    setIsDisclaimerOpened(false);
-  };
 
   const onSubmit = async (data: FormValues, published?: boolean) => {
     let location_point_geojson;
@@ -219,7 +216,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     setIdeaId(idea.data.id);
 
     if (published) {
-      config?.onFormSubmission({project: project.data, ideaId, idea});
+      participationMethodConfig?.onFormSubmission({project: project.data, ideaId, idea});
     }
   };
 
@@ -263,7 +260,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     setPostAnonymously((postAnonymously) => !postAnonymously);
   };
 
-  if (!config) {
+  if (!participationMethodConfig) {
     return null;
   }
 
@@ -271,12 +268,12 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     !isNilOrError(authUser) &&
     canModerateProject(project.data.id, { data: authUser.data });
 
-  const isSurvey = config.postType === 'nativeSurvey';
+  const isSurvey = participationMethodConfig.postType === 'nativeSurvey';
   const isAnonymousSurvey = isSurvey && allowAnonymousPosting;
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
-      {!processingLocation && !draftIdeaLoading && schema && uiSchema && config ? (
+      {!processingLocation && !draftIdeaLoading && schema && uiSchema && participationMethodConfig ? (
         <>
           <IdeasNewMeta />
           <Form
@@ -292,8 +289,8 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
                 <Heading
                   project={project.data}
                   titleText={
-                    config.getFormTitle ? (
-                      config.getFormTitle({
+                    participationMethodConfig.getFormTitle ? (
+                      participationMethodConfig.getFormTitle({
                         project: project.data,
                         phases: phases?.data,
                         phaseFromUrl: phaseFromUrl?.data,

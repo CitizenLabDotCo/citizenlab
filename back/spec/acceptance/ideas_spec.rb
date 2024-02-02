@@ -856,8 +856,6 @@ resource 'Ideas' do
         let(:allow_anonymous_participation) { true }
         let(:anonymous) { true }
 
-        # TODO: JS - Don't allow draft responses for anonymous posting?
-
         before { project.phases.first.update! allow_anonymous_participation: allow_anonymous_participation }
 
         example_request 'Posting an idea anonymously does not save an author id' do
