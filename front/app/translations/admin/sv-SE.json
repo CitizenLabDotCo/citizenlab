@@ -1682,6 +1682,7 @@
   "app.containers.AdminPage.ProjectEvents.preview": "Förhandsvisning",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Förfina kartans läge",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Förfina plats på karta",
+  "app.containers.AdminPage.ProjectEvents.refineOnMapInstructions": "Du kan förfina var din evenemangsplatsmarkör visas genom att klicka på kartan nedan.",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Spara",
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "Vi kunde inte spara dina ändringar, försök igen.",
   "app.containers.AdminPage.ProjectEvents.saveSuccessLabel": "Sparad!",
