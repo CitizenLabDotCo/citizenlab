@@ -669,7 +669,7 @@ jobs:
     resource_class: medium
     working_directory: ~/citizenlab/front
     steps:
-      # Non-shallow clone
+      # Non-shallow clone (required for chromatic)
       - run: mkdir -p ~/.ssh
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run: |
