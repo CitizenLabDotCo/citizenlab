@@ -1,11 +1,6 @@
 import React from 'react';
 // components
-import {
-  Box,
-  Text,
-  Icon,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, stylingConsts } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // styling
@@ -32,11 +27,6 @@ const ProgressBar = ({ phase, idea }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const votingMethod = phase.data.attributes.voting_method;
-
-  const baskets =
-    votingMethod === 'single_voting'
-      ? undefined
-      : idea.attributes.baskets_count ?? 0;
 
   const ideaVotes = idea.attributes.votes_count ?? 0;
   const votes = votingMethod === 'budgeting' ? undefined : ideaVotes;
@@ -114,27 +104,6 @@ const ProgressBar = ({ phase, idea }: Props) => {
             )}
           </Text>
         </Box>
-        {baskets !== undefined && (
-          <Box
-            position="absolute"
-            top="0"
-            right="0"
-            h="28px"
-            display="flex"
-            alignItems="center"
-          >
-            <Text mb="0" mt="1px" mr="4px" color="primary">
-              {baskets}
-            </Text>
-            <Icon
-              name="user"
-              width="20px"
-              height="20px"
-              mr="12px"
-              fill={theme.colors.primary}
-            />
-          </Box>
-        )}
       </Box>
     </Tippy>
   );
