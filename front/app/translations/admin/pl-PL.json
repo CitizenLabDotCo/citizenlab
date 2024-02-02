@@ -1682,6 +1682,7 @@
   "app.containers.AdminPage.ProjectEvents.preview": "Podgląd",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Doprecyzuj lokalizację na mapie",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Określ lokalizację na mapie",
+  "app.containers.AdminPage.ProjectEvents.refineOnMapInstructions": "Możesz doprecyzować, gdzie wyświetlany jest znacznik lokalizacji wydarzenia, klikając poniższą mapę.",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Zapisz",
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "Nie mogliśmy zapisać Twoich zmian, spróbuj jeszcze raz.",
   "app.containers.AdminPage.ProjectEvents.saveSuccessLabel": "Zapisane!",
