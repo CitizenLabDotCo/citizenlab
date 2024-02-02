@@ -1,5 +1,8 @@
 import { rest } from 'msw';
 import { API_PATH } from 'containers/App/constants';
+import { getOrigin } from 'utils/storybook/getOrigin';
+
+const image = `${getOrigin()}/images/image16.png`;
 
 export const projectImagesData = [
   {
@@ -10,10 +13,10 @@ export const projectImagesData = [
       created_at: '2023-02-28T05:56:37.762Z',
       updated_at: '2023-02-28T05:56:37.762Z',
       versions: {
-        small: 'http://localhost:6006/images/image16.png',
-        medium: 'http://localhost:6006/images/image16.png',
-        large: 'http://localhost:6006/images/image16.png',
-        fb: 'http://localhost:6006/images/image16.png',
+        small: image,
+        medium: image,
+        large: image,
+        fb: image,
       },
     },
   },
@@ -25,10 +28,10 @@ export const projectImagesData = [
       created_at: '2021-02-28T05:56:37.762Z',
       updated_at: '2020-02-28T05:56:37.762Z',
       versions: {
-        small: 'http://localhost:6006/images/image16.png',
-        medium: 'http://localhost:6006/images/image16.png',
-        large: 'http://localhost:6006/images/image16.png',
-        fb: 'http://localhost:6006/images/image16.png',
+        small: image,
+        medium: image,
+        large: image,
+        fb: image,
       },
     },
   },

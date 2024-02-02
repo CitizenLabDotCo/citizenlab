@@ -1,5 +1,8 @@
 import { rest } from 'msw';
+import { getOrigin } from 'utils/storybook/getOrigin';
 import { IAppConfigurationData } from '../types';
+
+const image = `${getOrigin()}/images/logo.png`;
 
 export const getAppConfigurationData = (
   attributes = {}
@@ -64,9 +67,9 @@ export const getAppConfigurationData = (
       },
     },
     logo: {
-      small: 'http://localhost:6006/images/logo.png',
-      medium: 'http://localhost:6006/images/logo.png',
-      large: 'http://localhost:6006/images/logo.png',
+      small: image,
+      medium: image,
+      large: image,
     },
     ...attributes,
   },

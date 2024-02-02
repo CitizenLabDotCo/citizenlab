@@ -1,6 +1,9 @@
 import { rest } from 'msw';
 import { API_PATH } from 'containers/App/constants';
+import { getOrigin } from 'utils/storybook/getOrigin';
 import { IAvatarData } from '../types';
+
+const image = `${getOrigin()}/images/female_avatar_5`;
 
 export const avatarsData: IAvatarData[] = [
   {
@@ -8,9 +11,9 @@ export const avatarsData: IAvatarData[] = [
     type: 'avatar',
     attributes: {
       avatar: {
-        small: 'http://localhost:6006/images/female_avatar_5.jpg',
-        medium: 'http://localhost:6006/images/female_avatar_5.jpg',
-        large: 'http://localhost:6006/images/female_avatar_5.jpg',
+        small: image,
+        medium: image,
+        large: image,
       },
     },
   },
