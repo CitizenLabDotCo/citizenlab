@@ -3,6 +3,11 @@ import createAdminRoutes from 'containers/Admin/routes';
 import moduleConfiguration from 'modules';
 import React, { lazy } from 'react';
 import userProfileRoutes from 'containers/UsersShowPage/routes';
+import {
+  REPORTING,
+  REPORT_BUILDER,
+  PRINT,
+} from 'containers/Admin/reporting/routes';
 
 const HomePage = lazy(() => import('containers/HomePage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
@@ -324,7 +329,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'admin/reporting/report-builder/:reportId/print',
+          path: `admin/${REPORTING}/${REPORT_BUILDER}/:reportId/${PRINT}`,
           element: (
             <PageLoading>
               <ReportPrintPage />

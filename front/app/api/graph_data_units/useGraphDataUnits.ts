@@ -5,6 +5,7 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 // routing
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { isPage } from 'utils/helperUtils';
+import { REPORT_BUILDER, EDITOR } from 'containers/Admin/reporting/routes';
 
 // hooks
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
@@ -28,8 +29,8 @@ const useGraphDataUnits = <Response extends BaseResponseData>(
 
   const isReportBuilder =
     isAdminPage &&
-    pathname.includes('report-builder') &&
-    pathname.endsWith('editor');
+    pathname.includes(REPORT_BUILDER) &&
+    pathname.endsWith(EDITOR);
   const isReportBuilderPreview =
     isReportBuilder && search.get('preview') === 'true';
 
