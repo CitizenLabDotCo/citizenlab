@@ -50,7 +50,7 @@ import useProjects from 'api/projects/useProjects';
 
 // utils
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
-import { isAdmin } from 'utils/permissions/roles';
+import { isModerator } from 'utils/permissions/roles';
 
 type ReportBuilderToolboxProps = {
   reportId: string;
@@ -76,7 +76,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const { projectId } = useReportContext();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: authUser } = useAuthUser();
-  const isModerator = !!authUser && !isAdmin(authUser);
+  const userIsModerator = !!authUser && isModerator(authUser);
 
   const { data: projects } = useProjects(
     {
@@ -84,11 +84,11 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
       canModerate: true,
     },
     {
-      enabled: isModerator,
+      enabled: userIsModerator,
     }
   );
 
-  if (!appConfigurationLocales || !authUser || (isModerator && !projects)) {
+  if (!appConfigurationLocales || !authUser || (userIsModerator && !projects)) {
     return (
       <Container>
         <Box
@@ -117,7 +117,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   // AND the user is moderator (i.e. projects is defined),
   // we use the first project in the list of projects as the default project.
   const selectedProjectId =
-    projectId ?? isModerator ? projects?.data[0]?.id : undefined;
+    projectId ?? (userIsModerator ? projects?.data[0]?.id : undefined);
 
   return (
     <Container>
