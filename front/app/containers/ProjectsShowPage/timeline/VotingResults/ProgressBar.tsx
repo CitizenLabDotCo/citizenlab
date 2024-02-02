@@ -33,17 +33,14 @@ const ProgressBar = ({ phase, idea }: Props) => {
   const localize = useLocalize();
   const votingMethod = phase.data.attributes.voting_method;
 
-  // both for pb and multiple voting, this is defined?
   const baskets =
     votingMethod === 'single_voting'
       ? undefined
       : idea.attributes.baskets_count ?? 0;
 
-  // confusingly, for PB we use the budget of the idea times the number of picks/baskets
   const ideaVotes = idea.attributes.votes_count ?? 0;
   const votes = votingMethod === 'budgeting' ? undefined : ideaVotes;
 
-  // for PB, this is the sum of all ideaVotes?
   const totalVotes = phase.data.attributes.votes_count;
 
   const votesPercentage =
