@@ -165,7 +165,6 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
 
   // Handle draft ideas for native surveys
   const handleDraftIdeas = async (data: FormValues) => {
-    console.log('handleDraftIdeas', data);
     if (data.publication_status === 'draft') {
       if (isNilOrError(authUser)) {
         // Anonymous surveys should not save drafts
