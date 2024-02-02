@@ -26,6 +26,8 @@ class ReportBuilder::PermissionsService
       props = node_obj['props']
       phase_id = props['phaseId']
 
+      # see this discussion for details
+      # https://github.com/CitizenLabDotCo/citizenlab/pull/6910/files#r1474778771
       if phase_id.present?
         phase = Phase.find(phase_id)
 
