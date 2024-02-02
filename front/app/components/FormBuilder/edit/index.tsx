@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
-import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
+import {
+  useForm,
+  useFieldArray,
+  FormProvider,
+  useFormContext,
+} from 'react-hook-form';
 import { object, boolean, array, string, number } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -142,10 +147,10 @@ export const FormEdit = ({
     trigger();
   };
 
-  const onAddField = (field: IFlatCreateCustomField) => {
+  const onAddField = (field: IFlatCreateCustomField, index: number) => {
     const newField = {
       ...field,
-      index: !isNilOrError(fields) ? fields.length : 0,
+      index,
     };
 
     if (isNewCustomFieldObject(newField)) {
@@ -301,6 +306,7 @@ export const FormEdit = ({
                     <Box>
                       <FormBuilderSettings
                         key={selectedField.id}
+                        // key={Math.floor(Date.now() * Math.random())}
                         field={selectedField}
                         onDelete={handleDelete}
                         onClose={closeSettings}
