@@ -662,7 +662,7 @@ const AdminProjectEventEdit = () => {
               />
 
               <ErrorComponent apiErrors={get(errors, 'address_1')} />
-              <Box mt="20px" mb="10px">
+              <Box mt="20px" mb="8px">
                 <InputMultilocWithLocaleSwitcher
                   id="event-address-2"
                   label={formatMessage(messages.addressTwoLabel)}
