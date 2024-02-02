@@ -10,8 +10,8 @@ import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import React, { useState } from 'react';
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import { replaceIdRefsWithLinks } from '../../../analysis/Insights/util';
+import messages from '../../../messages';
+import { replaceIdRefsWithLinks } from '../../../../../analysis/Insights/util';
 import { useParams } from 'react-router-dom';
 
 type AnalysisInsight = {

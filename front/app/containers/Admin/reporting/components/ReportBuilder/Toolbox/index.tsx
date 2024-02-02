@@ -17,7 +17,6 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 // widgets
 import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
-import TitleMultiloc from '../Widgets/TitleMultiloc';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
@@ -163,14 +162,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             }
             icon="section-image-text"
             label={formatMessage(WIDGET_TITLES.AboutReportWidget)}
-          />
-          <DraggableElement
-            id="e2e-draggable-title"
-            component={
-              <TitleMultiloc text={toMultiloc(WIDGET_TITLES.TitleMultiloc)} />
-            }
-            icon="text"
-            label={formatMessage(WIDGET_TITLES.TitleMultiloc)}
           />
           <DraggableElement
             id="e2e-draggable-text"
