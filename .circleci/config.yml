@@ -669,10 +669,19 @@ jobs:
     resource_class: medium
     working_directory: ~/citizenlab/front
     steps:
-      - shallow-clone
+      # Non-shallow clone
+      - run: mkdir -p ~/.ssh
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run: |
+          cd ~
+          rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
+          git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL"
+
+      # Install lastpass and copy secrets, without sudo and from different working dir
       - run: cd .. && .circleci/install_lpass.sh v1.3.5
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
       - run: cd .. && lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
+
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
