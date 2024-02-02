@@ -13,21 +13,24 @@ interface Props {
 
 const BudgetingProgressBar = ({ phase, idea }: Props) => {
   const { formatMessage } = useIntl();
-  const totalPhaseBaskets = phase.data.attributes.baskets_count;
-  const numberOfIdeaBasketPicks = idea.attributes.baskets_count ?? 0;
-  const votesPercentage =
-    typeof totalPhaseBaskets === 'number'
-      ? roundPercentage(numberOfIdeaBasketPicks, totalPhaseBaskets)
-      : null;
+  const totalBasketsIdeaIsIn = idea.attributes.baskets_count;
+  const totalBasketsInPhase = phase.data.attributes.baskets_count;
+
   // const tooltip = formatMessage(messages.budgetingTooltip);
   const tooltip = 'STILL TO CHANGE';
 
-  if (typeof votesPercentage === 'number') {
+  if (
+    typeof totalBasketsIdeaIsIn === 'number' &&
+    typeof totalBasketsInPhase === 'number'
+  ) {
+    const basketsPercentage = roundPercentage(
+      totalBasketsIdeaIsIn,
+      totalBasketsInPhase
+    );
+
     return (
-      <ProgressBarWrapper votesPercentage={votesPercentage} tooltip={tooltip}>
-        {`${votesPercentage}% (${formatMessage(messages.xPicks, {
-          picks: numberOfIdeaBasketPicks,
-        })})`}
+      <ProgressBarWrapper votesPercentage={basketsPercentage} tooltip={tooltip}>
+        {`${basketsPercentage}%`}
       </ProgressBarWrapper>
     );
   }
