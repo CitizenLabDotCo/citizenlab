@@ -649,7 +649,7 @@
   "app.components.formBuilder.formEnd": "Formular Ende",
   "app.components.formBuilder.formField.cancelDeleteButtonText": "Abbrechen",
   "app.components.formBuilder.formField.confirmDeleteFieldWithLogicButtonText": "Ja, Seite löschen",
-  "app.components.formBuilder.formField.copyNoun": "Kopieren",
+  "app.components.formBuilder.formField.copyNoun": "Kopie",
   "app.components.formBuilder.formField.copyVerb": "Kopieren",
   "app.components.formBuilder.formField.delete": "Löschen",
   "app.components.formBuilder.formField.deleteFieldWithLogicConfirmationQuestion": "Wenn Sie diese Seite löschen, wird auch die damit verbundene Logik gelöscht. Sind Sie sicher, dass Sie sie löschen wollen?",
