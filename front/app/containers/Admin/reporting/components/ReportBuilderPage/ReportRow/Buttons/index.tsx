@@ -1,6 +1,9 @@
 import React from 'react';
 import Tippy from '@tippyjs/react';
 
+// api
+import useReport from 'api/reports/useReport';
+
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
@@ -13,19 +16,18 @@ import messages from '../messages';
 interface Props {
   reportId: string;
   isLoading: boolean;
-  canEdit?: boolean;
   onDelete: () => void;
   onEdit: () => void;
 }
 
-const Buttons = ({
-  reportId,
-  isLoading,
-  canEdit = true,
-  onDelete,
-  onEdit,
-}: Props) => {
+const Buttons = ({ reportId, isLoading, onDelete, onEdit }: Props) => {
+  const { data: report } = useReport(reportId);
   const { formatMessage } = useIntl();
+
+  if (!report) return null;
+
+  const canEdit =
+    report.data.attributes.action_descriptor.editing_report.enabled;
 
   return (
     <Box display="flex">

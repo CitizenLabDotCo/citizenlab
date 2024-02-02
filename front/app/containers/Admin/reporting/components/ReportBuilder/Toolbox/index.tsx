@@ -47,7 +47,6 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjects from 'api/projects/useProjects';
-import usePhase from 'api/phases/usePhase';
 
 // utils
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
@@ -74,7 +73,7 @@ const SectionTitle = ({ children }) => (
 const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
-  const { projectId, phaseId } = useReportContext();
+  const { projectId } = useReportContext();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: authUser } = useAuthUser();
   const isModerator = !!authUser && !isAdmin(authUser);
@@ -89,14 +88,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
     }
   );
 
-  const { data: phase } = usePhase(phaseId);
-
-  if (
-    !appConfigurationLocales ||
-    !authUser ||
-    (isModerator && !projects) ||
-    (phaseId && !phase)
-  ) {
+  if (!appConfigurationLocales || !authUser || (isModerator && !projects)) {
     return (
       <Container>
         <Box
@@ -126,9 +118,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   // we use the first project in the list of projects as the default project.
   const selectedProjectId =
     projectId ?? isModerator ? projects?.data[0]?.id : undefined;
-
-  // Participation method if the report is in a phase context
-  const participationMethod = phase?.data.attributes.participation_method;
 
   return (
     <Container>
@@ -208,9 +197,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
               <SurveyResultsWidget
                 title={toMultiloc(WIDGET_TITLES.SurveyResultsWidget)}
                 projectId={selectedProjectId}
-                phaseId={
-                  participationMethod === 'native_survey' ? phaseId : undefined
-                }
               />
             }
             icon="survey"
@@ -224,9 +210,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
                 numberOfIdeas={5}
                 collapseLongText={false}
                 projectId={selectedProjectId}
-                phaseId={
-                  participationMethod === 'ideation' ? phaseId : undefined
-                }
               />
             }
             icon="idea"
