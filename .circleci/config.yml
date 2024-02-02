@@ -665,7 +665,7 @@ jobs:
 
   front-storybook:
     docker:
-      - image: citizenlabdotco/cl2-devops-front-buildenv
+      - image: circleci/node:16
     resource_class: large
     working_directory: ~/citizenlab/front
     steps:
