@@ -13,7 +13,7 @@ module Analysis
           access_token: ENV.fetch('AZURE_OPENAI_API_KEY'),
           uri_base: [ENV.fetch('AZURE_OPENAI_URI'), '/openai/deployments/', azure_deployment_name].join,
           api_type: :azure,
-          api_version: "2023-09-01-preview",
+          api_version: '2023-09-01-preview',
           request_timeout: 480
         }.merge(params))
       end
