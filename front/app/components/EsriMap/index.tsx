@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import '@arcgis/core/assets/esri/themes/light/main.css';
 
 // components
 import Map from '@arcgis/core/Map';
@@ -113,10 +114,6 @@ const EsriMap = ({
 
   return (
     <>
-      <link
-        rel="stylesheet"
-        href="https://js.arcgis.com/4.28/esri/themes/light/main.css"
-      />
       <Box
         id="esriMap"
         width={width ? `${width}` : '100%'}
