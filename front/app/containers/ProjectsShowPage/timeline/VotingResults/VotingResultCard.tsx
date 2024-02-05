@@ -25,6 +25,7 @@ import ImagePlaceholder from './ImagePlaceholder';
 import Rank from './Rank';
 import Footer from 'components/IdeaCard/Footer';
 import FormattedBudget from 'utils/currency/FormattedBudget';
+import ProgressBar from './ProgressBar';
 
 // styling
 import styled from 'styled-components';
@@ -36,7 +37,6 @@ import Link from 'utils/cl-router/Link';
 
 // typings
 import { IIdeaData } from 'api/ideas/types';
-import ProgressBar from './ProgressBar';
 
 const cardPadding = '17px';
 const cardInnerHeight = '162px';
