@@ -31,8 +31,10 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { generateTempId } from '../FormBuilderSettings/utils';
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import {
+  generateTempId,
+  FormBuilderConfig,
+} from 'components/FormBuilder/utils';
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField, index: number) => void;

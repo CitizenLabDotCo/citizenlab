@@ -28,7 +28,7 @@ import { Locale, CLError, RHFErrors } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { generateTempId } from '../utils';
+import { generateTempId } from 'components/FormBuilder/utils';
 import { get } from 'lodash-es';
 
 interface Props {

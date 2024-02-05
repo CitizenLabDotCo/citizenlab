@@ -15,7 +15,7 @@ import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { getAdditionalSettings } from '../utils';
+import { getAdditionalSettings } from 'components/FormBuilder/utils';
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';

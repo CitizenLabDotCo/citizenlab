@@ -29,10 +29,11 @@ import { useFormContext } from 'react-hook-form';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getFieldNumbers } from '../utils';
-import { formEndOption, getTranslatedStringKey } from './utils';
-
-// typings
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import {
+  formEndOption,
+  getTranslatedStringKey,
+  FormBuilderConfig,
+} from 'components/FormBuilder/utils';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;

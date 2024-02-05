@@ -26,6 +26,7 @@ import { getFieldBackgroundColor } from '../utils';
 import {
   FormBuilderConfig,
   builtInFieldKeys,
+  generateTempId,
 } from 'components/FormBuilder/utils';
 
 // Translation
@@ -38,7 +39,6 @@ import {
   IFlatCustomFieldWithIndex,
   IOptionsType,
 } from 'api/custom_fields/types';
-import { generateTempId } from '../../FormBuilderSettings/utils';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
