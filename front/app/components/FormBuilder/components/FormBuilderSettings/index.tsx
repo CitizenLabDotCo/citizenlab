@@ -101,7 +101,11 @@ const FormBuilderSettings = ({
       overflowX="hidden"
       height={`calc(100vh - ${stylingConsts.menuHeight}px)`}
     >
-      <Box position="absolute" right="10px">
+      <Box
+        position="absolute"
+        right="10px"
+        data-cy="e2e-form-builder-close-settings"
+      >
         <CloseIconButton
           a11y_buttonActionMessage={messages.close}
           onClick={closeSettings}

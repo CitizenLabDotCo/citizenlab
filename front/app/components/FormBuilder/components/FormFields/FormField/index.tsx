@@ -317,6 +317,7 @@ export const FormField = ({
               color={colors.textSecondary}
               actions={actions}
               onClick={(event) => event.stopPropagation()}
+              data-cy="e2e-more-field-actions"
             />
           </Box>
         </FlexibleRow>
