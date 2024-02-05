@@ -51,7 +51,7 @@ module Analysis
       self.state = 'in_progress'
       self.started_at = Time.now
       save!
-      insightable.update!(generated_at: nil)
+      insightable.update!(generated_at: nil) if insightable
     end
 
     def set_succeeded!
@@ -59,7 +59,7 @@ module Analysis
       self.progress = nil
       self.ended_at = Time.now
       save!
-      insightable.update!(generated_at: Time.now)
+      insightable.update!(generated_at: Time.now) if insightable
     end
 
     def set_failed!
