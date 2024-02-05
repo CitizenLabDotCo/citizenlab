@@ -69,6 +69,7 @@
   "app.components.UserSearch.addModerators": "Ekle",
   "app.components.UserSearch.noOptions": "Seçenek yok",
   "app.components.UserSearch.searchUsers": "Kullanıcıları aramak için yazın...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Tek anket sorusu",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Başlık",
   "app.components.admin.DateTimePicker.time": "Zaman",
   "app.components.admin.Graphs": "Mevcut filtrelerle ilgili veri yok.",
