@@ -10,12 +10,13 @@ import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import React, { useState, useEffect } from 'react';
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import { replaceIdRefsWithLinks } from '../../../analysis/Insights/util';
+
 import { useParams } from 'react-router-dom';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 import useAnalysisBackgroundTasks from 'api/analysis_background_tasks/useAnalysisBackgroundTasks';
+import { replaceIdRefsWithLinks } from 'containers/Admin/projects/project/analysis/Insights/util';
+import messages from '../../../messages';
 
 type AnalysisInsight = {
   analysisId: string;

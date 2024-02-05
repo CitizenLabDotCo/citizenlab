@@ -24,6 +24,7 @@ export const Widget = () => {
         display="flex"
         alignItems="flex-end"
         justifyContent="center"
+        borderRadius="3px"
       >
         <img src={widgetImage} alt={formatMessage(messages.widgetImage)} />
       </Box>
@@ -42,6 +43,7 @@ export const Widget = () => {
           width="fit-content"
           linkTo="/admin/tools/widgets"
           textColor="white"
+          bgColor={colors.primary}
         >
           {formatMessage(messages.manageWidget)}
         </Button>

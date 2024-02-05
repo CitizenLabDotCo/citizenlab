@@ -145,6 +145,7 @@ const Summary = ({ insight }: Props) => {
               <FilterItems
                 filters={summary.data.attributes.filters}
                 isEditable={false}
+                analysisId={analysisId}
               />
             </>
           )}
