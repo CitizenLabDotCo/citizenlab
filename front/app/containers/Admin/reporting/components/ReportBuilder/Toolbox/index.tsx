@@ -20,6 +20,7 @@ import TwoColumn from '../Widgets/TwoColumn';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
+import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
@@ -201,6 +202,17 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             }
             icon="survey"
             label={formatMessage(WIDGET_TITLES.SurveyResultsWidget)}
+          />
+          <DraggableElement
+            id="e2e-draggable-survey-question-result-widget"
+            component={
+              <SurveyQuestionResultWidget
+                title={toMultiloc(WIDGET_TITLES.SurveyQuestionResultWidget)}
+                projectId={selectedProjectId}
+              />
+            }
+            icon="survey"
+            label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
           />
           <DraggableElement
             id="e2e-most-reacted-ideas-widget"

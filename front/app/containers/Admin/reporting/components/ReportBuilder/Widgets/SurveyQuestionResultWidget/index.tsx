@@ -6,6 +6,9 @@ import NoData from '../_shared/NoData';
 import SurveyQuestionResult from './SurveyQuestionResult';
 import Settings from './Settings';
 
+// i18n
+import messages from './messages';
+
 // utils
 import { getEmptyMessage } from '../utils';
 
@@ -44,5 +47,7 @@ SurveyQuestionResultWidget.craft = {
     settings: Settings,
   },
 };
+
+export const surveyQuestionResultTitle = messages.singleSurveyQuestion;
 
 export default SurveyQuestionResultWidget;
