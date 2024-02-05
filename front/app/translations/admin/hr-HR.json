@@ -69,6 +69,7 @@
   "app.components.UserSearch.addModerators": "Dodaj",
   "app.components.UserSearch.noOptions": "Bez opcija",
   "app.components.UserSearch.searchUsers": "Unesite za pretraživanje korisnika...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Jedno anketno pitanje",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Naslov",
   "app.components.admin.DateTimePicker.time": "Vrijeme",
   "app.components.admin.Graphs": "Nema dostupnih podataka za trenutne filtre.",
