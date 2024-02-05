@@ -9,6 +9,7 @@ import { roundPercentage } from 'utils/math';
 import { IIdeaData } from 'api/ideas/types';
 import { IPhase } from 'api/phases/types';
 import ProgressBarWrapper from './ProgressBarWrapper';
+import messages from './messages';
 
 interface Props {
   phase: IPhase;
@@ -31,7 +32,7 @@ const VotingProgressBar = ({ phase, idea }: Props) => {
     const votingTermPlural =
       localize(voting_term_plural_multiloc) ||
       formatMessage(assignMultipleVotesInputMessages.votes).toLowerCase();
-    const tooltip = 'STILL TO CHANGE';
+    const tooltip = formatMessage(messages.votingTooltip);
 
     return (
       <ProgressBarWrapper votesPercentage={votesPercentage} tooltip={tooltip}>

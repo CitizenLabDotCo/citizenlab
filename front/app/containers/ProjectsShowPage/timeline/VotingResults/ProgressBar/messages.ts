@@ -11,4 +11,8 @@ export default defineMessages({
     defaultMessage:
       'The percentage of participants who submitted this option as part of their basket.',
   },
+  votingTooltip: {
+    id: 'app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip',
+    defaultMessage: 'The percentage of total votes this option received.',
+  },
 });
