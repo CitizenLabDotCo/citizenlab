@@ -128,10 +128,12 @@ export const FormField = ({
 
     let duplicatedOptions: IOptionsType[] = [];
     if (options) {
-      duplicatedOptions = options.map(({ id, temp_id, ...rest }) => ({
-        temp_id: generateTempId(),
-        ...rest,
-      }));
+      duplicatedOptions = options.map(
+        ({ id: _optionId, temp_id: _optionalTempId, ...rest }) => ({
+          temp_id: generateTempId(),
+          ...rest,
+        })
+      );
     }
 
     const duplicatedField = {
