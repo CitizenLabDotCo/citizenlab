@@ -359,7 +359,7 @@ jobs:
         default: ubuntu
       env_file:
         type: string
-        default: .env-production-benelux
+        default: .env-web
     steps:
       - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake templates:generate"
 
@@ -877,9 +877,9 @@ workflows:
               only:
                 - production
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-          compose_file: docker-compose-production-benelux.yml
+          compose_file: docker-compose-production.yml
           stack_name: cl2-prd-bnlx-stack
-          env_file: ".env-production-benelux"
+          env_file: ".env-web"
           cluster_name: "eu"
       - back-deploy-to-swarm:
           name: Deploy to Canada
@@ -1077,7 +1077,7 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-          env_file: ".env-production-benelux"
+          env_file: ".env-web"
       - back-generate-tenant-templates:
           name: "South America"
           context:
@@ -1168,7 +1168,7 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-          env_file: ".env-production-benelux"
+          env_file: ".env-web"
       - back-generate-tenant-templates:
           name: "South America"
           context:
