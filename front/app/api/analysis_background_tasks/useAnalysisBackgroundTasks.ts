@@ -35,7 +35,7 @@ const useAnalysisBackgroundTasks = (analysisId?: string) => {
         const { state } = task.attributes;
         return state === 'queued' || state === 'in_progress';
       });
-      return activeTask ? 10000 : false;
+      return activeTask ? 2000 : false;
     },
     keepPreviousData: false,
     enabled: !!analysisId,

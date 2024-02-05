@@ -19,9 +19,9 @@ import Button from 'components/UI/Button';
 import { stringify } from 'qs';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import FilterItems from 'containers/Admin/projects/project/analysis/FilterItems';
-import useAnalysisBackgroundTasks from 'api/analysis_background_tasks/useAnalysisBackgroundTasks';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
+import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
 
 type AnalysisInsight = {
   analysisId: string;
@@ -218,7 +218,11 @@ const Question = ({
 };
 
 const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
+  const [backgroundTaskId, setBackgroundTaskId] = useState<
+    string | undefined
+  >();
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
+
   const singleCustomFieldAnalysisId = analyses.find(
     (analysis) => analysis.relationships.custom_fields.data.length === 1
   )?.id;
@@ -226,9 +230,13 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
   const { data: singleCustomFieldAnalysisInsights } = useAnalysisInsights({
     analysisId: singleCustomFieldAnalysisId,
   });
+
   const { mutate: addAnalysisSummary } = useAddAnalysisSummary();
-  const { data: tasks } = useAnalysisBackgroundTasks(
-    singleCustomFieldAnalysisId
+
+  const { data: task } = useAnalysisBackgroundTask(
+    singleCustomFieldAnalysisId,
+    backgroundTaskId,
+    true
   );
   const { formatMessage } = useIntl();
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
@@ -256,10 +264,17 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
       !automaticSummaryCreated
     ) {
       setAutomaticSummaryCreated(true);
-      addAnalysisSummary({
-        analysisId: singleCustomFieldAnalysisId,
-        filters: {},
-      });
+      addAnalysisSummary(
+        {
+          analysisId: singleCustomFieldAnalysisId,
+          filters: {},
+        },
+        {
+          onSuccess: (res) => {
+            setBackgroundTaskId(res.data.relationships.background_task.data.id);
+          },
+        }
+      );
     }
   }, [
     singleCustomFieldAnalysisId,
