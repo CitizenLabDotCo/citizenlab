@@ -15,13 +15,13 @@ RSpec.describe Analysis::BackgroundTask do
     let(:background_task) { create(:summarization_task) }
     let(:insightable) { create(:summary, background_task: background_task) }
 
-    it 'clears generated_at when in progress' do
+    it 'is cleared when in progress' do
       insightable.update!(generated_at: Time.now)
       background_task.set_in_progress!
       expect(insightable.reload.generated_at).to be_nil
     end
 
-    it 'sets generated_at when succeeded' do
+    it 'is set when succeeded' do
       insightable.update!(generated_at: nil)
       freeze_time do
         background_task.set_succeeded!
