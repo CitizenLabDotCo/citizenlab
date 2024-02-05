@@ -1,29 +1,38 @@
 import {
+  AgeProps,
+  AnalyticsProps,
+  GenderProps,
+  MostReactedIdeasProps,
+  SurveyResultsProps,
+  SurveyQuestionResultProps,
+  VisitorsTrafficSourcesProps,
+} from './requestTypes';
+import {
   ActiveUsersResponse,
   CommentsByTimeResponse,
   MostReactedIdeasResponse,
   PostsByTimeResponse,
   ReactionsByTimeResponse,
   SurveyResultsResponse,
+  SurveyQuestionResultResponse,
   UsersByBirthyearResponse,
   UsersByGenderResponse,
   VisitorsResponse,
   VisitorsTrafficSourcesResponse,
 } from './responseTypes';
-import {
-  AgeProps,
-  AnalyticsProps,
-  GenderProps,
-  MostReactedIdeasProps,
-  SurveyResultsProps,
-  VisitorsTrafficSourcesProps,
-} from './requestTypes';
 import useGraphDataUnits from './useGraphDataUnits';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
 
 export const useSurveyResults = (props: SurveyResultsProps) => {
   return useGraphDataUnits<SurveyResultsResponse>({
     resolvedName: 'SurveyResultsWidget',
+    props,
+  });
+};
+
+export const useSurveyQuestionResult = (props: SurveyQuestionResultProps) => {
+  return useGraphDataUnits<SurveyQuestionResultResponse>({
+    resolvedName: 'SurveyQuestionResultWidget',
     props,
   });
 };

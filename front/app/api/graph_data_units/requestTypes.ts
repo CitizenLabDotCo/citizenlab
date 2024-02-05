@@ -4,6 +4,7 @@ import { Moment } from 'moment';
 // live
 export type ResolvedName =
   | 'SurveyResultsWidget'
+  | 'SurveyQuestionResultWidget'
   | 'MostReactedIdeasWidget'
   | 'VisitorsWidget'
   | 'VisitorsTrafficSourcesWidget'
@@ -21,6 +22,7 @@ export interface BaseParams {
 
 export type ParametersLive =
   | SurveyResultsParams
+  | SurveyQuestionResultParams
   | MostReactedIdeasParams
   | VisitorsParams
   | VisitorsTrafficSourcesParams
@@ -37,6 +39,16 @@ export interface SurveyResultsProps {
 export interface SurveyResultsParams extends BaseParams {
   resolvedName: 'SurveyResultsWidget';
   props: SurveyResultsProps;
+}
+
+export interface SurveyQuestionResultProps {
+  phaseId: string;
+  fieldId: string;
+}
+
+export interface SurveyQuestionResultParams extends BaseParams {
+  resolvedName: 'SurveyQuestionResultWidget';
+  props: SurveyQuestionResultProps;
 }
 
 export interface AnalyticsProps {
