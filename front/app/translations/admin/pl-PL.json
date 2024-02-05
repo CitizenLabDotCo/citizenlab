@@ -69,6 +69,7 @@
   "app.components.UserSearch.addModerators": "Dodaj",
   "app.components.UserSearch.noOptions": "Brak opcji",
   "app.components.UserSearch.searchUsers": "Przeszukaj użytkowników",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Pojedyncze pytanie ankietowe",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Tytuł",
   "app.components.admin.DateTimePicker.time": "Czas",
   "app.components.admin.Graphs": "Brak danych dla obecnie stosowanych filtrów.",
