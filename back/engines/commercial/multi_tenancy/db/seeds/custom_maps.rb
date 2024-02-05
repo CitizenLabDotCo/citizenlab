@@ -7,7 +7,7 @@ module MultiTenancy
     class CustomMaps < Base
       def run
         map_config = ::CustomMaps::MapConfig.create!(
-          project: Project.find_by!(internal_role: 'open_idea_box'),
+          mappable: Project.find_by!(internal_role: 'open_idea_box'),
           center: RGeo::Cartesian.factory.point(4.3517103, 50.8503396),
           zoom_level: 14
         )
