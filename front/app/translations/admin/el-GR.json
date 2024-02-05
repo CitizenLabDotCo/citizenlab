@@ -69,6 +69,7 @@
   "app.components.UserSearch.addModerators": "Add",
   "app.components.UserSearch.noOptions": "Δεν υπάρχουν επιλογές",
   "app.components.UserSearch.searchUsers": "Πληκτρολογήστε για να αναζητήσετε χρήστες...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Ενιαία ερώτηση έρευνας",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Title",
   "app.components.admin.DateTimePicker.time": "Χρόνος",
   "app.components.admin.Graphs": "Δεν υπάρχουν διαθέσιμα δεδομένα με τα τρέχοντα φίλτρα.",
