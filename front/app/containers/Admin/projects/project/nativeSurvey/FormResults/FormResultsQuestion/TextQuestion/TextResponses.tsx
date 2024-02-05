@@ -32,14 +32,14 @@ const TextResponses = ({ textResponses }: TextResponsesProps) => {
   });
 
   return (
-    <Box bg={colors.background}>
-      <Box borderBottom={`1px solid ${colors.divider}`} p="24px">
+    <Box bg={colors.background} height="460px">
+      <Box borderBottom={`1px solid ${colors.divider}`} p="24px" height="60px">
         <Text fontWeight="bold" m="0px">
           {formatMessage(messages.allResponses)} ({textResponses.length})
         </Text>
       </Box>
 
-      <Box ref={parentRef} height="400px" overflow="auto" pt="12px">
+      <Box ref={parentRef} overflow="auto" pt="12px" height="400px">
         <Box height={`${getTotalSize()}px`} width="100%" position="relative">
           {getVirtualItems().map((virtualItem) => (
             <Item
