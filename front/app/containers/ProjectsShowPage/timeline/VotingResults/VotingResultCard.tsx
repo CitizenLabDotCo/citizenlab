@@ -23,7 +23,6 @@ import {
 import Image from 'components/UI/Image';
 import ImagePlaceholder from './ImagePlaceholder';
 import Rank from './Rank';
-import Results from './Results';
 import Footer from 'components/IdeaCard/Footer';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
