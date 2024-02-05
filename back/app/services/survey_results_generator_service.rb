@@ -23,6 +23,16 @@ class SurveyResultsGeneratorService < FieldVisitorService
     }
   end
 
+  def generate_question_result(field_id)
+    field = fields.find { |f| f.id == field_id }
+    return unless field
+
+    result = visit field
+    {
+      result: result
+    }
+  end
+
   def visit_select(field)
     values = inputs
       .select("custom_field_values->'#{field.key}' as value")

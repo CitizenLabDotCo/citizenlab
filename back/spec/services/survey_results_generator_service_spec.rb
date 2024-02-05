@@ -257,6 +257,12 @@ RSpec.describe SurveyResultsGeneratorService do
     end
   end
 
+  let(:expected_question_result) do
+    {
+      result: expected_result[:results][0]
+    }
+  end
+
   before do
     create(:idea_status_proposed)
     create(
@@ -376,6 +382,12 @@ RSpec.describe SurveyResultsGeneratorService do
           expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
           expect(generator.generate_results).to match expected_result_without_minimum_and_maximum_labels
         end
+      end
+    end
+
+    describe '#generate_question_result' do
+      it 'returns the result' do
+        expect(generator.generate_question_result(text_field.id)).to match expected_question_result
       end
     end
   end
