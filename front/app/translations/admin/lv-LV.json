@@ -69,6 +69,7 @@
   "app.components.UserSearch.addModerators": "Pievienot",
   "app.components.UserSearch.noOptions": "Iespēju nav",
   "app.components.UserSearch.searchUsers": "Ierakstiet, lai meklētu lietotājus...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Atsevišķs aptaujas jautājums",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Nosaukums",
   "app.components.admin.DateTimePicker.time": "Laiks",
   "app.components.admin.Graphs": "Ar pašreizējiem filtriem dati nav pieejami.",
