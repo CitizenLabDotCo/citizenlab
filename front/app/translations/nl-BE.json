@@ -738,6 +738,7 @@
   "app.containers.AccessibilityStatement.workshops": "Workshops",
   "app.containers.Admin.Insights.tabInsights": "Inzichten",
   "app.containers.Admin.Insights.tabReports": "Rapporten",
+  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Selecteer project",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Einde enquête",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Maak een slimme groep aan",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Gebruikers die voldoen aan al deze voorwaarden zullen automatisch aan de groep worden toegevoegd:",
