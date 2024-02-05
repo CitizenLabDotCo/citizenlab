@@ -69,6 +69,7 @@
   "app.components.UserSearch.addModerators": "Lägg till",
   "app.components.UserSearch.noOptions": "Inga alternativ",
   "app.components.UserSearch.searchUsers": "Skriv för att söka efter användare...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Enskild undersökningsfråga",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Titel",
   "app.components.admin.DateTimePicker.time": "Tid",
   "app.components.admin.Graphs": "Inga data är tillgängliga med de aktuella filtren.",
