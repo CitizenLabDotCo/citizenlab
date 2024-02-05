@@ -97,13 +97,13 @@ const Settings = () => {
 
       <ProjectFilter
         projectId={projectId}
-        emptyValueMessage={widgetMessages.noProject}
+        emptyOptionMessage={widgetMessages.noProject}
         onProjectFilter={handleProjectFilter}
       />
 
       {projectId !== undefined && (
         <PhaseFilter
-          label={formatMessage(messages.ideationPhases)}
+          label={formatMessage(messages.ideationPhase)}
           projectId={projectId}
           phaseId={phaseId}
           participationMethod="ideation"
