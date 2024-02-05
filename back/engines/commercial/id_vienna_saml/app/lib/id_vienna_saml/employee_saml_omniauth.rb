@@ -32,7 +32,7 @@ module IdViennaSaml
     end
 
     def profile_to_uid(auth)
-      auth.dig(:extra, :raw_info).to_h[USERID_KEY]&.first
+      auth.dig(:extra, :raw_info).to_h[USERID_KEY].first
     end
 
     # Configures the SAML endpoint to authenticate with Vienna's IdP for employees
