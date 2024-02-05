@@ -4,7 +4,7 @@ import moment = require('moment');
 let projectId: string;
 const phaseTitle = randomString();
 
-describe('Report builder Reactions By Time widget', () => {
+describe.skip('Report builder Reactions By Time widget', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
 

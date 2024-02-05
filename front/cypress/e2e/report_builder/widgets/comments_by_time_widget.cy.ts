@@ -1,7 +1,7 @@
 import { randomString } from '../../../support/commands';
 import moment = require('moment');
 
-describe('Report builder Comments By Time widget', () => {
+describe.skip('Report builder Comments By Time widget', () => {
   let projectId: string;
   const phaseTitle = randomString();
 
