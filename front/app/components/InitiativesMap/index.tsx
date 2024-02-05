@@ -207,11 +207,6 @@ export class InitiativesMap extends PureComponent<Props, State> {
             initialSelectedPointId={initiallySelectedMarkerId ?? undefined}
             onInit={this.handleMapOnInit}
             points={points}
-            boxContent={
-              selectedInitiativeMarkerId ? (
-                <InitiativePreview initiativeId={selectedInitiativeMarkerId} />
-              ) : null
-            }
             onBoxClose={this.deselectInitiative}
           />
 

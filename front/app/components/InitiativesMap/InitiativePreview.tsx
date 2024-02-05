@@ -125,7 +125,7 @@ const CommentIcon = styled(Icon)`
 `;
 
 interface Props {
-  initiativeId: string;
+  initiativeId: string | null;
   className?: string;
 }
 
@@ -134,7 +134,7 @@ const InitiativePreview = ({
   localize,
   initiativeId,
 }: Props & InjectedLocalized) => {
-  const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: initiative } = useInitiativeById(initiativeId || undefined);
 
   if (!initiative) {
     return null;
