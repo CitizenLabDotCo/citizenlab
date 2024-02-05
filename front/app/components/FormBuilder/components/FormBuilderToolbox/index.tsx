@@ -64,8 +64,6 @@ const FormBuilderToolbox = ({
   if (isNilOrError(locale)) return null;
 
   const addField = (inputType: ICustomFieldInputType) => {
-    console.log('formCustomFields', formCustomFields);
-    console.log('formCustomFields length', formCustomFields.length);
     const index = !isNilOrError(formCustomFields) ? formCustomFields.length : 0;
     onAddField(
       {

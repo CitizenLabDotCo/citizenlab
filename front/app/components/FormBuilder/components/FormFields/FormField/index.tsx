@@ -23,7 +23,10 @@ import { rgba } from 'polished';
 
 // utils
 import { getFieldBackgroundColor } from '../utils';
-import { builtInFieldKeys } from 'components/FormBuilder/utils';
+import {
+  FormBuilderConfig,
+  builtInFieldKeys,
+} from 'components/FormBuilder/utils';
 
 // Translation
 import { useIntl } from 'utils/cl-intl';
@@ -35,7 +38,6 @@ import {
   IFlatCustomFieldWithIndex,
   IOptionsType,
 } from 'api/custom_fields/types';
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import { generateTempId } from '../../FormBuilderSettings/utils';
 
 const FormFieldsContainer = styled(Box)`
@@ -113,13 +115,13 @@ export const FormField = ({
 
   function duplicateField(originalField: IFlatCustomField) {
     const {
-      id,
-      temp_id,
-      logic,
-      isLocalOnly,
-      title_multiloc,
-      key,
-      code,
+      id: _id,
+      temp_id: _temp_id,
+      logic: _logic,
+      isLocalOnly: _isLocalOnly,
+      title_multiloc: _title_multiloc,
+      key: _key,
+      code: _code,
       options,
       ...rest
     } = originalField;
@@ -142,7 +144,7 @@ export const FormField = ({
         ? { options: duplicatedOptions }
         : undefined),
       isLocalOnly: true,
-      title_multiloc: addCopyIndicatorToTitle(title_multiloc),
+      title_multiloc: addCopyIndicatorToTitle(_title_multiloc),
       ...rest,
     };
 
