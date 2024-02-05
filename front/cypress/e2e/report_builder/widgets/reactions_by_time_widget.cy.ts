@@ -109,7 +109,9 @@ describe('Report builder Reactions By Time widget', () => {
         position: 'inside',
       }
     );
+    cy.wait(1000);
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveReportLayout');
 
     cy.get('#e2e-draggable-reactions-by-time-widget').should('exist');
     cy.get('#e2e-draggable-reactions-by-time-widget')
