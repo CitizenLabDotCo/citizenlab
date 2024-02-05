@@ -27,11 +27,7 @@ class Identity < ApplicationRecord
 
   class << self
     def find_or_build_with_omniauth(auth, authver_method)
-      auth_to_persist = if authver_method.respond_to?(:filter_auth_to_persist)
-        authver_method.filter_auth_to_persist(auth)
-      else
-        auth
-      end
+      auth_to_persist = authver_method.filter_auth_to_persist(auth)
 
       uid = authver_method.profile_to_uid(auth)
       find_with_omniauth(uid, auth) || build_with_omniauth(uid, auth_to_persist)
