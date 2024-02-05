@@ -69,6 +69,7 @@
   "app.components.UserSearch.addModerators": "Tilføj",
   "app.components.UserSearch.noOptions": "Ingen muligheder",
   "app.components.UserSearch.searchUsers": "Skriv for at søge brugere...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Enkelt spørgsmål i undersøgelsen",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Titel",
   "app.components.admin.DateTimePicker.time": "Tid",
   "app.components.admin.Graphs": "Ingen data tilgængelige med de nuværende filtre.",
