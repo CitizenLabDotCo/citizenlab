@@ -650,7 +650,7 @@
   "app.components.formBuilder.formField.cancelDeleteButtonText": "Annuleer",
   "app.components.formBuilder.formField.confirmDeleteFieldWithLogicButtonText": "Ja, verwijder pagina",
   "app.components.formBuilder.formField.copyNoun": "Kopie",
-  "app.components.formBuilder.formField.copyVerb": "Kopie",
+  "app.components.formBuilder.formField.copyVerb": "Kopieer",
   "app.components.formBuilder.formField.delete": "Verwijder",
   "app.components.formBuilder.formField.deleteFieldWithLogicConfirmationQuestion": "Als je deze pagina verwijdert, wordt ook de bijbehorende logica verwijderd. Weet je zeker dat je deze wilt verwijderen?",
   "app.components.formBuilder.formField.deleteResultsInfo": "Dit kan niet ongedaan worden gemaakt",
