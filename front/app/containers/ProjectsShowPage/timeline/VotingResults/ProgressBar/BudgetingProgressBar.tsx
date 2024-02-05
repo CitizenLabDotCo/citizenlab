@@ -15,7 +15,6 @@ const BudgetingProgressBar = ({ phase, idea }: Props) => {
   const { formatMessage } = useIntl();
   const totalBasketsIdeaIsIn = idea.attributes.baskets_count;
   const totalBasketsInPhase = phase.data.attributes.baskets_count;
-
   const tooltip = formatMessage(messages.budgetingTooltip);
 
   if (
