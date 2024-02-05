@@ -426,7 +426,7 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            native_surveys_mapping_question: {
+            input_form_mapping_question: {
               enabled: true,
               allowed: true
             },
