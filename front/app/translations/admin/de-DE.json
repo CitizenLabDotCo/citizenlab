@@ -69,6 +69,7 @@
   "app.components.UserSearch.addModerators": "Hinzufügen",
   "app.components.UserSearch.noOptions": "Keine Optionen",
   "app.components.UserSearch.searchUsers": "Tippen um Person(en) zu suchen...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Einzelne Umfragefrage",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Titel",
   "app.components.admin.DateTimePicker.time": "Uhrzeit",
   "app.components.admin.Graphs": "Mit den aktuellen Filtern sind keine Daten verfügbar.",
