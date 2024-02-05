@@ -69,6 +69,7 @@
   "app.components.UserSearch.addModerators": "Add",
   "app.components.UserSearch.noOptions": "Sense opcions",
   "app.components.UserSearch.searchUsers": "Escriviu per cercar usuaris...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Pregunta única de l'enquesta",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Title",
   "app.components.admin.DateTimePicker.time": "Temps",
   "app.components.admin.Graphs": "No hi ha dades disponibles amb els filtres actuals.",
