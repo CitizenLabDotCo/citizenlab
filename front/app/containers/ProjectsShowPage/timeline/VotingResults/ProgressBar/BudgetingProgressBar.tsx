@@ -30,7 +30,9 @@ const BudgetingProgressBar = ({ phase, idea }: Props) => {
 
     return (
       <ProgressBarWrapper votesPercentage={basketsPercentage} tooltip={tooltip}>
-        {`${basketsPercentage}%`}
+        {`${basketsPercentage}% (${formatMessage(messages.xPicks, {
+          baskets: totalBasketsIdeaIsIn,
+        })})`}
       </ProgressBarWrapper>
     );
   }
