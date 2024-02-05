@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useFormContext, useFieldArray } from 'react-hook-form';
+import { get } from 'lodash-es';
 
 // components
 import {
@@ -68,6 +69,7 @@ export const FormField = ({
     setValue,
   } = useFormContext();
   const { formatMessage } = useIntl();
+  const lockedAttributes = field?.constraints?.locks;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
@@ -88,9 +90,9 @@ export const FormField = ({
   const isGroupDeletable =
     formCustomFields.filter((field) => field.input_type === groupingType)
       .length > 1;
-  const isDeleteDisabled = !(
-    field?.input_type !== groupingType || isGroupDeletable
-  );
+  const isDeleteShown =
+    !(field?.input_type !== groupingType || isGroupDeletable) ||
+    get(lockedAttributes, 'enabled', false);
 
   const editFieldAndValidate = () => {
     onEditField({ ...field, index });
@@ -239,7 +241,7 @@ export const FormField = ({
           },
         ]
       : []),
-    ...(!isDeleteDisabled
+    ...(!isDeleteShown
       ? [
           {
             handler: (event: React.MouseEvent) => {
