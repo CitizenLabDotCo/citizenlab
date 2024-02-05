@@ -11,7 +11,7 @@ module Analysis
         def index
           insights = @analysis.insights
             .order(created_at: :desc)
-            .includes(insightable: [:background_task, insight: [analysis: [phase: [:ideas], project: [:ideas]]]])
+            .includes(insightable: [:background_task, { insight: [{ analysis: [{ phase: [:ideas] }, { project: [:ideas] }] }] }])
 
           render json: WebApi::V1::InsightSerializer.new(
             insights,

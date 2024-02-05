@@ -48,7 +48,7 @@ resource 'Insights' do
       create_list(:summary, 3, insight_attributes: { analysis: analysis })
 
       # It would be better to lower the query limit to 1 and fix the other performance issues,
-      # but this at least helps to ensure that the missing_inputs_count part does not trigger 
+      # but this at least helps to ensure that the missing_inputs_count part does not trigger
       # N+1 queries.
       expect do
         do_request
