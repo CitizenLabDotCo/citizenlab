@@ -18,6 +18,10 @@ module OmniauthMethods
       auth['uid']
     end
 
+    def filter_auth_to_persist(auth)
+      auth
+    end
+
     # @return [Array<Symbol>] Returns a list of user attributes that can be updated from the auth response hash
     def updateable_user_attrs
       []
