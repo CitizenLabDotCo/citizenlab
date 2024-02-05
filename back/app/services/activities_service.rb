@@ -87,7 +87,6 @@ class ActivitiesService
     end
   end
 
-  # TODO: JS = tests for this
   def create_survey_not_submitted_activities(now)
     Idea.draft_surveys.each do |idea|
       if Activity.find_by(item: idea, action: 'survey_not_submitted').nil? && idea.updated_at <= now - 1.day
