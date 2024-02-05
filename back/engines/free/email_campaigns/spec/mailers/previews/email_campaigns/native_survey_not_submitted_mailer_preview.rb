@@ -9,9 +9,9 @@ module EmailCampaigns
       command = {
         recipient: recipient_user,
         event_payload: {
-          # TODO: JS - correct survey URL
           survey_url: Frontend::UrlService.new.model_to_url(project, locale: recipient_user.locale),
-          context_title_multiloc: project.phases.first.title_multiloc || project.title_multiloc
+          phase_title_multiloc: project.phases.first.title_multiloc || project.title_multiloc,
+          phase_end_at: project.created_at
         }
       }
       campaign = EmailCampaigns::Campaigns::NativeSurveyNotSubmitted.first

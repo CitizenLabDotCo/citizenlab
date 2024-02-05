@@ -15,7 +15,10 @@ module EmailCampaigns
     end
 
     def header_message
-      format_message('event_description', values: { contextTitle: localize_for_recipient(event.context_title_multiloc) })
+      format_message('body_native_survey_not_submitted', values: {
+        phaseTitle: localize_for_recipient(event.phase_title_multiloc),
+        phaseEndDate: I18n.l(event.phase_end_at, format: '%B %d', locale: locale)
+      })
     end
 
     def preheader

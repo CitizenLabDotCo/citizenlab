@@ -6,13 +6,15 @@ RSpec.describe EmailCampaigns::NativeSurveyNotSubmittedMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::NativeSurveyNotSubmitted.create! }
-    let_it_be(:project) { create(:project_with_phases) }
+    let_it_be(:phase) { create(:native_survey_phase, start_at: '2022-12-01', end_at: '2022-12-31') }
+    let_it_be(:idea) { create(:native_survey_response, project: phase.project, phases: [phase], creation_phase: phase) }
     let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
-          project_url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
-          context_title_multiloc: project.phases.first.title_multiloc
+          survey_url: Frontend::UrlService.new.model_to_url(idea.project, locale: recipient.locale),
+          phase_title_multiloc: idea.creation_phase.title_multiloc,
+          phase_end_at: idea.creation_phase.end_at
         }
       }
     end
@@ -25,7 +27,7 @@ RSpec.describe EmailCampaigns::NativeSurveyNotSubmittedMailer do
 
     # TODO: JS - Complete these tests
     it 'renders the subject' do
-      expect(mail.subject).to end_with "You didn't submit your survey response"
+      expect(mail.subject).to end_with 'Almost there! Submit your answers'
     end
 
     it 'renders the receiver email' do
@@ -36,19 +38,22 @@ RSpec.describe EmailCampaigns::NativeSurveyNotSubmittedMailer do
       expect(mail.from).to all(end_with('@citizenlab.co'))
     end
 
-    it "displays 'you selected a few options' in the body" do
-      expect(mail.body.encoded).to match 'You selected a few options'
+    it "displays 'You started sharing your answers' in the body" do
+      expect(mail.body.encoded).to match 'You started sharing your answers'
     end
 
     it 'displays the correct phase in the body' do
-      expect(mail.body.encoded).to match project.phases.first.title_multiloc['en']
+      expect(mail.body.encoded).to match idea.creation_phase.title_multiloc['en']
     end
 
-    it "displays 'View options and vote' button with correct link" do
-      project_url = Frontend::UrlService.new.model_to_url(project, locale: recipient.locale)
+    it 'displays the end date of the phase in the body' do
+      expect(mail.body.encoded).to match 'December 31'
+    end
+
+    it "displays 'Resume your survey response' button with a link" do
+      project_url = Frontend::UrlService.new.model_to_url(phase.project, locale: recipient.locale)
       expect(mail.body.encoded).to match project_url
-      expect(mail.body.encoded).to match 'Click the button below to submit your selected options'
-      expect(mail.body.encoded).to match 'View options and vote'
+      expect(mail.body.encoded).to match 'Resume your survey response'
     end
   end
 end

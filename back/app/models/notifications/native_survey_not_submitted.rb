@@ -64,24 +64,23 @@
 #
 module Notifications
   class NativeSurveyNotSubmitted < Notification
-    validates :idea, presence: true
+    validates :post, presence: true # native survey response (idea)
     validates :project, presence: true
     validates :phase, presence: true
 
-    # TODO: JS - Complete this
     ACTIVITY_TRIGGERS = { 'Idea' => { 'survey_not_submitted' => true } }
     EVENT_NAME = 'Survey not submitted'
 
     def self.make_notifications_on(activity)
-      basket = activity.item
-      recipient_id = basket.user_id
+      idea = activity.item
+      recipient_id = idea.author_id
 
-      if basket && recipient_id
+      if idea && recipient_id
         [new(
           recipient_id: recipient_id,
-          basket: basket,
-          project: basket.phase.project,
-          phase: basket.phase
+          post: idea,
+          project: idea.project,
+          phase: idea.creation_phase
         )]
       else
         []

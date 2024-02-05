@@ -112,6 +112,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
   // TODO: JS - Seems to be caching previous responses
   const draftIdeaLoading = draftIdeaStatus === 'loading';
   if (draftIdeaStatus === 'success' && !isNilOrError(draftIdea) && !ideaId && schema) {
+    console.log(draftIdea.publication_status);
     setInitialFormData(getFormValues(draftIdea, schema));
     setIdeaId(draftIdea.data.id);
   }

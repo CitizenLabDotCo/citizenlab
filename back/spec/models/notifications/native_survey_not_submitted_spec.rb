@@ -4,15 +4,16 @@ require 'rails_helper'
 
 RSpec.describe Notifications::NativeSurveyNotSubmitted do
   describe 'make_notifications_on' do
-    # TODO: JS - Complete these tests
-    it 'makes a notification when a basket is flagged as not submitted' do
-      basket = create(:basket)
-      activity = create(:activity, item: basket, action: 'not_submitted')
+    it 'makes a notification when an idea is flagged as "survey_not_submitted"' do
+      idea = create(:native_survey_response, author: create(:user))
+      activity = create(:activity, item: idea, action: 'survey_not_submitted')
 
       notifications = described_class.make_notifications_on activity
       expect(notifications.first).to have_attributes(
-        recipient_id: basket.user_id,
-        basket: basket
+        recipient_id: idea.author_id,
+        post: idea,
+        project: idea.project,
+        phase: idea.creation_phase
       )
     end
   end

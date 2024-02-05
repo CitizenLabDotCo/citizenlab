@@ -229,14 +229,15 @@ FactoryBot.define do
     end
   end
 
+  factory :native_survey_not_submitted, parent: :notification, class: 'Notifications::NativeSurveyNotSubmitted' do
+    association :post, factory: :idea
+    project
+    phase
+  end
+
   factory :voting_basket_submitted, parent: :notification, class: 'Notifications::VotingBasketSubmitted' do
     project
     basket
-  end
-
-  factory :native_survey_not_submitted, parent: :notification, class: 'Notifications::NativeSurveyNotSubmitted' do
-    project
-    phase
   end
 
   factory :voting_basket_not_submitted, parent: :notification, class: 'Notifications::VotingBasketNotSubmitted' do

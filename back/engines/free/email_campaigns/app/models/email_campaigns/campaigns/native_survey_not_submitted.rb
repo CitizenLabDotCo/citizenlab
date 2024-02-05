@@ -66,12 +66,13 @@ module EmailCampaigns
     end
 
     def generate_commands(recipient:, activity:)
-      # TODO: JS - Get this working from a draft idea
-      basket = activity.item.basket
+      idea = activity.item.post
+      project_url = Frontend::UrlService.new.model_to_url(idea.project, locale: recipient.locale)
       [{
         event_payload: {
-          event_url: Frontend::UrlService.new.model_to_url(basket.phase.project, locale: recipient.locale),
-          context_title_multiloc: basket.phase.title_multiloc
+          survey_url: "#{project_url}/ideas/new?phase_id=#{idea.creation_phase.id}",
+          phase_title_multiloc: idea.creation_phase.title_multiloc,
+          phase_end_at: idea.creation_phase.end_at
         }
       }]
     end
