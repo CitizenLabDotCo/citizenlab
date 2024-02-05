@@ -647,7 +647,7 @@
   "app.components.formBuilder.fieldLabel": "Valg af svar",
   "app.components.formBuilder.fileUpload": "Upload af fil",
   "app.components.formBuilder.formEnd": "Formularens afslutning",
-  "app.components.formBuilder.formField.cancelDeleteButtonText": "Afbryd",
+  "app.components.formBuilder.formField.cancelDeleteButtonText": "Annuller",
   "app.components.formBuilder.formField.confirmDeleteFieldWithLogicButtonText": "Ja, slet siden",
   "app.components.formBuilder.formField.copyNoun": "Kopi",
   "app.components.formBuilder.formField.copyVerb": "Kopi",
