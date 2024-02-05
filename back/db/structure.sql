@@ -231,7 +231,7 @@ DROP INDEX IF EXISTS public.index_nav_bar_items_on_code;
 DROP INDEX IF EXISTS public.index_memberships_on_user_id;
 DROP INDEX IF EXISTS public.index_memberships_on_group_id_and_user_id;
 DROP INDEX IF EXISTS public.index_memberships_on_group_id;
-DROP INDEX IF EXISTS public.index_maps_map_configs_on_project_id;
+DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable;
 DROP INDEX IF EXISTS public.index_maps_legend_items_on_map_config_id;
 DROP INDEX IF EXISTS public.index_maps_layers_on_map_config_id;
 DROP INDEX IF EXISTS public.index_invites_on_token;
@@ -2808,12 +2808,13 @@ CREATE TABLE public.maps_legend_items (
 
 CREATE TABLE public.maps_map_configs (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    project_id uuid NOT NULL,
     center shared_extensions.geography(Point,4326),
     zoom_level numeric(4,2),
     tile_provider character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    mappable_type character varying NOT NULL,
+    mappable_id uuid NOT NULL
 );
 
 
@@ -5832,10 +5833,10 @@ CREATE INDEX index_maps_legend_items_on_map_config_id ON public.maps_legend_item
 
 
 --
--- Name: index_maps_map_configs_on_project_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_maps_map_configs_on_mappable; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_maps_map_configs_on_project_id ON public.maps_map_configs USING btree (project_id);
+CREATE INDEX index_maps_map_configs_on_mappable ON public.maps_map_configs USING btree (mappable_type, mappable_id);
 
 
 --
@@ -7928,6 +7929,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231130093345'),
 ('20231212151032'),
 ('20231214100537'),
-('20240130142750');
+('20240130142750'),
+('20240205132806');
 
 
