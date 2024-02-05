@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
 import customFieldsKeys from './keys';
 import {
   ICustomFields,
@@ -8,25 +7,8 @@ import {
   ICustomFieldsParameters,
   IFlatCustomField,
 } from './types';
+import { fetchCustomFields } from './useRawCustomFields';
 import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
-
-const fetchCustomFields = ({
-  projectId,
-  phaseId,
-  inputTypes,
-}: ICustomFieldsParameters) => {
-  const apiEndpoint = phaseId
-    ? `admin/phases/${phaseId}/custom_fields`
-    : `admin/projects/${projectId}/custom_fields`;
-
-  return fetcher<ICustomFields>({
-    path: `/${apiEndpoint}`,
-    action: 'get',
-    queryParams: {
-      input_types: inputTypes,
-    },
-  });
-};
 
 const useCustomFields = ({
   projectId,

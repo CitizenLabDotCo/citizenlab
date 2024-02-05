@@ -1,7 +1,10 @@
 import React from 'react';
 
 // api
-// import useCustomFields from 'api/custom_fields/useCustomFields';
+import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
+
+// i18n
+import useLocalize from 'hooks/useLocalize';
 
 // components
 import { Box, Select } from '@citizenlab/cl2-component-library';
@@ -15,7 +18,17 @@ interface Props {
   onFieldFilter: (fieldOption: IOption) => void;
 }
 
-const FieldFilter = ({ fieldId, onFieldFilter }: Props) => {
+const FieldFilter = ({ phaseId, fieldId, onFieldFilter }: Props) => {
+  const { data: fields } = useRawCustomFields({ phaseId });
+  const localize = useLocalize();
+
+  const fieldOptions = fields
+    ? fields.data.map((field) => ({
+        value: field.id,
+        label: localize(field.attributes.title_multiloc),
+      }))
+    : [];
+
   return (
     <Box width="100%" mb="20px">
       <Select
