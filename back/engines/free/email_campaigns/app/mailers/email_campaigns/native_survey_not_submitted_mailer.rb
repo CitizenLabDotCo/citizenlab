@@ -15,10 +15,16 @@ module EmailCampaigns
     end
 
     def header_message
-      format_message('body_native_survey_not_submitted', values: {
-        phaseTitle: localize_for_recipient(event.phase_title_multiloc),
-        phaseEndDate: I18n.l(event.phase_end_at, format: '%B %d', locale: locale)
-      })
+      if event.phase_end_at
+        format_message('body_native_survey_not_submitted', values: {
+          phaseTitle: localize_for_recipient(event.phase_title_multiloc),
+          phaseEndDate: event.phase_end_at ? I18n.l(event.phase_end_at, format: '%B %d', locale: locale) : 'NOWT'
+        })
+      else
+        format_message('body_native_survey_not_submitted_no_date', values: {
+          phaseTitle: localize_for_recipient(event.phase_title_multiloc)
+        })
+      end
     end
 
     def preheader
