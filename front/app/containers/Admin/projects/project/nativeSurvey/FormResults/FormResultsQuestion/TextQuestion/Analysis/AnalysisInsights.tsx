@@ -3,20 +3,25 @@ import {
   IconButton,
   colors,
   Text,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 import { IAnalysisData } from 'api/analyses/types';
 import useAnalysisInsightsWithIds from 'api/analysis_insights/useAnalysisInsightsById';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import React, { useState, useEffect } from 'react';
-import { useIntl } from 'utils/cl-intl';
-
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import messages from '../../../messages';
+import { replaceIdRefsWithLinks } from '../../../../../analysis/Insights/util';
 import { useParams } from 'react-router-dom';
+
+import Button from 'components/UI/Button';
+import { stringify } from 'qs';
+import { IInputsFilterParams } from 'api/analysis_inputs/types';
+import FilterItems from 'containers/Admin/projects/project/analysis/FilterItems';
+import useAnalysisBackgroundTasks from 'api/analysis_background_tasks/useAnalysisBackgroundTasks';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
-import useAnalysisBackgroundTasks from 'api/analysis_background_tasks/useAnalysisBackgroundTasks';
-import { replaceIdRefsWithLinks } from 'containers/Admin/projects/project/analysis/Insights/util';
-import messages from '../../../messages';
 
 type AnalysisInsight = {
   analysisId: string;
@@ -26,6 +31,20 @@ type AnalysisInsight = {
   };
 };
 
+// Convert all values in the filters object to strings
+// This is necessary because the filters are passed as query params
+const convertFilterValuesToString = (filters?: IInputsFilterParams) => {
+  return (
+    filters &&
+    Object.entries(filters).reduce((acc, [key, value]) => {
+      return {
+        ...acc,
+        [key]: JSON.stringify(value),
+      };
+    }, {})
+  );
+};
+
 const Summary = ({
   summaryId,
   analysisId,
@@ -33,6 +52,7 @@ const Summary = ({
   summaryId: string;
   analysisId: string;
 }) => {
+  const { formatMessage, formatDate } = useIntl();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -40,18 +60,74 @@ const Summary = ({
   const { data } = useAnalysisSummary({ analysisId, id: summaryId });
 
   const summary = data?.data.attributes.summary;
+  const filters = data?.data.attributes.filters;
+  const accuracy = data?.data.attributes.accuracy;
+  const generatedAt = data?.data.attributes.created_at;
+
   if (!summary) {
     return null;
   }
+
   return (
-    <Text fontSize="s" mt="0px">
-      {replaceIdRefsWithLinks({
-        insight: summary,
-        analysisId,
-        projectId,
-        phaseId,
-      })}
-    </Text>
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+      h="460px"
+      gap="16px"
+    >
+      <Box overflowY="auto" h="100%">
+        {filters && (
+          <FilterItems
+            filters={filters}
+            isEditable={false}
+            analysisId={analysisId}
+          />
+        )}
+        <Text fontWeight="bold">
+          {formatMessage(messages.aiSummary)} <Icon name="flash" />
+        </Text>
+        <Text>
+          {replaceIdRefsWithLinks({
+            insight: summary,
+            analysisId,
+            projectId,
+            phaseId,
+          })}
+        </Text>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        w="100%"
+      >
+        <Text m="0px" fontSize="s">
+          <FormattedMessage
+            {...messages.accuracy}
+            values={{
+              accuracy: accuracy ? accuracy * 100 : 0,
+              percentage: formatMessage(messages.percentage),
+            }}
+          />
+        </Text>
+
+        <Text m="0px" fontSize="s">
+          {formatMessage(messages.generated)} {formatDate(generatedAt)}
+        </Text>
+      </Box>
+      <Box display="flex">
+        <Button
+          buttonStyle="secondary"
+          icon="eye"
+          linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
+            { ...convertFilterValuesToString(filters), phase_id: phaseId }
+          )}`}
+        >
+          {formatMessage(messages.explore)}
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
@@ -62,6 +138,7 @@ const Question = ({
   summaryId: string;
   analysisId: string;
 }) => {
+  const { formatMessage, formatDate } = useIntl();
   const { data } = useAnalysisQuestion({ analysisId, id: summaryId });
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -69,23 +146,74 @@ const Question = ({
   };
   const question = data?.data.attributes.question;
   const answer = data?.data.attributes.answer;
+  const filters = data?.data.attributes.filters;
+  const accuracy = data?.data.attributes.accuracy;
+  const generatedAt = data?.data.attributes.created_at;
+
   if (!question || !answer) {
     return null;
   }
+
   return (
-    <>
-      <Text fontSize="s" mt="0px" fontWeight="bold">
-        {question}
-      </Text>
-      <Text fontSize="s" mt="0px">
-        {replaceIdRefsWithLinks({
-          insight: answer,
-          analysisId,
-          projectId,
-          phaseId,
-        })}
-      </Text>
-    </>
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+      h="460px"
+      gap="16px"
+    >
+      <Box overflowY="auto" h="100%">
+        {filters && (
+          <FilterItems
+            filters={filters}
+            isEditable={false}
+            analysisId={analysisId}
+          />
+        )}
+        <Text fontWeight="bold">
+          {question} <Icon name="question-bubble" />
+        </Text>
+        <Text mt="0px">
+          {replaceIdRefsWithLinks({
+            insight: answer,
+            analysisId,
+            projectId,
+            phaseId,
+          })}
+        </Text>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        w="100%"
+      >
+        <Text m="0px" fontSize="s">
+          <FormattedMessage
+            {...messages.accuracy}
+            values={{
+              accuracy: accuracy ? accuracy * 100 : 0,
+              percentage: formatMessage(messages.percentage),
+            }}
+          />
+        </Text>
+
+        <Text m="0px" fontSize="s">
+          {formatMessage(messages.generated)} {formatDate(generatedAt)}
+        </Text>
+      </Box>
+      <Box display="flex">
+        <Button
+          buttonStyle="secondary"
+          icon="eye"
+          linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
+            { ...convertFilterValuesToString(filters), phase_id: phaseId }
+          )}`}
+        >
+          {formatMessage(messages.explore)}
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
@@ -145,13 +273,16 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
   }
 
   return (
-    <Box>
+    <Box position="relative">
       {insights.length > 1 && (
         <Box
           display="flex"
           justifyContent="center"
           alignItems="center"
           w="100%"
+          mb="20px"
+          position="absolute"
+          top="-50px"
         >
           <IconButton
             iconName="chevron-left"
@@ -178,23 +309,25 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
           />
         </Box>
       )}
-      {selectedInsight && (
-        <>
-          {selectedInsight.relationship.type === 'analysis_question' ? (
-            <Question
-              key={selectedInsight.relationship.id}
-              summaryId={selectedInsight.relationship.id}
-              analysisId={selectedInsight.analysisId}
-            />
-          ) : (
-            <Summary
-              key={selectedInsight.relationship.id}
-              summaryId={selectedInsight.relationship.id}
-              analysisId={selectedInsight.analysisId}
-            />
-          )}
-        </>
-      )}
+      <Box>
+        {selectedInsight && (
+          <>
+            {selectedInsight.relationship.type === 'analysis_question' ? (
+              <Question
+                key={selectedInsight.relationship.id}
+                summaryId={selectedInsight.relationship.id}
+                analysisId={selectedInsight.analysisId}
+              />
+            ) : (
+              <Summary
+                key={selectedInsight.relationship.id}
+                summaryId={selectedInsight.relationship.id}
+                analysisId={selectedInsight.analysisId}
+              />
+            )}
+          </>
+        )}
+      </Box>
     </Box>
   );
 };
