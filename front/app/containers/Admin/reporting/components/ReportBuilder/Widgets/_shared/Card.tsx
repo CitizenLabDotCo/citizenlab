@@ -41,7 +41,7 @@ const Card = ({ title, children, ...rest }: Props) => {
   return (
     <Container className="report-widget-card" px={px} {...rest}>
       {title && (
-        <Title variant="h3" color="primary" mb="8px" mt="0">
+        <Title variant="h4" mt="0px">
           {localize(title)}
         </Title>
       )}

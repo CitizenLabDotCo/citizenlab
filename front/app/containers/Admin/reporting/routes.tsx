@@ -6,9 +6,14 @@ const ReportingWrapper = lazy(() => import('.'));
 const ReportBuilderPage = lazy(() => import('./containers/ReportBuilderPage'));
 const ReportBuilder = lazy(() => import('./containers/ReportBuilder'));
 
+export const REPORTING = 'reporting';
+export const REPORT_BUILDER = 'report-builder';
+export const EDITOR = 'editor';
+export const PRINT = 'print';
+
 const reportingRoutes = () => {
   return {
-    path: 'reporting',
+    path: REPORTING,
     element: (
       <PageLoading>
         <ReportingWrapper />
@@ -16,7 +21,7 @@ const reportingRoutes = () => {
     ),
     children: [
       {
-        path: 'report-builder',
+        path: REPORT_BUILDER,
         element: (
           <PageLoading>
             <ReportBuilderPage />
@@ -24,7 +29,7 @@ const reportingRoutes = () => {
         ),
       },
       {
-        path: 'report-builder/:reportId/editor',
+        path: `${REPORT_BUILDER}/:reportId/${EDITOR}`,
         element: (
           <PageLoading>
             <ReportBuilder />
