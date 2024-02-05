@@ -81,6 +81,7 @@ resource 'Questions' do
             tag_ids: [tag.id]
           },
           accuracy: 0.8,
+          missing_inputs_count: 0,
           created_at: kind_of(String),
           updated_at: kind_of(String)
         },
