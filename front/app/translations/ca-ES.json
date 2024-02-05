@@ -1432,7 +1432,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Malauradament, no teniu els drets per revisar aquest document.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "La revisió d'aquest document requereix la verificació del vostre compte. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "El document ja no està disponible, ja que aquest projecte ja no està actiu.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.budgetingTooltip": "Aquest percentatge representa el percentatge mitjà del seu pressupost que els participants van gastar en aquesta opció.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Cost:",
   "app.containers.ReactionControl.a11y_likesDislikes": "Total de m'agrada: {likesCount}, total de no m'agrada: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "A causa d'un error, la vostra reacció no s'ha pogut registrar. Si us plau, torna-ho a provar d'aquí a uns minuts.",

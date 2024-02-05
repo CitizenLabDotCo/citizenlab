@@ -1432,7 +1432,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Infelizmente, você não tem permissão para revisar este documento.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "A revisão deste documento requer a verificação da sua conta. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "O documento não está mais disponível, uma vez que este projeto não está mais ativo.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.budgetingTooltip": "Esta percentagem representa a percentagem média do seu orçamento que os participantes gastaram nesta opção.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Custo:",
   "app.containers.ReactionControl.a11y_likesDislikes": "Total de curtidas: {likesCount}, total de não curtidas: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Devido a um erro, não foi possível registar a sua reação. Por favor, tente novamente dentro de alguns minutos.",

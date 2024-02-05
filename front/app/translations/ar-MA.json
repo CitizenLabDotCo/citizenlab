@@ -1432,7 +1432,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "للأسف ، ليس لديك حقوق مراجعة هذا المستند.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "مراجعة هذا المستند يتطلب التحقق من حسابك. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "لم يعد المستند متاحًا ، نظرًا لأن هذا المشروع لم يعد نشطًا.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.budgetingTooltip": "تمثل هذه النسبة المئوية متوسط النسبة المئوية لميزانيتهم التي أنفقها المشاركون على هذا الخيار.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "يكلف:",
   "app.containers.ReactionControl.a11y_likesDislikes": "إجمالي المعجبين: {likesCount}، إجمالي غير المعجبين: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "بسبب خطأ لا يمكن تسجيل رد فعلك. يرجى المحاولة مرة أخرى في بضع دقائق.",

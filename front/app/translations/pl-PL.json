@@ -1432,7 +1432,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Niestety, nie masz uprawnień do przeglądania tego dokumentu.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Zapoznanie się z tym dokumentem wymaga weryfikacji Twojego konta. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Dokument nie jest już dostępny, ponieważ projekt ten nie jest już aktywny.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.budgetingTooltip": "Odsetek ten reprezentuje średni procent budżetu, jaki uczestnicy wydali na tę opcję.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Koszt:",
   "app.containers.ReactionControl.a11y_likesDislikes": "Łączna liczba polubień: {likesCount}, łączna liczba nielubianych: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Z powodu błędu Twoja reakcja nie mogła zostać zarejestrowana. Spróbuj ponownie za kilka minut.",

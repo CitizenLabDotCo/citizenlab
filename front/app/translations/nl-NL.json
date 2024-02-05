@@ -1432,7 +1432,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Helaas heb je niet de rechten om dit document te bekijken.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Het bekijken van dit document vereist verificatie van je account. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Het document is niet meer beschikbaar, omdat dit project niet meer actief is.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.budgetingTooltip": "Dit percentage vertegenwoordigt het gemiddelde percentage van hun budget dat deelnemers aan deze optie besteedden.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Kosten:",
   "app.containers.ReactionControl.a11y_likesDislikes": "Totaal aantal likes: {likesCount}, totaal aantal dislikes: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Door een fout kon je reactie niet worden geregistreerd. Probeer het over een paar minuten opnieuw.",

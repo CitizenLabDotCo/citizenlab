@@ -1432,7 +1432,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Diemžēl jums nav tiesību pārskatīt šo dokumentu.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Lai pārskatītu šo dokumentu, ir nepieciešama jūsu konta verifikācija. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Dokuments vairs nav pieejams, jo šis projekts vairs nav aktīvs.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.budgetingTooltip": "Šis procentuālais īpatsvars atspoguļo vidējo budžeta procentuālo daļu, ko dalībnieki iztērēja šai iespējai.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Izmaksas:",
   "app.containers.ReactionControl.a11y_likesDislikes": "Kopā patīk: {likesCount}, kopējais skaits nepatīk: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Kļūdas dēļ jūsu reakciju nevarēja reģistrēt. Lūdzu, mēģiniet vēlreiz pēc dažām minūtēm.",

@@ -1432,7 +1432,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Nažalost, nemate prava na pregled ovog dokumenta.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Pregledavanje ovog dokumenta zahtijeva potvrdu vašeg računa. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Dokument više nije dostupan jer ovaj projekt više nije aktivan.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.budgetingTooltip": "Ovaj postotak predstavlja prosječni postotak njihovog proračuna koji su sudionici potrošili na ovu opciju.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Cijena:",
   "app.containers.ReactionControl.a11y_likesDislikes": "Ukupno lajkova: {likesCount}, ukupno nesviđanja: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Zbog pogreške vaša reakcija nije mogla biti registrirana. Molim pokušajte ponovno za par minuta.",
