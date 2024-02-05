@@ -28,6 +28,7 @@ resource 'Questions' do
           accuracy: nil,
           created_at: kind_of(String),
           updated_at: kind_of(String),
+          generated_at: nil,
           missing_inputs_count: 0
         },
         relationships: {
@@ -83,7 +84,8 @@ resource 'Questions' do
           accuracy: 0.8,
           missing_inputs_count: 0,
           created_at: kind_of(String),
-          updated_at: kind_of(String)
+          updated_at: kind_of(String),
+          generated_at: nil
         },
         relationships: {
           background_task: {
