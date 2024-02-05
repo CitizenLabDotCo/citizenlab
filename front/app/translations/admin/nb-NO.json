@@ -69,6 +69,7 @@
   "app.components.UserSearch.addModerators": "Legg til",
   "app.components.UserSearch.noOptions": "Ingen alternativer",
   "app.components.UserSearch.searchUsers": "Skriv for å søke etter brukere...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Enkelt spørreundersøkelse",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Tittel",
   "app.components.admin.DateTimePicker.time": "Tid",
   "app.components.admin.Graphs": "Det er ingen tilgjengelige data med de gjeldende filterne.",
