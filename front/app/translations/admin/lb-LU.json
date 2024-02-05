@@ -69,6 +69,7 @@
   "app.components.UserSearch.addModerators": "Afügen",
   "app.components.UserSearch.noOptions": "No options",
   "app.components.UserSearch.searchUsers": "Type to search users...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Single Ëmfro Fro",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Title",
   "app.components.admin.DateTimePicker.time": "Zäit",
   "app.components.admin.Graphs": "No data available with the current filters.",
