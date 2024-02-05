@@ -738,6 +738,7 @@
   "app.containers.AccessibilityStatement.workshops": "Workshops",
   "app.containers.Admin.Insights.tabInsights": "Einblicke",
   "app.containers.Admin.Insights.tabReports": "Zusammenfassungen",
+  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Projekt auswählen",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Ende der Umfrage",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Erstellen einer intelligenten Gruppe",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Nutzer*innen, die alle der folgenden Bedingungen erfüllen, werden automatisch zur Gruppe hinzugefügt:",
