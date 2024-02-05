@@ -1,13 +1,15 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 
 // hooks
 import usePhases from 'api/phases/usePhases';
 
 // components
-import { Box, Text, Select } from '@citizenlab/cl2-component-library';
+import { Box, Select, Spinner, Text } from '@citizenlab/cl2-component-library';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 // typings
 import { IOption } from 'typings';
@@ -51,18 +53,19 @@ const PhaseFilter = ({
       : null;
   }, [correctPhases, localize]);
 
-  useEffect(() => {
-    if (!phaseOptions || phaseOptions.length === 0) return;
-    onPhaseFilter(phaseOptions[0]);
-  }, [phaseOptions, onPhaseFilter]);
-
-  if (!phaseOptions || phaseOptions.length === 0) return null;
-
-  if (phaseOptions.length === 1) {
+  if (!phaseOptions) {
     return (
-      <Box>
-        <Text variant="bodyM" color="textSecondary">
-          {phaseOptions[0].label}
+      <Box mb="20px">
+        <Spinner />
+      </Box>
+    );
+  }
+
+  if (phaseOptions.length === 0) {
+    return (
+      <Box mb="20px">
+        <Text color="red600">
+          <FormattedMessage {...messages.noAppropriatePhases} />
         </Text>
       </Box>
     );

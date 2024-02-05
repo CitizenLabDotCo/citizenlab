@@ -11,13 +11,14 @@ import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import { replaceIdRefsWithLinks } from '../../../analysis/Insights/util';
+import messages from '../../../messages';
+import { replaceIdRefsWithLinks } from '../../../../../analysis/Insights/util';
 import { useParams } from 'react-router-dom';
-import FilterItems from '../../../analysis/FilterItems';
+
 import Button from 'components/UI/Button';
 import { stringify } from 'qs';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
+import FilterItems from 'containers/Admin/projects/project/analysis/FilterItems';
 
 type AnalysisInsight = {
   analysisId: string;

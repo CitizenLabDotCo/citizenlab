@@ -56,7 +56,7 @@ const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
         <ChartFilters
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}
-          currentProjectFilter={projectId}
+          projectId={projectId}
           resolution={resolution}
           onChangeTimeRange={handleChangeTimeRange}
           onProjectFilter={handleProjectFilter}

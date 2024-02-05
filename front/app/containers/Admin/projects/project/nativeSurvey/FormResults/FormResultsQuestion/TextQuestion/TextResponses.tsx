@@ -4,7 +4,7 @@ import Divider from 'components/admin/Divider';
 import React from 'react';
 import styled from 'styled-components';
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../messages';
 
 const Item = styled.div<{ start: number }>`
   position: absolute;
