@@ -69,6 +69,7 @@
   "app.components.UserSearch.addModerators": "إضافة",
   "app.components.UserSearch.noOptions": "لا توجد خيارات",
   "app.components.UserSearch.searchUsers": "ابحث في المستخدمين",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "سؤال استطلاعي واحد",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "العنوان",
   "app.components.admin.DateTimePicker.time": "وقت",
   "app.components.admin.Graphs": "لا تتوفر أي بيانات باستخدام عوامل التصفية الحالية.",
