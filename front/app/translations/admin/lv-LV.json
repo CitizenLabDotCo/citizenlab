@@ -1679,7 +1679,6 @@
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Pielikumi (ne vairāk kā 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Pielikumi ir redzami zem notikuma apraksta.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Atrašanās vieta",
-  "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Uzklikšķinot uz kartes, precizējiet, kur tiek parādīta jūsu notikuma atrašanās vietas zīme:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Izveidot jaunu notikumu",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Tiešsaistes saite uz pasākumu",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "Ja jūsu pasākums ir pieejams tiešsaistē, pievienojiet saiti uz to šeit.",

@@ -16,14 +16,13 @@ import {
   Input,
   Label,
   Spinner,
+  Text,
   Title,
   Toggle,
   colors,
 } from '@citizenlab/cl2-component-library';
 import LocationInput, { Option } from 'components/UI/LocationInput';
-import Map from './components/map';
-import { leafletMapClicked$ } from 'components/UI/LeafletMap/events';
-import Modal from 'components/UI/Modal';
+import EventMap from './components/EventMap';
 import Button from 'components/UI/Button';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 
@@ -34,8 +33,7 @@ import clHistory from 'utils/cl-router/history';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// react query
-import { IEvent, IEventProperties } from 'api/events/types';
+// hooks
 import useAddEvent from 'api/events/useAddEvent';
 import useUpdateEvent from 'api/events/useUpdateEvent';
 import useEvent from 'api/events/useEvent';
@@ -45,26 +43,26 @@ import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
 import useEventImage from 'api/event_images/useEventImage';
 import useAddEventImage from 'api/event_images/useAddEventImage';
 import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
+import useLocale from 'hooks/useLocale';
+import { useTheme } from 'styled-components';
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 // typings
 import { Multiloc, CLError, UploadFile } from 'typings';
+import { IEvent, IEventProperties } from 'api/events/types';
 
 // utils
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
 import { geocode } from 'utils/locationTools';
-import { useTheme } from 'styled-components';
-import useLocale from 'hooks/useLocale';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import {
   roundToNearestMultipleOfFive,
   calculateRoundedEndDate,
 } from 'utils/dateUtils';
 
-import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
-
-type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
+export type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
   | Error
   | CLError[]
@@ -111,12 +109,14 @@ const AdminProjectEventEdit = () => {
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
 
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
-  const [mapModalVisible, setMapModalVisible] = useState(false);
   const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
     useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
     event?.data?.attributes?.location_point_geojson || null
+  );
+  const [geocodedPoint, setGeocodedPoint] = useState<GeoJSON.Point | null>(
+    null
   );
   const [eventFilesToRemove, setEventFilesToRemove] = useState<UploadFile[]>(
     []
@@ -180,29 +180,12 @@ const AdminProjectEventEdit = () => {
     }
   }, [eventAttrs.using_url]);
 
-  // Listen for map clicks to update the location point
-  useEffect(() => {
-    const subscriptions = [
-      leafletMapClicked$.subscribe(async (latLng) => {
-        const selectedPoint = {
-          type: 'Point',
-          coordinates: [latLng.lng, latLng.lat],
-        } as GeoJSON.Point;
-        setSubmitState('enabled');
-        setLocationPoint(selectedPoint);
-      }),
-    ];
-
-    return () => {
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
-    };
-  }, []);
-
   // When address 1 is updated, geocode the location point to match
   useEffect(() => {
     if (eventAttrs.address_1 !== event?.data.attributes.address_1) {
       const delayDebounceFn = setTimeout(async () => {
         const point = await geocode(eventAttrs.address_1);
+        setGeocodedPoint(point);
         setLocationPoint(point);
         setSuccessfulGeocode(!!point);
       }, 500);
@@ -452,7 +435,6 @@ const AdminProjectEventEdit = () => {
   const handleOnSubmit = async (e: FormEvent) => {
     const locationPointChanged =
       locationPoint !== event?.data.attributes.location_point_geojson;
-
     const locationPointUpdated =
       eventAttrs.address_1 || successfulGeocode ? locationPoint : null;
 
@@ -680,7 +662,7 @@ const AdminProjectEventEdit = () => {
               />
 
               <ErrorComponent apiErrors={get(errors, 'address_1')} />
-              <Box my="20px">
+              <Box mt="20px" mb="8px">
                 <InputMultilocWithLocaleSwitcher
                   id="event-address-2"
                   label={formatMessage(messages.addressTwoLabel)}
@@ -693,25 +675,26 @@ const AdminProjectEventEdit = () => {
               </Box>
               {locationPoint && (
                 <Box maxWidth="400px" zIndex="0">
-                  <Box>
-                    <Map
-                      position={locationPoint}
-                      projectId={projectId}
-                      mapHeight="160px"
-                      hideLegend={true}
-                      singleClickEnabled={false}
+                  <Box display="flex">
+                    <Text color="coolGrey600" my="4px" mr="4px">
+                      {formatMessage(messages.refineOnMap)}
+                    </Text>
+                    <IconTooltip
+                      content={formatMessage(messages.refineOnMapInstructions)}
                     />
                   </Box>
-                  <Button
-                    mt="8px"
-                    icon="position"
-                    buttonStyle="secondary"
-                    onClick={() => {
-                      setMapModalVisible(true);
-                    }}
-                  >
-                    {formatMessage(messages.refineOnMap)}
-                  </Button>
+
+                  <Box>
+                    <EventMap
+                      mapHeight="230px"
+                      setSubmitState={setSubmitState}
+                      setLocationPoint={setLocationPoint}
+                      position={
+                        geocodedPoint || // Present when an address is geocoded but hasn't been saved yet
+                        event?.data?.attributes?.location_point_geojson
+                      }
+                    />
+                  </Box>
                 </Box>
               )}
             </Box>
@@ -853,29 +836,6 @@ const AdminProjectEventEdit = () => {
           </Box>
         </Box>
       </form>
-      <Modal
-        opened={mapModalVisible}
-        close={() => {
-          setMapModalVisible(false);
-        }}
-        header={formatMessage(messages.refineLocationCoordinates)}
-        width={'800px'}
-      >
-        <Box p="16px">
-          {locationPoint && (
-            <Box>
-              <Label>
-                <FormattedMessage {...messages.mapSelectionLabel} />
-              </Label>
-              <Map
-                position={locationPoint}
-                projectId={projectId}
-                mapHeight="400px"
-              />
-            </Box>
-          )}
-        </Box>
-      </Modal>
     </Box>
   );
 };

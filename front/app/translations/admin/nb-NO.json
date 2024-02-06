@@ -1679,7 +1679,6 @@
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Vedlegg (maks 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Vedlegg vises under hendelsesbeskrivelsen.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Sted",
-  "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Avgrens hvor posisjonsmarkøren din vises ved å klikke på kartet:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Opprett en ny hendelse",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Link til arrangement på nett",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "Hvis arrangementet ditt er online, legg til en lenke til det her.",

@@ -1679,7 +1679,6 @@
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Ekler (maksimum 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Ekler etkinlik açıklamasının altında gösterilir.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Konum",
-  "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Haritaya tıklayarak etkinlik konumu işaretleyicinizin gösterildiği yeri daraltın:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Yeni bir etkinlik oluşturun",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Çevrimiçi etkinlik bağlantısı",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "Etkinliğiniz çevrimiçi ise, buraya bir bağlantı ekleyin.",

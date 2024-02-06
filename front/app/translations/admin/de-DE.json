@@ -1679,7 +1679,6 @@
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Anhänge (max. 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Anhänge werden unterhalb der Ereignisbeschreibung angezeigt.",
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Standort",
-  "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Legen Sie fest, wo Ihre Veranstaltungs-Standortmarkierung angezeigt wird, indem Sie auf die Karte klicken:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Eine neue Veranstaltung erstellen",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Link zur Online-Veranstaltung",
   "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "Wenn Ihre Veranstaltung online ist, fügen Sie hier einen Link hinzu.",
