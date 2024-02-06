@@ -69,6 +69,8 @@
   "app.components.UserSearch.addModerators": "Ajouter",
   "app.components.UserSearch.noOptions": "Pas d'options",
   "app.components.UserSearch.searchUsers": "Recherchez des utilisateurs",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Aucune question n'a été sélectionnée. Veuillez d'abord sélectionner une question.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Question d'enquête unique",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Titre",
   "app.components.admin.DateTimePicker.time": "Heure",
   "app.components.admin.Graphs": "Aucune donnée disponible avec les filtres actuels.",
@@ -2556,6 +2558,7 @@
   "app.modules.navbar.admin.containers.pageHeader": "Pages et menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Votre barre de navigation peut afficher jusqu'à cinq pages en plus des pages d'accueil et des projets. Vous pouvez renommer les éléments du menu, les réorganiser et ajouter de nouvelles pages avec votre propre contenu.",
   "app.modules.project_management.admin.components.permissionsTab": "Droits d'accès",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Question",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visitez notre centre d'assistance",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Pour plus d'informations sur les résolutions d'image recommandées, {supportPageLink}."
