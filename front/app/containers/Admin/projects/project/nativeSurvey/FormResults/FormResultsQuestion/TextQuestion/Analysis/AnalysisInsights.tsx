@@ -4,6 +4,7 @@ import {
   colors,
   Text,
   Icon,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { IAnalysisData } from 'api/analyses/types';
 import useAnalysisInsightsWithIds from 'api/analysis_insights/useAnalysisInsightsById';
@@ -48,9 +49,11 @@ const convertFilterValuesToString = (filters?: IInputsFilterParams) => {
 const Summary = ({
   summaryId,
   analysisId,
+  isLoading,
 }: {
   summaryId: string;
   analysisId: string;
+  isLoading?: boolean;
 }) => {
   const { formatMessage, formatDate } = useIntl();
   const { projectId, phaseId } = useParams() as {
@@ -95,6 +98,7 @@ const Summary = ({
             phaseId,
           })}
         </Text>
+        {isLoading && <Spinner />}
       </Box>
       <Box
         display="flex"
@@ -134,9 +138,11 @@ const Summary = ({
 const Question = ({
   summaryId,
   analysisId,
+  isLoading,
 }: {
   summaryId: string;
   analysisId: string;
+  isLoading?: boolean;
 }) => {
   const { formatMessage, formatDate } = useIntl();
   const { data } = useAnalysisQuestion({ analysisId, id: summaryId });
@@ -181,6 +187,7 @@ const Question = ({
             phaseId,
           })}
         </Text>
+        {isLoading && <Spinner />}
       </Box>
       <Box
         display="flex"
@@ -332,12 +339,20 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
                 key={selectedInsight.relationship.id}
                 summaryId={selectedInsight.relationship.id}
                 analysisId={selectedInsight.analysisId}
+                isLoading={
+                  task?.data.attributes.state === 'queued' ||
+                  task?.data.attributes.state === 'in_progress'
+                }
               />
             ) : (
               <Summary
                 key={selectedInsight.relationship.id}
                 summaryId={selectedInsight.relationship.id}
                 analysisId={selectedInsight.analysisId}
+                isLoading={
+                  task?.data.attributes.state === 'queued' ||
+                  task?.data.attributes.state === 'in_progress'
+                }
               />
             )}
           </>
