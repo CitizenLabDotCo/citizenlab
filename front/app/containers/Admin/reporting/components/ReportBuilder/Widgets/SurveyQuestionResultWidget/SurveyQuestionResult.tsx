@@ -4,11 +4,13 @@ import React from 'react';
 import { useSurveyQuestionResult } from 'api/graph_data_units';
 
 // components
-import { Title } from '@citizenlab/cl2-component-library';
+import { Title, Text } from '@citizenlab/cl2-component-library';
 import MultipleChoice from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MultipleChoice';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 interface Props {
   phaseId: string;
@@ -18,16 +20,22 @@ interface Props {
 const SurveyQuestionResult = ({ phaseId, fieldId }: Props) => {
   const response = useSurveyQuestionResult({ phaseId, fieldId });
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
+
   if (!response) return null;
 
   const { answers, totalResponses, question } = response.data.attributes.result;
+
   if (!answers) return null;
 
   return (
     <>
-      <Title variant="h4" mt="0px">
+      <Title variant="h4" mt="0px" mb="8px">
         {localize(question)}
       </Title>
+      <Text mt="0px" mb="8px" color="textSecondary" variant="bodyS">
+        {formatMessage(messages.numberOfResponses, { count: totalResponses })}
+      </Text>
       <MultipleChoice
         multipleChoiceAnswers={answers}
         totalResponses={totalResponses}

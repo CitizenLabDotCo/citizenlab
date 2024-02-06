@@ -38,6 +38,7 @@ export type SurveyQuestionResultResponse = {
     type: 'report_builder_data_units';
     attributes: {
       result: Result;
+      totalSubmissions: number;
     };
   };
 };

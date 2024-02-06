@@ -13,7 +13,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import ProjectFilter from '../../_shared/ProjectFilter';
 import PhaseFilter from '../../_shared/PhaseFilter';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import FieldFilter from './FieldFilter';
 
 // i18n
@@ -23,7 +22,7 @@ import widgetMessages from '../../messages';
 import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
 // typings
-import { Multiloc, IOption } from 'typings';
+import { IOption } from 'typings';
 import { Props } from '../typings';
 
 const Settings = () => {
@@ -31,7 +30,6 @@ const Settings = () => {
 
   const {
     actions: { setProp },
-    title,
     projectId,
     phaseId,
     fieldId,
@@ -41,15 +39,6 @@ const Settings = () => {
     phaseId: node.data.props.phaseId,
     fieldId: node.data.props.fieldId,
   }));
-
-  const setTitle = useCallback(
-    (value: Multiloc) => {
-      setProp((props: Props) => {
-        props.title = value;
-      });
-    },
-    [setProp]
-  );
 
   const handleProjectFilter = useCallback(
     ({ value }: IOption) => {
@@ -106,16 +95,6 @@ const Settings = () => {
           />
           {formatMessage(nativeSurveyMessages.informationText2)}
         </Text>
-      </Box>
-
-      <Box mb="20px">
-        <InputMultilocWithLocaleSwitcher
-          id="e2e-analytics-chart-widget-title"
-          label={formatMessage(messages.surveySettingsTitle)}
-          type="text"
-          valueMultiloc={title}
-          onChange={setTitle}
-        />
       </Box>
 
       <ProjectFilter
