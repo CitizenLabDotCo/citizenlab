@@ -13,7 +13,10 @@ import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
-import { replaceIdRefsWithLinks } from '../../../../../analysis/Insights/util';
+import {
+  deleteTrailingIncompleteIDs,
+  replaceIdRefsWithLinks,
+} from 'containers/Admin/projects/project/analysis/Insights/util';
 import { useParams } from 'react-router-dom';
 
 import Button from 'components/UI/Button';
@@ -92,7 +95,7 @@ const Summary = ({
         </Text>
         <Text>
           {replaceIdRefsWithLinks({
-            insight: summary,
+            insight: isLoading ? deleteTrailingIncompleteIDs(summary) : summary,
             analysisId,
             projectId,
             phaseId,
@@ -189,7 +192,7 @@ const Question = ({
         </Text>
         <Text mt="0px">
           {replaceIdRefsWithLinks({
-            insight: answer,
+            insight: isLoading ? deleteTrailingIncompleteIDs(answer) : answer,
             analysisId,
             projectId,
             phaseId,
