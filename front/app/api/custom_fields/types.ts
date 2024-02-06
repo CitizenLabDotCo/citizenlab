@@ -25,7 +25,8 @@ export type ICustomFieldInputType =
   | 'html_multiloc'
   | 'files'
   | 'image_files'
-  | 'topic_ids';
+  | 'topic_ids'
+  | 'multiselect_image';
 
 export type IOptionsType = {
   id?: string;
