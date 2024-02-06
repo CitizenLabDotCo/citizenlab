@@ -1,7 +1,8 @@
 import React from 'react';
 
 // components
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 
 // styling
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
@@ -21,6 +22,7 @@ export interface Props {
 }
 
 const Location = ({ event }: Props) => {
+  const isPhoneOrSmaller = useBreakpoint('phone');
   const currentLocale = useLocale();
   const position = event?.attributes.location_point_geojson;
   const address1 = event?.attributes?.address_1;
@@ -43,11 +45,8 @@ const Location = ({ event }: Props) => {
                 p="0px"
                 fontSize="m"
                 buttonStyle="text"
-                onClick={() => {
-                  window.open(
-                    `https://www.google.com/maps/search/?api=1&query=${position.coordinates[1]},${position.coordinates[0]}`
-                  );
-                }}
+                linkTo={`https://www.google.com/maps/search/?api=1&query=${position.coordinates[1]},${position.coordinates[0]}`}
+                openLinkInNewTab={isPhoneOrSmaller ? false : true} // On mobile, this will open the app instead
                 pl="0px"
                 style={{
                   textDecoration: 'underline',
@@ -82,7 +81,7 @@ const Location = ({ event }: Props) => {
             </Text>
           )}
           {position && ( // Using a negative margin here so we can extend the map outside of the container
-            <Box ml="-30px" width="300" mt="8px">
+            <Box ml="-30px" width="300" mt="8px" id="e2e-location-map">
               <LocationMap eventLocation={position} />
             </Box>
           )}
