@@ -69,6 +69,8 @@
   "app.components.UserSearch.addModerators": "Додати",
   "app.components.UserSearch.noOptions": "Нема опција",
   "app.components.UserSearch.searchUsers": "Унесите да бисте претражили кориснике...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "No question selected. Please select a question first.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Single survey question",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Наслов",
   "app.components.admin.DateTimePicker.time": "време",
   "app.components.admin.Graphs": "Нема доступних података са тренутним филтерима.",
@@ -2556,6 +2558,7 @@
   "app.modules.navbar.admin.containers.pageHeader": "Странице и мени",
   "app.modules.navbar.admin.containers.pageSubtitle": "Ваша навигациона трака може да прикаже до пет страница поред почетне странице и страница са пројектима. Можете преименовати ставке менија, преуредити и додати нове странице са сопственим садржајем.",
   "app.modules.project_management.admin.components.permissionsTab": "Права приступа",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Question",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "посетите наш центар за подршку",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "хттпс://суппорт.цитизенлаб.цо/ен/артицлес/1346397-вхат-аре-тхе-рецоммендед-дименсионс-анд-сизес-оф-тхе-платформ-имагес",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "За више информација о препорученим резолуцијама слика, {supportPageLink}."
