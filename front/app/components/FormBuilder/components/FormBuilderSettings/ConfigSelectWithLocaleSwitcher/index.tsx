@@ -18,20 +18,20 @@ import {
 import { SectionField } from 'components/admin/Section';
 import { List, Row, SortableRow } from 'components/admin/ResourceList';
 import Error, { TFieldName } from 'components/UI/Error';
-import ImagesDropzone from "components/UI/ImagesDropzone";
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
-import {Locale, CLError, RHFErrors } from 'typings';
+import { Locale, CLError, RHFErrors } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { generateTempId } from '../utils';
 import { get } from 'lodash-es';
+import { ICustomFieldInputType } from 'api/custom_fields/types';
 
 interface Props {
   name: string;
@@ -39,16 +39,17 @@ interface Props {
   locales: Locale[];
   allowDeletingAllOptions?: boolean;
   platformLocale: Locale;
+  inputType: ICustomFieldInputType;
 }
 
 const ConfigSelectWithLocaleSwitcher = ({
   onSelectedLocaleChange,
   name,
   locales,
-  intl: { formatMessage },
   allowDeletingAllOptions = false,
   platformLocale,
-}: Props & WrappedComponentProps) => {
+  inputType,
+}: Props) => {
   const {
     control,
     formState: { errors: formContextErrors },
@@ -58,6 +59,8 @@ const ConfigSelectWithLocaleSwitcher = ({
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(
     platformLocale
   );
+  const { formatMessage } = useIntl();
+  const showImageSettings = inputType === 'multiselect_image';
 
   // Handles locale change
   useEffect(() => {
@@ -81,20 +84,23 @@ const ConfigSelectWithLocaleSwitcher = ({
   };
 
   // Handles add and remove options
-  const addOption = (value, name, hasOtherOption) => {
+  const addOption = (value, name: string, hasOtherOption: boolean) => {
+    console.log('value', value);
     const newValues = value;
     const optionIndex = hasOtherOption ? value.length - 1 : value.length;
     newValues.splice(optionIndex, 0, {
       title_multiloc: {},
+      temp_id: generateTempId(),
+      image_id: '',
     });
     setValue(name, newValues);
   };
-  const removeOption = (value, name, index) => {
+  const removeOption = (value, name: string, index: number) => {
     const newValues = value;
     newValues.splice(index, 1);
     setValue(name, newValues);
   };
-  const addOtherOption = (value, name) => {
+  const addOtherOption = (value, name: string) => {
     const newValues = value;
     newValues.push({
       title_multiloc: { en: 'Other' },
@@ -154,31 +160,26 @@ const ConfigSelectWithLocaleSwitcher = ({
                         const updatedChoices = choices;
                         updatedChoices[index].title_multiloc[selectedLocale] =
                           value;
-                        if (
-                          !updatedChoices[index].id &&
-                          !updatedChoices[index].temp_id
-                        ) {
-                          updatedChoices[index].temp_id = generateTempId();
-                        }
                         setValue(name, updatedChoices);
                       }}
                     />
 
-                    <ImagesDropzone
-                      id={`e2e-option-image-${index}`}
-                      images={choice.image}
-                      imagePreviewRatio={135 / 298}
-                      acceptedFileTypes={{
-                        'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-                      }}
-                      onAdd={(images) => {
-                        console.log(images[0].base64);
-                      }}
-                      onRemove={() => {
-                        console.log('Removing image');
-                      }}
-                    />
-
+                    {showImageSettings && (
+                      <ImagesDropzone
+                        id={`e2e-option-image-${index}`}
+                        images={choice.image}
+                        imagePreviewRatio={135 / 298}
+                        acceptedFileTypes={{
+                          'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+                        }}
+                        onAdd={(images) => {
+                          console.log(images[0].base64);
+                        }}
+                        onRemove={() => {
+                          console.log('Removing image');
+                        }}
+                      />
+                    )}
                   </Box>
                   {canDeleteLastOption && (
                     <Button
@@ -304,4 +305,4 @@ const ConfigSelectWithLocaleSwitcher = ({
   return null;
 };
 
-export default injectIntl(ConfigSelectWithLocaleSwitcher);
+export default ConfigSelectWithLocaleSwitcher;
