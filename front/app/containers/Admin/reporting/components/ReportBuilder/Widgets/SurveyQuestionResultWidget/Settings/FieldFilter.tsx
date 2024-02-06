@@ -6,6 +6,8 @@ import { ICustomFieldInputType } from 'api/custom_fields/types';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // components
 import { Box, Select } from '@citizenlab/cl2-component-library';
@@ -27,6 +29,7 @@ const SUPPORTED_INPUT_TYPES = new Set<ICustomFieldInputType>([
 const FieldFilter = ({ phaseId, fieldId, onFieldFilter }: Props) => {
   const { data: fields } = useRawCustomFields({ phaseId });
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   const fieldOptions = fields
     ? fields.data
@@ -42,7 +45,7 @@ const FieldFilter = ({ phaseId, fieldId, onFieldFilter }: Props) => {
   return (
     <Box width="100%" mb="20px">
       <Select
-        label={'TODO'}
+        label={formatMessage(messages.question)}
         value={fieldId}
         options={fieldOptions}
         onChange={onFieldFilter}
