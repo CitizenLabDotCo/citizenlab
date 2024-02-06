@@ -1685,6 +1685,7 @@
   "app.containers.AdminPage.ProjectEvents.preview": "Önizleme",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Harita konumunu daraltın",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Harita üzerinde konumu hassaslaştır",
+  "app.containers.AdminPage.ProjectEvents.refineOnMapInstructions": "Aşağıdaki haritaya tıklayarak etkinlik konumu işaretleyicinizin gösterildiği yeri daraltabilirsiniz.",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Kaydet",
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "Yaptığınız değişiklikleri kaydedemedik, lütfen tekrar deneyin.",
   "app.containers.AdminPage.ProjectEvents.saveSuccessLabel": "Başarılı!",

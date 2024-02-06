@@ -1685,6 +1685,7 @@
   "app.containers.AdminPage.ProjectEvents.preview": "Preview",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Locatie verfijnen op de kaart",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Locatie verfijnen op de kaart",
+  "app.containers.AdminPage.ProjectEvents.refineOnMapInstructions": "Je kunt verfijnen waar de locatiemarker van je activiteit wordt weergegeven door op de kaart hieronder te klikken.",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Opslaan",
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "We konden je gegevens niet opslaan, probeer het a.j.b. opnieuw.",
   "app.containers.AdminPage.ProjectEvents.saveSuccessLabel": "Opgeslagen!",

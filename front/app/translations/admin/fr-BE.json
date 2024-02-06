@@ -1685,6 +1685,7 @@
   "app.containers.AdminPage.ProjectEvents.preview": "Aperçu",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Affiner la localisation sur la carte",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Affiner la localisation sur la carte",
+  "app.containers.AdminPage.ProjectEvents.refineOnMapInstructions": "Vous pouvez affiner la position du marqueur en cliquant sur la carte ci-dessous.",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Enregistrer",
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "Vos modifications n'ont pas pu être enregistrées, veuillez réessayer.",
   "app.containers.AdminPage.ProjectEvents.saveSuccessLabel": "Enregistré !",

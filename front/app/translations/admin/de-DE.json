@@ -1685,6 +1685,7 @@
   "app.containers.AdminPage.ProjectEvents.preview": "Vorschau",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Kartenstandort anpassen",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Standort auf der Karte anpassen",
+  "app.containers.AdminPage.ProjectEvents.refineOnMapInstructions": "Sie können die Anzeige Ihres Veranstaltungsortes verfeinern, indem Sie auf die Karte unten klicken.",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Speichern",
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "Wir konnten Ihre Änderungen nicht speichern, bitte versuchen Sie es erneut.",
   "app.containers.AdminPage.ProjectEvents.saveSuccessLabel": "Gespeichert!",

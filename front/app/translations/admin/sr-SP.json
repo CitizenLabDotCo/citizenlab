@@ -1685,6 +1685,7 @@
   "app.containers.AdminPage.ProjectEvents.preview": "Преглед",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Прецизирајте локацију на мапи",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Прецизирајте локацију на мапи",
+  "app.containers.AdminPage.ProjectEvents.refineOnMapInstructions": "You can refine where your event location marker is shown by clicking on the map below.",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "сачувати",
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "Нисмо могли да сачувамо ваше промене, покушајте поново.",
   "app.containers.AdminPage.ProjectEvents.saveSuccessLabel": "Успех!",

@@ -1685,6 +1685,7 @@
   "app.containers.AdminPage.ProjectEvents.preview": "Forhåndsvisning",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Avgrens kartplassering",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Avgrens plassering på kartet",
+  "app.containers.AdminPage.ProjectEvents.refineOnMapInstructions": "Du kan avgrense hvor posisjonsmarkøren din vises ved å klikke på kartet nedenfor.",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Lagre",
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "Vi kan ikke lagre endringene, prøv på nytt.",
   "app.containers.AdminPage.ProjectEvents.saveSuccessLabel": "Vellykket!",

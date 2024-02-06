@@ -1685,6 +1685,7 @@
   "app.containers.AdminPage.ProjectEvents.preview": "Pregled",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Precizirajte lokaciju karte",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Precizirajte lokaciju na karti",
+  "app.containers.AdminPage.ProjectEvents.refineOnMapInstructions": "Možete precizirati gdje se prikazuje oznaka lokacije vašeg događaja klikom na kartu u nastavku.",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Spremi",
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "Nismo mogli spremiti izmjene, pokušajte kasnije.",
   "app.containers.AdminPage.ProjectEvents.saveSuccessLabel": "Uspjeh!",
