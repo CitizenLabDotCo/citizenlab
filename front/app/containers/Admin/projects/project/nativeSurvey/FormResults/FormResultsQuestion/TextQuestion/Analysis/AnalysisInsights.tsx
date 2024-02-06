@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   IconButton,
@@ -9,7 +10,7 @@ import {
 import { IAnalysisData } from 'api/analyses/types';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
-import React, { useState, useEffect } from 'react';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
 import { replaceIdRefsWithLinks } from '../../../../../analysis/Insights/util';

@@ -31,7 +31,7 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
 
   // Create an analysis if there are no analyses yet
   useEffect(() => {
-    if (analyses && customFieldId && relevantAnalysis) {
+    if (analyses && customFieldId && !relevantAnalysis) {
       addAnalysis({
         projectId: phaseId ? undefined : projectId,
         phaseId,
