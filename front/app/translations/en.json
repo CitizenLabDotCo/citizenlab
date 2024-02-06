@@ -1029,6 +1029,7 @@
   "app.containers.IdeasNewPage.shareViaMessenger": "Share via Messenger",
   "app.containers.IdeasNewPage.submitApiError": "There was an issue submitting the form. Please check for any errors and try again.",
   "app.containers.IdeasNewPage.submitNewIdea": "Submit",
+  "app.containers.IdeasNewPage.surveyNewMetaTitle": "Add survey response | {projectName}",
   "app.containers.IdeasShow.MetaInformation.attachments": "Attachments",
   "app.containers.IdeasShow.MetaInformation.byUserOnDate": "{userName} on {date}",
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Current status",
