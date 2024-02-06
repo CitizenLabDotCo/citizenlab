@@ -1018,6 +1018,7 @@
   "app.containers.IdeasNewPage.issueMetaTitle": "Add new comment | {projectName}",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Are you sure you want to leave this survey?",
   "app.containers.IdeasNewPage.leaveSurveyText": "Your answers won't be saved.",
+  "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Your draft answers have been saved privately and you can return to complete this survey later.",
   "app.containers.IdeasNewPage.optionFormTitle": "Add new option",
   "app.containers.IdeasNewPage.optionMetaTitle": "Add new option | {projectName}",
   "app.containers.IdeasNewPage.or": "Or",
