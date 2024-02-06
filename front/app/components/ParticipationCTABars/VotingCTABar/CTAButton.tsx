@@ -22,7 +22,7 @@ import globalMessages from 'utils/messages';
 // utils
 import JSConfetti from 'js-confetti';
 import { scrollToElement } from 'utils/scroll';
-import { getDisabledExplanation } from './utils';
+import { getNumberOfVotesDisabledExplanation } from './utils';
 import clHistory from 'utils/cl-router/history';
 
 // typings
@@ -134,7 +134,7 @@ const CTAButton = ({ phase, project }: Props) => {
   const disabledExplanation =
     votingActionDescriptor.disabled_reason !== null
       ? getDisabledReasonMessage(votingActionDescriptor.disabled_reason)
-      : getDisabledExplanation(
+      : getNumberOfVotesDisabledExplanation(
           formatMessage,
           localize,
           phase,
