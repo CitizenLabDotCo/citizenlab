@@ -228,9 +228,6 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
   });
 
   const inputCount = inputs?.pages[0].meta.filtered_count || 0;
-  const { data: singleCustomFieldAnalysisInsights } = useAnalysisInsights({
-    analysisId: analysis.id,
-  });
 
   const { mutate: addAnalysisSummary } = useAddAnalysisSummary();
 
@@ -252,7 +249,7 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
   useEffect(() => {
     if (
       analysis.id &&
-      singleCustomFieldAnalysisInsights?.data.length === 0 &&
+      insights?.data.length === 0 &&
       !automaticSummaryCreated &&
       inputCount > 10
     ) {
@@ -274,7 +271,7 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
   }, [
     analysis.id,
     addAnalysisSummary,
-    singleCustomFieldAnalysisInsights,
+    insights,
     automaticSummaryCreated,
     inputCount,
   ]);
