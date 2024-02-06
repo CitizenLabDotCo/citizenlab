@@ -31,12 +31,12 @@ const useAnalysisBackgroundTask = (
         queryKey: insightsKeys.list({ analysisId }),
       });
     },
-    // Refetch every 2 seconds when task is active
+    // Refetch every 5 seconds when task is active
     refetchInterval: (data) => {
       const activeTask =
         data?.data.attributes.state === 'queued' ||
         data?.data.attributes.state === 'in_progress';
-      return activeTask && pollingEnabled ? 2000 : false;
+      return activeTask && pollingEnabled ? 5000 : false;
     },
   });
 };

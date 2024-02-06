@@ -42,11 +42,9 @@ const convertFilterValuesToString = (filters?: IInputsFilterParams) => {
 const Summary = ({
   summaryId,
   analysisId,
-  isLoading,
 }: {
   summaryId: string;
   analysisId: string;
-  isLoading?: boolean;
 }) => {
   const { formatMessage, formatDate } = useIntl();
   const { projectId, phaseId } = useParams() as {
@@ -54,11 +52,20 @@ const Summary = ({
     phaseId: string;
   };
   const { data } = useAnalysisSummary({ analysisId, id: summaryId });
+  const { data: task } = useAnalysisBackgroundTask(
+    analysisId,
+    data?.data.relationships.background_task.data.id,
+    true
+  );
 
   const summary = data?.data.attributes.summary;
   const filters = data?.data.attributes.filters;
   const accuracy = data?.data.attributes.accuracy;
   const generatedAt = data?.data.attributes.created_at;
+
+  const isLoading =
+    task?.data.attributes.state === 'queued' ||
+    task?.data.attributes.state === 'in_progress';
 
   if (!summary) {
     return null;
@@ -131,11 +138,9 @@ const Summary = ({
 const Question = ({
   summaryId,
   analysisId,
-  isLoading,
 }: {
   summaryId: string;
   analysisId: string;
-  isLoading?: boolean;
 }) => {
   const { formatMessage, formatDate } = useIntl();
   const { data } = useAnalysisQuestion({ analysisId, id: summaryId });
@@ -143,12 +148,22 @@ const Question = ({
     projectId: string;
     phaseId: string;
   };
+
+  const { data: task } = useAnalysisBackgroundTask(
+    analysisId,
+    data?.data.relationships.background_task.data.id,
+    true
+  );
+
   const question = data?.data.attributes.question;
   const answer = data?.data.attributes.answer;
   const filters = data?.data.attributes.filters;
   const accuracy = data?.data.attributes.accuracy;
   const generatedAt = data?.data.attributes.created_at;
 
+  const isLoading =
+    task?.data.attributes.state === 'queued' ||
+    task?.data.attributes.state === 'in_progress';
   if (!question || !answer) {
     return null;
   }
@@ -218,9 +233,6 @@ const Question = ({
 };
 
 const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
-  const [backgroundTaskId, setBackgroundTaskId] = useState<
-    string | undefined
-  >();
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
 
   const { data: inputs } = useInfiniteAnalysisInputs({
@@ -232,11 +244,6 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
 
   const { mutate: addAnalysisSummary } = useAddAnalysisSummary();
 
-  const { data: task } = useAnalysisBackgroundTask(
-    analysis.id,
-    backgroundTaskId,
-    true
-  );
   const { formatMessage } = useIntl();
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
   const { data: insights } = useAnalysisInsights({
@@ -255,19 +262,12 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
       inputCount > 10
     ) {
       setAutomaticSummaryCreated(true);
-      addAnalysisSummary(
-        {
-          analysisId: analysis.id,
-          filters: {
-            input_custom_field_no_empty_values: true,
-          },
+      addAnalysisSummary({
+        analysisId: analysis.id,
+        filters: {
+          input_custom_field_no_empty_values: true,
         },
-        {
-          onSuccess: (res) => {
-            setBackgroundTaskId(res.data.relationships.background_task.data.id);
-          },
-        }
-      );
+      });
     }
   }, [
     analysis.id,
@@ -327,20 +327,12 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
                 key={selectedInsight.relationships.insightable.data.id}
                 summaryId={selectedInsight.relationships.insightable.data.id}
                 analysisId={analysis.id}
-                isLoading={
-                  task?.data.attributes.state === 'queued' ||
-                  task?.data.attributes.state === 'in_progress'
-                }
               />
             ) : (
               <Summary
                 key={selectedInsight.relationships.insightable.data.id}
                 summaryId={selectedInsight.relationships.insightable.data.id}
                 analysisId={analysis.id}
-                isLoading={
-                  task?.data.attributes.state === 'queued' ||
-                  task?.data.attributes.state === 'in_progress'
-                }
               />
             )}
           </>
