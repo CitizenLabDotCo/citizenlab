@@ -120,17 +120,16 @@ resource 'Summaries' do
   end
 
   post 'web_api/v1/analyses/:analysis_id/summaries/:id/regenerate' do
-    let(:summary) { create(:summary) }
-    let(:analysis_id) { summary.analysis_id }
+    let(:background_task) { create(:summarization_task, state: 'succeeded', ended_at: Time.now) }
+    let(:analysis) { create(:analysis) }
+    let(:filters) { { reactions_from: 5 } }
+    let!(:summary) { create(:summary, summary: nil, insight_attributes: { filters: filters, analysis: analysis }, background_task: background_task) }
+    let(:analysis_id) { analysis.id }
     let(:id) { summary.id }
-    let(:tag) { create(:tag, analysis: summary.analysis) }
 
     example 'Regenerate a summary' do
-      create(:summarization_task, state: 'succeeded', ended_at: Time.now) # TODO: Also deal with case where current task is in progress?
-
-      do_request
-      byebug
-
+      # TODO: Also deal with case where current task is in progress?
+      # TODO: Test to check that plan is called and stub too_many_inputs return
       expect { do_request }
         .to have_enqueued_job(Analysis::SummarizationJob)
         .and change(Analysis::BackgroundTask, :count).from(1).to(2)
@@ -141,10 +140,7 @@ resource 'Summaries' do
         type: 'summary',
         attributes: {
           summary: nil,
-          filters: {
-            reactions_from: 5,
-            tag_ids: [tag.id]
-          },
+          filters: { reactions_from: 5 },
           accuracy: 0.8,
           missing_inputs_count: 0,
           created_at: kind_of(String),
@@ -162,7 +158,7 @@ resource 'Summaries' do
       })
       expect(json_response_body[:included].pluck(:id)).to include(new_background_task.id)
 
-      expect(background_task).to have_attributes({
+      expect(new_background_task).to have_attributes({
         progress: nil,
         type: 'Analysis::SummarizationTask',
         state: 'queued',
