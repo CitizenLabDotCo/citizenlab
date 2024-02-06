@@ -121,9 +121,11 @@ const CardsWrapper = styled.div`
   background: ${colors.background};
 `;
 
-const ProjectFolderShowPage = memo<{
+interface Props {
   projectFolder: IProjectFolderData;
-}>(({ projectFolder }) => {
+}
+
+const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const { data: authUser } = useAuthUser();
   const { windowWidth } = useWindowSize();
   const smallerThan1280px = windowWidth ? windowWidth <= 1280 : false;
@@ -192,7 +194,7 @@ const ProjectFolderShowPage = memo<{
       </>
     </Container>
   );
-});
+};
 
 const ProjectFolderShowPageWrapper = () => {
   const { slug } = useParams();
