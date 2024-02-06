@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useRef, useState } from 'react';
 
 // components
 import EsriMap from 'components/EsriMap';
@@ -7,7 +7,6 @@ import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
 import Renderer from '@arcgis/core/renderers/SimpleRenderer';
-import PopupTemplate from '@arcgis/core/PopupTemplate';
 import Popup from '@arcgis/core/widgets/Popup.js';
 import StartProposalButton from './StartProposalButton';
 
@@ -27,21 +26,30 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
+// intl
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
+import ProposalInformation from './ProposalInformation';
+
 export interface Props {
   center: GeoJSON.Point;
 }
 
 const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
+  const { formatMessage } = useIntl();
   const theme = useTheme();
   const { data: initiativeMarkers } = useInitiativeMarkers();
   const initiativePermissions = useInitiativesPermissions('posting_initiative');
-  const [clickedLocation, setClickedLocation] = useState<GeoJSON.Point | null>(
+  const clickedLocationRef = useRef<GeoJSON.Point | null>(null);
+  const isPhoneOrSmaller = useBreakpoint('phone');
+
+  const [selectedProposalId, setSelectedProposalId] = useState<string | null>(
     null
   );
-  const isPhoneOrSmaller = useBreakpoint('phone');
 
   // Create a div element to use for inserting the "Start Proposal" button into the popup
   const startProposalButtonNode = document.createElement('div');
+  const proposalInfoNode = document.createElement('div');
 
   // Loop through the initative markers and create a list of graphics
   const graphics = initiativeMarkers?.data.map((marker) => {
@@ -98,23 +106,16 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
               const id = graphics?.at(element.graphic.attributes.ID)?.attributes
                 .markerId;
               if (id) {
-                // Show information for the selected proposal
-                const template = new PopupTemplate({
-                  // autocasts as new PopupTemplate()
-                  title: 'PROPOSAL TITLE',
-                  content: 'PROPOSAL DESCRIPTION + BUTTON',
-                });
-                proposalsLayer.popupTemplate = template;
+                setSelectedProposalId(id);
+                if (proposalInfoNode) {
+                  mapView.ui.add(proposalInfoNode, 'top-right');
+                }
               }
             }
           }
         });
       } else {
         // If the user clicked elsewhere the map, show the "submit a proposal" popup
-        // setClickedLocation({
-        //   type: 'Point',
-        //   coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
-        // });
         mapView.goTo({
           center: [event.mapPoint.longitude, event.mapPoint.latitude],
         });
@@ -128,9 +129,14 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
               breakpoint: false,
             },
             location: event.mapPoint,
+            title: formatMessage(messages.startProposalAtLocation),
           } as Popup;
           mapView.popup.content = startProposalButtonNode;
           mapView.openPopup();
+          clickedLocationRef.current = {
+            type: 'Point',
+            coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
+          };
         }, 300);
       }
     });
@@ -153,46 +159,41 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
     });
   };
 
-  //   const redirectToInitiativeForm = () => {
-  //     const lat = clickedLocation?.coordinates[1];
-  //     const lng = clickedLocation?.coordinates[0];
-  //     clHistory.push(
-  //       {
-  //         pathname: `/initiatives/new`,
-  //         search: clickedLocation
-  //           ? stringify({ lat, lng }, { addQueryPrefix: true })
-  //           : undefined,
-  //       },
-  //       { scrollToTop: true }
-  //     );
-  //   };
+  const onNewProposalButtonClick = (event?: React.FormEvent) => {
+    event?.preventDefault();
+    const lat = clickedLocationRef?.current?.coordinates[1];
+    const lng = clickedLocationRef?.current?.coordinates[0];
 
-  //   const onNewInitiativeButtonClick = (event?: React.FormEvent) => {
-  //     event?.preventDefault();
-  //     const lat = clickedLocation?.coordinates[1];
-  //     const lng = clickedLocation?.coordinates[0];
+    if (initiativePermissions?.enabled) {
+      if (initiativePermissions?.authenticationRequirements) {
+        const context = {
+          type: 'initiative',
+          action: 'posting_initiative',
+        } as const;
 
-  //     if (initiativePermissions?.enabled) {
-  //       if (initiativePermissions?.authenticationRequirements) {
-  //         const context = {
-  //           type: 'initiative',
-  //           action: 'posting_initiative',
-  //         } as const;
-
-  //         const successAction: SuccessAction = {
-  //           name: 'redirectToInitiativeForm',
-  //           params: { lat, lng },
-  //         };
-  //         triggerAuthenticationFlow({
-  //           flow: 'signup',
-  //           context,
-  //           successAction,
-  //         });
-  //       } else {
-  //         redirectToInitiativeForm();
-  //       }
-  //     }
-  //   };
+        const successAction: SuccessAction = {
+          name: 'redirectToInitiativeForm',
+          params: { lat, lng },
+        };
+        triggerAuthenticationFlow({
+          flow: 'signup',
+          context,
+          successAction,
+        });
+      } else {
+        // Redirect to proposal form
+        clHistory.push(
+          {
+            pathname: `/initiatives/new`,
+            search: clickedLocationRef.current
+              ? stringify({ lat, lng }, { addQueryPrefix: true })
+              : undefined,
+          },
+          { scrollToTop: true }
+        );
+      }
+    }
+  };
 
   return (
     <>
@@ -203,12 +204,18 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
         onHover={onHover}
         layers={[proposalsLayer]}
       />
-      {/* <Box id="customTextDiv">
-        <InitiativePreview initiativeId={selectedInitiativeId} />
-      </Box> */}
       <StartProposalButton
         modalPortalElement={startProposalButtonNode}
-        onClick={() => {}}
+        onClick={() => {
+          onNewProposalButtonClick();
+        }}
+      />
+      <ProposalInformation
+        modalPortalElement={proposalInfoNode}
+        selectedProposalId={selectedProposalId}
+        onClick={() => {
+          onNewProposalButtonClick();
+        }}
       />
     </>
   );

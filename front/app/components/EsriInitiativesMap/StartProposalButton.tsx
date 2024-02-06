@@ -1,6 +1,12 @@
-import { Button } from '@citizenlab/cl2-component-library';
 import React from 'react';
 import { createPortal } from 'react-dom';
+
+// components
+import { Button } from '@citizenlab/cl2-component-library';
+
+// intl
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 type Props = {
   modalPortalElement: HTMLDivElement;
@@ -8,11 +14,12 @@ type Props = {
 };
 
 const StartProposalButton = ({ modalPortalElement, onClick }: Props) => {
+  const { formatMessage } = useIntl();
   if (!modalPortalElement) return null;
 
   return createPortal(
     <Button icon="arrow-right" iconPos="right" onClick={onClick}>
-      Start a proposal
+      {formatMessage(messages.startAProposal)}
     </Button>,
     modalPortalElement
   );
