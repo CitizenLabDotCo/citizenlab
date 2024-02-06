@@ -69,6 +69,8 @@
   "app.components.UserSearch.addModerators": "Add",
   "app.components.UserSearch.noOptions": "Δεν υπάρχουν επιλογές",
   "app.components.UserSearch.searchUsers": "Πληκτρολογήστε για να αναζητήσετε χρήστες...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Δεν έχει επιλεγεί καμία ερώτηση. Παρακαλώ επιλέξτε πρώτα μια ερώτηση.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Ενιαία ερώτηση έρευνας",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Title",
   "app.components.admin.DateTimePicker.time": "Χρόνος",
   "app.components.admin.Graphs": "Δεν υπάρχουν διαθέσιμα δεδομένα με τα τρέχοντα φίλτρα.",
@@ -2556,6 +2558,7 @@
   "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Η γραμμή πλοήγησης μπορεί να εμφανίζει έως και πέντε σελίδες εκτός από τις σελίδες Αρχική σελίδα και Έργα. Μπορείτε να μετονομάσετε τα στοιχεία μενού, να αναδιατάξετε και να προσθέσετε νέες σελίδες με το δικό σας περιεχόμενο.",
   "app.modules.project_management.admin.components.permissionsTab": "Access rights",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Ερώτηση",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
