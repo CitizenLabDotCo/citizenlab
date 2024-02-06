@@ -70,7 +70,13 @@ const CTAButton = ({ phase, project }: Props) => {
   const localize = useLocalize();
   const [processing, setProcessing] = useState(false);
 
-  if (!appConfig) return null;
+  if (
+    !appConfig ||
+    !phase.attributes.voting_method ||
+    numberOfVotesCast === undefined
+  ) {
+    return null;
+  }
 
   const handleSubmitOnClick = () => {
     if (basket) {
@@ -114,9 +120,6 @@ const CTAButton = ({ phase, project }: Props) => {
       }
     }
   };
-
-  const votingMethod = phase.attributes.voting_method;
-  if (!votingMethod || numberOfVotesCast === undefined) return null;
 
   const getDisabledReasonMessage = (reason: VotingDisabledReason) => {
     switch (reason) {
