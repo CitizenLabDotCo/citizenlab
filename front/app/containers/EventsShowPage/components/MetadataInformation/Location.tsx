@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy } from 'react';
 
 // components
 import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
@@ -15,7 +15,9 @@ import useLocale from 'hooks/useLocale';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import LocationMap from './LocationMap';
+// import LocationMap from './LocationMap';
+
+const LocationMap = lazy(() => import('./LocationMap'));
 
 export interface Props {
   event: IEventData | null;
