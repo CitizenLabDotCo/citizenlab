@@ -13,11 +13,6 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.surveySettingsTitle',
     defaultMessage: 'Survey title',
   },
-  surveyNoResults: {
-    id: 'app.containers.admin.ReportBuilder.surveyNoResults',
-    defaultMessage:
-      'There are no survey results for the filters you have selected.',
-  },
   surveyNoQuestions: {
     id: 'app.containers.admin.ReportBuilder.surveyNoQuestions',
     defaultMessage:
@@ -27,9 +22,9 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.surveyChooseQuestions',
     defaultMessage: 'Choose which questions to display:',
   },
-  surveyPhases: {
-    id: 'app.containers.admin.ReportBuilder.surveyPhases',
-    defaultMessage: 'Survey phases',
+  surveyPhase: {
+    id: 'app.containers.admin.ReportBuilder.surveyPhase',
+    defaultMessage: 'Survey phase',
   },
   totalParticipants: {
     id: 'app.containers.admin.ReportBuilder.totalParticipants',

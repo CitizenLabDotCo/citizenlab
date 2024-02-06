@@ -25,14 +25,9 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.title',
     defaultMessage: 'Title',
   },
-  ideationPhases: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhases',
-    defaultMessage: 'Ideation phases',
-  },
-  noProjectSelected: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noProjectSelected',
-    defaultMessage:
-      'No project was selected. Please select a project to see the most reacted ideas.',
+  ideationPhase: {
+    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhase',
+    defaultMessage: 'Ideation phase',
   },
   noIdeasAvailable: {
     id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable',

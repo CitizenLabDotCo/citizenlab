@@ -738,6 +738,7 @@
   "app.containers.AccessibilityStatement.workshops": "Seminarer",
   "app.containers.Admin.Insights.tabInsights": "Innsikt",
   "app.containers.Admin.Insights.tabReports": "Rapporter",
+  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Velg prosjekt",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Spørreundersøkelsens slutt",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Opprett en smart-gruppe",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Brukere som samsvarer med alle de følgende betingelsene blir automatisk lagt til gruppen:",
