@@ -14,7 +14,7 @@ import Tippy from '@tippyjs/react';
 import styled, { useTheme } from 'styled-components';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import useLocalize from 'hooks/useLocalize';
 import globalMessages from 'utils/messages';
@@ -121,19 +121,25 @@ const CTAButton = ({ phase, project }: Props) => {
     }
   };
 
-  const getDisabledReasonMessage = (reason: VotingDisabledReason) => {
-    switch (reason) {
-      case 'not_in_group':
-        return formatMessage(globalMessages.notInGroup);
-      default:
-        return null;
-    }
+  const getDisabledReasonMessage: {
+    [key in VotingDisabledReason]: MessageDescriptor;
+  } = {
+    not_in_group: globalMessages.notInGroup,
+    project_inactive: globalMessages.notInGroup,
+    not_voting: globalMessages.notInGroup,
+    not_active: globalMessages.notInGroup,
+    not_signed_in: globalMessages.notInGroup,
+    not_permitted: globalMessages.notInGroup,
+    not_verified: globalMessages.notInGroup,
+    missing_data: globalMessages.notInGroup,
   };
 
   const votingActionDescriptor = project.attributes.action_descriptor.voting;
   const disabledExplanation =
     votingActionDescriptor.disabled_reason !== null
-      ? getDisabledReasonMessage(votingActionDescriptor.disabled_reason)
+      ? formatMessage(
+          getDisabledReasonMessage[votingActionDescriptor.disabled_reason]
+        )
       : getNumberOfVotesDisabledExplanation(
           formatMessage,
           localize,
