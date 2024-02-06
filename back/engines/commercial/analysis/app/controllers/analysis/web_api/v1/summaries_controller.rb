@@ -56,6 +56,10 @@ module Analysis
         end
 
         def regenerate
+          if !@summary.background_task.finished?
+            render json: { errors: { base: [{ error: :previous_task_not_yet_finished }] } }, status: :unprocessable_entity
+            return
+          end
           @summary.background_task = SummarizationTask.new(analysis: @analysis)
           plan = SummarizationMethod::Base.plan(@summary)
           @summary.summarization_method = plan.summarization_method_class::SUMMARIZATION_METHOD

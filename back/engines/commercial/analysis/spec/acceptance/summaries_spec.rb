@@ -120,7 +120,8 @@ resource 'Summaries' do
   end
 
   post 'web_api/v1/analyses/:analysis_id/summaries/:id/regenerate' do
-    let(:background_task) { create(:summarization_task, state: 'succeeded', ended_at: Time.now) }
+    let(:state) { 'succeeded' }
+    let(:background_task) { create(:summarization_task, state: state, ended_at: Time.now) }
     let(:analysis) { create(:analysis) }
     let(:filters) { { reactions_from: 5 } }
     let!(:summary) { create(:summary, summary: nil, insight_attributes: { filters: filters, analysis: analysis }, background_task: background_task) }
@@ -128,8 +129,6 @@ resource 'Summaries' do
     let(:id) { summary.id }
 
     example 'Regenerate a summary' do
-      # TODO: Also deal with case where current task is in progress?
-      # TODO: Test to check that plan is called and stub too_many_inputs return
       expect { do_request }
         .to have_enqueued_job(Analysis::SummarizationJob)
         .and change(Analysis::BackgroundTask, :count).from(1).to(2)
@@ -166,6 +165,26 @@ resource 'Summaries' do
         updated_at: be_present,
         ended_at: nil
       })
+    end
+
+    describe 'when the current task is queued or in progress' do
+      let(:state) { 'in_progress' }
+
+      example_request '[error] returns previous_task_not_yet_finished' do
+        expect(status).to eq 422
+        expect(json_response_body).to eq ({ errors: { base: [{ error: 'previous_task_not_yet_finished' }] } })
+      end
+    end
+
+    example '[error] too many inputs' do
+      allow(Analysis::SummarizationMethod::Base)
+        .to receive(:plan)
+        .and_return(Analysis::SummarizationPlan.new(impossible_reason: :too_many_inputs))
+
+      do_request
+
+      expect(status).to eq 422
+      expect(json_response_body).to eq ({ errors: { base: [{ error: 'too_many_inputs' }] } })
     end
   end
 

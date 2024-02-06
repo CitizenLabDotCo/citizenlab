@@ -48,6 +48,10 @@ module Analysis
       end
     end
 
+    def finished?
+      %w[succeeded failed].include?(state)
+    end
+
     def set_in_progress!
       self.state = 'in_progress'
       self.started_at = Time.now
