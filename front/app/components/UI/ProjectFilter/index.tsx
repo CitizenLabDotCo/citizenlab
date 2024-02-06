@@ -57,7 +57,11 @@ const generateProjectOptions = (
   return [...(emptyOption ? [emptyOption] : []), ...projectOptions];
 };
 
-const PUBLICATION_STATUSES: PublicationStatus[] = ['published', 'archived'];
+const PUBLICATION_STATUSES: PublicationStatus[] = [
+  'published',
+  'archived',
+  'draft',
+];
 
 const ProjectFilter = ({
   projectId,

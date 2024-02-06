@@ -5,6 +5,7 @@ import moment from 'moment';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 
 // craft
 import { Element } from '@craftjs/core';
@@ -24,7 +25,7 @@ import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
-import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
+import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
 
 // i18n
@@ -37,6 +38,7 @@ import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod'
 import { getTemplateData } from './getTemplateData';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 import { withoutSpacing } from 'utils/textUtils';
+import { SUPPORTED_INPUT_TYPES } from '../Widgets/SurveyQuestionResultWidget/constants';
 
 export interface Props {
   reportId: string;
@@ -49,9 +51,21 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
-  if (!project || !phases) return null;
+  const templateData = phases ? getTemplateData(phases.data) : null;
 
-  const { participationMethod, phaseId } = getTemplateData(phases.data);
+  const { data: surveyFields } = useRawCustomFields({
+    phaseId:
+      templateData?.participationMethod === 'native_survey'
+        ? templateData?.phaseId
+        : undefined,
+  });
+
+  if (!project || !phases || !templateData) return null;
+
+  console.log({ templateData });
+
+  const { participationMethod, phaseId } = templateData;
+  if (participationMethod === 'native_survey' && !surveyFields) return null;
 
   const hasPhases = phases.data.length > 0;
 
@@ -78,6 +92,14 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
       return formatMessageWithLocale(locale, message);
     });
   };
+
+  const filteredSurveyFields = surveyFields
+    ? surveyFields.data.filter((field) =>
+        SUPPORTED_INPUT_TYPES.has(field.attributes.input_type)
+      )
+    : undefined;
+
+  console.log({ filteredSurveyFields });
 
   return (
     <Element id="project-report-template" is={Box} canvas>
@@ -106,11 +128,17 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
         {...projectPeriod}
       />
 
-      {participationMethod === 'native_survey' && (
-        <SurveyResultsWidget
-          title={toMultiloc(WIDGET_TITLES.SurveyResultsWidget)}
-          phaseId={phaseId}
-        />
+      {filteredSurveyFields && (
+        <div>
+          {filteredSurveyFields.map((field) => (
+            <SurveyQuestionResultWidget
+              key={field.id}
+              projectId={projectId}
+              phaseId={phaseId}
+              fieldId={field.id}
+            />
+          ))}
+        </div>
       )}
       {participationMethod === 'ideation' && (
         <MostReactedIdeasWidget

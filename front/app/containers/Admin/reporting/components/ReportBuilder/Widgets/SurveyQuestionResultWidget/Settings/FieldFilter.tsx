@@ -2,7 +2,6 @@ import React from 'react';
 
 // api
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
-import { ICustomFieldInputType } from 'api/custom_fields/types';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -12,6 +11,9 @@ import messages from './messages';
 // components
 import { Box, Select } from '@citizenlab/cl2-component-library';
 
+// constants
+import { SUPPORTED_INPUT_TYPES } from '../constants';
+
 // typings
 import { IOption } from 'typings';
 
@@ -20,11 +22,6 @@ interface Props {
   fieldId?: string;
   onFieldFilter: (fieldOption: IOption) => void;
 }
-
-const SUPPORTED_INPUT_TYPES = new Set<ICustomFieldInputType>([
-  'select',
-  'multiselect',
-]);
 
 const FieldFilter = ({ phaseId, fieldId, onFieldFilter }: Props) => {
   const { data: fields } = useRawCustomFields({ phaseId });
