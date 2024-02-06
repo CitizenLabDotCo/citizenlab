@@ -69,6 +69,8 @@
   "app.components.UserSearch.addModerators": "Dodaj",
   "app.components.UserSearch.noOptions": "Bez opcija",
   "app.components.UserSearch.searchUsers": "Unesite za pretraživanje korisnika...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Nije odabrano nijedno pitanje. Prvo odaberite pitanje.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Jedno anketno pitanje",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Naslov",
   "app.components.admin.DateTimePicker.time": "Vrijeme",
   "app.components.admin.Graphs": "Nema dostupnih podataka za trenutne filtre.",
@@ -2556,6 +2558,7 @@
   "app.modules.navbar.admin.containers.pageHeader": "Stranice i izbornik",
   "app.modules.navbar.admin.containers.pageSubtitle": "Na vašoj navigacijskoj traci može biti prikazano do pet stranica, pored Početne i projektnih stranica. Možete preimenovati stavke izbornika, preurediti i dodati nove stranice s vlastitim sadržajem.",
   "app.modules.project_management.admin.components.permissionsTab": "Prava pristupa",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Pitanje",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "posjetite naš centar za podršku",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Za više informacija o preporučenim razlučivostima slika, {supportPageLink}."
