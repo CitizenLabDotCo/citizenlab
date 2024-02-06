@@ -69,6 +69,8 @@
   "app.components.UserSearch.addModerators": "Pievienot",
   "app.components.UserSearch.noOptions": "Iespēju nav",
   "app.components.UserSearch.searchUsers": "Ierakstiet, lai meklētu lietotājus...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Nav izvēlēts neviens jautājums. Lūdzu, vispirms izvēlieties jautājumu.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Atsevišķs aptaujas jautājums",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Nosaukums",
   "app.components.admin.DateTimePicker.time": "Laiks",
   "app.components.admin.Graphs": "Ar pašreizējiem filtriem dati nav pieejami.",
@@ -2556,6 +2558,7 @@
   "app.modules.navbar.admin.containers.pageHeader": "Lapas un izvēlne",
   "app.modules.navbar.admin.containers.pageSubtitle": "Navigācijas joslā papildus sākuma un projektu lapām var tikt parādītas līdz pat piecām lapām. Jūs varat pārdēvēt izvēlnes elementus, mainīt to secību un pievienot jaunas lapas ar savu saturu.",
   "app.modules.project_management.admin.components.permissionsTab": "Piekļuves tiesības",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Jautājums",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "apmeklējiet mūsu atbalsta centru",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Plašāku informāciju par ieteicamo attēlu izšķirtspēju skatiet vietnē {supportPageLink}."
