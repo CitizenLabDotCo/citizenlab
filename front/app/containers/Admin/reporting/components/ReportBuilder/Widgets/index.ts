@@ -44,7 +44,7 @@ export const WIDGETS = {
   ImageMultiloc,
   WhiteSpace,
   AboutReportWidget,
-  SurveyResultsWidget,
+  SurveyResultsWidget, // TODO: remove this widget (TAN-1022)
   SurveyQuestionResultWidget,
   VisitorsWidget,
   VisitorsTrafficSourcesWidget,

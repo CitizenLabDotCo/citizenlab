@@ -19,7 +19,6 @@ import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
-import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
 import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
@@ -192,17 +191,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             // TODO: CL-2307 Only show this if there are surveys in the platform
             // TODO: Add in the default project / phase
           }
-          <DraggableElement
-            id="e2e-draggable-survey-results-widget"
-            component={
-              <SurveyResultsWidget
-                title={toMultiloc(WIDGET_TITLES.SurveyResultsWidget)}
-                projectId={selectedProjectId}
-              />
-            }
-            icon="survey"
-            label={formatMessage(WIDGET_TITLES.SurveyResultsWidget)}
-          />
           <DraggableElement
             id="e2e-draggable-survey-question-result-widget"
             component={
