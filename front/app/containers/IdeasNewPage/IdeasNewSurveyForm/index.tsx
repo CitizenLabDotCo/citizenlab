@@ -30,13 +30,12 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 import { getCurrentPhase } from 'api/phases/utils';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { getFormValues } from "../../IdeasEditPage/utils";
 
 // types
-import { Multiloc } from 'typings';
 import { IPhases, IPhaseData } from 'api/phases/types';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import { IProject } from 'api/projects/types';
-import { getFormValues } from "../../IdeasEditPage/utils";
 import { IdeaPublicationStatus } from "api/ideas/types";
 
 const getConfig = (
@@ -52,17 +51,12 @@ const getConfig = (
 };
 
 interface FormValues {
-  title_multiloc: Multiloc;
-  body_multiloc: Multiloc;
   author_id?: string;
   idea_images_attributes?: { image: string }[];
   idea_files_attributes?: {
     file_by_content: { content: string };
     name: string;
   };
-  location_description?: string;
-  location_point_geojson?: GeoJSON.Point;
-  topic_ids?: string[];
   publication_status?: IdeaPublicationStatus;
 }
 

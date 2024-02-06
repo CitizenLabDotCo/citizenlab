@@ -2,14 +2,13 @@ import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 
 // api
 import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
 import { useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
+import useLocale from 'hooks/useLocale';
 
 // i18n
 import messages from '../messages';
@@ -32,11 +31,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getCurrentPhase } from 'api/phases/utils';
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 // types
 import { Multiloc } from 'typings';
 import { IPhases, IPhaseData } from 'api/phases/types';
-import useLocale from 'hooks/useLocale';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import { IProject } from 'api/projects/types';
 import { IdeaPublicationStatus } from "api/ideas/types";
