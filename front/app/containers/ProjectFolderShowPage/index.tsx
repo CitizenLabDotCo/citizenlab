@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
@@ -10,9 +10,9 @@ import PageNotFound from 'components/PageNotFound';
 import {
   Box,
   Spinner,
-  useWindowSize,
   media,
   colors,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
 import FollowUnfollow from 'components/FollowUnfollow';
@@ -127,8 +127,7 @@ interface Props {
 
 const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const { data: authUser } = useAuthUser();
-  const { windowWidth } = useWindowSize();
-  const smallerThan1280px = windowWidth ? windowWidth <= 1280 : false;
+  const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
 
   const userCanEditFolder =
     !isNilOrError(authUser) &&
@@ -174,7 +173,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
             </Box>
           </Box>
           <ProjectFolderHeader projectFolder={projectFolder} />
-          {!smallerThan1280px ? (
+          {!isSmallerThanSmallDesktop ? (
             <Content>
               <StyledProjectFolderDescription projectFolder={projectFolder} />
               <StyledProjectFolderProjectCards folderId={projectFolder.id} />
@@ -184,7 +183,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
           )}
         </StyledContentContainer>
 
-        {smallerThan1280px && (
+        {isSmallerThanSmallDesktop && (
           <CardsWrapper>
             <ContentContainer maxWidth={maxPageWidth}>
               <StyledProjectFolderProjectCards folderId={projectFolder.id} />
