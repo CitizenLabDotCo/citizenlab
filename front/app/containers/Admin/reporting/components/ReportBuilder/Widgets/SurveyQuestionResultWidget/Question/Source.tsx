@@ -36,7 +36,7 @@ const Source = ({ projectId, phaseId }: Props) => {
   const phaseNumber = phaseIndex + 1;
 
   return (
-    <Text color="textSecondary" variant="bodyS" mb="0">
+    <Text color="textSecondary" variant="bodyS" mb="0" mt="20px">
       <FormattedMessage
         {...messages.sourceAndReference}
         values={{
