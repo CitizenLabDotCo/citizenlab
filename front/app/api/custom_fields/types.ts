@@ -33,6 +33,7 @@ export type IOptionsType = {
   title_multiloc: Multiloc;
   other?: boolean;
   temp_id?: string;
+  image_id?: string;
 };
 
 export type QuestionRuleType = { if: string | number; goto_page_id: string };

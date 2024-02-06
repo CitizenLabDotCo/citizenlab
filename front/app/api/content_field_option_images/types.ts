@@ -1,10 +1,14 @@
+import { ImageSizes } from 'typings';
+
 export interface ICustomFieldOptionImage {
   data: {
     type: 'image';
     id: string;
     attributes: {
-      code: string;
-      image_url: string;
+      versions: ImageSizes;
+      created_at: string;
+      updated_at: string;
+      oredering: number;
     };
   };
 }
