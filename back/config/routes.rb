@@ -295,6 +295,10 @@ Rails.application.routes.draw do
       resources :avatars, only: %i[index show]
 
       resources :ideas_phases, only: %i[show]
+
+      scope 'moderatable-projects', controller: 'projects' do
+        get '/', action: 'moderatable'
+      end
     end
   end
 
