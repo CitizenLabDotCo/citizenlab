@@ -103,7 +103,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     setIdeaId(draftIdea.data.id);
   }
 
-  // Handle draft ideas - native surveys only
+  // Handle draft ideas
   const handleDraftIdeas = async (data: FormValues) => {
     if (data.publication_status === 'draft') {
       if (isNilOrError(authUser)) {
