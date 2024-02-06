@@ -124,6 +124,8 @@
   "app.components.ErrorBoundary.openFormText": "help us figure it out",
   "app.components.ErrorToast.budgetExceededError": "You don't have enough budget",
   "app.components.ErrorToast.votesExceededError": "You don't have enough votes left",
+  "app.components.EsriInitiativesMap.startAProposal": "Start a proposal",
+  "app.components.EsriInitiativesMap.startProposal": "Start proposal at this location",
   "app.components.EventAttendanceButton.attend": "Attend",
   "app.components.EventAttendanceButton.attending": "Attending",
   "app.components.EventAttendanceButton.forwardToFriend": "Forward to a friend",
