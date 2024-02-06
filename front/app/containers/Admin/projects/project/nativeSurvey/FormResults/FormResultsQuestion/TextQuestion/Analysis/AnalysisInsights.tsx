@@ -234,22 +234,20 @@ const Question = ({
 
 const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
+  const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
+
+  const { formatMessage } = useIntl();
 
   const { data: inputs } = useInfiniteAnalysisInputs({
     analysisId: analysis.id,
     queryParams: {},
   });
-
-  const inputCount = inputs?.pages[0].meta.filtered_count || 0;
-
-  const { mutate: addAnalysisSummary } = useAddAnalysisSummary();
-
-  const { formatMessage } = useIntl();
-  const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
   const { data: insights } = useAnalysisInsights({
     analysisId: analysis.id,
   });
+  const { mutate: addAnalysisSummary } = useAddAnalysisSummary();
 
+  const inputCount = inputs?.pages[0].meta.filtered_count || 0;
   const selectedInsight = insights?.data[selectedInsightIndex];
 
   // Create a summary if there are no insights yet
