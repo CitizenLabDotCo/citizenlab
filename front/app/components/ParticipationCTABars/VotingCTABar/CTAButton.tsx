@@ -5,7 +5,6 @@ import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useProjectById from 'api/projects/useProjectById';
 
 // components
 import { Box, Button } from '@citizenlab/cl2-component-library';
@@ -27,6 +26,7 @@ import clHistory from 'utils/cl-router/history';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
+import { IProjectData, VotingDisabledReason } from 'api/projects/types';
 
 const confetti = new JSConfetti();
 
@@ -55,11 +55,10 @@ const StyledButton = styled(Button)`
 `;
 interface Props {
   phase: IPhaseData;
-  projectId?: string;
+  project: IProjectData;
 }
 
-const CTAButton = ({ phase, projectId }: Props) => {
-  const { data: project } = useProjectById(projectId);
+const CTAButton = ({ phase, project }: Props) => {
   const basketId = phase.relationships.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
@@ -106,7 +105,7 @@ const CTAButton = ({ phase, projectId }: Props) => {
               // If on the idea page, redirect to project page and scroll to status module
               if (location.pathname.includes('/ideas/')) {
                 clHistory.push(
-                  `/projects/${project?.data.attributes.slug}?scrollToStatusModule=true`
+                  `/projects/${project.attributes.slug}?scrollToStatusModule=true`
                 );
               }
             },
