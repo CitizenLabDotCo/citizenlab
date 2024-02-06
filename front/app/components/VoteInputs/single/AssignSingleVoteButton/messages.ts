@@ -24,4 +24,9 @@ export default defineMessages({
     defaultMessage:
       'You have reached the maximum number of votes you can submit.',
   },
+  notInGroup: {
+    id: 'app.components.AssignVoteControl.notInGroup',
+    defaultMessage:
+      "You can't select this option because voting is restricted to certain groups and you are not eligible to vote.",
+  },
 });
