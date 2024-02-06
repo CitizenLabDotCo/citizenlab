@@ -12,13 +12,10 @@ import {
   Button,
   LocaleSwitcher,
   Toggle,
-  Icon,
-  Input,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import { List, Row, SortableRow } from 'components/admin/ResourceList';
 import Error, { TFieldName } from 'components/UI/Error';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -29,9 +26,9 @@ import { Locale, CLError, RHFErrors } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { generateTempId } from '../utils';
 import { get } from 'lodash-es';
 import { ICustomFieldInputType } from 'api/custom_fields/types';
+import SelectFieldOption from './SelectFieldOption';
 
 interface Props {
   name: string;
@@ -60,7 +57,6 @@ const ConfigSelectWithLocaleSwitcher = ({
     platformLocale
   );
   const { formatMessage } = useIntl();
-  const showImageSettings = inputType === 'multiselect_image';
 
   // Handles locale change
   useEffect(() => {
@@ -85,20 +81,22 @@ const ConfigSelectWithLocaleSwitcher = ({
 
   // Handles add and remove options
   const addOption = (value, name: string, hasOtherOption: boolean) => {
+    console.log('value', value);
     const newValues = value;
     const optionIndex = hasOtherOption ? value.length - 1 : value.length;
     newValues.splice(optionIndex, 0, {
       title_multiloc: {},
-      temp_id: generateTempId(),
       image_id: '',
     });
     setValue(name, newValues);
   };
+
   const removeOption = (value, name: string, index: number) => {
     const newValues = value;
     newValues.splice(index, 1);
     setValue(name, newValues);
   };
+
   const addOtherOption = (value, name: string) => {
     const newValues = value;
     newValues.push({
@@ -108,17 +106,10 @@ const ConfigSelectWithLocaleSwitcher = ({
     setValue(name, newValues);
   };
 
-  const defaultOptionValues = [{}];
+  const defaultOptionValues: string[] = [];
   const errors = get(formContextErrors, name) as RHFErrors;
   const apiError = errors?.error && ([errors] as CLError[]);
   const validationError = errors?.message;
-
-  const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
-    // We want to prevent the form builder from being closed when enter is pressed
-    if (event.key === 'Enter') {
-      event.preventDefault();
-    }
-  };
 
   if (selectedLocale) {
     return (
@@ -127,6 +118,7 @@ const ConfigSelectWithLocaleSwitcher = ({
           name={name}
           control={control}
           defaultValue={defaultOptionValues}
+          // TODO: Try to enforce types in choices
           render={({ field: { ref: _ref, value: choices, onBlur } }) => {
             const hasOtherOption = choices.some(
               (choice) => choice.other === true
@@ -144,59 +136,6 @@ const ConfigSelectWithLocaleSwitcher = ({
             const validatedValues = choices.map((choice) => ({
               title_multiloc: choice.title_multiloc,
             }));
-
-            const eachOption = (choice, index) => {
-              return (
-                <>
-                  <Box width="100%" pl={choice.other === true ? '30px' : '0'}>
-                    <Input
-                      id={`e2e-option-input-${index}`}
-                      size="small"
-                      type="text"
-                      value={choice.title_multiloc[selectedLocale]}
-                      onKeyDown={handleKeyDown}
-                      onChange={(value) => {
-                        const updatedChoices = choices;
-                        updatedChoices[index].title_multiloc[selectedLocale] =
-                          value;
-                        setValue(name, updatedChoices);
-                      }}
-                    />
-
-                    {showImageSettings && (
-                      <ImagesDropzone
-                        id={`e2e-option-image-${index}`}
-                        images={choice.image}
-                        imagePreviewRatio={135 / 298}
-                        acceptedFileTypes={{
-                          'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-                        }}
-                        onAdd={(images) => {
-                          console.log(images[0].base64);
-                        }}
-                        onRemove={() => {
-                          console.log('Removing image');
-                        }}
-                      />
-                    )}
-                  </Box>
-                  {canDeleteLastOption && (
-                    <Button
-                      margin="0px"
-                      padding="0px"
-                      buttonStyle="text"
-                      aria-label={formatMessage(messages.removeAnswer)}
-                      onClick={() => {
-                        removeOption(choices, name, index);
-                        trigger();
-                      }}
-                    >
-                      <Icon name="delete" fill="coolGrey600" padding="0px" />
-                    </Button>
-                  )}
-                </>
-              );
-            };
 
             return (
               <Box
@@ -231,28 +170,48 @@ const ConfigSelectWithLocaleSwitcher = ({
                   <DndProvider backend={HTML5Backend}>
                     <List key={choices?.length}>
                       {choices
-                        ?.sort((a, b) => a.other - b.other)
+                        ?.sort((a, b) => (a?.other || 0) - (b?.other || 0))
                         .map((choice, index) => {
                           return (
                             <Box key={choice.id}>
                               {choice.other === true ? (
                                 <Row key={choice.id} isLastItem={true}>
-                                  {eachOption(choice, index)}
+                                  <SelectFieldOption
+                                    choice={choice}
+                                    index={index}
+                                    name={name}
+                                    choices={choices}
+                                    locale={selectedLocale}
+                                    removeOption={removeOption}
+                                    inputType={inputType}
+                                    canDeleteLastOption={canDeleteLastOption}
+                                  />
                                 </Row>
                               ) : (
                                 <SortableRow
-                                  id={choice.id}
+                                  id={
+                                    choice.temp_id
+                                      ? `${choice.temp_id}-${index}`
+                                      : `${choice.id}-${index}`
+                                  }
                                   index={index}
                                   moveRow={
-                                    choice.other === true
-                                      ? () => {}
-                                      : handleDragRow
+                                    choice?.other ? () => {} : handleDragRow
                                   }
                                   dropRow={() => {
                                     // Do nothing, no need to handle dropping a row for now
                                   }}
                                 >
-                                  {eachOption(choice, index)}
+                                  <SelectFieldOption
+                                    choice={choice}
+                                    index={index}
+                                    name={name}
+                                    choices={choices}
+                                    locale={selectedLocale}
+                                    removeOption={removeOption}
+                                    inputType={inputType}
+                                    canDeleteLastOption={canDeleteLastOption}
+                                  />
                                 </SortableRow>
                               )}
                             </Box>
