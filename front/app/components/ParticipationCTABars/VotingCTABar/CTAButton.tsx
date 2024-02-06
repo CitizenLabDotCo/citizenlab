@@ -17,6 +17,7 @@ import styled, { useTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import useLocalize from 'hooks/useLocalize';
+import globalMessages from 'utils/messages';
 
 // utils
 import JSConfetti from 'js-confetti';
@@ -69,19 +70,6 @@ const CTAButton = ({ phase, project }: Props) => {
   const localize = useLocalize();
   const [processing, setProcessing] = useState(false);
 
-  const votingMethod = phase.attributes.voting_method;
-  if (!votingMethod || numberOfVotesCast === undefined) return null;
-
-  const currency = appConfig?.data.attributes.settings.core.currency;
-
-  const disabledExplanation = getDisabledExplanation(
-    formatMessage,
-    localize,
-    phase,
-    numberOfVotesCast,
-    currency
-  );
-
   const handleSubmitOnClick = () => {
     if (basket) {
       const update = () => {
@@ -125,36 +113,63 @@ const CTAButton = ({ phase, project }: Props) => {
     }
   };
 
+  const votingActionDescriptor = project.attributes.action_descriptor.voting;
+  const votingMethod = phase.attributes.voting_method;
+  if (!votingMethod || numberOfVotesCast === undefined) return null;
+  const currency = appConfig?.data.attributes.settings.core.currency;
+
+  const getDisabledReasonMessage = (reason: VotingDisabledReason) => {
+    switch (reason) {
+      case 'not_in_group':
+        return formatMessage(globalMessages.notInGroup);
+      default:
+        return null;
+    }
+  };
+
+  const disabledExplanation =
+    votingActionDescriptor.disabled_reason !== null
+      ? getDisabledReasonMessage(votingActionDescriptor.disabled_reason)
+      : getDisabledExplanation(
+          formatMessage,
+          localize,
+          phase,
+          numberOfVotesCast,
+          currency
+        );
+
+  const disabled =
+    votingActionDescriptor.disabled_reason !== null ||
+    typeof disabledExplanation === 'string';
+
   return (
-    <>
-      <Tippy
-        disabled={!disabledExplanation}
-        interactive={true}
-        placement="bottom"
-        content={disabledExplanation}
-      >
-        <Box width="100%">
-          <StyledButton
-            icon="vote-ballot"
-            buttonStyle="secondary"
-            iconColor={theme.colors.tenantText}
-            onClick={handleSubmitOnClick}
-            fontWeight="500"
-            bgColor={theme.colors.white}
-            textColor={theme.colors.tenantText}
-            id="e2e-voting-submit-button"
-            textHoverColor={theme.colors.black}
-            padding="6px 12px"
-            fontSize="14px"
-            disabled={!!disabledExplanation}
-            processing={processing}
-            className={disabledExplanation ? '' : 'pulse'}
-          >
-            <FormattedMessage {...messages.submit} />
-          </StyledButton>
-        </Box>
-      </Tippy>
-    </>
+    <Tippy
+      disabled={!disabled}
+      interactive={true}
+      placement="bottom"
+      content={disabledExplanation}
+    >
+      <Box width="100%">
+        <StyledButton
+          icon="vote-ballot"
+          buttonStyle="secondary"
+          iconColor={theme.colors.tenantText}
+          onClick={handleSubmitOnClick}
+          fontWeight="500"
+          bgColor={theme.colors.white}
+          textColor={theme.colors.tenantText}
+          id="e2e-voting-submit-button"
+          textHoverColor={theme.colors.black}
+          padding="6px 12px"
+          fontSize="14px"
+          disabled={disabled}
+          processing={processing}
+          className={disabledExplanation ? '' : 'pulse'}
+        >
+          <FormattedMessage {...messages.submit} />
+        </StyledButton>
+      </Box>
+    </Tippy>
   );
 };
 
