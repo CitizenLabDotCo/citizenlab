@@ -10,6 +10,17 @@ resource 'CustomFieldOptionImage' do
     header 'Content-Type', 'application/json'
   end
 
+  context 'as a visitor' do
+    get 'web_api/v1/custom_field_option_images/:image_id' do
+      let(:image_id) { create(:custom_field_option_image).id }
+
+      example_request 'Get a CustomFieldOptionImage' do
+        expect(response_status).to eq 200
+        expect(json_response_body.dig(:data, :attributes, :versions).keys).to match %i[small medium large fb]
+      end
+    end
+  end
+
   context 'as an admin' do
     before do
       header_token_for create(:admin)
@@ -23,8 +34,7 @@ resource 'CustomFieldOptionImage' do
 
       example_request 'Add a CustomFieldOptionImage without an associated option' do
         expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small medium large fb]
+        expect(json_response_body.dig(:data, :attributes, :versions).keys).to match %i[small medium large fb]
       end
     end
 

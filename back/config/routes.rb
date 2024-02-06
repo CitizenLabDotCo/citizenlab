@@ -231,7 +231,7 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
-      resources :custom_field_option_images, only: %i[create update destroy], controller: :images, defaults: { container_type: 'CustomFieldOption' }
+      resources :custom_field_option_images, only: %i[show create update destroy], controller: :images, defaults: { container_type: 'CustomFieldOption' }
 
       resources :experiments, only: %i[index create]
 
