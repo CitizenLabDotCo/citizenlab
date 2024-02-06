@@ -21,7 +21,9 @@ const SurveyQuestionResultWidget = ({
   phaseId,
   fieldId,
 }: Props) => {
-  const emptyMessage = getEmptyMessage({ projectId, phaseId });
+  const projectOrPhaseEmptyMessage = getEmptyMessage({ projectId, phaseId });
+  const emptyMessage =
+    projectOrPhaseEmptyMessage ?? (!fieldId ? messages.emptyField : undefined);
 
   return (
     <Card title={title} data-testid="survey-question-result-widget">
