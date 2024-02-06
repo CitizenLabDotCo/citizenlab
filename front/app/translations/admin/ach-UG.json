@@ -69,6 +69,8 @@
   "app.components.UserSearch.addModerators": "crwdns1639622:0crwdne1639622:0",
   "app.components.UserSearch.noOptions": "crwdns1639624:0crwdne1639624:0",
   "app.components.UserSearch.searchUsers": "crwdns1639626:0crwdne1639626:0",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "crwdns1646218:0crwdne1646218:0",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "crwdns1646214:0crwdne1646214:0",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "crwdns1639628:0crwdne1639628:0",
   "app.components.admin.DateTimePicker.time": "crwdns1639630:0crwdne1639630:0",
   "app.components.admin.Graphs": "crwdns1639632:0crwdne1639632:0",
@@ -2556,6 +2558,7 @@
   "app.modules.navbar.admin.containers.pageHeader": "crwdns1644596:0crwdne1644596:0",
   "app.modules.navbar.admin.containers.pageSubtitle": "crwdns1644598:0crwdne1644598:0",
   "app.modules.project_management.admin.components.permissionsTab": "crwdns1644600:0crwdne1644600:0",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "crwdns1646216:0crwdne1646216:0",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "crwdns1644602:0crwdne1644602:0",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "crwdns1644604:0crwdne1644604:0",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "crwdns1644606:0{supportPageLink}crwdne1644606:0"
