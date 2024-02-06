@@ -75,6 +75,7 @@ resource 'Summaries' do
         .to have_enqueued_job(Analysis::SummarizationJob)
         .and change(Analysis::BackgroundTask, :count).from(0).to(1)
       expect(status).to eq 201
+      background_task = Analysis::BackgroundTask.first
       expect(response_data).to match({
         id: kind_of(String),
         type: 'summary',
@@ -94,12 +95,11 @@ resource 'Summaries' do
           background_task: {
             data: {
               type: 'background_task',
-              id: kind_of(String)
+              id: background_task.id
             }
           }
         }
       })
-      background_task = Analysis::BackgroundTask.first
       expect(json_response_body[:included].pluck(:id)).to include(background_task.id)
 
       expect(background_task).to have_attributes({
@@ -116,6 +116,60 @@ resource 'Summaries' do
       do_request(summary: { filters: { tag_ids: [nil] } })
       expect(status).to eq 201
       expect(response_data.dig(:attributes, :filters, :tag_ids)).to eq([nil])
+    end
+  end
+
+  post 'web_api/v1/analyses/:analysis_id/summaries/:id/regenerate' do
+    let(:summary) { create(:summary) }
+    let(:analysis_id) { summary.analysis_id }
+    let(:id) { summary.id }
+    let(:tag) { create(:tag, analysis: summary.analysis) }
+
+    example 'Regenerate a summary' do
+      create(:summarization_task, state: 'succeeded', ended_at: Time.now) # TODO: Also deal with case where current task is in progress?
+
+      do_request
+      byebug
+
+      expect { do_request }
+        .to have_enqueued_job(Analysis::SummarizationJob)
+        .and change(Analysis::BackgroundTask, :count).from(1).to(2)
+      expect(status).to eq 201
+      new_background_task = Analysis::BackgroundTask.find_by(state: 'queued')
+      expect(response_data).to match({
+        id: kind_of(String),
+        type: 'summary',
+        attributes: {
+          summary: nil,
+          filters: {
+            reactions_from: 5,
+            tag_ids: [tag.id]
+          },
+          accuracy: 0.8,
+          missing_inputs_count: 0,
+          created_at: kind_of(String),
+          updated_at: kind_of(String),
+          generated_at: nil
+        },
+        relationships: {
+          background_task: {
+            data: {
+              type: 'background_task',
+              id: new_background_task.id
+            }
+          }
+        }
+      })
+      expect(json_response_body[:included].pluck(:id)).to include(new_background_task.id)
+
+      expect(background_task).to have_attributes({
+        progress: nil,
+        type: 'Analysis::SummarizationTask',
+        state: 'queued',
+        created_at: be_present,
+        updated_at: be_present,
+        ended_at: nil
+      })
     end
   end
 

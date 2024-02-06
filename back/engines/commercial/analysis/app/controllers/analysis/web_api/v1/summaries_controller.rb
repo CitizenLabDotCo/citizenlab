@@ -7,7 +7,7 @@ module Analysis
         include FilterParamsExtraction
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
-        before_action :set_summary, only: [:show]
+        before_action :set_summary, only: %i[show regenerate]
 
         def show
           render json: SummarySerializer.new(@summary, params: jsonapi_serializer_params).serializable_hash
@@ -44,6 +44,25 @@ module Analysis
 
           if @summary.save && plan.possible?
             side_fx_service.after_create(@summary, current_user)
+            SummarizationJob.perform_later(@summary)
+            render json: SummarySerializer.new(
+              @summary,
+              params: jsonapi_serializer_params,
+              include: [:background_task]
+            ).serializable_hash, status: :created
+          else
+            render json: { errors: @summary.errors.details }, status: :unprocessable_entity
+          end
+        end
+
+        def regenerate
+          @summary.background_task = SummarizationTask.new(analysis: @analysis)
+          plan = SummarizationMethod::Base.plan(@summary)
+          @summary.summarization_method = plan.summarization_method_class::SUMMARIZATION_METHOD
+          @summary.accuracy = plan.accuracy
+
+          if @summary.save && plan.possible?
+            # side_fx_service.after_create(@summary, current_user)
             SummarizationJob.perform_later(@summary)
             render json: SummarySerializer.new(
               @summary,
