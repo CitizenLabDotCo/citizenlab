@@ -133,67 +133,64 @@ const ProjectFolderShowPage = memo<{
     userModeratesFolder(authUser.data, projectFolder.id);
 
   return (
-    <>
-      <ProjectFolderShowPageMeta projectFolder={projectFolder} />
-      <Container id="e2e-folder-page">
-        <>
-          <StyledContentContainer maxWidth={maxPageWidth}>
-            <Box display="flex" width="100%">
-              <Box ml="auto" display="flex" mb="24px">
-                {userCanEditFolder && (
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="flex-end"
-                    ml="30px"
+    <Container id="e2e-folder-page">
+      <>
+        <StyledContentContainer maxWidth={maxPageWidth}>
+          <Box display="flex" width="100%">
+            <Box ml="auto" display="flex" mb="24px">
+              {userCanEditFolder && (
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="flex-end"
+                  ml="30px"
+                >
+                  <Button
+                    icon="edit"
+                    linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
+                    buttonStyle="secondary"
+                    padding="6px 12px"
                   >
-                    <Button
-                      icon="edit"
-                      linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
-                      buttonStyle="secondary"
-                      padding="6px 12px"
-                    >
-                      <FormattedMessage {...messages.editFolder} />
-                    </Button>
-                  </Box>
-                )}
-                <Box ml="8px">
-                  <FollowUnfollow
-                    followableType="project_folders"
-                    followableId={projectFolder.id}
-                    followersCount={projectFolder.attributes.followers_count}
-                    followerId={
-                      projectFolder.relationships.user_follower?.data?.id
-                    }
-                    followableSlug={projectFolder.attributes.slug}
-                    w="auto"
-                    py="6px"
-                    iconSize="20px"
-                  />
+                    <FormattedMessage {...messages.editFolder} />
+                  </Button>
                 </Box>
+              )}
+              <Box ml="8px">
+                <FollowUnfollow
+                  followableType="project_folders"
+                  followableId={projectFolder.id}
+                  followersCount={projectFolder.attributes.followers_count}
+                  followerId={
+                    projectFolder.relationships.user_follower?.data?.id
+                  }
+                  followableSlug={projectFolder.attributes.slug}
+                  w="auto"
+                  py="6px"
+                  iconSize="20px"
+                />
               </Box>
             </Box>
-            <ProjectFolderHeader projectFolder={projectFolder} />
-            {!smallerThan1280px ? (
-              <Content>
-                <StyledProjectFolderDescription projectFolder={projectFolder} />
-                <StyledProjectFolderProjectCards folderId={projectFolder.id} />
-              </Content>
-            ) : (
+          </Box>
+          <ProjectFolderHeader projectFolder={projectFolder} />
+          {!smallerThan1280px ? (
+            <Content>
               <StyledProjectFolderDescription projectFolder={projectFolder} />
-            )}
-          </StyledContentContainer>
-
-          {smallerThan1280px && (
-            <CardsWrapper>
-              <ContentContainer maxWidth={maxPageWidth}>
-                <StyledProjectFolderProjectCards folderId={projectFolder.id} />
-              </ContentContainer>
-            </CardsWrapper>
+              <StyledProjectFolderProjectCards folderId={projectFolder.id} />
+            </Content>
+          ) : (
+            <StyledProjectFolderDescription projectFolder={projectFolder} />
           )}
-        </>
-      </Container>
-    </>
+        </StyledContentContainer>
+
+        {smallerThan1280px && (
+          <CardsWrapper>
+            <ContentContainer maxWidth={maxPageWidth}>
+              <StyledProjectFolderProjectCards folderId={projectFolder.id} />
+            </ContentContainer>
+          </CardsWrapper>
+        )}
+      </>
+    </Container>
   );
 });
 
@@ -217,7 +214,12 @@ const ProjectFolderShowPageWrapper = () => {
     return <PageNotFound />;
   }
 
-  return <ProjectFolderShowPage projectFolder={projectFolder.data} />;
+  return (
+    <>
+      <ProjectFolderShowPageMeta projectFolder={projectFolder.data} />
+      <ProjectFolderShowPage projectFolder={projectFolder.data} />;
+    </>
+  );
 };
 
 export default ProjectFolderShowPageWrapper;
