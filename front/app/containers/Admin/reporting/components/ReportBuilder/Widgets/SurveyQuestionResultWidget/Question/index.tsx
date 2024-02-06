@@ -6,18 +6,20 @@ import { useSurveyQuestionResult } from 'api/graph_data_units';
 // components
 import { Title, Text } from '@citizenlab/cl2-component-library';
 import MultipleChoice from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MultipleChoice';
+import Source from './Source';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 interface Props {
+  projectId: string;
   phaseId: string;
   fieldId: string;
 }
 
-const SurveyQuestionResult = ({ phaseId, fieldId }: Props) => {
+const SurveyQuestionResult = ({ projectId, phaseId, fieldId }: Props) => {
   const response = useSurveyQuestionResult({ phaseId, fieldId });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -25,7 +27,6 @@ const SurveyQuestionResult = ({ phaseId, fieldId }: Props) => {
   if (!response) return null;
 
   const { answers, totalResponses, question } = response.data.attributes.result;
-
   if (!answers) return null;
 
   return (
@@ -40,6 +41,7 @@ const SurveyQuestionResult = ({ phaseId, fieldId }: Props) => {
         multipleChoiceAnswers={answers}
         totalResponses={totalResponses}
       />
+      <Source projectId={projectId} phaseId={phaseId} />
     </>
   );
 };

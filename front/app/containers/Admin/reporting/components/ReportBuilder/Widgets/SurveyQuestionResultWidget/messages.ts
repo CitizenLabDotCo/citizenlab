@@ -13,4 +13,12 @@ export default defineMessages({
     id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses',
     defaultMessage: '{count} responses',
   },
+  sourceAndReference: {
+    id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.sourceAndReference',
+    defaultMessage: 'Data from {phase} during {period}',
+  },
+  untilNow: {
+    id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow',
+    defaultMessage: '{date} until now',
+  },
 });
