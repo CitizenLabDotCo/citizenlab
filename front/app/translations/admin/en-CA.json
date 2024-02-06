@@ -69,6 +69,8 @@
   "app.components.UserSearch.addModerators": "Add",
   "app.components.UserSearch.noOptions": "No options",
   "app.components.UserSearch.searchUsers": "Type to search users...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "No question selected. Please select a question first.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Single survey question",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Title",
   "app.components.admin.DateTimePicker.time": "Time",
   "app.components.admin.Graphs": "No data available with the current filters.",
@@ -2556,6 +2558,7 @@
   "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Your navigation bar can display up to five pages in addition to the Home and projects pages. You can rename menu items, re-order and add new pages  with your own content.",
   "app.modules.project_management.admin.components.permissionsTab": "Access rights",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Question",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
