@@ -379,6 +379,10 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.leaveSurveyText',
     defaultMessage: "Your answers won't be saved.",
   },
+  leaveSurveyTextLoggedIn: {
+    id: 'app.containers.IdeasNewPage.leaveSurveyTextLoggedIn',
+    defaultMessage: "Your draft answers have been saved privately and you can return to complete this survey later.",
+  },
   confirmLeaveSurveyButtonText: {
     id: 'app.containers.IdeasNewPage.confirmLeaveSurveyButtonText',
     defaultMessage: 'Yes, I want to leave the survey',

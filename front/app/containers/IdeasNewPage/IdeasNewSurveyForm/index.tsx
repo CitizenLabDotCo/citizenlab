@@ -92,49 +92,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const allowAnonymousPosting =
     participationContext?.attributes.allow_anonymous_participation;
 
-  if(!phaseId) {
-    return null;
-  }
-
-  // Try and load in a draft idea if one exists
-  const draftIdeaLoading = draftIdeaStatus === 'loading';
-  if (draftIdeaStatus === 'success' && !isNilOrError(draftIdea) && !ideaId && schema) {
-    setInitialFormData(getFormValues(draftIdea, schema));
-    setIdeaId(draftIdea.data.id);
-  }
-
-  // Handle draft ideas
-  const handleDraftIdeas = async (data: FormValues) => {
-    if (data.publication_status === 'draft') {
-      if (isNilOrError(authUser)) {
-        // Anonymous surveys should not save drafts
-        return;
-      }
-
-      return onSubmit(data, false);
-    } else {
-      return onSubmit(data, true);
-    }
-  }
-
-  const onSubmit = async (data: FormValues, published?: boolean) => {
-    const requestBody = {
-      ...data,
-      project_id: project.data.id,
-      publication_status: data.publication_status || 'published',
-      phase_ids: [phaseId],
-    };
-
-    // Update or add the idea depending on if we have an existing draft idea
-    const idea = ideaId ? await updateIdea({ id: ideaId, requestBody }) : await addIdea(requestBody);
-    setIdeaId(idea.data.id);
-
-    if (published) {
-      clearDraftIdea(phaseId);
-      participationMethodConfig?.onFormSubmission({project: project.data, ideaId, idea});
-    }
-  };
-
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
       return (
@@ -167,9 +124,46 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     [uiSchema]
   );
 
-  if (!participationMethodConfig) {
+  if (!participationMethodConfig || !phaseId) {
     return null;
   }
+
+  // Try and load in a draft idea if one exists
+  const draftIdeaLoading = draftIdeaStatus === 'loading';
+  if (draftIdeaStatus === 'success' && !isNilOrError(draftIdea) && !ideaId && schema) {
+    setInitialFormData(getFormValues(draftIdea, schema));
+    setIdeaId(draftIdea.data.id);
+  }
+
+  const handleDraftIdeas = async (data: FormValues) => {
+    if (data.publication_status === 'draft') {
+      if (isNilOrError(authUser)) {
+        // Anonymous surveys should not save drafts
+        return;
+      }
+
+      return onSubmit(data, false);
+    } else {
+      return onSubmit(data, true);
+    }
+  }
+
+  const onSubmit = async (data: FormValues, published?: boolean) => {
+    const requestBody = {
+      ...data,
+      project_id: project.data.id,
+      publication_status: data.publication_status || 'published',
+    };
+
+    // Update or add the idea depending on if we have an existing draft idea
+    const idea = ideaId ? await updateIdea({ id: ideaId, requestBody }) : await addIdea(requestBody);
+    setIdeaId(idea.data.id);
+
+    if (published) {
+      clearDraftIdea(phaseId);
+      participationMethodConfig?.onFormSubmission({project: project.data, ideaId, idea});
+    }
+  };
 
   const canUserEditProject =
     !isNilOrError(authUser) &&
@@ -205,6 +199,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
                   }
                   isSurvey={true}
                   canUserEditProject={canUserEditProject}
+                  loggedIn={!isNilOrError(authUser)}
                 />
                 {allowAnonymousPosting && (
                   <Box mx="auto" p="20px" maxWidth="700px">
