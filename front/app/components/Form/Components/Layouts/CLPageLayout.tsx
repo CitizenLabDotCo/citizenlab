@@ -145,7 +145,7 @@ const CLPageLayout = memo(
         scrollToTop();
         data.publication_status = 'draft';
         data.latest_complete_page = currentStep;
-        await onSubmit?.(data);
+        onSubmit?.(data);
         setCurrentStep(currentStep + 1);
 ;
         setIsLoading(false);

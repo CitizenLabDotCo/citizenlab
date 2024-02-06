@@ -67,6 +67,10 @@ export default defineMessages({
     defaultMessage:
       'A file failed to upload. Please check the file size and format and try again.',
   },
+  surveyNewMetaTitle: {
+    id: 'app.containers.IdeasNewPage.surveyNewMetaTitle',
+    defaultMessage: 'Add survey response | {projectName}',
+  },
   ideaNewMetaTitle: {
     id: 'app.containers.IdeasNewPage.ideaNewMetaTitle',
     defaultMessage: 'Add new idea | {projectName}',
