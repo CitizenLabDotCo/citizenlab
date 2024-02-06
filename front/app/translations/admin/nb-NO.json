@@ -69,6 +69,8 @@
   "app.components.UserSearch.addModerators": "Legg til",
   "app.components.UserSearch.noOptions": "Ingen alternativer",
   "app.components.UserSearch.searchUsers": "Skriv for å søke etter brukere...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Ingen spørsmål er valgt. Vennligst velg et spørsmål først.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Enkelt spørreundersøkelse",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Tittel",
   "app.components.admin.DateTimePicker.time": "Tid",
   "app.components.admin.Graphs": "Det er ingen tilgjengelige data med de gjeldende filterne.",
@@ -2556,6 +2558,7 @@
   "app.modules.navbar.admin.containers.pageHeader": "Sider og meny",
   "app.modules.navbar.admin.containers.pageSubtitle": "Navigasjonslinjen kan vise opptil fem sider i tillegg til start- og prosjektsidene. Du kan gi nye navn til menyelementer, sortere og legge til nye sider med ditt eget innhold.",
   "app.modules.project_management.admin.components.permissionsTab": "Tilgangsrettigheter",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Spørsmål",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "besøke støttesenteret",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For mer informasjon om anbefalte bildeoppløsninger kan du {supportPageLink}."
