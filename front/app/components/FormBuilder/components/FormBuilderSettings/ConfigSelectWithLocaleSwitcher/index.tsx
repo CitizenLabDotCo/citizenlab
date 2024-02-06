@@ -85,7 +85,6 @@ const ConfigSelectWithLocaleSwitcher = ({
 
   // Handles add and remove options
   const addOption = (value, name: string, hasOtherOption: boolean) => {
-    console.log('value', value);
     const newValues = value;
     const optionIndex = hasOtherOption ? value.length - 1 : value.length;
     newValues.splice(optionIndex, 0, {
