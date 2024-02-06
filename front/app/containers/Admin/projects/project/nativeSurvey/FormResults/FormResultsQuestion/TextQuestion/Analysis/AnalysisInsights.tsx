@@ -260,7 +260,9 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
       addAnalysisSummary(
         {
           analysisId: analysis.id,
-          filters: {},
+          filters: {
+            input_custom_field_no_empty_values: true,
+          },
         },
         {
           onSuccess: (res) => {
