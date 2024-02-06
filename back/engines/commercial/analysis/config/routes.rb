@@ -20,6 +20,7 @@ Analysis::Engine.routes.draw do
         end
         resources :questions, only: %i[create show] do
           post :pre_check, on: :collection
+          post :regenerate, on: :member
         end
         resources :users, only: [:show]
         nested do

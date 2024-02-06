@@ -110,6 +110,76 @@ resource 'Questions' do
     end
   end
 
+  post 'web_api/v1/analyses/:analysis_id/questions/:id/regenerate' do
+    let(:state) { 'succeeded' }
+    let(:background_task) { create(:q_and_a_task, state: state, ended_at: Time.now) }
+    let(:analysis) { create(:analysis) }
+    let(:filters) { { reactions_from: 5 } }
+    let!(:question) { create(:analysis_question, question: nil, insight_attributes: { filters: filters, analysis: analysis }, background_task: background_task) }
+    let(:analysis_id) { analysis.id }
+    let(:id) { question.id }
+
+    example 'Regenerate a question' do
+      expect { do_request }
+        .to have_enqueued_job(Analysis::QAndAJob)
+        .and change(Analysis::BackgroundTask, :count).from(1).to(2)
+      expect(status).to eq 201
+      new_background_task = Analysis::BackgroundTask.find_by(state: 'queued')
+      expect(response_data).to match({
+        id: kind_of(String),
+        type: 'analysis_question',
+        attributes: {
+          question: nil,
+          answer: nil,
+          filters: { reactions_from: 5 },
+          accuracy: 0.8,
+          missing_inputs_count: 0,
+          created_at: kind_of(String),
+          updated_at: kind_of(String),
+          generated_at: nil
+        },
+        relationships: {
+          background_task: {
+            data: {
+              type: 'background_task',
+              id: new_background_task.id
+            }
+          }
+        }
+      })
+      expect(json_response_body[:included].pluck(:id)).to include(new_background_task.id)
+
+      expect(new_background_task).to have_attributes({
+        progress: nil,
+        type: 'Analysis::QAndATask',
+        state: 'queued',
+        created_at: be_present,
+        updated_at: be_present,
+        ended_at: nil
+      })
+    end
+
+    describe 'when the current task is queued or in progress' do
+      let(:state) { 'queued' }
+
+      example_request '[error] returns previous_task_not_yet_finished' do
+        expect(status).to eq 422
+        expect(json_response_body).to eq ({ errors: { base: [{ error: 'previous_task_not_yet_finished' }] } })
+      end
+    end
+
+    example '[error] too many inputs' do
+      allow(Analysis::QAndAMethod::Base)
+        .to receive(:plan)
+        .and_return(Analysis::QAndAPlan.new(impossible_reason: :too_many_inputs))
+
+      do_request
+
+      expect(status).to eq 422
+      expect(json_response_body).to eq ({ errors: { base: [{ error: 'too_many_inputs' }] } })
+    end
+  end
+
   post 'web_api/v1/analyses/:analysis_id/questions/pre_check' do
     parameter :question, 'The question posed by the user', required: true, scope: :question
     with_options scope: %i[question filters] do
