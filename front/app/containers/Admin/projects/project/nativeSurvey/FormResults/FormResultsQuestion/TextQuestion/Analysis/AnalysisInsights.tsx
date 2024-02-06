@@ -23,6 +23,7 @@ import FilterItems from 'containers/Admin/projects/project/analysis/FilterItems'
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
+import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 
 type AnalysisInsight = {
   analysisId: string;
@@ -230,10 +231,16 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
   >();
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
 
-  const singleCustomFieldAnalysisId = analyses.find(
-    (analysis) => analysis.relationships.custom_fields.data.length === 1
-  )?.id;
+  const singleCustomFieldAnalysisId =
+    analyses.find(
+      (analysis) => analysis.relationships.custom_fields.data.length === 1
+    )?.id || '';
+  const { data: inputs } = useInfiniteAnalysisInputs({
+    analysisId: singleCustomFieldAnalysisId,
+    queryParams: {},
+  });
 
+  const inputCount = inputs?.pages[0].meta.filtered_count || 0;
   const { data: singleCustomFieldAnalysisInsights } = useAnalysisInsights({
     analysisId: singleCustomFieldAnalysisId,
   });
@@ -268,7 +275,8 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
     if (
       singleCustomFieldAnalysisId &&
       singleCustomFieldAnalysisInsights?.data.length === 0 &&
-      !automaticSummaryCreated
+      !automaticSummaryCreated &&
+      inputCount > 10
     ) {
       setAutomaticSummaryCreated(true);
       addAnalysisSummary(
@@ -288,6 +296,7 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
     addAnalysisSummary,
     singleCustomFieldAnalysisInsights,
     automaticSummaryCreated,
+    inputCount,
   ]);
 
   if (insights.length === 0) {
