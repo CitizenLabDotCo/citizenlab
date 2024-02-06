@@ -69,6 +69,8 @@
   "app.components.UserSearch.addModerators": "Add",
   "app.components.UserSearch.noOptions": "Sense opcions",
   "app.components.UserSearch.searchUsers": "Escriviu per cercar usuaris...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "No s'ha seleccionat cap pregunta. Seleccioneu una pregunta primer.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Pregunta única de l'enquesta",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Title",
   "app.components.admin.DateTimePicker.time": "Temps",
   "app.components.admin.Graphs": "No hi ha dades disponibles amb els filtres actuals.",
@@ -2556,6 +2558,7 @@
   "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "La barra de navegació pot mostrar fins a cinc pàgines a més de les pàgines d'inici i de projectes. Podeu canviar el nom dels elements del menú, tornar a ordenar i afegir pàgines noves amb el vostre propi contingut.",
   "app.modules.project_management.admin.components.permissionsTab": "Access rights",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Pregunta",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."
