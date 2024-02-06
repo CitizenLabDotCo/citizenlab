@@ -7,7 +7,6 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { IAnalysisData } from 'api/analyses/types';
-import useAnalysisInsightsWithIds from 'api/analysis_insights/useAnalysisInsightsById';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import React, { useState, useEffect } from 'react';
@@ -24,14 +23,6 @@ import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary'
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
-
-type AnalysisInsight = {
-  analysisId: string;
-  relationship: {
-    id: string;
-    type: 'summary' | 'analysis_question';
-  };
-};
 
 // Convert all values in the filters object to strings
 // This is necessary because the filters are passed as query params
@@ -225,55 +216,42 @@ const Question = ({
   );
 };
 
-const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
+const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
   const [backgroundTaskId, setBackgroundTaskId] = useState<
     string | undefined
   >();
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
 
-  const singleCustomFieldAnalysisId =
-    analyses.find(
-      (analysis) => analysis.relationships.custom_fields.data.length === 1
-    )?.id || '';
   const { data: inputs } = useInfiniteAnalysisInputs({
-    analysisId: singleCustomFieldAnalysisId,
+    analysisId: analysis.id,
     queryParams: {},
   });
 
   const inputCount = inputs?.pages[0].meta.filtered_count || 0;
   const { data: singleCustomFieldAnalysisInsights } = useAnalysisInsights({
-    analysisId: singleCustomFieldAnalysisId,
+    analysisId: analysis.id,
   });
 
   const { mutate: addAnalysisSummary } = useAddAnalysisSummary();
 
   const { data: task } = useAnalysisBackgroundTask(
-    singleCustomFieldAnalysisId,
+    analysis.id,
     backgroundTaskId,
     true
   );
   const { formatMessage } = useIntl();
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
-  const result = useAnalysisInsightsWithIds({
-    analysisIds: analyses?.map((a) => a.id) || [],
+  const { data: insights } = useAnalysisInsights({
+    analysisId: analysis.id,
   });
 
-  const insights = result
-    .flatMap(({ data }, i) =>
-      data?.data.map((insight) => ({
-        analysisId: analyses[i].id,
-        relationship: insight.relationships.insightable.data,
-      }))
-    )
-    .filter((relationship) => relationship !== undefined) as AnalysisInsight[];
-
-  const selectedInsight = insights[selectedInsightIndex];
+  const selectedInsight = insights?.data[selectedInsightIndex];
 
   // Create a summary if there are no insights yet
 
   useEffect(() => {
     if (
-      singleCustomFieldAnalysisId &&
+      analysis.id &&
       singleCustomFieldAnalysisInsights?.data.length === 0 &&
       !automaticSummaryCreated &&
       inputCount > 10
@@ -281,7 +259,7 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
       setAutomaticSummaryCreated(true);
       addAnalysisSummary(
         {
-          analysisId: singleCustomFieldAnalysisId,
+          analysisId: analysis.id,
           filters: {},
         },
         {
@@ -292,20 +270,20 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
       );
     }
   }, [
-    singleCustomFieldAnalysisId,
+    analysis.id,
     addAnalysisSummary,
     singleCustomFieldAnalysisInsights,
     automaticSummaryCreated,
     inputCount,
   ]);
 
-  if (insights.length === 0) {
+  if (!insights || insights.data.length === 0) {
     return null;
   }
 
   return (
     <Box position="relative">
-      {insights.length > 1 && (
+      {insights.data.length > 1 && (
         <Box
           display="flex"
           justifyContent="center"
@@ -326,12 +304,12 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
             a11y_buttonActionMessage={formatMessage(messages.previousInsight)}
           />
           <Text>
-            {selectedInsightIndex + 1} / {insights.length}
+            {selectedInsightIndex + 1} / {insights.data.length}
           </Text>
           <IconButton
             iconName="chevron-right"
             onClick={() => {
-              selectedInsightIndex < insights.length - 1 &&
+              selectedInsightIndex < insights.data.length - 1 &&
                 setSelectedInsightIndex(selectedInsightIndex + 1);
             }}
             iconColor={colors.black}
@@ -343,11 +321,12 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
       <Box>
         {selectedInsight && (
           <>
-            {selectedInsight.relationship.type === 'analysis_question' ? (
+            {selectedInsight.relationships.insightable.data.type ===
+            'analysis_question' ? (
               <Question
-                key={selectedInsight.relationship.id}
-                summaryId={selectedInsight.relationship.id}
-                analysisId={selectedInsight.analysisId}
+                key={selectedInsight.relationships.insightable.data.id}
+                summaryId={selectedInsight.relationships.insightable.data.id}
+                analysisId={analysis.id}
                 isLoading={
                   task?.data.attributes.state === 'queued' ||
                   task?.data.attributes.state === 'in_progress'
@@ -355,9 +334,9 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
               />
             ) : (
               <Summary
-                key={selectedInsight.relationship.id}
-                summaryId={selectedInsight.relationship.id}
-                analysisId={selectedInsight.analysisId}
+                key={selectedInsight.relationships.insightable.data.id}
+                summaryId={selectedInsight.relationships.insightable.data.id}
+                analysisId={analysis.id}
                 isLoading={
                   task?.data.attributes.state === 'queued' ||
                   task?.data.attributes.state === 'in_progress'
