@@ -2,6 +2,7 @@ import React from 'react';
 
 // api
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
+import { ICustomFieldInputType } from 'api/custom_fields/types';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -18,15 +19,24 @@ interface Props {
   onFieldFilter: (fieldOption: IOption) => void;
 }
 
+const SUPPORTED_INPUT_TYPES = new Set<ICustomFieldInputType>([
+  'select',
+  'multiselect',
+]);
+
 const FieldFilter = ({ phaseId, fieldId, onFieldFilter }: Props) => {
   const { data: fields } = useRawCustomFields({ phaseId });
   const localize = useLocalize();
 
   const fieldOptions = fields
-    ? fields.data.map((field) => ({
-        value: field.id,
-        label: localize(field.attributes.title_multiloc),
-      }))
+    ? fields.data
+        .filter((field) =>
+          SUPPORTED_INPUT_TYPES.has(field.attributes.input_type)
+        )
+        .map((field) => ({
+          value: field.id,
+          label: localize(field.attributes.title_multiloc),
+        }))
     : [];
 
   return (
