@@ -738,6 +738,7 @@
   "app.containers.AccessibilityStatement.workshops": "Radionice",
   "app.containers.Admin.Insights.tabInsights": "Uvidi",
   "app.containers.Admin.Insights.tabReports": "Izvješća",
+  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Odaberite projekt",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Završetak upitnika",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Kreirajte pametnu grupu",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Korisnici koji zadovoljavaju navedene uvjete automatski će biti dodani u grupu:",
