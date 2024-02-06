@@ -69,6 +69,8 @@
   "app.components.UserSearch.addModerators": "Ekle",
   "app.components.UserSearch.noOptions": "Seçenek yok",
   "app.components.UserSearch.searchUsers": "Kullanıcıları aramak için yazın...",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Seçili soru yok. Lütfen önce bir soru seçin.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Tek anket sorusu",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Başlık",
   "app.components.admin.DateTimePicker.time": "Zaman",
   "app.components.admin.Graphs": "Mevcut filtrelerle ilgili veri yok.",
@@ -2556,6 +2558,7 @@
   "app.modules.navbar.admin.containers.pageHeader": "Sayfalar ve menü",
   "app.modules.navbar.admin.containers.pageSubtitle": "Gezinti çubuğunuz, Ana Sayfa ve projeler sayfalarına ek olarak beş adede kadar sayfa görüntüleyebilir. Menü öğelerini yeniden adlandırabilir, sıralarını değiştirebilir ve kendi içeriğinizin bulunduğu yeni sayfalar ekleyebilirsiniz.",
   "app.modules.project_management.admin.components.permissionsTab": "Erişim hakları",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Soru",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "destek merkezimizi ziyaret edin",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Önerilen görüntü çözünürlükleri hakkında daha fazla bilgi için, {supportPageLink}."
