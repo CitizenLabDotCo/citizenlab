@@ -180,7 +180,12 @@ jobs:
       # Solution: upgrade to '>= 2.0.0'
       # But we can't, due to unmaintained gems that don't work with Omniauth 2.0.
       # See https://github.com/rubysec/bundler-audit
-      - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284
+      #
+      # GHSA-xc9x-jj77-9p9j
+      # Solutions: upgrade Nokogiri (requires newer Ruby) or
+      # Compile and link Nokogiri against new libxml2
+      # https://github.com/sparklemotion/nokogiri/security/advisories/GHSA-xc9x-jj77-9p9j
+      - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284 GHSA-xc9x-jj77-9p9j
 
   back-license-check:
     resource_class: small
