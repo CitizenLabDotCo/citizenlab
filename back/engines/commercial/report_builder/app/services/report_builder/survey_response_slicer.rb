@@ -39,7 +39,6 @@ module ReportBuilder
         .select(:answer)
         .from(answers)
         .group(:answer, :group_by_value)
-        .order(Arel.sql('COUNT(answer) DESC'))
         .count
         .to_a
         .map do |(answer, group_by_value), count|
