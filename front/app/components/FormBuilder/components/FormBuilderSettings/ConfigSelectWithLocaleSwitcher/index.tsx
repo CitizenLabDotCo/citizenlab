@@ -86,7 +86,7 @@ const ConfigSelectWithLocaleSwitcher = ({
     const optionIndex = hasOtherOption ? value.length - 1 : value.length;
     newValues.splice(optionIndex, 0, {
       title_multiloc: {},
-      image_id: '',
+      ...(inputType === 'multiselect_image' && { image_id: '' }),
     });
     setValue(name, newValues);
   };
