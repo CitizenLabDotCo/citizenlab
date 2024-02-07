@@ -7,6 +7,7 @@ import useIdeas from 'api/ideas/useIdeas';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import VotingResultCard from './VotingResultCard';
 import { VotingMethod } from 'api/phases/types';
+import { IIdeas } from 'api/ideas/types';
 
 interface Props {
   phaseId: string;
@@ -24,34 +25,6 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
 
   const getMx = (i: number) =>
     smallerThanPhone ? {} : i % 2 ? { ml: '8px' } : { mr: '8px' };
-
-  const getRanking = (
-    index: number,
-    attributeName: 'baskets_count' | 'votes_count'
-  ): number => {
-    let currentRank = 1;
-    let prevCount = ideas.data[0].attributes[attributeName];
-
-    for (let i = 0; i <= index; i++) {
-      const currentCount = ideas.data[i].attributes[attributeName];
-
-      if (
-        typeof prevCount === 'number' &&
-        typeof currentCount === 'number' &&
-        currentCount < prevCount
-      ) {
-        currentRank++;
-        prevCount = currentCount;
-      }
-    }
-
-    return currentRank;
-  };
-
-  const getBasketsRanking = (index: number): number =>
-    getRanking(index, 'baskets_count');
-  const getVotesRank = (index: number): number =>
-    getRanking(index, 'votes_count');
 
   return (
     <Box
@@ -73,9 +46,12 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
             idea={idea}
             phaseId={phaseId}
             rank={
-              votingMethod === 'budgeting'
-                ? getBasketsRanking(i)
-                : getVotesRank(i)
+              getRanks(
+                getCounts(
+                  ideas,
+                  votingMethod === 'budgeting' ? 'baskets_count' : 'votes_count'
+                )
+              )[i]
             }
           />
         </Box>
@@ -83,5 +59,31 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
     </Box>
   );
 };
+
+const getRanks = (counts: number[]) => {
+  let currentRank = 1;
+  const ranks: number[] = [];
+
+  for (let i = 0; i < counts.length; i++) {
+    if (i === 0) {
+      ranks.push(currentRank);
+    } else {
+      const count = counts[i];
+      const prevCount = counts[i - 1];
+
+      if (count < prevCount) {
+        currentRank = i + 1;
+      }
+      ranks.push(currentRank);
+    }
+  }
+
+  return ranks;
+};
+
+const getCounts = (
+  ideas: IIdeas,
+  attributeName: 'baskets_count' | 'votes_count'
+) => ideas.data.map((idea) => idea.attributes[attributeName]);
 
 export default VotingResults;
