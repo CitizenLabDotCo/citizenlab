@@ -15,6 +15,14 @@ export interface IFormCustomFieldOptionData {
   id: string;
   type: string;
   attributes: OptionAttributes;
+  relationships: {
+    image: {
+      data: {
+        id: string;
+        type: string;
+      } | null;
+    };
+  };
 }
 
 export interface IFormCustomFieldOption {
