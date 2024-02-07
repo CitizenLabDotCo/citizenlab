@@ -1861,7 +1861,6 @@
   "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Konstatēt nepiemērotu saturu",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Automātiski atpazīt platformā publicēto nepiemēroto saturu.",
-  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "Beta versijā: pašlaik pieejama angļu, franču, vācu, portugāļu un spāņu valodā. Kamēr šī funkcija ir iespējota, ievades dati, dalībnieku publicētie priekšlikumi un komentāri tiks automātiski pārskatīti, izmantojot dabiskās valodas apstrādi. Ieraksti, kas atzīmēti kā, iespējams, ar nepiemērotu saturu, netiks bloķēti, bet tiks izcelti pārskatīšanai {linkToActivityPage} lapā.",
   "app.containers.AdminPage.SettingsPage.languages": "Valodas",
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Varat izvēlēties vairākas valodas, kurās vēlaties piedāvāt savu platformu lietotājiem. Jums būs jāizveido saturs katrai izvēlētajai valodai.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Pasākums",
