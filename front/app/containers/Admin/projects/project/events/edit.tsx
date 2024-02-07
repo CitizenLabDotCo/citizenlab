@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent, lazy } from 'react';
 import moment from 'moment';
 import { isEmpty, get, isError } from 'lodash-es';
 
@@ -22,7 +22,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import LocationInput, { Option } from 'components/UI/LocationInput';
-import EventMap from './components/EventMap';
+const EventMap = lazy(() => import('./components/EventMap'));
 import Button from 'components/UI/Button';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 

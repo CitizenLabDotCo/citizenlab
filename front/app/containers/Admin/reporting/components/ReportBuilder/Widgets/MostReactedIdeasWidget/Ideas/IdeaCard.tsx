@@ -71,7 +71,12 @@ const IdeaCard = ({
 
   return (
     <PageBreakBox borderTop={BORDER} my="16px" pt="16px">
-      <Box display="flex" flexDirection="row" justifyContent="flex-start">
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+        alignItems="center"
+      >
         <Box
           // hack to make backgrounds work in print view
           boxShadow={`inset 0 0 0 1000px ${colors.grey200}`}
@@ -93,13 +98,7 @@ const IdeaCard = ({
           </Text>
         </Box>
         <Link to={url} target="_blank">
-          <Title
-            variant="h4"
-            display="inline"
-            color="primary"
-            mt="0px"
-            mb="0px"
-          >
+          <Title variant="h5" display="inline" mt="0px" mb="0px">
             {title}
           </Title>
         </Link>

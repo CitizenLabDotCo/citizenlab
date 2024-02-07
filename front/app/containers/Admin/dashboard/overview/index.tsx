@@ -138,7 +138,7 @@ const OverviewDashboard = ({ projects }: DataProps) => {
       <ChartFilters
         startAtMoment={startAtMoment}
         endAtMoment={endAtMoment}
-        currentProjectFilter={currentProjectFilter}
+        projectId={currentProjectFilter}
         resolution={resolution}
         onChangeTimeRange={handleChangeTimeRange}
         onProjectFilter={handleOnProjectFilter}

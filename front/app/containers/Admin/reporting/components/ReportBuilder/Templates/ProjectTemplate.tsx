@@ -17,7 +17,6 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 // report builder widgets
 import TextMultiloc from '../Widgets/TextMultiloc';
-import TitleMultiloc from '../Widgets/TitleMultiloc';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import TwoColumn from '../Widgets/TwoColumn';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
@@ -37,6 +36,7 @@ import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuild
 import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
 import { getTemplateData } from './getTemplateData';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
+import { withoutSpacing } from 'utils/textUtils';
 
 export interface Props {
   reportId: string;
@@ -61,6 +61,18 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
 
   if (!appConfigurationLocales) return null;
 
+  const toMultilocParagraph = (
+    title: MessageDescriptor,
+    text: MessageDescriptor
+  ) => {
+    return createMultiloc(appConfigurationLocales, (locale) => {
+      return withoutSpacing`
+        <h3>${formatMessageWithLocale(locale, title)}</h3>
+        <p>${formatMessageWithLocale(locale, text)}</p>
+      `;
+    });
+  };
+
   const toMultiloc = (message: MessageDescriptor) => {
     return createMultiloc(appConfigurationLocales, (locale) => {
       return formatMessageWithLocale(locale, message);
@@ -74,17 +86,35 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
         projectId={projectId}
         {...projectPeriod}
       />
-      <TitleMultiloc text={toMultiloc(messages.reportSummary)} />
-      <TextMultiloc text={toMultiloc(messages.reportSummaryDescription)} />
+      <TextMultiloc
+        text={toMultilocParagraph(
+          messages.reportSummary,
+          messages.reportSummaryDescription
+        )}
+      />
       <WhiteSpace />
-      <TitleMultiloc text={toMultiloc(messages.projectResults)} />
-      <TextMultiloc text={toMultiloc(messages.descriptionPlaceHolder)} />
-      <ActiveUsersWidget projectId={projectId} {...projectPeriod} />
+      <TextMultiloc
+        text={toMultilocParagraph(
+          messages.projectResults,
+          messages.descriptionPlaceHolder
+        )}
+      />
+      <WhiteSpace />
+      <ActiveUsersWidget
+        projectId={projectId}
+        title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
+        {...projectPeriod}
+      />
+
       {participationMethod === 'native_survey' && (
-        <SurveyResultsWidget phaseId={phaseId} />
+        <SurveyResultsWidget
+          title={toMultiloc(WIDGET_TITLES.SurveyResultsWidget)}
+          phaseId={phaseId}
+        />
       )}
       {participationMethod === 'ideation' && (
         <MostReactedIdeasWidget
+          title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
           projectId={projectId}
           phaseId={phaseId}
           numberOfIdeas={5}
@@ -92,8 +122,13 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
         />
       )}
       <WhiteSpace />
-      <TitleMultiloc text={toMultiloc(messages.participants)} />
-      <TextMultiloc text={toMultiloc(messages.descriptionPlaceHolder)} />
+      <TextMultiloc
+        text={toMultilocParagraph(
+          messages.participants,
+          messages.descriptionPlaceHolder
+        )}
+      />
+      <WhiteSpace />
       <TwoColumn columnLayout="1-1">
         <Element id="left" is={Container} canvas>
           <GenderWidget
@@ -110,8 +145,13 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
           />
         </Element>
       </TwoColumn>
-      <TitleMultiloc text={toMultiloc(messages.visitors)} />
-      <TextMultiloc text={toMultiloc(messages.descriptionPlaceHolder)} />
+      <TextMultiloc
+        text={toMultilocParagraph(
+          messages.visitors,
+          messages.descriptionPlaceHolder
+        )}
+      />
+      <WhiteSpace />
       <VisitorsWidget
         projectId={projectId}
         title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}

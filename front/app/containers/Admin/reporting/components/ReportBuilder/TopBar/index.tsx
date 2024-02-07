@@ -18,7 +18,7 @@ import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
-import ShareReportButton from '../../ReportBuilderPage/ReportRow/Buttons/ShareReportButton';
+import PrintReportButton from '../../ReportBuilderPage/ReportRow/Buttons/PrintReportButton';
 
 // i18n
 import messages from './messages';
@@ -217,7 +217,7 @@ const ContentBuilderTopBar = ({
           />
         </Box>
         <Box mr="20px">
-          <ShareReportButton reportId={reportId} />
+          <PrintReportButton reportId={reportId} />
         </Box>
         <SaveButton
           disabled={disableSave}
