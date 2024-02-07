@@ -426,6 +426,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            input_form_mapping_question: {
+              enabled: true,
+              allowed: true
+            },
             analytics: {
               enabled: true,
               allowed: true
