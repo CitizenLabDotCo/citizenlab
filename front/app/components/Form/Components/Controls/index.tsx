@@ -56,6 +56,9 @@ import MultilocInputLayout, {
 import MultiSelectCheckboxControl, {
   multiSelectCheckboxControlTester,
 } from './MultiSelectCheckboxControl';
+import ImageMultichoiceControl, {
+  imageMultichoiceControlTester,
+} from './ImageMultichoiceControl';
 import SingleSelectRadioControl, {
   singleSelectRadioControlTester,
 } from './SingleSelectRadioControl';
@@ -103,6 +106,8 @@ export {
   multiSelectControlTester,
   MultiSelectCheckboxControl,
   multiSelectCheckboxControlTester,
+  ImageMultichoiceControl,
+  imageMultichoiceControlTester,
   SingleSelectRadioControl,
   singleSelectRadioControlTester,
   singleSelectRadioEnumControlTester,
