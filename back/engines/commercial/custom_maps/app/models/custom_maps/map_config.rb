@@ -36,5 +36,9 @@ module CustomMaps
     def center_geojson=(geojson)
       self.center = RGeo::GeoJSON.decode(geojson)
     end
+
+    def project_id
+      resource.project_id if resource_type == 'Project'
+    end
   end
 end
