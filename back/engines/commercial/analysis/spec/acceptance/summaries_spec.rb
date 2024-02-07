@@ -172,7 +172,7 @@ resource 'Summaries' do
 
       example_request '[error] returns previous_task_not_yet_finished' do
         expect(status).to eq 422
-        expect(json_response_body).to eq ({ errors: { base: [{ error: 'previous_task_not_yet_finished' }] } })
+        expect(json_response_body).to eq({ errors: { base: [{ error: 'previous_task_not_yet_finished' }] } })
       end
     end
 
@@ -184,7 +184,7 @@ resource 'Summaries' do
       do_request
 
       expect(status).to eq 422
-      expect(json_response_body).to eq ({ errors: { base: [{ error: 'too_many_inputs' }] } })
+      expect(json_response_body).to eq({ errors: { base: [{ error: 'too_many_inputs' }] } })
     end
   end
 
