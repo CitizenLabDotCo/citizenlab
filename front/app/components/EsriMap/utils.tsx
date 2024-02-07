@@ -6,6 +6,7 @@ import { BASEMAP_AT_ATTRIBUTION, MAPTILER_ATTRIBUTION } from './constants';
 // components
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
+import MapView from '@arcgis/core/views/MapView';
 
 // getTileAttribution
 // Description: Gets the correct tile attribution given a certain tileProvider URL.
@@ -48,9 +49,27 @@ export const getShapeSymbol = (
     style: shape,
     color: color || colors.white,
     outline: {
-      color: 'rgba(255, 255, 255, 0.5)',
+      color: 'rgba(255, 255, 255, 0.2)',
       width: outlineWidth || 1,
     },
+  });
+};
+
+// changeCursorOnHover
+// Description: On map hover, change the cursor to pointer if hovering over a graphic
+export const changeCursorOnHover = (event: any, mapView: MapView) => {
+  mapView.hitTest(event).then((result) => {
+    if (result.results.length > 0) {
+      // Hovering over marker(s)
+      result.results.forEach((r) => {
+        if (r.type === 'graphic') {
+          // Change cursor to pointer
+          document.body.style.cursor = 'pointer';
+        }
+      });
+    } else {
+      document.body.style.cursor = 'auto';
+    }
   });
 };
 
@@ -59,8 +78,8 @@ export const getShapeSymbol = (
 export const getClusterConfiguration = (clusterSymbolColor?: string) => {
   return new FeatureReductionCluster({
     clusterRadius: '60px',
-    clusterMinSize: '28px',
-    clusterMaxSize: '48px',
+    clusterMinSize: '32px',
+    clusterMaxSize: '44px',
     symbol: getShapeSymbol(
       'circle',
       clusterSymbolColor || colors.coolGrey700,

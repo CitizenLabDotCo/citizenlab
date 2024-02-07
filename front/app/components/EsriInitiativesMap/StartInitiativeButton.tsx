@@ -13,7 +13,7 @@ type Props = {
   onClick: () => void;
 };
 
-const StartProposalButton = ({ modalPortalElement, onClick }: Props) => {
+const StartInitiativeButton = ({ modalPortalElement, onClick }: Props) => {
   const { formatMessage } = useIntl();
   if (!modalPortalElement) return null;
 
@@ -25,4 +25,4 @@ const StartProposalButton = ({ modalPortalElement, onClick }: Props) => {
   );
 };
 
-export default StartProposalButton;
+export default StartInitiativeButton;
