@@ -20,6 +20,9 @@ import { ICustomFieldInputType } from 'api/custom_fields/types';
 import useAddCustomFieldOptionImage from 'api/content_field_option_images/useAddCustomFieldOptionImage';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
+// api
+import useCustomFieldOptionImage from 'api/content_field_option_images/useCustomFieldOptionImage';
+
 // TODO: CLean up these types
 interface Props {
   index: number;
@@ -49,18 +52,22 @@ const SelectFieldOption = ({
     useAddCustomFieldOptionImage();
   const { setValue, trigger } = useFormContext();
 
-  useEffect(() => {
-    console.log('choice', choice);
+  const image = useCustomFieldOptionImage({
+    imageId: choice.imageId,
+  });
 
-    if (choice.image_id) {
+  useEffect(() => {
+    const imageUrl = image.data?.data.attributes.versions.medium;
+
+    if (imageUrl) {
       (async () => {
-        const imageFile = await convertUrlToUploadFile(choice.image_id);
+        const imageFile = await convertUrlToUploadFile(imageUrl);
         if (imageFile) {
           setImageFiles([imageFile]);
         }
       })();
     }
-  }, [choice.image_id]);
+  }, [image.data?.data.attributes.versions.medium]);
 
   const handleOnAddImage = async (imageFiles: UploadFile[]) => {
     setImageFiles(imageFiles);
@@ -79,8 +86,10 @@ const SelectFieldOption = ({
     }
   };
 
-  const handleOnRemoveImage = (option) => {
-    option.image_id = '';
+  const handleOnRemoveImage = () => {
+    choices[index].image_id = '';
+    setValue(name, choices);
+    setImageFiles([]);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
@@ -117,12 +126,8 @@ const SelectFieldOption = ({
             acceptedFileTypes={{
               'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
             }}
-            onAdd={(images) => {
-              handleOnAddImage(images);
-            }}
-            onRemove={() => {
-              handleOnRemoveImage(choice);
-            }}
+            onAdd={handleOnAddImage}
+            onRemove={handleOnRemoveImage}
           />
         )}
       </Box>
