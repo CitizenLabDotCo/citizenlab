@@ -7,7 +7,7 @@ import { IInsights, InsightsKeys, IInsightsParams } from './types';
 export const fetchInsights = ({ analysisId }: IInsightsParams) => {
   return fetcher<IInsights>({
     path: `/analyses/${analysisId}/insights`,
-    action: 'get'
+    action: 'get',
   });
 };
 

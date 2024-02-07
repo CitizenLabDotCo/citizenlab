@@ -23,17 +23,17 @@ module Analysis
         0.4
       end
 
-      def chat(prompt, **_params)
-        resp = @client.invoke_model invoke_params(prompt)
+      def chat(prompt, **params)
+        resp = @client.invoke_model invoke_params(prompt, params)
         body_completion resp.body.string
       end
 
-      def chat_async(prompt, **_params)
+      def chat_async(prompt, **params)
         chunk_handler = Aws::BedrockRuntime::EventStreams::ResponseStream.new
         chunk_handler.on_chunk_event do |event|
           puts body_completion(event.bytes)
         end
-        @client.invoke_model_with_response_stream(**invoke_params(prompt), event_stream_handler: chunk_handler)
+        @client.invoke_model_with_response_stream(**invoke_params(prompt, params), event_stream_handler: chunk_handler)
       end
 
       protected
@@ -44,9 +44,10 @@ module Analysis
 
       private
 
-      def invoke_params(prompt)
+      def invoke_params(prompt, **params)
+        assistant_prefix = params[:assistant_prefix] || ''
         json = {
-          'prompt' => "\n\nHuman: #{prompt}\n\nAssistant:",
+          'prompt' => "\n\nHuman: #{prompt}\n\nAssistant: #{assistant_prefix}",
           'max_tokens_to_sample' => 300,
           'temperature' => 0.1,
           'top_p' => 0.9
