@@ -120,11 +120,13 @@ const ImageMultichoiceControl = ({
               display="flex"
               flexDirection="column"
             >
-              <Image
-                maxWidth="188px"
-                src={option.image.medium}
-                alt={option.label}
-              />
+              {option?.image && (
+                <Image
+                  maxWidth="188px"
+                  src={option.image.medium}
+                  alt={option.label}
+                />
+              )}
               <Checkbox
                 size="20px"
                 padding="18px 20px 18px 20px"
