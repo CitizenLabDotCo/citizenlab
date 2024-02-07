@@ -103,6 +103,10 @@ module MultiTenancy
               zoom_level: 12,
               osm_relation_id: 2_404_021
             },
+            esri_integration: {
+              enabled: true,
+              allowed: true
+            },
             custom_maps: {
               enabled: true,
               allowed: true
@@ -419,6 +423,10 @@ module MultiTenancy
               monthly_sms_segments_limit: 100_000
             },
             native_surveys: {
+              enabled: true,
+              allowed: true
+            },
+            input_form_mapping_question: {
               enabled: true,
               allowed: true
             },

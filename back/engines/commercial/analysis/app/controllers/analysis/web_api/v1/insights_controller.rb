@@ -6,32 +6,18 @@ module Analysis
       class InsightsController < ApplicationController
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
-        before_action :set_insight, only: %i[toggle_bookmark destroy rate]
+        before_action :set_insight, only: %i[destroy rate]
 
         def index
           insights = @analysis.insights
             .order(created_at: :desc)
-            .includes(insightable: :background_task)
-
-          if params[:bookmarked].present?
-            insights = insights.where(bookmarked: true)
-          end
+            .includes(insightable: [:background_task, { insight: [{ analysis: [{ phase: [:ideas] }, { project: [:ideas] }] }] }])
 
           render json: WebApi::V1::InsightSerializer.new(
             insights,
             params: jsonapi_serializer_params,
             include: %i[insightable insightable.background_task]
           ).serializable_hash
-        end
-
-        def toggle_bookmark
-          # toggle the bookmarked attribute
-          @insight.bookmarked = !@insight.bookmarked
-          if @insight.save
-            head :ok
-          else
-            render json: { errors: @insight.errors.details }, status: :unprocessable_entity
-          end
         end
 
         def destroy

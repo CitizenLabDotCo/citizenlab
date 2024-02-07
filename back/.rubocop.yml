@@ -8,6 +8,7 @@ require:
   - ./lib/rubocop/cop/forbidden_app_configuration_method.rb
 
 AllCops:
+  DisplayStyleGuide: true
   NewCops: enable
   Exclude:
     - "db/schema.rb"

@@ -15,9 +15,11 @@ import { Props } from './typings';
 
 // hooks
 import { useMostReactedIdeas } from 'api/graph_data_units';
+import { getEmptyMessage } from '../utils';
 
 const MostReactedIdeasWidget = ({
   title,
+  projectId,
   phaseId,
   numberOfIdeas,
   collapseLongText,
@@ -32,13 +34,17 @@ const MostReactedIdeasWidget = ({
     }
   );
 
-  if (!response) {
+  const emptyMessage = getEmptyMessage({ projectId, phaseId });
+
+  if (emptyMessage) {
     return (
       <Card title={title}>
-        <NoData message={messages.noProjectSelected} />
+        <NoData message={emptyMessage} />
       </Card>
     );
   }
+
+  if (!response) return null;
 
   const {
     ideas,

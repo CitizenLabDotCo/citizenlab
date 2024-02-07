@@ -92,4 +92,55 @@ export default defineMessages({
     defaultMessage:
       'Power BI is a Premium-only feature. Contact your GovSuccess Manager if you want more info on this.',
   },
+  esriIntegration: {
+    id: 'app.containers.Admin.tools.esriIntegration2',
+    defaultMessage: 'Esri integration',
+  },
+  esriIntegrationDescription: {
+    id: 'app.containers.Admin.tools.esriIntegrationDescription2',
+    defaultMessage:
+      'Connect your Esri account and import your layers from ArcGIS Online directly into your mapping projects.',
+  },
+  esriIntegrationButton: {
+    id: 'app.containers.Admin.tools.esriIntegrationButton',
+    defaultMessage: 'Enable Esri',
+  },
+  esriIntegrationImageAlt: {
+    id: 'app.containers.Admin.tools.esriIntegrationImageAlt',
+    defaultMessage: 'Esri logo',
+  },
+  esriDisabled: {
+    id: 'app.containers.Admin.tools.esriDisabled',
+    defaultMessage:
+      'The Esri integration is an add-on feature. Contact your GovSuccess Manager if you want more information on this.',
+  },
+  esriMaps: {
+    id: 'app.containers.Admin.tools.esriMaps',
+    defaultMessage: 'Esri Maps',
+  },
+  esriKeyInputDescription: {
+    id: 'app.containers.Admin.tools.esriKeyInputDescription',
+    defaultMessage:
+      'Add your Esri API key to allow importing your map layers from ArcGIS Online in the map tabs in projects.',
+  },
+  esriKeyInputPlaceholder: {
+    id: 'app.containers.Admin.tools.esriKeyInputPlaceholder',
+    defaultMessage: 'Paste API key here',
+  },
+  esriKeyInputLabel: {
+    id: 'app.containers.Admin.tools.esriKeyInputLabel',
+    defaultMessage: 'Esri API key',
+  },
+  esriSaveButtonText: {
+    id: 'app.containers.Admin.tools.esriSaveButtonText',
+    defaultMessage: 'Save key',
+  },
+  esriSaveButtonSuccess: {
+    id: 'app.containers.Admin.tools.esriSaveButtonSuccess',
+    defaultMessage: 'API key saved',
+  },
+  esriSaveButtonError: {
+    id: 'app.containers.Admin.tools.esriSaveButtonError',
+    defaultMessage: 'There was an error saving your key, please try again.',
+  },
 });
