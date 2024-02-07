@@ -62,10 +62,14 @@ module Analysis
           end
           @summary.background_task = SummarizationTask.new(analysis: @analysis)
           plan = SummarizationMethod::Base.plan(@summary)
+          if !plan.possible?
+            render json: { errors: { base: [{ error: plan.impossible_reason }] } }, status: :unprocessable_entity
+            return
+          end
           @summary.summarization_method = plan.summarization_method_class::SUMMARIZATION_METHOD
           @summary.accuracy = plan.accuracy
 
-          if @summary.save && plan.possible?
+          if @summary.save
             side_fx_service.after_regenerate(@summary, current_user)
             SummarizationJob.perform_later(@summary)
             render json: SummarySerializer.new(
