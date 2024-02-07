@@ -8304,6 +8304,7 @@ models:
   custom_maps/layer:
   - &layer1
     map_config_ref: *map_config1
+    type: CustomMaps::GeojsonLayer
     title_multiloc:
       en: Districts
       nl-BE: Districten
@@ -15747,6 +15748,7 @@ models:
     created_at: 2020-03-18 13:32:07 UTC
     updated_at: 2020-03-18 13:32:07 UTC
   - map_config_ref: *map_config1
+    type: CustomMaps::GeojsonLayer
     title_multiloc:
       en: Public toilets
       nl-BE: Publieke toiletten
