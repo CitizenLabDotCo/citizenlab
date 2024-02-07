@@ -38,11 +38,13 @@ module Analysis
               filters: filters(params[:summary][:filters])
             }
           )
-          plan = SummarizationMethod::Base.plan(@summary)
-          @summary.summarization_method = plan.summarization_method_class::SUMMARIZATION_METHOD
-          @summary.accuracy = plan.accuracy
+          plan = plan_task
+          if !plan.possible?
+            render json: { errors: { base: [{ error: plan.impossible_reason }] } }, status: :unprocessable_entity
+            return
+          end
 
-          if @summary.save && plan.possible?
+          if @summary.save
             side_fx_service.after_create(@summary, current_user)
             SummarizationJob.perform_later(@summary)
             render json: SummarySerializer.new(
@@ -60,14 +62,11 @@ module Analysis
             render json: { errors: { base: [{ error: :previous_task_not_yet_finished }] } }, status: :unprocessable_entity
             return
           end
-          @summary.background_task = SummarizationTask.new(analysis: @analysis)
-          plan = SummarizationMethod::Base.plan(@summary)
+          plan = plan_task
           if !plan.possible?
             render json: { errors: { base: [{ error: plan.impossible_reason }] } }, status: :unprocessable_entity
             return
           end
-          @summary.summarization_method = plan.summarization_method_class::SUMMARIZATION_METHOD
-          @summary.accuracy = plan.accuracy
 
           if @summary.save
             side_fx_service.after_regenerate(@summary, current_user)
@@ -98,6 +97,16 @@ module Analysis
 
         def side_fx_service
           @side_fx_service ||= SideFxSummaryService.new
+        end
+
+        def plan_task
+          @summary.background_task = SummarizationTask.new(analysis: @analysis)
+          plan = SummarizationMethod::Base.plan(@summary)
+          if plan.possible?
+            @summary.summarization_method = plan.summarization_method_class::SUMMARIZATION_METHOD
+          @summary.accuracy = plan.accuracy
+          end
+          plan
         end
       end
     end
