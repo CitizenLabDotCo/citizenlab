@@ -47,7 +47,7 @@ const SelectFieldOption = ({
 }: Props) => {
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
   const { formatMessage } = useIntl();
-  const showImageSettings = inputType === 'multiselect_image';
+  const showImageSettings = inputType === 'multiselect_image' && !choice.other;
   const { mutateAsync: addCustomFieldOptionImage } =
     useAddCustomFieldOptionImage();
   const { setValue, trigger } = useFormContext();
