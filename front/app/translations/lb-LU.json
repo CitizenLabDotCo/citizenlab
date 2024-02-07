@@ -1433,7 +1433,6 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Leider hutt Dir net d'Rechter dëst Dokument ze iwwerpréiwen.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Iwwerpréift vun dësem Dokument erfuerdert d'Verifizéierung vun Ärem Kont. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "D'Dokument ass net méi verfügbar, well dëse Projet net méi aktiv ass.",
-  "app.containers.ProjectsShowPage.timeline.VotingResults.budgetingTooltip": "Dëse Prozentsaz representéiert den duerchschnëttleche Prozentsaz vun hirem Budget, deen d'Participanten op dës Optioun ausginn.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.cost": "Käschten:",
   "app.containers.ReactionControl.a11y_likesDislikes": "Total Likes: {likesCount}, Total Dislikes: {dislikesCount}",
   "app.containers.ReactionControl.reactionErrorSubTitle": "Wéinst engem Feeler konnt Är Reaktioun net registréiert ginn. Probéiert w.e.g. nach eng Kéier an e puer Minutten.",
