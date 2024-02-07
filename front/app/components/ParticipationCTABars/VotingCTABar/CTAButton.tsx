@@ -14,10 +14,9 @@ import Tippy from '@tippyjs/react';
 import styled, { useTheme } from 'styled-components';
 
 // i18n
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import useLocalize from 'hooks/useLocalize';
-import globalMessages from 'utils/messages';
 
 // utils
 import JSConfetti from 'js-confetti';
@@ -27,7 +26,7 @@ import clHistory from 'utils/cl-router/history';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
-import { IProjectData, VotingDisabledReason } from 'api/projects/types';
+import { IProjectData } from 'api/projects/types';
 
 const confetti = new JSConfetti();
 
