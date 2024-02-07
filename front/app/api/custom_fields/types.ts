@@ -75,7 +75,6 @@ export interface IAttributes {
   select_count_enabled?: boolean;
   other?: boolean;
   random_option_ordering?: boolean;
-  image?: string; // TODO: JS - This probably should be a file path or something
 }
 
 export interface ICustomFieldResponse {
