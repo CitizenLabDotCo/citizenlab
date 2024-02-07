@@ -14,6 +14,7 @@ import {
   colors,
   Text,
   Image,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from '../ErrorDisplay';
@@ -50,8 +51,7 @@ const ImageMultichoiceControl = ({
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
   const options = getOptions(schema, 'multi');
   const dataArray = Array.isArray(data) ? data : [];
-  console.log('options', options);
-  console.log('dataArray', dataArray);
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   const maxItems = schema.maxItems;
   const minItems = schema.minItems;
@@ -98,7 +98,14 @@ const ImageMultichoiceControl = ({
             <FormattedMessage {...messages.notPublic} />
           </Text>
         )}
-        <Box display="flex" flexWrap="wrap" gap="16px">
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          gap="16px"
+          w="100%"
+          justifyContent={isSmallerThanPhone ? 'center' : 'flex-start'}
+          alignItems="center"
+        >
           {options?.map((option, index: number) => (
             <StyledBox
               style={{ cursor: 'pointer' }}
@@ -114,7 +121,7 @@ const ImageMultichoiceControl = ({
               flexDirection="column"
             >
               <Image
-                width="188px"
+                maxWidth="188px"
                 src={option.image.medium}
                 alt={option.label}
               />
