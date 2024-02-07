@@ -104,7 +104,7 @@ module Analysis
           plan = SummarizationMethod::Base.plan(@summary)
           if plan.possible?
             @summary.summarization_method = plan.summarization_method_class::SUMMARIZATION_METHOD
-          @summary.accuracy = plan.accuracy
+            @summary.accuracy = plan.accuracy
           end
           plan
         end

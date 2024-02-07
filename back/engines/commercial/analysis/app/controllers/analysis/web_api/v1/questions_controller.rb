@@ -110,7 +110,7 @@ module Analysis
           plan = QAndAMethod::Base.plan(@question)
           if plan.possible?
             @question.q_and_a_method = plan.q_and_a_method_class::Q_AND_A_METHOD
-          @question.accuracy = plan.accuracy
+            @question.accuracy = plan.accuracy
           end
           plan
         end
