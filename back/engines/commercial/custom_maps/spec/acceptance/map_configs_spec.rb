@@ -148,7 +148,7 @@ resource 'Map Configs' do
             :with_tile_provider,
             :with_geojson_layers,
             :with_legend,
-            project: project)
+            mappable: project)
         end
 
         example_request 'Deletes a map config successfully' do
