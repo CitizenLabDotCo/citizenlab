@@ -69,7 +69,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
   it 'slices the survey by gender' do
     expect(generator.slice(
       survey_select_field.id,
-      user_custom_field.id
+      { group_by_field: user_custom_field.id }
     )).to eq({
       totalResponses: 11,
       answers: [

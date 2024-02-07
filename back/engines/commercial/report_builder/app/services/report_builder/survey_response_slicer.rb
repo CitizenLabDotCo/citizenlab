@@ -10,7 +10,7 @@ module ReportBuilder
     def slice(question_field_id, slice_options)
       question = @form.custom_fields.find_by(id: question_field_id)
       return unless question
-      return unless %w[select multiselect].include?(field.input_type)
+      return unless %w[select multiselect].include?(question.input_type)
       # TODO: check that group by field is also select or multiselect
 
       # TODO: implement without group by field
@@ -31,17 +31,28 @@ module ReportBuilder
       answers = @inputs
         .joins(:author)
         .select(
-          "custom_field_values->>'#{question.key}' as answer",
-          "users.custom_field_values->>'#{user_field.key}' as group_by_value"
+          "ideas.custom_field_values->'#{question.key}' as answer, users.custom_field_values->>'#{user_field.key}' as group_by_value"
         )
-        .where("custom_field_values->'#{question.key}' IS NOT NULL")
+        .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
+
+      grouped_answers = Idea
+        .select(:answer)
+        .from(answers)
         .group(:answer, :group_by_value)
+        .order(Arel.sql('COUNT(answer) DESC'))
         .count
         .to_a
+        .map do |(answer, group_by_value), count|
+          {
+            answer: answer,
+            group_by_value: group_by_value,
+            count: count
+          }
+        end
 
       {
-        totalResponses: answers.pluck(:count).sum,
-        answers: answers
+        totalResponses: grouped_answers.pluck(:count).sum,
+        answers: grouped_answers
       }
     end
 
