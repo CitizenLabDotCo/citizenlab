@@ -26,6 +26,7 @@ export const getOptions = (
         schema.items?.oneOf?.map((option) => ({
           value: option.const as string,
           label: (option.title || option.const) as string,
+          ...(option.image && { image: option.image }),
         }))) ||
       null
     );
