@@ -33,6 +33,7 @@ module Analysis
     belongs_to :analysis
 
     validates :type, inclusion: { in: TYPES }
+    validates :state, presence: true, inclusion: { in: STATES }
     validates :progress, numericality: { in: 0..1 }, allow_blank: true
 
     validate :progress_nil_when_not_in_progress

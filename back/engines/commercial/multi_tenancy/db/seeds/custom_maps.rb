@@ -14,6 +14,7 @@ module MultiTenancy
 
         ::CustomMaps::Layer.create!(
           map_config: map_config,
+          type: 'CustomMaps::GeojsonLayer',
           title_multiloc: { en: 'Districts', 'nl-BE': 'Districten' },
           geojson: JSON.parse(File.read(::CustomMaps::Engine.root.join('spec', 'fixtures', 'brussels-districts.geojson'))),
           default_enabled: true
@@ -30,6 +31,7 @@ module MultiTenancy
 
         ::CustomMaps::Layer.create!(
           map_config: map_config,
+          type: 'CustomMaps::GeojsonLayer',
           title_multiloc: { en: 'Public toilets', 'nl-BE': 'Publieke toiletten' },
           geojson: JSON.parse(File.read(::CustomMaps::Engine.root.join('spec', 'fixtures',
             'bruxelles_toilettes_publiques.geojson'))),
