@@ -1846,7 +1846,7 @@
   "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Detect inappropriate content",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Auto-detect inappropriate content posted on the platform.",
-  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "In Beta: currently available in English, French, German, Portuguese and Spanish. While this feature is enabled, input, proposals and comments posted by participants will be automatically reviewed using Natural Language Processing. Posts flagged as potentially containing inappropriate content will not be blocked, but will be highlighted for review on the {linkToActivityPage} page.",
+  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "An Beta: aktuell verfügbar op Englesch, Franséisch, Däitsch, Portugisesch a Spuenesch. Wärend dës Feature aktivéiert ass, ginn Input, Virschléi a Kommentarer vun de Participanten automatesch iwwerpréift mat der Natural Language Processing. Posts markéiert als potenziell onpassend Inhalter ginn net blockéiert, awer fir Iwwerpréiwung op der {linkToActivityPage} Säit markéiert.",
   "app.containers.AdminPage.SettingsPage.languages": "Languages",
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "You can select multiple languages in which you want to offer your platform to users. You will need to create content for every selected language.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Activity",
