@@ -68,7 +68,7 @@ module Analysis
           @question.accuracy = plan.accuracy
 
           if @question.save && plan.possible?
-            # side_fx_service.after_create(@question, current_user)
+            side_fx_service.after_regenerate(@question, current_user)
             QAndAJob.perform_later(@question)
             render json: QuestionSerializer.new(
               @question,

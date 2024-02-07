@@ -66,7 +66,7 @@ module Analysis
           @summary.accuracy = plan.accuracy
 
           if @summary.save && plan.possible?
-            # side_fx_service.after_create(@summary, current_user)
+            side_fx_service.after_regenerate(@summary, current_user)
             SummarizationJob.perform_later(@summary)
             render json: SummarySerializer.new(
               @summary,
