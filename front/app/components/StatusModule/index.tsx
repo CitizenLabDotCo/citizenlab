@@ -75,7 +75,8 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
     ? 'hasSubmitted'
     : 'hasNotSubmitted';
   const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
-  const basketCount = phase.attributes.baskets_count;
+  const basketCount =
+    phase.attributes.baskets_count || project.attributes.baskets_count;
 
   return (
     <Box boxShadow={defaultStyles.boxShadow} id="voting-status-module">
@@ -124,7 +125,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
             </Text>
           )}
         </>
-        {typeof basketCount === 'number' && basketCount > 0 && (
+        {basketCount > 0 && (
           <>
             <Text m="0px" fontSize="xxxxl" style={{ fontWeight: '700' }}>
               {basketCount}
