@@ -121,39 +121,17 @@ const CTAButton = ({ phase, project }: Props) => {
     }
   };
 
-  const getDisabledReasonMessage: {
-    [key in VotingDisabledReason]: MessageDescriptor;
-  } = {
-    not_in_group: globalMessages.notInGroup,
-    project_inactive: globalMessages.notInGroup,
-    not_voting: globalMessages.notInGroup,
-    not_active: globalMessages.notInGroup,
-    not_signed_in: globalMessages.notInGroup,
-    not_permitted: globalMessages.notInGroup,
-    not_verified: globalMessages.notInGroup,
-    missing_data: globalMessages.notInGroup,
-  };
-
-  const votingActionDescriptor = project.attributes.action_descriptor.voting;
-  const disabledExplanation =
-    votingActionDescriptor.disabled_reason !== null
-      ? formatMessage(
-          getDisabledReasonMessage[votingActionDescriptor.disabled_reason]
-        )
-      : getNumberOfVotesDisabledExplanation(
-          formatMessage,
-          localize,
-          phase,
-          numberOfVotesCast,
-          appConfig.data.attributes.settings.core.currency
-        );
-  const disabled =
-    votingActionDescriptor.disabled_reason !== null ||
-    typeof disabledExplanation === 'string';
+  const disabledExplanation = getNumberOfVotesDisabledExplanation(
+    formatMessage,
+    localize,
+    phase,
+    numberOfVotesCast,
+    appConfig.data.attributes.settings.core.currency
+  );
 
   return (
     <Tippy
-      disabled={!disabled}
+      disabled={!disabledExplanation}
       interactive={true}
       placement="bottom"
       content={disabledExplanation}
@@ -171,7 +149,7 @@ const CTAButton = ({ phase, project }: Props) => {
           textHoverColor={theme.colors.black}
           padding="6px 12px"
           fontSize="14px"
-          disabled={disabled}
+          disabled={!!disabledExplanation}
           processing={processing}
           className={disabledExplanation ? '' : 'pulse'}
         >

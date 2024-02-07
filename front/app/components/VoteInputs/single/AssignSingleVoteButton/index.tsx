@@ -123,12 +123,6 @@ const AssignSingleVoteButton = ({
       return formatMessage(messages.maxVotesReached);
     }
 
-    // Also add messages for other disabled reasons here
-    if (actionDescriptor.disabled_reason === 'not_in_group') {
-      return formatMessage(messages.notInGroup);
-    }
-    // And add messages for other voting methods
-
     return null;
   };
 
