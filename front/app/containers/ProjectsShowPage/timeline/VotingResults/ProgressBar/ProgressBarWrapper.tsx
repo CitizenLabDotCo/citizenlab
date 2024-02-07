@@ -18,7 +18,7 @@ const ProgressBarWrapper = ({ children, votesPercentage, tooltip }: Props) => {
 
   return (
     <Tippy
-      disabled={!tooltip}
+      disabled={false}
       content={tooltip}
       interactive={true}
       placement="bottom"
