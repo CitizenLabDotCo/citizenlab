@@ -13,7 +13,7 @@ import Body from 'components/PostShowComponents/Body';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // style
 import styled from 'styled-components';
@@ -33,19 +33,13 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-const MapMarkerIcon = styled(Icon)`
-  flex: 0 0 24px;
-  fill: ${colors.textSecondary};
-  margin-right: 5px;
-  margin-top: -2px;
-`;
-
-const Description = styled.div`
+const DescriptionPreview = styled.div`
   flex: 0 1 100%;
-  margin-bottom: 1rem;
   overflow: hidden;
   position: relative;
   max-height: 80px;
+  margin-bottom: 12px;
+  margin-top: 4px;
 
   &::after {
     background: linear-gradient(0deg, white, rgba(255, 255, 255, 0));
@@ -63,11 +57,6 @@ interface Props {
   initiativeId: string | null;
   className?: string;
 }
-
-const StyledBody = styled(Body)`
-  margin-bottom: 12px;
-  margin-top: 4px;
-`;
 
 const InitiativePreview = ({ className, initiativeId }: Props) => {
   const localize = useLocalize();
@@ -92,28 +81,28 @@ const InitiativePreview = ({ className, initiativeId }: Props) => {
       </Title>
       {initiativeAddress && (
         <Box display="flex" pt="12px">
-          <MapMarkerIcon name="position" />
+          <Icon pb="4px" fill={colors.coolGrey600} name="position" />
           <Text fontSize="s" color="coolGrey600" m="0px">
             {initiativeAddress}
           </Text>
         </Box>
       )}
       {initiativeId && (
-        <Description>
-          <StyledBody
+        <DescriptionPreview>
+          <Body
             postId={initiativeId}
             postType="initiative"
             body={localize(initiative.data.attributes.body_multiloc)}
             color={colors.coolGrey700}
           />
-        </Description>
+        </DescriptionPreview>
       )}
       <Button
         fullWidth={true}
         linkTo={`/initiatives/${initiative.data.attributes.slug}?go_back=true`}
         scrollToTop
       >
-        <FormattedMessage {...messages.seeInitiative} />
+        <FormattedMessage {...messages.seeProposal} />
       </Button>
     </Container>
   );

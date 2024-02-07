@@ -8,8 +8,8 @@ import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
 import Renderer from '@arcgis/core/renderers/SimpleRenderer';
 import Popup from '@arcgis/core/widgets/Popup.js';
-import StartInitiativeButton from './StartInitiativeButton';
-import InitiativeInformation from './InitiativeInformation';
+import StartInitiativeButton from './components/StartInitiativeButton';
+import InitiativeInformation from './components/InitiativeInformation';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // hooks
@@ -47,8 +47,8 @@ const StyledMapContainer = styled(Box)`
     display: none;
   }
 
-  .esri-ui-manual-container > .esri-component {
-    position: auto !important;
+  #initiative-info-node {
+    position: unset;
   }
 `;
 
@@ -64,6 +64,7 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
   // Create two div elements to use for inserting React components into Esri map popup and overlay
   const startInitiativeButtonNode = document.createElement('div');
   const initiativeInfoNode = document.createElement('div');
+  initiativeInfoNode.id = 'initiative-info-node';
 
   // Loop through the initative markers and create a list of graphics
   const markersWithLocation = initiativeMarkers?.data.filter(
@@ -111,7 +112,7 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
     mapView.hitTest(event).then((result) => {
       const elements = result.results; // These are the elements under our map click
       if (elements.length > 0) {
-        // User clicked a marker or cluster
+        // User clicked an initiative marker OR cluster
         elements.forEach((element) => {
           if (element.type === 'graphic') {
             const graphicId = element.graphic.attributes.ID;
@@ -123,20 +124,19 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
               });
             } else {
               // User clicked an initiative marker
-              const id = graphics?.at(graphicId - 1)?.attributes.markerId;
-              if (id) {
+              const initiativeId = graphics?.at(graphicId - 1)?.attributes
+                .markerId;
+              if (initiativeId) {
                 mapView.goTo({
                   center: [
                     element.mapPoint.longitude,
                     element.mapPoint.latitude,
                   ],
                 });
-                // Emit an event to show the selected initiative's information
-                eventEmitter.emit('initiativeSelectedEvent', id);
-                if (initiativeInfoNode) {
-                  // Add the initiative information node to the map
-                  mapView.ui.add(initiativeInfoNode, 'manual');
-                }
+                // Emit an event so we show the selected initiative's information
+                eventEmitter.emit('initiativeSelectedEvent', initiativeId);
+                // Add the initiative information node to the map
+                mapView.ui.add(initiativeInfoNode, 'manual');
               }
             }
           }
@@ -164,9 +164,9 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
               location: event.mapPoint,
               title: formatMessage(messages.startProposalAtLocation),
             });
-            // Set content of the popup to node we created so we can insert our React component via a portal
+            // Set content of the popup to the node we created (so we can insert our React button component via a portal)
             mapView.popup.content = startInitiativeButtonNode;
-            // Remove any other UI elements and open the popup
+            // Close any open UI elements and open the popup
             eventEmitter.emit('initiativeSelectedEvent', null);
             mapView.openPopup();
           });
@@ -176,9 +176,12 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
 
   const onNewInitiativeClick = (event?: React.FormEvent) => {
     event?.preventDefault();
+
+    // Get click coordinates
     const lat = clickedLocationRef?.current?.coordinates[1];
     const lng = clickedLocationRef?.current?.coordinates[0];
 
+    // Check permissions
     if (initiativePermissions?.enabled) {
       if (initiativePermissions?.authenticationRequirements) {
         // If the user needs to be authenticated, trigger the authentication flow
@@ -197,7 +200,7 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
           successAction,
         });
       } else {
-        // Redirect to the initiative form
+        // Otherwise, redirect to the initiative form
         clHistory.push(
           {
             pathname: `/initiatives/new`,

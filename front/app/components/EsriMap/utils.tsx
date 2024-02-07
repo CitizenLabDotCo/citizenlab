@@ -83,7 +83,7 @@ export const getClusterConfiguration = (clusterSymbolColor?: string) => {
     symbol: getShapeSymbol(
       'circle',
       clusterSymbolColor || colors.coolGrey700,
-      4
+      3
     ),
     labelingInfo: [
       {

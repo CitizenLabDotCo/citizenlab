@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.EsriInitiativesMap.startProposal',
     defaultMessage: 'Start proposal at this location',
   },
+  seeProposal: {
+    id: 'app.components.EsriInitiativesMap.seeProposal',
+    defaultMessage: 'See proposal',
+  },
 });
