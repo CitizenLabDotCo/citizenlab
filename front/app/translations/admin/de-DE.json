@@ -72,7 +72,7 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Keine Frage ausgewählt. Bitte wählen Sie zuerst eine Frage aus.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} Antworten",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Einzelfrage",
-  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.sourceAndReference": "Daten von {phase} unter {period}",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.sourceAndReference": "Daten von {phase} während {period}",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} bis jetzt",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Titel",
   "app.components.admin.DateTimePicker.time": "Uhrzeit",
