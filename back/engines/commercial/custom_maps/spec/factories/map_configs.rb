@@ -17,9 +17,15 @@ FactoryBot.define do
       tile_provider { generate(:tile_provider) }
     end
 
-    trait :with_layers do
+    trait :with_geojson_layers do
       after(:create) do |map_config, _evaluator|
-        create(:layer, :with_marker_svg, map_config: map_config)
+        create(:geojson_layer, :with_marker_svg, map_config: map_config)
+      end
+    end
+
+    trait :with_esri_feature_layers do
+      after(:create) do |map_config, _evaluator|
+        create(:esri_feature_layer, :with_marker_svg, map_config: map_config)
       end
     end
 
