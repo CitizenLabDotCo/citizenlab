@@ -120,7 +120,7 @@ describe LocalProjectCopyService do
     end
 
     it 'copies associated maps configs, layers and legend items' do
-      map_config = create(:map_config, project_id: open_ended_project.id, tile_provider: 'https://groovy_map_tiles')
+      map_config = create(:map_config, mappable: open_ended_project, tile_provider: 'https://groovy_map_tiles')
       create_list(:layer, 2, map_config_id: map_config.id)
       create_list(:legend_item, 2, map_config_id: map_config.id)
       copied_project = service.copy(open_ended_project)
