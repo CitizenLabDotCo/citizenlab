@@ -1861,6 +1861,7 @@
   "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Otkrijte neprikladan sadržaj",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Automatsko otkrivanje neprikladnog sadržaja objavljenog na platformi.",
+  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionToggleTooltip": "While this feature is enabled, input, proposals and comments posted by participants will be automatically reviewed. Posts flagged as potentially containing inappropriate content will not be blocked, but will be highlighted for review on the {linkToActivityPage} page.",
   "app.containers.AdminPage.SettingsPage.languages": "Jezici",
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Možete odabrati različite jezike koji će biti dostupni na vašoj platformi. Biće potrebno da kreirate sadržaj za svaki izabrani jezik.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Aktivnosti",

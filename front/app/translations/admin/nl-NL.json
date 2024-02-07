@@ -1861,6 +1861,7 @@
   "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Detecteer ongepaste inhoud",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Automatisch detecteren van ongepaste inhoud die op het platform wordt geplaatst.",
+  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionToggleTooltip": "Als deze functie is ingeschakeld, worden de door deelnemers geplaatste bijdragen, voorstellen en opmerkingen automatisch beoordeeld. Berichten die gemarkeerd zijn als mogelijk ongepaste inhoud worden niet geblokkeerd, maar worden gemarkeerd voor beoordeling op de pagina {linkToActivityPage}.",
   "app.containers.AdminPage.SettingsPage.languages": "Talen",
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Bepaal de talen waarin je platform beschikbaar wordt gemaakt aan de gebruikers. Gebruikers kunnen zelf eenvoudig hun gewenste taal uit deze lijst selecteren via een knop in de navbar.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Activiteit",
