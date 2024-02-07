@@ -18,6 +18,7 @@ export const PublicAPI = () => {
         height="240px"
         src={apiImage}
         alt={formatMessage(messages.publicAPIImage)}
+        style={{ borderRadius: '3px' }}
       />
 
       <Box ml="32px" display="flex" flexDirection="column">
@@ -43,6 +44,7 @@ export const PublicAPI = () => {
               width="fit-content"
               linkTo="/admin/tools/public-api-tokens"
               textColor="white"
+              bgColor={colors.primary}
             >
               {formatMessage(messages.managePublicAPIKeys)}
             </Button>

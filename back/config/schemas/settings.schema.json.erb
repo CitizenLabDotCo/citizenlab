@@ -516,6 +516,23 @@
         }
       },
 
+      "esri_integration": {
+        "type": "object",
+        "title": "Esri Integration",
+        "description":  "Esri integration for maps. In development. DO NOT ENABLE ON COMMERCIAL PLATFORM!",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "api_key": {
+            "title": "API Key",
+            "description": "The API key for the Esri integration. (TODO: add more useful information)",
+            "type": "string"
+          }
+        }
+      },
+
       "intercom": {
         "type": "object",
         "title": "Intercom Integration",
@@ -1218,6 +1235,18 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "input_form_mapping_question": {
+        "type": "object",
+        "title": "Mapping question used in in-platform surveys",
+        "description":  "Allow mapping question(s) for use in in-platform surveys. Currently limited to one type: Select a point on a map.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
         }
       },
 

@@ -10,8 +10,8 @@ import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import React, { useState } from 'react';
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import { replaceIdRefsWithLinks } from '../../../analysis/Insights/util';
+import messages from '../../../messages';
+import { replaceIdRefsWithLinks } from '../../../../../analysis/Insights/util';
 import { useParams } from 'react-router-dom';
 
 type AnalysisInsight = {
@@ -90,10 +90,9 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
   const result = useAnalysisInsightsWithIds({
     analysisIds: analyses?.map((a) => a.id) || [],
-    bookmarked: true,
   });
 
-  const bookmarkedInsights = result
+  const insights = result
     .flatMap(({ data }, i) =>
       data?.data.map((insight) => ({
         analysisId: analyses[i].id,
@@ -103,15 +102,15 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
     )
     .filter((relationship) => relationship !== undefined) as AnalysisInsight[];
 
-  const selectedInsight = bookmarkedInsights[selectedInsightIndex];
+  const selectedInsight = insights[selectedInsightIndex];
 
-  if (bookmarkedInsights.length === 0) {
+  if (insights.length === 0) {
     return null;
   }
 
   return (
     <Box>
-      {bookmarkedInsights.length > 1 && (
+      {insights.length > 1 && (
         <Box
           display="flex"
           justifyContent="center"
@@ -129,12 +128,12 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
             a11y_buttonActionMessage={formatMessage(messages.previousInsight)}
           />
           <Text>
-            {selectedInsightIndex + 1} / {bookmarkedInsights.length}
+            {selectedInsightIndex + 1} / {insights.length}
           </Text>
           <IconButton
             iconName="chevron-right"
             onClick={() => {
-              selectedInsightIndex < bookmarkedInsights.length - 1 &&
+              selectedInsightIndex < insights.length - 1 &&
                 setSelectedInsightIndex(selectedInsightIndex + 1);
             }}
             iconColor={colors.black}
