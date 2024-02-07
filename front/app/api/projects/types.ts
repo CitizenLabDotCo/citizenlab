@@ -69,8 +69,8 @@ export interface IProjectAttributes {
   avatars_count: number;
   followers_count: number;
   ideas_count: number;
-  baskets_count?: number | null;
-  votes_count?: number | null;
+  baskets_count: number;
+  votes_count: number;
   visible_to: Visibility;
   timeline_active?: 'past' | 'present' | 'future' | null;
   participants_count: number;
