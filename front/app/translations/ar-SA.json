@@ -738,6 +738,7 @@
   "app.containers.AccessibilityStatement.workshops": "ورشات العمل",
   "app.containers.Admin.Insights.tabInsights": "رؤى",
   "app.containers.Admin.Insights.tabReports": "تقارير",
+  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "حدد المشروع",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "نهاية الاستبيان",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "أنشئ مجموعة ذكية",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "ستتم إضافة المستخدمين المستوفين لجميع الشروط التالية إلى المجموعة تلقائيًا:",
