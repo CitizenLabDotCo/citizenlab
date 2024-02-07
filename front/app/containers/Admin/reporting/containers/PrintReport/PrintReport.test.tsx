@@ -1,5 +1,5 @@
 import React from 'react';
-import FullScreenReport from '.';
+import PrintReport from './';
 import { render } from 'utils/testUtils/rtl';
 import { reportLayout } from 'api/report_layout/__mocks__/_mockServer';
 
@@ -47,7 +47,7 @@ describe('<FullscreenReport />', () => {
   // In the mock data above, I fixed the `resolvedName` of the mismatched node.
   // Now the test passes.
   it('renders if report layout is valid', () => {
-    const { container } = render(<FullScreenReport />);
+    const { container } = render(<PrintReport />);
     expect(
       container.querySelector('#e2e-content-builder-frame')
     ).toBeInTheDocument();

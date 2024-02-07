@@ -738,6 +738,7 @@
   "app.containers.AccessibilityStatement.workshops": "Tallers",
   "app.containers.Admin.Insights.tabInsights": "Informació",
   "app.containers.Admin.Insights.tabReports": "Informes",
+  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Seleccioneu el projecte",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Final de l'enquesta",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Creeu un grup intel·ligent",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Els usuaris que compleixin totes les condicions següents s'afegiran automàticament al grup:",

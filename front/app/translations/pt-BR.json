@@ -738,6 +738,7 @@
   "app.containers.AccessibilityStatement.workshops": "Seminário",
   "app.containers.Admin.Insights.tabInsights": "Percepções",
   "app.containers.Admin.Insights.tabReports": "Relatórios",
+  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Selecione o projeto",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Fim da pesquisa",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Criar um grupo inteligente",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Os usuários que atenderem a todas as condições a seguir serão adicionados automaticamente ao grupo:",

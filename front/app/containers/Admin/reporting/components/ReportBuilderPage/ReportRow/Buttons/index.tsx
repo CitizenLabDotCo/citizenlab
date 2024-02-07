@@ -1,9 +1,13 @@
 import React from 'react';
+import Tippy from '@tippyjs/react';
+
+// api
+import useReport from 'api/reports/useReport';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import ShareReportButton from './ShareReportButton';
+import PrintReportButton from './PrintReportButton';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -14,11 +18,16 @@ interface Props {
   isLoading: boolean;
   onDelete: () => void;
   onEdit: () => void;
-  onView: () => void;
 }
 
-const Buttons = ({ reportId, isLoading, onDelete, onEdit, onView }: Props) => {
+const Buttons = ({ reportId, isLoading, onDelete, onEdit }: Props) => {
+  const { data: report } = useReport(reportId);
   const { formatMessage } = useIntl();
+
+  if (!report) return null;
+
+  const canEdit =
+    report.data.attributes.action_descriptor.editing_report.enabled;
 
   return (
     <Box display="flex">
@@ -28,32 +37,31 @@ const Buttons = ({ reportId, isLoading, onDelete, onEdit, onView }: Props) => {
         buttonStyle="white"
         onClick={onDelete}
         processing={isLoading}
-        disabled={isLoading}
+        disabled={isLoading || !canEdit}
         iconSize="18px"
       >
         {formatMessage(messages.delete)}
       </Button>
-      <Button
-        mr="8px"
-        icon="edit"
-        buttonStyle="secondary"
-        onClick={onEdit}
-        disabled={isLoading}
-        iconSize="18px"
+      <Tippy
+        disabled={canEdit}
+        interactive={true}
+        placement="bottom"
+        content={formatMessage(messages.cannotEditReport)}
       >
-        {formatMessage(messages.edit)}
-      </Button>
-      <Button
-        mr="8px"
-        icon="eye"
-        buttonStyle="secondary"
-        onClick={onView}
-        disabled={isLoading}
-        iconSize="18px"
-      >
-        {formatMessage(messages.view)}
-      </Button>
-      <ShareReportButton reportId={reportId} />
+        <div>
+          <Button
+            mr="8px"
+            icon="edit"
+            buttonStyle="secondary"
+            onClick={onEdit}
+            disabled={isLoading || !canEdit}
+            iconSize="18px"
+          >
+            {formatMessage(messages.edit)}
+          </Button>
+        </div>
+      </Tippy>
+      <PrintReportButton reportId={reportId} />
     </Box>
   );
 };

@@ -47,6 +47,10 @@ module Analysis
       end
     end
 
+    def participation_context
+      phase || project
+    end
+
     def participation_method
       if phase
         phase.participation_method
