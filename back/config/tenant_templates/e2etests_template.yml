@@ -8292,7 +8292,7 @@ models:
   #   - card_id: "i999"
   custom_maps/map_config:
   - &map_config1
-    project_ref: *76
+    mappable_ref: *76
     center_geojson:
       type: Point
       coordinates:
