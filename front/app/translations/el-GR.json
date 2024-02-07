@@ -738,6 +738,7 @@
   "app.containers.AccessibilityStatement.workshops": "Σεμινάρια",
   "app.containers.Admin.Insights.tabInsights": "Πληροφορίες",
   "app.containers.Admin.Insights.tabReports": "Αναφορές",
+  "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Επιλέξτε έργο",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Τέλος της έρευνας",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Δημιουργία μιας έξυπνης ομάδας",
   "app.containers.AdminPage.Users.GroupCreation.rulesExplanation": "Οι χρήστες που πληρούν όλες τις παρακάτω προϋποθέσεις θα προστεθούν αυτόματα στην ομάδα:",
