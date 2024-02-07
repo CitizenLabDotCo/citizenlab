@@ -81,7 +81,10 @@ export interface IIdeaData {
     comments_count: number;
     internal_comments_count: number;
     official_feedbacks_count: number;
-    /** Defined for all voting methods, even single_voting */
+    /** Defined for all ideas regardless of participation method.
+     * For participation_method voting, this is used for all voting_methods,
+     * even single_voting.
+     */
     baskets_count: number;
     /** For voting_method budgeting we use the budget of the idea
      * times the number of picks/baskets */
