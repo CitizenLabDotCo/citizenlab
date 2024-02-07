@@ -35,6 +35,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
     visit_select_base(field, flattened_values)
   end
 
+  def visit_multiselect_image(field)
+    visit_multiselect(field)
+  end
+
   def visit_multiline_text(field)
     answers = inputs
       .select("custom_field_values->'#{field.key}' as value")
@@ -106,15 +110,20 @@ class SurveyResultsGeneratorService < FieldVisitorService
     option_titles = field.options.each_with_object({}) do |option, accu|
       accu[option.key] = option.title_multiloc
     end
-    collect_answers(field, filtered_distribution, option_titles)
+    option_images = []
+    if field.support_option_images?
+      option_images = field.options.each_with_object({}) do |option, accu|
+        accu[option.key] = option.image&.image&.versions&.transform_values(&:url)
+      end
+    end
+    collect_answers(field, filtered_distribution, option_titles, option_images)
   end
 
-  def collect_answers(field, distribution, option_titles)
+  def collect_answers(field, distribution, option_titles, option_images = [])
     answers = distribution.map do |(value, count)|
-      {
-        answer: option_titles[value],
-        responses: count
-      }
+      option = { answer: option_titles[value], responses: count }
+      option[:image] = option_images[value] if option_images.present?
+      option
     end
     answer_count = distribution.sum { |(_value, count)| count }
     answers = {

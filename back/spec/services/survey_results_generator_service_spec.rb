@@ -157,7 +157,39 @@ RSpec.describe SurveyResultsGeneratorService do
       title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' }
     )
   end
+  let!(:multiselect_image_field) do
+    create(
+      :custom_field_multiselect_image,
+      resource: form,
+      title_multiloc: {
+        'en' => 'Choose an image',
+        'fr-FR' => 'Choisissez une image',
+        'nl-NL' => 'Kies een afbeelding'
+      },
+      description_multiloc: {},
+      required: false
+    )
+  end
+  let!(:house_option) do
+    create(
+      :custom_field_option,
+      custom_field: multiselect_image_field,
+      key: 'house',
+      title_multiloc: { 'en' => 'House', 'fr-FR' => 'Maison', 'nl-NL' => 'Huis' },
+      image: create(:custom_field_option_image)
+    )
+  end
+  let!(:school_option) do
+    create(
+      :custom_field_option,
+      custom_field: multiselect_image_field,
+      key: 'school',
+      title_multiloc: { 'en' => 'School', 'fr-FR' => 'Ecole', 'nl-NL' => 'School' },
+      image: create(:custom_field_option_image)
+    )
+  end
 
+  # TODO: JS - Split this into different results - hard to manage
   let(:expected_result) do
     {
       results: [
@@ -251,20 +283,52 @@ RSpec.describe SurveyResultsGeneratorService do
             { answer: 'Seattle' }
           ),
           customFieldId: select_field.id
+        },
+        {
+          inputType: 'multiselect_image',
+          question: {
+            'en' => 'Choose an image',
+            'fr-FR' => 'Choisissez une image',
+            'nl-NL' => 'Kies een afbeelding'
+          },
+          required: false,
+          totalResponses: 3,
+          answers: [
+            { answer: { 'en' => 'House', 'fr-FR' => 'Maison', 'nl-NL' => 'Huis' }, responses: 2, image: hash_including(
+              fb: end_with('.png'),
+              small: end_with('.png'),
+              medium: end_with('.png'),
+              large: end_with('.png')
+            ) },
+            { answer: { 'en' => 'School', 'fr-FR' => 'Ecole', 'nl-NL' => 'School' }, responses: 1, image: hash_including(
+              fb: end_with('.png'),
+              small: end_with('.png'),
+              medium: end_with('.png'),
+              large: end_with('.png')
+            ) }
+          ],
+          customFieldId: multiselect_image_field.id
         }
       ],
       totalSubmissions: 22
     }
   end
 
-  let(:expected_result_without_minimum_and_maximum_labels) do
-    expected_result.tap do |result|
-      result[:results][3][:answers][0][:answer] = {
+  let(:expected_result_text) { expected_result[:results][0] }
+  let(:expected_result_multiline_text) { expected_result[:results][1] }
+  let(:expected_result_multiselect) { expected_result[:results][2] }
+  let(:expected_result_linear_scale) { expected_result[:results][3] }
+  let(:expected_result_select) { expected_result[:results][4] }
+  let(:expected_result_multiselect_image) { expected_result[:results][5] }
+
+  let(:expected_result_linear_scale_without_min_and_max_labels) do
+    expected_result_linear_scale.tap do |result|
+      result[:answers][0][:answer] = {
         'en' => '5 - Strongly agree',
         'fr-FR' => '5',
         'nl-NL' => '5'
       }
-      result[:results][3][:answers][4][:answer] = {
+      result[:answers][4][:answer] = {
         'en' => '1',
         'fr-FR' => "1 - Pas du tout d'accord",
         'nl-NL' => '1'
@@ -302,7 +366,8 @@ RSpec.describe SurveyResultsGeneratorService do
         text_field.key => 'Green',
         multiselect_field.key => %w[cat dog],
         select_field.key => 'other',
-        "#{select_field.key}_other" => 'Austin'
+        "#{select_field.key}_other" => 'Austin',
+        multiselect_image_field.key => ['house']
       }
     )
     create(
@@ -313,7 +378,8 @@ RSpec.describe SurveyResultsGeneratorService do
         text_field.key => 'Pink',
         multiselect_field.key => %w[dog cat cow],
         select_field.key => 'other',
-        "#{select_field.key}_other" => 'Miami'
+        "#{select_field.key}_other" => 'Miami',
+        multiselect_image_field.key => ['house']
       }
     )
     create(
@@ -321,7 +387,8 @@ RSpec.describe SurveyResultsGeneratorService do
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
-        select_field.key => 'la'
+        select_field.key => 'la',
+        multiselect_image_field.key => ['school']
       }
     )
     create(
@@ -361,10 +428,44 @@ RSpec.describe SurveyResultsGeneratorService do
     end
 
     describe '#generate_results' do
-      it 'returns the results' do
+      let!(:generated_results) { generator.generate_results }
+
+      it 'returns the correct locales' do
         # These locales are a prerequisite for the test.
         expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
-        expect(generator.generate_results).to match expected_result
+      end
+
+      it 'returns the correct totals' do
+        expect(generated_results[:totalSubmissions]).to eq 22
+      end
+
+      it 'returns the results for a text field' do
+        expect(generated_results[:results][0]).to match expected_result_text
+      end
+
+      it 'returns the results for a multiline text field' do
+        expect(generated_results[:results][1]).to match expected_result_multiline_text
+      end
+
+      it 'returns the results for a multi-select field' do
+        expect(generated_results[:results][2]).to match expected_result_multiselect
+      end
+
+      it 'returns the results for a linear scale field' do
+        expect(generated_results[:results][3]).to match expected_result_linear_scale
+      end
+
+      context 'when not all minimum and maximum labels are configured for linear scale fields' do
+        let(:minimum_label_multiloc) { { 'fr-FR' => "Pas du tout d'accord" } }
+        let(:maximum_label_multiloc) { { 'en' => 'Strongly agree' } }
+
+        it 'returns minimum and maximum labels as numbers' do
+          expect(generator.generate_results[:results][3]).to match expected_result_linear_scale_without_min_and_max_labels
+        end
+      end
+
+      it 'returns the results for a select field' do
+        expect(generated_results[:results][4]).to match expected_result_select
       end
 
       it 'returns select answers in order of the number of responses, with other always last' do
@@ -373,15 +474,8 @@ RSpec.describe SurveyResultsGeneratorService do
         expect(answers.pluck(:responses)).to eq [2, 1, 3]
       end
 
-      context 'when not all minimum and maximum labels are configured' do
-        let(:minimum_label_multiloc) { { 'fr-FR' => "Pas du tout d'accord" } }
-        let(:maximum_label_multiloc) { { 'en' => 'Strongly agree' } }
-
-        it 'returns minimum and maximum labels as numbers' do
-          # These locales are a prerequisite for the test.
-          expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
-          expect(generator.generate_results).to match expected_result_without_minimum_and_maximum_labels
-        end
+      it 'returns the results for a multi-select image field' do
+        expect(generated_results[:results][5]).to match expected_result_multiselect_image
       end
     end
   end
