@@ -9,7 +9,7 @@ require 'rails_helper'
 #   * Missing values for fields are not counted.
 #   * The order of the results is the same as the field order in the form.
 #   * Results for one field are ordered in descending order.
-#   * Result generation is supported for projects and phases.
+#   * Result generation is supported for phases only.
 
 RSpec.describe SurveyResultsGeneratorService do
   subject(:generator) { described_class.new participation_context }
@@ -189,7 +189,6 @@ RSpec.describe SurveyResultsGeneratorService do
     )
   end
 
-  # TODO: JS - Split this into different results - hard to manage
   let(:expected_result) do
     {
       results: [
