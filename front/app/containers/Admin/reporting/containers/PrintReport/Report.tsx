@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { ReportContextProvider } from '../../context/ReportContext';
 
 // hooks
+import useReport from 'api/reports/useReport';
 import useReportLayout from 'api/report_layout/useReportLayout';
 
 // components
@@ -36,11 +37,16 @@ export interface Props {
 }
 
 export const Report = ({ reportId }: Props) => {
+  const { data: report } = useReport(reportId);
   const { data: reportLayout } = useReportLayout(reportId);
   const isLoadingLayout = reportLayout === undefined;
 
+  if (!report) return null;
+
+  const phaseId = report.data.relationships.phase?.data?.id;
+
   return (
-    <ReportContextProvider width="pdf" reportId={reportId}>
+    <ReportContextProvider width="pdf" reportId={reportId} phaseId={phaseId}>
       <FullScreenWrapper>
         {isLoadingLayout && <Spinner />}
         {!isLoadingLayout && (
