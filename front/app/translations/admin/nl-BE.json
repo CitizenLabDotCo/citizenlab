@@ -71,7 +71,7 @@
   "app.components.UserSearch.searchUsers": "Zoek gebruikers",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Geen vraag geselecteerd. Selecteer eerst een vraag.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} reacties",
-  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Enkele enquêtevraag",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion": "Eén vraag uit de vragenlijst",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.sourceAndReference": "Gegevens van {phase} tijdens {period}",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} tot nu toe",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Titel",
