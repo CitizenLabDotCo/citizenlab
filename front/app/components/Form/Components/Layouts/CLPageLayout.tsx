@@ -6,7 +6,6 @@ import {
   useJsonForms,
 } from '@jsonforms/react';
 import styled, { useTheme } from 'styled-components';
-import Ajv from 'ajv';
 
 // Components
 import {
@@ -41,6 +40,7 @@ import {
   isVisible,
 } from '../Controls/visibilityUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { customAjv } from 'components/Form';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
@@ -53,8 +53,6 @@ const StyledFormSection = styled(FormSection)`
     margin-bottom: 0;
   }
 `;
-
-const customAjv = new Ajv({ useDefaults: 'empty', removeAdditional: true });
 
 const CLPageLayout = memo(
   ({
