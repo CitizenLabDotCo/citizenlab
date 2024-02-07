@@ -1861,7 +1861,6 @@
   "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "https://support.citizenlab.co/de/articles/1346397-welche-dimensionen-und-grossen-sind-fur-bilder-auf-der-plattform-empfohlen",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Unangemessene Inhalte erkennen",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Automatische Erkennung von unangemessenen Inhalten, die auf der Plattform gepostet werden.",
-  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "In Beta: derzeit verfügbar in Englisch, Französisch, Deutsch, Portugiesisch und Spanisch. Während diese Funktion aktiviert ist, werden Eingaben, Vorschläge und Kommentare, die von Teilnehmenden gepostet werden, automatisch mithilfe von Natural Language Processing überprüft. Beiträge, die als potenziell unangemessene Inhalte gekennzeichnet sind, werden nicht blockiert, sondern zur Überprüfung auf der {linkToActivityPage} -Seite hervorgehoben.",
   "app.containers.AdminPage.SettingsPage.languages": "Sprachen",
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Sie können mehrere Sprachen auswählen, in denen Sie Ihre Plattform den Nutzer*innen anbieten möchten. Sie müssen für jede ausgewählte Sprache Inhalte erstellen.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Aktivität",
