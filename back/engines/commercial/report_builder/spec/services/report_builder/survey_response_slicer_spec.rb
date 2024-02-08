@@ -93,32 +93,33 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
   let_it_be(:user_custom_field) { create(:custom_field_gender, :with_options) }
 
   # Create multiselect user custom field
-  # let_it_be(:user_multiselect_field) do
-  #   create(
-  #     :custom_field_multiselect,
-  #     title_multiloc: {
-  #       'en' => 'Multiselect user',
-  #       'fr-FR' => 'Multiselect user',
-  #       'nl-NL' => 'Multiselect user'
-  #     }
-  #   )
-  # end
-  # let_it_be(:one_option) do
-  #   create(
-  #     :custom_field_option,
-  #     custom_field: user_multiselect_field,
-  #     key: 'one_option',
-  #     title_multiloc: { 'en' => 'One option', 'fr-FR' => 'One option', 'nl-NL' => 'One option' }
-  #   )
-  # end
-  # let_it_be(:another_option) do
-  #   create(
-  #     :custom_field_option,
-  #     custom_field: user_multiselect_field,
-  #     key: 'another_option',
-  #     title_multiloc: { 'en' => 'Another option', 'fr-FR' => 'Another option', 'nl-NL' => 'Another option' }
-  #   )
-  # end
+  let_it_be(:user_multiselect_field) do
+    create(
+      :custom_field_multiselect,
+      title_multiloc: {
+        'en' => 'Multiselect user',
+        'fr-FR' => 'Multiselect user',
+        'nl-NL' => 'Multiselect user'
+      },
+      key: 'multiselect_user'
+    )
+  end
+  let_it_be(:one_option) do
+    create(
+      :custom_field_option,
+      custom_field: user_multiselect_field,
+      key: 'one_option',
+      title_multiloc: { 'en' => 'One option', 'fr-FR' => 'One option', 'nl-NL' => 'One option' }
+    )
+  end
+  let_it_be(:another_option) do
+    create(
+      :custom_field_option,
+      custom_field: user_multiselect_field,
+      key: 'another_option',
+      title_multiloc: { 'en' => 'Another option', 'fr-FR' => 'Another option', 'nl-NL' => 'Another option' }
+    )
+  end
 
   # Create users
   let_it_be(:users) do
