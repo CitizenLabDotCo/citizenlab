@@ -136,25 +136,29 @@ export default defineMessages({
     defaultMessage:
       'If no logic is added, the survey will follow its normal flow. For more information, visit {supportPageLink}',
   },
-  multiselect2: {
+  multiselect: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.multiselectText2',
     defaultMessage: 'Multiple choice - choose many',
   },
-  select2: {
+  select: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.selectText2',
     defaultMessage: 'Multiple choice - choose one',
   },
-  linear_scale2: {
+  linear_scale: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale2',
     defaultMessage: 'Linear scale',
   },
-  multiline_text2: {
+  multiline_text: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.multiline_text2',
     defaultMessage: 'Long answer',
   },
-  text2: {
+  text: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.text2',
     defaultMessage: 'Short answer',
+  },
+  multiselect_image: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.multiselect_image',
+    defaultMessage: 'Image choice - choose many',
   },
   downloadExcelTemplate1: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1',

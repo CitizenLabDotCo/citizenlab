@@ -12,7 +12,7 @@ import T from 'components/T';
 import messages from '../messages';
 
 // utils
-import { get, snakeCase } from 'lodash-es';
+import { snakeCase } from 'lodash-es';
 
 // typings
 import { Locale, Multiloc } from 'typings';
@@ -45,26 +45,26 @@ const FormResultsQuestion = ({
   const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
   const { formatMessage } = useIntl();
 
-  // TODO: Replace hardcoded '2' here. Urgent to relese to fix bug though right now.
-  const inputTypeText = get(messages, inputType.concat('2'), '');
   const requiredOrOptionalText = required
     ? formatMessage(messages.required2)
     : formatMessage(messages.optional2);
-  const inputTypeLabel = `${formatMessage(
-    inputTypeText
-  )} - ${requiredOrOptionalText.toLowerCase()}`;
+  const inputTypeLabel = messages[inputType]
+    ? `${formatMessage(
+        messages[inputType]
+      )} - ${requiredOrOptionalText.toLowerCase()}`
+    : '';
 
   return (
     <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
       <Title variant="h3" mt="12px" mb="12px">
         <T value={question} />
       </Title>
-      {inputTypeText && (
+      {inputTypeLabel && (
         <Text variant="bodyS" color="textSecondary" mt="12px" mb="12px">
           {inputTypeLabel}
         </Text>
       )}
-      {answers && (
+      {answers &&
         answers.map(({ answer, responses }, index) => {
           const percentage =
             Math.round((responses / totalResponses) * 1000) / 10;
@@ -82,12 +82,14 @@ const FormResultsQuestion = ({
               />
             </Box>
           );
-        })
-      )}
+        })}
       {textResponses && textResponses.length > 0 && (
         <Box display="flex" gap="24px" mt={answers ? '20px' : '0'}>
           <Box flex="1">
-            <TextResponses textResponses={textResponses} selectField={answers !== undefined} />
+            <TextResponses
+              textResponses={textResponses}
+              selectField={answers !== undefined}
+            />
           </Box>
           <Box flex="1">
             {isAnalysisEnabled && <Analysis customFieldId={customFieldId} />}
