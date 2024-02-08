@@ -37,7 +37,7 @@ module IdeaCustomFields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         fields,
         params: serializer_params(@custom_form),
-        include: [:options]
+        include: %i[options options.image]
       ).serializable_hash
     end
 
@@ -45,7 +45,7 @@ module IdeaCustomFields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         @custom_field,
         params: jsonapi_serializer_params,
-        include: [:options]
+        include: %i[options options.image]
       ).serializable_hash
     end
 
@@ -63,7 +63,7 @@ module IdeaCustomFields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         IdeaCustomFieldsService.new(@custom_form).all_fields,
         params: serializer_params(@custom_form),
-        include: [:options]
+        include: %i[options options.image]
       ).serializable_hash
     rescue UpdateAllFailedError => e
       render json: { errors: e.errors }, status: :unprocessable_entity
@@ -173,13 +173,14 @@ module IdeaCustomFields
             option = create_option! option_params, field, errors, option_temp_ids_to_ids_mapping, field_index, option_index
             next unless option
           end
+          update_option_image!(option, option_params[:image_id])
           option.move_to_bottom
         end
       end
     end
 
     def create_option!(option_params, field, errors, option_temp_ids_to_ids_mapping, field_index, option_index)
-      create_params = option_params.except('temp_id')
+      create_params = option_params.except('temp_id', 'image_id')
       option = CustomFieldOption.new create_params.merge(custom_field: field)
       SideFxCustomFieldOptionService.new.before_create option, current_user
       if option.save
@@ -192,8 +193,20 @@ module IdeaCustomFields
       end
     end
 
+    def update_option_image!(option, image_id)
+      return unless image_id
+
+      if image_id == ''
+        option.image.destroy!
+      else
+        image = CustomFieldOptionImage.find image_id
+        option.update!(image: image)
+      end
+    end
+
     def update_option!(option, option_params, errors, field_index, option_index)
-      option.assign_attributes option_params
+      update_params = option_params.except('image_id')
+      option.assign_attributes update_params
       SideFxCustomFieldOptionService.new.before_update option, current_user
       if option.save
         SideFxCustomFieldOptionService.new.after_update option, current_user
@@ -246,7 +259,15 @@ module IdeaCustomFields
           description_multiloc: CL2_SUPPORTED_LOCALES,
           minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
           maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
-          options: [:id, :temp_id, :other, { title_multiloc: CL2_SUPPORTED_LOCALES }],
+          options: [
+            :id,
+            :temp_id,
+            :image_id,
+            :other,
+            {
+              title_multiloc: CL2_SUPPORTED_LOCALES
+            }
+          ],
           logic: {} }
       ])
     end

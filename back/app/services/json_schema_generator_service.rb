@@ -74,10 +74,15 @@ class JsonSchemaGeneratorService < FieldVisitorService
     }.tap do |json|
       options = field.ordered_options
 
+      # TODO: JS - Can we do this as a oneOf instead to support images?
       unless options.empty?
         json[:enum] = options.map(&:key)
       end
     end
+  end
+
+  def visit_select_image(field)
+    visit_select(field)
   end
 
   def visit_multiselect(field)
@@ -90,7 +95,6 @@ class JsonSchemaGeneratorService < FieldVisitorService
         type: 'string'
       }.tap do |items|
         options = field.ordered_options
-
         unless options.empty?
           items[:oneOf] = options.map do |option|
             {
@@ -101,6 +105,23 @@ class JsonSchemaGeneratorService < FieldVisitorService
         end
       end
     }
+  end
+
+  def visit_multiselect_image(field)
+    select = visit_multiselect(field)
+    select[:items].tap do |items|
+      options = field.ordered_options
+      unless options.empty?
+        items[:oneOf] = options.map do |option|
+          {
+            const: option.key,
+            title: multiloc_service.t(option.title_multiloc),
+            image: option.image&.image&.versions&.transform_values(&:url)
+          }
+        end
+      end
+    end
+    select
   end
 
   def visit_checkbox(_field)

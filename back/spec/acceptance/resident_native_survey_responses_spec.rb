@@ -148,6 +148,34 @@ resource 'Ideas' do
         end
       end
 
+      context 'with an image multi-select field' do
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+        let!(:image_select_field) do
+          create(
+            :custom_field_multiselect_image,
+            resource: custom_form,
+            key: 'custom_field_name1',
+            enabled: true
+          )
+        end
+        let!(:option) do
+          create(
+            :custom_field_option,
+            custom_field: image_select_field,
+            key: 'image1',
+            image: create(:custom_field_option_image)
+          )
+        end
+        let(:custom_field_name1) { ['image1'] }
+
+        example_request 'Create an input with a file upload field' do
+          assert_status 201
+          idea = project.reload.ideas.first
+          expect(idea.custom_field_values).to eq({ 'custom_field_name1' => ['image1'] })
+        end
+      end
+
       context 'with an active participation context' do
         let!(:custom_field) do
           create(

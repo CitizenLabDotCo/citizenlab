@@ -35,8 +35,16 @@ class TestVisitor < FieldVisitorService
     'select from visitor'
   end
 
+  def visit_select_image(_field)
+    'select_image from visitor'
+  end
+
   def visit_multiselect(_field)
     'multiselect from visitor'
+  end
+
+  def visit_multiselect_image(_field)
+    'multiselect_image from visitor'
   end
 
   def visit_checkbox(_field)

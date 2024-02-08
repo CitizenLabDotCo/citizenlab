@@ -194,7 +194,8 @@ resource 'Idea Custom Fields' do
             other: false,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String)
-          }
+          },
+          relationships: { image: { data: nil } }
         })
         expect(json_option2).to match({
           id: options.last.id,
@@ -206,8 +207,167 @@ resource 'Idea Custom Fields' do
             other: true,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String)
+          },
+          relationships: { image: { data: nil } }
+        })
+      end
+
+      example 'Add a custom field with image options' do
+        image1 = create(:custom_field_option_image, custom_field_option: nil)
+        image2 = create(:custom_field_option_image, custom_field_option: nil)
+        request = {
+          custom_fields: [
+            { input_type: 'page' },
+            {
+              input_type: 'multiselect_image',
+              title_multiloc: { en: 'Inserted field' },
+              required: false,
+              enabled: true,
+              options: [
+                {
+                  title_multiloc: { en: 'Option 1' },
+                  image_id: image1.id
+                },
+                {
+                  title_multiloc: { en: 'Option 2' },
+                  image_id: image2.id
+                }
+              ]
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 200
+
+        expect(CustomField.all.count).to eq 2
+        expect(CustomFieldOption.all.count).to eq 2
+        expect(CustomFieldOption.all.map { |c| c.image.id }).to match [image1.id, image2.id]
+        expect(response_data[1]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: {},
+            enabled: true,
+            input_type: 'multiselect_image',
+            key: Regexp.new('inserted_field'),
+            ordering: 1,
+            required: false,
+            select_count_enabled: false,
+            maximum_select_count: nil,
+            minimum_select_count: nil,
+            title_multiloc: { en: 'Inserted field' },
+            updated_at: an_instance_of(String),
+            logic: {},
+            constraints: {},
+            random_option_ordering: false
+          },
+          id: an_instance_of(String),
+          type: 'custom_field',
+          relationships: {
+            options: {
+              data: [
+                {
+                  id: an_instance_of(String),
+                  type: 'custom_field_option'
+                },
+                {
+                  id: an_instance_of(String),
+                  type: 'custom_field_option'
+                }
+              ]
+            }
           }
         })
+        expect(json_response_body[:included].pluck(:type)).to match_array(
+          %w[image custom_field_option image custom_field_option]
+        )
+      end
+
+      context 'Update custom field options with images' do
+        let!(:page) { create(:custom_field_page, resource: custom_form) }
+        let!(:field) { create(:custom_field_multiselect_image, resource: custom_form) }
+        let!(:option1) { create(:custom_field_option, key: 'option1', custom_field: field) }
+        let!(:option2) { create(:custom_field_option, key: 'option2', custom_field: field) }
+        let!(:image1) { create(:custom_field_option_image, custom_field_option: option1, updated_at: '2022-01-01') }
+        let!(:image2) { create(:custom_field_option_image, custom_field_option: option2, updated_at: '2022-01-01') }
+
+        example 'Remove an image from a custom field option' do
+          request = {
+            custom_fields: [
+              {
+                id: page.id,
+                input_type: 'page'
+              },
+              {
+                id: field.id,
+                input_type: 'multiselect',
+                title_multiloc: { en: 'Inserted field' },
+                required: false,
+                enabled: true,
+                options: [
+                  {
+                    id: option1.id,
+                    title_multiloc: { en: 'Option 1' },
+                    image_id: ''
+                  },
+                  {
+                    id: option2.id,
+                    title_multiloc: { en: 'Option 2' }
+                  }
+                ]
+              }
+            ]
+          }
+          do_request request
+
+          assert_status 200
+          expect(CustomFieldOptionImage.all.count).to eq 1
+          expect(CustomFieldOption.find(option1.id).image).to be_nil
+          expect(json_response_body[:included].pluck(:type)).to match_array(
+            %w[image custom_field_option custom_field_option]
+          )
+        end
+
+        example 'Update an image on a custom field option' do
+          image = create(:custom_field_option_image)
+          request = {
+            custom_fields: [
+              {
+                id: page.id,
+                input_type: 'page'
+              },
+              {
+                id: field.id,
+                input_type: 'multiselect',
+                title_multiloc: { en: 'Inserted field' },
+                required: false,
+                enabled: true,
+                options: [
+                  {
+                    id: option1.id,
+                    title_multiloc: { en: 'Option 1' },
+                    image_id: image.id
+                  },
+                  {
+                    id: option2.id,
+                    title_multiloc: { en: 'Option 2' }
+                  }
+                ]
+              }
+            ]
+          }
+          expect(image1.updated_at).to be < image1.created_at
+
+          do_request request
+
+          assert_status 200
+          expect(CustomFieldOptionImage.all.count).to eq 2
+          expect(CustomFieldOption.find(option1.id).image.id).to eq image.id
+          expect(json_response_body[:included].pluck(:type)).to match_array(
+            %w[image custom_field_option image custom_field_option]
+          )
+        end
       end
 
       example 'Remove all custom fields' do
@@ -2531,7 +2691,8 @@ resource 'Idea Custom Fields' do
             other: false,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String)
-          }
+          },
+          relationships: { image: { data: nil } }
         })
         expect(json_option2).to match({
           id: change_option.id,
@@ -2543,7 +2704,8 @@ resource 'Idea Custom Fields' do
             other: false,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String)
-          }
+          },
+          relationships: { image: { data: nil } }
         })
       end
 
