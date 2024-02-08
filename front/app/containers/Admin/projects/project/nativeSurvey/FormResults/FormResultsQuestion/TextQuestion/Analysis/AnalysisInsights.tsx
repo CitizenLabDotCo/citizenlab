@@ -243,7 +243,6 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
 
   const { data: inputs } = useInfiniteAnalysisInputs({
     analysisId: analysis.id,
-    queryParams: {},
   });
   const { data: insights } = useAnalysisInsights({
     analysisId: analysis.id,
