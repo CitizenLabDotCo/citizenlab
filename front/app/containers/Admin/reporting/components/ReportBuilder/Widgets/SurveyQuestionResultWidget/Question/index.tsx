@@ -16,17 +16,17 @@ import messages from '../messages';
 interface Props {
   projectId: string;
   phaseId: string;
-  fieldId: string;
+  questionId: string;
 }
 
-const SurveyQuestionResult = ({ projectId, phaseId, fieldId }: Props) => {
-  const response = useSurveyQuestionResult({ phaseId, fieldId });
+const SurveyQuestionResult = ({ projectId, phaseId, questionId }: Props) => {
+  const response = useSurveyQuestionResult({ phaseId, questionId });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   if (!response) return null;
 
-  const { answers, totalResponses, question } = response.data.attributes.result;
+  const { answers, totalResponses, question } = response.data.attributes;
   if (!answers) return null;
 
   return (

@@ -7,6 +7,33 @@ module ReportBuilder
       @inputs = phase.ideas.published
     end
 
+    def get_result(question_field_id)
+      question = get_question(question_field_id)
+
+      answers = @inputs
+        .select("ideas.custom_field_values->'#{question.key}' as answer")
+        .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
+
+      grouped_answers = Idea
+        .select(:answer)
+        .from(answers)
+        .group(:answer)
+        .order(Arel.sql('COUNT(answer) DESC'))
+        .count
+        .to_a
+        .map do |answer, count|
+          {
+            answer: answer,
+            count: count
+          }
+        end
+
+      {
+        totalResponses: grouped_answers.pluck(:count).sum,
+        answers: grouped_answers
+      }
+    end
+
     def slice_by_user_field(question_field_id, user_field_id)
       question = get_question(question_field_id)
       user_field = CustomField.find_by(id: user_field_id)

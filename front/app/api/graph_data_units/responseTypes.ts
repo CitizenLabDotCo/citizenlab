@@ -1,4 +1,4 @@
-import { SurveyResultAttributes, Result } from 'api/survey_results/types';
+import { SurveyResultAttributes } from 'api/survey_results/types';
 import { GenderOption } from 'api/users_by_gender/types';
 import {
   CommentsCountRow,
@@ -33,12 +33,18 @@ export type SurveyResultsResponse = {
   };
 };
 
+type Answer = {
+  answer: string;
+  count: number;
+  group_by_value?: string;
+};
+
 export type SurveyQuestionResultResponse = {
   data: {
     type: 'report_builder_data_units';
     attributes: {
-      result: Result;
-      totalSubmissions: number;
+      answers: Answer[];
+      totalResponses: number;
     };
   };
 };
