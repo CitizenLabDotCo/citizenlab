@@ -43,7 +43,7 @@ export interface Props {
   list: IInitiativeData[];
 }
 
-// Custom stylig for Esri map
+// Custom styling for Esri map
 const StyledMapContainer = styled(Box)`
   calcite-action-bar {
     display: none;
