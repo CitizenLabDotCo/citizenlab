@@ -42,6 +42,7 @@ const SortableRow = ({
   dataTestid,
 }: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
+  const handleRef = useRef<HTMLDivElement | null>(null);
   const [{ handlerId }, drop] = useDrop<
     DragItem,
     void,
@@ -103,7 +104,7 @@ const SortableRow = ({
     },
   });
 
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging }, drag, preview] = useDrag({
     type: itemType,
     item: {
       id,
@@ -120,7 +121,8 @@ const SortableRow = ({
 
   const opacity = isDragging ? 0 : 1;
 
-  drag(drop(ref));
+  drag(drop(handleRef));
+  preview(ref);
 
   return children ? (
     <div
@@ -131,7 +133,7 @@ const SortableRow = ({
       data-testid={dataTestid}
     >
       <Row isLastItem={isLastItem}>
-        <DragHandle className="sortablerow-draghandle">
+        <DragHandle className="sortablerow-draghandle" ref={handleRef}>
           <Icon width="12px" name="sort" />
         </DragHandle>
         {children}
