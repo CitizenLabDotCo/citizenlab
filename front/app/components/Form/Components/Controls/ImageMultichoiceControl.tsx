@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 // utils
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { getOptions, getSubtextElement } from './controlUtils';
+import imageFile from './emptyImage.png';
 
 // components
 import VerificationIcon from '../VerificationIcon';
@@ -55,6 +56,7 @@ const ImageMultichoiceControl = ({
 
   const maxItems = schema.maxItems;
   const minItems = schema.minItems;
+  console.log('uischema', uischema);
 
   if (!visible) {
     return null;
@@ -119,14 +121,13 @@ const ImageMultichoiceControl = ({
               }}
               display="flex"
               flexDirection="column"
+              alignItems="stretch"
             >
-              {option?.image && (
-                <Image
-                  maxWidth="188px"
-                  src={option.image.medium}
-                  alt={option.label}
-                />
-              )}
+              <Image
+                width="188px"
+                src={option.image?.medium || imageFile}
+                alt={option.label}
+              />
               <Checkbox
                 size="20px"
                 padding="18px 20px 18px 20px"
