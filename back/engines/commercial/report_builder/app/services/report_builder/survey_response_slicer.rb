@@ -8,14 +8,22 @@ module ReportBuilder
     end
 
     def slice_by_user_field(question_field_id, user_field_id)
-      question = @form.custom_fields.find_by(id: question_field_id)
-      return unless question
-      return unless %w[select multiselect].include?(question.input_type)
-
+      question = get_question(question_field_id)
       # TODO: check that user field is also select or multiselect
 
       if question.input_type == 'select'
         slice_by_user_field_select(question, user_field_id)
+      else
+        slice_multiselect_responses # TODO
+      end
+    end
+
+    def slice_by_other_question(question_field_id, other_question_field_id)
+      question = get_question(question_field_id)
+      other_question = get_question(other_question_field_id)
+
+      if question.input_type == 'select'
+        slice_by_other_question_select(question, other_question)
       else
         slice_multiselect_responses # TODO
       end
@@ -53,8 +61,20 @@ module ReportBuilder
       }
     end
 
+    def slice_by_other_question_select(question, other_question)
+      []
+    end
+
     def slice_multiselect_responses
       []
+    end
+
+    def get_question(question_field_id)
+      question = @form.custom_fields.find_by(id: question_field_id)
+      throw 'Question not found' unless question
+      throw "Unsupported question type: #{question.input_type}" unless %w[select multiselect].include?(question.input_type)
+
+      question
     end
   end
 end
