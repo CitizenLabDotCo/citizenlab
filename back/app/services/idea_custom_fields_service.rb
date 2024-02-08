@@ -66,7 +66,7 @@ class IdeaCustomFieldsService
     fields_with_array_keys = {}
     submittable_fields_with_other_options.reject(&:built_in?).each do |field|
       case field.input_type
-      when 'multiselect'
+      when 'multiselect', 'multiselect_image'
         fields_with_array_keys[field.key.to_sym] = []
       when 'file_upload'
         fields_with_array_keys[field.key.to_sym] = %i[content name]
