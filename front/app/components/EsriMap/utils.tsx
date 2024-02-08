@@ -21,16 +21,17 @@ export const getDefaultBasemap = (tileProvider: string | undefined): Layer => {
   if (tileProvider?.includes('wien.gv.at/basemap')) {
     return new VectorTileLayer({
       // For Vienna's custom basemap, we fetch a vector tile layer
+      // NOTE: Currently only Vienna requires this. If we ever need to add this for other clients, we
+      // move lift this into a separate configuration somewhere.
       portalItem: {
         id: 'd607c5c98e6a4e1fbd3569e38c5c8a0c',
       },
     });
-  } else {
-    return new WebTileLayer({
-      urlTemplate: tileProvider || DEFAULT_TILE_PROVIDER,
-      copyright: getTileAttribution(tileProvider || ''),
-    });
   }
+  return new WebTileLayer({
+    urlTemplate: tileProvider || DEFAULT_TILE_PROVIDER,
+    copyright: getTileAttribution(tileProvider || ''),
+  });
 };
 
 // getTileAttribution
