@@ -12,13 +12,22 @@ module ReportBuilder
       user_field = CustomField.find_by(id: user_field_id)
       # TODO: check that user field is also select or multiselect
 
-      answers = @inputs
-        .joins(:author)
-        .select(
-          "ideas.custom_field_values->'#{question.key}' as answer",
-          "users.custom_field_values->'#{user_field.key}' as group_by_value"
-        )
-        .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
+      answers = @inputs.joins(:author)
+
+      answers = if question.input_type == 'select'
+        answers
+          .select(
+            "ideas.custom_field_values->'#{question.key}' as answer",
+            get_user_select(user_field)
+          )
+          .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
+      else
+        answers
+          .select(
+            "jsonb_array_elements(ideas.custom_field_values->'#{question.key}') as answer",
+            get_user_select(user_field)
+          )
+      end
 
       collect_answers(answers)
     end
@@ -29,8 +38,8 @@ module ReportBuilder
 
       answers = @inputs
         .select(
-          "custom_field_values->'#{question.key}' as answer",
-          "custom_field_values->'#{other_question.key}' as group_by_value"
+          "ideas.custom_field_values->'#{question.key}' as answer",
+          "ideas.custom_field_values->'#{other_question.key}' as group_by_value"
         )
         .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
 
@@ -45,6 +54,14 @@ module ReportBuilder
       throw "Unsupported question type: #{question.input_type}" unless %w[select multiselect].include?(question.input_type)
 
       question
+    end
+
+    def get_user_select(user_field)
+      if user_field.input_type == 'select'
+        "users.custom_field_values->'#{user_field.key}' as group_by_value"
+      else
+        "jsonb_array_elements(users.custom_field_values->'#{user_field.key}') as group_by_value"
+      end
     end
 
     def collect_answers(answers)
