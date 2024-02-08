@@ -2,9 +2,16 @@ import React from 'react';
 
 // hooks
 import { useIntl } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
 
 // components
-import { Box, colors, Text, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  Text,
+  Title,
+  Image,
+} from '@citizenlab/cl2-component-library';
 import CompletionBar from './CompletionBar';
 
 // i18n
@@ -44,6 +51,7 @@ const FormResultsQuestion = ({
 }: FormResultsQuestionProps) => {
   const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const requiredOrOptionalText = required
     ? formatMessage(messages.required2)
@@ -65,12 +73,28 @@ const FormResultsQuestion = ({
         </Text>
       )}
       {answers &&
-        answers.map(({ answer, responses }, index) => {
+        answers.map(({ answer, responses, image }, index) => {
           const percentage =
             Math.round((responses / totalResponses) * 1000) / 10;
 
           return (
-            <Box key={index} maxWidth="524px">
+            <Box
+              key={index}
+              maxWidth="524px"
+              display="flex"
+              alignItems="flex-end"
+              justifyContent="center"
+            >
+              {image?.small && (
+                <Box mr="12px">
+                  <Image
+                    width="48px"
+                    height="48px"
+                    src={image.small}
+                    alt={localize(answer)}
+                  />
+                </Box>
+              )}
               <CompletionBar
                 bgColor={colors.primary}
                 completed={percentage}

@@ -1,4 +1,4 @@
-import { Multiloc } from 'typings';
+import { ImageSizes, Multiloc } from 'typings';
 import surveyResultsKeys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -11,6 +11,7 @@ export type IParameters = {
 export interface Answer {
   answer: Multiloc;
   responses: number;
+  image?: ImageSizes;
 }
 
 export interface Result {
