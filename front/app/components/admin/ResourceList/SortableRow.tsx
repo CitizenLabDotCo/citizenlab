@@ -20,6 +20,7 @@ interface Props {
   dropRow: (itemId: string, toIndex: number) => void;
   children?: React.ReactNode;
   dataTestid?: string;
+  dragByHandle?: boolean;
 }
 
 interface DragItem {
@@ -40,6 +41,7 @@ const SortableRow = ({
   dropRow,
   moveRow,
   dataTestid,
+  dragByHandle = false,
 }: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const handleRef = useRef<HTMLDivElement | null>(null);
@@ -121,8 +123,12 @@ const SortableRow = ({
 
   const opacity = isDragging ? 0 : 1;
 
-  drag(drop(handleRef));
-  preview(ref);
+  if (dragByHandle) {
+    drag(drop(handleRef));
+    preview(ref);
+  } else {
+    drag(drop(ref));
+  }
 
   return children ? (
     <div

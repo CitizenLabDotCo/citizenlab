@@ -203,6 +203,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                                   dropRow={() => {
                                     // Do nothing, no need to handle dropping a row for now
                                   }}
+                                  dragByHandle
                                 >
                                   <SelectFieldOption
                                     choice={choice}
