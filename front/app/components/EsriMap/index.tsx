@@ -5,7 +5,6 @@ import '@arcgis/core/assets/esri/themes/light/main.css';
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
 import Basemap from '@arcgis/core/Basemap';
-import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
 import Layer from '@arcgis/core/layers/Layer';
 import Graphic from '@arcgis/core/Graphic';
 import { Box } from '@citizenlab/cl2-component-library';
@@ -15,9 +14,8 @@ import Fullscreen from '@arcgis/core/widgets/Fullscreen';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // utils
-import { getTileAttribution } from './utils';
+import { getDefaultBasemap } from './utils';
 import { isNil } from 'utils/helperUtils';
-import { DEFAULT_TILE_PROVIDER } from './constants';
 import { EsriUiElement } from './types';
 
 type Props = {
@@ -74,13 +72,8 @@ const EsriMap = ({
     });
 
     // Set the basemap
-    const webTileLayerFromUrl = new WebTileLayer({
-      urlTemplate: globalMapSettings?.tile_provider || DEFAULT_TILE_PROVIDER,
-      copyright: getTileAttribution(globalMapSettings?.tile_provider || ''),
-    });
-
     esriMap.basemap = new Basemap({
-      baseLayers: [webTileLayerFromUrl],
+      baseLayers: [getDefaultBasemap(globalMapSettings?.tile_provider)],
     });
 
     // Add any layers that were passed in

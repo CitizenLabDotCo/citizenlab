@@ -85,6 +85,7 @@ const GeoJsonImportButton = memo<Props>(
         if (mapConfigId && !isNilOrError(tenantLocales)) {
           createProjectMapLayer(
             {
+              type: 'CustomMaps::GeojsonLayer',
               projectId,
               geojson,
               id: mapConfigId,

@@ -1,16 +1,44 @@
 import { colors } from '@citizenlab/cl2-component-library';
 
+// components
+import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
+import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
+import Layer from '@arcgis/core/layers/Layer';
+
 // constants
-import { BASEMAP_AT_ATTRIBUTION, MAPTILER_ATTRIBUTION } from './constants';
+import {
+  BASEMAP_AT_ATTRIBUTION,
+  DEFAULT_TILE_PROVIDER,
+  MAPTILER_ATTRIBUTION,
+} from './constants';
 
 // components
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
 import MapView from '@arcgis/core/views/MapView';
 
+// getDefaultBasemap
+// Description: Gets the correct basemap given a certain tileProvider URL.
+export const getDefaultBasemap = (tileProvider: string | undefined): Layer => {
+  if (tileProvider?.includes('wien.gv.at/basemap')) {
+    return new VectorTileLayer({
+      // For Vienna's custom basemap, we fetch a vector tile layer
+      // NOTE: Currently only Vienna requires this. If we ever need to add this for other clients, we
+      // should move this into a separate configuration somewhere.
+      portalItem: {
+        id: 'd607c5c98e6a4e1fbd3569e38c5c8a0c',
+      },
+    });
+  }
+  return new WebTileLayer({
+    urlTemplate: tileProvider || DEFAULT_TILE_PROVIDER,
+    copyright: getTileAttribution(tileProvider || ''),
+  });
+};
+
 // getTileAttribution
 // Description: Gets the correct tile attribution given a certain tileProvider URL.
-export const getTileAttribution = (tileProvider: string): string => {
+const getTileAttribution = (tileProvider: string): string => {
   if (tileProvider?.includes('maptiler')) {
     return MAPTILER_ATTRIBUTION;
   }
