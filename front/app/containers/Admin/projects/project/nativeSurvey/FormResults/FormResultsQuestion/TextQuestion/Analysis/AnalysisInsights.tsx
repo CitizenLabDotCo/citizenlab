@@ -13,6 +13,12 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
 import { replaceIdRefsWithLinks } from '../../../../../analysis/Insights/util';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+const StyledInsightsText = styled(Text)`
+  white-space: pre-wrap;
+  word-break: break-word;
+`;
 
 type AnalysisInsight = {
   analysisId: string;
@@ -40,14 +46,14 @@ const Summary = ({
     return null;
   }
   return (
-    <Text fontSize="s" mt="0px">
+    <StyledInsightsText mt="0px">
       {replaceIdRefsWithLinks({
         insight: summary,
         analysisId,
         projectId,
         phaseId,
       })}
-    </Text>
+    </StyledInsightsText>
   );
 };
 
@@ -73,14 +79,14 @@ const Question = ({
       <Text fontSize="s" mt="0px" fontWeight="bold">
         {question}
       </Text>
-      <Text fontSize="s" mt="0px">
+      <StyledInsightsText mt="0px">
         {replaceIdRefsWithLinks({
           insight: answer,
           analysisId,
           projectId,
           phaseId,
         })}
-      </Text>
+      </StyledInsightsText>
     </>
   );
 };
