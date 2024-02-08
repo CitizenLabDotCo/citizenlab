@@ -10,7 +10,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
   let_it_be(:phase) { project.phases.first }
   let_it_be(:survey) { create(:custom_form, participation_context: phase) }
 
-  # Set up form with two questions
+  # Set up form with some questions
   let_it_be(:page_field) { create(:custom_field_page, resource: survey) }
 
   ## Create city question
@@ -75,6 +75,20 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
     )
   end
 
+  ## Create multiselect question
+  let_it_be(:multiselect_question) do
+    create(
+      :custom_field_multiselect,
+      :with_options,
+      resource: survey,
+      title_multiloc: {
+        'en' => 'Multiselect',
+        'fr-FR' => 'Multiselect',
+        'nl-NL' => 'Multiselect'
+      }
+    )
+  end
+
   # Create user custom field
   let_it_be(:user_custom_field) { create(:custom_field_gender, :with_options) }
 
@@ -94,39 +108,59 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
       record.phases = [phase]
       record.custom_field_values = {
         city_survey_question.key => index < 6 ? la_option.key : ny_option.key,
-        food_survey_question.key => index.even? ? pizza_option.key : burger_option.key
+        food_survey_question.key => index.even? ? pizza_option.key : burger_option.key,
+        multiselect_question.key => index < 6 ? [multiselect_question.options.first.key] : multiselect_question.options.map(&:key)
       }
       record.save!
     end
   end
 
-  it 'slices the city question by gender' do
-    expect(generator.slice_by_user_field(
-      city_survey_question.id,
-      user_custom_field.id
-    )).to eq({
-      totalResponses: 11,
-      answers: [
-        { answer: 'la', group_by_value: 'female', count: 3 },
-        { answer: 'la', group_by_value: 'male', count: 3 },
-        { answer: 'ny', group_by_value: 'female', count: 3 },
-        { answer: 'ny', group_by_value: 'male', count: 2 }
-      ]
-    })
+  context 'when slicing by user field' do
+    it 'slices select by select' do
+      expect(generator.slice_by_user_field(
+        city_survey_question.id,
+        user_custom_field.id
+      )).to eq({
+        totalResponses: 11,
+        answers: [
+          { answer: 'la', group_by_value: 'female', count: 3 },
+          { answer: 'la', group_by_value: 'male', count: 3 },
+          { answer: 'ny', group_by_value: 'female', count: 3 },
+          { answer: 'ny', group_by_value: 'male', count: 2 }
+        ]
+      })
+    end
+
+    it 'slices multiselect by select' do
+      expect(generator.slice_by_user_field(
+        multiselect_question.id,
+        user_custom_field.id
+      )).to eq({
+        totalResponses: 11,
+        answers: [
+          { answer: 'option1', group_by_value: 'female', count: 6 },
+          { answer: 'option2', group_by_value: 'female', count: 3 },
+          { answer: 'option1', group_by_value: 'male', count: 5 },
+          { answer: 'option2', group_by_value: 'male', count: 3 }
+        ]
+      })
+    end
   end
 
-  it 'slices the city question by another question' do
-    expect(generator.slice_by_other_question(
-      city_survey_question.id,
-      food_survey_question.id
-    )).to eq({
-      totalResponses: 11,
-      answers: [
-        { answer: 'la', group_by_value: 'burger', count: 3 },
-        { answer: 'la', group_by_value: 'pizza', count: 3 },
-        { answer: 'ny', group_by_value: 'burger', count: 2 },
-        { answer: 'ny', group_by_value: 'pizza', count: 3 }
-      ]
-    })
+  context 'when slicing by other survey question' do
+    it 'slices select by select' do
+      expect(generator.slice_by_other_question(
+        city_survey_question.id,
+        food_survey_question.id
+      )).to eq({
+        totalResponses: 11,
+        answers: [
+          { answer: 'la', group_by_value: 'burger', count: 3 },
+          { answer: 'la', group_by_value: 'pizza', count: 3 },
+          { answer: 'ny', group_by_value: 'burger', count: 2 },
+          { answer: 'ny', group_by_value: 'pizza', count: 3 }
+        ]
+      })
+    end
   end
 end
