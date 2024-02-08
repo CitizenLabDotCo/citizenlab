@@ -12,6 +12,7 @@ import {
   Button,
   LocaleSwitcher,
   Toggle,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import { List, Row, SortableRow } from 'components/admin/ResourceList';
@@ -232,7 +233,19 @@ const ConfigSelectWithLocaleSwitcher = ({
 
                   <Box mt="24px" data-cy="e2e-other-option-toggle">
                     <Toggle
-                      label={formatMessage(messages.otherOption)}
+                      label={
+                        <Box display="flex">
+                          {formatMessage(messages.otherOption)}
+                          <Box pl="4px">
+                            <IconTooltip
+                              placement="top-start"
+                              content={formatMessage(
+                                messages.otherOptionTooltip
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                      }
                       checked={hasOtherOption}
                       onChange={() => toggleOtherOption(choices, name)}
                     />
