@@ -37,7 +37,8 @@ module ReportBuilder
       answers = @inputs
         .joins(:author)
         .select(
-          "ideas.custom_field_values->'#{question.key}' as answer, users.custom_field_values->>'#{user_field.key}' as group_by_value"
+          "ideas.custom_field_values->'#{question.key}' as answer",
+          "users.custom_field_values->>'#{user_field.key}' as group_by_value"
         )
         .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
 
