@@ -18,6 +18,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { getTileAttribution } from './utils';
 import { isNil } from 'utils/helperUtils';
 import { DEFAULT_TILE_PROVIDER } from './constants';
+import { EsriUiElement } from './types';
 
 type Props = {
   center?: GeoJSON.Point | null;
@@ -30,6 +31,7 @@ type Props = {
   onHover?: (event: any, mapView: MapView) => void;
   graphics?: Graphic[];
   showFullscreenOption?: boolean;
+  uiElements?: EsriUiElement[];
 };
 
 const EsriMap = memo<Props>(
@@ -44,6 +46,7 @@ const EsriMap = memo<Props>(
     width,
     graphics,
     showFullscreenOption,
+    uiElements,
   }: Props) => {
     const { data: appConfig } = useAppConfiguration();
 
@@ -95,6 +98,13 @@ const EsriMap = memo<Props>(
         });
       }
 
+      // Add any UI elements that were passed in.
+      if (uiElements) {
+        uiElements.forEach((uiElement) => {
+          mapView.ui.add(uiElement.element, uiElement.position);
+        });
+      }
+
       // Add fullscreen widget if set
       if (showFullscreenOption) {
         const fullscreen = new Fullscreen({
@@ -122,6 +132,7 @@ const EsriMap = memo<Props>(
       onClick,
       onHover,
       showFullscreenOption,
+      uiElements,
       zoom,
     ]);
 

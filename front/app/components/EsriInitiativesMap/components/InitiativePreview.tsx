@@ -22,6 +22,10 @@ import styled from 'styled-components';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useLocalize from 'hooks/useLocalize';
 
+// utils
+import clHistory from 'utils/cl-router/history';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
 const Container = styled.div`
   flex: 1;
   width: 100%;
@@ -99,8 +103,13 @@ const InitiativePreview = ({ className, initiativeId }: Props) => {
       )}
       <Button
         fullWidth={true}
-        linkTo={`/initiatives/${initiative.data.attributes.slug}?go_back=true`}
-        scrollToTop
+        onClick={() => {
+          updateSearchParams({ selected_initiative_id: initiative.data.id });
+          clHistory.push(
+            `/initiatives/${initiative.data.attributes.slug}?go_back=true`,
+            { scrollToTop: true }
+          );
+        }}
       >
         <FormattedMessage {...messages.seeProposal} />
       </Button>

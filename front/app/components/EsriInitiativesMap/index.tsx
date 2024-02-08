@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 
 // components
 import EsriMap from 'components/EsriMap';
@@ -29,6 +29,8 @@ import {
   getClusterConfiguration,
   getMapPinSymbol,
 } from 'components/EsriMap/utils';
+import { useSearchParams } from 'react-router-dom';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -54,6 +56,7 @@ const StyledMapContainer = styled(Box)`
 
 const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
   const { formatMessage } = useIntl();
+  const [searchParams] = useSearchParams();
   const isPhoneOrSmaller = useBreakpoint('phone');
   const theme = useTheme();
 
@@ -61,12 +64,22 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
   const initiativePermissions = useInitiativesPermissions('posting_initiative');
   const clickedLocationRef = useRef<GeoJSON.Point | null>(null); // Stores the clicked map location
 
+  // Check if the URL contains a selected initiative ID. Open the initiative preview if so.
+  const initiativeIdFromUrl = searchParams.get('selected_initiative_id');
+  useEffect(() => {
+    if (initiativeIdFromUrl) {
+      removeSearchParams(['selected_initiative_id']);
+      eventEmitter.emit('initiativeSelectedEvent', initiativeIdFromUrl);
+    }
+  }, [initiativeIdFromUrl]);
+
   // Create two div elements to use for inserting React components into Esri map popup and overlay
+  // Docs: https://developers.arcgis.com/javascript/latest/custom-ui/#introduction
   const startInitiativeButtonNode = document.createElement('div');
   const initiativeInfoNode = document.createElement('div');
   initiativeInfoNode.id = 'initiative-info-node';
 
-  // Loop through the initative markers and create a list of graphics
+  // Loop through initative markers and create array of graphics
   const markersWithLocation = initiativeMarkers?.data.filter(
     (marker) => marker?.attributes?.location_point_geojson
   );
@@ -77,7 +90,7 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
         latitude: marker?.attributes?.location_point_geojson?.coordinates[1],
       }),
       attributes: {
-        markerId: marker?.id,
+        initiativeId: marker?.id,
       },
     });
   });
@@ -85,7 +98,7 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
   // Create an Esri Layer from the graphics
   const initiativesLayer = graphics
     ? new FeatureLayer({
-        source: graphics, // The array of initiative marker graphics
+        source: graphics, // Array of initiative graphics
         title: 'Initiative markers',
         objectIdField: 'ID',
         fields: [
@@ -94,7 +107,7 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
             type: 'oid',
           },
           {
-            name: 'markerId',
+            name: 'initiativeId', // From the graphics attributes
             type: 'string',
           },
         ],
@@ -102,7 +115,7 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
         renderer: new Renderer({
           symbol: getMapPinSymbol(theme.colors.tenantPrimary),
         }),
-        // Add the clustering mechanism to this layer
+        // Add cluster display to this layer
         featureReduction: getClusterConfiguration(theme.colors.tenantPrimary),
       })
     : undefined;
@@ -110,7 +123,7 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
   const onMapClick = (event: any, mapView: MapView) => {
     // On map click, we either open an existing initiative or show the "submit a proposal" popup
     mapView.hitTest(event).then((result) => {
-      const elements = result.results; // These are the elements under our map click
+      const elements = result.results; // These are elements under our map click
       if (elements.length > 0) {
         // User clicked an initiative marker OR cluster
         elements.forEach((element) => {
@@ -125,7 +138,7 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
             } else {
               // User clicked an initiative marker
               const initiativeId = graphics?.at(graphicId - 1)?.attributes
-                .markerId;
+                .initiativeId;
               if (initiativeId) {
                 mapView.goTo({
                   center: [
@@ -135,8 +148,6 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
                 });
                 // Emit an event so we show the selected initiative's information
                 eventEmitter.emit('initiativeSelectedEvent', initiativeId);
-                // Add the initiative information node to the map
-                mapView.ui.add(initiativeInfoNode, 'manual');
               }
             }
           }
@@ -153,7 +164,7 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
               type: 'Point',
               coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
             };
-            // Create the Esri popup
+            // Create an Esri popup
             mapView.popup = new Popup({
               collapseEnabled: false,
               dockEnabled: false,
@@ -164,7 +175,7 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
               location: event.mapPoint,
               title: formatMessage(messages.startProposalAtLocation),
             });
-            // Set content of the popup to the node we created (so we can insert our React button component via a portal)
+            // Set content of the popup to the node we created (so we can insert our React component via a portal)
             mapView.popup.content = startInitiativeButtonNode;
             // Close any open UI elements and open the popup
             eventEmitter.emit('initiativeSelectedEvent', null);
@@ -222,6 +233,7 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
         onClick={onMapClick}
         onHover={changeCursorOnHover}
         layers={initiativesLayer ? [initiativesLayer] : undefined}
+        uiElements={[{ element: initiativeInfoNode, position: 'manual' }]}
       />
       <StartInitiativeButton
         modalPortalElement={startInitiativeButtonNode}
