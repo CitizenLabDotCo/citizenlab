@@ -20,14 +20,14 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
-  formBuilderTitle: messages.survey2,
-  viewFormLinkCopy: messages.viewSurvey2,
-  toolboxTitle: messages.addSurveyContent2,
-  formSavedSuccessMessage: messages.successMessage2,
-  supportArticleLink: messages.supportArticleLink2,
-  formEndPageLogicOption: messages.surveyEnd2,
-  questionLogicHelperText: messages.questionLogicHelperText2,
-  pagesLogicHelperText: messages.pagesLogicHelperText2,
+  formBuilderTitle: messages.survey,
+  viewFormLinkCopy: messages.viewSurvey,
+  toolboxTitle: messages.addSurveyContent,
+  formSavedSuccessMessage: messages.successMessage,
+  supportArticleLink: messages.supportArticleLink,
+  formEndPageLogicOption: messages.surveyEnd,
+  questionLogicHelperText: messages.questionLogicHelperText,
+  pagesLogicHelperText: messages.pagesLogicHelperText,
 
   toolboxFieldsToExclude: [],
   formCustomFields: undefined,

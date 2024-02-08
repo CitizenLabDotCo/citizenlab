@@ -41,10 +41,10 @@ const FormResults = () => {
 
   const surveyResponseMessage =
     totalSubmissions > 0
-      ? formatMessage(messages.totalSurveyResponses2, {
+      ? formatMessage(messages.totalSurveyResponses, {
           count: totalSubmissions,
         })
-      : formatMessage(messages.noSurveyResponses2);
+      : formatMessage(messages.noSurveyResponses);
 
   return (
     <Box width="100%">
