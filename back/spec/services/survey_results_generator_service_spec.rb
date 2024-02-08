@@ -188,6 +188,16 @@ RSpec.describe SurveyResultsGeneratorService do
       image: create(:custom_field_option_image)
     )
   end
+  let!(:unanswered_text_field) do
+    create(
+      :custom_field,
+      resource: form,
+      title_multiloc: {
+        'en' => 'Nobody wants to answer me'
+      },
+      description_multiloc: {}
+    )
+  end
 
   let(:expected_result) do
     {
@@ -307,6 +317,14 @@ RSpec.describe SurveyResultsGeneratorService do
             ) }
           ],
           customFieldId: multiselect_image_field.id
+        },
+        {
+          inputType: 'text',
+          question: { 'en' => 'Nobody wants to answer me' },
+          required: false,
+          totalResponses: 0,
+          customFieldId: unanswered_text_field.id,
+          textResponses: []
         }
       ],
       totalSubmissions: 22
@@ -319,6 +337,7 @@ RSpec.describe SurveyResultsGeneratorService do
   let(:expected_result_linear_scale) { expected_result[:results][3] }
   let(:expected_result_select) { expected_result[:results][4] }
   let(:expected_result_multiselect_image) { expected_result[:results][5] }
+  let(:expected_result_unanswered_field) { expected_result[:results][6] }
 
   let(:expected_result_linear_scale_without_min_and_max_labels) do
     expected_result_linear_scale.tap do |result|
@@ -475,6 +494,10 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'returns the results for a multi-select image field' do
         expect(generated_results[:results][5]).to match expected_result_multiselect_image
+      end
+
+      it 'returns the results for an unanswered field' do
+        expect(generated_results[:results][6]).to match expected_result_unanswered_field
       end
     end
   end
