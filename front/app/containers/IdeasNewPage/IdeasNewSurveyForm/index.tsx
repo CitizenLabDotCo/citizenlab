@@ -1,8 +1,6 @@
 import React, { useState, useCallback } from 'react';
 
 // api
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
@@ -11,6 +9,7 @@ import { useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
 import useUpdateIdea from "api/ideas/useUpdateIdea";
 import useDraftIdeaByPhaseId, {clearDraftIdea} from "api/ideas/useDraftIdeaByPhaseId";
+import useIdeaFiles from "api/idea_files/useIdeaFiles";
 
 // i18n
 import messages from '../messages';
@@ -31,13 +30,13 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getCurrentPhase } from 'api/phases/utils';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { getFormValues } from "../../IdeasEditPage/utils";
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 // types
 import { IPhases, IPhaseData } from 'api/phases/types';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import { IProject } from 'api/projects/types';
 import { IdeaPublicationStatus } from "api/ideas/types";
-import useIdeaFiles from "../../../api/idea_files/useIdeaFiles";
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -78,6 +77,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     projectId: project.data.id,
     phaseId,
   });
+
   const { data: draftIdea, status: draftIdeaStatus } = useDraftIdeaByPhaseId(phaseId);
   const { data: remoteFiles, status: remoteFilesStatus } = useIdeaFiles(draftIdea?.data.id);
   const [ideaId, setIdeaId] = useState<string|undefined>();
@@ -128,20 +128,30 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   // TODO: Edwin - We've got the remote files here for attachments, but:
   // a) Need to get the form to load it when we load from draft
   // b) Need the form to change the value to the ID when it goes to the next screen
-  const draftIdeaLoading = draftIdeaStatus === 'loading' || remoteFilesStatus === 'loading'
+  const convertFileAttributes = (formValues) => {
+    console.log(formValues);
+    // formValues.each((key, value) => {
+    //   console.log(key, value);
+    // });
+    return formValues;
+  }
+
+  const draftIdeaLoading = draftIdeaStatus === 'loading'; // || remoteFilesStatus === 'loading';
   if (!draftIdeaLoading && draftIdeaStatus === 'success' && !isNilOrError(draftIdea) && !ideaId && schema) {
-    console.log(draftIdea);
-    console.log(remoteFiles);
+    // Test here if schema contains attachments then wait for the attachments
+    console.log('Draft idea', draftIdea);
+    console.log(remoteFilesStatus, remoteFiles);
+
     setInitialFormData(
-      getFormValues(
+      convertFileAttributes(getFormValues(
         draftIdea,
         schema,
         undefined,
         remoteFiles
-      )
+      ))
     );
     setIdeaId(draftIdea.data.id);
-  }
+  } // Do an else if draft idea error here to set the draftIdeaLoading to false
 
   const handleDraftIdeas = async (data: FormValues) => {
     if (data.publication_status === 'draft') {
@@ -166,6 +176,8 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     // Update or add the idea depending on if we have an existing draft idea
     const idea = ideaId ? await updateIdea({ id: ideaId, requestBody }) : await addIdea(requestBody);
     setIdeaId(idea.data.id);
+
+    // TODO: Here we need to add the attachment ID into the object
 
     if (published) {
       clearDraftIdea(phaseId);
