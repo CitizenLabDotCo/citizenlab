@@ -22,7 +22,7 @@ export const getDefaultBasemap = (tileProvider: string | undefined): Layer => {
     return new VectorTileLayer({
       // For Vienna's custom basemap, we fetch a vector tile layer
       // NOTE: Currently only Vienna requires this. If we ever need to add this for other clients, we
-      // move lift this into a separate configuration somewhere.
+      // should move this into a separate configuration somewhere.
       portalItem: {
         id: 'd607c5c98e6a4e1fbd3569e38c5c8a0c',
       },
