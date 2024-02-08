@@ -108,7 +108,7 @@ const SurveyResults = ({ phaseId, shownQuestions }: Props) => {
               borderTop={BORDER}
               borderRight={index === 0 ? BORDER : undefined}
             >
-              <FormResultsQuestion locale={locale} {...result} />
+              <FormResultsQuestion locale={locale} totalSubmissions={formResults.data.attributes.totalSubmissions} {...result} />
             </Box>
           ))}
         </PageBreakBox>

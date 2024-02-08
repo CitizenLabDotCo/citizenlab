@@ -27,6 +27,7 @@ type FormResultsQuestionProps = {
   inputType: string;
   answers?: Answer[];
   totalResponses: number;
+  totalSubmissions: number;
   required: boolean;
   customFieldId: string;
   textResponses?: { answer: string }[];
@@ -38,6 +39,7 @@ const FormResultsQuestion = ({
   inputType,
   answers,
   totalResponses,
+  totalSubmissions,
   required,
   customFieldId,
   textResponses = [],
@@ -49,9 +51,10 @@ const FormResultsQuestion = ({
   const requiredOrOptionalText = required
     ? formatMessage(messages.required)
     : formatMessage(messages.optional);
-  const inputTypeLabel = `${formatMessage(
-    inputTypeText
-  )} - ${requiredOrOptionalText.toLowerCase()}`;
+  const inputTypeLabel = `${totalResponses}/${totalSubmissions}
+  - ${requiredOrOptionalText}
+  - ${formatMessage(inputTypeText)}`;
+  console.log(totalSubmissions);
 
   return (
     <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
