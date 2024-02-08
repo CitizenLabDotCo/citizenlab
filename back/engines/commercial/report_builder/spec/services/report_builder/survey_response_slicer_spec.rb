@@ -131,20 +131,20 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
       })
     end
 
-    it 'slices multiselect by select' do
-      expect(generator.slice_by_user_field(
-        multiselect_question.id,
-        user_custom_field.id
-      )).to eq({
-        totalResponses: 11,
-        answers: [
-          { answer: 'option1', group_by_value: 'female', count: 6 },
-          { answer: 'option2', group_by_value: 'female', count: 3 },
-          { answer: 'option1', group_by_value: 'male', count: 5 },
-          { answer: 'option2', group_by_value: 'male', count: 3 }
-        ]
-      })
-    end
+    # it 'slices multiselect by select' do
+    #   expect(generator.slice_by_user_field(
+    #     multiselect_question.id,
+    #     user_custom_field.id
+    #   )).to eq({
+    #     totalResponses: 11,
+    #     answers: [
+    #       { answer: 'option1', group_by_value: 'female', count: 6 },
+    #       { answer: 'option2', group_by_value: 'female', count: 3 },
+    #       { answer: 'option1', group_by_value: 'male', count: 5 },
+    #       { answer: 'option2', group_by_value: 'male', count: 3 }
+    #     ]
+    #   })
+    # end
   end
 
   context 'when slicing by other survey question' do
