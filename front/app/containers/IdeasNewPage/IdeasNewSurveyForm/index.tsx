@@ -125,31 +125,56 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     return null;
   }
 
-  // Try and load in a draft idea if one exists
-  // TODO: Edwin - We've got the remote files here for attachments, but:
-  // a) Need to get the form to load it when we load from draft
-  // b) Need the form to change the value to the ID when it goes to the next screen
-  const convertFileAttributes = (formValues) => {
-    console.log(formValues);
+  const uuidRegex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i;
+  const fieldsContainFiles = (formValues) => {
+    for (const key in formValues) {
+      if (uuidRegex.test(formValues[key])) {
+        return true;
+      }
+    };
+    return false;
+  }
+
+  const combineFileValues = (formValues, files) => {
+    for (const key in formValues) {
+      if (uuidRegex.test(formValues[key])) {
+        files.forEach((file) => {
+          if (file.id === formValues[key]) {
+            formValues[key] = {
+              id: file.id,
+              name: file.attributes.name,
+            }
+          }
+        })
+      }
+    };
     return formValues;
   }
 
+  // Try and load in a draft idea if one exists
   useEffect(() => {
     if (draftIdeaStatus === 'success' && !isNilOrError(draftIdea) && !ideaId && schema) {
-      // Test here if schema contains attachments then wait for the attachments using remoteFilesStatus === 'loading';
-      console.log('Draft idea', draftIdea);
-      console.log(remoteFilesStatus, remoteFiles);
-
-      setInitialFormData(
-        convertFileAttributes(getFormValues(
-          draftIdea,
-          schema,
-          undefined,
-          remoteFiles
-        ))
+      const formValues = getFormValues(
+        draftIdea,
+        schema
       );
-      setIdeaId(draftIdea.data.id);
-      setLoadingDraftIdea(false);
+
+      if (fieldsContainFiles(formValues)) {
+        console.log('Fields contain files');
+        if (remoteFilesStatus !== 'loading') {
+          console.log(remoteFiles);
+          const combinedFileValues = combineFileValues(formValues, remoteFiles?.data);
+          console.log(combinedFileValues);
+          setInitialFormData(combinedFileValues);
+          setIdeaId(draftIdea.data.id);
+          setLoadingDraftIdea(false);
+        }
+      } else {
+        setInitialFormData(formValues);
+        setIdeaId(draftIdea.data.id);
+        setLoadingDraftIdea(false);
+      }
+
     } else if (draftIdeaStatus === 'error') {
       setLoadingDraftIdea(false);
     }
@@ -168,9 +193,21 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   }
 
+  const convertFileAttributeIds = (data: FormValues) => {
+    for(const key in data) {
+      if (data[key] && data[key].id && data[key].name) {
+        data[key] = data[key].id;
+      }
+    }
+    console.log(data);
+    return data;
+  }
+
+  // TODO: JS - Still need to get the ID of the file upload into the form data
   const onSubmit = async (data: FormValues, published?: boolean) => {
+    const postData = convertFileAttributeIds(data);
     const requestBody = {
-      ...data,
+      ...postData,
       project_id: project.data.id,
       publication_status: data.publication_status || 'published',
     };
@@ -178,8 +215,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     // Update or add the idea depending on if we have an existing draft idea
     const idea = ideaId ? await updateIdea({ id: ideaId, requestBody }) : await addIdea(requestBody);
     setIdeaId(idea.data.id);
-
-    // TODO: Here we need to add the attachment ID into the object
 
     if (published) {
       clearDraftIdea(phaseId);

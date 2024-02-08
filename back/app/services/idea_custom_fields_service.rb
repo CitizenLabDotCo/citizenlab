@@ -61,7 +61,7 @@ class IdeaCustomFieldsService
       when 'multiselect'
         fields_with_array_keys[field.key.to_sym] = []
       when 'file_upload'
-        fields_with_array_keys[field.key.to_sym] = %i[content name]
+        fields_with_array_keys[field.key.to_sym] = %i[id content name]
       else
         fields_with_simple_keys << field.key.to_sym
       end
