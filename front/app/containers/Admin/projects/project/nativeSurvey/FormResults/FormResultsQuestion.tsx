@@ -52,8 +52,8 @@ const FormResultsQuestion = ({
     ? formatMessage(messages.required)
     : formatMessage(messages.optional);
   const inputTypeLabel = `${totalResponses}/${totalSubmissions}
-  - ${requiredOrOptionalText}
-  - ${formatMessage(inputTypeText)}`;
+  · ${requiredOrOptionalText}
+  · ${formatMessage(inputTypeText)}`;
   console.log(totalSubmissions);
 
   return (
