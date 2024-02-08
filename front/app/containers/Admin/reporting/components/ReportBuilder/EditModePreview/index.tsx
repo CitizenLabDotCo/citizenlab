@@ -12,7 +12,10 @@ import PDFWrapper from './PDFWrapper';
 import useLocale from 'hooks/useLocale';
 
 // context
-import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
+import {
+  ReportContextProvider,
+  useReportContext,
+} from 'containers/Admin/reporting/context/ReportContext';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 // constants
@@ -26,15 +29,17 @@ import { Locale } from 'typings';
 import { CraftJson } from 'components/admin/ContentBuilder/typings';
 
 interface Props {
-  reportId: string;
   previewData?: CraftJson;
   selectedLocale: Locale;
 }
 
 type View = 'phone' | 'pdf' | 'desktop';
 
-const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
-  const [view, setView] = useState<View>('phone');
+const EditModePreview = ({ previewData, selectedLocale }: Props) => {
+  const { phaseId, reportId } = useReportContext();
+  const isPhaseContext = !!phaseId;
+
+  const [view, setView] = useState<View>(isPhaseContext ? 'phone' : 'pdf');
   const platformLocale = useLocale();
 
   return (
@@ -44,26 +49,28 @@ const EditModePreview = ({ reportId, previewData, selectedLocale }: Props) => {
       justifyContent="center"
     >
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Box display="flex" mb="16px">
-          <MobileButton
-            active={view === 'phone'}
-            onClick={() => {
-              setView('phone');
-            }}
-          />
-          <PDFButton
-            active={view === 'pdf'}
-            onClick={() => {
-              setView('pdf');
-            }}
-          />
-          <DesktopButton
-            active={view === 'desktop'}
-            onClick={() => {
-              setView('desktop');
-            }}
-          />
-        </Box>
+        {isPhaseContext && (
+          <Box display="flex" mb="16px">
+            <MobileButton
+              active={view === 'phone'}
+              onClick={() => {
+                setView('phone');
+              }}
+            />
+            <PDFButton
+              active={view === 'pdf'}
+              onClick={() => {
+                setView('pdf');
+              }}
+            />
+            <DesktopButton
+              active={view === 'desktop'}
+              onClick={() => {
+                setView('desktop');
+              }}
+            />
+          </Box>
+        )}
         <ReportContextProvider reportId={reportId} width={view}>
           <LanguageProvider
             contentBuilderLocale={selectedLocale}
