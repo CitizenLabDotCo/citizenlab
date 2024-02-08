@@ -129,6 +129,68 @@ describe ProjectCopyService do
       expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
     end
 
+    it 'successfully copies map_configs associated with phase-level form custom_fields' do
+      open_ended_project = create(:single_phase_native_survey_project, title_multiloc: { en: 'open ended' })
+      form1 = create(:custom_form, participation_context: open_ended_project.phases.first)
+      field1 = create(:custom_field, :for_custom_form, resource: form1)
+      map_config = create(:map_config, zoom_level: 17, mappable: field1)
+
+      template = service.export open_ended_project
+
+      expect(template['models']['custom_field'].size).to eq 1
+      expect(template['models']['custom_maps/map_config'].size).to eq 1
+
+      tenant = create(:tenant)
+      tenant.switch do
+        expect(CustomMaps::MapConfig.count).to eq 0
+
+        service.import template
+
+        expect(CustomMaps::MapConfig.count).to eq 1
+        expect(CustomMaps::MapConfig.first.zoom_level).to eq map_config.zoom_level
+      end
+    end
+
+    it 'successfully copies map_configs associated with project-level form custom_fields' do
+      project = create(:project)
+      form1 = create(:custom_form, participation_context: project)
+      field1 = create(:custom_field, :for_custom_form, resource: form1)
+      map_config = create(:map_config, zoom_level: 17, mappable: field1)
+
+      template = service.export project
+
+      expect(template['models']['custom_maps/map_config'].size).to eq 1
+
+      tenant = create(:tenant)
+      tenant.switch do
+        expect(CustomMaps::MapConfig.count).to eq 0
+
+        service.import template
+
+        expect(CustomMaps::MapConfig.count).to eq 1
+        expect(CustomMaps::MapConfig.first.zoom_level).to eq map_config.zoom_level
+      end
+    end
+
+    it 'successfully copies map_configs associated with projects' do
+      project = create(:project)
+      map_config = create(:map_config, zoom_level: 17, mappable: project)
+
+      template = service.export project
+
+      expect(template['models']['custom_maps/map_config'].size).to eq 1
+
+      tenant = create(:tenant)
+      tenant.switch do
+        expect(CustomMaps::MapConfig.count).to eq 0
+
+        service.import template
+
+        expect(CustomMaps::MapConfig.count).to eq 1
+        expect(CustomMaps::MapConfig.first.zoom_level).to eq map_config.zoom_level
+      end
+    end
+
     it 'includes volunteers' do
       cause = create(:cause)
       volunteer = create(:user)
