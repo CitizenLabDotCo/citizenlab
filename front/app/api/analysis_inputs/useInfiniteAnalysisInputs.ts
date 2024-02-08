@@ -25,7 +25,7 @@ const useInfiniteAnalysisInputs = ({
   queryParams,
 }: {
   analysisId: string;
-  queryParams: IInputsQueryParams;
+  queryParams?: IInputsQueryParams;
 }) => {
   return useInfiniteQuery<IInputs, CLErrors, IInputs, InputsKeys>({
     queryKey: inputsKeys.list({ analysisId, filters: queryParams }),

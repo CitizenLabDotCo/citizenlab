@@ -15,6 +15,7 @@ const useAnalysisInsights = (queryParams: IInsightsParams) => {
   return useQuery<IInsights, CLErrors, IInsights, InsightsKeys>({
     queryKey: insightsKeys.list(queryParams),
     queryFn: () => fetchInsights(queryParams),
+    enabled: !!queryParams.analysisId,
   });
 };
 
