@@ -180,6 +180,7 @@ const IdeaCard = ({
             mt="4px"
             mb="16px"
             className="e2e-idea-card-title"
+            color="red600"
           >
             {ideaTitle}
           </Title>
