@@ -169,6 +169,8 @@ const Summary = ({ insight }: Props) => {
               analysisId,
               projectId,
               phaseId,
+              selectedInputId:
+                searchParams.get('selected_input_id') || undefined,
             })}
           </StyledSummaryText>
           {processing && <Spinner />}

@@ -74,30 +74,29 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
             </Text>
           )}
           <Text color="textSecondary" fontSize="s" m="0px">
-            {input.attributes.published_at &&
-              formatDate(input.attributes.published_at)}
+            {formatDate(input.attributes.published_at)}
           </Text>
         </Box>
         <Box display="flex" gap="8px">
-          {!!input.attributes.likes_count && (
+          {typeof input.attributes.likes_count === 'number' && (
             <Box display="flex" gap="4px">
               <Icon width="20px" height="20px" name="vote-up" />
               <span> {input.attributes.likes_count}</span>
             </Box>
           )}
-          {!!input.attributes.dislikes_count && (
+          {typeof input.attributes.dislikes_count === 'number' && (
             <Box display="flex" gap="4px">
               <Icon width="20px" height="20px" name="vote-down" />
               <span> {input.attributes.dislikes_count}</span>
             </Box>
           )}
-          {!!input.attributes.votes_count && (
+          {typeof input.attributes.votes_count === 'number' && (
             <Box display="flex" gap="4px">
               <Icon width="20px" height="20px" name="vote-ballot" />
               <span> {input.attributes.votes_count}</span>
             </Box>
           )}
-          {!!input.attributes.comments_count && (
+          {typeof input.attributes.comments_count === 'number' && (
             <Box display="flex" gap="4px">
               <Icon width="20px" height="20px" name="comments" />
               <span> {input.attributes.comments_count}</span>
