@@ -7,26 +7,24 @@ module ReportBuilder
       @inputs = phase.ideas.published
     end
 
-    def slice(question_field_id, slice_options)
+    def slice_by_user_field(question_field_id, user_field_id)
       question = @form.custom_fields.find_by(id: question_field_id)
       return unless question
       return unless %w[select multiselect].include?(question.input_type)
-      # TODO: check that group by field is also select or multiselect
 
-      # TODO: implement without group by field
-      return if slice_options[:group_by_field].blank?
+      # TODO: check that user field is also select or multiselect
 
       if question.input_type == 'select'
-        slice_select_responses(question, slice_options[:group_by_field])
+        slice_by_user_field_select(question, user_field_id)
       else
-        slice_multiselect_responses
+        slice_multiselect_responses # TODO
       end
     end
 
     private
 
-    def slice_select_responses(question, group_by_field)
-      user_field = CustomField.find_by(id: group_by_field)
+    def slice_by_user_field_select(question, user_field_id)
+      user_field = CustomField.find_by(id: user_field_id)
 
       answers = @inputs
         .joins(:author)
