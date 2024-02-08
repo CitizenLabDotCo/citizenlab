@@ -366,6 +366,8 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_maps_map_configs(shift_timestamps: 0)
+    # This needs to include map_configs of custom_fields of custom_forms of phases of the project
+
     CustomMaps::MapConfig.where(mappable_id: @project.id).map do |map_config|
       yml_map_config = {
         'mappable_ref' => lookup_ref(map_config.mappable_id, :project),
