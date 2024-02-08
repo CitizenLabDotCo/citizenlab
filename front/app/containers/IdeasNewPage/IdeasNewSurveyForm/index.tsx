@@ -37,6 +37,7 @@ import { IPhases, IPhaseData } from 'api/phases/types';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import { IProject } from 'api/projects/types';
 import { IdeaPublicationStatus } from "api/ideas/types";
+import useIdeaFiles from "../../../api/idea_files/useIdeaFiles";
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -78,6 +79,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     phaseId,
   });
   const { data: draftIdea, status: draftIdeaStatus } = useDraftIdeaByPhaseId(phaseId);
+  const { data: remoteFiles, status: remoteFilesStatus } = useIdeaFiles(draftIdea?.data.id);
   const [ideaId, setIdeaId] = useState<string|undefined>();
 
   const [initialFormData, setInitialFormData] = useState({});
@@ -123,9 +125,21 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   }
 
   // Try and load in a draft idea if one exists
-  const draftIdeaLoading = draftIdeaStatus === 'loading';
-  if (draftIdeaStatus === 'success' && !isNilOrError(draftIdea) && !ideaId && schema) {
-    setInitialFormData(getFormValues(draftIdea, schema));
+  // TODO: Edwin - We've got the remote files here for attachments, but:
+  // a) Need to get the form to load it when we load from draft
+  // b) Need the form to change the value to the ID when it goes to the next screen
+  const draftIdeaLoading = draftIdeaStatus === 'loading' || remoteFilesStatus === 'loading'
+  if (!draftIdeaLoading && draftIdeaStatus === 'success' && !isNilOrError(draftIdea) && !ideaId && schema) {
+    console.log(draftIdea);
+    console.log(remoteFiles);
+    setInitialFormData(
+      getFormValues(
+        draftIdea,
+        schema,
+        undefined,
+        remoteFiles
+      )
+    );
     setIdeaId(draftIdea.data.id);
   }
 

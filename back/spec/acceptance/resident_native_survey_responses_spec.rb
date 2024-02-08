@@ -62,6 +62,7 @@ resource 'Ideas' do
       parameter :phase_ids, 'The identifiers of the phases that host the input. None is allowed for normal users.', required: false
       parameter :custom_field_name1, 'A value for one custom field'
       parameter :custom_field_name2, 'A value for another custom field'
+      parameter :publication_status, 'Draft or published', required: false
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
 
@@ -113,35 +114,51 @@ resource 'Ideas' do
         let(:project) { create(:single_phase_native_survey_project) }
         let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
 
-        example_request 'Create an input with a file upload field' do
-          assert_status 201
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+        context 'published idea' do
+          example_request 'Create a survey response with file upload fields' do
+            assert_status 201
+            expect(json_response_body.dig(:data, :relationships, :project, :data, :id)).to eq project_id
 
-          # Verify that the input is saved correctly
-          inputs = project.reload.ideas
-          expect(inputs.size).to eq 1
-          input = inputs.first
-          expect(input.phase_ids).to eq [project.phases.first.id]
-          expect(input.creation_phase).to eq project.phases.first
+            # Verify that the input is saved correctly
+            inputs = project.reload.ideas
+            expect(inputs.size).to eq 1
+            input = inputs.first
+            expect(input.phase_ids).to eq [project.phases.first.id]
+            expect(input.creation_phase).to eq project.phases.first
 
-          # Verify that the files are saved correctly
-          file1_id = input.custom_field_values['custom_field_name1']
-          file2_id = input.custom_field_values['custom_field_name2']
-          file1 = IdeaFile.find(file1_id)
-          file2 = IdeaFile.find(file2_id)
-          expect(input.idea_files.size).to eq 2
-          expect(input.idea_files.ids).to match_array([file1.id, file2.id])
-          expect(file1.name).to eq filename1
-          expect(file1.file.url).to match "/uploads/.+/idea_file/file/#{file1.id}/#{filename1}"
-          expect(file2.name).to eq filename2
-          expect(file2.file.url).to match "/uploads/.+/idea_file/file/#{file2.id}/#{filename2}"
+            # Verify that the files are saved correctly
+            file1_id = input.custom_field_values['custom_field_name1']
+            file2_id = input.custom_field_values['custom_field_name2']
+            file1 = IdeaFile.find(file1_id)
+            file2 = IdeaFile.find(file2_id)
+            expect(input.idea_files.size).to eq 2
+            expect(input.idea_files.ids).to match_array([file1.id, file2.id])
+            expect(file1.name).to eq filename1
+            expect(file1.file.url).to match "/uploads/.+/idea_file/file/#{file1.id}/#{filename1}"
+            expect(file2.name).to eq filename2
+            expect(file2.file.url).to match "/uploads/.+/idea_file/file/#{file2.id}/#{filename2}"
 
-          # Verify that the cutom field value is saved correctly.
-          expect(input.custom_field_values).to eq({
-            'custom_field_name1' => file1.id,
-            'custom_field_name2' => file2.id
-          })
+            # Verify that the custom field value is saved correctly.
+            expect(input.custom_field_values).to eq({
+              'custom_field_name1' => file1.id,
+              'custom_field_name2' => file2.id
+            })
+          end
+        end
+
+        context 'draft idea' do
+          let(:publication_status) { 'draft' }
+
+          example_request 'Create a draft survey response with a file upload field' do
+            assert_status 201
+            survey = project.reload.ideas.first
+            expect(survey.publication_status).to eq 'draft'
+            binding.pry
+            # expect(survey.custom_field_values).to eq({
+            #   'custom_field_name1' => file1.id,
+            #   'custom_field_name2' => file2.id
+            # })
+          end
         end
       end
 
