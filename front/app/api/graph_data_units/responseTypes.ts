@@ -33,7 +33,7 @@ export type SurveyResultsResponse = {
   };
 };
 
-type Answer = {
+export type Answer = {
   answer: string;
   count: number;
   group_by_value?: string;

@@ -14,6 +14,7 @@ import {
 import ProjectFilter from '../../_shared/ProjectFilter';
 import PhaseFilter from '../../_shared/PhaseFilter';
 import FieldFilter from './FieldFilter';
+import UserFieldFilter from './UserFieldFilter';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -32,12 +33,14 @@ const Settings = () => {
     actions: { setProp },
     projectId,
     phaseId,
-    fieldId,
+    questionId,
+    groupByUserFieldId,
   } = useNode<Props>((node) => ({
     title: node.data.props.title,
     projectId: node.data.props.projectId,
     phaseId: node.data.props.phaseId,
-    fieldId: node.data.props.fieldId,
+    questionId: node.data.props.questionId,
+    groupByUserFieldId: node.data.props.groupByUserFieldId,
   }));
 
   const handleProjectFilter = useCallback(
@@ -45,7 +48,7 @@ const Settings = () => {
       setProp((props: Props) => {
         props.projectId = value;
         props.phaseId = undefined;
-        props.fieldId = undefined;
+        props.questionId = undefined;
       });
     },
     [setProp]
@@ -55,7 +58,7 @@ const Settings = () => {
     ({ value }: IOption) => {
       setProp((props: Props) => {
         props.phaseId = value;
-        props.fieldId = undefined;
+        props.questionId = undefined;
       });
     },
     [setProp]
@@ -64,7 +67,20 @@ const Settings = () => {
   const handleFieldFilter = useCallback(
     ({ value }: IOption) => {
       setProp((props: Props) => {
-        props.fieldId = value;
+        props.questionId = value;
+      });
+    },
+    [setProp]
+  );
+
+  const handleGroupByUserFieldFilter = useCallback(
+    ({ value }: IOption) => {
+      setProp((props: Props) => {
+        if (value === '') {
+          props.groupByUserFieldId = undefined;
+        } else {
+          props.groupByUserFieldId = value;
+        }
       });
     },
     [setProp]
@@ -115,12 +131,17 @@ const Settings = () => {
           {phaseId && (
             <FieldFilter
               phaseId={phaseId}
-              fieldId={fieldId}
+              fieldId={questionId}
               onFieldFilter={handleFieldFilter}
             />
           )}
         </>
       )}
+
+      <UserFieldFilter
+        userFieldId={groupByUserFieldId}
+        onFilter={handleGroupByUserFieldFilter}
+      />
     </Box>
   );
 };

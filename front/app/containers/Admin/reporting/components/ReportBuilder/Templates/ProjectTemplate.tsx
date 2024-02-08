@@ -131,7 +131,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
               key={field.id}
               projectId={projectId}
               phaseId={phaseId}
-              fieldId={field.id}
+              questionId={field.id}
             />
           ))}
         </div>

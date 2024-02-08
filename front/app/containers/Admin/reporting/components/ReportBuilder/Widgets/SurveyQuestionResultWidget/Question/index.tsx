@@ -9,36 +9,59 @@ import MultipleChoice from 'containers/Admin/projects/project/nativeSurvey/FormR
 import Source from './Source';
 
 // i18n
-import useLocalize from 'hooks/useLocalize';
+// import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+
+// typings
+import { Answer } from 'api/graph_data_units/responseTypes';
+import { Multiloc } from 'typings';
 
 interface Props {
   projectId: string;
   phaseId: string;
   questionId: string;
+  groupByUserFieldId?: string;
 }
 
-const SurveyQuestionResult = ({ projectId, phaseId, questionId }: Props) => {
-  const response = useSurveyQuestionResult({ phaseId, questionId });
-  const localize = useLocalize();
+const addFakeMultilocs = (answers: Answer[]) =>
+  answers.map(({ count, answer, group_by_value }) => ({
+    responses: count,
+    answer: {
+      en: group_by_value ? `${answer} - ${group_by_value}` : answer,
+    } as Multiloc,
+  }));
+
+const SurveyQuestionResult = ({
+  projectId,
+  phaseId,
+  questionId,
+  groupByUserFieldId,
+}: Props) => {
+  const response = useSurveyQuestionResult({
+    phaseId,
+    questionId,
+    groupByUserFieldId,
+  });
+  // const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   if (!response) return null;
 
-  const { answers, totalResponses, question } = response.data.attributes;
+  const { answers, totalResponses } = response.data.attributes;
   if (!answers) return null;
 
   return (
     <>
       <Title variant="h4" mt="0px" mb="8px">
-        {localize(question)}
+        {/* {localize(question)} */}
+        Test question
       </Title>
       <Text mt="0px" mb="8px" color="textSecondary" variant="bodyS">
         {formatMessage(messages.numberOfResponses, { count: totalResponses })}
       </Text>
       <MultipleChoice
-        multipleChoiceAnswers={answers}
+        multipleChoiceAnswers={addFakeMultilocs(answers)}
         totalResponses={totalResponses}
       />
       <Source projectId={projectId} phaseId={phaseId} />

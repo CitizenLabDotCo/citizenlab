@@ -22,6 +22,7 @@ const SurveyQuestionResultWidget = ({
   projectId,
   phaseId,
   questionId,
+  groupByUserFieldId,
 }: Props) => {
   const px = useReportDefaultPadding();
 
@@ -42,6 +43,7 @@ const SurveyQuestionResultWidget = ({
           projectId={projectId}
           phaseId={phaseId}
           questionId={questionId}
+          groupByUserFieldId={groupByUserFieldId}
         />
       ) : (
         // This is unreachable but I can't seem to explain to TS
