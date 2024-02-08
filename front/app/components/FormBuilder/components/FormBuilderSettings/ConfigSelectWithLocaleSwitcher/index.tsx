@@ -173,9 +173,12 @@ const ConfigSelectWithLocaleSwitcher = ({
                         ?.sort((a, b) => (a?.other || 0) - (b?.other || 0))
                         .map((choice, index) => {
                           return (
-                            <Box key={choice.id}>
+                            <Box key={index}>
                               {choice.other === true ? (
-                                <Row key={choice.id} isLastItem={true}>
+                                <Row
+                                  key={choice.id || choice.temp_id}
+                                  isLastItem={true}
+                                >
                                   <SelectFieldOption
                                     choice={choice}
                                     index={index}

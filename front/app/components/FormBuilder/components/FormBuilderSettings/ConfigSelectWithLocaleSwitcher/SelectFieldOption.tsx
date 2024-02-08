@@ -53,7 +53,7 @@ const SelectFieldOption = ({
   const { setValue, trigger } = useFormContext();
 
   const image = useCustomFieldOptionImage({
-    imageId: choice.imageId,
+    imageId: choice.image_id,
   });
 
   useEffect(() => {
