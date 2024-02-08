@@ -56,7 +56,6 @@ const ImageMultichoiceControl = ({
 
   const maxItems = schema.maxItems;
   const minItems = schema.minItems;
-  console.log('uischema', uischema);
 
   if (!visible) {
     return null;
