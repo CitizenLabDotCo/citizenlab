@@ -10,6 +10,8 @@ import {
 import { IAnalysisData } from 'api/analyses/types';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
+import useRegenerateAnalysisSummary from 'api/analysis_summaries/useRegenerateAnalysisSummary';
+import useRegenerateAnalysisQuestion from 'api/analysis_questions/useRegenerateAnalysisQuestion';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
@@ -61,6 +63,8 @@ const Summary = ({
     true
   );
 
+  const { mutate: regenerateSummary, isLoading: isLoadingRegenerateSummary } =
+    useRegenerateAnalysisSummary();
   const summary = data?.data.attributes.summary;
   const filters = data?.data.attributes.filters;
   const accuracy = data?.data.attributes.accuracy;
@@ -129,6 +133,10 @@ const Summary = ({
           disabled={missingInputsCount === 0}
           buttonStyle="secondary-outlined"
           icon="refresh"
+          onClick={() => {
+            regenerateSummary({ analysisId, summaryId });
+          }}
+          processing={isLoadingRegenerateSummary}
         >
           <FormattedMessage
             {...messages.refresh}
@@ -150,14 +158,14 @@ const Summary = ({
 };
 
 const Question = ({
-  summaryId,
+  questionId,
   analysisId,
 }: {
-  summaryId: string;
+  questionId: string;
   analysisId: string;
 }) => {
   const { formatMessage, formatDate } = useIntl();
-  const { data } = useAnalysisQuestion({ analysisId, id: summaryId });
+  const { data } = useAnalysisQuestion({ analysisId, id: questionId });
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -168,6 +176,9 @@ const Question = ({
     data?.data.relationships.background_task.data.id,
     true
   );
+
+  const { mutate: regenerateQuestion, isLoading: isLoadingRegenerateQuestion } =
+    useRegenerateAnalysisQuestion();
 
   const question = data?.data.attributes.question;
   const answer = data?.data.attributes.answer;
@@ -237,6 +248,10 @@ const Question = ({
           disabled={missingInputsCount === 0}
           buttonStyle="secondary-outlined"
           icon="refresh"
+          onClick={() => {
+            regenerateQuestion({ analysisId, questionId });
+          }}
+          processing={isLoadingRegenerateQuestion}
         >
           <FormattedMessage
             {...messages.refresh}
@@ -347,7 +362,7 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
             'analysis_question' ? (
               <Question
                 key={selectedInsight.relationships.insightable.data.id}
-                summaryId={selectedInsight.relationships.insightable.data.id}
+                questionId={selectedInsight.relationships.insightable.data.id}
                 analysisId={analysis.id}
               />
             ) : (
