@@ -13,7 +13,6 @@ import InitiativeInformation from './components/InitiativeInformation';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // hooks
-import useInitiativeMarkers from 'api/initiative_markers/useInitiativeMarkers';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 // auth
@@ -31,6 +30,7 @@ import {
 } from 'components/EsriMap/utils';
 import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { IInitiativeData } from 'api/initiatives/types';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -41,6 +41,7 @@ import messages from './messages';
 
 export interface Props {
   center: GeoJSON.Point;
+  list: IInitiativeData[];
 }
 
 // Esri CSS overrides
@@ -54,13 +55,12 @@ const StyledMapContainer = styled(Box)`
   }
 `;
 
-const EsriInitiativeMap = ({ center }: Props) => {
+const EsriInitiativeMap = ({ center, list }: Props) => {
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const isPhoneOrSmaller = useBreakpoint('phone');
   const theme = useTheme();
 
-  const { data: initiativeMarkers } = useInitiativeMarkers();
   const initiativePermissions = useInitiativesPermissions('posting_initiative');
   const clickedLocationRef = useRef<GeoJSON.Point | null>(null); // Stores the clicked map location
 
@@ -80,7 +80,7 @@ const EsriInitiativeMap = ({ center }: Props) => {
   initiativeInfoNode.id = 'initiative-info-node';
 
   // Loop through initative markers and create array of graphics
-  const markersWithLocation = initiativeMarkers?.data.filter(
+  const markersWithLocation = list.filter(
     (marker) => marker?.attributes?.location_point_geojson
   );
   const graphics = markersWithLocation?.map((marker) => {

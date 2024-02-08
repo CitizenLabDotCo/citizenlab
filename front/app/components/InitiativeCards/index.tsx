@@ -493,6 +493,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
                   {selectedView === 'map' && (
                     <Box aria-labelledby={'view-tab-2'} id={'view-panel-2'}>
                       <EsriInitiativeMap
+                        list={flatInitiatives}
                         center={
                           {
                             type: 'Point',
