@@ -29,7 +29,7 @@ import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import { ScreenReaderOnly } from 'utils/a11y';
 import EmptyProposals from './EmptyProposals';
 import ProposalsList from './ProposalsList';
-const EsriInitiativeMap = lazy(() => import('components/EsriInitiativesMap'));
+const InitiativeMap = lazy(() => import('components/InitiativeMap'));
 
 // router
 import { useSearchParams } from 'react-router-dom';
@@ -492,7 +492,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
 
                   {selectedView === 'map' && (
                     <Box aria-labelledby={'view-tab-2'} id={'view-panel-2'}>
-                      <EsriInitiativeMap
+                      <InitiativeMap
                         list={flatInitiatives}
                         center={
                           {

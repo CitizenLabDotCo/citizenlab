@@ -55,7 +55,7 @@ const StyledMapContainer = styled(Box)`
   }
 `;
 
-const EsriInitiativeMap = ({ center, list }: Props) => {
+const InitiativeMap = ({ center, list }: Props) => {
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const isPhoneOrSmaller = useBreakpoint('phone');
@@ -79,27 +79,29 @@ const EsriInitiativeMap = ({ center, list }: Props) => {
   const initiativeInfoNode = document.createElement('div');
   initiativeInfoNode.id = 'initiative-info-node';
 
-  // Loop through initative markers and create array of graphics
-  const markersWithLocation = list.filter(
-    (marker) => marker?.attributes?.location_point_geojson
+  // Loop through initatives with locations and create array of graphics
+  const initiativesWithLocation = list.filter(
+    (initiative) => initiative?.attributes?.location_point_geojson
   );
-  const graphics = markersWithLocation?.map((marker) => {
+  const graphics = initiativesWithLocation?.map((initiative) => {
     return new Graphic({
       geometry: new Point({
-        longitude: marker?.attributes?.location_point_geojson?.coordinates[0],
-        latitude: marker?.attributes?.location_point_geojson?.coordinates[1],
+        longitude:
+          initiative?.attributes?.location_point_geojson?.coordinates[0],
+        latitude:
+          initiative?.attributes?.location_point_geojson?.coordinates[1],
       }),
       attributes: {
-        initiativeId: marker?.id,
+        initiativeId: initiative?.id,
       },
     });
   });
 
-  // Create an Esri Layer from the graphics
+  // Create an Esri Layer from the graphics so we can add a cluster display
   const initiativesLayer = graphics
     ? new FeatureLayer({
         source: graphics, // Array of initiative graphics
-        title: 'Initiative markers',
+        title: 'Initiative pins',
         objectIdField: 'ID',
         fields: [
           {
@@ -125,7 +127,7 @@ const EsriInitiativeMap = ({ center, list }: Props) => {
     mapView.hitTest(event).then((result) => {
       const elements = result.results; // These are elements under our map click
       if (elements.length > 0) {
-        // User clicked an initiative marker OR cluster
+        // User clicked an initiative pin OR cluster
         elements.forEach((element) => {
           if (element.type === 'graphic') {
             const graphicId = element.graphic.attributes.ID;
@@ -136,7 +138,7 @@ const EsriInitiativeMap = ({ center, list }: Props) => {
                 zoom: mapView.zoom + 1,
               });
             } else {
-              // User clicked an initiative marker
+              // User clicked an initiative pin
               const initiativeId = graphics?.at(graphicId - 1)?.attributes
                 .initiativeId;
               if (initiativeId) {
@@ -246,4 +248,4 @@ const EsriInitiativeMap = ({ center, list }: Props) => {
   );
 };
 
-export default EsriInitiativeMap;
+export default InitiativeMap;
