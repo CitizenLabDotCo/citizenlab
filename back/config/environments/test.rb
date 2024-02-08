@@ -65,7 +65,7 @@ Rails.application.configure do
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
 
-  # Comment this out to see the queries in the logs.
+  # Comment this out and set config.log_level = :debug to see the queries in the logs.
   # STDOUT.sync = true
   # config.rails_semantic_logger.add_file_appender = false
   # config.semantic_logger.add_appender(io: STDOUT, level: config.log_level, formatter: config.rails_semantic_logger.format)

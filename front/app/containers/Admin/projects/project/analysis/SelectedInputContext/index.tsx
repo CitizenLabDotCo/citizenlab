@@ -6,7 +6,6 @@ import React, {
   useEffect,
 } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 const Context = createContext<{
   selectedInputId: string | null;
@@ -29,7 +28,6 @@ const SelectedInputContext = ({ children }) => {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
-    removeSearchParams(['selected_input_id']);
   }, [inputId]);
 
   const contextValue = { selectedInputId, setSelectedInputId };
