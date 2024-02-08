@@ -38,7 +38,7 @@ export const getMapPinSymbol = (color?: string) => {
 };
 
 // getShapeSymbol
-// Description: Get a circle symbol (with an optional color value)
+// Description: Get a simple shape symbol (with an optional outline width & color value)
 type SimpleShape = 'circle' | 'square' | 'cross' | 'diamond' | 'triangle' | 'x';
 export const getShapeSymbol = (
   shape: SimpleShape,

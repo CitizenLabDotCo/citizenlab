@@ -75,12 +75,7 @@ const InitiativePreview = ({ className, initiativeId }: Props) => {
 
   return (
     <Container className={className}>
-      <Title
-        variant="h3"
-        as="h1"
-        m="0px"
-        style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}
-      >
+      <Title variant="h3" as="h1" m="0px">
         {initiativeTitle}
       </Title>
       {initiativeAddress && (

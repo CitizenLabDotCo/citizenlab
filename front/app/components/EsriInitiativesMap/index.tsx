@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 // components
 import EsriMap from 'components/EsriMap';
@@ -54,7 +54,7 @@ const StyledMapContainer = styled(Box)`
   }
 `;
 
-const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
+const EsriInitiativeMap = ({ center }: Props) => {
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const isPhoneOrSmaller = useBreakpoint('phone');
@@ -244,6 +244,6 @@ const EsriInitiativeMap = memo<Props>(({ center }: Props) => {
       <InitiativeInformation modalPortalElement={initiativeInfoNode} />
     </StyledMapContainer>
   );
-});
+};
 
 export default EsriInitiativeMap;

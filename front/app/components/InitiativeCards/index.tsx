@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, lazy } from 'react';
 import { isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -29,7 +29,7 @@ import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import { ScreenReaderOnly } from 'utils/a11y';
 import EmptyProposals from './EmptyProposals';
 import ProposalsList from './ProposalsList';
-import EsriInitiativeMap from 'components/EsriInitiativesMap';
+const EsriInitiativeMap = lazy(() => import('components/EsriInitiativesMap'));
 
 // router
 import { useSearchParams } from 'react-router-dom';
