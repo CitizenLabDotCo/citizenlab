@@ -35,7 +35,6 @@ export const getFormValues = (
   remoteImages?: IIdeaImages,
   remoteFiles?: IIdeaFiles
 ) => {
-  console.log('schema', schema);
   return Object.fromEntries(
     Object.keys(schema.properties).map((prop) => {
       if (prop === 'author_id') {

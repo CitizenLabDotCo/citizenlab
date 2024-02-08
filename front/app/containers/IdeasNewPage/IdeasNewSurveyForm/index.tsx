@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 
 // api
 import useAuthUser from 'api/me/useAuthUser';
@@ -80,6 +80,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   const { data: draftIdea, status: draftIdeaStatus } = useDraftIdeaByPhaseId(phaseId);
   const { data: remoteFiles, status: remoteFilesStatus } = useIdeaFiles(draftIdea?.data.id);
+  const [loadingDraftIdea, setLoadingDraftIdea] = useState(true);
   const [ideaId, setIdeaId] = useState<string|undefined>();
 
   const [initialFormData, setInitialFormData] = useState({});
@@ -130,28 +131,29 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   // b) Need the form to change the value to the ID when it goes to the next screen
   const convertFileAttributes = (formValues) => {
     console.log(formValues);
-    // formValues.each((key, value) => {
-    //   console.log(key, value);
-    // });
     return formValues;
   }
 
-  const draftIdeaLoading = draftIdeaStatus === 'loading'; // || remoteFilesStatus === 'loading';
-  if (!draftIdeaLoading && draftIdeaStatus === 'success' && !isNilOrError(draftIdea) && !ideaId && schema) {
-    // Test here if schema contains attachments then wait for the attachments
-    console.log('Draft idea', draftIdea);
-    console.log(remoteFilesStatus, remoteFiles);
+  useEffect(() => {
+    if (draftIdeaStatus === 'success' && !isNilOrError(draftIdea) && !ideaId && schema) {
+      // Test here if schema contains attachments then wait for the attachments using remoteFilesStatus === 'loading';
+      console.log('Draft idea', draftIdea);
+      console.log(remoteFilesStatus, remoteFiles);
 
-    setInitialFormData(
-      convertFileAttributes(getFormValues(
-        draftIdea,
-        schema,
-        undefined,
-        remoteFiles
-      ))
-    );
-    setIdeaId(draftIdea.data.id);
-  } // Do an else if draft idea error here to set the draftIdeaLoading to false
+      setInitialFormData(
+        convertFileAttributes(getFormValues(
+          draftIdea,
+          schema,
+          undefined,
+          remoteFiles
+        ))
+      );
+      setIdeaId(draftIdea.data.id);
+      setLoadingDraftIdea(false);
+    } else if (draftIdeaStatus === 'error') {
+      setLoadingDraftIdea(false);
+    }
+  }, [draftIdeaStatus, draftIdea, remoteFilesStatus, remoteFiles, schema]);
 
   const handleDraftIdeas = async (data: FormValues) => {
     if (data.publication_status === 'draft') {
@@ -191,7 +193,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
-      {!draftIdeaLoading && schema && uiSchema && participationMethodConfig ? (
+      {!loadingDraftIdea && schema && uiSchema && participationMethodConfig ? (
         <>
           <IdeasNewMeta isSurvey={true} />
           <Form
