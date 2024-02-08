@@ -74,8 +74,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
             </Text>
           )}
           <Text color="textSecondary" fontSize="s" m="0px">
-            {input.attributes.published_at &&
-              formatDate(input.attributes.published_at)}
+            {formatDate(input.attributes.published_at)}
           </Text>
         </Box>
         <Box display="flex" gap="8px">
