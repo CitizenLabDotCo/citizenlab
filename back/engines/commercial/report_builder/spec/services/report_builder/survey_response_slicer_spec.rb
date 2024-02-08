@@ -113,7 +113,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
     )
   end
   let_it_be(:another_option) do
-    create(
+    create( 
       :custom_field_option,
       custom_field: user_multiselect_field,
       key: 'another_option',
@@ -124,10 +124,10 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
   # Create users
   let_it_be(:users) do
     build_list(:user, 11) do |record, index|
-      record.gender = index.even? ? 'female' : 'male'
-      # record.custom_field_values = {
-      #   user_multiselect_field.key => index < 6 ? [user_multiselect_field.options.first.key] : user_multiselect_field.options.map(&:key)
-      # }
+      record.custom_field_values = {
+        gender: index.even? ? 'female' : 'male',
+        user_multiselect_field.key => index < 6 ? [user_multiselect_field.options.first.key] : user_multiselect_field.options.map(&:key)
+      }
       record.save!
     end
   end
@@ -178,20 +178,20 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
       })
     end
 
-    # it 'slices select by multiselect' do
-    #   expect(generator.slice_by_user_field(
-    #     food_survey_question.id,
-    #     user_multiselect_field.id
-    #   )).to eq({
-    #     totalResponses: 16,
-    #     answers: [
-    #       { answer: 'burger', group_by_value: 'female', count: 6 },
-    #       { answer: 'pizza', group_by_value: 'male', count: 2 },
-    #       { answer: 'burger', group_by_value: 'male', count: 5 },
-    #       { answer: 'pizza', group_by_value: 'female', count: 3 }
-    #     ]
-    #   })
-    # end
+    it 'slices select by multiselect' do
+      expect(generator.slice_by_user_field(
+        food_survey_question.id,
+        user_multiselect_field.id
+      )).to eq({
+        totalResponses: 16,
+        answers: [
+          { answer: 'burger', group_by_value: 'one_option', count: 5 },
+          { answer: 'pizza', group_by_value: 'one_option', count: 6 },
+          { answer: 'pizza', group_by_value: 'another_option', count: 3 },
+          { answer: 'burger', group_by_value: 'another_option', count: 2 }
+        ]
+      })
+    end
   end
 
   context 'when slicing by other survey question' do
