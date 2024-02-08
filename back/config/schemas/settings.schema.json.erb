@@ -1380,6 +1380,18 @@
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "extensive_logging": {
+        "type": "object",
+        "title": "Extensive logging",
+        "description": "Enables extensive logging for debugging purposes. Check how the feature is used before enabling it.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {

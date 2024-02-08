@@ -6,6 +6,7 @@ class OmniauthCallbackController < ApplicationController
   skip_after_action :verify_authorized
 
   def create
+    log_auth_raw_info
     auth_provider = request.env.dig('omniauth.auth', 'provider')
     auth_method = authentication_service.method_by_provider(auth_provider)
     verification_method = get_verification_method(auth_provider)
@@ -226,6 +227,12 @@ class OmniauthCallbackController < ApplicationController
 
   def authentication_service
     @authentication_service ||= AuthenticationService.new
+  end
+
+  def log_auth_raw_info
+    if AppConfiguration.instance.feature_activated?('extensive_logging')
+      Rails.logger.warn("extra['raw_info'].to_h.to_json: #{request.env['omniauth.auth'].extra['raw_info'].to_h.to_json}")
+    end
   end
 end
 
