@@ -675,6 +675,7 @@
   "app.components.formBuilder.open": "Open",
   "app.components.formBuilder.optional": "Optional",
   "app.components.formBuilder.otherOption": "\"Other\" option",
+  "app.components.formBuilder.otherOptionTooltip": "Allow participants to enter a custom response if the provided answers do not match their preference",
   "app.components.formBuilder.page": "Page",
   "app.components.formBuilder.pageRuleLabel": "Next page is:",
   "app.components.formBuilder.pagesLogicHelperTextDefault": "If no logic is added, the form will follow its normal flow. For more information, visit {supportPageLink}",
