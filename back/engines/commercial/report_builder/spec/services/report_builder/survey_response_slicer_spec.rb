@@ -10,9 +10,11 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
   let_it_be(:phase) { project.phases.first }
   let_it_be(:survey) { create(:custom_form, participation_context: phase) }
 
-  # Set up form with one question
+  # Set up form with two questions
   let_it_be(:page_field) { create(:custom_field_page, resource: survey) }
-  let_it_be(:survey_select_field) do
+
+  ## Create city question
+  let_it_be(:city_survey_question) do
     create(
       :custom_field_select,
       resource: survey,
@@ -28,7 +30,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
   let_it_be(:la_option) do
     create(
       :custom_field_option,
-      custom_field: survey_select_field,
+      custom_field: city_survey_question,
       key: 'la',
       title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }
     )
@@ -36,9 +38,40 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
   let_it_be(:ny_option) do
     create(
       :custom_field_option,
-      custom_field: survey_select_field,
+      custom_field: city_survey_question,
       key: 'ny',
       title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }
+    )
+  end
+
+  ## Create food question
+  let_it_be(:food_survey_question) do
+    create(
+      :custom_field_select,
+      resource: survey,
+      title_multiloc: {
+        'en' => 'What is your favorite food?',
+        'fr-FR' => 'What is your favorite food?',
+        'nl-NL' => 'What is your favorite food?'
+      },
+      description_multiloc: {},
+      required: true
+    )
+  end
+  let_it_be(:pizza_option) do
+    create(
+      :custom_field_option,
+      custom_field: food_survey_question,
+      key: 'pizza',
+      title_multiloc: { 'en' => 'Pizza', 'fr-FR' => 'Pizza', 'nl-NL' => 'Pizza' }
+    )
+  end
+  let_it_be(:burger_option) do
+    create(
+      :custom_field_option,
+      custom_field: food_survey_question,
+      key: 'burger',
+      title_multiloc: { 'en' => 'Burger', 'fr-FR' => 'Burger', 'nl-NL' => 'Burger' }
     )
   end
 
@@ -60,15 +93,16 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
       record.project = project
       record.phases = [phase]
       record.custom_field_values = {
-        survey_select_field.key => index < 6 ? la_option.key : ny_option.key
+        city_survey_question.key => index < 6 ? la_option.key : ny_option.key,
+        food_survey_question.key => index.even? ? pizza_option.key : burger_option.key
       }
       record.save!
     end
   end
 
-  it 'slices the survey by gender' do
+  it 'slices the city question by gender' do
     expect(generator.slice_by_user_field(
-      survey_select_field.id,
+      city_survey_question.id,
       user_custom_field.id
     )).to eq({
       totalResponses: 11,
@@ -77,6 +111,21 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         { answer: 'la', group_by_value: 'male', count: 3 },
         { answer: 'ny', group_by_value: 'female', count: 3 },
         { answer: 'ny', group_by_value: 'male', count: 2 }
+      ]
+    })
+  end
+
+  it 'slices the city question by another question' do
+    expect(generator.slice_by_other_question(
+      city_survey_question.id,
+      food_survey_question.id
+    )).to eq({
+      totalResponses: 11,
+      answers: [
+        { answer: 'la', group_by_value: 'burger', count: 3 },
+        { answer: 'la', group_by_value: 'pizza', count: 3 },
+        { answer: 'ny', group_by_value: 'burger', count: 2 },
+        { answer: 'ny', group_by_value: 'pizza', count: 3 }
       ]
     })
   end
