@@ -368,7 +368,7 @@ class ProjectCopyService < TemplateService
   def yml_maps_map_configs(shift_timestamps: 0)
     map_configs = CustomMaps::MapConfig.where(mappable: @project)
       .or(CustomMaps::MapConfig.where(mappable: @project&.custom_form&.custom_fields))
-      .or(CustomMaps::MapConfig.where(mappable: @project&.phases&.filter_map(&:custom_form)&.compact&.flat_map(&:custom_fields)))
+      .or(CustomMaps::MapConfig.where(mappable: @project&.phases&.map(&:custom_form)&.compact&.map(&:custom_fields)))
 
     map_configs.map do |map_config|
       yml_map_config = {
