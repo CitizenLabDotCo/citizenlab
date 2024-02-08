@@ -9,7 +9,7 @@ import Point from '@arcgis/core/geometry/Point';
 import Renderer from '@arcgis/core/renderers/SimpleRenderer';
 import Popup from '@arcgis/core/widgets/Popup.js';
 import StartInitiativeButton from './components/StartInitiativeButton';
-import InitiativeInformation from './components/InitiativeInformation';
+import InitiativeInformationOverlay from './components/InitiativeInformationOverlay';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // hooks
@@ -40,11 +40,10 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 export interface Props {
-  center: GeoJSON.Point;
   list: IInitiativeData[];
 }
 
-// Esri CSS overrides
+// Custom stylig for Esri map
 const StyledMapContainer = styled(Box)`
   calcite-action-bar {
     display: none;
@@ -55,7 +54,7 @@ const StyledMapContainer = styled(Box)`
   }
 `;
 
-const InitiativeMap = ({ center, list }: Props) => {
+const InitiativeMap = ({ list }: Props) => {
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const isPhoneOrSmaller = useBreakpoint('phone');
@@ -97,7 +96,7 @@ const InitiativeMap = ({ center, list }: Props) => {
     });
   });
 
-  // Create an Esri Layer from the graphics so we can add a cluster display
+  // Create an Esri map layer from the graphics so we can add a cluster display
   const initiativesLayer = graphics
     ? new FeatureLayer({
         source: graphics, // Array of initiative graphics
@@ -230,7 +229,6 @@ const InitiativeMap = ({ center, list }: Props) => {
   return (
     <StyledMapContainer>
       <EsriMap
-        center={center}
         height={isPhoneOrSmaller ? '480px' : '640px'}
         onClick={onMapClick}
         onHover={changeCursorOnHover}
@@ -243,7 +241,7 @@ const InitiativeMap = ({ center, list }: Props) => {
           onNewInitiativeClick();
         }}
       />
-      <InitiativeInformation modalPortalElement={initiativeInfoNode} />
+      <InitiativeInformationOverlay modalPortalElement={initiativeInfoNode} />
     </StyledMapContainer>
   );
 };

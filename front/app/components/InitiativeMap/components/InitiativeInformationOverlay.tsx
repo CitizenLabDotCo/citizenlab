@@ -19,7 +19,7 @@ const StyledCloseButton = styled(CloseIconButton)`
   padding-right: 8px;
 `;
 
-const InitiativeInformation = ({ modalPortalElement }: Props) => {
+const InitiativeInformationOverlay = ({ modalPortalElement }: Props) => {
   const [selectedInitiativeId, setSelectedInitiativeId] = useState<
     string | null
   >(null);
@@ -51,4 +51,4 @@ const InitiativeInformation = ({ modalPortalElement }: Props) => {
   );
 };
 
-export default InitiativeInformation;
+export default InitiativeInformationOverlay;

@@ -492,15 +492,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
 
                   {selectedView === 'map' && (
                     <Box aria-labelledby={'view-tab-2'} id={'view-panel-2'}>
-                      <InitiativeMap
-                        list={flatInitiatives}
-                        center={
-                          {
-                            type: 'Point',
-                            coordinates: [4.350928, 50.85578659999999],
-                          } as GeoJSON.Point
-                        }
-                      />
+                      <InitiativeMap list={flatInitiatives} />
                     </Box>
                   )}
                 </>
