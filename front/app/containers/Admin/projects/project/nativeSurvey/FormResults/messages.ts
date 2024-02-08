@@ -112,4 +112,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.analysis.generated',
     defaultMessage: 'Generated:',
   },
+  refresh: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.refresh',
+    defaultMessage: '{ count } new responses',
+  },
 });

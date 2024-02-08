@@ -65,6 +65,7 @@ const Summary = ({
   const filters = data?.data.attributes.filters;
   const accuracy = data?.data.attributes.accuracy;
   const generatedAt = data?.data.attributes.created_at;
+  const missingInputsCount = data?.data.attributes.missing_inputs_count;
 
   const isLoading =
     task?.data.attributes.state === 'queued' ||
@@ -123,7 +124,17 @@ const Summary = ({
           {formatMessage(messages.generated)} {formatDate(generatedAt)}
         </Text>
       </Box>
-      <Box display="flex">
+      <Box display="flex" gap="16px">
+        <Button
+          disabled={missingInputsCount === 0}
+          buttonStyle="secondary-outlined"
+          icon="refresh"
+        >
+          <FormattedMessage
+            {...messages.refresh}
+            values={{ count: missingInputsCount }}
+          />
+        </Button>
         <Button
           buttonStyle="secondary"
           icon="eye"
@@ -163,6 +174,7 @@ const Question = ({
   const filters = data?.data.attributes.filters;
   const accuracy = data?.data.attributes.accuracy;
   const generatedAt = data?.data.attributes.created_at;
+  const missingInputsCount = data?.data.attributes.missing_inputs_count;
 
   const isLoading =
     task?.data.attributes.state === 'queued' ||
@@ -220,7 +232,17 @@ const Question = ({
           {formatMessage(messages.generated)} {formatDate(generatedAt)}
         </Text>
       </Box>
-      <Box display="flex">
+      <Box display="flex" gap="16px">
+        <Button
+          disabled={missingInputsCount === 0}
+          buttonStyle="secondary-outlined"
+          icon="refresh"
+        >
+          <FormattedMessage
+            {...messages.refresh}
+            values={{ count: missingInputsCount }}
+          />
+        </Button>
         <Button
           buttonStyle="secondary"
           icon="eye"

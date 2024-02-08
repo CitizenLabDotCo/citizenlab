@@ -20,6 +20,7 @@ export interface ISummaryData {
     accuracy: number | null;
     created_at: string;
     updated_at: string;
+    missing_inputs_count: number;
   };
   relationships: {
     background_task: {
