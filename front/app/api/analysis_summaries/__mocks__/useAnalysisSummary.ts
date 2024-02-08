@@ -11,6 +11,7 @@ export const summaryData: ISummaryData = {
     },
     created_at: '2020-01-01T00:00:00.000Z',
     updated_at: '2020-01-01T00:00:00.000Z',
+    missing_inputs_count: 0,
   },
   relationships: {
     background_task: {
