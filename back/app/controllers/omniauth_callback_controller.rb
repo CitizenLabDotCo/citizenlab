@@ -231,7 +231,7 @@ class OmniauthCallbackController < ApplicationController
 
   def log_auth_raw_info
     if AppConfiguration.instance.feature_activated?('extensive_logging')
-      Rails.logger.warn("extra['raw_info'].to_h.to_json: #{request.env['omniauth.auth'].extra['raw_info'].to_h.to_json}")
+      Rails.logger.warn("Auth extra raw info JSON: #{request.env['omniauth.auth'].extra['raw_info'].to_h.to_json}")
     end
   end
 end
