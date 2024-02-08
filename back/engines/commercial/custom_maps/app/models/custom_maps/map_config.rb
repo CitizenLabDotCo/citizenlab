@@ -40,5 +40,9 @@ module CustomMaps
     def project_id
       resource.project_id if resource_type == 'Project'
     end
+
+    def custom_field_id
+      resource.custom_field_id if resource_type == 'CustomField'
+    end
   end
 end

@@ -37,6 +37,13 @@ module MultiTenancy
             'bruxelles_toilettes_publiques.geojson'))),
           default_enabled: false
         )
+
+        custom_field = CustomField.where(resource_type: 'CustomForm').where(input_type: 'text').first
+        ::CustomMaps::MapConfig.create!(
+          mappable: custom_field,
+          center: RGeo::Cartesian.factory.point(2.349014, 48.864716), # Paris
+          zoom_level: 13
+        )
       end
     end
   end
