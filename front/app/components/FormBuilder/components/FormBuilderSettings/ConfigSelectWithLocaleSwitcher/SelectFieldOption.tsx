@@ -134,6 +134,7 @@ const SelectFieldOption = ({
             h="100%"
             alignItems="center"
             justifyContent="center"
+            mt="12px"
           >
             {isUploading ? (
               <Box p="16px">
