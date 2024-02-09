@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/FormatStringToken
 module IdCriipto
   module CriiptoVerification
     include Verification::VerificationMethod
 
     DK_MIT_ID = 'DK MitID'
+    DEFAULT_UID_FIELD_PATTERN = '%{uuid}'
 
     def verification_method_type
       :omniauth
@@ -18,6 +20,10 @@ module IdCriipto
       'criipto'
     end
 
+    def name_for_hashing
+      config[:method_name_for_hashing].presence || super
+    end
+
     def config_parameters
       %i[
         identity_source
@@ -27,6 +33,8 @@ module IdCriipto
         client_id
         client_secret
         method_name_multiloc
+        uid_field_pattern
+        method_name_for_hashing
       ]
     end
 
@@ -56,6 +64,17 @@ module IdCriipto
           private: true,
           type: 'string',
           description: 'Only for MitID: The `key` attribute of the custom field where the municipality_key should be stored. Leave empty to not store the municipality_key. We don\'t lock this field, assuming it is a hidden field.'
+        },
+        uid_field_pattern: {
+          private: true,
+          type: 'string',
+          description: 'It is the legacy of tenants migrated from Auth0, but can be used with other MitID providers too. Pattern used for getting UID value. Use ${value} for values from the auth->extra->raw_info object. Example: adfs|criipto-verify-DK-NemID-POCES|%{nameidentifier}. See the specs for all possible values.',
+          default: DEFAULT_UID_FIELD_PATTERN
+        },
+        method_name_for_hashing: {
+          private: true,
+          type: 'string',
+          description: 'It is the legacy of tenants migrated from Auth0, but can be used with other MitID providers too. If present, this method name will be used for hashing. Leave empty to use the default Criipto value. Example: auth0.'
         }
       }
     end
@@ -69,7 +88,7 @@ module IdCriipto
     def profile_to_uid(auth)
       case config[:identity_source]
       when DK_MIT_ID
-        auth['uid']
+        config[:uid_field_pattern] % auth.extra.raw_info.to_h.symbolize_keys
       else
         raise "Unsupported identity source #{config[:identity_source]}"
       end
@@ -91,3 +110,4 @@ module IdCriipto
     end
   end
 end
+# rubocop:enable Style/FormatStringToken

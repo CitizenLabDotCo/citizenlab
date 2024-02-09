@@ -60,7 +60,7 @@ module Verification
       user.update_merging_custom_fields!(
         user_attributes.merge(custom_field_values: response[:custom_field_values] || {})
       )
-      make_verification(user: user, method_name: method_name, uid: uid)
+      make_verification(user: user, method_name: method.name_for_hashing, uid: uid)
     end
 
     def verify_omniauth(user:, auth:)
@@ -68,7 +68,7 @@ module Verification
       raise NotEntitledError if method.respond_to?(:entitled?) && !method.entitled?(auth)
 
       uid = method.profile_to_uid(auth)
-      make_verification(user: user, method_name: method.name, uid: uid)
+      make_verification(user: user, method_name: method.name_for_hashing, uid: uid)
     end
 
     def locked_attributes(user)

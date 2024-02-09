@@ -2,6 +2,10 @@
 
 module Verification
   module VerificationMethod
+    def name_for_hashing
+      name
+    end
+
     # @return [Hash, nil]
     def config
       AppConfiguration.instance
