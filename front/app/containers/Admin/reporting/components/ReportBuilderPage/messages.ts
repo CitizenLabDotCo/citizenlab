@@ -77,4 +77,8 @@ export default defineMessages({
     defaultMessage:
       'An error occurred when trying to create this report. Please try again later.',
   },
+  noProjectSelected: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.noProjectSelected',
+    defaultMessage: 'No project selected',
+  },
 });

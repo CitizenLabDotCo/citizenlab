@@ -9,13 +9,15 @@ import Workshops from './Workshops';
 import Widget from './Widget';
 import PublicAPI from './PublicAPI';
 import PowerBI from './PowerBI';
+import Esri from './Esri';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export const Tools = () => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
+  const isEsriIntegrationEnabled = useFeatureFlag({ name: 'esri_integration' }); // TODO: Remove this when releasing esri integration
 
   if (isNilOrError(authUser)) return null;
-
   const isUserAdmin = isAdmin({ data: authUser.data });
 
   return (
@@ -23,6 +25,7 @@ export const Tools = () => {
       <Box maxWidth="800px">
         <Title color="primary">{formatMessage(messages.toolsLabel)}</Title>
         <Workshops />
+        {isUserAdmin && isEsriIntegrationEnabled && <Esri />}
         {isUserAdmin && <Widget />}
         {isUserAdmin && <PublicAPI />}
         {isUserAdmin && <PowerBI />}

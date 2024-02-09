@@ -3,8 +3,9 @@ import { useNode } from '@craftjs/core';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
 // routing
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { isPage } from 'utils/helperUtils';
+import { REPORT_BUILDER, EDITOR } from 'containers/Admin/reporting/routes';
 
 // hooks
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
@@ -19,12 +20,28 @@ const useGraphDataUnits = <Response extends BaseResponseData>(
   { enabled = true, onSuccess }: Options = { enabled: true }
 ) => {
   const { pathname } = useLocation();
+  const [search] = useSearchParams();
+
   const { id: graphId } = useNode();
+  const { reportId, phaseId } = useReportContext();
+
   const isAdminPage = isPage('admin', pathname);
-  const { reportId } = useReportContext();
+
+  const isReportBuilder =
+    isAdminPage &&
+    pathname.includes(REPORT_BUILDER) &&
+    pathname.endsWith(EDITOR);
+  const isReportBuilderPreview =
+    isReportBuilder && search.get('preview') === 'true';
+
+  const isPhaseContext = !!phaseId;
+
+  const showLiveData = isPhaseContext
+    ? isAdminPage && !isReportBuilderPreview
+    : true;
 
   const { data: dataLive } = useGraphDataUnitsLive<Response>(parameters, {
-    enabled: enabled && isAdminPage,
+    enabled: enabled && showLiveData,
     onSuccess,
   });
 
@@ -33,7 +50,7 @@ const useGraphDataUnits = <Response extends BaseResponseData>(
       reportId,
       graphId,
     },
-    { enabled: enabled && !isAdminPage }
+    { enabled: enabled && !showLiveData }
   );
 
   const data = dataLive ?? dataPublished;

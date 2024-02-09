@@ -22,8 +22,19 @@ export const deleteTrailingIncompleteIDs = (str: string | null) => {
   return str.replace(/\[?[0-9a-f-]{0,35}$/, '');
 };
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(Link)<{ isActive: boolean }>`
   color: ${colors.black};
+  svg {
+    transform: scaleX(-1);
+    margin-bottom: 4px;
+  }
+  :hover {
+    color: ${colors.teal500};
+  }
+  ${({ isActive }) =>
+    isActive &&
+    `color: ${colors.teal500};
+  `}
 `;
 
 export const replaceIdRefsWithLinks = ({
@@ -31,11 +42,13 @@ export const replaceIdRefsWithLinks = ({
   analysisId,
   projectId,
   phaseId,
+  selectedInputId,
 }: {
   insight: string | null;
   analysisId: string;
   projectId: string;
   phaseId?: string | null;
+  selectedInputId?: string;
 }) => {
   if (!insight) return null;
   return reactStringReplace(insight, refRegex, (match, i) => (
@@ -48,8 +61,9 @@ export const replaceIdRefsWithLinks = ({
         });
       }}
       key={i}
+      isActive={selectedInputId === match}
     >
-      <Icon name="comment" width="16px" height="16px" fill={colors.black} />
+      <Icon name="comment" width="12px" height="12px" />
     </StyledLink>
   ));
 };

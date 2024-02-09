@@ -29,7 +29,7 @@ const ProjectInfo = ({ project, phase }: Props) => {
 
   return (
     <Box>
-      <Text mt="4px" mb="4px" color="primary">
+      <Text mt="4px" mb="4px">
         {'| '}
         {projectTitle}
         {phase ? ` (${localize(phase.attributes.title_multiloc)})` : ''}

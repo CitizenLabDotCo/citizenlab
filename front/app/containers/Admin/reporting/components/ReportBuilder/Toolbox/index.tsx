@@ -3,7 +3,13 @@ import moment from 'moment';
 
 // components
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
-import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Accordion,
+  Spinner,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 
 // shared widgets
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
@@ -11,7 +17,6 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 // widgets
 import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
-import TitleMultiloc from '../Widgets/TitleMultiloc';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
@@ -40,9 +45,12 @@ import {
 // hooks
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjects from 'api/projects/useProjects';
 
 // utils
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
+import { isModerator } from 'utils/permissions/roles';
 
 type ReportBuilderToolboxProps = {
   reportId: string;
@@ -65,10 +73,36 @@ const SectionTitle = ({ children }) => (
 const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
-  const { projectId, phaseId } = useReportContext();
+  const { projectId } = useReportContext();
   const appConfigurationLocales = useAppConfigurationLocales();
+  const { data: authUser } = useAuthUser();
+  const userIsModerator = !!authUser && isModerator(authUser);
 
-  if (!appConfigurationLocales) return null;
+  const { data: projects } = useProjects(
+    {
+      publicationStatuses: ['published', 'archived'],
+      canModerate: true,
+    },
+    {
+      enabled: userIsModerator,
+    }
+  );
+
+  if (!appConfigurationLocales || !authUser || (userIsModerator && !projects)) {
+    return (
+      <Container>
+        <Box
+          h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+          w="100%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Spinner />
+        </Box>
+      </Container>
+    );
+  }
 
   // Default end date for charts (today)
   const chartEndDate = moment().format('YYYY-MM-DD');
@@ -78,6 +112,12 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
       return formatMessageWithLocale(locale, message);
     });
   };
+
+  // If this report is not in a phase context (i.e. projectId is undefined),
+  // AND the user is moderator (i.e. projects is defined),
+  // we use the first project in the list of projects as the default project.
+  const selectedProjectId =
+    projectId ?? (userIsModerator ? projects?.data[0]?.id : undefined);
 
   return (
     <Container>
@@ -115,18 +155,13 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           <DraggableElement
             id="e2e-draggable-about-report"
             component={
-              <AboutReportWidget reportId={reportId} projectId={projectId} />
+              <AboutReportWidget
+                reportId={reportId}
+                projectId={selectedProjectId}
+              />
             }
             icon="section-image-text"
             label={formatMessage(WIDGET_TITLES.AboutReportWidget)}
-          />
-          <DraggableElement
-            id="e2e-draggable-title"
-            component={
-              <TitleMultiloc text={toMultiloc(WIDGET_TITLES.TitleMultiloc)} />
-            }
-            icon="text"
-            label={formatMessage(WIDGET_TITLES.TitleMultiloc)}
           />
           <DraggableElement
             id="e2e-draggable-text"
@@ -161,8 +196,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <SurveyResultsWidget
                 title={toMultiloc(WIDGET_TITLES.SurveyResultsWidget)}
-                projectId={projectId}
-                phaseId={phaseId}
+                projectId={selectedProjectId}
               />
             }
             icon="survey"
@@ -175,7 +209,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
                 title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
                 numberOfIdeas={5}
                 collapseLongText={false}
-                projectId={projectId}
+                projectId={selectedProjectId}
               />
             }
             icon="idea"
@@ -196,7 +230,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <VisitorsWidget
                 title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -209,7 +243,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <VisitorsTrafficSourcesWidget
                 title={toMultiloc(WIDGET_TITLES.VisitorsTrafficSourcesWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -222,7 +256,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <GenderWidget
                 title={toMultiloc(WIDGET_TITLES.GenderWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -235,7 +269,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <AgeWidget
                 title={toMultiloc(WIDGET_TITLES.AgeWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -248,7 +282,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <ActiveUsersWidget
                 title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -261,7 +295,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <PostsByTimeWidget
                 title={toMultiloc(WIDGET_TITLES.PostsByTimeWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -274,7 +308,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <CommentsByTimeWidget
                 title={toMultiloc(WIDGET_TITLES.CommentsByTimeWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
@@ -287,7 +321,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <ReactionsByTimeWidget
                 title={toMultiloc(WIDGET_TITLES.ReactionsByTimeWidget)}
-                projectId={projectId}
+                projectId={selectedProjectId}
                 startAt={undefined}
                 endAt={chartEndDate}
               />

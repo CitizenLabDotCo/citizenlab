@@ -20,6 +20,7 @@ export default (mapLayers: IMapLayerAttributes[]) => {
     } = mapLayers[i];
 
     mapLayersWithOrdering.push({
+      type: 'CustomMaps::GeojsonLayer',
       id,
       title_multiloc,
       geojson,

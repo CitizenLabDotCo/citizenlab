@@ -212,6 +212,9 @@ export interface IAppConfigurationSettings {
       target: string;
     }[];
   };
+  esri_integration?: AppConfigurationFeature & {
+    api_key: string;
+  };
   disable_user_bios?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   project_description_builder?: AppConfigurationFeature;
