@@ -1592,6 +1592,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "مقياس خطي",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "اجابة طويلة",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "اختيار متعدد - تحديد إجابات متعددة",
+  "app.containers.AdminPage.ProjectEdit.survey.multiselect_image": "اختيار الصورة - اختر الكثير",
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "لا توجد استجابات للاستبيان حتى الآن",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "فتح للاستجابات",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "اختياري",
