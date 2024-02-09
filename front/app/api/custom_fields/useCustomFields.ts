@@ -75,6 +75,7 @@ const useCustomFields = ({
                 title_multiloc:
                   option.data?.data.attributes.title_multiloc || {},
                 other: option.data?.data.attributes.other || false,
+                image_id: option.data?.data.relationships.image?.data?.id,
               }))
             : [],
       };

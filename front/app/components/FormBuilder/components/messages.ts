@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.multipleChoice',
     defaultMessage: 'Multiple choice',
   },
+  multipleChoiceImage: {
+    id: 'app.components.formBuilder.multipleChoiceImage',
+    defaultMessage: 'Image choice',
+  },
   singleChoice: {
     id: 'app.components.formBuilder.singleChoice',
     defaultMessage: 'Single choice',

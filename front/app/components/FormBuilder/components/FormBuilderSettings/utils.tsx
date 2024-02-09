@@ -16,7 +16,7 @@ import MultiselectSettings from './MultiselectSettings';
 import { uuid4 } from '@sentry/utils';
 import { MessageDescriptor } from 'react-intl';
 import { builtInFieldKeys } from 'components/FormBuilder/utils';
-import SelectSettings from "./SelectSettings";
+import SelectSettings from './SelectSettings';
 
 export function generateTempId() {
   return `TEMP-ID-${uuid4()}`;
@@ -36,6 +36,7 @@ export function getAdditionalSettings(
   }
 
   switch (field.input_type) {
+    case 'multiselect_image':
     case 'multiselect':
       return (
         <>
@@ -43,6 +44,7 @@ export function getAdditionalSettings(
             name={`customFields.${field.index}.options`}
             locales={locales}
             platformLocale={platformLocale}
+            inputType={field.input_type}
           />
           <MultiselectSettings
             selectOptionsName={`customFields.${field.index}.options`}
@@ -62,6 +64,7 @@ export function getAdditionalSettings(
             name={`customFields.${field.index}.options`}
             locales={locales}
             platformLocale={platformLocale}
+            inputType={field.input_type}
           />
           <SelectSettings
             randomizeName={`customFields.${field.index}.random_option_ordering`}
@@ -136,6 +139,9 @@ const getInputTypeStringKey = (
       break;
     case 'multiselect':
       translatedStringKey = messages.multipleChoice;
+      break;
+    case 'multiselect_image':
+      translatedStringKey = messages.multipleChoiceImage;
       break;
     case 'page':
       translatedStringKey = messages.page;

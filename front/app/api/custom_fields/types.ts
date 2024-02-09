@@ -25,13 +25,15 @@ export type ICustomFieldInputType =
   | 'html_multiloc'
   | 'files'
   | 'image_files'
-  | 'topic_ids';
+  | 'topic_ids'
+  | 'multiselect_image';
 
 export type IOptionsType = {
   id?: string;
   title_multiloc: Multiloc;
   other?: boolean;
   temp_id?: string;
+  image_id?: string;
 };
 
 export type QuestionRuleType = { if: string | number; goto_page_id: string };
@@ -73,7 +75,6 @@ export interface IAttributes {
   select_count_enabled?: boolean;
   other?: boolean;
   random_option_ordering?: boolean;
-  image?: string; // TODO: JS - This probably should be a file path or something
 }
 
 export interface ICustomFieldResponse {
