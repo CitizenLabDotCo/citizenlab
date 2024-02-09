@@ -65,6 +65,7 @@ const FormResults = () => {
               required,
               customFieldId,
               textResponses,
+              files,
             },
             index
           ) => {
@@ -80,6 +81,7 @@ const FormResults = () => {
                 required={required}
                 customFieldId={customFieldId}
                 textResponses={textResponses}
+                files={files}
               />
             );
           }

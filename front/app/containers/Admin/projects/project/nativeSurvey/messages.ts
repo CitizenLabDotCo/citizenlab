@@ -156,6 +156,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.text2',
     defaultMessage: 'Short answer',
   },
+  file_upload: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.file_upload',
+    defaultMessage: 'File upload',
+  },
   downloadExcelTemplate: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1',
     defaultMessage: 'Download an excel template',

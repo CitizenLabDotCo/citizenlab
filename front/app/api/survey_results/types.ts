@@ -21,6 +21,7 @@ export interface Result {
   required: boolean;
   customFieldId: string;
   textResponses?: { answer: string }[];
+  files?: { name: string, url: string }[];
 }
 
 export interface SurveyResultAttributes {

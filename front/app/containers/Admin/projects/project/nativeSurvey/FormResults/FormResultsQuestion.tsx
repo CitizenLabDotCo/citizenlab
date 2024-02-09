@@ -6,6 +6,9 @@ import { useIntl } from 'utils/cl-intl';
 // components
 import { Box, colors, Text, Title } from '@citizenlab/cl2-component-library';
 import CompletionBar from './CompletionBar';
+import Analysis from './analysis';
+import TextResponses from './TextResponses';
+import Files from "./Files";
 
 // i18n
 import T from 'components/T';
@@ -13,24 +16,15 @@ import messages from '../messages';
 
 // utils
 import { get, snakeCase } from 'lodash-es';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // typings
-import { Locale, Multiloc } from 'typings';
-import { Answer } from 'api/survey_results/types';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import Analysis from './analysis';
-import TextResponses from './TextResponses';
+import { Locale } from 'typings';
+import { Result} from 'api/survey_results/types';
 
-type FormResultsQuestionProps = {
+type FormResultsQuestionProps = Result & {
   locale: Locale;
-  question: Multiloc;
-  inputType: string;
-  answers?: Answer[];
-  totalResponses: number;
   totalSubmissions: number;
-  required: boolean;
-  customFieldId: string;
-  textResponses?: { answer: string }[];
 };
 
 const FormResultsQuestion = ({
@@ -43,6 +37,7 @@ const FormResultsQuestion = ({
   required,
   customFieldId,
   textResponses = [],
+  files = [],
 }: FormResultsQuestionProps) => {
   const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
   const { formatMessage } = useIntl();
@@ -54,7 +49,6 @@ const FormResultsQuestion = ({
   const inputTypeLabel = `${totalResponses}/${totalSubmissions}
   · ${requiredOrOptionalText}
   · ${formatMessage(inputTypeText)}`;
-  console.log(totalSubmissions);
 
   return (
     <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
@@ -93,6 +87,13 @@ const FormResultsQuestion = ({
           </Box>
           <Box flex="1">
             {isAnalysisEnabled && <Analysis customFieldId={customFieldId} />}
+          </Box>
+        </Box>
+      )}
+      {files && files.length > 0 && (
+        <Box display="flex" gap="24px" mt={answers ? '20px' : '0'}>
+          <Box flex="1">
+            <Files files={files} />
           </Box>
         </Box>
       )}
