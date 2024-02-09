@@ -11,7 +11,7 @@ import { TCurrency } from 'api/app_configuration/types';
 import { FormatMessage } from 'typings';
 import { Localize } from 'hooks/useLocalize';
 
-export const getDisabledExplanation = (
+export const getNumberOfVotesDisabledExplanation = (
   formatMessage: FormatMessage,
   localize: Localize,
   phase: IPhaseData,
@@ -21,13 +21,13 @@ export const getDisabledExplanation = (
   const { voting_method } = phase.attributes;
   const maxVotes = phase.attributes.voting_max_total;
 
-  const votesExceedLimit =
-    maxVotes && numberOfVotesCast !== undefined
+  const maxNumberOfVotesExceeded =
+    typeof maxVotes === 'number' && numberOfVotesCast !== undefined
       ? numberOfVotesCast > maxVotes
       : false;
 
   if (voting_method === 'single_voting') {
-    if (votesExceedLimit) {
+    if (maxNumberOfVotesExceeded) {
       if (isNil(maxVotes)) return;
 
       return formatMessage(messages.votesExceedLimit, {
@@ -44,7 +44,7 @@ export const getDisabledExplanation = (
   }
 
   if (voting_method === 'multiple_voting') {
-    if (votesExceedLimit) {
+    if (maxNumberOfVotesExceeded) {
       if (isNil(maxVotes)) return;
 
       return formatMessage(messages.votesExceedLimit, {
@@ -67,7 +67,7 @@ export const getDisabledExplanation = (
   }
 
   if (voting_method === 'budgeting') {
-    if (votesExceedLimit) {
+    if (maxNumberOfVotesExceeded) {
       if (isNil(maxVotes)) return;
 
       return formatMessage(messages.budgetExceedsLimit, {

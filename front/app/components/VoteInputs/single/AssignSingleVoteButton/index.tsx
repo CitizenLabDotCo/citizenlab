@@ -122,7 +122,8 @@ const AssignSingleVoteButton = ({
     if (maxVotesReached && !ideaInBasket) {
       return formatMessage(messages.maxVotesReached);
     }
-    return undefined;
+
+    return null;
   };
 
   const disabledButtonExplanation = getButtonDisabledExplanation();
