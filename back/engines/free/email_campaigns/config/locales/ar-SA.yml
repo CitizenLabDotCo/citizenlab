@@ -50,6 +50,7 @@ ar:
       "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة
       "user_digest": نظرة عامة أسبوعية
       "voting_basket_submitted": تأكيد التصويت
+      "native_survey_not_submitted": لم يتم إرسال الاستطلاع
       "voting_basket_not_submitted": لم يتم تقديم الأصوات
       "voting_last_chance": آخر فرصة للتصويت
       "voting_phase_started": مرحلة المشروع الجديد مع التصويت
@@ -505,6 +506,13 @@ ar:
       event_description: 'شكرا على المشاركة. تم تسجيل تصويتك. قم بزيارة منصة %{organizationName} لرؤية وإدارة أصواتك.'
       cta_see_votes_submitted: 'انظر التصويتات المقدمة'
       cta_message: 'انقر فوق الزر أدناه للمشاركة'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: أوشكت على الوصول! أرسل إجاباتك'
+      preheader: 'لم تكمل إجابتك على الاستبيان على منصة المشاركة %{organizationName}'
+      title_native_survey_not_submitted: 'اوشكت على الوصول! أرسل إجاباتك'
+      body_native_survey_not_submitted: 'لقد بدأت بمشاركة إجاباتك على %{phaseTitle} ولكنك لم ترسلها. سيتم إغلاق التقديم في %{phaseEndDate}. انقر على الزر أدناه للمتابعة من حيث توقفت.'
+      body_native_survey_not_submitted_no_date: 'لقد بدأت بمشاركة إجاباتك على %{phaseTitle} ولكنك لم ترسلها. انقر على الزر أدناه للمتابعة من حيث توقفت.'
+      cta_complete_your_survey_response: 'استئناف الرد على الاستطلاع الخاص بك'
     voting_basket_not_submitted:
       subject: '%{organizationName}: أنت لم ترسل أصواتك'
       preheader: 'لم ترسل أصواتك على منصة المشاركة %{organizationName}'
