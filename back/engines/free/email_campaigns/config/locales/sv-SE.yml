@@ -50,6 +50,7 @@ sv:
       "assignee_digest": Veckoöversikt över tilldelade idéer
       "user_digest": Veckoöversikt
       "voting_basket_submitted": Bekräftelse av röstning
+      "native_survey_not_submitted": Enkät ej inlämnad
       "voting_basket_not_submitted": Ej avgivna röster
       "voting_last_chance": Sista chansen att rösta
       "voting_phase_started": Ny projektfas med omröstning
@@ -505,6 +506,13 @@ sv:
       event_description: 'Tack för ert deltagande. Dina röster har registrerats. Besök plattformen %{organizationName} för att se och hantera dina röster.'
       cta_see_votes_submitted: 'Se avgivna röster'
       cta_message: 'Klicka på knappen nedan för att delta'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Nästan där! Skicka in dina svar'
+      preheader: 'Du slutförde inte ditt enkätsvar på deltagarplattformen på %{organizationName}'
+      title_native_survey_not_submitted: 'Nästan där! Skicka in dina svar'
+      body_native_survey_not_submitted: 'Du började dela dina svar på %{phaseTitle} men skickade inte in dem. Inlämningen kommer att stängas på %{phaseEndDate}. Klicka på knappen nedan för att fortsätta där du slutade.'
+      body_native_survey_not_submitted_no_date: 'Du började dela dina svar på %{phaseTitle} men skickade inte in dem. Klicka på knappen nedan för att fortsätta där du slutade.'
+      cta_complete_your_survey_response: 'Återuppta ditt svar på enkäten'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Du har inte skickat in dina röster'
       preheader: 'Du har inte lämnat dina röster på deltagandeplattformen %{organizationName}'
