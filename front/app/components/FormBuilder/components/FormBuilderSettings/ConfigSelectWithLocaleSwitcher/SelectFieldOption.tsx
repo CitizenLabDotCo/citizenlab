@@ -4,7 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 // components
-import { Box, Button, Icon, Input } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Icon,
+  Input,
+  Spinner,
+} from '@citizenlab/cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 // i18n
@@ -45,6 +51,7 @@ const SelectFieldOption = ({
   choices,
 }: Props) => {
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
   const { formatMessage } = useIntl();
   const showImageSettings = inputType === 'multiselect_image' && !choice.other;
   const { mutateAsync: addCustomFieldOptionImage } =
@@ -71,6 +78,7 @@ const SelectFieldOption = ({
   const handleOnAddImage = async (imageFiles: UploadFile[]) => {
     setImageFiles(imageFiles);
     try {
+      setIsUploading(true);
       const response = await addCustomFieldOptionImage(imageFiles[0].base64);
 
       const updatedChoices = choices;
@@ -82,6 +90,8 @@ const SelectFieldOption = ({
       setValue(name, updatedChoices);
     } catch {
       // Do nothing for now
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -118,18 +128,33 @@ const SelectFieldOption = ({
         />
 
         {showImageSettings && (
-          <ImagesDropzone
-            id={`e2e-option-image-${index}`}
-            images={imageFiles}
-            imagePreviewRatio={135 / 298}
-            acceptedFileTypes={{
-              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-            }}
-            onAdd={handleOnAddImage}
-            onRemove={handleOnRemoveImage}
-          />
+          <Box
+            display="flex"
+            w="100%"
+            h="100%"
+            alignItems="center"
+            justifyContent="center"
+          >
+            {isUploading ? (
+              <Box p="16px">
+                <Spinner />
+              </Box>
+            ) : (
+              <ImagesDropzone
+                id={`e2e-option-image-${index}`}
+                images={imageFiles}
+                imagePreviewRatio={135 / 298}
+                acceptedFileTypes={{
+                  'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+                }}
+                onAdd={handleOnAddImage}
+                onRemove={handleOnRemoveImage}
+              />
+            )}
+          </Box>
         )}
       </Box>
+
       {canDeleteLastOption && (
         <Button
           margin="0px"
