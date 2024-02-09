@@ -216,7 +216,7 @@ class CustomField < ApplicationRecord
   end
 
   def other_option_text_field
-    return unless options.any?(&:other)
+    return if options.none?(&:other)
 
     other_field_key = "#{key}_other"
     CustomField.new(

@@ -183,6 +183,7 @@ class ProjectCopyService < TemplateService
         'key' => c.key,
         'title_multiloc' => c.title_multiloc,
         'ordering' => c.ordering,
+        'other' => c.other,
         'created_at' => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601
       }
