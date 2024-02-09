@@ -50,6 +50,7 @@ hr:
       "assignee_digest": Tjedni pregled dodijeljenih ideja
       "user_digest": Tjedni pregled
       "voting_basket_submitted": Potvrda glasovanja
+      "native_survey_not_submitted": Anketa nije poslana
       "voting_basket_not_submitted": Glasovi nisu poslani
       "voting_last_chance": Zadnja prilika za glasanje
       "voting_phase_started": Nova faza projekta s glasovanjem
@@ -505,6 +506,13 @@ hr:
       event_description: 'Hvala na sudjelovanju. Vaši glasovi su zabilježeni. Posjetite platformu %{organizationName} da vidite i upravljate svojim glasovima.'
       cta_see_votes_submitted: 'Pogledajte poslane glasove'
       cta_message: 'Za sudjelovanje kliknite gumb ispod'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Još malo pa smo stigli! Pošaljite svoje odgovore'
+      preheader: 'Niste ispunili svoj odgovor na anketu na platformi za sudjelovanje %{organizationName}'
+      title_native_survey_not_submitted: 'Skoro tamo! Pošaljite svoje odgovore'
+      body_native_survey_not_submitted: 'Počeli ste dijeliti svoje odgovore na %{phaseTitle} , ali ih niste poslali. Prijave se zatvaraju %{phaseEndDate}. Kliknite gumb ispod kako biste nastavili gdje ste stali.'
+      body_native_survey_not_submitted_no_date: 'Počeli ste dijeliti svoje odgovore na %{phaseTitle} , ali ih niste poslali. Kliknite gumb ispod kako biste nastavili gdje ste stali.'
+      cta_complete_your_survey_response: 'Nastavite odgovarati na anketu'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Niste predali svoje glasove'
       preheader: 'Niste poslali svoje glasove na platformi za sudjelovanje od %{organizationName}'
