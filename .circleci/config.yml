@@ -1329,11 +1329,11 @@ workflows:
   weekly-storybook:
     triggers:
       - schedule:
-        cron: 0 5 * * 1 # Every Monday at 5am: https://crontab.guru/
-        filters:
-          branches:
-            only:
-              - master
+          cron: 0 5 * * 1 # Every Monday at 5am: https://crontab.guru/
+          filters:
+            branches:
+              only:
+                - master
     jobs:
       - front-storybook:
           context:
