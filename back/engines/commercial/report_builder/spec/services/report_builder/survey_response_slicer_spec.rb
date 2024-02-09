@@ -113,7 +113,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
     )
   end
   let_it_be(:another_option) do
-    create( 
+    create(
       :custom_field_option,
       custom_field: user_multiselect_field,
       key: 'another_option',
@@ -144,6 +144,28 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         multiselect_question.key => index < 6 ? [multiselect_question.options.first.key] : multiselect_question.options.map(&:key)
       }
       record.save!
+    end
+  end
+
+  context 'when getting result' do
+    it 'works for select' do
+      expect(generator.get_result(city_survey_question.id)).to eq({
+        totalResponses: 11,
+        answers: [
+          { answer: 'la', count: 6 },
+          { answer: 'ny', count: 5 }
+        ]
+      })
+    end
+
+    it 'works for multiselect' do
+      expect(generator.get_result(multiselect_question.id)).to eq({ 
+        totalResponses: 16,
+        answers: [
+          { answer: 'option1', count: 11 },
+          { answer: 'option2', count: 5 }
+        ]
+      })
     end
   end
 

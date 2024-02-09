@@ -10,9 +10,13 @@ module ReportBuilder
     def get_result(question_field_id)
       question = get_question(question_field_id)
 
-      answers = @inputs
-        .select("ideas.custom_field_values->'#{question.key}' as answer")
-        .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
+      sql_question = sql_field(question)
+
+      answers = @inputs.select("#{sql_question} as answer")
+
+      if question.input_type == 'select'
+        answers = answers.where("#{sql_question} IS NOT NULL")
+      end
 
       grouped_answers = get_counts(answers)
         .map do |answer, count|
@@ -59,23 +63,29 @@ module ReportBuilder
       question
     end
 
-    def select_answers(inputs, question, slice_question)
-      slice_question_table = slice_question.resource_type == 'User' ? 'users' : 'ideas'
+    def sql_field(field)
+      table = field.resource_type == 'User' ? 'users' : 'ideas'
+
+      if field.input_type == 'select'
+        "#{table}.custom_field_values->'#{field.key}'"
+      else
+        "jsonb_array_elements(#{table}.custom_field_values->'#{field.key}')"
+      end
+    end
+
+    def select_answers(inputs, question, slice_field)
+      sql_question = sql_field(question)
+
+      answers = inputs.select(
+        "#{sql_question} as answer",
+        "#{sql_field(slice_field)} as group_by_value"
+      )
 
       if question.input_type == 'select'
-        inputs
-          .select(
-            "ideas.custom_field_values->'#{question.key}' as answer",
-            "#{slice_question_table}.custom_field_values->'#{slice_question.key}' as group_by_value"
-          )
-          .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
-      else
-        inputs
-          .select(
-            "jsonb_array_elements(ideas.custom_field_values->'#{question.key}') as answer",
-            "#{slice_question_table}.custom_field_values->'#{slice_question.key}' as group_by_value"
-          )
+        answers = answers.where("#{sql_question} IS NOT NULL")
       end
+
+      answers
     end
 
     def collect_answers(answers)
