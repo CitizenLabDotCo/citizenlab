@@ -1592,6 +1592,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linearna ljestvica",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Dug odgovor",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Višestruki izbor – odaberite više",
+  "app.containers.AdminPage.ProjectEdit.survey.multiselect_image": "Izbor slike - odaberite više",
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Još nema odgovora na upitnik",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Otvori za odgovore",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Nije obavezno",
