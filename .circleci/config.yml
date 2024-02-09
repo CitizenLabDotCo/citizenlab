@@ -1325,6 +1325,14 @@ workflows:
           context:
             - docker-hub-access
             - chromatic
+          post-steps:
+            - slack/notify:
+                event: pass
+                template: basic_success_1
+            - slack/notify:
+                event: fail
+                mentions: ":boom: FAILURE: Some stories failed."
+                template: basic_fail_1
 
   weekly-storybook:
     triggers:
