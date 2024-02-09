@@ -50,6 +50,7 @@ sr-Cyrl:
       "assignee_digest": Недељни преглед додељених идеја
       "user_digest": Недељни преглед
       "voting_basket_submitted": Потврда гласања
+      "native_survey_not_submitted": Survey not submitted
       "voting_basket_not_submitted": Гласови нису предати
       "voting_last_chance": Последња прилика за гласање
       "voting_phase_started": Нова фаза пројекта са гласањем
@@ -505,6 +506,13 @@ sr-Cyrl:
       event_description: 'Хвала на учешћу. Ваши гласови су забележени. Посетите платформу %{organizationName} да бисте видели и управљали својим гласовима.'
       cta_see_votes_submitted: 'Погледајте достављене гласове'
       cta_message: 'Кликните на дугме испод да бисте учествовали'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Almost there! Submit your answers'
+      preheader: 'You didn''t complete your survey response on the participation platform of %{organizationName}'
+      title_native_survey_not_submitted: 'Almost there! Submit your answers'
+      body_native_survey_not_submitted: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Submissions will close on %{phaseEndDate}. Click on the button below to continue where you left off.'
+      body_native_survey_not_submitted_no_date: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
+      cta_complete_your_survey_response: 'Resume your survey response'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Нисте послали своје гласове'
       preheader: 'Нисте послали своје гласове на платформи за учешће %{organizationName}'
