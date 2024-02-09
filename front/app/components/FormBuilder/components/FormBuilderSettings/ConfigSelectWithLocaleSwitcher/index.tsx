@@ -28,7 +28,7 @@ import { Locale, CLError, RHFErrors } from 'typings';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
-import { ICustomFieldInputType } from 'api/custom_fields/types';
+import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
 import SelectFieldOption from './SelectFieldOption';
 
 interface Props {
@@ -80,8 +80,11 @@ const ConfigSelectWithLocaleSwitcher = ({
     move(fromIndex, toIndex);
   };
 
-  // Handles add and remove options
-  const addOption = (value, name: string, hasOtherOption: boolean) => {
+  const addOption = (
+    value: IOptionsType[],
+    name: string,
+    hasOtherOption: boolean
+  ) => {
     const newValues = value;
     const optionIndex = hasOtherOption ? value.length - 1 : value.length;
     newValues.splice(optionIndex, 0, {
@@ -91,13 +94,13 @@ const ConfigSelectWithLocaleSwitcher = ({
     setValue(name, newValues);
   };
 
-  const removeOption = (value, name: string, index: number) => {
+  const removeOption = (value: IOptionsType[], name: string, index: number) => {
     const newValues = value;
     newValues.splice(index, 1);
     setValue(name, newValues);
   };
 
-  const addOtherOption = (value, name: string) => {
+  const addOtherOption = (value: IOptionsType[], name: string) => {
     const newValues = value;
     newValues.push({
       title_multiloc: { en: 'Other' },
@@ -118,12 +121,12 @@ const ConfigSelectWithLocaleSwitcher = ({
           name={name}
           control={control}
           defaultValue={defaultOptionValues}
-          // TODO: Try to enforce types in choices
-          render={({ field: { ref: _ref, value: choices, onBlur } }) => {
+          render={({ field: { ref: _ref, value: options, onBlur } }) => {
+            const choices: IOptionsType[] = options;
             const hasOtherOption = choices.some(
               (choice) => choice.other === true
             );
-            const toggleOtherOption = (value, name) => {
+            const toggleOtherOption = (value: IOptionsType[], name: string) => {
               if (hasOtherOption) {
                 removeOption(value, name, value.length - 1);
               } else {
@@ -170,7 +173,12 @@ const ConfigSelectWithLocaleSwitcher = ({
                   <DndProvider backend={HTML5Backend}>
                     <List key={choices?.length}>
                       {choices
-                        ?.sort((a, b) => (a?.other || 0) - (b?.other || 0))
+                        ?.sort((a, b) => {
+                          const aValue = a.other ? 1 : 0;
+                          const bValue = b.other ? 1 : 0;
+
+                          return aValue - bValue;
+                        })
                         .map((choice, index) => {
                           return (
                             <Box key={index}>

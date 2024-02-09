@@ -16,23 +16,22 @@ import { Locale, UploadFile } from 'typings';
 
 // utils
 import { generateTempId } from '../utils';
-import { ICustomFieldInputType } from 'api/custom_fields/types';
+import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
 import useAddCustomFieldOptionImage from 'api/content_field_option_images/useAddCustomFieldOptionImage';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // api
 import useCustomFieldOptionImage from 'api/content_field_option_images/useCustomFieldOptionImage';
 
-// TODO: CLean up these types
 interface Props {
   index: number;
-  choice: any;
+  choice: IOptionsType;
   inputType: ICustomFieldInputType;
   canDeleteLastOption: boolean;
   locale: Locale;
   name: string;
-  removeOption: (value, name: string, index: number) => void;
-  choices: any[];
+  removeOption: (value: IOptionsType[], name: string, index: number) => void;
+  choices: IOptionsType[];
 }
 
 const SelectFieldOption = ({
