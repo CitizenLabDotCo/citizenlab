@@ -33,22 +33,8 @@ module ReportBuilder
       user_field = CustomField.find_by(id: user_field_id)
       throw "Unsupported user field type: #{user_field.input_type}" unless user_field.input_type == 'select'
 
-      answers = @inputs.joins(:author)
-
-      answers = if question.input_type == 'select'
-        answers
-          .select(
-            "ideas.custom_field_values->'#{question.key}' as answer",
-            "users.custom_field_values->'#{user_field.key}' as group_by_value"
-          )
-          .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
-      else
-        answers
-          .select(
-            "jsonb_array_elements(ideas.custom_field_values->'#{question.key}') as answer",
-            "users.custom_field_values->'#{user_field.key}' as group_by_value"
-          )
-      end
+      joined_inputs = @inputs.joins(:author)
+      answers = select_answers(joined_inputs, question, user_field)
 
       collect_answers(answers)
     end
@@ -58,20 +44,7 @@ module ReportBuilder
       other_question = get_question(other_question_field_id)
       throw "Unsupported question type: #{other_question.input_type}" unless other_question.input_type == 'select'
 
-      answers = if question.input_type == 'select'
-        @inputs
-          .select(
-            "ideas.custom_field_values->'#{question.key}' as answer",
-            "ideas.custom_field_values->'#{other_question.key}' as group_by_value"
-          )
-          .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
-      else
-        @inputs
-          .select(
-            "jsonb_array_elements(ideas.custom_field_values->'#{question.key}') as answer",
-            "ideas.custom_field_values->'#{other_question.key}' as group_by_value"
-          )
-      end
+      answers = select_answers(@inputs, question, other_question)
 
       collect_answers(answers)
     end
@@ -84,6 +57,25 @@ module ReportBuilder
       throw "Unsupported question type: #{question.input_type}" unless %w[select multiselect].include?(question.input_type)
 
       question
+    end
+
+    def select_answers(inputs, question, slice_question)
+      slice_question_table = slice_question.resource_type == 'User' ? 'users' : 'ideas'
+
+      if question.input_type == 'select'
+        inputs
+          .select(
+            "ideas.custom_field_values->'#{question.key}' as answer",
+            "#{slice_question_table}.custom_field_values->'#{slice_question.key}' as group_by_value"
+          )
+          .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
+      else
+        inputs
+          .select(
+            "jsonb_array_elements(ideas.custom_field_values->'#{question.key}') as answer",
+            "#{slice_question_table}.custom_field_values->'#{slice_question.key}' as group_by_value"
+          )
+      end
     end
 
     def collect_answers(answers)
