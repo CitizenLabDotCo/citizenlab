@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
@@ -10,13 +10,14 @@ import PageNotFound from 'components/PageNotFound';
 import {
   Box,
   Spinner,
-  useWindowSize,
   media,
   colors,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
-import Centerer from 'components/UI/Centerer';
 import FollowUnfollow from 'components/FollowUnfollow';
+import Unauthorized from 'components/Unauthorized';
+import VerticalCenterer from 'components/VerticalCenterer';
 
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
@@ -32,12 +33,12 @@ import styled from 'styled-components';
 import { maxPageWidth } from './styles';
 
 // utils
-import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 // typings
 import { IProjectFolderData } from 'api/project_folders/types';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 const Container = styled.main`
   flex: 1 0 auto;
@@ -120,108 +121,101 @@ const CardsWrapper = styled.div`
   background: ${colors.background};
 `;
 
-const ProjectFolderShowPage = memo<{
-  projectFolder: IProjectFolderData | null | undefined;
-}>(({ projectFolder }) => {
+interface Props {
+  projectFolder: IProjectFolderData;
+}
+
+const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const { data: authUser } = useAuthUser();
-  const { windowWidth } = useWindowSize();
-  const smallerThan1280px = windowWidth ? windowWidth <= 1280 : false;
+  const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
 
-  const loading = projectFolder === undefined;
-
-  const userCanEditFolder = projectFolder
-    ? !isNilOrError(authUser) &&
-      userModeratesFolder(authUser.data, projectFolder.id)
-    : undefined;
+  const userCanEditFolder =
+    !isNilOrError(authUser) &&
+    userModeratesFolder(authUser.data, projectFolder.id);
 
   return (
-    <>
-      {projectFolder && (
-        <ProjectFolderShowPageMeta projectFolder={projectFolder} />
-      )}
-      <Container id="e2e-folder-page">
-        {loading ? (
-          <Centerer flex="1 0 auto">
-            <Spinner />
-          </Centerer>
-        ) : projectFolder ? (
-          <>
-            <StyledContentContainer maxWidth={maxPageWidth}>
-              <Box display="flex" width="100%">
-                <Box ml="auto" display="flex" mb="24px">
-                  {userCanEditFolder && (
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="flex-end"
-                      ml="30px"
-                    >
-                      <Button
-                        icon="edit"
-                        linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
-                        buttonStyle="secondary"
-                        padding="6px 12px"
-                      >
-                        <FormattedMessage {...messages.editFolder} />
-                      </Button>
-                    </Box>
-                  )}
-                  <Box ml="8px">
-                    <FollowUnfollow
-                      followableType="project_folders"
-                      followableId={projectFolder.id}
-                      followersCount={projectFolder.attributes.followers_count}
-                      followerId={
-                        projectFolder.relationships.user_follower?.data?.id
-                      }
-                      followableSlug={projectFolder.attributes.slug}
-                      w="auto"
-                      py="6px"
-                      iconSize="20px"
-                    />
-                  </Box>
-                </Box>
+    <Container id="e2e-folder-page">
+      <StyledContentContainer maxWidth={maxPageWidth}>
+        <Box display="flex" width="100%">
+          <Box ml="auto" display="flex" mb="24px">
+            {userCanEditFolder && (
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="flex-end"
+                ml="30px"
+              >
+                <Button
+                  icon="edit"
+                  linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
+                  buttonStyle="secondary"
+                  padding="6px 12px"
+                >
+                  <FormattedMessage {...messages.editFolder} />
+                </Button>
               </Box>
-              <ProjectFolderHeader projectFolder={projectFolder} />
-              {!smallerThan1280px ? (
-                <Content>
-                  <StyledProjectFolderDescription
-                    projectFolder={projectFolder}
-                  />
-                  <StyledProjectFolderProjectCards
-                    folderId={projectFolder.id}
-                  />
-                </Content>
-              ) : (
-                <StyledProjectFolderDescription projectFolder={projectFolder} />
-              )}
-            </StyledContentContainer>
-
-            {smallerThan1280px && (
-              <CardsWrapper>
-                <ContentContainer maxWidth={maxPageWidth}>
-                  <StyledProjectFolderProjectCards
-                    folderId={projectFolder.id}
-                  />
-                </ContentContainer>
-              </CardsWrapper>
             )}
-          </>
-        ) : null}
-      </Container>
-    </>
+            <Box ml="8px">
+              <FollowUnfollow
+                followableType="project_folders"
+                followableId={projectFolder.id}
+                followersCount={projectFolder.attributes.followers_count}
+                followerId={projectFolder.relationships.user_follower?.data?.id}
+                followableSlug={projectFolder.attributes.slug}
+                w="auto"
+                py="6px"
+                iconSize="20px"
+              />
+            </Box>
+          </Box>
+        </Box>
+        <ProjectFolderHeader projectFolder={projectFolder} />
+        {!isSmallerThanSmallDesktop ? (
+          <Content>
+            <StyledProjectFolderDescription projectFolder={projectFolder} />
+            <StyledProjectFolderProjectCards folderId={projectFolder.id} />
+          </Content>
+        ) : (
+          <StyledProjectFolderDescription projectFolder={projectFolder} />
+        )}
+      </StyledContentContainer>
+      {isSmallerThanSmallDesktop && (
+        <CardsWrapper>
+          <ContentContainer maxWidth={maxPageWidth}>
+            <StyledProjectFolderProjectCards folderId={projectFolder.id} />
+          </ContentContainer>
+        </CardsWrapper>
+      )}
+    </Container>
   );
-});
+};
 
 const ProjectFolderShowPageWrapper = () => {
   const { slug } = useParams();
-  const { data: projectFolder } = useProjectFolderBySlug(slug);
+  const { data: projectFolder, status, error } = useProjectFolderBySlug(slug);
 
-  if (isError(projectFolder)) {
+  if (status === 'loading') {
+    return (
+      <VerticalCenterer>
+        <Spinner />
+      </VerticalCenterer>
+    );
+  }
+
+  if (status === 'error') {
+    if (isUnauthorizedRQ(error)) {
+      return <Unauthorized />;
+    }
+
     return <PageNotFound />;
   }
 
-  return <ProjectFolderShowPage projectFolder={projectFolder?.data} />;
+  return (
+    <>
+      <ProjectFolderShowPageMeta projectFolder={projectFolder.data} />
+      <ProjectFolderShowPage projectFolder={projectFolder.data} />;
+    </>
+  );
 };
 
 export default ProjectFolderShowPageWrapper;
