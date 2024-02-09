@@ -50,6 +50,7 @@ sr-Latn:
       "assignee_digest": Nedeljni pregled dodeljenih ideja
       "user_digest": Nedeljni pregled
       "voting_basket_submitted": Confirmation of voting
+      "native_survey_not_submitted": Survey not submitted
       "voting_basket_not_submitted": Votes not submitted
       "voting_last_chance": Last chance to vote
       "voting_phase_started": New project phase with voting
@@ -505,6 +506,13 @@ sr-Latn:
       event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
       cta_see_votes_submitted: 'See votes submitted'
       cta_message: 'Click the button below to participate'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Almost there! Submit your answers'
+      preheader: 'You didn''t complete your survey response on the participation platform of %{organizationName}'
+      title_native_survey_not_submitted: 'Almost there! Submit your answers'
+      body_native_survey_not_submitted: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Submissions will close on %{phaseEndDate}. Click on the button below to continue where you left off.'
+      body_native_survey_not_submitted_no_date: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
+      cta_complete_your_survey_response: 'Resume your survey response'
     voting_basket_not_submitted:
       subject: '%{organizationName}: You didn''t submit your votes'
       preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
