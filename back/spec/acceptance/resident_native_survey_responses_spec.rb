@@ -153,11 +153,7 @@ resource 'Ideas' do
             assert_status 201
             survey = project.reload.ideas.first
             expect(survey.publication_status).to eq 'draft'
-            binding.pry
-            # expect(survey.custom_field_values).to eq({
-            #   'custom_field_name1' => file1.id,
-            #   'custom_field_name2' => file2.id
-            # })
+            expect(survey.custom_field_values.values).to match_array IdeaFile.pluck(:id)
           end
         end
       end

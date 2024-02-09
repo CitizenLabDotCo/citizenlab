@@ -121,38 +121,35 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     [uiSchema]
   );
 
-  if (!participationMethodConfig || !phaseId) {
-    return null;
-  }
-
-  const uuidRegex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i;
-  const fieldsContainFiles = (formValues) => {
-    for (const key in formValues) {
-      if (uuidRegex.test(formValues[key])) {
-        return true;
-      }
-    };
-    return false;
-  }
-
-  const combineFileValues = (formValues, files) => {
-    for (const key in formValues) {
-      if (uuidRegex.test(formValues[key])) {
-        files.forEach((file) => {
-          if (file.id === formValues[key]) {
-            formValues[key] = {
-              id: file.id,
-              name: file.attributes.name,
-            }
-          }
-        })
-      }
-    };
-    return formValues;
-  }
-
   // Try and load in a draft idea if one exists
   useEffect(() => {
+    const uuidRegex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i;
+
+    const fieldsContainFiles = (formValues) => {
+      for (const key in formValues) {
+        if (uuidRegex.test(formValues[key])) {
+          return true;
+        }
+      };
+      return false;
+    }
+
+    const combineFileValues = (formValues, files) => {
+      for (const key in formValues) {
+        if (uuidRegex.test(formValues[key])) {
+          files.forEach((file) => {
+            if (file.id === formValues[key]) {
+              formValues[key] = {
+                id: file.id,
+                name: file.attributes.name,
+              }
+            }
+          })
+        }
+      }
+      return formValues;
+    }
+
     if (draftIdeaStatus === 'success' && !isNilOrError(draftIdea) && !ideaId && schema) {
       const formValues = getFormValues(
         draftIdea,
@@ -160,11 +157,8 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
       );
 
       if (fieldsContainFiles(formValues)) {
-        console.log('Fields contain files');
         if (remoteFilesStatus !== 'loading') {
-          console.log(remoteFiles);
           const combinedFileValues = combineFileValues(formValues, remoteFiles?.data);
-          console.log(combinedFileValues);
           setInitialFormData(combinedFileValues);
           setIdeaId(draftIdea.data.id);
           setLoadingDraftIdea(false);
@@ -178,7 +172,11 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     } else if (draftIdeaStatus === 'error') {
       setLoadingDraftIdea(false);
     }
-  }, [draftIdeaStatus, draftIdea, remoteFilesStatus, remoteFiles, schema]);
+  }, [draftIdeaStatus, draftIdea, remoteFilesStatus, remoteFiles, schema, ideaId]);
+
+  if (!participationMethodConfig || !phaseId) {
+    return null;
+  }
 
   const handleDraftIdeas = async (data: FormValues) => {
     if (data.publication_status === 'draft') {
@@ -199,7 +197,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
         data[key] = data[key].id;
       }
     }
-    console.log(data);
     return data;
   }
 
