@@ -50,6 +50,7 @@ da:
       "assignee_digest": Ugentlig oversigt over tildelte ideer
       "user_digest": Ugentlig oversigt
       "voting_basket_submitted": Bekræftelse af afstemning
+      "native_survey_not_submitted": Undersøgelse ikke indsendt
       "voting_basket_not_submitted": Stemmer ikke afgivet
       "voting_last_chance": Sidste chance for at stemme
       "voting_phase_started": Ny projektfase med afstemning
@@ -505,6 +506,13 @@ da:
       event_description: 'Tak for din deltagelse. Dine stemmer er blevet registreret. Besøg platformen %{organizationName} for at se og administrere dine stemmer.'
       cta_see_votes_submitted: 'Se afgivne stemmer'
       cta_message: 'Klik på knappen nedenfor for at deltage'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Næsten i mål! Indsend dine svar'
+      preheader: 'Du har ikke udfyldt din besvarelse af undersøgelsen på deltagelsesplatformen %{organizationName}'
+      title_native_survey_not_submitted: 'Så er vi der næsten! Indsend dine svar'
+      body_native_survey_not_submitted: 'Du begyndte at dele dine svar på %{phaseTitle} , men har ikke indsendt dem. Indsendelserne lukker på %{phaseEndDate}. Klik på knappen nedenfor for at fortsætte, hvor du slap.'
+      body_native_survey_not_submitted_no_date: 'Du er begyndt at dele dine svar på %{phaseTitle} , men har ikke sendt dem. Klik på knappen nedenfor for at fortsætte, hvor du slap.'
+      cta_complete_your_survey_response: 'Fortsæt din besvarelse af undersøgelsen'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Du har ikke indsendt dine stemmer'
       preheader: 'Du har ikke afgivet din stemme på borgerinddragelsesplatformen fra %{organizationName}'
