@@ -50,6 +50,7 @@ lv:
       "assignee_digest": Nedēļas pārskats par piešķirtajām idejām
       "user_digest": Nedēļas pārskats
       "voting_basket_submitted": Balsošanas apstiprināšana
+      "native_survey_not_submitted": Aptauja nav iesniegta
       "voting_basket_not_submitted": Neiesniegtās balsis
       "voting_last_chance": Pēdējā iespēja balsot
       "voting_phase_started": Jauns projekta posms ar balsošanu
@@ -505,6 +506,13 @@ lv:
       event_description: 'Paldies par dalību. Jūsu balsis ir reģistrētas. Apmeklējiet %{organizationName} platformu, lai redzētu un pārvaldītu savas balsis.'
       cta_see_votes_submitted: 'Skatīt iesniegtos balsojumus'
       cta_message: 'Noklikšķiniet uz pogas zemāk, lai piedalītos'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Gandrīz ir! Nosūtiet savas atbildes'
+      preheader: 'Jūs neesat aizpildījis savu aptaujas atbildi %{organizationName}dalības platformā.'
+      title_native_survey_not_submitted: 'Gandrīz ir! Nosūtiet savas atbildes'
+      body_native_survey_not_submitted: 'Jūs sākāt dalīties ar savām atbildēm vietnē %{phaseTitle} , bet tās neiesūtījāt. Iesniegšana beigsies %{phaseEndDate}. Noklikšķiniet uz zemāk redzamās pogas, lai turpinātu, kur esat pārtraucis.'
+      body_native_survey_not_submitted_no_date: 'Jūs sākāt dalīties ar savām atbildēm vietnē %{phaseTitle} , bet tās neiesūtījāt. Noklikšķiniet uz zemāk redzamās pogas, lai turpinātu, kur esat pārtraucis.'
+      cta_complete_your_survey_response: 'Turpiniet atbildēt uz aptaujas jautājumiem'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Jūs neiesūtījāt savas balsis'
       preheader: 'Jūs neiesniedzāt savas balsis %{organizationName}dalības platformā.'
