@@ -99,21 +99,21 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def visit_file_upload(field)
-    # GEt all the ideas from custom fields then grab all the files in one go for that field
-    files = inputs.map do |input|
-      { file: input.idea_files.map { |file| file.file.url } }
+    file_ids = inputs
+      .select("custom_field_values->'#{field.key}' as value")
+      .where("custom_field_values->'#{field.key}' IS NOT NULL")
+      .map(&:value)
+    files = IdeaFile.where(id: file_ids).map do |file|
+      { name: file.name, url: file.file.url }
     end
-    answer_count = files.size
-    value = {
+    {
       inputType: field.input_type,
       question: field.title_multiloc,
       required: field.required,
-      totalResponses: answer_count,
+      totalResponses: files.size,
       customFieldId: field.id,
       files: files
     }
-    binding.pry
-    value
   end
 
   private

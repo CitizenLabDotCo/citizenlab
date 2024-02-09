@@ -204,7 +204,7 @@ RSpec.describe SurveyResultsGeneratorService do
       input_type: 'file_upload',
       resource: form,
       title_multiloc: {
-        'en' => 'Choose an image'
+        'en' => 'Upload a file'
       },
       required: false
     )
@@ -339,12 +339,12 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'file_upload',
-          question: { 'en' => 'Nobody wants to answer me' },
+          question: { 'en' => 'Upload a file' },
           required: false,
-          totalResponses: 0,
-          customFieldId: unanswered_text_field.id,
+          totalResponses: 1,
+          customFieldId: file_upload_field.id,
           files: [
-            { name: 'image.png', url: end_with('.png') }
+            { name: end_with('.pdf'), url: end_with('.pdf') }
           ]
         }
       ],
