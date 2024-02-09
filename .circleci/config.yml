@@ -1339,5 +1339,40 @@ workflows:
             - docker-hub-access
             - lastpass
 
-  # nightly-storybook:
-    # TODO
+  weekly-storybook:
+    triggers:
+      - schedule:
+        cron: 0 5 * * 1 # Every Monday at 5am: https://crontab.guru/
+        filters:
+          branches:
+            only:
+              - master
+    jobs:
+      - front-storybook:
+          context:
+            - docker-hub-access
+            - lastpass
+          
+
+  # nightly-e2e-tests:
+  #   triggers:
+  #     - schedule:
+  #         cron: "0 2,14 * * 1-5" # https://crontab.guru/
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
+  #   jobs:
+  #     - e2e-tests:
+  #         context:
+  #           - docker-hub-access
+  #           - slack-dev-notifications-e2e
+  #           - lastpass
+  #         post-steps:
+  #           - slack/notify:
+  #               event: pass
+  #               template: basic_success_1
+  #           - slack/notify:
+  #               event: fail
+  #               mentions: ":boom: FAILURE: Some tests failed."
+  #               template: basic_fail_1
