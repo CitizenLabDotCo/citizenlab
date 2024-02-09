@@ -50,6 +50,7 @@ nl:
       "assignee_digest": Weekoverzicht van toegewezen ideeën
       "user_digest": Weekoverzicht
       "voting_basket_submitted": Bevestiging van stemming
+      "native_survey_not_submitted": Enquête niet ingediend
       "voting_basket_not_submitted": Niet-ingediende stemmen
       "voting_last_chance": Laatste kans om te stemmen
       "voting_phase_started": Nieuwe projectfase met stemmen
@@ -505,6 +506,13 @@ nl:
       event_description: 'Bedankt voor je deelname. Je stemmen zijn geregistreerd. Ga naar het platform van %{organizationName} om je stemmen te bekijken en te beheren.'
       cta_see_votes_submitted: 'Bekijk ingediende stemmen'
       cta_message: 'Klik op de knop hieronder om deel te nemen'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Bijna klaar! Antwoorden insturen'
+      preheader: 'Je hebt je antwoord op de enquête niet ingevuld op het deelnameplatform van %{organizationName}'
+      title_native_survey_not_submitted: 'We zijn er bijna! Stuur je antwoorden in'
+      body_native_survey_not_submitted: 'Je bent begonnen met het delen van je antwoorden op %{phaseTitle} maar hebt ze niet ingestuurd. Inzendingen sluiten op %{phaseEndDate}. Klik op de knop hieronder om verder te gaan waar je gebleven was.'
+      body_native_survey_not_submitted_no_date: 'Je bent begonnen met het delen van je antwoorden op %{phaseTitle} , maar hebt ze niet ingestuurd. Klik op de knop hieronder om verder te gaan waar je gebleven was.'
+      cta_complete_your_survey_response: 'Ga verder met het beantwoorden van je enquête'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Je hebt je stemmen niet ingediend'
       preheader: 'Je hebt je stem niet uitgebracht op het participatieplatform van %{organizationName}'
