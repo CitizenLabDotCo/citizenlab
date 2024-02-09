@@ -50,6 +50,7 @@ pl:
       "assignee_digest": Tygodniowy przegląd przydzielonych pomysłów
       "user_digest": Tygodniowy przegląd
       "voting_basket_submitted": Potwierdzenie głosowania
+      "native_survey_not_submitted": Ankieta nie została przesłana
       "voting_basket_not_submitted": Nieoddane głosy
       "voting_last_chance": Ostatnia szansa na oddanie głosu
       "voting_phase_started": Nowa faza projektu z głosowaniem
@@ -505,6 +506,13 @@ pl:
       event_description: 'Dziękujemy za udział. Twoje głosy zostały zarejestrowane. Odwiedź platformę %{organizationName} , aby zobaczyć i zarządzać swoimi głosami.'
       cta_see_votes_submitted: 'Zobacz oddane głosy'
       cta_message: 'Kliknij poniższy przycisk, aby wziąć udział'
+    native_survey_not_submitted:
+      subject: '%{organizationName}Już prawie! Prześlij swoje odpowiedzi'
+      preheader: 'Nie wypełniłeś swojej ankiety na platformie uczestnictwa %{organizationName}.'
+      title_native_survey_not_submitted: 'Już prawie! Prześlij swoje odpowiedzi'
+      body_native_survey_not_submitted: 'Zacząłeś udostępniać swoje odpowiedzi na stronie %{phaseTitle} , ale ich nie przesłałeś. Zgłoszenia zostaną zamknięte na stronie %{phaseEndDate}. Kliknij poniższy przycisk, aby kontynuować od miejsca, w którym skończyłeś.'
+      body_native_survey_not_submitted_no_date: 'Zacząłeś udostępniać swoje odpowiedzi na stronie %{phaseTitle} , ale ich nie przesłałeś. Kliknij poniższy przycisk, aby kontynuować od miejsca, w którym przerwałeś.'
+      cta_complete_your_survey_response: 'Wznów swoją odpowiedź na ankietę'
     voting_basket_not_submitted:
       subject: '%{organizationName}Nie oddałeś swojego głosu'
       preheader: 'Nie oddałeś głosu na platformie uczestnictwa %{organizationName}.'
