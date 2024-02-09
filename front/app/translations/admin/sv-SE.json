@@ -1592,6 +1592,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linjär skala",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Långt svar",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Flerval – välj flera",
+  "app.containers.AdminPage.ProjectEdit.survey.multiselect_image": "Bildval - välj många",
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Inga undersökningssvar ännu",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Öppen för svar",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Valfritt",
