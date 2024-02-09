@@ -125,7 +125,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
             </Text>
           )}
         </>
-        {typeof basketCount === 'number' && basketCount > 0 && (
+        {basketCount > 0 && (
           <>
             <Text m="0px" fontSize="xxxxl" style={{ fontWeight: '700' }}>
               {basketCount}

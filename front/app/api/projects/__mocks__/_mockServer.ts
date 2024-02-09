@@ -76,6 +76,8 @@ export const project1: IProjectData = {
     avatars_count: 8,
     participants_count: 8,
     uses_content_builder: false,
+    baskets_count: 0,
+    votes_count: 0,
   },
   relationships: {
     admin_publication: {
@@ -198,6 +200,8 @@ export const project2: IProjectData = {
     avatars_count: 6,
     participants_count: 6,
     uses_content_builder: false,
+    baskets_count: 0,
+    votes_count: 0,
   },
   relationships: {
     admin_publication: {
