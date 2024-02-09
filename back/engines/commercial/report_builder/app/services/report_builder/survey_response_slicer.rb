@@ -31,7 +31,7 @@ module ReportBuilder
     def slice_by_user_field(question_field_id, user_field_id)
       question = get_question(question_field_id)
       user_field = CustomField.find_by(id: user_field_id)
-      # TODO: check that user field is also select or multiselect
+      throw "Unsupported user field type: #{user_field.input_type}" unless user_field.input_type == 'select'
 
       answers = @inputs.joins(:author)
 
@@ -39,14 +39,14 @@ module ReportBuilder
         answers
           .select(
             "ideas.custom_field_values->'#{question.key}' as answer",
-            get_user_select(user_field)
+            "users.custom_field_values->'#{user_field.key}' as group_by_value"
           )
           .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
       else
         answers
           .select(
             "jsonb_array_elements(ideas.custom_field_values->'#{question.key}') as answer",
-            get_user_select(user_field)
+            "users.custom_field_values->'#{user_field.key}' as group_by_value"
           )
       end
 
@@ -56,13 +56,22 @@ module ReportBuilder
     def slice_by_other_question(question_field_id, other_question_field_id)
       question = get_question(question_field_id)
       other_question = get_question(other_question_field_id)
+      throw "Unsupported question type: #{other_question.input_type}" unless other_question.input_type == 'select'
 
-      answers = @inputs
-        .select(
-          "ideas.custom_field_values->'#{question.key}' as answer",
-          "ideas.custom_field_values->'#{other_question.key}' as group_by_value"
-        )
-        .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
+      answers = if question.input_type == 'select'
+        @inputs
+          .select(
+            "ideas.custom_field_values->'#{question.key}' as answer",
+            "ideas.custom_field_values->'#{other_question.key}' as group_by_value"
+          )
+          .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
+      else
+        @inputs
+          .select(
+            "jsonb_array_elements(ideas.custom_field_values->'#{question.key}') as answer",
+            "ideas.custom_field_values->'#{other_question.key}' as group_by_value"
+          )
+      end
 
       collect_answers(answers)
     end
@@ -75,14 +84,6 @@ module ReportBuilder
       throw "Unsupported question type: #{question.input_type}" unless %w[select multiselect].include?(question.input_type)
 
       question
-    end
-
-    def get_user_select(user_field)
-      if user_field.input_type == 'select'
-        "users.custom_field_values->'#{user_field.key}' as group_by_value"
-      else
-        "jsonb_array_elements(users.custom_field_values->'#{user_field.key}') as group_by_value"
-      end
     end
 
     def collect_answers(answers)

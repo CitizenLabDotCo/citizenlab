@@ -177,21 +177,6 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         ]
       })
     end
-
-    it 'slices select by multiselect' do
-      expect(generator.slice_by_user_field(
-        food_survey_question.id,
-        user_multiselect_field.id
-      )).to eq({
-        totalResponses: 16,
-        answers: [
-          { answer: 'pizza', group_by_value: 'one_option', count: 6 },
-          { answer: 'burger', group_by_value: 'one_option', count: 5 },
-          { answer: 'pizza', group_by_value: 'another_option', count: 3 },
-          { answer: 'burger', group_by_value: 'another_option', count: 2 }
-        ]
-      })
-    end
   end
 
   context 'when slicing by other survey question' do
@@ -206,6 +191,21 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
           { answer: 'la', group_by_value: 'pizza', count: 3 },
           { answer: 'ny', group_by_value: 'pizza', count: 3 },
           { answer: 'ny', group_by_value: 'burger', count: 2 }
+        ]
+      })
+    end
+
+    it 'slices multiselect by select' do
+      expect(generator.slice_by_other_question(
+        multiselect_question.id,
+        food_survey_question.id
+      )).to eq({
+        totalResponses: 16,
+        answers: [
+          { answer: 'option1', group_by_value: 'pizza', count: 6 },
+          { answer: 'option1', group_by_value: 'burger', count: 5 },
+          { answer: 'option2', group_by_value: 'pizza', count: 3 },
+          { answer: 'option2', group_by_value: 'burger', count: 2 }
         ]
       })
     end
