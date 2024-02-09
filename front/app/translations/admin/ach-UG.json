@@ -1592,6 +1592,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "crwdns1557988:0crwdne1557988:0",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "crwdns1557990:0crwdne1557990:0",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "crwdns1557992:0crwdne1557992:0",
+  "app.containers.AdminPage.ProjectEdit.survey.multiselect_image": "crwdns1656884:0crwdne1656884:0",
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "crwdns1557994:0crwdne1557994:0",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "crwdns1557996:0crwdne1557996:0",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "crwdns1557998:0crwdne1557998:0",
