@@ -1592,6 +1592,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Линеарна скала",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Дуг одговор",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Вишеструки избор - изаберите много",
+  "app.containers.AdminPage.ProjectEdit.survey.multiselect_image": "Image choice - choose many",
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Још нема одговора на анкету",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Отворено за одговоре",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Опционо",
