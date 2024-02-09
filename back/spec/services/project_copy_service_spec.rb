@@ -102,6 +102,21 @@ describe ProjectCopyService do
       )
     end
 
+    it 'successfully exports custom field option images' do
+      field = create(:custom_field_select, :for_custom_form)
+      option = create(:custom_field_option, custom_field: field, image: create(:custom_field_option_image))
+      template = service.export field.resource.participation_context
+
+      expect(template['models']['custom_field_option_images'].size).to eq 1
+      expect(template['models']['custom_field_option_images'].first).to match hash_including(
+        'created_at' => an_instance_of(String),
+        'updated_at' => an_instance_of(String),
+        'custom_field_option_ref' => hash_including('custom_field_ref' => an_instance_of(Hash)),
+        'remote_image_url' => an_instance_of(String),
+        'ordering' => option.image.ordering
+      )
+    end
+
     it 'skips custom field values with ID references' do
       project = create(:single_phase_native_survey_project)
       custom_form = create(:custom_form, participation_context: project)

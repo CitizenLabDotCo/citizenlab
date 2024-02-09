@@ -35,21 +35,22 @@ class ProjectCopyService < TemplateService
     @template = { 'models' => {} }
 
     # TODO: deal with linking idea_statuses, topics, custom field values and maybe areas and groups
-    @template['models']['project']                 = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
-    @template['models']['project_file']            = yml_project_files shift_timestamps: shift_timestamps
-    @template['models']['project_image']           = yml_project_images shift_timestamps: shift_timestamps
-    @template['models']['phase']                   = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
-    @template['models']['phase_file']              = yml_phase_files shift_timestamps: shift_timestamps
-    @template['models']['custom_form']             = yml_custom_forms shift_timestamps: shift_timestamps
-    @template['models']['custom_field']            = yml_custom_fields shift_timestamps: shift_timestamps
-    @template['models']['custom_field_option']     = yml_custom_field_options shift_timestamps: shift_timestamps
-    @template['models']['permission']              = yml_permissions shift_timestamps: shift_timestamps
-    @template['models']['polls/question']          = yml_poll_questions shift_timestamps: shift_timestamps
-    @template['models']['polls/option']            = yml_poll_options shift_timestamps: shift_timestamps
-    @template['models']['volunteering/cause']      = yml_volunteering_causes shift_timestamps: shift_timestamps
-    @template['models']['custom_maps/map_config']  = yml_maps_map_configs shift_timestamps: shift_timestamps
-    @template['models']['custom_maps/layer']       = yml_maps_layers shift_timestamps: shift_timestamps
-    @template['models']['custom_maps/legend_item'] = yml_maps_legend_items shift_timestamps: shift_timestamps
+    @template['models']['project']                    = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
+    @template['models']['project_file']               = yml_project_files shift_timestamps: shift_timestamps
+    @template['models']['project_image']              = yml_project_images shift_timestamps: shift_timestamps
+    @template['models']['phase']                      = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
+    @template['models']['phase_file']                 = yml_phase_files shift_timestamps: shift_timestamps
+    @template['models']['custom_form']                = yml_custom_forms shift_timestamps: shift_timestamps
+    @template['models']['custom_field']               = yml_custom_fields shift_timestamps: shift_timestamps
+    @template['models']['custom_field_option']        = yml_custom_field_options shift_timestamps: shift_timestamps
+    @template['models']['custom_field_option_images'] = yml_custom_field_option_images shift_timestamps: shift_timestamps
+    @template['models']['permission']                 = yml_permissions shift_timestamps: shift_timestamps
+    @template['models']['polls/question']             = yml_poll_questions shift_timestamps: shift_timestamps
+    @template['models']['polls/option']               = yml_poll_options shift_timestamps: shift_timestamps
+    @template['models']['volunteering/cause']         = yml_volunteering_causes shift_timestamps: shift_timestamps
+    @template['models']['custom_maps/map_config']     = yml_maps_map_configs shift_timestamps: shift_timestamps
+    @template['models']['custom_maps/layer']          = yml_maps_layers shift_timestamps: shift_timestamps
+    @template['models']['custom_maps/legend_item']    = yml_maps_legend_items shift_timestamps: shift_timestamps
 
     @template['models']['content_builder/layout'], layout_images_mapping = yml_content_builder_layouts shift_timestamps: shift_timestamps
     @template['models']['content_builder/layout_image'] = yml_content_builder_layout_images layout_images_mapping, shift_timestamps: shift_timestamps
@@ -188,6 +189,19 @@ class ProjectCopyService < TemplateService
       }
       store_ref yml_custom_field_option, c.id, :custom_field_option
       yml_custom_field_option
+    end
+  end
+
+  def yml_custom_field_option_images(shift_timestamps: 0)
+    custom_form_ids = ([@project.custom_form_id] + @project.phases.map(&:custom_form_id)).compact
+    CustomFieldOption.where(custom_field: CustomField.where(resource: custom_form_ids)).flat_map(&:image).map do |image|
+      {
+        'custom_field_option_ref' => lookup_ref(image.custom_field_option_id, :custom_field_option),
+        'remote_image_url' => image.image_url,
+        'ordering' => image.ordering,
+        'created_at' => shift_timestamp(image.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(image.updated_at, shift_timestamps)&.iso8601
+      }
     end
   end
 
