@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/FormatStringToken
 module IdCriipto
   module CriiptoVerification
     include Verification::VerificationMethod
@@ -111,4 +110,3 @@ module IdCriipto
     end
   end
 end
-# rubocop:enable Style/FormatStringToken
