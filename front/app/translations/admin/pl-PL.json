@@ -1592,6 +1592,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Skala liniowa",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Długa odpowiedź",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Wybór wielokrotny - wybierz wiele",
+  "app.containers.AdminPage.ProjectEdit.survey.multiselect_image": "Wybór obrazu - wybierz wiele",
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Brak jeszcze odpowiedzi na ankietę",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Otwarte dla odpowiedzi",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Opcjonalnie",
