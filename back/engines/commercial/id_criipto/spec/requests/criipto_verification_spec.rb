@@ -102,7 +102,8 @@ context 'criipto verification' do
         municipality_code_custom_field_key: 'municipality_code',
         method_name_multiloc: {
           en: 'MitID Verification'
-        }
+        },
+        uid_field_pattern: '%{sub}'
       }]
     }
     configuration.save!
@@ -138,7 +139,7 @@ context 'criipto verification' do
 
     user2 = create(:user)
     token2 = AuthToken::AuthToken.new(payload: user2.to_token_payload).token
-    auth_hash['uid'] = '12345'
+    auth_hash['extra']['raw_info']['sub'] = '12345'
     OmniAuth.config.mock_auth[:criipto] = OmniAuth::AuthHash.new(auth_hash)
 
     get "/auth/criipto?token=#{token2}"
