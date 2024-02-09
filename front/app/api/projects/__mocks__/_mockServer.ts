@@ -43,6 +43,10 @@ export const project1: IProjectData = {
         enabled: true,
         disabled_reason: null,
       },
+      comment_reacting_idea: {
+        enabled: true,
+        disabled_reason: null,
+      },
       reacting_idea: {
         enabled: true,
         disabled_reason: null,
@@ -55,11 +59,10 @@ export const project1: IProjectData = {
           disabled_reason: 'reacting_dislike_disabled',
         },
       },
-      // MISMATCH: this attribute doesn't exist on our type
-      // comment_reacting_idea: {
-      //   enabled: true,
-      //   disabled_reason: null
-      // },
+      voting: {
+        enabled: false,
+        disabled_reason: 'not_voting',
+      },
       taking_survey: {
         enabled: false,
         disabled_reason: 'not_survey',
@@ -167,6 +170,10 @@ export const project2: IProjectData = {
         enabled: true,
         disabled_reason: null,
       },
+      comment_reacting_idea: {
+        enabled: true,
+        disabled_reason: null,
+      },
       reacting_idea: {
         enabled: true,
         disabled_reason: null,
@@ -179,15 +186,14 @@ export const project2: IProjectData = {
           disabled_reason: null,
         },
       },
+      voting: {
+        enabled: false,
+        disabled_reason: 'not_voting',
+      },
       annotating_document: {
         enabled: false,
         disabled_reason: 'not_document_annotation',
       },
-      // MISMATCH: this attribute doesn't exist on our type
-      // comment_reacting_idea: {
-      //   enabled: true,
-      //   disabled_reason: null
-      // },
       taking_survey: {
         enabled: false,
         disabled_reason: 'not_survey',
@@ -294,6 +300,10 @@ const votingProject: IProject = {
           enabled: true,
           disabled_reason: null,
         },
+        comment_reacting_idea: {
+          enabled: true,
+          disabled_reason: null,
+        },
         reacting_idea: {
           enabled: false,
           disabled_reason: 'not_ideation',
@@ -306,11 +316,10 @@ const votingProject: IProject = {
             disabled_reason: 'not_ideation',
           },
         },
-        // MISMATCH
-        // comment_reacting_idea: {
-        //   enabled: true,
-        //   disabled_reason: null
-        // },
+        voting: {
+          enabled: true,
+          disabled_reason: null,
+        },
         annotating_document: {
           enabled: false,
           disabled_reason: 'not_document_annotation',
@@ -323,11 +332,6 @@ const votingProject: IProject = {
           enabled: false,
           disabled_reason: 'not_poll',
         },
-        // MISMATCH
-        // voting: {
-        //   enabled: true,
-        //   disabled_reason: null
-        // }
       },
       avatars_count: 2,
       participants_count: 2,

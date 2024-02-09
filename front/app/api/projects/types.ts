@@ -81,6 +81,8 @@ export interface IProjectAttributes {
   action_descriptor: {
     posting_idea: ActionDescriptorFutureEnabled<PostingDisabledReason>;
     commenting_idea: ActionDescriptor<CommentingDisabledReason>;
+    // Same disabled reasons as commenting_idea at time of writing
+    comment_reacting_idea: ActionDescriptor<CommentingDisabledReason>;
     reacting_idea: ActionDescriptor<ProjectReactingDisabledReason> & {
       up: ActionDescriptor<ProjectReactingDisabledReason>;
       down: ActionDescriptor<ProjectReactingDisabledReason>;
@@ -88,6 +90,7 @@ export interface IProjectAttributes {
     taking_survey: ActionDescriptor<SurveyDisabledReason>;
     taking_poll: ActionDescriptor<PollDisabledReason>;
     annotating_document: ActionDescriptor<DocumentAnnotationDisabledReason>;
+    voting: ActionDescriptor<VotingDisabledReason>;
   };
   uses_content_builder: boolean;
 }
@@ -171,6 +174,11 @@ export type PollDisabledReason =
 export type DocumentAnnotationDisabledReason =
   | 'project_inactive'
   | 'not_document_annotation'
+  | PermissionsDisabledReason;
+
+export type VotingDisabledReason =
+  | 'project_inactive'
+  | 'not_voting'
   | PermissionsDisabledReason;
 
 interface ProjectHeaderBgImageSizes {
