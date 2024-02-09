@@ -43,7 +43,7 @@ class ProjectCopyService < TemplateService
     @template['models']['custom_form']                = yml_custom_forms shift_timestamps: shift_timestamps
     @template['models']['custom_field']               = yml_custom_fields shift_timestamps: shift_timestamps
     @template['models']['custom_field_option']        = yml_custom_field_options shift_timestamps: shift_timestamps
-    @template['models']['custom_field_option_images'] = yml_custom_field_option_images shift_timestamps: shift_timestamps
+    @template['models']['custom_field_option_image']  = yml_custom_field_option_images shift_timestamps: shift_timestamps
     @template['models']['permission']                 = yml_permissions shift_timestamps: shift_timestamps
     @template['models']['polls/question']             = yml_poll_questions shift_timestamps: shift_timestamps
     @template['models']['polls/option']               = yml_poll_options shift_timestamps: shift_timestamps
