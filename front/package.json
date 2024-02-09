@@ -38,7 +38,7 @@
     "dependency-cruiser": "depcruise app  --validate",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "chromatic --exit-zero-on-changes"
+    "chromatic": "chromatic --exit-once-uploaded"
   },
   "jest-junit": {
     "addFileAttribute": "true"

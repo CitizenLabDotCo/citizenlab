@@ -7,14 +7,14 @@ export const allModes = {
 
   tablet: {
     viewport: {
-      width: 1200
+      width: 1000
     }
   },
 
   mobile: {
     viewport: {
-      width: 769,
-      height: 1280
+      width: 500,
+      height: 1000
     }
   }
 };
