@@ -50,6 +50,7 @@ tr:
       "assignee_digest": Atanmış fikirlere haftalık genel bakış
       "user_digest": Haftalık genel bakış
       "voting_basket_submitted": Oylamanın onaylanması
+      "native_survey_not_submitted": Anket gönderilmedi
       "voting_basket_not_submitted": Gönderilmeyen oylar
       "voting_last_chance": Oy vermek için son şans
       "voting_phase_started": Oylama ile yeni proje aşaması
@@ -505,6 +506,13 @@ tr:
       event_description: 'Katıldığınız için teşekkürler. Oylarınız kaydedilmiştir. Oylarınızı görmek ve yönetmek için %{organizationName} platformunu ziyaret edin.'
       cta_see_votes_submitted: 'Verilen oyları görün'
       cta_message: 'Katılmak için aşağıdaki butona tıklayın'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Neredeyse bitti! Cevaplarınızı gönderin'
+      preheader: 'Anket yanıtınızı %{organizationName}katılım platformunda tamamlamadınız'
+      title_native_survey_not_submitted: 'Neredeyse bitti! Cevaplarınızı gönderin'
+      body_native_survey_not_submitted: 'Cevaplarınızı %{phaseTitle} adresinde paylaşmaya başladınız ancak göndermediniz. Gönderimler %{phaseEndDate}adresinde sona erecektir. Kaldığınız yerden devam etmek için aşağıdaki düğmeye tıklayın.'
+      body_native_survey_not_submitted_no_date: 'Cevaplarınızı %{phaseTitle} adresinde paylaşmaya başladınız ancak göndermediniz. Kaldığınız yerden devam etmek için aşağıdaki butona tıklayın.'
+      cta_complete_your_survey_response: 'Anket yanıtınıza devam edin'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Oylarınızı teslim etmediniz'
       preheader: 'Oylarınızı %{organizationName}katılım platformuna göndermediniz'
