@@ -109,7 +109,7 @@ const ConfigSelectWithLocaleSwitcher = ({
     setValue(name, newValues);
   };
 
-  const defaultOptionValues: string[] = [];
+  const defaultOptionValues = [{}];
   const errors = get(formContextErrors, name) as RHFErrors;
   const apiError = errors?.error && ([errors] as CLError[]);
   const validationError = errors?.message;
