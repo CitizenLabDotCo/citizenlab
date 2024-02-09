@@ -1592,6 +1592,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linearna skala",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Long answer",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Višestruki izbor - izaberi više",
+  "app.containers.AdminPage.ProjectEdit.survey.multiselect_image": "Image choice - choose many",
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Još uvek nema odgovora na anketu",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Otvori za odgovore",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Opcionalno",
