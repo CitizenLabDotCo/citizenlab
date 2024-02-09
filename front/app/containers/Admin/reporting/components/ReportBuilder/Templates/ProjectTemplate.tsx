@@ -62,8 +62,6 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
 
   if (!project || !phases || !templateData) return null;
 
-  console.log({ templateData });
-
   const { participationMethod, phaseId } = templateData;
   if (participationMethod === 'native_survey' && !surveyFields) return null;
 
@@ -98,8 +96,6 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
         SUPPORTED_INPUT_TYPES.has(field.attributes.input_type)
       )
     : undefined;
-
-  console.log({ filteredSurveyFields });
 
   return (
     <Element id="project-report-template" is={Box} canvas>

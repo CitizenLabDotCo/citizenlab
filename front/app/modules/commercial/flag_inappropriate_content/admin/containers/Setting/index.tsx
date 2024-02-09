@@ -87,7 +87,7 @@ const FlagInnapropriateContentSetting = ({
               <StyledIconTooltip
                 content={
                   <FormattedMessage
-                    {...messages.inappropriateContentDetectionTooltip}
+                    {...messages.inappropriateContentDetectionToggleTooltip}
                     values={{
                       linkToActivityPage: (
                         <Link to="/admin/dashboard/moderation">

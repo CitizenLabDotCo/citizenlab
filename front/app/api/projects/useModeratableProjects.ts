@@ -11,7 +11,7 @@ type QueryParams = {
 
 const fetchModeratableProjects = (queryParams: QueryParams) =>
   fetcher<IProjects>({
-    path: '/moderatable-projects',
+    path: '/projects/moderatable',
     action: 'get',
     queryParams,
   });
