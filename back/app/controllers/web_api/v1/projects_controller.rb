@@ -18,9 +18,12 @@ class WebApi::V1::ProjectsController < ApplicationController
     # But could not find a way to eager-load the polymorphic type in the publication
     # scope.
 
+    # For unknown reasons, `includes` uses joins here. It makes the query complex and slow. So, we use `preload`.
+    # Using `pluck(:publication_id)` instead of `select(:publication_id)` also helps if used with `includes`,
+    # but it doesn't make any difference with `preload`.
     @projects = Project.where(id: publications.select(:publication_id))
       .ordered
-      .includes(
+      .preload(
         :project_images,
         :areas,
         :topics,
