@@ -50,6 +50,7 @@ ca:
       "assignee_digest": Visió general setmanal de les idees assignades
       "user_digest": Resum setmanal
       "voting_basket_submitted": Confirmació de la votació
+      "native_survey_not_submitted": Enquesta no enviada
       "voting_basket_not_submitted": Vots no enviats
       "voting_last_chance": Última oportunitat per votar
       "voting_phase_started": Nova fase del projecte amb votació
@@ -505,6 +506,13 @@ ca:
       event_description: 'Gràcies per participar. Els vostres vots s''han registrat. Visiteu la plataforma de %{organizationName} per veure i gestionar els vostres vots.'
       cta_see_votes_submitted: 'Veure vots enviats'
       cta_message: 'Feu clic al botó següent per participar'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Gairebé allà! Envieu les vostres respostes'
+      preheader: 'No heu completat la resposta de l''enquesta a la plataforma de participació de %{organizationName}'
+      title_native_survey_not_submitted: 'Casi allà! Envieu les vostres respostes'
+      body_native_survey_not_submitted: 'Vas començar a compartir les teves respostes el %{phaseTitle} però no les has enviat. Els enviaments es tancaran el %{phaseEndDate}. Feu clic al botó de sota per continuar on ho vau deixar.'
+      body_native_survey_not_submitted_no_date: 'Vas començar a compartir les teves respostes el %{phaseTitle} però no les has enviat. Feu clic al botó de sota per continuar on ho vau deixar.'
+      cta_complete_your_survey_response: 'Reprèn la resposta de l''enquesta'
     voting_basket_not_submitted:
       subject: '%{organizationName}: no heu enviat els vostres vots'
       preheader: 'No heu enviat els vostres vots a la plataforma de participació de %{organizationName}'
