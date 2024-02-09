@@ -1861,7 +1861,7 @@
   "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "crwdns211890:0crwdne211890:0",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "crwdns211892:0crwdne211892:0",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "crwdns211894:0crwdne211894:0",
-  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "crwdns211896:0{linkToActivityPage}crwdne211896:0",
+  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionToggleTooltip": "crwdns1646226:0{linkToActivityPage}crwdne1646226:0",
   "app.containers.AdminPage.SettingsPage.languages": "crwdns211898:0crwdne211898:0",
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "crwdns211900:0crwdne211900:0",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "crwdns211902:0crwdne211902:0",

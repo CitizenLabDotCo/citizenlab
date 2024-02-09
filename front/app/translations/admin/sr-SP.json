@@ -1861,7 +1861,7 @@
   "app.containers.AdminPage.SettingsPage.imageSupportPageURL": "хттпс://суппорт.цитизенлаб.цо/ен/артицлес/1346397-вхат-аре-тхе-рецоммендед-дименсионс-анд-сизес-оф-тхе-платформ-имагес",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSetting": "Откријте неприкладан садржај",
   "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionSettingDescription": "Аутоматско откривање неприкладног садржаја објављеног на платформи.",
-  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionTooltip": "У бета верзији: тренутно доступно на енглеском, француском, немачком, португалском и шпанском. Док је ова функција омогућена, унос, предлози и коментари које поставе учесници биће аутоматски прегледани помоћу обраде природног језика. Постови означени као потенцијално неприкладни садржаји неће бити блокирани, али ће бити истакнути за преглед на страници {linkToActivityPage}.",
+  "app.containers.AdminPage.SettingsPage.inappropriateContentDetectionToggleTooltip": "While this feature is enabled, input, proposals and comments posted by participants will be automatically reviewed. Posts flagged as potentially containing inappropriate content will not be blocked, but will be highlighted for review on the {linkToActivityPage} page.",
   "app.containers.AdminPage.SettingsPage.languages": "Језици",
   "app.containers.AdminPage.SettingsPage.languagesTooltip": "Можете одабрати више језика на којима желите да понудите своју платформу корисницима. Мораћете да креирате садржај за сваки изабрани језик.",
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Активност",
