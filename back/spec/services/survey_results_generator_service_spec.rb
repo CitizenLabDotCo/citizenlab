@@ -198,6 +198,17 @@ RSpec.describe SurveyResultsGeneratorService do
       description_multiloc: {}
     )
   end
+  let!(:file_upload_field) do
+    create(
+      :custom_field,
+      input_type: 'file_upload',
+      resource: form,
+      title_multiloc: {
+        'en' => 'Upload a file'
+      },
+      required: false
+    )
+  end
 
   let(:expected_result) do
     {
@@ -325,6 +336,16 @@ RSpec.describe SurveyResultsGeneratorService do
           totalResponses: 0,
           customFieldId: unanswered_text_field.id,
           textResponses: []
+        },
+        {
+          inputType: 'file_upload',
+          question: { 'en' => 'Upload a file' },
+          required: false,
+          totalResponses: 1,
+          customFieldId: file_upload_field.id,
+          files: [
+            { name: end_with('.pdf'), url: end_with('.pdf') }
+          ]
         }
       ],
       totalSubmissions: 22
@@ -338,6 +359,7 @@ RSpec.describe SurveyResultsGeneratorService do
   let(:expected_result_select) { expected_result[:results][4] }
   let(:expected_result_multiselect_image) { expected_result[:results][5] }
   let(:expected_result_unanswered_field) { expected_result[:results][6] }
+  let(:expected_result_file_upload) { expected_result[:results][7] }
 
   let(:expected_result_linear_scale_without_min_and_max_labels) do
     expected_result_linear_scale.tap do |result|
@@ -356,6 +378,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
   before do
     create(:idea_status_proposed)
+    idea_file = create(:idea_file)
     create(
       :idea,
       project: project,
@@ -363,8 +386,10 @@ RSpec.describe SurveyResultsGeneratorService do
       custom_field_values: {
         text_field.key => 'Red',
         multiselect_field.key => %w[cat dog],
-        select_field.key => 'ny'
-      }
+        select_field.key => 'ny',
+        file_upload_field.key => idea_file.id
+      },
+      idea_files: [idea_file]
     )
     create(
       :idea,
@@ -498,6 +523,10 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'returns the results for an unanswered field' do
         expect(generated_results[:results][6]).to match expected_result_unanswered_field
+      end
+
+      it 'returns the results for file upload field' do
+        expect(generated_results[:results][7]).to match expected_result_file_upload
       end
     end
   end

@@ -1,23 +1,23 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  survey2: {
+  survey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.survey2',
     defaultMessage: 'Survey',
   },
-  surveyDescription2: {
+  surveyDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyDescription2',
     defaultMessage: "Create and edit the questions in this projects's survey.",
   },
-  downloadAllResults2: {
+  downloadAllResults: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2',
     defaultMessage: 'Download all survey results',
   },
-  totalSurveyResponses2: {
+  totalSurveyResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2',
     defaultMessage: 'Total {count} responses',
   },
-  noSurveyResponses2: {
+  noSurveyResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2',
     defaultMessage: 'No survey responses yet',
   },
@@ -25,7 +25,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResponses',
     defaultMessage: 'Survey responses',
   },
-  downloadResults2: {
+  downloadResults: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResults2',
     defaultMessage: 'Download survey results',
   },
@@ -33,37 +33,37 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadSurvey',
     defaultMessage: 'Download survey as pdf',
   },
-  informationText2: {
+  informationText: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.informationText2',
     defaultMessage:
       'Responses to short and long answer questions are currently only available in the survey download',
   },
-  required2: {
+  required: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.required2',
     defaultMessage: 'Required',
   },
-  optional2: {
+  optional: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.optional2',
     defaultMessage: 'Optional',
   },
-  choiceCount2: {
+  choiceCount: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.choiceCount2',
     defaultMessage:
       '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
   },
-  openForResponses2: {
+  openForResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
     defaultMessage: 'Open for responses',
   },
-  deleteSurveyResults2: {
+  deleteSurveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2',
     defaultMessage: 'Delete survey results',
   },
-  viewSurveyResults2: {
+  viewSurveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyResults2',
     defaultMessage: 'View survey results ({count})',
   },
-  editSurveyContent2: {
+  editSurveyContent: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2',
     defaultMessage: 'Edit survey content',
   },
@@ -71,7 +71,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.editSurvey',
     defaultMessage: 'Edit survey',
   },
-  viewSurveyText2: {
+  viewSurveyText: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2',
     defaultMessage: 'View survey',
   },
@@ -80,58 +80,58 @@ export default defineMessages({
     defaultMessage:
       'Submissions to this survey have started to come in. Changes to the survey may result in data loss and incomplete data in the exported files.',
   },
-  deleteResultsConfirmationQuestion2: {
+  deleteResultsConfirmationQuestion: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2',
     defaultMessage: 'Are you sure you want to delete all survey results?',
   },
-  deleteResultsInfo2: {
+  deleteResultsInfo: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsInfo2',
     defaultMessage: 'This cannot be undone',
   },
-  cancelDeleteButtonText2: {
+  cancelDeleteButtonText: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.cancelDeleteButtonText2',
     defaultMessage: 'Cancel',
   },
-  confirmDeleteButtonText2: {
+  confirmDeleteButtonText: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText2',
     defaultMessage: 'Yes, delete survey results',
   },
-  disabledSurveyMessage2: {
+  disabledSurveyMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2',
     defaultMessage:
       "Survey content can't be edited as survey results have started coming in.",
   },
-  deleteResultsLink2: {
+  deleteResultsLink: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2',
     defaultMessage: 'Delete the results if you need to make changes.',
   },
-  viewSurvey2: {
+  viewSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurvey2',
     defaultMessage: 'View survey',
   },
-  addSurveyContent2: {
+  addSurveyContent: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2',
     defaultMessage: 'Add survey content',
   },
-  successMessage2: {
+  successMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.successMessage2',
     defaultMessage: 'Survey successfully saved',
   },
-  supportArticleLink2: {
+  supportArticleLink: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.supportArticleLink2',
     defaultMessage:
       'https://support.citizenlab.co/en/articles/6673873-creating-an-in-platform-survey',
   },
-  surveyEnd2: {
+  surveyEnd: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd2',
     defaultMessage: 'Survey end',
   },
-  questionLogicHelperText2: {
+  questionLogicHelperText: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2',
     defaultMessage:
       'If no logic is added to an answer, the survey will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}',
   },
-  pagesLogicHelperText2: {
+  pagesLogicHelperText: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2',
     defaultMessage:
       'If no logic is added, the survey will follow its normal flow. For more information, visit {supportPageLink}',
@@ -160,7 +160,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.multiselect_image',
     defaultMessage: 'Image choice - choose many',
   },
-  downloadExcelTemplate1: {
+  file_upload: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.file_upload',
+    defaultMessage: 'File upload',
+  },
+  downloadExcelTemplate: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1',
     defaultMessage: 'Download an excel template',
   },
