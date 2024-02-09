@@ -1592,6 +1592,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Lineaire schaal",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Lang antwoord",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Meerkeuze - kies er veel",
+  "app.containers.AdminPage.ProjectEdit.survey.multiselect_image": "Afbeelding kiezen - kies er veel",
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Nog geen reacties op de enquête",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Open voor reacties",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Optioneel",
