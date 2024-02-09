@@ -50,6 +50,7 @@ es:
       "assignee_digest": Resumen semanal de ideas asignadas
       "user_digest": Resumen semanal
       "voting_basket_submitted": Confirmación de voto
+      "native_survey_not_submitted": Encuesta no presentada
       "voting_basket_not_submitted": Votos no presentados
       "voting_last_chance": Última oportunidad para votar
       "voting_phase_started": Nueva fase del proyecto con votación
@@ -505,6 +506,13 @@ es:
       event_description: 'Gracias por participar. Tus votos han quedado registrados. Visita la plataforma de %{organizationName} para ver y gestionar tus votos.'
       cta_see_votes_submitted: 'Ver los votos presentados'
       cta_message: 'Haz clic en el botón de abajo para participar'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: ¡Ya casi está! Envía tus respuestas'
+      preheader: 'No completaste tu respuesta a la encuesta en la plataforma de participación de %{organizationName}'
+      title_native_survey_not_submitted: '¡Ya casi está! Envía tus respuestas'
+      body_native_survey_not_submitted: 'Empezaste a compartir tus respuestas en %{phaseTitle} pero no las enviaste. Los envíos se cerrarán en %{phaseEndDate}. Haz clic en el botón de abajo para continuar donde lo dejaste.'
+      body_native_survey_not_submitted_no_date: 'Empezaste a compartir tus respuestas en %{phaseTitle} pero no las enviaste. Haz clic en el botón de abajo para continuar donde lo dejaste.'
+      cta_complete_your_survey_response: 'Reanuda tu respuesta a la encuesta'
     voting_basket_not_submitted:
       subject: '%{organizationName}No has enviado tus votos'
       preheader: 'No enviaste tus votos en la plataforma de participación de %{organizationName}'
