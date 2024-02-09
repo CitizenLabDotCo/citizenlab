@@ -1409,7 +1409,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForUsersDescription": "Sélectionnez les actions supplémentaires que les utilisateurs peuvent effectuer.",
   "app.containers.AdminPage.ProjectEdit.Voting.fixedAmount": "Montant fixe",
   "app.containers.AdminPage.ProjectEdit.Voting.ifLeftEmpty": "Si non spécifié, le terme utilisé par défaut est \"vote\".",
-  "app.containers.AdminPage.ProjectEdit.Voting.learnMoreVotingMethod": "Pour en apprendre davantage sur quand utiliser <b> {voteTypeDescription} </b> , consultez notre article sur l'{optionAnalysisArticleLink}.",
+  "app.containers.AdminPage.ProjectEdit.Voting.learnMoreVotingMethod": "Pour en apprendre davantage sur quand utiliser <b> {voteTypeDescription} </b> , consultez notre article sur l''{optionAnalysisArticleLink}.",
   "app.containers.AdminPage.ProjectEdit.Voting.maxVotesPerOption": "Nombre maximum de votes par option",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": "Nombre maximum de votes",
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": "Vous pouvez limiter le nombre total de votes qu'un utilisateur peut exprimer (avec un maximum d'un vote par option).",
