@@ -50,6 +50,7 @@ fr-BE:
       "assignee_digest": Aperçu hebdomadaire des idées attribuées
       "user_digest": Aperçu hebdomadaire
       "voting_basket_submitted": Confirmation de vote
+      "native_survey_not_submitted": Enquête non soumise
       "voting_basket_not_submitted": Votes non soumis
       "voting_last_chance": Dernière chance pour voter
       "voting_phase_started": Nouvelle phase de projet avec vote
@@ -505,6 +506,13 @@ fr-BE:
       event_description: 'Merci de votre participation. Vos votes ont bien été enregistrés. Vous pouvez consulter et gérer vos votes sur la plateforme %{organizationName}.'
       cta_see_votes_submitted: 'Voir les votes soumis'
       cta_message: 'Cliquez sur le bouton ci-dessous pour participer'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Nous y sommes presque ! Soumettez vos réponses'
+      preheader: 'Vous n''avez pas répondu à l''enquête sur la plateforme de participation de %{organizationName}'
+      title_native_survey_not_submitted: 'Vous y êtes presque ! Envoyez vos réponses'
+      body_native_survey_not_submitted: 'Vous avez commencé à partager vos réponses sur %{phaseTitle} mais vous ne les avez pas soumises. Les soumissions seront clôturées à l''adresse %{phaseEndDate}. Cliquez sur le bouton ci-dessous pour continuer là où vous vous êtes arrêté.'
+      body_native_survey_not_submitted_no_date: 'Vous avez commencé à partager vos réponses sur %{phaseTitle} mais vous ne les avez pas envoyées. Cliquez sur le bouton ci-dessous pour reprendre là où vous vous êtes arrêté.'
+      cta_complete_your_survey_response: 'Reprendre votre réponse à l''enquête'
     voting_basket_not_submitted:
       subject: '%{organizationName}Vous n''avez pas soumis vos votes'
       preheader: 'Vous n''avez pas soumis vos votes sur la plateforme de participation de %{organizationName}'
