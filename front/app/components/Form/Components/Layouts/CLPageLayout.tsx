@@ -225,15 +225,18 @@ const CLPageLayout = memo(
                   )}
                   {pageElements.map((elementUiSchema, index) => {
                     const key = elementUiSchema.scope.split('/').pop();
-                    const bottomMargin =
+                    const hasOtherFieldBelow =
                       key &&
-                      data[key] === 'other' &&
-                      elementUiSchema.options?.otherField
-                        ? undefined
-                        : '28px';
+                      (Array.isArray(data[key])
+                        ? data[key].includes('other')
+                        : data[key] === 'other');
 
                     return (
-                      <Box width="100%" mb={bottomMargin} key={index}>
+                      <Box
+                        width="100%"
+                        mb={hasOtherFieldBelow ? undefined : '28px'}
+                        key={index}
+                      >
                         <JsonFormsDispatch
                           renderers={renderers}
                           cells={cells}
