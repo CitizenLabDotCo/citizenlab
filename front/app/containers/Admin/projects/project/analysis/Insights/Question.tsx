@@ -169,6 +169,8 @@ const Question = ({ insight }: Props) => {
               analysisId,
               projectId,
               phaseId,
+              selectedInputId:
+                searchParams.get('selected_input_id') || undefined,
             })}
           </StyledAnswerText>
           {processing && <Spinner />}

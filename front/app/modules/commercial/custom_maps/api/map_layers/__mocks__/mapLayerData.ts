@@ -5,6 +5,7 @@ export const mapLayerData: IMapLayer = {
     id: '1',
     type: 'layer',
     attributes: {
+      type: 'CustomMaps::GeojsonLayer',
       title_multiloc: {
         en: 'Layer 1',
       },

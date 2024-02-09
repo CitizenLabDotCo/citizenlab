@@ -8,6 +8,8 @@ import useIdeaImage from 'api/idea_images/useIdeaImage';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // components
 import {
@@ -16,12 +18,14 @@ import {
   defaultCardStyle,
   defaultCardHoverStyle,
   media,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import ImagePlaceholder from './ImagePlaceholder';
 import Rank from './Rank';
-import Results from './Results';
 import Footer from 'components/IdeaCard/Footer';
+import FormattedBudget from 'utils/currency/FormattedBudget';
+import ProgressBar from './ProgressBar';
 
 // styling
 import styled from 'styled-components';
@@ -153,6 +157,7 @@ interface Props {
 
 const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(idea.relationships.project.data.id);
   const { data: ideaImage } = useIdeaImage(
@@ -163,6 +168,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
 
   if (!phase || !project) return null;
 
+  const budget = idea.attributes.budget;
   const ideaTitle = localize(idea.attributes.title_multiloc);
   const votingMethod = phase.data.attributes.voting_method;
   const url = `/ideas/${idea.attributes.slug}?go_back=true`;
@@ -226,10 +232,19 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
 
         <Header>
           <Title title={ideaTitle}>{ideaTitle}</Title>
+          {phase.data.attributes.voting_method === 'budgeting' &&
+            typeof budget === 'number' && (
+              <Text mb="8px" mt="8px" color="tenantPrimary">
+                {formatMessage(messages.cost)}{' '}
+                <FormattedBudget value={budget} />
+              </Text>
+            )}
         </Header>
 
         <Body>
-          <Results phase={phase} idea={idea} />
+          <Box h="100%" display="flex" alignItems="flex-end">
+            <ProgressBar idea={idea} phase={phase} />
+          </Box>
         </Body>
         <Footer
           project={project}

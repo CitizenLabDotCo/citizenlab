@@ -100,6 +100,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
   if (selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
     const participationMethod = selectedPhase.attributes.participation_method;
+    const votingMethod = selectedPhase.attributes.voting_method;
     const isPastPhase =
       !!selectedPhase.attributes.end_at &&
       pastPresentOrFuture(selectedPhase.attributes.end_at) === 'past';
@@ -144,7 +145,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
             <StatusModule
               phase={selectedPhase}
               project={project.data}
-              votingMethod={selectedPhase?.attributes.voting_method}
+              votingMethod={votingMethod}
             />
           )}
           <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />
@@ -159,7 +160,12 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
           {showIdeas && (
             <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
           )}
-          {showVotingResults && <VotingResults phaseId={selectedPhaseId} />}
+          {showVotingResults && votingMethod && (
+            <VotingResults
+              phaseId={selectedPhaseId}
+              votingMethod={votingMethod}
+            />
+          )}
         </ContentContainer>
         {showReport && (
           <PhaseReport reportId={reportId} phaseId={selectedPhaseId} />

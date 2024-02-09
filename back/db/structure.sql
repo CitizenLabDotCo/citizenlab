@@ -2329,7 +2329,8 @@ CREATE TABLE public.flag_inappropriate_content_inappropriate_content_flags (
     deleted_at timestamp without time zone,
     toxicity_label character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    ai_reason character varying
 );
 
 
@@ -2779,11 +2780,13 @@ CREATE TABLE public.maps_layers (
     map_config_id uuid NOT NULL,
     title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     ordering integer NOT NULL,
-    geojson jsonb NOT NULL,
+    geojson jsonb DEFAULT '{}'::jsonb NOT NULL,
     default_enabled boolean DEFAULT true NOT NULL,
     marker_svg_url character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    type character varying,
+    layer_url character varying
 );
 
 
@@ -7928,6 +7931,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231130093345'),
 ('20231212151032'),
 ('20231214100537'),
-('20240130142750');
+('20240124173411'),
+('20240130142750'),
+('20240130170644');
 
 
