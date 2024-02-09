@@ -1339,27 +1339,11 @@ workflows:
           context:
             - docker-hub-access
             - chromatic
-          
-
-  # nightly-e2e-tests:
-  #   triggers:
-  #     - schedule:
-  #         cron: "0 2,14 * * 1-5" # https://crontab.guru/
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
-  #   jobs:
-  #     - e2e-tests:
-  #         context:
-  #           - docker-hub-access
-  #           - slack-dev-notifications-e2e
-  #           - lastpass
-  #         post-steps:
-  #           - slack/notify:
-  #               event: pass
-  #               template: basic_success_1
-  #           - slack/notify:
-  #               event: fail
-  #               mentions: ":boom: FAILURE: Some tests failed."
-  #               template: basic_fail_1
+          post-steps:
+            - slack/notify:
+                event: pass
+                template: basic_success_1
+            - slack/notify:
+                event: fail
+                mentions: ":boom: FAILURE: Some stories failed."
+                template: basic_fail_1
