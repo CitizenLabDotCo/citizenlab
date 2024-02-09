@@ -156,6 +156,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         'key' => field.key,
         'input_type' => field.input_type,
         'title_multiloc' => field.title_multiloc,
+        'random_option_ordering' => field.random_option_ordering,
         'description_multiloc' => field.description_multiloc
       )
     end

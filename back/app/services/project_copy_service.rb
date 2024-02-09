@@ -160,6 +160,7 @@ class ProjectCopyService < TemplateService
         'select_count_enabled' => field.select_count_enabled,
         'maximum_select_count' => field.maximum_select_count,
         'minimum_select_count' => field.minimum_select_count,
+        'random_option_ordering' => field.random_option_ordering,
         'text_images_attributes' => field.text_images.map do |text_image|
           {
             'imageable_field' => text_image.imageable_field,
