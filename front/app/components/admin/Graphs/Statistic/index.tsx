@@ -1,7 +1,12 @@
 import React from 'react';
 
 // components
-import { Box, Text, IconTooltip } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  IconTooltip,
+  Color,
+} from '@citizenlab/cl2-component-library';
 
 interface Props {
   name: string;
@@ -10,6 +15,7 @@ interface Props {
   bottomLabelValue?: string;
   tooltipContent?: React.ReactChild;
   textAlign?: 'left' | 'center';
+  nameColor?: Color;
 }
 
 const Statistic = ({
@@ -19,6 +25,7 @@ const Statistic = ({
   bottomLabelValue,
   tooltipContent,
   textAlign = 'left',
+  nameColor = 'primary',
 }: Props) => (
   <Box
     {...(textAlign === 'left'
@@ -27,7 +34,7 @@ const Statistic = ({
   >
     <Box display="flex" alignItems="center">
       <Text
-        color="primary"
+        color={nameColor}
         fontSize="s"
         mt="0px"
         mb="0px"

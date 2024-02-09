@@ -60,6 +60,7 @@ const ActiveUsers = ({
             <Statistic
               name={formatMessage(messages.totalParticipants)}
               value={stats.activeUsers.value}
+              nameColor="black"
             />
           </Box>
         </Box>

@@ -1,4 +1,11 @@
-import React, { Dispatch, createContext, useContext, useState } from 'react';
+import React, {
+  Dispatch,
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const Context = createContext<{
   selectedInputId: string | null;
@@ -10,6 +17,19 @@ const Context = createContext<{
 
 const SelectedInputContext = ({ children }) => {
   const [selectedInputId, setSelectedInputId] = useState<string | null>(null);
+  const [search] = useSearchParams();
+  const inputId = search.get('selected_input_id');
+
+  useEffect(() => {
+    if (inputId) {
+      setSelectedInputId(inputId);
+      const element = document.getElementById(`input-${inputId}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [inputId]);
+
   const contextValue = { selectedInputId, setSelectedInputId };
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 };
