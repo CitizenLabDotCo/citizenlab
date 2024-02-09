@@ -50,6 +50,7 @@ de:
       "assignee_digest": Wöchentliche Übersicht über die zugewiesenen Beiträge
       "user_digest": Wöchentliche Übersicht
       "voting_basket_submitted": Bestätigung der Abstimmung
+      "native_survey_not_submitted": Umfrage nicht eingereicht
       "voting_basket_not_submitted": Nicht abgegebene Stimmen
       "voting_last_chance": Letzte Chance zur Abstimmung
       "voting_phase_started": Neue Projektphase mit Abstimmung
@@ -505,6 +506,13 @@ de:
       event_description: 'Vielen Dank für Ihre Teilnahme. Ihre Stimmen wurden aufgezeichnet. Besuchen Sie die Plattform von %{organizationName}, um Ihre Stimmen zu sehen und zu verwalten.'
       cta_see_votes_submitted: 'Siehe abgegebene Stimmen'
       cta_message: 'Klicken Sie auf die Schaltfläche unten, um teilzunehmen'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Fast geschafft! Reichen Sie Ihre Antworten ein'
+      preheader: 'Sie haben Ihre Umfrageantwort nicht auf der Teilnahmeplattform von %{organizationName}ausgefüllt.'
+      title_native_survey_not_submitted: 'Fast geschafft! Reichen Sie Ihre Antworten ein'
+      body_native_survey_not_submitted: 'Sie haben begonnen, Ihre Antworten auf %{phaseTitle} zu teilen, haben sie aber nicht eingereicht. Die Einsendungen werden am %{phaseEndDate}geschlossen. Klicken Sie auf die Schaltfläche unten, um dort fortzufahren, wo Sie aufgehört haben.'
+      body_native_survey_not_submitted_no_date: 'Sie haben begonnen, Ihre Antworten auf %{phaseTitle} zu teilen, haben sie aber nicht abgeschickt. Klicken Sie auf die Schaltfläche unten, um dort fortzufahren, wo Sie aufgehört haben.'
+      cta_complete_your_survey_response: 'Setzen Sie Ihre Umfragebeantwortung fort'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Sie haben Ihre Stimmen nicht abgegeben'
       preheader: 'Sie haben Ihre Stimme nicht auf der Beteiligungsplattform von %{organizationName} abgegeben'
