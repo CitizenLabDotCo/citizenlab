@@ -1592,6 +1592,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Lineær skala",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Langt svar",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Multiple choice - vælg mange",
+  "app.containers.AdminPage.ProjectEdit.survey.multiselect_image": "Billedvalg - vælg mange",
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Ingen besvarelser i undersøgelsen endnu",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Åben for besvarelser",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Valgfri",
