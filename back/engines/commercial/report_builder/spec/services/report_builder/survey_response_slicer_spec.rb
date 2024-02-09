@@ -171,9 +171,9 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         totalResponses: 16,
         answers: [
           { answer: 'option1', group_by_value: 'female', count: 6 },
-          { answer: 'option2', group_by_value: 'male', count: 2 },
           { answer: 'option1', group_by_value: 'male', count: 5 },
-          { answer: 'option2', group_by_value: 'female', count: 3 }
+          { answer: 'option2', group_by_value: 'female', count: 3 },
+          { answer: 'option2', group_by_value: 'male', count: 2 }
         ]
       })
     end
@@ -185,8 +185,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
       )).to eq({
         totalResponses: 16,
         answers: [
-          { answer: 'burger', group_by_value: 'one_option', count: 5 },
           { answer: 'pizza', group_by_value: 'one_option', count: 6 },
+          { answer: 'burger', group_by_value: 'one_option', count: 5 },
           { answer: 'pizza', group_by_value: 'another_option', count: 3 },
           { answer: 'burger', group_by_value: 'another_option', count: 2 }
         ]
@@ -204,8 +204,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         answers: [
           { answer: 'la', group_by_value: 'burger', count: 3 },
           { answer: 'la', group_by_value: 'pizza', count: 3 },
-          { answer: 'ny', group_by_value: 'burger', count: 2 },
-          { answer: 'ny', group_by_value: 'pizza', count: 3 }
+          { answer: 'ny', group_by_value: 'pizza', count: 3 },
+          { answer: 'ny', group_by_value: 'burger', count: 2 }
         ]
       })
     end

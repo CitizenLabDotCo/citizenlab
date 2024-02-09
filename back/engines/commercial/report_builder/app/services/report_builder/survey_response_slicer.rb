@@ -14,13 +14,7 @@ module ReportBuilder
         .select("ideas.custom_field_values->'#{question.key}' as answer")
         .where("ideas.custom_field_values->'#{question.key}' IS NOT NULL")
 
-      grouped_answers = Idea
-        .select(:answer)
-        .from(answers)
-        .group(:answer)
-        .order(Arel.sql('COUNT(answer) DESC'))
-        .count
-        .to_a
+      grouped_answers = get_counts(answers)
         .map do |answer, count|
           {
             answer: answer,
@@ -92,12 +86,7 @@ module ReportBuilder
     end
 
     def collect_answers(answers)
-      grouped_answers = Idea
-        .select(:answer)
-        .from(answers)
-        .group(:answer, :group_by_value)
-        .count
-        .to_a
+      grouped_answers = get_counts(answers, grouped: true)
         .map do |(answer, group_by_value), count|
           {
             answer: answer,
@@ -110,6 +99,16 @@ module ReportBuilder
         totalResponses: grouped_answers.pluck(:count).sum,
         answers: grouped_answers
       }
+    end
+
+    def get_counts(answers, grouped: false)
+      Idea
+        .select(:answer)
+        .from(answers)
+        .group(:answer, grouped ? :group_by_value : nil)
+        .order(Arel.sql('COUNT(answer) DESC'))
+        .count
+        .to_a
     end
   end
 end
