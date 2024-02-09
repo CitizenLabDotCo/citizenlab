@@ -88,7 +88,8 @@ module IdCriipto
     def profile_to_uid(auth)
       case config[:identity_source]
       when DK_MIT_ID
-        config[:uid_field_pattern] % auth.extra.raw_info.to_h.symbolize_keys
+        uid_pattern = config[:uid_field_pattern].presence || DEFAULT_UID_FIELD_PATTERN
+        uid_pattern % auth.extra.raw_info.to_h.symbolize_keys
       else
         raise "Unsupported identity source #{config[:identity_source]}"
       end
