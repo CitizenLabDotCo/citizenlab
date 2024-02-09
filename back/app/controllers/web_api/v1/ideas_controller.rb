@@ -279,6 +279,7 @@ class WebApi::V1::IdeasController < ApplicationController
     params[:idea][:custom_field_values] = extra_field_values
   end
 
+  # Do not save any 'other' text values if the select field does not include 'other' as an option
   def reject_other_text_values(extra_field_values)
     extra_field_values.each do |key, _value|
       if key.end_with? '_other'
