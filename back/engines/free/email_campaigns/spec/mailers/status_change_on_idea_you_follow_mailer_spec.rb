@@ -4,17 +4,17 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::StatusChangeOnIdeaYouFollowMailer do
   describe 'campaign_mail' do
-    let(:recipient) { create(:user, locale: 'en') }
-    let(:campaign) { EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow.create! }
-    let(:idea) { create(:idea) }
-    let(:command) do
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow.create! }
+    let_it_be(:idea) { create(:idea) }
+    let_it_be(:command) do
       campaign.generate_commands(
         recipient: recipient,
         activity: build(:activity, item: build(:notification, post: idea))
       ).first.merge({ recipient: recipient })
     end
 
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 

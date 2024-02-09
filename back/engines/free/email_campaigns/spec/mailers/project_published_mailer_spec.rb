@@ -4,10 +4,10 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::ProjectPublishedMailer do
   describe 'campaign_mail' do
-    let(:recipient) { create(:user, locale: 'en') }
-    let(:campaign) { EmailCampaigns::Campaigns::ProjectPublished.create! }
-    let(:project) { create(:project) }
-    let(:command) do
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::ProjectPublished.create! }
+    let_it_be(:project) { create(:project) }
+    let_it_be(:command) do
       activity = create(:activity, item: project, action: 'published')
       create(:project_published_campaign).generate_commands(
         activity: activity,
@@ -15,7 +15,7 @@ RSpec.describe EmailCampaigns::ProjectPublishedMailer do
       ).first.merge({ recipient: recipient })
     end
 
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     before { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 

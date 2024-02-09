@@ -4,13 +4,10 @@ require 'rails_helper'
 
 RSpec.describe FlagInappropriateContent::EmailCampaigns::InappropriateContentFlaggedMailer do
   describe 'campaign_mail' do
-    let!(:recipient) { create(:user, locale: 'en') }
-    let!(:campaign) { FlagInappropriateContent::EmailCampaigns::Campaigns::InappropriateContentFlagged.create! }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
-    let(:flaggable) { create(:idea) }
-
-    let(:command) do
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:campaign) { FlagInappropriateContent::EmailCampaigns::Campaigns::InappropriateContentFlagged.create! }
+    let_it_be(:flaggable) { create(:idea) }
+    let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
@@ -23,6 +20,8 @@ RSpec.describe FlagInappropriateContent::EmailCampaigns::InappropriateContentFla
         }
       }
     end
+
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     before do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
@@ -57,6 +56,8 @@ RSpec.describe FlagInappropriateContent::EmailCampaigns::InappropriateContentFla
       before do
         command[:event_payload][:flag_automatically_detected] = true
       end
+
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
       it 'includes the explanation note about automatic flagging' do
         expect(mail.body.encoded).to include('This post was automatically detected')

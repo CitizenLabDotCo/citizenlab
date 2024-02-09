@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe ApplicationMailer do
   describe 'localize_for_recipient_and_truncate' do
-    let!(:user) { create(:user, locale: 'en') }
-    let(:multiloc) { { 'en' => "Some test content text. A link is included here to test links when text is truncated: <a href=\"https://en.wikipedia.org/wiki/Ada_Lovelace\" target=\"_blank\" rel=\"noreferrer noopener nofollow\">https://en.wikipedia.org/wiki/Ada_Lovelace</a>\nThis is a newline." } }
+    let_it_be(:user) { create(:user, locale: 'en') }
+    let_it_be(:multiloc) { { 'en' => "Some test content text. A link is included here to test links when text is truncated: <a href=\"https://en.wikipedia.org/wiki/Ada_Lovelace\" target=\"_blank\" rel=\"noreferrer noopener nofollow\">https://en.wikipedia.org/wiki/Ada_Lovelace</a>\nThis is a newline." } }
 
     # If we naively truncated the original string to 140 characters length, we would end up with a broken link,
     # so we test this case.
