@@ -50,6 +50,7 @@ el:
       "assignee_digest": Εβδομαδιαία επισκόπηση των ιδεών που έχουν ανατεθεί
       "user_digest": Εβδομαδιαία επισκόπηση
       "voting_basket_submitted": Επιβεβαίωση της ψηφοφορίας
+      "native_survey_not_submitted": Έρευνα που δεν υποβλήθηκε
       "voting_basket_not_submitted": Ψήφοι που δεν υποβλήθηκαν
       "voting_last_chance": Τελευταία ευκαιρία να ψηφίσετε
       "voting_phase_started": Νέα φάση έργου με ψηφοφορία
@@ -505,6 +506,13 @@ el:
       event_description: 'Ευχαριστώ για τη συμμετοχή σας. Οι ψήφοι σας έχουν καταγραφεί. Επισκεφθείτε την πλατφόρμα %{organizationName} για να δείτε και να διαχειριστείτε τις ψήφους σας.'
       cta_see_votes_submitted: 'Δείτε τις υποβληθείσες ψήφους'
       cta_message: 'Κάντε κλικ στο παρακάτω κουμπί για να συμμετάσχετε'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Σχεδόν φτάσαμε! Υποβάλετε τις απαντήσεις σας'
+      preheader: 'Δεν ολοκληρώσατε την απάντησή σας στην έρευνα στην πλατφόρμα συμμετοχής του %{organizationName}.'
+      title_native_survey_not_submitted: 'Σχεδόν φτάσαμε! Υποβάλετε τις απαντήσεις σας'
+      body_native_survey_not_submitted: 'Αρχίσατε να μοιράζεστε τις απαντήσεις σας στο %{phaseTitle} αλλά δεν τις υποβάλατε. Οι υποβολές θα κλείσουν στις %{phaseEndDate}. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε από εκεί που σταματήσατε.'
+      body_native_survey_not_submitted_no_date: 'Αρχίσατε να μοιράζεστε τις απαντήσεις σας στο %{phaseTitle} αλλά δεν τις υποβάλατε. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε από εκεί που σταματήσατε.'
+      cta_complete_your_survey_response: 'Συνεχίστε την απάντησή σας στην έρευνα'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Δεν υποβάλατε τις ψήφους σας'
       preheader: 'Δεν καταθέσατε την ψήφο σας στην πλατφόρμα συμμετοχής του %{organizationName}'
