@@ -90,7 +90,7 @@ const ImageMultichoiceControl = ({
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
-      <Box display="block">
+      <Box display="block" data-cy="e2e-image-multichoice-control">
         <Text mt="4px" mb={answerNotPublic ? '4px' : '8px'} fontSize="s">
           {getInstructionMessage()}
         </Text>
