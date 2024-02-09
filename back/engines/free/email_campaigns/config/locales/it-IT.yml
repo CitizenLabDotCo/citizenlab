@@ -50,6 +50,7 @@ it:
       "assignee_digest": Panoramica settimanale delle idee assegnate
       "user_digest": Panoramica settimanale
       "voting_basket_submitted": Conferma del voto
+      "native_survey_not_submitted": Sondaggio non inviato
       "voting_basket_not_submitted": Voti non inviati
       "voting_last_chance": Ultima possibilità di voto
       "voting_phase_started": Nuova fase del progetto con votazione
@@ -505,6 +506,13 @@ it:
       event_description: 'Grazie per aver partecipato. I tuoi voti sono stati registrati. Visita la piattaforma di %{organizationName} per vedere e gestire i tuoi voti.'
       cta_see_votes_submitted: 'Vedi i voti inviati'
       cta_message: 'Clicca sul pulsante qui sotto per partecipare'
+    native_survey_not_submitted:
+      subject: '%{organizationName}Ci siamo quasi! Invia le tue risposte'
+      preheader: 'Non hai completato la risposta al sondaggio sulla piattaforma di partecipazione di %{organizationName}.'
+      title_native_survey_not_submitted: 'Ci siamo quasi! Invia le tue risposte'
+      body_native_survey_not_submitted: 'Hai iniziato a condividere le tue risposte su %{phaseTitle} ma non le hai inviate. L''invio delle risposte si chiuderà il giorno %{phaseEndDate}. Clicca sul pulsante qui sotto per continuare da dove hai lasciato.'
+      body_native_survey_not_submitted_no_date: 'Hai iniziato a condividere le tue risposte su %{phaseTitle} ma non le hai inviate. Clicca sul pulsante qui sotto per continuare da dove avevi interrotto.'
+      cta_complete_your_survey_response: 'Riprendi la risposta al sondaggio'
     voting_basket_not_submitted:
       subject: '%{organizationName}Non hai inviato i tuoi voti'
       preheader: 'Non hai inviato i tuoi voti sulla piattaforma di partecipazione di %{organizationName}.'
