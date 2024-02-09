@@ -682,11 +682,6 @@ jobs:
           rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
           git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL"
 
-      # Install lastpass and copy secrets, without sudo and from different working dir
-      - run: cd .. && .circleci/install_lpass.sh v1.3.5
-      - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
-      - run: cd .. && lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
-
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
@@ -695,15 +690,7 @@ jobs:
           paths:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
-      # - run:
-          # command: npm run chromatic
-      - run: |
-          cd ..
-          set -a
-          source env_files/front-secret.env
-          set +a
-          cd ./front
-          npm run chromatic
+      - run: npm run chromatic
 
   # E2E TESTS
   e2e-tests:
@@ -1337,7 +1324,7 @@ workflows:
       - front-storybook:
           context:
             - docker-hub-access
-            - lastpass
+            - chromatic
 
   weekly-storybook:
     triggers:
@@ -1351,7 +1338,7 @@ workflows:
       - front-storybook:
           context:
             - docker-hub-access
-            - lastpass
+            - chromatic
           
 
   # nightly-e2e-tests:
