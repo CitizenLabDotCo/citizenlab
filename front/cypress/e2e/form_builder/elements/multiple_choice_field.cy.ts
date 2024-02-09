@@ -54,8 +54,8 @@ describe('Form builder multiple choice choose multiple component', () => {
     cy.get('#e2e-multiselect-control').should('exist');
   });
 
-  it.only('allows using an other option that is mandatory when other is selected when entering data in the form/survey', () => {
-    const otherText = 'Other: please specify';
+  it('allows using an other option that is mandatory when other is selected when entering data in the form/survey', () => {
+    const otherText = 'Other';
     const questionTitle = randomString();
     const otherAnswer = 'Walking';
     cy.visit(
@@ -68,7 +68,7 @@ describe('Form builder multiple choice choose multiple component', () => {
       .click({ force: true });
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('#e2e-option-input-0').type('Car', { force: true });
-    cy.get('#e2e-option-input-1').clear().type(otherText, { force: true });
+    cy.get('#e2e-option-input-1').should('exist');
     cy.contains('Save').click();
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
     cy.contains(questionTitle).should('exist');
