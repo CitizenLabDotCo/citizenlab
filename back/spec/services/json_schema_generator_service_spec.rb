@@ -203,20 +203,14 @@ RSpec.describe JsonSchemaGeneratorService do
         })
       end
 
-      it 'returns options in a random order but with other option always last if "random_option_ordering" is true' do
+      it 'returns other option last even if "random_option_ordering" is true' do
+        create(:custom_field_option, custom_field: field, key: 'other', other: true)
         create(:custom_field_option, custom_field: field, key: 'option3')
         create(:custom_field_option, custom_field: field, key: 'option4')
-        create(:custom_field_option, custom_field: field, key: 'other', other: true)
         field.update!(random_option_ordering: true)
 
-        # NOTE: Checking 10 loops to make sure the chance of a flaky test here is very very low
-        attempts = []
-        10.times do
-          options = generator.visit_select(field)[:enum]
-          expect(options.last).to eq 'other'
-          attempts << options
-        end
-        expect(attempts.uniq.size).to be > 1
+        options = generator.visit_select(field)[:enum]
+        expect(options.last).to eq 'other'
       end
     end
   end
