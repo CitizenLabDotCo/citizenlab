@@ -140,8 +140,7 @@ export type CommentingDisabledReason =
   | 'project_inactive'
   | 'not_supported'
   | 'commenting_disabled'
-  | PermissionsDisabledReason
-  | null;
+  | PermissionsDisabledReason;
 
 type ProjectReactingDisabledReason =
   | 'project_inactive'

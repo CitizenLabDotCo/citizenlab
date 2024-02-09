@@ -20,11 +20,7 @@ const FIXABLE_REASONS = new Set<string>([
   'missing_data',
 ] satisfies DisabledReasonFixable[]);
 
-export const isFixableByAuthentication = (disabledReason: string | null) => {
-  if (disabledReason === null) {
-    return false;
-  }
-
+export const isFixableByAuthentication = (disabledReason: string) => {
   return FIXABLE_REASONS.has(disabledReason);
 };
 
