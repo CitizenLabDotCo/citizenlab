@@ -1592,6 +1592,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Doğrusal ölçek",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Uzun cevap",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Çoktan seçmeli - birçok seçim yapın",
+  "app.containers.AdminPage.ProjectEdit.survey.multiselect_image": "Görüntü seçimi - çok sayıda seçin",
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Henüz anket yanıtı yok",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Yanıtlara açık",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Opsiyonel",
