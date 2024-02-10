@@ -1,59 +1,43 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { Helmet } from 'react-helmet';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
-import { stripHtml } from 'utils/textUtils';
+import { stripHtml, truncate } from 'utils/textUtils';
 import { imageSizes } from 'utils/fileUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 // i18n
-import { getLocalized } from 'utils/i18n';
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // typings
 import { IProjectFolderData } from 'api/project_folders/types';
+import useLocalize from 'hooks/useLocalize';
 
 interface Props {
   projectFolder: IProjectFolderData;
 }
 
-const Meta = memo<Props & WrappedComponentProps>(({ projectFolder, intl }) => {
-  const locale = useLocale();
+const ProjectFolderShowPageMeta = ({ projectFolder }: Props) => {
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const tenantLocales = useAppConfigurationLocales();
   const { data: authUser } = useAuthUser();
 
-  if (
-    !isNilOrError(locale) &&
-    !isNilOrError(tenantLocales) &&
-    !isNilOrError(projectFolder) &&
-    projectFolder.attributes
-  ) {
-    const { formatMessage } = intl;
+  if (!isNilOrError(tenantLocales)) {
     const metaTitle = formatMessage(messages.metaTitle, {
-      title: getLocalized(
-        projectFolder.attributes.title_multiloc,
-        locale,
-        tenantLocales,
-        50
-      ),
+      title: truncate(localize(projectFolder.attributes.title_multiloc), 50),
     });
     const description = stripHtml(
-      getLocalized(
-        projectFolder.attributes.description_multiloc,
-        locale,
-        tenantLocales
-      ),
+      localize(projectFolder.attributes.description_multiloc),
       250
     );
     const image = projectFolder.attributes.header_bg?.large;
@@ -92,6 +76,6 @@ const Meta = memo<Props & WrappedComponentProps>(({ projectFolder, intl }) => {
   }
 
   return null;
-});
+};
 
-export default injectIntl(Meta);
+export default ProjectFolderShowPageMeta;
