@@ -2,7 +2,6 @@ import React from 'react';
 import { isNumber } from 'lodash-es';
 import styled from 'styled-components';
 import { stylingConsts, media } from '@citizenlab/cl2-component-library';
-import bowser from 'bowser';
 
 const Outer = styled.div`
   width: 100%;
@@ -63,13 +62,8 @@ const ContentContainer = ({
   }
 
   return (
-    <Outer id={id} className={`${className} ${bowser.msie ? 'ie' : ''}`}>
-      <Inner
-        className={`inner ${bowser.msie ? 'ie' : ''}`}
-        maxWidth={newMaxWidth}
-      >
-        {children}
-      </Inner>
+    <Outer id={id} className={className}>
+      <Inner maxWidth={newMaxWidth}>{children}</Inner>
     </Outer>
   );
 };

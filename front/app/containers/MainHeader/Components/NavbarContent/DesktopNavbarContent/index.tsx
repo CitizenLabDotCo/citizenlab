@@ -21,7 +21,6 @@ import UserMenu from '../../UserMenu';
 // utils
 import clHistory from 'utils/cl-router/history';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import bowser from 'bowser';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // style
@@ -131,7 +130,7 @@ const DesktopNavbarContent = () => {
   };
 
   return (
-    <Right className={bowser.msie ? 'ie' : ''}>
+    <Right>
       {!isEmailSettingsPage && (
         <>
           {isDesktopUser && (
