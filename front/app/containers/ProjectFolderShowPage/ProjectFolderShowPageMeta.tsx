@@ -9,7 +9,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
-import { stripHtml, truncate } from 'utils/textUtils';
+import { stripHtml } from 'utils/textUtils';
 import { imageSizes } from 'utils/fileUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
@@ -34,7 +34,7 @@ const ProjectFolderShowPageMeta = ({ projectFolder }: Props) => {
 
   if (!isNilOrError(tenantLocales)) {
     const metaTitle = formatMessage(messages.metaTitle, {
-      title: truncate(localize(projectFolder.attributes.title_multiloc), 50),
+      title: localize(projectFolder.attributes.title_multiloc, { maxChar: 50 }),
     });
     const description = stripHtml(
       localize(projectFolder.attributes.description_multiloc),
