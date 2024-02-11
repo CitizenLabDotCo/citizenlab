@@ -5,6 +5,7 @@ module CustomMaps
     module CustomField
       def self.included(base)
         base.has_one :map_config, class_name: 'CustomMaps::MapConfig', as: :mappable, dependent: :destroy
+        base.accepts_nested_attributes_for :map_config
       end
     end
   end

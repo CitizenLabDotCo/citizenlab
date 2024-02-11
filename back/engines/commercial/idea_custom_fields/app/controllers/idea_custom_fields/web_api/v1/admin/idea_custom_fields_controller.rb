@@ -246,6 +246,7 @@ module IdeaCustomFields
           minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
           maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
           options: [:id, :temp_id, { title_multiloc: CL2_SUPPORTED_LOCALES }],
+          map_config_attributes: [:zoom_level, :tile_provider, { center_geojson: {} }],
           logic: {} }
       ])
     end
