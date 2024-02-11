@@ -20,6 +20,26 @@ FactoryBot.define do
       association :resource, factory: :custom_form
     end
 
+    factory :custom_field_point do
+      title_multiloc do
+        {
+          'en' => 'Where do you live?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please indicate where you live.'
+        }
+      end
+      required { false }
+      input_type { 'point' }
+      enabled { true } # TODO: Is this needed? A good idea?
+
+      trait :for_custom_form do
+        association :resource, factory: :custom_form
+      end
+    end
+
     factory :custom_field_multiline_text do
       title_multiloc do
         {
