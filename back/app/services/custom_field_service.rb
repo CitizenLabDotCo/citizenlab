@@ -339,7 +339,7 @@ class CustomFieldService
 
   # *** point ***
 
-  def point_to_ui_schema_field(_field, locale)
+  def point_to_ui_schema_field(_field, _locale)
     {}.tap do |ui_schema|
       ui_schema[:'ui:widget'] = 'hidden'
     end
