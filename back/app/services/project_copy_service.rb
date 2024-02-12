@@ -194,7 +194,8 @@ class ProjectCopyService < TemplateService
 
   def yml_custom_field_option_images(shift_timestamps: 0)
     custom_form_ids = ([@project.custom_form_id] + @project.phases.map(&:custom_form_id)).compact
-    CustomFieldOption.where(custom_field: CustomField.where(resource: custom_form_ids)).flat_map(&:image).map do |image|
+    CustomFieldOption.where(custom_field: CustomField.where(resource: custom_form_ids))
+      .flat_map(&:image).compact.map do |image|
       {
         'custom_field_option_ref' => lookup_ref(image.custom_field_option_id, :custom_field_option),
         'remote_image_url' => image.image_url,
