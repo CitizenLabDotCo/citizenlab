@@ -366,9 +366,13 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_maps_map_configs(shift_timestamps: 0)
-    CustomMaps::MapConfig.where(project_id: @project.id).map do |map_config|
+    map_configs = CustomMaps::MapConfig.where(mappable: @project)
+      .or(CustomMaps::MapConfig.where(mappable: @project&.custom_form&.custom_fields))
+      .or(CustomMaps::MapConfig.where(mappable: @project&.phases&.map(&:custom_form)&.compact&.map(&:custom_fields)))
+
+    map_configs.map do |map_config|
       yml_map_config = {
-        'project_ref' => lookup_ref(map_config.project_id, :project),
+        'mappable_ref' => lookup_ref(map_config.mappable_id, %i[project custom_field]),
         'center_geojson' => map_config.center_geojson,
         'zoom_level' => map_config.zoom_level&.to_f,
         'tile_provider' => map_config.tile_provider,

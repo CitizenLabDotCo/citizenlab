@@ -3,7 +3,7 @@
 module CustomMaps
   module WebApi
     module V1
-      class MapConfigsController < ApplicationController
+      class ProjectMapConfigsController < ApplicationController
         before_action :set_map_config, only: %i[update destroy]
 
         def create
@@ -44,7 +44,7 @@ module CustomMaps
 
         def set_map_config
           authorize @project, :update?
-          @map_config = CustomMaps::MapConfig.find_by!(project_id: params[:project_id])
+          @map_config = CustomMaps::MapConfig.find_by!(mappable_id: params[:project_id])
         end
 
         def serialized_map_config
