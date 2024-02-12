@@ -7,9 +7,11 @@ import { useParams } from 'react-router-dom';
 
 import AnalysisInsights from './AnalysisInsights';
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
+import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 
 const Analysis = ({ customFieldId }: { customFieldId: string }) => {
   const { mutate: addAnalysis } = useAddAnalysis();
+  const { mutate: updateAnalysis } = useUpdateAnalysis();
 
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -49,7 +51,33 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
 
   return (
     <Box>
-      {relevantAnalysis && <AnalysisInsights analysis={relevantAnalysis} />}
+      {relevantAnalysis && relevantAnalysis.attributes.show_insights && (
+        <>
+          <button
+            onClick={() =>
+              updateAnalysis({
+                id: relevantAnalysis.id,
+                show_insights: false,
+              })
+            }
+          >
+            hide
+          </button>
+          <AnalysisInsights analysis={relevantAnalysis} />
+        </>
+      )}
+      {relevantAnalysis && !relevantAnalysis.attributes.show_insights && (
+        <button
+          onClick={() =>
+            updateAnalysis({
+              id: relevantAnalysis.id,
+              show_insights: true,
+            })
+          }
+        >
+          show
+        </button>
+      )}
     </Box>
   );
 };

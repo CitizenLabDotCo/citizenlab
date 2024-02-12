@@ -53,9 +53,10 @@ module Analysis
         end
 
         def update
+          @analysis.assign_attributes analysis_params
           authorize @analysis
 
-          if @analysis.update(analysis_params)
+          if @analysis.save
             side_fx_service.after_update(@analysis, current_user)
             render json: WebApi::V1::AnalysisSerializer.new(
               @analysis,
