@@ -120,6 +120,10 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
   context 'when getting result' do
     it 'works for select' do
       expect(generator.get_result(city_survey_question.id)).to eq({
+        inputType: city_survey_question.input_type,
+        question: city_survey_question.title_multiloc,
+        customFieldId: city_survey_question.id,
+        required: true,
         totalResponses: 11,
         answers: [
           { answer: 'la', count: 6 },
@@ -130,6 +134,10 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
 
     it 'works for multiselect' do
       expect(generator.get_result(multiselect_question.id)).to eq({
+        inputType: multiselect_question.input_type,
+        question: multiselect_question.title_multiloc,
+        customFieldId: multiselect_question.id,
+        required: false,
         totalResponses: 16,
         answers: [
           { answer: 'option1', count: 11 },
@@ -145,6 +153,10 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         city_survey_question.id,
         user_custom_field.id
       )).to eq({
+        inputType: city_survey_question.input_type,
+        question: city_survey_question.title_multiloc,
+        customFieldId: city_survey_question.id,
+        required: true,
         totalResponses: 11,
         answers: [
           { answer: 'la', group_by_value: 'female', count: 3 },
@@ -160,6 +172,10 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         multiselect_question.id,
         user_custom_field.id
       )).to eq({
+        inputType: multiselect_question.input_type,
+        question: multiselect_question.title_multiloc,
+        customFieldId: multiselect_question.id,
+        required: false,
         totalResponses: 16,
         answers: [
           { answer: 'option1', group_by_value: 'female', count: 6 },
@@ -177,6 +193,10 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         city_survey_question.id,
         food_survey_question.id
       )).to eq({
+        inputType: city_survey_question.input_type,
+        question: city_survey_question.title_multiloc,
+        customFieldId: city_survey_question.id,
+        required: true,
         totalResponses: 11,
         answers: [
           { answer: 'la', group_by_value: 'burger', count: 3 },
@@ -192,6 +212,10 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         multiselect_question.id,
         food_survey_question.id
       )).to eq({
+        inputType: multiselect_question.input_type,
+        question: multiselect_question.title_multiloc,
+        customFieldId: multiselect_question.id,
+        required: false,
         totalResponses: 16,
         answers: [
           { answer: 'option1', group_by_value: 'pizza', count: 6 },

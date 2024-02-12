@@ -36,6 +36,12 @@ module ReportBuilder
 
       joined_inputs = @inputs.joins(:author)
       answers = select_answers(joined_inputs, question, user_field)
+
+      # answers = answers.where(
+      #   "#{sql_field(user_field)} IN (?)",
+      #   user_field.options.pluck(:key)
+      # )
+
       grouped_answers = group_answers(answers)
 
       build_response(grouped_answers, question)
@@ -115,7 +121,7 @@ module ReportBuilder
         required: question.required,
         totalResponses: grouped_answers.pluck(:count).sum,
         answers: grouped_answers,
-        customFieldId: field.id
+        customFieldId: question.id
       }
     end
   end
