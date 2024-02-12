@@ -508,7 +508,7 @@ da:
       cta_message: 'Klik på knappen nedenfor for at deltage'
     native_survey_not_submitted:
       subject: '%{organizationName}: Næsten i mål! Indsend dine svar'
-      preheader: 'Du har ikke udfyldt din besvarelse af undersøgelsen på deltagelsesplatformen %{organizationName}'
+      preheader: 'Du har ikke udfyldt din besvarelse af undersøgelsen på borgerinddragelsesplatformen %{organizationName}'
       title_native_survey_not_submitted: 'Så er vi der næsten! Indsend dine svar'
       body_native_survey_not_submitted: 'Du begyndte at dele dine svar på %{phaseTitle} , men har ikke indsendt dem. Indsendelserne lukker på %{phaseEndDate}. Klik på knappen nedenfor for at fortsætte, hvor du slap.'
       body_native_survey_not_submitted_no_date: 'Du er begyndt at dele dine svar på %{phaseTitle} , men har ikke sendt dem. Klik på knappen nedenfor for at fortsætte, hvor du slap.'
