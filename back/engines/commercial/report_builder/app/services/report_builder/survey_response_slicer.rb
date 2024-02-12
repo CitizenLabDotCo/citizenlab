@@ -18,7 +18,7 @@ module ReportBuilder
         answers = answers.where("#{sql_question} IS NOT NULL")
       end
 
-      grouped_answers = get_counts(answers)
+      grouped_answers = apply_grouping(answers)
         .map do |answer, count|
           {
             answer: answer,
@@ -88,7 +88,7 @@ module ReportBuilder
     end
 
     def group_answers(answers)
-      get_counts(answers, grouped: true)
+      apply_grouping(answers, grouped: true)
         .map do |(answer, group_by_value), count|
           {
             answer: answer,
@@ -98,7 +98,7 @@ module ReportBuilder
         end
     end
 
-    def get_counts(answers, grouped: false)
+    def apply_grouping(answers, grouped: false)
       Idea
         .select(:answer)
         .from(answers)
