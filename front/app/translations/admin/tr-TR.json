@@ -927,6 +927,7 @@
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Doğruluk: {accuracy}{percentage}",
   "app.containers.Admin.projects.project.survey.analysis.generated": "Oluşturuldu:",
   "app.containers.Admin.projects.project.survey.analysis.percentage": "%",
+  "app.containers.Admin.projects.project.survey.analysis.refresh": "{count} yeni yanıtlar",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Analiz için ilgili soruları seçin",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "{question}adresindeki analizinize ilgili başka sorular da eklemek ister misiniz?",
   "app.containers.Admin.projects.project.survey.cancel": "İptal",
