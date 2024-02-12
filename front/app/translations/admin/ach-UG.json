@@ -927,6 +927,7 @@
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "crwdns1609608:0{accuracy}crwdnd1609608:0{percentage}crwdne1609608:0",
   "app.containers.Admin.projects.project.survey.analysis.generated": "crwdns1609610:0crwdne1609610:0",
   "app.containers.Admin.projects.project.survey.analysis.percentage": "crwdns1609612:0crwdne1609612:0",
+  "app.containers.Admin.projects.project.survey.analysis.refresh": "crwdns1667500:0{count}crwdne1667500:0",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "crwdns1609614:0crwdne1609614:0",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "crwdns1609616:0{question}crwdne1609616:0",
   "app.containers.Admin.projects.project.survey.cancel": "crwdns1609618:0crwdne1609618:0",
