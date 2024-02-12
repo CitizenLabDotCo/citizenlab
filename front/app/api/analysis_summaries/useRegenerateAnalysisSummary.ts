@@ -16,7 +16,7 @@ const regenerateAnalysisSummary = async ({
   summaryId,
 }: ISummaryRegenerate) =>
   fetcher<ISummary>({
-    path: `/analyses/${analysisId}/summarys/${summaryId}/regenerate`,
+    path: `/analyses/${analysisId}/summaries/${summaryId}/regenerate`,
     action: 'post',
     body: null,
   });
