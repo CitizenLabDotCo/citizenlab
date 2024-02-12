@@ -52,6 +52,22 @@ module Analysis
           end
         end
 
+        def update
+          authorize @analysis
+
+          if @analysis.update(analysis_params)
+            side_fx_service.after_update(@analysis, current_user)
+            render json: WebApi::V1::AnalysisSerializer.new(
+              @analysis,
+              params: jsonapi_serializer_params,
+              include: [:custom_fields]
+            ).serializable_hash, status: :ok
+          else
+            render json: { errors: @analysis.errors.details }, status: :unprocessable_entity
+          end
+        end
+
+
         def destroy
           if @analysis.destroy
             side_fx_service.after_destroy(@analysis, current_user)
@@ -69,7 +85,7 @@ module Analysis
         end
 
         def analysis_params
-          params.require(:analysis).permit(:project_id, :phase_id, custom_field_ids: [])
+          params.require(:analysis).permit(:project_id, :phase_id, :show_insights, custom_field_ids: [] )
         end
 
         def side_fx_service

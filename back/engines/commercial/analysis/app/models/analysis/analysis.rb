@@ -4,11 +4,12 @@
 #
 # Table name: analysis_analyses
 #
-#  id         :uuid             not null, primary key
-#  project_id :uuid
-#  phase_id   :uuid
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id            :uuid             not null, primary key
+#  project_id    :uuid
+#  phase_id      :uuid
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  show_insights :boolean          default(TRUE), not null
 #
 # Indexes
 #

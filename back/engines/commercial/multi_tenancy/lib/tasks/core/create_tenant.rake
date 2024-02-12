@@ -8,7 +8,7 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
     Tenant.find_by(host: host)&.destroy!
 
     settings = SettingsService.new.minimal_required_settings(
-      locales: %w[en nl-BE nl-NL fr-BE],
+      locales: %w[en nl-BE nl-NL fr-BE de-DE],
       lifecycle_stage: 'not_applicable'
     ).deep_merge(
       {
