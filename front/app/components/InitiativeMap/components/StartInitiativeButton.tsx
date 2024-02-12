@@ -17,6 +17,7 @@ const StartInitiativeButton = ({ modalPortalElement, onClick }: Props) => {
   const { formatMessage } = useIntl();
   if (!modalPortalElement) return null;
 
+  // A portal is needed here as we're inserting our React component into the Esri Map popup as its content
   return createPortal(
     <Button icon="arrow-right" iconPos="right" onClick={onClick}>
       {formatMessage(messages.startAProposal)}

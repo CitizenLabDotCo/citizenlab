@@ -32,11 +32,13 @@ const LocationMap = memo<Props>(({ eventLocation }: Props) => {
 
   return (
     <EsriMap
-      center={eventLocation}
+      initialData={{
+        initialCenter: eventLocation,
+        initialZoom: 18,
+        initialGraphics: [pointGraphic],
+        initialShowFullscreenOption: isPhoneOrSmaller ? false : true,
+      }}
       height={isPhoneOrSmaller ? '180px' : '140px'}
-      zoom={18}
-      graphics={[pointGraphic]}
-      showFullscreenOption={isPhoneOrSmaller ? false : true}
     />
   );
 });

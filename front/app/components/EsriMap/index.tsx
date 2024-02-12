@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '@arcgis/core/assets/esri/themes/light/main.css';
 
 // components
@@ -9,6 +9,7 @@ import Layer from '@arcgis/core/layers/Layer';
 import Graphic from '@arcgis/core/Graphic';
 import { Box } from '@citizenlab/cl2-component-library';
 import Fullscreen from '@arcgis/core/widgets/Fullscreen';
+import Point from '@arcgis/core/geometry/Point';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -19,114 +20,120 @@ import { isNil } from 'utils/helperUtils';
 import { EsriUiElement } from './types';
 
 type Props = {
-  center?: GeoJSON.Point | null;
   height?: string;
   width?: string;
-  zoom?: number;
-  maxZoom?: number;
-  layers?: Layer[];
-  onClick?: (event: any, mapView: MapView) => void;
-  onHover?: (event: any, mapView: MapView) => void;
-  graphics?: Graphic[];
-  showFullscreenOption?: boolean;
-  uiElements?: EsriUiElement[];
+  initialData?: InitialData;
 };
 
-const EsriMap = ({
-  center,
-  zoom,
-  maxZoom,
-  layers,
-  onClick,
-  onHover,
-  height,
-  width,
-  graphics,
-  showFullscreenOption,
-  uiElements,
-}: Props) => {
+type InitialData = {
+  initialLayers?: Layer[];
+  initialCenter?: GeoJSON.Point | null;
+  initialGraphics?: Graphic[];
+  initialZoom?: number;
+  initialMaxZoom?: number;
+  initialUiElements?: EsriUiElement[];
+  initialShowFullscreenOption?: boolean;
+  initialOnClick?: (event: any, mapView: MapView) => void;
+  initialOnHover?: (event: any, mapView: MapView) => void;
+};
+
+const EsriMap = ({ height, width, initialData }: Props) => {
   const { data: appConfig } = useAppConfiguration();
+  const globalMapSettings = appConfig?.data.attributes.settings.maps;
 
+  const [map, setMap] = useState<Map | null>(null);
+  const [mapView, setMapView] = useState<MapView | null>(null);
+
+  const initialValuesLoaded = useRef(false);
+
+  // On initial render, create a new map and map view and save them to state variables
   useEffect(() => {
-    // Get global map settings from the app config
-    const globalMapSettings = appConfig?.data.attributes.settings.maps;
+    const newMap = new Map();
+    setMap(newMap);
 
-    // Create a new map and map view
-    const esriMap = new Map();
+    setMapView(
+      new MapView({
+        container: 'esriMap', // Reference to DOM node that will contain the view
+        map: newMap,
+      })
+    );
+  }, []);
 
-    const mapView = new MapView({
-      container: 'esriMap', // Reference to DOM node that will contain the view
-      map: esriMap,
-      zoom: zoom || globalMapSettings?.zoom_level,
-      center: !isNil(center)
-        ? [center.coordinates[0], center.coordinates[1]]
-        : [
-            // Otherwise use the default from map settings OR 0,0 if there is no map settings center.
-            Number(globalMapSettings?.map_center?.lat) || 0,
-            Number(globalMapSettings?.map_center?.long) || 0,
-          ],
-      constraints: {
-        maxZoom: maxZoom || 22,
+  // Load initial map configuration data that was passed in
+  useEffect(() => {
+    if (!initialValuesLoaded.current && initialData && mapView && map) {
+      // Set map center
+      mapView.center = !isNil(initialData.initialCenter)
+        ? new Point({
+            latitude: initialData.initialCenter.coordinates[1],
+            longitude: initialData.initialCenter.coordinates[0],
+          })
+        : new Point({
+            latitude: Number(globalMapSettings?.map_center?.lat) || 0,
+            longitude: Number(globalMapSettings?.map_center?.long) || 0,
+          });
+
+      // Set the basemap
+      map.basemap = new Basemap({
+        baseLayers: [getDefaultBasemap(globalMapSettings?.tile_provider)],
+      });
+      mapView.zoom =
+        initialData.initialZoom || globalMapSettings?.zoom_level || 18;
+      mapView.constraints = {
+        maxZoom: initialData.initialMaxZoom || 22,
         minZoom: 5,
-      },
-    });
+      };
 
-    // Set the basemap
-    esriMap.basemap = new Basemap({
-      baseLayers: [getDefaultBasemap(globalMapSettings?.tile_provider)],
-    });
+      // Add any layers that were passed in
+      if (initialData.initialLayers) {
+        map?.removeAll();
+        initialData.initialLayers.forEach((layer) => {
+          map.add(layer);
+        });
+      }
 
-    // Add any layers that were passed in
-    if (layers) {
-      layers.forEach((layer) => {
-        esriMap.add(layer);
-      });
+      // Add any graphics that were passed in. These should sit on top of any map layers.
+      if (initialData.initialGraphics) {
+        initialData.initialGraphics.forEach((graphic) => {
+          mapView.graphics.add(graphic);
+        });
+      }
+
+      // Add fullscreen widget if set
+      if (initialData.initialShowFullscreenOption) {
+        const fullscreen = new Fullscreen({
+          view: mapView,
+        });
+        mapView.ui.add(fullscreen, 'top-right');
+      }
+
+      // Add any ui elements that were passed in
+      if (initialData.initialUiElements && mapView) {
+        initialData.initialUiElements.forEach((uiElement) => {
+          mapView.ui.add(uiElement.element, uiElement.position);
+        });
+      }
+
+      // On map click, pass the event to onClick handler if it was provided
+      const onClick = initialData.initialOnClick;
+      if (onClick) {
+        mapView?.on('click', function (event) {
+          // By passing the mapView to onClick functions, we can easily change the map from that function
+          onClick(event, mapView);
+        });
+      }
+
+      // On map hover, pass the event to onHover handler if it was provided
+      const onHover = initialData.initialOnHover;
+      if (onHover) {
+        mapView?.on('pointer-move', function (event) {
+          onHover(event, mapView);
+        });
+      }
+
+      initialValuesLoaded.current = true;
     }
-
-    // Add any graphics that were passed in. These should sit on top of any map layers.
-    if (graphics) {
-      graphics.forEach((graphic) => {
-        mapView.graphics.add(graphic);
-      });
-    }
-
-    // Add any UI elements that were passed in.
-    if (uiElements) {
-      uiElements.forEach((uiElement) => {
-        mapView.ui.add(uiElement.element, uiElement.position);
-      });
-    }
-
-    // Add fullscreen widget if set
-    if (showFullscreenOption) {
-      const fullscreen = new Fullscreen({
-        view: mapView,
-      });
-      mapView.ui.add(fullscreen, 'top-right');
-    }
-
-    // On map click, pass the event to onClick handler if it was provided
-    mapView.on('click', function (event) {
-      // By passing the mapview to onClick functions, we can easily change the map from that function
-      onClick && onClick(event, mapView);
-    });
-
-    // On map hover, pass the event to onHover handler if it was provided
-    mapView.on('pointer-move', function (event) {
-      onHover && onHover(event, mapView);
-    });
-  }, [
-    appConfig?.data.attributes.settings.maps,
-    center,
-    graphics,
-    layers,
-    maxZoom,
-    onClick,
-    onHover,
-    showFullscreenOption,
-    uiElements,
-    zoom,
-  ]);
+  }, [globalMapSettings, initialData, map, mapView]);
 
   return (
     <>

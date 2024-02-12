@@ -67,11 +67,13 @@ const EventMap = memo<Props>(
 
     return (
       <EsriMap
-        center={position}
+        initialData={{
+          initialCenter: position,
+          initialZoom: 18,
+          initialGraphics: [pointGraphic],
+          initialOnClick: onClick,
+        }}
         height={mapHeight}
-        zoom={18}
-        graphics={[pointGraphic]}
-        onClick={onClick}
       />
     );
   }
