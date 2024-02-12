@@ -85,6 +85,7 @@ module IdeaCustomFields
         delete_fields = fields.reject { |field| given_field_ids.include? field.id }
         delete_fields.each { |field| delete_field! field }
         given_fields.each_with_index do |field_params, index|
+          puts "field_params: #{field_params.inspect}"
           options_params = field_params.delete :options
           if field_params[:id] && fields_by_id.key?(field_params[:id])
             field = fields_by_id[field_params[:id]]
@@ -97,6 +98,7 @@ module IdeaCustomFields
             option_temp_ids_to_ids_mapping_in_field_logic = update_options! field, options_params, errors, index
             option_temp_ids_to_ids_mapping.merge! option_temp_ids_to_ids_mapping_in_field_logic
           end
+          create_or_update_map_config(field, field_params)
           field.set_list_position(index)
         end
         raise UpdateAllFailedError, errors if errors.present?
@@ -148,6 +150,22 @@ module IdeaCustomFields
         errors[index.to_s] = field.errors.details
         false
       end
+    end
+
+    def create_or_update_map_config(field, field_params)
+      map_config_params = field_params[:map_config_params]
+      return unless map_config_params
+
+      map_config_params = map_config_params.merge(mappable_id: field.id, mappable_type: 'CustomField')
+
+      if field.map_config
+        field.map_config.update!(map_config_params)
+      else
+        map_config = CustomMaps::MapConfig.new(map_config_params)
+        map_config.save!
+      end
+
+      # TODO: Add error handling/reporting?
     end
 
     def delete_field!(field)
@@ -246,7 +264,7 @@ module IdeaCustomFields
           minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
           maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
           options: [:id, :temp_id, { title_multiloc: CL2_SUPPORTED_LOCALES }],
-          map_config_attributes: [:zoom_level, :tile_provider, { center_geojson: {} }],
+          map_config_params: [:zoom_level, :tile_provider, { center_geojson: {} }],
           logic: {} }
       ])
     end

@@ -27,7 +27,9 @@ module CustomMaps
 
     validates :zoom_level, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 20 }, allow_nil: true
     validates :tile_provider, format: { with: %r{\Ahttps://.+\z} }, allow_nil: true
-    # validates :mappable_id, presence: true, uniqueness: true
+    validates :mappable_id, presence: true, uniqueness: true
+
+    # TODO: validate custom_field type == point
 
     def center_geojson
       RGeo::GeoJSON.encode(center) if center.present?
