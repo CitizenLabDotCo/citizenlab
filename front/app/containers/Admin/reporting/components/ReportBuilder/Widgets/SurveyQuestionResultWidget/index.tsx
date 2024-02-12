@@ -59,6 +59,6 @@ SurveyQuestionResultWidget.craft = {
   },
 };
 
-export const surveyQuestionResultTitle = messages.singleSurveyQuestion;
+export const surveyQuestionResultTitle = messages.surveyQuestion;
 
 export default SurveyQuestionResultWidget;
