@@ -11,7 +11,15 @@ module ReportBuilder
       question = get_question(question_field_id)
       sql_question = sql_field(question)
 
+      puts "================"
+      puts @inputs.to_a.pluck(:custom_field_values)
+      puts "================"
+
       answers = @inputs.select("#{sql_question} as answer")
+
+      puts "================"
+      puts answers.to_a.pluck(:answer)
+      puts "================"
 
       if question.input_type == 'select'
         answers = answers.where(

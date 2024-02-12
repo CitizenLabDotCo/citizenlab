@@ -132,11 +132,19 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
       record.author = users[index]
       record.project = project
       record.phases = [phase]
-      record.custom_field_values = {
-        city_survey_question.key => city_survey_response(index),
-        food_survey_question.key => index.even? ? pizza_option.key : burger_option.key,
-        multiselect_question.key => index < 6 ? [multiselect_question.options.first.key] : multiselect_question.options.map(&:key)
-      }
+      record.custom_field_values = if index == 8
+        {
+          city_survey_question.key => city_survey_response(index),
+          food_survey_question.key => index.even? ? pizza_option.key : burger_option.key,
+        }
+      else
+        {
+          city_survey_question.key => city_survey_response(index),
+          food_survey_question.key => index.even? ? pizza_option.key : burger_option.key,
+          multiselect_question.key => index < 6 ? [multiselect_question.options.first.key] : multiselect_question.options.map(&:key)
+        }
+      end
+
       record.save!
     end
   end
@@ -166,7 +174,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         totalResponses: 16,
         answers: [
           { answer: 'option1', count: 11 },
-          { answer: 'option2', count: 5 },
+          { answer: 'option2', count: 5 }
         ]
       })
     end
