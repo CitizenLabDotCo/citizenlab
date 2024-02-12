@@ -4,7 +4,6 @@ import { combineLatest } from 'rxjs';
 import { useParams } from 'react-router-dom';
 
 // components
-import Map from 'components/Map';
 import MapConfigOverview from './MapConfigOverview';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
@@ -35,6 +34,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
+import IdeationConfigurationMap from './IdeationConfigurationMap';
 
 const Container = styled.div`
   display: flex;
@@ -172,7 +172,11 @@ const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
       <Container className={className || ''}>
         <StyledMapConfigOverview projectId={projectId} />
         <MapWrapper>
-          <Map projectId={projectId} hideLegend={false} />
+          <IdeationConfigurationMap
+            center={mapConfig.data.attributes.center_geojson}
+            zoom={mapConfig.data.attributes.zoom_level}
+            layers={mapConfig.data.attributes.layers}
+          />
           <GoToDefaultViewportButtonWrapper>
             <Tippy
               maxWidth="250px"
