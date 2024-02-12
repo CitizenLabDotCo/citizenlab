@@ -43,9 +43,7 @@ const RightContainer = styled(Box)`
     flex-direction: row-reverse;
     margin-left: 30px;
 
-    &.ie {
-      margin-left: 50px;
-    }
+
     ${media.desktop`
         margin-left: 40px;
     `}
@@ -53,7 +51,7 @@ const RightContainer = styled(Box)`
     ${media.phone`
         margin-left: 20px;
     `}
-    `}
+  `}
 `;
 
 const NavItem = styled(Box)`

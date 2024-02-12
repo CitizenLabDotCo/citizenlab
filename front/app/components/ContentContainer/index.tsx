@@ -8,28 +8,20 @@ const Outer = styled.div`
   position: relative;
   padding-left: 30px;
   padding-right: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   ${media.phone`
     padding-left: 20px;
     padding-right: 20px;
   `}
-
-  &:not(.ie) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
 `;
 
 const Inner = styled.div<{ maxWidth?: string | number }>`
   width: 100%;
   max-width: ${({ maxWidth }) =>
     isNumber(maxWidth) ? `${maxWidth}px` : maxWidth};
-
-  &.ie {
-    margin-left: auto;
-    margin-right: auto;
-  }
 `;
 
 export interface Props {

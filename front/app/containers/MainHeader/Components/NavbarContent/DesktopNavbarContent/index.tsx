@@ -37,10 +37,6 @@ const Right = styled.div`
   height: ${({ theme }) => theme.menuHeight}px;
   margin-right: 30px;
 
-  &.ie {
-    margin-right: 50px;
-  }
-
   ${media.desktop`
     margin-right: 40px;
   `}
@@ -52,9 +48,6 @@ const Right = styled.div`
     flex-direction: row-reverse;
     margin-left: 30px;
 
-    &.ie {
-      margin-left: 50px;
-    }
     ${media.desktop`
         margin-left: 40px;
     `}
