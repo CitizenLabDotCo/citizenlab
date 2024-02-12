@@ -11,25 +11,78 @@ module ReportBuilder
       end
 
       def resolve
-        raise Pundit::NotAuthorizedError unless user&.active? && user&.admin?
+        raise Pundit::NotAuthorizedError unless user&.active?
 
-        @scope.all
+        if user.admin?
+          @scope.all
+        elsif user.project_or_folder_moderator?
+          @scope.where(owner: user)
+        else
+          raise Pundit::NotAuthorizedError
+        end
+      end
+    end
+
+    def show?
+      return false unless active?
+
+      if admin?
+        true
+      elsif user.project_or_folder_moderator?
+        if record.phase?
+          PhasePolicy.new(user, record.phase).active_moderator?
+        else
+          record.owner == user
+        end
+      else
+        false
+      end
+    end
+
+    def layout?
+      if admin?
+        true
+      elsif user.present? && user.project_or_folder_moderator?
+        if record.phase?
+          if PhasePolicy.new(user, record.phase).show?
+            record.phase.started? || access_to_data?
+          else
+            false
+          end
+        else
+          record.owner == user && access_to_data?
+        end
+      else
+        phase_started_and_accessible?
       end
     end
 
     def write?
-      record.phase? ? PhasePolicy.new(user, record.phase).update? : (admin? && active?)
-    end
+      return false unless active?
 
-    def read?
-      record.phase? ? PhasePolicy.new(user, record.phase).show? : (admin? && active?)
+      if admin?
+        true
+      elsif user.project_or_folder_moderator?
+        if record.phase?
+          PhasePolicy.new(user, record.phase).show? && access_to_data?
+        else
+          record.owner == user && access_to_data?
+        end
+      else
+        false
+      end
     end
-
-    alias show? read?
-    alias layout? read?
 
     alias create? write?
     alias update? write?
     alias destroy? write?
+
+    def access_to_data?
+      ReportBuilder::PermissionsService.new.editing_disabled_reason_for_report(record, user).blank?
+    end
+
+    def phase_started_and_accessible?
+      record.phase? && PhasePolicy.new(user, record.phase).show? && record.phase.started?
+    end
   end
 end

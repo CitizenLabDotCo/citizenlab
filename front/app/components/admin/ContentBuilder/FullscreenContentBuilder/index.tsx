@@ -85,6 +85,7 @@ export const ContentBuilder = ({
 
 const FullscreenContentBuilder = (props: Props) => {
   const modalPortalElement = document.getElementById('modal-portal');
+
   return modalPortalElement
     ? createPortal(<ContentBuilder {...props} />, modalPortalElement)
     : null;

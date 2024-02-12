@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { convertUrlToUploadFile } from 'utils/fileUtils';
@@ -56,7 +55,7 @@ const InputContainer = styled.div`
   flex-direction: row;
 `;
 
-export type ExtraFormDataKey = 'custom_field_values';
+type ExtraFormDataKey = 'custom_field_values';
 
 type FormValues = {
   first_name?: string;
@@ -69,11 +68,11 @@ type FormValues = {
 const ProfileForm = () => {
   const tenantLocales = useAppConfigurationLocales();
   const disableBio = useFeatureFlag({ name: 'disable_user_bios' });
+  const userAvatarsEnabled = useFeatureFlag({ name: 'user_avatars' });
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { mutateAsync: updateUser } = useUpdateUser();
   const { data: authUser } = useAuthUser();
   const { data: lockedAttributes } = useUserLockedAttributes();
-
   const { formatMessage } = useIntl();
   const [extraFormData, setExtraFormData] = useState<{
     [field in ExtraFormDataKey]?: Record<string, any>;
@@ -90,7 +89,7 @@ const ProfileForm = () => {
       bio_multiloc: object(),
     }),
     locale: string(),
-    avatar: mixed().nullable(),
+    ...(userAvatarsEnabled ? { avatar: mixed().nullable() } : {}),
   });
 
   const methods = useForm<FormValues>({
@@ -109,9 +108,10 @@ const ProfileForm = () => {
   });
 
   useEffect(() => {
-    if (isNilOrError(authUser)) return;
-    const avatarUrl =
-      authUser.data.attributes.avatar && authUser.data.attributes.avatar.medium;
+    if (!userAvatarsEnabled) return;
+
+    const avatarUrl = authUser?.data.attributes.avatar?.medium;
+
     if (avatarUrl) {
       convertUrlToUploadFile(avatarUrl, null, null).then((fileAvatar) => {
         if (fileAvatar) {
@@ -121,7 +121,7 @@ const ProfileForm = () => {
     } else {
       methods.setValue('avatar', null);
     }
-  }, [authUser, methods]);
+  }, [authUser, methods, userAvatarsEnabled]);
 
   if (!authUser || !tenantLocales) return null;
 
@@ -207,22 +207,24 @@ const ProfileForm = () => {
           <SectionField>
             <Feedback successMessage={formatMessage(messages.messageSuccess)} />
           </SectionField>
-          <SectionField>
-            <ImagesDropzone
-              name="avatar"
-              imagePreviewRatio={1}
-              maxImagePreviewWidth="170px"
-              acceptedFileTypes={{
-                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-              }}
-              label={formatMessage(messages.imageDropzonePlaceholder)}
-              inputLabel={formatMessage(messages.image)}
-              removeIconAriaTitle={formatMessage(
-                messages.a11y_imageDropzoneRemoveIconAriaTitle
-              )}
-              borderRadius="50%"
-            />
-          </SectionField>
+          {userAvatarsEnabled && (
+            <SectionField>
+              <ImagesDropzone
+                name="avatar"
+                imagePreviewRatio={1}
+                maxImagePreviewWidth="170px"
+                acceptedFileTypes={{
+                  'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+                }}
+                label={formatMessage(messages.imageDropzonePlaceholder)}
+                inputLabel={formatMessage(messages.image)}
+                removeIconAriaTitle={formatMessage(
+                  messages.a11y_imageDropzoneRemoveIconAriaTitle
+                )}
+                borderRadius="50%"
+              />
+            </SectionField>
+          )}
 
           <SectionField>
             <InputContainer>

@@ -38,7 +38,15 @@ const Visitors = () => {
     name: 'visitors_dashboard',
   });
 
-  if (!visitorsDashboardEnabled || !appConfig || !analytics) return null;
+  if (
+    !visitorsDashboardEnabled ||
+    !appConfig ||
+    !analytics ||
+    !authUser ||
+    !isAdmin(authUser)
+  ) {
+    return null;
+  }
 
   const [countData] = analytics.data.attributes;
   if (!countData) return null;

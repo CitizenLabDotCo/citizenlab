@@ -26,7 +26,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 // utils
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import messages from './messages';
@@ -34,7 +33,7 @@ import useLocalize from 'hooks/useLocalize';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
-  phase?: IPhaseData;
+  phase: IPhaseData;
   project: IProjectData;
 };
 
@@ -61,18 +60,14 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
 
   // phase
   const config = getVotingMethodConfig(votingMethod);
-  const phaseHasEnded =
-    phase?.attributes && phase?.attributes.end_at
-      ? pastPresentOrFuture(phase?.attributes.end_at) === 'past'
-      : false;
-  const phaseHasNotStartedYet = phase?.attributes
-    ? pastPresentOrFuture(phase?.attributes.start_at) === 'future'
+  const phaseHasEnded = phase.attributes.end_at
+    ? pastPresentOrFuture(phase.attributes.end_at) === 'past'
     : false;
+  const phaseHasNotStartedYet =
+    pastPresentOrFuture(phase.attributes.start_at) === 'future';
 
   // basket
-  const { data: basket } = useBasket(
-    phase?.relationships?.user_basket?.data?.id
-  );
+  const { data: basket } = useBasket(phase.relationships.user_basket?.data?.id);
   const { mutate: updateBasket } = useUpdateBasket();
   const basketStatus = phaseHasEnded
     ? 'submissionEnded'
@@ -81,7 +76,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
     : 'hasNotSubmitted';
   const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
   const basketCount =
-    phase?.attributes.baskets_count || project?.attributes.baskets_count;
+    phase.attributes.baskets_count || project.attributes.baskets_count;
 
   return (
     <Box boxShadow={defaultStyles.boxShadow} id="voting-status-module">
@@ -123,14 +118,14 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 formatMessage,
               })}
           </Box>
-          {phase && showDate && phase.attributes.end_at && (
+          {showDate && phase.attributes.end_at && (
             <Text>
               {formatMessage(messages.submittedUntil)}{' '}
-              <b>{getLocalisedDateString(phase?.attributes.end_at)}</b>.
+              <b>{getLocalisedDateString(phase.attributes.end_at)}</b>.
             </Text>
           )}
         </>
-        {!isNilOrError(basketCount) && basketCount > 0 && (
+        {basketCount > 0 && (
           <>
             <Text m="0px" fontSize="xxxxl" style={{ fontWeight: '700' }}>
               {basketCount}
@@ -154,7 +149,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
               mt="16px"
               id="e2e-modify-votes"
               onClick={() => {
-                unsubmitBasket(basket?.data.id, updateBasket);
+                unsubmitBasket(basket.data.id, updateBasket);
               }}
             >
               {config &&

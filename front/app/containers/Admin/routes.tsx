@@ -107,7 +107,7 @@ const createAdminRoutes = () => {
         // Careful: moderators currently have access to the admin index route
         // Adjust isModerator in routePermissions.ts if needed.
         path: '',
-        element: <Navigate to="dashboard/visitors" />,
+        element: <Navigate to="dashboard/overview" />,
       },
       createDashboardRoutes(),
       createAdminInitiativesRoutes(),

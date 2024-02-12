@@ -1,8 +1,5 @@
 import React from 'react';
 
-// hooks
-import useMostReactedIdeas from 'containers/Admin/reporting/hooks/useMostReactedIdeas';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import IdeaCard from './IdeaCard';
@@ -14,37 +11,27 @@ import messages from '../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { IIdeaData } from 'api/ideas/types';
+import { IIdeaImageData } from 'api/idea_images/types';
 
 interface Props {
-  projectId: string;
-  phaseId?: string;
-  numberOfIdeas: number;
+  ideas: IIdeaData[];
+  images: IIdeaImageData[];
   collapseLongText: boolean;
 }
 
-const Ideas = ({
-  projectId,
-  phaseId,
-  numberOfIdeas,
-  collapseLongText,
-}: Props) => {
+const Ideas = ({ ideas, images, collapseLongText }: Props) => {
   const localize = useLocalize();
-  const mostReactedIdeas = useMostReactedIdeas({
-    projectId,
-    phaseId,
-    numberOfIdeas,
-  });
 
-  if (isNilOrError(mostReactedIdeas) || mostReactedIdeas.length === 0) {
+  if (isNilOrError(ideas) || ideas.length === 0) {
     return <NoData message={messages.noIdeasAvailable} />;
   }
 
   return (
     <Box>
-      {mostReactedIdeas.map(
+      {ideas.map(
         (
           {
-            id,
             attributes: {
               title_multiloc,
               body_multiloc,
@@ -62,7 +49,7 @@ const Ideas = ({
             title={localize(title_multiloc)}
             body={localize(body_multiloc)}
             url={`/ideas/${slug}`}
-            id={id}
+            images={images}
             likes={likes_count}
             dislikes={dislikes_count}
             comments={comments_count}

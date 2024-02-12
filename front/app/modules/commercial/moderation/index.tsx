@@ -1,6 +1,5 @@
-import { ModuleConfiguration } from 'utils/moduleUtils';
 import React from 'react';
-const NavItem = React.lazy(() => import('./admin/components/NavItem'));
+import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const AdminModerationComponent = React.lazy(() => import('./admin/containers'));
 
@@ -12,9 +11,6 @@ const configuration: ModuleConfiguration = {
         element: <AdminModerationComponent />,
       },
     ],
-  },
-  outlets: {
-    'app.containers.Admin.dashboards.tabs': (props) => <NavItem {...props} />,
   },
 };
 

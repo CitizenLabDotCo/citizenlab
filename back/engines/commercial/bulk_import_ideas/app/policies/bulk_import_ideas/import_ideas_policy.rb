@@ -25,17 +25,5 @@ module BulkImportIdeas
     def idea_import?
       active_admin?
     end
-
-    private
-
-    def active_user?
-      return false unless user
-
-      user.active?
-    end
-
-    def active_admin?
-      active_user? && user.admin?
-    end
   end
 end

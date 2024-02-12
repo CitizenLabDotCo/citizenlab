@@ -3,7 +3,7 @@
 module Verification
   module Patches
     module UserPolicy
-      def shared_permitted_attributes
+      def permitted_attributes_for_update
         locked_attributes = verification_service.locked_attributes(record)
         super - locked_attributes
       end

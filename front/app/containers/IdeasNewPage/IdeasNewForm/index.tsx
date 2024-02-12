@@ -5,11 +5,10 @@ import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import useAuthUser from 'api/me/useAuthUser';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
 import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
 
 // i18n
@@ -32,7 +31,7 @@ import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getLocationGeojson } from '../utils';
-import { isError, isNilOrError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { getCurrentPhase } from 'api/phases/utils';
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
@@ -42,6 +41,7 @@ import { Multiloc } from 'typings';
 import { IPhases, IPhaseData } from 'api/phases/types';
 import useLocale from 'hooks/useLocale';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+import { IProject } from 'api/projects/types';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -69,21 +69,22 @@ interface FormValues {
   topic_ids?: string[];
 }
 
-const IdeasNewPageWithJSONForm = () => {
+interface Props {
+  project: IProject;
+}
+
+const IdeasNewPageWithJSONForm = ({ project }: Props) => {
   const locale = useLocale();
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
   const { mutateAsync: addIdea } = useAddIdea();
   const { formatMessage } = useIntl();
-  const params = useParams<{ slug: string }>();
   const { data: authUser } = useAuthUser();
-  const { data: project } = useProjectBySlug(params.slug);
   const [queryParams] = useSearchParams();
   const phaseId = queryParams.get('phase_id');
-
-  const { data: phases } = usePhases(project?.data.id);
+  const { data: phases } = usePhases(project.data.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
-    projectId: project?.data.id,
+    projectId: project.data.id,
     phaseId,
   });
 
@@ -159,10 +160,6 @@ const IdeasNewPageWithJSONForm = () => {
   };
 
   const onSubmit = async (data: FormValues) => {
-    if (!project) {
-      return;
-    }
-
     let location_point_geojson;
 
     if (data.location_description && !data.location_point_geojson) {
@@ -233,7 +230,7 @@ const IdeasNewPageWithJSONForm = () => {
     setPostAnonymously((postAnonymously) => !postAnonymously);
   };
 
-  if (isNilOrError(project) || !config) {
+  if (!config) {
     return null;
   }
 
@@ -246,7 +243,7 @@ const IdeasNewPageWithJSONForm = () => {
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
-      {project && !processingLocation && schema && uiSchema && config ? (
+      {!processingLocation && schema && uiSchema && config ? (
         <>
           <IdeasNewMeta />
           <Form
@@ -298,7 +295,7 @@ const IdeasNewPageWithJSONForm = () => {
             }
           />
         </>
-      ) : isError(project) || inputSchemaError ? null : (
+      ) : inputSchemaError ? null : (
         <FullPageSpinner />
       )}
       {showAnonymousConfirmationModal && (

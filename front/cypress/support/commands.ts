@@ -16,6 +16,7 @@ declare global {
       signUp: typeof signUp;
       apiLogin: typeof apiLogin;
       setAdminLoginCookie: typeof setAdminLoginCookie;
+      setModeratorLoginCookie: typeof setModeratorLoginCookie;
       setConsentCookie: typeof setConsentCookie;
       setConsentAndAdminLoginCookies: typeof setConsentAndAdminLoginCookies;
       setLoginCookie: typeof setLoginCookie;
@@ -100,7 +101,7 @@ export function randomEmail() {
     .toLowerCase()}.com`;
 }
 
-export function unregisterServiceWorkers() {
+function unregisterServiceWorkers() {
   if (navigator.serviceWorker) {
     navigator.serviceWorker.getRegistrations().then((registrations) => {
       registrations.forEach((registration) => {
@@ -110,14 +111,14 @@ export function unregisterServiceWorkers() {
   }
 }
 
-export function goToLandingPage() {
+function goToLandingPage() {
   cy.wait(500);
   cy.visit('/');
   cy.get('#e2e-landing-page');
   cy.wait(500);
 }
 
-export function login(email: string, password: string) {
+function login(email: string, password: string) {
   cy.wait(500);
   cy.visit('/');
   cy.get('#e2e-landing-page');
@@ -131,7 +132,7 @@ export function login(email: string, password: string) {
   cy.wait(500);
 }
 
-export function signUp() {
+function signUp() {
   cy.goToLandingPage();
   cy.get('#e2e-navbar-login-menu-item').click();
   cy.get('#e2e-goto-signup').click();
@@ -157,7 +158,7 @@ export function signUp() {
   cy.get('.e2e-signup-success-close-button').wait(500).click();
 }
 
-export function apiLogin(email: string, password: string) {
+function apiLogin(email: string, password: string) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
@@ -173,24 +174,28 @@ export function apiLogin(email: string, password: string) {
   });
 }
 
-export function setLoginCookie(email: string, password: string) {
+function setLoginCookie(email: string, password: string) {
   return cy.apiLogin(email, password).then((res) => {
     cy.setCookie('cl2_jwt', res.body.jwt);
   });
 }
 
-export function setAdminLoginCookie() {
+function setAdminLoginCookie() {
   cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
 }
 
-export function setConsentCookie() {
+function setModeratorLoginCookie() {
+  cy.setLoginCookie('moderator@citizenlab.co', 'democracy2.0');
+}
+
+function setConsentCookie() {
   cy.setCookie(
     'cl2_consent',
     '{%22analytics%22:true%2C%22advertising%22:true%2C%22functional%22:true%2C%22savedChoices%22:{%22google_tag_manager%22:true%2C%22matomo%22:true%2C%22google_analytics%22:true%2C%22intercom%22:true%2C%22segment%22:true}}'
   );
 }
 
-export function setConsentAndAdminLoginCookies() {
+function setConsentAndAdminLoginCookies() {
   cy.setConsentCookie();
   cy.setAdminLoginCookie();
 }
@@ -233,7 +238,7 @@ function emailConfirmation(jwt: any) {
   });
 }
 
-export function apiSignup(
+function apiSignup(
   firstName: string,
   lastName: string,
   email: string,
@@ -254,7 +259,7 @@ export function apiSignup(
   });
 }
 
-export function apiConfirmUser(email: string, password: string) {
+function apiConfirmUser(email: string, password: string) {
   return cy.apiLogin(email, password).then((response) => {
     const jwt = response.body.jwt;
 
@@ -262,7 +267,7 @@ export function apiConfirmUser(email: string, password: string) {
   });
 }
 
-export function apiCreateAdmin(
+function apiCreateAdmin(
   firstName: string,
   lastName: string,
   email: string,
@@ -296,7 +301,7 @@ export function apiCreateAdmin(
   });
 }
 
-export function apiUpdateCurrentUser(attrs: IUserUpdate) {
+function apiUpdateCurrentUser(attrs: IUserUpdate) {
   cy.getCookie('cl2_jwt').then((cookie) => {
     if (!cookie) {
       return;
@@ -318,7 +323,7 @@ export function apiUpdateCurrentUser(attrs: IUserUpdate) {
   });
 }
 
-export function apiRemoveUser(userId: string) {
+function apiRemoveUser(userId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -333,7 +338,7 @@ export function apiRemoveUser(userId: string) {
   });
 }
 
-export function apiGetUsersCount() {
+function apiGetUsersCount() {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -348,7 +353,7 @@ export function apiGetUsersCount() {
   });
 }
 
-export function apiGetSeats() {
+function apiGetSeats() {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -363,7 +368,7 @@ export function apiGetSeats() {
   });
 }
 
-export function apiGetAppConfiguration() {
+function apiGetAppConfiguration() {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -378,7 +383,7 @@ export function apiGetAppConfiguration() {
   });
 }
 
-export function apiCreateModeratorForProject(
+function apiCreateModeratorForProject(
   firstName: string,
   lastName: string,
   email: string,
@@ -414,18 +419,18 @@ export function apiCreateModeratorForProject(
   });
 }
 
-export function logout() {
+function logout() {
   cy.clearCookies();
   cy.reload();
 }
 
-export function acceptCookies() {
+function acceptCookies() {
   cy.get('#e2e-cookie-banner');
   cy.get('#e2e-cookie-banner .e2e-accept-cookies-btn').click();
   cy.wait(200);
 }
 
-export function getIdeaById(ideaId: string) {
+function getIdeaById(ideaId: string) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
@@ -435,7 +440,7 @@ export function getIdeaById(ideaId: string) {
   });
 }
 
-export function getProjectBySlug(projectSlug: string) {
+function getProjectBySlug(projectSlug: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -450,7 +455,7 @@ export function getProjectBySlug(projectSlug: string) {
   });
 }
 
-export function getProjectById(projectId: string) {
+function getProjectById(projectId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -465,7 +470,7 @@ export function getProjectById(projectId: string) {
   });
 }
 
-export function getTopics({ excludeCode }: { excludeCode?: string }) {
+function getTopics({ excludeCode }: { excludeCode?: string }) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
@@ -475,7 +480,7 @@ export function getTopics({ excludeCode }: { excludeCode?: string }) {
   });
 }
 
-export function getInitiativeStatuses() {
+function getInitiativeStatuses() {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
@@ -485,7 +490,7 @@ export function getInitiativeStatuses() {
   });
 }
 
-export function getAuthUser() {
+function getAuthUser() {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -500,7 +505,7 @@ export function getAuthUser() {
   });
 }
 
-export function getArea(areaId: string) {
+function getArea(areaId: string) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
@@ -510,7 +515,7 @@ export function getArea(areaId: string) {
   });
 }
 
-export function getUserBySlug(userSlug: string) {
+function getUserBySlug(userSlug: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -537,7 +542,7 @@ type IdeaType = {
   phaseIds?: string[];
 };
 
-export function apiCreateIdea({
+function apiCreateIdea({
   projectId,
   ideaTitle,
   ideaContent,
@@ -590,7 +595,7 @@ export function apiCreateIdea({
   });
 }
 
-export function apiRemoveIdea(ideaId: string) {
+function apiRemoveIdea(ideaId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -605,7 +610,7 @@ export function apiRemoveIdea(ideaId: string) {
   });
 }
 
-export function apiCreateInitiative({
+function apiCreateInitiative({
   initiativeTitle,
   initiativeContent,
   assigneeId,
@@ -663,7 +668,7 @@ export function apiCreateInitiative({
   });
 }
 
-export function apiRemoveInitiative(initiativeId: string) {
+function apiRemoveInitiative(initiativeId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -678,7 +683,7 @@ export function apiRemoveInitiative(initiativeId: string) {
   });
 }
 
-export function apiLikeInitiative(
+function apiLikeInitiative(
   email: string,
   password: string,
   initiativeId: string
@@ -697,11 +702,7 @@ export function apiLikeInitiative(
   });
 }
 
-export function apiDislikeIdea(
-  email: string,
-  password: string,
-  ideaId: string
-) {
+function apiDislikeIdea(email: string, password: string, ideaId: string) {
   return cy.apiLogin(email, password).then((response) => {
     const jwt = response.body.jwt;
 
@@ -716,7 +717,7 @@ export function apiDislikeIdea(
   });
 }
 
-export function apiCreateOfficialFeedbackForIdea(
+function apiCreateOfficialFeedbackForIdea(
   ideaId: string,
   officialFeedbackContent: string,
   officialFeedbackAuthor: string
@@ -747,7 +748,7 @@ export function apiCreateOfficialFeedbackForIdea(
   });
 }
 
-export function apiAddComment(
+function apiAddComment(
   postId: string,
   postType: 'idea' | 'initiative',
   commentContent: string,
@@ -799,7 +800,7 @@ export function apiAddComment(
   }
 }
 
-export function apiRemoveComment(commentId: string) {
+function apiRemoveComment(commentId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -819,7 +820,7 @@ export function apiRemoveComment(commentId: string) {
   });
 }
 
-export function apiCreateProject({
+function apiCreateProject({
   title,
   descriptionPreview,
   description,
@@ -871,7 +872,7 @@ export function apiCreateProject({
   });
 }
 
-export function apiEditProject({
+function apiEditProject({
   projectId,
   title,
   descriptionPreview,
@@ -931,7 +932,7 @@ export function apiEditProject({
   });
 }
 
-export function apiCreateFolder({
+function apiCreateFolder({
   title,
   descriptionPreview,
   description,
@@ -976,7 +977,7 @@ export function apiCreateFolder({
   });
 }
 
-export function apiAddProjectsToFolder(projectIds: string[], folderId: string) {
+function apiAddProjectsToFolder(projectIds: string[], folderId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -993,7 +994,7 @@ export function apiAddProjectsToFolder(projectIds: string[], folderId: string) {
     });
   });
 }
-export function apiRemoveProject(projectId: string) {
+function apiRemoveProject(projectId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1008,7 +1009,7 @@ export function apiRemoveProject(projectId: string) {
   });
 }
 
-export function apiRemoveFolder(folderId: string) {
+function apiRemoveFolder(folderId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1023,7 +1024,7 @@ export function apiRemoveFolder(folderId: string) {
   });
 }
 
-export function apiCreateCustomPage(title: string) {
+function apiCreateCustomPage(title: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1049,7 +1050,7 @@ export function apiCreateCustomPage(title: string) {
     });
   });
 }
-export function apiRemoveCustomPage(customPageId: string) {
+function apiRemoveCustomPage(customPageId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1064,7 +1065,7 @@ export function apiRemoveCustomPage(customPageId: string) {
   });
 }
 
-export function apiAddPoll(
+function apiAddPoll(
   phaseId: string,
   questions: { title: string; type: 'single_option' | 'multiple_options' }[],
   options: string[][]
@@ -1105,7 +1106,7 @@ export function apiAddPoll(
   });
 }
 
-export function apiCreatePhase({
+function apiCreatePhase({
   projectId,
   title,
   startAt,
@@ -1177,7 +1178,7 @@ export function apiCreatePhase({
   });
 }
 
-export function apiCreateCustomField(
+function apiCreateCustomField(
   fieldName: string,
   enabled: boolean,
   required: boolean,
@@ -1208,10 +1209,7 @@ export function apiCreateCustomField(
   });
 }
 
-export function apiCreateCustomFieldOption(
-  optionName: string,
-  customFieldId: string
-) {
+function apiCreateCustomFieldOption(optionName: string, customFieldId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1232,7 +1230,7 @@ export function apiCreateCustomFieldOption(
   });
 }
 
-export function apiRemoveCustomField(fieldId: string) {
+function apiRemoveCustomField(fieldId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1247,7 +1245,7 @@ export function apiRemoveCustomField(fieldId: string) {
   });
 }
 
-export function apiVerifyBogus(jwt: string, error?: string) {
+function apiVerifyBogus(jwt: string, error?: string) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
@@ -1263,7 +1261,7 @@ export function apiVerifyBogus(jwt: string, error?: string) {
   });
 }
 
-export function apiCreateEvent({
+function apiCreateEvent({
   projectId,
   title,
   description,
@@ -1319,7 +1317,7 @@ export function apiCreateEvent({
   });
 }
 
-export function apiEnableProjectDescriptionBuilder({
+function apiEnableProjectDescriptionBuilder({
   projectId,
 }: {
   projectId: string;
@@ -1343,7 +1341,7 @@ export function apiEnableProjectDescriptionBuilder({
   });
 }
 
-export function apiCreateReportBuilder() {
+function apiCreateReportBuilder() {
   const reportName = randomString();
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1364,7 +1362,7 @@ export function apiCreateReportBuilder() {
   });
 }
 
-export function apiRemoveReportBuilder(reportId: string) {
+function apiRemoveReportBuilder(reportId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1379,7 +1377,7 @@ export function apiRemoveReportBuilder(reportId: string) {
   });
 }
 
-export type IPhasePermissionAction =
+type IPhasePermissionAction =
   | 'posting_idea'
   | 'reacting_idea'
   | 'commenting_idea'
@@ -1393,7 +1391,7 @@ type ApiSetPermissionTypeProps = {
   permissionBody?: any;
   action: IPhasePermissionAction;
 };
-export function apiSetPhasePermission({
+function apiSetPhasePermission({
   phaseId,
   permissionBody,
   action,
@@ -1413,10 +1411,7 @@ export function apiSetPhasePermission({
   });
 }
 
-export function apiGetPhasePermission({
-  phaseId,
-  action,
-}: ApiSetPermissionTypeProps) {
+function apiGetPhasePermission({ phaseId, action }: ApiSetPermissionTypeProps) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1431,7 +1426,7 @@ export function apiGetPhasePermission({
   });
 }
 
-export function apiSetPermissionCustomField(
+function apiSetPermissionCustomField(
   phaseId: string,
   action: IPhasePermissionAction,
   custom_field_id: string
@@ -1454,7 +1449,7 @@ export function apiSetPermissionCustomField(
   });
 }
 
-export function apiUpdateAppConfiguration(
+function apiUpdateAppConfiguration(
   updatedAttributes: IUpdatedAppConfigurationProperties
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
@@ -1474,14 +1469,14 @@ export function apiUpdateAppConfiguration(
   });
 }
 
-export function clickLocaleSwitcherAndType(title: string) {
+function clickLocaleSwitcherAndType(title: string) {
   cy.get('.e2e-localeswitcher').each((button) => {
     cy.wrap(button).click();
     cy.get('#title_multiloc').clear().type(title);
   });
 }
 
-export function apiUpdateHomepageLayout({
+function apiUpdateHomepageLayout({
   craftjs_json,
 }: {
   craftjs_json: Record<string, any>;
@@ -1505,7 +1500,7 @@ export function apiUpdateHomepageLayout({
     });
   });
 }
-export function apiCreateSmartGroupCustomField(
+function apiCreateSmartGroupCustomField(
   groupName: string,
   customFieldId: string,
   customFieldOptionId: string
@@ -1542,7 +1537,7 @@ export function apiCreateSmartGroupCustomField(
   });
 }
 
-export function apiRemoveSmartGroup(smartGroupId: string) {
+function apiRemoveSmartGroup(smartGroupId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1574,7 +1569,7 @@ function bboxesIntersect(a: Bbox, b: Bbox) {
   );
 }
 
-export function intersectsViewport(subject?: any) {
+function intersectsViewport(subject?: any) {
   const viewportWidth = Cypress.config('viewportWidth');
   const viewportHeight = Cypress.config('viewportHeight');
 
@@ -1589,7 +1584,7 @@ export function intersectsViewport(subject?: any) {
   expect(bboxesIntersect(bboxElement, bboxViewport)).to.be.true;
 }
 
-export function notIntersectsViewport(subject?: any) {
+function notIntersectsViewport(subject?: any) {
   const viewportWidth = Cypress.config('viewportWidth');
   const viewportHeight = Cypress.config('viewportHeight');
 
@@ -1653,6 +1648,7 @@ Cypress.Commands.add('apiCreateCustomFieldOption', apiCreateCustomFieldOption);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
+Cypress.Commands.add('setModeratorLoginCookie', setModeratorLoginCookie);
 Cypress.Commands.add(
   'setConsentAndAdminLoginCookies',
   setConsentAndAdminLoginCookies

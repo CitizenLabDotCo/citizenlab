@@ -12,7 +12,6 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
 import { MARGINS } from '../_utils/style';
@@ -24,7 +23,7 @@ import { TimeSeries } from './useActiveUsers/typings';
 
 type Props = Dates &
   Resolution & {
-    timeSeries: TimeSeries | NilOrError;
+    timeSeries: TimeSeries | null;
     innerRef?: React.RefObject<any>;
     layout?: Layout;
   };
@@ -67,7 +66,7 @@ const Chart = ({
     return null;
   }
 
-  const noData = isNilOrError(timeSeries);
+  const noData = timeSeries === null;
 
   return (
     <LineChart

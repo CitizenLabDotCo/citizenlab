@@ -1,14 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-// hooks
-import useIdeaImages from 'api/idea_images/useIdeaImages';
-
 // styling
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import {
   colors,
   stylingConsts,
-  fontSizes,
   Box,
   Text,
   Title,
@@ -21,6 +17,7 @@ import { BORDER } from '../../constants';
 import Link from 'utils/cl-router/Link';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import GradientSrc from './gradient.svg';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // i18n
 import messages from '../messages';
@@ -29,12 +26,15 @@ import { FormattedMessage } from 'utils/cl-intl';
 // utils
 import checkTextOverflow, { MEDIUM_LINE_HEIGHT } from './checkTextOverflow';
 
+// types
+import { IIdeaImageData } from 'api/idea_images/types';
+
 interface Props {
   rank: number;
   title: string;
   body: string;
   url: string;
-  id: string;
+  images: IIdeaImageData[];
   likes: number;
   dislikes: number;
   comments: number;
@@ -42,8 +42,6 @@ interface Props {
 }
 
 const IdeaText = styled.div`
-  font-size: ${fontSizes.m}px;
-  color: ${colors.primary};
   line-height: ${MEDIUM_LINE_HEIGHT}px;
 `;
 
@@ -52,7 +50,7 @@ const IdeaCard = ({
   title,
   body,
   url,
-  id,
+  images,
   likes,
   dislikes,
   comments,
@@ -60,8 +58,9 @@ const IdeaCard = ({
 }: Props) => {
   const textContainerRef = useRef<HTMLDivElement | null>(null);
   const [textOverflow, setTextOverflow] = useState(false);
-  const { data: images } = useIdeaImages(id);
-  const image = images?.data[0]?.attributes?.versions?.medium;
+  const theme = useTheme();
+
+  const image = images[0]?.attributes?.versions?.medium;
 
   useEffect(() => {
     if (!textContainerRef.current) return;
@@ -72,7 +71,12 @@ const IdeaCard = ({
 
   return (
     <PageBreakBox borderTop={BORDER} my="16px" pt="16px">
-      <Box display="flex" flexDirection="row" justifyContent="flex-start">
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+        alignItems="center"
+      >
         <Box
           // hack to make backgrounds work in print view
           boxShadow={`inset 0 0 0 1000px ${colors.grey200}`}
@@ -94,13 +98,7 @@ const IdeaCard = ({
           </Text>
         </Box>
         <Link to={url} target="_blank">
-          <Title
-            variant="h4"
-            display="inline"
-            color="primary"
-            mt="0px"
-            mb="0px"
-          >
+          <Title variant="h5" display="inline" mt="0px" mb="0px">
             {title}
           </Title>
         </Link>
@@ -129,10 +127,17 @@ const IdeaCard = ({
           >
             <Image src={GradientSrc} alt="" width="100%" height="100%" />
           </Box>
-          <IdeaText
-            dangerouslySetInnerHTML={{ __html: body }}
-            ref={textContainerRef}
-          />
+          <Box mt="12px">
+            <QuillEditedContent
+              textColor={theme.colors.tenantText}
+              fontSize="m"
+            >
+              <IdeaText
+                dangerouslySetInnerHTML={{ __html: body }}
+                ref={textContainerRef}
+              />
+            </QuillEditedContent>
+          </Box>
         </Box>
       </Box>
       {hideTextOverflow && (

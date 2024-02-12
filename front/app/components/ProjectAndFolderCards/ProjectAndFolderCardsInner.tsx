@@ -26,6 +26,7 @@ import { PublicationTab, Props as BaseProps } from '.';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import { Multiloc } from 'typings';
+import { PublicationStatus } from 'api/projects/types';
 
 const Container = styled.div`
   display: flex;
@@ -44,7 +45,7 @@ interface Props extends BaseProps {
   showFilters: boolean;
   adminPublications: IAdminPublicationData[];
   statusCountsWithoutFilters: IStatusCountsAll;
-  onChangePublicationStatus?: (publicationStatus: PublicationTab[]) => void;
+  onChangePublicationStatus?: (publicationStatus: PublicationStatus[]) => void;
   onLoadMore?: () => void;
   loadingInitial?: boolean;
   loadingMore?: boolean;

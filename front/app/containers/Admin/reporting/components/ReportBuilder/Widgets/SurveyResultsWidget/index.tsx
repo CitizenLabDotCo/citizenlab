@@ -29,21 +29,31 @@ import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey
 
 // types
 import { IOption, Multiloc } from 'typings';
+import { getEmptyMessage } from '../utils';
 
-type Props = {
+export type Props = {
   title?: Multiloc;
   projectId?: string;
   phaseId?: string;
   shownQuestions?: boolean[];
 };
 
-const SurveyResultsWidget = ({ title, phaseId, shownQuestions }: Props) => {
+const SurveyResultsWidget = ({
+  title,
+  projectId,
+  phaseId,
+  shownQuestions,
+}: Props) => {
+  const emptyMessage = getEmptyMessage({ projectId, phaseId });
+
   return (
     <Card title={title} data-testid="survey-results-widget">
-      {phaseId ? (
+      {emptyMessage ? (
+        <NoData message={emptyMessage} />
+      ) : phaseId ? (
         <SurveyResults phaseId={phaseId} shownQuestions={shownQuestions} />
       ) : (
-        <NoData message={messages.surveyNoResults} />
+        <></>
       )}
     </Card>
   );
@@ -147,14 +157,14 @@ const SurveyResultsWidgetSettings = () => {
 
       <ProjectFilter
         projectId={projectId}
-        emptyValueMessage={widgetMessages.noProject}
+        emptyOptionMessage={widgetMessages.noProject}
         onProjectFilter={handleProjectFilter}
       />
 
       {projectId !== undefined && (
         <>
           <PhaseFilter
-            label={formatMessage(messages.surveyPhases)}
+            label={formatMessage(messages.surveyPhase)}
             projectId={projectId}
             phaseId={phaseId}
             participationMethod="native_survey"
@@ -182,10 +192,8 @@ SurveyResultsWidget.craft = {
   related: {
     settings: SurveyResultsWidgetSettings,
   },
-  custom: {
-    title: messages.surveyResults,
-    noPointerEvents: true,
-  },
 };
+
+export const surveyResultsTitle = messages.surveyResults;
 
 export default SurveyResultsWidget;

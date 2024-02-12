@@ -16,7 +16,11 @@ resource 'Summaries' do
     let(:analysis_id) { summary.analysis_id }
     let(:id) { summary.id }
 
-    example_request 'Get one summary by id' do
+    example 'Get one summary by id' do
+      create_list(:idea, 2, project: summary.analysis.project)
+
+      do_request
+
       expect(status).to eq 200
       expect(response_data).to match({
         id: id,
@@ -27,7 +31,7 @@ resource 'Summaries' do
           accuracy: nil,
           created_at: kind_of(String),
           updated_at: kind_of(String),
-          bookmarked: false
+          missing_inputs_count: 2
         },
         relationships: {
           background_task: {
@@ -80,9 +84,9 @@ resource 'Summaries' do
             tag_ids: [tag.id]
           },
           accuracy: 0.8,
+          missing_inputs_count: 0,
           created_at: kind_of(String),
-          updated_at: kind_of(String),
-          bookmarked: false
+          updated_at: kind_of(String)
         },
         relationships: {
           background_task: {

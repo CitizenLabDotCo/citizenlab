@@ -4,10 +4,9 @@ import { render } from 'utils/testUtils/rtl';
 
 jest.mock('containers/Admin/reporting/hooks/useLayout', () => () => 'narrow');
 
-let mockGenderSerie: any = null;
-jest.mock(
-  'containers/Admin/dashboard/users/Charts/GenderChart/useGenderSerie',
-  () => jest.fn(() => mockGenderSerie)
+let mockUsersByGender: any = null;
+jest.mock('api/users_by_gender/useUsersByGender', () =>
+  jest.fn(() => mockUsersByGender)
 );
 
 describe.skip('<GenderWidget />', () => {
@@ -17,12 +16,21 @@ describe.skip('<GenderWidget />', () => {
   const title = { en: 'GENDER TITLE' };
 
   it('renders a title and pie chart when there is data', () => {
-    const validData = [
-      { value: 4, name: 'male', code: 'male', percentage: 40 },
-      { value: 6, name: 'female', code: 'female', percentage: 60 },
-    ];
+    const validData = {
+      data: {
+        type: 'users_by_custom_field',
+        attributes: {
+          series: {
+            users: {
+              male: 4,
+              female: 6,
+            },
+          },
+        },
+      },
+    };
 
-    mockGenderSerie = validData;
+    mockUsersByGender = validData;
 
     const { container } = render(
       <GenderWidget
@@ -43,12 +51,21 @@ describe.skip('<GenderWidget />', () => {
   });
 
   it('renders a title and no data message if all values are zero', () => {
-    const emptyData = [
-      { value: 0, name: 'male', code: 'male', percentage: 0 },
-      { value: 0, name: 'female', code: 'female', percentage: 0 },
-    ];
+    const emptyData = {
+      data: {
+        type: 'users_by_custom_field',
+        attributes: {
+          series: {
+            users: {
+              male: 0,
+              female: 0,
+            },
+          },
+        },
+      },
+    };
 
-    mockGenderSerie = emptyData;
+    mockUsersByGender = emptyData;
 
     const { container } = render(
       <GenderWidget

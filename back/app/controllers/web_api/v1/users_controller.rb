@@ -150,17 +150,11 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def update
-    user_params = permitted_attributes @user
-    user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
-    user_params[:onboarding] = @user.onboarding.merge(user_params[:onboarding] || {})
-    user_params = user_params.to_h
-    CustomFieldService.new.cleanup_custom_field_values! user_params[:custom_field_values]
-    @user.assign_attributes user_params
+    @user.assign_attributes(update_params)
+    remove_image_if_requested!(@user, update_params, :avatar)
+    authorize(@user)
 
-    remove_image_if_requested!(@user, user_params, :avatar)
-
-    authorize @user
-    save_params = user_params.key?(:custom_field_values) ? { context: :form_submission } : {}
+    save_params = update_params.key?(:custom_field_values) ? { context: :form_submission } : {}
     if @user.save save_params
       SideFxUserService.new.after_update(@user, current_user)
       render json: WebApi::V1::UserSerializer.new(
@@ -178,7 +172,7 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def block
-    block_end_at = Time.zone.now + AppConfiguration.instance.settings('user_blocking', 'duration').days
+    block_end_at = Time.zone.now + app_configuration.settings('user_blocking', 'duration').days
 
     authorize @user, :block?
     if @user.update(
@@ -264,7 +258,7 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def reset_confirm_on_existing_no_password_user?
-    return false unless AppConfiguration.instance.feature_activated?('user_confirmation')
+    return false unless app_configuration.feature_activated?('user_confirmation')
 
     original_user = @user
     errors = original_user.errors.details[:email]
@@ -286,5 +280,23 @@ class WebApi::V1::UsersController < ApplicationController
 
   def view_private_attributes?
     Pundit.policy!(current_user, (@user || User)).view_private_attributes?
+  end
+
+  def update_params
+    @update_params ||= permitted_attributes(@user).tap do |attrs|
+      attrs[:onboarding] = @user.onboarding.merge(attrs[:onboarding].to_h)
+      attrs[:custom_field_values] = @user.custom_field_values.merge(attrs[:custom_field_values].to_h)
+      CustomFieldService.new.compact_custom_field_values!(attrs[:custom_field_values])
+
+      # Even if the feature is not activated, we still want to allow the user to remove
+      # their avatar.
+      if !app_configuration.feature_activated?('user_avatars') && !attrs[:avatar].nil?
+        attrs.delete(:avatar)
+      end
+    end.permit!
+  end
+
+  def app_configuration
+    @app_configuration ||= AppConfiguration.instance
   end
 end

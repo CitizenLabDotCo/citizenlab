@@ -403,6 +403,10 @@ class User < ApplicationRecord
     project_id ? moderatable_project_ids.include?(project_id) : moderatable_project_ids.present?
   end
 
+  def project_or_folder_moderator?
+    project_moderator? || project_folder_moderator?
+  end
+
   def normal_user?
     !admin? && moderatable_project_ids.blank? && moderated_project_folder_ids.blank?
   end

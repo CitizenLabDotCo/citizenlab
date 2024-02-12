@@ -38,10 +38,10 @@ import styled from 'styled-components';
 // utils
 import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
 import { isValidPhase } from '../phaseParam';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 
 const StyledSectionContainer = styled(SectionContainer)`
   display: flex;
@@ -100,6 +100,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
   if (selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
     const participationMethod = selectedPhase.attributes.participation_method;
+    const votingMethod = selectedPhase.attributes.voting_method;
     const isPastPhase =
       !!selectedPhase.attributes.end_at &&
       pastPresentOrFuture(selectedPhase.attributes.end_at) === 'past';
@@ -109,9 +110,14 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
     const showVotingResults = isVotingPhase && isPastPhase;
 
     const reportId = selectedPhase.relationships.report?.data?.id;
+
+    const phaseHasStarted =
+      pastPresentOrFuture(selectedPhase.attributes.start_at) !== 'future';
+
     const showReport =
       selectedPhase.attributes.participation_method === 'information' &&
-      !!reportId;
+      !!reportId &&
+      phaseHasStarted;
 
     return (
       <StyledSectionContainer
@@ -139,7 +145,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
             <StatusModule
               phase={selectedPhase}
               project={project.data}
-              votingMethod={selectedPhase?.attributes.voting_method}
+              votingMethod={votingMethod}
             />
           )}
           <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />
@@ -154,7 +160,12 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
           {showIdeas && (
             <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
           )}
-          {showVotingResults && <VotingResults phaseId={selectedPhaseId} />}
+          {showVotingResults && votingMethod && (
+            <VotingResults
+              phaseId={selectedPhaseId}
+              votingMethod={votingMethod}
+            />
+          )}
         </ContentContainer>
         {showReport && <PhaseReport reportId={reportId} />}
       </StyledSectionContainer>

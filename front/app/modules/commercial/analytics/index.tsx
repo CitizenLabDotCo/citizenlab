@@ -9,7 +9,6 @@ const EmailDeliveriesCard = React.lazy(
   () => import('./admin/components/EmailDeliveriesCard')
 );
 
-const Tab = React.lazy(() => import('./admin/components/Tab'));
 const VisitorsContainer = React.lazy(
   () => import('./admin/containers/Visitors')
 );
@@ -35,7 +34,6 @@ const configuration: ModuleConfiguration = {
   },
   outlets: {
     'app.containers.Admin.dashboard.summary.inputStatus': InputStatusCard,
-    'app.containers.Admin.dashboards.tabs': Tab,
     'app.containers.Admin.dashboard.summary.emailDeliveries':
       EmailDeliveriesCard,
     'app.containers.Admin.dashboard.summary.proposals': ProposalsCard,

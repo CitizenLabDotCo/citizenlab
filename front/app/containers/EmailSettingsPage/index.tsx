@@ -47,7 +47,7 @@ const EmailSettingPage = () => {
   const [unsubscribedCampaignMultiloc, setUnsubscribedCampaignMultiloc] =
     useState<Multiloc | null>(null);
 
-  const [searchParams, _] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const unsubscriptionToken = searchParams.get('unsubscription_token');
   const campaignId = searchParams.get('campaign_id');
 
@@ -100,6 +100,7 @@ const EmailSettingPage = () => {
           <StyledCampaignConsentForm
             trackEventName="Unsubcribed from unsubscribe link flow"
             runOnSave={closeInitialUnsubscribe}
+            unsubscriptionToken={unsubscriptionToken}
           />
         )}
       </div>

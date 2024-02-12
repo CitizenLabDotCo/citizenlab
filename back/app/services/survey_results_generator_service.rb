@@ -39,14 +39,17 @@ class SurveyResultsGeneratorService < FieldVisitorService
     answers = inputs
       .select("custom_field_values->'#{field.key}' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map(&:value)
+      .map do |answer|
+        { answer: answer.value }
+      end
     answer_count = answers.size
     {
       inputType: field.input_type,
       question: field.title_multiloc,
       required: field.required,
       totalResponses: answer_count,
-      customFieldId: field.id
+      customFieldId: field.id,
+      textResponses: answers
     }
   end
 
@@ -54,14 +57,17 @@ class SurveyResultsGeneratorService < FieldVisitorService
     answers = inputs
       .select("custom_field_values->'#{field.key}' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map(&:value)
+      .map do |answer|
+        { answer: answer.value }
+      end
     answer_count = answers.size
     {
       inputType: field.input_type,
       question: field.title_multiloc,
       required: field.required,
       totalResponses: answer_count,
-      customFieldId: field.id
+      customFieldId: field.id,
+      textResponses: answers
     }
   end
 

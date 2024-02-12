@@ -6,25 +6,19 @@ import { getTranslations } from 'components/admin/GraphCards/VisitorsTrafficSour
 import { parsePieData } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/parse';
 
 // typings
-import {
-  QueryParameters,
-  Response,
-} from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
+import { QueryParameters } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
 
-import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
+import { useVisitorsTrafficSources } from 'api/graph_data_units';
 
 export default function useVisitorsReferrerTypes({
   projectId,
   startAtMoment,
   endAtMoment,
 }: QueryParameters) {
-  const analytics = useGraphDataUnits<Response>({
-    resolvedName: 'VisitorsTrafficSourcesWidget',
-    queryParameters: {
-      projectId,
-      startAtMoment,
-      endAtMoment,
-    },
+  const analytics = useVisitorsTrafficSources({
+    projectId,
+    startAtMoment,
+    endAtMoment,
   });
 
   const { formatMessage } = useIntl();

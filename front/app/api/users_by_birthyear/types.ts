@@ -11,8 +11,6 @@ export interface IUsersByBirthyear {
         users: {
           [key: string]: number;
         };
-        expected_users: null;
-        reference_population: null;
       };
     };
   };

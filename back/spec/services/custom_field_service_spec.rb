@@ -11,7 +11,7 @@ describe CustomFieldService do
     let(:field_values) { { 'key1' => nil, 'key2' => '', 'key3' => 'Not blank', 'key4' => true, 'key5' => false } }
 
     it 'destructively deletes keys with blank values from the argument and returns the argument' do
-      cleaned_values = service.cleanup_custom_field_values! field_values
+      cleaned_values = service.compact_custom_field_values! field_values
       expect(field_values).to eq({ 'key3' => 'Not blank', 'key4' => true, 'key5' => false })
       expect(cleaned_values).to be field_values
     end

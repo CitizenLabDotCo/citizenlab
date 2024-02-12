@@ -88,4 +88,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.consentModalCancel',
     defaultMessage: 'Cancel',
   },
+  allResponses: {
+    id: 'app.containers.Admin.projects.project.survey.allResponses',
+    defaultMessage: 'All responses',
+  },
 });

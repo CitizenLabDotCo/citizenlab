@@ -1,8 +1,5 @@
 import React, { useState, useCallback } from 'react';
 
-import { isNilOrError } from 'utils/helperUtils';
-import { insertConfiguration } from 'utils/moduleUtils';
-
 // components
 import {
   Table,
@@ -33,6 +30,7 @@ import useModerations from 'api/moderations/useModerations';
 import useModerationsCount from 'api/moderation_count/useModerationsCount';
 import useRemoveInappropriateContentFlag from 'api/inappropriate_content_flags/useRemoveInappropriateContentFlag';
 import useUpdateModerationStatus from 'api/moderations/useUpdateModerationStatus';
+import useAuthUser from 'api/me/useAuthUser';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -44,6 +42,11 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
+
+// utils
+import { isAdmin } from 'utils/permissions/roles';
+import { isNilOrError } from 'utils/helperUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 // typings
 import { IOption, InsertConfigurationOptions } from 'typings';
@@ -196,6 +199,8 @@ const pageSizes = [
 ];
 
 const Moderation = () => {
+  const { data: authUser } = useAuthUser();
+
   const { formatMessage } = useIntl();
   const { mutateAsync: updateModerationStatus } = useUpdateModerationStatus();
   const { mutateAsync: removeInappropriateContentFlag } =
@@ -229,6 +234,12 @@ const Moderation = () => {
     },
   ]);
 
+  const handleData = useCallback(
+    (data: InsertConfigurationOptions<ITabItem>) =>
+      setTabs((tabs) => insertConfiguration(data)(tabs)),
+    []
+  );
+
   const moderationStatus = selectedTab === 'warnings' ? undefined : selectedTab;
 
   const { data: moderations } = useModerations({
@@ -244,6 +255,10 @@ const Moderation = () => {
   const { data: moderationsWithActiveFlagCount } = useModerationsCount({
     isFlagged: true,
   });
+
+  if (!authUser || !isAdmin(authUser)) {
+    return null;
+  }
 
   const handleOnSelectAll = (_event: React.ChangeEvent) => {
     if (!processing && !isNilOrError(moderations)) {
@@ -381,12 +396,6 @@ const Moderation = () => {
       }
     }
   };
-
-  const handleData = useCallback(
-    (data: InsertConfigurationOptions<ITabItem>) =>
-      setTabs((tabs) => insertConfiguration(data)(tabs)),
-    []
-  );
 
   if (moderations) {
     const lastPage = getPageNumberFromUrl(moderations.links?.last) || 1;

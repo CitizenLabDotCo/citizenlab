@@ -1,15 +1,12 @@
 // hooks
 import { useMemo, useState } from 'react';
-import useGraphDataUnits from 'api/graph_data_units/useGraphDataUnits';
+import { useCommentsByTime as useCommentsByTimeData } from 'api/graph_data_units';
 
 // parse
 import { parseTimeSeries } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/parse';
 
 // typings
-import {
-  QueryParameters,
-  Response,
-} from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/typings';
+import { QueryParameters } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/typings';
 
 export default function useCommentsByTime({
   projectId,
@@ -19,29 +16,30 @@ export default function useCommentsByTime({
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  const analytics = useGraphDataUnits<Response>({
-    resolvedName: 'CommentsByTimeWidget',
-    queryParameters: {
+  const dataUnits = useCommentsByTimeData(
+    {
       projectId,
       startAtMoment,
       endAtMoment,
       resolution,
     },
-    onSuccess: () => setCurrentResolution(resolution),
-  });
+    {
+      onSuccess: () => setCurrentResolution(resolution),
+    }
+  );
 
   const timeSeries = useMemo(
     () =>
-      analytics?.data
+      dataUnits?.data
         ? parseTimeSeries(
-            analytics.data.attributes[0],
+            dataUnits.data.attributes[0],
             startAtMoment,
             endAtMoment,
             currentResolution,
-            analytics.data.attributes[1]
+            dataUnits.data.attributes[1]
           )
         : null,
-    [analytics?.data, startAtMoment, endAtMoment, currentResolution]
+    [dataUnits?.data, startAtMoment, endAtMoment, currentResolution]
   );
 
   return { currentResolution, timeSeries };

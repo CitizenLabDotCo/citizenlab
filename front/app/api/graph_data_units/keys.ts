@@ -1,5 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
-import { ParametersLive, ParametersPublished } from './types';
+import { ParametersLive, ParametersPublished } from './requestTypes';
 
 const baseKey = {
   type: 'report_builder_data_units',

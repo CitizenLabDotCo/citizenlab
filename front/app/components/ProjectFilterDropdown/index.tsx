@@ -48,7 +48,7 @@ const ProjectFilterDropdown = ({
   );
   const localize = useLocalize();
 
-  const handleOnChange = (selectedValues) => {
+  const handleOnChange = (selectedValues: string[]) => {
     setSelectedValues(selectedValues);
     onChange(selectedValues);
   };

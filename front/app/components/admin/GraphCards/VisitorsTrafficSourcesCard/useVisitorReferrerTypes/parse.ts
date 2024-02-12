@@ -5,11 +5,12 @@ import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 import { roundPercentages } from 'utils/math';
 
 // typings
-import { Response, PieRow } from './typings';
+import { PieRow } from './typings';
 import { Translations } from './translations';
+import { VisitorsTrafficSourcesResponse } from 'api/graph_data_units/responseTypes';
 
 export const parsePieData = (
-  data: Response['data']['attributes'],
+  data: VisitorsTrafficSourcesResponse['data']['attributes'],
   translations: Translations
 ): PieRow[] | null => {
   if (data.length === 0) return null;

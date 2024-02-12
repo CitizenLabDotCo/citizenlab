@@ -20,8 +20,6 @@ export const usersByBirthyear: IUsersByBirthyear = {
           2010: 1,
           _blank: 42,
         },
-        expected_users: null,
-        reference_population: null,
       },
     },
   },

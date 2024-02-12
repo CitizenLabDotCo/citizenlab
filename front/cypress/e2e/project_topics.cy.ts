@@ -1,4 +1,4 @@
-import { randomString, apiRemoveProject } from '../support/commands';
+import { randomString } from '../support/commands';
 import moment = require('moment');
 
 describe('Project topics', () => {
@@ -303,6 +303,6 @@ describe('Project topics', () => {
   });
 
   afterEach(() => {
-    apiRemoveProject(projectId);
+    cy.apiRemoveProject(projectId);
   });
 });

@@ -31,6 +31,7 @@ const StylingWrapper = styled.div`
       line-height: normal;
       font-weight: 400;
       background: transparent;
+      width: 100%;
     }
   }
 `;

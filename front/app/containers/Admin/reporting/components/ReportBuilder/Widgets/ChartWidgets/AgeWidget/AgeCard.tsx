@@ -1,7 +1,8 @@
 import React from 'react';
 
 // hooks
-import useAgeSerie from 'containers/Admin/dashboard/users/Charts/AgeChart/useAgeSerie';
+import useLayout from 'containers/Admin/reporting/hooks/useLayout';
+import { useUsersByAge } from 'api/graph_data_units';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -10,25 +11,41 @@ import BarChart from 'components/admin/Graphs/BarChart';
 
 // i18n
 import messages from '../messages';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
-import { serieHasValues } from '../utils';
+import { serieHasValues, formatLargeNumber } from '../utils';
+import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/AgeChart/convertToGraphFormat';
 
-interface Props {
-  startAt: string | null | undefined;
-  endAt: string | null;
-  projectId: string | undefined;
-}
+// typings
+import { ProjectId, Dates, Layout } from 'components/admin/GraphCards/typings';
+import { Margin } from 'components/admin/Graphs/typings';
 
-const AgeCard = ({ startAt, endAt, projectId }: Props) => {
-  const ageSerie = useAgeSerie({
-    startAt,
-    endAt,
+const MARGINS: Record<Layout, Margin | undefined> = {
+  wide: {
+    left: -20,
+    right: 20,
+  },
+  narrow: {
+    right: -20,
+  },
+};
+
+type Props = ProjectId & Dates;
+
+const AgeCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
+  const usersByBirthyear = useUsersByAge({
+    startAtMoment,
+    endAtMoment,
     projectId,
   });
+  const { formatMessage } = useIntl();
 
-  if (isNilOrError(ageSerie) || !serieHasValues(ageSerie)) {
+  const ageSerie = convertToGraphFormat(usersByBirthyear, formatMessage);
+
+  const layout = useLayout();
+
+  if (!ageSerie || !serieHasValues(ageSerie)) {
     return <NoData message={messages.noData} />;
   }
 
@@ -36,13 +53,14 @@ const AgeCard = ({ startAt, endAt, projectId }: Props) => {
     <Box width="100%" height="220px" mt="20px" pb="10px">
       <BarChart
         data={ageSerie}
-        margin={{
-          left: -20,
-          right: 20,
-        }}
+        margin={MARGINS[layout]}
         mapping={{
           category: 'name',
           length: 'value',
+        }}
+        yaxis={{
+          orientation: 'right',
+          tickFormatter: formatLargeNumber,
         }}
         labels
         tooltip

@@ -383,6 +383,19 @@ namespace :setup_and_support do # rubocop:disable Metrics/BlockLength
     end
   end
 
+  desc 'Change the default assignee for proposals'
+  task :proposals_default_assignee, %i[host email] => [:environment] do |_, args|
+    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
+      user = User.find_by email: args[:email]
+      raise "No user found for email #{args[:email]}" if !user
+      raise "#{user.email} is not an admin" if !user.admin?
+      raise "#{user.email} is a super admin" if user.super_admin?
+
+      new_created_at = User.admin.order(:created_at).first.created_at - 1.day
+      user.update!(created_at: new_created_at)
+    end
+  end
+
   def add_anonymous_reaction(reactable, mode)
     attrs = AnonymizeUserService.new.anonymized_attributes AppConfiguration.instance.settings('core', 'locales')
     attrs.delete 'custom_field_values'

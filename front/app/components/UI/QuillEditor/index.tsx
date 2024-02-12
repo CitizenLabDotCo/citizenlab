@@ -334,6 +334,11 @@ class CustomLink extends Link {
     const node = super.create(url);
     node.setAttribute('rel', 'noreferrer noopener nofollow');
 
+    // if the href of node starts with www., add https://
+    if (url.startsWith('www.')) {
+      node.setAttribute('href', `https://${url}`);
+    }
+
     // The default behavior of the Link is to add a target="_blank" attribute
     // So for internal urls we have to remove this
     if (!isExternal(url)) {

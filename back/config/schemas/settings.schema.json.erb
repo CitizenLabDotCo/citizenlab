@@ -232,6 +232,18 @@
         }
       },
 
+      "user_avatars": {
+        "type": "object",
+        "title": "User avatars",
+        "description": "Allow users to upload a profile picture.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "internal_commenting": {
         "type": "object",
         "title": "Internal commenting",
@@ -500,6 +512,23 @@
             "type": "integer",
             "title": "OSM Relation ID",
             "description": "The boundary of the municipality/organisation is specified by its Relation ID in OpenStreetMap (OSM). You can find the Relation ID at https://www.openstreetmap.org. Search for the place, click on the correct result and you'll find the Relation ID if the result is a relation (e.g. \"Relation: Knokke-Heist (4569)\"). If there is no relation defined for the place (e.g. Scheveningen), search for the next largest administrative territory (e.g. The Hague)."
+          }
+        }
+      },
+
+      "esri_integration": {
+        "type": "object",
+        "title": "Esri Integration",
+        "description":  "In development. DO NOT ENABLE ON COMMERCIAL PLATFORM! Esri integration for maps. An add-on that can be purchased, and is not restricted to specific pricing plan(s).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "api_key": {
+            "title": "API Key",
+            "description": "Add customer’s Esri API key to allow importing map layers from their ArcGIS Online in the map tabs in projects. This setting is also available to admins in the Tools: Esri Maps item.",
+            "type": "string"
           }
         }
       },
@@ -1209,6 +1238,18 @@
         }
       },
 
+      "input_form_mapping_question": {
+        "type": "object",
+        "title": "Mapping question used in in-platform surveys",
+        "description":  "Allow mapping question(s) for use in in-platform surveys. Currently limited to one type: Select a point on a map.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "seat_based_billing": {
         "type": "object",
         "title": "Seat based billing",
@@ -1325,6 +1366,18 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "user_session_recording": {
+        "type": "object",
+        "title": "User session recording",
+        "description": "Enables the recording of a small fraction of user sessions for analysis and product research purposes. Requires active consent from the customer.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": false }
         }
       }

@@ -7,7 +7,7 @@ SHELL ["/bin/ash", "-o", "pipefail", "-c"]
 
 WORKDIR /app
 
-COPY back/Gemfile back/Gemfile.* ./
+COPY back/Gemfile back/Gemfile.* back/.ruby-version ./
 COPY back/engines ./engines
 
 # `version.rb` files are also kept as they are required by gemspec files.

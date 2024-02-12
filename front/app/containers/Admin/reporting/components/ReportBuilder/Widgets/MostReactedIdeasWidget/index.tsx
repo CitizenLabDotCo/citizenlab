@@ -13,6 +13,10 @@ import messages from './messages';
 // typings
 import { Props } from './typings';
 
+// hooks
+import { useMostReactedIdeas } from 'api/graph_data_units';
+import { getEmptyMessage } from '../utils';
+
 const MostReactedIdeasWidget = ({
   title,
   projectId,
@@ -20,19 +24,43 @@ const MostReactedIdeasWidget = ({
   numberOfIdeas,
   collapseLongText,
 }: Props) => {
+  const response = useMostReactedIdeas(
+    {
+      phaseId,
+      numberOfIdeas,
+    },
+    {
+      enabled: !!phaseId,
+    }
+  );
+
+  const emptyMessage = getEmptyMessage({ projectId, phaseId });
+
+  if (emptyMessage) {
+    return (
+      <Card title={title}>
+        <NoData message={emptyMessage} />
+      </Card>
+    );
+  }
+
+  if (!response) return null;
+
+  const {
+    ideas,
+    project,
+    phase,
+    idea_images: ideaImages,
+  } = response.data.attributes;
+
   return (
     <Card title={title}>
-      <ProjectInfo projectId={projectId} phaseId={phaseId} />
-      {projectId ? (
-        <Ideas
-          projectId={projectId}
-          phaseId={phaseId}
-          numberOfIdeas={numberOfIdeas}
-          collapseLongText={collapseLongText}
-        />
-      ) : (
-        <NoData message={messages.noProjectSelected} />
-      )}
+      <ProjectInfo project={project} phase={phase} />
+      <Ideas
+        ideas={ideas}
+        images={ideaImages}
+        collapseLongText={collapseLongText}
+      />
     </Card>
   );
 };
@@ -48,9 +76,8 @@ MostReactedIdeasWidget.craft = {
   related: {
     settings: Settings,
   },
-  custom: {
-    title: messages.mostReactedIdeas,
-  },
 };
+
+export const mostReactedIdeasTitle = messages.mostReactedIdeas;
 
 export default MostReactedIdeasWidget;

@@ -1,33 +1,37 @@
 import React from 'react';
 
 // hooks
-import useGenderSerie from 'containers/Admin/dashboard/users/Charts/GenderChart/useGenderSerie';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import Chart from 'containers/Admin/dashboard/users/Charts/GenderChart/Chart';
+import Chart from './Chart';
 import NoData from '../../_shared/NoData';
 
 // i18n
 import messages from '../messages';
+import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { serieHasValues } from '../utils';
+import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/GenderChart/convertToGraphFormat';
 
-interface Props {
-  startAt: string | null | undefined;
-  endAt: string | null;
-  projectId: string | undefined;
-}
+// types
+import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
+import { useUsersByGender } from 'api/graph_data_units';
 
-const GenderCard = ({ startAt, endAt, projectId }: Props) => {
-  const genderSerie = useGenderSerie({
-    startAt,
-    endAt,
+type Props = ProjectId & Dates;
+
+const GenderCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
+  const usersByGender = useUsersByGender({
+    startAtMoment,
+    endAtMoment,
     projectId,
   });
+  const { formatMessage } = useIntl();
+
+  const genderSerie = convertToGraphFormat(usersByGender, formatMessage);
 
   const layout = useLayout();
 

@@ -22,12 +22,11 @@ const Centerer = styled.div`
   align-items: center;
 
   @media print {
-    margin-top: -20px;
+    margin-top: 0px;
     display: block;
     position: absolute;
     @page {
       size: auto;
-      margin: 30px 0;
     }
   }
 `;

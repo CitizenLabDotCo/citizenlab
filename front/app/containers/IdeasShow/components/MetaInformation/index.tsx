@@ -12,7 +12,6 @@ import PostedBy from './PostedBy';
 // hooks & services
 import useLocale from 'hooks/useLocale';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-import Outlet from 'components/Outlet';
 import usePhases from 'api/phases/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
 
@@ -98,11 +97,6 @@ const MetaInformation = ({
         {attachmentsEnabled && (
           <Attachments ideaId={ideaId} compact={compact} />
         )}
-        <Outlet
-          id="app.containers.IdeasShow.MetaInformation"
-          ideaId={ideaId}
-          compact={compact}
-        />
       </Container>
     );
   }

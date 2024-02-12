@@ -29,15 +29,10 @@ const ReportRow = ({ report }: Props) => {
     }
   };
 
-  // TODO link to correct instance
   const reportPath = `/admin/reporting/report-builder/${report.id}`;
 
   const handleEditReport = () => {
     clHistory.push(`${reportPath}/editor`);
-  };
-
-  const handleViewReport = () => {
-    window.open(`${reportPath}/viewer`, '_blank');
   };
 
   return (
@@ -64,7 +59,6 @@ const ReportRow = ({ report }: Props) => {
           isLoading={isLoading}
           onDelete={handleDeleteReport}
           onEdit={handleEditReport}
-          onView={handleViewReport}
         />
       </Box>
     </ListItem>

@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent, FormEvent, KeyboardEvent } from 'react';
 import { isNil, isEmpty, size as lodashSize, isBoolean } from 'lodash-es';
 
 // components
@@ -76,6 +76,7 @@ export interface InputProps {
   onFocus?: (arg: FormEvent<HTMLInputElement>) => void;
   onBlur?: (arg: FormEvent<HTMLInputElement>) => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;
+  onKeyDown?: (event: KeyboardEvent) => void;
   autoFocus?: boolean;
   min?: string;
   max?: string;
@@ -132,6 +133,7 @@ class Input extends PureComponent<InputProps> {
       ariaLabel,
       a11yCharactersLeftMessage,
       className,
+      onKeyDown,
     } = this.props;
     const {
       id,
@@ -198,6 +200,7 @@ class Input extends PureComponent<InputProps> {
           readOnly={readOnly}
           required={required}
           autoComplete={autocomplete}
+          onKeyDown={onKeyDown}
           {...optionalProps}
         />
 

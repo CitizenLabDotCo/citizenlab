@@ -52,7 +52,7 @@ export const query = ({
   };
 
   const date_group = `dimension_date_sent.${getInterval(resolution)}`;
-  let timeSeriesQuery: QuerySchema = {
+  const timeSeriesQuery: QuerySchema = {
     fact: 'email_delivery',
     filters: { ...dateFilter },
     groups: [date_group, 'automated'],

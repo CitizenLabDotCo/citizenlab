@@ -16,7 +16,7 @@ import messages from './messages';
 type Props = {
   customFieldId: string;
   filterKey: string;
-  filterValue: string | string[] | null[] | undefined | number;
+  filterValue: string | string[] | null[] | undefined | number | boolean;
   isEditable: boolean;
   predicate: '<' | '>' | '=';
 };

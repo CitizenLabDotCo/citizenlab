@@ -20,16 +20,17 @@ export interface Result {
   answers?: Answer[];
   required: boolean;
   customFieldId: string;
+  textResponses?: { answer: string }[];
 }
 
-export interface SurveyResultData {
-  type: 'survey_results';
-  attributes: {
-    results: Result[];
-    totalSubmissions: number;
-  };
+export interface SurveyResultAttributes {
+  results: Result[];
+  totalSubmissions: number;
 }
 
 export interface SurveyResultsType {
-  data: SurveyResultData;
+  data: {
+    type: 'survey_results';
+    attributes: SurveyResultAttributes;
+  };
 }

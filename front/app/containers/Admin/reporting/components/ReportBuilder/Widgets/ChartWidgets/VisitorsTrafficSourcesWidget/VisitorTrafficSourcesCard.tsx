@@ -6,7 +6,7 @@ import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import Chart from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/Chart';
+import Chart from './Chart';
 import NoData from '../../_shared/NoData';
 
 // i18n
@@ -38,15 +38,7 @@ const VisitorsTrafficSourcesCard = ({
 
   return (
     <Box width="100%" height="220px" mt="20px" pb="10px">
-      <Chart
-        pieData={pieData}
-        pieConfig={{
-          startAngle: 0,
-          endAngle: 360,
-          outerRadius: 60,
-        }}
-        layout={layout}
-      />
+      <Chart pieData={pieData} layout={layout} />
     </Box>
   );
 };
