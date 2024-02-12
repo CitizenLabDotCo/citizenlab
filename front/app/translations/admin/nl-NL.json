@@ -927,6 +927,7 @@
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Nauwkeurigheid: {accuracy}{percentage}",
   "app.containers.Admin.projects.project.survey.analysis.generated": "Gegenereerd:",
   "app.containers.Admin.projects.project.survey.analysis.percentage": "%",
+  "app.containers.Admin.projects.project.survey.analysis.refresh": "{count} nieuwe reacties",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Selecteer gerelateerde vragen voor analyse",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Wil je nog andere gerelateerde vragen opnemen in je analyse van {question}?",
   "app.containers.Admin.projects.project.survey.cancel": "Annuleren",
