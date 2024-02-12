@@ -102,6 +102,16 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
     end
   end
 
+  def city_survey_response(index)
+    # We add one faulthy value that is not in the options,
+    # to test that the logic to filter this out works
+    if index == 1
+      return 'faulthy'
+    end
+
+    index < 6 ? la_option.key : ny_option.key
+  end
+
   # Submit response for each user
   let_it_be(:responses) do
     build_list(:idea, 11) do |record, index|
@@ -109,7 +119,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
       record.project = project
       record.phases = [phase]
       record.custom_field_values = {
-        city_survey_question.key => index < 6 ? la_option.key : ny_option.key,
+        city_survey_question.key => city_survey_response(index),
         food_survey_question.key => index.even? ? pizza_option.key : burger_option.key,
         multiselect_question.key => index < 6 ? [multiselect_question.options.first.key] : multiselect_question.options.map(&:key)
       }
@@ -124,9 +134,9 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         question: city_survey_question.title_multiloc,
         customFieldId: city_survey_question.id,
         required: true,
-        totalResponses: 11,
+        totalResponses: 10,
         answers: [
-          { answer: 'la', count: 6 },
+          { answer: 'la', count: 5 },
           { answer: 'ny', count: 5 }
         ]
       })
@@ -157,11 +167,11 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         question: city_survey_question.title_multiloc,
         customFieldId: city_survey_question.id,
         required: true,
-        totalResponses: 11,
+        totalResponses: 10,
         answers: [
           { answer: 'la', group_by_value: 'female', count: 3 },
-          { answer: 'la', group_by_value: 'male', count: 3 },
           { answer: 'ny', group_by_value: 'female', count: 3 },
+          { answer: 'la', group_by_value: 'male', count: 2 },
           { answer: 'ny', group_by_value: 'male', count: 2 }
         ]
       })
@@ -197,11 +207,11 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         question: city_survey_question.title_multiloc,
         customFieldId: city_survey_question.id,
         required: true,
-        totalResponses: 11,
+        totalResponses: 10,
         answers: [
-          { answer: 'la', group_by_value: 'burger', count: 3 },
           { answer: 'la', group_by_value: 'pizza', count: 3 },
           { answer: 'ny', group_by_value: 'pizza', count: 3 },
+          { answer: 'la', group_by_value: 'burger', count: 2 },
           { answer: 'ny', group_by_value: 'burger', count: 2 }
         ]
       })

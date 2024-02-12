@@ -26,6 +26,8 @@ module ReportBuilder
           }
         end
 
+      grouped_answers = filter_missing_answer_keys(grouped_answers, question)
+
       build_response(grouped_answers, question)
     end
 
@@ -36,13 +38,8 @@ module ReportBuilder
 
       joined_inputs = @inputs.joins(:author)
       answers = select_answers(joined_inputs, question, user_field)
-
-      # answers = answers.where(
-      #   "#{sql_field(user_field)} IN (?)",
-      #   user_field.options.pluck(:key)
-      # )
-
       grouped_answers = group_answers(answers)
+      grouped_answers = filter_missing_answer_keys(grouped_answers, question)
 
       build_response(grouped_answers, question)
     end
@@ -54,6 +51,7 @@ module ReportBuilder
 
       answers = select_answers(@inputs, question, other_question)
       grouped_answers = group_answers(answers)
+      grouped_answers = filter_missing_answer_keys(grouped_answers, question)
 
       build_response(grouped_answers, question)
     end
@@ -112,6 +110,14 @@ module ReportBuilder
         .order(Arel.sql('COUNT(answer) DESC'))
         .count
         .to_a
+    end
+
+    def filter_missing_answer_keys(grouped_answers, field)
+      option_keys = field.options.pluck(:key)
+
+      grouped_answers.select do |grouping|
+        option_keys.include? grouping[:answer]
+      end
     end
 
     def build_response(grouped_answers, question)
