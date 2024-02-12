@@ -38,16 +38,15 @@ const InputListItem = () => {
 
   if (!analysis || !input || !selectedInputId) return null;
 
+  const showManageIdeaButton =
+    analysis.data.attributes.participation_method === 'ideation' && phaseId;
+
   return (
     <Box data-cy="e2e-analysis-input-preview">
-      {analysis.data.attributes.participation_method === 'ideation' && (
+      {showManageIdeaButton && (
         <Box display="flex" justifyContent="flex-end">
           <Button
-            linkTo={`/admin/projects/${
-              analysis.data.relationships.project?.data?.id
-            }${
-              phaseId ? `/phases/${phaseId}` : ''
-            }/ideas?selected_idea_id=${selectedInputId}`}
+            linkTo={`/admin/projects/${analysis.data.relationships.project?.data?.id}/phases/${phaseId}/ideas?selected_idea_id=${selectedInputId}`}
             openLinkInNewTab
             buttonStyle="secondary"
             icon="settings"
