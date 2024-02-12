@@ -15,7 +15,6 @@ import {
   getLayerColor,
   getLayerIcon,
 } from 'modules/commercial/custom_maps/utils/map';
-import bowser from 'bowser';
 import useMapConfig from 'modules/commercial/custom_maps/api/map_config/useMapConfig';
 
 const Container = styled.div`
@@ -75,10 +74,6 @@ const StyledIcon = styled(Icon)<{ color: string }>`
   fill: ${(props) => props.color};
   flex: 0 0 24px;
   margin-right: 10px;
-
-  &.ie {
-    height: 18px;
-  }
 
   ${isRtl`
     margin-right: 0;
@@ -141,11 +136,7 @@ const Legend = memo<Props>(({ projectId, className }) => {
               >
                 {hasCustomLegend && color && <ColorLabel color={color} />}
                 {!hasCustomLegend && color && iconName && (
-                  <StyledIcon
-                    name={iconName}
-                    color={color}
-                    className={bowser.msie ? 'ie' : ''}
-                  />
+                  <StyledIcon name={iconName} color={color} />
                 )}
                 {label}
               </Item>
