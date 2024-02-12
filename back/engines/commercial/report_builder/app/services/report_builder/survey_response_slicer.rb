@@ -26,10 +26,7 @@ module ReportBuilder
           }
         end
 
-      {
-        totalResponses: grouped_answers.pluck(:count).sum,
-        answers: grouped_answers
-      }
+      build_response(grouped_answers, question)
     end
 
     def slice_by_user_field(question_field_id, user_field_id)
@@ -39,8 +36,9 @@ module ReportBuilder
 
       joined_inputs = @inputs.joins(:author)
       answers = select_answers(joined_inputs, question, user_field)
+      grouped_answers = group_answers(answers)
 
-      collect_answers(answers)
+      build_response(grouped_answers, question)
     end
 
     def slice_by_other_question(question_field_id, other_question_field_id)
@@ -49,8 +47,9 @@ module ReportBuilder
       throw "Unsupported question type: #{other_question.input_type}" unless other_question.input_type == 'select'
 
       answers = select_answers(@inputs, question, other_question)
+      grouped_answers = group_answers(answers)
 
-      collect_answers(answers)
+      build_response(grouped_answers, question)
     end
 
     private
@@ -88,8 +87,8 @@ module ReportBuilder
       answers
     end
 
-    def collect_answers(answers)
-      grouped_answers = get_counts(answers, grouped: true)
+    def group_answers(answers)
+      get_counts(answers, grouped: true)
         .map do |(answer, group_by_value), count|
           {
             answer: answer,
@@ -97,11 +96,6 @@ module ReportBuilder
             count: count
           }
         end
-
-      {
-        totalResponses: grouped_answers.pluck(:count).sum,
-        answers: grouped_answers
-      }
     end
 
     def get_counts(answers, grouped: false)
@@ -112,6 +106,17 @@ module ReportBuilder
         .order(Arel.sql('COUNT(answer) DESC'))
         .count
         .to_a
+    end
+
+    def build_response(grouped_answers, question)
+      {
+        inputType: question.input_type,
+        question: question.title_multiloc,
+        required: question.required,
+        totalResponses: grouped_answers.pluck(:count).sum,
+        answers: grouped_answers,
+        customFieldId: field.id
+      }
     end
   end
 end
