@@ -5,6 +5,9 @@ import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
 import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
 import Layer from '@arcgis/core/layers/Layer';
 
+// utils
+import debounceFn from 'lodash/debounce';
+
 // constants
 import {
   BASEMAP_AT_ATTRIBUTION,
@@ -85,21 +88,24 @@ export const getShapeSymbol = (
 
 // changeCursorOnHover
 // Description: On map hover, change the cursor to pointer if hovering over a graphic
-export const changeCursorOnHover = (event: any, mapView: MapView) => {
-  mapView.hitTest(event).then((result) => {
-    if (result.results.length > 0) {
-      // Hovering over marker(s)
-      result.results.forEach((r) => {
-        if (r.type === 'graphic') {
-          // Change cursor to pointer
-          document.body.style.cursor = 'pointer';
-        }
-      });
-    } else {
-      document.body.style.cursor = 'auto';
-    }
-  });
-};
+export const changeCursorOnHover = debounceFn(
+  (event: any, mapView: MapView) => {
+    mapView.hitTest(event).then((result) => {
+      if (result.results.length > 0) {
+        // Hovering over marker(s)
+        result.results.forEach((r) => {
+          if (r.type === 'graphic') {
+            // Change cursor to pointer
+            document.body.style.cursor = 'pointer';
+          }
+        });
+      } else {
+        document.body.style.cursor = 'auto';
+      }
+    });
+  },
+  100
+);
 
 // getClusterConfiguration
 // Description: Gets the configuration needed to render a FeatureLayer with clustering on zoom in/out
