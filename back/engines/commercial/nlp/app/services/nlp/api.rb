@@ -148,14 +148,6 @@ module NLP
       resp.parsed_response['data']
     end
 
-    def toxicity_detection(texts)
-      body = { texts: texts }
-      resp = post('/v2/toxic_classification', body)
-      raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
-
-      resp.parsed_response['data']
-    end
-
     private
 
     def get(path, json = nil)

@@ -25,6 +25,15 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           additional_admins_number: 2,
           additional_moderators_number: 1
         },
+        maps: {
+          enabled: true,
+          allowed: true,
+          map_center: {
+            lat: '50.8503',
+            long: '4.3517'
+          },
+          zoom_level: 12
+        },
         private_projects: {
           enabled: true,
           allowed: true

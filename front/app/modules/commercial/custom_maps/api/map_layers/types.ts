@@ -2,6 +2,7 @@ import { Multiloc, UploadFile } from 'typings';
 
 export interface IMapLayerAttributes {
   id: string;
+  type: 'CustomMaps::GeojsonLayer' | 'CustomMaps::EsriFeatureLayer';
   title_multiloc: Multiloc;
   geojson?: GeoJSON.FeatureCollection;
   default_enabled: boolean;
