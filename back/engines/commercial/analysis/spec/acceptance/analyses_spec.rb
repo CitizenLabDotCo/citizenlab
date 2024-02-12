@@ -53,7 +53,8 @@ resource 'Analyses' do
       expect(response_data[:attributes]).to match({
         participation_method: 'ideation',
         updated_at: kind_of(String),
-        created_at: kind_of(String)
+        created_at: kind_of(String),
+        show_insights: true
       })
       expect(response_data.dig(:relationships, :custom_fields, :data, 0, :id)).to eq analysis.custom_fields.first.id
       expect(json_response_body.dig(:included, 0, :id)).to eq analysis.custom_fields.first.id
