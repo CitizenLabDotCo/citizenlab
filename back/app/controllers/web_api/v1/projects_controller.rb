@@ -51,25 +51,6 @@ class WebApi::V1::ProjectsController < ApplicationController
     )
   end
 
-  def moderatable
-    if current_user.admin?
-      @projects = Project.all
-    else
-      project_ids = current_user.moderatable_project_ids
-      @projects = Project.where(id: project_ids)
-    end
-
-    @projects = paginate @projects
-
-    @projects.each { |project| authorize project }
-
-    render json: linked_json(
-      @projects,
-      WebApi::V1::ProjectSerializer,
-      params: jsonapi_serializer_params
-    )
-  end
-
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,

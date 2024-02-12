@@ -60,10 +60,6 @@ class ProjectPolicy < ApplicationPolicy
     end
   end
 
-  def moderatable?
-    active_moderator?
-  end
-
   def index_xlsx?
     active_moderator?
   end

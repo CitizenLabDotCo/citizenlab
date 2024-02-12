@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 // hooks
-import useModeratableProjects from 'api/projects/useModeratableProjects';
+import useProjects from 'api/projects/useProjects';
 import useAuthUser from 'api/me/useAuthUser';
 
 // styling
@@ -23,7 +23,13 @@ import messages from './messages';
 
 // typings
 import { IOption } from 'typings';
-import { IProjectData } from 'api/projects/types';
+import { IProjectData, PublicationStatus } from 'api/projects/types';
+
+const PUBLICATION_STATUSES: PublicationStatus[] = [
+  'published',
+  'archived',
+  'draft',
+];
 
 interface Option {
   value: string | undefined;
@@ -67,7 +73,10 @@ const ProjectFilter = ({
 }: Props & Omit<BoxProps, 'children'>) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { data: projects } = useModeratableProjects();
+  const { data: projects } = useProjects({
+    publicationStatuses: PUBLICATION_STATUSES,
+    canModerate: true,
+  });
   const { data: authUser } = useAuthUser();
 
   const projectFilterOptions = useMemo(() => {
