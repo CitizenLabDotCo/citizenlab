@@ -54,7 +54,7 @@ const RepresentativenessDashboard = () => {
       <Box width="100%" mb="36px">
         <Header />
         <ChartFilters
-          currentProjectFilter={currentProjectFilter}
+          projectId={currentProjectFilter}
           onProjectFilter={onProjectFilter}
           noData={!anyReferenceData}
         />

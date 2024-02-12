@@ -56,6 +56,13 @@ export const ContentSettings = ({
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
+    // We want to prevent the form builder from being closed when enter is pressed
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   if (!isNilOrError(platformLocale)) {
     return (
       <Box mt="16px">
@@ -68,6 +75,7 @@ export const ContentSettings = ({
                   id="e2e-title-multiloc"
                   name={`customFields.${field.index}.title_multiloc`}
                   label={<FormattedMessage {...messages.questionTitle} />}
+                  onKeyDown={handleKeyDown}
                 />
               </SectionField>
             )}

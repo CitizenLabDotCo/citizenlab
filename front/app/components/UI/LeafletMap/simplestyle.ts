@@ -152,7 +152,8 @@
       const that = this;
       this.eachLayer(function (l) {
         if ('icon' in l.options) {
-          if (l.feature.properties['marker-symbol'] !== '') {
+          const markerSymbol = l.feature.properties['marker-symbol'];
+          if (typeof markerSymbol === 'string' && markerSymbol.length > 0) {
             // If a specific icon is used, we need to wait for the async call to fetch the svg
             getIcon(l.feature.properties, that.options.useMakiMarkers).then(
               (icon) => {

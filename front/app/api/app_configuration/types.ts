@@ -150,8 +150,6 @@ export interface IAppConfigurationSettings {
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
-  insights_manual_flow?: AppConfigurationFeature;
-  insights_nlp_flow?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -211,6 +209,9 @@ export interface IAppConfigurationSettings {
       path: string;
       target: string;
     }[];
+  };
+  esri_integration?: AppConfigurationFeature & {
+    api_key: string;
   };
   disable_user_bios?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;

@@ -152,7 +152,7 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
             >
               <Box>{formatMessage(translationKeys[key].translationKey)}</Box>
               <Box mx="3px">{translationKeys[key].predicate}</Box>
-              <EllipsisFilterValue>{value}</EllipsisFilterValue>
+              <EllipsisFilterValue>{value?.toString()}</EllipsisFilterValue>
               {isEditable && (
                 <IconButton
                   iconName="close"

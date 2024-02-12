@@ -7,6 +7,7 @@ import HelmetIntl from 'components/HelmetIntl';
 import Tools from './';
 import PublicAPITokens from './PublicAPI/PublicAPITokens';
 import PowerBITemplates from './PowerBI/PowerBITemplates';
+import EsriKeyInput from './Esri/EsriKeyInput';
 
 const toolsRoutes = () => {
   return {
@@ -39,6 +40,14 @@ const toolsRoutes = () => {
         element: (
           <PageLoading>
             <PowerBITemplates />
+          </PageLoading>
+        ),
+      },
+      {
+        path: 'esri-integration',
+        element: (
+          <PageLoading>
+            <EsriKeyInput />
           </PageLoading>
         ),
       },

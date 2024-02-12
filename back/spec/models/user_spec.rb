@@ -558,14 +558,31 @@ RSpec.describe User do
       expect(u.project_folder_moderator?(l2.id)).to be false
     end
 
-    it 'response true when the user is project_folder_moderator and no project_folder_id is passed' do
+    it 'responds true when the user is project_folder_moderator and no project_folder_id is passed' do
       u = build(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: 'project_folder_id' }])
       expect(u.project_folder_moderator?).to be true
     end
 
-    it 'response false when the user is not a project_folder_moderator and no project_folder_id is passed' do
+    it 'responds false when the user is not a project_folder_moderator and no project_folder_id is passed' do
       u = build(:admin)
       expect(u.project_folder_moderator?).to be false
+    end
+  end
+
+  describe 'project_or_folder_moderator?' do
+    it 'responds true when the user has the project_folder_moderator role' do
+      u = build(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: 'project_folder_id' }])
+      expect(u.project_or_folder_moderator?).to be true
+    end
+
+    it 'responds true when the user is project_moderator' do
+      u = build(:user, roles: [{ type: 'project_moderator', project_id: 'project_id' }])
+      expect(u.project_or_folder_moderator?).to be true
+    end
+
+    it 'responds false when the user does not have any moderator roles' do
+      u = build(:user, roles: [])
+      expect(u.project_or_folder_moderator?).to be false
     end
   end
 

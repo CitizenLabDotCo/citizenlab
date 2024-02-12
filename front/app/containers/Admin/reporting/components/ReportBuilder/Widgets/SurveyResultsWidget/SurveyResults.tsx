@@ -9,7 +9,7 @@ import { useSurveyResults } from 'api/graph_data_units';
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import NoData from '../_shared/NoData';
-import FormResultsQuestion from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion';
+import FormResultsQuestion from './FormResultsQuestion';
 import Dot from './Dot';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
@@ -46,12 +46,12 @@ const SurveyResults = ({ phaseId, shownQuestions }: Props) => {
 
     const { results } = formResults.data.attributes;
     // Filtering out qualitative questions
-    const fitleredResults = results.filter((result) => {
+    const filteredResults = results.filter((result) => {
       return (
         result.inputType !== 'text' && result.inputType !== 'multiline_text'
       );
     });
-    return createResultRows(fitleredResults, shownQuestions);
+    return createResultRows(filteredResults, shownQuestions);
   }, [formResults, shownQuestions]);
 
   if (
@@ -72,7 +72,7 @@ const SurveyResults = ({ phaseId, shownQuestions }: Props) => {
   return (
     <>
       <Box width="100%" mb="24px">
-        <Text variant="bodyM" color="primary" mt="0px" mb="0px">
+        <Text variant="bodyM" mt="0px" mb="0px">
           {'| '}
           {localize(project.data.attributes.title_multiloc)}
           {phase && (

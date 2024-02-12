@@ -94,10 +94,7 @@ describe('Event show page', () => {
     cy.visit(`/events/${eventIdWithCoordinates}`);
     cy.get('#e2e-text-only-location').should('not.exist');
     cy.get('#e2e-location-with-coordinates-button').should('exist');
-    cy.get('#e2e-location-with-coordinates-button').click({ force: true });
-
-    // confirm modal is shown
-    cy.get('#e2e-event-map-modal').should('be.visible');
+    cy.get('#e2e-location-map').should('exist');
   });
 
   it('shows unauthorized notice when applicable', () => {

@@ -36,7 +36,7 @@ import { MessageDescriptor } from 'utils/cl-intl';
 
 export const WIDGETS = {
   TwoColumn,
-  TitleMultiloc,
+  TitleMultiloc, // TODO: remove this widget (TAN-1022)
   TextMultiloc,
   ImageMultiloc,
   WhiteSpace,

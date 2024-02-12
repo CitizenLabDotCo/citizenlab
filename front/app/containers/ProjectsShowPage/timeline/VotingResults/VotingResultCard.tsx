@@ -18,12 +18,14 @@ import {
   defaultCardStyle,
   defaultCardHoverStyle,
   media,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import ImagePlaceholder from './ImagePlaceholder';
 import Rank from './Rank';
-import Results from './Results';
 import Footer from 'components/IdeaCard/Footer';
+import FormattedBudget from 'utils/currency/FormattedBudget';
+import ProgressBar from './ProgressBar';
 
 // styling
 import styled from 'styled-components';
@@ -32,9 +34,6 @@ import styled from 'styled-components';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
-
-// utils
-import { roundPercentage } from 'utils/math';
 
 // typings
 import { IIdeaData } from 'api/ideas/types';
@@ -158,6 +157,7 @@ interface Props {
 
 const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(idea.relationships.project.data.id);
   const { data: ideaImage } = useIdeaImage(
@@ -165,27 +165,19 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
     idea.relationships.idea_images.data?.[0]?.id
   );
   const smallerThanPhone = useBreakpoint('phone');
-  const { formatMessage } = useIntl();
 
+  if (!phase || !project) return null;
+
+  const budget = idea.attributes.budget;
   const ideaTitle = localize(idea.attributes.title_multiloc);
-  const { slug } = idea.attributes;
-  const params = '?go_back=true';
-  const votingMethod = phase?.data.attributes.voting_method;
-
-  const ideaVotes = idea.attributes.votes_count ?? 0;
-  const totalVotes = phase?.data.attributes.votes_count;
-
-  const votesPercentage = totalVotes
-    ? roundPercentage(ideaVotes, totalVotes)
-    : 0;
-
-  const baskets = idea.attributes.baskets_count;
+  const votingMethod = phase.data.attributes.voting_method;
+  const url = `/ideas/${idea.attributes.slug}?go_back=true`;
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.id });
 
-    clHistory.push(`/ideas/${slug}${params}?go_back=true`, {
+    clHistory.push(url, {
       scrollToTop: true,
     });
   };
@@ -195,7 +187,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   return (
     <Container
       id={idea.id}
-      to={`/ideas/${slug}${params}`}
+      to={url}
       onClick={handleClick}
       className={`e2e-card ${
         !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
@@ -220,8 +212,9 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
         <IdeaCardImageWrapper>
           <Box w="100%" h="100%" flex="1" position="relative">
             <ImagePlaceholder
-              participationMethod="voting"
-              votingMethod={votingMethod}
+              placeholderIconName={
+                votingMethod === 'budgeting' ? 'money-bag' : 'idea'
+              }
             />
             <Box position="absolute" mt="12px" ml="12px">
               <Rank rank={rank} />
@@ -239,23 +232,19 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
 
         <Header>
           <Title title={ideaTitle}>{ideaTitle}</Title>
+          {phase.data.attributes.voting_method === 'budgeting' &&
+            typeof budget === 'number' && (
+              <Text mb="8px" mt="8px" color="tenantPrimary">
+                {formatMessage(messages.cost)}{' '}
+                <FormattedBudget value={budget} />
+              </Text>
+            )}
         </Header>
 
         <Body>
-          <Results
-            phaseId={phaseId}
-            budget={idea.attributes.budget ?? undefined}
-            votes={votingMethod === 'budgeting' ? undefined : ideaVotes}
-            votesPercentage={votesPercentage}
-            baskets={
-              votingMethod === 'single_voting' ? undefined : baskets ?? 0
-            }
-            tooltip={
-              votingMethod === 'budgeting'
-                ? formatMessage(messages.budgetingTooltip)
-                : undefined
-            }
-          />
+          <Box h="100%" display="flex" alignItems="flex-end">
+            <ProgressBar idea={idea} phase={phase} />
+          </Box>
         </Body>
         <Footer
           project={project}

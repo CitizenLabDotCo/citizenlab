@@ -97,6 +97,13 @@ const ConfigSelectWithLocaleSwitcher = ({
   const apiError = errors?.error && ([errors] as CLError[]);
   const validationError = errors?.message;
 
+  const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
+    // We want to prevent the form builder from being closed when enter is pressed
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   if (selectedLocale) {
     return (
       <>
@@ -160,6 +167,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                                   size="small"
                                   type="text"
                                   value={choice.title_multiloc[selectedLocale]}
+                                  onKeyDown={handleKeyDown}
                                   onChange={(value) => {
                                     const updatedChoices = choices;
                                     updatedChoices[index].title_multiloc[

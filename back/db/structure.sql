@@ -1012,8 +1012,7 @@ CREATE TABLE public.analysis_insights (
     filters jsonb DEFAULT '{}'::jsonb NOT NULL,
     inputs_ids jsonb,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    bookmarked boolean DEFAULT false NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -2589,11 +2588,13 @@ CREATE TABLE public.maps_layers (
     map_config_id uuid NOT NULL,
     title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     ordering integer NOT NULL,
-    geojson jsonb NOT NULL,
+    geojson jsonb DEFAULT '{}'::jsonb NOT NULL,
     default_enabled boolean DEFAULT true NOT NULL,
     marker_svg_url character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    type character varying,
+    layer_url character varying
 );
 
 
@@ -7378,6 +7379,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231212151032'),
 ('20231214100537'),
 ('20240124173411'),
-('20240126122702');
+('20240126122702'),
+('20240130142750'),
+('20240130170644');
 
 

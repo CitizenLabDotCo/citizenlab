@@ -1,31 +1,11 @@
 import React, { useRef, KeyboardEvent } from 'react';
 import { ScreenReaderOnly } from 'utils/a11y';
 import styled from 'styled-components';
-import {
-  fontSizes,
-  isRtl,
-  colors,
-  media,
-} from '@citizenlab/cl2-component-library';
+import { fontSizes, colors, media } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 import { FormattedMessage } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
-
-const TabsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  overflow-x: auto;
-
-  ${media.phone`
-    width: 100%;
-    justify-content: space-between;
-  `}
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-`;
+import HorizontalScroll from 'components/HorizontalScroll';
 
 const Tab = styled.button<{ active: boolean }>`
   box-sizing: content-box;
@@ -115,7 +95,7 @@ const Tabs = <ShowCount extends boolean>({
   };
 
   return (
-    <TabsContainer role="tablist">
+    <HorizontalScroll containerRole="tablist">
       {/*
             These tabs need the role, aria-selected etc to work well with
             screen readers.
@@ -147,7 +127,7 @@ const Tabs = <ShowCount extends boolean>({
           )}
         </Tab>
       ))}
-    </TabsContainer>
+    </HorizontalScroll>
   );
 };
 
