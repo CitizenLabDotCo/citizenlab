@@ -68,7 +68,6 @@ module Analysis
           end
         end
 
-
         def destroy
           if @analysis.destroy
             side_fx_service.after_destroy(@analysis, current_user)

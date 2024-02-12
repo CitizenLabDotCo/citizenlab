@@ -136,12 +136,10 @@ resource 'Analyses' do
 
     describe do
       let(:show_insights) { false }
-
       example_request 'Update an analysis to hide insights' do
         expect(response_status).to eq 200
         expect(response_data[:attributes][:show_insights]).to eq false
       end
-
     end
   end
 

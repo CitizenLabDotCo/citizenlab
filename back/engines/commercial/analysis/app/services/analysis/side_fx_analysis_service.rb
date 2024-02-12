@@ -13,7 +13,6 @@ module Analysis
       LogActivityJob.perform_later(analysis, 'updated', user, analysis.updated_at.to_i)
     end
 
-
     def after_destroy(frozen_analysis, user)
       serialized_analysis = clean_time_attributes(frozen_analysis.attributes)
       LogActivityJob.perform_later(encode_frozen_resource(frozen_analysis), 'deleted', user, Time.now.to_i, payload: { analysis: serialized_analysis })
