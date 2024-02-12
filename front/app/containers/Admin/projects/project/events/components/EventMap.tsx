@@ -33,7 +33,7 @@ const EventMap = memo<Props>(
         longitude: locationPoint?.current?.coordinates[0],
         latitude: locationPoint?.current?.coordinates[1],
       }),
-      symbol: getMapPinSymbol(theme.colors.tenantPrimary),
+      symbol: getMapPinSymbol({ color: theme.colors.tenantPrimary }),
     });
 
     const onClick = (event: any, mapView: MapView) => {
@@ -49,7 +49,7 @@ const EventMap = memo<Props>(
           longitude: locationPoint.current.coordinates[0],
           latitude: locationPoint.current.coordinates[1],
         }),
-        symbol: getMapPinSymbol(theme.colors.tenantPrimary),
+        symbol: getMapPinSymbol({ color: theme.colors.tenantPrimary }),
       });
 
       // Add a pin to the clicked location and delete the old one

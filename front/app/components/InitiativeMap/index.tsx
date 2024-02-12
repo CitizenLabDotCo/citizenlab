@@ -114,7 +114,7 @@ const InitiativeMap = ({ list }: Props) => {
         ],
         // Set the symbol used to render the graphics
         renderer: new Renderer({
-          symbol: getMapPinSymbol(theme.colors.tenantPrimary),
+          symbol: getMapPinSymbol({ color: theme.colors.tenantPrimary }),
         }),
         // Add cluster display to this layer
         featureReduction: getClusterConfiguration(theme.colors.tenantPrimary),
