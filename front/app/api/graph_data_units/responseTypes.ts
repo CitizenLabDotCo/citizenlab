@@ -45,6 +45,16 @@ export type MostReactedIdeasResponse = {
   };
 };
 
+export type SingleIdeaResponse = {
+  data: {
+    type: 'report_builder_data_units';
+    attributes: {
+      idea: IIdeaData;
+      idea_images: IIdeaImageData[];
+    };
+  };
+};
+
 export type VisitorsResponse = {
   data: {
     type: 'report_builder_data_units';

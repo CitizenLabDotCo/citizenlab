@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas',
     defaultMessage: 'Number of ideas',
   },
-  collapseLongText: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.collapseLongText',
-    defaultMessage: 'Collapse long text',
-  },
   showMore: {
     id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.showMore',
     defaultMessage: 'Show more',

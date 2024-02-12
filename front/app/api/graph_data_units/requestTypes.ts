@@ -5,6 +5,7 @@ import { Moment } from 'moment';
 export type ResolvedName =
   | 'SurveyResultsWidget'
   | 'MostReactedIdeasWidget'
+  | 'SingleIdeaWidget'
   | 'VisitorsWidget'
   | 'VisitorsTrafficSourcesWidget'
   | 'GenderWidget'
@@ -22,6 +23,7 @@ export interface BaseParams {
 export type ParametersLive =
   | SurveyResultsParams
   | MostReactedIdeasParams
+  | SingleIdeaParams
   | VisitorsParams
   | VisitorsTrafficSourcesParams
   | GenderParams
@@ -53,6 +55,15 @@ export interface MostReactedIdeasProps {
 export interface MostReactedIdeasParams extends BaseParams {
   resolvedName: 'MostReactedIdeasWidget';
   props: MostReactedIdeasProps;
+}
+
+export interface SingleIdeaProps {
+  phaseId?: string | null;
+  ideaId?: string;
+}
+export interface SingleIdeaParams extends BaseParams {
+  resolvedName: 'SingleIdeaWidget';
+  props: SingleIdeaProps;
 }
 
 export interface VisitorsParams extends BaseParams {

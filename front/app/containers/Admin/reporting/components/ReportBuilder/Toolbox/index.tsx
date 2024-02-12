@@ -26,6 +26,7 @@ import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
+import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
@@ -214,6 +215,18 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             }
             icon="idea"
             label={formatMessage(WIDGET_TITLES.MostReactedIdeasWidget)}
+          />
+          <DraggableElement
+            id="e2e-single-idea-widget"
+            component={
+              <SingleIdeaWidget
+                title={toMultiloc(WIDGET_TITLES.SingleIdeaWidget)}
+                collapseLongText={false}
+                projectId={selectedProjectId}
+              />
+            }
+            icon="idea"
+            label={formatMessage(WIDGET_TITLES.SingleIdeaWidget)}
           />
         </Accordion>
 

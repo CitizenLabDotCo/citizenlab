@@ -7,8 +7,7 @@ import { useNode } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
 import ProjectFilter from '../../_shared/ProjectFilter';
 import PhaseFilter from '../../_shared/PhaseFilter';
-import NumberOfIdeasDropdown from './NumberOfIdeasDropdown';
-import CollapseLongTextToggle from '../../SingleIdeaWidget/Settings/CollapseLongTextToggle';
+import CollapseLongTextToggle from './CollapseLongTextToggle';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 // i18n
@@ -19,6 +18,7 @@ import { useIntl } from 'utils/cl-intl';
 // typings
 import { Props } from '../typings';
 import { IOption, Multiloc } from 'typings';
+import IdeaFilter from './IdeaFilter';
 
 const Settings = () => {
   const { formatMessage } = useIntl();
@@ -28,13 +28,13 @@ const Settings = () => {
     title,
     projectId,
     phaseId,
-    numberOfIdeas,
+    ideaId,
     collapseLongText,
   } = useNode<Props>((node) => ({
     title: node.data.props.title,
     projectId: node.data.props.projectId,
     phaseId: node.data.props.phaseId,
-    numberOfIdeas: node.data.props.numberOfIdeas,
+    ideaId: node.data.props.ideaId,
     collapseLongText: node.data.props.collapseLongText,
   }));
 
@@ -66,10 +66,10 @@ const Settings = () => {
     [setProp]
   );
 
-  const handleChangeNumberOfIdeas = useCallback(
-    (numberOfIdeas: number) => {
+  const handleChangeIdeaId = useCallback(
+    (ideaId: string) => {
       setProp((props: Props) => {
-        props.numberOfIdeas = numberOfIdeas;
+        props.ideaId = ideaId;
       });
     },
     [setProp]
@@ -111,10 +111,10 @@ const Settings = () => {
         />
       )}
 
-      <NumberOfIdeasDropdown
-        numberOfIdeas={numberOfIdeas}
-        onChange={handleChangeNumberOfIdeas}
-      />
+      {/* <IdeaFilter
+        ideaId={ideaId}
+        onChange={handleChangeIdeaId}
+      /> */}
 
       <Box my="28px">
         <CollapseLongTextToggle

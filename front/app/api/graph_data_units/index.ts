@@ -4,6 +4,7 @@ import {
   MostReactedIdeasResponse,
   PostsByTimeResponse,
   ReactionsByTimeResponse,
+  SingleIdeaResponse,
   SurveyResultsResponse,
   UsersByBirthyearResponse,
   UsersByGenderResponse,
@@ -15,6 +16,7 @@ import {
   AnalyticsProps,
   GenderProps,
   MostReactedIdeasProps,
+  SingleIdeaProps,
   SurveyResultsProps,
   VisitorsTrafficSourcesProps,
 } from './requestTypes';
@@ -35,6 +37,19 @@ export const useMostReactedIdeas = (
   return useGraphDataUnits<MostReactedIdeasResponse>(
     {
       resolvedName: 'MostReactedIdeasWidget',
+      props,
+    },
+    { enabled }
+  );
+};
+
+export const useSingleIdea = (
+  props: SingleIdeaProps,
+  { enabled }: { enabled: boolean }
+) => {
+  return useGraphDataUnits<SingleIdeaResponse>(
+    {
+      resolvedName: 'SingleIdeaWidget',
       props,
     },
     { enabled }
