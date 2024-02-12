@@ -9,13 +9,17 @@ module ReportBuilder
 
     def get_result(question_field_id)
       question = get_question(question_field_id)
-
       sql_question = sql_field(question)
 
       answers = @inputs.select("#{sql_question} as answer")
 
       if question.input_type == 'select'
-        answers = answers.where("#{sql_question} IS NOT NULL")
+        answers = answers.where(
+          "(ideas.custom_field_values->>'#{question.key}' IN (?)) OR ideas.custom_field_values->>'#{question.key}' IS NULL",
+          question.options.map(&:key)
+        )
+      else
+        # TODO
       end
 
       grouped_answers = apply_grouping(answers)
@@ -25,11 +29,6 @@ module ReportBuilder
             count: count
           }
         end
-
-      option_keys = question.options.pluck(:key)
-      grouped_answers = grouped_answers.select do |grouping|
-        option_keys.include? grouping[:answer]
-      end
 
       build_response(grouped_answers, question)
     end
@@ -42,7 +41,6 @@ module ReportBuilder
       joined_inputs = @inputs.joins(:author)
       answers = select_answers(joined_inputs, question, user_field)
       grouped_answers = group_answers(answers)
-      grouped_answers = filter_missing_keys(grouped_answers, question, user_field)
 
       build_response(grouped_answers, question)
     end
@@ -54,7 +52,6 @@ module ReportBuilder
 
       answers = select_answers(@inputs, question, other_question)
       grouped_answers = group_answers(answers)
-      grouped_answers = filter_missing_keys(grouped_answers, question, other_question)
 
       build_response(grouped_answers, question)
     end
@@ -113,18 +110,6 @@ module ReportBuilder
         .order(Arel.sql('COUNT(answer) DESC'))
         .count
         .to_a
-    end
-
-    def filter_missing_keys(grouped_answers, question, slice_field)
-      question_option_keys = question.options.pluck(:key)
-      slice_field_option_keys = slice_field.options.pluck(:key)
-
-      grouped_answers.select do |grouping|
-        answer_present = question_option_keys.include? grouping[:answer]
-        group_present = slice_field_option_keys.include? grouping[:group_by_value]
-
-        answer_present && group_present
-      end
     end
 
     def build_response(grouped_answers, question)
