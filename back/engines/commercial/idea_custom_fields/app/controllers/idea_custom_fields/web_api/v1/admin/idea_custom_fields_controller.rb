@@ -98,7 +98,7 @@ module IdeaCustomFields
             option_temp_ids_to_ids_mapping_in_field_logic = update_options! field, options_params, errors, index
             option_temp_ids_to_ids_mapping.merge! option_temp_ids_to_ids_mapping_in_field_logic
           end
-          create_or_update_map_config(field, field_params)
+          create_or_update_map_config(field, field_params, errors, index)
           field.set_list_position(index)
         end
         raise UpdateAllFailedError, errors if errors.present?
@@ -152,20 +152,36 @@ module IdeaCustomFields
       end
     end
 
-    def create_or_update_map_config(field, field_params)
+    def create_or_update_map_config(field, field_params, errors, index)
       map_config_params = field_params[:map_config_params]
       return unless map_config_params
 
       map_config_params = map_config_params.merge(mappable_id: field.id, mappable_type: 'CustomField')
 
       if field.map_config
-        field.map_config.update!(map_config_params)
+        update_map_config(field, map_config_params, errors, index)
       else
-        map_config = CustomMaps::MapConfig.new(map_config_params)
-        map_config.save!
+        create_map_config(map_config_params, errors, index)
       end
+    end
 
-      # TODO: Add error handling/reporting?
+    def create_map_config(map_config_params, errors, index)
+      map_config = CustomMaps::MapConfig.new(map_config_params)
+      unless map_config.save
+        wrong_input_type_for_map_config_error(errors, index, map_config.errors)
+      end
+    end
+
+    def update_map_config(field, map_config_params, errors, index)
+      unless field.map_config.update(map_config_params)
+        wrong_input_type_for_map_config_error(errors, index, map_config.errors)
+      end
+    end
+
+    def wrong_input_type_for_map_config_error(errors, index, map_config_errors)
+      errors[index.to_s] ||= {}
+      errors[index.to_s][:map_config] ||= {}
+      errors[index.to_s][:map_config] = map_config_errors
     end
 
     def delete_field!(field)

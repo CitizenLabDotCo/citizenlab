@@ -38,7 +38,7 @@ module MultiTenancy
           default_enabled: false
         )
 
-        custom_field = CustomField.where(resource_type: 'CustomForm').where(input_type: 'text').first
+        custom_field = CustomField.where(resource_type: 'CustomForm').where(input_type: 'point').first
         ::CustomMaps::MapConfig.create!(
           mappable: custom_field,
           center: RGeo::Cartesian.factory.point(2.349014, 48.864716), # Paris

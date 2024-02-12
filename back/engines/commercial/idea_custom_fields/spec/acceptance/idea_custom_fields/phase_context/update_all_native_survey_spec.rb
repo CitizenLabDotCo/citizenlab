@@ -2529,8 +2529,8 @@ resource 'Idea Custom Fields' do
           custom_fields: [
             { input_type: 'page' },
             {
-              title_multiloc: { 'en' => 'Inserted field' },
-              description_multiloc: { 'en' => 'Inserted field description' },
+              title_multiloc: { 'en' => 'Inserted point field' },
+              description_multiloc: { 'en' => 'Inserted point field description' },
               input_type: 'point',
               required: false,
               enabled: false,
@@ -2570,6 +2570,73 @@ resource 'Idea Custom Fields' do
         expect(CustomField.find(field_to_update.id).map_config.tile_provider).to eq('https://somespecificprovider.com')
 
         assert_status 200
+      end
+
+      example "[error] Add map_config when creating field that is not input_type: 'point'", document: false do
+        request = {
+          custom_fields: [
+            { input_type: 'page' },
+            {
+              title_multiloc: { 'en' => 'Inserted text field' },
+              description_multiloc: { 'en' => 'Inserted text field description' },
+              input_type: 'text',
+              required: false,
+              enabled: false,
+              map_config_params: {
+                center_geojson: {
+                  type: 'Point',
+                  coordinates: [
+                    42.4242,
+                    24.2424
+                  ]
+                },
+                zoom_level: '11',
+                tile_provider: 'https://something.com'
+              }
+            }
+          ]
+        }
+        do_request request
+        assert_status 422
+
+        json_response = json_parse(response_body)
+        expect(json_response[:errors]).to eq({
+          '1': { map_config: { mappable: ['The custom field input_type cannot be associated with a map_config'] } }
+        })
+      end
+
+      example "[error] Add map_config when updating field that is not input_type: 'point'", document: false do
+        field_to_update = create(:custom_field_text, resource: custom_form, title_multiloc: { 'en' => 'Text field' })
+        request = {
+          custom_fields: [
+            { input_type: 'page' },
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => 'Updated text field' },
+              description_multiloc: { 'en' => 'Updated text field description' },
+              required: true,
+              enabled: true,
+              map_config_params: {
+                center_geojson: {
+                  type: 'Point',
+                  coordinates: [
+                    42.4242,
+                    24.2424
+                  ]
+                },
+                zoom_level: '11',
+                tile_provider: 'https://somespecificprovider.com'
+              }
+            }
+          ]
+        }
+        do_request request
+        assert_status 422
+
+        json_response = json_parse(response_body)
+        expect(json_response[:errors]).to eq({
+          '1': { map_config: { mappable: ['The custom field input_type cannot be associated with a map_config'] } }
+        })
       end
     end
   end
