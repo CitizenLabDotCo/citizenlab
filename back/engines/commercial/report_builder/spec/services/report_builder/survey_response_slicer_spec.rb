@@ -92,11 +92,20 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
   # Create select user custom field
   let_it_be(:user_custom_field) { create(:custom_field_gender, :with_options) }
 
+  def gender_response(index)
+    # We add one missing value to see what happens
+    if index == 1
+      return nil
+    end
+
+    index.even? ? 'female' : 'male'
+  end
+
   # Create users
   let_it_be(:users) do
     build_list(:user, 11) do |record, index|
       record.custom_field_values = {
-        gender: index.even? ? 'female' : 'male'
+        gender: gender_response(index)
       }
       record.save!
     end
@@ -186,10 +195,10 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         question: multiselect_question.title_multiloc,
         customFieldId: multiselect_question.id,
         required: false,
-        totalResponses: 16,
+        totalResponses: 15,
         answers: [
           { answer: 'option1', group_by_value: 'female', count: 6 },
-          { answer: 'option1', group_by_value: 'male', count: 5 },
+          { answer: 'option1', group_by_value: 'male', count: 4 },
           { answer: 'option2', group_by_value: 'female', count: 3 },
           { answer: 'option2', group_by_value: 'male', count: 2 }
         ]
