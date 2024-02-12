@@ -927,6 +927,7 @@
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "الدقة: {accuracy}{percentage}",
   "app.containers.Admin.projects.project.survey.analysis.generated": "ولدت:",
   "app.containers.Admin.projects.project.survey.analysis.percentage": "%",
+  "app.containers.Admin.projects.project.survey.analysis.refresh": "{count} ردود جديدة",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "حدد الأسئلة ذات الصلة للتحليل",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "هل تريد تضمين أي أسئلة أخرى ذات صلة في تحليلك لـ {question}؟",
   "app.containers.Admin.projects.project.survey.cancel": "يلغي",
