@@ -2521,6 +2521,56 @@ resource 'Idea Custom Fields' do
 
         assert_status 200
       end
+
+      example 'Adding and updating a field with associated map_config' do
+        field_to_update = create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' })
+        create(:map_config, mappable: field_to_update)
+        request = {
+          custom_fields: [
+            { input_type: 'page' },
+            {
+              title_multiloc: { 'en' => 'Inserted field' },
+              description_multiloc: { 'en' => 'Inserted field description' },
+              input_type: 'point',
+              required: false,
+              enabled: false,
+              map_config_params: {
+                center_geojson: {
+                  type: 'Point',
+                  coordinates: [
+                    42.4242,
+                    24.2424
+                  ]
+                },
+                zoom_level: '11',
+                tile_provider: 'https://something.com'
+              }
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => 'Updated point field' },
+              description_multiloc: { 'en' => 'Updated point field description' },
+              required: true,
+              enabled: true,
+              map_config_params: {
+                center_geojson: {
+                  type: 'Point',
+                  coordinates: [
+                    42.4242,
+                    24.2424
+                  ]
+                },
+                zoom_level: '11',
+                tile_provider: 'https://somespecificprovider.com'
+              }
+            }
+          ]
+        }
+        expect { do_request request }.to change(CustomMaps::MapConfig, :count).by 1
+        expect(CustomField.find(field_to_update.id).map_config.tile_provider).to eq('https://somespecificprovider.com')
+
+        assert_status 200
+      end
     end
   end
 end
