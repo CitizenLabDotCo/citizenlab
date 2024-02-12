@@ -2522,7 +2522,7 @@ resource 'Idea Custom Fields' do
         assert_status 200
       end
 
-      example 'Adding and updating a field with associated map_config' do
+      example 'Adding and updating a point field with associated map_config' do
         field_to_update = create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' })
         create(:map_config, mappable: field_to_update)
         request = {

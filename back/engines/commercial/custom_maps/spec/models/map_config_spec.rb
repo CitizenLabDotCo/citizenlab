@@ -18,10 +18,17 @@ RSpec.describe CustomMaps::MapConfig do
     end
   end
 
-  describe 'when mappable is a custom_field' do
+  describe "when mappable_type is 'CustomField' with input_type: 'point'" do
     it 'is valid' do
-      map_config = build(:map_config, mappable: create(:custom_field))
+      map_config = build(:map_config, mappable: create(:custom_field_point))
       expect(map_config).to be_valid
+    end
+  end
+
+  describe "when mappable_type is 'CustomField' with input_type other than 'point'" do
+    it 'is invalid' do
+      map_config = build(:map_config, mappable: create(:custom_field_text))
+      expect(map_config).to be_invalid
     end
   end
 
