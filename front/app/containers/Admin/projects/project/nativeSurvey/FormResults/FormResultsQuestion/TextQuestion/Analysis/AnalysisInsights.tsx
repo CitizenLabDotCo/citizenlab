@@ -10,6 +10,8 @@ import {
 import { IAnalysisData } from 'api/analyses/types';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
+import useRegenerateAnalysisSummary from 'api/analysis_summaries/useRegenerateAnalysisSummary';
+import useRegenerateAnalysisQuestion from 'api/analysis_questions/useRegenerateAnalysisQuestion';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
@@ -61,10 +63,13 @@ const Summary = ({
     true
   );
 
+  const { mutate: regenerateSummary, isLoading: isLoadingRegenerateSummary } =
+    useRegenerateAnalysisSummary();
   const summary = data?.data.attributes.summary;
   const filters = data?.data.attributes.filters;
   const accuracy = data?.data.attributes.accuracy;
   const generatedAt = data?.data.attributes.created_at;
+  const missingInputsCount = data?.data.attributes.missing_inputs_count;
 
   const isLoading =
     task?.data.attributes.state === 'queued' ||
@@ -123,7 +128,21 @@ const Summary = ({
           {formatMessage(messages.generated)} {formatDate(generatedAt)}
         </Text>
       </Box>
-      <Box display="flex">
+      <Box display="flex" gap="16px">
+        <Button
+          disabled={missingInputsCount === 0}
+          buttonStyle="secondary-outlined"
+          icon="refresh"
+          onClick={() => {
+            regenerateSummary({ analysisId, summaryId });
+          }}
+          processing={isLoadingRegenerateSummary}
+        >
+          <FormattedMessage
+            {...messages.refresh}
+            values={{ count: missingInputsCount }}
+          />
+        </Button>
         <Button
           buttonStyle="secondary"
           icon="eye"
@@ -139,14 +158,14 @@ const Summary = ({
 };
 
 const Question = ({
-  summaryId,
+  questionId,
   analysisId,
 }: {
-  summaryId: string;
+  questionId: string;
   analysisId: string;
 }) => {
   const { formatMessage, formatDate } = useIntl();
-  const { data } = useAnalysisQuestion({ analysisId, id: summaryId });
+  const { data } = useAnalysisQuestion({ analysisId, id: questionId });
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -158,11 +177,15 @@ const Question = ({
     true
   );
 
+  const { mutate: regenerateQuestion, isLoading: isLoadingRegenerateQuestion } =
+    useRegenerateAnalysisQuestion();
+
   const question = data?.data.attributes.question;
   const answer = data?.data.attributes.answer;
   const filters = data?.data.attributes.filters;
   const accuracy = data?.data.attributes.accuracy;
   const generatedAt = data?.data.attributes.created_at;
+  const missingInputsCount = data?.data.attributes.missing_inputs_count;
 
   const isLoading =
     task?.data.attributes.state === 'queued' ||
@@ -220,7 +243,21 @@ const Question = ({
           {formatMessage(messages.generated)} {formatDate(generatedAt)}
         </Text>
       </Box>
-      <Box display="flex">
+      <Box display="flex" gap="16px">
+        <Button
+          disabled={missingInputsCount === 0}
+          buttonStyle="secondary-outlined"
+          icon="refresh"
+          onClick={() => {
+            regenerateQuestion({ analysisId, questionId });
+          }}
+          processing={isLoadingRegenerateQuestion}
+        >
+          <FormattedMessage
+            {...messages.refresh}
+            values={{ count: missingInputsCount }}
+          />
+        </Button>
         <Button
           buttonStyle="secondary"
           icon="eye"
@@ -325,7 +362,7 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
             'analysis_question' ? (
               <Question
                 key={selectedInsight.relationships.insightable.data.id}
-                summaryId={selectedInsight.relationships.insightable.data.id}
+                questionId={selectedInsight.relationships.insightable.data.id}
                 analysisId={analysis.id}
               />
             ) : (
