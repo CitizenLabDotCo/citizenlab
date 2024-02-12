@@ -23,12 +23,12 @@ type Props = {
   height?: string;
   width?: string;
   initialData?: InitialData;
+  layers?: Layer[];
+  graphics?: Graphic[];
 };
 
 type InitialData = {
-  initialLayers?: Layer[];
   initialCenter?: GeoJSON.Point | null;
-  initialGraphics?: Graphic[];
   initialZoom?: number;
   initialMaxZoom?: number;
   initialUiElements?: EsriUiElement[];
@@ -37,7 +37,7 @@ type InitialData = {
   initialOnHover?: (event: any, mapView: MapView) => void;
 };
 
-const EsriMap = ({ height, width, initialData }: Props) => {
+const EsriMap = ({ height, width, layers, graphics, initialData }: Props) => {
   const { data: appConfig } = useAppConfiguration();
   const globalMapSettings = appConfig?.data.attributes.settings.maps;
 
@@ -59,7 +59,8 @@ const EsriMap = ({ height, width, initialData }: Props) => {
     );
   }, []);
 
-  // Load initial map configuration data that was passed in
+  // Load initial map configuration data that was passed in.
+  // Note: This data is static and will not change.
   useEffect(() => {
     if (!initialValuesLoaded.current && initialData && mapView && map) {
       // Set map center
@@ -83,21 +84,6 @@ const EsriMap = ({ height, width, initialData }: Props) => {
         maxZoom: initialData.initialMaxZoom || 22,
         minZoom: 5,
       };
-
-      // Add any layers that were passed in
-      if (initialData.initialLayers) {
-        map?.removeAll();
-        initialData.initialLayers.forEach((layer) => {
-          map.add(layer);
-        });
-      }
-
-      // Add any graphics that were passed in. These should sit on top of any map layers.
-      if (initialData.initialGraphics) {
-        initialData.initialGraphics.forEach((graphic) => {
-          mapView.graphics.add(graphic);
-        });
-      }
 
       // Add fullscreen widget if set
       if (initialData.initialShowFullscreenOption) {
@@ -134,6 +120,27 @@ const EsriMap = ({ height, width, initialData }: Props) => {
       initialValuesLoaded.current = true;
     }
   }, [globalMapSettings, initialData, map, mapView]);
+
+  // Load dynamic data that was passed in.
+  // Note: This data is dynamic and may change.
+  useEffect(() => {
+    // Add any map layers which were passed in
+    if (map && layers) {
+      map?.removeAll();
+      layers.forEach((layer) => {
+        map.add(layer);
+      });
+    }
+  }, [layers, map]);
+
+  useEffect(() => {
+    // Add any graphics which were passed in
+    if (mapView && graphics) {
+      graphics.forEach((graphic) => {
+        mapView.graphics.add(graphic);
+      });
+    }
+  }, [graphics, mapView]);
 
   return (
     <>

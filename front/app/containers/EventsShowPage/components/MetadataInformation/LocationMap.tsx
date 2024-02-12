@@ -35,9 +35,9 @@ const LocationMap = memo<Props>(({ eventLocation }: Props) => {
       initialData={{
         initialCenter: eventLocation,
         initialZoom: 18,
-        initialGraphics: [pointGraphic],
         initialShowFullscreenOption: isPhoneOrSmaller ? false : true,
       }}
+      graphics={[pointGraphic]}
       height={isPhoneOrSmaller ? '180px' : '140px'}
     />
   );

@@ -83,9 +83,11 @@ const InitiativeMap = ({ list }: Props) => {
   }, []);
 
   // Loop through initatives with locations and create array of graphics
-  const initiativesWithLocation = list.filter(
-    (initiative) => initiative?.attributes?.location_point_geojson
-  );
+  const initiativesWithLocation = useMemo(() => {
+    return list.filter(
+      (initiative) => initiative?.attributes?.location_point_geojson
+    );
+  }, [list]);
 
   const graphics = useMemo(() => {
     return initiativesWithLocation?.map((initiative) => {
@@ -267,8 +269,8 @@ const InitiativeMap = ({ list }: Props) => {
     <StyledMapContainer>
       <EsriMap
         height={isPhoneOrSmaller ? '480px' : '640px'}
+        layers={initiativesLayer ? [initiativesLayer] : undefined}
         initialData={{
-          initialLayers: initiativesLayer ? [initiativesLayer] : undefined,
           initialOnClick: onMapClick,
           initialOnHover: changeCursorOnHover,
         }}

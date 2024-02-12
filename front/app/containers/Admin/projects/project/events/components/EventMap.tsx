@@ -70,9 +70,9 @@ const EventMap = memo<Props>(
         initialData={{
           initialCenter: position,
           initialZoom: 18,
-          initialGraphics: [pointGraphic],
           initialOnClick: onClick,
         }}
+        graphics={[pointGraphic]}
         height={mapHeight}
       />
     );
