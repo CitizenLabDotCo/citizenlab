@@ -124,6 +124,27 @@ resource 'Analyses' do
     end
   end
 
+  patch 'web_api/v1/analyses/:id' do
+    with_options scope: :analysis do
+      parameter :show_insights, 'Whether to show insights or not', required: false
+
+      ValidationErrorHelper.new.error_fields(self, Analysis::Analysis)
+    end
+
+    let(:analysis) { create(:analysis) }
+    let(:id) { analysis.id }
+
+    describe do
+      let(:show_insights) { false }
+
+      example_request 'Update an analysis to hide insights' do
+        expect(response_status).to eq 200
+        expect(response_data[:attributes][:show_insights]).to eq false
+      end
+
+    end
+  end
+
   delete 'web_api/v1/analyses/:id' do
     let!(:analysis) { create(:analysis) }
     let(:id) { analysis.id }
