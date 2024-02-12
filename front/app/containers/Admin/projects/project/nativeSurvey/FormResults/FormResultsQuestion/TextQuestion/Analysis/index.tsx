@@ -74,7 +74,9 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
               iconName="dots-horizontal"
               iconColor={colors.textSecondary}
               iconColorOnHover={colors.black}
-              a11y_buttonActionMessage="open analysis actions dropdown"
+              a11y_buttonActionMessage={formatMessage(
+                messages.openAnalysisActions
+              )}
               onClick={toggleDropdown}
               mr="20px"
             />
