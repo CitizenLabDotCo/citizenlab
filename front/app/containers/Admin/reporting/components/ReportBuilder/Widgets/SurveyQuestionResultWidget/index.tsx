@@ -30,15 +30,9 @@ const SurveyQuestionResultWidget = ({
 
   const projectOrPhaseEmptyMessage = getEmptyMessage({ projectId, phaseId });
 
-  const emptyMessage = hasEverything
-    ? undefined
-    : projectOrPhaseEmptyMessage ?? messages.emptyField;
-
   return (
     <PageBreakBox px={px}>
-      {emptyMessage ? (
-        <NoData message={emptyMessage} />
-      ) : hasEverything ? (
+      {hasEverything ? (
         <SurveyQuestionResult
           projectId={projectId}
           phaseId={phaseId}
@@ -46,9 +40,7 @@ const SurveyQuestionResultWidget = ({
           groupByUserFieldId={groupByUserFieldId}
         />
       ) : (
-        // This is unreachable but I can't seem to explain to TS
-        // that the emptyMessage check is enough to guarantee that
-        <></>
+        <NoData message={projectOrPhaseEmptyMessage ?? messages.emptyField} />
       )}
     </PageBreakBox>
   );
@@ -65,6 +57,6 @@ SurveyQuestionResultWidget.craft = {
   },
 };
 
-export const surveyQuestionResultTitle = messages.singleSurveyQuestion;
+export const surveyQuestionResultTitle = messages.surveyQuestion;
 
 export default SurveyQuestionResultWidget;

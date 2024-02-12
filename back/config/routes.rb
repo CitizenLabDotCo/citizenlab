@@ -188,7 +188,6 @@ Rails.application.routes.draw do
         post 'copy', on: :member
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
         get :as_xlsx, on: :member, action: 'index_xlsx'
-        get 'moderatable', on: :collection, to: 'projects#moderatable'
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do
