@@ -927,6 +927,7 @@
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Precisão: {accuracy}{percentage}",
   "app.containers.Admin.projects.project.survey.analysis.generated": "Gerado:",
   "app.containers.Admin.projects.project.survey.analysis.percentage": "%",
+  "app.containers.Admin.projects.project.survey.analysis.refresh": "{count} novas respostas",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Selecione questões relacionadas para análise",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Deseja incluir alguma outra questão relacionada em sua análise de {question}?",
   "app.containers.Admin.projects.project.survey.cancel": "Cancelar",
