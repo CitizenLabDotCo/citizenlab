@@ -27,10 +27,11 @@ module ReportBuilder
 
       # WHERE
       answers = if question.input_type == 'select'
-        answers.where(
-          "(ideas.custom_field_values->>'#{question.key}' IN (?)) OR ideas.custom_field_values->>'#{question.key}' IS NULL",
-          question.options.map(&:key) + [nil]
-        )
+        # answers.where(
+        #   "(ideas.custom_field_values->>'#{question.key}' IN (?)) OR ideas.custom_field_values->>'#{question.key}' IS NULL",
+        #   question.options.map(&:key)
+        # )
+        answers
       else
         # answers.where(
         #   %{
@@ -40,9 +41,9 @@ module ReportBuilder
 
         #   }
         # )
+        # TODO
         answers
       end
-      # puts answers.to_sql
 
       # GROUP_BY
       grouped_answers = apply_grouping(answers)
