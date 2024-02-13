@@ -510,9 +510,9 @@ fr-BE:
       subject: '%{organizationName}: Nous y sommes presque ! Soumettez vos réponses'
       preheader: 'Vous n''avez pas répondu à l''enquête sur la plateforme de participation de %{organizationName}'
       title_native_survey_not_submitted: 'Vous y êtes presque ! Envoyez vos réponses'
-      body_native_survey_not_submitted: 'Vous avez commencé à partager vos réponses sur %{phaseTitle} mais vous ne les avez pas soumises. Les soumissions seront clôturées à l''adresse %{phaseEndDate}. Cliquez sur le bouton ci-dessous pour continuer là où vous vous êtes arrêté.'
-      body_native_survey_not_submitted_no_date: 'Vous avez commencé à partager vos réponses sur %{phaseTitle} mais vous ne les avez pas envoyées. Cliquez sur le bouton ci-dessous pour reprendre là où vous vous êtes arrêté.'
-      cta_complete_your_survey_response: 'Reprendre votre réponse à l''enquête'
+      body_native_survey_not_submitted: 'Vous avez commencé à répondre à l''enquête sur %{phaseTitle}, mais vous n''avez pas soumis vos réponses. Les soumissions seront clôturées le %{phaseEndDate}. Cliquez sur le bouton ci-dessous pour reprendre là où vous vous êtes arrêté.'
+      body_native_survey_not_submitted_no_date: 'Vous avez commencé à répondre à l''enquête sur %{phaseTitle}, mais vous n''avez pas soumis vos réponses. Cliquez sur le bouton ci-dessous pour reprendre là où vous vous êtes arrêté.'
+      cta_complete_your_survey_response: 'Continuer l''enquête'
     voting_basket_not_submitted:
       subject: '%{organizationName}Vous n''avez pas soumis vos votes'
       preheader: 'Vous n''avez pas soumis vos votes sur la plateforme de participation de %{organizationName}'
@@ -588,6 +588,7 @@ fr-BE:
         user_who_voted: 'Utilisateur ayant voté'
         user_with_unsubmitted_votes: 'Utilisateur qui n''a pas soumis ses votes'
         users_who_engaged_but_not_voted: 'Utilisateurs ayant participé au projet, mais n''ayant pas voté'
+        user_with_unsubmitted_survey: 'Utilisateur qui a commencé son enquête mais ne l''a pas soumise'
       content_type:
         comments: 'Commentaires'
         content_moderation: 'Modération du contenu'
@@ -600,6 +601,7 @@ fr-BE:
         proposals: 'Propositions'
         reactions: 'Réactions'
         voting: 'Vote'
+        surveys: 'Enquêtes'
       trigger:
         comment_is_deleted: 'Suppression d''un commentaire'
         comment_is_flagged_as_spam: 'Commentaire marqué comme spam'
@@ -648,3 +650,4 @@ fr-BE:
         7_days_after_invite_is_sent: '7 jours après l''envoi de l''invitation'
         7_days_before_the_project_changes_phase: '7 jours avant le changement de phase du projet'
         registration_to_event: 'Inscription à un événement'
+        survey_1_day_after_draft_saved: '1 jour après que l''utilisateur a sauvegardé l''enquête en tant que brouillon'
