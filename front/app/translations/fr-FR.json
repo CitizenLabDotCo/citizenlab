@@ -1019,7 +1019,7 @@
   "app.containers.IdeasNewPage.issueMetaTitle": "Ajoutez un nouveau problème | {projectName}",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Êtes-vous sûr de vouloir quitter cette enquête ?",
   "app.containers.IdeasNewPage.leaveSurveyText": "Vos réponses ne seront pas enregistrées.",
-  "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Vos réponses provisoires ont été sauvegardées en privé et vous pourrez revenir plus tard pour répondre à cette enquête.",
+  "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Vos réponses ont été enregistrées en tant que brouillon. Vous pouvez revenir plus tard pour terminer cette enquête.",
   "app.containers.IdeasNewPage.optionFormTitle": "Ajoutez une nouvelle option",
   "app.containers.IdeasNewPage.optionMetaTitle": "Ajoutez une nouvelle option | {projectName}",
   "app.containers.IdeasNewPage.or": "Ou",
