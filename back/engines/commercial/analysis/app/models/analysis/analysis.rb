@@ -29,8 +29,8 @@ module Analysis
     belongs_to :project, optional: true
     belongs_to :phase, optional: true
 
-    has_many :analyses_custom_fields, class_name: 'Analysis::AnalysesCustomField', dependent: :destroy
-    has_many :custom_fields, -> { order(ordering: :asc) }, through: :analyses_custom_fields
+    has_many :additional_custom_fields, class_name: 'Analysis::AdditionalCustomField', dependent: :destroy
+    has_many :custom_fields, -> { order(ordering: :asc) }, through: :additional_custom_fields # TODO: include main field
     has_many :tags, class_name: 'Analysis::Tag', dependent: :destroy
     has_many :taggings, class_name: 'Analysis::Tagging', through: :tags
     has_many :background_tasks, class_name: 'Analysis::BackgroundTask', dependent: :destroy
