@@ -2215,7 +2215,6 @@
   "app.containers.admin.ContentBuilder.twoEvenColumnLayout": "عمودان متساويان",
   "app.containers.admin.ContentBuilder.urlPlaceholder": "https://example.com",
   "app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIdeas": "الأفكار الأكثر تفاعلًا",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.collapseLongText": "طي النص الطويل",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhase": "مرحلة التفكير",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable": "لا تتوفر أي أسئلة لهذا المشروع أو هذه المرحلة.",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas": "عدد الأفكار",

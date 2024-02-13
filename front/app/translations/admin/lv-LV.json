@@ -2215,7 +2215,6 @@
   "app.containers.admin.ContentBuilder.twoEvenColumnLayout": "2 vienādas ailes",
   "app.containers.admin.ContentBuilder.urlPlaceholder": "https://example.com",
   "app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIdeas": "Lielākā daļa reaģēto ideju",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.collapseLongText": "Salocīt garu tekstu",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhase": "Idejas fāze",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable": "Šim projektam vai posmam nav pieejami jautājumi.",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas": "Ideju skaits",

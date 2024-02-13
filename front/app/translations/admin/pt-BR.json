@@ -2215,7 +2215,6 @@
   "app.containers.admin.ContentBuilder.twoEvenColumnLayout": "2 colunas pares",
   "app.containers.admin.ContentBuilder.urlPlaceholder": "https://exemplo.com",
   "app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIdeas": "Ideias mais reagidas",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.collapseLongText": "Recolher texto longo",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhase": "Fase de ideação",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable": "Não há perguntas disponíveis para este projeto ou fase.",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas": "Número de ideias",

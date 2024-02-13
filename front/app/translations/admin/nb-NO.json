@@ -2215,7 +2215,6 @@
   "app.containers.admin.ContentBuilder.twoEvenColumnLayout": "2 jevne kolonner",
   "app.containers.admin.ContentBuilder.urlPlaceholder": "https://example.com",
   "app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIdeas": "De fleste reagerte ideer",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.collapseLongText": "Lukk den lange teksten",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhase": "Ideasjonsfase",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable": "Det er ingen tilgjengelige spørsmål for dette prosjektet eller fasen.",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas": "Antall ideer",

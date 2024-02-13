@@ -2215,7 +2215,6 @@
   "app.containers.admin.ContentBuilder.twoEvenColumnLayout": "2 парне колоне",
   "app.containers.admin.ContentBuilder.urlPlaceholder": "хттпс://екампле.цом",
   "app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIdeas": "Већина реагованих идеја",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.collapseLongText": "Скупи дугачак текст",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhase": "Ideation phase",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable": "Нема доступних питања за овај пројекат или фазу.",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas": "Број идеја",

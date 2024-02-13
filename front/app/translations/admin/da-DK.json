@@ -2215,7 +2215,6 @@
   "app.containers.admin.ContentBuilder.twoEvenColumnLayout": "2 lige store kolonner",
   "app.containers.admin.ContentBuilder.urlPlaceholder": "https://example.com",
   "app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIdeas": "Idéer med flest stemmer",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.collapseLongText": "Luk lang tekst sammen",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhase": "Idéfasen",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable": "Der er ingen spørgsmål til rådighed for dette projekt eller denne fase.",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas": "Antal idéer",

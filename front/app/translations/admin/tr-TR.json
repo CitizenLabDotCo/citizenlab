@@ -2215,7 +2215,6 @@
   "app.containers.admin.ContentBuilder.twoEvenColumnLayout": "2 eşit sütun",
   "app.containers.admin.ContentBuilder.urlPlaceholder": "https://ornek.com",
   "app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIdeas": "En çok tepki gören fikirler",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.collapseLongText": "Uzun metni daraltma",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhase": "Fikir oluşturma aşaması",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable": "Bu proje veya aşama için herhangi bir soru bulunmamaktadır.",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas": "Fikir sayısı",
