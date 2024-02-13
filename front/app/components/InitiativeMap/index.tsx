@@ -47,10 +47,6 @@ const StyledMapContainer = styled(Box)`
   calcite-action-bar {
     display: none;
   }
-
-  #initiative-info-node {
-    position: unset;
-  }
 `;
 
 const InitiativeMap = ({ list }: Props) => {

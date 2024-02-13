@@ -139,6 +139,7 @@ const EsriMap = ({
   useEffect(() => {
     // Add any graphics which were passed in
     if (mapView && graphics) {
+      mapView.graphics.removeAll();
       graphics.forEach((graphic) => {
         mapView.graphics.add(graphic);
       });
