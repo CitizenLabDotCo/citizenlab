@@ -588,6 +588,7 @@
         user_who_voted: 'Bruker som har stemt'
         user_with_unsubmitted_votes: 'Bruker som ikke har sendt inn sine stemmer'
         users_who_engaged_but_not_voted: 'Brukere som har engasjert seg i prosjektet, men ikke har stemt'
+        user_with_unsubmitted_survey: 'Bruker som har startet, men ikke levert undersøkelsen'
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderering av innhold'
@@ -600,6 +601,7 @@
         proposals: 'Forslag'
         reactions: 'Reaksjoner'
         voting: 'Stemmegivning'
+        surveys: 'Undersøkelser'
       trigger:
         comment_is_deleted: 'Kommentaren er slettet'
         comment_is_flagged_as_spam: 'Kommentar er merket som spam'
@@ -648,3 +650,4 @@
         7_days_after_invite_is_sent: '7 dager etter at invitasjonen er sendt'
         7_days_before_the_project_changes_phase: '7 dager før prosjektet endrer fase'
         registration_to_event: 'Påmelding til et arrangement'
+        survey_1_day_after_draft_saved: '1 dag etter at brukeren sist lagret undersøkelsen i utkast'
