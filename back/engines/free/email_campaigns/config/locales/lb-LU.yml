@@ -588,6 +588,7 @@ lb:
         user_who_voted: 'Benotzer deen gestëmmt huet'
         user_with_unsubmitted_votes: 'Benotzer déi hir Stëmmen net ofginn huet'
         users_who_engaged_but_not_voted: 'Benotzer déi mam Projet engagéiert hunn awer net gestëmmt hunn'
+        user_with_unsubmitted_survey: 'Benotzer deen ugefaang huet awer net hir Ëmfro ofginn huet'
       content_type:
         comments: 'Kommentaren'
         content_moderation: 'Inhalt Moderatioun'
@@ -600,6 +601,7 @@ lb:
         proposals: 'Propositioune'
         reactions: 'Reaktiounen'
         voting: 'Ofstëmmung'
+        surveys: 'Ëmfroen'
       trigger:
         comment_is_deleted: 'Commentaire geläscht'
         comment_is_flagged_as_spam: 'Kommentar gëtt als Spam markéiert'
@@ -648,3 +650,4 @@ lb:
         7_days_after_invite_is_sent: '7 Deeg no der Invitatioun geschéckt'
         7_days_before_the_project_changes_phase: '7 Deeg virum Projet Ännerungen Phas'
         registration_to_event: 'Aschreiwung op en Event'
+        survey_1_day_after_draft_saved: '1 Dag nodeems de Benotzer fir d''lescht d''Ëmfro am Entworf gespäichert huet'
