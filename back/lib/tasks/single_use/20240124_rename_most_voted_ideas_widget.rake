@@ -5,9 +5,9 @@ MULTILOC_TYPES = {
 }
 TEXT_PROPS = %w[text alt title]
 
-namespace :rename_most_voted_ideas_widget do
+namespace :single_use do
   desc 'Fix existing layouts'
-  task :run, %i[content_buildable_type] => [:environment] do |_t, args|
+  task :rename_most_voted_ideas_widget, %i[content_buildable_type] => [:environment] do |_t, args|
     errors = {}
     Tenant.prioritize(Tenant.creation_finalized).each do |tenant|
       Rails.logger.info tenant.host

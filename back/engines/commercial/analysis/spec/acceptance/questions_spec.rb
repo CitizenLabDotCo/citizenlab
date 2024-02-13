@@ -27,7 +27,8 @@ resource 'Questions' do
           filters: {},
           accuracy: nil,
           created_at: kind_of(String),
-          updated_at: kind_of(String)
+          updated_at: kind_of(String),
+          missing_inputs_count: 0
         },
         relationships: {
           background_task: {
@@ -80,6 +81,7 @@ resource 'Questions' do
             tag_ids: [tag.id]
           },
           accuracy: 0.8,
+          missing_inputs_count: 0,
           created_at: kind_of(String),
           updated_at: kind_of(String)
         },

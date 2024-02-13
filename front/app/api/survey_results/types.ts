@@ -1,6 +1,7 @@
 import { ImageSizes, Multiloc } from 'typings';
 import surveyResultsKeys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
+import { ICustomFieldInputType } from 'api/custom_fields/types';
 
 export type SurveyResultsKeys = Keys<typeof surveyResultsKeys>;
 
@@ -15,14 +16,14 @@ export interface Answer {
 }
 
 export interface Result {
-  inputType: string;
+  inputType: ICustomFieldInputType;
   question: Multiloc;
   totalResponses: number;
   answers?: Answer[];
   required: boolean;
   customFieldId: string;
   textResponses?: { answer: string }[];
-  files?: { name: string, url: string }[];
+  files?: { name: string; url: string }[];
 }
 
 export interface SurveyResultAttributes {

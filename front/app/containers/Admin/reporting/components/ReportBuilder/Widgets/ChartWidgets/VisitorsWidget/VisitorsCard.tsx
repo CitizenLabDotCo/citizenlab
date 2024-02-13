@@ -69,6 +69,7 @@ const VisitorsCard = ({
             <Statistic
               name={formatMessage(visitorsCardMessages.visitors)}
               value={stats.visitors.value}
+              nameColor="black"
             />
             <Box
               mt={layout === 'wide' ? '32px' : '0px'}
@@ -77,6 +78,7 @@ const VisitorsCard = ({
               <Statistic
                 name={formatMessage(visitorsCardMessages.visits)}
                 value={stats.visits.value}
+                nameColor="black"
               />
             </Box>
           </Box>

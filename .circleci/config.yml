@@ -180,7 +180,12 @@ jobs:
       # Solution: upgrade to '>= 2.0.0'
       # But we can't, due to unmaintained gems that don't work with Omniauth 2.0.
       # See https://github.com/rubysec/bundler-audit
-      - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284
+      #
+      # GHSA-xc9x-jj77-9p9j
+      # Solutions: upgrade Nokogiri (requires newer Ruby) or
+      # Compile and link Nokogiri against new libxml2
+      # https://github.com/sparklemotion/nokogiri/security/advisories/GHSA-xc9x-jj77-9p9j
+      - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284 GHSA-xc9x-jj77-9p9j
 
   back-license-check:
     resource_class: small
@@ -359,7 +364,7 @@ jobs:
         default: ubuntu
       env_file:
         type: string
-        default: .env-production-benelux
+        default: .env-web
     steps:
       - run: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake templates:generate"
 
@@ -592,7 +597,7 @@ jobs:
   front-deploy-staging:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    resource_class: medium
+    resource_class: medium+
     working_directory: ~/citizenlab/front
     steps:
       - shallow-clone
@@ -618,7 +623,7 @@ jobs:
   front-deploy-production:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    resource_class: medium
+    resource_class: medium+
     working_directory: ~/citizenlab/front
     steps:
       - shallow-clone
@@ -877,9 +882,9 @@ workflows:
               only:
                 - production
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-          compose_file: docker-compose-production-benelux.yml
+          compose_file: docker-compose-production.yml
           stack_name: cl2-prd-bnlx-stack
-          env_file: ".env-production-benelux"
+          env_file: ".env-web"
           cluster_name: "eu"
       - back-deploy-to-swarm:
           name: Deploy to Canada
@@ -1077,7 +1082,7 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-          env_file: ".env-production-benelux"
+          env_file: ".env-web"
       - back-generate-tenant-templates:
           name: "South America"
           context:
@@ -1168,7 +1173,7 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
-          env_file: ".env-production-benelux"
+          env_file: ".env-web"
       - back-generate-tenant-templates:
           name: "South America"
           context:

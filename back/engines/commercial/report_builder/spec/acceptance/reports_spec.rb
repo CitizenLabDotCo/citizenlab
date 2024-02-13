@@ -46,6 +46,12 @@ resource 'Reports' do
           id: report.id,
           type: 'report',
           attributes: {
+            action_descriptor: {
+              editing_report: {
+                enabled: true,
+                disabled_reason: nil
+              }
+            },
             name: report.name,
             created_at: report.created_at.iso8601(3),
             updated_at: report.updated_at.iso8601(3)
@@ -99,6 +105,12 @@ resource 'Reports' do
           id: be_a(String),
           type: 'report',
           attributes: {
+            action_descriptor: {
+              editing_report: {
+                enabled: true,
+                disabled_reason: nil
+              }
+            },
             name: name,
             created_at: be_a(String),
             updated_at: be_a(String)
