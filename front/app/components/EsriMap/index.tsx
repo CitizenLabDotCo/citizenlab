@@ -17,6 +17,9 @@ import Point from '@arcgis/core/geometry/Point';
 // utils
 import { getDefaultBasemap } from './utils';
 import { isNil } from 'utils/helperUtils';
+import { debounce } from 'lodash-es';
+
+// typings
 import { EsriUiElement } from './types';
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 
@@ -164,10 +167,12 @@ const EsriMap = ({
   }, [onClick, mapView]);
 
   useEffect(() => {
-    if (onHover) {
-      mapView?.on('pointer-move', function (event) {
+    if (onHover && mapView) {
+      const debouncedHover = debounce((event: any) => {
         onHover(event, mapView);
-      });
+      }, 100);
+
+      mapView.on('pointer-move', debouncedHover);
     }
   }, [onHover, mapView]);
 
