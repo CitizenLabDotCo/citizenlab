@@ -2216,7 +2216,6 @@
   "app.containers.admin.ContentBuilder.urlPlaceholder": "хттпс://екампле.цом",
   "app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIdeas": "Већина реагованих идеја",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhase": "Ideation phase",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable": "Нема доступних питања за овај пројекат или фазу.",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas": "Број идеја",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.showMore": "Прикажи више",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.title": "Наслов",

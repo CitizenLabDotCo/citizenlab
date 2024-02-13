@@ -2216,7 +2216,6 @@
   "app.containers.admin.ContentBuilder.urlPlaceholder": "https://ornek.com",
   "app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIdeas": "En çok tepki gören fikirler",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhase": "Fikir oluşturma aşaması",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable": "Bu proje veya aşama için herhangi bir soru bulunmamaktadır.",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas": "Fikir sayısı",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.showMore": "Daha fazla göster",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.title": "Başlık",

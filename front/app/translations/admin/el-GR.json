@@ -1735,7 +1735,6 @@
   "app.containers.admin.ContentBuilder.twoEvenColumnLayout": "2 ίσες στήλες",
   "app.containers.admin.ContentBuilder.urlPlaceholder": "https://example.com",
   "app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIdeas": "Οι πιο αντιδραστικές ιδέες",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable": "There are no questions available for this project or phase.",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas": "Number of ideas",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.showMore": "Show more",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.title": "Title",

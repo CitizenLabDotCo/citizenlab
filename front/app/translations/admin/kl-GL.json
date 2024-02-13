@@ -1397,7 +1397,6 @@
   "app.containers.admin.ContentBuilder.twoColumnLayoutVariant2-1": "Ammut tulleriiaat marluk 60%-imik 30%-imillu silissusillit",
   "app.containers.admin.ContentBuilder.twoEvenColumnLayout": "Ammut tulleriiaat marluk naligiit",
   "app.containers.admin.ContentBuilder.urlPlaceholder": "https://example.com",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable": "There are no questions available for this project or phase.",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas": "Number of ideas",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.showMore": "Show more",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.title": "Title",

@@ -2216,7 +2216,6 @@
   "app.containers.admin.ContentBuilder.urlPlaceholder": "https://beispiel.de",
   "app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIdeas": "Beiträge mit den meisten Reaktionen",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.ideationPhase": "Ideenfindungsphase",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable": "Für dieses Projekt oder diese Phase sind keine Fragen verfügbar.",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas": "Anzahl der Ideen",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.showMore": "Mehr anzeigen",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.title": "Titel",
