@@ -66,6 +66,7 @@ resource 'Analyses' do
       parameter :project_id, 'The project to analyze, only in case of project with ideation or voting phases. Mandatory to pass either project_id or phase_id.', required: false
       parameter :phase_id, 'The phase to analyze, only in case of survey. Mandatory to pass either project_id or phase_id.', required: false
       parameter :custom_field_ids, 'Custom fields that should be part of the analysis. Must be textual fields. If not passed, all textual fields will be analyzed.', required: false
+      parameter :show_insights, 'Whether to show insights or not', required: false
     end
     ValidationErrorHelper.new.error_fields(self, Analysis::Analysis)
 
