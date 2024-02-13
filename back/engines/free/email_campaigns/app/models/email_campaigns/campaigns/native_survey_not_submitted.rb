@@ -67,7 +67,6 @@ module EmailCampaigns
 
     def generate_commands(recipient:, activity:)
       idea = activity.item.post
-      pp recipient
       project_url = Frontend::UrlService.new.model_to_url(idea.project, locale: recipient.locale)
       [{
         event_payload: {
