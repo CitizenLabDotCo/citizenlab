@@ -1251,7 +1251,6 @@ resource 'Ideas' do
 
           let(:id) { idea.id }
           let(:publication_status) { 'published' }
-          # let(:title_multiloc) { { 'en' => 'New title' } }
 
           example_request 'Can change a survey response from draft to published (as the author)' do
             assert_status 200
@@ -1346,7 +1345,6 @@ resource 'Ideas' do
 
               let(:id) { idea.id }
 
-              # TODO: Baskets_ideas
               before do
                 basket = create(:basket, phase: project.phases.last)
                 basket.update!(ideas: [idea], submitted_at: Time.zone.now)

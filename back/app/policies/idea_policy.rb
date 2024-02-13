@@ -59,7 +59,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def draft_by_phase?
-    show?
+    show? && owner?
   end
 
   def update?
