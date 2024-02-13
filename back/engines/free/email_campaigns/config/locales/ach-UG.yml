@@ -588,6 +588,7 @@ ach:
         user_who_voted: 'crwdns1667322:0crwdne1667322:0'
         user_with_unsubmitted_votes: 'crwdns1667324:0crwdne1667324:0'
         users_who_engaged_but_not_voted: 'crwdns1667326:0crwdne1667326:0'
+        user_with_unsubmitted_survey: 'crwdns1667502:0crwdne1667502:0'
       content_type:
         comments: 'crwdns1667328:0crwdne1667328:0'
         content_moderation: 'crwdns1667330:0crwdne1667330:0'
@@ -600,6 +601,7 @@ ach:
         proposals: 'crwdns1667344:0crwdne1667344:0'
         reactions: 'crwdns1667346:0crwdne1667346:0'
         voting: 'crwdns1667348:0crwdne1667348:0'
+        surveys: 'crwdns1667504:0crwdne1667504:0'
       trigger:
         comment_is_deleted: 'crwdns1667350:0crwdne1667350:0'
         comment_is_flagged_as_spam: 'crwdns1667352:0crwdne1667352:0'
@@ -648,3 +650,4 @@ ach:
         7_days_after_invite_is_sent: 'crwdns1667438:0crwdne1667438:0'
         7_days_before_the_project_changes_phase: 'crwdns1667440:0crwdne1667440:0'
         registration_to_event: 'crwdns1667442:0crwdne1667442:0'
+        survey_1_day_after_draft_saved: 'crwdns1667506:0crwdne1667506:0'
