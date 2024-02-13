@@ -588,6 +588,7 @@ ar:
         user_who_voted: 'المستخدم الذي صوت'
         user_with_unsubmitted_votes: 'المستخدم الذي لم يقدم أصواتهم'
         users_who_engaged_but_not_voted: 'المستخدمون الذين شاركوا في المشروع لكنهم لم يصوتوا'
+        user_with_unsubmitted_survey: 'المستخدم الذي بدأ الاستطلاع ولكنه لم يرسله'
       content_type:
         comments: 'تعليقات'
         content_moderation: 'تعديل المحتوى'
@@ -600,6 +601,7 @@ ar:
         proposals: 'اقتراحات'
         reactions: 'تفاعلات'
         voting: 'التصويت'
+        surveys: 'الدراسات الاستقصائية'
       trigger:
         comment_is_deleted: 'تم حذف التعليق'
         comment_is_flagged_as_spam: 'تم وضع علامة على التعليق على أنه بريد عشوائي'
@@ -648,3 +650,4 @@ ar:
         7_days_after_invite_is_sent: '7 أيام بعد إرسال الدعوة'
         7_days_before_the_project_changes_phase: '7 أيام قبل مرحلة تغييرات المشروع'
         registration_to_event: 'التسجيل في هذا الحدث'
+        survey_1_day_after_draft_saved: 'يوم واحد بعد آخر حفظ للمستخدم للاستطلاع في المسودة'
