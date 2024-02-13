@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { getOptions, getSubtextElement } from './controlUtils';
 import imageFile from './emptyImage.png';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import VerificationIcon from '../VerificationIcon';
@@ -27,7 +28,6 @@ import messages from './messages';
 // style
 import { darken } from 'polished';
 import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
 
 const StyledBox = styled(Box)`
   background-color: ${colors.grey100};
