@@ -588,6 +588,7 @@ sr-Latn:
         user_who_voted: 'User who voted'
         user_with_unsubmitted_votes: 'User who has not submitted their votes'
         users_who_engaged_but_not_voted: 'Users who engaged with the project but have not voted'
+        user_with_unsubmitted_survey: 'User who has started but not submitted their survey'
       content_type:
         comments: 'Коментари'
         content_moderation: 'Модерирање садржаја'
@@ -600,6 +601,7 @@ sr-Latn:
         proposals: 'Предлози'
         reactions: 'Реакције'
         voting: 'Voting'
+        surveys: 'Surveys'
       trigger:
         comment_is_deleted: 'Коментар је обрисан'
         comment_is_flagged_as_spam: 'Коментар је означен као непожељан'
@@ -648,3 +650,4 @@ sr-Latn:
         7_days_after_invite_is_sent: '7 дана након слања позивнице'
         7_days_before_the_project_changes_phase: '7 дана пре промене фазе пројекта'
         registration_to_event: 'Registration to an event'
+        survey_1_day_after_draft_saved: '1 day after user last saved the survey in draft'
