@@ -9,7 +9,7 @@ describe SideFxCustomFieldService do
   describe 'before_delete' do
     let_it_be(:custom_field1) { create(:custom_field) }
     let_it_be(:custom_field2) { create(:custom_field) }
-    let_it_be(:analysis) { create(:analysis, custom_fields: [custom_field1, custom_field2]) }
+    let_it_be(:analysis) { create(:analysis, main_custom_field: custom_field1, additional_custom_fields: [custom_field2]) }
     let_it_be(:insight1) { create(:insight, analysis: analysis, filters: { "author_custom_#{custom_field1.id}" => [], 'votes_from' => 4 }) }
     let_it_be(:insight2) { create(:insight, analysis: analysis, filters: { "author_custom_#{custom_field1.id}_from" => 5, "author_custom_#{custom_field2.id}_from" => 5 }) }
     let_it_be(:insight3) { create(:insight, analysis: analysis, filters: {}) }
