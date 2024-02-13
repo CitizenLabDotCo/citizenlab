@@ -588,6 +588,7 @@ pt:
         user_who_voted: 'Usuário que votou'
         user_with_unsubmitted_votes: 'Usuário que não enviou seus votos'
         users_who_engaged_but_not_voted: 'Usuários que se engajaram com o projeto, mas não votaram'
+        user_with_unsubmitted_survey: 'Usuário que iniciou, mas não enviou o questionário'
       content_type:
         comments: 'Comentários'
         content_moderation: 'Moderação de conteúdo'
@@ -600,6 +601,7 @@ pt:
         proposals: 'Propostas'
         reactions: 'Reações'
         voting: 'Votação'
+        surveys: 'Pesquisas'
       trigger:
         comment_is_deleted: 'Comentário excluído'
         comment_is_flagged_as_spam: 'O comentário foi sinalizado como spam'
@@ -648,3 +650,4 @@ pt:
         7_days_after_invite_is_sent: '7 dias após o envio do convite'
         7_days_before_the_project_changes_phase: '7 dias antes da fase de mudanças do projeto'
         registration_to_event: 'Inscrição em um evento'
+        survey_1_day_after_draft_saved: '1 dia após o usuário ter salvo o questionário pela última vez em rascunho'
