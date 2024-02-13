@@ -1,7 +1,7 @@
 import React, { memo, useRef } from 'react';
 
 // components
-import EsriMap from 'components/EsriMap';
+import EsriMap from 'components/EsriMap/EsriMapWrapper';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
 import MapView from '@arcgis/core/views/MapView';
@@ -68,10 +68,10 @@ const EventMap = memo<Props>(
     return (
       <EsriMap
         initialData={{
-          initialCenter: position,
-          initialZoom: 18,
-          initialOnClick: onClick,
+          center: position,
+          zoom: 18,
         }}
+        onClick={onClick}
         graphics={[pointGraphic]}
         height={mapHeight}
       />

@@ -11,52 +11,65 @@ import { Box } from '@citizenlab/cl2-component-library';
 import Fullscreen from '@arcgis/core/widgets/Fullscreen';
 import Point from '@arcgis/core/geometry/Point';
 
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
 // utils
 import { getDefaultBasemap } from './utils';
 import { isNil } from 'utils/helperUtils';
 import { EsriUiElement } from './types';
+import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 
-type Props = {
+export type EsriMapProps = {
+  id?: string;
   height?: string;
   width?: string;
   initialData?: InitialData;
   layers?: Layer[];
   graphics?: Graphic[];
+  onClick?: (event: any, mapView: MapView) => void;
+  globalMapSettings?: AppConfigurationMapSettings;
 };
 
 type InitialData = {
-  initialCenter?: GeoJSON.Point | null;
-  initialZoom?: number;
-  initialMaxZoom?: number;
-  initialUiElements?: EsriUiElement[];
-  initialShowFullscreenOption?: boolean;
-  initialOnClick?: (event: any, mapView: MapView) => void;
-  initialOnHover?: (event: any, mapView: MapView) => void;
+  center?: GeoJSON.Point | null;
+  zoom?: number;
+  maxZoom?: number;
+  uiElements?: EsriUiElement[];
+  showFullscreenOption?: boolean;
+  onHover?: (event: any, mapView: MapView) => void;
 };
 
-const EsriMap = ({ height, width, layers, graphics, initialData }: Props) => {
-  const { data: appConfig } = useAppConfiguration();
-  const globalMapSettings = appConfig?.data.attributes.settings.maps;
-
+const EsriMap = ({
+  id,
+  height,
+  width,
+  layers,
+  graphics,
+  onClick,
+  initialData,
+  globalMapSettings,
+}: EsriMapProps) => {
   const [map, setMap] = useState<Map | null>(null);
   const [mapView, setMapView] = useState<MapView | null>(null);
+  const mapRef = useRef<HTMLDivElement | null>(null);
 
   const initialValuesLoaded = useRef(false);
 
   // On initial render, create a new map and map view and save them to state variables
   useEffect(() => {
-    const newMap = new Map();
-    setMap(newMap);
-
-    setMapView(
-      new MapView({
-        container: 'esriMap', // Reference to DOM node that will contain the view
+    if (mapRef.current) {
+      const newMap = new Map();
+      const mapView = new MapView({
+        container: mapRef.current, // Reference to DOM node that will contain the view
         map: newMap,
-      })
-    );
+      });
+
+      setMap(newMap);
+      setMapView(mapView);
+
+      return () => {
+        mapView.destroy();
+      };
+    }
+    return;
   }, []);
 
   // Load initial map configuration data that was passed in.
@@ -64,10 +77,10 @@ const EsriMap = ({ height, width, layers, graphics, initialData }: Props) => {
   useEffect(() => {
     if (!initialValuesLoaded.current && initialData && mapView && map) {
       // Set map center
-      mapView.center = !isNil(initialData.initialCenter)
+      mapView.center = !isNil(initialData.center)
         ? new Point({
-            latitude: initialData.initialCenter.coordinates[1],
-            longitude: initialData.initialCenter.coordinates[0],
+            latitude: initialData.center.coordinates[1],
+            longitude: initialData.center.coordinates[0],
           })
         : new Point({
             latitude: Number(globalMapSettings?.map_center?.lat) || 0,
@@ -78,15 +91,14 @@ const EsriMap = ({ height, width, layers, graphics, initialData }: Props) => {
       map.basemap = new Basemap({
         baseLayers: [getDefaultBasemap(globalMapSettings?.tile_provider)],
       });
-      mapView.zoom =
-        initialData.initialZoom || globalMapSettings?.zoom_level || 18;
+      mapView.zoom = initialData.zoom || globalMapSettings?.zoom_level || 18;
       mapView.constraints = {
-        maxZoom: initialData.initialMaxZoom || 22,
+        maxZoom: initialData.maxZoom || 22,
         minZoom: 5,
       };
 
       // Add fullscreen widget if set
-      if (initialData.initialShowFullscreenOption) {
+      if (initialData.showFullscreenOption) {
         const fullscreen = new Fullscreen({
           view: mapView,
         });
@@ -94,23 +106,14 @@ const EsriMap = ({ height, width, layers, graphics, initialData }: Props) => {
       }
 
       // Add any ui elements that were passed in
-      if (initialData.initialUiElements && mapView) {
-        initialData.initialUiElements.forEach((uiElement) => {
+      if (initialData.uiElements && mapView) {
+        initialData.uiElements.forEach((uiElement) => {
           mapView.ui.add(uiElement.element, uiElement.position);
         });
       }
 
-      // On map click, pass the event to onClick handler if it was provided
-      const onClick = initialData.initialOnClick;
-      if (onClick) {
-        mapView?.on('click', function (event) {
-          // By passing the mapView to onClick functions, we can easily change the map from that function
-          onClick(event, mapView);
-        });
-      }
-
       // On map hover, pass the event to onHover handler if it was provided
-      const onHover = initialData.initialOnHover;
+      const onHover = initialData.onHover;
       if (onHover) {
         mapView?.on('pointer-move', function (event) {
           onHover(event, mapView);
@@ -142,10 +145,21 @@ const EsriMap = ({ height, width, layers, graphics, initialData }: Props) => {
     }
   }, [graphics, mapView]);
 
+  useEffect(() => {
+    // On map click, pass the event to onClick handler if it was provided
+    if (onClick) {
+      mapView?.on('click', function (event) {
+        // By passing the mapView to onClick functions, we can easily change the map from that function
+        onClick(event, mapView);
+      });
+    }
+  }, [onClick, mapView]);
+
   return (
     <>
       <Box
-        id="esriMap"
+        id={id}
+        ref={mapRef}
         width={width ? `${width}` : '100%'}
         height={height ? `${height}` : '400px'}
       />

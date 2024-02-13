@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // components
-import EsriMap from 'components/EsriMap';
+import EsriMap from 'components/EsriMap/EsriMapWrapper';
 import MapView from '@arcgis/core/views/MapView';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Graphic from '@arcgis/core/Graphic';
@@ -272,9 +272,9 @@ const InitiativeMap = ({ list }: Props) => {
         height={isPhoneOrSmaller ? '480px' : '640px'}
         layers={initiativesLayer ? [initiativesLayer] : undefined}
         initialData={{
-          initialOnClick: onMapClick,
-          initialOnHover: changeCursorOnHover,
+          onHover: changeCursorOnHover,
         }}
+        onClick={onMapClick}
       />
       <StartInitiativeButton
         modalPortalElement={startInitiativeButtonNode}
