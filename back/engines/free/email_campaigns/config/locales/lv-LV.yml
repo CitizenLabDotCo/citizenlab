@@ -588,6 +588,7 @@ lv:
         user_who_voted: 'Lietotājs, kas balsoja'
         user_with_unsubmitted_votes: 'Lietotājs, kurš nav iesniedzis savu balsojumu'
         users_who_engaged_but_not_voted: 'Lietotāji, kas iesaistījās projektā, bet nav balsojuši'
+        user_with_unsubmitted_survey: 'Lietotājs, kurš ir sācis, bet nav iesniedzis savu aptauju'
       content_type:
         comments: 'Komentāri'
         content_moderation: 'Satura moderēšana'
@@ -600,6 +601,7 @@ lv:
         proposals: 'Priekšlikumi'
         reactions: 'Reakcijas'
         voting: 'Balsošana'
+        surveys: 'Aptaujas'
       trigger:
         comment_is_deleted: 'Komentārs ir dzēsts'
         comment_is_flagged_as_spam: 'Komentārs ir atzīmēts kā surogātpasts'
@@ -648,3 +650,4 @@ lv:
         7_days_after_invite_is_sent: '7 dienas pēc uzaicinājuma nosūtīšanas'
         7_days_before_the_project_changes_phase: '7 dienas pirms projekta izmaiņu fāzes'
         registration_to_event: 'Reģistrācija pasākumam'
+        survey_1_day_after_draft_saved: '1 diena pēc tam, kad lietotājs pēdējo reizi saglabājis aptaujas melnrakstu.'
