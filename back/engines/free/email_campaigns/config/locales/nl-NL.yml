@@ -588,7 +588,7 @@ nl:
         user_who_voted: 'Gebruiker die heeft gestemd'
         user_with_unsubmitted_votes: 'Gebruiker die nog geen stem heeft uitgebracht'
         users_who_engaged_but_not_voted: 'Gebruikers die betrokken waren bij het project maar niet hebben gestemd'
-        user_with_unsubmitted_survey: 'Gebruiker die zijn enquête is begonnen maar nog niet heeft ingediend'
+        user_with_unsubmitted_survey: 'Gebruiker die zijn vragenlijst is begonnen, maar nog niet heeft ingediend'
       content_type:
         comments: 'Reacties'
         content_moderation: 'Inhoudelijke moderatie'
@@ -601,7 +601,7 @@ nl:
         proposals: 'Voorstellen'
         reactions: 'Likes/dislikes'
         voting: 'Stemming'
-        surveys: 'Enquêtes'
+        surveys: 'Vragenlijsten'
       trigger:
         comment_is_deleted: 'Reactie is verwijderd'
         comment_is_flagged_as_spam: 'Reactie is gemarkeerd als spam'
@@ -650,4 +650,4 @@ nl:
         7_days_after_invite_is_sent: '7 dagen na verzending van de uitnodiging'
         7_days_before_the_project_changes_phase: '7 dagen voor het project van fase verandert'
         registration_to_event: 'Registratie voor een evenement'
-        survey_1_day_after_draft_saved: '1 dag nadat de gebruiker de enquête voor het laatst in concept heeft opgeslagen'
+        survey_1_day_after_draft_saved: '1 dag nadat de gebruiker de vragenlijst voor het laatst in concept heeft opgeslagen'
