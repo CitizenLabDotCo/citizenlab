@@ -213,10 +213,11 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         required: false,
         totalResponses: 15,
         answers: [
-          { answer: 'option1', group_by_value: 'female', count: 6 },
+          { answer: 'option1', group_by_value: 'female', count: 5 },
           { answer: 'option1', group_by_value: 'male', count: 4 },
-          { answer: 'option2', group_by_value: 'female', count: 3 },
           { answer: 'option2', group_by_value: 'male', count: 2 },
+          { answer: 'option2', group_by_value: 'female', count: 2 },
+          { answer: nil, group_by_value: 'female', count: 1 },
           { answer: 'option1', group_by_value: nil, count: 1 }
         ]
       })
