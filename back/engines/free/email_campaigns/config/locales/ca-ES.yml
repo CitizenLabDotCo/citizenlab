@@ -588,6 +588,7 @@ ca:
         user_who_voted: 'Usuari que ha votat'
         user_with_unsubmitted_votes: 'Usuari que no ha enviat els seus vots'
         users_who_engaged_but_not_voted: 'Usuaris que s''han implicat amb el projecte però no han votat'
+        user_with_unsubmitted_survey: 'Usuari que ha començat però no ha enviat la seva enquesta'
       content_type:
         comments: 'Comentaris'
         content_moderation: 'Moderació de continguts'
@@ -600,6 +601,7 @@ ca:
         proposals: 'Propostes'
         reactions: 'Reaccions'
         voting: 'Votació'
+        surveys: 'Enquestes'
       trigger:
         comment_is_deleted: 'S''ha suprimit el comentari'
         comment_is_flagged_as_spam: 'El comentari està marcat com a correu brossa'
@@ -648,3 +650,4 @@ ca:
         7_days_after_invite_is_sent: '7 dies després de l''enviament de la invitació'
         7_days_before_the_project_changes_phase: '7 dies abans del canvi de fase del projecte'
         registration_to_event: 'Inscripció a un esdeveniment'
+        survey_1_day_after_draft_saved: '1 dia després que l''usuari hagi desat l''enquesta per darrera vegada com a esborrany'
