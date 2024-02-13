@@ -25,25 +25,6 @@ module ReportBuilder
         )
       end
 
-      # WHERE
-      answers = if question.input_type == 'select'
-        answers.where(
-          "(ideas.custom_field_values->>'#{question.key}' IN (?)) OR ideas.custom_field_values->>'#{question.key}' IS NULL",
-          question.options.map(&:key)
-        )
-      else
-        # answers.where(
-        #   %{
-        #     CASE WHEN jsonb_path_exists(ideas.custom_field_values, '$ ? (!exists (@.#{question.key}))')
-        #       THEN true
-        #       ELSE (ideas.custom_field_values->>'#{question.key}' IN (#{question.options.pluck(:key).map { |v| "'#{v}'" }.join(',')})) END
-
-        #   }
-        # )
-        # TODO
-        answers
-      end
-
       # GROUP_BY
       grouped_answers = apply_grouping(answers)
         .map do |answer, count|
@@ -52,6 +33,13 @@ module ReportBuilder
             count: count
           }
         end
+
+      # FILTER OUT INVALID KEYS
+      option_keys = question.options.map(&:key)
+
+      grouped_answers = grouped_answers.select do |answer|
+        answer[:answer].nil? || option_keys.include?(answer[:answer])
+      end
 
       build_response(grouped_answers, question)
     end
