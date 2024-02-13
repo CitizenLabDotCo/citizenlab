@@ -588,6 +588,7 @@ hr:
         user_who_voted: 'Korisnik koji je glasao'
         user_with_unsubmitted_votes: 'Korisnik koji nije predao svoje glasove'
         users_who_engaged_but_not_voted: 'Korisnici koji su sudjelovali u projektu, ali nisu glasali'
+        user_with_unsubmitted_survey: 'Korisnik koji je započeo, ali nije poslao svoju anketu'
       content_type:
         comments: 'Komentari'
         content_moderation: 'Moderiranje sadržaja'
@@ -600,6 +601,7 @@ hr:
         proposals: 'Prijedlozi'
         reactions: 'Reakcije'
         voting: 'Glasovanje'
+        surveys: 'Ankete'
       trigger:
         comment_is_deleted: 'Komentar je izbrisan'
         comment_is_flagged_as_spam: 'Komentar je označen kao neželjena pošta'
@@ -648,3 +650,4 @@ hr:
         7_days_after_invite_is_sent: '7 dana nakon slanja poziva'
         7_days_before_the_project_changes_phase: '7 dana prije promjene faze projekta'
         registration_to_event: 'Prijava na događaj'
+        survey_1_day_after_draft_saved: '1 dan nakon što je korisnik posljednji put spremio anketu u skicu'
