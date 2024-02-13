@@ -171,10 +171,11 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         question: multiselect_question.title_multiloc,
         customFieldId: multiselect_question.id,
         required: false,
-        totalResponses: 16,
+        totalResponses: 15,
         answers: [
-          { answer: 'option1', count: 11 },
-          { answer: 'option2', count: 5 }
+          { answer: 'option1', count: 10 },
+          { answer: 'option2', count: 4 },
+          { answer: nil, count: 1 }
         ]
       })
     end

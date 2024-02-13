@@ -9,30 +9,42 @@ module ReportBuilder
 
     def get_result(question_field_id)
       question = get_question(question_field_id)
-      sql_question = sql_field(question)
 
-      # puts "================"
-      # puts @inputs.to_a.pluck(:custom_field_values)
-      # puts "================"
-
-      binding.pry
-
-      answers = @inputs.select("#{sql_question} as answer")
-
-      puts "================"
-      # puts answers.to_a.pluck(:answer)
-      puts answers.to_sql
-      puts "================"
-
-      if question.input_type == 'select'
-        answers = answers.where(
-          "(ideas.custom_field_values->>'#{question.key}' IN (?)) OR ideas.custom_field_values->>'#{question.key}' IS NULL",
-          question.options.map(&:key)
-        )
+      # SELECT
+      answers = if question.input_type == 'select'
+        @inputs.select("ideas.custom_field_values->>'#{question.key}' as answer")
       else
-        # TODO
+        @inputs.select(
+          %{
+            jsonb_array_elements(
+              CASE WHEN jsonb_path_exists(ideas.custom_field_values, '$ ? (!exists (@.#{question.key}))')
+                THEN '{"x":[null]}'::jsonb->'x'
+                ELSE ideas.custom_field_values->'#{question.key}' END
+            ) as answer
+          }
+        )
       end
 
+      # WHERE
+      answers = if question.input_type == 'select'
+        answers.where(
+          "(ideas.custom_field_values->>'#{question.key}' IN (?)) OR ideas.custom_field_values->>'#{question.key}' IS NULL",
+          question.options.map(&:key) + [nil]
+        )
+      else
+        # answers.where(
+        #   %{
+        #     CASE WHEN jsonb_path_exists(ideas.custom_field_values, '$ ? (!exists (@.#{question.key}))')
+        #       THEN true
+        #       ELSE (ideas.custom_field_values->>'#{question.key}' IN (#{question.options.pluck(:key).map { |v| "'#{v}'" }.join(',')})) END
+
+        #   }
+        # )
+        answers
+      end
+      # puts answers.to_sql
+
+      # GROUP_BY
       grouped_answers = apply_grouping(answers)
         .map do |answer, count|
           {
