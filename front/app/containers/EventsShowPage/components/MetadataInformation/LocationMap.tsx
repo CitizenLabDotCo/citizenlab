@@ -1,7 +1,7 @@
 import React, { memo, useRef } from 'react';
 
 // components
-import EsriMap from 'components/EsriMap';
+import EsriMap from 'components/EsriMap/EsriMapWrapper';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
 
@@ -32,11 +32,13 @@ const LocationMap = memo<Props>(({ eventLocation }: Props) => {
 
   return (
     <EsriMap
-      center={eventLocation}
-      height={isPhoneOrSmaller ? '180px' : '140px'}
-      zoom={18}
+      initialData={{
+        center: eventLocation,
+        zoom: 18,
+        showFullscreenOption: isPhoneOrSmaller ? false : true,
+      }}
       graphics={[pointGraphic]}
-      showFullscreenOption={isPhoneOrSmaller ? false : true}
+      height={isPhoneOrSmaller ? '180px' : '140px'}
     />
   );
 });
