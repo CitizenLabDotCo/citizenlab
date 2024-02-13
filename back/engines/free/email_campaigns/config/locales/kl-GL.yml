@@ -588,6 +588,7 @@ kl:
         user_who_voted: 'User who voted'
         user_with_unsubmitted_votes: 'User who has not submitted their votes'
         users_who_engaged_but_not_voted: 'Users who engaged with the project but have not voted'
+        user_with_unsubmitted_survey: 'User who has started but not submitted their survey'
       content_type:
         comments: 'Comments'
         content_moderation: 'Content moderation'
@@ -600,6 +601,7 @@ kl:
         proposals: 'Proposals'
         reactions: 'Reactions'
         voting: 'Voting'
+        surveys: 'Surveys'
       trigger:
         comment_is_deleted: 'Comment is deleted'
         comment_is_flagged_as_spam: 'Comment is flagged as spam'
@@ -648,3 +650,4 @@ kl:
         7_days_after_invite_is_sent: '7 days after invite is sent'
         7_days_before_the_project_changes_phase: '7 days before the project changes phase'
         registration_to_event: 'Registration to an event'
+        survey_1_day_after_draft_saved: '1 day after user last saved the survey in draft'
