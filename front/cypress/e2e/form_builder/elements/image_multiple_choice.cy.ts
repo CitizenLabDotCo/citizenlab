@@ -1,7 +1,7 @@
 import { randomString } from '../../../support/commands';
 import moment = require('moment');
 
-describe('Form builder multiple choice choose multiple component', () => {
+describe('Form builder image multiple choice choose multiple component', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
@@ -40,18 +40,18 @@ describe('Form builder multiple choice choose multiple component', () => {
     cy.setAdminLoginCookie();
   });
 
-  it('adds multiselect multiple choice field and is displayed when filling survey', () => {
+  it('adds image multiple choice field and is displayed when filling survey', () => {
     cy.visit(
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
-    cy.get('[data-cy="e2e-multiple-choice"]').click();
+    cy.get('[data-cy="e2e-image-choice"]').click();
     cy.get('#e2e-title-multiloc').type('Question title 2', { force: true });
     cy.get('#e2e-option-input-0').type('Option 1 question 2', { force: true });
     cy.get('form').submit();
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
     cy.contains('Question title 2').should('exist');
     cy.contains('Option 1 question 2').should('exist');
-    cy.get('#e2e-multiselect-control').should('exist');
+    cy.get('[data-cy="e2e-image-multichoice-control"]').click();
   });
 
   it('allows using an other option that is mandatory when other is selected when entering data in the form/survey', () => {
@@ -62,13 +62,12 @@ describe('Form builder multiple choice choose multiple component', () => {
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
     cy.acceptCookies();
-    cy.get('[data-cy="e2e-multiple-choice"]').click();
+    cy.get('[data-cy="e2e-image-choice"]').click();
     cy.get('[data-cy="e2e-other-option-toggle"]')
       .find('input')
       .click({ force: true });
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('#e2e-option-input-0').type('Car', { force: true });
-    cy.get('#e2e-option-input-1').should('exist');
     cy.contains('Save').click();
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
     cy.contains(questionTitle).should('exist');

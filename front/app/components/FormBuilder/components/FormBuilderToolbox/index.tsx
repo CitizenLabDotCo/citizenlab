@@ -174,6 +174,15 @@ const FormBuilderToolbox = ({
           disabled={isCustomFieldsDisabled}
         />
         <ToolboxItem
+          icon="image"
+          label={formatMessage(messages.multipleChoiceImage)}
+          onClick={() => addField('multiselect_image')}
+          data-cy="e2e-image-choice"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="multiselect_image"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
           icon="survey-linear-scale"
           label={formatMessage(messages.linearScale)}
           onClick={() => addField('linear_scale')}
