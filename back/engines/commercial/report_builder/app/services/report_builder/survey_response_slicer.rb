@@ -10,22 +10,10 @@ module ReportBuilder
     def get_result(question_field_id)
       question = get_question(question_field_id)
 
-      # SELECT
-      answers = if question.input_type == 'select'
-        @inputs.select("ideas.custom_field_values->'#{question.key}' as answer")
-      else
-        @inputs.select(
-          %{
-            jsonb_array_elements(
-              CASE WHEN jsonb_path_exists(ideas.custom_field_values, '$ ? (!exists (@.#{question.key}))')
-                THEN '{"x":[null]}'::jsonb->'x'
-                ELSE ideas.custom_field_values->'#{question.key}' END
-            ) as answer
-          }
-        )
-      end
+      # Select
+      answers = @inputs.select(select_query(question, as: 'answer'))
 
-      # GROUP_BY
+      # Group by
       grouped_answers = apply_grouping(answers)
         .map do |answer, count|
           {
@@ -34,13 +22,14 @@ module ReportBuilder
           }
         end
 
-      # FILTER OUT INVALID KEYS
+      # Filter out invalid keys
       option_keys = question.options.map(&:key)
 
       grouped_answers = grouped_answers.select do |answer|
         answer[:answer].nil? || option_keys.include?(answer[:answer])
       end
 
+      # Build response
       build_response(grouped_answers, question)
     end
 
@@ -49,9 +38,31 @@ module ReportBuilder
       user_field = CustomField.find_by(id: user_field_id)
       throw "Unsupported user field type: #{user_field.input_type}" unless user_field.input_type == 'select'
 
+      # Join
       joined_inputs = @inputs.joins(:author)
-      answers = select_answers(joined_inputs, question, user_field)
+
+      # Select
+      answers = joined_inputs.select(
+        select_query(question, as: 'answer'),
+        select_query(user_field, as: 'group_by_value')
+      )
+
+      # Group by
       grouped_answers = group_answers(answers)
+
+      # Filter out invalid keys
+      question_option_keys = question.options.map(&:key)
+      user_field_option_keys = user_field.options.map(&:key)
+
+      grouped_answers = grouped_answers.select do |grouped_answer|
+        answer = grouped_answer[:answer]
+        group_by_value = grouped_answer[:group_by_value]
+
+        valid_answer = answer.nil? || question_option_keys.include?(answer)
+        valid_group_by_value = group_by_value.nil? || user_field_option_keys.include?(group_by_value)
+
+        valid_answer && valid_group_by_value
+      end
 
       build_response(grouped_answers, question)
     end
@@ -61,8 +72,17 @@ module ReportBuilder
       other_question = get_question(other_question_field_id)
       throw "Unsupported question type: #{other_question.input_type}" unless other_question.input_type == 'select'
 
-      answers = select_answers(@inputs, question, other_question)
+      # Select
+      answers = @inputs.select(
+        select_query(question, as: 'answer'),
+        select_query(other_question, as: 'group_by_value')
+      )
+
+      # Group by
       grouped_answers = group_answers(answers)
+
+      # Filter out invalid keys
+      # TODO
 
       build_response(grouped_answers, question)
     end
@@ -77,33 +97,24 @@ module ReportBuilder
       question
     end
 
-    def sql_field(field)
+    def select_query(field, as: 'answer')
       table = field.resource_type == 'User' ? 'users' : 'ideas'
 
       if field.input_type == 'select'
-        "#{table}.custom_field_values->'#{field.key}'"
+        "#{table}.custom_field_values->'#{field.key}' as #{as}"
       else
-        "jsonb_array_elements(#{table}.custom_field_values->'#{field.key}')"
+        %{
+          jsonb_array_elements(
+            CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (!exists (@.#{field.key}))')
+              THEN '{"x":[null]}'::jsonb->'x'
+              ELSE #{table}.custom_field_values->'#{field.key}' END
+          ) as #{as}
+        }
       end
-    end
-
-    def select_answers(inputs, question, slice_field)
-      sql_question = sql_field(question)
-
-      answers = inputs.select(
-        "#{sql_question} as answer",
-        "#{sql_field(slice_field)} as group_by_value"
-      )
-
-      if question.input_type == 'select'
-        answers = answers.where("#{sql_question} IS NOT NULL")
-      end
-
-      answers
     end
 
     def group_answers(answers)
-      apply_grouping(answers, grouped: true)
+      apply_grouping(answers, slice_field: true)
         .map do |(answer, group_by_value), count|
           {
             answer: answer,
@@ -113,11 +124,11 @@ module ReportBuilder
         end
     end
 
-    def apply_grouping(answers, grouped: false)
+    def apply_grouping(answers, slice_field: false)
       Idea
         .select(:answer)
         .from(answers)
-        .group(:answer, grouped ? :group_by_value : nil)
+        .group(:answer, slice_field ? :group_by_value : nil)
         .order(Arel.sql('COUNT(answer) DESC'))
         .count
         .to_a

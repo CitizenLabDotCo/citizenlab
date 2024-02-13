@@ -191,13 +191,13 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         question: city_survey_question.title_multiloc,
         customFieldId: city_survey_question.id,
         required: true,
-        totalResponses: 11,
+        totalResponses: 10,
         answers: [
           { answer: 'la', group_by_value: 'female', count: 3 },
-          { answer: 'ny', group_by_value: 'female', count: 3 },
           { answer: 'la', group_by_value: 'male', count: 2 },
-          { answer: 'ny', group_by_value: 'male', count: 1 },
-          { answer: nil, group_by_value: 'male', count: 1 }
+          { answer: 'ny', group_by_value: 'female', count: 2 },
+          { answer: 'ny', group_by_value: 'male', count: 2 },
+          { answer: nil, group_by_value: 'female', count: 1 }
         ]
       })
     end
