@@ -37,7 +37,7 @@ module IdeaCustomFields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         fields,
         params: serializer_params(@custom_form),
-        include: [:options]
+        include: %i[options map_config]
       ).serializable_hash
     end
 

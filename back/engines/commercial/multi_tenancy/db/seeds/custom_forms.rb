@@ -36,7 +36,7 @@ module MultiTenancy
           resource: custom_form,
           input_type: 'point',
           title_multiloc: { 'en' => 'Where do want a new bike park?' },
-          description_multiloc: { 'en' => 'Click on the map indicate your preferred location' },
+          description_multiloc: { 'en' => 'Click on the map to indicate your preferred location' },
           required: false,
           answer_visible_to: 'admins'
         )
