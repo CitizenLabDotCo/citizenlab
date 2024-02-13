@@ -588,6 +588,7 @@ sv:
         user_who_voted: 'Användare som röstade'
         user_with_unsubmitted_votes: 'Användare som inte har lämnat sina röster'
         users_who_engaged_but_not_voted: 'Användare som engagerat sig i projektet men inte röstat'
+        user_with_unsubmitted_survey: 'Användare som har påbörjat men inte skickat in sin undersökning'
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderering av innehåll'
@@ -600,6 +601,7 @@ sv:
         proposals: 'Förslag'
         reactions: 'Reaktioner'
         voting: 'Omröstning'
+        surveys: 'Undersökningar'
       trigger:
         comment_is_deleted: 'Kommentaren tas bort.'
         comment_is_flagged_as_spam: 'Kommentaren flaggas som skräppost'
@@ -648,3 +650,4 @@ sv:
         7_days_after_invite_is_sent: '7 dagar efter att inbjudan skickats'
         7_days_before_the_project_changes_phase: '7 dagar innan projektet byter fas'
         registration_to_event: 'Anmälan till ett evenemang'
+        survey_1_day_after_draft_saved: '1 dag efter att användaren senast sparade enkäten i utkast'
