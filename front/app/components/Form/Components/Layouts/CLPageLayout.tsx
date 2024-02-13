@@ -147,7 +147,7 @@ const CLPageLayout = memo(
         data.latest_complete_page = currentStep;
         onSubmit?.(data);
         setCurrentStep(currentStep + 1);
-;
+
         setIsLoading(false);
       } else {
         setShowAllErrors?.(true);

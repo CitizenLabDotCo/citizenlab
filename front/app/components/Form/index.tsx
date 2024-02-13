@@ -135,6 +135,10 @@ const Form = memo(
       }
     }, [scrollToError]);
 
+    useEffect(() => {
+      setData(parseRequiredMultilocsData(schema, locale, initialFormData));
+    }, [schema, locale, initialFormData]);
+
     const layoutType = layout
       ? layout
       : isCategorization(uiSchema)

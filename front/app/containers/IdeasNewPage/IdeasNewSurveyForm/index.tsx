@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 // api
 import useAuthUser from 'api/me/useAuthUser';
@@ -7,9 +7,11 @@ import usePhase from 'api/phases/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
 import { useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
-import useUpdateIdea from "api/ideas/useUpdateIdea";
-import useDraftIdeaByPhaseId, {clearDraftIdea} from "api/ideas/useDraftIdeaByPhaseId";
-import useIdeaFiles from "api/idea_files/useIdeaFiles";
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useDraftIdeaByPhaseId, {
+  clearDraftIdea,
+} from 'api/ideas/useDraftIdeaByPhaseId';
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 
 // i18n
 import messages from '../messages';
@@ -29,14 +31,14 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 import { getCurrentPhase } from 'api/phases/utils';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { getFormValues } from "../../IdeasEditPage/utils";
+import { getFormValues } from '../../IdeasEditPage/utils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 // types
 import { IPhases, IPhaseData } from 'api/phases/types';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import { IProject } from 'api/projects/types';
-import { IdeaPublicationStatus } from "api/ideas/types";
+import { IdeaPublicationStatus } from 'api/ideas/types';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -78,10 +80,13 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     phaseId,
   });
 
-  const { data: draftIdea, status: draftIdeaStatus } = useDraftIdeaByPhaseId(phaseId);
-  const { data: remoteFiles, status: remoteFilesStatus } = useIdeaFiles(draftIdea?.data.id);
+  const { data: draftIdea, status: draftIdeaStatus } =
+    useDraftIdeaByPhaseId(phaseId);
+  const { data: remoteFiles, status: remoteFilesStatus } = useIdeaFiles(
+    draftIdea?.data.id
+  );
   const [loadingDraftIdea, setLoadingDraftIdea] = useState(true);
-  const [ideaId, setIdeaId] = useState<string|undefined>();
+  const [ideaId, setIdeaId] = useState<string | undefined>();
 
   const [initialFormData, setInitialFormData] = useState({});
   const participationContext = getCurrentPhase(phases?.data);
@@ -108,13 +113,13 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
             getFieldNameFromPath(error.instancePath) ||
             error?.params?.missingProperty
           }_${error.keyword}`
-          ] ||
+        ] ||
         messages[
           `ajv_error_${
             getFieldNameFromPath(error.instancePath) ||
             error?.params?.missingProperty
           }_${error.keyword}`
-          ] ||
+        ] ||
         undefined
       );
     },
@@ -123,16 +128,17 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   // Try and load in a draft idea if one exists
   useEffect(() => {
-    const uuidRegex = /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i;
+    const uuidRegex =
+      /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i;
 
     const fieldsContainFiles = (formValues) => {
       for (const key in formValues) {
         if (uuidRegex.test(formValues[key])) {
           return true;
         }
-      };
+      }
       return false;
-    }
+    };
 
     const combineFileValues = (formValues, files) => {
       for (const key in formValues) {
@@ -142,23 +148,28 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               formValues[key] = {
                 id: file.id,
                 name: file.attributes.name,
-              }
+              };
             }
-          })
+          });
         }
       }
       return formValues;
-    }
+    };
 
-    if (draftIdeaStatus === 'success' && !isNilOrError(draftIdea) && !ideaId && schema) {
-      const formValues = getFormValues(
-        draftIdea,
-        schema
-      );
+    if (
+      draftIdeaStatus === 'success' &&
+      !isNilOrError(draftIdea) &&
+      !ideaId &&
+      schema
+    ) {
+      const formValues = getFormValues(draftIdea, schema);
 
       if (fieldsContainFiles(formValues)) {
         if (remoteFilesStatus !== 'loading') {
-          const combinedFileValues = combineFileValues(formValues, remoteFiles?.data);
+          const combinedFileValues = combineFileValues(
+            formValues,
+            remoteFiles?.data
+          );
           setInitialFormData(combinedFileValues);
           setIdeaId(draftIdea.data.id);
           setLoadingDraftIdea(false);
@@ -168,11 +179,17 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
         setIdeaId(draftIdea.data.id);
         setLoadingDraftIdea(false);
       }
-
     } else if (draftIdeaStatus === 'error') {
       setLoadingDraftIdea(false);
     }
-  }, [draftIdeaStatus, draftIdea, remoteFilesStatus, remoteFiles, schema, ideaId]);
+  }, [
+    draftIdeaStatus,
+    draftIdea,
+    remoteFilesStatus,
+    remoteFiles,
+    schema,
+    ideaId,
+  ]);
 
   if (!participationMethodConfig || !phaseId) {
     return null;
@@ -189,16 +206,16 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     } else {
       return onSubmit(data, true);
     }
-  }
+  };
 
   const convertFileAttributeIds = (data: FormValues) => {
-    for(const key in data) {
+    for (const key in data) {
       if (data[key] && data[key].id && data[key].name) {
         data[key] = data[key].id;
       }
     }
     return data;
-  }
+  };
 
   // TODO: JS - Still need to get the ID of the file upload into the form data
   const onSubmit = async (data: FormValues, published?: boolean) => {
@@ -210,12 +227,36 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     };
 
     // Update or add the idea depending on if we have an existing draft idea
-    const idea = ideaId ? await updateIdea({ id: ideaId, requestBody }) : await addIdea(requestBody);
+    const idea = ideaId
+      ? await updateIdea({ id: ideaId, requestBody })
+      : await addIdea(requestBody);
     setIdeaId(idea.data.id);
+
+    const ideaAttributes = idea.data.attributes;
+    const newData = { ...data };
+
+    // Update the form data with the new idea attribute values. This is specifically important for
+    // files at the moment where we add the id coming from the backend, but could be useful for other attributes in the future
+    for (const key in ideaAttributes) {
+      if (
+        newData.hasOwnProperty(key) &&
+        typeof newData[key] === 'object' &&
+        !Array.isArray(newData[key])
+      ) {
+        // Merge objects while maintaining existing attributes and adding missing ones
+        newData[key] = { ...newData[key], ...ideaAttributes[key] };
+      }
+    }
+
+    setInitialFormData(newData);
 
     if (published) {
       clearDraftIdea(phaseId);
-      participationMethodConfig?.onFormSubmission({project: project.data, ideaId, idea});
+      participationMethodConfig?.onFormSubmission({
+        project: project.data,
+        ideaId,
+        idea,
+      });
     }
   };
 
@@ -276,4 +317,3 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 };
 
 export default IdeasNewSurveyForm;
-
