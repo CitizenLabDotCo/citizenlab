@@ -31,7 +31,7 @@ module Analysis
 
     belongs_to :main_custom_field, class_name: 'CustomField'
     has_many :analyses_additional_custom_fields, class_name: 'Analysis::AdditionalCustomField', dependent: :destroy
-    has_many :additional_custom_fields, -> { order(ordering: :asc) }, through: :analyses_additional_custom_fields
+    has_many :additional_custom_fields, -> { order(ordering: :asc) }, through: :analyses_additional_custom_fields, class_name: 'CustomField', source: :custom_field
     has_many :tags, class_name: 'Analysis::Tag', dependent: :destroy
     has_many :taggings, class_name: 'Analysis::Tagging', through: :tags
     has_many :background_tasks, class_name: 'Analysis::BackgroundTask', dependent: :destroy
