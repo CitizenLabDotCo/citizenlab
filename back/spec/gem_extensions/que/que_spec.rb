@@ -18,4 +18,18 @@ RSpec.describe Que do
       described_class.migrate!(version: current_version)
     end
   end
+
+  describe '.db_version' do
+    before do
+      current_schema = Tenant.current.schema_name
+      ActiveRecord::Base.connection.execute("COMMENT ON TABLE #{current_schema}.que_jobs IS '4';")
+      ActiveRecord::Base.connection.execute("COMMENT ON TABLE public.que_jobs IS '5';")
+    end
+
+    it 'returns the correct version for the current schema' do
+      expect(described_class.db_version).to eq(4)
+      Apartment::Tenant.reset
+      expect(described_class.db_version).to eq(5)
+    end
+  end
 end
