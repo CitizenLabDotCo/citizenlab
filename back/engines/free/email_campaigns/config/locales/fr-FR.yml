@@ -50,7 +50,7 @@ fr:
       "assignee_digest": Aperçu hebdomadaire des idées attribuées
       "user_digest": Aperçu hebdomadaire
       "voting_basket_submitted": Confirmation de vote
-      "native_survey_not_submitted": Enquête non soumise
+      "native_survey_not_submitted": Réponse à l'enquête non soumise
       "voting_basket_not_submitted": Votes non soumis
       "voting_last_chance": Dernière chance pour voter
       "voting_phase_started": Nouvelle phase de projet avec vote
@@ -508,7 +508,7 @@ fr:
       cta_message: 'Cliquez sur le bouton ci-dessous pour participer'
     native_survey_not_submitted:
       subject: '%{organizationName}: Nous y sommes presque ! Soumettez vos réponses'
-      preheader: 'Vous n''avez pas répondu à l''enquête sur la plateforme de participation de %{organizationName}'
+      preheader: 'Vous n''avez pas terminé votre réponse à l''enquête sur la plateforme de participation de %{organizationName}'
       title_native_survey_not_submitted: 'Vous y êtes presque ! Envoyez vos réponses'
       body_native_survey_not_submitted: 'Vous avez commencé à répondre à l''enquête sur %{phaseTitle}, mais vous n''avez pas soumis vos réponses. Les soumissions seront clôturées le %{phaseEndDate}. Cliquez sur le bouton ci-dessous pour reprendre là où vous vous êtes arrêté.'
       body_native_survey_not_submitted_no_date: 'Vous avez commencé à répondre à l''enquête sur %{phaseTitle}, mais vous n''avez pas soumis vos réponses. Cliquez sur le bouton ci-dessous pour reprendre là où vous vous êtes arrêté.'
@@ -588,7 +588,7 @@ fr:
         user_who_voted: 'Utilisateur ayant voté'
         user_with_unsubmitted_votes: 'Utilisateur qui n''a pas soumis ses votes'
         users_who_engaged_but_not_voted: 'Utilisateurs ayant participé au projet, mais n''ayant pas voté'
-        user_with_unsubmitted_survey: 'Utilisateur qui a commencé son enquête mais ne l''a pas soumise'
+        user_with_unsubmitted_survey: 'Utilisateur qui a commencé mais n''a pas soumis sa réponse'
       content_type:
         comments: 'Commentaires'
         content_moderation: 'Modération du contenu'
@@ -650,4 +650,4 @@ fr:
         7_days_after_invite_is_sent: '7 jours après l''envoi de l''invitation'
         7_days_before_the_project_changes_phase: '7 jours avant le changement de phase du projet'
         registration_to_event: 'Inscription à un événement'
-        survey_1_day_after_draft_saved: '1 jour après que l''utilisateur a sauvegardé l''enquête en tant que brouillon'
+        survey_1_day_after_draft_saved: '1 jour après la dernière sauvegarde du brouillon'
