@@ -588,6 +588,7 @@ da:
         user_who_voted: 'Bruger der stemte'
         user_with_unsubmitted_votes: 'Bruger der ikke har afgivet sin stemme'
         users_who_engaged_but_not_voted: 'Brugere der har engageret sig i projektet, men ikke har stemt'
+        user_with_unsubmitted_survey: 'Bruger, der har startet, men ikke indsendt sin undersøgelse'
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderation af indhold'
@@ -600,6 +601,7 @@ da:
         proposals: 'Forslag'
         reactions: 'Stemmer'
         voting: 'Afstemning'
+        surveys: 'Undersøgelser'
       trigger:
         comment_is_deleted: 'Kommentar er slettet'
         comment_is_flagged_as_spam: 'Kommentar er markeret som spam'
@@ -648,3 +650,4 @@ da:
         7_days_after_invite_is_sent: '7 dage efter at invitationen er sendt'
         7_days_before_the_project_changes_phase: '7 dage før projektet ændre fase'
         registration_to_event: 'Tilmelding til en begivenhed'
+        survey_1_day_after_draft_saved: '1 dag efter at brugeren sidst gemte undersøgelsen i kladden'
