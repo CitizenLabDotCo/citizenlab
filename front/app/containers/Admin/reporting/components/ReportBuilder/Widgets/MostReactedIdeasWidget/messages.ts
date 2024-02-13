@@ -26,8 +26,7 @@ export default defineMessages({
     defaultMessage: 'Ideation phase',
   },
   noIdeasAvailable: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable',
-    defaultMessage:
-      'There are no questions available for this project or phase.',
+    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable1',
+    defaultMessage: 'There are no ideas available for this project or phase.',
   },
 });

@@ -17,10 +17,14 @@ const fetchIdeas = (queryParameters: IQueryParameters) =>
     },
   });
 
-const useIdeas = (queryParams: IQueryParameters) => {
+const useIdeas = (
+  queryParams: IQueryParameters,
+  { enabled = true }: { enabled: boolean } = { enabled: true }
+) => {
   return useQuery<IIdeas, CLErrors, IIdeas, IdeasKeys>({
     queryKey: ideasKeys.list(queryParams),
     queryFn: () => fetchIdeas(queryParams),
+    enabled,
   });
 };
 

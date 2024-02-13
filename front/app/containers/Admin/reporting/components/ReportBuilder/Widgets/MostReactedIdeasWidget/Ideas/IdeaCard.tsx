@@ -30,7 +30,7 @@ import checkTextOverflow, { MEDIUM_LINE_HEIGHT } from './checkTextOverflow';
 import { IIdeaImageData } from 'api/idea_images/types';
 
 interface Props {
-  rank: number;
+  rank?: number;
   title: string;
   body: string;
   url: string;
@@ -77,26 +77,28 @@ const IdeaCard = ({
         justifyContent="flex-start"
         alignItems="center"
       >
-        <Box
-          // hack to make backgrounds work in print view
-          boxShadow={`inset 0 0 0 1000px ${colors.grey200}`}
-          px="8px"
-          py="4px"
-          borderRadius={stylingConsts.borderRadius}
-          mr="8px"
-          mt="-1px"
-          height="26px"
-        >
-          <Text
-            mt="0px"
-            mb="0px"
-            color="textSecondary"
-            fontSize="xs"
-            fontWeight="bold"
+        {rank && (
+          <Box
+            // hack to make backgrounds work in print view
+            boxShadow={`inset 0 0 0 1000px ${colors.grey200}`}
+            px="8px"
+            py="4px"
+            borderRadius={stylingConsts.borderRadius}
+            mr="8px"
+            mt="-1px"
+            height="26px"
           >
-            #{rank}
-          </Text>
-        </Box>
+            <Text
+              mt="0px"
+              mb="0px"
+              color="textSecondary"
+              fontSize="xs"
+              fontWeight="bold"
+            >
+              #{rank}
+            </Text>
+          </Box>
+        )}
         <Link to={url} target="_blank">
           <Title variant="h5" display="inline" mt="0px" mb="0px">
             {title}

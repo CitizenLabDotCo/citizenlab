@@ -1,7 +1,7 @@
 module ReportBuilder
   class Queries::SingleIdea < ReportBuilder::Queries::Base
     # TODO: prevent access to publishing unauthorized data and in report_has_unauthorized_data?
-    def run_query(project_id: nil, phase_id: nil, idea_id: nil, **_other_props)
+    def run_query(phase_id: nil, idea_id: nil, **_other_props)
       return {} if phase_id.blank? || idea_id.blank?
 
       idea = Phase.find(phase_id).ideas.find(idea_id)

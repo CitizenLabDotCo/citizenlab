@@ -67,9 +67,9 @@ const Settings = () => {
   );
 
   const handleChangeIdeaId = useCallback(
-    (ideaId: string) => {
+    ({ value }: IOption) => {
       setProp((props: Props) => {
-        props.ideaId = ideaId;
+        props.ideaId = value;
       });
     },
     [setProp]
@@ -103,7 +103,7 @@ const Settings = () => {
 
       {projectId !== undefined && (
         <PhaseFilter
-          label={formatMessage(messages.ideationPhase)}
+          label={formatMessage(messages.selectPhase)}
           projectId={projectId}
           phaseId={phaseId}
           participationMethod="ideation"
@@ -111,10 +111,14 @@ const Settings = () => {
         />
       )}
 
-      {/* <IdeaFilter
-        ideaId={ideaId}
-        onChange={handleChangeIdeaId}
-      /> */}
+      {phaseId && (
+        <IdeaFilter
+          label={formatMessage(messages.selectIdea)}
+          phaseId={phaseId}
+          ideaId={ideaId}
+          onIdeaFilter={handleChangeIdeaId}
+        />
+      )}
 
       <Box my="28px">
         <CollapseLongTextToggle

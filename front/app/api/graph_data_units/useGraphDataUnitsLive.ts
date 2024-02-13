@@ -19,6 +19,7 @@ const fetchGraphDataUnitsLive = <Response extends BaseResponseData>({
       props: {
         project_id: _props.projectId,
         phase_id: _props.phaseId,
+        idea_id: _props.ideaId,
         resolution: _props.resolution,
         group_id: _props.groupId,
         number_of_ideas: _props.numberOfIdeas,

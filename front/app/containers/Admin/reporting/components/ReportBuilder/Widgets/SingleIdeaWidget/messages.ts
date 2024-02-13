@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   singleIdea: {
     id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.singleIdea',
-    defaultMessage: 'Single idea',
+    defaultMessage: 'Idea',
   },
   collapseLongText: {
     id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.collapseLongText',
@@ -13,13 +13,16 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.title',
     defaultMessage: 'Title',
   },
-  ideationPhase: {
-    id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.ideationPhase',
-    defaultMessage: 'Ideation phase',
+  selectPhase: {
+    id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.selectPhase',
+    defaultMessage: 'Select phase',
+  },
+  selectIdea: {
+    id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.selectIdea',
+    defaultMessage: 'Select idea',
   },
   noIdeaAvailable: {
     id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.noIdeaAvailable',
-    defaultMessage:
-      'There are no questions available for this project or phase.',
+    defaultMessage: 'There are no ideas available for this project or phase.',
   },
 });
