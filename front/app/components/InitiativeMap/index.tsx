@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 // components
 import EsriMap from 'components/EsriMap';
@@ -29,6 +29,7 @@ import {
 } from 'components/EsriMap/utils';
 import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { IInitiativeData } from 'api/initiatives/types';
 
 // style
@@ -59,18 +60,16 @@ const InitiativeMap = ({ list }: Props) => {
   // State variables
   const [clickedMapLocation, setClickedMapLocation] =
     useState<GeoJSON.Point | null>(null);
-  const [selectedInitiative, setSelectedInitiative] = useState<string | null>(
-    null
-  );
 
-  // Check if the URL contains a selected initiative ID. Open the initiative preview if so.
-  const initiativeIdFromUrl = searchParams.get('selected_initiative_id');
-  useEffect(() => {
-    if (initiativeIdFromUrl) {
+  const selectedInitiative = searchParams.get('selected_initiative_id');
+
+  const setSelectedInitiative = (id: string | null) => {
+    if (id === null) {
       removeSearchParams(['selected_initiative_id']);
-      setSelectedInitiative(initiativeIdFromUrl);
+    } else {
+      updateSearchParams({ selected_initiative_id: id });
     }
-  }, [initiativeIdFromUrl]);
+  };
 
   // Create a div element to use for inserting React components into Esri map popup
   // Docs: https://developers.arcgis.com/javascript/latest/custom-ui/#introduction
