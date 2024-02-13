@@ -51,18 +51,7 @@ module ReportBuilder
       grouped_answers = group_answers(answers)
 
       # Filter out invalid keys
-      question_option_keys = question.options.map(&:key)
-      user_field_option_keys = user_field.options.map(&:key)
-
-      grouped_answers = grouped_answers.select do |grouped_answer|
-        answer = grouped_answer[:answer]
-        group_by_value = grouped_answer[:group_by_value]
-
-        valid_answer = answer.nil? || question_option_keys.include?(answer)
-        valid_group_by_value = group_by_value.nil? || user_field_option_keys.include?(group_by_value)
-
-        valid_answer && valid_group_by_value
-      end
+      grouped_answers = filter_valid_keys(grouped_answers, question, user_field)
 
       build_response(grouped_answers, question)
     end
@@ -82,7 +71,7 @@ module ReportBuilder
       grouped_answers = group_answers(answers)
 
       # Filter out invalid keys
-      # TODO
+      grouped_answers = filter_valid_keys(grouped_answers, question, other_question)
 
       build_response(grouped_answers, question)
     end
@@ -132,6 +121,25 @@ module ReportBuilder
         .order(Arel.sql('COUNT(answer) DESC'))
         .count
         .to_a
+    end
+
+    def filter_valid_keys(
+      grouped_answers,
+      question,
+      slice_field
+    )
+      question_option_keys = question.options.map(&:key)
+      slice_field_option_keys = slice_field.options.map(&:key)
+
+      grouped_answers.select do |grouped_answer|
+        answer = grouped_answer[:answer]
+        group_by_value = grouped_answer[:group_by_value]
+
+        valid_answer = answer.nil? || question_option_keys.include?(answer)
+        valid_group_by_value = group_by_value.nil? || slice_field_option_keys.include?(group_by_value)
+
+        valid_answer && valid_group_by_value
+      end
     end
 
     def build_response(grouped_answers, question)

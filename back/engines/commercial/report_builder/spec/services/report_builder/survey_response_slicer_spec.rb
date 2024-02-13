@@ -234,13 +234,13 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         question: city_survey_question.title_multiloc,
         customFieldId: city_survey_question.id,
         required: true,
-        totalResponses: 11,
+        totalResponses: 10,
         answers: [
           { answer: 'la', group_by_value: 'pizza', count: 3 },
-          { answer: 'ny', group_by_value: 'pizza', count: 3 },
           { answer: 'la', group_by_value: 'burger', count: 2 },
-          { answer: 'ny', group_by_value: 'burger', count: 1 },
-          { answer: nil, group_by_value: 'burger', count: 1 }
+          { answer: 'ny', group_by_value: 'burger', count: 2 },
+          { answer: 'ny', group_by_value: 'pizza', count: 2 },
+          { answer: nil, group_by_value: 'pizza', count: 1 }
         ]
       })
     end
@@ -254,12 +254,13 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         question: multiselect_question.title_multiloc,
         customFieldId: multiselect_question.id,
         required: false,
-        totalResponses: 16,
+        totalResponses: 15,
         answers: [
-          { answer: 'option1', group_by_value: 'pizza', count: 6 },
           { answer: 'option1', group_by_value: 'burger', count: 5 },
-          { answer: 'option2', group_by_value: 'pizza', count: 3 },
-          { answer: 'option2', group_by_value: 'burger', count: 2 }
+          { answer: 'option1', group_by_value: 'pizza', count: 5 },
+          { answer: 'option2', group_by_value: 'burger', count: 2 },
+          { answer: 'option2', group_by_value: 'pizza', count: 2 },
+          { answer: nil, group_by_value: 'pizza', count: 1 }
         ]
       })
     end
