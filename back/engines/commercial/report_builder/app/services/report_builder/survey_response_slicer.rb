@@ -12,7 +12,7 @@ module ReportBuilder
 
       # SELECT
       answers = if question.input_type == 'select'
-        @inputs.select("ideas.custom_field_values->>'#{question.key}' as answer")
+        @inputs.select("ideas.custom_field_values->'#{question.key}' as answer")
       else
         @inputs.select(
           %{
@@ -27,11 +27,10 @@ module ReportBuilder
 
       # WHERE
       answers = if question.input_type == 'select'
-        # answers.where(
-        #   "(ideas.custom_field_values->>'#{question.key}' IN (?)) OR ideas.custom_field_values->>'#{question.key}' IS NULL",
-        #   question.options.map(&:key)
-        # )
-        answers
+        answers.where(
+          "(ideas.custom_field_values->>'#{question.key}' IN (?)) OR ideas.custom_field_values->>'#{question.key}' IS NULL",
+          question.options.map(&:key)
+        )
       else
         # answers.where(
         #   %{
