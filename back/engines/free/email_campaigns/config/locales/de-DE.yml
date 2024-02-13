@@ -588,7 +588,7 @@ de:
         user_who_voted: 'Nutzer*innen, die abgestimmt haben'
         user_with_unsubmitted_votes: 'Nutzer*innen, die Ihre Stimme(n) nicht abgeschickt haben'
         users_who_engaged_but_not_voted: 'Nutzer*innen, die sich mit dem Projekt beschäftigt, aber nicht abgestimmt haben'
-        user_with_unsubmitted_survey: 'Benutzer, der seine Umfrage begonnen, aber noch nicht abgeschickt hat'
+        user_with_unsubmitted_survey: 'Nutzer*innen, die ihre Umfrage begonnen, aber noch nicht abgeschickt haben'
       content_type:
         comments: 'Kommentare'
         content_moderation: 'Inhaltsmoderation'
@@ -650,4 +650,4 @@ de:
         7_days_after_invite_is_sent: '7 Tage nach Versand der 1. Einladung'
         7_days_before_the_project_changes_phase: '7 Tage bevor das Projekt die Phase wechselt'
         registration_to_event: 'Anmeldung zu einer Veranstaltung'
-        survey_1_day_after_draft_saved: '1 Tag nachdem der Benutzer die Umfrage zuletzt als Entwurf gespeichert hat'
+        survey_1_day_after_draft_saved: '1 Tag, nachdem der Nutzer / die Nutzer*in die Umfrage zuletzt als Entwurf gespeichert hat'
