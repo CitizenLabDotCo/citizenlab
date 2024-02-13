@@ -31,6 +31,10 @@ module Analysis
       active? && can_moderate?(record.source_project)
     end
 
+    def update?
+      active? && can_moderate?(record.source_project)
+    end
+
     def show?
       active? && can_moderate?(record.source_project)
     end

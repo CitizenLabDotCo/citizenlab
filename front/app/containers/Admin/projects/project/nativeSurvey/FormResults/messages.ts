@@ -116,4 +116,16 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.analysis.refresh',
     defaultMessage: '{ count } new responses',
   },
+  showSummaries: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.showSummaries',
+    defaultMessage: 'Show AI summaries',
+  },
+  hideSummaries: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.hideSummaries',
+    defaultMessage: 'Hide summaries for this question',
+  },
+  openAnalysisActions: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.openAnalysisActions',
+    defaultMessage: 'Open analysis actions',
+  },
 });

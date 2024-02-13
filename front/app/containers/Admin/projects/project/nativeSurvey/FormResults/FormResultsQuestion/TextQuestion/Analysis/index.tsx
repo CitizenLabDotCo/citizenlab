@@ -1,15 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  IconButton,
+  colors,
+  Dropdown,
+  DropdownListItem,
+  Spinner,
+} from '@citizenlab/cl2-component-library';
 
 import useAnalyses from 'api/analyses/useAnalyses';
 import { useParams } from 'react-router-dom';
 
 import AnalysisInsights from './AnalysisInsights';
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
+import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
+import messages from '../../../messages';
+import { useIntl } from 'utils/cl-intl';
 
 const Analysis = ({ customFieldId }: { customFieldId: string }) => {
+  const [dropdownOpened, setDropdownOpened] = useState(false);
+  const { formatMessage } = useIntl();
   const { mutate: addAnalysis } = useAddAnalysis();
+  const { mutate: updateAnalysis, isLoading } = useUpdateAnalysis();
 
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -47,9 +61,76 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
     addAnalysis,
   ]);
 
+  const toggleDropdown = () => {
+    setDropdownOpened(!dropdownOpened);
+  };
+
   return (
     <Box>
-      {relevantAnalysis && <AnalysisInsights analysis={relevantAnalysis} />}
+      {relevantAnalysis && relevantAnalysis.attributes.show_insights && (
+        <>
+          <Box display="flex" justifyContent="flex-end">
+            <IconButton
+              iconName="dots-horizontal"
+              iconColor={colors.textSecondary}
+              iconColorOnHover={colors.black}
+              a11y_buttonActionMessage={formatMessage(
+                messages.openAnalysisActions
+              )}
+              onClick={toggleDropdown}
+              mr="20px"
+            />
+            <Dropdown
+              opened={dropdownOpened}
+              onClickOutside={() => setDropdownOpened(false)}
+              content={
+                <>
+                  <DropdownListItem
+                    onClick={() => {
+                      updateAnalysis(
+                        {
+                          id: relevantAnalysis.id,
+                          show_insights: false,
+                        },
+                        {
+                          onSuccess: () => {
+                            setDropdownOpened(false);
+                          },
+                        }
+                      );
+                    }}
+                  >
+                    {isLoading ? (
+                      <Spinner />
+                    ) : (
+                      formatMessage(messages.hideSummaries)
+                    )}
+                  </DropdownListItem>
+                </>
+              }
+            />
+          </Box>
+
+          <AnalysisInsights analysis={relevantAnalysis} />
+        </>
+      )}
+      {relevantAnalysis && !relevantAnalysis.attributes.show_insights && (
+        <Box display="flex">
+          <Button
+            processing={isLoading}
+            onClick={() =>
+              updateAnalysis({
+                id: relevantAnalysis.id,
+                show_insights: true,
+              })
+            }
+            buttonStyle="secondary"
+            icon="flash"
+          >
+            {formatMessage(messages.showSummaries)}
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };
