@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // components
-import EsriMap from 'components/EsriMap/EsriMapWrapper';
+import EsriMap from 'components/EsriMap';
 import MapView from '@arcgis/core/views/MapView';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Graphic from '@arcgis/core/Graphic';

@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '@arcgis/core/assets/esri/themes/light/main.css';
 
+// hooks
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 // components
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
@@ -25,7 +28,7 @@ export type EsriMapProps = {
   layers?: Layer[];
   graphics?: Graphic[];
   onClick?: (event: any, mapView: MapView) => void;
-  globalMapSettings?: AppConfigurationMapSettings;
+  globalMapSettings: AppConfigurationMapSettings;
 };
 
 type InitialData = {
@@ -83,15 +86,15 @@ const EsriMap = ({
             longitude: initialData.center.coordinates[0],
           })
         : new Point({
-            latitude: Number(globalMapSettings?.map_center?.lat) || 0,
-            longitude: Number(globalMapSettings?.map_center?.long) || 0,
+            latitude: Number(globalMapSettings.map_center?.lat) || 0,
+            longitude: Number(globalMapSettings.map_center?.long) || 0,
           });
 
       // Set the basemap
       map.basemap = new Basemap({
-        baseLayers: [getDefaultBasemap(globalMapSettings?.tile_provider)],
+        baseLayers: [getDefaultBasemap(globalMapSettings.tile_provider)],
       });
-      mapView.zoom = initialData.zoom || globalMapSettings?.zoom_level || 18;
+      mapView.zoom = initialData.zoom || globalMapSettings.zoom_level || 18;
       mapView.constraints = {
         maxZoom: initialData.maxZoom || 22,
         minZoom: 5,
@@ -168,4 +171,15 @@ const EsriMap = ({
   );
 };
 
-export default EsriMap;
+const EsriMapWrapper = (props: Omit<EsriMapProps, 'globalMapSettings'>) => {
+  const { data: appConfig } = useAppConfiguration();
+  const globalMapSettings = appConfig?.data.attributes.settings.maps;
+
+  if (globalMapSettings) {
+    return <EsriMap globalMapSettings={globalMapSettings} {...props} />;
+  }
+
+  return null;
+};
+
+export default EsriMapWrapper;

@@ -1,7 +1,7 @@
 import React, { memo, useRef } from 'react';
 
 // components
-import EsriMap from 'components/EsriMap/EsriMapWrapper';
+import EsriMap from 'components/EsriMap';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
 import MapView from '@arcgis/core/views/MapView';
