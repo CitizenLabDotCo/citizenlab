@@ -35,7 +35,7 @@ module Analysis
         end
 
         def create
-          @analysis = ::Analysis::Analysis.new(analysis_params)
+          @analysis = ::Analysis::Analysis.new(analysis_params_for_create)
           authorize @analysis
 
           @analysis.custom_field_ids = detect_custom_fields unless analysis_params[:custom_field_ids]
@@ -53,7 +53,7 @@ module Analysis
         end
 
         def update
-          @analysis.assign_attributes analysis_params
+          @analysis.assign_attributes analysis_params_for_update
           authorize @analysis
 
           if @analysis.save
@@ -84,8 +84,12 @@ module Analysis
           authorize @analysis
         end
 
-        def analysis_params
+        def analysis_params_for_create
           params.require(:analysis).permit(:project_id, :phase_id, :show_insights, custom_field_ids: [])
+        end
+
+        def analysis_params_for_update
+          params.require(:analysis).permit(:show_insights, custom_field_ids: [])
         end
 
         def side_fx_service

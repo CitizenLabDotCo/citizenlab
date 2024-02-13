@@ -10,7 +10,7 @@ module Analysis
     end
 
     def after_update(analysis, user)
-      LogActivityJob.perform_later(analysis, 'updated', user, analysis.updated_at.to_i)
+      LogActivityJob.perform_later(analysis, 'changed', user, analysis.updated_at.to_i)
     end
 
     def after_destroy(frozen_analysis, user)
