@@ -1037,6 +1037,7 @@ CREATE TABLE public.analysis_analyses (
     phase_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
+    show_insights boolean DEFAULT true NOT NULL,
     main_custom_field_id uuid
 );
 
@@ -7955,6 +7956,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240130142750'),
 ('20240130170644'),
 ('20240201141520'),
+('20240212133704'),
 ('20240213111149'),
 ('20240213112911');
 
