@@ -588,6 +588,7 @@ el:
         user_who_voted: 'Χρήστης που ψήφισε'
         user_with_unsubmitted_votes: 'Χρήστης που δεν έχει υποβάλει την ψήφο του'
         users_who_engaged_but_not_voted: 'Χρήστες που ασχολήθηκαν με το έργο αλλά δεν ψήφισαν'
+        user_with_unsubmitted_survey: 'Χρήστης που έχει ξεκινήσει αλλά δεν έχει υποβάλει την έρευνά του'
       content_type:
         comments: 'Σχόλια'
         content_moderation: 'Μετριασμός περιεχομένου'
@@ -600,6 +601,7 @@ el:
         proposals: 'Προτάσεις'
         reactions: 'Αντιδράσεις'
         voting: 'Ψηφοφορία'
+        surveys: 'Έρευνες'
       trigger:
         comment_is_deleted: 'Το σχόλιο διαγράφεται'
         comment_is_flagged_as_spam: 'Το σχόλιο επισημαίνεται ως spam'
@@ -648,3 +650,4 @@ el:
         7_days_after_invite_is_sent: '7 ημέρες μετά την αποστολή της πρόσκλησης'
         7_days_before_the_project_changes_phase: '7 ημέρες πριν από τη φάση αλλαγής του έργου'
         registration_to_event: 'Εγγραφή σε μια εκδήλωση'
+        survey_1_day_after_draft_saved: '1 ημέρα μετά την τελευταία αποθήκευση της έρευνας σε προσχέδιο'
