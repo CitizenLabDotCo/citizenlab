@@ -239,7 +239,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     // files at the moment where we add the id coming from the backend, but could be useful for other attributes in the future
     for (const key in ideaAttributes) {
       if (
-        newData.hasOwnProperty(key) &&
+        Object.prototype.hasOwnProperty.call(newData, key) &&
         typeof newData[key] === 'object' &&
         !Array.isArray(newData[key])
       ) {
