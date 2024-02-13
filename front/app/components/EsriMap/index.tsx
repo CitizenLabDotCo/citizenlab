@@ -46,7 +46,7 @@ const EsriMap = ({ height, width, layers, graphics, initialData }: Props) => {
 
   const initialValuesLoaded = useRef(false);
 
-  // On initial render, create a new map and mapView and save them to state variables
+  // On initial render, create a new map and map view and save them to state variables
   useEffect(() => {
     const newMap = new Map();
     setMap(newMap);
@@ -121,7 +121,8 @@ const EsriMap = ({ height, width, layers, graphics, initialData }: Props) => {
     }
   }, [globalMapSettings, initialData, map, mapView]);
 
-  // Load any dynamic data that was passed in.
+  // Load dynamic data that was passed in.
+  // Note: This data is dynamic and may change.
   useEffect(() => {
     // Add any map layers which were passed in
     if (map && layers) {

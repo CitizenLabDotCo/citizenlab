@@ -54,13 +54,13 @@ const StyledMapContainer = styled(Box)`
 `;
 
 const InitiativeMap = ({ list }: Props) => {
+  const theme = useTheme();
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const isPhoneOrSmaller = useBreakpoint('phone');
-  const theme = useTheme();
-
   const initiativePermissions = useInitiativesPermissions('posting_initiative');
 
+  // State variables
   const [clickedMapLocation, setClickedMapLocation] =
     useState<GeoJSON.Point | null>(null);
   const [selectedInitiative, setSelectedInitiative] = useState<string | null>(
@@ -162,6 +162,7 @@ const InitiativeMap = ({ list }: Props) => {
                 // User clicked an initiative pin. Zoom to pin & open the information panel.
                 const initiativeId = graphics?.at(graphicId - 1)?.attributes
                   .initiativeId;
+
                 if (initiativeId) {
                   mapView.goTo(
                     {
