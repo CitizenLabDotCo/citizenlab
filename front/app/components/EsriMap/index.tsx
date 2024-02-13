@@ -28,6 +28,7 @@ export type EsriMapProps = {
   layers?: Layer[];
   graphics?: Graphic[];
   onClick?: (event: any, mapView: MapView) => void;
+  onHover?: (event: any, mapView: MapView) => void;
   globalMapSettings: AppConfigurationMapSettings;
 };
 
@@ -37,7 +38,6 @@ type InitialData = {
   maxZoom?: number;
   uiElements?: EsriUiElement[];
   showFullscreenOption?: boolean;
-  onHover?: (event: any, mapView: MapView) => void;
 };
 
 const EsriMap = ({
@@ -46,8 +46,9 @@ const EsriMap = ({
   width,
   layers,
   graphics,
-  onClick,
   initialData,
+  onClick,
+  onHover,
   globalMapSettings,
 }: EsriMapProps) => {
   const [map, setMap] = useState<Map | null>(null);
@@ -72,6 +73,7 @@ const EsriMap = ({
         mapView.destroy();
       };
     }
+
     return;
   }, []);
 
@@ -115,14 +117,6 @@ const EsriMap = ({
         });
       }
 
-      // On map hover, pass the event to onHover handler if it was provided
-      const onHover = initialData.onHover;
-      if (onHover) {
-        mapView?.on('pointer-move', function (event) {
-          onHover(event, mapView);
-        });
-      }
-
       initialValuesLoaded.current = true;
     }
   }, [globalMapSettings, initialData, map, mapView]);
@@ -158,6 +152,24 @@ const EsriMap = ({
       });
     }
   }, [onClick, mapView]);
+
+  useEffect(() => {
+    // On map click, pass the event to onClick handler if it was provided
+    if (onClick) {
+      mapView?.on('click', function (event) {
+        // By passing the mapView to onClick functions, we can easily change the map from that function
+        onClick(event, mapView);
+      });
+    }
+  }, [onClick, mapView]);
+
+  useEffect(() => {
+    if (onHover) {
+      mapView?.on('pointer-move', function (event) {
+        onHover(event, mapView);
+      });
+    }
+  }, [onHover, mapView]);
 
   return (
     <>
