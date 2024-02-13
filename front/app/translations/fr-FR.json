@@ -1220,7 +1220,7 @@
   "app.containers.NotificationMenu.mentionInComment": "{name} vous a mentionné dans un commentaire",
   "app.containers.NotificationMenu.mentionInInternalComment": "{name} vous a mentionné dans un commentaire interne",
   "app.containers.NotificationMenu.mentionInOfficialFeedback": "{officialName} vous mentionné dans une mise à jour officielle",
-  "app.containers.NotificationMenu.nativeSurveyNotSubmitted": "Vous n'avez pas soumis votre enquête",
+  "app.containers.NotificationMenu.nativeSurveyNotSubmitted": "Vous n'avez pas soumis votre réponse à l'enquête",
   "app.containers.NotificationMenu.noNotifications": "Vous n'avez pas de notifications",
   "app.containers.NotificationMenu.notificationsLabel": "Notifications",
   "app.containers.NotificationMenu.officialFeedbackOnContributionYouFollow": "{officialName} a publié une mise à jour officielle sur une contribution que vous suivez",
