@@ -588,6 +588,7 @@ tr:
         user_who_voted: 'Oy veren kullanıcı'
         user_with_unsubmitted_votes: 'Oylarını göndermemiş olan kullanıcı'
         users_who_engaged_but_not_voted: 'Proje ile ilgilenen ancak oy kullanmayan kullanıcılar'
+        user_with_unsubmitted_survey: 'Anketini başlatmış ancak göndermemiş kullanıcı'
       content_type:
         comments: 'Yorumlar'
         content_moderation: 'İçerik moderasyonu'
@@ -600,6 +601,7 @@ tr:
         proposals: 'Teklifler'
         reactions: 'Tepkiler'
         voting: 'Oylama'
+        surveys: 'Anketler'
       trigger:
         comment_is_deleted: 'Yorum silindi'
         comment_is_flagged_as_spam: 'Yorum spam olarak işaretlendi'
@@ -648,3 +650,4 @@ tr:
         7_days_after_invite_is_sent: 'Davetiye gönderildikten 7 gün sonra'
         7_days_before_the_project_changes_phase: 'Proje değişiklik aşamasından 7 gün önce'
         registration_to_event: 'Bir etkinliğe kayıt'
+        survey_1_day_after_draft_saved: 'Kullanıcı anketi en son taslak olarak kaydettikten 1 gün sonra'
