@@ -47,6 +47,7 @@ import { anyIsDefined } from 'utils/helperUtils';
 
 // typings
 import { CLErrors, Multiloc } from 'typings';
+import { IAppConfiguration } from 'api/app_configuration/types';
 import { getDefaultSortMethodFallback } from 'api/phases/utils';
 
 export interface IPhaseParticipationConfig {
@@ -98,6 +99,7 @@ interface InputProps {
   phase?: IPhase | undefined | null;
   project?: IProject | undefined | null;
   apiErrors: ApiErrors;
+  appConfig?: IAppConfiguration;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -110,6 +112,7 @@ export interface State extends IPhaseParticipationConfig {
   maxVotesPerOptionError: string | null;
   voteTermError: string | null;
   loaded: boolean;
+  appConfig: IAppConfiguration | null;
 }
 
 const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
@@ -158,6 +161,7 @@ class PhaseParticipationConfig extends PureComponent<
       ideas_order: 'trending',
       input_term: 'idea',
       document_annotation_embed_url: null,
+      appConfig: props.appConfig || null,
     };
     this.subscriptions = [];
   }

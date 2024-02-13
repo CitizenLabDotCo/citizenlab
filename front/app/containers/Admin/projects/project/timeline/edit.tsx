@@ -14,6 +14,7 @@ import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
 import useAddPhase from 'api/phases/useAddPhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // Components
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -87,6 +88,7 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 const CONFIGURABLE_CAMPAIGN_NAMES: CampaignName[] = ['project_phase_started'];
 
 const AdminPhaseEdit = () => {
+  const { data: appConfig } = useAppConfiguration();
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { projectId, phaseId } = useParams() as {
@@ -508,6 +510,7 @@ const AdminPhaseEdit = () => {
             onSubmit={handlePhaseParticipationConfigSubmit}
             onChange={handlePhaseParticipationConfigChange}
             apiErrors={errors}
+            appConfig={appConfig}
           />
 
           {phase?.data.attributes.participation_method === 'information' && (
