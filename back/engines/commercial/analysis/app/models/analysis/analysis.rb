@@ -29,13 +29,15 @@ module Analysis
     belongs_to :project, optional: true
     belongs_to :phase, optional: true
 
-    has_many :additional_custom_fields, class_name: 'Analysis::AdditionalCustomField', dependent: :destroy
-    has_many :custom_fields, -> { order(ordering: :asc) }, through: :additional_custom_fields # TODO: include main field
+    belongs_to :main_custom_field, class_name: 'CustomField'
+    has_many :analyses_additional_custom_fields, class_name: 'Analysis::AdditionalCustomField', dependent: :destroy
+    has_many :additional_custom_fields, -> { order(ordering: :asc) }, through: :analyses_additional_custom_fields
     has_many :tags, class_name: 'Analysis::Tag', dependent: :destroy
     has_many :taggings, class_name: 'Analysis::Tagging', through: :tags
     has_many :background_tasks, class_name: 'Analysis::BackgroundTask', dependent: :destroy
     has_many :insights, class_name: 'Analysis::Insight', dependent: :destroy
 
+    validates :main_custom_field, presence: true
     validate :project_xor_phase_present
     validate :project_or_phase_form_context, on: :create
 
