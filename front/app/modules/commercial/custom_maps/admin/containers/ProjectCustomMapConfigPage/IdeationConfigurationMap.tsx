@@ -9,7 +9,8 @@ import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer.js';
 import useLocalize from 'hooks/useLocalize';
 import { hexToRGBA } from 'utils/helperUtils';
 import { colors } from '@citizenlab/cl2-component-library';
-import { getMapPinSymbol } from 'components/EsriMap/utils';
+import { getMakiIconUrl, getMapPinSymbol } from 'components/EsriMap/utils';
+import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol.js';
 
 export interface Props {
   center?: GeoJSON.Point;
@@ -63,8 +64,17 @@ const IdeationConfigurationMap = memo<Props>(
         });
       } else if (geometryType === 'Point') {
         const pointColour = layer.geojson?.features[0]?.properties?.fill;
+        console.log(layer.geojson?.features[0]?.properties?.['marker-symbol']);
+        console.log(
+          getMakiIconUrl({
+            makiSymbol: 'basketball',
+            size: 'medium',
+            color: 'FF0000',
+          })
+        );
+
         geoJsonLayer.renderer = new SimpleRenderer({
-          symbol: getMapPinSymbol({ color: pointColour, sizeInPx: 30 }),
+          symbol: getMapPinSymbol({ color: pointColour }),
         });
       }
 

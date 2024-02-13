@@ -105,6 +105,165 @@ export const changeCursorOnHover = (event: any, mapView: MapView) => {
   });
 };
 
+// getMakiIcon
+// Description: Get a Maki icon URL given a certain icon name and color
+export const getMakiIconUrl = ({ makiSymbol, size, color }: MakiIconProps) => {
+  return fetch(
+    `https://unpkg.com/@icon/maki-icons/icons/${makiSymbol.toLowerCase()}.svg`
+  )
+    .then((response) => response.text())
+    .then((svg) => {
+      let makiSvgIcon = '';
+      const makiSizes = {
+        small: [20, 50],
+        medium: [30, 70],
+        large: [35, 90],
+      };
+
+      // Insert the correct color into the fetched SVG
+      const pathElementIndex = svg.indexOf('d='); // Find the start of the svg path data
+      makiSvgIcon = `${svg.slice(
+        0,
+        pathElementIndex
+      )} fill="#${color}" ${svg.slice(pathElementIndex)}`;
+
+      // Insert icon width/height into the fetched SVG
+      const svgElementIndex = makiSvgIcon.indexOf('>');
+      makiSvgIcon = `${makiSvgIcon.slice(0, svgElementIndex)} width="${
+        makiSizes[size][0]
+      }px" height="${makiSizes[size][1]}px" ${makiSvgIcon.slice(
+        svgElementIndex
+      )} `;
+
+      // Create blob from SVG
+      const blob = new Blob([svg], { type: 'image/svg+xml' });
+      // Return URL to blob
+      const url = URL.createObjectURL(blob);
+      console.log(url);
+      return url;
+    });
+};
+
+type MakiIconProps = {
+  makiSymbol: makiIconNames;
+  size: 'small' | 'medium' | 'large';
+  color: string;
+};
+
+type makiIconNames =
+  | 'aerialway'
+  | 'airfield'
+  | 'airport'
+  | 'alcohol-shop'
+  | 'america-football'
+  | 'amusement-park'
+  | 'aquarium'
+  | 'art-gallery'
+  | 'attraction'
+  | 'bakery'
+  | 'bank'
+  | 'bar'
+  | 'baseball'
+  | 'basketball'
+  | 'beer'
+  | 'bicycle'
+  | 'bicycle-share'
+  | 'building'
+  | 'bus'
+  | 'cafe'
+  | 'campsite'
+  | 'car'
+  | 'cemetery'
+  | 'cinema'
+  | 'circle'
+  | 'circle-stroked'
+  | 'clothing-store'
+  | 'college'
+  | 'commercial'
+  | 'cricket'
+  | 'cross'
+  | 'dam'
+  | 'danger'
+  | 'dentist'
+  | 'doctor'
+  | 'dog-park'
+  | 'drinking-water'
+  | 'embassy'
+  | 'entrance'
+  | 'fast-food'
+  | 'ferry'
+  | 'fire-station'
+  | 'fuel'
+  | 'garden'
+  | 'gift'
+  | 'golf'
+  | 'grocery'
+  | 'hairdresser'
+  | 'harbor'
+  | 'heart'
+  | 'heliport'
+  | 'hospital'
+  | 'ice-cream'
+  | 'industry'
+  | 'information'
+  | 'laundry'
+  | 'library'
+  | 'lighthouse'
+  | 'lodging'
+  | 'marker'
+  | 'monument'
+  | 'mountain'
+  | 'museum'
+  | 'music'
+  | 'park'
+  | 'parking'
+  | 'parking-garage'
+  | 'pharmacy'
+  | 'picnic-site'
+  | 'pitch'
+  | 'place-of-worship'
+  | 'playground'
+  | 'police'
+  | 'post'
+  | 'prison'
+  | 'rail'
+  | 'rail-light'
+  | 'rail-metro'
+  | 'ranger-station'
+  | 'religious-christian'
+  | 'religious-jewish'
+  | 'religious-muslim'
+  | 'restaurant'
+  | 'roadblock'
+  | 'rocket'
+  | 'school'
+  | 'shelter'
+  | 'shop'
+  | 'skiing'
+  | 'soccer'
+  | 'square'
+  | 'square-stroke'
+  | 'stadium'
+  | 'star'
+  | 'star-stroke'
+  | 'suitcase'
+  | 'sushi'
+  | 'swimming'
+  | 'telephone'
+  | 'tennis'
+  | 'theatre'
+  | 'toilets'
+  | 'town-hall'
+  | 'triangle'
+  | 'triangle-stroked'
+  | 'veterinary'
+  | 'volcano'
+  | 'warehouse'
+  | 'waste-basket'
+  | 'water'
+  | 'wetland'
+  | 'zoo';
+
 // getClusterConfiguration
 // Description: Gets the configuration needed to render a FeatureLayer with clustering on zoom in/out
 export const getClusterConfiguration = (clusterSymbolColor?: string) => {
