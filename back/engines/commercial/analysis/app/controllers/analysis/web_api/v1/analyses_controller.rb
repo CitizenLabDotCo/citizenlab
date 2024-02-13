@@ -38,7 +38,7 @@ module Analysis
           @analysis = ::Analysis::Analysis.new(analysis_params_for_create)
           authorize @analysis
 
-          @analysis.custom_field_ids = detect_custom_fields unless analysis_params[:custom_field_ids]
+          @analysis.custom_field_ids = detect_custom_fields unless analysis_params_for_create[:custom_field_ids]
 
           if @analysis.save
             side_fx_service.after_create(@analysis, current_user)
