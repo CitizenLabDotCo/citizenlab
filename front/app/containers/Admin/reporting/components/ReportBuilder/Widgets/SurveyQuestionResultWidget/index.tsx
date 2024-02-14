@@ -53,6 +53,8 @@ SurveyQuestionResultWidget.craft = {
     projectId: undefined,
     phaseId: undefined,
     questionId: undefined,
+    sliceMode: undefined,
+    sliceFieldId: undefined,
   },
   related: {
     settings: Settings,

@@ -1,5 +1,6 @@
 module ReportBuilder
   class Queries::SurveyQuestionResult < ReportBuilder::Queries::Base
+<<<<<<< HEAD
     def run_query(
       phase_id: nil,
       question_id: nil,
@@ -19,6 +20,13 @@ module ReportBuilder
           group_by_user_field_id
         )
       end
+=======
+    def run_query(phase_id: nil, question_id: nil, **_other_props)
+      return {} if phase_id.blank? || question_id.blank?
+
+      phase = Phase.find(phase_id)
+      SurveyResultsGeneratorService.new(phase).generate_question_result(question_id)
+>>>>>>> master
     end
   end
 end

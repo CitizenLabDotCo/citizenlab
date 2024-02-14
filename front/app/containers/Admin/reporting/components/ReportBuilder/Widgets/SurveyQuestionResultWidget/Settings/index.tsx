@@ -79,7 +79,7 @@ const Settings = () => {
     ({ value }: IOption) => {
       setProp((props: Props) => {
         if (value === '') {
-          props.sliceMode = 'none';
+          props.sliceMode = undefined;
           props.sliceFieldId = undefined;
         } else {
           props.sliceMode = 'user_field';

@@ -24,7 +24,7 @@ interface Props {
   projectId: string;
   phaseId: string;
   questionId: string;
-  sliceMode: SliceMode;
+  sliceMode?: SliceMode;
   sliceFieldId?: string;
 }
 
