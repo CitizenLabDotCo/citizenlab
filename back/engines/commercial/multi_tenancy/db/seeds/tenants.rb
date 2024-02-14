@@ -199,14 +199,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            similar_ideas: {
-              enabled: false,
-              allowed: true
-            },
-            geographic_dashboard: {
-              enabled: true,
-              allowed: true
-            },
             intercom: {
               enabled: true,
               allowed: true
@@ -317,14 +309,6 @@ module MultiTenancy
               allowed: true
             },
             polls: {
-              enabled: true,
-              allowed: true
-            },
-            insights_manual_flow: {
-              enabled: true,
-              allowed: true
-            },
-            insights_nlp_flow: {
               enabled: true,
               allowed: true
             },

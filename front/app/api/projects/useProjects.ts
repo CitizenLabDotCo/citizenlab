@@ -6,7 +6,7 @@ import projectsKeys from './keys';
 
 const fetchProjects = (queryParams: QueryParameters) =>
   fetcher<IProjects>({
-    path: `/projects`,
+    path: '/projects',
     action: 'get',
     queryParams,
   });
