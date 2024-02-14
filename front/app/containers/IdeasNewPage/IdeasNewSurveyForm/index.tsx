@@ -197,8 +197,8 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   const handleDraftIdeas = async (data: FormValues) => {
     if (data.publication_status === 'draft') {
-      if (isNilOrError(authUser)) {
-        // Anonymous surveys should not save drafts
+      if (allowAnonymousPosting || isNilOrError(authUser)) {
+        // Anonymous or not logged in surveys should not save drafts
         return;
       }
 

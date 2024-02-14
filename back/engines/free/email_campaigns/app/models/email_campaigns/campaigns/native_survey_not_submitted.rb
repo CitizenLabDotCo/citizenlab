@@ -54,15 +54,15 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.user_with_unsubmitted_votes'
+      'email_campaigns.admin_labels.recipient_segment.user_with_unsubmitted_survey'
     end
 
     def self.content_type_multiloc_key
-      'email_campaigns.admin_labels.content_type.voting'
+      'email_campaigns.admin_labels.content_type.surveys'
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.voting_1_day_after_last_votes'
+      'email_campaigns.admin_labels.trigger.survey_1_day_after_draft_saved'
     end
 
     def generate_commands(recipient:, activity:)
