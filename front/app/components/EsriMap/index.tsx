@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '@arcgis/core/assets/esri/themes/light/main.css';
 
+// hooks
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 // components
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
@@ -14,6 +17,9 @@ import Point from '@arcgis/core/geometry/Point';
 // utils
 import { getDefaultBasemap } from './utils';
 import { isNil } from 'utils/helperUtils';
+import { debounce } from 'lodash-es';
+
+// typings
 import { EsriUiElement } from './types';
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 
@@ -25,7 +31,8 @@ export type EsriMapProps = {
   layers?: Layer[];
   graphics?: Graphic[];
   onClick?: (event: any, mapView: MapView) => void;
-  globalMapSettings?: AppConfigurationMapSettings;
+  onHover?: (event: any, mapView: MapView) => void;
+  globalMapSettings: AppConfigurationMapSettings;
 };
 
 type InitialData = {
@@ -34,7 +41,6 @@ type InitialData = {
   maxZoom?: number;
   uiElements?: EsriUiElement[];
   showFullscreenOption?: boolean;
-  onHover?: (event: any, mapView: MapView) => void;
 };
 
 const EsriMap = ({
@@ -43,8 +49,9 @@ const EsriMap = ({
   width,
   layers,
   graphics,
-  onClick,
   initialData,
+  onClick,
+  onHover,
   globalMapSettings,
 }: EsriMapProps) => {
   const [map, setMap] = useState<Map | null>(null);
@@ -69,6 +76,7 @@ const EsriMap = ({
         mapView.destroy();
       };
     }
+
     return;
   }, []);
 
@@ -83,15 +91,15 @@ const EsriMap = ({
             longitude: initialData.center.coordinates[0],
           })
         : new Point({
-            latitude: Number(globalMapSettings?.map_center?.lat) || 0,
-            longitude: Number(globalMapSettings?.map_center?.long) || 0,
+            latitude: Number(globalMapSettings.map_center?.lat) || 0,
+            longitude: Number(globalMapSettings.map_center?.long) || 0,
           });
 
       // Set the basemap
       map.basemap = new Basemap({
-        baseLayers: [getDefaultBasemap(globalMapSettings?.tile_provider)],
+        baseLayers: [getDefaultBasemap(globalMapSettings.tile_provider)],
       });
-      mapView.zoom = initialData.zoom || globalMapSettings?.zoom_level || 18;
+      mapView.zoom = initialData.zoom || globalMapSettings.zoom_level || 18;
       mapView.constraints = {
         maxZoom: initialData.maxZoom || 22,
         minZoom: 5,
@@ -109,14 +117,6 @@ const EsriMap = ({
       if (initialData.uiElements && mapView) {
         initialData.uiElements.forEach((uiElement) => {
           mapView.ui.add(uiElement.element, uiElement.position);
-        });
-      }
-
-      // On map hover, pass the event to onHover handler if it was provided
-      const onHover = initialData.onHover;
-      if (onHover) {
-        mapView?.on('pointer-move', function (event) {
-          onHover(event, mapView);
         });
       }
 
@@ -156,6 +156,26 @@ const EsriMap = ({
     }
   }, [onClick, mapView]);
 
+  useEffect(() => {
+    // On map click, pass the event to onClick handler if it was provided
+    if (onClick) {
+      mapView?.on('click', function (event) {
+        // By passing the mapView to onClick functions, we can easily change the map from that function
+        onClick(event, mapView);
+      });
+    }
+  }, [onClick, mapView]);
+
+  useEffect(() => {
+    if (onHover && mapView) {
+      const debouncedHover = debounce((event: any) => {
+        onHover(event, mapView);
+      }, 100);
+
+      mapView.on('pointer-move', debouncedHover);
+    }
+  }, [onHover, mapView]);
+
   return (
     <>
       <Box
@@ -168,4 +188,15 @@ const EsriMap = ({
   );
 };
 
-export default EsriMap;
+const EsriMapWrapper = (props: Omit<EsriMapProps, 'globalMapSettings'>) => {
+  const { data: appConfig } = useAppConfiguration();
+  const globalMapSettings = appConfig?.data.attributes.settings.maps;
+
+  if (globalMapSettings) {
+    return <EsriMap globalMapSettings={globalMapSettings} {...props} />;
+  }
+
+  return null;
+};
+
+export default EsriMapWrapper;

@@ -1,7 +1,7 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useRef, useMemo, useCallback } from 'react';
 
 // components
-import EsriMap from 'components/EsriMap/EsriMapWrapper';
+import EsriMap from 'components/EsriMap';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
 import MapView from '@arcgis/core/views/MapView';
@@ -27,43 +27,50 @@ const EventMap = memo<Props>(
     const theme = useTheme();
     const locationPoint = useRef<GeoJSON.Point | null>(position || null);
 
-    // Create point graphic for event location
-    const pointGraphic = new Graphic({
-      geometry: new Point({
-        longitude: locationPoint?.current?.coordinates[0],
-        latitude: locationPoint?.current?.coordinates[1],
-      }),
-      symbol: getMapPinSymbol(theme.colors.tenantPrimary),
-    });
-
-    const onClick = (event: any, mapView: MapView) => {
-      // Update the locationPoint ref
-      locationPoint.current = {
-        type: 'Point',
-        coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
-      };
-
-      // Create a graphic and add the point and symbol to it
-      const graphic = new Graphic({
+    const graphics = useMemo(() => {
+      // Create point graphic for event location
+      const pointGraphic = new Graphic({
         geometry: new Point({
-          longitude: locationPoint.current.coordinates[0],
-          latitude: locationPoint.current.coordinates[1],
+          longitude: locationPoint?.current?.coordinates[0],
+          latitude: locationPoint?.current?.coordinates[1],
         }),
         symbol: getMapPinSymbol(theme.colors.tenantPrimary),
       });
 
-      // Add a pin to the clicked location and delete the old one
-      mapView.graphics.removeAll();
-      mapView.graphics.add(graphic);
+      return [pointGraphic];
+    }, [theme.colors.tenantPrimary]);
 
-      // Update the locationPoint and submitState in the parent form component
-      setSubmitState && setSubmitState('enabled');
-      setLocationPoint &&
-        setLocationPoint({
+    const onClick = useCallback(
+      (event: any, mapView: MapView) => {
+        // Update the locationPoint ref
+        locationPoint.current = {
+          type: 'Point',
+          coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
+        };
+
+        // Create a graphic and add the point and symbol to it
+        const graphic = new Graphic({
+          geometry: new Point({
+            longitude: locationPoint.current.coordinates[0],
+            latitude: locationPoint.current.coordinates[1],
+          }),
+          symbol: getMapPinSymbol(theme.colors.tenantPrimary),
+        });
+
+        // Add a pin to the clicked location and delete the old one
+        mapView.graphics.removeAll();
+        mapView.graphics.add(graphic);
+
+        // Update the locationPoint and submitState in the parent form component
+        setSubmitState?.('enabled');
+
+        setLocationPoint?.({
           type: 'Point',
           coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
         });
-    };
+      },
+      [setLocationPoint, setSubmitState, theme.colors.tenantPrimary]
+    );
 
     return (
       <EsriMap
@@ -72,7 +79,7 @@ const EventMap = memo<Props>(
           zoom: 18,
         }}
         onClick={onClick}
-        graphics={[pointGraphic]}
+        graphics={graphics}
         height={mapHeight}
       />
     );
