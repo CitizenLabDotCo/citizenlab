@@ -698,6 +698,7 @@
   "app.components.formBuilder.tags": "Tags",
   "app.components.formBuilder.title": "Title",
   "app.components.formBuilder.toLabel": "to",
+  "app.components.formBuilder.unsavedChanges": "You have unsaved changes",
   "app.container.InitiativeForm.fileUploadLabel": "Attachment",
   "app.container.InitiativeForm.fileUploadLabelSubtext": "Upload files to give others more information and context",
   "app.container.InitiativeForm.imageDropzonePlaceholder": "Drop your image here",
