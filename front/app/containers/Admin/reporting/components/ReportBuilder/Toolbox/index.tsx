@@ -222,6 +222,10 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
               <SingleIdeaWidget
                 title={toMultiloc(WIDGET_TITLES.SingleIdeaWidget)}
                 collapseLongText={false}
+                showAuthor={true}
+                showContent={true}
+                showReactions={true}
+                showVotes={true}
                 projectId={selectedProjectId}
               />
             }
