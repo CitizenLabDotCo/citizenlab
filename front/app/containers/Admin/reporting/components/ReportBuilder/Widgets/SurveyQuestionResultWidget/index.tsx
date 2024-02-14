@@ -22,7 +22,8 @@ const SurveyQuestionResultWidget = ({
   projectId,
   phaseId,
   questionId,
-  groupByUserFieldId,
+  sliceMode,
+  sliceFieldId,
 }: Props) => {
   const px = useReportDefaultPadding();
 
@@ -37,7 +38,8 @@ const SurveyQuestionResultWidget = ({
           projectId={projectId}
           phaseId={phaseId}
           questionId={questionId}
-          groupByUserFieldId={groupByUserFieldId}
+          sliceMode={sliceMode}
+          sliceFieldId={sliceFieldId}
         />
       ) : (
         <NoData message={projectOrPhaseEmptyMessage ?? messages.emptyField} />

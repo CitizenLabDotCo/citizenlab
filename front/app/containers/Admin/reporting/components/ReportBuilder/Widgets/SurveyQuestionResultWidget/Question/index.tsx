@@ -14,6 +14,7 @@ import useLocalize from 'hooks/useLocalize';
 import messages from '../messages';
 
 // typings
+import { SliceMode } from 'api/graph_data_units/requestTypes';
 import {
   Answer,
   SurveyQuestionMultilocs,
@@ -23,7 +24,8 @@ interface Props {
   projectId: string;
   phaseId: string;
   questionId: string;
-  groupByUserFieldId?: string;
+  sliceMode: SliceMode;
+  sliceFieldId?: string;
 }
 
 const addGroupByValueIfExists = (
@@ -50,13 +52,14 @@ const SurveyQuestionResult = ({
   projectId,
   phaseId,
   questionId,
-  groupByUserFieldId,
+  sliceMode,
+  sliceFieldId,
 }: Props) => {
   const response = useSurveyQuestionResult({
     phaseId,
     questionId,
-    groupByMode: groupByUserFieldId ? 'user_field' : 'none',
-    groupByFieldId: groupByUserFieldId,
+    sliceMode,
+    sliceFieldId,
   });
 
   const localize = useLocalize();

@@ -194,7 +194,10 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           <DraggableElement
             id="e2e-draggable-survey-question-result-widget"
             component={
-              <SurveyQuestionResultWidget projectId={selectedProjectId} />
+              <SurveyQuestionResultWidget
+                projectId={selectedProjectId}
+                sliceMode="none"
+              />
             }
             icon="survey"
             label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}

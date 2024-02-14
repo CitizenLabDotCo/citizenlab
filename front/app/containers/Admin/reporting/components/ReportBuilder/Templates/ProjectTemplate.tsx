@@ -132,6 +132,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
               projectId={projectId}
               phaseId={phaseId}
               questionId={field.id}
+              sliceMode="none"
             />
           ))}
         </div>

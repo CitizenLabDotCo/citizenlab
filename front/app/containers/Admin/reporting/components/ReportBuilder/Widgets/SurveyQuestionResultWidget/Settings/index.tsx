@@ -34,13 +34,15 @@ const Settings = () => {
     projectId,
     phaseId,
     questionId,
-    groupByUserFieldId,
+    // sliceMode,
+    sliceFieldId,
   } = useNode<Props>((node) => ({
     title: node.data.props.title,
     projectId: node.data.props.projectId,
     phaseId: node.data.props.phaseId,
     questionId: node.data.props.questionId,
-    groupByUserFieldId: node.data.props.groupByUserFieldId,
+    sliceMode: node.data.props.sliceMode,
+    sliceFieldId: node.data.props.sliceFieldId,
   }));
 
   const handleProjectFilter = useCallback(
@@ -77,9 +79,11 @@ const Settings = () => {
     ({ value }: IOption) => {
       setProp((props: Props) => {
         if (value === '') {
-          props.groupByUserFieldId = undefined;
+          props.sliceMode = 'none';
+          props.sliceFieldId = undefined;
         } else {
-          props.groupByUserFieldId = value;
+          props.sliceMode = 'user_field';
+          props.sliceFieldId = value;
         }
       });
     },
@@ -109,7 +113,7 @@ const Settings = () => {
             fill="textSecondary"
             display="inline"
           />
-          {formatMessage(nativeSurveyMessages.informationText2)}
+          {formatMessage(nativeSurveyMessages.informationText)}
         </Text>
       </Box>
 
@@ -139,7 +143,7 @@ const Settings = () => {
       )}
 
       <UserFieldFilter
-        userFieldId={groupByUserFieldId}
+        userFieldId={sliceFieldId}
         onFilter={handleGroupByUserFieldFilter}
       />
     </Box>
