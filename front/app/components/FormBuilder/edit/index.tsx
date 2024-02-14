@@ -23,6 +23,7 @@ import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSe
 import FormFields from 'components/FormBuilder/components/FormFields';
 import Error from 'components/UI/Error';
 import Feedback from 'components/HookForm/Feedback';
+import Warning from 'components/UI/Warning';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -124,7 +125,7 @@ export const FormEdit = ({
     setError,
     handleSubmit,
     control,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting, errors, isDirty },
     trigger,
   } = methods;
 
@@ -169,6 +170,7 @@ export const FormEdit = ({
   };
 
   const hasErrors = !!Object.keys(errors).length;
+  const editedAndCorrect = isDirty && !hasErrors;
 
   const onFormSubmit = async ({ customFields }: FormValues) => {
     try {
@@ -274,6 +276,13 @@ export const FormEdit = ({
                           text={formatMessage(messages.errorMessage)}
                           scrollIntoView={false}
                         />
+                      </Box>
+                    )}
+                    {editedAndCorrect && (
+                      <Box mb="8px">
+                        <Warning>
+                          {formatMessage(messages.unsavedChanges)}
+                        </Warning>
                       </Box>
                     )}
                     <Feedback
