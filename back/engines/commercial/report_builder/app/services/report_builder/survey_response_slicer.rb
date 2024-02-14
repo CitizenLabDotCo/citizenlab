@@ -30,7 +30,7 @@ module ReportBuilder
       end
 
       # Build response
-      build_response(grouped_answers, question)
+      build_response(grouped_answers, question, nil)
     end
 
     def slice_by_user_field(question_field_id, user_field_id)
@@ -53,7 +53,7 @@ module ReportBuilder
       # Filter out invalid keys
       grouped_answers = filter_valid_keys(grouped_answers, question, user_field)
 
-      build_response(grouped_answers, question)
+      build_response(grouped_answers, question, user_field)
     end
 
     def slice_by_other_question(question_field_id, other_question_field_id)
@@ -73,7 +73,13 @@ module ReportBuilder
       # Filter out invalid keys
       grouped_answers = filter_valid_keys(grouped_answers, question, other_question)
 
-      build_response(grouped_answers, question)
+      build_response(grouped_answers, question, other_question)
+    end
+
+    def get_multilocs(question, slice_field)
+      multilocs = { answer: get_option_titles(question) }
+      multilocs[:group_by_value] = get_option_titles(slice_field) if slice_field
+      multilocs
     end
 
     private
@@ -103,7 +109,7 @@ module ReportBuilder
     end
 
     def group_answers(answers)
-      apply_grouping(answers, slice_field: true)
+      apply_grouping(answers, slice: true)
         .map do |(answer, group_by_value), count|
           {
             answer: answer,
@@ -113,11 +119,11 @@ module ReportBuilder
         end
     end
 
-    def apply_grouping(answers, slice_field: false)
+    def apply_grouping(answers, slice: false)
       Idea
         .select(:answer)
         .from(answers)
-        .group(:answer, slice_field ? :group_by_value : nil)
+        .group(:answer, slice ? :group_by_value : nil)
         .order(Arel.sql('COUNT(answer) DESC'))
         .count
         .to_a
@@ -142,15 +148,24 @@ module ReportBuilder
       end
     end
 
-    def build_response(grouped_answers, question)
+    def build_response(grouped_answers, question, slice_field)
+      multilocs = get_multilocs(question, slice_field)
+
       {
         inputType: question.input_type,
         question: question.title_multiloc,
         required: question.required,
         totalResponses: grouped_answers.pluck(:count).sum,
         answers: grouped_answers,
-        customFieldId: question.id
+        customFieldId: question.id,
+        multilocs: multilocs
       }
+    end
+
+    def get_option_titles(field)
+      field.options.each_with_object({}) do |option, accu|
+        accu[option.key] = option.title_multiloc
+      end
     end
   end
 end

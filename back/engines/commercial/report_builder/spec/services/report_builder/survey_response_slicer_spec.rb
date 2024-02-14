@@ -161,7 +161,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
           { answer: 'la', count: 5 },
           { answer: 'ny', count: 4 },
           { answer: nil, count: 1 }
-        ]
+        ],
+        multilocs: generator.get_multilocs(city_survey_question, nil)
       })
     end
 
@@ -176,7 +177,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
           { answer: 'option1', count: 10 },
           { answer: 'option2', count: 4 },
           { answer: nil, count: 1 }
-        ]
+        ],
+        multilocs: generator.get_multilocs(multiselect_question, nil)
       })
     end
   end
@@ -198,7 +200,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
           { answer: 'ny', group_by_value: 'female', count: 2 },
           { answer: 'ny', group_by_value: 'male', count: 2 },
           { answer: nil, group_by_value: 'female', count: 1 }
-        ]
+        ],
+        multilocs: generator.get_multilocs(city_survey_question, user_custom_field)
       })
     end
 
@@ -219,7 +222,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
           { answer: 'option2', group_by_value: 'female', count: 2 },
           { answer: nil, group_by_value: 'female', count: 1 },
           { answer: 'option1', group_by_value: nil, count: 1 }
-        ]
+        ],
+        multilocs: generator.get_multilocs(multiselect_question, user_custom_field)
       })
     end
   end
@@ -241,7 +245,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
           { answer: 'ny', group_by_value: 'burger', count: 2 },
           { answer: 'ny', group_by_value: 'pizza', count: 2 },
           { answer: nil, group_by_value: 'pizza', count: 1 }
-        ]
+        ],
+        multilocs: generator.get_multilocs(city_survey_question, food_survey_question)
       })
     end
 
@@ -261,7 +266,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
           { answer: 'option2', group_by_value: 'burger', count: 2 },
           { answer: 'option2', group_by_value: 'pizza', count: 2 },
           { answer: nil, group_by_value: 'pizza', count: 1 }
-        ]
+        ],
+        multilocs: generator.get_multilocs(multiselect_question, food_survey_question)
       })
     end
   end
