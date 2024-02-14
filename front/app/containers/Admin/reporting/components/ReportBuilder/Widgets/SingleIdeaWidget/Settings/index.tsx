@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import { useNode } from '@craftjs/core';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Toggle, colors } from '@citizenlab/cl2-component-library';
 import ProjectFilter from '../../_shared/ProjectFilter';
 import PhaseFilter from '../../_shared/PhaseFilter';
 import CollapseLongTextToggle from './CollapseLongTextToggle';
@@ -26,22 +26,75 @@ const Settings = () => {
   const {
     actions: { setProp },
     title,
+    showAuthor,
+    showContent,
+    showReactions,
+    showVotes,
+    collapseLongText,
     projectId,
     phaseId,
     ideaId,
-    collapseLongText,
   } = useNode<Props>((node) => ({
     title: node.data.props.title,
+    showAuthor: node.data.props.showAuthor,
+    showContent: node.data.props.showContent,
+    showReactions: node.data.props.showReactions,
+    showVotes: node.data.props.showVotes,
+    collapseLongText: node.data.props.collapseLongText,
     projectId: node.data.props.projectId,
     phaseId: node.data.props.phaseId,
     ideaId: node.data.props.ideaId,
-    collapseLongText: node.data.props.collapseLongText,
   }));
 
   const setTitle = useCallback(
     (value: Multiloc) => {
       setProp((props: Props) => {
         props.title = value;
+      });
+    },
+    [setProp]
+  );
+
+  const handleChangeShowAuthor = useCallback(
+    (showAuthor: boolean) => {
+      setProp((props: Props) => {
+        props.showAuthor = showAuthor;
+      });
+    },
+    [setProp]
+  );
+
+  const handleChangeShowDescription = useCallback(
+    (showContent: boolean) => {
+      setProp((props: Props) => {
+        props.showContent = showContent;
+      });
+    },
+    [setProp]
+  );
+
+  const handleChangeShowReactions = useCallback(
+    (showReactions: boolean) => {
+      setProp((props: Props) => {
+        props.showReactions = showReactions;
+      });
+    },
+    [setProp]
+  );
+
+  const handleChangeShowVotes = useCallback(
+    (showVotes: boolean) => {
+      setProp((props: Props) => {
+        props.showVotes = showVotes;
+      });
+    },
+    [setProp]
+  );
+
+  const handleChangeCollapseLongText = useCallback(
+    (collapseLongText: boolean) => {
+      setProp((props: Props) => {
+        props.collapseLongText = collapseLongText;
       });
     },
     [setProp]
@@ -75,15 +128,6 @@ const Settings = () => {
     [setProp]
   );
 
-  const handleChangeCollapseLongText = useCallback(
-    (collapseLongText: boolean) => {
-      setProp((props: Props) => {
-        props.collapseLongText = collapseLongText;
-      });
-    },
-    [setProp]
-  );
-
   return (
     <Box>
       <Box mb="20px">
@@ -92,6 +136,49 @@ const Settings = () => {
           type="text"
           valueMultiloc={title}
           onChange={setTitle}
+        />
+      </Box>
+
+      <Box mb="20px">
+        <Toggle
+          checked={showAuthor}
+          label={formatMessage(messages.showAuthor)}
+          labelTextColor={colors.primary}
+          onChange={() => handleChangeShowAuthor(!showAuthor)}
+        />
+      </Box>
+
+      <Box mb="20px">
+        <Toggle
+          checked={showContent}
+          label={formatMessage(messages.showContent)}
+          labelTextColor={colors.primary}
+          onChange={() => handleChangeShowDescription(!showContent)}
+        />
+      </Box>
+
+      <Box mb="20px">
+        <CollapseLongTextToggle
+          collapseLongText={collapseLongText}
+          onChange={handleChangeCollapseLongText}
+        />
+      </Box>
+
+      <Box mb="20px">
+        <Toggle
+          checked={showReactions}
+          label={formatMessage(messages.showReactions)}
+          labelTextColor={colors.primary}
+          onChange={() => handleChangeShowReactions(!showReactions)}
+        />
+      </Box>
+
+      <Box mb="20px">
+        <Toggle
+          checked={showVotes}
+          label={formatMessage(messages.showVotes)}
+          labelTextColor={colors.primary}
+          onChange={() => handleChangeShowVotes(!showVotes)}
         />
       </Box>
 
@@ -119,13 +206,6 @@ const Settings = () => {
           onIdeaFilter={handleChangeIdeaId}
         />
       )}
-
-      <Box my="28px">
-        <CollapseLongTextToggle
-          collapseLongText={collapseLongText}
-          onChange={handleChangeCollapseLongText}
-        />
-      </Box>
     </Box>
   );
 };

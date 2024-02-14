@@ -39,6 +39,10 @@ interface Props {
   dislikes: number;
   comments: number;
   collapseLongText: boolean;
+  showAuthor?: boolean;
+  showContent?: boolean;
+  showReactions?: boolean;
+  showVotes?: boolean;
 }
 
 const IdeaText = styled.div`
@@ -55,6 +59,10 @@ const IdeaCard = ({
   dislikes,
   comments,
   collapseLongText,
+  showAuthor = false,
+  showContent = true,
+  showReactions = false,
+  showVotes = false,
 }: Props) => {
   const textContainerRef = useRef<HTMLDivElement | null>(null);
   const [textOverflow, setTextOverflow] = useState(false);
@@ -105,43 +113,49 @@ const IdeaCard = ({
           </Title>
         </Link>
       </Box>
-      {image && (
-        <Box
-          mt="8px"
-          display="flex"
-          flexDirection="row"
-          justifyContent="center"
-        >
-          <Image src={image} alt="" width="50%" />
+      {showContent && (
+        <Box>
+          {image && (
+            <Box
+              mt="8px"
+              display="flex"
+              flexDirection="row"
+              justifyContent="center"
+            >
+              <Image src={image} alt="" width="50%" />
+            </Box>
+          )}
+          <Box width="100%">
+            <Box
+              height={
+                hideTextOverflow ? `${MEDIUM_LINE_HEIGHT * 8}px` : undefined
+              }
+              overflow={hideTextOverflow ? 'hidden' : undefined}
+            >
+              <Box
+                display={hideTextOverflow ? 'block' : 'none'}
+                position="absolute"
+                mt={`${MEDIUM_LINE_HEIGHT * 6}px`}
+                height={`${MEDIUM_LINE_HEIGHT * 2}px`}
+                width={`${textContainerRef.current?.clientWidth ?? 0}px`}
+              >
+                <Image src={GradientSrc} alt="" width="100%" height="100%" />
+              </Box>
+              <Box mt="12px">
+                <QuillEditedContent
+                  textColor={theme.colors.tenantText}
+                  fontSize="m"
+                >
+                  <IdeaText
+                    dangerouslySetInnerHTML={{ __html: body }}
+                    ref={textContainerRef}
+                  />
+                </QuillEditedContent>
+              </Box>
+            </Box>
+          </Box>
         </Box>
       )}
-      <Box width="100%">
-        <Box
-          height={hideTextOverflow ? `${MEDIUM_LINE_HEIGHT * 8}px` : undefined}
-          overflow={hideTextOverflow ? 'hidden' : undefined}
-        >
-          <Box
-            display={hideTextOverflow ? 'block' : 'none'}
-            position="absolute"
-            mt={`${MEDIUM_LINE_HEIGHT * 6}px`}
-            height={`${MEDIUM_LINE_HEIGHT * 2}px`}
-            width={`${textContainerRef.current?.clientWidth ?? 0}px`}
-          >
-            <Image src={GradientSrc} alt="" width="100%" height="100%" />
-          </Box>
-          <Box mt="12px">
-            <QuillEditedContent
-              textColor={theme.colors.tenantText}
-              fontSize="m"
-            >
-              <IdeaText
-                dangerouslySetInnerHTML={{ __html: body }}
-                ref={textContainerRef}
-              />
-            </QuillEditedContent>
-          </Box>
-        </Box>
-      </Box>
       {hideTextOverflow && (
         <Link to={url} target="_blank">
           <Text
@@ -156,21 +170,25 @@ const IdeaCard = ({
       )}
       <Box>
         <Text color="coolGrey500" fontSize="s">
-          <Icon
-            height="16px"
-            fill={colors.coolGrey500}
-            mr="3px"
-            name="vote-up"
-          />
-          {likes}
-          <Icon
-            height="16px"
-            fill={colors.coolGrey500}
-            ml="8px"
-            mr="3px"
-            name="vote-down"
-          />
-          {dislikes}
+          {showReactions && (
+            <Box display="inline">
+              <Icon
+                height="16px"
+                fill={colors.coolGrey500}
+                mr="3px"
+                name="vote-up"
+              />
+              {likes}
+              <Icon
+                height="16px"
+                fill={colors.coolGrey500}
+                ml="8px"
+                mr="3px"
+                name="vote-down"
+              />
+              {dislikes}
+            </Box>
+          )}
           <Icon
             height="16px"
             fill={colors.coolGrey500}

@@ -2225,7 +2225,7 @@
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.noIdeaAvailable": "There are no questions available for this project or phase.",
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.selectIdea": "Select idea",
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.selectPhase": "Select phase",
-  "app.containers.admin.ReportBuilder.SingleIdeaWidget.singleIdea": "Single idea",
+  "app.containers.admin.ReportBuilder.SingleIdeaWidget.singleIdea": "Idea",
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.title": "Title",
   "app.containers.admin.ReportBuilder.aboutThisReport": "About this report",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Participants timeline",

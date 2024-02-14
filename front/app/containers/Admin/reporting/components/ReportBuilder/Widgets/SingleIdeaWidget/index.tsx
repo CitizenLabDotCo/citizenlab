@@ -24,6 +24,10 @@ const SingleIdeaWidget = ({
   phaseId,
   ideaId,
   collapseLongText,
+  showAuthor,
+  showContent,
+  showReactions,
+  showVotes,
 }: Props) => {
   const response = useSingleIdea(
     {
@@ -57,6 +61,10 @@ const SingleIdeaWidget = ({
           dislikes={idea.dislikes_count}
           comments={idea.comments_count}
           collapseLongText={collapseLongText}
+          showAuthor={showAuthor}
+          showContent={showContent}
+          showReactions={showReactions}
+          showVotes={showVotes}
         />
       )}
     </Card>

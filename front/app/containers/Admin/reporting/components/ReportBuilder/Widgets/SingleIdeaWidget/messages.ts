@@ -5,13 +5,29 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.singleIdea',
     defaultMessage: 'Idea',
   },
-  collapseLongText: {
-    id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.collapseLongText',
-    defaultMessage: 'Collapse long text',
-  },
   title: {
     id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.title',
     defaultMessage: 'Title',
+  },
+  showAuthor: {
+    id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.showAuthor',
+    defaultMessage: 'Author',
+  },
+  showContent: {
+    id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.showContent',
+    defaultMessage: 'Content',
+  },
+  showReactions: {
+    id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.showReactions',
+    defaultMessage: 'Reactions',
+  },
+  showVotes: {
+    id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.showVotes',
+    defaultMessage: 'Votes',
+  },
+  collapseLongText: {
+    id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.collapseLongText',
+    defaultMessage: 'Collapse long text',
   },
   selectPhase: {
     id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.selectPhase',
