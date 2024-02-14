@@ -374,6 +374,22 @@ RSpec.describe UiSchemaGeneratorService do
           }
         })
       end
+
+      it 'returns the options in a random order for the given field' do
+        create(:custom_field_option, custom_field: field, key: 'option3', title_multiloc: { en: 'Option 3' })
+        create(:custom_field_option, custom_field: field, key: 'option4', title_multiloc: { en: 'Option 4' })
+        create(:custom_field_option, custom_field: field, key: 'other', other: true, title_multiloc: { en: 'Other' })
+        field.update!(random_option_ordering: true)
+
+        # NOTE: Checking 10 loops to make sure the chance of a flaky test here is very very low
+        attempts = []
+        10.times do
+          options = generator.visit_select(field).dig(:options, :enumNames)
+          expect(options.last).to eq 'Other'
+          attempts << options
+        end
+        expect(attempts.uniq.size).to be > 1
+      end
     end
   end
 
