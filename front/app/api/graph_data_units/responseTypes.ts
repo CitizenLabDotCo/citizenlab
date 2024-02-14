@@ -40,7 +40,7 @@ export type MostReactedIdeasResponse = {
       ideas: IIdeaData[];
       project: IProjectData;
       phase: IPhaseData;
-      idea_images: IIdeaImageData[];
+      idea_images: Record<string, IIdeaImageData[]>;
     };
   };
 };

@@ -16,7 +16,7 @@ import { IIdeaImageData } from 'api/idea_images/types';
 
 interface Props {
   ideas: IIdeaData[];
-  images: IIdeaImageData[];
+  images: Record<string, IIdeaImageData[]>;
   collapseLongText: boolean;
 }
 
@@ -32,6 +32,7 @@ const Ideas = ({ ideas, images, collapseLongText }: Props) => {
       {ideas.map(
         (
           {
+            id,
             attributes: {
               title_multiloc,
               body_multiloc,
@@ -49,7 +50,7 @@ const Ideas = ({ ideas, images, collapseLongText }: Props) => {
             title={localize(title_multiloc)}
             body={localize(body_multiloc)}
             url={`/ideas/${slug}`}
-            images={images}
+            images={images[id] || []}
             likes={likes_count}
             dislikes={dislikes_count}
             comments={comments_count}
