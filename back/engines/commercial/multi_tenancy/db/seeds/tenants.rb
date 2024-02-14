@@ -499,10 +499,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            basic_autotagging: {
-              enabled: true,
-              allowed: true
-            },
             advanced_autotagging: {
               enabled: true,
               allowed: true

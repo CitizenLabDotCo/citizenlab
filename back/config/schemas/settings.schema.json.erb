@@ -1418,18 +1418,6 @@
         } 
       },
 
-      "basic_autotagging": {
-        "type": "object",
-        "title": "AI-powered basic autotagging for surveys and ideation",
-        "description": "Enables the use of AI-powered basic autotagging feature for surveys and ideation.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": false }
-        }       
-      },
-
       "advanced_autotagging": {
         "type": "object",
         "title": "AI-powered advanced autotagging for surveys and ideation",
@@ -1470,7 +1458,6 @@
 
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
-    "basic_autotagging": ["analysis"],
     "advanced_autotagging": ["analysis"]
   },
   "definitions": {
