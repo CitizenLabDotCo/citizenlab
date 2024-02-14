@@ -1132,7 +1132,6 @@
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Glasanje trenutno nije omogućeno",
   "app.containers.InitiativesShow.VoteControl.xDays": "{x, plural, =0 {manje od jednog dana} one {jedan dan} other {# dana}}",
   "app.containers.InitiativesShow.VoteControl.xPeople": "{count, plural, =0 {Nitko} one {Jedna osoba} other {# osoba}}",
-  "app.containers.InitiativesShow.VoteControl.xPeopleVoted": "{xPeople} je glasalo za ovaj prijedlog",
   "app.containers.InitiativesShow.VoteControl.xVotes": "{count, plural, =0 {nema glasova} one {1 glas} other {# glasova}}",
   "app.containers.InitiativesShow.a11y_voteControl": "Glasovanje i status",
   "app.containers.InitiativesShow.allInitiatives": "Svi prijedlozi",

@@ -1132,7 +1132,6 @@
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "La votació no està activada actualment",
   "app.containers.InitiativesShow.VoteControl.xDays": "{x, plural, =0 {menys d'un dia} one {un dia} other {# dies}}",
   "app.containers.InitiativesShow.VoteControl.xPeople": "{count, plural, =0 {Ningú} one {Una persona} other {# persones}}",
-  "app.containers.InitiativesShow.VoteControl.xPeopleVoted": "{xPeople} ha votat aquesta proposta",
   "app.containers.InitiativesShow.VoteControl.xVotes": "{count, plural, =0 {sense vots} one {1 vot} other {# vots}}",
   "app.containers.InitiativesShow.a11y_voteControl": "Votació i estat",
   "app.containers.InitiativesShow.allInitiatives": "Totes les propostes",

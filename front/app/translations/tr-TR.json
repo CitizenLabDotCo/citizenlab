@@ -1132,7 +1132,6 @@
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Oylama şu anda etkin değil",
   "app.containers.InitiativesShow.VoteControl.xDays": "{x, plural, =0 {bir günden az} one {bir gün} other {# gün}}",
   "app.containers.InitiativesShow.VoteControl.xPeople": "{count, plural, =0 {Sıfır kişi} one {Bir kişi} other {# kişi}}",
-  "app.containers.InitiativesShow.VoteControl.xPeopleVoted": "Bu öneri {xPeople} tarafından oylandı",
   "app.containers.InitiativesShow.VoteControl.xVotes": "{count, plural, =0 {sıfır oy} one {1 oy} other {# oy}}",
   "app.containers.InitiativesShow.a11y_voteControl": "Oylama ve durum",
   "app.containers.InitiativesShow.allInitiatives": "Tüm öneriler",
