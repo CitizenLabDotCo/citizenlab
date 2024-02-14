@@ -53,7 +53,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
 
   const templateData = phases ? getTemplateData(phases.data) : null;
 
-  const { data: surveyFields } = useRawCustomFields({
+  const { data: surveyQuestions } = useRawCustomFields({
     phaseId:
       templateData?.participationMethod === 'native_survey'
         ? templateData?.phaseId
@@ -63,7 +63,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
   if (!project || !phases || !templateData) return null;
 
   const { participationMethod, phaseId } = templateData;
-  if (participationMethod === 'native_survey' && !surveyFields) return null;
+  if (participationMethod === 'native_survey' && !surveyQuestions) return null;
 
   const hasPhases = phases.data.length > 0;
 
@@ -91,8 +91,8 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
     });
   };
 
-  const filteredSurveyFields = surveyFields
-    ? surveyFields.data.filter((field) =>
+  const filteredSurveyQuestions = surveyQuestions
+    ? surveyQuestions.data.filter((field) =>
         SUPPORTED_INPUT_TYPES.has(field.attributes.input_type)
       )
     : undefined;
@@ -124,14 +124,14 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
         {...projectPeriod}
       />
 
-      {filteredSurveyFields && (
+      {filteredSurveyQuestions && (
         <div>
-          {filteredSurveyFields.map((field) => (
+          {filteredSurveyQuestions.map((question) => (
             <SurveyQuestionResultWidget
-              key={field.id}
+              key={question.id}
               projectId={projectId}
               phaseId={phaseId}
-              fieldId={field.id}
+              questionId={question.id}
             />
           ))}
         </div>
