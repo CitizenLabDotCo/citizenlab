@@ -1,22 +1,78 @@
 import React from 'react';
+
 import {
   ICustomFieldInputType,
+  IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
+import { IPhaseData } from 'api/phases/types';
 import { Locale } from 'typings';
-import messages from '../messages';
+import messages from './components/messages';
+import { MessageDescriptor } from 'react-intl';
 
 // Components
-import ConfigSelectWithLocaleSwitcher from './ConfigSelectWithLocaleSwitcher';
-import LinearScaleSettings from './LinearScaleSettings';
-import FieldGroupSettings from './FieldGroupSettings';
-import MultiselectSettings from './MultiselectSettings';
+import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/ConfigSelectWithLocaleSwitcher';
+import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
+import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
+import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
+import SelectSettings from './components/FormBuilderSettings/SelectSettings';
 
 // utils
 import { uuid4 } from '@sentry/utils';
-import { MessageDescriptor } from 'react-intl';
-import { builtInFieldKeys } from 'components/FormBuilder/utils';
-import SelectSettings from './SelectSettings';
+import { isNilOrError } from 'utils/helperUtils';
+
+export type FormBuilderConfig = {
+  formBuilderTitle: MessageDescriptor;
+  viewFormLinkCopy: MessageDescriptor;
+  formSavedSuccessMessage: MessageDescriptor;
+  toolboxTitle?: MessageDescriptor;
+  supportArticleLink?: MessageDescriptor;
+  formEndPageLogicOption?: MessageDescriptor;
+  questionLogicHelperText?: MessageDescriptor;
+  pagesLogicHelperText?: MessageDescriptor;
+
+  toolboxFieldsToExclude: ICustomFieldInputType[];
+  formCustomFields: IFlatCustomField[] | undefined | Error;
+
+  displayBuiltInFields: boolean;
+  showStatusBadge: boolean;
+  isLogicEnabled: boolean;
+  alwaysShowCustomFields: boolean;
+  isFormPhaseSpecific: boolean;
+
+  viewFormLink?: string;
+
+  getDeletionNotice?: (projectId: string) => void;
+  getWarningNotice?: () => void;
+
+  goBackUrl?: string;
+  groupingType: 'page' | 'section';
+
+  onDownloadPDF?: () => void;
+};
+
+export const getIsPostingEnabled = (
+  phase?: IPhaseData | Error | null | undefined
+) => {
+  if (!isNilOrError(phase)) {
+    return phase.attributes.posting_enabled;
+  }
+
+  return false;
+};
+
+export const builtInFieldKeys = [
+  'title_multiloc',
+  'body_multiloc',
+  'proposed_budget',
+  'topic_ids',
+  'location_description',
+  'idea_images_attributes',
+  'idea_files_attributes',
+  'topic_ids',
+];
+
+export type BuiltInKeyType = (typeof builtInFieldKeys)[number];
 
 export function generateTempId() {
   return `TEMP-ID-${uuid4()}`;
@@ -25,6 +81,7 @@ export function generateTempId() {
 // TODO: BE key for survey end options should be replaced with form_end, then we can update this value.
 export const formEndOption = 'survey_end';
 
+// TODO: Clean this up and make it an actual component
 // Function to return additional settings based on input type
 export function getAdditionalSettings(
   field: IFlatCustomFieldWithIndex,
