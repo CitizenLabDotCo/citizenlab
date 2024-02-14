@@ -183,6 +183,9 @@ class JsonSchemaGeneratorService < FieldVisitorService
     {
       type: 'object',
       properties: {
+        id: {
+          type: 'string'
+        },
         content: {
           type: 'string'
         },
