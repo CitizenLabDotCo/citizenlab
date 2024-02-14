@@ -9,13 +9,15 @@ import MultipleChoice from 'containers/Admin/projects/project/nativeSurvey/FormR
 import Source from './Source';
 
 // i18n
-// import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
 import messages from '../messages';
 
 // typings
-import { Answer } from 'api/graph_data_units/responseTypes';
-import { Multiloc } from 'typings';
+import {
+  Answer,
+  SurveyQuestionMultilocs,
+} from 'api/graph_data_units/responseTypes';
 
 interface Props {
   projectId: string;
@@ -24,13 +26,25 @@ interface Props {
   groupByUserFieldId?: string;
 }
 
-const addFakeMultilocs = (answers: Answer[]) =>
-  answers.map(({ count, answer, group_by_value }) => ({
+const addGroupByValueIfExists = (
+  groupByValue: string | undefined,
+  multilocs: SurveyQuestionMultilocs
+) => {
+  return groupByValue && multilocs.group_by_value
+    ? { group_by_value: multilocs.group_by_value[groupByValue] }
+    : {};
+};
+
+const addMultilocs = (
+  answers: Answer[],
+  multilocs: SurveyQuestionMultilocs
+) => {
+  return answers.map(({ count, answer, group_by_value }) => ({
     responses: count,
-    answer: {
-      en: group_by_value ? `${answer} - ${group_by_value}` : answer,
-    } as Multiloc,
+    answer: multilocs.answer[answer],
+    ...addGroupByValueIfExists(group_by_value, multilocs),
   }));
+};
 
 const SurveyQuestionResult = ({
   projectId,
@@ -44,25 +58,25 @@ const SurveyQuestionResult = ({
     groupByMode: groupByUserFieldId ? 'user_field' : 'none',
     groupByFieldId: groupByUserFieldId,
   });
-  // const localize = useLocalize();
+
+  const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   if (!response) return null;
 
-  const { answers, totalResponses } = response.data.attributes;
-  if (!answers) return null;
+  const { answers, totalResponses, multilocs, question } =
+    response.data.attributes;
 
   return (
     <>
       <Title variant="h4" mt="0px" mb="8px">
-        {/* {localize(question)} */}
-        Test question
+        {localize(question)}
       </Title>
       <Text mt="0px" mb="8px" color="textSecondary" variant="bodyS">
         {formatMessage(messages.numberOfResponses, { count: totalResponses })}
       </Text>
       <MultipleChoice
-        multipleChoiceAnswers={addFakeMultilocs(answers)}
+        multipleChoiceAnswers={addMultilocs(answers, multilocs)}
         totalResponses={totalResponses}
       />
       <Source projectId={projectId} phaseId={phaseId} />

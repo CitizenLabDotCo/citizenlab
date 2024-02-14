@@ -12,7 +12,7 @@ import useLocalize from 'hooks/useLocalize';
 import { Box, Select } from '@citizenlab/cl2-component-library';
 
 // constants
-import { SUPPORTED_INPUT_TYPES } from '../constants';
+import { SUPPORTED_INPUT_TYPES_ARRAY } from '../constants';
 
 // typings
 import { IOption } from 'typings';
@@ -24,7 +24,7 @@ interface Props {
 
 const FieldFilter = ({ userFieldId, onFilter }: Props) => {
   const { data: userFields } = useUserCustomFields({
-    inputTypes: Array.from(SUPPORTED_INPUT_TYPES) as any,
+    inputTypes: SUPPORTED_INPUT_TYPES_ARRAY,
   });
   const localize = useLocalize();
   // const { formatMessage } = useIntl();
@@ -39,7 +39,8 @@ const FieldFilter = ({ userFieldId, onFilter }: Props) => {
   return (
     <Box width="100%" mb="20px">
       <Select
-        label={'Slice by'}
+        // label={formatMessage(messages)}
+        label={'Slice by user field'}
         value={userFieldId}
         options={[{ value: '', label: '' }, ...userFieldOptions]}
         onChange={onFilter}

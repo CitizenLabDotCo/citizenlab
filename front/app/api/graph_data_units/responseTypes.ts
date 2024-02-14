@@ -25,6 +25,7 @@ import {
   TimeSeriesResponseRow as VisitorsTimeSeriesResponseRow,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/VisitorsWidget/useVisitors/typings';
 import { TrafficSourcesRow } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
+import { ICustomFieldInputType } from 'api/custom_fields/types';
 import { Multiloc } from 'typings';
 
 // Survey results (whole survey, deprecated)
@@ -43,7 +44,7 @@ export type Answer = {
   group_by_value?: string;
 };
 
-type SurveyQuestionMultilocs = {
+export type SurveyQuestionMultilocs = {
   answer: Record<string, Multiloc>;
   /* undefined if not grouped */
   group_by_value?: Record<string, Multiloc>;
@@ -53,7 +54,7 @@ export type SurveyQuestionResultResponse = {
   data: {
     type: 'report_builder_data_units';
     attributes: {
-      inputType: string;
+      inputType: ICustomFieldInputType;
       question: Multiloc;
       customFieldId: string;
       required: boolean;
