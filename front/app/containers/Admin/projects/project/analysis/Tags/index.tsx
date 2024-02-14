@@ -173,6 +173,7 @@ const Tags = () => {
       <Modal
         opened={autotaggingModalIsOpened}
         close={() => setAutotaggingModalIsOpened(false)}
+        width="1000px"
       >
         <AutotaggingModal
           onCloseModal={() => setAutotaggingModalIsOpened(false)}

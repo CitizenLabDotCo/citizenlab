@@ -16,16 +16,17 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Tag from '../Tag';
 import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
-import FilterItems from '../../FilterItems';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import { isEmpty } from 'lodash-es';
 import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
 import useAnalysis from 'api/analyses/useAnalysis';
+import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 
 const AutoTagMethodContainer = styled.div<{ disabled: boolean }>`
   background-color: ${colors.grey100};
+  width: 30%;
   border-radius: 3px;
   padding: 16px;
   ${({ disabled }) =>
@@ -78,13 +79,15 @@ const AutoTagOption = ({
 }) => {
   return (
     <AutoTagMethodContainer onClick={() => onSelect()} disabled={disabled}>
+      <Box w="32px" mb="8px">
+        <Tag tagType={tagType} name="&nbsp;" />
+      </Box>
       <Box
         display="flex"
         justifyContent="flex-start"
         alignItems="center"
         gap="6px"
       >
-        <Tag tagType={tagType} name="&nbsp;" />
         <Title variant="h6" m="0px">
           {title}
         </Title>
@@ -121,6 +124,16 @@ const Step1 = ({
 }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
+  const { data: allInputs } = useInfiniteAnalysisInputs({
+    analysisId,
+  });
+  const { data: filteredInputs } = useInfiniteAnalysisInputs({
+    analysisId,
+    queryParams: filters,
+  });
+
+  const allInputsCount = allInputs?.pages[0].meta.filtered_count;
+  const filteredInputsCount = filteredInputs?.pages[0].meta.filtered_count;
 
   const { formatMessage } = useIntl();
   return (
@@ -144,7 +157,10 @@ const Step1 = ({
               name="auto_tagging_target"
               value="all"
             />
-            <Label>{formatMessage(messages.allInput)}</Label>
+            <Label>
+              {formatMessage(messages.allInput)}
+              {` (${allInputsCount})`}
+            </Label>
           </Box>
         </AutoTagTargetContainer>
         <AutoTagTargetContainer
@@ -163,7 +179,10 @@ const Step1 = ({
               disabled={isEmpty(filters)}
             />
             <Box>
-              <Label>{formatMessage(messages.useCurrentFilters)}</Label>
+              <Label>
+                {formatMessage(messages.useCurrentFilters)}
+                {` (${filteredInputsCount})`}
+              </Label>
               {isEmpty(filters) && (
                 <Text fontSize="s" m="0">
                   {formatMessage(messages.noActiveFilters)}
@@ -171,11 +190,6 @@ const Step1 = ({
               )}
             </Box>
           </Box>
-          <FilterItems
-            filters={filters}
-            isEditable={false}
-            analysisId={analysisId}
-          />
         </AutoTagTargetContainer>
       </Box>
 
@@ -183,9 +197,9 @@ const Step1 = ({
 
       <Box
         display="flex"
-        flexDirection="column"
         gap="16px"
         opacity={isLoading ? 0.5 : undefined}
+        flexWrap="wrap"
       >
         <AutoTagOption
           tagType="nlp_topic"
