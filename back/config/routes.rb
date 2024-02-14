@@ -9,12 +9,6 @@ Rails.application.routes.draw do
   mount Surveys::Engine => '', as: 'surveys'
   mount Volunteering::Engine => '', as: 'volunteering'
 
-  # It must come before +resource :ideas+, otherwise /web_api/v1/ideas/geotagged
-  # (unfortunate route naming) is captured by /web_api/v1/ideas/<idea-id>.
-  # Already tried +Rails.applications.routes.prepend+. That does not work:
-  # https://github.com/rails/rails/issues/11663
-  mount GeographicDashboard::Engine => '', as: 'geographic_dashboard'
-
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
       concern :reactable do
