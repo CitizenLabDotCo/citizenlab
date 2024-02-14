@@ -32,7 +32,7 @@ const TextQuestion = ({
         />
       </Box>
       <Box flex="1">
-        {isAnalysisEnabled && showAnalysis && (
+        {isAnalysisEnabled && showAnalysis && !hasOtherResponses && (
           <Analysis customFieldId={customFieldId} />
         )}
       </Box>
