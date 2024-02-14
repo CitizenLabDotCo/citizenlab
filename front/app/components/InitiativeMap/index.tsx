@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // components
-import EsriMap from 'components/EsriMap/EsriMapWrapper';
+import EsriMap from 'components/EsriMap';
 import MapView from '@arcgis/core/views/MapView';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Graphic from '@arcgis/core/Graphic';
@@ -30,6 +30,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { IInitiativeData } from 'api/initiatives/types';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -60,17 +61,14 @@ const InitiativeMap = ({ list }: Props) => {
   const [clickedMapLocation, setClickedMapLocation] =
     useState<GeoJSON.Point | null>(null);
   const [selectedInitiative, setSelectedInitiative] = useState<string | null>(
-    null
+    searchParams.get('selected_initiative_id') || null
   );
 
-  // Check if the URL contains a selected initiative ID. Open the initiative preview if so.
-  const initiativeIdFromUrl = searchParams.get('selected_initiative_id');
   useEffect(() => {
-    if (initiativeIdFromUrl) {
+    if (searchParams.get('selected_initiative_id')) {
       removeSearchParams(['selected_initiative_id']);
-      setSelectedInitiative(initiativeIdFromUrl);
     }
-  }, [initiativeIdFromUrl]);
+  }, [searchParams]);
 
   // Create a div element to use for inserting React components into Esri map popup
   // Docs: https://developers.arcgis.com/javascript/latest/custom-ui/#introduction
@@ -243,6 +241,7 @@ const InitiativeMap = ({ list }: Props) => {
           });
         } else {
           // Otherwise, redirect to the initiative form
+          updateSearchParams({ selected_initiative_id: selectedInitiative });
           clHistory.push(
             {
               pathname: `/initiatives/new`,
@@ -259,6 +258,7 @@ const InitiativeMap = ({ list }: Props) => {
       clickedMapLocation,
       initiativePermissions?.authenticationRequirements,
       initiativePermissions?.enabled,
+      selectedInitiative,
     ]
   );
 
@@ -267,8 +267,8 @@ const InitiativeMap = ({ list }: Props) => {
       <EsriMap
         height={isPhoneOrSmaller ? '480px' : '640px'}
         layers={initiativesLayer ? [initiativesLayer] : undefined}
-        onHover={changeCursorOnHover}
         onClick={onMapClick}
+        onHover={changeCursorOnHover}
       />
       <StartInitiativeButton
         modalPortalElement={startInitiativeButtonNode}

@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from 'react';
 
 // components
-import EsriMap from 'components/EsriMap/EsriMapWrapper';
+import EsriMap from 'components/EsriMap';
 import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol.js';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer.js';
