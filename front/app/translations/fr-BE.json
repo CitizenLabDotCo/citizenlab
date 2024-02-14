@@ -666,7 +666,7 @@
   "app.components.formBuilder.logicValidationError": "Logic ne peut pas créer de liens vers des pages antérieures",
   "app.components.formBuilder.longAnswer": "Réponse longue",
   "app.components.formBuilder.multipleChoice": "Choix multiples",
-  "app.components.formBuilder.multipleChoiceImage": "Choix de l'image",
+  "app.components.formBuilder.multipleChoiceImage": "Choix unique (Images)",
   "app.components.formBuilder.multiselect.maximum": "Maximum",
   "app.components.formBuilder.multiselect.minimum": "Minimum",
   "app.components.formBuilder.newField": "Nouveau champ",
