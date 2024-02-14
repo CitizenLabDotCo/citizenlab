@@ -21,7 +21,7 @@ import messages from './messages';
 import { Locale, UploadFile } from 'typings';
 
 // utils
-import { generateTempId } from '../utils';
+import { generateTempId } from 'components/FormBuilder/utils';
 import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
 import useAddCustomFieldOptionImage from 'api/content_field_option_images/useAddCustomFieldOptionImage';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
