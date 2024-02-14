@@ -74,13 +74,15 @@ class JsonSchemaGeneratorService < FieldVisitorService
     }.tap do |json|
       options = field.ordered_options
 
-      # TODO: JS - Can we do this as a oneOf instead to support images?
       unless options.empty?
         json[:enum] = options.map(&:key)
       end
     end
   end
 
+  # Fallback to basic visit_select. Only multi select image currently fully implemented.
+  # Field type not used in native surveys, nor in idea forms.
+  # To support single select images oneOf will be needed instead of Enum for returning options.
   def visit_select_image(field)
     visit_select(field)
   end
