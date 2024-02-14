@@ -1984,6 +1984,7 @@
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.title": "How to work with AI",
   "app.containers.AdminPage.projects.project.analysis.Tags.addInputToTag": "Add selected inputs to tag",
   "app.containers.AdminPage.projects.project.analysis.Tags.addTag": "Add tag",
+  "app.containers.AdminPage.projects.project.analysis.Tags.advancedAutotaggingUpsellMessage": "This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.",
   "app.containers.AdminPage.projects.project.analysis.Tags.allInput": "All inputs",
   "app.containers.AdminPage.projects.project.analysis.Tags.allInputs": "All inputs",
   "app.containers.AdminPage.projects.project.analysis.Tags.allTags": "All tags",
