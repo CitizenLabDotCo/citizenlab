@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fontSizes, Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
@@ -22,19 +22,11 @@ const StatusIcon = styled(Icon)`
   margin-bottom: 20px;
 `;
 
-const ReactionText = styled.div`
-  font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colors.tenantText};
-  margin-top: 20px;
-`;
-
 const Buttons = styled.div`
-  margin-top: 20px;
   display: flex;
-  margin: 20px -3px 0 -3px;
+
   & > * {
     flex: 1;
-    margin: 3px;
   }
 `;
 
@@ -44,22 +36,18 @@ interface Props {
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
   userReacted: boolean;
   onReaction: () => void;
+  onCancelReaction: () => void;
   onScrollToOfficialFeedback: () => void;
 }
 
-const Answered = (props: Props) => {
-  const handleOnReaction = () => {
-    props.onReaction();
-  };
-
-  const handleOnReadAnswer = () => {
-    props.onScrollToOfficialFeedback();
-  };
-
-  const { initiative, initiativeStatus, userReacted } = props;
-
-  const reactionCount = initiative.attributes.likes_count;
-
+const Answered = ({
+  onReaction,
+  onCancelReaction,
+  onScrollToOfficialFeedback,
+  initiative,
+  initiativeStatus,
+  userReacted,
+}: Props) => {
   return (
     <Box>
       <Box mb="16px">
@@ -68,19 +56,39 @@ const Answered = (props: Props) => {
         </StatusWrapper>
       </Box>
       <StatusIcon name="email-check" />
-      <StatusExplanation>
-        <FormattedMessage
-          {...messages.answeredStatusExplanation}
-          values={{
-            answeredStatusExplanationBold: (
-              <b>
-                <FormattedMessage {...messages.answeredStatusExplanationBold} />
-              </b>
-            ),
-          }}
-        />
-      </StatusExplanation>
-      <ReactionText>
+      <Box mb="12px">
+        <StatusExplanation>
+          <FormattedMessage
+            {...messages.answeredStatusExplanation}
+            values={{
+              answeredStatusExplanationBold: (
+                <b>
+                  <FormattedMessage
+                    {...messages.answeredStatusExplanationBold}
+                  />
+                </b>
+              ),
+            }}
+          />
+        </StatusExplanation>
+      </Box>
+      <Buttons>
+        <Box mr="8px">
+          {userReacted ? (
+            <Button buttonStyle="primary-outlined" onClick={onCancelReaction}>
+              <FormattedMessage {...messages.cancelVote} />
+            </Button>
+          ) : (
+            <Button buttonStyle="primary" onClick={onReaction}>
+              <FormattedMessage {...messages.vote} />
+            </Button>
+          )}
+        </Box>
+        <Button buttonStyle="secondary" onClick={onScrollToOfficialFeedback}>
+          <FormattedMessage {...messages.readAnswer} />
+        </Button>
+      </Buttons>
+      <Text fontSize="base" mb="8px">
         <FormattedMessage
           {...messages.xPeopleVoted}
           values={{
@@ -88,23 +96,13 @@ const Answered = (props: Props) => {
               <b>
                 <FormattedMessage
                   {...messages.xPeople}
-                  values={{ count: reactionCount }}
+                  values={{ count: initiative.attributes.likes_count }}
                 />
               </b>
             ),
           }}
         />
-      </ReactionText>
-      <Buttons>
-        <Button onClick={handleOnReadAnswer}>
-          <FormattedMessage {...messages.readAnswer} />
-        </Button>
-        {!userReacted && (
-          <Button buttonStyle="primary-outlined" onClick={handleOnReaction}>
-            <FormattedMessage {...messages.vote} />
-          </Button>
-        )}
-      </Buttons>
+      </Text>
     </Box>
   );
 };
