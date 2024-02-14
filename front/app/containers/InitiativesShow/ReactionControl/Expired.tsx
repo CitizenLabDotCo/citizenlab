@@ -13,7 +13,6 @@ import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import ProposalProgressBar from './ProposalProgressBar';
-import Button from 'components/UI/Button';
 
 import T from 'components/T';
 import messages from './messages';
@@ -50,10 +49,6 @@ const ReactionText = styled.div`
   color: ${colors.coolGrey600};
 `;
 
-const StyledButton = styled(Button)`
-  margin-top: 20px;
-`;
-
 interface Props {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
@@ -61,14 +56,11 @@ interface Props {
   userReacted: boolean;
 }
 
-const Expired = (props: Props) => {
-  const {
-    initiative,
-    initiativeSettings: { reacting_threshold },
-    initiativeStatus,
-    userReacted,
-  } = props;
-
+const Expired = ({
+  initiative,
+  initiativeSettings: { reacting_threshold },
+  initiativeStatus,
+}: Props) => {
   const reactionCount = initiative.attributes.likes_count;
   const reactionLimit = reacting_threshold;
 
@@ -112,13 +104,6 @@ const Expired = (props: Props) => {
           bgShaded
         />
       </ReactionCounter>
-      <StyledButton icon="halt" disabled>
-        {userReacted ? (
-          <FormattedMessage {...messages.cancelVote} />
-        ) : (
-          <FormattedMessage {...messages.vote} />
-        )}
-      </StyledButton>
     </Container>
   );
 };
