@@ -39,10 +39,10 @@ module Analysis
 
     validates :main_custom_field, presence: true, if: -> { participation_method != 'ideation' }
     validates :main_custom_field_id, uniqueness: { allow_nil: true }
+    validate :main_field_is_textual
     validate :main_field_not_in_additional_fields
     validate :project_xor_phase_present
     validate :project_or_phase_form_context, on: :create
-    # TODO: Validate main question is textual
 
     # The inputs of an analysis are those inputs that were created according to
     # the form definition of the project or phase assigned to the analysis, that
@@ -95,9 +95,15 @@ module Analysis
       end
     end
 
+    def main_field_is_textual
+      if main_custom_field_id.present? && !main_custom_field.support_free_text_value?
+        errors.add(:base, :main_custom_field_not_textual, message: 'The main custom field should be a textual custom field')
+      end
+    end
+
     def main_field_not_in_additional_fields
       if main_custom_field_id.present? && additional_custom_field_ids.include?(main_custom_field_id)
-        errors.add(:base, :main_field_in_additional_fields, message: 'The main custom field cannot be part of the additional custom fields')
+        errors.add(:base, :main_custom_field_in_additional_fields, message: 'The main custom field cannot be part of the additional custom fields')
       end
     end
   end

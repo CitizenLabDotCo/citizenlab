@@ -28,8 +28,8 @@ namespace :migrate_analysis do
             .analyses_additional_custom_fields
             .where.not(custom_field_id: main_field_ids)
             .order(:created_at)
-            .filter(&:support_free_text_value?)
-            .first.custom_field
+            .map(&:custom_field)
+            .find(&:support_free_text_value?)
           main_field_ids << main_field.id
 
           if main_field.blank?
