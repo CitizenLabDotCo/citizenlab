@@ -32,12 +32,12 @@ const Settings = () => {
     actions: { setProp },
     projectId,
     phaseId,
-    fieldId,
+    questionId,
   } = useNode<Props>((node) => ({
     title: node.data.props.title,
     projectId: node.data.props.projectId,
     phaseId: node.data.props.phaseId,
-    fieldId: node.data.props.fieldId,
+    questionId: node.data.props.questionId,
   }));
 
   const handleProjectFilter = useCallback(
@@ -45,7 +45,7 @@ const Settings = () => {
       setProp((props: Props) => {
         props.projectId = value;
         props.phaseId = undefined;
-        props.fieldId = undefined;
+        props.questionId = undefined;
       });
     },
     [setProp]
@@ -55,7 +55,7 @@ const Settings = () => {
     ({ value }: IOption) => {
       setProp((props: Props) => {
         props.phaseId = value;
-        props.fieldId = undefined;
+        props.questionId = undefined;
       });
     },
     [setProp]
@@ -64,7 +64,7 @@ const Settings = () => {
   const handleFieldFilter = useCallback(
     ({ value }: IOption) => {
       setProp((props: Props) => {
-        props.fieldId = value;
+        props.questionId = value;
       });
     },
     [setProp]
@@ -115,7 +115,7 @@ const Settings = () => {
           {phaseId && (
             <FieldFilter
               phaseId={phaseId}
-              fieldId={fieldId}
+              fieldId={questionId}
               onFieldFilter={handleFieldFilter}
             />
           )}

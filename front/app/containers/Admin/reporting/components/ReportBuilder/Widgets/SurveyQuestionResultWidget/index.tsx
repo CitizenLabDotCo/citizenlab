@@ -18,10 +18,14 @@ import { getEmptyMessage } from '../utils';
 //  typings
 import { Props } from './typings';
 
-const SurveyQuestionResultWidget = ({ projectId, phaseId, fieldId }: Props) => {
+const SurveyQuestionResultWidget = ({
+  projectId,
+  phaseId,
+  questionId,
+}: Props) => {
   const px = useReportDefaultPadding();
 
-  const hasEverything = projectId && phaseId && fieldId;
+  const hasEverything = projectId && phaseId && questionId;
 
   const projectOrPhaseEmptyMessage = getEmptyMessage({ projectId, phaseId });
 
@@ -31,7 +35,7 @@ const SurveyQuestionResultWidget = ({ projectId, phaseId, fieldId }: Props) => {
         <SurveyQuestionResult
           projectId={projectId}
           phaseId={phaseId}
-          fieldId={fieldId}
+          questionId={questionId}
         />
       ) : (
         <NoData message={projectOrPhaseEmptyMessage ?? messages.emptyField} />
@@ -44,7 +48,7 @@ SurveyQuestionResultWidget.craft = {
   props: {
     projectId: undefined,
     phaseId: undefined,
-    fieldId: undefined,
+    questionId: undefined,
   },
   related: {
     settings: Settings,

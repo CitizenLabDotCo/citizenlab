@@ -43,7 +43,7 @@ export interface SurveyResultsParams extends BaseParams {
 
 export interface SurveyQuestionResultProps {
   phaseId: string;
-  fieldId: string;
+  questionId: string;
 }
 
 export interface SurveyQuestionResultParams extends BaseParams {
