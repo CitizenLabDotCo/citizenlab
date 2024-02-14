@@ -85,7 +85,6 @@ module IdeaCustomFields
         delete_fields = fields.reject { |field| given_field_ids.include? field.id }
         delete_fields.each { |field| delete_field! field }
         given_fields.each_with_index do |field_params, index|
-          puts "field_params: #{field_params.inspect}"
           options_params = field_params.delete :options
           if field_params[:id] && fields_by_id.key?(field_params[:id])
             field = fields_by_id[field_params[:id]]
