@@ -55,7 +55,7 @@ RSpec.describe Analysis::Analysis do
     it 'is required for surveys' do
       analysis = build(:survey_analysis, main_custom_field: nil)
       expect(analysis).to be_invalid
-      expect(analysis.errors.details[:main_custom_field]).to eq([ { error: :blank }])
+      expect(analysis.errors.details[:main_custom_field]).to eq([{ error: :blank }])
     end
 
     it 'it is not required for ideation' do
@@ -70,7 +70,7 @@ RSpec.describe Analysis::Analysis do
       create(:analysis, main_custom_field: custom_field)
       analysis = build(:analysis, main_custom_field: custom_field)
       expect(analysis).to be_invalid
-      expect(analysis.errors.details[:main_custom_field_id]).to eq([ { error: :taken, value: custom_field.id }])
+      expect(analysis.errors.details[:main_custom_field_id]).to eq([{ error: :taken, value: custom_field.id }])
     end
   end
 
@@ -79,7 +79,7 @@ RSpec.describe Analysis::Analysis do
       custom_field = create(:custom_field_checkbox)
       analysis = build(:survey_analysis, main_custom_field: custom_field)
       expect(analysis).to be_invalid
-      expect(analysis.errors.details[:base]).to eq([ { error: :main_custom_field_not_textual }])
+      expect(analysis.errors.details[:base]).to eq([{ error: :main_custom_field_not_textual }])
     end
   end
 
@@ -88,7 +88,7 @@ RSpec.describe Analysis::Analysis do
       custom_field = create(:custom_field_text)
       analysis = build(:survey_analysis, main_custom_field: custom_field, additional_custom_fields: [custom_field])
       expect(analysis).to be_invalid
-      expect(analysis.errors.details[:base]).to eq([ { error: :main_custom_field_in_additional_fields }])
+      expect(analysis.errors.details[:base]).to eq([{ error: :main_custom_field_in_additional_fields }])
     end
   end
 
