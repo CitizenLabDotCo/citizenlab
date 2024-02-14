@@ -173,7 +173,8 @@ const FormBuilderToolbox = ({
           inputType="multiselect"
           disabled={isCustomFieldsDisabled}
         />
-        <ToolboxItem
+        {/* Hiding for now until we release the image choice */}
+        {/* <ToolboxItem
           icon="image"
           label={formatMessage(messages.multipleChoiceImage)}
           onClick={() => addField('multiselect_image')}
@@ -181,7 +182,7 @@ const FormBuilderToolbox = ({
           fieldsToExclude={builderConfig.toolboxFieldsToExclude}
           inputType="multiselect_image"
           disabled={isCustomFieldsDisabled}
-        />
+        /> */}
         <ToolboxItem
           icon="survey-linear-scale"
           label={formatMessage(messages.linearScale)}
