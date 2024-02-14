@@ -11,16 +11,15 @@ import {
   Label,
   Button,
   LocaleSwitcher,
-  Icon,
-  Input,
+  Toggle,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
-import { List, SortableRow } from 'components/admin/ResourceList';
+import { List, Row, SortableRow } from 'components/admin/ResourceList';
 import Error, { TFieldName } from 'components/UI/Error';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
@@ -28,8 +27,9 @@ import { Locale, CLError, RHFErrors } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { generateTempId } from 'components/FormBuilder/utils';
 import { get } from 'lodash-es';
+import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
+import SelectFieldOption from './SelectFieldOption';
 
 interface Props {
   name: string;
@@ -37,16 +37,17 @@ interface Props {
   locales: Locale[];
   allowDeletingAllOptions?: boolean;
   platformLocale: Locale;
+  inputType: ICustomFieldInputType;
 }
 
 const ConfigSelectWithLocaleSwitcher = ({
   onSelectedLocaleChange,
   name,
   locales,
-  intl: { formatMessage },
   allowDeletingAllOptions = false,
   platformLocale,
-}: Props & WrappedComponentProps) => {
+  inputType,
+}: Props) => {
   const {
     control,
     formState: { errors: formContextErrors },
@@ -56,6 +57,7 @@ const ConfigSelectWithLocaleSwitcher = ({
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(
     platformLocale
   );
+  const { formatMessage } = useIntl();
 
   // Handles locale change
   useEffect(() => {
@@ -78,17 +80,32 @@ const ConfigSelectWithLocaleSwitcher = ({
     move(fromIndex, toIndex);
   };
 
-  // Handles add and remove options
-  const addOption = (value, name) => {
+  const addOption = (
+    value: IOptionsType[],
+    name: string,
+    hasOtherOption: boolean
+  ) => {
     const newValues = value;
-    newValues.push({
+    const optionIndex = hasOtherOption ? value.length - 1 : value.length;
+    newValues.splice(optionIndex, 0, {
       title_multiloc: {},
+      ...(inputType === 'multiselect_image' && { image_id: '' }),
     });
     setValue(name, newValues);
   };
-  const removeOption = (value, name, index) => {
+
+  const removeOption = (value: IOptionsType[], name: string, index: number) => {
     const newValues = value;
     newValues.splice(index, 1);
+    setValue(name, newValues);
+  };
+
+  const addOtherOption = (value: IOptionsType[], name: string) => {
+    const newValues = value;
+    newValues.push({
+      title_multiloc: { en: 'Other' },
+      other: true,
+    });
     setValue(name, newValues);
   };
 
@@ -97,13 +114,6 @@ const ConfigSelectWithLocaleSwitcher = ({
   const apiError = errors?.error && ([errors] as CLError[]);
   const validationError = errors?.message;
 
-  const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
-    // We want to prevent the form builder from being closed when enter is pressed
-    if (event.key === 'Enter') {
-      event.preventDefault();
-    }
-  };
-
   if (selectedLocale) {
     return (
       <>
@@ -111,7 +121,19 @@ const ConfigSelectWithLocaleSwitcher = ({
           name={name}
           control={control}
           defaultValue={defaultOptionValues}
-          render={({ field: { ref: _ref, value: choices, onBlur } }) => {
+          render={({ field: { ref: _ref, value: options, onBlur } }) => {
+            const choices: IOptionsType[] = options;
+            const hasOtherOption = choices.some(
+              (choice) => choice.other === true
+            );
+            const toggleOtherOption = (value: IOptionsType[], name: string) => {
+              if (hasOtherOption) {
+                removeOption(value, name, value.length - 1);
+              } else {
+                addOtherOption(value, name);
+              }
+            };
+
             const canDeleteLastOption =
               allowDeletingAllOptions || choices.length > 1;
             const validatedValues = choices.map((choice) => ({
@@ -150,73 +172,93 @@ const ConfigSelectWithLocaleSwitcher = ({
                   </Box>
                   <DndProvider backend={HTML5Backend}>
                     <List key={choices?.length}>
-                      {choices?.map((choice, index) => {
-                        return (
-                          <Box key={choice.id}>
-                            <SortableRow
-                              id={choice.id}
-                              index={index}
-                              moveRow={handleDragRow}
-                              dropRow={() => {
-                                // Do nothing, no need to handle dropping a row for now
-                              }}
-                            >
-                              <Box width="100%">
-                                <Input
-                                  id={`e2e-option-input-${index}`}
-                                  size="small"
-                                  type="text"
-                                  value={choice.title_multiloc[selectedLocale]}
-                                  onKeyDown={handleKeyDown}
-                                  onChange={(value) => {
-                                    const updatedChoices = choices;
-                                    updatedChoices[index].title_multiloc[
-                                      selectedLocale
-                                    ] = value;
-                                    if (
-                                      !updatedChoices[index].id &&
-                                      !updatedChoices[index].temp_id
-                                    ) {
-                                      updatedChoices[index].temp_id =
-                                        generateTempId();
-                                    }
-                                    setValue(name, updatedChoices);
-                                  }}
-                                />
-                              </Box>
-                              {canDeleteLastOption && (
-                                <Button
-                                  margin="0px"
-                                  padding="0px"
-                                  buttonStyle="text"
-                                  aria-label={formatMessage(
-                                    messages.removeAnswer
-                                  )}
-                                  onClick={() => {
-                                    removeOption(choices, name, index);
-                                    trigger();
-                                  }}
+                      {choices
+                        ?.sort((a, b) => {
+                          const aValue = a.other ? 1 : 0;
+                          const bValue = b.other ? 1 : 0;
+
+                          return aValue - bValue;
+                        })
+                        .map((choice, index) => {
+                          return (
+                            <Box key={index}>
+                              {choice.other === true ? (
+                                <Row
+                                  key={choice.id || choice.temp_id}
+                                  isLastItem={true}
                                 >
-                                  <Icon
-                                    name="delete"
-                                    fill="coolGrey600"
-                                    padding="0px"
+                                  <SelectFieldOption
+                                    choice={choice}
+                                    index={index}
+                                    name={name}
+                                    choices={choices}
+                                    locale={selectedLocale}
+                                    removeOption={removeOption}
+                                    inputType={inputType}
+                                    canDeleteLastOption={canDeleteLastOption}
                                   />
-                                </Button>
+                                </Row>
+                              ) : (
+                                <SortableRow
+                                  id={
+                                    choice.temp_id
+                                      ? `${choice.temp_id}-${index}`
+                                      : `${choice.id}-${index}`
+                                  }
+                                  index={index}
+                                  moveRow={
+                                    choice?.other ? () => {} : handleDragRow
+                                  }
+                                  dropRow={() => {
+                                    // Do nothing, no need to handle dropping a row for now
+                                  }}
+                                  dragByHandle
+                                >
+                                  <SelectFieldOption
+                                    choice={choice}
+                                    index={index}
+                                    name={name}
+                                    choices={choices}
+                                    locale={selectedLocale}
+                                    removeOption={removeOption}
+                                    inputType={inputType}
+                                    canDeleteLastOption={canDeleteLastOption}
+                                  />
+                                </SortableRow>
                               )}
-                            </SortableRow>
-                          </Box>
-                        );
-                      })}
+                            </Box>
+                          );
+                        })}
                     </List>
                   </DndProvider>
                   <Button
                     icon="plus-circle"
                     buttonStyle="secondary"
                     data-cy="e2e-add-answer"
-                    onClick={() => addOption(choices, name)}
+                    onClick={() => addOption(choices, name, hasOtherOption)}
                     text={formatMessage(messages.addAnswer)}
                   />
+
+                  <Box mt="24px" data-cy="e2e-other-option-toggle">
+                    <Toggle
+                      label={
+                        <Box display="flex">
+                          {formatMessage(messages.otherOption)}
+                          <Box pl="4px">
+                            <IconTooltip
+                              placement="top-start"
+                              content={formatMessage(
+                                messages.otherOptionTooltip
+                              )}
+                            />
+                          </Box>
+                        </Box>
+                      }
+                      checked={hasOtherOption}
+                      onChange={() => toggleOtherOption(choices, name)}
+                    />
+                  </Box>
+
                   {validationError && (
                     <Error
                       marginTop="8px"
@@ -245,4 +287,4 @@ const ConfigSelectWithLocaleSwitcher = ({
   return null;
 };
 
-export default injectIntl(ConfigSelectWithLocaleSwitcher);
+export default ConfigSelectWithLocaleSwitcher;

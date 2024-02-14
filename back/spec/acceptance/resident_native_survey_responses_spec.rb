@@ -62,6 +62,9 @@ resource 'Ideas' do
       parameter :phase_ids, 'The identifiers of the phases that host the input. None is allowed for normal users.', required: false
       parameter :custom_field_name1, 'A value for one custom field'
       parameter :custom_field_name2, 'A value for another custom field'
+      parameter :custom_field_name2_other, 'A custom text value for an "other" option in custom fields'
+      parameter :custom_field_name3, 'A value for another custom field'
+      parameter :custom_field_name3_other, 'A custom text value for an "other" option in custom fields'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
 
@@ -145,6 +148,34 @@ resource 'Ideas' do
         end
       end
 
+      context 'with an image multi-select field' do
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+        let!(:image_select_field) do
+          create(
+            :custom_field_multiselect_image,
+            resource: custom_form,
+            key: 'custom_field_name1',
+            enabled: true
+          )
+        end
+        let!(:option) do
+          create(
+            :custom_field_option,
+            custom_field: image_select_field,
+            key: 'image1',
+            image: create(:custom_field_option_image)
+          )
+        end
+        let(:custom_field_name1) { ['image1'] }
+
+        example_request 'Create an input with a file upload field' do
+          assert_status 201
+          idea = project.reload.ideas.first
+          expect(idea.custom_field_values).to eq({ 'custom_field_name1' => ['image1'] })
+        end
+      end
+
       context 'with an active participation context' do
         let!(:custom_field) do
           create(
@@ -173,6 +204,49 @@ resource 'Ideas' do
             expect(inputs.first.phase_ids).to eq [active_phase.id]
             expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
             expect(input.creation_phase_id).to eq active_phase.id
+          end
+
+          context 'when there is an "other" option selected for a custom field' do
+            let!(:custom_field2) { create(:custom_field_select, :with_options, key: 'custom_field_name2', resource: custom_form) }
+            let!(:other_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
+
+            let(:custom_field_name2) { 'other' }
+            let(:custom_field_name2_other) { 'a text value here' }
+
+            example_request 'Create an input with an other option and text field' do
+              assert_status 201
+              input = project.reload.ideas.first
+              expect(input.custom_field_values).to match({
+                'custom_field_name1' => 'Cat',
+                'custom_field_name2' => 'other',
+                'custom_field_name2_other' => 'a text value here'
+              })
+            end
+          end
+
+          context 'when there are "other" options for a custom fields, but "other" is not selected' do
+            let!(:custom_field2) { create(:custom_field_select, key: 'custom_field_name2', resource: custom_form) }
+            let!(:first_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'first', title_multiloc: { 'en' => 'First' }) }
+            let!(:other_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
+
+            let!(:custom_field3) { create(:custom_field_multiselect, key: 'custom_field_name3', resource: custom_form) }
+            let!(:an_option) { create(:custom_field_option, custom_field: custom_field3, other: true, key: 'something', title_multiloc: { 'en' => 'Something' }) }
+            let!(:other_other_option) { create(:custom_field_option, custom_field: custom_field3, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
+
+            let(:custom_field_name2) { 'first' }
+            let(:custom_field_name2_other) { 'a text value here' }
+            let(:custom_field_name3) { ['something'] }
+            let(:custom_field_name3_other) { 'another text value here' }
+
+            example_request 'Create an input without other text fields' do
+              assert_status 201
+              input = project.reload.ideas.first
+              expect(input.custom_field_values).to match({
+                'custom_field_name1' => 'Cat',
+                'custom_field_name2' => 'first',
+                'custom_field_name3' => ['something']
+              })
+            end
           end
         end
       end

@@ -152,8 +152,9 @@ export const FormEdit = ({
         key: field.key,
         code: field.code,
         description_multiloc: field.description_multiloc || {},
-        ...((field.input_type === 'multiselect' ||
-          field.input_type === 'select') && {
+        ...(['select', 'multiselect', 'multiselect_image'].includes(
+          field.input_type
+        ) && {
           // TODO: This will get messy with more field types, abstract this in some way
           options: field.options || {},
           maximum_select_count: field.select_count_enabled
@@ -163,6 +164,7 @@ export const FormEdit = ({
             ? field.minimum_select_count || '0'
             : null,
           select_count_enabled: field.select_count_enabled,
+          random_option_ordering: field.random_option_ordering,
         }),
         ...(field.input_type === 'linear_scale' && {
           minimum_label_multiloc: field.minimum_label_multiloc || {},

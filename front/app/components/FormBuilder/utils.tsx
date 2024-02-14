@@ -1,9 +1,5 @@
 import React from 'react';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { uuid4 } from '@sentry/utils';
-
 import {
   ICustomFieldInputType,
   IFlatCustomField,
@@ -11,16 +7,19 @@ import {
 } from 'api/custom_fields/types';
 import { IPhaseData } from 'api/phases/types';
 import { Locale } from 'typings';
-import { MessageDescriptor } from 'react-intl';
 import messages from './components/messages';
+import { MessageDescriptor } from 'react-intl';
 
 // Components
 import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/ConfigSelectWithLocaleSwitcher';
 import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
 import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
+import SelectSettings from './components/FormBuilderSettings/SelectSettings';
 
 // utils
+import { uuid4 } from '@sentry/utils';
+import { isNilOrError } from 'utils/helperUtils';
 
 export type FormBuilderConfig = {
   formBuilderTitle: MessageDescriptor;
@@ -94,6 +93,7 @@ export function getAdditionalSettings(
   }
 
   switch (field.input_type) {
+    case 'multiselect_image':
     case 'multiselect':
       return (
         <>
@@ -101,6 +101,7 @@ export function getAdditionalSettings(
             name={`customFields.${field.index}.options`}
             locales={locales}
             platformLocale={platformLocale}
+            inputType={field.input_type}
           />
           <MultiselectSettings
             selectOptionsName={`customFields.${field.index}.options`}
@@ -108,15 +109,24 @@ export function getAdditionalSettings(
             maximumSelectCountName={`customFields.${field.index}.maximum_select_count`}
             selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
           />
+          <SelectSettings
+            randomizeName={`customFields.${field.index}.random_option_ordering`}
+          />
         </>
       );
     case 'select':
       return (
-        <ConfigSelectWithLocaleSwitcher
-          name={`customFields.${field.index}.options`}
-          locales={locales}
-          platformLocale={platformLocale}
-        />
+        <>
+          <ConfigSelectWithLocaleSwitcher
+            name={`customFields.${field.index}.options`}
+            locales={locales}
+            platformLocale={platformLocale}
+            inputType={field.input_type}
+          />
+          <SelectSettings
+            randomizeName={`customFields.${field.index}.random_option_ordering`}
+          />
+        </>
       );
     case 'page':
     case 'section':
@@ -186,6 +196,9 @@ const getInputTypeStringKey = (
       break;
     case 'multiselect':
       translatedStringKey = messages.multipleChoice;
+      break;
+    case 'multiselect_image':
+      translatedStringKey = messages.multipleChoiceImage;
       break;
     case 'page':
       translatedStringKey = messages.page;
