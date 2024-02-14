@@ -6,7 +6,6 @@ import {
   useJsonForms,
 } from '@jsonforms/react';
 import styled, { useTheme } from 'styled-components';
-import Ajv from 'ajv';
 
 // Components
 import {
@@ -36,8 +35,12 @@ import {
   PageType,
   getFilteredDataForUserPath,
 } from 'components/Form/Components/Layouts/utils';
-import { isVisible } from '../Controls/visibilityUtils';
+import {
+  extractElementsByOtherOptionLogic,
+  isVisible,
+} from '../Controls/visibilityUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { customAjv } from 'components/Form';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
@@ -50,8 +53,6 @@ const StyledFormSection = styled(FormSection)`
     margin-bottom: 0;
   }
 `;
-
-const customAjv = new Ajv({ useDefaults: 'empty', removeAdditional: true });
 
 const CLPageLayout = memo(
   ({
@@ -205,6 +206,7 @@ const CLPageLayout = memo(
           margin="auto"
         >
           {uiPages.map((page, index) => {
+            const pageElements = extractElementsByOtherOptionLogic(page, data);
             return (
               currentStep === index && (
                 <StyledFormSection key={index}>
@@ -214,7 +216,7 @@ const CLPageLayout = memo(
                     </Title>
                   )}
                   {page.options.description && (
-                    <Box mb={page.elements.length >= 1 ? '48px' : '28px'}>
+                    <Box mb={pageElements.length >= 1 ? '48px' : '28px'}>
                       <QuillEditedContent
                         fontWeight={400}
                         textColor={theme.colors.tenantText}
@@ -227,18 +229,31 @@ const CLPageLayout = memo(
                       </QuillEditedContent>
                     </Box>
                   )}
-                  {page.elements.map((elementUiSchema, index) => (
-                    <Box width="100%" mb="28px" key={index}>
-                      <JsonFormsDispatch
-                        renderers={renderers}
-                        cells={cells}
-                        uischema={elementUiSchema}
-                        schema={schema}
-                        path={path}
-                        enabled={enabled}
-                      />
-                    </Box>
-                  ))}
+                  {pageElements.map((elementUiSchema, index) => {
+                    const key = elementUiSchema.scope.split('/').pop();
+                    const hasOtherFieldBelow =
+                      key &&
+                      (Array.isArray(data[key])
+                        ? data[key].includes('other')
+                        : data[key] === 'other');
+
+                    return (
+                      <Box
+                        width="100%"
+                        mb={hasOtherFieldBelow ? undefined : '28px'}
+                        key={index}
+                      >
+                        <JsonFormsDispatch
+                          renderers={renderers}
+                          cells={cells}
+                          uischema={elementUiSchema}
+                          schema={schema}
+                          path={path}
+                          enabled={enabled}
+                        />
+                      </Box>
+                    );
+                  })}
                 </StyledFormSection>
               )
             );
