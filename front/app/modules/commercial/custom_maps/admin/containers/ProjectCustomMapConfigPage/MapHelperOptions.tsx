@@ -46,10 +46,13 @@ const MapHelperOptions = ({ mapView, mapConfig, projectId }: Props) => {
 
   const goToDefaultMapView = () => {
     const centerPoint = mapConfig?.data.attributes.center_geojson;
-    mapView?.goTo({
-      center: [centerPoint?.coordinates[0], centerPoint?.coordinates[1]],
-      zoom: mapConfig?.data.attributes.zoom_level,
-    });
+    mapView?.goTo(
+      {
+        center: [centerPoint?.coordinates[0], centerPoint?.coordinates[1]],
+        zoom: mapConfig?.data.attributes.zoom_level,
+      },
+      { duration: 500 }
+    );
   };
 
   const setAsDefaultMapView = () => {
