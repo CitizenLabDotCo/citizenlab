@@ -62,14 +62,14 @@ const FormResultsQuestion = ({
             hasOtherResponses={isMultipleChoiceAndHasAnswers}
           />
         )}
-      </Box>
-      {files && files.length > 0 && (
-        <Box display="flex" gap="24px" mt={answers ? '20px' : '0'}>
-          <Box flex="1">
-            <Files files={files} />
+        {files && files.length > 0 && (
+          <Box display="flex" gap="24px" mt={answers ? '20px' : '0'} w="50%">
+            <Box flex="1">
+              <Files files={files} />
+            </Box>
           </Box>
-        </Box>
-      )}
+        )}
+      </Box>
     </>
   );
 };
