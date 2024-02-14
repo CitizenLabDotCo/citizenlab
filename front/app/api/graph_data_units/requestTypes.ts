@@ -44,7 +44,8 @@ export interface SurveyResultsParams extends BaseParams {
 export interface SurveyQuestionResultProps {
   phaseId: string;
   questionId: string;
-  groupByUserFieldId?: string;
+  groupByMode: 'user_field' | 'survey_question' | 'none';
+  groupByFieldId?: string;
 }
 
 export interface SurveyQuestionResultParams extends BaseParams {

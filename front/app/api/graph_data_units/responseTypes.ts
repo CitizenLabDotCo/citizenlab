@@ -25,7 +25,9 @@ import {
   TimeSeriesResponseRow as VisitorsTimeSeriesResponseRow,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/VisitorsWidget/useVisitors/typings';
 import { TrafficSourcesRow } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
+import { Multiloc } from 'typings';
 
+// Survey results (whole survey, deprecated)
 export type SurveyResultsResponse = {
   data: {
     type: 'report_builder_data_units';
@@ -33,18 +35,31 @@ export type SurveyResultsResponse = {
   };
 };
 
+// Survey question results
 export type Answer = {
   answer: string;
   count: number;
+  /* undefined if not grouped */
   group_by_value?: string;
+};
+
+type SurveyQuestionMultilocs = {
+  answer: Record<string, Multiloc>;
+  /* undefined if not grouped */
+  group_by_value?: Record<string, Multiloc>;
 };
 
 export type SurveyQuestionResultResponse = {
   data: {
     type: 'report_builder_data_units';
     attributes: {
-      answers: Answer[];
+      inputType: string;
+      question: Multiloc;
+      customFieldId: string;
+      required: boolean;
       totalResponses: number;
+      answers: Answer[];
+      multilocs: SurveyQuestionMultilocs;
     };
   };
 };

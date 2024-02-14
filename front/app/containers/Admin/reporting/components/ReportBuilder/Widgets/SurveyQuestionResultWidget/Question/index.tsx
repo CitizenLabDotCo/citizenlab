@@ -41,7 +41,8 @@ const SurveyQuestionResult = ({
   const response = useSurveyQuestionResult({
     phaseId,
     questionId,
-    groupByUserFieldId,
+    groupByMode: groupByUserFieldId ? 'user_field' : 'none',
+    groupByFieldId: groupByUserFieldId,
   });
   // const localize = useLocalize();
   const { formatMessage } = useIntl();
