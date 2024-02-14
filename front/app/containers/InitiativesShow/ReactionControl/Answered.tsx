@@ -56,7 +56,7 @@ const Answered = ({
         </StatusWrapper>
       </Box>
       <StatusIcon name="email-check" />
-      <Box mb="12px">
+      <Box mb="16px">
         <StatusExplanation>
           <FormattedMessage
             {...messages.answeredStatusExplanation}
