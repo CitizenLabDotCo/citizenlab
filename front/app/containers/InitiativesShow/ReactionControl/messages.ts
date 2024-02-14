@@ -137,8 +137,8 @@ export default defineMessages({
     defaultMessage: '{xVotes} out of {votingThreshold} required votes',
   },
   xPeopleVoted: {
-    id: 'app.containers.InitiativesShow.VoteControl.xPeopleVoted',
-    defaultMessage: '{xPeople} voted for this initiative',
+    id: 'app.containers.InitiativesShow.VoteControl.xPeopleVoted1',
+    defaultMessage: '{xPeople} voted on this proposal.',
   },
   xPeople: {
     id: 'app.containers.InitiativesShow.VoteControl.xPeople',
