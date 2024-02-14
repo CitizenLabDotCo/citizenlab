@@ -4,8 +4,6 @@ import React from 'react';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import InputType from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/InputType';
 import MultipleChoice from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MultipleChoice';
-import TextQuestion from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/TextQuestion';
-import Files from 'containers/Admin/projects/project/nativeSurvey/FormResults/Files';
 
 // i18n
 import T from 'components/T';
@@ -29,13 +27,9 @@ const FormResultsQuestion = ({
   answers,
   totalResponses,
   required,
-  customFieldId,
-  textResponses = [],
   totalSubmissions,
-  files = [],
 }: FormResultsQuestionProps) => {
   const isMultipleChoiceAndHasAnswers = !!answers;
-  const hasTextResponses = textResponses && textResponses.length > 0;
 
   return (
     <>
@@ -55,21 +49,7 @@ const FormResultsQuestion = ({
             totalResponses={totalResponses}
           />
         )}
-        {hasTextResponses && (
-          <TextQuestion
-            textResponses={textResponses}
-            customFieldId={customFieldId}
-            hasOtherResponses={isMultipleChoiceAndHasAnswers}
-          />
-        )}
       </Box>
-      {files && files.length > 0 && (
-        <Box display="flex" gap="24px" mt={answers ? '20px' : '0'}>
-          <Box flex="1">
-            <Files files={files} />
-          </Box>
-        </Box>
-      )}
     </>
   );
 };
