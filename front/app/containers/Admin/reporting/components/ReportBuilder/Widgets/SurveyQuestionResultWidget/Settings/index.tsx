@@ -93,7 +93,7 @@ const Settings = () => {
             fill="textSecondary"
             display="inline"
           />
-          {formatMessage(nativeSurveyMessages.informationText2)}
+          {formatMessage(nativeSurveyMessages.informationText)}
         </Text>
       </Box>
 
