@@ -502,7 +502,7 @@ module MultiTenancy
             advanced_autotagging: {
               enabled: true,
               allowed: true
-            },
+            }
           })
         )
 
