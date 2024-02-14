@@ -153,4 +153,8 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.votingNotPermitted',
     defaultMessage: "You don't have the rights to vote on this proposal.",
   },
+  youVotedOnThisProposal: {
+    id: 'app.containers.InitiativesShow.VoteControl.youVotedOnThisProposal',
+    defaultMessage: 'You voted on this proposal.',
+  },
 });
