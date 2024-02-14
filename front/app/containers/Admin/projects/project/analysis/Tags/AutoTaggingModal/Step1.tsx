@@ -204,7 +204,7 @@ const Step1 = ({
             !isEmpty(filters) && onChangeAutoTaggingTarget('filters')
           }
         >
-          <Box display="flex">
+          <Box>
             <Radio
               currentValue={autoTaggingTarget}
               name="auto_tagging_target"
@@ -220,7 +220,7 @@ const Step1 = ({
             />
 
             {isEmpty(filters) && (
-              <Text fontSize="s" m="0">
+              <Text fontSize="s">
                 {formatMessage(messages.noActiveFilters)}
               </Text>
             )}

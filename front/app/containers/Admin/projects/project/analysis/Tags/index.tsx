@@ -164,7 +164,8 @@ const Tags = () => {
       flexDirection="column"
       height="100%"
       overflow="auto"
-      p="12px"
+      pb="12px"
+      px="12px"
     >
       <TagAssistance
         tagId={tagAssistanceTagId}
@@ -185,6 +186,7 @@ const Tags = () => {
         zIndex="2"
         ref={measuredRef}
         w="265px"
+        pt="12px"
       >
         <Box>
           <Button
