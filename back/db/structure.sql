@@ -2624,7 +2624,8 @@ CREATE TABLE public.maps_map_configs (
     zoom_level numeric(4,2),
     tile_provider character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    esri_web_map_id character varying
 );
 
 
@@ -7381,6 +7382,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240124173411'),
 ('20240126122702'),
 ('20240130142750'),
-('20240130170644');
+('20240130170644'),
+('20240214125557');
 
 
