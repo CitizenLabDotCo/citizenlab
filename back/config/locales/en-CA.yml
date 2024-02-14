@@ -146,6 +146,8 @@ en-CA:
       section3:
         title: Details
         description:
+      other:
+        title: Type your answer
   custom_forms:
     categories:
       main_content:
