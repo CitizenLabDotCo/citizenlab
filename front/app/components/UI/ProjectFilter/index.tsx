@@ -25,6 +25,12 @@ import messages from './messages';
 import { IOption } from 'typings';
 import { IProjectData, PublicationStatus } from 'api/projects/types';
 
+const PUBLICATION_STATUSES: PublicationStatus[] = [
+  'published',
+  'archived',
+  'draft',
+];
+
 interface Option {
   value: string | undefined;
   label: string;
@@ -56,8 +62,6 @@ const generateProjectOptions = (
 
   return [...(emptyOption ? [emptyOption] : []), ...projectOptions];
 };
-
-const PUBLICATION_STATUSES: PublicationStatus[] = ['published', 'archived'];
 
 const ProjectFilter = ({
   projectId,
