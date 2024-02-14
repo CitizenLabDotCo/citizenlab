@@ -10,6 +10,9 @@ import Graphic from '@arcgis/core/Graphic';
 import { Box } from '@citizenlab/cl2-component-library';
 import Fullscreen from '@arcgis/core/widgets/Fullscreen';
 import Point from '@arcgis/core/geometry/Point';
+import Expand from '@arcgis/core/widgets/Expand';
+import Legend from '@arcgis/core/widgets/Legend';
+import LayerList from '@arcgis/core/widgets/LayerList';
 
 // utils
 import { getDefaultBasemap } from './utils';
@@ -25,6 +28,7 @@ export type EsriMapProps = {
   layers?: Layer[];
   graphics?: Graphic[];
   onClick?: (event: any, mapView: MapView) => void;
+  onHover?: (event: any, mapView: MapView) => void;
   globalMapSettings?: AppConfigurationMapSettings;
 };
 
@@ -34,7 +38,8 @@ type InitialData = {
   maxZoom?: number;
   uiElements?: EsriUiElement[];
   showFullscreenOption?: boolean;
-  onHover?: (event: any, mapView: MapView) => void;
+  showLegend?: boolean;
+  showLayerVisibilityControl?: boolean;
 };
 
 const EsriMap = ({
@@ -44,6 +49,7 @@ const EsriMap = ({
   layers,
   graphics,
   onClick,
+  onHover,
   initialData,
   globalMapSettings,
 }: EsriMapProps) => {
@@ -105,18 +111,39 @@ const EsriMap = ({
         mapView.ui.add(fullscreen, 'top-right');
       }
 
+      // Add map legend if set
+      if (initialData.showLegend) {
+        const legend = new Expand({
+          content: new Legend({
+            view: mapView,
+            hideLayersNotInCurrentView: false,
+            style: { type: 'card', layout: 'stack' },
+          }),
+          view: mapView,
+          expanded: false,
+        });
+
+        mapView.ui.add(legend, 'bottom-right');
+      }
+
+      // Show layer visibility controls if set
+      if (initialData.showLayerVisibilityControl) {
+        const layerList = new Expand({
+          content: new LayerList({
+            view: mapView,
+          }),
+          view: mapView,
+          expanded: false,
+        });
+        mapView.ui.add(layerList, {
+          position: 'top-right',
+        });
+      }
+
       // Add any ui elements that were passed in
       if (initialData.uiElements && mapView) {
         initialData.uiElements.forEach((uiElement) => {
           mapView.ui.add(uiElement.element, uiElement.position);
-        });
-      }
-
-      // On map hover, pass the event to onHover handler if it was provided
-      const onHover = initialData.onHover;
-      if (onHover) {
-        mapView?.on('pointer-move', function (event) {
-          onHover(event, mapView);
         });
       }
 
@@ -155,6 +182,15 @@ const EsriMap = ({
       });
     }
   }, [onClick, mapView]);
+
+  useEffect(() => {
+    // On map hover, pass the event to onHover handler if it was provided
+    if (mapView && onHover) {
+      mapView?.on('pointer-move', function (event) {
+        onHover(event, mapView);
+      });
+    }
+  }, [onHover, mapView]);
 
   return (
     <>

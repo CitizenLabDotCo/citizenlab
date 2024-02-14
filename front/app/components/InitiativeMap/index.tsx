@@ -267,9 +267,7 @@ const InitiativeMap = ({ list }: Props) => {
       <EsriMap
         height={isPhoneOrSmaller ? '480px' : '640px'}
         layers={initiativesLayer ? [initiativesLayer] : undefined}
-        initialData={{
-          onHover: changeCursorOnHover,
-        }}
+        onHover={changeCursorOnHover}
         onClick={onMapClick}
       />
       <StartInitiativeButton

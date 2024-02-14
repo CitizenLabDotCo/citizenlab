@@ -72,6 +72,33 @@ export const getMapPinSymbol = ({ color, sizeInPx }: MapPinSymbolProps) => {
   });
 };
 
+export const getMakiSymbolFromPath = (
+  iconName: makiIconNames,
+  color: string
+) => {
+  return fetch(
+    // Fetch the SVG from the maki icons endpoint
+    `https://unpkg.com/@icon/maki-icons/icons/${iconName.toLowerCase()}.svg`
+  )
+    .then((response) => response.text())
+    .then((svg) => {
+      // Extract the SVG path value
+      const path = svg.match(/d="([^"]*)"/)?.[1];
+
+      // Create and return Esri symbol using the path value
+      return new SimpleMarkerSymbol({
+        color,
+        outline: {
+          width: 0,
+        },
+        size: '28px',
+        xoffset: 0,
+        yoffset: 15,
+        path,
+      });
+    });
+};
+
 // getShapeSymbol
 // Description: Get a simple shape symbol (with an optional outline width & color value)
 type SimpleShape = 'circle' | 'square' | 'cross' | 'diamond' | 'triangle' | 'x';
@@ -110,51 +137,6 @@ export const changeCursorOnHover = debounceFn(
   },
   100
 );
-
-// getMakiIcon
-// Description: Get a Maki icon URL given a certain icon name and color
-export const getMakiIconUrl = ({ makiSymbol, size, color }: MakiIconProps) => {
-  return fetch(
-    `https://unpkg.com/@icon/maki-icons/icons/${makiSymbol.toLowerCase()}.svg`
-  )
-    .then((response) => response.text())
-    .then((svg) => {
-      let makiSvgIcon = '';
-      const makiSizes = {
-        small: [20, 50],
-        medium: [30, 70],
-        large: [35, 90],
-      };
-
-      // Insert the correct color into the fetched SVG
-      const pathElementIndex = svg.indexOf('d='); // Find the start of the svg path data
-      makiSvgIcon = `${svg.slice(
-        0,
-        pathElementIndex
-      )} fill="#${color}" ${svg.slice(pathElementIndex)}`;
-
-      // Insert icon width/height into the fetched SVG
-      const svgElementIndex = makiSvgIcon.indexOf('>');
-      makiSvgIcon = `${makiSvgIcon.slice(0, svgElementIndex)} width="${
-        makiSizes[size][0]
-      }px" height="${makiSizes[size][1]}px" ${makiSvgIcon.slice(
-        svgElementIndex
-      )} `;
-
-      // Create blob from SVG
-      const blob = new Blob([svg], { type: 'image/svg+xml' });
-      // Return URL to blob
-      const url = URL.createObjectURL(blob);
-      console.log(url);
-      return url;
-    });
-};
-
-type MakiIconProps = {
-  makiSymbol: makiIconNames;
-  size: 'small' | 'medium' | 'large';
-  color: string;
-};
 
 type makiIconNames =
   | 'aerialway'
