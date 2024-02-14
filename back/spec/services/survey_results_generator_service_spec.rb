@@ -387,7 +387,7 @@ RSpec.describe SurveyResultsGeneratorService do
         text_field.key => 'Red',
         multiselect_field.key => %w[cat dog],
         select_field.key => 'ny',
-        file_upload_field.key => idea_file.id
+        file_upload_field.key => { 'id' => idea_file.id, 'name' => idea_file.name }
       },
       idea_files: [idea_file]
     )
