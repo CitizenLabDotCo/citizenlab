@@ -28,7 +28,7 @@ module Analysis
       @summary = summary
       @task = summary.background_task
       @analysis = summary.analysis
-      @input_to_text = InputToText.new(@analysis)
+      @input_to_text = InputToText.new(@analysis.associated_custom_fields)
     end
 
     def execute(plan)

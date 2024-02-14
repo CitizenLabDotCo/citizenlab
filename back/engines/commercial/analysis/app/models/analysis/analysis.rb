@@ -29,7 +29,7 @@ module Analysis
     belongs_to :project, optional: true
     belongs_to :phase, optional: true
 
-    belongs_to :main_custom_field, class_name: 'CustomField'
+    belongs_to :main_custom_field, class_name: 'CustomField', optional: true
     has_many :analyses_additional_custom_fields, class_name: 'Analysis::AdditionalCustomField', dependent: :destroy
     has_many :additional_custom_fields, -> { order(ordering: :asc) }, through: :analyses_additional_custom_fields, class_name: 'CustomField', source: :custom_field
     has_many :tags, class_name: 'Analysis::Tag', dependent: :destroy
@@ -37,9 +37,9 @@ module Analysis
     has_many :background_tasks, class_name: 'Analysis::BackgroundTask', dependent: :destroy
     has_many :insights, class_name: 'Analysis::Insight', dependent: :destroy
 
-    validates :main_custom_field, presence: true
     validate :project_xor_phase_present
     validate :project_or_phase_form_context, on: :create
+    # TODO: Validate main question is textual
 
     # The inputs of an analysis are those inputs that were created according to
     # the form definition of the project or phase assigned to the analysis, that
@@ -68,6 +68,10 @@ module Analysis
     # We don't call this `project` to not collide with the project association
     def source_project
       project || phase&.project
+    end
+
+    def associated_custom_fields
+      ([main_custom_field] + additional_custom_fields).compact
     end
 
     private

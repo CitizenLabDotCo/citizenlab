@@ -13,8 +13,10 @@ namespace :migrate_analysis do
       Apartment::Tenant.switch(tenant.schema_name) do
         Rails.logger.info tenant.host
 
+        main_field_ids = []
         Analysis::Analysis.all.each do |analysis|
           next if analysis.main_custom_field.present? # Make idempotent
+          next if analysis.participation_method == 'ideation'
 
           if analysis.analyses_additional_custom_fields.count < 1 || analysis.additional_custom_fields.count < 1
             errors[tenant.host] ||= {}
@@ -22,7 +24,14 @@ namespace :migrate_analysis do
             next
           end
 
-          main_field = analysis.additional_custom_fields.find_by(code: 'body_multiloc') || analysis.analyses_additional_custom_fields.order(:created_at).filter(&:support_free_text_value?).first.custom_field # TODO: first created association or first in ordering?
+          main_field = analysis
+            .analyses_additional_custom_fields
+            .where.not(custom_field_id: main_field_ids)
+            .order(:created_at)
+            .filter(&:support_free_text_value?)
+            .first.custom_field
+          main_field_ids << main_field.id
+
           if main_field.blank?
             errors[tenant.host] ||= {}
             errors[tenant.host][analysis.id] = 'No main custom field found'

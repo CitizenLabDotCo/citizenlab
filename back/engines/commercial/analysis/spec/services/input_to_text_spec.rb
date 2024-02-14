@@ -7,8 +7,7 @@ describe Analysis::InputToText do
     it 'works with ideation built-in textual fields' do
       custom_form = create(:custom_form, :with_default_fields)
       custom_fields = custom_form.custom_fields.filter(&:support_free_text_value?)
-      analysis = create(:analysis, main_custom_field: custom_fields.first, additional_custom_fields: custom_fields.drop(1))
-      service = described_class.new(analysis)
+      service = described_class.new(custom_fields)
       input = build(
         :idea,
         title_multiloc: { en: 'New pool' },
@@ -23,12 +22,14 @@ describe Analysis::InputToText do
     end
 
     it 'works with non built-in textual fields' do
-      custom_field = create(:custom_field_text, title_multiloc: { en: 'Where did you hear from us?' })
-      service = described_class.new(build(:analysis, main_custom_field: custom_field))
+      custom_fields = [
+        build(:custom_field_text, title_multiloc: { en: 'Where did you hear from us?' })
+      ]
+      service = described_class.new(custom_fields)
       input = build(
         :idea,
         custom_field_values: {
-          custom_field.key => 'Newspaper'
+          custom_fields[0].key => 'Newspaper'
         }
       )
       expect(service.execute(input)).to eq({
@@ -37,12 +38,14 @@ describe Analysis::InputToText do
     end
 
     it 'omits fields with blank answers' do
-      custom_field = create(:custom_field_text, title_multiloc: { en: 'Where did you hear from us?' })
-      service = described_class.new(build(:analysis, main_custom_field: custom_field))
+      custom_fields = [
+        build(:custom_field_text, title_multiloc: { en: 'Where did you hear from us?' })
+      ]
+      service = described_class.new(custom_fields)
       input1 = build(
         :idea,
         custom_field_values: {
-          custom_field.key => ''
+          custom_fields[0].key => ''
         }
       )
       input2 = build(
@@ -54,16 +57,18 @@ describe Analysis::InputToText do
     end
 
     it 'respects the `override_field_labels` option' do
-      custom_field = create(:custom_field_text, title_multiloc: { en: 'Where did you hear from us?' })
-      service = described_class.new(build(:analysis, main_custom_field: custom_field))
+      custom_fields = [
+        create(:custom_field_text, title_multiloc: { en: 'Where did you hear from us?' })
+      ]
+      service = described_class.new(custom_fields)
       input = build(
         :idea,
         custom_field_values: {
-          custom_field.key => 'Newspaper'
+          custom_fields[0].key => 'Newspaper'
         }
       )
       override_field_labels = {
-        custom_field.id => 'QUESTION_1'
+        custom_fields[0].id => 'QUESTION_1'
       }
       expect(service.execute(input, override_field_labels: override_field_labels)).to eq({
         'QUESTION_1' => 'Newspaper'
@@ -71,16 +76,14 @@ describe Analysis::InputToText do
     end
 
     it 'includes the id when passed the `include_id: true` option' do
-      service = described_class.new(build(:analysis))
+      service = described_class.new([])
       input = build(:idea)
       expect(service.execute(input, include_id: true)).to eq({ 'ID' => input.id })
     end
 
     it 'truncates long values when passed the `truncate_values` option' do
       custom_form = create(:custom_form, :with_default_fields)
-      custom_fields = custom_form.custom_fields.filter(&:support_free_text_value?)
-      analysis = create(:analysis, main_custom_field: custom_fields.first, additional_custom_fields: custom_fields.drop(1))
-      service = described_class.new(analysis)
+      service = described_class.new(custom_form.custom_fields.filter(&:support_free_text_value?))
       input = build(:idea, body_multiloc: { en: 'This is a way too long sentence!' })
       expect(service.execute(input, truncate_values: 20)).to include({ 'Description' => 'This is a way too...' })
     end
@@ -88,15 +91,17 @@ describe Analysis::InputToText do
 
   describe '#formatted' do
     it 'generates a sensible text representation from the custom_fields' do
-      main_custom_field = build(:custom_field_text, title_multiloc: { en: 'Where did you hear from us?' })
-      additional_custom_field = build(:custom_field_text, title_multiloc: { en: 'Would you recommend us to a friend?' })
-      service = described_class.new(build(:analysis, main_custom_field: main_custom_field, additional_custom_fields: [additional_custom_field]))
+      custom_fields = [
+        build(:custom_field_text, title_multiloc: { en: 'Where did you hear from us?' }),
+        build(:custom_field_text, title_multiloc: { en: 'Would you recommend us to a friend?' })
+      ]
+      service = described_class.new(custom_fields)
 
       input = build(
         :idea,
         custom_field_values: {
-          main_custom_field.key => 'Newspaper',
-          additional_custom_field.key => 'Yes, I would'
+          custom_fields[0].key => 'Newspaper',
+          custom_fields[1].key => 'Yes, I would'
         }
       )
 
@@ -117,8 +122,7 @@ describe Analysis::InputToText do
         create(:custom_field_text, title_multiloc: { en: 'Would you recommend us to a friend?' }),
         create(:custom_field_text, title_multiloc: { en: 'Hair color?' })
       ]
-      analysis = create(:analysis, main_custom_field: custom_fields.first, additional_custom_fields: custom_fields.drop(1))
-      service = described_class.new(analysis)
+      service = described_class.new(custom_fields)
 
       input = build(
         :idea,
@@ -149,7 +153,7 @@ describe Analysis::InputToText do
     end
 
     it 'includes the id when passed the `include_id: true` option' do
-      service = described_class.new(build(:analysis))
+      service = described_class.new([])
       input = build(:idea)
       expect(service.formatted(input, include_id: true)).to eq(
         <<~TEXT
