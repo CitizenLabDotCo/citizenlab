@@ -83,12 +83,12 @@ const EsriMap = ({
   // Load initial map configuration data that was passed in.
   // Note: This data is static and will not change.
   useEffect(() => {
-    if (!initialValuesLoaded.current && initialData && mapView && map) {
+    if (!initialValuesLoaded.current && mapView && map) {
       // Set map center
-      mapView.center = !isNil(initialData.center)
+      mapView.center = !isNil(initialData?.center)
         ? new Point({
-            latitude: initialData.center.coordinates[1],
-            longitude: initialData.center.coordinates[0],
+            latitude: initialData?.center.coordinates[1],
+            longitude: initialData?.center.coordinates[0],
           })
         : new Point({
             latitude: Number(globalMapSettings.map_center?.lat) || 0,
@@ -99,14 +99,14 @@ const EsriMap = ({
       map.basemap = new Basemap({
         baseLayers: [getDefaultBasemap(globalMapSettings.tile_provider)],
       });
-      mapView.zoom = initialData.zoom || globalMapSettings.zoom_level || 18;
+      mapView.zoom = initialData?.zoom || globalMapSettings.zoom_level || 18;
       mapView.constraints = {
-        maxZoom: initialData.maxZoom || 22,
+        maxZoom: initialData?.maxZoom || 22,
         minZoom: 5,
       };
 
       // Add fullscreen widget if set
-      if (initialData.showFullscreenOption) {
+      if (initialData?.showFullscreenOption) {
         const fullscreen = new Fullscreen({
           view: mapView,
         });
@@ -114,8 +114,8 @@ const EsriMap = ({
       }
 
       // Add any ui elements that were passed in
-      if (initialData.uiElements && mapView) {
-        initialData.uiElements.forEach((uiElement) => {
+      if (initialData?.uiElements && mapView) {
+        initialData?.uiElements.forEach((uiElement) => {
           mapView.ui.add(uiElement.element, uiElement.position);
         });
       }
@@ -145,16 +145,6 @@ const EsriMap = ({
       });
     }
   }, [graphics, mapView]);
-
-  useEffect(() => {
-    // On map click, pass the event to onClick handler if it was provided
-    if (onClick) {
-      mapView?.on('click', function (event) {
-        // By passing the mapView to onClick functions, we can easily change the map from that function
-        onClick(event, mapView);
-      });
-    }
-  }, [onClick, mapView]);
 
   useEffect(() => {
     // On map click, pass the event to onClick handler if it was provided

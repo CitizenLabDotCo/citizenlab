@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // components
 import EsriMap from 'components/EsriMap';
@@ -29,8 +29,8 @@ import {
 } from 'components/EsriMap/utils';
 import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { IInitiativeData } from 'api/initiatives/types';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -60,16 +60,15 @@ const InitiativeMap = ({ list }: Props) => {
   // State variables
   const [clickedMapLocation, setClickedMapLocation] =
     useState<GeoJSON.Point | null>(null);
+  const [selectedInitiative, setSelectedInitiative] = useState<string | null>(
+    searchParams.get('selected_initiative_id') || null
+  );
 
-  const selectedInitiative = searchParams.get('selected_initiative_id');
-
-  const setSelectedInitiative = (id: string | null) => {
-    if (id === null) {
+  useEffect(() => {
+    if (searchParams.get('selected_initiative_id')) {
       removeSearchParams(['selected_initiative_id']);
-    } else {
-      updateSearchParams({ selected_initiative_id: id });
     }
-  };
+  }, [searchParams]);
 
   // Create a div element to use for inserting React components into Esri map popup
   // Docs: https://developers.arcgis.com/javascript/latest/custom-ui/#introduction
@@ -242,6 +241,7 @@ const InitiativeMap = ({ list }: Props) => {
           });
         } else {
           // Otherwise, redirect to the initiative form
+          updateSearchParams({ selected_initiative_id: selectedInitiative });
           clHistory.push(
             {
               pathname: `/initiatives/new`,
@@ -258,6 +258,7 @@ const InitiativeMap = ({ list }: Props) => {
       clickedMapLocation,
       initiativePermissions?.authenticationRequirements,
       initiativePermissions?.enabled,
+      selectedInitiative,
     ]
   );
 
