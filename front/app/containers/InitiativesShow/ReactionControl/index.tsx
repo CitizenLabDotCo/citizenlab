@@ -81,13 +81,13 @@ const componentMap: TComponentMap = {
     reacted: ReviewPending,
     notReacted: ReviewPending,
   },
-  threshold_reached: {
-    reacted: ThresholdReached,
-    notReacted: ThresholdReached,
-  },
   answered: {
     reacted: Answered,
     notReacted: Answered,
+  },
+  threshold_reached: {
+    reacted: ThresholdReached,
+    notReacted: ThresholdReached,
   },
   ineligible: {
     reacted: Ineligible,
@@ -119,7 +119,9 @@ const ReactionControl = ({
   );
   const reactingPermission = useInitiativesPermissions('reacting_initiative');
   const { mutate: addReaction } = useAddInitiativeReaction();
-  const { mutate: deleteReaction } = useDeleteInitiativeReaction();
+  const { mutate: deleteReaction } = useDeleteInitiativeReaction({
+    initiativeId,
+  });
 
   if (!initiative || !initiativeStatus || !appConfiguration) {
     return null;
@@ -157,7 +159,6 @@ const ReactionControl = ({
   const handleOnCancelReaction = () => {
     if (initiative.data.relationships.user_reaction?.data?.id) {
       deleteReaction({
-        initiativeId: initiative.data.id,
         reactionId: initiative.data.relationships.user_reaction.data.id,
       });
     }
@@ -189,6 +190,15 @@ const ReactionControl = ({
       <ScreenReaderOnly>
         <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
       </ScreenReaderOnly>
+      <Box mb="24px">
+        <FollowUnfollow
+          followableType="initiatives"
+          followableId={initiative.data.id}
+          followersCount={initiative.data.attributes.followers_count}
+          followerId={initiative.data.relationships.user_follower?.data?.id}
+          buttonStyle="secondary"
+        />
+      </Box>
       <StatusComponent
         initiative={initiative.data}
         initiativeStatus={initiativeStatus.data}
@@ -199,15 +209,6 @@ const ReactionControl = ({
         onScrollToOfficialFeedback={onScrollToOfficialFeedback}
         disabledReason={reactingPermission?.disabledReason}
       />
-      <Box mt="24px">
-        <FollowUnfollow
-          followableType="initiatives"
-          followableId={initiative.data.id}
-          followersCount={initiative.data.attributes.followers_count}
-          followerId={initiative.data.relationships.user_follower?.data?.id}
-          buttonStyle="secondary"
-        />
-      </Box>
     </BorderContainer>
   );
 };
