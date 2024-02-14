@@ -23,6 +23,7 @@ import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
 import useAnalysis from 'api/analyses/useAnalysis';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const AutoTagMethodContainer = styled.div<{ disabled: boolean }>`
   background-color: ${colors.grey100};
@@ -31,7 +32,7 @@ const AutoTagMethodContainer = styled.div<{ disabled: boolean }>`
   padding: 16px;
   ${({ disabled }) =>
     disabled
-      ? ''
+      ? 'opacity: 0.5;'
       : `
       cursor: pointer;
       &:hover {
@@ -122,6 +123,10 @@ const Step1 = ({
   onChangeAutoTaggingTarget,
   filters,
 }: Props) => {
+  const advancedAutotaggingEnabled = useFeatureFlag({
+    name: 'advanced_autotagging',
+    onlyCheckAllowed: true,
+  });
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
   const { data: allInputs } = useInfiniteAnalysisInputs({
@@ -136,6 +141,8 @@ const Step1 = ({
   const filteredInputsCount = filteredInputs?.pages[0].meta.filtered_count;
 
   const { formatMessage } = useIntl();
+  const advancedAutotaggingOptionDisabled =
+    !advancedAutotaggingEnabled || isLoading;
   return (
     <>
       <Title mb="32px">
@@ -195,17 +202,12 @@ const Step1 = ({
 
       <Title variant="h4">{formatMessage(messages.howToTag)}</Title>
 
-      <Box
-        display="flex"
-        gap="16px"
-        opacity={isLoading ? 0.5 : undefined}
-        flexWrap="wrap"
-      >
+      <Box display="flex" gap="16px" flexWrap="wrap">
         <AutoTagOption
           tagType="nlp_topic"
           title={formatMessage(messages.fullyAutomatedTitle)}
           onSelect={() => onSelectMethod('nlp_topic')}
-          disabled={isLoading}
+          disabled={advancedAutotaggingOptionDisabled}
           isLoading={isLoading && loadingMethod === 'nlp_topic'}
           tooltip={formatMessage(messages.fullyAutomatedTooltip)}
         >
@@ -227,7 +229,7 @@ const Step1 = ({
           tagType="custom"
           title={formatMessage(messages.classificationByExampleTitle)}
           onSelect={() => onSelectMethod('few_shot_classification')}
-          disabled={isLoading}
+          disabled={advancedAutotaggingOptionDisabled}
           isLoading={isLoading && loadingMethod === 'few_shot_classification'}
           tooltip={formatMessage(messages.classificationByExampleTooltip)}
         >
@@ -239,7 +241,7 @@ const Step1 = ({
             tagType="platform_topic"
             title={formatMessage(messages.platformTagsTitle)}
             onSelect={() => onSelectMethod('platform_topic')}
-            disabled={isLoading}
+            disabled={advancedAutotaggingOptionDisabled}
             isLoading={isLoading && loadingMethod === 'platform_topic'}
           >
             {formatMessage(messages.platformTagsDescription)}
@@ -250,7 +252,7 @@ const Step1 = ({
           tagType="sentiment"
           title={formatMessage(messages.sentimentTagTitle)}
           onSelect={() => onSelectMethod('sentiment')}
-          disabled={isLoading}
+          disabled={advancedAutotaggingOptionDisabled}
           isLoading={isLoading && loadingMethod === 'sentiment'}
         >
           {formatMessage(messages.sentimentTagDescription)}
@@ -261,7 +263,7 @@ const Step1 = ({
             tagType="controversial"
             title={formatMessage(messages.controversialTagTitle)}
             onSelect={() => onSelectMethod('controversial')}
-            disabled={isLoading}
+            disabled={advancedAutotaggingOptionDisabled}
             isLoading={isLoading && loadingMethod === 'controversial'}
           >
             {formatMessage(messages.controversialTagDescription)}
@@ -272,7 +274,7 @@ const Step1 = ({
           tagType="language"
           title={formatMessage(messages.languageTagTitle)}
           onSelect={() => onSelectMethod('language')}
-          disabled={isLoading}
+          disabled={advancedAutotaggingOptionDisabled}
           isLoading={isLoading && loadingMethod === 'language'}
         >
           {formatMessage(messages.languageTagDescription)}
