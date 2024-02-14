@@ -376,6 +376,12 @@ RSpec.describe SurveyResultsGeneratorService do
     end
   end
 
+  let(:expected_question_result) do
+    {
+      result: expected_result[:results][0]
+    }
+  end
+
   before do
     create(:idea_status_proposed)
     idea_file = create(:idea_file)
@@ -527,6 +533,12 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'returns the results for file upload field' do
         expect(generated_results[:results][7]).to match expected_result_file_upload
+      end
+    end
+
+    describe '#generate_question_result' do
+      it 'returns the result' do
+        expect(generator.generate_question_result(text_field.id)).to match expected_question_result
       end
     end
   end
