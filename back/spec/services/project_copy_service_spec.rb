@@ -93,12 +93,28 @@ describe ProjectCopyService do
         'input_type' => field.input_type,
         'title_multiloc' => field.title_multiloc,
         'description_multiloc' => field.description_multiloc,
+        'random_option_ordering' => field.random_option_ordering,
         'text_images_attributes' => [
           hash_including(
             'imageable_field' => 'description_multiloc',
             'remote_image_url' => match(%r{/uploads/#{uuid_regex}/text_image/image/#{uuid_regex}/#{uuid_regex}.gif})
           )
         ]
+      )
+    end
+
+    it 'successfully exports custom field option images' do
+      field = create(:custom_field_select, :for_custom_form)
+      option = create(:custom_field_option, custom_field: field, image: create(:custom_field_option_image))
+      template = service.export field.resource.participation_context
+
+      expect(template['models']['custom_field_option_image'].size).to eq 1
+      expect(template['models']['custom_field_option_image'].first).to match hash_including(
+        'created_at' => an_instance_of(String),
+        'updated_at' => an_instance_of(String),
+        'custom_field_option_ref' => hash_including('custom_field_ref' => an_instance_of(Hash)),
+        'remote_image_url' => an_instance_of(String),
+        'ordering' => option.image.ordering
       )
     end
 

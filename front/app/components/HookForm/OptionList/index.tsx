@@ -25,7 +25,7 @@ import { IOptionsType } from 'api/custom_fields/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { generateTempId } from 'components/FormBuilder/components/FormBuilderSettings/utils';
+import { generateTempId } from 'components/FormBuilder/utils';
 
 export type Option = {
   id?: string;

@@ -5,6 +5,9 @@ import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
 import TwoColumn, { twoColumnTitle } from './TwoColumn';
 import AboutReportWidget, { aboutReportTitle } from './AboutReportWidget';
 import SurveyResultsWidget, { surveyResultsTitle } from './SurveyResultsWidget';
+import SurveyQuestionResultWidget, {
+  surveyQuestionResultTitle,
+} from './SurveyQuestionResultWidget';
 import VisitorsWidget, { visitorsTitle } from './ChartWidgets/VisitorsWidget';
 import VisitorsTrafficSourcesWidget, {
   visitorsTrafficSourcesTitle,
@@ -41,7 +44,8 @@ export const WIDGETS = {
   ImageMultiloc,
   WhiteSpace,
   AboutReportWidget,
-  SurveyResultsWidget,
+  SurveyResultsWidget, // TODO: remove this widget (TAN-1022)
+  SurveyQuestionResultWidget,
   VisitorsWidget,
   VisitorsTrafficSourcesWidget,
   AgeWidget,
@@ -63,6 +67,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   ImageMultiloc: imageMultilocTitle,
   AboutReportWidget: aboutReportTitle,
   SurveyResultsWidget: surveyResultsTitle,
+  SurveyQuestionResultWidget: surveyQuestionResultTitle,
   MostReactedIdeasWidget: mostReactedIdeasTitle,
   VisitorsWidget: visitorsTitle,
   VisitorsTrafficSourcesWidget: visitorsTrafficSourcesTitle,
@@ -92,6 +97,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
   'SurveyResultsWidget',
+  'SurveyQuestionResultWidget',
 ] satisfies WidgetName[]);
 
 export const hasNoPointerEvents = (nodeName: string) => {

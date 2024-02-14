@@ -26,6 +26,7 @@
 #  select_count_enabled   :boolean          default(FALSE), not null
 #  maximum_select_count   :integer
 #  minimum_select_count   :integer
+#  random_option_ordering :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -49,8 +50,8 @@ class CustomField < ApplicationRecord
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[
-    checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text
-    multiline_text_multiloc multiselect number page point select text text_multiloc topic_ids section
+    checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text multiline_text_multiloc
+    multiselect multiselect_image number page point select select_image text text_multiloc topic_ids section
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile education gender idea_files_attributes idea_images_attributes
@@ -99,11 +100,15 @@ class CustomField < ApplicationRecord
   end
 
   def support_options?
-    %w[select multiselect].include?(input_type)
+    %w[select multiselect select_image multiselect_image].include?(input_type)
   end
 
   def support_free_text_value?
     %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type)
+  end
+
+  def support_option_images?
+    %w[select_image multiselect_image].include?(input_type)
   end
 
   def built_in?
@@ -139,7 +144,11 @@ class CustomField < ApplicationRecord
   end
 
   def multiselect?
-    input_type == 'multiselect'
+    %w[multiselect multiselect_image].include?(input_type)
+  end
+
+  def linear_scale?
+    input_type == 'linear_scale'
   end
 
   def page_or_section?
@@ -182,6 +191,8 @@ class CustomField < ApplicationRecord
       visitor.visit_multiline_text_multiloc self
     when 'multiselect'
       visitor.visit_multiselect self
+    when 'multiselect_image'
+      visitor.visit_multiselect_image self
     when 'number'
       visitor.visit_number self
     when 'page'
@@ -192,6 +203,8 @@ class CustomField < ApplicationRecord
       visitor.visit_section self
     when 'select'
       visitor.visit_select self
+    when 'select_image'
+      visitor.visit_select_image self
     when 'text'
       visitor.visit_text self
     when 'text_multiloc'
@@ -221,6 +234,32 @@ class CustomField < ApplicationRecord
     resource.project_id if resource_type == 'CustomForm'
   end
 
+  def other_option_text_field
+    return if options.none?(&:other)
+
+    other_field_key = "#{key}_other"
+    CustomField.new(
+      key: other_field_key,
+      input_type: 'text',
+      title_multiloc: MultilocService.new.i18n_to_multiloc(
+        'custom_fields.ideas.other.title',
+        locales: CL2_SUPPORTED_LOCALES
+      ),
+      required: true,
+      enabled: true
+    )
+  end
+
+  def ordered_options
+    return [] unless options.any?
+
+    if random_option_ordering
+      options.shuffle.sort_by { |o| o.other ? 1 : 0 }
+    else
+      options.order(:ordering)
+    end
+  end
+
   private
 
   def set_default_enabled
@@ -244,7 +283,7 @@ class CustomField < ApplicationRecord
     title = title_multiloc.values.first
     return unless title
 
-    self.key = CustomFieldService.new.generate_key(self, title) do |key_proposal|
+    self.key = CustomFieldService.new.generate_key(title, false) do |key_proposal|
       self.class.find_by(key: key_proposal, resource_type: resource_type)
     end
   end

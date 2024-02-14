@@ -19,7 +19,7 @@ import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
-import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
+import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
@@ -192,15 +192,12 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             // TODO: Add in the default project / phase
           }
           <DraggableElement
-            id="e2e-draggable-survey-results-widget"
+            id="e2e-draggable-survey-question-result-widget"
             component={
-              <SurveyResultsWidget
-                title={toMultiloc(WIDGET_TITLES.SurveyResultsWidget)}
-                projectId={selectedProjectId}
-              />
+              <SurveyQuestionResultWidget projectId={selectedProjectId} />
             }
             icon="survey"
-            label={formatMessage(WIDGET_TITLES.SurveyResultsWidget)}
+            label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
           />
           <DraggableElement
             id="e2e-most-reacted-ideas-widget"

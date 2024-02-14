@@ -82,6 +82,7 @@ export const FlexibleRow = ({
         <Box
           display="flex"
           alignContent="center"
+          alignItems="center"
           py="8px"
           minHeight={rowHeight}
         >
