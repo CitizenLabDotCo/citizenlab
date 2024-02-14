@@ -8,6 +8,8 @@ import {
   TextAreaControl,
   multiSelectCheckboxControlTester,
   MultiSelectCheckboxControl,
+  imageMultichoiceControlTester,
+  ImageMultichoiceControl,
   singleSelectRadioControlTester,
   SingleSelectRadioControl,
   singleSelectRadioEnumControlTester,
@@ -82,6 +84,10 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
     {
       tester: multiSelectCheckboxControlTester,
       renderer: MultiSelectCheckboxControl,
+    },
+    {
+      tester: imageMultichoiceControlTester,
+      renderer: ImageMultichoiceControl,
     },
     {
       tester: singleSelectRadioControlTester,

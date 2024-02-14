@@ -13,7 +13,7 @@ import { AddFieldScreen } from './screens/AddFieldScreen';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../containers/Granular/messages';
-import { generateTempId } from 'components/FormBuilder/components/FormBuilderSettings/utils';
+import { generateTempId } from 'components/FormBuilder/utils';
 
 type FieldSelectionModalProps = {
   showSelectionModal: boolean;
