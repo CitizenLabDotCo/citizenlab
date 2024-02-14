@@ -20,7 +20,7 @@ import GradientSrc from './gradient.svg';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // i18n
-import messages from '../messages';
+import messages from '../../MostReactedIdeasWidget/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
@@ -28,16 +28,18 @@ import checkTextOverflow, { MEDIUM_LINE_HEIGHT } from './checkTextOverflow';
 
 // types
 import { IIdeaImageData } from 'api/idea_images/types';
+import { IIdeaData } from 'api/ideas/types';
+import { IPhaseData } from 'api/phases/types';
+
+// i18n
+import useTextNumberOfVotes from './useTextNumberOfVotes';
+import useLocalize from 'hooks/useLocalize';
 
 interface Props {
   rank?: number;
-  title: string;
-  body: string;
-  url: string;
+  idea: IIdeaData;
   images: IIdeaImageData[];
-  likes: number;
-  dislikes: number;
-  comments: number;
+  phase: IPhaseData;
   collapseLongText: boolean;
   showAuthor?: boolean;
   showContent?: boolean;
@@ -51,13 +53,9 @@ const IdeaText = styled.div`
 
 const IdeaCard = ({
   rank,
-  title,
-  body,
-  url,
+  idea,
   images,
-  likes,
-  dislikes,
-  comments,
+  phase,
   collapseLongText,
   showAuthor = false,
   showContent = true,
@@ -67,13 +65,25 @@ const IdeaCard = ({
   const textContainerRef = useRef<HTMLDivElement | null>(null);
   const [textOverflow, setTextOverflow] = useState(false);
   const theme = useTheme();
+  const localize = useLocalize();
 
+  const title = localize(idea.attributes.title_multiloc);
+  const body = localize(idea.attributes.body_multiloc);
+  const url = `/ideas/${idea.attributes.slug}`;
+  const likes = idea.attributes.likes_count;
+  const dislikes = idea.attributes.dislikes_count;
+  const comments = idea.attributes.comments_count;
   const image = images[0]?.attributes?.versions?.medium;
 
   useEffect(() => {
     if (!textContainerRef.current) return;
     setTextOverflow(checkTextOverflow(textContainerRef.current));
   }, []);
+
+  const textNumberOfVotes = useTextNumberOfVotes({
+    numberOfVotes: idea.attributes.votes_count,
+    phase,
+  });
 
   const hideTextOverflow = collapseLongText && textOverflow;
 
@@ -170,6 +180,11 @@ const IdeaCard = ({
       )}
       <Box>
         <Text color="coolGrey500" fontSize="s">
+          {showVotes && (
+            <Box display="inline" mr="10px">
+              {textNumberOfVotes}
+            </Box>
+          )}
           {showReactions && (
             <Box display="inline">
               <Icon

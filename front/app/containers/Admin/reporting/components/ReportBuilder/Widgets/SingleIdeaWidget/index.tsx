@@ -13,10 +13,10 @@ import { Props } from './typings';
 
 // hooks
 import { getEmptyMessage } from '../utils';
-import useLocalize from 'hooks/useLocalize';
-import IdeaCard from '../MostReactedIdeasWidget/Ideas/IdeaCard';
+import IdeaCard from './IdeaCard';
 import { useSingleIdea } from 'api/graph_data_units';
 import { isNil } from 'utils/helperUtils';
+import usePhase from 'api/phases/usePhase';
 
 const SingleIdeaWidget = ({
   title,
@@ -38,28 +38,25 @@ const SingleIdeaWidget = ({
       enabled: !!phaseId && !!ideaId,
     }
   );
-  const localize = useLocalize();
+  const { data } = usePhase(phaseId);
+  const phase = data?.data;
 
   const emptyMessage = getEmptyMessage({ projectId, phaseId });
 
-  const idea = response?.data.attributes.idea.attributes;
+  const idea = response?.data.attributes.idea;
   const ideaImages = response?.data.attributes.idea_images;
 
   return (
     <Card title={title}>
       {emptyMessage ? (
         <NoData message={emptyMessage} />
-      ) : isNil(idea) || isNil(ideaImages) ? (
+      ) : isNil(idea) || isNil(ideaImages) || isNil(phase) ? (
         <NoData message={messages.noIdeaAvailable} />
       ) : (
         <IdeaCard
-          title={localize(idea.title_multiloc)}
-          body={localize(idea.body_multiloc)}
-          url={`/ideas/${idea.slug}`}
+          phase={phase}
+          idea={idea}
           images={ideaImages}
-          likes={idea.likes_count}
-          dislikes={idea.dislikes_count}
-          comments={idea.comments_count}
           collapseLongText={collapseLongText}
           showAuthor={showAuthor}
           showContent={showContent}
