@@ -48,7 +48,7 @@ const AutoTagTargetContainer = styled.div`
   flex: 1;
   background-color: ${colors.grey100};
   border-radius: 3px;
-  padding: 16px;
+  padding: 20px 16px 0px 16px;
   cursor: pointer;
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
@@ -61,8 +61,10 @@ const AutoTagTargetContainer = styled.div`
     cursor: not-allowed;
     opacity: 0.5;
     box-shadow: none;
+    pointer-events: none;
   }
 `;
+
 const AutoTagOption = ({
   children,
   tagType,
@@ -180,17 +182,19 @@ const Step1 = ({
           className={autoTaggingTarget === 'all' ? 'selected' : ''}
           onClick={() => onChangeAutoTaggingTarget('all')}
         >
-          <Box display="flex">
-            <Radio
-              currentValue={autoTaggingTarget}
-              name="auto_tagging_target"
-              value="all"
-            />
-            <Label>
-              {formatMessage(messages.allInput)}
-              {` (${allInputsCount})`}
-            </Label>
-          </Box>
+          <Radio
+            currentValue={autoTaggingTarget}
+            name="auto_tagging_target"
+            value="all"
+            id="auto_tagging_target_all"
+            label={
+              <>
+                {formatMessage(messages.allInput)}
+                {` (${allInputsCount})`}
+              </>
+            }
+          />
+          <Label />
         </AutoTagTargetContainer>
         <AutoTagTargetContainer
           className={`${autoTaggingTarget === 'filters' ? 'selected' : ''} ${
@@ -204,20 +208,22 @@ const Step1 = ({
             <Radio
               currentValue={autoTaggingTarget}
               name="auto_tagging_target"
+              id="auto_tagging_target_filtered"
               value="filters"
               disabled={isEmpty(filters)}
+              label={
+                <>
+                  {formatMessage(messages.useCurrentFilters)}
+                  {` (${filteredInputsCount})`}
+                </>
+              }
             />
-            <Box>
-              <Label>
-                {formatMessage(messages.useCurrentFilters)}
-                {` (${filteredInputsCount})`}
-              </Label>
-              {isEmpty(filters) && (
-                <Text fontSize="s" m="0">
-                  {formatMessage(messages.noActiveFilters)}
-                </Text>
-              )}
-            </Box>
+
+            {isEmpty(filters) && (
+              <Text fontSize="s" m="0">
+                {formatMessage(messages.noActiveFilters)}
+              </Text>
+            )}
           </Box>
         </AutoTagTargetContainer>
       </Box>
