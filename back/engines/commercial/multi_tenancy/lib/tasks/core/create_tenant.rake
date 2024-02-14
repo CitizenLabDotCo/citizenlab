@@ -2,13 +2,13 @@
 
 namespace :cl2_back do # rubocop:disable Metrics/BlockLength
   desc 'Create a tenant with given host and optional template'
-  task :create_tenant, %i[host template] => [:environment] do |_t, args| # rubocop:disable Metrics/BlockLength
+  task :create_tenant, %i[host template locales] => [:environment] do |_t, args| # rubocop:disable Metrics/BlockLength
     host = args[:host] || raise("Please provide the 'host' arg")
     tenant_template = args[:template] || 'e2etests_template'
     Tenant.find_by(host: host)&.destroy!
 
     settings = SettingsService.new.minimal_required_settings(
-      locales: %w[en nl-BE nl-NL fr-BE],
+      locales: (args[:locales]&.split(';')&.map(&:strip) || %w[en nl-BE nl-NL fr-BE]),
       lifecycle_stage: 'not_applicable'
     ).deep_merge(
       {
