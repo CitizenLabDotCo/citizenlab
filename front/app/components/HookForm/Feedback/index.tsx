@@ -40,7 +40,7 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
     } else {
       setSuccessMessageIsVisible(false);
     }
-  }, [submitCount, isSubmitted]);
+  }, [submitCount, isSubmitted, reset]);
 
   useEffect(() => {
     if (isDirty) {
