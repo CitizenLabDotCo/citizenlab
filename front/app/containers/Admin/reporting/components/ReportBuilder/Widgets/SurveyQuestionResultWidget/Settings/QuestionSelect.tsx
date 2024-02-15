@@ -11,34 +11,33 @@ import messages from './messages';
 // components
 import { Box, Select } from '@citizenlab/cl2-component-library';
 
-// constants
-import { SUPPORTED_INPUT_TYPES } from '../constants';
-
 // typings
 import { IOption } from 'typings';
-import { ICustomFields } from 'api/custom_fields/types';
+import { ICustomFields, ICustomFieldInputType } from 'api/custom_fields/types';
 
 interface Props {
   phaseId: string;
   questionId?: string;
+  inputTypes: ICustomFieldInputType[];
   onChange: (questionId?: string) => void;
 }
 
 const generateOptions = (questions: ICustomFields, localize: Localize) => {
-  const options = questions.data
-    .filter((question) =>
-      SUPPORTED_INPUT_TYPES.has(question.attributes.input_type)
-    )
-    .map((question) => ({
-      value: question.id,
-      label: localize(question.attributes.title_multiloc),
-    }));
+  const options = questions.data.map((question) => ({
+    value: question.id,
+    label: localize(question.attributes.title_multiloc),
+  }));
 
   return [{ value: '', label: '' }, ...options];
 };
 
-const QuestionSelect = ({ phaseId, questionId, onChange }: Props) => {
-  const { data: questions } = useRawCustomFields({ phaseId });
+const QuestionSelect = ({
+  phaseId,
+  questionId,
+  inputTypes,
+  onChange,
+}: Props) => {
+  const { data: questions } = useRawCustomFields({ phaseId, inputTypes });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 

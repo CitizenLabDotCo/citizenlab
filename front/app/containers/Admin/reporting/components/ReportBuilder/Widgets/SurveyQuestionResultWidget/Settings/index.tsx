@@ -143,6 +143,7 @@ const Settings = () => {
         <QuestionSelect
           phaseId={phaseId}
           questionId={questionId}
+          inputTypes={['select', 'multiselect']}
           onChange={handleQuestion}
         />
       )}
@@ -162,6 +163,7 @@ const Settings = () => {
         <QuestionSelect
           phaseId={phaseId}
           questionId={sliceFieldId}
+          inputTypes={['select']}
           onChange={handleSliceFieldSelect}
         />
       )}
