@@ -16,6 +16,7 @@ export interface IAnalysisData {
     created_at: string;
     updated_at: string;
     participation_method: 'native_survey' | 'ideation';
+    show_insights: boolean;
   };
   relationships: {
     project?: { data: IRelationship } | null;

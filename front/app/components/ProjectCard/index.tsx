@@ -2,7 +2,6 @@ import React, { memo, useState } from 'react';
 import { isEmpty, round } from 'lodash-es';
 import moment from 'moment';
 import { useInView } from 'react-intersection-observer';
-import bowser from 'bowser';
 import { TLayout } from 'components/ProjectAndFolderCards';
 
 // router
@@ -84,6 +83,8 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
     min-height: 580px;
     padding-left: 30px;
     padding-right: 30px;
+    padding-top: 20px;
+    padding-bottom: 30px;
 
     ${media.phone`
       width: 100%;
@@ -92,6 +93,8 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
 
   &.small {
     min-height: 540px;
+    padding-top: 18px;
+    padding-bottom: 25px;
 
     &.hideDescriptionPreview {
       min-height: 490px;
@@ -113,19 +116,9 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
     `}
   }
 
-  &.medium {
-    padding-top: 20px;
-    padding-bottom: 30px;
-  }
-
-  &.small {
-    padding-top: 18px;
-    padding-bottom: 25px;
-  }
-
-  &.desktop {
+  ${media.desktop`
     ${defaultCardHoverStyle};
-  }
+  `}
 
   ${media.phone`
     width: 100%;
@@ -670,7 +663,6 @@ const ProjectCard = memo<InputProps>(
             'e2e-project-card',
             'e2e-admin-publication-card',
             isArchived ? 'archived' : '',
-            !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile',
             hideDescriptionPreview ? 'hideDescriptionPreview' : '',
           ]
             .filter((item) => item)

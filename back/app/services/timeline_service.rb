@@ -79,6 +79,7 @@ class TimelineService
   end
 
   def timeline_active_on_collection(projects)
+    projects = projects.to_a
     today = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     starts = Phase.where(project: projects).group(:project_id).minimum(:start_at)
     ends = Phase.where(project: projects).group(:project_id).maximum(:end_at)

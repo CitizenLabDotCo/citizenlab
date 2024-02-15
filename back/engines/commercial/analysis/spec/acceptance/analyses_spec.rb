@@ -53,7 +53,8 @@ resource 'Analyses' do
       expect(response_data[:attributes]).to match({
         participation_method: 'ideation',
         updated_at: kind_of(String),
-        created_at: kind_of(String)
+        created_at: kind_of(String),
+        show_insights: true
       })
       expect(response_data.dig(:relationships, :custom_fields, :data, 0, :id)).to eq analysis.custom_fields.first.id
       expect(json_response_body.dig(:included, 0, :id)).to eq analysis.custom_fields.first.id
@@ -65,6 +66,7 @@ resource 'Analyses' do
       parameter :project_id, 'The project to analyze, only in case of project with ideation or voting phases. Mandatory to pass either project_id or phase_id.', required: false
       parameter :phase_id, 'The phase to analyze, only in case of survey. Mandatory to pass either project_id or phase_id.', required: false
       parameter :custom_field_ids, 'Custom fields that should be part of the analysis. Must be textual fields. If not passed, all textual fields will be analyzed.', required: false
+      parameter :show_insights, 'Whether to show insights or not', required: false
     end
     ValidationErrorHelper.new.error_fields(self, Analysis::Analysis)
 
@@ -120,6 +122,26 @@ resource 'Analyses' do
 
       example_request '[Error] Cannot create a project analysis on project with a single native survey phase' do
         expect(response_status).to eq 422
+      end
+    end
+  end
+
+  patch 'web_api/v1/analyses/:id' do
+    with_options scope: :analysis do
+      parameter :show_insights, 'Whether to show insights or not', required: false
+
+      ValidationErrorHelper.new.error_fields(self, Analysis::Analysis)
+    end
+
+    let(:analysis) { create(:analysis) }
+    let(:id) { analysis.id }
+
+    describe do
+      let(:show_insights) { false }
+
+      example_request 'Update an analysis to hide insights' do
+        expect(response_status).to eq 200
+        expect(response_data.dig(:attributes, :show_insights)).to be false
       end
     end
   end

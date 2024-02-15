@@ -171,7 +171,11 @@ const Step1 = ({
               )}
             </Box>
           </Box>
-          <FilterItems filters={filters} isEditable={false} />
+          <FilterItems
+            filters={filters}
+            isEditable={false}
+            analysisId={analysisId}
+          />
         </AutoTagTargetContainer>
       </Box>
 

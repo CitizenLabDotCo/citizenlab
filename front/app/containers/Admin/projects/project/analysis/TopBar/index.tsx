@@ -147,7 +147,7 @@ const TopBar = () => {
         >
           {formatMessage(messages.filters)}
         </Button>
-        <FilterItems filters={filters} isEditable />
+        <FilterItems filters={filters} isEditable analysisId={analysisId} />
         <Box marginLeft="auto">
           <SearchInput
             key={urlParams.get('reset_filters')}
