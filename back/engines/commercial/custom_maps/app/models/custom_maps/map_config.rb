@@ -12,6 +12,7 @@
 #  updated_at    :datetime         not null
 #  mappable_type :string           not null
 #  mappable_id   :uuid             not null
+#  esri_web_map_id :string
 #
 # Indexes
 #

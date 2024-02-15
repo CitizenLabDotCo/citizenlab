@@ -2645,7 +2645,8 @@ CREATE TABLE public.maps_map_configs (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     mappable_type character varying NOT NULL,
-    mappable_id uuid NOT NULL
+    mappable_id uuid NOT NULL,
+    esri_web_map_id character varying
 );
 
 
@@ -7429,6 +7430,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240126122702'),
 ('20240130142750'),
 ('20240130170644'),
-('20240209101740');
+('20240209101740'),
+('20240214125557');
 
 
