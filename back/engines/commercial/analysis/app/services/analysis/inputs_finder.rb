@@ -222,7 +222,6 @@ module Analysis
 
     def filter_limit(inputs)
       return inputs unless params[:limit]
-
       raise ArgumentError, 'limit must be a positive integer' unless params[:limit].to_i.positive?
       inputs.limit(params[:limit])
     end

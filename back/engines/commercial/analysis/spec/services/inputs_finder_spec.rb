@@ -56,6 +56,17 @@ describe Analysis::InputsFinder do
     end
   end
 
+  describe 'limit' do
+    it 'filters correctly' do
+      idea1 = create(:idea, project: analysis.source_project)
+      _idea2 = create(:idea, project: analysis.source_project)
+      _idea3 = create(:idea, project: analysis.source_project)
+      _idea4 = create(:idea, project: analysis.source_project)
+      @params = { limit: 1 }
+      expect(output).to contain_exactly(idea1)
+    end
+  end
+
   describe 'published_at' do
     it 'filters correctly' do
       _idea1 = create(:idea, project: analysis.source_project, published_at: '2019-01-01')
