@@ -5,8 +5,8 @@ import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
-// import { useIntl } from 'utils/cl-intl';
-// import messages from './messages';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // components
 import { Box, Select } from '@citizenlab/cl2-component-library';
@@ -22,12 +22,12 @@ interface Props {
   onFilter: (fieldOption: IOption) => void;
 }
 
-const FieldFilter = ({ userFieldId, onFilter }: Props) => {
+const UserFieldSelect = ({ userFieldId, onFilter }: Props) => {
   const { data: userFields } = useUserCustomFields({
     inputTypes: SUPPORTED_INPUT_TYPES_ARRAY,
   });
   const localize = useLocalize();
-  // const { formatMessage } = useIntl();
+  const { formatMessage } = useIntl();
 
   const userFieldOptions = userFields
     ? userFields.data.map((field) => ({
@@ -39,8 +39,7 @@ const FieldFilter = ({ userFieldId, onFilter }: Props) => {
   return (
     <Box width="100%" mb="20px">
       <Select
-        // label={formatMessage(messages)}
-        label={'Slice by user field'}
+        label={formatMessage(messages.sliceByUserField)}
         value={userFieldId}
         options={[{ value: '', label: '' }, ...userFieldOptions]}
         onChange={onFilter}
@@ -49,4 +48,4 @@ const FieldFilter = ({ userFieldId, onFilter }: Props) => {
   );
 };
 
-export default FieldFilter;
+export default UserFieldSelect;

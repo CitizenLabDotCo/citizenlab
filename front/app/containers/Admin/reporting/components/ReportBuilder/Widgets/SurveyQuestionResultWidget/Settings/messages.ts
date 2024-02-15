@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion',
     defaultMessage: 'Survey question',
   },
+  sliceByUserField: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceByUserField',
+    defaultMessage: 'Slice by user field',
+  },
 });

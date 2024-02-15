@@ -15,7 +15,7 @@ import ProjectFilter from '../../_shared/ProjectFilter';
 import PhaseFilter from '../../_shared/PhaseFilter';
 import FieldFilter from './FieldFilter';
 import SliceModeSelect from './SliceModeSelect';
-import UserFieldFilter from './UserFieldFilter';
+import UserFieldSelect from './UserFieldSelect';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -154,10 +154,12 @@ const Settings = () => {
 
       <SliceModeSelect mode={sliceMode} onChange={handleSliceMode} />
 
-      <UserFieldFilter
-        userFieldId={sliceFieldId}
-        onFilter={handleGroupByUserFieldFilter}
-      />
+      {sliceMode === 'user_field' && (
+        <UserFieldSelect
+          userFieldId={sliceFieldId}
+          onFilter={handleGroupByUserFieldFilter}
+        />
+      )}
     </Box>
   );
 };
