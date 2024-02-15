@@ -73,7 +73,6 @@ const IdeaCard = ({
   const url = `/ideas/${idea.attributes.slug}`;
   const likes = idea.attributes.likes_count;
   const dislikes = idea.attributes.dislikes_count;
-  const comments = idea.attributes.comments_count;
   const image = images[0]?.attributes?.versions?.medium;
 
   useEffect(() => {
@@ -207,14 +206,6 @@ const IdeaCard = ({
                 {dislikes}
               </Box>
             )}
-            <Icon
-              height="16px"
-              fill={colors.coolGrey500}
-              ml="8px"
-              mr="3px"
-              name="comments"
-            />
-            {comments}
           </Text>
         </Box>
       </Box>
