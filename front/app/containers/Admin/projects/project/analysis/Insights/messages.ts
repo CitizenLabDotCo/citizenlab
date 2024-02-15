@@ -101,4 +101,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.thankYou',
     defaultMessage: 'Thank you for your feedback',
   },
+  askAQuestionUpsellMessage: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.askAQuestionUpsellMessage',
+    defaultMessage:
+      'Instead of summarising, you can ask relevant questions to your data. This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
 });

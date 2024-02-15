@@ -241,4 +241,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.dontShowAgain',
     defaultMessage: "Don't show this again",
   },
+  advancedAutotaggingUpsellMessage: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.advancedAutotaggingUpsellMessage',
+    defaultMessage:
+      'This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
 });
