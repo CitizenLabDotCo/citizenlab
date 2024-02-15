@@ -2435,7 +2435,12 @@
   "app.modules.navbar.admin.containers.pageHeader": "Strony i menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Twój pasek nawigacyjny może wyświetlać do pięciu stron oprócz strony głównej i stron projektów. Możesz zmieniać nazwy pozycji menu, zmieniać kolejność i dodawać nowe strony z własną zawartością.",
   "app.modules.project_management.admin.components.permissionsTab": "Uprawnienia",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none": "Brak",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Pytanie",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceByUserField": "Podziel według pola użytkownika",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceMode": "Tryb krojenia",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Pytanie ankietowe",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.userField": "Pole użytkownika",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "odwiedź nasze centrum wsparcia",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Więcej informacji na temat zalecanych rozdzielczości obrazu można znaleźć na stronie {supportPageLink}."
