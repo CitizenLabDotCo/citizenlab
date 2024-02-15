@@ -1,4 +1,4 @@
-# This migration comes from analytics (originally 20240201141520)
+# This migration comes from analysis (originally 20240201141520)
 class AddGeneratedAtToInsightables < ActiveRecord::Migration[7.0]
   def change
     succeeded_job_ids = ActiveRecord::Base.connection.execute("SELECT id FROM analysis_background_tasks WHERE state = 'succeeded'").pluck 'id'
