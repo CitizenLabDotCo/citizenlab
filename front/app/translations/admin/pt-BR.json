@@ -2435,7 +2435,12 @@
   "app.modules.navbar.admin.containers.pageHeader": "Páginas & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "A sua barra de navegação pode exibir até cinco páginas para além das páginas Home e de projetos. Você pode renomear itens do menu, reordenar e adicionar novas páginas com o seu próprio conteúdo.",
   "app.modules.project_management.admin.components.permissionsTab": "Direitos de acesso",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none": "Nenhum",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Pergunta",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceByUserField": "Fatia por campo de usuário",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceMode": "Modo de fatia",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Pergunta da pesquisa",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.userField": "Campo do usuário",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visite o nosso centro de apoio",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Para mais informações sobre as resoluções de imagem recomendadas, {supportPageLink}."
