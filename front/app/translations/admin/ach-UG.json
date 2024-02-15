@@ -2435,7 +2435,12 @@
   "app.modules.navbar.admin.containers.pageHeader": "crwdns1686824:0crwdne1686824:0",
   "app.modules.navbar.admin.containers.pageSubtitle": "crwdns1686826:0crwdne1686826:0",
   "app.modules.project_management.admin.components.permissionsTab": "crwdns1686828:0crwdne1686828:0",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none": "crwdns1688446:0crwdne1688446:0",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "crwdns1686830:0crwdne1686830:0",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceByUserField": "crwdns1688448:0crwdne1688448:0",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceMode": "crwdns1688450:0crwdne1688450:0",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "crwdns1688452:0crwdne1688452:0",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.userField": "crwdns1688454:0crwdne1688454:0",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "crwdns1686832:0crwdne1686832:0",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "crwdns1686834:0crwdne1686834:0",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "crwdns1686836:0{supportPageLink}crwdne1686836:0"
