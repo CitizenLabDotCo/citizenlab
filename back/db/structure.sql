@@ -1088,7 +1088,8 @@ CREATE TABLE public.analysis_questions (
     q_and_a_method character varying NOT NULL,
     accuracy double precision,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    generated_at timestamp without time zone
 );
 
 
@@ -1104,7 +1105,8 @@ CREATE TABLE public.analysis_summaries (
     summarization_method character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    accuracy double precision
+    accuracy double precision,
+    generated_at timestamp without time zone
 );
 
 
@@ -7935,6 +7937,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240124173411'),
 ('20240130142750'),
 ('20240130170644'),
+('20240201141520'),
 ('20240212133704');
 
 
