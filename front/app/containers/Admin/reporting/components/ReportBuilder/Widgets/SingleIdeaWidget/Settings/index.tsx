@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 // hooks
 import { useNode } from '@craftjs/core';
+import usePhase from 'api/phases/usePhase';
 
 // components
 import { Box, Toggle, colors } from '@citizenlab/cl2-component-library';
@@ -45,6 +46,8 @@ const Settings = () => {
     phaseId: node.data.props.phaseId,
     ideaId: node.data.props.ideaId,
   }));
+
+  const phase = usePhase(phaseId);
 
   const setTitle = useCallback(
     (value: Multiloc) => {
@@ -110,6 +113,20 @@ const Settings = () => {
     [setProp]
   );
 
+  useEffect(() => {
+    const phaseAttrs = phase.data?.data.attributes;
+    setProp((props: Props) => {
+      if (phaseAttrs?.participation_method === 'ideation') {
+        props.showReactions = true;
+        props.showVotes = false;
+      }
+      if (phaseAttrs?.participation_method === 'voting') {
+        props.showReactions = false;
+        props.showVotes = true;
+      }
+    });
+  }, [setProp, phase]);
+
   const handlePhaseFilter = useCallback(
     ({ value }: IOption) => {
       setProp((props: Props) => {
@@ -150,7 +167,7 @@ const Settings = () => {
           label={formatMessage(messages.selectPhase)}
           projectId={projectId}
           phaseId={phaseId}
-          participationMethod="ideation"
+          participationMethods={['ideation', 'voting']}
           onPhaseFilter={handlePhaseFilter}
         />
       )}

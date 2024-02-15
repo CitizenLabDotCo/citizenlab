@@ -2222,7 +2222,7 @@
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.title": "Title",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.totalIdeas": "Total ideas: {numberOfIdeas}",
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.collapseLongText": "Collapse long text",
-  "app.containers.admin.ReportBuilder.SingleIdeaWidget.noIdeaAvailable": "There are no questions available for this project or phase.",
+  "app.containers.admin.ReportBuilder.SingleIdeaWidget.noIdeaAvailable": "There are no ideas available for this project or phase.",
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.numberOfVotes": "{numberOfVotes} {numberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}}",
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.selectIdea": "Select idea",
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.selectPhase": "Select phase",
