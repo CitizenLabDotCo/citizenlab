@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 // hooks
 import { useNode } from '@craftjs/core';
@@ -48,6 +48,8 @@ const Settings = () => {
   }));
 
   const phase = usePhase(phaseId);
+  const [shouldProcessPhaseChange, setShouldProcessPhaseChange] =
+    useState(false);
 
   const setTitle = useCallback(
     (value: Multiloc) => {
@@ -113,9 +115,11 @@ const Settings = () => {
     [setProp]
   );
 
+  const phaseAttrs = phase.data?.data.attributes;
   useEffect(() => {
-    const phaseAttrs = phase.data?.data.attributes;
     setProp((props: Props) => {
+      if (!shouldProcessPhaseChange) return;
+
       if (phaseAttrs?.participation_method === 'ideation') {
         props.showReactions = true;
         props.showVotes = false;
@@ -125,15 +129,16 @@ const Settings = () => {
         props.showVotes = true;
       }
     });
-  }, [setProp, phase]);
+  }, [setProp, phaseAttrs, shouldProcessPhaseChange]);
 
   const handlePhaseFilter = useCallback(
     ({ value }: IOption) => {
       setProp((props: Props) => {
         props.phaseId = value;
       });
+      setShouldProcessPhaseChange(true);
     },
-    [setProp]
+    [setProp, setShouldProcessPhaseChange]
   );
 
   const handleChangeIdeaId = useCallback(
