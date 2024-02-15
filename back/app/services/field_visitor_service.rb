@@ -41,6 +41,14 @@ class FieldVisitorService
     default(field)
   end
 
+  def visit_select_image(field)
+    default(field)
+  end
+
+  def visit_multiselect_image(field)
+    default(field)
+  end
+
   def visit_checkbox(field)
     default(field)
   end

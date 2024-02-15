@@ -16,8 +16,9 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
     let!(:project) { create(:project) }
     let!(:moderator) { create(:project_moderator, projects: [project]) }
     let!(:old_ideas) { create_list(:idea, 2, project: project, published_at: 20.days.ago) }
-    let!(:new_ideas) { create_list(:idea, 3, project: project, published_at: 1.day.ago) }
-    let!(:reaction) { create(:reaction, mode: 'up', reactable: new_ideas.first) }
+    let!(:top_new_idea) { create(:idea, project: project, published_at: 1.day.ago) }
+    let!(:other_new_ideas) { create_list(:idea, 3, project: project, published_at: 1.day.ago) }
+    let!(:reaction) { create(:reaction, mode: 'up', reactable: top_new_idea) }
     let!(:comment) { create(:comment, idea: old_ideas[0]) }
     let!(:other_idea) { create(:idea, project: create(:project)) }
     let!(:draft) { create(:idea, project: project, publication_status: 'draft') }
@@ -27,20 +28,20 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
 
       expect(
         command.dig(:event_payload, :statistics, :new_ideas_increase)
-      ).to eq(new_ideas.size)
+      ).to eq(other_new_ideas.size + 1)
       expect(
         command.dig(:event_payload, :statistics, :new_comments_increase)
       ).to eq(1)
       expect(
         command.dig(:event_payload, :top_ideas).pluck(:id)
-      ).to include(new_ideas.first.id)
+      ).to include(top_new_idea.id)
       expect(
         command.dig(:event_payload, :top_ideas).pluck(:id)
       ).not_to include(draft.id)
       expect(
         command.dig(:event_payload, :top_ideas).pluck(:id)
       ).not_to include(other_idea.id)
-      expect(command.dig(:tracked_content, :idea_ids)).to include(new_ideas.first.id)
+      expect(command.dig(:tracked_content, :idea_ids)).to include(top_new_idea.id)
     end
 
     it 'generates a command with abbreviated names' do
@@ -49,7 +50,7 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
       expect(moderator.admin?).to be false
       command = campaign.generate_commands(recipient: moderator).first
 
-      expected_author_name = "#{new_ideas.first.author.first_name} #{new_ideas.first.author.last_name[0]}."
+      expected_author_name = "#{top_new_idea.author.first_name} #{top_new_idea.author.last_name[0]}."
       expect(
         command.dig(:event_payload, :top_ideas, 0, :author_name)
       ).to eq(expected_author_name)
@@ -106,8 +107,6 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
     let(:project) { create(:project) }
 
     it 'returns true when no significant stats' do
-      pp campaign.send(:statistics, project)
-
       stats = { new_ideas_increase: 0,
                 new_comments_increase: 0,
                 new_participants_increase: 0 }

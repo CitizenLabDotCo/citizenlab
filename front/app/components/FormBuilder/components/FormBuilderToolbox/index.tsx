@@ -1,5 +1,6 @@
 import React from 'react';
 import { get } from 'lodash-es';
+import { useFormContext } from 'react-hook-form';
 
 // intl
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -21,6 +22,7 @@ import LayoutFields from './LayoutFields';
 import {
   ICustomFieldInputType,
   IFlatCreateCustomField,
+  IFlatCustomField,
 } from 'api/custom_fields/types';
 
 // hooks
@@ -29,11 +31,13 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { generateTempId } from '../FormBuilderSettings/utils';
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import {
+  generateTempId,
+  FormBuilderConfig,
+} from 'components/FormBuilder/utils';
 
 interface FormBuilderToolboxProps {
-  onAddField: (field: IFlatCreateCustomField) => void;
+  onAddField: (field: IFlatCreateCustomField, index: number) => void;
   builderConfig: FormBuilderConfig;
   move: (indexA: number, indexB: number) => void;
 }
@@ -46,6 +50,8 @@ const FormBuilderToolbox = ({
   const isInputFormCustomFieldsFlagEnabled = useFeatureFlag({
     name: 'input_form_custom_fields',
   });
+  const { watch } = useFormContext();
+  const formCustomFields: IFlatCustomField[] = watch('customFields');
   const isCustomFieldsDisabled =
     !isInputFormCustomFieldsFlagEnabled &&
     !builderConfig.alwaysShowCustomFields;
@@ -60,29 +66,33 @@ const FormBuilderToolbox = ({
   if (isNilOrError(locale)) return null;
 
   const addField = (inputType: ICustomFieldInputType) => {
-    onAddField({
-      id: `${Math.floor(Date.now() * Math.random())}`,
-      temp_id: generateTempId(),
-      logic: {
-        ...(inputType !== 'page' ? { rules: [] } : undefined),
-      },
-      isLocalOnly: true,
-      description_multiloc: {},
-      input_type: inputType,
-      required: false,
-      title_multiloc: {
-        [locale]: '',
-      },
-      maximum_label_multiloc: {},
-      minimum_label_multiloc: {},
-      maximum: 5,
-      options: [
-        {
-          title_multiloc: {},
+    const index = !isNilOrError(formCustomFields) ? formCustomFields.length : 0;
+    onAddField(
+      {
+        id: `${Math.floor(Date.now() * Math.random())}`,
+        temp_id: generateTempId(),
+        logic: {
+          ...(inputType !== 'page' ? { rules: [] } : undefined),
         },
-      ],
-      enabled: true,
-    });
+        isLocalOnly: true,
+        description_multiloc: {},
+        input_type: inputType,
+        required: false,
+        title_multiloc: {
+          [locale]: '',
+        },
+        maximum_label_multiloc: {},
+        minimum_label_multiloc: {},
+        maximum: 5,
+        options: [
+          {
+            title_multiloc: {},
+          },
+        ],
+        enabled: true,
+      },
+      index
+    );
   };
 
   return (
@@ -173,6 +183,16 @@ const FormBuilderToolbox = ({
           inputType="multiselect"
           disabled={isCustomFieldsDisabled}
         />
+        {/* Hiding for now until we release the image choice */}
+        {/* <ToolboxItem
+          icon="image"
+          label={formatMessage(messages.multipleChoiceImage)}
+          onClick={() => addField('multiselect_image')}
+          data-cy="e2e-image-choice"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="multiselect_image"
+          disabled={isCustomFieldsDisabled}
+        /> */}
         <ToolboxItem
           icon="survey-linear-scale"
           label={formatMessage(messages.linearScale)}
