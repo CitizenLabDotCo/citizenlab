@@ -208,20 +208,9 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   };
 
-  const convertFileAttributeIds = (data: FormValues) => {
-    for (const key in data) {
-      if (data[key] && data[key].id && data[key].name) {
-        data[key] = data[key].id;
-      }
-    }
-    return data;
-  };
-
-  // TODO: JS - Still need to get the ID of the file upload into the form data
   const onSubmit = async (data: FormValues, published?: boolean) => {
-    const postData = convertFileAttributeIds(data);
     const requestBody = {
-      ...postData,
+      ...data,
       project_id: project.data.id,
       publication_status: data.publication_status || 'published',
     };
