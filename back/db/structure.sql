@@ -2644,9 +2644,9 @@ CREATE TABLE public.maps_map_configs (
     tile_provider character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
+    esri_web_map_id character varying,
     mappable_type character varying NOT NULL,
-    mappable_id uuid NOT NULL,
-    esri_web_map_id character varying
+    mappable_id uuid NOT NULL
 );
 
 
@@ -7430,7 +7430,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240126122702'),
 ('20240130142750'),
 ('20240130170644'),
-('20240209101740'),
-('20240214125557');
+('20240214125557'),
+('20240215170108');
 
 
