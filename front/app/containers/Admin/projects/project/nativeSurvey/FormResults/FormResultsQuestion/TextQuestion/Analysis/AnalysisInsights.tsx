@@ -35,6 +35,8 @@ import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary'
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 
 // Convert all values in the filters object to strings
 // This is necessary because the filters are passed as query params
@@ -291,6 +293,12 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
     analysisId: analysis.id,
   });
   const { mutate: addAnalysisSummary } = useAddAnalysisSummary();
+  const { mutate: preCheck } = useAddAnalysisSummaryPreCheck();
+
+  const largeSummariesEnabled = useFeatureFlag({
+    name: 'large_summaries',
+    onlyCheckAllowed: true,
+  });
 
   const inputCount = inputs?.pages[0].meta.filtered_count || 0;
   const selectedInsight = insights?.data[selectedInsightIndex];
@@ -305,13 +313,27 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
       inputCount > 10
     ) {
       setAutomaticSummaryCreated(true);
-      addAnalysisSummary({
-        analysisId: analysis.id,
-        filters: {
-          input_custom_field_no_empty_values: true,
-          limit: 30,
+      preCheck(
+        {
+          analysisId: analysis.id,
+          filters: {
+            input_custom_field_no_empty_values: true,
+          },
         },
-      });
+        {
+          onSuccess: (data) => {
+            if (!data.data.attributes.impossible_reason) {
+              addAnalysisSummary({
+                analysisId: analysis.id,
+                filters: {
+                  input_custom_field_no_empty_values: true,
+                  limit: !largeSummariesEnabled ? 30 : undefined,
+                },
+              });
+            }
+          },
+        }
+      );
     }
   }, [
     analysis.id,
@@ -319,6 +341,8 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
     insights,
     automaticSummaryCreated,
     inputCount,
+    largeSummariesEnabled,
+    preCheck,
   ]);
 
   if (!insights || insights.data.length === 0) {
