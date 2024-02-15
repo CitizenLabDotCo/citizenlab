@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 // hooks
 import { useNode } from '@craftjs/core';
-import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
 
 // components
 import { Box, Toggle, colors } from '@citizenlab/cl2-component-library';
@@ -47,9 +47,7 @@ const Settings = () => {
     ideaId: node.data.props.ideaId,
   }));
 
-  const phase = usePhase(phaseId);
-  const [shouldProcessPhaseChange, setShouldProcessPhaseChange] =
-    useState(false);
+  const { data: phases } = usePhases(projectId);
 
   const setTitle = useCallback(
     (value: Multiloc) => {
@@ -115,30 +113,26 @@ const Settings = () => {
     [setProp]
   );
 
-  const phaseAttrs = phase.data?.data.attributes;
-  useEffect(() => {
-    setProp((props: Props) => {
-      if (!shouldProcessPhaseChange) return;
-
-      if (phaseAttrs?.participation_method === 'ideation') {
-        props.showReactions = true;
-        props.showVotes = false;
-      }
-      if (phaseAttrs?.participation_method === 'voting') {
-        props.showReactions = false;
-        props.showVotes = true;
-      }
-    });
-  }, [setProp, phaseAttrs, shouldProcessPhaseChange]);
-
   const handlePhaseFilter = useCallback(
     ({ value }: IOption) => {
       setProp((props: Props) => {
         props.phaseId = value;
+
+        const phase = phases?.data.find((phase) => phase.id === value);
+        const phaseAttrs = phase?.attributes;
+        if (!phaseAttrs) return;
+
+        if (phaseAttrs.participation_method === 'ideation') {
+          props.showReactions = true;
+          props.showVotes = false;
+        }
+        if (phaseAttrs.participation_method === 'voting') {
+          props.showReactions = false;
+          props.showVotes = true;
+        }
       });
-      setShouldProcessPhaseChange(true);
     },
-    [setProp, setShouldProcessPhaseChange]
+    [setProp, phases?.data]
   );
 
   const handleChangeIdeaId = useCallback(
