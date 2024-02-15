@@ -220,7 +220,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             id="e2e-single-idea-widget"
             component={
               <SingleIdeaWidget
-                title={toMultiloc(WIDGET_TITLES.SingleIdeaWidget)}
                 collapseLongText={false}
                 showAuthor={true}
                 showContent={true}
