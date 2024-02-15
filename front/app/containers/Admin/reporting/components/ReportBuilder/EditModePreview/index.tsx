@@ -71,7 +71,11 @@ const EditModePreview = ({ previewData, selectedLocale }: Props) => {
             />
           </Box>
         )}
-        <ReportContextProvider reportId={reportId} width={view}>
+        <ReportContextProvider
+          reportId={reportId}
+          width={view}
+          phaseId={phaseId}
+        >
           <LanguageProvider
             contentBuilderLocale={selectedLocale}
             platformLocale={platformLocale}

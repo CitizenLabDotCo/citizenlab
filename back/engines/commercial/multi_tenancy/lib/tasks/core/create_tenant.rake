@@ -109,14 +109,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           allowed: true,
           enabled: true
         },
-        similar_ideas: {
-          enabled: false,
-          allowed: true
-        },
-        geographic_dashboard: {
-          enabled: true,
-          allowed: true
-        },
         intercom: {
           enabled: true,
           allowed: true
@@ -212,14 +204,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
             'initiatives.default_posting_tips',
             locales: CL2_SUPPORTED_LOCALES
           )
-        },
-        insights_manual_flow: {
-          enabled: false,
-          allowed: false
-        },
-        insights_nlp_flow: {
-          enabled: false,
-          allowed: false
         },
         polls: {
           enabled: true,
