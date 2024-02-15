@@ -309,6 +309,7 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
         analysisId: analysis.id,
         filters: {
           input_custom_field_no_empty_values: true,
+          limit: 30,
         },
       });
     }

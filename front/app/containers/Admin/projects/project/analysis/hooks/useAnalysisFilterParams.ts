@@ -13,6 +13,7 @@ const STATIC_SCALAR_FILTERS = [
   'votes_to',
   'comments_from',
   'comments_to',
+  'limit',
 ];
 
 const STATIC_BOOLEAN_FILTERS = ['input_custom_field_no_empty_values'];

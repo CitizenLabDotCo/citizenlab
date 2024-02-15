@@ -58,12 +58,12 @@ describe Analysis::InputsFinder do
 
   describe 'limit' do
     it 'filters correctly' do
-      idea1 = create(:idea, project: analysis.source_project)
+      _idea1 = create(:idea, project: analysis.source_project)
       _idea2 = create(:idea, project: analysis.source_project)
       _idea3 = create(:idea, project: analysis.source_project)
       _idea4 = create(:idea, project: analysis.source_project)
       @params = { limit: 1 }
-      expect(output).to contain_exactly(idea1)
+      expect(output).to contain_exactly(analysis.source_project.ideas.first)
     end
   end
 
