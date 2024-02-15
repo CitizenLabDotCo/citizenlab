@@ -34,6 +34,7 @@ import { IPhaseData } from 'api/phases/types';
 // i18n
 import useTextNumberOfVotes from './useTextNumberOfVotes';
 import useLocalize from 'hooks/useLocalize';
+import AuthorAvatar from './AuthorAvatar';
 
 interface Props {
   rank?: number;
@@ -178,41 +179,44 @@ const IdeaCard = ({
           </Text>
         </Link>
       )}
-      <Box>
-        <Text color="coolGrey500" fontSize="s">
-          {showVotes && (
-            <Box display="inline" mr="10px">
-              {textNumberOfVotes}
-            </Box>
-          )}
-          {showReactions && (
-            <Box display="inline">
-              <Icon
-                height="16px"
-                fill={colors.coolGrey500}
-                mr="3px"
-                name="vote-up"
-              />
-              {likes}
-              <Icon
-                height="16px"
-                fill={colors.coolGrey500}
-                ml="8px"
-                mr="3px"
-                name="vote-down"
-              />
-              {dislikes}
-            </Box>
-          )}
-          <Icon
-            height="16px"
-            fill={colors.coolGrey500}
-            ml="8px"
-            mr="3px"
-            name="comments"
-          />
-          {comments}
-        </Text>
+      <Box display="flex" mt="12px">
+        <Box>{showAuthor && <AuthorAvatar idea={idea} />}</Box>
+        <Box marginLeft="auto">
+          <Text color="coolGrey500" fontSize="s">
+            {showVotes && (
+              <Box display="inline" mr="10px">
+                {textNumberOfVotes}
+              </Box>
+            )}
+            {showReactions && (
+              <Box display="inline">
+                <Icon
+                  height="16px"
+                  fill={colors.coolGrey500}
+                  mr="3px"
+                  name="vote-up"
+                />
+                {likes}
+                <Icon
+                  height="16px"
+                  fill={colors.coolGrey500}
+                  ml="8px"
+                  mr="3px"
+                  name="vote-down"
+                />
+                {dislikes}
+              </Box>
+            )}
+            <Icon
+              height="16px"
+              fill={colors.coolGrey500}
+              ml="8px"
+              mr="3px"
+              name="comments"
+            />
+            {comments}
+          </Text>
+        </Box>
       </Box>
     </PageBreakBox>
   );
