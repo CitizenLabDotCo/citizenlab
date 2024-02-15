@@ -2435,7 +2435,12 @@
   "app.modules.navbar.admin.containers.pageHeader": "Sidor och meny",
   "app.modules.navbar.admin.containers.pageSubtitle": "Ditt navigeringsfält kan visa upp till fem sidor utöver start- och projektsidorna. Du kan byta namn på menyobjekt, ändra ordning på och lägga till nya sidor med ditt eget innehåll.",
   "app.modules.project_management.admin.components.permissionsTab": "Åtkomsträttigheter",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none": "Ingen",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Fråga",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceByUserField": "Slice efter användarfält",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceMode": "Skivläge",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Enkätfråga",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.userField": "Användarfält",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "besök vårt supportcenter",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Mer information om rekommenderade bildupplösningar finns i {supportPageLink}."
