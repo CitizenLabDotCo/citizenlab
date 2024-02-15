@@ -22,8 +22,8 @@ module Analysis
       inputs = filter_author_custom_field_range(inputs)
       inputs = filter_input_custom_field_in(inputs)
       inputs = filter_input_custom_field_range(inputs)
-      inputs = filter_limit(inputs)
       search(inputs)
+      inputs = filter_limit(inputs)
     end
 
     private

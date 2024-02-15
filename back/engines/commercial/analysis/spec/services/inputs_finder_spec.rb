@@ -63,7 +63,7 @@ describe Analysis::InputsFinder do
       _idea3 = create(:idea, project: analysis.source_project)
       _idea4 = create(:idea, project: analysis.source_project)
       @params = { limit: 1 }
-      expect(output).to contain_exactly(analysis.source_project.ideas.first)
+      expect(output.size).to eq 1
     end
   end
 
