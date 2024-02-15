@@ -167,7 +167,6 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do
       if input.save save_options
         update_file_upload_fields input, participation_method.custom_form, params_for_create
-        input.save!
         service.after_create(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
@@ -214,9 +213,8 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save save_options
-        update_file_upload_fields input, input.custom_form, update_params
-        input.save!
         service.after_update(input, current_user)
+        update_file_upload_fields input, input.custom_form, update_params
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
@@ -277,12 +275,14 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def update_file_upload_fields(input, custom_form, params)
+    file_uploads_exist = false
     params_for_file_upload_fields = extract_params_for_file_upload_fields custom_form, params
     params_for_file_upload_fields.each do |key, params_for_files_field|
       if params_for_files_field['id']
         idea_file = FileUpload.find(params_for_files_field['id'])
         if idea_file
           input.custom_field_values[key] = { id: idea_file.id, name: idea_file.name }
+          file_uploads_exist = true
         end
       elsif params_for_files_field['content']
         idea_file = FileUpload.create!(
@@ -293,8 +293,10 @@ class WebApi::V1::IdeasController < ApplicationController
           }
         )
         input.custom_field_values[key] = { id: idea_file.id, name: idea_file.name }
+        file_uploads_exist = true
       end
     end
+    input.save! if file_uploads_exist
   end
 
   # Do not save any 'other' text values if the select field does not include 'other' as an option
