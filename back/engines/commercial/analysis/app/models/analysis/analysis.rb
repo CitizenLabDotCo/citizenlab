@@ -4,23 +4,20 @@
 #
 # Table name: analysis_analyses
 #
-#  id                   :uuid             not null, primary key
-#  project_id           :uuid
-#  phase_id             :uuid
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  show_insights        :boolean          default(TRUE), not null
-#  main_custom_field_id :uuid
+#  id            :uuid             not null, primary key
+#  project_id    :uuid
+#  phase_id      :uuid
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  show_insights :boolean          default(TRUE), not null
 #
 # Indexes
 #
-#  index_analysis_analyses_on_main_custom_field_id  (main_custom_field_id)
-#  index_analysis_analyses_on_phase_id              (phase_id)
-#  index_analysis_analyses_on_project_id            (project_id)
+#  index_analysis_analyses_on_phase_id    (phase_id)
+#  index_analysis_analyses_on_project_id  (project_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (main_custom_field_id => custom_fields.id)
 #  fk_rails_...  (phase_id => phases.id)
 #  fk_rails_...  (project_id => projects.id)
 #
