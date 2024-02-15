@@ -178,8 +178,8 @@ const IdeaCard = ({
           </Text>
         </Link>
       )}
-      <Box display="flex" mt="12px">
-        <Box>{showAuthor && <AuthorAvatar idea={idea} />}</Box>
+      <Box display="flex" {...(showAuthor ? { pt: '8px' } : {})}>
+        {showAuthor && <AuthorAvatar idea={idea} />}
         <Box marginLeft="auto">
           <Text color="coolGrey500" fontSize="s">
             {showVotes && (
