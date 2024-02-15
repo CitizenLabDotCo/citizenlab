@@ -139,6 +139,31 @@ const Settings = () => {
         />
       </Box>
 
+      <ProjectFilter
+        projectId={projectId}
+        emptyOptionMessage={widgetMessages.noProject}
+        onProjectFilter={handleProjectFilter}
+      />
+
+      {projectId !== undefined && (
+        <PhaseFilter
+          label={formatMessage(messages.selectPhase)}
+          projectId={projectId}
+          phaseId={phaseId}
+          participationMethod="ideation"
+          onPhaseFilter={handlePhaseFilter}
+        />
+      )}
+
+      {phaseId && (
+        <IdeaFilter
+          label={formatMessage(messages.selectIdea)}
+          phaseId={phaseId}
+          ideaId={ideaId}
+          onIdeaFilter={handleChangeIdeaId}
+        />
+      )}
+
       <Box mb="20px">
         <Toggle
           checked={showAuthor}
@@ -181,31 +206,6 @@ const Settings = () => {
           onChange={() => handleChangeShowVotes(!showVotes)}
         />
       </Box>
-
-      <ProjectFilter
-        projectId={projectId}
-        emptyOptionMessage={widgetMessages.noProject}
-        onProjectFilter={handleProjectFilter}
-      />
-
-      {projectId !== undefined && (
-        <PhaseFilter
-          label={formatMessage(messages.selectPhase)}
-          projectId={projectId}
-          phaseId={phaseId}
-          participationMethod="ideation"
-          onPhaseFilter={handlePhaseFilter}
-        />
-      )}
-
-      {phaseId && (
-        <IdeaFilter
-          label={formatMessage(messages.selectIdea)}
-          phaseId={phaseId}
-          ideaId={ideaId}
-          onIdeaFilter={handleChangeIdeaId}
-        />
-      )}
     </Box>
   );
 };
