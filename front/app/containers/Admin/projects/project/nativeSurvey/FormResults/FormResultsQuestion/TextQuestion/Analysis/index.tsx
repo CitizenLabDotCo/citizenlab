@@ -73,7 +73,7 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
             display="flex"
             justifyContent="flex-end"
             position="absolute"
-            top="0"
+            top="-40px"
             right="0"
             zIndex="1000"
           >
