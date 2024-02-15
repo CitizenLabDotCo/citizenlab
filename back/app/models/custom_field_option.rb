@@ -11,7 +11,6 @@
 #  ordering        :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  other           :boolean          default(FALSE), not null
 #
 # Indexes
 #
