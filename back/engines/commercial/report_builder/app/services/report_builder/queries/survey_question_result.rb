@@ -12,7 +12,7 @@ module ReportBuilder
       phase = Phase.find(phase_id)
       service = SurveyResponseSlicer.new(phase)
 
-      if slice_mode.nil? || slice_field_id.nil?
+      if slice_mode.blank? || slice_field_id.blank?
         service.get_result(question_id)
       elsif slice_mode == 'user_field'
         service.slice_by_user_field(

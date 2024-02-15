@@ -40,7 +40,7 @@ const UserFieldSelect = ({ userFieldId, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
   const handleChange = ({ value }: IOption) => {
-    onChange(value);
+    onChange(value === '' ? undefined : value);
   };
 
   const userFieldOptions = useMemo(() => {

@@ -26,9 +26,7 @@ const SurveyQuestionResultWidget = ({
   sliceFieldId,
 }: Props) => {
   const px = useReportDefaultPadding();
-
   const hasEverything = projectId && phaseId && questionId;
-
   const projectOrPhaseEmptyMessage = getEmptyMessage({ projectId, phaseId });
 
   return (
@@ -38,7 +36,7 @@ const SurveyQuestionResultWidget = ({
           projectId={projectId}
           phaseId={phaseId}
           questionId={questionId}
-          sliceMode={sliceMode}
+          sliceMode={sliceFieldId ? sliceMode : undefined}
           sliceFieldId={sliceFieldId}
         />
       ) : (
