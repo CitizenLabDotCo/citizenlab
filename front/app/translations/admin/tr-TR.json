@@ -2435,7 +2435,12 @@
   "app.modules.navbar.admin.containers.pageHeader": "Sayfalar ve menü",
   "app.modules.navbar.admin.containers.pageSubtitle": "Gezinti çubuğunuz, Ana Sayfa ve projeler sayfalarına ek olarak beş adede kadar sayfa görüntüleyebilir. Menü öğelerini yeniden adlandırabilir, sıralarını değiştirebilir ve kendi içeriğinizin bulunduğu yeni sayfalar ekleyebilirsiniz.",
   "app.modules.project_management.admin.components.permissionsTab": "Erişim hakları",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none": "Hiçbiri",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Soru",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceByUserField": "Kullanıcı alanına göre dilimleme",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceMode": "Dilim modu",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Anket sorusu",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.userField": "Kullanıcı alanı",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "destek merkezimizi ziyaret edin",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Önerilen görüntü çözünürlükleri hakkında daha fazla bilgi için, {supportPageLink}."
