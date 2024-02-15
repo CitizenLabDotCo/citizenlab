@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 // api
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 // i18n
-import useLocalize from 'hooks/useLocalize';
+import useLocalize, { Localize } from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -16,33 +16,44 @@ import { SUPPORTED_INPUT_TYPES_ARRAY } from '../constants';
 
 // typings
 import { IOption } from 'typings';
+import { IUserCustomFields } from 'api/user_custom_fields/types';
 
 interface Props {
   userFieldId?: string;
-  onFilter: (fieldOption: IOption) => void;
+  onChange: (userFieldId?: string) => void;
 }
 
-const UserFieldSelect = ({ userFieldId, onFilter }: Props) => {
+const generateOptions = (questions: IUserCustomFields, localize: Localize) => {
+  const options = questions.data.map((question) => ({
+    value: question.id,
+    label: localize(question.attributes.title_multiloc),
+  }));
+
+  return [{ value: '', label: '' }, ...options];
+};
+
+const UserFieldSelect = ({ userFieldId, onChange }: Props) => {
   const { data: userFields } = useUserCustomFields({
     inputTypes: SUPPORTED_INPUT_TYPES_ARRAY,
   });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  const userFieldOptions = userFields
-    ? userFields.data.map((field) => ({
-        value: field.id,
-        label: localize(field.attributes.title_multiloc),
-      }))
-    : [];
+  const handleChange = ({ value }: IOption) => {
+    onChange(value);
+  };
+
+  const userFieldOptions = useMemo(() => {
+    return userFields ? generateOptions(userFields, localize) : [];
+  }, [userFields, localize]);
 
   return (
     <Box width="100%" mb="20px">
       <Select
         label={formatMessage(messages.sliceByUserField)}
         value={userFieldId}
-        options={[{ value: '', label: '' }, ...userFieldOptions]}
-        onChange={onFilter}
+        options={userFieldOptions}
+        onChange={handleChange}
       />
     </Box>
   );

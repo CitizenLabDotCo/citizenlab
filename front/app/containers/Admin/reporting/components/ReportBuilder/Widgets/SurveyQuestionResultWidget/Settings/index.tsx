@@ -13,7 +13,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import ProjectFilter from '../../_shared/ProjectFilter';
 import PhaseFilter from '../../_shared/PhaseFilter';
-import FieldFilter from './FieldFilter';
+import QuestionSelect from './QuestionSelect';
 import SliceModeSelect from './SliceModeSelect';
 import UserFieldSelect from './UserFieldSelect';
 
@@ -68,10 +68,10 @@ const Settings = () => {
     [setProp]
   );
 
-  const handleFieldFilter = useCallback(
-    ({ value }: IOption) => {
+  const handleQuestion = useCallback(
+    (questionId: string) => {
       setProp((props: Props) => {
-        props.questionId = value;
+        props.questionId = questionId;
       });
     },
     [setProp]
@@ -87,14 +87,10 @@ const Settings = () => {
     [setProp]
   );
 
-  const handleGroupByUserFieldFilter = useCallback(
-    ({ value }: IOption) => {
+  const handleSliceFieldSelect = useCallback(
+    (sliceFieldId?: string) => {
       setProp((props: Props) => {
-        if (value === '') {
-          props.sliceFieldId = undefined;
-        } else {
-          props.sliceFieldId = value;
-        }
+        props.sliceFieldId = sliceFieldId;
       });
     },
     [setProp]
@@ -134,30 +130,39 @@ const Settings = () => {
       />
 
       {projectId !== undefined && (
-        <>
-          <PhaseFilter
-            label={formatMessage(messages.surveyPhase)}
-            projectId={projectId}
-            phaseId={phaseId}
-            participationMethod="native_survey"
-            onPhaseFilter={handlePhaseFilter}
-          />
-          {phaseId && (
-            <FieldFilter
-              phaseId={phaseId}
-              fieldId={questionId}
-              onFieldFilter={handleFieldFilter}
-            />
-          )}
-        </>
+        <PhaseFilter
+          label={formatMessage(messages.surveyPhase)}
+          projectId={projectId}
+          phaseId={phaseId}
+          participationMethod="native_survey"
+          onPhaseFilter={handlePhaseFilter}
+        />
       )}
 
-      <SliceModeSelect mode={sliceMode} onChange={handleSliceMode} />
+      {phaseId && (
+        <QuestionSelect
+          phaseId={phaseId}
+          questionId={questionId}
+          onChange={handleQuestion}
+        />
+      )}
+
+      {questionId && (
+        <SliceModeSelect mode={sliceMode} onChange={handleSliceMode} />
+      )}
 
       {sliceMode === 'user_field' && (
         <UserFieldSelect
           userFieldId={sliceFieldId}
-          onFilter={handleGroupByUserFieldFilter}
+          onChange={handleSliceFieldSelect}
+        />
+      )}
+
+      {phaseId && sliceMode === 'survey_question' && (
+        <QuestionSelect
+          phaseId={phaseId}
+          questionId={sliceFieldId}
+          onChange={handleSliceFieldSelect}
         />
       )}
     </Box>
