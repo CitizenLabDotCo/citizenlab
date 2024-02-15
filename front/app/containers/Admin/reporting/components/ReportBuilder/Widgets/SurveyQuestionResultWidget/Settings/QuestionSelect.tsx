@@ -22,11 +22,19 @@ interface Props {
   onChange: (questionId?: string) => void;
 }
 
-const generateOptions = (questions: ICustomFields, localize: Localize) => {
-  const options = questions.data.map((question) => ({
-    value: question.id,
-    label: localize(question.attributes.title_multiloc),
-  }));
+const generateOptions = (
+  questions: ICustomFields,
+  inputTypes: ICustomFieldInputType[],
+  localize: Localize
+) => {
+  const inputTypesSet = new Set(inputTypes);
+
+  const options = questions.data
+    .filter((question) => inputTypesSet.has(question.attributes.input_type))
+    .map((question) => ({
+      value: question.id,
+      label: localize(question.attributes.title_multiloc),
+    }));
 
   return [{ value: '', label: '' }, ...options];
 };
@@ -37,7 +45,7 @@ const QuestionSelect = ({
   inputTypes,
   onChange,
 }: Props) => {
-  const { data: questions } = useRawCustomFields({ phaseId, inputTypes });
+  const { data: questions } = useRawCustomFields({ phaseId });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -45,9 +53,13 @@ const QuestionSelect = ({
     onChange(value === '' ? undefined : value);
   };
 
+  const inputTypesStr = JSON.stringify(inputTypes);
   const questionOptions = useMemo(() => {
-    return questions ? generateOptions(questions, localize) : [];
-  }, [questions, localize]);
+    if (!questions) return [];
+
+    const inputTypes: ICustomFieldInputType[] = JSON.parse(inputTypesStr);
+    return generateOptions(questions, inputTypes, localize);
+  }, [questions, inputTypesStr, localize]);
 
   return (
     <Box width="100%" mb="20px">
