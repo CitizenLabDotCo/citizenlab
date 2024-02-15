@@ -10,6 +10,7 @@ import ProjectFilter from '../../_shared/ProjectFilter';
 import PhaseFilter from '../../_shared/PhaseFilter';
 import CollapseLongTextToggle from './CollapseLongTextToggle';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import IdeaFilter from './IdeaFilter';
 
 // i18n
 import messages from '../messages';
@@ -19,7 +20,6 @@ import { useIntl } from 'utils/cl-intl';
 // typings
 import { Props } from '../typings';
 import { IOption, Multiloc } from 'typings';
-import IdeaFilter from './IdeaFilter';
 
 const Settings = () => {
   const { formatMessage } = useIntl();

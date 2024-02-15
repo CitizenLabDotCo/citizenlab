@@ -4,6 +4,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import IdeaCard from '../../SingleIdeaWidget/IdeaCard';
 import NoData from '../../_shared/NoData';
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // i18n
 import messages from '../messages';
@@ -12,9 +13,10 @@ import messages from '../messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { IIdeaData } from 'api/ideas/types';
 import { IIdeaImageData } from 'api/idea_images/types';
-import { IPhaseData } from 'api/phases/types';
-import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import { BORDER } from '../../constants';
+
+// types
+import { IPhaseData } from 'api/phases/types';
 
 interface Props {
   phase: IPhaseData;

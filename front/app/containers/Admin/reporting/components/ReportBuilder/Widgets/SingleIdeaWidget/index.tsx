@@ -4,6 +4,7 @@ import React from 'react';
 import Card from '../_shared/Card';
 import NoData from '../_shared/NoData';
 import Settings from './Settings';
+import IdeaCard from './IdeaCard';
 
 // i18n
 import messages from './messages';
@@ -13,10 +14,11 @@ import { Props } from './typings';
 
 // hooks
 import { getEmptyMessage } from '../utils';
-import IdeaCard from './IdeaCard';
 import { useSingleIdea } from 'api/graph_data_units';
-import { isNil } from 'utils/helperUtils';
 import usePhase from 'api/phases/usePhase';
+
+// utils
+import { isNil } from 'utils/helperUtils';
 
 const SingleIdeaWidget = ({
   title,

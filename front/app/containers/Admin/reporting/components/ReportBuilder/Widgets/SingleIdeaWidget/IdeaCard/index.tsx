@@ -16,6 +16,7 @@ import {
 import Link from 'utils/cl-router/Link';
 import GradientSrc from './gradient.svg';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import AuthorAvatar from './AuthorAvatar';
 
 // i18n
 import messages from '../../MostReactedIdeasWidget/messages';
@@ -32,7 +33,6 @@ import { IPhaseData } from 'api/phases/types';
 // i18n
 import useTextNumberOfVotes from './useTextNumberOfVotes';
 import useLocalize from 'hooks/useLocalize';
-import AuthorAvatar from './AuthorAvatar';
 
 interface Props {
   rank?: number;
