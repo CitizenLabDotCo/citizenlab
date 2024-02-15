@@ -663,7 +663,7 @@
   "app.components.formBuilder.labels": "Etiketter",
   "app.components.formBuilder.labelsTooltipContent": "Vælg valgfrie etiketter for dine minimums- og maksimumsværdier.",
   "app.components.formBuilder.layout": "Layout",
-  "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Er du sikker på, at du vil rejse?",
+  "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Er du sikker på, at du vil forlade os?",
   "app.components.formBuilder.leaveBuilderText": "Du har ændringer, der ikke er gemt. Gem venligst, før du går. Hvis du går, mister du dine ændringer.",
   "app.components.formBuilder.limitAnswersTooltip": "Når det er slået til, skal respondenterne vælge det angivne antal svar for at komme videre.",
   "app.components.formBuilder.limitNumberAnswers": "Begræns antallet af svar",
