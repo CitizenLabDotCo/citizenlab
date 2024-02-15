@@ -2435,7 +2435,12 @@
   "app.modules.navbar.admin.containers.pageHeader": "Sider og meny",
   "app.modules.navbar.admin.containers.pageSubtitle": "Navigasjonslinjen kan vise opptil fem sider i tillegg til start- og prosjektsidene. Du kan gi nye navn til menyelementer, sortere og legge til nye sider med ditt eget innhold.",
   "app.modules.project_management.admin.components.permissionsTab": "Tilgangsrettigheter",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none": "Ingen",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Spørsmål",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceByUserField": "Del etter brukerfelt",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceMode": "Skivemodus",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Undersøkelsesspørsmål",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.userField": "Brukerfelt",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "besøke støttesenteret",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For mer informasjon om anbefalte bildeoppløsninger kan du {supportPageLink}."
