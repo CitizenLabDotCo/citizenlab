@@ -14,6 +14,7 @@ import {
 import ProjectFilter from '../../_shared/ProjectFilter';
 import PhaseFilter from '../../_shared/PhaseFilter';
 import FieldFilter from './FieldFilter';
+import SliceModeSelect from './SliceModeSelect';
 import UserFieldFilter from './UserFieldFilter';
 
 // i18n
@@ -34,7 +35,7 @@ const Settings = () => {
     projectId,
     phaseId,
     questionId,
-    // sliceMode,
+    sliceMode,
     sliceFieldId,
   } = useNode<Props>((node) => ({
     title: node.data.props.title,
@@ -75,14 +76,22 @@ const Settings = () => {
     [setProp]
   );
 
+  const handleSliceMode = useCallback(
+    (mode?: 'user_field' | 'survey_question') => {
+      setProp((props: Props) => {
+        props.sliceMode = mode;
+        props.sliceFieldId = undefined;
+      });
+    },
+    [setProp]
+  );
+
   const handleGroupByUserFieldFilter = useCallback(
     ({ value }: IOption) => {
       setProp((props: Props) => {
         if (value === '') {
-          props.sliceMode = undefined;
           props.sliceFieldId = undefined;
         } else {
-          props.sliceMode = 'user_field';
           props.sliceFieldId = value;
         }
       });
@@ -141,6 +150,8 @@ const Settings = () => {
           )}
         </>
       )}
+
+      <SliceModeSelect mode={sliceMode} onChange={handleSliceMode} />
 
       <UserFieldFilter
         userFieldId={sliceFieldId}
