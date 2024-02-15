@@ -6,7 +6,6 @@ import IdeaCard from '../../SingleIdeaWidget/IdeaCard';
 import NoData from '../../_shared/NoData';
 
 // i18n
-import useLocalize from 'hooks/useLocalize';
 import messages from '../messages';
 
 // utils
@@ -14,6 +13,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IIdeaData } from 'api/ideas/types';
 import { IIdeaImageData } from 'api/idea_images/types';
 import { IPhaseData } from 'api/phases/types';
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+import { BORDER } from '../../constants';
 
 interface Props {
   phase: IPhaseData;
@@ -30,14 +31,15 @@ const Ideas = ({ phase, ideas, images, collapseLongText }: Props) => {
   return (
     <Box>
       {ideas.map((idea, i) => (
-        <IdeaCard
-          key={i}
-          rank={i + 1}
-          idea={idea}
-          images={images[idea.id] || []}
-          phase={phase}
-          collapseLongText={collapseLongText}
-        />
+        <PageBreakBox key={i} borderTop={BORDER} my="16px" pt="16px">
+          <IdeaCard
+            rank={i + 1}
+            idea={idea}
+            images={images[idea.id] || []}
+            phase={phase}
+            collapseLongText={collapseLongText}
+          />
+        </PageBreakBox>
       ))}
     </Box>
   );

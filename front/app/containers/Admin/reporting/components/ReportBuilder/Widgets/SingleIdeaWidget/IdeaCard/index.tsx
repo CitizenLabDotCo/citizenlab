@@ -11,11 +11,9 @@ import {
   Image,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import { BORDER } from '../../constants';
 
 // components
 import Link from 'utils/cl-router/Link';
-import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import GradientSrc from './gradient.svg';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -88,7 +86,7 @@ const IdeaCard = ({
   const hideTextOverflow = collapseLongText && textOverflow;
 
   return (
-    <PageBreakBox borderTop={BORDER} my="16px" pt="16px">
+    <Box>
       <Box
         display="flex"
         flexDirection="row"
@@ -209,7 +207,7 @@ const IdeaCard = ({
           </Text>
         </Box>
       </Box>
-    </PageBreakBox>
+    </Box>
   );
 };
 
