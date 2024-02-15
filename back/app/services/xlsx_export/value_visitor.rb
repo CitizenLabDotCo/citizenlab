@@ -88,7 +88,7 @@ module XlsxExport
       return '' if file['id'].blank?
 
       file_id = file['id']
-      idea_file = model.idea_files.detect { |file| file.id == file_id }
+      idea_file = model.idea_files.detect { |f| f.id == file_id }
       idea_file.file.url
     end
 
