@@ -2435,7 +2435,12 @@
   "app.modules.navbar.admin.containers.pageHeader": "Lapas un izvēlne",
   "app.modules.navbar.admin.containers.pageSubtitle": "Navigācijas joslā papildus sākuma un projektu lapām var tikt parādītas līdz pat piecām lapām. Jūs varat pārdēvēt izvēlnes elementus, mainīt to secību un pievienot jaunas lapas ar savu saturu.",
   "app.modules.project_management.admin.components.permissionsTab": "Piekļuves tiesības",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none": "Nav",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Jautājums",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceByUserField": "Slice pēc lietotāja lauka",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceMode": "Slice režīms",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Aptaujas jautājums",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.userField": "Lietotāja lauks",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "apmeklējiet mūsu atbalsta centru",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Plašāku informāciju par ieteicamo attēlu izšķirtspēju skatiet vietnē {supportPageLink}."
