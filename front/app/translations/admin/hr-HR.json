@@ -2435,7 +2435,12 @@
   "app.modules.navbar.admin.containers.pageHeader": "Stranice i izbornik",
   "app.modules.navbar.admin.containers.pageSubtitle": "Na vašoj navigacijskoj traci može biti prikazano do pet stranica, pored Početne i projektnih stranica. Možete preimenovati stavke izbornika, preurediti i dodati nove stranice s vlastitim sadržajem.",
   "app.modules.project_management.admin.components.permissionsTab": "Prava pristupa",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none": "Nijedan",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question": "Pitanje",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceByUserField": "Isječak po korisničkom polju",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceMode": "Režim rada",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Anketno pitanje",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.userField": "Korisničko polje",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "posjetite naš centar za podršku",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Za više informacija o preporučenim razlučivostima slika, {supportPageLink}."
