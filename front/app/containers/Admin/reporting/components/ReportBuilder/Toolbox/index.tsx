@@ -213,7 +213,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
                 projectId={selectedProjectId}
               />
             }
-            icon="idea"
+            icon="vote-up"
             label={formatMessage(WIDGET_TITLES.MostReactedIdeasWidget)}
           />
           <DraggableElement
