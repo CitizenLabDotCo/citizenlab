@@ -26,6 +26,7 @@ import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey
 // typings
 import { IOption } from 'typings';
 import { Props } from '../typings';
+import { SliceMode } from 'api/graph_data_units/requestTypes';
 
 const Settings = () => {
   const { formatMessage } = useIntl();
@@ -77,7 +78,7 @@ const Settings = () => {
   );
 
   const handleSliceMode = useCallback(
-    (mode?: 'user_field' | 'survey_question') => {
+    (mode?: SliceMode) => {
       setProp((props: Props) => {
         props.sliceMode = mode;
         props.sliceFieldId = undefined;
