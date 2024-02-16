@@ -101,7 +101,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
   let_it_be(:user_custom_field) { create(:custom_field_gender, :with_options) }
 
   def gender_response(index)
-    # We add one missing value to see what happens
+    # We add one missing value
     if index == 1
       return nil
     end
@@ -120,8 +120,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
   end
 
   def city_survey_response(index)
-    # We add one faulthy value that is not in the options,
-    # to test that the logic to filter this out works
+    # We add one faulthy value that is not in the options.
+    # This will be treated as a nil value
     if index == 1
       return 'faulthy'
     end
