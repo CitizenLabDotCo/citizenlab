@@ -10,7 +10,7 @@
 #   are actually from version 5).
 # - Luckily, it seems that the migrations ran properly for the public schema.
 #
-# In practice, Que jobs are only stored in the `public` schema, so the most part these
+# In practice, Que jobs are only stored in the `public` schema, so for the most part these
 # inconsistencies are inconsequential, but they are confusing and could lead to issues
 # difficult to debug in the future.
 #

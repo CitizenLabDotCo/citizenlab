@@ -13,8 +13,8 @@ RSpec.describe Que do
       # `twice` to account for the `current_version` let helper.
       expect(Que::Migrations).to receive(:db_version).and_call_original.twice
 
-      # We use the current version to make the test lightweight (because not migration
-      # is run).
+      # We use the current version to make the test lightweight (because then no migration
+      # is actually run).
       described_class.migrate!(version: current_version)
     end
   end
