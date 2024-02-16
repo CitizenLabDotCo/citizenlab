@@ -33,6 +33,14 @@ RSpec.describe AdminApi::CopyProjectJob do
       expect(model_counts).to eq(expected_model_counts)
     end
 
+    example 'delays the destruction of the job record once it is finished' do
+      # rubocop:disable RSpec/SubjectStub
+      expect(job).to receive(:destroy_in).with(15.minutes).and_call_original
+      # rubocop:enable RSpec/SubjectStub
+
+      job.perform(template_yaml)
+    end
+
     context 'when outside the context of a tenant' do
       before { Apartment::Tenant.reset }
 

@@ -15,6 +15,8 @@ module AdminApi
       folder = ProjectFolders::Folder.find(folder_id) if folder_id
       template = YAML.load(template_yaml) # rubocop:disable Security/YAMLLoad
       ProjectCopyService.new.import(template, folder: folder)
+
+      destroy_in(15.minutes)
     end
 
     private
