@@ -16,6 +16,8 @@ module AdminApi
       template = YAML.load(template_yaml) # rubocop:disable Security/YAMLLoad
       ProjectCopyService.new.import(template, folder: folder)
 
+      # Wait before destroying the job record to allow clients to poll the job status via
+      # the API.
       destroy_in(15.minutes)
     end
 
