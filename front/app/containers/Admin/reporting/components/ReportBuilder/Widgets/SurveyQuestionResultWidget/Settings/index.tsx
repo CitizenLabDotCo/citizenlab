@@ -19,7 +19,7 @@ import UserFieldSelect from './UserFieldSelect';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from '../../SurveyResultsWidget/messages';
+import messages from './messages';
 import widgetMessages from '../../messages';
 import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
@@ -144,6 +144,7 @@ const Settings = () => {
           phaseId={phaseId}
           questionId={questionId}
           inputTypes={['select', 'multiselect']}
+          label={formatMessage(messages.question)}
           onChange={handleQuestion}
         />
       )}
@@ -164,6 +165,7 @@ const Settings = () => {
           phaseId={phaseId}
           questionId={sliceFieldId}
           inputTypes={['select']}
+          label={formatMessage(messages.groupBySurveyQuestion)}
           onChange={handleSliceFieldSelect}
         />
       )}

@@ -1,13 +1,17 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  surveyPhase: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyPhase',
+    defaultMessage: 'Survey phase',
+  },
   question: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.question',
     defaultMessage: 'Question',
   },
-  sliceMode: {
-    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceMode',
-    defaultMessage: 'Slice mode',
+  groupMode: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupMode',
+    defaultMessage: 'Group mode',
   },
   none: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none',
@@ -21,8 +25,12 @@ export default defineMessages({
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion',
     defaultMessage: 'Survey question',
   },
-  sliceByUserField: {
-    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sliceByUserField',
-    defaultMessage: 'Slice by user field',
+  groupByUserField: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupByUserField',
+    defaultMessage: 'Group by user field',
+  },
+  groupBySurveyQuestion: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupBySurveyQuestion',
+    defaultMessage: 'Group by survey question',
   },
 });

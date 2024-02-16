@@ -50,7 +50,7 @@ const UserFieldSelect = ({ userFieldId, onChange }: Props) => {
   return (
     <Box width="100%" mb="20px">
       <Select
-        label={formatMessage(messages.sliceByUserField)}
+        label={formatMessage(messages.groupByUserField)}
         value={userFieldId}
         options={userFieldOptions}
         onChange={handleChange}

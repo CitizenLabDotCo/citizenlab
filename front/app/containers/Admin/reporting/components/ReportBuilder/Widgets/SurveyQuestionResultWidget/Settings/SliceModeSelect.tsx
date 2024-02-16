@@ -33,7 +33,7 @@ const SliceModeSelect = ({ mode, onChange }: Props) => {
   return (
     <Box width="100%" mb="20px">
       <Select
-        label={formatMessage(messages.sliceMode)}
+        label={formatMessage(messages.groupMode)}
         value={mode ?? ''}
         options={options}
         onChange={handleChange}

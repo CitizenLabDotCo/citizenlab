@@ -5,8 +5,6 @@ import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 
 // i18n
 import useLocalize, { Localize } from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
 // components
 import { Box, Select } from '@citizenlab/cl2-component-library';
@@ -19,6 +17,7 @@ interface Props {
   phaseId: string;
   questionId?: string;
   inputTypes: ICustomFieldInputType[];
+  label: string;
   onChange: (questionId?: string) => void;
 }
 
@@ -43,11 +42,11 @@ const QuestionSelect = ({
   phaseId,
   questionId,
   inputTypes,
+  label,
   onChange,
 }: Props) => {
   const { data: questions } = useRawCustomFields({ phaseId });
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
 
   const handleChange = ({ value }: IOption) => {
     onChange(value === '' ? undefined : value);
@@ -64,7 +63,7 @@ const QuestionSelect = ({
   return (
     <Box width="100%" mb="20px">
       <Select
-        label={formatMessage(messages.question)}
+        label={label}
         value={questionId}
         options={questionOptions}
         onChange={handleChange}

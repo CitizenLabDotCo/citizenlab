@@ -26,8 +26,6 @@ const StackedBar = ({ percentages, leftLabel, rightLabel }: Props) => {
     []
   );
 
-  console.log({ percentages, stackedPercentages, leftLabel });
-
   return (
     <Box width="100%">
       {(leftLabel || rightLabel) && (
