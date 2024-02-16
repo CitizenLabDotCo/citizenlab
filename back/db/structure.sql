@@ -219,6 +219,7 @@ DROP INDEX IF EXISTS public.index_nav_bar_items_on_code;
 DROP INDEX IF EXISTS public.index_memberships_on_user_id;
 DROP INDEX IF EXISTS public.index_memberships_on_group_id_and_user_id;
 DROP INDEX IF EXISTS public.index_memberships_on_group_id;
+DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable_id;
 DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable;
 DROP INDEX IF EXISTS public.index_maps_legend_items_on_map_config_id;
 DROP INDEX IF EXISTS public.index_maps_layers_on_map_config_id;
@@ -765,7 +766,7 @@ WITH (fillfactor='90');
 -- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON TABLE public.que_jobs IS '5';
+COMMENT ON TABLE public.que_jobs IS '4';
 
 
 --
@@ -2645,8 +2646,8 @@ CREATE TABLE public.maps_map_configs (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     esri_web_map_id character varying,
-    mappable_type character varying NOT NULL,
-    mappable_id uuid NOT NULL
+    mappable_type character varying,
+    mappable_id uuid
 );
 
 
@@ -5426,6 +5427,13 @@ CREATE INDEX index_maps_map_configs_on_mappable ON public.maps_map_configs USING
 
 
 --
+-- Name: index_maps_map_configs_on_mappable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_maps_map_configs_on_mappable_id ON public.maps_map_configs USING btree (mappable_id);
+
+
+--
 -- Name: index_memberships_on_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7433,3 +7441,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240206165004'),
 ('20240214125557'),
 ('20240215170108');
+
+

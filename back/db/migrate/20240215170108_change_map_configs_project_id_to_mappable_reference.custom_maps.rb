@@ -22,7 +22,7 @@ class ChangeMapConfigsProjectIdToMappableReference < ActiveRecord::Migration[7.0
     end
 
     remove_column :maps_map_configs, :project_id, :uuid
-    change_column_null :maps_map_configs, :mappable_type, false # disallow nulls
-    change_column_null :maps_map_configs, :mappable_id, false # disallow nulls
+
+    add_index :maps_map_configs, :mappable_id, unique: true
   end
 end
