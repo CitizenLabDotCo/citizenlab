@@ -11,26 +11,23 @@ module ReportBuilder
       question = get_question(question_field_id)
 
       # Select
-      answers = @inputs.select(select_query(question, as: 'answer'))
+      query = @inputs.select(select_query(question, as: 'answer'))
 
       # Group by
-      grouped_answers = apply_grouping(answers)
-        .map do |answer, count|
-          {
-            answer: answer,
-            count: count
-          }
+      grouped_answers_hash = apply_grouping(query)
+        .each_with_object({}) do |(answer, count), accu|
+          accu[answer] = { answer: answer, count: count }
         end
 
-      # Filter out invalid keys
-      option_keys = question.options.map(&:key)
+      # Construct answers array
+      answer_keys = question.options.map(&:key) + [nil]
 
-      grouped_answers = grouped_answers.select do |answer|
-        answer[:answer].nil? || option_keys.include?(answer[:answer])
+      answers = answer_keys.map do |key|
+        grouped_answers_hash[key] || { answer: key, count: 0 }
       end
 
       # Build response
-      build_response(grouped_answers, question, nil)
+      build_response(answers, question, nil)
     end
 
     def slice_by_user_field(question_field_id, user_field_id)
@@ -126,7 +123,6 @@ module ReportBuilder
         .group(:answer, slice ? :group_by_value : nil)
         .order(Arel.sql('COUNT(answer) DESC'))
         .count
-        .to_a
     end
 
     def filter_valid_keys(
@@ -148,15 +144,15 @@ module ReportBuilder
       end
     end
 
-    def build_response(grouped_answers, question, slice_field)
+    def build_response(answers, question, slice_field)
       multilocs = get_multilocs(question, slice_field)
 
       {
         inputType: question.input_type,
         question: question.title_multiloc,
         required: question.required,
-        totalResponses: grouped_answers.pluck(:count).sum,
-        answers: grouped_answers,
+        totalResponses: answers.pluck(:count).sum,
+        answers: answers,
         customFieldId: question.id,
         multilocs: multilocs
       }
