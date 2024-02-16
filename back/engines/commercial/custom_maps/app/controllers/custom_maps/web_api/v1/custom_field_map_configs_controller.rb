@@ -3,13 +3,12 @@
 module CustomMaps
   module WebApi
     module V1
-      class ProjectMapConfigsController < ApplicationController
-        before_action :set_project
+      class CustomFieldMapConfigsController < ApplicationController
+        before_action :set_custom_field
         before_action :set_map_config, only: %i[update destroy]
 
         def create
-          authorize @project, :update?
-          @map_config = @project.build_map_config(map_config_params)
+          @map_config = @custom_field.build_map_config(map_config_params)
 
           if @map_config.save
             render json: serialized_map_config, status: :ok
@@ -35,21 +34,22 @@ module CustomMaps
         end
 
         def show
-          @project = Project.includes(map_config: %i[layers legend_items]).find(params[:project_id])
-          authorize @project
-          @map_config = @project.map_config
+          @custom_field = CustomField.includes(map_config: %i[layers legend_items]).find(params[:custom_field_id])
+          @map_config = @custom_field.map_config
           render json: serialized_map_config, status: :ok
         end
 
         private
 
-        def set_project
-          @project = Project.find(params[:project_id])
+        def set_custom_field
+          @custom_field = CustomField.find(params[:custom_field_id])
+          authorize @custom_field, policy_class: MapConfigCustomFieldPolicy
         end
 
         def set_map_config
-          authorize @project, :update?
-          @map_config = CustomMaps::MapConfig.find_by!(mappable_id: params[:project_id])
+          authorize @custom_field, policy_class: MapConfigCustomFieldPolicy
+
+          @map_config = CustomMaps::MapConfig.find_by!(mappable_id: params[:custom_field_id])
         end
 
         def serialized_map_config
