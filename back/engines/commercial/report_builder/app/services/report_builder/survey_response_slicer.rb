@@ -35,35 +35,14 @@ module ReportBuilder
       user_field = CustomField.find_by(id: user_field_id)
       throw "Unsupported user field type: #{user_field.input_type}" unless user_field.input_type == 'select'
 
-      # Join
       query = @inputs.joins(:author)
 
-      # Select
       query = query.select(
         select_query(question, as: 'answer'),
         select_query(user_field, as: 'group_by_value')
       )
 
-      # Group by
-      grouped_answers_hash = group_answers(query)
-
-      # Construct answers array
-      answer_keys = question.options.map(&:key) + [nil]
-      user_field_keys = user_field.options.map(&:key) + [nil]
-
-      answers = answer_keys.map do |key|
-        grouped_answer = grouped_answers_hash[key] || { answer: key, count: 0, groups: {} }
-
-        answers_row = {
-          answer: key,
-          count: grouped_answer[:count],
-          groups: user_field_keys.map do |user_key|
-            grouped_answer[:groups][user_key] || { group: user_key, count: 0 }
-          end
-        }
-
-        answers_row
-      end
+      answers = construct_answers(query, question, user_field)
 
       build_response(answers, question, user_field)
     end
@@ -73,19 +52,14 @@ module ReportBuilder
       other_question = get_question(other_question_field_id)
       throw "Unsupported question type: #{other_question.input_type}" unless other_question.input_type == 'select'
 
-      # Select
-      answers = @inputs.select(
+      query = @inputs.select(
         select_query(question, as: 'answer'),
         select_query(other_question, as: 'group_by_value')
       )
 
-      # Group by
-      grouped_answers = group_answers(answers)
+      answers = construct_answers(query, question, other_question)
 
-      # Filter out invalid keys
-      # grouped_answers = filter_valid_keys(grouped_answers, question, other_question)
-
-      build_response(grouped_answers, question, other_question)
+      build_response(answers, question, other_question)
     end
 
     def get_multilocs(question, slice_field)
@@ -120,7 +94,29 @@ module ReportBuilder
       end
     end
 
-    def group_answers(answers)
+    def construct_answers(query, question, slice_field)
+      grouped_answers_hash = construct_grouped_answers_hash(query)
+
+      # Construct answers array
+      answer_keys = question.options.map(&:key) + [nil]
+      slice_field_keys = slice_field.options.map(&:key) + [nil]
+
+      answer_keys.map do |key|
+        grouped_answer = grouped_answers_hash[key] || { answer: key, count: 0, groups: {} }
+
+        answers_row = {
+          answer: key,
+          count: grouped_answer[:count],
+          groups: slice_field_keys.map do |user_key|
+            grouped_answer[:groups][user_key] || { group: user_key, count: 0 }
+          end
+        }
+
+        answers_row
+      end
+    end
+
+    def construct_grouped_answers_hash(answers)
       apply_grouping(answers, slice: true)
         .each_with_object({}) do |((answer, group_by_value), count), accu|
           accu[answer] ||= { answer: answer, count: 0, groups: {} }
