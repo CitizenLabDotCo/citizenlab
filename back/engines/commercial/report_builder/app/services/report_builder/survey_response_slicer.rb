@@ -36,21 +36,36 @@ module ReportBuilder
       throw "Unsupported user field type: #{user_field.input_type}" unless user_field.input_type == 'select'
 
       # Join
-      joined_inputs = @inputs.joins(:author)
+      query = @inputs.joins(:author)
 
       # Select
-      answers = joined_inputs.select(
+      query = query.select(
         select_query(question, as: 'answer'),
         select_query(user_field, as: 'group_by_value')
       )
 
       # Group by
-      grouped_answers = group_answers(answers)
+      grouped_answers_hash = group_answers(query)
 
-      # Filter out invalid keys
-      grouped_answers = filter_valid_keys(grouped_answers, question, user_field)
+      # Construct answers array
+      answer_keys = question.options.map(&:key) + [nil]
+      user_field_keys = user_field.options.map(&:key) + [nil]
 
-      build_response(grouped_answers, question, user_field)
+      answers = answer_keys.map do |key|
+        grouped_answer = grouped_answers_hash[key] || { answer: key, count: 0, groups: {} }
+
+        answers_row = {
+          answer: key,
+          count: grouped_answer[:count],
+          groups: user_field_keys.map do |user_key|
+            grouped_answer[:groups][user_key] || { group: user_key, count: 0 }
+          end
+        }
+
+        answers_row
+      end
+
+      build_response(answers, question, user_field)
     end
 
     def slice_by_other_question(question_field_id, other_question_field_id)
@@ -68,7 +83,7 @@ module ReportBuilder
       grouped_answers = group_answers(answers)
 
       # Filter out invalid keys
-      grouped_answers = filter_valid_keys(grouped_answers, question, other_question)
+      # grouped_answers = filter_valid_keys(grouped_answers, question, other_question)
 
       build_response(grouped_answers, question, other_question)
     end
@@ -107,12 +122,10 @@ module ReportBuilder
 
     def group_answers(answers)
       apply_grouping(answers, slice: true)
-        .map do |(answer, group_by_value), count|
-          {
-            answer: answer,
-            group_by_value: group_by_value,
-            count: count
-          }
+        .each_with_object({}) do |((answer, group_by_value), count), accu|
+          accu[answer] ||= { answer: answer, count: 0, groups: {} }
+          accu[answer][:count] += count
+          accu[answer][:groups][group_by_value] = { group: group_by_value, count: count }
         end
     end
 
@@ -121,27 +134,7 @@ module ReportBuilder
         .select(:answer)
         .from(answers)
         .group(:answer, slice ? :group_by_value : nil)
-        .order(Arel.sql('COUNT(answer) DESC'))
         .count
-    end
-
-    def filter_valid_keys(
-      grouped_answers,
-      question,
-      slice_field
-    )
-      question_option_keys = question.options.map(&:key)
-      slice_field_option_keys = slice_field.options.map(&:key)
-
-      grouped_answers.select do |grouped_answer|
-        answer = grouped_answer[:answer]
-        group_by_value = grouped_answer[:group_by_value]
-
-        valid_answer = answer.nil? || question_option_keys.include?(answer)
-        valid_group_by_value = group_by_value.nil? || slice_field_option_keys.include?(group_by_value)
-
-        valid_answer && valid_group_by_value
-      end
     end
 
     def build_response(answers, question, slice_field)
