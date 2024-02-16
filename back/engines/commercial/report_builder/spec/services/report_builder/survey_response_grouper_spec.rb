@@ -164,6 +164,7 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
         question: city_survey_question.title_multiloc,
         customFieldId: city_survey_question.id,
         required: true,
+        grouped: false,
         totalResponses: 11,
         totalPicks: 11,
         answers: [
@@ -182,6 +183,7 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
         question: multiselect_question.title_multiloc,
         customFieldId: multiselect_question.id,
         required: false,
+        grouped: false,
         totalResponses: 11,
         totalPicks: 15,
         answers: [
@@ -204,6 +206,7 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
         question: city_survey_question.title_multiloc,
         customFieldId: city_survey_question.id,
         required: true,
+        grouped: true,
         totalResponses: 11,
         totalPicks: 11,
         answers: [
@@ -261,6 +264,7 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
         question: multiselect_question.title_multiloc,
         customFieldId: multiselect_question.id,
         required: false,
+        grouped: true,
         totalResponses: 11,
         totalPicks: 15,
         answers: [
@@ -310,6 +314,7 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
         question: city_survey_question.title_multiloc,
         customFieldId: city_survey_question.id,
         required: true,
+        grouped: true,
         totalResponses: 11,
         totalPicks: 11,
         answers: [
@@ -363,6 +368,7 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
         question: multiselect_question.title_multiloc,
         customFieldId: multiselect_question.id,
         required: false,
+        grouped: true,
         totalResponses: 11,
         totalPicks: 15,
         answers: [
