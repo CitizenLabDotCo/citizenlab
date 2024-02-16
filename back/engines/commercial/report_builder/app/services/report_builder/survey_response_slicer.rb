@@ -140,7 +140,8 @@ module ReportBuilder
         inputType: question.input_type,
         question: question.title_multiloc,
         required: question.required,
-        totalResponses: answers.pluck(:count).sum,
+        totalResponses: @inputs.count,
+        totalPicks: answers.pluck(:count).sum,
         answers: answers,
         customFieldId: question.id,
         multilocs: multilocs

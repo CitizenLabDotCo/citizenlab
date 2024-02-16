@@ -143,7 +143,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
       record.custom_field_values = if index == 8
         {
           city_survey_question.key => city_survey_response(index),
-          food_survey_question.key => index.even? ? pizza_option.key : burger_option.key,
+          food_survey_question.key => index.even? ? pizza_option.key : burger_option.key
         }
       else
         {
@@ -164,12 +164,13 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         question: city_survey_question.title_multiloc,
         customFieldId: city_survey_question.id,
         required: true,
-        totalResponses: 10,
+        totalResponses: 11,
+        totalPicks: 11,
         answers: [
           { answer: 'la', count: 5 },
           { answer: 'ny', count: 4 },
           { answer: 'lx', count: 0 },
-          { answer: nil, count: 1 }
+          { answer: nil, count: 2 }
         ],
         multilocs: generator.get_multilocs(city_survey_question, nil)
       })
@@ -181,11 +182,12 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         question: multiselect_question.title_multiloc,
         customFieldId: multiselect_question.id,
         required: false,
-        totalResponses: 15,
+        totalResponses: 11,
+        totalPicks: 16,
         answers: [
           { answer: 'option1', count: 10 },
           { answer: 'option2', count: 4 },
-          { answer: nil, count: 1 }
+          { answer: nil, count: 2 }
         ],
         multilocs: generator.get_multilocs(multiselect_question, nil)
       })
@@ -202,7 +204,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         question: city_survey_question.title_multiloc,
         customFieldId: city_survey_question.id,
         required: true,
-        totalResponses: 10,
+        totalResponses: 11,
+        totalPicks: 11,
         answers: [
           {
             answer: 'la',
@@ -238,7 +241,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
             answer: nil,
             count: 1,
             groups: [
-              { group: 'male', count: 0 },
+              { group: 'male', count: 1 },
               { group: 'female', count: 1 },
               { group: 'unspecified', count: 0 },
               { group: nil, count: 0 }
@@ -258,7 +261,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         question: multiselect_question.title_multiloc,
         customFieldId: multiselect_question.id,
         required: false,
-        totalResponses: 15,
+        totalResponses: 11,
+        totalPicks: 16,
         answers: [
           {
             answer: 'option1',
@@ -284,7 +288,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
             answer: nil,
             count: 1,
             groups: [
-              { group: 'male', count: 0 },
+              { group: 'male', count: 1 },
               { group: 'female', count: 1 },
               { group: 'unspecified', count: 0 },
               { group: nil, count: 0 }
@@ -306,7 +310,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         question: city_survey_question.title_multiloc,
         customFieldId: city_survey_question.id,
         required: true,
-        totalResponses: 10,
+        totalResponses: 11,
+        totalPicks: 11,
         answers: [
           {
             answer: 'la',
@@ -340,7 +345,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
             count: 1,
             groups: [
               { group: 'pizza', count: 1 },
-              { group: 'burger', count: 0 },
+              { group: 'burger', count: 1 },
               { group: nil, count: 0 }
             ]
           }
@@ -358,7 +363,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         question: multiselect_question.title_multiloc,
         customFieldId: multiselect_question.id,
         required: false,
-        totalResponses: 15,
+        totalResponses: 11,
+        totalPicks: 16,
         answers: [
           {
             answer: 'option1',
@@ -383,7 +389,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
             count: 1,
             groups: [
               { group: 'pizza', count: 1 },
-              { group: 'burger', count: 0 },
+              { group: 'burger', count: 1 },
               { group: nil, count: 0 }
             ]
           }
