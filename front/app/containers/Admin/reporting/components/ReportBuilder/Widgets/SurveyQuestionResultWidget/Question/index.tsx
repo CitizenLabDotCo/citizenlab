@@ -6,7 +6,6 @@ import { useSurveyQuestionResult } from 'api/graph_data_units';
 // components
 import { Title, Text } from '@citizenlab/cl2-component-library';
 // import MultipleChoice from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MultipleChoice';
-import StackedGraph from './StackedGraph';
 import Source from './Source';
 
 // i18n
@@ -16,10 +15,6 @@ import messages from '../messages';
 
 // typings
 import { GroupMode } from 'api/graph_data_units/requestTypes';
-// import {
-//   Answer,
-//   SurveyQuestionMultilocs,
-// } from 'api/graph_data_units/responseTypes';
 
 interface Props {
   projectId: string;
@@ -28,26 +23,6 @@ interface Props {
   groupMode?: GroupMode;
   groupFieldId?: string;
 }
-
-// const addGroupByValueIfExists = (
-//   groupByValue: string | undefined,
-//   multilocs: SurveyQuestionMultilocs
-// ) => {
-//   return groupByValue && multilocs.group_by_value
-//     ? { group_by_value: multilocs.group_by_value[groupByValue] }
-//     : {};
-// };
-
-// const addMultilocs = (
-//   answers: Answer[],
-//   multilocs: SurveyQuestionMultilocs
-// ) => {
-//   return answers.map(({ count, answer, group_by_value }) => ({
-//     responses: count,
-//     answer: multilocs.answer[answer],
-//     ...addGroupByValueIfExists(group_by_value, multilocs),
-//   }));
-// };
 
 const SurveyQuestionResult = ({
   projectId,
@@ -68,24 +43,23 @@ const SurveyQuestionResult = ({
 
   if (!response) return null;
 
-  // const { answers, totalResponses, multilocs, question } =
-  //   response.data.attributes;
-
-  const { totalResponses, question } = response.data.attributes;
+  const { attributes } = response.data;
 
   return (
     <>
       <Title variant="h4" mt="0px" mb="8px">
-        {localize(question)}
+        {localize(attributes.question)}
       </Title>
       <Text mt="0px" mb="8px" color="textSecondary" variant="bodyS">
-        {formatMessage(messages.numberOfResponses, { count: totalResponses })}
+        {formatMessage(messages.numberOfResponses, {
+          count: attributes.totalResponses,
+        })}
       </Text>
       {/* <MultipleChoice
         multipleChoiceAnswers={addMultilocs(answers, multilocs)}
         totalResponses={totalResponses}
       /> */}
-      <StackedGraph surveyQuestionResult={response.data.attributes} />
+      {/* <StackedGraph surveyQuestionResult={response.data.attributes} /> */}
       <Source projectId={projectId} phaseId={phaseId} />
     </>
   );

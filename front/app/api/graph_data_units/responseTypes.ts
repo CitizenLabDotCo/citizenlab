@@ -38,7 +38,7 @@ export type SurveyResultsResponse = {
 
 // Survey question results
 export type Answer = {
-  answer: string;
+  answer: string | null;
   count: number;
 };
 
