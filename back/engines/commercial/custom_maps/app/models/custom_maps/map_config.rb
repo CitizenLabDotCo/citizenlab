@@ -29,8 +29,15 @@ module CustomMaps
 
     validates :zoom_level, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 20 }, allow_nil: true
     validates :tile_provider, format: { with: %r{\Ahttps://.+\z} }, allow_nil: true
-    # validates :mappable_id, presence: true, uniqueness: true
+    validates :mappable_id, uniqueness: true
+    validate :mappable_id_for_project
     validate :mappable_custom_field_is_input_type_point
+
+    def mappable_id_for_project
+      return unless mappable_type == 'Project' && mappable_id.blank?
+
+      errors.add(:mappable, message: 'The mappable_id cannot be blank for a project')
+    end
 
     def mappable_custom_field_is_input_type_point
       return unless mappable_type == 'CustomField' && mappable.input_type != 'point'

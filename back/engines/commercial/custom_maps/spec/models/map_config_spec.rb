@@ -32,9 +32,27 @@ RSpec.describe CustomMaps::MapConfig do
     end
   end
 
+  # Permitted so that we can create a map_config, before creating the (to be) associated mappable (custom_field) for a
+  # custom field used in a native survey, as the custom field(s) is/are created only when the survey form is submitted.
   describe 'when mappable is nil' do
-    it 'is invalid' do
+    it 'is valid' do
       map_config = build(:map_config, mappable: nil)
+      expect(map_config).to be_valid
+    end
+  end
+
+  describe "when mappable_type is 'Project', but mappable_id is nil" do
+    it 'is invalid' do
+      map_config = build(:map_config, mappable_type: 'Project', mappable_id: nil)
+      expect(map_config).to be_invalid
+    end
+  end
+
+  describe 'when mappable (ID) is not unique' do
+    it 'is invalid' do
+      project = create(:project)
+      create(:map_config, mappable: project)
+      map_config = build(:map_config, mappable: project)
       expect(map_config).to be_invalid
     end
   end
