@@ -7,7 +7,6 @@ import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
 import Renderer from '@arcgis/core/renderers/SimpleRenderer';
-import Popup from '@arcgis/core/widgets/Popup.js';
 import StartInitiativeButton from './components/StartInitiativeButton';
 import InitiativeInformationOverlay from './components/InitiativeInformationOverlay';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
@@ -24,8 +23,11 @@ import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 import {
   changeCursorOnHover,
+  esriPointToGeoJson,
   getClusterConfiguration,
   getMapPinSymbol,
+  goToMapLocation,
+  showAddInputPopup,
 } from 'components/EsriMap/utils';
 import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -134,80 +136,45 @@ const InitiativeMap = ({ list }: Props) => {
       mapView.hitTest(event).then((result) => {
         const elements = result.results; // These are map elements underneath our map click
         if (elements.length > 0) {
+          const topElement = elements[0];
           // User clicked an initiative pin OR a cluster
-          elements.forEach((element) => {
-            if (element.type === 'graphic') {
-              const graphicId = element.graphic.attributes.ID;
-              if (graphicId === undefined) {
-                // User clicked a cluster. Zoom in on the cluster.
-                mapView.goTo(
-                  {
-                    center: [
-                      element.mapPoint.longitude,
-                      element.mapPoint.latitude,
-                    ],
-                    zoom: mapView.zoom + 1,
-                  },
-                  {
-                    duration: 1000,
-                  }
-                );
-              } else {
-                // User clicked an initiative pin. Zoom to pin & open the information panel.
-                const initiativeId = graphics?.at(graphicId - 1)?.attributes
-                  .initiativeId;
+          if (topElement.type === 'graphic') {
+            const graphicId = topElement.graphic.attributes.ID;
+            const clusterCount = topElement.graphic.attributes.cluster_count;
+            if (clusterCount) {
+              // User clicked a cluster. Zoom in on the cluster.
+              goToMapLocation(
+                esriPointToGeoJson(topElement.mapPoint),
+                mapView,
+                mapView.zoom + 2
+              );
+              return;
+            } else if (graphicId) {
+              // User clicked an initiative pin. Zoom to pin & open the information panel.
+              const initiativeId = graphics?.at(graphicId - 1)?.attributes
+                .initiativeId;
 
-                if (initiativeId) {
-                  mapView.goTo(
-                    {
-                      center: [
-                        element.mapPoint.longitude,
-                        element.mapPoint.latitude,
-                      ],
-                    },
-                    { duration: 1000 }
-                  );
+              if (initiativeId) {
+                goToMapLocation(
+                  esriPointToGeoJson(topElement.mapPoint),
+                  mapView
+                ).then(() => {
                   setSelectedInitiative(initiativeId);
-                }
+                });
               }
+              return;
             }
-          });
-        } else {
-          // User clicked elsewhere the map. Show the "submit a proposal" popup.
-          mapView
-            .goTo(
-              {
-                // Center the map on the clicked location (so the popup will always show nicely).
-                center: [event.mapPoint.longitude, event.mapPoint.latitude],
-              },
-              { duration: 700 }
-            )
-            .then(() => {
-              setClickedMapLocation({
-                type: 'Point',
-                coordinates: [
-                  event.mapPoint.longitude,
-                  event.mapPoint.latitude,
-                ],
-              });
-              // Create an Esri popup
-              mapView.popup = new Popup({
-                collapseEnabled: false,
-                dockEnabled: false,
-                dockOptions: {
-                  buttonEnabled: false,
-                  breakpoint: false,
-                },
-                location: event.mapPoint,
-                title: formatMessage(messages.startProposalAtLocation),
-              });
-              // Set content of the popup to the node we created (so we can insert our React component via a portal)
-              mapView.popup.content = startInitiativeButtonNode;
-              // Close any open UI elements and open the popup
-              setSelectedInitiative(null);
-              mapView.openPopup();
-            });
+          }
         }
+        // Show the "submit a proposal" popup.
+        showAddInputPopup({
+          event,
+          mapView,
+          setClickedMapLocation,
+          setSelectedInput: setSelectedInitiative,
+          popupContentNode: startInitiativeButtonNode,
+          popupTitle: formatMessage(messages.startProposalAtLocation),
+        });
       });
     },
     [formatMessage, graphics, startInitiativeButtonNode]

@@ -15,6 +15,7 @@ import useUpdateMapConfig from 'modules/commercial/custom_maps/api/map_config/us
 
 // types
 import { IMapConfig } from 'modules/commercial/custom_maps/api/map_config/types';
+import { goToMapLocation } from 'components/EsriMap/utils';
 
 const GoToDefaultViewportButtonWrapper = styled.div`
   position: absolute;
@@ -46,13 +47,9 @@ const MapHelperOptions = ({ mapView, mapConfig, projectId }: Props) => {
 
   const goToDefaultMapView = () => {
     const centerPoint = mapConfig?.data.attributes.center_geojson;
-    mapView?.goTo(
-      {
-        center: [centerPoint?.coordinates[0], centerPoint?.coordinates[1]],
-        zoom: mapConfig?.data.attributes.zoom_level,
-      },
-      { duration: 500 }
-    );
+    if (mapView && centerPoint) {
+      goToMapLocation(centerPoint, mapView);
+    }
   };
 
   const setAsDefaultMapView = () => {

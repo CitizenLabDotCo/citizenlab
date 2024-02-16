@@ -10,7 +10,7 @@ import MapView from '@arcgis/core/views/MapView';
 import Basemap from '@arcgis/core/Basemap';
 import Layer from '@arcgis/core/layers/Layer';
 import Graphic from '@arcgis/core/Graphic';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, media } from '@citizenlab/cl2-component-library';
 import Fullscreen from '@arcgis/core/widgets/Fullscreen';
 import Point from '@arcgis/core/geometry/Point';
 import Expand from '@arcgis/core/widgets/Expand';
@@ -21,10 +21,23 @@ import LayerList from '@arcgis/core/widgets/LayerList';
 import { getDefaultBasemap } from './utils';
 import { isNil } from 'utils/helperUtils';
 import { debounce } from 'lodash-es';
+import styled from 'styled-components';
 
 // typings
 import { EsriUiElement } from './types';
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
+
+// Custom Esri styles
+const MapContainer = styled(Box)`
+  ${media.phone`
+    .esri-legend {
+      max-width: 240px !important;
+    }
+    .esri-layer-list {
+      max-width: 220px !important;
+    }
+  `}
+`;
 
 export type EsriMapProps = {
   id?: string;
@@ -46,6 +59,7 @@ type InitialData = {
   showFullscreenOption?: boolean;
   showLegend?: boolean;
   showLayerVisibilityControl?: boolean;
+  zoomWidgetLocation?: 'left' | 'right';
 };
 
 const EsriMap = ({
@@ -110,6 +124,12 @@ const EsriMap = ({
         minZoom: 5,
       };
 
+      // Change location of zoom widget if specified
+      if (initialData?.zoomWidgetLocation === 'right') {
+        const zoom = mapView.ui.find('zoom');
+        mapView.ui.add(zoom, 'top-right');
+      }
+
       // Add fullscreen widget if set
       if (initialData?.showFullscreenOption) {
         const fullscreen = new Fullscreen({
@@ -128,6 +148,7 @@ const EsriMap = ({
           }),
           view: mapView,
           expanded: false,
+          mode: 'floating',
         });
 
         mapView.ui.add(legend, 'bottom-right');
@@ -141,9 +162,10 @@ const EsriMap = ({
           }),
           view: mapView,
           expanded: false,
+          mode: 'floating',
         });
         mapView.ui.add(layerList, {
-          position: 'top-right',
+          position: 'bottom-right',
         });
       }
 
@@ -194,7 +216,7 @@ const EsriMap = ({
     if (onHover && mapView) {
       const debouncedHover = debounce((event: any) => {
         onHover(event, mapView);
-      }, 10);
+      }, 60);
 
       mapView.on('pointer-move', debouncedHover);
     }
@@ -202,7 +224,7 @@ const EsriMap = ({
 
   return (
     <>
-      <Box
+      <MapContainer
         id={id}
         ref={mapRef}
         width={width ? `${width}` : '100%'}

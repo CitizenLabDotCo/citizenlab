@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import IdeasList from './IdeasList';
 import IdeasMap from 'components/IdeasMap';
 import { IIdeaData } from 'api/ideas/types';
 import { IdeaDefaultSortMethod } from 'api/phases/types';
+import useMapConfig from 'modules/commercial/custom_maps/api/map_config/useMapConfig';
 
 interface Props {
   view: 'card' | 'map';
@@ -19,53 +20,52 @@ interface Props {
   onLoadMore(): void;
 }
 
-const IdeasView = ({
-  view,
-  hideImage,
-  hideImagePlaceholder,
-  hideIdeaStatus,
-  projectId,
-  phaseId,
-  list,
-  querying,
-  hasMore,
-  loadingMore,
-  onLoadMore,
-}: Props) => {
-  return (
-    <>
-      {view === 'card' && list && (
-        <IdeasList
-          ariaLabelledBy={'view-tab-1'}
-          id={'view-panel-1'}
-          querying={querying}
-          onLoadMore={onLoadMore}
-          hasMore={hasMore}
-          hasIdeas={list.length > 0}
-          loadingMore={loadingMore}
-          list={list}
-          tabIndex={0}
-          hideImage={hideImage}
-          hideImagePlaceholder={hideImagePlaceholder}
-          hideIdeaStatus={hideIdeaStatus}
-          phaseId={phaseId}
-        />
-      )}
-      {/*
-        IdeasMap is only used in projects at the moment,
-        so I narrowed down the projectId type.
-      */}
-      {view === 'map' && projectId && (
-        <IdeasMap
-          ariaLabelledBy={'view-tab-2'}
-          id={'view-panel-2'}
-          projectId={projectId}
-          phaseId={phaseId}
-          tabIndex={0}
-        />
-      )}
-    </>
-  );
-};
+const IdeasView = memo<Props>(
+  ({
+    view,
+    hideImage,
+    hideImagePlaceholder,
+    hideIdeaStatus,
+    projectId,
+    phaseId,
+    list,
+    querying,
+    hasMore,
+    loadingMore,
+    onLoadMore,
+  }: Props) => {
+    const { data: mapConfig } = useMapConfig(projectId);
+
+    return (
+      <>
+        {view === 'card' && list && (
+          <IdeasList
+            ariaLabelledBy={'view-tab-1'}
+            id={'view-panel-1'}
+            querying={querying}
+            onLoadMore={onLoadMore}
+            hasMore={hasMore}
+            hasIdeas={list.length > 0}
+            loadingMore={loadingMore}
+            list={list}
+            tabIndex={0}
+            hideImage={hideImage}
+            hideImagePlaceholder={hideImagePlaceholder}
+            hideIdeaStatus={hideIdeaStatus}
+            phaseId={phaseId}
+          />
+        )}
+        {view === 'map' && projectId && mapConfig && (
+          <IdeasMap
+            mapConfig={mapConfig}
+            projectId={projectId}
+            phaseId={phaseId}
+            ideasList={list}
+          />
+        )}
+      </>
+    );
+  }
+);
 
 export default IdeasView;

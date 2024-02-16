@@ -1,160 +1,66 @@
 import React, {
   memo,
-  useState,
-  useRef,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
+  useRef,
+  useState,
 } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { popup, LatLng, Map as LeafletMap, LatLngTuple } from 'leaflet';
-import { CSSTransition } from 'react-transition-group';
 
 // components
-import Map, { Point } from 'components/Map';
-import IdeaButton from 'components/IdeaButton';
+import EsriMap from 'components/EsriMap';
+import MapView from '@arcgis/core/views/MapView';
+import LayerHoverLabel from 'modules/commercial/custom_maps/admin/containers/ProjectCustomMapConfigPage/LayerHoverLabel';
 import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
-import IdeaMapCard from './IdeaMapCard';
+import Graphic from '@arcgis/core/Graphic';
+import Point from '@arcgis/core/geometry/Point';
+import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
+import Renderer from '@arcgis/core/renderers/SimpleRenderer';
+import InstructionMessage from './InstructionMessage';
 import {
-  Icon,
-  useWindowSize,
+  Box,
   media,
+  useBreakpoint,
+  useWindowSize,
   viewportWidths,
-  colors,
-  fontSizes,
 } from '@citizenlab/cl2-component-library';
 
 // hooks
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
-import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
-import useAuthUser from 'api/me/useAuthUser';
-
-// router
-import { useSearchParams } from 'react-router-dom';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-// events
-import {
-  setLeafletMapSelectedMarker,
-  setLeafletMapHoveredMarker,
-  leafletMapSelectedMarker$,
-  leafletMapClicked$,
-} from 'components/UI/LeafletMap/events';
-
-// i18n
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import messages from './messages';
-
-// styling
-import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import useLocalize from 'hooks/useLocalize';
 
 // utils
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
+import {
+  createEsriGeoJsonLayers,
+  getMapPinSymbol,
+  getClusterConfiguration,
+  showAddInputPopup,
+  goToMapLocation,
+  esriPointToGeoJson,
+} from 'components/EsriMap/utils';
+import {
+  InnerContainer,
+  getInnerContainerLeftMargin,
+  initialContainerWidth,
+  initialInnerContainerLeftMargin,
+  mapHeightDesktop,
+  mapHeightMobile,
+} from './utils';
+import styled, { useTheme } from 'styled-components';
+import { CSSTransition } from 'react-transition-group';
 
-// typings
-import { IIdeaMarkerData } from 'api/idea_markers/types';
-
-const mapMarginDesktop = 70;
-const mapHeightDesktop = '83vh';
-const mapHeightMobile = '78vh';
-
-const Container = styled.div``;
-
-const InnerContainer = styled.div<{
-  leftMargin: number | null;
-  isPostingEnabled: boolean;
-}>`
-  width: ${({ leftMargin }) =>
-    leftMargin ? `calc(100vw - ${mapMarginDesktop * 2}px)` : '100%'};
-  margin-left: ${({ leftMargin }) =>
-    leftMargin ? `-${leftMargin}px` : 'auto'};
-  position: relative;
-
-  @media screen and (min-width: 2000px) {
-    width: 1800px;
-    margin-left: -${(1800 - maxPageWidth) / 2}px;
-  }
-
-  > .create-idea-wrapper {
-    display: none;
-  }
-
-  .activeArea {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    left: 500px;
-  }
-
-  & .pbAssignBudgetControlContainer {
-    padding: 20px;
-    background: ${colors.background};
-  }
-
-  ${(props) =>
-    media.desktop`
-    & .leaflet-control-zoom {
-      margin-top: ${props.isPostingEnabled ? '78px' : '25px'} !important;
-      margin-right: 14px !important;
-    }
-
-    & .leaflet-control-layers {
-      margin-right: 15px !important;
-    }
-  `}
-
-  ${media.tablet`
-    .activeArea {
-      left: 0px;
-    }
-  `}
-`;
-
-const InfoOverlay = styled.div`
-  position: absolute;
-  top: 25px;
-  right: 15px;
-  z-index: 900;
-
-  ${media.tablet`
-    width: calc(100% - 40px);
-    top: calc(${mapHeightMobile} - 72px);
-    right: 20px;
-  `}
-`;
-
-const InfoOverlayInner = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 14px 17px;
-  border-radius: 3px;
-  background: #e1f0f4;
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
-  position: relative;
-`;
-
-const InfoOverlayIcon = styled(Icon)`
-  fill: ${colors.teal700};
-  flex: 0 0 24px;
-  margin-right: 8px;
-`;
-
-const InfoOverlayText = styled.p`
-  color: ${colors.teal700};
-  font-size: ${fontSizes.base}px;
-  font-weight: 500;
-  line-height: normal;
-`;
-
-const IdeaButtonWrapper = styled.div``;
+// types
+import { IMapConfig } from 'modules/commercial/custom_maps/api/map_config/types';
+import { IIdeaData } from 'api/ideas/types';
+import { useSearchParams } from 'react-router-dom';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
+import StartIdeaButton from './StartIdeaButton';
+import IdeaMapCard from './IdeaMapCard';
 
 const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
   width: 390px;
-  height: calc(${mapHeightDesktop} - 50px);
+  height: calc(${mapHeightDesktop} - 80px);
   position: absolute;
   display: flex;
   top: 25px;
@@ -169,7 +75,7 @@ const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
 const StyledIdeaMapCard = styled(IdeaMapCard)<{ isClickable: boolean }>`
   width: calc(100% - 24px);
   position: absolute;
-  top: calc(${mapHeightMobile} - 130px - 24px);
+  top: calc(${mapHeightMobile} - 220px - 24px);
   left: 12px;
   right: 12px;
   z-index: 1001;
@@ -179,296 +85,343 @@ const StyledIdeaMapCard = styled(IdeaMapCard)<{ isClickable: boolean }>`
 
   &.animation-enter {
     opacity: 0;
-    top: calc(${mapHeightMobile} - 130px);
 
     &.animation-enter-active {
       opacity: 1;
-      top: calc(${mapHeightMobile} - 130px - 24px);
     }
   }
 `;
 
-interface Props {
-  projectId: string;
-  phaseId?: string;
-  className?: string;
-  id?: string;
-  ariaLabelledBy?: string;
-  tabIndex?: number;
-}
-
-const getInnerContainerLeftMargin = (
-  windowWidth: number,
-  containerWidth: number
-) => {
-  const leftMargin =
-    Math.round((windowWidth - containerWidth) / 2) - mapMarginDesktop;
-  return leftMargin > 0 ? leftMargin : null;
-};
-
-const initialWindowWidth = Math.max(
-  document.documentElement.clientWidth || 0,
-  window.innerWidth || 0
-);
-const initialContainerWidth =
-  document?.getElementById('e2e-ideas-container')?.offsetWidth ||
-  (initialWindowWidth < maxPageWidth ? initialWindowWidth - 40 : maxPageWidth);
-const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
-  initialWindowWidth,
-  initialContainerWidth
-);
-
-const IdeasMap = memo<Props>((props) => {
-  const { projectId, phaseId, className, id, ariaLabelledBy, tabIndex } = props;
-  const [searchParams] = useSearchParams();
-  const { data: project } = useProjectById(projectId);
-  const { data: phase } = usePhase(phaseId);
-  const { windowWidth } = useWindowSize();
-  const tablet = windowWidth <= viewportWidths.tablet;
-  const { data: authUser } = useAuthUser();
-
-  // refs
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const ideaButtonWrapperRef = useRef<HTMLDivElement | null>(null);
-
-  // state
-  const [map, setMap] = useState<LeafletMap | null>(null);
-  const [selectedLatLng, setSelectedLatLng] = useState<LatLng | null>(null);
-  const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
-  const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
-    initialInnerContainerLeftMargin
-  );
-  const [isCardClickable, setIsCardClickable] = useState(true);
-  const [initialMapCenter, setInitialMapCenter] = useState<
-    LatLngTuple | undefined
-  >(undefined);
-
-  // ideaMarkers
-  const selectedIdeaMarkerId = searchParams.get('idea_map_id');
-  const search = searchParams.get('search');
-  const topicsParam = searchParams.get('topics');
-  const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
-
-  const [initiallySelectedMarkerId, setInitiallySelectedMarkerId] = useState<
-    string | null
-  >(selectedIdeaMarkerId);
-
-  const { data: ideaMarkers } = useIdeaMarkers({
-    projectIds: [projectId],
-    phaseId,
-    search,
-    topics,
-  });
-
-  const ideaPostingActionDescriptor =
-    project?.data.attributes.action_descriptor.posting_idea;
-
-  const isAdminOrModerator = authUser
-    ? isAdmin(authUser) || isProjectModerator(authUser)
-    : false;
-
-  const isIdeaPostingEnabled =
-    ideaPostingActionDescriptor?.enabled === true || isAdminOrModerator;
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useLayoutEffect(() => {
-    const newContainerWidth = containerRef.current
-      ?.getBoundingClientRect()
-      .toJSON()?.width;
-
-    if (newContainerWidth && newContainerWidth !== containerWidth) {
-      setContainerWidth(newContainerWidth);
-    }
-  });
-
-  useEffect(() => {
-    const subscriptions = [
-      leafletMapSelectedMarker$.subscribe((ideaId) => {
-        // temporarily disable pointer events on the mobile ideacard popup to avoid
-        // the marker click event from propagating to the card that migth pop up on top of it
-        setIsCardClickable(false);
-        setTimeout(() => {
-          setIsCardClickable(true);
-        }, 200);
-
-        updateSearchParams({ idea_map_id: ideaId });
-      }),
-      leafletMapClicked$.subscribe((latLng) => {
-        setSelectedLatLng(latLng);
-      }),
-    ];
-
-    return () => {
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [project, phase]);
-
-  useEffect(() => {
-    if (
-      map &&
-      selectedLatLng &&
-      isIdeaPostingEnabled &&
-      ideaButtonWrapperRef?.current
-    ) {
-      popup({ closeButton: true })
-        .setLatLng(selectedLatLng)
-        .setContent(ideaButtonWrapperRef.current)
-        .openOn(map);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, selectedLatLng]);
-
-  useEffect(() => {
-    setInnerContainerLeftMargin(
-      getInnerContainerLeftMargin(windowWidth, containerWidth)
-    );
-  }, [windowWidth, containerWidth, tablet]);
-
-  const points = useMemo(() => {
-    if (!isNilOrError(ideaMarkers) && ideaMarkers.data.length > 0) {
-      const ideaPoints: Point[] = [];
-
-      ideaMarkers.data.forEach((ideaMarker) => {
-        if (
-          ideaMarker.attributes &&
-          ideaMarker.attributes.location_point_geojson
-        ) {
-          ideaPoints.push({
-            ...ideaMarker.attributes.location_point_geojson,
-            id: ideaMarker.id,
-          });
-        }
-      });
-
-      return ideaPoints;
-    }
-
-    return;
-  }, [ideaMarkers]);
-
-  const handleMapOnInit = (map: LeafletMap) => {
-    setMap(map);
-  };
-
-  const deselectIdeaMarker = () => {
-    updateSearchParams({ idea_map_id: null });
-    setLeafletMapSelectedMarker(null);
-    setLeafletMapHoveredMarker(null);
-  };
-
-  const selectedIdeaMarker = useMemo(() => {
-    return ideaMarkers?.data.find(({ id }) => id === selectedIdeaMarkerId);
-  }, [ideaMarkers, selectedIdeaMarkerId]);
-
-  useEffect(() => {
-    if (!initiallySelectedMarkerId || initialMapCenter) return;
-    const point = selectedIdeaMarker?.attributes.location_point_geojson;
-
-    if (!point) {
-      // For whatever reason, ideaMarkers also includes ideas without
-      // markers. If the search params contain one of those,
-      // we do nothing
-      setInitiallySelectedMarkerId(null);
-      return;
-    }
-
-    const { coordinates } = point;
-    setInitialMapCenter([coordinates[1], coordinates[0]]);
-  }, [initiallySelectedMarkerId, initialMapCenter, selectedIdeaMarker]);
-
-  if (initiallySelectedMarkerId && !initialMapCenter) {
-    return null;
+// Custom styling for Esri map
+const StyledMapContainer = styled(Box)`
+  calcite-action-bar {
+    display: none;
   }
 
-  return (
-    <Container
-      ref={containerRef}
-      className={className || ''}
-      id={id}
-      aria-labelledby={ariaLabelledBy}
-      tabIndex={tabIndex}
-    >
-      <InnerContainer
-        leftMargin={innerContainerLeftMargin}
-        isPostingEnabled={isIdeaPostingEnabled}
-      >
-        {isIdeaPostingEnabled && (
-          <InfoOverlay>
-            <InfoOverlayInner>
-              <InfoOverlayIcon name="info-outline" />
-              <InfoOverlayText>
-                {!isAdminOrModerator ? (
-                  <FormattedMessage
-                    {...(tablet
-                      ? messages.tapOnMapToAdd
-                      : messages.clickOnMapToAdd)}
-                  />
-                ) : (
-                  <FormattedMessage
-                    {...(tablet
-                      ? messages.tapOnMapToAddAdmin
-                      : messages.clickOnMapToAddAdmin)}
-                  />
-                )}
-              </InfoOverlayText>
-            </InfoOverlayInner>
-          </InfoOverlay>
-        )}
+  .esri-popup__main-container {
+    max-width: 300px !important;
+  }
+`;
 
-        <ScreenReaderOnly>
-          <FormattedMessage {...messages.a11y_mapTitle} />
-        </ScreenReaderOnly>
+export interface Props {
+  mapConfig: IMapConfig;
+  projectId: string;
+  phaseId?: string;
+  ideasList: IIdeaData[];
+}
 
-        {tablet && (
-          <CSSTransition
-            classNames="animation"
-            in={!!selectedIdeaMarker}
-            timeout={300}
+const IdeasMap = memo<Props>(
+  ({ mapConfig, projectId, phaseId, ideasList }: Props) => {
+    const theme = useTheme();
+    const localize = useLocalize();
+    const { formatMessage } = useIntl();
+    const [searchParams] = useSearchParams();
+    const isMobileOrSmaller = useBreakpoint('phone');
+    const isTabletOrSmaller = useBreakpoint('tablet');
+
+    // Create a div element to use for inserting React components into Esri map popup
+    // Docs: https://developers.arcgis.com/javascript/latest/custom-ui/#introduction
+    const startIdeaButtonNode = useMemo(() => {
+      return document.createElement('div');
+    }, []);
+
+    // Map state variables
+    const [esriMapView, setEsriMapview] = useState<MapView | null>(null);
+    const [hoveredLayerId, setHoveredLayerId] = useState<string | null>(null);
+    const [clickedMapLocation, setClickedMapLocation] =
+      useState<GeoJSON.Point | null>(null);
+    const [selectedIdea, setSelectedIdea] = useState<string | null>(
+      searchParams.get('selected_idea_id') || null
+    );
+
+    // Handling for dynamic container width
+    const { windowWidth } = useWindowSize();
+    const tablet = windowWidth <= viewportWidths.tablet;
+
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
+    const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
+      initialInnerContainerLeftMargin
+    );
+
+    useLayoutEffect(() => {
+      const newContainerWidth = containerRef.current
+        ?.getBoundingClientRect()
+        .toJSON()?.width;
+
+      if (newContainerWidth && newContainerWidth !== containerWidth) {
+        setContainerWidth(newContainerWidth);
+      }
+    }, [containerWidth]);
+
+    useEffect(() => {
+      setInnerContainerLeftMargin(
+        getInnerContainerLeftMargin(windowWidth, containerWidth)
+      );
+    }, [windowWidth, containerWidth, tablet]);
+
+    // Create and configure the map data
+    // Create GeoJSON layers to add to Esri map
+    const geoJsonLayers = useMemo(() => {
+      return createEsriGeoJsonLayers(
+        mapConfig.data.attributes.layers,
+        localize
+      );
+    }, [mapConfig, localize]);
+
+    // Create point graphics layer from ideas list and add to Esri map
+    const graphics = useMemo(() => {
+      return ideasList?.map((idea) => {
+        return new Graphic({
+          geometry: new Point({
+            longitude: idea?.attributes?.location_point_geojson?.coordinates[0],
+            latitude: idea?.attributes?.location_point_geojson?.coordinates[1],
+          }),
+          attributes: {
+            ideaId: idea?.id,
+          },
+        });
+      });
+    }, [ideasList]);
+
+    // Create an Esri map layer from the graphics so we can add a cluster display
+    const ideasLayer = useMemo(() => {
+      if (graphics) {
+        return new FeatureLayer({
+          source: graphics, // Array of initiative graphics
+          title: formatMessage(messages.userInputs),
+          objectIdField: 'ID',
+          fields: [
+            {
+              name: 'ID',
+              type: 'oid',
+            },
+            {
+              name: 'ideaId', // From the graphics attributes
+              type: 'string',
+            },
+          ],
+          // Set the symbol used to render the graphics
+          renderer: new Renderer({
+            symbol: getMapPinSymbol({
+              color: theme.colors.tenantPrimary,
+              sizeInPx: 42,
+            }),
+          }),
+          // Add cluster display to this layer
+          featureReduction: getClusterConfiguration(theme.colors.tenantPrimary),
+        });
+      }
+      return undefined;
+    }, [formatMessage, graphics, theme.colors.tenantPrimary]);
+
+    const onMapClick = useCallback(
+      (event: any, mapView: MapView) => {
+        // On map click, we either open an existing idea OR show the "submit an idea" popup
+        // depending on whether the user has clicked an existing map feature.
+        mapView.hitTest(event).then((result) => {
+          const elements = result.results; // These are map elements underneath our map click
+          if (elements.length > 0) {
+            const topElement = elements[0];
+            // User clicked an idea pin OR a cluster
+            if (topElement.type === 'graphic') {
+              const graphicId = topElement?.graphic?.attributes?.ID;
+              const clusterCount =
+                topElement?.graphic?.attributes?.cluster_count;
+              if (clusterCount) {
+                // User clicked a cluster. Zoom in on the cluster.
+                goToMapLocation(
+                  esriPointToGeoJson(topElement.mapPoint),
+                  mapView,
+                  mapView.zoom + 2
+                );
+              } else if (graphicId) {
+                // User clicked an idea pin. Zoom to pin & open idea in information panel.
+                const ideaId = graphics?.at(graphicId - 1)?.attributes.ideaId;
+
+                if (ideaId) {
+                  goToMapLocation(
+                    esriPointToGeoJson(topElement.mapPoint),
+                    mapView
+                  ).then(() => {
+                    setSelectedIdea(ideaId);
+                    // Add graphic symbol
+                    const geometry = topElement.graphic.geometry;
+                    if (geometry.type === 'point') {
+                      const graphic = new Graphic({
+                        geometry,
+                        symbol: getMapPinSymbol({
+                          color: theme.colors.tenantSecondary,
+                          sizeInPx: 42,
+                        }),
+                      });
+                      mapView.graphics.removeAll();
+                      mapView.graphics.add(graphic);
+                      setTimeout(() => {
+                        mapView.graphics.removeAll();
+                      }, 4000);
+                    }
+                  });
+                }
+              } else {
+                // Show the "Submit an idea" popup
+                showAddInputPopup({
+                  event,
+                  mapView,
+                  setClickedMapLocation,
+                  setSelectedInput: setSelectedIdea,
+                  popupContentNode: startIdeaButtonNode,
+                  popupTitle: formatMessage(messages.submitIdea),
+                });
+              }
+            }
+          } else {
+            showAddInputPopup({
+              event,
+              mapView,
+              setClickedMapLocation,
+              setSelectedInput: setSelectedIdea,
+              popupContentNode: startIdeaButtonNode,
+              popupTitle: formatMessage(messages.submitIdea),
+            });
+          }
+        });
+      },
+      [
+        formatMessage,
+        graphics,
+        startIdeaButtonNode,
+        theme.colors.tenantSecondary,
+      ]
+    );
+
+    const onMapHover = useCallback(
+      (event: any, mapView: MapView) => {
+        // Save the esriMapView in state
+        if (!esriMapView) {
+          setEsriMapview(mapView);
+        }
+
+        mapView.hitTest(event).then((result) => {
+          const elements = result.results; // These are map elements underneath our cursor
+          if (elements.length > 0) {
+            // User hovered over an element on the map
+            const topElement = elements[0];
+            // Change cursor to pointer
+            document.body.style.cursor = 'pointer';
+            if (topElement.type === 'graphic') {
+              // Set the hovered layer id
+              const customParameters =
+                topElement.layer && topElement.layer['customParameters'];
+              setHoveredLayerId(customParameters?.layerId || null);
+            }
+          } else {
+            document.body.style.cursor = 'auto';
+            setHoveredLayerId(null);
+          }
+        });
+      },
+      [esriMapView]
+    );
+
+    const onSelectIdeaFromList = useCallback(
+      (selectedIdeaId: string | null) => {
+        const ideaPoint = ideasList.find((idea) => idea.id === selectedIdeaId)
+          ?.attributes?.location_point_geojson;
+
+        if (selectedIdeaId && ideaPoint && esriMapView) {
+          goToMapLocation(ideaPoint, esriMapView).then(() => {
+            const graphic = new Graphic({
+              geometry: new Point({
+                latitude: ideaPoint.coordinates[1],
+                longitude: ideaPoint.coordinates[0],
+              }),
+              symbol: getMapPinSymbol({
+                color: theme.colors.tenantSecondary,
+                sizeInPx: 42,
+              }),
+            });
+            esriMapView.graphics.removeAll();
+            esriMapView.graphics.add(graphic);
+            setTimeout(() => {
+              esriMapView.graphics.removeAll();
+            }, 4000);
+
+            setSelectedIdea(selectedIdeaId);
+            return;
+          });
+        }
+
+        setSelectedIdea(selectedIdeaId);
+      },
+      [ideasList, esriMapView, theme.colors.tenantSecondary]
+    );
+
+    return (
+      <>
+        <StyledMapContainer ref={containerRef}>
+          <InnerContainer
+            leftMargin={innerContainerLeftMargin}
+            isPostingEnabled={true}
           >
-            <StyledIdeaMapCard
-              ideaMarker={selectedIdeaMarker as IIdeaMarkerData}
-              onClose={deselectIdeaMarker}
-              isClickable={isCardClickable}
+            <EsriMap
+              initialData={{
+                center: mapConfig.data.attributes.center_geojson,
+                zoom: Number(mapConfig.data.attributes.zoom_level),
+                showLayerVisibilityControl: true,
+                showLegend: true,
+                zoomWidgetLocation: 'right',
+              }}
+              height={isMobileOrSmaller ? '68vh' : '80vh'}
+              layers={
+                ideasLayer ? [...geoJsonLayers, ideasLayer] : geoJsonLayers
+              }
+              onHover={onMapHover}
+              onClick={onMapClick}
+            />
+            <LayerHoverLabel
+              layer={mapConfig?.data.attributes.layers.find(
+                (layer) => layer.id === hoveredLayerId
+              )}
+            />
+            {phaseId && projectId && (
+              <StartIdeaButton
+                modalPortalElement={startIdeaButtonNode}
+                latlng={clickedMapLocation}
+                phaseId={phaseId}
+                projectId={projectId}
+              />
+            )}
+            {isTabletOrSmaller && (
+              <CSSTransition
+                classNames="animation"
+                in={!!selectedIdea}
+                timeout={300}
+              >
+                <StyledIdeaMapCard
+                  idea={ideasList?.find(({ id }) => id === selectedIdea)}
+                  onClose={() => {
+                    setSelectedIdea(null);
+                  }}
+                  onSelectIdea={setSelectedIdea}
+                  isClickable={true}
+                  projectId={projectId}
+                  phaseId={phaseId}
+                />
+              </CSSTransition>
+            )}
+            <StyledDesktopIdeaMapOverlay
               projectId={projectId}
               phaseId={phaseId}
+              onSelectIdea={onSelectIdeaFromList}
+              selectedIdea={selectedIdea}
             />
-          </CSSTransition>
-        )}
-
-        <Map
-          initialSelectedPointId={initiallySelectedMarkerId ?? undefined}
-          centerLatLng={initialMapCenter}
-          onInit={handleMapOnInit}
-          projectId={projectId}
-          points={points}
-          mapHeight={tablet ? mapHeightMobile : mapHeightDesktop}
-          noMarkerClustering={false}
-          zoomControlPosition={tablet ? 'topleft' : 'topright'}
-          layersControlPosition={tablet ? 'topright' : 'bottomright'}
-        />
-
-        <StyledDesktopIdeaMapOverlay
-          projectId={projectId}
-          phaseId={phaseId}
-          deselectIdeaMarker={deselectIdeaMarker}
-        />
-
-        <IdeaButtonWrapper
-          className="create-idea-wrapper"
-          ref={ideaButtonWrapperRef}
-        >
-          <IdeaButton
-            projectId={projectId}
-            latLng={selectedLatLng}
-            inMap={true}
-            phase={phase?.data}
-            participationMethod="ideation"
-          />
-        </IdeaButtonWrapper>
-      </InnerContainer>
-    </Container>
-  );
-});
+            <InstructionMessage projectId={projectId} />
+          </InnerContainer>
+        </StyledMapContainer>
+      </>
+    );
+  }
+);
 
 export default IdeasMap;

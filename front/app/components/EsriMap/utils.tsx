@@ -1,9 +1,17 @@
 import { colors } from '@citizenlab/cl2-component-library';
 
-// components
+// arcGIS
 import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
 import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
 import Layer from '@arcgis/core/layers/Layer';
+import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
+import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
+import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
+import Popup from '@arcgis/core/widgets/Popup';
+import Point from '@arcgis/core/geometry/Point';
+
+// utils
+import { hexToRGBA } from 'utils/helperUtils';
 
 // constants
 import {
@@ -16,6 +24,8 @@ import {
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
 import MapView from '@arcgis/core/views/MapView';
+import { IMapLayerAttributes } from 'modules/commercial/custom_maps/api/map_layers/types';
+import { Localize } from 'hooks/useLocalize';
 
 // getDefaultBasemap
 // Description: Gets the correct basemap given a certain tileProvider URL.
@@ -69,10 +79,7 @@ export const getMapPinSymbol = ({ color, sizeInPx }: MapPinSymbolProps) => {
   });
 };
 
-export const getMakiSymbolFromPath = (
-  iconName: makiIconNames,
-  color: string
-) => {
+export const getEsriMakiSymbol = (iconName: makiIconNames, color: string) => {
   return fetch(
     // Fetch the SVG from the maki icons endpoint
     `https://unpkg.com/@icon/maki-icons/icons/${iconName.toLowerCase()}.svg`
@@ -94,42 +101,6 @@ export const getMakiSymbolFromPath = (
         path,
       });
     });
-};
-
-// getShapeSymbol
-// Description: Get a simple shape symbol (with an optional outline width & color value)
-type SimpleShape = 'circle' | 'square' | 'cross' | 'diamond' | 'triangle' | 'x';
-export const getShapeSymbol = (
-  shape: SimpleShape,
-  color?: string,
-  outlineWidth?: number
-) => {
-  return new SimpleMarkerSymbol({
-    style: shape,
-    color: color || colors.white,
-    outline: {
-      color: 'rgba(255, 255, 255, 0.2)',
-      width: outlineWidth || 1,
-    },
-  });
-};
-
-// changeCursorOnHover
-// Description: On map hover, change the cursor to pointer if hovering over a graphic
-export const changeCursorOnHover = (event: any, mapView: MapView) => {
-  mapView.hitTest(event).then((result) => {
-    if (result.results.length > 0) {
-      // Hovering over marker(s)
-      result.results.forEach((r) => {
-        if (r.type === 'graphic') {
-          // Change cursor to pointer
-          document.body.style.cursor = 'pointer';
-        }
-      });
-    } else {
-      document.body.style.cursor = 'auto';
-    }
-  });
 };
 
 type makiIconNames =
@@ -246,37 +217,241 @@ type makiIconNames =
   | 'wetland'
   | 'zoo';
 
+// getShapeSymbol
+// Description: Get a simple shape symbol (with an optional outline width & color value)
+type SimpleShape = 'circle' | 'square' | 'cross' | 'diamond' | 'triangle' | 'x';
+export const getShapeSymbol = (
+  shape: SimpleShape,
+  color?: string,
+  outlineWidth?: number
+) => {
+  return new SimpleMarkerSymbol({
+    style: shape,
+    color: color || colors.white,
+    outline: {
+      color: 'rgba(255, 255, 255, 0.2)',
+      width: outlineWidth || 1,
+    },
+  });
+};
+
+// changeCursorOnHover
+// Description: On map hover, change the cursor to pointer if hovering over a graphic
+export const changeCursorOnHover = (event: any, mapView: MapView) => {
+  mapView.hitTest(event).then((result) => {
+    if (result.results.length > 0) {
+      // Hovering over marker(s)
+      result.results.forEach((r) => {
+        if (r.type === 'graphic') {
+          // Change cursor to pointer
+          document.body.style.cursor = 'pointer';
+        }
+      });
+    } else {
+      document.body.style.cursor = 'auto';
+    }
+  });
+};
+
+// goToMapLocation
+// Description: Center a specific location on the map
+export const goToMapLocation = async (
+  coordinates: GeoJSON.Point,
+  mapView: MapView,
+  zoomLevel?: number
+) => {
+  mapView
+    .goTo(
+      {
+        center: [coordinates.coordinates[0], coordinates.coordinates[1]],
+        zoom: zoomLevel || mapView.zoom,
+      },
+      {
+        duration: 1000,
+        easing: 'ease-in-out',
+      }
+    )
+    .catch(() => {
+      // Do nothing
+    });
+};
+
+// esriPointToGeoJson
+// Description: Converts an Esri point to an GeoJSON.Point
+export const esriPointToGeoJson = (esriPoint: Point): GeoJSON.Point => {
+  return {
+    type: 'Point',
+    coordinates: [esriPoint.longitude, esriPoint.latitude],
+  };
+};
+
 // getClusterConfiguration
 // Description: Gets the configuration needed to render a FeatureLayer with clustering on zoom in/out
 export const getClusterConfiguration = (clusterSymbolColor?: string) => {
   return new FeatureReductionCluster({
-    clusterRadius: '60px',
-    clusterMinSize: '32px',
-    clusterMaxSize: '44px',
+    maxScale: 500,
+    clusterMinSize: '20',
     symbol: getShapeSymbol(
       'circle',
       clusterSymbolColor || colors.coolGrey700,
       3
     ),
     labelingInfo: [
+      // Cluster configuration from Esri sample
+      // src: https://developers.arcgis.com/javascript/latest/sample-code/featurereduction-cluster-filter/
       {
         deconflictionStrategy: 'none',
         labelExpressionInfo: {
-          // {cluster_count} is a field containing
-          // the number of features in the cluster
-          expression: "Text($feature.cluster_count, '#,###')",
-        },
-        symbol: {
-          type: 'text',
-          color: colors.white,
-          font: {
-            weight: 'bold',
-            family: 'Noto Sans',
-            size: '14px',
-          },
+          expression:
+            '\n  $feature["cluster_count"];\n  var value = $feature["cluster_count"];\n  var num = Count(Text(Round(value)));\n  var label = When(\n    num < 4, Text(value, "#.#"),\n    num == 4, Text(value / Pow(10, 3), "#.0k"),\n    num <= 6, Text(value / Pow(10, 3), "#k"),\n    num == 7, Text(value / Pow(10, 6), "#.0m"),\n    num > 7, Text(value / Pow(10, 6), "#m"),\n    Text(value, "#,###")\n  );\n  return label;\n  ',
         },
         labelPlacement: 'center-center',
+        labelPosition: 'curved',
+        repeatLabel: true,
+        symbol: {
+          type: 'text',
+          color: [255, 255, 255, 255],
+          font: {
+            family: 'Noto Sans',
+            size: 10,
+            weight: 'bold',
+          },
+          horizontalAlignment: 'center',
+          kerning: true,
+          rotated: false,
+          text: '',
+          verticalAlignment: 'baseline',
+          xoffset: 0,
+          yoffset: 0,
+          angle: 0,
+          lineWidth: 192,
+          lineHeight: 1,
+        },
       },
     ],
+  });
+};
+
+// showAddInputPopup
+// Description: Shows popup where the user clicked and adds content from an popupContentNode
+// This is used by the Initiative Map and Idea Map to show "Submit" buttons on map click.
+type AddInputPopupProps = {
+  event;
+  mapView: MapView;
+  setClickedMapLocation: (location: GeoJSON.Point) => void;
+  setSelectedInput: (idea: string | null) => void;
+  popupTitle: string;
+  popupContentNode: HTMLDivElement;
+};
+
+export const showAddInputPopup = ({
+  event,
+  mapView,
+  setClickedMapLocation,
+  setSelectedInput,
+  popupContentNode,
+  popupTitle,
+}: AddInputPopupProps) => {
+  mapView
+    .goTo(
+      {
+        // Center the map on the clicked location (so the popup will always show nicely).
+        center: [event.mapPoint.longitude, event.mapPoint.latitude],
+      },
+      { duration: 700 }
+    )
+    .then(() => {
+      setClickedMapLocation({
+        type: 'Point',
+        coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
+      });
+      // Create an Esri popup
+      mapView.popup = new Popup({
+        collapseEnabled: false,
+        dockEnabled: false,
+        dockOptions: {
+          buttonEnabled: false,
+          breakpoint: false,
+        },
+        location: event.mapPoint,
+        title: popupTitle,
+      });
+      // Set content of the popup to the node we created (so we can insert our React component via a portal)
+      mapView.popup.content = popupContentNode;
+      // Close any open UI elements and open the popup
+      setSelectedInput(null);
+      mapView.openPopup();
+    })
+    .catch(() => {
+      // Do nothing
+    });
+};
+
+// createEsriGeoJsonLayers
+// Description: Create list of Esri GeoJSON layers from our mapConfig layers data
+export const createEsriGeoJsonLayers = (
+  layers: IMapLayerAttributes[],
+  localize: Localize
+) => {
+  return layers.map((layer) => {
+    // create a new blob from geojson featurecollection
+    const blob = new Blob([JSON.stringify(layer.geojson)], {
+      type: 'application/json',
+    });
+
+    // URL reference to the blob
+    const url = URL.createObjectURL(blob);
+
+    // create new geojson layer using the created url
+    const geoJsonLayer = new GeoJSONLayer({
+      url,
+      customParameters: {
+        layerId: layer.id,
+      },
+    });
+
+    const geometryType = layer.geojson?.features[0].geometry?.type;
+
+    if (geometryType === 'Polygon') {
+      // All features in a layer will have the same symbology, so we can just check the first feature's properties
+      const fillColour = layer.geojson?.features[0]?.properties?.fill;
+      geoJsonLayer.renderer = new SimpleRenderer({
+        symbol: new SimpleFillSymbol({
+          color: fillColour
+            ? hexToRGBA(fillColour, 0.3)
+            : hexToRGBA(colors.coolGrey600, 0.3),
+          outline: {
+            color: fillColour,
+            width: 2,
+          },
+        }),
+      });
+    } else if (geometryType === 'Point') {
+      // Get color and icon name
+      const pointColour = layer.geojson?.features[0]?.properties?.fill;
+      const pointSymbol =
+        layer.geojson?.features[0]?.properties?.['marker-symbol'];
+
+      // Generate the symbol
+      if (pointSymbol) {
+        // Use a custom Maki symbol
+        getEsriMakiSymbol(pointSymbol, pointColour).then((symbol) => {
+          geoJsonLayer.renderer = new SimpleRenderer({
+            symbol,
+          });
+        });
+      } else {
+        // Use the default map pin symbol
+        geoJsonLayer.renderer = new SimpleRenderer({
+          symbol: getMapPinSymbol({
+            color: pointColour || colors.coolGrey600,
+          }),
+        });
+      }
+    }
+    // Specify the legend title
+    geoJsonLayer.title = localize(layer.title_multiloc);
+
+    return geoJsonLayer;
   });
 };
