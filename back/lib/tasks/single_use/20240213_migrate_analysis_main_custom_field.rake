@@ -39,15 +39,15 @@ namespace :migrate_analysis do
 
           main_field_ids << main_field.id
 
-          if !analysis.update(main_custom_field: main_field)
-            errors[tenant.host] ||= {}
-            errors[tenant.host][analysis.id] = analysis.errors.full_messages
-            next
-          end
-
           if !analysis.analyses_additional_custom_fields.find_by(custom_field: main_field).destroy
             errors[tenant.host] ||= {}
             errors[tenant.host][analysis.id] = 'Could not remove main field from additional fields'
+            next
+          end
+
+          if !analysis.update(main_custom_field: main_field)
+            errors[tenant.host] ||= {}
+            errors[tenant.host][analysis.id] = analysis.errors.full_messages
             next
           end
         end
