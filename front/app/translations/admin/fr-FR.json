@@ -827,7 +827,7 @@
   "app.containers.Admin.projects.project.survey.upsell.bullet4": "Consultez notre site {link} pour un aperçu complet.",
   "app.containers.Admin.projects.project.survey.upsell.button": "Débloquer l'analyse de l'IA",
   "app.containers.Admin.projects.project.survey.upsell.supportArticle": "article d'assistance",
-  "app.containers.Admin.projects.project.survey.upsell.supportArticleLink": "https://support.citizenlab.co/en/articles/8316692-ai-analysis",
+  "app.containers.Admin.projects.project.survey.upsell.supportArticleLink": "https://support.citizenlab.co/fr/articles/8316692-analyse-soutenue-par-l-intelligence-artificielle",
   "app.containers.Admin.projects.project.survey.upsell.title": "Analyser les données plus rapidement grâce à l'IA",
   "app.containers.Admin.projects.project.survey.upsell.upsellMessage": "Cette fonction n'est pas incluse dans votre plan actuel. Adressez-vous à votre Government Success Manager ou à votre administrateur pour la débloquer.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Voir",
