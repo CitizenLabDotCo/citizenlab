@@ -75,8 +75,12 @@ type RegisterUserCampaignName =
   | 'comment_on_your_comment'
   | 'comment_on_idea_you_follow'
   | 'comment_on_initiative_you_follow'
+  | 'cosponsor_of_your_initiative'
+  | 'event_registration_confirmation'
   | 'idea_published'
+  | 'invite_received'
   | 'invite_reminder'
+  | 'invitation_to_cosponsor'
   | 'initiative_published'
   | 'mention_in_official_feedback'
   | 'official_feedback_on_idea_you_follow'
@@ -86,7 +90,12 @@ type RegisterUserCampaignName =
   | 'project_published'
   | 'status_change_on_idea_you_follow'
   | 'status_change_on_initiative_you_follow'
-  | 'user_digest';
+  | 'user_digest'
+  | 'voting_basket_not_submitted'
+  | 'voting_basket_submitted'
+  | 'voting_last_chance'
+  | 'voting_phase_started'
+  | 'voting_results';
 
 export const internalCommentNotificationTypes = [
   'mention_in_internal_comment',
@@ -109,6 +118,7 @@ type AdminModeratorCampaignName =
   | 'idea_marked_as_spam'
   | 'initiative_assigned_to_you'
   | 'initiative_marked_as_spam'
+  | 'initiative_resubmitted_for_review'
   | 'new_comment_for_admin'
   | 'new_idea_for_admin'
   | 'new_initiative_for_admin'
@@ -123,7 +133,6 @@ type AdminModeratorCampaignName =
 
 export type CampaignName =
   | 'manual'
-  | 'invite_received'
   | RegisterUserCampaignName
   | AdminModeratorCampaignName;
 
