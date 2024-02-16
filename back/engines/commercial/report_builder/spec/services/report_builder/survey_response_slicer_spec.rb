@@ -43,6 +43,14 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
       title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }
     )
   end
+  let_it_be(:lx_option) do
+    create(
+      :custom_field_option,
+      custom_field: city_survey_question,
+      key: 'lx',
+      title_multiloc: { 'en' => 'Lisbon', 'fr-FR' => 'Lisbonne', 'nl-NL': 'Lissabon' }
+    )
+  end
 
   ## Create food question
   let_it_be(:food_survey_question) do
@@ -160,6 +168,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         answers: [
           { answer: 'la', count: 5 },
           { answer: 'ny', count: 4 },
+          { answer: 'lx', count: 0 },
           { answer: nil, count: 1 }
         ],
         multilocs: generator.get_multilocs(city_survey_question, nil)
@@ -195,11 +204,46 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         required: true,
         totalResponses: 10,
         answers: [
-          { answer: 'la', group_by_value: 'female', count: 3 },
-          { answer: 'la', group_by_value: 'male', count: 2 },
-          { answer: 'ny', group_by_value: 'female', count: 2 },
-          { answer: 'ny', group_by_value: 'male', count: 2 },
-          { answer: nil, group_by_value: 'female', count: 1 }
+          {
+            answer: 'la',
+            count: 5,
+            groups: [
+              { group: 'male', count: 2 },
+              { group: 'female', count: 3 },
+              { group: 'unspecified', count: 0 },
+              { group: nil, count: 0 }
+            ]
+          },
+          {
+            answer: 'ny',
+            count: 4,
+            groups: [
+              { group: 'male', count: 2 },
+              { group: 'female', count: 2 },
+              { group: 'unspecified', count: 0 },
+              { group: nil, count: 0 }
+            ]
+          },
+          {
+            answer: 'lx',
+            count: 0,
+            groups: [
+              { group: 'male', count: 0 },
+              { group: 'female', count: 0 },
+              { group: 'unspecified', count: 0 },
+              { group: nil, count: 0 }
+            ]
+          },
+          {
+            answer: nil,
+            count: 1,
+            groups: [
+              { group: 'male', count: 0 },
+              { group: 'female', count: 1 },
+              { group: 'unspecified', count: 0 },
+              { group: nil, count: 0 }
+            ]
+          }
         ],
         multilocs: generator.get_multilocs(city_survey_question, user_custom_field)
       })
@@ -216,12 +260,36 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         required: false,
         totalResponses: 15,
         answers: [
-          { answer: 'option1', group_by_value: 'female', count: 5 },
-          { answer: 'option1', group_by_value: 'male', count: 4 },
-          { answer: 'option2', group_by_value: 'male', count: 2 },
-          { answer: 'option2', group_by_value: 'female', count: 2 },
-          { answer: nil, group_by_value: 'female', count: 1 },
-          { answer: 'option1', group_by_value: nil, count: 1 }
+          {
+            answer: 'option1',
+            count: 10,
+            groups: [
+              { group: 'male', count: 4 },
+              { group: 'female', count: 5 },
+              { group: 'unspecified', count: 0 },
+              { group: nil, count: 1 }
+            ]
+          },
+          {
+            answer: 'option2',
+            count: 4,
+            groups: [
+              { group: 'male', count: 2 },
+              { group: 'female', count: 2 },
+              { group: 'unspecified', count: 0 },
+              { group: nil, count: 0 }
+            ]
+          },
+          {
+            answer: nil,
+            count: 1,
+            groups: [
+              { group: 'male', count: 0 },
+              { group: 'female', count: 1 },
+              { group: 'unspecified', count: 0 },
+              { group: nil, count: 0 }
+            ]
+          }
         ],
         multilocs: generator.get_multilocs(multiselect_question, user_custom_field)
       })
@@ -240,11 +308,42 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         required: true,
         totalResponses: 10,
         answers: [
-          { answer: 'la', group_by_value: 'pizza', count: 3 },
-          { answer: 'la', group_by_value: 'burger', count: 2 },
-          { answer: 'ny', group_by_value: 'burger', count: 2 },
-          { answer: 'ny', group_by_value: 'pizza', count: 2 },
-          { answer: nil, group_by_value: 'pizza', count: 1 }
+          {
+            answer: 'la',
+            count: 5,
+            groups: [
+              { group: 'pizza', count: 3 },
+              { group: 'burger', count: 2 },
+              { group: nil, count: 0 }
+            ]
+          },
+          {
+            answer: 'ny',
+            count: 4,
+            groups: [
+              { group: 'pizza', count: 2 },
+              { group: 'burger', count: 2 },
+              { group: nil, count: 0 }
+            ]
+          },
+          {
+            answer: 'lx',
+            count: 0,
+            groups: [
+              { group: 'pizza', count: 0 },
+              { group: 'burger', count: 0 },
+              { group: nil, count: 0 }
+            ]
+          },
+          {
+            answer: nil,
+            count: 1,
+            groups: [
+              { group: 'pizza', count: 1 },
+              { group: 'burger', count: 0 },
+              { group: nil, count: 0 }
+            ]
+          }
         ],
         multilocs: generator.get_multilocs(city_survey_question, food_survey_question)
       })
@@ -261,11 +360,33 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         required: false,
         totalResponses: 15,
         answers: [
-          { answer: 'option1', group_by_value: 'burger', count: 5 },
-          { answer: 'option1', group_by_value: 'pizza', count: 5 },
-          { answer: 'option2', group_by_value: 'burger', count: 2 },
-          { answer: 'option2', group_by_value: 'pizza', count: 2 },
-          { answer: nil, group_by_value: 'pizza', count: 1 }
+          {
+            answer: 'option1',
+            count: 10,
+            groups: [
+              { group: 'pizza', count: 5 },
+              { group: 'burger', count: 5 },
+              { group: nil, count: 0 }
+            ]
+          },
+          {
+            answer: 'option2',
+            count: 4,
+            groups: [
+              { group: 'pizza', count: 2 },
+              { group: 'burger', count: 2 },
+              { group: nil, count: 0 }
+            ]
+          },
+          {
+            answer: nil,
+            count: 1,
+            groups: [
+              { group: 'pizza', count: 1 },
+              { group: 'burger', count: 0 },
+              { group: nil, count: 0 }
+            ]
+          }
         ],
         multilocs: generator.get_multilocs(multiselect_question, food_survey_question)
       })
