@@ -3,26 +3,26 @@ module ReportBuilder
     def run_query(
       phase_id: nil,
       question_id: nil,
-      slice_mode: nil,
-      slice_field_id: nil,
+      group_mode: nil,
+      group_field_id: nil,
       **_other_props
     )
       return {} if phase_id.blank? || question_id.blank?
 
       phase = Phase.find(phase_id)
-      service = SurveyResponseSlicer.new(phase)
+      service = SurveyResponseGrouper.new(phase)
 
-      if slice_mode.blank? || slice_field_id.blank?
+      if group_mode.blank? || group_field_id.blank?
         service.get_result(question_id)
-      elsif slice_mode == 'user_field'
-        service.slice_by_user_field(
+      elsif group_mode == 'user_field'
+        service.group_by_user_field(
           question_id,
-          slice_field_id
+          group_field_id
         )
       else
-        service.slice_by_other_question(
+        service.group_by_other_question(
           question_id,
-          slice_field_id
+          group_field_id
         )
       end
     end

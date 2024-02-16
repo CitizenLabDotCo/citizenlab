@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ReportBuilder
-  class SurveyResponseSlicer
+  class SurveyResponseGrouper
     def initialize(phase)
       @form = phase.custom_form || CustomForm.new(participation_context: phase)
       @inputs = phase.ideas.published
@@ -30,7 +30,7 @@ module ReportBuilder
       build_response(answers, question, nil)
     end
 
-    def slice_by_user_field(question_field_id, user_field_id)
+    def group_by_user_field(question_field_id, user_field_id)
       question = get_question(question_field_id)
       user_field = CustomField.find_by(id: user_field_id)
       throw "Unsupported user field type: #{user_field.input_type}" unless user_field.input_type == 'select'
@@ -39,7 +39,7 @@ module ReportBuilder
 
       query = query.select(
         select_query(question, as: 'answer'),
-        select_query(user_field, as: 'group_by_value')
+        select_query(user_field, as: 'group')
       )
 
       answers = construct_answers(query, question, user_field)
@@ -47,14 +47,14 @@ module ReportBuilder
       build_response(answers, question, user_field)
     end
 
-    def slice_by_other_question(question_field_id, other_question_field_id)
+    def group_by_other_question(question_field_id, other_question_field_id)
       question = get_question(question_field_id)
       other_question = get_question(other_question_field_id)
       throw "Unsupported question type: #{other_question.input_type}" unless other_question.input_type == 'select'
 
       query = @inputs.select(
         select_query(question, as: 'answer'),
-        select_query(other_question, as: 'group_by_value')
+        select_query(other_question, as: 'group')
       )
 
       answers = construct_answers(query, question, other_question)
@@ -62,9 +62,9 @@ module ReportBuilder
       build_response(answers, question, other_question)
     end
 
-    def get_multilocs(question, slice_field)
+    def get_multilocs(question, group_field)
       multilocs = { answer: get_option_titles(question) }
-      multilocs[:group_by_value] = get_option_titles(slice_field) if slice_field
+      multilocs[:group] = get_option_titles(group_field) if group_field
       multilocs
     end
 
@@ -94,35 +94,35 @@ module ReportBuilder
       end
     end
 
-    def construct_answers(query, question, slice_field)
+    def construct_answers(query, question, group_field)
       answer_keys = question.options.map(&:key) + [nil]
-      slice_field_keys = slice_field.options.map(&:key) + [nil]
+      group_field_keys = group_field.options.map(&:key) + [nil]
 
       # Create hash of grouped answers
-      grouped_answers_hash = apply_grouping(query, slice: true)
-        .each_with_object({}) do |((answer, group_by_value), count), accu|
+      grouped_answers_hash = apply_grouping(query, group: true)
+        .each_with_object({}) do |((answer, group), count), accu|
           # We treat 'faulthy' values (i.e. that don't exist in options) as nil
           valid_answer = answer_keys.include?(answer) ? answer : nil
 
           accu[valid_answer] ||= { answer: valid_answer, count: 0, groups: {} }
           accu[valid_answer][:count] += count
 
-          # Same for group_by_value
-          valid_group_by_value = slice_field_keys.include?(group_by_value) ? group_by_value : nil
+          # Same for group
+          valid_group = group_field_keys.include?(group) ? group : nil
 
-          accu[valid_answer][:groups][valid_group_by_value] ||= { group: valid_group_by_value, count: 0 }
-          accu[valid_answer][:groups][valid_group_by_value][:count] += count
+          accu[valid_answer][:groups][valid_group] ||= { group: valid_group, count: 0 }
+          accu[valid_answer][:groups][valid_group][:count] += count
         end
 
       # Construct answers array using order of custom field options
-      answer_keys.map do |key|
-        grouped_answer = grouped_answers_hash[key] || { answer: key, count: 0, groups: {} }
+      answer_keys.map do |answer|
+        grouped_answer = grouped_answers_hash[answer] || { answer: answer, count: 0, groups: {} }
 
         answers_row = {
-          answer: key,
+          answer: answer,
           count: grouped_answer[:count],
-          groups: slice_field_keys.map do |user_key|
-            grouped_answer[:groups][user_key] || { group: user_key, count: 0 }
+          groups: group_field_keys.map do |group|
+            grouped_answer[:groups][group] || { group: group, count: 0 }
           end
         }
 
@@ -130,16 +130,16 @@ module ReportBuilder
       end
     end
 
-    def apply_grouping(query, slice: false)
+    def apply_grouping(query, group: false)
       Idea
         .select(:answer)
         .from(query)
-        .group(:answer, slice ? :group_by_value : nil)
+        .group(:answer, group ? :group : nil)
         .count
     end
 
-    def build_response(answers, question, slice_field)
-      multilocs = get_multilocs(question, slice_field)
+    def build_response(answers, question, group_field)
+      multilocs = get_multilocs(question, group_field)
 
       {
         inputType: question.input_type,

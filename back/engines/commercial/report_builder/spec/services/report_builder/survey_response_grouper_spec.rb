@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ReportBuilder::SurveyResponseSlicer do
+RSpec.describe ReportBuilder::SurveyResponseGrouper do
   subject(:generator) { described_class.new phase }
 
   # Create phase and form
@@ -194,9 +194,9 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
     end
   end
 
-  context 'when slicing by user field' do
-    it 'slices select by select' do
-      expect(generator.slice_by_user_field(
+  context 'when grouping by user field' do
+    it 'groups select by select' do
+      expect(generator.group_by_user_field(
         city_survey_question.id,
         user_custom_field.id
       )).to eq({
@@ -252,8 +252,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
       })
     end
 
-    it 'slices multiselect by select' do
-      expect(generator.slice_by_user_field(
+    it 'groups multiselect by select' do
+      expect(generator.group_by_user_field(
         multiselect_question.id,
         user_custom_field.id
       )).to eq({
@@ -300,9 +300,9 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
     end
   end
 
-  context 'when slicing by other survey question' do
-    it 'slices select by select' do
-      expect(generator.slice_by_other_question(
+  context 'when grouping by other survey question' do
+    it 'groups select by select' do
+      expect(generator.group_by_other_question(
         city_survey_question.id,
         food_survey_question.id
       )).to eq({
@@ -354,8 +354,8 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
       })
     end
 
-    it 'slices multiselect by select' do
-      expect(generator.slice_by_other_question(
+    it 'groups multiselect by select' do
+      expect(generator.group_by_other_question(
         multiselect_question.id,
         food_survey_question.id
       )).to eq({
