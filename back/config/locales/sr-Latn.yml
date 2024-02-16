@@ -146,6 +146,8 @@ sr-Latn:
       section3:
         title: Detalji
         description:
+      other:
+        title: Type your answer
   custom_forms:
     categories:
       main_content:
