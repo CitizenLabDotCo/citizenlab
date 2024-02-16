@@ -43,10 +43,6 @@ module CustomMaps
 
         private
 
-        def set_project
-          @project = Project.find(params[:project_id])
-        end
-
         def set_map_config
           authorize @project, :update?
           @map_config = CustomMaps::MapConfig.find_by!(mappable_id: params[:project_id])

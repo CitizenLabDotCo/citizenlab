@@ -5,6 +5,7 @@ module CustomMaps
     module V1
       class LayersController < ApplicationController
         before_action :set_layer, except: %i[create]
+        before_action :set_project
 
         def create
           authorize @project, :update?

@@ -41,11 +41,6 @@ module CustomMaps
 
         private
 
-        def set_custom_field
-          @custom_field = CustomField.find(params[:custom_field_id])
-          authorize @custom_field, policy_class: MapConfigCustomFieldPolicy
-        end
-
         def set_map_config
           authorize @custom_field, policy_class: MapConfigCustomFieldPolicy
 
