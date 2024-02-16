@@ -31,6 +31,7 @@ resource 'Summaries' do
           accuracy: nil,
           created_at: kind_of(String),
           updated_at: kind_of(String),
+          generated_at: nil,
           missing_inputs_count: 2
         },
         relationships: {
@@ -74,6 +75,7 @@ resource 'Summaries' do
         .to have_enqueued_job(Analysis::SummarizationJob)
         .and change(Analysis::BackgroundTask, :count).from(0).to(1)
       expect(status).to eq 201
+      background_task = Analysis::BackgroundTask.first
       expect(response_data).to match({
         id: kind_of(String),
         type: 'summary',
@@ -86,18 +88,18 @@ resource 'Summaries' do
           accuracy: 0.8,
           missing_inputs_count: 0,
           created_at: kind_of(String),
-          updated_at: kind_of(String)
+          updated_at: kind_of(String),
+          generated_at: nil
         },
         relationships: {
           background_task: {
             data: {
               type: 'background_task',
-              id: kind_of(String)
+              id: background_task.id
             }
           }
         }
       })
-      background_task = Analysis::BackgroundTask.first
       expect(json_response_body[:included].pluck(:id)).to include(background_task.id)
 
       expect(background_task).to have_attributes({
@@ -114,6 +116,75 @@ resource 'Summaries' do
       do_request(summary: { filters: { tag_ids: [nil] } })
       expect(status).to eq 201
       expect(response_data.dig(:attributes, :filters, :tag_ids)).to eq([nil])
+    end
+  end
+
+  post 'web_api/v1/analyses/:analysis_id/summaries/:id/regenerate' do
+    let(:state) { 'succeeded' }
+    let(:background_task) { create(:summarization_task, state: state, ended_at: Time.now) }
+    let(:analysis) { create(:analysis) }
+    let(:filters) { { reactions_from: 5 } }
+    let!(:summary) { create(:summary, summary: nil, insight_attributes: { filters: filters, analysis: analysis }, background_task: background_task) }
+    let(:analysis_id) { analysis.id }
+    let(:id) { summary.id }
+
+    example 'Regenerate a summary' do
+      expect { do_request }
+        .to have_enqueued_job(Analysis::SummarizationJob)
+        .and change(Analysis::BackgroundTask, :count).from(1).to(2)
+      expect(status).to eq 201
+      new_background_task = Analysis::BackgroundTask.find_by(state: 'queued')
+      expect(response_data).to match({
+        id: kind_of(String),
+        type: 'summary',
+        attributes: {
+          summary: nil,
+          filters: { reactions_from: 5 },
+          accuracy: 0.8,
+          missing_inputs_count: 0,
+          created_at: kind_of(String),
+          updated_at: kind_of(String),
+          generated_at: nil
+        },
+        relationships: {
+          background_task: {
+            data: {
+              type: 'background_task',
+              id: new_background_task.id
+            }
+          }
+        }
+      })
+      expect(json_response_body[:included].pluck(:id)).to include(new_background_task.id)
+
+      expect(new_background_task).to have_attributes({
+        progress: nil,
+        type: 'Analysis::SummarizationTask',
+        state: 'queued',
+        created_at: be_present,
+        updated_at: be_present,
+        ended_at: nil
+      })
+    end
+
+    describe 'when the current task is queued or in progress' do
+      let(:state) { 'in_progress' }
+
+      example_request '[error] returns previous_task_not_yet_finished' do
+        expect(status).to eq 422
+        expect(json_response_body).to eq({ errors: { base: [{ error: 'previous_task_not_yet_finished' }] } })
+      end
+    end
+
+    example '[error] too many inputs' do
+      allow(Analysis::SummarizationMethod::Base)
+        .to receive(:plan)
+        .and_return(Analysis::SummarizationPlan.new(impossible_reason: :too_many_inputs))
+
+      do_request
+
+      expect(status).to eq 422
+      expect(json_response_body).to eq({ errors: { base: [{ error: 'too_many_inputs' }] } })
     end
   end
 
