@@ -4,6 +4,7 @@ namespace :migrate_analysis do
   desc 'Fix existing homepage'
   task :main_custom_fields, %i[host] => [:environment] do |_t, args|
     errors = {}
+    no_main_field = {}
     tenants = if args[:host]
       Tenant.where(host: args[:host])
     else
@@ -30,7 +31,11 @@ namespace :migrate_analysis do
             .order(:created_at)
             .map(&:custom_field)
             .find(&:support_free_text_value?)
-          next if !main_field
+          if !main_field
+            no_main_field[tenant.host] ||= []
+            no_main_field[tenant.host] << analysis.id
+            next
+          end
 
           main_field_ids << main_field.id
 
@@ -48,6 +53,8 @@ namespace :migrate_analysis do
         end
       end
     end
+
+    Rails.logger.info "No main field: #{no_main_field}" if no_main_field.present?
 
     if errors.present?
       Rails.logger.info 'Some errors occurred!'
