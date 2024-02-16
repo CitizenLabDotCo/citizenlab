@@ -30,13 +30,9 @@ namespace :migrate_analysis do
             .order(:created_at)
             .map(&:custom_field)
             .find(&:support_free_text_value?)
-          main_field_ids << main_field.id
+          next if !main_field
 
-          if main_field.blank?
-            errors[tenant.host] ||= {}
-            errors[tenant.host][analysis.id] = 'No main custom field found'
-            next
-          end
+          main_field_ids << main_field.id
 
           if !analysis.update(main_custom_field: main_field)
             errors[tenant.host] ||= {}

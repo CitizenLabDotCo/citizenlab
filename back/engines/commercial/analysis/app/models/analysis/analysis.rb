@@ -9,7 +9,7 @@
 #  phase_id             :uuid
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  show_insights :boolean          default(TRUE), not null
+#  show_insights        :boolean          default(TRUE), not null
 #  main_custom_field_id :uuid
 #
 # Indexes
