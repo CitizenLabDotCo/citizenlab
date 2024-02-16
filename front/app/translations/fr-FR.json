@@ -663,7 +663,7 @@
   "app.components.formBuilder.labels": "Étiquettes",
   "app.components.formBuilder.labelsTooltipContent": "Choisissez des étiquettes facultatives pour vos valeurs minimales et maximales.",
   "app.components.formBuilder.layout": "Mise en page",
-  "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Voulez-vous vraiment quitter?",
+  "app.components.formBuilder.leaveBuilderConfirmationQuestion": "Êtes-vous sûr de vouloir quitter ?",
   "app.components.formBuilder.leaveBuilderText": "Vous avez des modifications non sauvegardées. Veuillez les enregistrer avant de quitter le site. Si vous quittez, vous perdrez vos modifications.",
   "app.components.formBuilder.limitAnswersTooltip": "Lorsque cette option est activée, les répondants doivent sélectionner le nombre de réponses spécifié pour continuer.",
   "app.components.formBuilder.limitNumberAnswers": "Limiter le nombre de réponses",
