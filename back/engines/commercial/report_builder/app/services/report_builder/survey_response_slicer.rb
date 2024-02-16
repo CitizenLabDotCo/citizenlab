@@ -10,17 +10,17 @@ module ReportBuilder
     def get_result(question_field_id)
       question = get_question(question_field_id)
 
-      # Select
       query = @inputs.select(select_query(question, as: 'answer'))
 
-      # Group by
+      answer_keys = question.options.map(&:key) + [nil]
+
       grouped_answers_hash = apply_grouping(query)
         .each_with_object({}) do |(answer, count), accu|
-          accu[answer] = { answer: answer, count: count }
-        end
+          valid_answer = answer_keys.include?(answer) ? answer : nil
 
-      # Construct answers array
-      answer_keys = question.options.map(&:key) + [nil]
+          accu[valid_answer] ||= { answer: valid_answer, count: 0 }
+          accu[valid_answer][:count] += count
+        end
 
       answers = answer_keys.map do |key|
         grouped_answers_hash[key] || { answer: key, count: 0 }
@@ -95,12 +95,26 @@ module ReportBuilder
     end
 
     def construct_answers(query, question, slice_field)
-      grouped_answers_hash = construct_grouped_answers_hash(query)
-
-      # Construct answers array
       answer_keys = question.options.map(&:key) + [nil]
       slice_field_keys = slice_field.options.map(&:key) + [nil]
 
+      # Create hash of grouped answers
+      grouped_answers_hash = apply_grouping(query, slice: true)
+        .each_with_object({}) do |((answer, group_by_value), count), accu|
+          # We treat 'faulthy' values (i.e. that don't exist in options) as nil
+          valid_answer = answer_keys.include?(answer) ? answer : nil
+
+          accu[valid_answer] ||= { answer: valid_answer, count: 0, groups: {} }
+          accu[valid_answer][:count] += count
+
+          # Same for group_by_value
+          valid_group_by_value = slice_field_keys.include?(group_by_value) ? group_by_value : nil
+
+          accu[valid_answer][:groups][valid_group_by_value] ||= { group: valid_group_by_value, count: 0 }
+          accu[valid_answer][:groups][valid_group_by_value][:count] += count
+        end
+
+      # Construct answers array using order of custom field options
       answer_keys.map do |key|
         grouped_answer = grouped_answers_hash[key] || { answer: key, count: 0, groups: {} }
 
@@ -116,19 +130,10 @@ module ReportBuilder
       end
     end
 
-    def construct_grouped_answers_hash(answers)
-      apply_grouping(answers, slice: true)
-        .each_with_object({}) do |((answer, group_by_value), count), accu|
-          accu[answer] ||= { answer: answer, count: 0, groups: {} }
-          accu[answer][:count] += count
-          accu[answer][:groups][group_by_value] = { group: group_by_value, count: count }
-        end
-    end
-
-    def apply_grouping(answers, slice: false)
+    def apply_grouping(query, slice: false)
       Idea
         .select(:answer)
-        .from(answers)
+        .from(query)
         .group(:answer, slice ? :group_by_value : nil)
         .count
     end

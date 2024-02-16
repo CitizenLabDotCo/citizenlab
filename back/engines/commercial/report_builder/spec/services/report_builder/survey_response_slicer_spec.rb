@@ -183,11 +183,11 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         customFieldId: multiselect_question.id,
         required: false,
         totalResponses: 11,
-        totalPicks: 16,
+        totalPicks: 15,
         answers: [
           { answer: 'option1', count: 10 },
           { answer: 'option2', count: 4 },
-          { answer: nil, count: 2 }
+          { answer: nil, count: 1 }
         ],
         multilocs: generator.get_multilocs(multiselect_question, nil)
       })
@@ -239,12 +239,12 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
           },
           {
             answer: nil,
-            count: 1,
+            count: 2,
             groups: [
-              { group: 'male', count: 1 },
+              { group: 'male', count: 0 },
               { group: 'female', count: 1 },
               { group: 'unspecified', count: 0 },
-              { group: nil, count: 0 }
+              { group: nil, count: 1 }
             ]
           }
         ],
@@ -262,7 +262,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         customFieldId: multiselect_question.id,
         required: false,
         totalResponses: 11,
-        totalPicks: 16,
+        totalPicks: 15,
         answers: [
           {
             answer: 'option1',
@@ -288,7 +288,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
             answer: nil,
             count: 1,
             groups: [
-              { group: 'male', count: 1 },
+              { group: 'male', count: 0 },
               { group: 'female', count: 1 },
               { group: 'unspecified', count: 0 },
               { group: nil, count: 0 }
@@ -342,7 +342,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
           },
           {
             answer: nil,
-            count: 1,
+            count: 2,
             groups: [
               { group: 'pizza', count: 1 },
               { group: 'burger', count: 1 },
@@ -364,7 +364,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
         customFieldId: multiselect_question.id,
         required: false,
         totalResponses: 11,
-        totalPicks: 16,
+        totalPicks: 15,
         answers: [
           {
             answer: 'option1',
@@ -389,7 +389,7 @@ RSpec.describe ReportBuilder::SurveyResponseSlicer do
             count: 1,
             groups: [
               { group: 'pizza', count: 1 },
-              { group: 'burger', count: 1 },
+              { group: 'burger', count: 0 },
               { group: nil, count: 0 }
             ]
           }
