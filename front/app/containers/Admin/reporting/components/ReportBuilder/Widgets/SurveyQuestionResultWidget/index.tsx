@@ -22,8 +22,8 @@ const SurveyQuestionResultWidget = ({
   projectId,
   phaseId,
   questionId,
-  sliceMode,
-  sliceFieldId,
+  groupMode,
+  groupFieldId,
 }: Props) => {
   const px = useReportDefaultPadding();
   const hasEverything = projectId && phaseId && questionId;
@@ -36,8 +36,8 @@ const SurveyQuestionResultWidget = ({
           projectId={projectId}
           phaseId={phaseId}
           questionId={questionId}
-          sliceMode={sliceFieldId ? sliceMode : undefined}
-          sliceFieldId={sliceFieldId}
+          groupMode={groupFieldId ? groupMode : undefined}
+          groupFieldId={groupFieldId}
         />
       ) : (
         <NoData message={projectOrPhaseEmptyMessage ?? messages.emptyField} />
@@ -51,8 +51,8 @@ SurveyQuestionResultWidget.craft = {
     projectId: undefined,
     phaseId: undefined,
     questionId: undefined,
-    sliceMode: undefined,
-    sliceFieldId: undefined,
+    groupMode: undefined,
+    groupFieldId: undefined,
   },
   related: {
     settings: Settings,

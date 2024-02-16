@@ -14,7 +14,7 @@ import {
 import ProjectFilter from '../../_shared/ProjectFilter';
 import PhaseFilter from '../../_shared/PhaseFilter';
 import QuestionSelect from './QuestionSelect';
-import SliceModeSelect from './SliceModeSelect';
+import GroupModeSelect from './GroupModeSelect';
 import UserFieldSelect from './UserFieldSelect';
 
 // i18n
@@ -26,7 +26,7 @@ import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey
 // typings
 import { IOption } from 'typings';
 import { Props } from '../typings';
-import { SliceMode } from 'api/graph_data_units/requestTypes';
+import { GroupMode } from 'api/graph_data_units/requestTypes';
 
 const Settings = () => {
   const { formatMessage } = useIntl();
@@ -36,15 +36,15 @@ const Settings = () => {
     projectId,
     phaseId,
     questionId,
-    sliceMode,
-    sliceFieldId,
+    groupMode,
+    groupFieldId,
   } = useNode<Props>((node) => ({
     title: node.data.props.title,
     projectId: node.data.props.projectId,
     phaseId: node.data.props.phaseId,
     questionId: node.data.props.questionId,
-    sliceMode: node.data.props.sliceMode,
-    sliceFieldId: node.data.props.sliceFieldId,
+    groupMode: node.data.props.groupMode,
+    groupFieldId: node.data.props.groupFieldId,
   }));
 
   const handleProjectFilter = useCallback(
@@ -77,20 +77,20 @@ const Settings = () => {
     [setProp]
   );
 
-  const handleSliceMode = useCallback(
-    (mode?: SliceMode) => {
+  const handleGroupMode = useCallback(
+    (mode?: GroupMode) => {
       setProp((props: Props) => {
-        props.sliceMode = mode;
-        props.sliceFieldId = undefined;
+        props.groupMode = mode;
+        props.groupFieldId = undefined;
       });
     },
     [setProp]
   );
 
-  const handleSliceFieldSelect = useCallback(
+  const handleGroupField = useCallback(
     (sliceFieldId?: string) => {
       setProp((props: Props) => {
-        props.sliceFieldId = sliceFieldId;
+        props.groupFieldId = sliceFieldId;
       });
     },
     [setProp]
@@ -150,23 +150,23 @@ const Settings = () => {
       )}
 
       {questionId && (
-        <SliceModeSelect mode={sliceMode} onChange={handleSliceMode} />
+        <GroupModeSelect mode={groupMode} onChange={handleGroupMode} />
       )}
 
-      {sliceMode === 'user_field' && (
+      {groupMode === 'user_field' && (
         <UserFieldSelect
-          userFieldId={sliceFieldId}
-          onChange={handleSliceFieldSelect}
+          userFieldId={groupFieldId}
+          onChange={handleGroupField}
         />
       )}
 
-      {phaseId && sliceMode === 'survey_question' && (
+      {phaseId && groupMode === 'survey_question' && (
         <QuestionSelect
           phaseId={phaseId}
-          questionId={sliceFieldId}
+          questionId={groupFieldId}
           inputTypes={['select']}
           label={formatMessage(messages.groupBySurveyQuestion)}
-          onChange={handleSliceFieldSelect}
+          onChange={handleGroupField}
         />
       )}
     </Box>

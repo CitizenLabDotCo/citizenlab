@@ -40,28 +40,47 @@ export type SurveyResultsResponse = {
 export type Answer = {
   answer: string;
   count: number;
-  /* undefined if not grouped */
-  group_by_value?: string;
+};
+
+export type GroupedAnswer = Answer & {
+  group: string;
 };
 
 export type SurveyQuestionMultilocs = {
   answer: Record<string, Multiloc>;
-  /* undefined if not grouped */
-  group_by_value?: Record<string, Multiloc>;
 };
+
+export type SurveyQuestionMultilocsGrouped = SurveyQuestionMultilocs & {
+  group: Record<string, Multiloc>;
+};
+
+type BaseAttributes = {
+  inputType: ICustomFieldInputType;
+  question: Multiloc;
+  customFieldId: string;
+  required: boolean;
+  totalResponses: number;
+  totalPicks: number;
+};
+
+type AttributesGrouped = BaseAttributes & {
+  grouped: true;
+  answers: GroupedAnswer[];
+  multilocs: SurveyQuestionMultilocsGrouped;
+};
+
+type AttributesUngrouped = BaseAttributes & {
+  grouped: false;
+  answers: Answer[];
+  multilocs: SurveyQuestionMultilocs;
+};
+
+type SurveyQuestionResultAttributes = AttributesGrouped | AttributesUngrouped;
 
 export type SurveyQuestionResultResponse = {
   data: {
     type: 'report_builder_data_units';
-    attributes: {
-      inputType: ICustomFieldInputType;
-      question: Multiloc;
-      customFieldId: string;
-      required: boolean;
-      totalResponses: number;
-      answers: Answer[];
-      multilocs: SurveyQuestionMultilocs;
-    };
+    attributes: SurveyQuestionResultAttributes;
   };
 };
 

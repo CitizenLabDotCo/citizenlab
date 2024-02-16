@@ -41,13 +41,13 @@ export interface SurveyResultsParams extends BaseParams {
   props: SurveyResultsProps;
 }
 
-export type SliceMode = 'user_field' | 'survey_question';
+export type GroupMode = 'user_field' | 'survey_question';
 
 export interface SurveyQuestionResultProps {
   phaseId: string;
   questionId: string;
-  sliceMode?: SliceMode;
-  sliceFieldId?: string;
+  groupMode?: GroupMode;
+  groupFieldId?: string;
 }
 
 export interface SurveyQuestionResultParams extends BaseParams {

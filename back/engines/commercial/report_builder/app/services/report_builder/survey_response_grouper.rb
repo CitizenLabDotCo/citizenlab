@@ -145,6 +145,7 @@ module ReportBuilder
         inputType: question.input_type,
         question: question.title_multiloc,
         required: question.required,
+        grouped: !!group_field,
         totalResponses: @inputs.count,
         totalPicks: answers.pluck(:count).sum,
         answers: answers,

@@ -8,20 +8,20 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { SliceMode } from 'api/graph_data_units/requestTypes';
+import { GroupMode } from 'api/graph_data_units/requestTypes';
 
-type Option = { value: SliceMode | ''; label: string };
+type Option = { value: GroupMode | ''; label: string };
 
 interface Props {
-  mode?: SliceMode;
-  onChange: (mode?: SliceMode) => void;
+  mode?: GroupMode;
+  onChange: (mode?: GroupMode) => void;
 }
 
-const SliceModeSelect = ({ mode, onChange }: Props) => {
+const GroupModeSelect = ({ mode, onChange }: Props) => {
   const { formatMessage } = useIntl();
 
   const handleChange = ({ value }: Option) => {
-    onChange(value === '' ? undefined : (value as SliceMode));
+    onChange(value === '' ? undefined : (value as GroupMode));
   };
 
   const options: Option[] = [
@@ -42,4 +42,4 @@ const SliceModeSelect = ({ mode, onChange }: Props) => {
   );
 };
 
-export default SliceModeSelect;
+export default GroupModeSelect;
