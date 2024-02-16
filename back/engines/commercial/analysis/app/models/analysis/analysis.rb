@@ -37,7 +37,6 @@ module Analysis
     has_many :background_tasks, class_name: 'Analysis::BackgroundTask', dependent: :destroy
     has_many :insights, class_name: 'Analysis::Insight', dependent: :destroy
 
-    validates :main_custom_field, presence: true, if: -> { participation_method != 'ideation' }
     validates :main_custom_field_id, uniqueness: { allow_nil: true }
     validate :main_field_is_textual
     validate :main_field_not_in_additional_fields
