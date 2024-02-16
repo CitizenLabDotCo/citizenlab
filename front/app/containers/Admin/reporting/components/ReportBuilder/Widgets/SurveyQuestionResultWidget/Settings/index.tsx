@@ -88,9 +88,9 @@ const Settings = () => {
   );
 
   const handleGroupField = useCallback(
-    (sliceFieldId?: string) => {
+    (groupFieldId?: string) => {
       setProp((props: Props) => {
-        props.groupFieldId = sliceFieldId;
+        props.groupFieldId = groupFieldId;
       });
     },
     [setProp]
