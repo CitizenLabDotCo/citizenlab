@@ -202,6 +202,23 @@ const Forms = () => {
             >
               {formatMessage(messages.editSurvey)}
             </Button>
+
+
+            <Button
+              icon="edit"
+              iconSize="20px"
+              buttonStyle="cl-blue"
+              width="auto"
+              onClick={() => {
+                // TODO: Get the copy_from value from a phase selector in a modal - also warns if you have already made edits - are you sure
+                // Need to get a form_saved attribute on the phase? Or separate endpoint - only needed for this
+                clHistory.push(`${editFormLink}?copy_from=28055d0e-44c4-46a4-bc13-74aff20c7891`);
+              }}
+              data-cy="e2e-edit-survey-content"
+            >
+              Start with other survey
+            </Button>
+
             <Box>
               <Button
                 icon="dots-horizontal"

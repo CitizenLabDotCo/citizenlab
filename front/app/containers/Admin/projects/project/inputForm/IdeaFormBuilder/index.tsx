@@ -38,6 +38,8 @@ const IdeaFormBuilder = () => {
     if (isNilOrError(locale)) return;
     await saveIdeaFormAsPDF({ projectId, locale, personal_data, phase_id });
   };
+  console.log(formCustomFields);
+
 
   return (
     <>
