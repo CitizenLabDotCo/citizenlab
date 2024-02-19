@@ -50,15 +50,18 @@ const AccessRightsNotice = ({
             <p>This survey is set to allow access for "Anyone".</p>
             <ul>
               <li>Residents who are not logged in can submit answers twice</li>
-              <li>You won'd get demographic analysis of answers from residents who are not logged in</li>
+              <li>You won'd get demographic analysis of answers from residents
+                who are not logged in</li>
             </ul>
-            <p>If you wish to change this, you can do so in the <Link to={accessRightsPath}>access rights for this phase</Link>.</p>
+            <p>If you wish to change this, you can do so in the
+              <Link to={accessRightsPath}>access rights for this phase</Link>.</p>
           </>
         ) : (
           <>{ surveyUserFields && surveyUserFields?.length > 0 ? (
             <>
             <p>You are asking the following demographic questions through registration for this survey.
-              To ask additional demographic questions we suggest you add these through the <Link to={accessRightsPath}>access rights for this phase</Link>.</p>
+              To ask additional demographic questions we suggest you add these through
+              the <Link to={accessRightsPath}>access rights for this phase</Link>.</p>
             <ul>
               { surveyUserFields?.map((fieldName, index) => {
                 return (<li key={index}>{fieldName}</li>)
@@ -67,7 +70,8 @@ const AccessRightsNotice = ({
             </>
             ):(
           <p>You are not asking any demographic questions through registration.
-            If you want to ask demographic questions we suggest you add these through the <Link to={accessRightsPath}>access rights for this phase</Link>.</p>
+            If you want to ask demographic questions we suggest you add these through
+            the <Link to={accessRightsPath}>access rights for this phase</Link>.</p>
             )}</>
         )}
       </Warning>
