@@ -4,7 +4,7 @@ import React from 'react';
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 // utils
-import { roundPercentages } from 'utils/math';
+import { roundPercentages, sum } from 'utils/math';
 
 interface Props {
   values: number[];
@@ -14,6 +14,20 @@ interface Props {
   rightLabel?: string;
 }
 
+const getRoundedPercentages = (values: number[], total: number) => {
+  const valuesSum = sum(values);
+  const remainder = total - valuesSum;
+
+  if (remainder < 0) {
+    throw new Error('Total is smaller than the sum of the values');
+  }
+
+  const valuesWithRemainder = [...values, remainder];
+  const roundedPercentages = roundPercentages(valuesWithRemainder, 1);
+
+  return roundedPercentages.slice(0, values.length);
+};
+
 const ProgressBars2 = ({
   values,
   total,
@@ -21,7 +35,7 @@ const ProgressBars2 = ({
   rightLabel,
   colorScheme,
 }: Props) => {
-  const percentages = roundPercentages(values, 1, total);
+  const percentages = getRoundedPercentages(values, total);
   const showLabels = !!leftLabel || !!rightLabel;
 
   return (

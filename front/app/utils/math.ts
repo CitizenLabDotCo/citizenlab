@@ -4,12 +4,8 @@ export const roundPercentage = (num: number, denom: number) =>
   Math.round((num / denom) * 100);
 
 // See https://stackoverflow.com/a/13483710
-export const roundPercentages = (
-  values: number[],
-  decimals = 0,
-  totalArg?: number
-): number[] => {
-  const total = totalArg ?? sum(values);
+export const roundPercentages = (values: number[], decimals = 0): number[] => {
+  const total = sum(values);
 
   if (total === 0) {
     return Array(values.length).fill(0);
