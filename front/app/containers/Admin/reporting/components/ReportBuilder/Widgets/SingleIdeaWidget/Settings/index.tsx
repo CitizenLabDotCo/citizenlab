@@ -20,6 +20,8 @@ import { useIntl } from 'utils/cl-intl';
 // typings
 import { Props } from '../typings';
 import { IOption, Multiloc } from 'typings';
+import IdeaSelect from 'components/UI/IdeaSelect';
+import { IIdeaData } from 'api/ideas/types';
 
 const Settings = () => {
   const { formatMessage } = useIntl();
@@ -136,9 +138,9 @@ const Settings = () => {
   );
 
   const handleChangeIdeaId = useCallback(
-    ({ value }: IOption) => {
+    (ideaData: IIdeaData) => {
       setProp((props: Props) => {
-        props.ideaId = value;
+        props.ideaId = ideaData.id;
       });
     },
     [setProp]
@@ -172,12 +174,17 @@ const Settings = () => {
       )}
 
       {phaseId && (
-        <IdeaFilter
-          label={formatMessage(messages.selectIdea)}
+        <IdeaSelect
+          selectedIdeaId={ideaId}
+          onChange={handleChangeIdeaId}
           phaseId={phaseId}
-          ideaId={ideaId}
-          onIdeaFilter={handleChangeIdeaId}
         />
+        // <IdeaFilter
+        //   label={formatMessage(messages.selectIdea)}
+        //   phaseId={phaseId}
+        //   ideaId={ideaId}
+        //   onIdeaFilter={handleChangeIdeaId}
+        // />
       )}
 
       <Box mb="20px">
