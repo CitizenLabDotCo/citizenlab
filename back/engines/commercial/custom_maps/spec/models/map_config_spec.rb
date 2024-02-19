@@ -40,9 +40,24 @@ RSpec.describe CustomMaps::MapConfig do
     end
   end
 
-  describe "when mappable_type is 'Project', but mappable_id is nil" do
+  describe 'when mappable_type is given, but mappable_id is nil' do
     it 'is invalid' do
       map_config = build(:map_config, mappable_type: 'Project', mappable_id: nil)
+      expect(map_config).to be_invalid
+    end
+  end
+
+  describe 'when mappable_id is given, but mappable_type is nil' do
+    it 'is invalid' do
+      project = create(:project)
+      map_config = build(:map_config, mappable_type: nil, mappable_id: project.id)
+      expect(map_config).to be_invalid
+    end
+  end
+
+  describe 'when mappable_type and mappable_id given, but mappable does not exist' do
+    it 'is invalid' do
+      map_config = build(:map_config, mappable_type: 'Project', mappable_id: SecureRandom.uuid)
       expect(map_config).to be_invalid
     end
   end
