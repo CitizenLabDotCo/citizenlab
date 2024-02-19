@@ -26,7 +26,7 @@ const AccessRightsNotice = ({
     action: 'posting_idea',
   });
 
-  // TODO: JS - Can we assume that there is only one permission always for surveys?
+  // NOTE: There should only ever one permission for a survey phase
   const permittedBySetting = permissions?.data[0].attributes.permitted_by;
   const globalCustomFieldsSetting = permissions?.data[0].attributes.global_custom_fields;
   const permissionCustomFieldIds = permissionCustomFields?.data.map((customField) => customField.relationships.custom_field.data.id)
@@ -50,7 +50,7 @@ const AccessRightsNotice = ({
             <p>This survey is set to allow access for "Anyone".</p>
             <ul>
               <li>Residents who are not logged in can submit answers twice</li>
-              <li>You won'd get demographic analysis of answers from residents
+              <li>You won't get demographic analysis of answers from residents
                 who are not logged in</li>
             </ul>
             <p>If you wish to change this, you can do so in the
