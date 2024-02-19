@@ -59,4 +59,8 @@ export default defineMessages({
     id: 'app.components.IdeasMap.submitIdea',
     defaultMessage: 'Submit idea',
   },
+  multipleInputsAtLocation: {
+    id: 'app.components.IdeasMap.multipleInputsAtLocation',
+    defaultMessage: 'Multiple inputs at this location',
+  },
 });

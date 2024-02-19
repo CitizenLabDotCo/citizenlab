@@ -20,7 +20,7 @@ import Renderer from '@arcgis/core/renderers/SimpleRenderer';
 import InstructionMessage from './InstructionMessage';
 import StartIdeaButton from './StartIdeaButton';
 import IdeaMapCard from './IdeaMapCard';
-import IdeasSharingLocationPopup from './IdeasSharingLocationPopup';
+import IdeasAtLocationPopup from './IdeasAtLocationPopup';
 
 import {
   Box,
@@ -32,6 +32,8 @@ import {
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
+import { useSearchParams } from 'react-router-dom';
+import useAuthUser from 'api/me/useAuthUser';
 
 // utils
 import {
@@ -41,6 +43,7 @@ import {
   showAddInputPopup,
   goToMapLocation,
   esriPointToGeoJson,
+  changeCursorOnHover,
 } from 'components/EsriMap/utils';
 import {
   InnerContainer,
@@ -56,13 +59,12 @@ import { CSSTransition } from 'react-transition-group';
 // types
 import { IMapConfig } from 'modules/commercial/custom_maps/api/map_config/types';
 import { IIdeaData } from 'api/ideas/types';
-import { useSearchParams } from 'react-router-dom';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import useAuthUser from 'api/me/useAuthUser';
 
+// Note: Existing custom styling
 const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
   width: 390px;
   height: calc(${mapHeightDesktop} - 80px);
@@ -77,6 +79,7 @@ const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
   `}
 `;
 
+// Note: Existing custom styling
 const StyledIdeaMapCard = styled(IdeaMapCard)<{ isClickable: boolean }>`
   width: calc(100% - 24px);
   position: absolute;
@@ -123,18 +126,18 @@ const IdeasMap = memo<Props>(
   ({ mapConfig, projectId, phaseId, ideasList }: Props) => {
     const theme = useTheme();
     const localize = useLocalize();
-    const { data: authUser } = useAuthUser();
     const { formatMessage } = useIntl();
+    const { data: authUser } = useAuthUser();
     const [searchParams] = useSearchParams();
     const isMobileOrSmaller = useBreakpoint('phone');
     const isTabletOrSmaller = useBreakpoint('tablet');
 
-    // Create a div element to use for inserting React components into Esri map popup
+    // Create div elements to use for inserting React components into Esri map popup
     // Docs: https://developers.arcgis.com/javascript/latest/custom-ui/#introduction
     const startIdeaButtonNode = useMemo(() => {
       return document.createElement('div');
     }, []);
-    const ideasSharingLocationNode = useMemo(() => {
+    const ideasAtLocationNode = useMemo(() => {
       return document.createElement('div');
     }, []);
 
@@ -146,11 +149,11 @@ const IdeasMap = memo<Props>(
     const [selectedIdea, setSelectedIdea] = useState<string | null>(
       searchParams.get('selected_idea_id') || null
     );
-    const [selectedClusterIdeas, setSelectedClusterIdeas] = useState<
+    const [ideasSharingLocation, setIdeasSharingLocation] = useState<
       string[] | null
     >(null);
 
-    // Handling for dynamic container width
+    // Existing handling for dynamic container width
     const { windowWidth } = useWindowSize();
     const tablet = windowWidth <= viewportWidths.tablet;
 
@@ -176,8 +179,7 @@ const IdeasMap = memo<Props>(
       );
     }, [windowWidth, containerWidth, tablet]);
 
-    // Create and configure the map data
-    // Create GeoJSON layers to add to Esri map
+    // Create Esri GeoJSON layers from mapConfig layers
     const geoJsonLayers = useMemo(() => {
       return createEsriGeoJsonLayers(
         mapConfig.data.attributes.layers,
@@ -185,27 +187,31 @@ const IdeasMap = memo<Props>(
       );
     }, [mapConfig, localize]);
 
-    // Create point graphics layer from ideas list and add to Esri map
+    // Create a point graphics layer for idea pins
     const graphics = useMemo(() => {
-      return ideasList?.map((idea) => {
+      const ideasWithLocations = ideasList?.filter(
+        (idea) => idea?.attributes?.location_point_geojson
+      );
+      return ideasWithLocations?.map((idea) => {
+        const coordinates =
+          idea?.attributes?.location_point_geojson?.coordinates;
         return new Graphic({
           geometry: new Point({
-            longitude: idea?.attributes?.location_point_geojson?.coordinates[0],
-            latitude: idea?.attributes?.location_point_geojson?.coordinates[1],
+            longitude: coordinates?.[0],
+            latitude: coordinates?.[1],
           }),
           attributes: {
             ideaId: idea?.id,
-            ideaTitleLocalized: localize(idea?.attributes?.title_multiloc),
           },
         });
       });
-    }, [ideasList, localize]);
+    }, [ideasList]);
 
-    // Create an Esri map layer from the graphics so we can add a cluster display
+    // Create an Esri feature layer from the idea pin graphics so we can add a cluster display
     const ideasLayer = useMemo(() => {
       if (graphics) {
         return new FeatureLayer({
-          source: graphics, // Array of initiative graphics
+          source: graphics, // Array of idea graphics
           title: formatMessage(messages.userInputs),
           objectIdField: 'ID',
           fields: [
@@ -227,10 +233,11 @@ const IdeasMap = memo<Props>(
           }),
           // Add cluster display to this layer
           featureReduction: getClusterConfiguration(theme.colors.tenantPrimary),
+          // Add a popup template which is used when multiple ideas share a single location
           popupTemplate: {
-            title: 'Multiple inputs at this location',
+            title: formatMessage(messages.multipleInputsAtLocation),
             content: () => {
-              return ideasSharingLocationNode;
+              return ideasAtLocationNode;
             },
           },
         });
@@ -239,19 +246,30 @@ const IdeasMap = memo<Props>(
     }, [
       formatMessage,
       graphics,
-      ideasSharingLocationNode,
+      ideasAtLocationNode,
       theme.colors.tenantPrimary,
     ]);
 
+    const onMapInit = useCallback(
+      (mapView: MapView) => {
+        // Save the esriMapView in state
+        if (!esriMapView) {
+          setEsriMapview(mapView);
+        }
+      },
+      [esriMapView]
+    );
+
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
-        // On map click, we either open an existing idea OR show the "submit an idea" popup
-        // depending on whether the user has clicked an existing map feature.
+        // On map click, we either open an existing idea OR show the "submit an idea" popup.
+        // This depends on whether the user has clicked an existing map pin.
         mapView.hitTest(event).then((result) => {
           const elements = result.results; // These are map elements underneath our map click
           if (elements.length > 0) {
-            const topElement = elements[0];
             // User clicked an idea pin OR a cluster
+            const topElement = elements[0];
+
             if (topElement.type === 'graphic') {
               const graphicId = topElement?.graphic?.attributes?.ID;
               const clusterCount =
@@ -267,13 +285,14 @@ const IdeasMap = memo<Props>(
                 // User clicked an idea pin. Zoom to pin & open idea in information panel.
                 const ideaId = graphics?.at(graphicId - 1)?.attributes.ideaId;
 
-                // If there are multiple ideas at this same location (overlapping pins), show the idea selection popup
-                if (elements.length > 1 && mapView.zoom >= 20) {
+                // If there are multiple ideas at this same location (overlapping pins), show the idea selection popup.
+                if (elements.length > 1 && mapView.zoom >= 19) {
                   goToMapLocation(
                     esriPointToGeoJson(topElement.mapPoint),
                     mapView
                   ).then(() => {
                     const ideaIds = elements.map((element) => {
+                      // Get list of idea ids at this location
                       if (element.type === 'graphic') {
                         const graphicId = element?.graphic?.attributes?.ID;
                         const ideaId = graphics?.at(graphicId - 1)?.attributes
@@ -283,7 +302,8 @@ const IdeasMap = memo<Props>(
                         }
                       }
                     });
-                    setSelectedClusterIdeas(ideaIds);
+                    // Set state and open the idea selection popup
+                    setIdeasSharingLocation(ideaIds);
                     mapView.popup.open({
                       features: [topElement.graphic],
                       location: topElement.mapPoint,
@@ -297,7 +317,7 @@ const IdeasMap = memo<Props>(
                       mapView
                     ).then(() => {
                       setSelectedIdea(ideaId);
-                      // Add graphic symbol
+                      // Add a graphic symbol to highlight which point was clicked
                       const geometry = topElement.graphic.geometry;
                       if (geometry.type === 'point') {
                         const graphic = new Graphic({
@@ -308,6 +328,8 @@ const IdeasMap = memo<Props>(
                           }),
                         });
                         mapView.graphics.removeAll();
+
+                        // Add the graphic to the map for a few seconds to highlight the clicked point
                         mapView.graphics.add(graphic);
                         setTimeout(() => {
                           mapView.graphics.removeAll();
@@ -331,6 +353,7 @@ const IdeasMap = memo<Props>(
               }
             }
           } else {
+            // If the user clicked elsewhere on the map, show the "Submit an idea" popup
             if (authUser) {
               showAddInputPopup({
                 event,
@@ -353,34 +376,27 @@ const IdeasMap = memo<Props>(
       ]
     );
 
-    const onMapHover = useCallback(
-      (event: any, mapView: MapView) => {
-        // Save the esriMapView in state
-        if (!esriMapView) {
-          setEsriMapview(mapView);
-        }
+    const onMapHover = useCallback((event: any, mapView: MapView) => {
+      // Change cursor to pointer on hover
+      changeCursorOnHover(event, mapView);
 
-        mapView.hitTest(event).then((result) => {
-          const elements = result.results; // These are map elements underneath our cursor
-          if (elements.length > 0) {
-            // User hovered over an element on the map
-            const topElement = elements[0];
-            // Change cursor to pointer
-            document.body.style.cursor = 'pointer';
-            if (topElement.type === 'graphic') {
-              // Set the hovered layer id
-              const customParameters =
-                topElement.layer && topElement.layer['customParameters'];
-              setHoveredLayerId(customParameters?.layerId || null);
-            }
-          } else {
-            document.body.style.cursor = 'auto';
-            setHoveredLayerId(null);
+      // If the user hovers over a map element, show the layer label
+      mapView.hitTest(event).then((result) => {
+        const elements = result.results; // These are map elements underneath our cursor
+        if (elements.length > 0) {
+          // User hovered over an element on the map
+          const topElement = elements[0];
+          if (topElement.type === 'graphic') {
+            // Set the hovered layer id
+            const customParameters =
+              topElement.layer && topElement.layer['customParameters'];
+            setHoveredLayerId(customParameters?.layerId || null);
           }
-        });
-      },
-      [esriMapView]
-    );
+        } else {
+          setHoveredLayerId(null);
+        }
+      });
+    }, []);
 
     const onSelectIdeaFromList = useCallback(
       (selectedIdeaId: string | null) => {
@@ -389,6 +405,7 @@ const IdeasMap = memo<Props>(
 
         if (selectedIdeaId && ideaPoint && esriMapView) {
           goToMapLocation(ideaPoint, esriMapView).then(() => {
+            // Create a graphic symbol to highlight the selected point
             const graphic = new Graphic({
               geometry: new Point({
                 latitude: ideaPoint.coordinates[1],
@@ -400,16 +417,16 @@ const IdeasMap = memo<Props>(
               }),
             });
             esriMapView.graphics.removeAll();
+            // Show the graphic on the map for a few seconds to highlight the selected point
             esriMapView.graphics.add(graphic);
             setTimeout(() => {
               esriMapView.graphics.removeAll();
-            }, 4000);
+            }, 2000);
 
             setSelectedIdea(selectedIdeaId);
             return;
           });
         }
-
         setSelectedIdea(selectedIdeaId);
       },
       [ideasList, esriMapView, theme.colors.tenantSecondary]
@@ -429,6 +446,7 @@ const IdeasMap = memo<Props>(
                 showLayerVisibilityControl: true,
                 showLegend: true,
                 zoomWidgetLocation: 'right',
+                onInit: onMapInit,
               }}
               height={isMobileOrSmaller ? '68vh' : '80vh'}
               layers={
@@ -450,10 +468,10 @@ const IdeasMap = memo<Props>(
                 projectId={projectId}
               />
             )}
-            <IdeasSharingLocationPopup
+            <IdeasAtLocationPopup
               setSelectedIdea={setSelectedIdea}
-              portalElement={ideasSharingLocationNode}
-              ideaIds={selectedClusterIdeas}
+              portalElement={ideasAtLocationNode}
+              ideaIds={ideasSharingLocation}
               ideasList={ideasList}
               mapView={esriMapView}
             />

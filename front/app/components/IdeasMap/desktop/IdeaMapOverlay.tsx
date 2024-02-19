@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useCallback, useMemo } from 'react';
+import React, { memo, useState, useEffect, useMemo } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // hooks
@@ -113,9 +113,9 @@ const IdeaMapOverlay = memo<Props>(
       }
     }, [scrollContainerElement, selectedIdea]);
 
-    const handleIdeasShowSetRef = useCallback((element: HTMLDivElement) => {
+    const handleIdeasShowSetRef = (element: HTMLDivElement) => {
       setScrollContainerElement(element);
-    }, []);
+    };
 
     if (project) {
       return (

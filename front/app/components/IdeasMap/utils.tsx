@@ -2,9 +2,9 @@ import { colors, media } from '@citizenlab/cl2-component-library';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import styled from 'styled-components';
 
-// Custom handling for map width
+// BELOW: Custom handling for idea map width
 // Description: This was existing styling prior to Esri migration.
-// TODO: Cleanup
+// TODO: Cleanup these styles
 
 export const mapMarginDesktop = 70;
 export const mapHeightDesktop = '83vh';

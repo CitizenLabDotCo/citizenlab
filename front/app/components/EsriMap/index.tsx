@@ -60,6 +60,7 @@ type InitialData = {
   showLegend?: boolean;
   showLayerVisibilityControl?: boolean;
   zoomWidgetLocation?: 'left' | 'right';
+  onInit?: (mapView: MapView) => void;
 };
 
 const EsriMap = ({
@@ -97,7 +98,6 @@ const EsriMap = ({
 
       setMap(newMap);
       setMapView(mapView);
-
       return () => {
         mapView.destroy();
       };
@@ -181,6 +181,11 @@ const EsriMap = ({
         initialData?.uiElements.forEach((uiElement) => {
           mapView.ui.add(uiElement.element, uiElement.position);
         });
+      }
+
+      // Call onInit function if provided
+      if (initialData?.onInit && mapView) {
+        initialData?.onInit(mapView);
       }
 
       initialValuesLoaded.current = true;

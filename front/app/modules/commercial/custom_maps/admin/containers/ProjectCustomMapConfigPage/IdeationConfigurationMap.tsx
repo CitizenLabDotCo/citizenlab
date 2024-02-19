@@ -14,7 +14,10 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // utils
 import debounceFn from 'lodash/debounce';
-import { createEsriGeoJsonLayers } from 'components/EsriMap/utils';
+import {
+  changeCursorOnHover,
+  createEsriGeoJsonLayers,
+} from 'components/EsriMap/utils';
 
 // types
 import { IMapConfig } from 'modules/commercial/custom_maps/api/map_config/types';
@@ -46,18 +49,18 @@ const IdeationConfigurationMap = memo<Props>(
         setMapView(esriMapView);
       }
 
+      // Change cursor when hovering over element
+      changeCursorOnHover(event, esriMapView);
+
       esriMapView.hitTest(event).then((result) => {
         if (result.results.length > 0) {
           // Hovering over marker(s)
           const element = result.results[0];
           if (element.type === 'graphic') {
-            // Change cursor to pointer
-            document.body.style.cursor = 'pointer';
             // Set the hovered layer id
             setHoveredLayerId(element.layer['customParameters']?.layerId);
           }
         } else {
-          document.body.style.cursor = 'auto';
           setHoveredLayerId(null);
         }
       });

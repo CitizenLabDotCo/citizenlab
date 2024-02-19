@@ -1,6 +1,6 @@
 import { colors } from '@citizenlab/cl2-component-library';
 
-// arcGIS
+// ArcGIS
 import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
 import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
 import Layer from '@arcgis/core/layers/Layer';
@@ -9,9 +9,16 @@ import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 import Popup from '@arcgis/core/widgets/Popup';
 import Point from '@arcgis/core/geometry/Point';
+import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
+import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
+import MapView from '@arcgis/core/views/MapView';
 
 // utils
 import { hexToRGBA } from 'utils/helperUtils';
+
+// types
+import { Localize } from 'hooks/useLocalize';
+import { IMapLayerAttributes } from 'modules/commercial/custom_maps/api/map_layers/types';
 
 // constants
 import {
@@ -19,13 +26,6 @@ import {
   DEFAULT_TILE_PROVIDER,
   MAPTILER_ATTRIBUTION,
 } from './constants';
-
-// components
-import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
-import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
-import MapView from '@arcgis/core/views/MapView';
-import { IMapLayerAttributes } from 'modules/commercial/custom_maps/api/map_layers/types';
-import { Localize } from 'hooks/useLocalize';
 
 // getDefaultBasemap
 // Description: Gets the correct basemap given a certain tileProvider URL.
@@ -229,7 +229,7 @@ export const getShapeSymbol = (
     style: shape,
     color: color || colors.white,
     outline: {
-      color: 'rgba(255, 255, 255, 0.2)',
+      color: hexToRGBA(colors.white, 0.2),
       width: outlineWidth || 1,
     },
   });
@@ -289,7 +289,7 @@ export const esriPointToGeoJson = (esriPoint: Point): GeoJSON.Point => {
 // Description: Gets the configuration needed to render a FeatureLayer with clustering on zoom in/out
 export const getClusterConfiguration = (clusterSymbolColor?: string) => {
   return new FeatureReductionCluster({
-    maxScale: 500,
+    maxScale: 600, // Stop clustering once fully zoomed in
     clusterMinSize: '20',
     symbol: getShapeSymbol(
       'circle',
@@ -310,7 +310,7 @@ export const getClusterConfiguration = (clusterSymbolColor?: string) => {
         repeatLabel: true,
         symbol: {
           type: 'text',
-          color: [255, 255, 255, 255],
+          color: colors.white,
           font: {
             family: 'Noto Sans',
             size: 10,
@@ -333,8 +333,8 @@ export const getClusterConfiguration = (clusterSymbolColor?: string) => {
 };
 
 // showAddInputPopup
-// Description: Shows popup where the user clicked and adds content from an popupContentNode
-// This is used by the Initiative Map and Idea Map to show "Submit" buttons on map click.
+// Description: Shows a popup where the user clicked and adds content from a popupContentNode
+// Usage: This is used by the Initiative Map and Idea Map to show "Submit" buttons on map click.
 type AddInputPopupProps = {
   event;
   mapView: MapView;
@@ -352,43 +352,32 @@ export const showAddInputPopup = ({
   popupContentNode,
   popupTitle,
 }: AddInputPopupProps) => {
-  mapView
-    .goTo(
-      {
-        // Center the map on the clicked location (so the popup will always show nicely).
-        center: [event.mapPoint.longitude, event.mapPoint.latitude],
-      },
-      { duration: 700 }
-    )
-    .then(() => {
-      setClickedMapLocation({
-        type: 'Point',
-        coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
-      });
-      // Create an Esri popup
-      mapView.popup = new Popup({
-        collapseEnabled: false,
-        dockEnabled: false,
-        dockOptions: {
-          buttonEnabled: false,
-          breakpoint: false,
-        },
-        location: event.mapPoint,
-        title: popupTitle,
-      });
-      // Set content of the popup to the node we created (so we can insert our React component via a portal)
-      mapView.popup.content = popupContentNode;
-      // Close any open UI elements and open the popup
-      setSelectedInput(null);
-      mapView.openPopup();
-    })
-    .catch(() => {
-      // Do nothing
+  goToMapLocation(esriPointToGeoJson(event.mapPoint), mapView).then(() => {
+    setClickedMapLocation({
+      type: 'Point',
+      coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
     });
+    // Create an Esri popup
+    mapView.popup = new Popup({
+      collapseEnabled: false,
+      dockEnabled: false,
+      dockOptions: {
+        buttonEnabled: false,
+        breakpoint: false,
+      },
+      location: event.mapPoint,
+      title: popupTitle,
+    });
+    // Set content of the popup to the node we created (so we can insert our React component via a portal)
+    mapView.popup.content = popupContentNode;
+    // Close any open UI elements and open the popup
+    setSelectedInput(null);
+    mapView.openPopup();
+  });
 };
 
 // createEsriGeoJsonLayers
-// Description: Create list of Esri GeoJSON layers from our mapConfig layers data
+// Description: Create list of Esri GeoJSON layers from a list of IMapLayerAttributes
 export const createEsriGeoJsonLayers = (
   layers: IMapLayerAttributes[],
   localize: Localize
@@ -410,10 +399,11 @@ export const createEsriGeoJsonLayers = (
       },
     });
 
+    // All features in a layer will have the same geometry, so we can just check the first feature
     const geometryType = layer.geojson?.features[0].geometry?.type;
 
     if (geometryType === 'Polygon') {
-      // All features in a layer will have the same symbology, so we can just check the first feature's properties
+      // All features in a layer will have the same symbology, so we can just check the first feature
       const fillColour = layer.geojson?.features[0]?.properties?.fill;
       geoJsonLayer.renderer = new SimpleRenderer({
         symbol: new SimpleFillSymbol({

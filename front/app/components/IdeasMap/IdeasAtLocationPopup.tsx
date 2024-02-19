@@ -22,7 +22,7 @@ type Props = {
   mapView: MapView | null;
 };
 
-const IdeasSharingLocationPopup = ({
+const IdeasAtLocationPopup = ({
   setSelectedIdea,
   portalElement,
   ideasList,
@@ -56,4 +56,4 @@ const IdeasSharingLocationPopup = ({
   );
 };
 
-export default IdeasSharingLocationPopup;
+export default IdeasAtLocationPopup;
