@@ -170,8 +170,8 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
         answers: [
           { answer: 'la', count: 5 },
           { answer: 'ny', count: 4 },
-          { answer: 'lx', count: 0 },
-          { answer: nil, count: 2 }
+          { answer: nil, count: 2 },
+          { answer: 'lx', count: 0 }
         ],
         multilocs: generator.get_multilocs(city_survey_question, nil)
       })
@@ -231,16 +231,6 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
             ]
           },
           {
-            answer: 'lx',
-            count: 0,
-            groups: [
-              { group: 'male', count: 0 },
-              { group: 'female', count: 0 },
-              { group: 'unspecified', count: 0 },
-              { group: nil, count: 0 }
-            ]
-          },
-          {
             answer: nil,
             count: 2,
             groups: [
@@ -248,6 +238,16 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
               { group: 'female', count: 1 },
               { group: 'unspecified', count: 0 },
               { group: nil, count: 1 }
+            ]
+          },
+          {
+            answer: 'lx',
+            count: 0,
+            groups: [
+              { group: 'male', count: 0 },
+              { group: 'female', count: 0 },
+              { group: 'unspecified', count: 0 },
+              { group: nil, count: 0 }
             ]
           }
         ],
@@ -337,20 +337,20 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
             ]
           },
           {
-            answer: 'lx',
-            count: 0,
-            groups: [
-              { group: 'pizza', count: 0 },
-              { group: 'burger', count: 0 },
-              { group: nil, count: 0 }
-            ]
-          },
-          {
             answer: nil,
             count: 2,
             groups: [
               { group: 'pizza', count: 1 },
               { group: 'burger', count: 1 },
+              { group: nil, count: 0 }
+            ]
+          },
+          {
+            answer: 'lx',
+            count: 0,
+            groups: [
+              { group: 'pizza', count: 0 },
+              { group: 'burger', count: 0 },
               { group: nil, count: 0 }
             ]
           }

@@ -16,6 +16,8 @@ module ReportBuilder
 
       answers = construct_not_grouped_answers(query, question)
 
+      answers = answers.sort_by { |a| -a[:count] }
+
       # Build response
       build_response(answers, question, nil)
     end
@@ -121,7 +123,7 @@ module ReportBuilder
         end
 
       # Construct answers array using order of custom field options
-      answer_keys.map do |answer|
+      answers = answer_keys.map do |answer|
         grouped_answer = grouped_answers_hash[answer] || { answer: answer, count: 0, groups: {} }
 
         answers_row = {
@@ -134,6 +136,8 @@ module ReportBuilder
 
         answers_row
       end
+
+      answers.sort_by { |a| -a[:count] }
     end
 
     def apply_grouping(query, group: false)
