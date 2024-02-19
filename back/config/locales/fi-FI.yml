@@ -15,10 +15,10 @@ fi:
     rejected: hylätty
     rejected_description: Tämä ajatus on hylätty
   initiative_statuses:
-    review_pending: review pending
-    review_pending_description: review pending
-    changes_requested: changes requested
-    changes_requested_description: changes requested
+    review_pending: tarkistus odottaa
+    review_pending_description: tarkistus odottaa
+    changes_requested: pyydetyt muutokset
+    changes_requested_description: pyydetyt muutokset
     proposed: ehdotettu
     proposed_description: ehdotettu
     expired: vanhentunut
@@ -97,7 +97,7 @@ fi:
     open_idea_project_description: >
       <p>Täällä voit aloittaa oman ideasi, jos se ei sovi yhteen olemassa olevista projekteista.</p><p><strong>Tavoite?</strong> Saadaksesi ideasi poliittiselle asialistalle.</p><p><strong>Miten?</strong> Keräämällä kannatusta, eli vähintään 100 ääntä 3 kuukaudessa. Voit tehdä sen tekemällä ideastasi ensin "houkuttelevan". Kirjoita se selkeästi ja mukaansatempaavalla tavalla, lisää kuvia, esitä vahvoja faktoihin perustuvia argumentteja, lisää liitteitä tarkempiin yksityiskohtiin tai taustatietoihin... Kun olet tehnyt sen, aloita ideasi jakaminen sosiaalisessa mediassa tai sähköpostitse. Kutsu ihmisiä mukaan keskusteluun ideastasi tai yksinkertaisesti vakuuta heidät tukemaan sitä äänestämällä sen puolesta.</p><p><strong>Mistä?</strong> Ideasi voi koskea monia asioita, kunhan se liittyy kaupunkiisi ja sen politiikkaan. Se voi olla kohtaamasi ongelma, kuvittelemasi ratkaisu tai jopa näiden yhdistelmä. Se voi olla villi ja pitkällä aikavälillä tai erittäin konkreettinen ja nopea voitto.</p><p><strong>Ja sitten? </strong>Saitko 100 ääntä 3 kuukaudessa? Onnittelut! Kaupunki ottaa nyt ideasi huomioon. Jos ideasi katsotaan toteuttamiskelpoiseksi eikä se vahingoita tiettyjä ryhmiä tai yksilöitä, sinulla on mahdollisuus esittää ehdotuksesi valtuuston kokouksessa. Saman kokouksen aikana valtuuston jäsenet antavat sinulle suoraa palautetta siitä, mitä he tekevät tai eivät tee ideasi kanssa ja miksi. Jos et kerää 100 ääntä 3 kuukaudessa, ehdotustasi ei oteta huomioon.</p><p>Olemme uteliaita kuulemaan ideoistasi!</p>
   phases:
-    open_idea_phase_title: Current phase
+    open_idea_phase_title: Nykyinen vaihe
   events:
     council_meeting_title: Neuvoston kokous
     council_meeting_description: >
@@ -147,7 +147,7 @@ fi:
         title: Yksityiskohdat
         description:
       other:
-        title: Type your answer
+        title: Kirjoita vastauksesi
   custom_forms:
     categories:
       main_content:
@@ -190,7 +190,7 @@ fi:
     default_eligibility_criteria: >
       <ul> <li>It must fall within the policy areas and competencies of local policy</li> <li>It serves the public interest rather than your individual interest</li> <li>It does not discriminate based on gender, race, age, or background</li> <li>It does not harm others</li> </ul>
     default_posting_tips: >
-      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
+      <ul><li>Käytä aikaa ehdotuksen tarkentamiseen. Kirjoita tarvittaessa ensin luonnos ja kopioi ja liitä se sitten tähän.</li><li>Valitse merkityksellinen otsikko, joka selittää selvästi, mitä ehdotuksesi sisältää.</li><li>Visualisoi ehdotuksesi sopivalla kuvalla, jotta se erottuu joukosta!</li><li>Lisää asiaankuuluvia liitteitä, kuten videoita, inspiroivia esimerkkejä, teknisiä yksityiskohtia tai suunnitelmia.</li><li>Jaa ideasi sosiaalisessa mediassa ja muissa kanavissa saadaksesi tukea muilta.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Nollaa salasana'
@@ -209,18 +209,18 @@ fi:
       created_at: 'Lähetetty klo'
       published_at: 'Julkaistu klo'
       comments_count: 'Kommentit'
-      likes_count: 'Likes'
-      dislikes_count: 'Dislikes'
-      picks: 'Picks'
-      participants: 'Participants'
-      votes_count: 'Votes'
+      likes_count: 'Tykkää'
+      dislikes_count: 'Ei pidä'
+      picks: 'Poimintoja'
+      participants: 'Osallistujat'
+      votes_count: 'Äänet'
       input_url: 'URL-osoite'
       project: 'Projekti'
       status: 'Tila'
       assignee_fullname: 'Valtuutettu'
       assignee_email: 'Valtuutetun sähköpostiosoite'
-      image_url: 'Image URL'
-    anonymous: 'Anonymous'
+      image_url: 'Kuvan URL-osoite'
+    anonymous: 'Nimetön'
   form_builder:
     default_select_field:
       title: 'Kysymyksesi'
@@ -230,22 +230,22 @@ fi:
       title: 'Kyselyn loppu'
       description: "Lähetä vastauksesi valitsemalla alta \"Lähetä kysely\"."
     pdf_export:
-      personal_data: 'Personal data'
-      personal_data_explanation_ideation: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."
-      personal_data_explanation_native_survey: "We will submit your input to %{organizationName}'s online participation platform. If you want to receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your data will not be public and will only be used by %{organizationName}. If you do not agree for us to use your personal data in this way, you can leave them empty."
-      first_name: 'First name(s)'
-      last_name: 'Last name'
-      email_address: 'Email address'
-      by_checking_this_box: "By checking this box I consent to my data being used to create an account on %{organizationName}'s participation platform."
-      optional: 'optional'
-      permission: 'Permission'
-      choose_as_many: 'Choose as many as you like'
-      this_answer: 'This answer will only be shared with moderators, and not to the public.'
-      page: 'Page'
-      date_published: 'Date Published (dd-mm-yyyy)'
-      instructions: 'Instructions'
-      write_as_clearly: 'Write as <b>clearly</b> as you can— these forms might be scanned'
-      write_in_language: 'Write your answers in the same language as this form'
+      personal_data: 'Henkilökohtaiset tiedot'
+      personal_data_explanation_ideation: "Lähetämme palautetta %{organizationName}:n online-osallistumisalustalle. Jos haluat, että nimesi näytetään tämän syötteen kirjoittajana ja että saat sähköpostiisi syöttöäsi koskevia päivityksiä, täytä seuraavat tämän sivun kentät, niin luomme sinulle tilin. Sähköpostisi ei ole julkinen, ja vain %{organizationName}käyttää sitä. Jos haluat pysyä nimettömänä tai et suostu siihen, että käytämme henkilötietojasi tällä tavalla, voit jättää ne tyhjiksi."
+      personal_data_explanation_native_survey: "Lähetämme palautetta %{organizationName}:n online-osallistumisalustalle. Jos haluat saada palautettasi koskevia päivityksiä sähköpostitse, täytä seuraavat tämän sivun kentät, niin luomme sinulle tilin. Tietosi eivät ole julkisia, ja vain %{organizationName}käyttää niitä. Jos et suostu siihen, että käytämme henkilötietojasi tällä tavalla, voit jättää ne tyhjiksi."
+      first_name: 'Etunimet)'
+      last_name: 'Sukunimi'
+      email_address: 'Sähköpostiosoite'
+      by_checking_this_box: "Valitsemalla tämän ruudun hyväksyn sen, että tietojani käytetään tilin luomiseen %{organizationName}:n osallistumisalustalle."
+      optional: 'valinnainen'
+      permission: 'Lupa'
+      choose_as_many: 'Valitse niin monta kuin haluat'
+      this_answer: 'Tämä vastaus jaetaan vain moderaattoreille, ei yleisölle.'
+      page: 'Sivu'
+      date_published: 'Julkaisupäivä (pp-kk-vvvv)'
+      instructions: 'Ohjeet'
+      write_as_clearly: 'Kirjoita <b>selkeästi</b> niin kuin voit – nämä lomakkeet voidaan skannata'
+      write_in_language: 'Kirjoita vastauksesi samalla kielellä kuin tämä lomake'
   project_copy:
     title_suffix: 'Kopio'
   confirmations_mailer:
@@ -253,30 +253,30 @@ fi:
       subject: "Vahvista sähköpostiosoitteesi %{organizationName}:n osallistumisalustalle"
       header: "Vahvistuskoodisi"
       header_message: "Hei %{firstName}!"
-      confirm_email_address: "Confirm your email address"
+      confirm_email_address: "Vahvista sähköpostiosoitteesi"
       thanks_for_signing_up: "Kiitos osallistumisestasi. Syötä tämä vahvistuskoodi ikkunaan %{organizationName}:n osallistumisalustalla:"
-      best_regards: "Best regards,"
-      ignore_email: "If you didn't request a code, you can safely ignore this email."
-      expire_code: "This code will be expired in "
-      24_hours: "24 hours."
+      best_regards: "Parhain terveisin,"
+      ignore_email: "Jos et pyytänyt koodia, voit jättää tämän sähköpostin huomiotta."
+      expire_code: "Tämä koodi vanhenee vuonna "
+      24_hours: "24 tuntia."
       copy_paste_the_link_below: "Kopioi ja liitä alla oleva koodi alustan rekisteröintilomakkeeseen."
       the_link_is_valid_for: "Tämä linkki on voimassa 24 tuntia. Jos linkki on vanhentunut, voit <a href=\"%{link}\">pyytää uuden koodin</a>."
       did_you_receive_this_email_in_error: "Saitko tämän sähköpostin vahingossa? <a href=\"%{link}\">Kerro meille</a>."
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: 'Your account has been temporarily disabled'
-      title_user_blocked: 'Your account has been temporarily disabled'
-      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
-      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
-      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
-      you_can_sign_in_again_from: "You can sign in again from %{date}"
+      subject: 'Tilisi on väliaikaisesti poistettu käytöstä'
+      title_user_blocked: 'Tilisi on väliaikaisesti poistettu käytöstä'
+      paragraph_1_without_reason: "Tilisi osallistumisalustalla %{organizationName} on poistettu tilapäisesti käytöstä yhteisön sääntöjen rikkomisen vuoksi."
+      paragraph_1_with_reason: "Tilisi osallistumisalustalla %{organizationName} on poistettu tilapäisesti käytöstä seuraavasta syystä:"
+      for_more_information: "Lisätietoja tästä saat osoitteesta %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "Voit kirjautua uudelleen sisään osoitteesta %{date}"
   user:
-    anon_first_name: "User"
+    anon_first_name: "Käyttäjä"
   time:
-    am: am
+    am: olen
     formats:
       hour_of_day: "%l %p"
     pm: pm
   voting_method:
-    default_voting_term_singular: "vote"
-    default_voting_term_plural: "votes"
+    default_voting_term_singular: "äänestys"
+    default_voting_term_plural: "ääniä"
