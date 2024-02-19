@@ -63,6 +63,12 @@ const Summary = ({
 }) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
+
+  const largeSummariesEnabled = useFeatureFlag({
+    name: 'large_summaries',
+    onlyCheckAllowed: true,
+  });
+
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -119,9 +125,14 @@ const Summary = ({
             analysisId={analysisId}
           />
         )}
-        <Text fontWeight="bold">
-          {formatMessage(messages.aiSummary)} <Icon name="flash" />
-        </Text>
+        <Box display="flex" gap="4px" alignItems="center">
+          {!largeSummariesEnabled && (
+            <Icon name="alert-octagon" fill={colors.orange} />
+          )}
+          <Text fontWeight="bold">{formatMessage(messages.aiSummary)}</Text>
+          <Icon name="flash" />
+        </Box>
+
         <StyledInsightsText mt="0px">
           {replaceIdRefsWithLinks({
             insight: isLoading ? deleteTrailingIncompleteIDs(summary) : summary,
@@ -138,9 +149,18 @@ const Summary = ({
         alignItems="center"
         w="100%"
       >
-        <Text m="0px" fontSize="s">
-          {filteredInputCount} / {totalInputCount}{' '}
-        </Text>
+        <Box display="flex" gap="4px" alignItems="center">
+          {!largeSummariesEnabled && (
+            <Icon name="alert-octagon" fill={colors.orange} />
+          )}
+          <Text
+            m="0px"
+            fontSize="s"
+            color={!largeSummariesEnabled ? 'orange' : 'textPrimary'}
+          >
+            {filteredInputCount} / {totalInputCount}
+          </Text>
+        </Box>
 
         <Text m="0px" fontSize="s">
           <FormattedMessage
@@ -196,6 +216,12 @@ const Question = ({
 }) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
+
+  const largeSummariesEnabled = useFeatureFlag({
+    name: 'large_summaries',
+    onlyCheckAllowed: true,
+  });
+
   const { data } = useAnalysisQuestion({ analysisId, id: questionId });
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -233,6 +259,7 @@ const Question = ({
   const isLoading =
     task?.data.attributes.state === 'queued' ||
     task?.data.attributes.state === 'in_progress';
+
   if (!question || !answer) {
     return null;
   }
@@ -253,9 +280,14 @@ const Question = ({
             analysisId={analysisId}
           />
         )}
-        <Text fontWeight="bold">
-          {question} <Icon name="question-bubble" />
-        </Text>
+        <Box display="flex" gap="4px" alignItems="center">
+          {!largeSummariesEnabled && (
+            <Icon name="alert-octagon" fill={colors.orange} />
+          )}
+          <Text fontWeight="bold">{question}</Text>
+          <Icon name="question-bubble" />
+        </Box>
+
         <StyledInsightsText mt="0px">
           {replaceIdRefsWithLinks({
             insight: isLoading ? deleteTrailingIncompleteIDs(answer) : answer,
@@ -272,9 +304,18 @@ const Question = ({
         alignItems="center"
         w="100%"
       >
-        <Text m="0px" fontSize="s">
-          {filteredInputCount} / {totalInputCount}{' '}
-        </Text>
+        <Box display="flex" gap="4px" alignItems="center">
+          {!largeSummariesEnabled && (
+            <Icon name="alert-octagon" fill={colors.orange} />
+          )}
+          <Text
+            m="0px"
+            fontSize="s"
+            color={!largeSummariesEnabled ? 'orange' : 'textPrimary'}
+          >
+            {filteredInputCount} / {totalInputCount}
+          </Text>
+        </Box>
 
         <Text m="0px" fontSize="s">
           <FormattedMessage
