@@ -39,6 +39,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 import { timeAgo } from 'utils/dateUtils';
 import useLocale from 'hooks/useLocale';
+import Tippy from '@tippyjs/react';
 
 // Convert all values in the filters object to strings
 // This is necessary because the filters are passed as query params
@@ -149,18 +150,24 @@ const Summary = ({
         alignItems="center"
         w="100%"
       >
-        <Box display="flex" gap="4px" alignItems="center">
-          {!largeSummariesEnabled && (
-            <Icon name="alert-octagon" fill={colors.orange} />
-          )}
-          <Text
-            m="0px"
-            fontSize="s"
-            color={!largeSummariesEnabled ? 'orange' : 'textPrimary'}
-          >
-            {filteredInputCount} / {totalInputCount}
-          </Text>
-        </Box>
+        <Tippy
+          content={formatMessage(messages.tooltipTextLimit)}
+          disabled={largeSummariesEnabled}
+        >
+          <Box display="flex" gap="4px" alignItems="center">
+            {!largeSummariesEnabled && (
+              <Icon name="alert-octagon" fill={colors.orange} />
+            )}
+            <Text
+              m="0px"
+              fontSize="s"
+              color={!largeSummariesEnabled ? 'orange' : 'textPrimary'}
+            >
+              {filteredInputCount} / {totalInputCount}{' '}
+              {formatMessage(messages.inputsSelected)}
+            </Text>
+          </Box>
+        </Tippy>
 
         <Text m="0px" fontSize="s">
           <FormattedMessage
@@ -313,7 +320,8 @@ const Question = ({
             fontSize="s"
             color={!largeSummariesEnabled ? 'orange' : 'textPrimary'}
           >
-            {filteredInputCount} / {totalInputCount}
+            {filteredInputCount} / {totalInputCount}{' '}
+            {formatMessage(messages.inputsSelected)}
           </Text>
         </Box>
 

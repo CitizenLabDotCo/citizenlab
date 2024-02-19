@@ -124,4 +124,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.analysis.openAnalysisActions',
     defaultMessage: 'Open analysis actions',
   },
+  inputsSelected: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.inputsSelected',
+    defaultMessage: 'inputs selected',
+  },
+  tooltipTextLimit: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.tooltipTextLimit',
+    defaultMessage:
+      'You can summarise a maximum of 30 inputs at a time on your current plan. Talk to your GovSuccess Manager or admin to unlock more.',
+  },
 });
