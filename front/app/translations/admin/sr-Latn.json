@@ -1507,6 +1507,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Umetnite URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Servis",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Možete pronaći više informacija o integraciji ankete {surveyServiceTooltipLink}.",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1": "https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "ovde",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",

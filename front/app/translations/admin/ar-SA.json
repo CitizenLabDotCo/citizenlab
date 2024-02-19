@@ -1507,6 +1507,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL مضمن",
   "app.containers.AdminPage.ProjectEdit.surveyService": "الخدمة",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "يمكنك معرفة المزيد من المعلومات حول كيفية تضمين الاستبيان {surveyServiceTooltipLink}.",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1": "https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "هنا",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",
