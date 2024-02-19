@@ -199,6 +199,15 @@ export const FormEdit = ({
     }
   };
 
+  const showWarnings = () => {
+    if (showWarningNotice && builderConfig.getWarningNotice) {
+      return builderConfig.getWarningNotice();
+    } else if (!hasErrors && builderConfig.getAccessRightsNotice) {
+      return builderConfig.getAccessRightsNotice(projectId, phaseId)
+    }
+    return null;
+  };
+
   if (!isNilOrError(builderConfig)) {
     return (
       <Box
@@ -250,9 +259,7 @@ export const FormEdit = ({
                     <Feedback
                       successMessage={formatMessage(formSavedSuccessMessage)}
                     />
-                    {showWarningNotice &&
-                      builderConfig.getWarningNotice &&
-                      builderConfig.getWarningNotice()}
+                    {showWarnings()}
                     <Box
                       borderRadius="3px"
                       boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"

@@ -44,6 +44,10 @@ export type FormBuilderConfig = {
 
   getDeletionNotice?: (projectId: string) => void;
   getWarningNotice?: () => void;
+  getAccessRightsNotice?: (
+    projectId: string | undefined,
+    phaseId: string | undefined
+  ) => void;
 
   goBackUrl?: string;
   groupingType: 'page' | 'section';
