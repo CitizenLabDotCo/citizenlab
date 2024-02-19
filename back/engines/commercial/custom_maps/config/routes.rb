@@ -12,15 +12,6 @@ CustomMaps::Engine.routes.draw do
           end
         end
       end
-      resources :custom_fields, only: [] do
-        resource :map_config, except: %i[index], controller: 'custom_field_map_configs' do
-          resources :layers, except: %i[index] do
-            member do
-              patch :reorder
-            end
-          end
-        end
-      end
     end
   end
 end
