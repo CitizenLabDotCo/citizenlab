@@ -73,11 +73,24 @@ const Summary = ({
 
   const { mutate: regenerateSummary, isLoading: isLoadingRegenerateSummary } =
     useRegenerateAnalysisSummary();
+
   const summary = data?.data.attributes.summary;
   const filters = data?.data.attributes.filters;
   const accuracy = data?.data.attributes.accuracy;
   const generatedAt = data?.data.attributes.created_at;
   const missingInputsCount = data?.data.attributes.missing_inputs_count;
+
+  const { data: inputs } = useInfiniteAnalysisInputs({
+    analysisId,
+  });
+
+  const { data: filteredInputs } = useInfiniteAnalysisInputs({
+    analysisId,
+    queryParams: filters,
+  });
+
+  const totalInputCount = inputs?.pages[0].meta.filtered_count || 0;
+  const filteredInputCount = filteredInputs?.pages[0].meta.filtered_count || 0;
 
   const isLoading =
     task?.data.attributes.state === 'queued' ||
@@ -122,6 +135,10 @@ const Summary = ({
         alignItems="center"
         w="100%"
       >
+        <Text m="0px" fontSize="s">
+          {filteredInputCount} / {totalInputCount}{' '}
+        </Text>
+
         <Text m="0px" fontSize="s">
           <FormattedMessage
             {...messages.accuracy}
@@ -195,6 +212,18 @@ const Question = ({
   const generatedAt = data?.data.attributes.created_at;
   const missingInputsCount = data?.data.attributes.missing_inputs_count;
 
+  const { data: inputs } = useInfiniteAnalysisInputs({
+    analysisId,
+  });
+
+  const { data: filteredInputs } = useInfiniteAnalysisInputs({
+    analysisId,
+    queryParams: filters,
+  });
+
+  const totalInputCount = inputs?.pages[0].meta.filtered_count || 0;
+  const filteredInputCount = filteredInputs?.pages[0].meta.filtered_count || 0;
+
   const isLoading =
     task?.data.attributes.state === 'queued' ||
     task?.data.attributes.state === 'in_progress';
@@ -237,6 +266,10 @@ const Question = ({
         alignItems="center"
         w="100%"
       >
+        <Text m="0px" fontSize="s">
+          {filteredInputCount} / {totalInputCount}{' '}
+        </Text>
+
         <Text m="0px" fontSize="s">
           <FormattedMessage
             {...messages.accuracy}
