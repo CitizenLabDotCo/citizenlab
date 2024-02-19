@@ -98,6 +98,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     collect_answers(field, distribution, option_titles)
   end
 
+  # Trigger back workflow
   def visit_file_upload(field)
     file_ids = inputs
       .select("custom_field_values->'#{field.key}'->'id' as value")
