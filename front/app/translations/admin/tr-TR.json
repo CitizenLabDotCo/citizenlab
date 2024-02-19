@@ -70,6 +70,7 @@
   "app.components.UserSearch.noOptions": "Seçenek yok",
   "app.components.UserSearch.searchUsers": "Kullanıcıları aramak için yazın...",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Seçili soru yok. Lütfen önce bir soru seçin.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Cevap yok",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} yanıtlar",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.sourceAndReference": "{period}sırasında {phase} adresinden alınan veriler",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.surveyQuestion": "Anket sorusu",
