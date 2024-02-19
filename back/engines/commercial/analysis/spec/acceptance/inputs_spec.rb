@@ -101,8 +101,8 @@ resource 'Inputs' do
       end
 
       example 'supports limit', document: false do
-        idea1 = create(:idea, title_multiloc: { en: 'Idea one' }, project: analysis.source_project)
-        idea2 = create(:idea, body_multiloc: { en: 'Idea two' }, project: analysis.source_project)
+        create(:idea, title_multiloc: { en: 'Idea one' }, project: analysis.source_project)
+        create(:idea, body_multiloc: { en: 'Idea two' }, project: analysis.source_project)
         do_request(limit: 1)
         expect(status).to eq(200)
         expect(json_response_body[:meta]).to match({

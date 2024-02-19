@@ -22,8 +22,8 @@ module Analysis
       inputs = filter_author_custom_field_range(inputs)
       inputs = filter_input_custom_field_in(inputs)
       inputs = filter_input_custom_field_range(inputs)
-      search(inputs)
       inputs = filter_limit(inputs)
+      search(inputs)
     end
 
     private
@@ -223,6 +223,7 @@ module Analysis
     def filter_limit(inputs)
       return inputs unless params[:limit]
       raise ArgumentError, 'limit must be a positive integer' unless params[:limit].to_i.positive?
+
       inputs.where(id: inputs.limit(params[:limit]))
     end
 
