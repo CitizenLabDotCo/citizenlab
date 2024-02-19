@@ -111,7 +111,6 @@ const ImageMultichoiceControl = ({
           {options?.map((option, index: number) => (
             <StyledBox
               style={{
-                cursor: 'pointer',
                 position: 'relative',
                 flex: '1 1 auto',
               }}
