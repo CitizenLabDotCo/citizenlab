@@ -70,6 +70,7 @@
   "app.components.UserSearch.noOptions": "Ei vaihtoehtoja",
   "app.components.UserSearch.searchUsers": "Hae käyttäjiä kirjoittamalla...",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Yhtään kysymystä ei valittu. Valitse ensin kysymys.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Ei vastausta",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} vastauksia",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.sourceAndReference": "Tiedot kohteesta {phase} aikana {period}",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.surveyQuestion": "Kysely kysymys",
