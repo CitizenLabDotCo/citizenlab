@@ -36,13 +36,13 @@ resource 'Map Configs' do
   end
 
   shared_examples 'unauthorized POST, PATCH and DELETE map config' do
-    post 'web_api/v1/map_configs' do
+    post 'web_api/v1/map_configs', document: false do
       example_request 'Cannot create a map config for a project' do
         expect(status).to eq 401
       end
     end
 
-    patch 'web_api/v1/map_configs/:id' do
+    patch 'web_api/v1/map_configs/:id', document: false do
       let(:id) { create(:map_config, mappable: nil).id }
 
       example_request 'Cannot update the map config for a project' do
@@ -50,7 +50,7 @@ resource 'Map Configs' do
       end
     end
 
-    delete 'web_api/v1/map_configs/:id' do
+    delete 'web_api/v1/map_configs/:id', document: false do
       let(:id) { create(:map_config, mappable: nil).id }
 
       example_request 'Cannot delete the map config for a project' do

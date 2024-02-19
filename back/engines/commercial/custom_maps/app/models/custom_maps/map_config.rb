@@ -29,7 +29,7 @@ module CustomMaps
 
     validates :zoom_level, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 20 }, allow_nil: true
     validates :tile_provider, format: { with: %r{\Ahttps://.+\z} }, allow_nil: true
-    validates :mappable_id, uniqueness: true
+    validates :mappable_id, uniqueness: true, allow_nil: true
     validates :mappable, presence: true, if: -> { mappable_id.present? or mappable_type.present? }
     validate :mappable_custom_field_is_input_type_point
 
