@@ -20,6 +20,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from '../ErrorDisplay';
+import FullscreenImage from 'components/FullscreenImage';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -105,11 +106,15 @@ const ImageMultichoiceControl = ({
           gap="16px"
           w="100%"
           justifyContent={isSmallerThanPhone ? 'center' : 'flex-start'}
-          alignItems="center"
+          alignItems="stretch"
         >
           {options?.map((option, index: number) => (
             <StyledBox
-              style={{ cursor: 'pointer' }}
+              style={{
+                cursor: 'pointer',
+                position: 'relative',
+                flex: '1 1 auto',
+              }}
               mb="12px"
               key={option.value}
               borderRadius="3px"
@@ -118,35 +123,49 @@ const ImageMultichoiceControl = ({
                   setDidBlur(true);
                 }, 300);
               }}
+              width={isSmallerThanPhone ? '100%' : 'calc(50% - 8px)'}
               display="flex"
               flexDirection="column"
-              alignItems="stretch"
+              alignItems="flex-start"
             >
-              <Image
-                width="188px"
-                src={option.image?.medium || imageFile}
-                alt={option.label}
-              />
-              <Checkbox
-                size="20px"
-                padding="18px 20px 18px 20px"
-                checkedColor={'tenantSecondary'}
-                id={`${path}-checkbox-${index}`}
-                label={option.label}
-                checked={dataArray.includes(option.value)}
-                onChange={() => {
-                  if (dataArray.includes(option.value)) {
-                    dataArray.length === 1
-                      ? handleChange(path, undefined)
-                      : handleChange(
-                          path,
-                          dataArray.filter((value) => value !== option.value)
-                        );
-                  } else {
-                    handleChange(path, [...dataArray, option.value]);
-                  }
-                }}
-              />
+              {option.value === 'other' ? (
+                <Image
+                  width="100%"
+                  src={option.image?.medium || imageFile}
+                  alt={option.label}
+                  style={{ borderRadius: '3px 3px 0 0' }}
+                />
+              ) : (
+                <FullscreenImage
+                  src={option.image?.large || imageFile}
+                  altText={option.label}
+                />
+              )}
+
+              <Box position="absolute" top="8px" right="4px">
+                <Checkbox
+                  size="20px"
+                  checkedColor="tenantSecondary"
+                  id={`${path}-checkbox-${index}`}
+                  label=""
+                  checked={dataArray.includes(option.value)}
+                  onChange={() => {
+                    if (dataArray.includes(option.value)) {
+                      dataArray.length === 1
+                        ? handleChange(path, undefined)
+                        : handleChange(
+                            path,
+                            dataArray.filter((value) => value !== option.value)
+                          );
+                    } else {
+                      handleChange(path, [...dataArray, option.value]);
+                    }
+                  }}
+                />
+              </Box>
+              <Text my="12px" mx="4px">
+                {option.label}
+              </Text>
             </StyledBox>
           ))}
         </Box>
