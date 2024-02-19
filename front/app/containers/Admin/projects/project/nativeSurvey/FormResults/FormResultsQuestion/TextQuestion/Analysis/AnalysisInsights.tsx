@@ -20,6 +20,12 @@ import {
   replaceIdRefsWithLinks,
 } from 'containers/Admin/projects/project/analysis/Insights/util';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+const StyledInsightsText = styled(Text)`
+  white-space: pre-wrap;
+  word-break: break-word;
+`;
 
 import Button from 'components/UI/Button';
 import { stringify } from 'qs';
@@ -98,14 +104,14 @@ const Summary = ({
         <Text fontWeight="bold">
           {formatMessage(messages.aiSummary)} <Icon name="flash" />
         </Text>
-        <Text>
+        <StyledInsightsText mt="0px">
           {replaceIdRefsWithLinks({
             insight: isLoading ? deleteTrailingIncompleteIDs(summary) : summary,
             analysisId,
             projectId,
             phaseId,
           })}
-        </Text>
+        </StyledInsightsText>
         {isLoading && <Spinner />}
       </Box>
       <Box
@@ -213,14 +219,14 @@ const Question = ({
         <Text fontWeight="bold">
           {question} <Icon name="question-bubble" />
         </Text>
-        <Text mt="0px">
+        <StyledInsightsText mt="0px">
           {replaceIdRefsWithLinks({
             insight: isLoading ? deleteTrailingIncompleteIDs(answer) : answer,
             analysisId,
             projectId,
             phaseId,
           })}
-        </Text>
+        </StyledInsightsText>
         {isLoading && <Spinner />}
       </Box>
       <Box

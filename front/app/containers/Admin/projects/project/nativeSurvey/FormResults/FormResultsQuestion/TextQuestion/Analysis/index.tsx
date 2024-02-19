@@ -66,10 +66,17 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
   };
 
   return (
-    <Box>
+    <Box position="relative">
       {relevantAnalysis && relevantAnalysis.attributes.show_insights && (
         <>
-          <Box display="flex" justifyContent="flex-end">
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+            position="absolute"
+            top="-40px"
+            right="0"
+            zIndex="1000"
+          >
             <IconButton
               iconName="dots-horizontal"
               iconColor={colors.textSecondary}

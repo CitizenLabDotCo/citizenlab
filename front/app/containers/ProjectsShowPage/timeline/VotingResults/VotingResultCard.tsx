@@ -1,5 +1,4 @@
 import React from 'react';
-import bowser from 'bowser';
 
 // api
 import usePhase from 'api/phases/usePhase';
@@ -51,10 +50,10 @@ const Container = styled(Link)`
   ${defaultCardStyle};
   cursor: pointer;
 
-  &.desktop {
+  ${media.desktop`
     ${defaultCardHoverStyle};
     transform: translate(0px, -2px);
-  }
+  `}
 
   @media (max-width: 1220px) and (min-width: 1023px) {
     min-height: calc(
@@ -189,9 +188,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
       id={idea.id}
       to={url}
       onClick={handleClick}
-      className={`e2e-card ${
-        !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-      }`}
+      className={'e2e-card'}
     >
       {image && (
         <IdeaCardImageWrapper>

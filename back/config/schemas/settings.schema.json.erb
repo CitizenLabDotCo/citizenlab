@@ -1380,6 +1380,54 @@
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "analysis": {
+        "type": "object",
+        "title": "AI-powered analysis for surveys and ideation",
+        "description": "Enables the use of AI-powered analysis for surveys and ideation.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }        
+      },
+
+      "large_summaries": {
+        "type": "object",
+        "title": "AI-powered analysis for surveys and ideation (large summaries)",
+        "description": "Enables the use of AI-powered analysis for surveys and ideation for a large number of inputs.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }      
+      },
+
+      "ask_a_question": {
+        "type": "object",
+        "title": "AI-powered questions and answers feature for surveys and ideation",
+        "description": "Enables the use of AI-powered questions and answers feature for surveys and ideation.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        } 
+      },
+
+      "advanced_autotagging": {
+        "type": "object",
+        "title": "AI-powered advanced autotagging for surveys and ideation",
+        "description": "Enables the use of AI-powered advanced autotagging feature for surveys and ideation.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }       
       }
     },
   "dependencies": {
@@ -1406,7 +1454,11 @@
     "id_id_card_lookup": ["verification"],
 
     "permission_option_email_confirmation": ["user_confirmation"],
-    "power_bi": ["public_api_tokens"]
+    "power_bi": ["public_api_tokens"],
+
+    "large_summaries": ["analysis"],
+    "ask_a_question": ["analysis"],
+    "advanced_autotagging": ["analysis"]
   },
   "definitions": {
     "multiloc_string": {

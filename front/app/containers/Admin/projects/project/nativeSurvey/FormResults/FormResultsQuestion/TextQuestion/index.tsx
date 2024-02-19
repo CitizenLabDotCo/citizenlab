@@ -7,6 +7,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { Box } from '@citizenlab/cl2-component-library';
 import TextResponses from './TextResponses';
 import Analysis from './Analysis';
+import AnalysisUpsell from './AnalysisUpsell';
 
 interface Props {
   textResponses: { answer: string }[];
@@ -19,7 +20,10 @@ const TextQuestion = ({
   showAnalysis = true,
   customFieldId,
 }: Props) => {
-  const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
+  const isAnalysisEnabled = useFeatureFlag({
+    name: 'analysis',
+    onlyCheckAllowed: true,
+  });
 
   return (
     <Box display="flex" gap="24px">
@@ -27,6 +31,7 @@ const TextQuestion = ({
         <TextResponses textResponses={textResponses} />
       </Box>
       <Box flex="1">
+        {!isAnalysisEnabled && showAnalysis && <AnalysisUpsell />}
         {isAnalysisEnabled && showAnalysis && (
           <Analysis customFieldId={customFieldId} />
         )}

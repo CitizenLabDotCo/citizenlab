@@ -486,6 +486,22 @@ module MultiTenancy
             user_session_recording: {
               enabled: true,
               allowed: true
+            },
+            analysis: {
+              enabled: true,
+              allowed: true
+            },
+            large_summaries: {
+              enabled: true,
+              allowed: true
+            },
+            ask_a_question: {
+              enabled: true,
+              allowed: true
+            },
+            advanced_autotagging: {
+              enabled: true,
+              allowed: true
             }
           })
         )

@@ -150,8 +150,6 @@ export interface IAppConfigurationSettings {
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
-  insights_manual_flow?: AppConfigurationFeature;
-  insights_nlp_flow?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -239,6 +237,9 @@ export interface IAppConfigurationSettings {
   public_api_tokens?: AppConfigurationFeature;
   power_bi?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;
+  large_summaries?: AppConfigurationFeature;
+  ask_a_question?: AppConfigurationFeature;
+  advanced_autotagging?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
   user_session_recording?: AppConfigurationFeature;
   user_avatars?: AppConfigurationFeature;
