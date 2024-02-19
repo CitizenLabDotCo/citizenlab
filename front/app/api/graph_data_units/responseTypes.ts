@@ -67,6 +67,7 @@ type AttributesGrouped = BaseAttributes & {
   grouped: true;
   answers: GroupedAnswer[];
   multilocs: SurveyQuestionMultilocsGrouped;
+  legend: (string | null)[];
 };
 
 type AttributesUngrouped = BaseAttributes & {

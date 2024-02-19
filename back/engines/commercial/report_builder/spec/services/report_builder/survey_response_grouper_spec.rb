@@ -251,7 +251,8 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
             ]
           }
         ],
-        multilocs: generator.get_multilocs(city_survey_question, user_custom_field)
+        multilocs: generator.get_multilocs(city_survey_question, user_custom_field),
+        legend: ['male', 'female', 'unspecified', nil]
       })
     end
 
@@ -299,7 +300,8 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
             ]
           }
         ],
-        multilocs: generator.get_multilocs(multiselect_question, user_custom_field)
+        multilocs: generator.get_multilocs(multiselect_question, user_custom_field),
+        legend: ['male', 'female', 'unspecified', nil]
       })
     end
   end
@@ -355,7 +357,8 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
             ]
           }
         ],
-        multilocs: generator.get_multilocs(city_survey_question, food_survey_question)
+        multilocs: generator.get_multilocs(city_survey_question, food_survey_question),
+        legend: ['pizza', 'burger', nil]
       })
     end
 
@@ -400,7 +403,8 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
             ]
           }
         ],
-        multilocs: generator.get_multilocs(multiselect_question, food_survey_question)
+        multilocs: generator.get_multilocs(multiselect_question, food_survey_question),
+        legend: ['pizza', 'burger', nil]
       })
     end
   end

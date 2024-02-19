@@ -151,7 +151,7 @@ module ReportBuilder
     def build_response(answers, question, group_field)
       multilocs = get_multilocs(question, group_field)
 
-      {
+      attributes = {
         inputType: question.input_type,
         question: question.title_multiloc,
         required: question.required,
@@ -163,6 +163,12 @@ module ReportBuilder
         totalPicks: answers.pluck(:count).sum,
         multilocs: multilocs
       }
+
+      if group_field.present?
+        attributes[:legend] = group_field.options.map(&:key) + [nil]
+      end
+
+      attributes
     end
 
     def get_option_titles(field)
