@@ -44,7 +44,9 @@ resource 'Analyses' do
   end
 
   get 'web_api/v1/analyses/:id' do
-    let(:analysis) { create(:ideation_analysis, :with_custom_field) }
+    let(:main_field) { create(:custom_field_text) }
+    let(:additional_field) { create(:custom_field_checkbox) }
+    let(:analysis) { create(:analysis, main_custom_field: main_field, additional_custom_fields: [additional_field]) }
     let(:id) { analysis.id }
 
     example_request 'Get one analysis by id' do
@@ -56,8 +58,10 @@ resource 'Analyses' do
         created_at: kind_of(String),
         show_insights: true
       })
-      expect(response_data.dig(:relationships, :custom_fields, :data, 0, :id)).to eq analysis.custom_fields.first.id
-      expect(json_response_body.dig(:included, 0, :id)).to eq analysis.custom_fields.first.id
+      expect(response_data.dig(:relationships, :main_custom_field, :data, :id)).to eq main_field.id
+      expect(response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)).to eq [additional_field.id]
+      expect(json_response_body.dig(:included).pluck(:id)).to include main_field.id
+      expect(json_response_body.dig(:included).pluck(:id)).to include additional_field.id
     end
   end
 
@@ -65,10 +69,29 @@ resource 'Analyses' do
     with_options scope: :analysis do
       parameter :project_id, 'The project to analyze, only in case of project with ideation or voting phases. Mandatory to pass either project_id or phase_id.', required: false
       parameter :phase_id, 'The phase to analyze, only in case of survey. Mandatory to pass either project_id or phase_id.', required: false
-      parameter :custom_field_ids, 'Custom fields that should be part of the analysis. Must be textual fields. If not passed, all textual fields will be analyzed.', required: false
+      parameter :main_custom_field_id, 'The main custom field to analyze. Must be textual fields. If not passed, only the additional fields will be analyzed.', required: false
+      parameter :additional_custom_field_ids, 'The additional custom fields that should be part of the analysis.', required: false
       parameter :show_insights, 'Whether to show insights or not', required: false
     end
     ValidationErrorHelper.new.error_fields(self, Analysis::Analysis)
+
+    describe do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:phase) { project.phases.first }
+      let(:phase_id) { phase.id }
+      let(:custom_form) { create(:custom_form, participation_context: phase) }
+      let(:main_field) { create(:custom_field_text, resource: custom_form) }
+      let(:additional_tields) { create_list(:custom_field_checkbox, 2, resource: custom_form) }
+      let(:main_custom_field_id) { main_field.id }
+      let(:additional_custom_field_ids) { additional_tields.map(&:id) }
+
+      example_request 'Create a phase analysis (survey phase) with specific custom_fields' do
+        expect(response_status).to eq 201
+        expect(response_data.dig(:relationships, :main_custom_field, :data, :id)).to eq main_field.id
+        expect(response_data.dig(:relationships, :additional_custom_fields, :data).size).to eq 2
+        expect(response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)).to match_array additional_custom_field_ids
+      end
+    end
 
     describe do
       let(:project) { create(:project_with_active_ideation_phase) }
@@ -77,7 +100,7 @@ resource 'Analyses' do
       example_request 'Create a project analysis (ideation phase) when no custom_form exists' do
         expect(response_status).to eq 201
         # If no custom_fields are passed, all textual fields must be added automatically
-        expect(response_data.dig(:relationships, :custom_fields, :data)).not_to be_empty
+        expect(response_data.dig(:relationships, :additional_custom_fields, :data)).not_to be_empty
         expect(json_response_body[:included].map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc body_multiloc location_description])
 
         # Example tags must be present
@@ -95,23 +118,8 @@ resource 'Analyses' do
       example_request 'Create a project analysis (ideation phase) when the custom_form already exists' do
         expect(response_status).to eq 201
         # If no custom_fields are passed, all textual fields must be added automatically
-        expect(response_data.dig(:relationships, :custom_fields, :data)).not_to be_empty
+        expect(response_data.dig(:relationships, :additional_custom_fields, :data)).not_to be_empty
         expect(json_response_body[:included].map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc body_multiloc location_description])
-      end
-    end
-
-    describe do
-      let(:project) { create(:project_with_active_native_survey_phase) }
-      let(:phase) { project.phases.first }
-      let(:phase_id) { phase.id }
-      let(:custom_form) { create(:custom_form, participation_context: phase) }
-      let(:custom_field) { create(:custom_field, resource: custom_form) }
-      let(:custom_field_ids) { [custom_field.id] }
-
-      example_request 'Create a phase analysis (survey phase) with specific custom_fields' do
-        expect(response_status).to eq 201
-        expect(response_data.dig(:relationships, :custom_fields, :data).size).to eq 1
-        expect(response_data.dig(:relationships, :custom_fields, :data, 0, :id)).to eq custom_field.id
       end
     end
 
@@ -129,6 +137,7 @@ resource 'Analyses' do
   patch 'web_api/v1/analyses/:id' do
     with_options scope: :analysis do
       parameter :show_insights, 'Whether to show insights or not', required: false
+      parameter :additional_custom_field_ids, 'The additional custom fields that should be part of the analysis.', required: false
 
       ValidationErrorHelper.new.error_fields(self, Analysis::Analysis)
     end
@@ -142,6 +151,16 @@ resource 'Analyses' do
       example_request 'Update an analysis to hide insights' do
         expect(response_status).to eq 200
         expect(response_data.dig(:attributes, :show_insights)).to be false
+      end
+    end
+
+    describe do
+      let(:additional_field) { create(:custom_field_checkbox) }
+      let(:additional_custom_field_ids) { [additional_field.id] }
+
+      example_request 'Update the additional fields of an analysis' do
+        expect(response_status).to eq 200
+        expect(response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)).to match_array additional_custom_field_ids
       end
     end
   end

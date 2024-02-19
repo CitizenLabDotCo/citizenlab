@@ -37,11 +37,12 @@ module Analysis
     has_many :background_tasks, class_name: 'Analysis::BackgroundTask', dependent: :destroy
     has_many :insights, class_name: 'Analysis::Insight', dependent: :destroy
 
+    validate :project_xor_phase_present
+    validate :project_or_phase_form_context, on: :create
+    validate :main_or_additional_fields_present
     validates :main_custom_field_id, uniqueness: { allow_nil: true }
     validate :main_field_is_textual
     validate :main_field_not_in_additional_fields
-    validate :project_xor_phase_present
-    validate :project_or_phase_form_context, on: :create
 
     # The inputs of an analysis are those inputs that were created according to
     # the form definition of the project or phase assigned to the analysis, that
@@ -92,6 +93,12 @@ module Analysis
       elsif project && !project.uses_input_form?
         errors.add(:base, :project_or_phase_form_context, message: 'An analysis should be associated with a valid form context. The passed project has no phases supporting a participation method that can hold inputs')
       end
+    end
+
+    def main_or_additional_fields_present
+      return if associated_custom_fields.present?
+
+      errors.add(:base, :main_custom_field_or_additional_custom_fields_present, message: 'This analysis does not have any associated custom fields')
     end
 
     def main_field_is_textual

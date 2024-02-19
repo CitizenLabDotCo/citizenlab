@@ -51,7 +51,7 @@ RSpec.describe Analysis::Analysis do
     end
   end
 
-  describe 'main_custom_field presence' do
+  describe 'main_custom_field presence' do # TODO: Test at least one field must be present
     it 'is not required for surveys' do
       analysis = build(:survey_analysis, main_custom_field: nil)
       expect(analysis).to be_valid

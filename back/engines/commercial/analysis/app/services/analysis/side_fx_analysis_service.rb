@@ -4,6 +4,10 @@ module Analysis
   class SideFxAnalysisService
     include SideFxHelper
 
+    def before_create(analysis, user)
+      analysis.additional_custom_field_ids = fallback_custom_fields(analysis) if analysis.associated_custom_fields.blank?
+    end
+
     def after_create(analysis, user)
       LogActivityJob.perform_later(analysis, 'created', user, analysis.created_at.to_i)
       create_example_tags(analysis)
@@ -29,6 +33,15 @@ module Analysis
         name: I18n.t('analysis.example_tag_n', n: 2),
         tag_type: 'onboarding_example'
       )
+    end
+
+    def fallback_custom_fields(analysis)
+      participation_method = Factory.instance.participation_method_for(analysis.participation_context)
+      custom_form = analysis.participation_context.custom_form || participation_method.create_default_form!
+
+      custom_fields = IdeaCustomFieldsService.new(custom_form).all_fields
+      # custom fields can be an array or a scope
+      custom_fields.filter(&:support_free_text_value?).map(&:id)
     end
   end
 end

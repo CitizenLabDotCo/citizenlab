@@ -38,6 +38,7 @@ module Analysis
           @analysis = ::Analysis::Analysis.new(analysis_params_for_create)
           authorize @analysis
 
+          side_fx_service.before_create(@analysis, current_user)
           if @analysis.save
             side_fx_service.after_create(@analysis, current_user)
             render json: WebApi::V1::AnalysisSerializer.new(
@@ -93,16 +94,6 @@ module Analysis
         def side_fx_service
           @side_fx_service ||= SideFxAnalysisService.new
         end
-
-        # def detect_custom_fields
-        #   container = @analysis.phase || @analysis.project
-        #   participation_method = Factory.instance.participation_method_for(container)
-        #   custom_form = container.custom_form || participation_method.create_default_form!
-
-        #   custom_fields = IdeaCustomFieldsService.new(custom_form).all_fields
-        #   # custom fields can be an array or a scope
-        #   custom_fields.filter(&:support_free_text_value?).map(&:id)
-        # end
       end
     end
   end
