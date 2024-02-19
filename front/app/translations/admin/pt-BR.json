@@ -1507,7 +1507,6 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL de incorporação",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Serviço",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Você pode encontrar mais informações sobre como incorporar uma pesquisa {surveyServiceTooltipLink}.",
-  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/articles/1641202",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "Aqui",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",
