@@ -70,6 +70,7 @@
   "app.components.UserSearch.noOptions": "Δεν υπάρχουν επιλογές",
   "app.components.UserSearch.searchUsers": "Πληκτρολογήστε για να αναζητήσετε χρήστες...",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Δεν έχει επιλεγεί καμία ερώτηση. Παρακαλώ επιλέξτε πρώτα μια ερώτηση.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Καμία απάντηση",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} απαντήσεις",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.sourceAndReference": "Δεδομένα από το {phase} κατά τη διάρκεια του {period}",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.surveyQuestion": "Ερώτηση έρευνας",
