@@ -37,6 +37,7 @@ const ProgressBars2 = ({
 }: Props) => {
   const percentages = getRoundedPercentages(values, total);
   const showLabels = !!leftLabel || !!rightLabel;
+  const border = `1px solid ${colors.divider}`;
 
   return (
     <Box width="100%">
@@ -69,8 +70,8 @@ const ProgressBars2 = ({
             height="16px"
             width="100%"
             borderRadius="3px"
-            border={`1px solid ${colors.divider};`}
-            borderBottom={last ? `1px solid ${colors.divider};` : 'none'}
+            border={border}
+            borderBottom={last ? border : 'none'}
             overflow="hidden"
           >
             <svg
