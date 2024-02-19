@@ -3,7 +3,7 @@
 module CustomMaps
   module WebApi
     module V1
-      class LayersController < ApplicationController
+      class ProjectMapConfigLayersController < ApplicationController
         before_action :set_layer, except: %i[create]
         before_action :set_project
 

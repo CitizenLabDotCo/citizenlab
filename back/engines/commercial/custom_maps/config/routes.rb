@@ -5,7 +5,7 @@ CustomMaps::Engine.routes.draw do
     namespace :v1 do
       resources :projects, only: [] do
         resource :map_config, except: %i[index], controller: 'project_map_configs' do
-          resources :layers, except: %i[index] do
+          resources :layers, except: %i[index] , controller: 'project_map_config_layers' do
             member do
               patch :reorder
             end
