@@ -823,7 +823,7 @@
   "app.containers.Admin.projects.project.survey.previousInsight": "Insight précédent",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Résumez automatiquement toutes vos réponses.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Questionnez vos données en langage naturel.",
-  "app.containers.Admin.projects.project.survey.upsell.bullet3": "Obtenez les références des réponses individuelles à partir des résumés générés par l'IA.",
+  "app.containers.Admin.projects.project.survey.upsell.bullet3": "Étoffez les résumés générés par l'IA avec des références directes aux réponses individuelles.",
   "app.containers.Admin.projects.project.survey.upsell.bullet4": "Consultez notre {link} pour un aperçu complet.",
   "app.containers.Admin.projects.project.survey.upsell.button": "Débloquer l'analyse IA",
   "app.containers.Admin.projects.project.survey.upsell.supportArticle": "article d'assistance",
