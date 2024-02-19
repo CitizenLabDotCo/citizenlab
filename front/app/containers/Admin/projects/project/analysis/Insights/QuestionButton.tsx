@@ -50,7 +50,6 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
     >
       <Box>
         <Button
-          justify="left"
           icon="question-bubble"
           mb="4px"
           size="s"

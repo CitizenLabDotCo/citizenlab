@@ -83,7 +83,6 @@ const SummarizeButton = () => {
     >
       <Box>
         <Button
-          justify="left"
           icon="flash"
           mb="4px"
           size="s"
