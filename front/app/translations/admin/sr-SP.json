@@ -1507,6 +1507,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Угради УРЛ",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Услуга",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Можете пронаћи више информација о томе како да уградите анкету {surveyServiceTooltipLink}.",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1": "https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "овде",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Опитни мајмун",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "СурвеиКсацт",
