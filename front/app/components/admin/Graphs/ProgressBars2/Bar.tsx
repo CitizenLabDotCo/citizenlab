@@ -1,30 +1,11 @@
 import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import { getBorderRadius } from './utils';
+import { BarProps } from './typings';
 
 const BORDER = `1px solid ${colors.divider}`;
 
-type Type = 'first' | 'middle' | 'last' | 'single';
-
-interface Props {
-  type?: Type;
-  percentage: number;
-  color?: string;
-}
-
-const getBorderRadius = (type: Type) => {
-  switch (type) {
-    case 'first':
-      return '3px 3px 0 0';
-    case 'middle':
-      return '0';
-    case 'last':
-      return '0 0 3px 3px';
-    case 'single':
-      return '3px';
-  }
-};
-
-const Bar = ({ type = 'single', percentage, color }: Props) => {
+const Bar = ({ type = 'single', percentage, color }: BarProps) => {
   return (
     <Box
       height="16px"

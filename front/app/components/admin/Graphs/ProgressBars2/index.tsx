@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import Bar from './Bar';
 
 // i18n
@@ -9,7 +9,8 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
-import { roundPercentages, sum } from 'utils/math';
+import { getRoundedPercentages, getType, noZeroes } from './utils';
+import { sum } from 'utils/math';
 import { round } from 'lodash-es';
 
 interface Props {
@@ -18,30 +19,6 @@ interface Props {
   colorScheme: string[];
   label: string;
 }
-
-const getType = (index: number, length: number) => {
-  if (length === 1) return 'single';
-  if (index === 0) return 'first';
-  if (index === length - 1) return 'last';
-
-  return 'middle';
-};
-
-const getRoundedPercentages = (values: number[], total: number) => {
-  const valuesSum = sum(values);
-  const remainder = total - valuesSum;
-
-  if (remainder < 0) {
-    throw new Error('Total is smaller than the sum of the values');
-  }
-
-  const valuesWithRemainder = [...values, remainder];
-  const roundedPercentages = roundPercentages(valuesWithRemainder, 1);
-
-  return roundedPercentages.slice(0, values.length);
-};
-
-const noZeroes = (number: number) => number !== 0;
 
 const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
   const { formatMessage } = useIntl();
@@ -68,14 +45,10 @@ const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
           })}
         </Text>
       </Box>
-      {percentages.length === 1 && percentages[0] === 0 && (
-        <Bar percentage={0} />
-      )}
+      {nonZeroPercentages.length === 0 && <Bar percentage={0} />}
 
       {nonZeroPercentages.map((percentage, index) => {
         const type = getType(index, nonZeroPercentages.length);
-
-        console.log({ type });
 
         return (
           <Bar
