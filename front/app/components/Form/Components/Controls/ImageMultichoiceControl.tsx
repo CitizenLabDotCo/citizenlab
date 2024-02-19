@@ -124,6 +124,12 @@ const ImageMultichoiceControl = ({
               display="flex"
               flexDirection="column"
               alignItems="flex-start"
+              p="8px"
+              border={
+                dataArray.includes(option.value)
+                  ? `2px solid ${colors.primary}`
+                  : undefined
+              }
             >
               {option.value === 'other' ? (
                 <Image
@@ -139,7 +145,7 @@ const ImageMultichoiceControl = ({
                 />
               )}
 
-              <Box position="absolute" top="8px" right="4px">
+              <Box position="absolute" top="18px" right="12px">
                 <Checkbox
                   size="20px"
                   checkedColor="tenantSecondary"
