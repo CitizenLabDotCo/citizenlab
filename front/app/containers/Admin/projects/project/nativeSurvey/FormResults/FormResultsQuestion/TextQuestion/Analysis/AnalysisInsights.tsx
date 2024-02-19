@@ -37,6 +37,8 @@ import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysis
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
+import { timeAgo } from 'utils/dateUtils';
+import useLocale from 'hooks/useLocale';
 
 // Convert all values in the filters object to strings
 // This is necessary because the filters are passed as query params
@@ -59,7 +61,8 @@ const Summary = ({
   summaryId: string;
   analysisId: string;
 }) => {
-  const { formatMessage, formatDate } = useIntl();
+  const { formatMessage } = useIntl();
+  const locale = useLocale();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -77,7 +80,7 @@ const Summary = ({
   const summary = data?.data.attributes.summary;
   const filters = data?.data.attributes.filters;
   const accuracy = data?.data.attributes.accuracy;
-  const generatedAt = data?.data.attributes.created_at;
+  const generatedAt = data?.data.attributes.generated_at;
   const missingInputsCount = data?.data.attributes.missing_inputs_count;
 
   const { data: inputs } = useInfiniteAnalysisInputs({
@@ -149,9 +152,11 @@ const Summary = ({
           />
         </Text>
 
-        <Text m="0px" fontSize="s">
-          {formatMessage(messages.generated)} {formatDate(generatedAt)}
-        </Text>
+        {generatedAt && (
+          <Text m="0px" fontSize="s">
+            {timeAgo(Date.parse(generatedAt), locale)}
+          </Text>
+        )}
       </Box>
       <Box display="flex" gap="16px">
         <Button
@@ -189,7 +194,8 @@ const Question = ({
   questionId: string;
   analysisId: string;
 }) => {
-  const { formatMessage, formatDate } = useIntl();
+  const { formatMessage } = useIntl();
+  const locale = useLocale();
   const { data } = useAnalysisQuestion({ analysisId, id: questionId });
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -209,7 +215,7 @@ const Question = ({
   const answer = data?.data.attributes.answer;
   const filters = data?.data.attributes.filters;
   const accuracy = data?.data.attributes.accuracy;
-  const generatedAt = data?.data.attributes.created_at;
+  const generatedAt = data?.data.attributes.generated_at;
   const missingInputsCount = data?.data.attributes.missing_inputs_count;
 
   const { data: inputs } = useInfiniteAnalysisInputs({
@@ -280,9 +286,11 @@ const Question = ({
           />
         </Text>
 
-        <Text m="0px" fontSize="s">
-          {formatMessage(messages.generated)} {formatDate(generatedAt)}
-        </Text>
+        {generatedAt && (
+          <Text m="0px" fontSize="s">
+            {timeAgo(Date.parse(generatedAt), locale)}
+          </Text>
+        )}
       </Box>
       <Box display="flex" gap="16px">
         <Button
