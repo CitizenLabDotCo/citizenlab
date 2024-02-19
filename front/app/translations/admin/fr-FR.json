@@ -1507,6 +1507,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL incorporée",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Service",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Choisissez quel outil d'enquête vous souhaitez utiliser. Des informations supplémentaires peuvent être trouvées {surveyServiceTooltipLink}.",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1": "https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "ici",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",
