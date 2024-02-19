@@ -13,6 +13,7 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import { IIdeaData } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
+import BaseIdeaSelect from './BaseIdeaSelect';
 
 interface Props {
   selectedIdeaId?: string | null;
@@ -20,7 +21,7 @@ interface Props {
   id?: string;
   inputId?: string;
   phaseId: string;
-  onChange: (user?: IIdeaData) => void;
+  onChange: (idea?: IIdeaData) => void;
 }
 
 const IdeaSelect = ({
@@ -38,7 +39,9 @@ const IdeaSelect = ({
     hasNextPage,
     fetchNextPage,
   } = useInfiniteIdeas({
+    sort: 'likes_count',
     search: searchValue,
+    phase: phaseId,
   });
 
   const ideasList = ideas?.pages.flatMap((page) => page.data) ?? [];
@@ -46,20 +49,7 @@ const IdeaSelect = ({
   // TODO: remove "?? undefined"
   const { data: selectedIdea } = useIdeaById(selectedIdeaId ?? undefined);
 
-  const handleInputChange = useMemo(() => {
-    return debounce((searchTerm: string) => {
-      setSearchValue(searchTerm);
-    }, 500);
-  }, [setSearchValue]);
-
-  useEffect(() => {
-    return () => {
-      handleInputChange.cancel();
-    };
-  }, [handleInputChange]);
-
   const handleChange = (option?: Option) => {
-    console.log({ option });
     if (!option) {
       onChange(undefined);
       return;
@@ -68,48 +58,27 @@ const IdeaSelect = ({
     if (optionIsIdea(option)) onChange(option);
   };
 
-  const handleChangeWithAction = (
-    option: Option,
-    { action }: { action: 'clear' | 'select-option' }
-  ) => {
-    if (action === 'clear') {
-      handleChange(undefined);
-      return;
-    }
-
-    handleChange(option);
-  };
-
   return (
-    <ReactSelect
+    <BaseIdeaSelect
       id={id}
       inputId={inputId}
-      isSearchable
-      blurInputOnSelect
-      backspaceRemovesValue={false}
-      menuShouldScrollIntoView={false}
-      isClearable
+      // We check if selectedIdeaId is present because setting it to null won't trigger a refetch so will have old data.
+      // I'm preferring this over refetching on clear because it's faster and avoids a fetch that we technically don't need.
       value={(selectedIdeaId && selectedIdea?.data) || null}
-      placeholder={placeholder}
+      // placeholder={placeholder}
       options={hasNextPage ? [...ideasList, { value: 'loadMore' }] : ideasList}
-      getOptionValue={getOptionId}
-      getOptionLabel={(option) =>
-        (
-          <OptionLabel
-            option={option}
-            hasNextPage={hasNextPage}
-            isLoading={isLoading}
-            fetchNextPage={() => fetchNextPage()}
-          />
-        ) as any
-      }
-      menuPlacement="auto"
-      styles={selectStyles()}
-      filterOption={() => true}
-      // onMenuOpen={handleChange}
-      onInputChange={handleInputChange}
+      getOptionLabel={(option) => (
+        <OptionLabel
+          option={option}
+          hasNextPage={hasNextPage}
+          isLoading={isLoading}
+          fetchNextPage={() => fetchNextPage()}
+        />
+      )}
+      onInputChange={setSearchValue}
       onMenuScrollToBottom={() => fetchNextPage()}
-      onChange={handleChangeWithAction as any}
+      onChange={handleChange}
+      // onMenuOpen={handleChange}
     />
   );
 };
