@@ -1507,7 +1507,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Iestrādāt URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Apkalpošana",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Vairāk informācijas par to, kā iestrādāt apsekojumu, varat atrast {surveyServiceTooltipLink}.",
-  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/articles/1641202",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1": "https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "šeit",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Apsekojums Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",
