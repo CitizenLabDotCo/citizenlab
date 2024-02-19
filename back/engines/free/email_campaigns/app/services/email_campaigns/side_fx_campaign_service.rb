@@ -13,12 +13,12 @@ module EmailCampaigns
       # campaign that's currently configurable on a phase level.
       # We turn off all phase email toggles for this campaign when the platform-wide
       # setting is turned off.
-      # attribute_before_last_save: 
+      # attribute_before_last_save:
       # https://apidock.com/rails/v6.0.0/ActiveRecord/AttributeMethods/Dirty/attribute_before_last_save
-       if campaign.enabled_before_last_save &&
-          campaign.instance_of?(EmailCampaigns::Campaigns::ProjectPhaseStarted)
+      if campaign.enabled_before_last_save &&
+         campaign.instance_of?(EmailCampaigns::Campaigns::ProjectPhaseStarted)
         toggle_project_phase_started(campaign)
-      end  
+      end
     end
 
     def before_send(campaign, user); end
