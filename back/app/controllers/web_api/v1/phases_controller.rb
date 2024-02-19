@@ -8,6 +8,7 @@ class WebApi::V1::PhasesController < ApplicationController
     @phases = policy_scope(Phase)
       .includes(:permissions, :report)
     @phases = @phases.where(project_id: params[:project_id]) if params[:project_id]
+    # TODO: JS - test for this
     @phases = @phases.where(participation_method: params[:participation_method]) if params[:participation_method]
     @phases = @phases.order(:start_at)
     @phases = paginate @phases
