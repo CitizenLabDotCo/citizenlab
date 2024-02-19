@@ -70,6 +70,7 @@
   "app.components.UserSearch.noOptions": "Ingen alternativer",
   "app.components.UserSearch.searchUsers": "Skriv for å søke etter brukere...",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Ingen spørsmål er valgt. Vennligst velg et spørsmål først.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Ingen svar",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} svar",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.sourceAndReference": "Data fra {phase} under {period}",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.surveyQuestion": "Undersøkelsesspørsmål",
