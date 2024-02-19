@@ -70,6 +70,7 @@
   "app.components.UserSearch.noOptions": "Nessuna opzione",
   "app.components.UserSearch.searchUsers": "Digita per cercare gli utenti...",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Non è stata selezionata alcuna domanda. Seleziona prima una domanda.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Nessuna risposta",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} risposte",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.sourceAndReference": "Dati di {phase} durante {period}",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.surveyQuestion": "Domanda del sondaggio",
