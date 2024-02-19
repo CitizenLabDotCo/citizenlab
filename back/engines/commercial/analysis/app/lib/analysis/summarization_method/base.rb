@@ -33,14 +33,20 @@ module Analysis
 
     def execute(plan)
       task.set_in_progress!
-      summary.update!(accuracy: plan.accuracy)
+      old_summary = summary.summary
+      old_accuracy = summary.accuracy
+      old_input_ids = summary.insight.inputs_ids
+      summary.update!(accuracy: plan.accuracy, summary: '')
       summary.insight.update!(inputs_ids: filtered_inputs.ids)
+
       begin
         run(plan)
         task.set_succeeded!
       rescue SummarizationFailedError => e
         ErrorReporter.report(e)
         task.set_failed!
+        summary.update!(accuracy: old_accuracy, summary: old_summary)
+        summary.insight.update!(inputs_ids: old_input_ids)
       end
     end
 
