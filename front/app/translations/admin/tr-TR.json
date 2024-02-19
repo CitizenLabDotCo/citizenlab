@@ -1930,7 +1930,6 @@
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projeler ve klasörler",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "Yapay Zeka Analizi",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Doğruluk: {accuracy}{percentage}",
-  "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Geçerli olarak seçilen girişler için geçerlidir",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Sor",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Bir soru sorun",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Soruyu sil",

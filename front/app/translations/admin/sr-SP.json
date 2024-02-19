@@ -1930,7 +1930,6 @@
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Пројекти и фасцикле",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "АИ Аналисис",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Тачност: {accuracy}{percentage}",
-  "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Примењује се на тренутно изабране улазе",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Питати",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Поставите питање",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Избриши питање",

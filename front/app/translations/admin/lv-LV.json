@@ -1930,7 +1930,6 @@
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekti un mapes",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI analīze",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Precizitāte: {accuracy}{percentage}",
-  "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Attiecas uz pašreiz izvēlētajiem ievades datiem",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Jautājiet",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Uzdot jautājumu",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Dzēst jautājumu",

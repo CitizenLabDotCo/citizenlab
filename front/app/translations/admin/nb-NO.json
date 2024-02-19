@@ -1930,7 +1930,6 @@
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Prosjekter og mapper",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI-analyse",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Nøyaktighet: {accuracy}{percentage}",
-  "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Gjelder for gjeldende valgte innganger",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Spørre",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Spør et spørsmål",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Slett spørsmålet",

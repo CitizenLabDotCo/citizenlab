@@ -1930,7 +1930,6 @@
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekt och mappar",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI-analys",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Noggrannhet: {accuracy}{percentage}",
-  "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Gäller för för tillfället valda ingångar",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Fråga",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Ställ en fråga",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Radera fråga",

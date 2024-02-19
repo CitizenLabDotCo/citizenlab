@@ -1930,7 +1930,6 @@
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekter og mapper",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI-analyse",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Nøjagtighed: {accuracy}{percentage}",
-  "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Gælder for de aktuelt valgte inputs",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Spørg",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Stil et spørgsmål",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Slet spørgsmål",

@@ -1930,7 +1930,6 @@
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projects and folders",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI Analysis",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Accuracy: {accuracy}{percentage}",
-  "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Applies to currently selected inputs",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Ask",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Ask a question",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Delete question",

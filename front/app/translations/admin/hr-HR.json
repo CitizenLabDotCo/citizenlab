@@ -1930,7 +1930,6 @@
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekti i mape",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI analiza",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Točnost: {accuracy}{percentage}",
-  "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Primjenjuje se na trenutno odabrane ulaze",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Pitajte",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Pitati pitanje",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Izbriši pitanje",

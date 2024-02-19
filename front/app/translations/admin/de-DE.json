@@ -1930,7 +1930,6 @@
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekte und Ordner",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "KI-Analyse",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Genauigkeit: {accuracy}{percentage}",
-  "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Gilt für die aktuell ausgewählten Beiträge",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Fragen",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Frage stellen",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Frage löschen",

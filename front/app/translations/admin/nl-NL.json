@@ -1930,7 +1930,6 @@
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projecten en mappen",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI-analyse",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Nauwkeurigheid: {accuracy}{percentage}",
-  "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Geldt voor de huidig geselecteerde bijdragen",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Vraag",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Stel een vraag",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Verwijder vraag",
