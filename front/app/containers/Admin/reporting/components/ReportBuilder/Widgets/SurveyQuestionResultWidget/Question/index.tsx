@@ -5,6 +5,7 @@ import { useSurveyQuestionResult } from 'api/graph_data_units';
 
 // components
 import { Title, Text, Box } from '@citizenlab/cl2-component-library';
+import GroupedBars from './GroupedBars';
 import UngroupedBars from './UngroupedBars';
 import Source from './Source';
 
@@ -56,7 +57,11 @@ const SurveyQuestionResult = ({
         })}
       </Text>
       <Box>
-        {attributes.grouped ? <></> : <UngroupedBars attributes={attributes} />}
+        {attributes.grouped ? (
+          <GroupedBars attributes={attributes} />
+        ) : (
+          <UngroupedBars attributes={attributes} />
+        )}
       </Box>
       <Source projectId={projectId} phaseId={phaseId} />
     </>

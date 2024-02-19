@@ -6,7 +6,7 @@ import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportD
 // components
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import NoData from '../_shared/NoData';
-import SurveyQuestionResult from './Question';
+import Question from './Question';
 import Settings from './Settings';
 
 // i18n
@@ -32,7 +32,7 @@ const SurveyQuestionResultWidget = ({
   return (
     <PageBreakBox px={px}>
       {hasEverything ? (
-        <SurveyQuestionResult
+        <Question
           projectId={projectId}
           phaseId={phaseId}
           questionId={questionId}

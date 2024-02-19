@@ -2,6 +2,7 @@ import React from 'react';
 
 // components
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import Bar from './Bar';
 
 // i18n
 import messages from './messages';
@@ -9,6 +10,7 @@ import { useIntl } from 'utils/cl-intl';
 
 // utils
 import { roundPercentages, sum } from 'utils/math';
+import { round } from 'lodash-es';
 
 interface Props {
   values: number[];
@@ -16,6 +18,14 @@ interface Props {
   colorScheme: string[];
   label: string;
 }
+
+const getType = (index: number, length: number) => {
+  if (length === 1) return 'single';
+  if (index === 0) return 'first';
+  if (index === length - 1) return 'last';
+
+  return 'middle';
+};
 
 const getRoundedPercentages = (values: number[], total: number) => {
   const valuesSum = sum(values);
@@ -31,12 +41,13 @@ const getRoundedPercentages = (values: number[], total: number) => {
   return roundedPercentages.slice(0, values.length);
 };
 
-const BORDER = `1px solid ${colors.divider}`;
+const noZeroes = (number: number) => number !== 0;
 
 const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
   const { formatMessage } = useIntl();
   const percentages = getRoundedPercentages(values, total);
-  const percentage = sum(percentages);
+  const percentage = round(sum(percentages), 1);
+  const nonZeroPercentages = percentages.filter(noZeroes);
 
   return (
     <Box width="100%">
@@ -57,33 +68,22 @@ const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
           })}
         </Text>
       </Box>
-      {percentages.map((percentage, index) => {
-        const last = index === percentages.length - 1;
+      {percentages.length === 1 && percentages[0] === 0 && (
+        <Bar percentage={0} />
+      )}
+
+      {nonZeroPercentages.map((percentage, index) => {
+        const type = getType(index, nonZeroPercentages.length);
+
+        console.log({ type });
 
         return (
-          <Box
+          <Bar
             key={index}
-            height="16px"
-            width="100%"
-            borderRadius="3px"
-            border={BORDER}
-            borderBottom={last ? BORDER : 'none'}
-            overflow="hidden"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width={`${percentage}%`}
-              height="25px"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-            >
-              <rect
-                width="100"
-                height="100"
-                fill={colorScheme[index % colorScheme.length]}
-              />
-            </svg>
-          </Box>
+            type={type}
+            percentage={percentage}
+            color={colorScheme[index % colorScheme.length]}
+          />
         );
       })}
     </Box>
