@@ -70,6 +70,7 @@
   "app.components.UserSearch.noOptions": "crwdns1682094:0crwdne1682094:0",
   "app.components.UserSearch.searchUsers": "crwdns1682096:0crwdne1682096:0",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "crwdns1682098:0crwdne1682098:0",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "crwdns1709186:0crwdne1709186:0",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "crwdns1682100:0{count}crwdne1682100:0",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.sourceAndReference": "crwdns1682102:0{phase}crwdnd1682102:0{period}crwdne1682102:0",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.surveyQuestion": "crwdns1682104:0crwdne1682104:0",
