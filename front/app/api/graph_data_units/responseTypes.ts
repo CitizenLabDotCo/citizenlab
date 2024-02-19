@@ -43,7 +43,7 @@ export type Answer = {
 };
 
 export type GroupedAnswer = Answer & {
-  group: string;
+  groups: { group: string | null; count: number }[];
 };
 
 export type SurveyQuestionMultilocs = {
@@ -63,20 +63,22 @@ type BaseAttributes = {
   totalPicks: number;
 };
 
-type AttributesGrouped = BaseAttributes & {
+export type AttributesGrouped = BaseAttributes & {
   grouped: true;
   answers: GroupedAnswer[];
   multilocs: SurveyQuestionMultilocsGrouped;
   legend: (string | null)[];
 };
 
-type AttributesUngrouped = BaseAttributes & {
+export type AttributesUngrouped = BaseAttributes & {
   grouped: false;
   answers: Answer[];
   multilocs: SurveyQuestionMultilocs;
 };
 
-type SurveyQuestionResultAttributes = AttributesGrouped | AttributesUngrouped;
+export type SurveyQuestionResultAttributes =
+  | AttributesGrouped
+  | AttributesUngrouped;
 
 export type SurveyQuestionResultResponse = {
   data: {

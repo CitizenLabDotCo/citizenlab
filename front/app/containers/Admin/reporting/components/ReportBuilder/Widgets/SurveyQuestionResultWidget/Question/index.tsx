@@ -4,8 +4,8 @@ import React from 'react';
 import { useSurveyQuestionResult } from 'api/graph_data_units';
 
 // components
-import { Title, Text } from '@citizenlab/cl2-component-library';
-// import MultipleChoice from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MultipleChoice';
+import { Title, Text, Box } from '@citizenlab/cl2-component-library';
+import UngroupedBars from './UngroupedBars';
 import Source from './Source';
 
 // i18n
@@ -55,11 +55,9 @@ const SurveyQuestionResult = ({
           count: attributes.totalResponses,
         })}
       </Text>
-      {/* <MultipleChoice
-        multipleChoiceAnswers={addMultilocs(answers, multilocs)}
-        totalResponses={totalResponses}
-      /> */}
-      {/* <StackedGraph surveyQuestionResult={response.data.attributes} /> */}
+      <Box>
+        {attributes.grouped ? <></> : <UngroupedBars attributes={attributes} />}
+      </Box>
       <Source projectId={projectId} phaseId={phaseId} />
     </>
   );

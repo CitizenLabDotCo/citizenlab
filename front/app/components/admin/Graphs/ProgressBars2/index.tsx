@@ -3,6 +3,10 @@ import React from 'react';
 // components
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
+// i18n
+import messages from './messages';
+import { useIntl } from 'utils/cl-intl';
+
 // utils
 import { roundPercentages, sum } from 'utils/math';
 
@@ -10,8 +14,7 @@ interface Props {
   values: number[];
   total: number;
   colorScheme: string[];
-  leftLabel?: string;
-  rightLabel?: string;
+  label: string;
 }
 
 const getRoundedPercentages = (values: number[], total: number) => {
@@ -30,38 +33,30 @@ const getRoundedPercentages = (values: number[], total: number) => {
 
 const BORDER = `1px solid ${colors.divider}`;
 
-const ProgressBars2 = ({
-  values,
-  total,
-  leftLabel,
-  rightLabel,
-  colorScheme,
-}: Props) => {
+const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
+  const { formatMessage } = useIntl();
   const percentages = getRoundedPercentages(values, total);
-  const showLabels = !!leftLabel || !!rightLabel;
+  const percentage = sum(percentages);
 
   return (
     <Box width="100%">
-      {showLabels && (
-        <Box
-          width="100%"
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          my="12px"
-        >
-          {leftLabel && (
-            <Text variant="bodyM" m="0">
-              {leftLabel}
-            </Text>
-          )}
-          {rightLabel && (
-            <Text variant="bodyS" color="textSecondary" m="0">
-              {rightLabel}
-            </Text>
-          )}
-        </Box>
-      )}
+      <Box
+        width="100%"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        my="12px"
+      >
+        <Text variant="bodyM" m="0">
+          {label}
+        </Text>
+        <Text variant="bodyS" color="textSecondary" m="0">
+          {formatMessage(messages.choiceCount, {
+            choiceCount: total,
+            percentage,
+          })}
+        </Text>
+      </Box>
       {percentages.map((percentage, index) => {
         const last = index === percentages.length - 1;
 

@@ -1,5 +1,9 @@
 import moment from 'moment';
+
+// i18n
 import messages from '../messages';
+
+// typings
 import { FormatMessage } from 'typings';
 import { IPhaseData } from 'api/phases/types';
 
