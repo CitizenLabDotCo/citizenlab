@@ -1,0 +1,82 @@
+import React from 'react';
+
+// components
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+
+// utils
+import { roundPercentages } from 'utils/math';
+
+interface Props {
+  values: number[];
+  total: number;
+  colorScheme: string[];
+  leftLabel?: string;
+  rightLabel?: string;
+}
+
+const ProgressBars2 = ({
+  values,
+  total,
+  leftLabel,
+  rightLabel,
+  colorScheme,
+}: Props) => {
+  const percentages = roundPercentages(values, 1, total);
+  const showLabels = !!leftLabel || !!rightLabel;
+
+  return (
+    <Box width="100%">
+      {showLabels && (
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          my="12px"
+        >
+          {leftLabel && (
+            <Text variant="bodyM" m="0">
+              {leftLabel}
+            </Text>
+          )}
+          {rightLabel && (
+            <Text variant="bodyS" color="textSecondary" m="0">
+              {rightLabel}
+            </Text>
+          )}
+        </Box>
+      )}
+      {percentages.map((percentage, index) => {
+        const last = index === percentages.length - 1;
+
+        return (
+          <Box
+            key={index}
+            height="16px"
+            width="100%"
+            borderRadius="3px"
+            border={`1px solid ${colors.divider};`}
+            borderBottom={last ? `1px solid ${colors.divider};` : 'none'}
+            overflow="hidden"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={`${percentage}%`}
+              height="25px"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              <rect
+                width="100"
+                height="100"
+                fill={colorScheme[index % colorScheme.length]}
+              />
+            </svg>
+          </Box>
+        );
+      })}
+    </Box>
+  );
+};
+
+export default ProgressBars2;
