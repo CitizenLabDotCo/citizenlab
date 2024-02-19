@@ -50,7 +50,7 @@ const SummarizeButton = () => {
     queryParams: filters,
   });
 
-  const inputsCount = inputs?.pages[0].meta.filtered_count;
+  const inputsCount = inputs?.pages[0].meta.filtered_count || 0;
 
   const [preCheck, setPreCheck] = useState<ISummaryPreCheck | null>(null);
   useEffect(() => {
@@ -66,10 +66,11 @@ const SummarizeButton = () => {
 
   const tooManyInputs = preCheck?.data.attributes.impossible_reason;
 
-  const applyInputsLimit =
-    !largeSummariesEnabled && inputsCount && inputsCount > 30;
+  const applyInputsLimit = !largeSummariesEnabled && inputsCount > 30;
 
-  const summaryPossible = !tooManyInputs && !applyInputsLimit;
+  const summaryPossible =
+    !tooManyInputs && !applyInputsLimit && inputsCount > 0;
+
   const tooltipContent = applyInputsLimit
     ? formatMessage(messages.tooltipTextLimit)
     : formatMessage(messages.tooManyInputs);

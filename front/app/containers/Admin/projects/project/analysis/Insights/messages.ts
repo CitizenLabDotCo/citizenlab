@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  appliesTo: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.appliesTo',
-    defaultMessage: 'Applies to currently selected inputs',
-  },
   emptyList: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.emptyList',
     defaultMessage:
