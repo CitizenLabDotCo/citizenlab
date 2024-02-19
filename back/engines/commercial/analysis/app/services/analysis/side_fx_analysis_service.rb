@@ -4,7 +4,7 @@ module Analysis
   class SideFxAnalysisService
     include SideFxHelper
 
-    def before_create(analysis, user)
+    def before_create(analysis, _user)
       analysis.additional_custom_field_ids = fallback_custom_fields(analysis) if analysis.associated_custom_fields.blank?
     end
 

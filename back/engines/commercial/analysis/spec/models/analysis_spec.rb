@@ -52,7 +52,7 @@ RSpec.describe Analysis::Analysis do
   end
 
   describe 'custom_fields presence' do
-    {'native survey' => :survey_analysis, 'ideation' => :ideation_analysis}.each do |method, factory|
+    { 'native survey' => :survey_analysis, 'ideation' => :ideation_analysis }.each do |method, factory|
       context method do
         let(:analysis) { create(factory) }
 

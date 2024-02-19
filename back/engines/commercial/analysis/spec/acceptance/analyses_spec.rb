@@ -60,8 +60,8 @@ resource 'Analyses' do
       })
       expect(response_data.dig(:relationships, :main_custom_field, :data, :id)).to eq main_field.id
       expect(response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)).to eq [additional_field.id]
-      expect(json_response_body.dig(:included).pluck(:id)).to include main_field.id
-      expect(json_response_body.dig(:included).pluck(:id)).to include additional_field.id
+      expect(json_response_body[:included].pluck(:id)).to include main_field.id
+      expect(json_response_body[:included].pluck(:id)).to include additional_field.id
     end
   end
 
