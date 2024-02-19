@@ -4,14 +4,13 @@
 #
 # Table name: maps_map_configs
 #
-#  id              :uuid             not null, primary key
-#  project_id      :uuid             not null
-#  center          :geography        point, 4326
-#  zoom_level      :decimal(4, 2)
-#  tile_provider   :string
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  esri_web_map_id :string
+#  id            :uuid             not null, primary key
+#  project_id    :uuid             not null
+#  center        :geography        point, 4326
+#  zoom_level    :decimal(4, 2)
+#  tile_provider :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 # Indexes
 #
