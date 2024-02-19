@@ -34,7 +34,7 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
     );
   }, [analysisId, filters, addQuestionPreCheck]);
 
-  const tooManyInputs = !preCheck?.data.attributes.impossible_reason;
+  const tooManyInputs = preCheck?.data.attributes.impossible_reason;
 
   const questionPossible = !tooManyInputs && askAQuestionEnabled;
   const tooltipContent = !askAQuestionEnabled
@@ -55,7 +55,7 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
           mb="4px"
           size="s"
           w="100%"
-          buttonStyle="secondary-outlined"
+          buttonStyle="admin-dark"
           processing={isLoadingPreCheck}
           onClick={onClick}
           disabled={!questionPossible || !askAQuestionEnabled}

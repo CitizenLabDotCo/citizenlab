@@ -51,10 +51,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary',
     defaultMessage: 'Delete summary',
   },
-  bookmarkSummary: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.bookmarkSummary',
-    defaultMessage: 'Bookmark summary',
-  },
   deleteSummaryConfirmation: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.deleteSummaryConfirmation',
     defaultMessage: 'Are you sure you want to delete these summaries?',
@@ -77,8 +73,8 @@ export default defineMessages({
       'The AI can’t process so many inputs in one go. Divide them into smaller groups.',
   },
   summarize: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.summarize',
-    defaultMessage: 'Auto-summarize',
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton',
+    defaultMessage: 'Summarize',
   },
   ask: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.ask',

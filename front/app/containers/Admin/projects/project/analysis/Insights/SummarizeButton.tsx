@@ -64,7 +64,7 @@ const SummarizeButton = () => {
     );
   }, [analysisId, filters, addSummaryPreCheck]);
 
-  const tooManyInputs = !preCheck?.data.attributes.impossible_reason;
+  const tooManyInputs = preCheck?.data.attributes.impossible_reason;
 
   const applyInputsLimit =
     !largeSummariesEnabled && inputsCount && inputsCount > 30;
@@ -88,7 +88,7 @@ const SummarizeButton = () => {
           mb="4px"
           size="s"
           w="100%"
-          buttonStyle="secondary-outlined"
+          buttonStyle="admin-dark"
           onClick={handleSummaryCreate}
           disabled={!summaryPossible}
           processing={isLoadingPreCheck || isLoadingSummary}
