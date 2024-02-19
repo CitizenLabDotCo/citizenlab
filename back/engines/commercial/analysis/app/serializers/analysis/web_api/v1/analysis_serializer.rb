@@ -6,5 +6,8 @@ class Analysis::WebApi::V1::AnalysisSerializer < WebApi::V1::BaseSerializer
   belongs_to :project, serializer: ::WebApi::V1::ProjectSerializer
   belongs_to :phase, serializer: ::WebApi::V1::PhaseSerializer
 
-  has_many :custom_fields, serializer: ::WebApi::V1::CustomFieldSerializer
+  belongs_to :main_custom_field, serializer: ::WebApi::V1::CustomFieldSerializer
+  has_many :additional_custom_fields, serializer: ::WebApi::V1::CustomFieldSerializer
+
+  # TODO: Include all_custom_fields
 end

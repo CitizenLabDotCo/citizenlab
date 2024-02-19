@@ -52,13 +52,12 @@ RSpec.describe Analysis::Analysis do
   end
 
   describe 'main_custom_field presence' do
-    it 'is required for surveys' do
+    it 'is not required for surveys' do
       analysis = build(:survey_analysis, main_custom_field: nil)
-      expect(analysis).to be_invalid
-      expect(analysis.errors.details[:main_custom_field]).to eq([{ error: :blank }])
+      expect(analysis).to be_valid
     end
 
-    it 'it is not required for ideation' do
+    it 'is not required for ideation' do
       analysis = build(:analysis, project: create(:single_phase_ideation_project), phase: nil, main_custom_field: nil)
       expect(analysis).to be_valid
     end
