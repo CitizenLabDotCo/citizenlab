@@ -213,6 +213,7 @@ const IdeasMap = memo<Props>(
         return new FeatureLayer({
           source: graphics, // Array of idea graphics
           title: formatMessage(messages.userInputs),
+          id: 'ideasLayer',
           objectIdField: 'ID',
           fields: [
             {
@@ -265,9 +266,10 @@ const IdeasMap = memo<Props>(
         // On map click, we either open an existing idea OR show the "submit an idea" popup.
         // This depends on whether the user has clicked an existing map pin.
         mapView.hitTest(event).then((result) => {
-          const elements = result.results; // These are map elements underneath our map click
+          // Get any map elements underneath map click
+          const elements = result.results;
           if (elements.length > 0) {
-            // User clicked an idea pin OR a cluster
+            // There are map elements - user clicked an layer, idea pin OR a cluster
             const topElement = elements[0];
 
             if (topElement.type === 'graphic') {
@@ -282,7 +284,7 @@ const IdeasMap = memo<Props>(
                   mapView.zoom + 3
                 );
               } else if (graphicId) {
-                // User clicked an idea pin. Zoom to pin & open idea in information panel.
+                // User clicked an idea pin or layer.
                 const ideaId = graphics?.at(graphicId - 1)?.attributes.ideaId;
 
                 // If there are multiple ideas at this same location (overlapping pins), show the idea selection popup.
@@ -295,9 +297,10 @@ const IdeasMap = memo<Props>(
                       // Get list of idea ids at this location
                       if (element.type === 'graphic') {
                         const graphicId = element?.graphic?.attributes?.ID;
+                        const layerId = element?.graphic?.layer?.id;
                         const ideaId = graphics?.at(graphicId - 1)?.attributes
                           .ideaId;
-                        if (ideaId) {
+                        if (ideaId && layerId === 'ideasLayer') {
                           return ideaId;
                         }
                       }

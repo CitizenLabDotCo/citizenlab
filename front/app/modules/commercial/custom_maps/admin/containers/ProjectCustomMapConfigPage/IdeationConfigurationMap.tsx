@@ -68,7 +68,7 @@ const IdeationConfigurationMap = memo<Props>(
     }, []);
 
     return (
-      <Box>
+      <Box height="700px !important">
         <EsriMap
           initialData={{
             center: mapConfig.data.attributes.center_geojson,
