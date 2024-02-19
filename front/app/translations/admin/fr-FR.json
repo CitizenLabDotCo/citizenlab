@@ -1950,7 +1950,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Précision : {accuracy}{percentage}",
   "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "S'applique uniquement aux contributions sélectionnées",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Soumettre",
-  "app.containers.AdminPage.projects.project.analysis.Insights.askAQuestionUpsellMessage": "Au lieu de résumer, vous pouvez poser des questions pertinentes à vos données. Cette fonctionnalité n'est pas incluse dans votre plan actuel. Adressez-vous à votre Government Success Manager ou à votre administrateur pour la débloquer.",
+  "app.containers.AdminPage.projects.project.analysis.Insights.askAQuestionUpsellMessage": "En plus des résumés automatiques, il est également possible de poser des questions spécifiques concernant vos résultats. Toutefois, cette fonctionnalité n'est pas incluse dans votre plan actuel. Adressez-vous à votre GovSuccess Manager ou à votre administrateur pour la débloquer.",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Posez une question",
   "app.containers.AdminPage.projects.project.analysis.Insights.bookmarkSummary": "Insights favoris",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Supprimer la question",
