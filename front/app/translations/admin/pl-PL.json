@@ -70,6 +70,7 @@
   "app.components.UserSearch.noOptions": "Brak opcji",
   "app.components.UserSearch.searchUsers": "Przeszukaj użytkowników",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Nie wybrano żadnego pytania. Wybierz pytanie jako pierwsze.",
+  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Brak odpowiedzi",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} odpowiedzi",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.sourceAndReference": "Dane z {phase} podczas {period}",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.surveyQuestion": "Pytanie ankietowe",
