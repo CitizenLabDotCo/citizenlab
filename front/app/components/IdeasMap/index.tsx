@@ -432,6 +432,8 @@ const IdeasMap = memo<Props>(
       [ideasList, esriMapView, theme.colors.tenantSecondary]
     );
 
+    const selectedIdeaData = ideasList?.find(({ id }) => id === selectedIdea);
+
     return (
       <>
         <StyledMapContainer ref={containerRef}>
@@ -481,16 +483,20 @@ const IdeasMap = memo<Props>(
                 in={!!selectedIdea}
                 timeout={300}
               >
-                <StyledIdeaMapCard
-                  idea={ideasList?.find(({ id }) => id === selectedIdea)}
-                  onClose={() => {
-                    setSelectedIdea(null);
-                  }}
-                  onSelectIdea={setSelectedIdea}
-                  isClickable={true}
-                  projectId={projectId}
-                  phaseId={phaseId}
-                />
+                <Box>
+                  {selectedIdeaData && (
+                    <StyledIdeaMapCard
+                      idea={selectedIdeaData}
+                      onClose={() => {
+                        setSelectedIdea(null);
+                      }}
+                      onSelectIdea={setSelectedIdea}
+                      isClickable={true}
+                      projectId={projectId}
+                      phaseId={phaseId}
+                    />
+                  )}
+                </Box>
               </CSSTransition>
             )}
             <StyledDesktopIdeaMapOverlay

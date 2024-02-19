@@ -125,7 +125,7 @@ const FooterValue = styled.div`
 `;
 
 interface Props {
-  idea?: IIdeaData;
+  idea: IIdeaData;
   onSelectIdea: (ideaId: string | null) => void;
   onClose?: () => void;
   className?: string;
@@ -142,10 +142,6 @@ const IdeaMapCard = memo<Props>(
     const { windowWidth } = useWindowSize();
     const tablet = windowWidth <= viewportWidths.tablet;
     const phaseData = phase?.data;
-
-    if (!idea) {
-      return null;
-    }
 
     const votingMethodConfig = getVotingMethodConfig(
       phaseData?.attributes.voting_method

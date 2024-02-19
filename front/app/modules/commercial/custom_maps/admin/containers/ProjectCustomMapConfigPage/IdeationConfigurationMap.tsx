@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 
 // components
 import EsriMap from 'components/EsriMap';
@@ -13,7 +13,6 @@ import useLocalize from 'hooks/useLocalize';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // utils
-import debounceFn from 'lodash/debounce';
 import {
   changeCursorOnHover,
   createEsriGeoJsonLayers,
@@ -43,12 +42,14 @@ const IdeationConfigurationMap = memo<Props>(
       );
     }, [mapConfig, localize]);
 
-    const onHover = debounceFn((event: any, esriMapView: MapView) => {
+    const onMapInit = useCallback((esriMapView: MapView) => {
       // Save the esriMapView in state
-      if (!mapView) {
+      if (!esriMapView) {
         setMapView(esriMapView);
       }
+    }, []);
 
+    const onHover = useCallback((event: any, esriMapView: MapView) => {
       // Change cursor when hovering over element
       changeCursorOnHover(event, esriMapView);
 
@@ -64,7 +65,7 @@ const IdeationConfigurationMap = memo<Props>(
           setHoveredLayerId(null);
         }
       });
-    }, 10);
+    }, []);
 
     return (
       <Box>
@@ -74,6 +75,7 @@ const IdeationConfigurationMap = memo<Props>(
             zoom: Number(mapConfig.data.attributes.zoom_level),
             showLayerVisibilityControl: true,
             showLegend: true,
+            onInit: onMapInit,
           }}
           height={'700px'}
           layers={geoJsonLayers}
