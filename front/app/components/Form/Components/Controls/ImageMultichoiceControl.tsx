@@ -32,6 +32,8 @@ import styled from 'styled-components';
 
 const StyledBox = styled(Box)`
   background-color: ${colors.grey100};
+  position: relative;
+  flex: 1 1 auto;
   &:hover {
     background-color: ${darken(0.05, colors.grey100)};
   }
@@ -110,10 +112,6 @@ const ImageMultichoiceControl = ({
         >
           {options?.map((option, index: number) => (
             <StyledBox
-              style={{
-                position: 'relative',
-                flex: '1 1 auto',
-              }}
               mb="12px"
               key={option.value}
               borderRadius="3px"
