@@ -9,10 +9,9 @@ import { useIntl } from 'utils/cl-intl';
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
 
 // services
-import { IUserData } from 'api/users/types';
+import { IUser } from 'api/users/types';
 
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
@@ -20,22 +19,20 @@ import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import useLocalize from 'hooks/useLocalize';
 
 interface Props {
-  user: IUserData;
+  authUser: IUser;
 }
 
-const UsersEditPageMeta = ({ user }: Props) => {
+const UsersEditPageMeta = ({ authUser }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const tenantLocales = useAppConfigurationLocales();
-  const { data: authUser } = useAuthUser();
   const { data: appConfig } = useAppConfiguration();
-  const firstName = user.attributes.first_name;
-  const lastName = user.attributes.last_name;
+  const firstName = authUser.data.attributes.first_name;
+  const lastName = authUser.data.attributes.last_name;
 
   if (
     !tenantLocales ||
     !appConfig ||
-    !authUser ||
     typeof firstName !== 'string' ||
     typeof lastName !== 'string'
   ) {
