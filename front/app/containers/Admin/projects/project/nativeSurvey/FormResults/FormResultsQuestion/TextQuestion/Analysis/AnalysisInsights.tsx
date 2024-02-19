@@ -128,7 +128,7 @@ const Summary = ({
         )}
         <Box display="flex" gap="4px" alignItems="center">
           {!largeSummariesEnabled && (
-            <Icon name="alert-octagon" fill={colors.orange} />
+            <Icon name="alert-circle" fill={colors.orange} />
           )}
           <Text fontWeight="bold">{formatMessage(messages.aiSummary)}</Text>
           <Icon name="flash" />
@@ -156,7 +156,7 @@ const Summary = ({
         >
           <Box display="flex" gap="4px" alignItems="center">
             {!largeSummariesEnabled && (
-              <Icon name="alert-octagon" fill={colors.orange} />
+              <Icon name="alert-circle" fill={colors.orange} />
             )}
             <Text
               m="0px"
@@ -289,7 +289,7 @@ const Question = ({
         )}
         <Box display="flex" gap="4px" alignItems="center">
           {!largeSummariesEnabled && (
-            <Icon name="alert-octagon" fill={colors.orange} />
+            <Icon name="alert-circle" fill={colors.orange} />
           )}
           <Text fontWeight="bold">{question}</Text>
           <Icon name="question-bubble" />
@@ -313,7 +313,7 @@ const Question = ({
       >
         <Box display="flex" gap="4px" alignItems="center">
           {!largeSummariesEnabled && (
-            <Icon name="alert-octagon" fill={colors.orange} />
+            <Icon name="alert-circle" fill={colors.orange} />
           )}
           <Text
             m="0px"
