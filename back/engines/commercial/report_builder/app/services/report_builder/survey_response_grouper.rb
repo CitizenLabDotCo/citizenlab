@@ -10,21 +10,11 @@ module ReportBuilder
     def get_result(question_field_id)
       question = get_question(question_field_id)
 
-      query = @inputs.select(select_query(question, as: 'answer'))
+      query = @inputs.select(
+        select_query(question, as: 'answer')
+      )
 
-      answer_keys = question.options.map(&:key) + [nil]
-
-      grouped_answers_hash = apply_grouping(query)
-        .each_with_object({}) do |(answer, count), accu|
-          valid_answer = answer_keys.include?(answer) ? answer : nil
-
-          accu[valid_answer] ||= { answer: valid_answer, count: 0 }
-          accu[valid_answer][:count] += count
-        end
-
-      answers = answer_keys.map do |key|
-        grouped_answers_hash[key] || { answer: key, count: 0 }
-      end
+      answers = construct_not_grouped_answers(query, question)
 
       # Build response
       build_response(answers, question, nil)
@@ -42,7 +32,7 @@ module ReportBuilder
         select_query(user_field, as: 'group')
       )
 
-      answers = construct_answers(query, question, user_field)
+      answers = construct_grouped_answers(query, question, user_field)
 
       build_response(answers, question, user_field)
     end
@@ -57,7 +47,7 @@ module ReportBuilder
         select_query(other_question, as: 'group')
       )
 
-      answers = construct_answers(query, question, other_question)
+      answers = construct_grouped_answers(query, question, other_question)
 
       build_response(answers, question, other_question)
     end
@@ -86,15 +76,31 @@ module ReportBuilder
       else
         %{
           jsonb_array_elements(
-            CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (!exists (@.#{field.key}))')
-              THEN '{"x":[null]}'::jsonb->'x'
-              ELSE #{table}.custom_field_values->'#{field.key}' END
+            CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@.#{field.key}))')
+              THEN #{table}.custom_field_values->'#{field.key}'
+              ELSE '[null]'::jsonb END
           ) as #{as}
         }
       end
     end
 
-    def construct_answers(query, question, group_field)
+    def construct_not_grouped_answers(query, question)
+      answer_keys = question.options.map(&:key) + [nil]
+
+      grouped_answers_hash = apply_grouping(query)
+        .each_with_object({}) do |(answer, count), accu|
+          valid_answer = answer_keys.include?(answer) ? answer : nil
+
+          accu[valid_answer] ||= { answer: valid_answer, count: 0 }
+          accu[valid_answer][:count] += count
+        end
+
+      answer_keys.map do |key|
+        grouped_answers_hash[key] || { answer: key, count: 0 }
+      end
+    end
+
+    def construct_grouped_answers(query, question, group_field)
       answer_keys = question.options.map(&:key) + [nil]
       group_field_keys = group_field.options.map(&:key) + [nil]
 
@@ -145,11 +151,12 @@ module ReportBuilder
         inputType: question.input_type,
         question: question.title_multiloc,
         required: question.required,
-        grouped: !!group_field,
         totalResponses: @inputs.count,
-        totalPicks: answers.pluck(:count).sum,
         answers: answers,
         customFieldId: question.id,
+
+        grouped: !!group_field,
+        totalPicks: answers.pluck(:count).sum,
         multilocs: multilocs
       }
     end

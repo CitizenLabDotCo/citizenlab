@@ -157,7 +157,7 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
     end
   end
 
-  context 'when getting result' do
+  describe '#get_result' do
     it 'works for select' do
       expect(generator.get_result(city_survey_question.id)).to eq({
         inputType: city_survey_question.input_type,
@@ -196,7 +196,7 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
     end
   end
 
-  context 'when grouping by user field' do
+  describe '#group_by_user_field' do
     it 'groups select by select' do
       expect(generator.group_by_user_field(
         city_survey_question.id,
@@ -304,7 +304,7 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
     end
   end
 
-  context 'when grouping by other survey question' do
+  describe '#group_by_other_question' do
     it 'groups select by select' do
       expect(generator.group_by_other_question(
         city_survey_question.id,
