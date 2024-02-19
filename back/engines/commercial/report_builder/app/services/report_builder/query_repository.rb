@@ -13,6 +13,7 @@ module ReportBuilder
       'VisitorsWidget' => Queries::Analytics::Visitors,
       'VisitorsTrafficSourcesWidget' => Queries::Analytics::TrafficSources,
       'SurveyResultsWidget' => Queries::SurveyResults,
+      'SurveyQuestionResultWidget' => Queries::SurveyQuestionResult,
       'MostReactedIdeasWidget' => Queries::MostReactedIdeas
     }.freeze
 

@@ -69,6 +69,8 @@ const getCustomFieldBadgeLabel = (
       return messages.longAnswer;
     case 'multiselect':
       return messages.multipleChoice;
+    case 'multiselect_image':
+      return messages.multipleChoiceImage;
     case 'select':
       return messages.singleChoice;
     case 'page':

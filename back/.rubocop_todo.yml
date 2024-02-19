@@ -52,8 +52,6 @@ Lint/EmptyBlock:
 Lint/OrAssignmentToConstant:
   Exclude:
     - 'config/initializers/bunny.rb'
-    - 'engines/commercial/insights/config/initializers/bunny.rb'
-    - 'engines/commercial/nlp/config/initializers/bunny.rb'
 
 # Offense count: 5
 Lint/RescueException:
@@ -255,7 +253,6 @@ RSpec/RepeatedDescription:
 RSpec/RepeatedExample:
   Exclude:
     - 'engines/commercial/idea_assignment/spec/acceptance/ideas_spec.rb'
-    - 'engines/commercial/insights/spec/models/insights/processed_flag_spec.rb'
 
 # Offense count: 2
 RSpec/RepeatedExampleGroupDescription:
@@ -294,7 +291,6 @@ RSpec/SubjectStub:
 # Configuration parameters: IgnoreNameless, IgnoreSymbolicNames.
 RSpec/VerifiedDoubles:
   Exclude:
-    - 'engines/commercial/insights/spec/jobs/insights/create_classification_tasks_job_spec.rb'
     - 'engines/commercial/multi_tenancy/spec/services/track_intercom_service_spec.rb'
     - 'spec/services/track_intercom_service_spec.rb'
 
@@ -353,8 +349,6 @@ Rails/I18nLocaleTexts:
     - 'app/models/custom_field.rb'
     - 'app/models/custom_field_option.rb'
     - 'engines/commercial/custom_maps/app/models/custom_maps/layer.rb'
-    - 'engines/commercial/insights/app/models/insights/category_assignment.rb'
-    - 'engines/commercial/insights/app/models/insights/processed_flag.rb'
     - 'engines/free/surveys/app/models/surveys/survey_phase.rb'
 
 # Offense count: 32
@@ -488,9 +482,6 @@ Style/ClassVars:
 Style/FetchEnvVar:
   Exclude:
     - 'config/initializers/bunny.rb'
-    - 'engines/commercial/insights/config/initializers/bunny.rb'
-    - 'engines/commercial/nlp/config/initializers/bunny.rb'
-    - 'engines/commercial/nlp/spec/services/nlp/api_spec.rb'
     - 'engines/commercial/texting/app/services/texting/sms/providers/twilio.rb'
     - 'engines/free/surveys/spec/acceptance/typeform_events_spec.rb'
 
@@ -503,7 +494,6 @@ Style/MultilineBlockChain:
     - 'app/services/profanity_service.rb'
     - 'app/services/user_reduce_service.rb'
     - 'engines/commercial/flag_inappropriate_content/app/services/flag_inappropriate_content/toxicity_detection_service.rb'
-    - 'engines/commercial/nlp/lib/tasks/nlp.rake'
     - 'engines/free/email_campaigns/spec/acceptance/consents_spec.rb'
     - 'lib/tasks/tenant_template_csv_to_yml.rake'
     - 'spec/services/profanity_service_spec.rb'
@@ -532,7 +522,6 @@ Style/OpenStructUse:
 Style/OptionalBooleanParameter:
   Exclude:
     - 'app/services/posts_filtering_service.rb'
-    - 'engines/commercial/insights/app/services/insights/category_assignments_service.rb'
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).

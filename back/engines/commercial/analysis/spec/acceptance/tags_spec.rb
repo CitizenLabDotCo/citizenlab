@@ -183,7 +183,6 @@ resource 'Tags' do
     with_options scope: :tag do
       parameter :name, 'The name of the tag.', required: true
     end
-    ValidationErrorHelper.new.error_fields(self, Insights::Category)
 
     let(:tag) { create(:tag) }
     let(:analysis_id) { tag.analysis_id }

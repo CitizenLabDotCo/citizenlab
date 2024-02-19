@@ -71,12 +71,6 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
-  remote: engines/commercial/geographic_dashboard
-  specs:
-    geographic_dashboard (0.1.0)
-      rails (~> 7.0)
-
-PATH
   remote: engines/commercial/google_tag_manager
   specs:
     google_tag_manager (0.1.0)
@@ -203,12 +197,6 @@ PATH
       rails (~> 7.0)
 
 PATH
-  remote: engines/commercial/insights
-  specs:
-    insights (0.1.0)
-      rails (~> 7.0)
-
-PATH
   remote: engines/commercial/machine_translations
   specs:
     machine_translations (0.1.0)
@@ -236,17 +224,8 @@ PATH
   remote: engines/commercial/multi_tenancy
   specs:
     multi_tenancy (0.1.0)
-      nlp
       rails (~> 7.0)
       ros-apartment (>= 2.9.0)
-
-PATH
-  remote: engines/commercial/nlp
-  specs:
-    nlp (0.1.0)
-      bunny
-      httparty
-      rails (~> 7.0)
 
 PATH
   remote: engines/commercial/posthog_integration
@@ -1263,7 +1242,6 @@ DEPENDENCIES
   flag_inappropriate_content!
   fog-aws (~> 3.19)
   frontend!
-  geographic_dashboard!
   google-cloud-document_ai
   google_tag_manager!
   groupdate (~> 4.1)
@@ -1285,7 +1263,6 @@ DEPENDENCIES
   idea_assignment!
   idea_custom_fields!
   impact_tracking!
-  insights!
   interactor
   interactor-rails
   intercom (~> 4.2)
@@ -1303,7 +1280,6 @@ DEPENDENCIES
   mjml-rails (~> 4.9)
   moderation!
   multi_tenancy!
-  nlp!
   nokogiri (~> 1.14.3)
   okcomputer
   omniauth (~> 1.9.1)

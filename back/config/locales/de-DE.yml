@@ -146,6 +146,8 @@ de:
       section3:
         title: Details
         description:
+      other:
+        title: Antwort eingeben
   custom_forms:
     categories:
       main_content:
