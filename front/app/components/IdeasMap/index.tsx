@@ -18,6 +18,10 @@ import Point from '@arcgis/core/geometry/Point';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Renderer from '@arcgis/core/renderers/SimpleRenderer';
 import InstructionMessage from './InstructionMessage';
+import StartIdeaButton from './StartIdeaButton';
+import IdeaMapCard from './IdeaMapCard';
+import IdeasSharingLocationPopup from './IdeasSharingLocationPopup';
+
 import {
   Box,
   media,
@@ -53,10 +57,11 @@ import { CSSTransition } from 'react-transition-group';
 import { IMapConfig } from 'modules/commercial/custom_maps/api/map_config/types';
 import { IIdeaData } from 'api/ideas/types';
 import { useSearchParams } from 'react-router-dom';
+
+// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import StartIdeaButton from './StartIdeaButton';
-import IdeaMapCard from './IdeaMapCard';
+import useAuthUser from 'api/me/useAuthUser';
 
 const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
   width: 390px;
@@ -98,6 +103,10 @@ const StyledMapContainer = styled(Box)`
     display: none;
   }
 
+  calcite-action {
+    display: none !important;
+  }
+
   .esri-popup__main-container {
     max-width: 300px !important;
   }
@@ -114,6 +123,7 @@ const IdeasMap = memo<Props>(
   ({ mapConfig, projectId, phaseId, ideasList }: Props) => {
     const theme = useTheme();
     const localize = useLocalize();
+    const { data: authUser } = useAuthUser();
     const { formatMessage } = useIntl();
     const [searchParams] = useSearchParams();
     const isMobileOrSmaller = useBreakpoint('phone');
@@ -122,6 +132,9 @@ const IdeasMap = memo<Props>(
     // Create a div element to use for inserting React components into Esri map popup
     // Docs: https://developers.arcgis.com/javascript/latest/custom-ui/#introduction
     const startIdeaButtonNode = useMemo(() => {
+      return document.createElement('div');
+    }, []);
+    const ideasSharingLocationNode = useMemo(() => {
       return document.createElement('div');
     }, []);
 
@@ -133,6 +146,9 @@ const IdeasMap = memo<Props>(
     const [selectedIdea, setSelectedIdea] = useState<string | null>(
       searchParams.get('selected_idea_id') || null
     );
+    const [selectedClusterIdeas, setSelectedClusterIdeas] = useState<
+      string[] | null
+    >(null);
 
     // Handling for dynamic container width
     const { windowWidth } = useWindowSize();
@@ -179,10 +195,11 @@ const IdeasMap = memo<Props>(
           }),
           attributes: {
             ideaId: idea?.id,
+            ideaTitleLocalized: localize(idea?.attributes?.title_multiloc),
           },
         });
       });
-    }, [ideasList]);
+    }, [ideasList, localize]);
 
     // Create an Esri map layer from the graphics so we can add a cluster display
     const ideasLayer = useMemo(() => {
@@ -210,10 +227,21 @@ const IdeasMap = memo<Props>(
           }),
           // Add cluster display to this layer
           featureReduction: getClusterConfiguration(theme.colors.tenantPrimary),
+          popupTemplate: {
+            title: 'Multiple inputs at this location',
+            content: () => {
+              return ideasSharingLocationNode;
+            },
+          },
         });
       }
       return undefined;
-    }, [formatMessage, graphics, theme.colors.tenantPrimary]);
+    }, [
+      formatMessage,
+      graphics,
+      ideasSharingLocationNode,
+      theme.colors.tenantPrimary,
+    ]);
 
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
@@ -233,61 +261,91 @@ const IdeasMap = memo<Props>(
                 goToMapLocation(
                   esriPointToGeoJson(topElement.mapPoint),
                   mapView,
-                  mapView.zoom + 2
+                  mapView.zoom + 3
                 );
               } else if (graphicId) {
                 // User clicked an idea pin. Zoom to pin & open idea in information panel.
                 const ideaId = graphics?.at(graphicId - 1)?.attributes.ideaId;
 
-                if (ideaId) {
+                // If there are multiple ideas at this same location (overlapping pins), show the idea selection popup
+                if (elements.length > 1 && mapView.zoom >= 20) {
                   goToMapLocation(
                     esriPointToGeoJson(topElement.mapPoint),
                     mapView
                   ).then(() => {
-                    setSelectedIdea(ideaId);
-                    // Add graphic symbol
-                    const geometry = topElement.graphic.geometry;
-                    if (geometry.type === 'point') {
-                      const graphic = new Graphic({
-                        geometry,
-                        symbol: getMapPinSymbol({
-                          color: theme.colors.tenantSecondary,
-                          sizeInPx: 42,
-                        }),
-                      });
-                      mapView.graphics.removeAll();
-                      mapView.graphics.add(graphic);
-                      setTimeout(() => {
-                        mapView.graphics.removeAll();
-                      }, 4000);
-                    }
+                    const ideaIds = elements.map((element) => {
+                      if (element.type === 'graphic') {
+                        const graphicId = element?.graphic?.attributes?.ID;
+                        const ideaId = graphics?.at(graphicId - 1)?.attributes
+                          .ideaId;
+                        if (ideaId) {
+                          return ideaId;
+                        }
+                      }
+                    });
+                    setSelectedClusterIdeas(ideaIds);
+                    mapView.popup.open({
+                      features: [topElement.graphic],
+                      location: topElement.mapPoint,
+                    });
                   });
+                } else {
+                  // Otherwise, open the selected idea in the information panel
+                  if (ideaId) {
+                    goToMapLocation(
+                      esriPointToGeoJson(topElement.mapPoint),
+                      mapView
+                    ).then(() => {
+                      setSelectedIdea(ideaId);
+                      // Add graphic symbol
+                      const geometry = topElement.graphic.geometry;
+                      if (geometry.type === 'point') {
+                        const graphic = new Graphic({
+                          geometry,
+                          symbol: getMapPinSymbol({
+                            color: theme.colors.tenantSecondary,
+                            sizeInPx: 42,
+                          }),
+                        });
+                        mapView.graphics.removeAll();
+                        mapView.graphics.add(graphic);
+                        setTimeout(() => {
+                          mapView.graphics.removeAll();
+                        }, 2000);
+                      }
+                    });
+                  }
                 }
               } else {
                 // Show the "Submit an idea" popup
-                showAddInputPopup({
-                  event,
-                  mapView,
-                  setClickedMapLocation,
-                  setSelectedInput: setSelectedIdea,
-                  popupContentNode: startIdeaButtonNode,
-                  popupTitle: formatMessage(messages.submitIdea),
-                });
+                if (authUser) {
+                  showAddInputPopup({
+                    event,
+                    mapView,
+                    setClickedMapLocation,
+                    setSelectedInput: setSelectedIdea,
+                    popupContentNode: startIdeaButtonNode,
+                    popupTitle: formatMessage(messages.submitIdea),
+                  });
+                }
               }
             }
           } else {
-            showAddInputPopup({
-              event,
-              mapView,
-              setClickedMapLocation,
-              setSelectedInput: setSelectedIdea,
-              popupContentNode: startIdeaButtonNode,
-              popupTitle: formatMessage(messages.submitIdea),
-            });
+            if (authUser) {
+              showAddInputPopup({
+                event,
+                mapView,
+                setClickedMapLocation,
+                setSelectedInput: setSelectedIdea,
+                popupContentNode: startIdeaButtonNode,
+                popupTitle: formatMessage(messages.submitIdea),
+              });
+            }
           }
         });
       },
       [
+        authUser,
         formatMessage,
         graphics,
         startIdeaButtonNode,
@@ -392,6 +450,13 @@ const IdeasMap = memo<Props>(
                 projectId={projectId}
               />
             )}
+            <IdeasSharingLocationPopup
+              setSelectedIdea={setSelectedIdea}
+              portalElement={ideasSharingLocationNode}
+              ideaIds={selectedClusterIdeas}
+              ideasList={ideasList}
+              mapView={esriMapView}
+            />
             {isTabletOrSmaller && (
               <CSSTransition
                 classNames="animation"

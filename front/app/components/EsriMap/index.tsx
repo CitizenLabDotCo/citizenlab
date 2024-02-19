@@ -86,6 +86,13 @@ const EsriMap = ({
       const mapView = new MapView({
         container: mapRef.current, // Reference to DOM node that will contain the view
         map: newMap,
+        popupEnabled: false,
+        popup: {
+          dockEnabled: false,
+          dockOptions: {
+            breakpoint: false,
+          },
+        },
       });
 
       setMap(newMap);
