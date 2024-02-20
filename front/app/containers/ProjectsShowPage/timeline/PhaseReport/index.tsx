@@ -24,9 +24,10 @@ import { getReportWidth } from 'containers/Admin/reporting/utils/getReportWidth'
 
 interface Props {
   reportId: string;
+  phaseId: string;
 }
 
-const PhaseReport = ({ reportId }: Props) => {
+const PhaseReport = ({ reportId, phaseId }: Props) => {
   const { data: reportLayout } = useReportLayout(reportId);
   const smallerThanPhone = useBreakpoint('phone');
   const smallerThanTablet = useBreakpoint('tablet');
@@ -50,12 +51,13 @@ const PhaseReport = ({ reportId }: Props) => {
         bgColor="white"
         borderRadius={stylingConsts.borderRadius}
         boxShadow="0px 2px 4px -1px rgba(0,0,0,0.06)"
-        p={smallerThanTablet ? '0px' : '30px'}
-        pt={smallerThanPhone ? '20px' : '0px'}
+        px={smallerThanTablet ? '0px' : '30px'}
+        py={smallerThanPhone ? '20px' : '30px'}
       >
         <ReportContextProvider
           width={getReportWidth({ smallerThanPhone, smallerThanTablet })}
           reportId={reportId}
+          phaseId={phaseId}
         >
           <Box
             w="100%"

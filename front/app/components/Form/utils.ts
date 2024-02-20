@@ -90,3 +90,15 @@ export const isValidData = (
 
   return ajv.validate(schemaToUse, isSurvey ? dataWithoutHiddenFields : data);
 };
+
+// The scope of the element that is used as the other field will have _other appended to it. The corresponding field key can also be found by using this function.
+export function getOtherControlKey(scope: string = ''): string | undefined {
+  const regex = /^#\/properties\/(\w+)_other$/;
+  const match = scope.match(regex);
+
+  if (match) {
+    return match[1];
+  }
+
+  return undefined;
+}

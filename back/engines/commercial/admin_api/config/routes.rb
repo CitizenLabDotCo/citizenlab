@@ -19,6 +19,8 @@ AdminApi::Engine.routes.draw do
     delete :bulk_delete_by_emails, on: :collection
   end
 
+  resources :jobs, only: [:show]
+
   resources :areas, only: [:index]
 
   resources :invites, only: [:create]

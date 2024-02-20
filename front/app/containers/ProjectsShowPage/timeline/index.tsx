@@ -167,7 +167,9 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
             />
           )}
         </ContentContainer>
-        {showReport && <PhaseReport reportId={reportId} />}
+        {showReport && (
+          <PhaseReport reportId={reportId} phaseId={selectedPhaseId} />
+        )}
       </StyledSectionContainer>
     );
   }

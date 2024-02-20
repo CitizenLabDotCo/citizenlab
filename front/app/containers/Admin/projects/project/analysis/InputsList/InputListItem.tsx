@@ -77,56 +77,60 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
             {formatDate(input.attributes.published_at)}
           </Text>
         </Box>
-        <Box display="flex" gap="8px">
-          {typeof input.attributes.likes_count === 'number' && (
-            <Box display="flex" gap="4px">
-              <Icon width="20px" height="20px" name="vote-up" />
-              <span> {input.attributes.likes_count}</span>
-            </Box>
-          )}
-          {typeof input.attributes.dislikes_count === 'number' && (
-            <Box display="flex" gap="4px">
-              <Icon width="20px" height="20px" name="vote-down" />
-              <span> {input.attributes.dislikes_count}</span>
-            </Box>
-          )}
-          {typeof input.attributes.votes_count === 'number' && (
-            <Box display="flex" gap="4px">
-              <Icon width="20px" height="20px" name="vote-ballot" />
-              <span> {input.attributes.votes_count}</span>
-            </Box>
-          )}
-          {typeof input.attributes.comments_count === 'number' && (
-            <Box display="flex" gap="4px">
-              <Icon width="20px" height="20px" name="comments" />
-              <span> {input.attributes.comments_count}</span>
-            </Box>
-          )}
-          {(!title_multiloc || isEmpty(title_multiloc)) && (
-            <Box flex="1" w="100%">
-              {analysis.data.relationships.custom_fields.data
-                .slice(0, 3)
-                .map((customField) => (
-                  <Text
-                    key={customField.id}
-                    fontSize="s"
-                    color="textSecondary"
-                    m="0px"
-                    textOverflow="ellipsis"
-                    overflow="hidden"
-                    whiteSpace="nowrap"
-                  >
-                    <InputShortFieldValue
-                      customFieldId={customField.id}
-                      input={input}
-                      projectId={analysis.data.relationships.project?.data?.id}
-                      phaseId={analysis.data.relationships.phase?.data?.id}
-                    />
-                  </Text>
-                ))}
-            </Box>
-          )}
-        </Box>
+
+        {(!title_multiloc || isEmpty(title_multiloc)) && (
+          <Box flex="1" w="100%">
+            {analysis.data.relationships.custom_fields.data
+              .slice(0, 3)
+              .map((customField) => (
+                <Text
+                  key={customField.id}
+                  fontSize="s"
+                  color="textSecondary"
+                  m="0px"
+                  textOverflow="ellipsis"
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                >
+                  <InputShortFieldValue
+                    customFieldId={customField.id}
+                    input={input}
+                    projectId={analysis.data.relationships.project?.data?.id}
+                    phaseId={analysis.data.relationships.phase?.data?.id}
+                  />
+                </Text>
+              ))}
+          </Box>
+        )}
+
+        {analysis.data.attributes.participation_method === 'ideation' && (
+          <Box display="flex" gap="8px">
+            {typeof input.attributes.likes_count === 'number' && (
+              <Box display="flex" gap="4px">
+                <Icon width="20px" height="20px" name="vote-up" />
+                <span> {input.attributes.likes_count}</span>
+              </Box>
+            )}
+            {typeof input.attributes.dislikes_count === 'number' && (
+              <Box display="flex" gap="4px">
+                <Icon width="20px" height="20px" name="vote-down" />
+                <span> {input.attributes.dislikes_count}</span>
+              </Box>
+            )}
+            {typeof input.attributes.votes_count === 'number' && (
+              <Box display="flex" gap="4px">
+                <Icon width="20px" height="20px" name="vote-ballot" />
+                <span> {input.attributes.votes_count}</span>
+              </Box>
+            )}
+            {typeof input.attributes.comments_count === 'number' && (
+              <Box display="flex" gap="4px">
+                <Icon width="20px" height="20px" name="comments" />
+                <span> {input.attributes.comments_count}</span>
+              </Box>
+            )}
+          </Box>
+        )}
 
         <Taggings inputId={input.id} />
       </Box>
