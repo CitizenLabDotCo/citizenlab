@@ -298,7 +298,7 @@ const IdeasMap = memo<Props>(
           // Get any map elements underneath map click
           const elements = result.results;
           if (elements.length > 0) {
-            // There are map elements - user clicked an layer, idea pin OR a cluster
+            // There are map elements - user clicked a layer, idea pin OR a cluster
             const topElement = elements[0];
 
             if (topElement.type === 'graphic') {
