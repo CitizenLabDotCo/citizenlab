@@ -1,4 +1,14 @@
+import EsriMap from 'components/EsriMap';
 import React, { memo } from 'react';
+import Graphic from '@arcgis/core/Graphic';
+import Point from '@arcgis/core/geometry/Point';
+import {
+  createEsriGeoJsonLayers,
+  getMapPinSymbol,
+} from 'components/EsriMap/utils';
+import { useTheme } from 'styled-components';
+import useMapConfig from 'api/map_config/useMapConfig';
+import useLocalize from 'hooks/useLocalize';
 
 export interface Props {
   position: GeoJSON.Point;
@@ -6,11 +16,41 @@ export interface Props {
 }
 
 const MapComponent = memo<Props>(({ position, projectId }) => {
-  // const points: any = [{ ...position }];
-  // const center = position.coordinates;
-  // const centerLatLng = [center[1], center[0]] as LatLngTuple;
-  console.log({ projectId, position });
-  return <h1>TODO: Implement Map component with Esri</h1>;
+  const { data: mapConfig } = useMapConfig(projectId || undefined);
+  const localize = useLocalize();
+  const theme = useTheme();
+  const center = position.coordinates;
+
+  // Load layers from project
+  const layers = createEsriGeoJsonLayers(
+    mapConfig?.data?.attributes?.layers || [],
+    localize
+  );
+
+  // Create point graphic for idea location
+  const pointGraphic = new Graphic({
+    geometry: new Point({
+      x: center[0],
+      y: center[1],
+    }),
+    symbol: getMapPinSymbol({ color: theme.colors.tenantPrimary }),
+  });
+
+  return (
+    <EsriMap
+      initialData={{
+        center: {
+          type: 'Point',
+          coordinates: [position.coordinates[0], position.coordinates[1]],
+        },
+        zoom: 14,
+        showLegend: true,
+        showLayerVisibilityControl: true,
+      }}
+      graphics={[pointGraphic]}
+      layers={layers}
+    />
+  );
 });
 
 export default MapComponent;
