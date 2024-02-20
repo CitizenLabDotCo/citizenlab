@@ -300,7 +300,7 @@ const LargerThanPhone = ({
                 <FormattedMessage tagName="h2" {...messages.a11y_voteControl} />
               </ScreenReaderOnly>
               <ReactionControl
-                initiativeId={initiativeId}
+                initiative={initiative}
                 onScrollToOfficialFeedback={onScrollToOfficialFeedback}
                 id="e2e-initiative-reaction-control"
               />

@@ -8,7 +8,7 @@ import Answered from './Answered';
 import Ineligible from './Ineligible';
 import ReviewPending from './ReviewPending';
 import ChangesRequested from './ChangesRequested';
-import { IInitiativeData } from 'api/initiatives/types';
+import { IInitiative, IInitiativeData } from 'api/initiatives/types';
 import {
   InitiativeStatusCode,
   IInitiativeStatusData,
@@ -18,7 +18,6 @@ import useInitiativesPermissions, {
   InitiativePermissionsDisabledReason,
 } from 'hooks/useInitiativesPermissions';
 import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import { trackEventByName } from 'utils/analytics';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useAddInitiativeReaction from 'api/initiative_reactions/useAddInitiativeReaction';
@@ -78,14 +77,14 @@ const componentMap: TComponentMap = {
 };
 
 interface Props {
-  initiativeId: string;
+  initiative: IInitiative;
   onScrollToOfficialFeedback: () => void;
 }
 
-const Status = ({ initiativeId, onScrollToOfficialFeedback }: Props) => {
-  const { data: initiative } = useInitiativeById(initiativeId);
+const Status = ({ initiative, onScrollToOfficialFeedback }: Props) => {
+  const initiativeId = initiative.data.id;
   const { data: initiativeStatus } = useInitiativeStatus(
-    initiative?.data.relationships.initiative_status?.data?.id
+    initiative.data.relationships.initiative_status?.data?.id
   );
   const reactingPermission = useInitiativesPermissions('reacting_initiative');
   const { mutate: addReaction } = useAddInitiativeReaction();
@@ -94,10 +93,10 @@ const Status = ({ initiativeId, onScrollToOfficialFeedback }: Props) => {
   });
   const { data: appConfiguration } = useAppConfiguration();
 
-  if (!initiative || !initiativeStatus || !appConfiguration) return null;
+  if (!initiativeStatus || !appConfiguration) return null;
 
   const reaction = () => {
-    addReaction({ initiativeId: initiative.data.id, mode: 'up' });
+    addReaction({ initiativeId, mode: 'up' });
   };
 
   const handleOnreaction = () => {
@@ -111,7 +110,7 @@ const Status = ({ initiativeId, onScrollToOfficialFeedback }: Props) => {
       const successAction: SuccessAction = {
         name: 'reactionOnInitiative',
         params: {
-          initiativeId: initiative.data.id,
+          initiativeId,
         },
       };
 

@@ -4,9 +4,6 @@ import React from 'react';
 import FollowUnfollow from 'components/FollowUnfollow';
 import { Box } from '@citizenlab/cl2-component-library';
 
-// hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -17,25 +14,19 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // typings
 import BorderContainer from '../BorderContainer';
 import Status from './Status';
+import { IInitiative } from 'api/initiatives/types';
 
 interface Props {
-  initiativeId: string;
-  className?: string;
+  initiative: IInitiative;
   onScrollToOfficialFeedback: () => void;
   id?: string;
 }
 
 const ReactionControl = ({
+  initiative,
   onScrollToOfficialFeedback,
-  initiativeId,
   id,
 }: Props) => {
-  const { data: initiative } = useInitiativeById(initiativeId);
-
-  if (!initiative) {
-    return null;
-  }
-
   return (
     <BorderContainer id={id}>
       <ScreenReaderOnly>
@@ -43,7 +34,7 @@ const ReactionControl = ({
       </ScreenReaderOnly>
       <Box mb="8px">
         <Status
-          initiativeId={initiative.data.id}
+          initiative={initiative}
           onScrollToOfficialFeedback={onScrollToOfficialFeedback}
         />
       </Box>
