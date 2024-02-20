@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
+RSpec.describe ReportBuilder::Queries::Analytics::ReactionsByTime do
   subject(:query) { described_class.new(build(:user)) }
 
   describe '#run_query' do
@@ -14,17 +14,23 @@ RSpec.describe ReportBuilder::Queries::Analytics::ActiveUsers do
       create(:idea, created_at: date)
     end
 
-    it 'returns active users' do
+    before do
+      create(:dimension_type, name: 'reaction', parent: 'idea')
+      create(:reaction, created_at: date, reactable: idea)
+    end
+
+    it 'returns reactions by time' do
       params = { start_at: date - 1.day, end_at: date + 1.day, project_id: idea.project_id }
       expect(query.run_query(params)).to eq(
         [
           [{
-            'count_dimension_user_id' => 1,
+            'sum_dislikes_count' => 0,
+            'sum_likes_count' => 1,
             'dimension_date_created.month' => '2022-09',
             'first_dimension_date_created_date' => date
           }],
           [{
-            'count_dimension_user_id' => 1
+            'sum_reactions_count' => 1
           }]
         ]
       )

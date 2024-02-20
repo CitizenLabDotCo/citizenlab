@@ -14,7 +14,7 @@ RSpec.describe ReportBuilder::Queries::Analytics::PostsByTime do
       create(:idea, created_at: date)
     end
 
-    it 'returns posts' do
+    it 'returns posts by time' do
       params = { start_at: date - 1.day, end_at: date + 1.day, project_id: idea.project_id }
       expect(query.run_query(params)).to eq(
         [
@@ -23,7 +23,9 @@ RSpec.describe ReportBuilder::Queries::Analytics::PostsByTime do
             'dimension_date_created.month' => '2022-09',
             'first_dimension_date_created_date' => date
           }],
-          [{ 'count' => 1 }]
+          [{
+            'count' => 1
+          }]
         ]
       )
     end
