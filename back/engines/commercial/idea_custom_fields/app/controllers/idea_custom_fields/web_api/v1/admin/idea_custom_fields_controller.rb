@@ -153,13 +153,13 @@ module IdeaCustomFields
 
     def create_or_update_map_config(field, field_params, errors, index)
       map_config_id = field_params[:map_config_id]
-      return unless map_config_id && field.input_type == 'point'
+      return unless map_config_id
 
-      # puts "map_config_id: #{map_config_id}"
+      return if field&.map_config&.id == map_config_id # already associated with the given `custom_field`
 
-      unless field&.map_config&.id == map_config_id
-        map_config = CustomMaps::MapConfig.find_by(id: map_config_id)
-        map_config.update(mappable_id: field.id, mappable_type: 'CustomField')
+      map_config = CustomMaps::MapConfig.find_by(id: map_config_id)
+      unless map_config.update(mappable_id: field.id, mappable_type: 'CustomField')
+        add_map_configs_errors(errors, index, map_config.errors)
       end
 
       # DONE. Is this a `custom_field` with `input_type` of `'point'`
@@ -187,24 +187,30 @@ module IdeaCustomFields
       # end
     end
 
-    def create_map_config(map_config_params, errors, index)
-      map_config = CustomMaps::MapConfig.new(map_config_params)
-      unless map_config.save
-        wrong_input_type_for_map_config_error(errors, index, map_config.errors)
-      end
-    end
-
-    def update_map_config(field, map_config_params, errors, index)
-      unless field.map_config.update(map_config_params)
-        wrong_input_type_for_map_config_error(errors, index, map_config.errors)
-      end
-    end
-
-    def wrong_input_type_for_map_config_error(errors, index, map_config_errors)
+    def add_map_configs_errors(errors, index, map_config_errors)
       errors[index.to_s] ||= {}
       errors[index.to_s][:map_config] ||= {}
       errors[index.to_s][:map_config] = map_config_errors
     end
+
+    # def create_map_config(map_config_params, errors, index)
+    #   map_config = CustomMaps::MapConfig.new(map_config_params)
+    #   unless map_config.save
+    #     wrong_input_type_for_map_config_error(errors, index, map_config.errors)
+    #   end
+    # end
+
+    # def update_map_config(field, map_config_params, errors, index)
+    #   unless field.map_config.update(map_config_params)
+    #     wrong_input_type_for_map_config_error(errors, index, map_config.errors)
+    #   end
+    # end
+
+    # def wrong_input_type_for_map_config_error(errors, index, map_config_errors)
+    #   errors[index.to_s] ||= {}
+    #   errors[index.to_s][:map_config] ||= {}
+    #   errors[index.to_s][:map_config] = map_config_errors
+    # end
 
     def delete_field!(field)
       SideFxCustomFieldService.new.before_destroy field, current_user
