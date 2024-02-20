@@ -452,7 +452,6 @@ const IdeasMap = memo<Props>(
                 showLayerVisibilityControl: true,
                 showLegend: true,
                 zoomWidgetLocation: 'right',
-                onInit: onMapInit,
               }}
               height={isMobileOrSmaller ? '68vh' : '80vh'}
               layers={
@@ -460,6 +459,7 @@ const IdeasMap = memo<Props>(
               }
               onHover={onMapHover}
               onClick={onMapClick}
+              onInit={onMapInit}
             />
             <LayerHoverLabel
               layer={mapConfig?.data.attributes.layers.find(

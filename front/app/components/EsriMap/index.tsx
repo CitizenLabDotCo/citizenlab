@@ -48,6 +48,7 @@ export type EsriMapProps = {
   graphics?: Graphic[];
   onClick?: (event: any, mapView: MapView) => void;
   onHover?: (event: any, mapView: MapView) => void;
+  onInit?: (mapView: MapView) => void;
   globalMapSettings: AppConfigurationMapSettings;
 };
 
@@ -60,7 +61,6 @@ type InitialData = {
   showLegend?: boolean;
   showLayerVisibilityControl?: boolean;
   zoomWidgetLocation?: 'left' | 'right';
-  onInit?: (mapView: MapView) => void;
 };
 
 const EsriMap = ({
@@ -71,6 +71,7 @@ const EsriMap = ({
   graphics,
   onClick,
   onHover,
+  onInit,
   initialData,
   globalMapSettings,
 }: EsriMapProps) => {
@@ -183,11 +184,6 @@ const EsriMap = ({
         });
       }
 
-      // Call onInit function if provided
-      if (initialData?.onInit && mapView) {
-        initialData?.onInit(mapView);
-      }
-
       initialValuesLoaded.current = true;
     }
   }, [globalMapSettings, initialData, map, mapView]);
@@ -225,6 +221,7 @@ const EsriMap = ({
   }, [onClick, mapView]);
 
   useEffect(() => {
+    // On map hover, pass the event to hover handler if it was provided
     if (onHover && mapView) {
       const debouncedHover = debounce((event: any) => {
         onHover(event, mapView);
@@ -233,6 +230,15 @@ const EsriMap = ({
       mapView.on('pointer-move', debouncedHover);
     }
   }, [onHover, mapView]);
+
+  useEffect(() => {
+    // Once mapView is created, run onInit function if it was provided
+    if (onInit) {
+      if (mapView) {
+        onInit(mapView);
+      }
+    }
+  }, [mapView, onInit]);
 
   return (
     <>
