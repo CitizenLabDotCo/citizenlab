@@ -21,7 +21,6 @@ describe SideFxCustomFieldService do
       it 'deletes the analysis with the field as main field', document: false do
         service.before_destroy(custom_field1, user)
 
-        byebug
         expect { Analysis::Analysis.find(analysis.id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
