@@ -104,7 +104,7 @@ const ListItem = styled.button`
 
 export interface IAction {
   label: string | JSX.Element;
-  handler: () => void;
+  handler: (event: React.MouseEvent) => void;
   icon?: IconNames;
   name?: string;
   isLoading?: boolean;
@@ -119,27 +119,10 @@ export interface Props {
   color?: string;
   id?: string;
   'data-cy'?: string;
+  onClick?: (event: React.MouseEvent) => void;
 }
 
 const MoreActionsMenu = (props: Props) => {
-  const [visible, setVisible] = useState(false);
-
-  const hide = () => {
-    setVisible(false);
-  };
-
-  const toggleMenu = (event: React.MouseEvent) => {
-    event.preventDefault();
-    setVisible((current) => !current);
-  };
-
-  const handleListItemOnClick =
-    (handler: () => Promise<any> | void) => async (event: React.MouseEvent) => {
-      event.preventDefault();
-      await handler();
-      hide();
-    };
-
   const {
     actions,
     showLabel = true,
@@ -147,7 +130,27 @@ const MoreActionsMenu = (props: Props) => {
     labelAndTitle = <FormattedMessage {...messages.showMoreActions} />,
     className,
     id,
+    onClick,
   } = props;
+  const [visible, setVisible] = useState(false);
+
+  const hide = () => {
+    setVisible(false);
+  };
+
+  const toggleMenu = (event: React.MouseEvent) => {
+    onClick && onClick(event);
+    event.preventDefault();
+    setVisible((current) => !current);
+  };
+
+  const handleListItemOnClick =
+    (handler: (event: React.MouseEvent) => Promise<any> | void) =>
+    async (event: React.MouseEvent) => {
+      event.preventDefault();
+      await handler(event);
+      hide();
+    };
 
   if (actions.length === 0) {
     return <Box width="25px" />; // to keep other elements in the row in the same place as when there is actions menu

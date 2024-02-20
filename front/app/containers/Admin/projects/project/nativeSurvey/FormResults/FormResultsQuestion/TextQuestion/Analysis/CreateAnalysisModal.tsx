@@ -29,6 +29,7 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
   const [selectdQuestions, setSelectedQuestions] = useState<string[]>(
     customFieldId ? [customFieldId] : []
   );
+  const [scrollCompleted, setScrollCompleted] = useState(false);
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -41,15 +42,16 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
   });
 
   useEffect(() => {
-    if (customFieldId && formCustomFields) {
+    if (customFieldId && formCustomFields && !scrollCompleted) {
       const element = document.getElementById(customFieldId);
       element?.scrollIntoView({
         behavior: 'smooth',
         block: 'center',
         inline: 'nearest',
       });
+      setScrollCompleted(true);
     }
-  }, [customFieldId, formCustomFields]);
+  }, [customFieldId, formCustomFields, scrollCompleted]);
 
   const handleCreateAnalysis = () => {
     createAnalysis(

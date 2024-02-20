@@ -10,7 +10,7 @@ import MapView from '@arcgis/core/views/MapView';
 import Basemap from '@arcgis/core/Basemap';
 import Layer from '@arcgis/core/layers/Layer';
 import Graphic from '@arcgis/core/Graphic';
-import { Box, media } from '@citizenlab/cl2-component-library';
+import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Fullscreen from '@arcgis/core/widgets/Fullscreen';
 import Point from '@arcgis/core/geometry/Point';
 import Expand from '@arcgis/core/widgets/Expand';
@@ -48,7 +48,6 @@ export type EsriMapProps = {
   graphics?: Graphic[];
   onClick?: (event: any, mapView: MapView) => void;
   onHover?: (event: any, mapView: MapView) => void;
-  onInit?: (mapView: MapView) => void;
   globalMapSettings: AppConfigurationMapSettings;
 };
 
@@ -61,6 +60,7 @@ type InitialData = {
   showLegend?: boolean;
   showLayerVisibilityControl?: boolean;
   zoomWidgetLocation?: 'left' | 'right';
+  onInit?: (mapView: MapView) => void;
 };
 
 const EsriMap = ({
@@ -71,10 +71,10 @@ const EsriMap = ({
   graphics,
   onClick,
   onHover,
-  onInit,
   initialData,
   globalMapSettings,
 }: EsriMapProps) => {
+  const isMobileOrSmaller = useBreakpoint('phone');
   const [map, setMap] = useState<Map | null>(null);
   const [mapView, setMapView] = useState<MapView | null>(null);
   const mapRef = useRef<HTMLDivElement | null>(null);
@@ -155,7 +155,7 @@ const EsriMap = ({
             style: { type: 'card', layout: 'stack' },
           }),
           view: mapView,
-          expanded: false,
+          expanded: isMobileOrSmaller ? false : true,
           mode: 'floating',
         });
 
@@ -184,9 +184,14 @@ const EsriMap = ({
         });
       }
 
+      // Run onInit function if it was provided
+      if (initialData?.onInit) {
+        initialData.onInit(mapView);
+      }
+
       initialValuesLoaded.current = true;
     }
-  }, [globalMapSettings, initialData, map, mapView]);
+  }, [globalMapSettings, initialData, isMobileOrSmaller, map, mapView]);
 
   // Load dynamic data that was passed in.
   // Note: This data is dynamic and may change.
@@ -230,15 +235,6 @@ const EsriMap = ({
       mapView.on('pointer-move', debouncedHover);
     }
   }, [onHover, mapView]);
-
-  useEffect(() => {
-    // Once mapView is created, run onInit function if it was provided
-    if (onInit) {
-      if (mapView) {
-        onInit(mapView);
-      }
-    }
-  }, [mapView, onInit]);
 
   return (
     <>

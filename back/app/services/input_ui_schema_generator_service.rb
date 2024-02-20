@@ -53,6 +53,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     if @supports_answer_visible_to
       defaults[:answer_visible_to] = field.answer_visible_to
     end
+    defaults[:otherField] = field.other_option_text_field&.key if field.other_option_text_field
     super.merge(defaults).tap do |options|
       options[:description] = description_option field
     end

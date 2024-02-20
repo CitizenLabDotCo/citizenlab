@@ -16,26 +16,18 @@ const BudgetingProgressBar = ({ phase, idea }: Props) => {
   const totalBasketsIdeaIsIn = idea.attributes.baskets_count;
   const totalBasketsInPhase = phase.data.attributes.baskets_count;
   const tooltip = formatMessage(messages.budgetingTooltip);
+  const basketsPercentage = roundPercentage(
+    totalBasketsIdeaIsIn,
+    totalBasketsInPhase
+  );
 
-  if (
-    typeof totalBasketsIdeaIsIn === 'number' &&
-    typeof totalBasketsInPhase === 'number'
-  ) {
-    const basketsPercentage = roundPercentage(
-      totalBasketsIdeaIsIn,
-      totalBasketsInPhase
-    );
-
-    return (
-      <ProgressBarWrapper votesPercentage={basketsPercentage} tooltip={tooltip}>
-        {`${basketsPercentage}% (${formatMessage(messages.xPicks, {
-          baskets: totalBasketsIdeaIsIn,
-        })})`}
-      </ProgressBarWrapper>
-    );
-  }
-
-  return null;
+  return (
+    <ProgressBarWrapper votesPercentage={basketsPercentage} tooltip={tooltip}>
+      {`${basketsPercentage}% (${formatMessage(messages.xPicks, {
+        baskets: totalBasketsIdeaIsIn,
+      })})`}
+    </ProgressBarWrapper>
+  );
 };
 
 export default BudgetingProgressBar;

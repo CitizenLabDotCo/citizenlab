@@ -59,10 +59,10 @@ export interface IPhaseAttributes {
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
   ideas_count: number;
-  baskets_count?: number | null;
+  baskets_count: number;
   /** For budgeting it's: for each idea multiply price of the idea
    * with the idea's baskets_count, then sum all those to get the total idea votes for the phase  */
-  votes_count?: number | null;
+  votes_count: number;
 }
 
 export interface IPhases {
