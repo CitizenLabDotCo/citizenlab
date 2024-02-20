@@ -512,7 +512,7 @@ pt:
       title_native_survey_not_submitted: 'Quase lá! Envie suas respostas'
       body_native_survey_not_submitted: 'Você começou a compartilhar suas respostas em %{phaseTitle} , mas não as enviou. Os envios serão encerrados em %{phaseEndDate}. Clique no botão abaixo para continuar de onde você parou.'
       body_native_survey_not_submitted_no_date: 'Você começou a compartilhar suas respostas em %{phaseTitle} , mas não as enviou. Clique no botão abaixo para continuar de onde você parou.'
-      cta_complete_your_survey_response: 'Retome a resposta da pesquisa'
+      cta_complete_your_survey_response: 'Retomar sua resposta à pesquisa'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Você não enviou seus votos'
       preheader: 'Você não enviou os seus votos na plataforma de participação de %{organizationName}'
@@ -588,7 +588,7 @@ pt:
         user_who_voted: 'Usuário que votou'
         user_with_unsubmitted_votes: 'Usuário que não enviou seus votos'
         users_who_engaged_but_not_voted: 'Usuários que se engajaram com o projeto, mas não votaram'
-        user_with_unsubmitted_survey: 'Usuário que iniciou, mas não enviou o questionário'
+        user_with_unsubmitted_survey: 'Usuário que iniciou, mas não enviou a pesquisa'
       content_type:
         comments: 'Comentários'
         content_moderation: 'Moderação de conteúdo'
