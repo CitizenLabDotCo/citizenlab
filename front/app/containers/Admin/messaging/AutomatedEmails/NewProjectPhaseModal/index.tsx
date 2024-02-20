@@ -1,9 +1,11 @@
 import React from 'react';
 import Modal from 'components/UI/Modal';
 import { Title, Button, Text, Box } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { CampaignData } from '../types';
+import Warning from 'components/UI/Warning';
+import useLocalize from 'hooks/useLocalize';
 
 type Props = {
   open: boolean;
@@ -14,14 +16,11 @@ type Props = {
 
 const NewProjectPhaseModal = ({ open, close, onConfirm, campaign }: Props) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
   const isEnabled = campaign.attributes.enabled;
-  const title = isEnabled
-    ? messages.turnEmailCampaignOff
-    : messages.turnEmailCampaignOn;
-  const message = isEnabled
-    ? messages.disabledMessage
-    : messages.enabledMessage;
-  const confirmText = isEnabled ? messages.turnOff : messages.turnOn;
+  const emailCampaignName = (
+    <b>{localize(campaign.attributes.campaign_description_multiloc)}</b>
+  );
 
   const handleConfirmClick = () => {
     onConfirm();
@@ -31,10 +30,28 @@ const NewProjectPhaseModal = ({ open, close, onConfirm, campaign }: Props) => {
   return (
     <Modal close={close} opened={open}>
       <Title variant="h3" m="35px 0 30px">
-        {formatMessage(title)}
+        <FormattedMessage
+          {...(isEnabled
+            ? messages.turnEmailCampaignOff
+            : messages.turnEmailCampaignOn)}
+          values={{
+            emailCampaignName,
+          }}
+        />
       </Title>
-      <Text>{formatMessage(message)}</Text>
-
+      <Text>
+        <FormattedMessage
+          {...(isEnabled ? messages.disabledMessage : messages.enabledMessage)}
+          values={{
+            emailCampaignName,
+          }}
+        />
+      </Text>
+      {isEnabled && (
+        <Box mb="32px">
+          <Warning>{formatMessage(messages.alternatively)}</Warning>
+        </Box>
+      )}
       <Box
         display="flex"
         flexDirection="row"
@@ -47,7 +64,7 @@ const NewProjectPhaseModal = ({ open, close, onConfirm, campaign }: Props) => {
           w="100%"
           mr="16px"
         >
-          {formatMessage(confirmText)}
+          {formatMessage(isEnabled ? messages.turnOff : messages.turnOn)}
         </Button>
         <Button buttonStyle="secondary" onClick={close} w="100%">
           {formatMessage(messages.cancel)}
