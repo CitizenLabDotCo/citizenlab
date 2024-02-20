@@ -140,25 +140,8 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY',
     defaultMessage: '{xVotes} out of {votingThreshold} required votes',
   },
-  xPeopleVoted: {
-    id: 'app.containers.InitiativesShow.VoteControl.xPeopleVoted1',
-    defaultMessage: '{xPeople} voted on this proposal.',
-  },
-  xPeople: {
-    id: 'app.containers.InitiativesShow.VoteControl.xPeople',
-    defaultMessage:
-      '{count, plural, =0 {No one} one {One person} other {# people}}',
-  },
-  or: {
-    id: 'app.containers.InitiativesShow.VoteControl.or',
-    defaultMessage: 'or',
-  },
   votingNotPermitted: {
     id: 'app.containers.InitiativesShow.VoteControl.votingNotPermitted',
     defaultMessage: "You don't have the rights to vote on this proposal.",
-  },
-  youVotedOnThisProposal: {
-    id: 'app.containers.InitiativesShow.VoteControl.youVotedOnThisProposal',
-    defaultMessage: 'You voted on this proposal.',
   },
 });
