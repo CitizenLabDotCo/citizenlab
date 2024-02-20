@@ -81,9 +81,9 @@ resource 'Analyses' do
       let(:phase_id) { phase.id }
       let(:custom_form) { create(:custom_form, participation_context: phase) }
       let(:main_field) { create(:custom_field_text, resource: custom_form) }
-      let(:additional_tields) { create_list(:custom_field_checkbox, 2, resource: custom_form) }
+      let(:additional_fields) { create_list(:custom_field_checkbox, 2, resource: custom_form) }
       let(:main_custom_field_id) { main_field.id }
-      let(:additional_custom_field_ids) { additional_tields.map(&:id) }
+      let(:additional_custom_field_ids) { additional_fields.map(&:id) }
 
       example_request 'Create a phase analysis (survey phase) with specific custom_fields' do
         expect(response_status).to eq 201

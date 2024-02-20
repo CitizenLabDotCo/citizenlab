@@ -122,8 +122,6 @@ ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.idea_import_files DROP CONSTRAINT IF EXISTS fk_rails_229b6de93f;
 ALTER TABLE IF EXISTS ONLY public.project_images DROP CONSTRAINT IF EXISTS fk_rails_2119c24213;
 ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS fk_rails_1fc601f42c;
-ALTER TABLE IF EXISTS ONLY public.insights_text_network_analysis_tasks_views DROP CONSTRAINT IF EXISTS fk_rails_1e7db206db;
-ALTER TABLE IF EXISTS ONLY public.insights_data_sources DROP CONSTRAINT IF EXISTS fk_rails_17b344203a;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_16b3d1e637;
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS fk_rails_121f3a2011;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_0e5b472696;
@@ -6131,22 +6129,6 @@ ALTER TABLE ONLY public.spam_reports
 
 ALTER TABLE ONLY public.analysis_analyses
     ADD CONSTRAINT fk_rails_16b3d1e637 FOREIGN KEY (main_custom_field_id) REFERENCES public.custom_fields(id);
-
-
---
--- Name: insights_data_sources fk_rails_17b344203a; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.insights_data_sources
-    ADD CONSTRAINT fk_rails_17b344203a FOREIGN KEY (view_id) REFERENCES public.insights_views(id);
-
-
---
--- Name: insights_text_network_analysis_tasks_views fk_rails_1e7db206db; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.insights_text_network_analysis_tasks_views
-    ADD CONSTRAINT fk_rails_1e7db206db FOREIGN KEY (view_id) REFERENCES public.insights_views(id);
 
 
 --

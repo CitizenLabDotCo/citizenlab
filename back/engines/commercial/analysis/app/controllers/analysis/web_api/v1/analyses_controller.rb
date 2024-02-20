@@ -22,7 +22,7 @@ module Analysis
             @analyses,
             WebApi::V1::AnalysisSerializer,
             params: jsonapi_serializer_params,
-            include: %i[main_custom_field additional_custom_fields]
+            include: serializer_includes
           )
         end
 
@@ -30,7 +30,7 @@ module Analysis
           render json: WebApi::V1::AnalysisSerializer.new(
             @analysis,
             params: jsonapi_serializer_params,
-            include: %i[main_custom_field additional_custom_fields]
+            include: serializer_includes
           ).serializable_hash
         end
 
@@ -44,7 +44,7 @@ module Analysis
             render json: WebApi::V1::AnalysisSerializer.new(
               @analysis,
               params: jsonapi_serializer_params,
-              include: %i[main_custom_field additional_custom_fields]
+              include: serializer_includes
             ).serializable_hash, status: :created
           else
             render json: { errors: @analysis.errors.details }, status: :unprocessable_entity
@@ -60,7 +60,7 @@ module Analysis
             render json: WebApi::V1::AnalysisSerializer.new(
               @analysis,
               params: jsonapi_serializer_params,
-              include: %i[main_custom_field additional_custom_fields]
+              include: serializer_includes
             ).serializable_hash, status: :ok
           else
             render json: { errors: @analysis.errors.details }, status: :unprocessable_entity
@@ -93,6 +93,10 @@ module Analysis
 
         def side_fx_service
           @side_fx_service ||= SideFxAnalysisService.new
+        end
+
+        def serializer_includes
+          %i[main_custom_field additional_custom_fields all_custom_fields]
         end
       end
     end

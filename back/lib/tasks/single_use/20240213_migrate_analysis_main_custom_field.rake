@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :migrate_analysis do
-  desc 'Fix existing homepage'
+  desc 'Extract the main custom field from the additional fields'
   task :main_custom_fields, %i[host] => [:environment] do |_t, args|
     errors = {}
     no_main_field = {}
