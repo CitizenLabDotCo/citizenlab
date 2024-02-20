@@ -707,7 +707,7 @@
   "app.containers.Admin.messaging.newProjectPhaseModal.cancel": "Annuller",
   "app.containers.Admin.messaging.newProjectPhaseModal.disabledMessage1": "Dette vil også deaktivere {emailCampaignName} e-mailkampagnen for alle eksisterende projektfaser. Du vil ikke kunne konfigurere denne e-mailkampagne for nogen fase, så længe denne indstilling er deaktiveret.",
   "app.containers.Admin.messaging.newProjectPhaseModal.enabledMessage1": "Dette vil ikke automatisk aktivere {emailCampaignName} e-mailkampagnen for eksisterende projektfaser. Hvis du aktiverer denne indstilling, kan du kun konfigurere denne e-mailkampagne for hver fase.",
-  "app.containers.Admin.messaging.newProjectPhaseModal.turnEmailCampaignOff1": "Er du sikker på, at du vil deaktivere indstillingen {emailCampaignName} email campaign?",
+  "app.containers.Admin.messaging.newProjectPhaseModal.turnEmailCampaignOff1": "Er du sikker på, at du vil deaktivere indstillingen {emailCampaignName} email kampagne?",
   "app.containers.Admin.messaging.newProjectPhaseModal.turnEmailCampaignOn1": "Aktivér indstillingen {emailCampaignName} e-mailkampagne?",
   "app.containers.Admin.messaging.newProjectPhaseModal.turnOff": "Ja, sluk for",
   "app.containers.Admin.messaging.newProjectPhaseModal.turnOn": "Ja, tænd for",
