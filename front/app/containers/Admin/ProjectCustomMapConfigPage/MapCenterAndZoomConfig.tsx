@@ -14,10 +14,7 @@ import Error from 'components/UI/Error';
 import { SubSectionTitle } from 'components/admin/Section';
 
 // utils
-import {
-  getCenter,
-  getZoomLevel,
-} from '../../../modules/commercial/custom_maps/utils/map';
+import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';

@@ -18,10 +18,7 @@ import useDeleteMapLayer from 'api/map_layers/useDeleteMapLayer';
 import useReorderMapLayer from 'api/map_layers/useReorderMapLayer';
 
 // utils
-import {
-  getLayerColor,
-  getLayerIcon,
-} from '../../../modules/commercial/custom_maps/utils/map';
+import { getLayerColor, getLayerIcon } from '../../../utils/mapUtils/map';
 import addOrderingToLayers, {
   IMapLayerAttributesWithOrdering,
 } from './addOrderingToLayers';

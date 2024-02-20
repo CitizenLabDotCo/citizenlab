@@ -1,13 +1,11 @@
 import { isNilOrError } from 'utils/helperUtils';
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import { Locale } from 'typings';
-import { LatLngTuple } from 'leaflet';
 import { isNumber } from 'lodash-es';
 import {
   getCenter as baseGetCenter,
   getZoomLevel as baseGetZoomLevel,
   getTileProvider as baseGetTileProvider,
-  getTileOptions as baseGetTileOptions,
 } from 'utils/map';
 import {
   MAPTILER_DEFAULT_OPTIONS,
@@ -15,6 +13,8 @@ import {
 } from './tileProviderDefaultOptions';
 import { IMapLayerAttributes } from 'api/map_layers/types';
 import { IMapConfigData } from 'api/map_config/types';
+
+export type LatLngTuple = [number, number, number?];
 
 export const getCenter = (
   centerLatLng: LatLngTuple | null | undefined,
@@ -79,7 +79,7 @@ export const getTileOptions = (tileProvider: string) => {
     return BASEMAP_AT_DEFAULT_OPTIONS;
   }
 
-  return baseGetTileOptions();
+  return MAPTILER_DEFAULT_OPTIONS;
 };
 
 export const getLayerType = (mapLayer: IMapLayerAttributes | undefined) => {

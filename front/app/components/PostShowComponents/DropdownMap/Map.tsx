@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-// import { LatLngTuple } from 'leaflet';
 
 export interface Props {
   position: GeoJSON.Point;

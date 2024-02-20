@@ -13,10 +13,7 @@ import useMapConfig from 'api/map_config/useMapConfig';
 import useAddMapConfig from 'api/map_config/useAddMapConfig';
 
 // utils
-import {
-  getCenter,
-  getZoomLevel,
-} from '../../../modules/commercial/custom_maps/utils/map';
+import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
 
 // styling
 import styled from 'styled-components';

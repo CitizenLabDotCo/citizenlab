@@ -25,7 +25,7 @@ import {
   getLayerType,
   makiIconNames,
   getUnnamedLayerTitleMultiloc,
-} from '../../../modules/commercial/custom_maps/utils/map';
+} from '../../../utils/mapUtils/map';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';

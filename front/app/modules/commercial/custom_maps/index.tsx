@@ -5,10 +5,6 @@ import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 import { InsertConfigurationOptions, ITab } from 'typings';
 
-const CustomMapConfigComponent = React.lazy(
-  () => import('../../../containers/Admin/ProjectCustomMapConfigPage')
-);
-
 type RenderOnHideTabConditionProps = {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
   onRemove: (name: string) => void;
@@ -31,14 +27,6 @@ const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {
 };
 
 const configuration: ModuleConfiguration = {
-  routes: {
-    'admin.projects.project': [
-      {
-        path: 'phases/:phaseId/map',
-        element: <CustomMapConfigComponent />,
-      },
-    ],
-  },
   outlets: {
     'app.containers.Admin.projects.edit': RenderOnHideTabCondition,
   },
