@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  appliesTo: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.appliesTo',
-    defaultMessage: 'Applies to currently selected inputs',
-  },
   emptyList: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.emptyList',
     defaultMessage:
@@ -42,16 +38,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.percentage',
     defaultMessage: '%',
   },
-  summaryAccuracyTooltip: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.summaryAccuracyTooltip',
-    defaultMessage:
-      'Summarizing fewer inputs leads to a higher accuracy. Reduce the current input selection by using tags, search or demographic filters.',
-  },
-  tooManyInputsTooltip: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.tooManyInputsTooltip',
-    defaultMessage:
-      'Reduce the current input selection by using tags, search or demographic filters',
-  },
   questionAccuracyTooltip: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.questionAccuracyTooltip',
     defaultMessage:
@@ -60,10 +46,6 @@ export default defineMessages({
   deleteSummary: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary',
     defaultMessage: 'Delete summary',
-  },
-  bookmarkSummary: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.bookmarkSummary',
-    defaultMessage: 'Bookmark summary',
   },
   deleteSummaryConfirmation: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.deleteSummaryConfirmation',
@@ -82,12 +64,13 @@ export default defineMessages({
     defaultMessage: 'Ask a question',
   },
   tooManyInputs: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.tooManyInputs',
-    defaultMessage: 'Too many inputs',
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.tooManyInputsMessage',
+    defaultMessage:
+      'The AI can’t process so many inputs in one go. Divide them into smaller groups.',
   },
   summarize: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.summarize',
-    defaultMessage: 'Auto-summarize',
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.summarizeButton',
+    defaultMessage: 'Summarize',
   },
   ask: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.ask',
@@ -105,5 +88,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.askAQuestionUpsellMessage',
     defaultMessage:
       'Instead of summarising, you can ask relevant questions to your data. This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
+  inputsSelected: {
+    id: 'app.containers.Admin.projects.project.analysis.Insights.inputsSelected',
+    defaultMessage: 'inputs selected',
+  },
+  tooltipTextLimit: {
+    id: 'app.containers.Admin.projects.project.analysis.Insights.tooltipTextLimit',
+    defaultMessage:
+      'You can summarise a maximum of 30 inputs at a time on your current plan. Talk to your GovSuccess Manager or admin to unlock more.',
   },
 });
