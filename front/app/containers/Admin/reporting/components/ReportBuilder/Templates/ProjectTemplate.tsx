@@ -123,19 +123,17 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
         title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
         {...projectPeriod}
       />
-
-      {filteredSurveyQuestions && (
-        <div>
-          {filteredSurveyQuestions.map((question) => (
-            <SurveyQuestionResultWidget
-              key={question.id}
-              projectId={projectId}
-              phaseId={phaseId}
-              questionId={question.id}
-            />
-          ))}
-        </div>
-      )}
+      <WhiteSpace />
+      {filteredSurveyQuestions?.map((question) => (
+        <Element is={Container} canvas key={question.id}>
+          <SurveyQuestionResultWidget
+            projectId={projectId}
+            phaseId={phaseId}
+            questionId={question.id}
+          />
+          <WhiteSpace />
+        </Element>
+      ))}
       {participationMethod === 'ideation' && (
         <MostReactedIdeasWidget
           title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
