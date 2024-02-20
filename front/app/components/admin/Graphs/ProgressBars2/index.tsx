@@ -9,7 +9,7 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // utils
-import { getRoundedPercentages, getType, noZeroes } from './utils';
+import { getRoundedPercentages, getType, filterZeroes } from './utils';
 import { sum } from 'utils/math';
 import { round } from 'lodash-es';
 
@@ -24,7 +24,11 @@ const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
   const { formatMessage } = useIntl();
   const percentages = getRoundedPercentages(values, total);
   const percentage = round(sum(percentages), 1);
-  const nonZeroPercentages = percentages.filter(noZeroes);
+
+  const { nonZeroPercentages, nonZeroColorScheme } = filterZeroes({
+    percentages,
+    colorScheme,
+  });
 
   return (
     <Box width="100%">
@@ -55,7 +59,7 @@ const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
             key={index}
             type={type}
             percentage={percentage}
-            color={colorScheme[index % colorScheme.length]}
+            color={nonZeroColorScheme[index]}
           />
         );
       })}
