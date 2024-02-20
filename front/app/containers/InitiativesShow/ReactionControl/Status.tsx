@@ -145,24 +145,22 @@ const Status = ({ initiative, onScrollToOfficialFeedback }: Props) => {
     .duration(expiresAt.diff(moment()))
     .asSeconds();
   const isExpired = durationAsSeconds < 0;
-  const statusCode =
-    initiativeStatus.data.attributes.code === 'proposed' && isExpired
-      ? 'expired'
-      : initiativeStatus.data.attributes.code;
   const userReacted = !!(
     initiative.data.relationships.user_reaction &&
     initiative.data.relationships.user_reaction.data
   );
+  const statusCode =
+    initiativeStatus.data.attributes.code === 'proposed' && isExpired
+      ? 'expired'
+      : initiativeStatus.data.attributes.code;
   const StatusComponent =
     componentMap[statusCode][userReacted ? 'reacted' : 'notReacted'];
-  const initiativeSettings =
-    appConfiguration.data.attributes.settings.initiatives;
 
   return (
     <StatusComponent
       initiative={initiative.data}
       initiativeStatus={initiativeStatus.data}
-      initiativeSettings={initiativeSettings}
+      initiativeSettings={appConfiguration.data.attributes.settings.initiatives}
       userReacted={userReacted}
       onReaction={handleOnreaction}
       onCancelReaction={handleOnCancelReaction}

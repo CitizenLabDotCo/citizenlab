@@ -143,7 +143,7 @@ const TooltipContentText = styled.div`
   }
 `;
 
-interface InputProps {
+interface Props {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
@@ -151,8 +151,6 @@ interface InputProps {
   onReaction: () => void;
   disabledReason: InitiativePermissionsDisabledReason;
 }
-
-interface Props extends InputProps {}
 
 const disabledMessages: {
   [key in InitiativePermissionsDisabledReason]: MessageDescriptor;
