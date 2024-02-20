@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.invisibleTitle',
     defaultMessage: 'Status and votes',
   },
-  moreInfo: {
-    id: 'app.containers.InitiativesShow.VoteControl.moreInfo',
-    defaultMessage: 'More info',
-  },
   days: {
     id: 'app.containers.InitiativesShow.VoteControl.days',
     defaultMessage: 'days',
@@ -135,19 +131,6 @@ export default defineMessages({
   a11y_xVotesOfRequiredY: {
     id: 'app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY',
     defaultMessage: '{xVotes} out of {votingThreshold} required votes',
-  },
-  xPeopleVoted: {
-    id: 'app.containers.InitiativesShow.VoteControl.xPeopleVoted1',
-    defaultMessage: '{xPeople} voted on this proposal.',
-  },
-  xPeople: {
-    id: 'app.containers.InitiativesShow.VoteControl.xPeople',
-    defaultMessage:
-      '{count, plural, =0 {No one} one {One person} other {# people}}',
-  },
-  or: {
-    id: 'app.containers.InitiativesShow.VoteControl.or',
-    defaultMessage: 'or',
   },
   votingNotPermitted: {
     id: 'app.containers.InitiativesShow.VoteControl.votingNotPermitted',
