@@ -146,6 +146,8 @@ fi:
       section3:
         title: Yksityiskohdat
         description:
+      other:
+        title: Kirjoita vastauksesi
   custom_forms:
     categories:
       main_content:
