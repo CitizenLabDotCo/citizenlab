@@ -23,6 +23,7 @@ interface Props {
 const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
   const { formatMessage } = useIntl();
   const percentages = getRoundedPercentages(values, total);
+  const valueSum = sum(values);
   const percentage = round(sum(percentages), 1);
 
   const { nonZeroPercentages, nonZeroColorScheme } = filterZeroes({
@@ -44,7 +45,7 @@ const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
         </Text>
         <Text variant="bodyS" color="textSecondary" m="0">
           {formatMessage(messages.choiceCount, {
-            choiceCount: total,
+            choiceCount: valueSum,
             percentage,
           })}
         </Text>
