@@ -294,6 +294,7 @@
   "app.components.formBuilder.copySurveyModal.noPhaseSelected": "No phase selected. Please select a phase first.",
   "app.components.formBuilder.copySurveyModal.noProject": "No project",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "No project selected. Please select a project first.",
+  "app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning": "You have already saved changes to this survey. If you duplicate another survey, the changes will be lost.",
   "app.components.formBuilder.copySurveyModal.surveyPhase": "Survey phase",
   "app.components.formBuilder.copySurveyModal.title": "Select a survey to duplicate",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Add or reorder questions",
