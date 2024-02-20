@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, memo } from 'react';
 
 // components
 import {
@@ -20,10 +20,10 @@ import { Locale, UploadFile } from 'typings';
 // utils
 import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
 import useAddCustomFieldOptionImage from 'api/content_field_option_images/useAddCustomFieldOptionImage';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
 
-// api
-import useCustomFieldOptionImage from 'api/content_field_option_images/useCustomFieldOptionImage';
+export interface OptionImageType {
+  [key: string]: UploadFile;
+}
 
 interface Props {
   index: number;
@@ -33,6 +33,7 @@ interface Props {
   locale: Locale;
   removeOption: (index: number) => void;
   onChoiceUpdate: (choice: IOptionsType, index: number) => void;
+  optionImages: OptionImageType | undefined;
 }
 
 const SelectFieldOption = memo(
@@ -44,34 +45,22 @@ const SelectFieldOption = memo(
     locale,
     removeOption,
     onChoiceUpdate,
+    optionImages,
   }: Props) => {
-    const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
     const [isUploading, setIsUploading] = useState(false);
     const { formatMessage } = useIntl();
     const showImageSettings =
       inputType === 'multiselect_image' && !choice.other;
     const { mutateAsync: addCustomFieldOptionImage } =
       useAddCustomFieldOptionImage();
-
-    const image = useCustomFieldOptionImage({
-      imageId: choice.image_id,
-    });
-
-    useEffect(() => {
-      const imageUrl = image.data?.data.attributes.versions.medium;
-
-      if (imageUrl) {
-        (async () => {
-          const imageFile = await convertUrlToUploadFile(imageUrl);
-          if (imageFile) {
-            setImageFiles([imageFile]);
-          }
-        })();
-      }
-    }, [image.data?.data.attributes.versions.medium]);
+    const image =
+      optionImages &&
+      choice.image_id &&
+      Object.prototype.hasOwnProperty.call(optionImages, choice.image_id)
+        ? [optionImages[choice.image_id]]
+        : [];
 
     const handleOnAddImage = async (imageFiles: UploadFile[]) => {
-      setImageFiles(imageFiles);
       try {
         setIsUploading(true);
         const response = await addCustomFieldOptionImage(imageFiles[0].base64);
@@ -98,7 +87,6 @@ const SelectFieldOption = memo(
         } as IOptionsType,
         index
       );
-      setImageFiles([]);
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
@@ -139,7 +127,7 @@ const SelectFieldOption = memo(
               ) : (
                 <ImagesDropzone
                   id={`e2e-option-image-${index}`}
-                  images={imageFiles}
+                  images={image}
                   imagePreviewRatio={135 / 298}
                   acceptedFileTypes={{
                     'image/*': ['.jpg', '.jpeg', '.png', '.gif'],

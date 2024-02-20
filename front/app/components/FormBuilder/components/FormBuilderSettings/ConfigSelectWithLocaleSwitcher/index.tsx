@@ -3,7 +3,12 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 // react hook form
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import {
+  Controller,
+  useFieldArray,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form';
 
 // components
 import {
@@ -29,8 +34,13 @@ import { Locale, CLError, RHFErrors } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
 import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
-import SelectFieldOption from './SelectFieldOption';
+import SelectFieldOption, { OptionImageType } from './SelectFieldOption';
 import { generateTempId } from 'components/FormBuilder/utils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+
+// hooks
+import { useCustomFieldOptionImages } from 'api/content_field_option_images/useCustomFieldOptionImage';
+import usePrevious from 'hooks/usePrevious';
 
 interface Props {
   name: string;
@@ -53,13 +63,44 @@ const ConfigSelectWithLocaleSwitcher = ({
     control,
     formState: { errors: formContextErrors },
     trigger,
-    watch,
   } = useFormContext();
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(
     platformLocale
   );
   const { formatMessage } = useIntl();
-  const selectOptions = watch(name);
+  const selectOptions = useWatch({ name });
+  const imageIds = selectOptions
+    .filter((selectOption) => selectOption.image_id)
+    .map((selectOption) => selectOption.image_id);
+  const customFieldOptionImages = useCustomFieldOptionImages(imageIds);
+  const prevImageQueries = usePrevious(customFieldOptionImages);
+  const [optionImages, setOptionImages] = useState<OptionImageType>();
+
+  useEffect(() => {
+    if (
+      customFieldOptionImages &&
+      customFieldOptionImages.length !== prevImageQueries?.length
+    ) {
+      (async () => {
+        const promises = customFieldOptionImages.map(
+          async (customFieldOptionImage) => {
+            if (
+              !customFieldOptionImage?.data?.data.attributes.versions.medium
+            ) {
+              return;
+            }
+            const imageData = await convertUrlToUploadFile(
+              customFieldOptionImage?.data?.data.attributes.versions.medium
+            );
+            return { [customFieldOptionImage.data.data.id]: imageData };
+          }
+        );
+        const optionImageArray = await Promise.all(promises);
+        const optionImagesObject = Object.assign({}, ...optionImageArray);
+        setOptionImages(optionImagesObject);
+      })();
+    }
+  }, [customFieldOptionImages, prevImageQueries]);
 
   // Handles locale change
   useEffect(() => {
@@ -217,6 +258,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                                   canDeleteLastOption={canDeleteLastOption}
                                   removeOption={removeOption}
                                   onChoiceUpdate={updateChoice}
+                                  optionImages={optionImages}
                                 />
                               </Row>
                             ) : (
@@ -238,6 +280,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                                   canDeleteLastOption={canDeleteLastOption}
                                   removeOption={removeOption}
                                   onChoiceUpdate={updateChoice}
+                                  optionImages={optionImages}
                                 />
                               </SortableRow>
                             )}
