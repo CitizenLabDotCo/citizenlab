@@ -190,25 +190,25 @@ const ReactionControl = ({
       <ScreenReaderOnly>
         <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
       </ScreenReaderOnly>
-      <StatusComponent
-        initiative={initiative.data}
-        initiativeStatus={initiativeStatus.data}
-        initiativeSettings={initiativeSettings}
-        userReacted={userReacted}
-        onReaction={handleOnreaction}
-        onCancelReaction={handleOnCancelReaction}
-        onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-        disabledReason={reactingPermission?.disabledReason}
-      />
-      <Box mt="24px">
-        <FollowUnfollow
-          followableType="initiatives"
-          followableId={initiative.data.id}
-          followersCount={initiative.data.attributes.followers_count}
-          followerId={initiative.data.relationships.user_follower?.data?.id}
-          buttonStyle="secondary"
+      <Box mb="8px">
+        <StatusComponent
+          initiative={initiative.data}
+          initiativeStatus={initiativeStatus.data}
+          initiativeSettings={initiativeSettings}
+          userReacted={userReacted}
+          onReaction={handleOnreaction}
+          onCancelReaction={handleOnCancelReaction}
+          onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+          disabledReason={reactingPermission?.disabledReason}
         />
       </Box>
+      <FollowUnfollow
+        followableType="initiatives"
+        followableId={initiative.data.id}
+        followersCount={initiative.data.attributes.followers_count}
+        followerId={initiative.data.relationships.user_follower?.data?.id}
+        buttonStyle="secondary"
+      />
     </BorderContainer>
   );
 };

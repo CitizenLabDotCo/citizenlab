@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Box, Icon, Text, fontSizes } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
@@ -20,16 +20,6 @@ const StatusIcon = styled(Icon)`
   width: 30px;
   height: 30px;
   margin-bottom: 20px;
-`;
-
-const ReadAnswerButton = styled.button`
-  color: ${(props) => props.theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  text-decoration: underline;
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 interface Props {
@@ -75,11 +65,6 @@ const Answered = ({
             />
           </StatusExplanation>
         </Box>
-        <Box display="flex" justifyContent="center">
-          <ReadAnswerButton onClick={onScrollToOfficialFeedback}>
-            <FormattedMessage {...messages.readAnswer} />
-          </ReadAnswerButton>
-        </Box>
       </Box>
       <Text fontSize="base" mb="8px">
         <FormattedMessage
@@ -96,20 +81,30 @@ const Answered = ({
           }}
         />
       </Text>
-      {userReacted ? (
-        <>
-          <Text mb="8px">
-            <FormattedMessage {...messages.youVotedOnThisProposal} />
-          </Text>
+      <Box mb="8px">
+        {userReacted ? (
           <Button buttonStyle="primary-outlined" onClick={onCancelReaction}>
             <FormattedMessage {...messages.cancelVote} />
           </Button>
-        </>
-      ) : (
-        <Button buttonStyle="primary" onClick={onReaction}>
-          <FormattedMessage {...messages.vote} />
-        </Button>
-      )}
+        ) : (
+          <Button
+            buttonStyle="primary"
+            iconSize="20px"
+            icon="vote-ballot"
+            onClick={onReaction}
+          >
+            <FormattedMessage {...messages.vote} />
+          </Button>
+        )}
+      </Box>
+      <Button
+        icon="survey-long-answer-2"
+        iconSize="20px"
+        buttonStyle="secondary"
+        onClick={onScrollToOfficialFeedback}
+      >
+        <FormattedMessage {...messages.readAnswer} />
+      </Button>
     </Box>
   );
 };
