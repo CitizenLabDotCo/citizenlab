@@ -1,14 +1,9 @@
-import React, { memo, useEffect, useState } from 'react';
-import { isEqual } from 'lodash-es';
-import { combineLatest } from 'rxjs';
+import React, { memo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 // components
-import Map from 'components/Map';
 import MapConfigOverview from './MapConfigOverview';
 import { Spinner } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Tippy from '@tippyjs/react';
 import Centerer from 'components/UI/Centerer';
 
 // hooks
@@ -16,25 +11,13 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useMapConfig from '../../../api/map_config/useMapConfig';
 
 import useAddMapConfig from 'modules/commercial/custom_maps/api/map_config/useAddMapConfig';
-import useUpdateMapConfig from 'modules/commercial/custom_maps/api/map_config/useUpdateMapConfig';
-
-// events
-import {
-  leafletMapCenter$,
-  leafletMapZoom$,
-  setLeafletMapCenter,
-  setLeafletMapZoom,
-} from 'components/UI/LeafletMap/events';
 
 // utils
 import { getCenter, getZoomLevel } from '../../../utils/map';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
 // styling
 import styled from 'styled-components';
+import IdeationConfigurationMap from './IdeationConfigurationMap';
 
 const Container = styled.div`
   display: flex;
@@ -51,24 +34,6 @@ const MapWrapper = styled.div`
   position: relative;
 `;
 
-const GoToDefaultViewportButtonWrapper = styled.div`
-  position: absolute;
-  top: 80px;
-  left: 11px;
-  z-index: 1000;
-  background: #fff;
-  border-radius: ${(props) => props.theme.borderRadius};
-`;
-
-const SetAsDefaultViewportButtonWrapper = styled.div`
-  position: absolute;
-  top: 122px;
-  left: 11px;
-  z-index: 1000;
-  background: #fff;
-  border-radius: ${(props) => props.theme.borderRadius};
-`;
-
 interface Props {
   className?: string;
 }
@@ -77,66 +42,14 @@ const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
-  const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
   const { mutate: createProjectMapConfig } = useAddMapConfig();
-  const { mutate: updateProjectMapConfig } = useUpdateMapConfig();
   const { data: mapConfig, isFetching } = useMapConfig(projectId);
 
   const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig?.data);
   const defaultLat = defaultLatLng[0];
   const defaultLng = defaultLatLng[1];
   const defaultZoom = getZoomLevel(undefined, appConfig?.data, mapConfig?.data);
-
-  const [currentLat, setCurrentLat] = useState<number | undefined>(undefined);
-  const [currentLng, setCurrentLng] = useState<number | undefined>(undefined);
-  const [currentZoom, setCurrentZoom] = useState<number | null>(null);
-
-  const disabled = isEqual(
-    [defaultLat.toFixed(4), defaultLng.toFixed(4), defaultZoom],
-    [currentLat?.toFixed(4), currentLng?.toFixed(4), currentZoom]
-  );
-
-  useEffect(() => {
-    const subscriptions = [
-      combineLatest([leafletMapCenter$, leafletMapZoom$]).subscribe(
-        ([center, zoom]) => {
-          setCurrentLat(center?.[0]);
-          setCurrentLng(center?.[1]);
-          setCurrentZoom(zoom);
-        }
-      ),
-    ];
-
-    return () =>
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }, []);
-
-  const goToDefaultMapView = () => {
-    setLeafletMapCenter([defaultLat, defaultLng]);
-    setLeafletMapZoom(defaultZoom);
-  };
-
-  const setAsDefaultMapView = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    if (
-      mapConfig &&
-      currentLat !== undefined &&
-      currentLng !== undefined &&
-      currentZoom !== null
-    ) {
-      updateProjectMapConfig({
-        projectId,
-        id: mapConfig.data.id,
-        center_geojson: {
-          type: 'Point',
-          coordinates: [currentLng, currentLat],
-        },
-        zoom_level: currentZoom.toString(),
-      });
-    }
-  };
 
   useEffect(() => {
     // Since we return {data: null}, that is not sent back here so the useEffect on the mapConfig will not
@@ -172,47 +85,10 @@ const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
       <Container className={className || ''}>
         <StyledMapConfigOverview projectId={projectId} />
         <MapWrapper>
-          <Map projectId={projectId} hideLegend={false} />
-          <GoToDefaultViewportButtonWrapper>
-            <Tippy
-              maxWidth="250px"
-              placement="right"
-              content={formatMessage(messages.goToDefaultMapView)}
-              hideOnClick={true}
-              disabled={disabled}
-            >
-              <div>
-                <Button
-                  icon="gps"
-                  buttonStyle="white"
-                  padding="7px"
-                  boxShadow="0px 2px 2px rgba(0, 0, 0, 0.2)"
-                  onClick={goToDefaultMapView}
-                  disabled={disabled}
-                />
-              </div>
-            </Tippy>
-          </GoToDefaultViewportButtonWrapper>
-          <SetAsDefaultViewportButtonWrapper>
-            <Tippy
-              maxWidth="250px"
-              placement="right"
-              content={formatMessage(messages.setAsDefaultMapView)}
-              hideOnClick={true}
-              disabled={disabled}
-            >
-              <div>
-                <Button
-                  icon="save"
-                  buttonStyle="white"
-                  padding="7px"
-                  boxShadow="0px 2px 2px rgba(0, 0, 0, 0.2)"
-                  onClick={setAsDefaultMapView}
-                  disabled={disabled}
-                />
-              </div>
-            </Tippy>
-          </SetAsDefaultViewportButtonWrapper>
+          <IdeationConfigurationMap
+            mapConfig={mapConfig}
+            projectId={projectId}
+          />
         </MapWrapper>
       </Container>
     );

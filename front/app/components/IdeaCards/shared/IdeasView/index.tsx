@@ -3,6 +3,7 @@ import IdeasList from './IdeasList';
 import IdeasMap from 'components/IdeasMap';
 import { IIdeaData } from 'api/ideas/types';
 import { IdeaDefaultSortMethod } from 'api/phases/types';
+import useMapConfig from 'modules/commercial/custom_maps/api/map_config/useMapConfig';
 
 interface Props {
   view: 'card' | 'map';
@@ -32,6 +33,8 @@ const IdeasView = ({
   loadingMore,
   onLoadMore,
 }: Props) => {
+  const { data: mapConfig } = useMapConfig(projectId);
+
   return (
     <>
       {view === 'card' && list && (
@@ -51,17 +54,12 @@ const IdeasView = ({
           phaseId={phaseId}
         />
       )}
-      {/*
-        IdeasMap is only used in projects at the moment,
-        so I narrowed down the projectId type.
-      */}
-      {view === 'map' && projectId && (
+      {view === 'map' && projectId && mapConfig && (
         <IdeasMap
-          ariaLabelledBy={'view-tab-2'}
-          id={'view-panel-2'}
+          mapConfig={mapConfig}
           projectId={projectId}
           phaseId={phaseId}
-          tabIndex={0}
+          ideasList={list}
         />
       )}
     </>

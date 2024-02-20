@@ -3,7 +3,6 @@ import {
   map,
   publishReplay,
   refCount,
-  debounceTime,
 } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
 import eventEmitter from 'utils/eventEmitter';
@@ -86,11 +85,3 @@ export const leafletMapSelectedMarker$ = eventEmitter
 export function setLeafletMapClicked(latLng: L.LatLng) {
   eventEmitter.emit<L.LatLng>(events.leafletMapClicked, latLng);
 }
-
-export const leafletMapClicked$ = eventEmitter
-  .observeEvent<L.LatLng>(events.leafletMapClicked)
-  .pipe(
-    map(({ eventValue }) => eventValue),
-    distinctUntilChanged((x, y) => isEqual(x, y)),
-    debounceTime(50)
-  );
