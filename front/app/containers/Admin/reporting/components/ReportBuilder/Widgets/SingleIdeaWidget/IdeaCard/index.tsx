@@ -20,7 +20,7 @@ import AuthorAvatar from './AuthorAvatar';
 
 // i18n
 import messages from '../../MostReactedIdeasWidget/messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // utils
 import checkTextOverflow, { MEDIUM_LINE_HEIGHT } from './checkTextOverflow';
@@ -31,8 +31,8 @@ import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 
 // i18n
-import useTextNumberOfVotes from './useTextNumberOfVotes';
 import useLocalize from 'hooks/useLocalize';
+import { getTextNumberOfVotes } from 'utils/configs/votingMethodConfig/textNumberOfVotes';
 
 interface Props {
   rank?: number;
@@ -65,6 +65,7 @@ const IdeaCard = ({
   const [textOverflow, setTextOverflow] = useState(false);
   const theme = useTheme();
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   const title = localize(idea.attributes.title_multiloc);
   const body = localize(idea.attributes.body_multiloc);
@@ -78,9 +79,11 @@ const IdeaCard = ({
     setTextOverflow(checkTextOverflow(textContainerRef.current));
   }, []);
 
-  const textNumberOfVotes = useTextNumberOfVotes({
+  const textNumberOfVotes = getTextNumberOfVotes({
     numberOfVotes: idea.attributes.votes_count,
     phase,
+    localize,
+    formatMessage,
   });
 
   const hideTextOverflow = collapseLongText && textOverflow;

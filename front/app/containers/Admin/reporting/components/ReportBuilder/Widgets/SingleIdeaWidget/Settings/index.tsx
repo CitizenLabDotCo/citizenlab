@@ -173,11 +173,13 @@ const Settings = () => {
       )}
 
       {phaseId && (
-        <IdeaSelect
-          selectedIdeaId={ideaId}
-          onChange={handleChangeIdeaId}
-          phaseId={phaseId}
-        />
+        <Box mb="20px">
+          <IdeaSelect
+            selectedIdeaId={ideaId}
+            onChange={handleChangeIdeaId}
+            phaseId={phaseId}
+          />
+        </Box>
       )}
 
       <Box mb="20px">
