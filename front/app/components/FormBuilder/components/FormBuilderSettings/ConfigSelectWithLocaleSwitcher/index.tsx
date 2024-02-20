@@ -121,13 +121,12 @@ const ConfigSelectWithLocaleSwitcher = ({
     name,
   });
 
-  const handleDragRow = useCallback((fromIndex: number, toIndex: number) => {
-    move(fromIndex, toIndex);
-  }, []);
-
-  if (!selectedLocale) {
-    return null;
-  }
+  const handleDragRow = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      move(fromIndex, toIndex);
+    },
+    [move]
+  );
 
   const addOption = useCallback(() => {
     const otherOptionIndex = selectOptions.findIndex(
@@ -147,10 +146,13 @@ const ConfigSelectWithLocaleSwitcher = ({
     insert(insertIndex, newOption);
   }, [insert, inputType, selectOptions]);
 
-  const removeOption = useCallback((index: number) => {
-    remove(index);
-    trigger();
-  }, []);
+  const removeOption = useCallback(
+    (index: number) => {
+      remove(index);
+      trigger();
+    },
+    [remove, trigger]
+  );
 
   const addOtherOption = useCallback(() => {
     append({
@@ -184,6 +186,10 @@ const ConfigSelectWithLocaleSwitcher = ({
       addOtherOption();
     }
   }, [selectOptions, addOtherOption, removeOption]);
+
+  if (!selectedLocale) {
+    return null;
+  }
 
   return (
     <>
