@@ -3,14 +3,11 @@ import React, { memo, useCallback, useMemo } from 'react';
 // components
 import EsriMap from 'components/EsriMap';
 import MapView from '@arcgis/core/views/MapView';
-import LayerHoverLabel from './LayerHoverLabel';
-import MapHelperOptions from './MapHelperOptions';
+import LayerHoverLabel from './components/LayerHoverLabel';
+import MapHelperOptions from './components/MapHelperOptions';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-
-// style
-import { Box } from '@citizenlab/cl2-component-library';
 
 // utils
 import {
@@ -19,7 +16,7 @@ import {
 } from 'components/EsriMap/utils';
 
 // types
-import { IMapConfig } from 'modules/commercial/custom_maps/api/map_config/types';
+import { IMapConfig } from 'api/map_config/types';
 
 export interface Props {
   mapConfig: IMapConfig;
@@ -66,7 +63,7 @@ const IdeationConfigurationMap = memo<Props>(
     }, []);
 
     return (
-      <Box height="700px !important">
+      <>
         <EsriMap
           initialData={{
             center: mapConfig.data.attributes.center_geojson,
@@ -89,7 +86,7 @@ const IdeationConfigurationMap = memo<Props>(
           mapConfig={mapConfig}
           projectId={projectId}
         />
-      </Box>
+      </>
     );
   }
 );

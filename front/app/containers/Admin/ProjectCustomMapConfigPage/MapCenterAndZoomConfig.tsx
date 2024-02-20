@@ -3,9 +3,9 @@ import { isEmpty, inRange } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import useUpdateMapConfig from 'modules/commercial/custom_maps/api/map_config/useUpdateMapConfig';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useMapConfig from '../../../api/map_config/useMapConfig';
+import useMapConfig from 'api/map_config/useMapConfig';
 
 // components
 import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
@@ -14,13 +14,7 @@ import Error from 'components/UI/Error';
 import { SubSectionTitle } from 'components/admin/Section';
 
 // utils
-import { getCenter, getZoomLevel } from '../../../utils/map';
-
-// events
-import {
-  setLeafletMapCenter,
-  setLeafletMapZoom,
-} from 'components/UI/LeafletMap/events';
+import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -217,9 +211,6 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
             },
             zoom_level: defaultZoom,
           });
-
-          setLeafletMapCenter([defaultLat, defaultLng]);
-          setLeafletMapZoom(parseInt(defaultZoom, 10));
           formSuccess();
         } catch (error) {
           formError(error);

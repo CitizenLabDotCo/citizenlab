@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import useAddMapLayer from 'modules/commercial/custom_maps/api/map_layers/useAddMapLayer';
+import useAddMapLayer from 'api/map_layers/useAddMapLayer';
 
 // components
 import Error from 'components/UI/Error';
@@ -11,7 +11,7 @@ import Error from 'components/UI/Error';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
-import { getUnnamedLayerTitleMultiloc } from '../../../utils/map';
+import { getUnnamedLayerTitleMultiloc } from '../../../utils/mapUtils/map';
 
 // i18n
 import messages from './messages';

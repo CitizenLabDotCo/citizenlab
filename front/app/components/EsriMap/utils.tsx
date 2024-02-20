@@ -18,7 +18,7 @@ import { hexToRGBA } from 'utils/helperUtils';
 
 // types
 import { Localize } from 'hooks/useLocalize';
-import { IMapLayerAttributes } from 'modules/commercial/custom_maps/api/map_layers/types';
+import { IMapLayerAttributes } from 'api/map_layers/types';
 
 // constants
 import {
@@ -97,7 +97,7 @@ export const getEsriMakiSymbol = (iconName: MakiIconName, color: string) => {
         },
         size: '28px',
         xoffset: 0,
-        yoffset: 15,
+        yoffset: 0,
         path,
       });
     });
@@ -338,7 +338,6 @@ export const getClusterConfiguration = (clusterSymbolColor?: string) => {
 type AddInputPopupProps = {
   event;
   mapView: MapView;
-  setClickedMapLocation: (location: GeoJSON.Point) => void;
   setSelectedInput: (idea: string | null) => void;
   popupTitle: string;
   popupContentNode: HTMLDivElement;
@@ -347,16 +346,11 @@ type AddInputPopupProps = {
 export const showAddInputPopup = ({
   event,
   mapView,
-  setClickedMapLocation,
   setSelectedInput,
   popupContentNode,
   popupTitle,
 }: AddInputPopupProps) => {
   goToMapLocation(esriPointToGeoJson(event.mapPoint), mapView).then(() => {
-    setClickedMapLocation({
-      type: 'Point',
-      coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
-    });
     // Create an Esri popup
     mapView.popup = new Popup({
       collapseEnabled: false,
