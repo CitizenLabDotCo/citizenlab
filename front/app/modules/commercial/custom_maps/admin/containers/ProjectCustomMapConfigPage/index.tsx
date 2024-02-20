@@ -8,9 +8,9 @@ import Centerer from 'components/UI/Centerer';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useMapConfig from '../../../api/map_config/useMapConfig';
+import useMapConfig from 'api/map_config/useMapConfig';
 
-import useAddMapConfig from 'modules/commercial/custom_maps/api/map_config/useAddMapConfig';
+import useAddMapConfig from 'api/map_config/useAddMapConfig';
 
 // utils
 import { getCenter, getZoomLevel } from '../../../utils/map';

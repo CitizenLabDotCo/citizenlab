@@ -2,10 +2,11 @@ import React, { memo, useEffect, useState } from 'react';
 import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
-import useUpdateMapLayer from 'modules/commercial/custom_maps/api/map_layers/useUpdateMapLayer';
+import useUpdateMapLayer from 'api/map_layers/useUpdateMapLayer';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useMapConfig from 'api/map_config/useMapConfig';
 
 // components
 import {
@@ -36,8 +37,7 @@ import styled from 'styled-components';
 
 // typing
 import { Multiloc, IOption } from 'typings';
-import { IMapLayerAttributes } from 'modules/commercial/custom_maps/api/map_layers/types';
-import useMapConfig from 'modules/commercial/custom_maps/api/map_config/useMapConfig';
+import { IMapLayerAttributes } from 'api/map_layers/types';
 
 const Container = styled.div`
   display: flex;

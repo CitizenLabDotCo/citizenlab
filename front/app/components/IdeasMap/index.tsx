@@ -57,7 +57,7 @@ import styled, { useTheme } from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 
 // types
-import { IMapConfig } from 'modules/commercial/custom_maps/api/map_config/types';
+import { IMapConfig } from 'api/map_config/types';
 import { IIdeaData } from 'api/ideas/types';
 
 // intl
@@ -263,6 +263,9 @@ const IdeasMap = memo<Props>(
 
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
+        // Save clicked location
+        setClickedMapLocation(esriPointToGeoJson(event.mapPoint));
+
         // On map click, we either open an existing idea OR show the "submit an idea" popup.
         // This depends on whether the user has clicked an existing map pin.
         mapView.hitTest(event).then((result) => {
@@ -347,7 +350,6 @@ const IdeasMap = memo<Props>(
                   showAddInputPopup({
                     event,
                     mapView,
-                    setClickedMapLocation,
                     setSelectedInput: setSelectedIdea,
                     popupContentNode: startIdeaButtonNode,
                     popupTitle: formatMessage(messages.submitIdea),
@@ -361,7 +363,6 @@ const IdeasMap = memo<Props>(
               showAddInputPopup({
                 event,
                 mapView,
-                setClickedMapLocation,
                 setSelectedInput: setSelectedIdea,
                 popupContentNode: startIdeaButtonNode,
                 popupTitle: formatMessage(messages.submitIdea),
@@ -476,8 +477,9 @@ const IdeasMap = memo<Props>(
             <IdeasAtLocationPopup
               setSelectedIdea={setSelectedIdea}
               portalElement={ideasAtLocationNode}
-              ideaIds={ideasSharingLocation}
-              ideasList={ideasList}
+              ideas={ideasList.filter((idea) =>
+                ideasSharingLocation?.includes(idea.id)
+              )}
               mapView={esriMapView}
             />
             {isTabletOrSmaller && (

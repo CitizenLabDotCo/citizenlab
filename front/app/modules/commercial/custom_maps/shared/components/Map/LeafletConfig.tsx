@@ -21,7 +21,7 @@ import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 // typings
 import { LatLngTuple } from 'leaflet';
 import { GeoJSONLayer, Point } from 'components/UI/LeafletMap/typings';
-import useMapConfig from 'modules/commercial/custom_maps/api/map_config/useMapConfig';
+import useMapConfig from 'api/map_config/useMapConfig';
 
 interface Props {
   onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;

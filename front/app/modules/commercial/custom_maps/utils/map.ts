@@ -13,8 +13,8 @@ import {
   MAPTILER_DEFAULT_OPTIONS,
   BASEMAP_AT_DEFAULT_OPTIONS,
 } from './tileProviderDefaultOptions';
-import { IMapLayerAttributes } from '../api/map_layers/types';
-import { IMapConfigData } from '../api/map_config/types';
+import { IMapLayerAttributes } from 'api/map_layers/types';
+import { IMapConfigData } from 'api/map_config/types';
 
 export const getCenter = (
   centerLatLng: LatLngTuple | null | undefined,

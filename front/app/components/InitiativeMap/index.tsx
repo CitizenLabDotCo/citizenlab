@@ -131,6 +131,9 @@ const InitiativeMap = ({ list }: Props) => {
 
   const onMapClick = useCallback(
     (event: any, mapView: MapView) => {
+      // Save clicked location
+      setClickedMapLocation(esriPointToGeoJson(event.mapPoint));
+
       // On map click, we either open an existing initiative OR show the "submit a proposal" popup
       // depending on whether the user has clicked an existing map feature.
       mapView.hitTest(event).then((result) => {
@@ -170,7 +173,6 @@ const InitiativeMap = ({ list }: Props) => {
         showAddInputPopup({
           event,
           mapView,
-          setClickedMapLocation,
           setSelectedInput: setSelectedInitiative,
           popupContentNode: startInitiativeButtonNode,
           popupTitle: formatMessage(messages.startProposalAtLocation),

@@ -19,7 +19,7 @@ import {
 } from 'components/EsriMap/utils';
 
 // types
-import { IMapConfig } from 'modules/commercial/custom_maps/api/map_config/types';
+import { IMapConfig } from 'api/map_config/types';
 
 export interface Props {
   mapConfig: IMapConfig;

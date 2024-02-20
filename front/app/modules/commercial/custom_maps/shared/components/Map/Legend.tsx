@@ -16,7 +16,7 @@ import {
   getLayerIcon,
 } from 'modules/commercial/custom_maps/utils/map';
 import bowser from 'bowser';
-import useMapConfig from 'modules/commercial/custom_maps/api/map_config/useMapConfig';
+import useMapConfig from 'api/map_config/useMapConfig';
 
 const Container = styled.div`
   padding: 25px;

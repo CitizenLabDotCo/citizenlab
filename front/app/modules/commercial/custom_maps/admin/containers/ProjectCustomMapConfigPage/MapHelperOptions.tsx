@@ -11,10 +11,10 @@ import messages from './messages';
 
 // hooks
 import { useIntl } from 'utils/cl-intl';
-import useUpdateMapConfig from 'modules/commercial/custom_maps/api/map_config/useUpdateMapConfig';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
 // types
-import { IMapConfig } from 'modules/commercial/custom_maps/api/map_config/types';
+import { IMapConfig } from 'api/map_config/types';
 import { goToMapLocation } from 'components/EsriMap/utils';
 
 const GoToDefaultViewportButtonWrapper = styled.div`
