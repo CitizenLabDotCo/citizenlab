@@ -96,7 +96,7 @@ module Analysis
     end
 
     def main_or_additional_fields_present
-      return if associated_custom_fields.filter(&:support_free_text_value?).present?
+      return if associated_custom_fields.present?
 
       errors.add(:base, :main_custom_field_or_additional_custom_fields_present, message: 'This analysis does not have any associated custom fields')
     end

@@ -56,11 +56,17 @@ RSpec.describe Analysis::Analysis do
       context method do
         let(:analysis) { create(factory) }
 
-        it 'is not valid when no textual custom fields are associated' do
+        it 'is not valid when no custom fields are associated' do
           analysis.main_custom_field = nil
-          analysis.additional_custom_fields = [create(:custom_field_checkbox)]
+          analysis.additional_custom_fields = []
           expect(analysis).to be_invalid
           expect(analysis.errors.details[:base]).to eq([{ error: :main_custom_field_or_additional_custom_fields_present }])
+        end
+
+        it 'is valid when no textual custom fields are associated' do
+          analysis.main_custom_field = nil
+          analysis.additional_custom_fields = [create(:custom_field_checkbox)]
+          expect(analysis).to be_valid
         end
 
         it 'is valid when the main custom field is associated' do
