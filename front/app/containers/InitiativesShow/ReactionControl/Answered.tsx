@@ -84,22 +84,20 @@ const Answered = ({
       </Box>
       <StatusIcon name="email-check" />
       <Box mb="24px">
-        <Box mb="16px">
-          <StatusExplanation>
-            <FormattedMessage
-              {...messages.answeredStatusExplanation}
-              values={{
-                answeredStatusExplanationBold: (
-                  <b>
-                    <FormattedMessage
-                      {...messages.answeredStatusExplanationBold}
-                    />
-                  </b>
-                ),
-              }}
-            />
-          </StatusExplanation>
-        </Box>
+        <StatusExplanation>
+          <FormattedMessage
+            {...messages.answeredStatusExplanation}
+            values={{
+              answeredStatusExplanationBold: (
+                <b>
+                  <FormattedMessage
+                    {...messages.answeredStatusExplanationBold}
+                  />
+                </b>
+              ),
+            }}
+          />
+        </StatusExplanation>
       </Box>
       <Box mb="24px">
         <ReactionCounter>
