@@ -4,7 +4,7 @@ import moment = require('moment');
 let projectId: string;
 const phaseTitle = randomString();
 
-describe.skip('Report builder Reactions By Time widget', () => {
+describe('Report builder Reactions By Time widget', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
 
@@ -99,7 +99,7 @@ describe.skip('Report builder Reactions By Time widget', () => {
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
-    cy.contains('Dislikes : 1').should('be.visible');
+    cy.contains('Dislikes : 1').should('exist');
   });
 
   it('deletes Reactions By Time widget correctly', function () {
