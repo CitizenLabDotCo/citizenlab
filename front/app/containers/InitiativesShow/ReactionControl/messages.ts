@@ -106,9 +106,9 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.vote',
     defaultMessage: 'Vote',
   },
-  cancelVote: {
-    id: 'app.containers.InitiativesShow.VoteControl.cancelVote',
-    defaultMessage: 'Cancel vote',
+  voted: {
+    id: 'app.containers.InitiativesShow.VoteControl.voted',
+    defaultMessage: 'Voted',
   },
   readAnswer: {
     id: 'app.containers.InitiativesShow.VoteControl.readAnswer',

@@ -83,8 +83,13 @@ const Answered = ({
       </Text>
       <Box mb="8px">
         {userReacted ? (
-          <Button buttonStyle="primary-outlined" onClick={onCancelReaction}>
-            <FormattedMessage {...messages.cancelVote} />
+          <Button
+            buttonStyle="success"
+            iconSize="20px"
+            icon="check"
+            onClick={onCancelReaction}
+          >
+            <FormattedMessage {...messages.voted} />
           </Button>
         ) : (
           <Button
