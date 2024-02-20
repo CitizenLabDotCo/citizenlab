@@ -2748,56 +2748,45 @@ resource 'Idea Custom Fields' do
         assert_status 200
       end
 
-      # context "Update custom field's map config relation" do
-      #   example 'Adding and updating a point field with associated map_config' do
-      #     field_to_update = create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' })
-      #     create(:map_config, mappable: field_to_update)
-      #     request = {
-      #       custom_fields: [
-      #         { input_type: 'page' },
-      #         {
-      #           title_multiloc: { 'en' => 'Inserted point field' },
-      #           description_multiloc: { 'en' => 'Inserted point field description' },
-      #           input_type: 'point',
-      #           required: false,
-      #           enabled: false,
-      #           map_config_params: {
-      #             center_geojson: {
-      #               type: 'Point',
-      #               coordinates: [
-      #                 42.4242,
-      #                 24.2424
-      #               ]
-      #             },
-      #             zoom_level: '11',
-      #             tile_provider: 'https://something.com'
-      #           }
-      #         },
-      #         {
-      #           id: field_to_update.id,
-      #           title_multiloc: { 'en' => 'Updated point field' },
-      #           description_multiloc: { 'en' => 'Updated point field description' },
-      #           required: true,
-      #           enabled: true,
-      #           map_config_params: {
-      #             center_geojson: {
-      #               type: 'Point',
-      #               coordinates: [
-      #                 42.4242,
-      #                 24.2424
-      #               ]
-      #             },
-      #             zoom_level: '11',
-      #             tile_provider: 'https://somespecificprovider.com'
-      #           }
-      #         }
-      #       ]
-      #     }
-      #     expect { do_request request }.to change(CustomMaps::MapConfig, :count).by 1
-      #     expect(CustomField.find(field_to_update.id).map_config.tile_provider).to eq('https://somespecificprovider.com')
+      context "Update custom field's map config relation" do
+        let!(:map_config1) { create(:map_config, mappable: nil) }
+        let!(:map_config2) { create(:map_config, mappable: nil) }
 
-      #     assert_status 200
-      #   end
+        example "Associating map_config(s) with 'point' custom field(s)" do
+          field_to_update = create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' })
+          request = {
+            custom_fields: [
+              { input_type: 'page' },
+              {
+                title_multiloc: { 'en' => 'Inserted point custom field' },
+                description_multiloc: { 'en' => 'Inserted point custom field description' },
+                input_type: 'point',
+                required: false,
+                enabled: false,
+                map_config_id: map_config1.id
+              },
+              {
+                id: field_to_update.id, 
+                title_multiloc: { 'en' => 'Updated point custom field' },
+                description_multiloc: { 'en' => 'Updated custom point field description' },
+                required: true,
+                enabled: true,
+                map_config_id: map_config2.id
+              }
+            ]
+          }
+
+          do_request request
+          assert_status 200
+
+          new_custom_field = map_config1.reload.mappable
+          expect(new_custom_field.title_multiloc).to eq({ 'en' => 'Inserted point custom field' })
+          expect(new_custom_field.input_type).to eq('point')
+
+          updated_custom_field = CustomField.find(field_to_update.id)
+          expect(updated_custom_field.map_config).to eq(map_config2)
+          expect(updated_custom_field.title_multiloc).to eq({ 'en' => 'Updated point custom field' })
+        end
 
       #   example "[error] Add map_config when creating field that is not input_type: 'point'", document: false do
       #     request = {
@@ -2865,7 +2854,7 @@ resource 'Idea Custom Fields' do
       #       '1': { map_config: { mappable: ['The custom field input_type cannot be associated with a map_config'] } }
       #     })
       #   end
-      # end
+      end
     end
   end
 end

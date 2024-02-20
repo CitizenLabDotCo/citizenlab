@@ -153,9 +153,30 @@ module IdeaCustomFields
 
     def create_or_update_map_config(field, field_params, errors, index)
       map_config_id = field_params[:map_config_id]
-      return unless map_config_id
+      return unless map_config_id && field.input_type == 'point'
 
-      puts "map_config_id: #{map_config_id}"
+      # puts "map_config_id: #{map_config_id}"
+
+      unless field&.map_config&.id == map_config_id
+        map_config = CustomMaps::MapConfig.find_by(id: map_config_id)
+        map_config.update(mappable_id: field.id, mappable_type: 'CustomField')
+      end
+
+      # DONE. Is this a `custom_field` with `input_type` of `'point'`
+      #     TRUE => continue
+      #     FALSE => break (no-op)
+      # DONE. Is there a `map_config_id` in its `update_all` params?
+      #     TRUE => continue
+      #     FALSE => break (no-op)
+      # 3. Does `map_config` exist?
+      #     TRUE => continue
+      #     FALSE => error ‘map_config with map_config_id does not exist’
+      # DONE. Is `map_config` already associated with the given `custom_field`?
+      #     TRUE => break (no-op)
+      #     FALSE => continue
+      # 5. Is `map_config` already associated with something else?
+      #     TRUE => error ‘map_config with map_config_id is associated with other resource’ (model validation - also db unique index)
+      #     FALSE => create & save association between `map_config` & `custom_field`
 
       # map_config_params = map_config_params.merge(mappable_id: field.id, mappable_type: 'CustomField')
 
