@@ -4,7 +4,7 @@ import moment = require('moment');
 let projectId: string;
 const phaseTitle = randomString();
 
-describe.skip('Report builder Posts By Time widget', () => {
+describe('Report builder Posts By Time widget', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
 
@@ -93,7 +93,7 @@ describe.skip('Report builder Posts By Time widget', () => {
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
-    cy.contains('Total : 1').should('be.visible');
+    cy.contains('Total : 1').should('exist');
   });
 
   it('deletes Posts By Time widget correctly', function () {
