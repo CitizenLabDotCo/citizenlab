@@ -143,7 +143,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
           collapseLongText={false}
         />
       )}
-      <WhiteSpace />
+      {participationMethod === 'ideation' && <WhiteSpace />}
       <TextMultiloc
         text={toMultilocParagraph(
           messages.participants,
