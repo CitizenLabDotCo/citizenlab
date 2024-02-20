@@ -271,6 +271,7 @@ const IdeasMap = memo<Props>(
         if (!esriMapView) {
           setEsriMapview(mapView);
 
+          // If an idea was selected in the URL params, move map to that idea
           if (selectedIdea) {
             const point = ideasList.find((idea) => idea.id === selectedIdea)
               ?.attributes.location_point_geojson;
