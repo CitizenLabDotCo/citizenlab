@@ -64,18 +64,6 @@ export const InnerContainer = styled.div<{
     background: ${colors.background};
   }
 
-  ${(props) =>
-    media.desktop`
-      & .leaflet-control-zoom {
-        margin-top: ${props.isPostingEnabled ? '78px' : '25px'} !important;
-        margin-right: 14px !important;
-      }
-  
-      & .leaflet-control-layers {
-        margin-right: 15px !important;
-      }
-    `}
-
   ${media.tablet`
       .activeArea {
         left: 0px;

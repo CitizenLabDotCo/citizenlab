@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // types
-import { IMapLayerAttributes } from 'modules/commercial/custom_maps/api/map_layers/types';
+import { IMapLayerAttributes } from 'api/map_layers/types';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';

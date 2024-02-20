@@ -16,8 +16,7 @@ import { createPortal } from 'react-dom';
 
 type Props = {
   portalElement: HTMLDivElement;
-  ideaIds: string[] | null;
-  ideasList: IIdeaData[];
+  ideas: IIdeaData[];
   setSelectedIdea: (ideaId: string) => void;
   mapView: MapView | null;
 };
@@ -25,19 +24,17 @@ type Props = {
 const IdeasAtLocationPopup = ({
   setSelectedIdea,
   portalElement,
-  ideasList,
-  ideaIds,
+  ideas,
   mapView,
 }: Props) => {
   const localize = useLocalize();
-  const selectedIdeas = ideasList.filter((idea) => ideaIds?.includes(idea.id));
 
   if (!portalElement) return null;
 
   // A portal is needed here as we're inserting our React component into the Esri Map popup as its content
   return createPortal(
     <Box maxHeight="100px">
-      {selectedIdeas.map((idea) => (
+      {ideas.map((idea) => (
         <Button
           key={idea.id}
           width="100%"

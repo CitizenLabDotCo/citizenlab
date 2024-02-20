@@ -11,7 +11,7 @@ import React, {
 // components
 import EsriMap from 'components/EsriMap';
 import MapView from '@arcgis/core/views/MapView';
-import LayerHoverLabel from 'modules/commercial/custom_maps/admin/containers/ProjectCustomMapConfigPage/LayerHoverLabel';
+import LayerHoverLabel from 'components/IdeationConfigurationMap/components/LayerHoverLabel';
 import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
@@ -59,7 +59,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // types
-import { IMapConfig } from 'modules/commercial/custom_maps/api/map_config/types';
+import { IMapConfig } from 'api/map_config/types';
 import { IIdeaData } from 'api/ideas/types';
 
 // intl
@@ -289,13 +289,16 @@ const IdeasMap = memo<Props>(
 
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
+        // Save clicked location
+        setClickedMapLocation(esriPointToGeoJson(event.mapPoint));
+
         // On map click, we either open an existing idea OR show the "submit an idea" popup.
         // This depends on whether the user has clicked an existing map pin.
         mapView.hitTest(event).then((result) => {
           // Get any map elements underneath map click
           const elements = result.results;
           if (elements.length > 0) {
-            // There are map elements - user clicked an layer, idea pin OR a cluster
+            // There are map elements - user clicked a layer, idea pin OR a cluster
             const topElement = elements[0];
 
             if (topElement.type === 'graphic') {
@@ -373,7 +376,6 @@ const IdeasMap = memo<Props>(
                   showAddInputPopup({
                     event,
                     mapView,
-                    setClickedMapLocation,
                     setSelectedInput: setSelectedIdea,
                     popupContentNode: startIdeaButtonNode,
                     popupTitle: formatMessage(messages.submitIdea),
@@ -387,7 +389,6 @@ const IdeasMap = memo<Props>(
               showAddInputPopup({
                 event,
                 mapView,
-                setClickedMapLocation,
                 setSelectedInput: setSelectedIdea,
                 popupContentNode: startIdeaButtonNode,
                 popupTitle: formatMessage(messages.submitIdea),
@@ -501,8 +502,9 @@ const IdeasMap = memo<Props>(
             <IdeasAtLocationPopup
               setSelectedIdea={setSelectedIdea}
               portalElement={ideasAtLocationNode}
-              ideaIds={ideasSharingLocation}
-              ideasList={ideasList}
+              ideas={ideasList.filter((idea) =>
+                ideasSharingLocation?.includes(idea.id)
+              )}
               mapView={esriMapView}
             />
             {isTabletOrSmaller && (
