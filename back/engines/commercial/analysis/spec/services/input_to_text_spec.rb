@@ -6,7 +6,8 @@ describe Analysis::InputToText do
   describe '#execute' do
     it 'works with ideation built-in textual fields' do
       custom_form = create(:custom_form, :with_default_fields)
-      service = described_class.new(custom_form.custom_fields.filter(&:support_free_text_value?))
+      custom_fields = custom_form.custom_fields.filter(&:support_free_text_value?)
+      service = described_class.new(custom_fields)
       input = build(
         :idea,
         title_multiloc: { en: 'New pool' },

@@ -326,19 +326,19 @@ describe Analysis::InputsFinder do
 
   describe 'input_custom_field_no_empty_values' do
     let_it_be(:custom_form) { create(:custom_form) }
-    let_it_be(:custom_field_select) { create(:custom_field_select, :with_options, resource: custom_form) }
-    let_it_be(:analysis) { create(:analysis, custom_fields: [custom_field_select]) }
+    let_it_be(:custom_field_text) { create(:custom_field_text, resource: custom_form) }
+    let_it_be(:analysis) { create(:analysis, main_custom_field: nil, additional_custom_fields: [custom_field_text]) }
 
     let_it_be(:input0) { create(:idea, project: analysis.source_project) }
     let_it_be(:input1) do
       create(:idea, project: analysis.source_project, custom_field_values: {
-        custom_field_select.key => custom_field_select.options[0].key
+        custom_field_text.key => 'value 1'
       })
     end
 
     let_it_be(:input2) do
       create(:idea, project: analysis.source_project, custom_field_values: {
-        custom_field_select.key => custom_field_select.options[1].key
+        custom_field_text.key => 'value 2'
       })
     end
 

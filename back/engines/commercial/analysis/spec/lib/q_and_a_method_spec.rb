@@ -5,12 +5,12 @@ require 'rails_helper'
 RSpec.describe Analysis::QAndAMethod do
   describe 'Bogus q_and_a' do
     it 'works' do
-      analysis = create(:analysis, custom_fields: [create(
+      analysis = create(:analysis, main_custom_field: create(
         :custom_field,
         :for_custom_form,
         code: 'title_multiloc',
         key: 'title_multiloc'
-      )])
+      ))
 
       q_and_a_task = create(
         :q_and_a_task,
@@ -44,12 +44,12 @@ RSpec.describe Analysis::QAndAMethod do
 
   describe 'OnePassLLM q_and_a' do
     it 'works' do
-      analysis = create(:analysis, custom_fields: [create(
+      analysis = create(:analysis, main_custom_field: create(
         :custom_field,
         :for_custom_form,
         code: 'title_multiloc',
         key: 'title_multiloc'
-      )])
+      ))
 
       q_and_a_task = create(
         :q_and_a_task,

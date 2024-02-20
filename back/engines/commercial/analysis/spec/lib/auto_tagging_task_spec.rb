@@ -60,7 +60,7 @@ RSpec.describe Analysis::AutoTaggingTask do
     it 'works' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'sentiment')
       idea = create(:idea, author: create(:user, locale: 'nl-NL'), project: project, title_multiloc: { 'nl-NL' => 'Heel erg slecht' })
 
@@ -98,7 +98,7 @@ RSpec.describe Analysis::AutoTaggingTask do
     it 'works' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'language')
       idea = create(:idea, project: project, title_multiloc: { en: 'Dit is niet echt in het Engels, mais en Nederlands' })
       fr_tag = create(:tag, name: 'fr', tag_type: 'language', analysis: analysis)
@@ -144,7 +144,7 @@ RSpec.describe Analysis::AutoTaggingTask do
     it 'works' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'nlp_topic')
       idea = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
 
@@ -180,7 +180,7 @@ RSpec.describe Analysis::AutoTaggingTask do
     it 'works' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       tags = create_list(:tag, 3, analysis: analysis)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'label_classification', tags_ids: [tags[0].id, tags[1].id], filters: { search: 'world' })
       idea1 = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
@@ -217,7 +217,7 @@ RSpec.describe Analysis::AutoTaggingTask do
     it 'works' do
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       tags = create_list(:tag, 3, analysis: analysis)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'few_shot_classification', tags_ids: [tags[0].id, tags[1].id])
       idea1 = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })

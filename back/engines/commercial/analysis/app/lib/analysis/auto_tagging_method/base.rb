@@ -30,7 +30,7 @@ module Analysis
     def initialize(auto_tagging_task)
       @analysis = auto_tagging_task.analysis
       @task = auto_tagging_task
-      @input_to_text = InputToText.new(@analysis.custom_fields)
+      @input_to_text = InputToText.new(@analysis.associated_custom_fields)
     end
 
     def execute

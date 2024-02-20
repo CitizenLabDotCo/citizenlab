@@ -70,7 +70,7 @@ ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_ra
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_8e3f01dacd;
 ALTER TABLE IF EXISTS ONLY public.user_custom_fields_representativeness_ref_distributions DROP CONSTRAINT IF EXISTS fk_rails_8cabeff294;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns DROP CONSTRAINT IF EXISTS fk_rails_87e592c9f5;
-ALTER TABLE IF EXISTS ONLY public.analysis_analyses_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_857115261d;
+ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_857115261d;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_849e0c7eb7;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_845d7ca944;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_828a073a04;
@@ -85,7 +85,7 @@ ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP C
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS fk_rails_7e11bb717f;
 ALTER TABLE IF EXISTS ONLY public.maps_legend_items DROP CONSTRAINT IF EXISTS fk_rails_7c44736f5e;
 ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS fk_rails_74e779db86;
-ALTER TABLE IF EXISTS ONLY public.analysis_analyses_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_74744744a6;
+ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_74744744a6;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_73e1dee5fd;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_730408dafc;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAINT IF EXISTS fk_rails_712f4ad915;
@@ -122,6 +122,7 @@ ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.idea_import_files DROP CONSTRAINT IF EXISTS fk_rails_229b6de93f;
 ALTER TABLE IF EXISTS ONLY public.project_images DROP CONSTRAINT IF EXISTS fk_rails_2119c24213;
 ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS fk_rails_1fc601f42c;
+ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_16b3d1e637;
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS fk_rails_121f3a2011;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_0e5b472696;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_0b6ac3e1da;
@@ -351,9 +352,10 @@ DROP INDEX IF EXISTS public.index_analysis_insights_on_analysis_id;
 DROP INDEX IF EXISTS public.index_analysis_background_tasks_on_analysis_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_on_project_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_on_phase_id;
-DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields_on_custom_field_id;
-DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields_on_analysis_id;
+DROP INDEX IF EXISTS public.index_analysis_analyses_on_main_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields;
+DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_custom_field_id;
+DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_rgt;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_type_and_publication_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_parent_id;
@@ -495,7 +497,7 @@ ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS a
 ALTER TABLE IF EXISTS ONLY public.analysis_insights DROP CONSTRAINT IF EXISTS analysis_insights_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF EXISTS analysis_background_tasks_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS analysis_analyses_pkey;
-ALTER TABLE IF EXISTS ONLY public.analysis_analyses_custom_fields DROP CONSTRAINT IF EXISTS analysis_analyses_custom_fields_pkey;
+ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS analysis_analyses_custom_fields_pkey;
 ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS admin_publications_pkey;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS activities_pkey;
 ALTER TABLE IF EXISTS public.que_jobs ALTER COLUMN id DROP DEFAULT;
@@ -633,8 +635,8 @@ DROP TABLE IF EXISTS public.analysis_summaries;
 DROP TABLE IF EXISTS public.analysis_questions;
 DROP TABLE IF EXISTS public.analysis_insights;
 DROP TABLE IF EXISTS public.analysis_background_tasks;
-DROP TABLE IF EXISTS public.analysis_analyses_custom_fields;
 DROP TABLE IF EXISTS public.analysis_analyses;
+DROP TABLE IF EXISTS public.analysis_additional_custom_fields;
 DROP TABLE IF EXISTS public.admin_publications;
 DROP TABLE IF EXISTS public.activities;
 DROP FUNCTION IF EXISTS public.que_state_notify();
@@ -959,6 +961,19 @@ CREATE TABLE public.admin_publications (
 
 
 --
+-- Name: analysis_additional_custom_fields; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.analysis_additional_custom_fields (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    analysis_id uuid NOT NULL,
+    custom_field_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: analysis_analyses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -968,20 +983,8 @@ CREATE TABLE public.analysis_analyses (
     phase_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    show_insights boolean DEFAULT true NOT NULL
-);
-
-
---
--- Name: analysis_analyses_custom_fields; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.analysis_analyses_custom_fields (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    analysis_id uuid,
-    custom_field_id uuid,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    show_insights boolean DEFAULT true NOT NULL,
+    main_custom_field_id uuid
 );
 
 
@@ -3372,10 +3375,10 @@ ALTER TABLE ONLY public.admin_publications
 
 
 --
--- Name: analysis_analyses_custom_fields analysis_analyses_custom_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: analysis_additional_custom_fields analysis_analyses_custom_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.analysis_analyses_custom_fields
+ALTER TABLE ONLY public.analysis_additional_custom_fields
     ADD CONSTRAINT analysis_analyses_custom_fields_pkey PRIMARY KEY (id);
 
 
@@ -4483,24 +4486,31 @@ CREATE INDEX index_admin_publications_on_rgt ON public.admin_publications USING 
 
 
 --
+-- Name: index_analysis_additional_custom_fields_on_analysis_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_additional_custom_fields_on_analysis_id ON public.analysis_additional_custom_fields USING btree (analysis_id);
+
+
+--
+-- Name: index_analysis_additional_custom_fields_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_additional_custom_fields_on_custom_field_id ON public.analysis_additional_custom_fields USING btree (custom_field_id);
+
+
+--
 -- Name: index_analysis_analyses_custom_fields; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_analysis_analyses_custom_fields ON public.analysis_analyses_custom_fields USING btree (analysis_id, custom_field_id);
+CREATE UNIQUE INDEX index_analysis_analyses_custom_fields ON public.analysis_additional_custom_fields USING btree (analysis_id, custom_field_id);
 
 
 --
--- Name: index_analysis_analyses_custom_fields_on_analysis_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_analysis_analyses_on_main_custom_field_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_analysis_analyses_custom_fields_on_analysis_id ON public.analysis_analyses_custom_fields USING btree (analysis_id);
-
-
---
--- Name: index_analysis_analyses_custom_fields_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_analysis_analyses_custom_fields_on_custom_field_id ON public.analysis_analyses_custom_fields USING btree (custom_field_id);
+CREATE INDEX index_analysis_analyses_on_main_custom_field_id ON public.analysis_analyses USING btree (main_custom_field_id);
 
 
 --
@@ -6114,6 +6124,14 @@ ALTER TABLE ONLY public.spam_reports
 
 
 --
+-- Name: analysis_analyses fk_rails_16b3d1e637; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.analysis_analyses
+    ADD CONSTRAINT fk_rails_16b3d1e637 FOREIGN KEY (main_custom_field_id) REFERENCES public.custom_fields(id);
+
+
+--
 -- Name: areas_static_pages fk_rails_1fc601f42c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6402,10 +6420,10 @@ ALTER TABLE ONLY public.groups_projects
 
 
 --
--- Name: analysis_analyses_custom_fields fk_rails_74744744a6; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: analysis_additional_custom_fields fk_rails_74744744a6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.analysis_analyses_custom_fields
+ALTER TABLE ONLY public.analysis_additional_custom_fields
     ADD CONSTRAINT fk_rails_74744744a6 FOREIGN KEY (analysis_id) REFERENCES public.analysis_analyses(id);
 
 
@@ -6522,10 +6540,10 @@ ALTER TABLE ONLY public.notifications
 
 
 --
--- Name: analysis_analyses_custom_fields fk_rails_857115261d; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: analysis_additional_custom_fields fk_rails_857115261d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.analysis_analyses_custom_fields
+ALTER TABLE ONLY public.analysis_additional_custom_fields
     ADD CONSTRAINT fk_rails_857115261d FOREIGN KEY (custom_field_id) REFERENCES public.custom_fields(id);
 
 
@@ -7435,6 +7453,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240201141520'),
 ('20240206165004'),
 ('20240212133704'),
-('20240214125557');
+('20240214125557'),
+('20240219104430'),
+('20240219104431');
 
 
