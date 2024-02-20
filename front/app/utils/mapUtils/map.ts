@@ -7,10 +7,6 @@ import {
   getZoomLevel as baseGetZoomLevel,
   getTileProvider as baseGetTileProvider,
 } from 'utils/map';
-import {
-  MAPTILER_DEFAULT_OPTIONS,
-  BASEMAP_AT_DEFAULT_OPTIONS,
-} from './tileProviderDefaultOptions';
 import { IMapLayerAttributes } from 'api/map_layers/types';
 import { IMapConfigData } from 'api/map_config/types';
 
@@ -68,18 +64,6 @@ export const getTileProvider = (
   }
 
   return baseGetTileProvider(appConfig);
-};
-
-export const getTileOptions = (tileProvider: string) => {
-  if (tileProvider?.includes('maptiler')) {
-    return MAPTILER_DEFAULT_OPTIONS;
-  }
-
-  if (tileProvider?.includes('wien.gv.at/basemap')) {
-    return BASEMAP_AT_DEFAULT_OPTIONS;
-  }
-
-  return MAPTILER_DEFAULT_OPTIONS;
 };
 
 export const getLayerType = (mapLayer: IMapLayerAttributes | undefined) => {

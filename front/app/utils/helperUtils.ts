@@ -183,11 +183,6 @@ export function isString(s: unknown): s is string {
   return typeof s === 'string';
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function isOrReturnsString(s: any, ...args: any[]): s is Function {
-  return isString(s) || (isFunction(s) && isString(s(...args)));
-}
-
 export const isTopBarNavActive = (
   basePath: string,
   pathname: string,
