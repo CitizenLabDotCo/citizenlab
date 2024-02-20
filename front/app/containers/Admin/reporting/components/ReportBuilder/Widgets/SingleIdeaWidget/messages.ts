@@ -33,10 +33,6 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.selectPhase',
     defaultMessage: 'Select phase',
   },
-  selectIdea: {
-    id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.selectIdea',
-    defaultMessage: 'Select idea',
-  },
   noIdeaAvailable: {
     id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.noIdeaAvailable',
     defaultMessage: 'There are no ideas available for this project or phase.',

@@ -27,11 +27,7 @@ const OptionLabel = ({
   const localize = useLocalize();
 
   if (optionIsIdea(option)) {
-    return (
-      <Box display="flex" alignItems="center">
-        {localize(option.attributes.title_multiloc)} ({option.attributes.slug})
-      </Box>
-    );
+    return <Box>{localize(option.attributes.title_multiloc)}</Box>;
   }
 
   if (option.value === 'loadMore' && hasNextPage) {

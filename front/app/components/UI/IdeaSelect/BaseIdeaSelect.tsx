@@ -20,11 +20,10 @@ interface Props {
   inputId?: string;
   value: IIdeaData | null;
   inputValue?: string;
-  // placeholder: string;
   options: Option[];
   components?: { Option: FC };
   getOptionLabel: (option: Option) => any;
-  // onMenuOpen?: () => void;
+  onMenuOpen?: () => void;
   /* onInputChange should be a stable reference! */
   onInputChange: (searchTerm: string) => void;
   onMenuScrollToBottom: () => void;
@@ -36,11 +35,10 @@ const BaseIdeaSelect = ({
   inputId,
   value,
   inputValue,
-  // placeholder,
   options,
   components,
   getOptionLabel,
-  // onMenuOpen,
+  onMenuOpen,
   onInputChange,
   onMenuScrollToBottom,
   onChange,
@@ -78,10 +76,9 @@ const BaseIdeaSelect = ({
         blurInputOnSelect
         backspaceRemovesValue={false}
         menuShouldScrollIntoView={false}
-        isClearable
         value={value}
         inputValue={inputValue}
-        // placeholder={placeholder}
+        placeholder={''}
         options={options}
         getOptionValue={getOptionId}
         getOptionLabel={getOptionLabel}
@@ -89,7 +86,7 @@ const BaseIdeaSelect = ({
         styles={selectStyles()}
         filterOption={() => true}
         components={components}
-        // onMenuOpen={onMenuOpen}
+        onMenuOpen={onMenuOpen}
         onInputChange={handleInputChange}
         onMenuScrollToBottom={onMenuScrollToBottom}
         onChange={handleChange as any}

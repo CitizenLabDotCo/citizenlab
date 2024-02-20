@@ -10,7 +10,6 @@ import ProjectFilter from '../../_shared/ProjectFilter';
 import PhaseFilter from '../../_shared/PhaseFilter';
 import CollapseLongTextToggle from './CollapseLongTextToggle';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import IdeaFilter from './IdeaFilter';
 
 // i18n
 import messages from '../messages';
@@ -138,9 +137,9 @@ const Settings = () => {
   );
 
   const handleChangeIdeaId = useCallback(
-    (ideaData: IIdeaData) => {
+    (ideaData?: IIdeaData) => {
       setProp((props: Props) => {
-        props.ideaId = ideaData.id;
+        props.ideaId = ideaData?.id;
       });
     },
     [setProp]
@@ -179,12 +178,6 @@ const Settings = () => {
           onChange={handleChangeIdeaId}
           phaseId={phaseId}
         />
-        // <IdeaFilter
-        //   label={formatMessage(messages.selectIdea)}
-        //   phaseId={phaseId}
-        //   ideaId={ideaId}
-        //   onIdeaFilter={handleChangeIdeaId}
-        // />
       )}
 
       <Box mb="20px">
