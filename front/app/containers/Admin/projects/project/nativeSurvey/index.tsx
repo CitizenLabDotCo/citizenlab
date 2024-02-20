@@ -171,7 +171,7 @@ const Forms = () => {
             <Box mr="16px">
               <Toggle
                 checked={postingEnabled}
-                label={formatMessage(messages.openForResponses2)}
+                label={formatMessage(messages.openForResponses)}
                 onChange={() => {
                   togglePostingEnabled();
                 }}
@@ -186,7 +186,7 @@ const Forms = () => {
               width="auto"
               mx="8px"
             >
-              {formatMessage(messages.viewSurveyText2)}
+              {formatMessage(messages.viewSurveyText)}
             </Button>
             <Button
               icon="edit"
@@ -249,7 +249,7 @@ const Forms = () => {
                           <Box display="flex" gap="4px" alignItems="center">
                             <Icon name="download" fill={colors.coolGrey600} />
                             <Text my="0px">
-                              {formatMessage(messages.downloadExcelTemplate1)}
+                              {formatMessage(messages.downloadExcelTemplate)}
                             </Text>
                           </Box>
                         </DropdownListItem>
@@ -264,7 +264,7 @@ const Forms = () => {
                       >
                         <Icon name="download" fill={colors.coolGrey600} />
                         <Text my="0px">
-                          {formatMessage(messages.downloadResults2)}
+                          {formatMessage(messages.downloadResults)}
                         </Text>
                       </Box>
                     </DropdownListItem>
@@ -278,7 +278,7 @@ const Forms = () => {
                         >
                           <Icon name="delete" fill={colors.red600} />
                           <Text color="red600" my="0px">
-                            {formatMessage(messages.deleteSurveyResults2)}
+                            {formatMessage(messages.deleteSurveyResults)}
                           </Text>
                         </Box>
                       </DropdownListItem>
@@ -308,10 +308,10 @@ const Forms = () => {
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
             <Title variant="h3" color="primary">
-              {formatMessage(messages.deleteResultsConfirmationQuestion2)}
+              {formatMessage(messages.deleteResultsConfirmationQuestion)}
             </Title>
             <Text color="primary" fontSize="l">
-              {formatMessage(messages.deleteResultsInfo2)}
+              {formatMessage(messages.deleteResultsInfo)}
             </Text>
           </Box>
           <Box
@@ -328,14 +328,14 @@ const Forms = () => {
               mr="20px"
               onClick={deleteResults}
             >
-              {formatMessage(messages.confirmDeleteButtonText2)}
+              {formatMessage(messages.confirmDeleteButtonText)}
             </Button>
             <Button
               buttonStyle="secondary"
               width="auto"
               onClick={closeDeleteModal}
             >
-              {formatMessage(messages.cancelDeleteButtonText2)}
+              {formatMessage(messages.cancelDeleteButtonText)}
             </Button>
           </Box>
         </Box>

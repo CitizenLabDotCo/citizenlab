@@ -51,9 +51,12 @@ const Logic = ({
         field.options &&
         field.options.map((option) => {
           const optionRule = getOptionRule(option, field);
+          const key = `${field.temp_id || field.id}_${
+            option.id || option.temp_id
+          }`;
 
           return (
-            <Box key={option.id}>
+            <Box key={key}>
               <QuestionRuleDisplay
                 isRuleValid={isRuleValid(
                   optionRule,
@@ -79,9 +82,10 @@ const Logic = ({
         field.maximum &&
         getLinearScaleOptions(field.maximum).map((option) => {
           const linearScaleRule = getLinearScaleRule(option, field);
+          const key = `${field.temp_id || field.id}_${option.key}`;
 
           return (
-            <Box key={option.key}>
+            <Box key={key}>
               <QuestionRuleDisplay
                 isRuleValid={isRuleValid(
                   linearScaleRule,
