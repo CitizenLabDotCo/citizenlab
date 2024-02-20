@@ -14,8 +14,12 @@ import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 import messages from '../messages';
 
+// utils
+import { getColorScheme, getLegendLabels } from './utils';
+
 // typings
 import { GroupMode } from 'api/graph_data_units/requestTypes';
+import Legend from 'components/admin/Graphs/Legend';
 
 interface Props {
   projectId: string;
@@ -46,6 +50,10 @@ const SurveyQuestionResult = ({
 
   const { attributes } = response.data;
 
+  const colorScheme = attributes.grouped
+    ? getColorScheme(attributes.legend.length)
+    : undefined;
+
   return (
     <>
       <Title variant="h4" mt="0px" mb="8px">
@@ -56,13 +64,19 @@ const SurveyQuestionResult = ({
           count: attributes.totalResponses,
         })}
       </Text>
-      <Box>
-        {attributes.grouped ? (
-          <GroupedBars attributes={attributes} />
-        ) : (
-          <UngroupedBars attributes={attributes} />
-        )}
-      </Box>
+      {attributes.grouped && colorScheme && (
+        <Box>
+          <GroupedBars attributes={attributes} colorScheme={colorScheme} />
+          <Box mt="20px">
+            <Legend
+              labels={getLegendLabels(attributes, localize, formatMessage)}
+              colors={colorScheme}
+            />
+          </Box>
+        </Box>
+      )}
+
+      {!attributes.grouped && <UngroupedBars attributes={attributes} />}
       <Source projectId={projectId} phaseId={phaseId} />
     </>
   );

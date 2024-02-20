@@ -1,7 +1,8 @@
 import React from 'react';
 
 // components
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
+import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 import ProgressBars2 from 'components/admin/Graphs/ProgressBars2';
 
 // i18n
@@ -18,7 +19,7 @@ interface Props {
   attributes: AttributesUngrouped;
 }
 
-const COLOR_SCHEME = [colors.primary];
+const COLOR_SCHEME = [DEFAULT_CATEGORICAL_COLORS[0]];
 
 const UngroupedBars = ({ attributes }: Props) => {
   const { formatMessage } = useIntl();

@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import ProgressBars2 from 'components/admin/Graphs/ProgressBars2';
 
 // i18n
@@ -16,11 +16,10 @@ import messages from '../messages';
 
 interface Props {
   attributes: AttributesGrouped;
+  colorScheme: string[];
 }
 
-const COLOR_SCHEME = [colors.primary, colors.orange, colors.grey300];
-
-const GroupedBars = ({ attributes }: Props) => {
+const GroupedBars = ({ attributes, colorScheme }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
@@ -38,7 +37,7 @@ const GroupedBars = ({ attributes }: Props) => {
             <ProgressBars2
               values={groups.map((group) => group.count)}
               total={attributes.totalPicks}
-              colorScheme={COLOR_SCHEME}
+              colorScheme={colorScheme}
               label={
                 answer === null
                   ? formatMessage(messages.noAnswer)

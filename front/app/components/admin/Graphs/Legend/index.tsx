@@ -24,6 +24,7 @@ const Legend = ({ labels, colors }: Props) => (
           display="flex"
           flexDirection="row"
           alignItems="center"
+          justifyContent="center"
           mr={lastItem ? undefined : '12px'}
           key={i}
         >
@@ -34,7 +35,7 @@ const Legend = ({ labels, colors }: Props) => (
             fill={color}
             mr="8px"
           />
-          <Text fontSize="s" color="textSecondary">
+          <Text fontSize="s" color="textSecondary" m="0">
             {label}
           </Text>
         </Box>
