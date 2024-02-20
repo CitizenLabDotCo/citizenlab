@@ -4,11 +4,18 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon, Text, colors, isRtl } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  Text,
+  colors,
+  isRtl,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import {
   Header,
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
+import Button from 'components/UI/Button';
 
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
@@ -46,6 +53,7 @@ export interface Props {
 const Location = memo<Props>(({ ideaId, compact, className }) => {
   const { formatMessage } = useIntl();
   const { data: idea } = useIdeaById(ideaId);
+  const isTabletOrSmaller = useBreakpoint('tablet');
 
   const point =
     (!isNilOrError(idea) && idea.data.attributes?.location_point_geojson) ||
@@ -63,7 +71,25 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
         <Header>{formatMessage(messages.location)}</Header>
         <Container>
           <StyledIcon name="position" ariaHidden />
-          {address}
+          <Button
+            m="0px"
+            p="0px"
+            fontSize="m"
+            buttonStyle="text"
+            linkTo={`https://www.google.com/maps/search/?api=1&query=${point?.coordinates[1]},${point?.coordinates[0]}`}
+            openLinkInNewTab={isTabletOrSmaller ? false : true} // On tablet/mobile devices, this will open the app instead
+            pl="0px"
+            style={{
+              textDecoration: 'underline',
+              justifyContent: 'left',
+              textAlign: 'left',
+            }}
+          >
+            <Text mt="4px" color="coolGrey600" m="0px" p="0px" fontSize="s">
+              {address}
+            </Text>
+          </Button>
+
           {!point && (
             <Text
               m="0px"
