@@ -172,4 +172,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.addOfflineInputs',
     defaultMessage: 'Add offline inputs',
   },
+  duplicateAnotherSurvey: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey',
+    defaultMessage: 'Duplicate another survey',
+  },
 });

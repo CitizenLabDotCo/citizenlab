@@ -205,19 +205,6 @@ const Forms = () => {
               {formatMessage(messages.editSurvey)}
             </Button>
 
-            <Button
-              icon="edit"
-              iconSize="20px"
-              buttonStyle="cl-blue"
-              width="auto"
-              disabled={haveSubmissionsComeIn}
-              onClick={() => {
-                setShowCopySurveyModal(true)
-              }}
-              data-cy="e2e-copy-survey-button"
-            >
-              Duplicate another survey
-            </Button>
 
             <Box>
               <Button
@@ -242,6 +229,19 @@ const Forms = () => {
                   <>
                     {uiSchema && importPrintedFormsEnabled && (
                       <>
+                        <DropdownListItem
+                          onClick={() => {
+                            setShowCopySurveyModal(true)
+                          }}
+                          disabled={haveSubmissionsComeIn}
+                        >
+                          <Box display="flex" gap="4px" alignItems="center">
+                            <Icon name="copy" fill={haveSubmissionsComeIn ? colors.grey400 : colors.coolGrey600} />
+                            <Text my="0px" color={haveSubmissionsComeIn ? 'grey400' : 'black'}>
+                              {formatMessage(messages.duplicateAnotherSurvey)}
+                            </Text>
+                          </Box>
+                        </DropdownListItem>
                         <DropdownListItem
                           onClick={() => {
                             clHistory.push(offlineInputsLink);
