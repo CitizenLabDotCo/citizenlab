@@ -3,8 +3,8 @@ import React, { memo, useCallback, useMemo } from 'react';
 // components
 import EsriMap from 'components/EsriMap';
 import MapView from '@arcgis/core/views/MapView';
-import LayerHoverLabel from './LayerHoverLabel';
-import MapHelperOptions from './MapHelperOptions';
+import LayerHoverLabel from './components/LayerHoverLabel';
+import MapHelperOptions from './components/MapHelperOptions';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';

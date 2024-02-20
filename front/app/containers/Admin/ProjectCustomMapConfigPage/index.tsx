@@ -2,9 +2,9 @@ import React, { memo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 // components
-import MapConfigOverview from './MapConfigOverview';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
+import MapConfigOverview from './MapConfigOverview';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -13,11 +13,14 @@ import useMapConfig from 'api/map_config/useMapConfig';
 import useAddMapConfig from 'api/map_config/useAddMapConfig';
 
 // utils
-import { getCenter, getZoomLevel } from '../../../utils/map';
+import {
+  getCenter,
+  getZoomLevel,
+} from '../../../modules/commercial/custom_maps/utils/map';
 
 // styling
 import styled from 'styled-components';
-import IdeationConfigurationMap from './IdeationConfigurationMap';
+import IdeationConfigurationMap from '../../../components/IdeationConfigurationMap/IdeationConfigurationMap';
 
 const Container = styled.div`
   display: flex;

@@ -14,13 +14,10 @@ import Error from 'components/UI/Error';
 import { SubSectionTitle } from 'components/admin/Section';
 
 // utils
-import { getCenter, getZoomLevel } from '../../../utils/map';
-
-// events
 import {
-  setLeafletMapCenter,
-  setLeafletMapZoom,
-} from 'components/UI/LeafletMap/events';
+  getCenter,
+  getZoomLevel,
+} from '../../../modules/commercial/custom_maps/utils/map';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -217,9 +214,6 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
             },
             zoom_level: defaultZoom,
           });
-
-          setLeafletMapCenter([defaultLat, defaultLng]);
-          setLeafletMapZoom(parseInt(defaultZoom, 10));
           formSuccess();
         } catch (error) {
           formError(error);

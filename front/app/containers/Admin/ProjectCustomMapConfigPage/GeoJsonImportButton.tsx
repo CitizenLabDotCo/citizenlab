@@ -11,7 +11,7 @@ import Error from 'components/UI/Error';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
-import { getUnnamedLayerTitleMultiloc } from '../../../utils/map';
+import { getUnnamedLayerTitleMultiloc } from '../../../modules/commercial/custom_maps/utils/map';
 
 // i18n
 import messages from './messages';

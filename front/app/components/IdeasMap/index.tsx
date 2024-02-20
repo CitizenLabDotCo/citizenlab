@@ -11,7 +11,7 @@ import React, {
 // components
 import EsriMap from 'components/EsriMap';
 import MapView from '@arcgis/core/views/MapView';
-import LayerHoverLabel from 'modules/commercial/custom_maps/admin/containers/ProjectCustomMapConfigPage/LayerHoverLabel';
+import LayerHoverLabel from 'components/IdeationConfigurationMap/components/LayerHoverLabel';
 import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
