@@ -77,7 +77,7 @@ module Analysis
     def prompt(project, inputs_text)
       project_title = MultilocService.new.t(project.title_multiloc)
       @prompt = <<~GPT_PROMPT
-        At the end of this message is a list of form responses filled out by respondents in the context of an online participation project titled '{{project}}'. The responses are separated by lines.
+        At the end of this message is a list of form responses filled out by respondents in the context of an online participation project titled '#{project_title}'. The responses are separated by lines.
 
         Summarize what respondents have said. Keep it brief. Put the most emphasis on things that were mentioned most often.
         The goal is for the reader to get an understanding of what respondents have been talking about, without having to read through it all. Focus more on the trends across the responses, than on individual responses.
