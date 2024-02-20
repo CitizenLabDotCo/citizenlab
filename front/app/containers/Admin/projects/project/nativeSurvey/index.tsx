@@ -48,7 +48,7 @@ import { saveSurveyAsPDF } from './saveSurveyAsPDF';
 // Services
 import { downloadSurveyResults } from 'api/survey_results/utils';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
-import CopySurveyModal from "./CopySurveyModal";
+import CopySurveyModal from './CopySurveyModal';
 
 const Forms = () => {
   const { projectId, phaseId } = useParams() as {
@@ -148,7 +148,8 @@ const Forms = () => {
   const haveSubmissionsComeIn =
     submissionCount.data.attributes.totalSubmissions > 0;
 
-  const surveyFormPersisted = phase.data.attributes.custom_form_persisted || false;
+  const surveyFormPersisted =
+    phase.data.attributes.custom_form_persisted || false;
 
   if (isDownloading) {
     return (
@@ -207,7 +208,6 @@ const Forms = () => {
               {formatMessage(messages.editSurvey)}
             </Button>
 
-
             <Box>
               <Button
                 icon="dots-horizontal"
@@ -233,13 +233,25 @@ const Forms = () => {
                       <>
                         <DropdownListItem
                           onClick={() => {
-                            setShowCopySurveyModal(true)
+                            setShowCopySurveyModal(true);
                           }}
                           disabled={haveSubmissionsComeIn}
                         >
                           <Box display="flex" gap="4px" alignItems="center">
-                            <Icon name="copy" fill={haveSubmissionsComeIn ? colors.grey400 : colors.coolGrey600} />
-                            <Text my="0px" color={haveSubmissionsComeIn ? 'grey400' : 'black'}>
+                            <Icon
+                              name="copy"
+                              fill={
+                                haveSubmissionsComeIn
+                                  ? colors.grey400
+                                  : colors.coolGrey600
+                              }
+                            />
+                            <Text
+                              my="0px"
+                              color={
+                                haveSubmissionsComeIn ? 'grey400' : 'black'
+                              }
+                            >
                               {formatMessage(messages.duplicateAnotherSurvey)}
                             </Text>
                           </Box>

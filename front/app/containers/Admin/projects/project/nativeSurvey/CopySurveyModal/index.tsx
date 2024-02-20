@@ -1,23 +1,19 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import {
-  Text,
-  Box,
-  Button,
-} from '@citizenlab/cl2-component-library';
+import { Text, Box, Button } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
-import Warning from "components/UI/Warning";
+import Warning from 'components/UI/Warning';
 
 // routing
 import clHistory from 'utils/cl-router/history';
-import {IOption} from "typings";
-import PhaseFilter from "containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/PhaseFilter";
-import ProjectFilter from "containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/ProjectFilter";
+import { IOption } from 'typings';
+import PhaseFilter from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/PhaseFilter';
+import ProjectFilter from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/ProjectFilter';
 
 type Props = {
   showCopySurveyModal: boolean;
@@ -68,20 +64,16 @@ const CopySurveyModal = ({
               {formatMessage(messages.surveyFormPersistedWarning)}
             </Text>
           </Warning>
-
         )}
-        <Text mb="10px" variant="bodyS" color="textSecondary">{formatMessage(messages.copySurveyDescription)}</Text>
-          <Box
-            py="5px"
-            mt="0px"
-            alignItems="center"
-          >
+        <Text mb="10px" variant="bodyS" color="textSecondary">
+          {formatMessage(messages.copySurveyDescription)}
+        </Text>
+        <Box py="5px" mt="0px" alignItems="center">
           <ProjectFilter
             projectId={projectId}
             emptyOptionMessage={messages.noProject}
             onProjectFilter={handleProjectFilter}
           />
-
           {projectId !== undefined && (
             <PhaseFilter
               label={formatMessage(messages.surveyPhase)}

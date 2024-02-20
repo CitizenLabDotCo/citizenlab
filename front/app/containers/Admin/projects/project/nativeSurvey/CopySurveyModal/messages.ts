@@ -7,7 +7,8 @@ export default defineMessages({
   },
   copySurveyDescription: {
     id: 'app.components.formBuilder.copySurveyModal.description',
-    defaultMessage: 'This will copy all the questions and logic without the answers.',
+    defaultMessage:
+      'This will copy all the questions and logic without the answers.',
   },
   cancel: {
     id: 'app.components.formBuilder.copySurveyModal.cancel',
@@ -39,6 +40,7 @@ export default defineMessages({
   },
   surveyFormPersistedWarning: {
     id: 'app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning',
-    defaultMessage: 'You have already saved changes to this survey. If you duplicate another survey, the changes will be lost.',
+    defaultMessage:
+      'You have already saved changes to this survey. If you duplicate another survey, the changes will be lost.',
   },
 });
