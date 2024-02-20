@@ -152,16 +152,18 @@ module IdeaCustomFields
     end
 
     def create_or_update_map_config(field, field_params, errors, index)
-      map_config_params = field_params[:map_config_params]
-      return unless map_config_params
+      map_config_id = field_params[:map_config_id]
+      return unless map_config_id
 
-      map_config_params = map_config_params.merge(mappable_id: field.id, mappable_type: 'CustomField')
+      puts "map_config_id: #{map_config_id}"
 
-      if field.map_config
-        update_map_config(field, map_config_params, errors, index)
-      else
-        create_map_config(map_config_params, errors, index)
-      end
+      # map_config_params = map_config_params.merge(mappable_id: field.id, mappable_type: 'CustomField')
+
+      # if field.map_config
+      #   update_map_config(field, map_config_params, errors, index)
+      # else
+      #   create_map_config(map_config_params, errors, index)
+      # end
     end
 
     def create_map_config(map_config_params, errors, index)
@@ -288,11 +290,11 @@ module IdeaCustomFields
         :maximum_select_count,
         :minimum_select_count,
         :random_option_ordering,
+        :map_config_id,
         { title_multiloc: CL2_SUPPORTED_LOCALES,
           description_multiloc: CL2_SUPPORTED_LOCALES,
           minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
           maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
-          map_config_params: [:zoom_level, :tile_provider, { center_geojson: {} }],
           options: [
             :id,
             :temp_id,
