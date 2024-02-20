@@ -48,6 +48,7 @@ import { saveSurveyAsPDF } from './saveSurveyAsPDF';
 // Services
 import { downloadSurveyResults } from 'api/survey_results/utils';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
+import CopySurveyModal from "./CopySurveyModal";
 
 const Forms = () => {
   const { projectId, phaseId } = useParams() as {
@@ -60,6 +61,7 @@ const Forms = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditWarningModal, setShowEditWarningModal] = useState(false);
+  const [showCopySurveyModal, setShowCopySurveyModal] = useState(false);
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const locale = useLocale();
@@ -203,20 +205,18 @@ const Forms = () => {
               {formatMessage(messages.editSurvey)}
             </Button>
 
-
             <Button
               icon="edit"
               iconSize="20px"
               buttonStyle="cl-blue"
               width="auto"
+              disabled={haveSubmissionsComeIn}
               onClick={() => {
-                // TODO: Get the copy_from value from a phase selector in a modal - also warns if you have already made edits - are you sure
-                // Need to get a form_saved attribute on the phase? Or separate endpoint - only needed for this
-                clHistory.push(`${editFormLink}?copy_from=28055d0e-44c4-46a4-bc13-74aff20c7891`);
+                setShowCopySurveyModal(true)
               }}
-              data-cy="e2e-edit-survey-content"
+              data-cy="e2e-copy-survey-button"
             >
-              Start with other survey
+              Duplicate another survey
             </Button>
 
             <Box>
@@ -313,6 +313,11 @@ const Forms = () => {
           showEditWarningModal={showEditWarningModal}
           setShowEditWarningModal={setShowEditWarningModal}
           handleDownloadResults={handleDownloadResults}
+        />
+        <CopySurveyModal
+          editFormLink={editFormLink}
+          showCopySurveyModal={showCopySurveyModal}
+          setShowCopySurveyModal={setShowCopySurveyModal}
         />
       </Box>
       <PDFExportModal
