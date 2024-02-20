@@ -108,6 +108,7 @@ resource 'Inputs' do
         expect(json_response_body[:meta]).to match({
           filtered_count: 1
         })
+        expect(response_data.size).to eq 1
       end
 
       example 'supports published_at_to filter', document: false do

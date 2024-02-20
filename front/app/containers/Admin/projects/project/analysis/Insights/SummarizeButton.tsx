@@ -64,7 +64,8 @@ const SummarizeButton = () => {
     );
   }, [analysisId, filters, addSummaryPreCheck]);
 
-  const tooManyInputs = preCheck?.data.attributes.impossible_reason;
+  const tooManyInputs =
+    preCheck?.data.attributes.impossible_reason === 'too_many_inputs';
 
   const applyInputsLimit = !largeSummariesEnabled && inputsCount > 30;
 
@@ -73,14 +74,16 @@ const SummarizeButton = () => {
 
   const tooltipContent = applyInputsLimit
     ? formatMessage(messages.tooltipTextLimit)
-    : formatMessage(messages.tooManyInputs);
+    : tooManyInputs
+    ? formatMessage(messages.tooManyInputs)
+    : undefined;
 
   return (
     <Tippy
       content={<p>{tooltipContent}</p>}
       placement="auto-start"
       zIndex={99999}
-      disabled={summaryPossible}
+      disabled={!tooltipContent}
     >
       <Box h="100%">
         <Button
