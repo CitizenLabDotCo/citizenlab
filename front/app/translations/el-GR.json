@@ -1110,7 +1110,6 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} από τις {votingThreshold} απαιτούμενες ψήφους",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Η ψηφοφορία παραμένει ανοικτή.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "Το {orgName} έλαβε την πρόταση και έδωσε επίσημη απάντηση.",
-  "app.containers.InitiativesShow.VoteControl.cancelVote": "Ακύρωση ψηφοφορίας",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "Η πρόταση αυτή χρειάζεται κάποιες αλλαγές πριν εγκριθεί.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Ελέγξτε την επίσημη ενημέρωση για μια εξήγηση των αλλαγών που ζητούνται.",
   "app.containers.InitiativesShow.VoteControl.days": "ημέρες",

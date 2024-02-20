@@ -1110,7 +1110,6 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} od {votingThreshold} potrebnih glasova",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Glasanje ostaje otvoreno.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} je primio predlog i dao zvaničan odgovor.",
-  "app.containers.InitiativesShow.VoteControl.cancelVote": "Poništite glas",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "This proposal needs some changes before it can be approved.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Check the official update for an explanation of the requested changes.",
   "app.containers.InitiativesShow.VoteControl.days": "dana",

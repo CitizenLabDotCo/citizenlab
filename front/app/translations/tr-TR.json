@@ -1110,7 +1110,6 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{votingThreshold} gerekli oy için {xVotes} oy",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Oylama devam ediyor.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} öneri aldı ve resmi bir yanıt verdi.",
-  "app.containers.InitiativesShow.VoteControl.cancelVote": "Oyu iptal et",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "Bu teklifin onaylanabilmesi için bazı değişiklikler yapılması gerekmektedir.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Talep edilen değişikliklerin açıklaması için resmi güncellemeyi kontrol edin.",
   "app.containers.InitiativesShow.VoteControl.days": "gün",

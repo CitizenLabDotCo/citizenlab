@@ -1110,7 +1110,6 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} {votingThreshold} vaadituista äänistä",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Äänestys on auki.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} sai ehdotuksen ja antoi virallisen vastauksen.",
-  "app.containers.InitiativesShow.VoteControl.cancelVote": "Peruuta äänestys",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "Tämä ehdotus vaatii joitain muutoksia, ennen kuin se voidaan hyväksyä.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Tarkista pyydetyt muutokset virallisesta päivityksestä.",
   "app.containers.InitiativesShow.VoteControl.days": "päivää",

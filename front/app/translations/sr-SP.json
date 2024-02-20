@@ -1110,7 +1110,6 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} од {votingThreshold} потребних гласова",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Гласање остаје отворено.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} је примио предлог и дао званичан одговор.",
-  "app.containers.InitiativesShow.VoteControl.cancelVote": "Откажи гласање",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "Овом предлогу су потребне неке измене пре него што буде одобрен.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Проверите званично ажурирање за објашњење захтеваних промена.",
   "app.containers.InitiativesShow.VoteControl.days": "дана",

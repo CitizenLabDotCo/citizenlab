@@ -1110,7 +1110,6 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} ud af {votingThreshold} nødvendige stemmer",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Afstemning forbliver åben.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} modtog forslag og gav et officielt svar.",
-  "app.containers.InitiativesShow.VoteControl.cancelVote": "Annullér stemme",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "Dette forslag kræver nogle ændringer, før det kan godkendes.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Se den officielle opdatering for en forklaring af de ønskede ændringer.",
   "app.containers.InitiativesShow.VoteControl.days": "dage",

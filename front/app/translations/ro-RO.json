@@ -857,7 +857,6 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} din {votingThreshold} voturi necesare",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Votarea rămâne deschisă.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} a primit propunerea ta și a oferit un răspuns oficial.",
-  "app.containers.InitiativesShow.VoteControl.cancelVote": "Anulare vot",
   "app.containers.InitiativesShow.VoteControl.days": "zile",
   "app.containers.InitiativesShow.VoteControl.expiredStatusExplanation": "Această propunere a expirat deoarece {expiredStatusExplanationBold}.",
   "app.containers.InitiativesShow.VoteControl.expiredStatusExplanationBold": "nu ați atins minimul de {votingThreshold} voturi la timp",

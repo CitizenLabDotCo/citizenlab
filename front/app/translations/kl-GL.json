@@ -1012,7 +1012,6 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} taasinernit {votingThreshold} pisariaqartinneqartunit",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Taasineq ammaannassaaq",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} innuttaasutut siunnersuutit tigusimavaa pisortatigoortumillu akissummik nassiussilluni. ",
-  "app.containers.InitiativesShow.VoteControl.cancelVote": "Taasinerit atorunnaartiguk",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "This proposal needs some changes before it can be approved.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Check the official update for an explanation of the requested changes.",
   "app.containers.InitiativesShow.VoteControl.days": "ullut",
