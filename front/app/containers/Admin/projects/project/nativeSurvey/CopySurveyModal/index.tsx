@@ -6,7 +6,6 @@ import messages from './messages';
 
 // components
 import {
-  Icon,
   Text,
   Box,
   Button,
@@ -18,18 +17,21 @@ import clHistory from 'utils/cl-router/history';
 import {IOption} from "typings";
 import PhaseFilter from "containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/PhaseFilter";
 import ProjectFilter from "containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/ProjectFilter";
+import Warning from "../../../../../../components/UI/Warning";
 
 type Props = {
   showCopySurveyModal: boolean;
   setShowCopySurveyModal: (show: boolean) => void;
   editFormLink: string;
+  surveyFormPersisted: boolean;
 };
 
 const CopySurveyModal = ({
-                            showCopySurveyModal,
-                            setShowCopySurveyModal,
-                            editFormLink,
-                          }: Props) => {
+  showCopySurveyModal,
+  setShowCopySurveyModal,
+  editFormLink,
+  surveyFormPersisted,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   const [projectId, setProjectId] = useState();
@@ -50,8 +52,6 @@ const CopySurveyModal = ({
     [setPhaseId]
   );
 
-  console.log('projectId', projectId);
-
   return (
     <Modal
       width={520}
@@ -61,25 +61,19 @@ const CopySurveyModal = ({
       }}
       header={formatMessage(messages.copySurveyTitle)}
     >
-      <Box m="24px" data-cy="e2e-edit-warning-modal">
-        <Text mb="10px" fontSize="s">
-          <Icon
-            name="info-outline"
-            width="16px"
-            height="16px"
-            mr="4px"
-            fill="textSecondary"
-            display="inline"
-          />
-          [message needed here if form has already been saved]
-        </Text>
+      <Box m="24px" data-cy="e2e-copy-survey-modal">
+        {surveyFormPersisted && (
+          <Warning>
+            <Text color="primary" m="0px" fontSize="s">
+              {formatMessage(messages.surveyFormPersistedWarning)}
+            </Text>
+          </Warning>
+
+        )}
         <Text mb="10px" variant="bodyS" color="textSecondary">{formatMessage(messages.copySurveyDescription)}</Text>
           <Box
-            py="4px"
+            py="5px"
             mt="0px"
-            mb="16px"
-            display="flex"
-            justifyContent="space-between"
             alignItems="center"
           >
           <ProjectFilter

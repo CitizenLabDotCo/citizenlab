@@ -79,6 +79,8 @@ const Forms = () => {
     return null;
   }
 
+  console.log(phase.data.attributes.custom_form_persisted);
+
   const {
     downloadPdfLink,
     downloadExcelLink,
@@ -147,6 +149,8 @@ const Forms = () => {
 
   const haveSubmissionsComeIn =
     submissionCount.data.attributes.totalSubmissions > 0;
+
+  const surveyFormPersisted = phase.data.attributes.custom_form_persisted || false;
 
   if (isDownloading) {
     return (
@@ -318,6 +322,7 @@ const Forms = () => {
           editFormLink={editFormLink}
           showCopySurveyModal={showCopySurveyModal}
           setShowCopySurveyModal={setShowCopySurveyModal}
+          surveyFormPersisted={surveyFormPersisted}
         />
       </Box>
       <PDFExportModal

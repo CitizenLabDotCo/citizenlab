@@ -43,6 +43,10 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     object.previous_phase_end_at_updated?
   end
 
+  attribute :custom_form_persisted do |object|
+    object.custom_form_persisted?
+  end
+
   belongs_to :project
 
   has_one :user_basket, if: proc { |object, params|

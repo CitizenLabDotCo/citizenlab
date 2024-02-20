@@ -1,6 +1,5 @@
 import { defineMessages } from 'react-intl';
 
-// TODO: JS - Get all these correct and deleted
 export default defineMessages({
   copySurveyTitle: {
     id: 'app.components.formBuilder.copySurveyModal.title',
@@ -37,5 +36,9 @@ export default defineMessages({
   surveyPhase: {
     id: 'app.components.formBuilder.copySurveyModal.surveyPhase',
     defaultMessage: 'Survey phase',
+  },
+  surveyFormPersistedWarning: {
+    id: 'app.components.formBuilder.copySurveyModal.surveyFormPersistedWarning',
+    defaultMessage: 'You have already saved changes to this survey. If you duplicate another survey, the changes will be lost.',
   },
 });

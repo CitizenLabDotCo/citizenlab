@@ -232,6 +232,10 @@ class Phase < ApplicationRecord
     native_survey?
   end
 
+  def custom_form_persisted?
+    custom_form.present?
+  end
+
   def posting_limited?
     posting_method == 'limited'
   end
