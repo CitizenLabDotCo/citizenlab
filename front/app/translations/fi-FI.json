@@ -1140,7 +1140,6 @@
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Äänestys ei ole tällä hetkellä käytössä",
   "app.containers.InitiativesShow.VoteControl.xDays": "{x, plural, =0 {alle päivä} one {yksi päivä} other {# päivää}}",
   "app.containers.InitiativesShow.VoteControl.xPeople": "{count, plural, =0 {Ei kukaan} one {Yksi henkilö} other {# henkilöä}}",
-  "app.containers.InitiativesShow.VoteControl.xPeopleVoted": "{xPeople} äänesti tästä ehdotuksesta",
   "app.containers.InitiativesShow.VoteControl.xVotes": "{count, plural, =0 {ei ääniä} one {1 ääni} other {# ääntä}}",
   "app.containers.InitiativesShow.a11y_voteControl": "Äänestys ja status",
   "app.containers.InitiativesShow.allInitiatives": "Kaikki ehdotukset",
