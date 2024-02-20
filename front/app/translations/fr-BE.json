@@ -1895,7 +1895,7 @@
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Une fois que vous avez terminé, cliquez sur \"Soumettre\" pour voter.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "Le vote a été clôturé le <b>{endDate}.</b> Les participants pouvaient <b>voter pour une seule option</b>.",
   "app.utils.votingMethodUtils.singleVotingOneVotePreferredOption": "Sélectionnez votre option préférée en cliquant sur \"Vote\".",
-  "app.utils.votingMethodUtils.singleVotingOneVoteYouCanVote2": "Vous disposez d'<b>un unique vote</b> que vous pouvez attribuer à l'une des options.",
+  "app.utils.votingMethodUtils.singleVotingOneVoteYouCanVote2": "Vous disposez d''<b>un unique vote</b> que vous pouvez attribuer à l'une des options.",
   "app.utils.votingMethodUtils.singleVotingUnlimitedEnded": "Le vote a été clôturé le <b>{endDate}.</b> Les participants pouvaient <b>voter pour autant d'options qu'ils le souhaitaient</b>.",
   "app.utils.votingMethodUtils.singleVotingUnlimitedVotesYouCanVote": "Vous pouvez voter pour autant d'options que vous le souhaitez.",
   "app.utils.votingMethodUtils.submitYourBudget": "Soumettre ton budget",
