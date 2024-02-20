@@ -48,12 +48,13 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
       zIndex={99999}
       disabled={questionPossible}
     >
-      <Box>
+      <Box h="100%">
         <Button
           icon="question-bubble"
           mb="4px"
           size="s"
           w="100%"
+          h="100%"
           buttonStyle="admin-dark"
           processing={isLoadingPreCheck}
           onClick={onClick}

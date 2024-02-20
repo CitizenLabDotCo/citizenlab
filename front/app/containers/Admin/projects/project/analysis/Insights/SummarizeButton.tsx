@@ -82,12 +82,13 @@ const SummarizeButton = () => {
       zIndex={99999}
       disabled={summaryPossible}
     >
-      <Box>
+      <Box h="100%">
         <Button
           icon="flash"
           mb="4px"
           size="s"
           w="100%"
+          h="100%"
           buttonStyle="admin-dark"
           onClick={handleSummaryCreate}
           disabled={!summaryPossible}
