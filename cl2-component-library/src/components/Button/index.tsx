@@ -154,11 +154,8 @@ function getButtonStyle(
       iconColor: colors.textSecondary,
     },
     success: {
-      bgColor: colors.green500,
-      bgHoverColor: colors.green700,
-      textColor: colors.white,
-      textHoverColor: colors.white,
-      iconHoverColor: colors.white,
+      bgColor: colors.successLight,
+      textColor: colors.success,
     },
     'cl-blue': {
       bgColor: colors.primary,
