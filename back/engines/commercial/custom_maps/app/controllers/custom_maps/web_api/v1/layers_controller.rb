@@ -12,7 +12,7 @@ module CustomMaps
           @layer = @map_config.layers.build(create_params)
 
           if @layer.save
-            render json: serialized_layer, status: :ok
+            render json: serialized_layer, status: :created
           else
             render json: layer_errors, status: :unprocessable_entity
           end

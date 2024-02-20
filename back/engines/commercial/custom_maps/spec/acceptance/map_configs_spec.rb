@@ -81,7 +81,7 @@ resource 'Map Configs' do
 
       context 'when mappable is not specified' do
         example_request 'Create a map config' do
-          expect(status).to eq 200
+          expect(status).to eq 201
           expect(attributes['center_geojson']).to  eq center_geojson
           expect(attributes['zoom_level']).to      eq zoom_level.to_f.to_s
           expect(attributes['tile_provider']).to   eq tile_provider

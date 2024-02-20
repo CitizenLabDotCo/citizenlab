@@ -105,7 +105,7 @@ resource 'Map Layers' do
         let(:geojson) { layer_attributes[:geojson] }
 
         example_request 'Creates a map layer successfully using a geojson object' do
-          assert_status 200
+          assert_status 201
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['type']).to            eq 'CustomMaps::GeojsonLayer'
           expect(attributes['geojson']).to         eq geojson
@@ -126,7 +126,7 @@ resource 'Map Layers' do
 
         example_request 'Creates a map layer successfully using a geojson file' do
           geojson = JSON.parse(Base64.decode64(geojson_file[:base64].gsub('data:application/json;base64,', '')))
-          assert_status 200
+          assert_status 201
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['type']).to            eq 'CustomMaps::GeojsonLayer'
           expect(attributes['geojson']).to         eq geojson
@@ -147,8 +147,8 @@ resource 'Map Layers' do
           }
         end
 
-        example_request 'Updates a map layer successfully using the geojson object' do
-          assert_status 200
+        example_request 'Creates a map layer successfully using the geojson object' do
+          assert_status 201
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['type']).to            eq 'CustomMaps::GeojsonLayer'
           expect(attributes['geojson']).to         eq geojson
@@ -301,7 +301,7 @@ resource 'Map Layers' do
         let(:layer_url) { 'https://some.domain.com/some_layer' }
 
         example_request 'Creates a map layer successfully using a url' do
-          assert_status 200
+          assert_status 201
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['type']).to            eq 'CustomMaps::EsriFeatureLayer'
           expect(attributes['geojson']).to         be_nil # Not serialized for EsriFeatureLayer

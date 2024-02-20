@@ -11,7 +11,7 @@ module CustomMaps
           @map_config = MapConfig.new(map_config_params)
 
           if @map_config.save
-            render json: serialized_map_config, status: :ok
+            render json: serialized_map_config, status: :created
           else
             render json: { errors: @map_config.errors.details }, status: :unprocessable_entity
           end
