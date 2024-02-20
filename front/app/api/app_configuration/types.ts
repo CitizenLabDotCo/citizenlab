@@ -249,7 +249,7 @@ export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 
-interface AppConfigurationMapSettings extends AppConfigurationFeature {
+export interface AppConfigurationMapSettings extends AppConfigurationFeature {
   map_center: {
     lat: string;
     long: string;

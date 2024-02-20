@@ -3,6 +3,7 @@ import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useReport from 'api/reports/useReport';
 import useReportLayout from 'api/report_layout/useReportLayout';
 import useLocale from 'hooks/useLocale';
 
@@ -27,6 +28,10 @@ import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrappe
 // templates
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
 
+// utils
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+
 // typings
 import {
   CraftJson,
@@ -36,15 +41,17 @@ import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import { ReportLayout } from 'api/report_layout/types';
 import { isEmpty } from 'lodash-es';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { ReportResponse } from 'api/reports/types';
 
 interface Props {
-  reportId: string;
+  report: ReportResponse;
   reportLayout: ReportLayout;
 }
 
-const ReportBuilder = ({ reportId, reportLayout }: Props) => {
+const ReportBuilder = ({ report, reportLayout }: Props) => {
+  const reportId = report.data.id;
+  const phaseId = report.data.relationships.phase?.data?.id;
+
   const platformLocale = useLocale();
   const [search] = useSearchParams();
   const templateProjectId = search.get('templateProjectId');
@@ -115,7 +122,7 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
     0;
 
   return (
-    <ReportContextProvider width="pdf" reportId={reportId}>
+    <ReportContextProvider width="pdf" reportId={reportId} phaseId={phaseId}>
       <FullscreenContentBuilder
         onErrors={handleErrors}
         onDeleteElement={handleDeleteElement}
@@ -179,17 +186,19 @@ const ReportBuilderWrapper = () => {
   const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const { pathname } = useLocation();
   const { reportId } = useParams();
+  const { data: report } = useReport(reportId);
   const { data: reportLayout } = useReportLayout(reportId);
 
   const renderReportBuilder =
     reportBuilderEnabled &&
     pathname.includes('admin/reporting/report-builder') &&
     reportId !== undefined &&
+    report &&
     reportLayout;
 
   if (!renderReportBuilder) return null;
 
-  return <ReportBuilder reportId={reportId} reportLayout={reportLayout.data} />;
+  return <ReportBuilder report={report} reportLayout={reportLayout.data} />;
 };
 
 export default ReportBuilderWrapper;

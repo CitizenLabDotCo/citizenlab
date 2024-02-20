@@ -33,7 +33,10 @@ module Analysis
 
     def execute(plan)
       task.set_in_progress!
-      question.update!(accuracy: plan.accuracy)
+      old_answer = question.answer
+      old_accuracy = question.accuracy
+      old_input_ids = question.insight.inputs_ids
+      question.update!(accuracy: plan.accuracy, answer: '')
       question.insight.update!(inputs_ids: filtered_inputs.ids)
 
       begin
@@ -42,6 +45,8 @@ module Analysis
       rescue QAndAFailedError => e
         ErrorReporter.report(e)
         task.set_failed!
+        question.update!(accuracy: old_accuracy, answer: old_answer)
+        question.insight.update!(inputs_ids: old_input_ids)
       end
     end
 

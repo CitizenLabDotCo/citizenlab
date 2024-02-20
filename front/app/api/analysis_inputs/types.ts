@@ -23,6 +23,7 @@ export type IInputsFilterParams = {
   comments_from?: string | number;
   comments_to?: string | number;
   input_custom_field_no_empty_values?: boolean;
+  limit?: number;
 } & { [K in AuthorCustomFromFilterKey]?: string } & {
   [K in AuthorCustomToFilterKey]?: string;
 } & { [K in AuthorCustomInFilterKey]?: string[] } & {

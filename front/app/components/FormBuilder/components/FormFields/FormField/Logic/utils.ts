@@ -1,6 +1,6 @@
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { formEndOption } from 'components/FormBuilder/components/FormBuilderSettings/utils';
+import { formEndOption } from 'components/FormBuilder/utils';
 
 // typings
 import { IFlatCustomField, IOptionsType } from 'api/custom_fields/types';

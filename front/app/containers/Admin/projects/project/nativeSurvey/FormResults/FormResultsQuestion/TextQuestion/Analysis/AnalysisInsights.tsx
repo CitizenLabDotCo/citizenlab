@@ -35,6 +35,11 @@ import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary'
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
+import { timeAgo } from 'utils/dateUtils';
+import useLocale from 'hooks/useLocale';
+import Tippy from '@tippyjs/react';
 
 // Convert all values in the filters object to strings
 // This is necessary because the filters are passed as query params
@@ -57,7 +62,14 @@ const Summary = ({
   summaryId: string;
   analysisId: string;
 }) => {
-  const { formatMessage, formatDate } = useIntl();
+  const { formatMessage } = useIntl();
+  const locale = useLocale();
+
+  const largeSummariesEnabled = useFeatureFlag({
+    name: 'large_summaries',
+    onlyCheckAllowed: true,
+  });
+
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -71,11 +83,24 @@ const Summary = ({
 
   const { mutate: regenerateSummary, isLoading: isLoadingRegenerateSummary } =
     useRegenerateAnalysisSummary();
+
   const summary = data?.data.attributes.summary;
   const filters = data?.data.attributes.filters;
   const accuracy = data?.data.attributes.accuracy;
-  const generatedAt = data?.data.attributes.created_at;
+  const generatedAt = data?.data.attributes.generated_at;
   const missingInputsCount = data?.data.attributes.missing_inputs_count;
+
+  const { data: inputs } = useInfiniteAnalysisInputs({
+    analysisId,
+  });
+
+  const { data: filteredInputs } = useInfiniteAnalysisInputs({
+    analysisId,
+    queryParams: filters,
+  });
+
+  const totalInputCount = inputs?.pages[0].meta.filtered_count || 0;
+  const filteredInputCount = filteredInputs?.pages[0].meta.filtered_count || 0;
 
   const isLoading =
     task?.data.attributes.state === 'queued' ||
@@ -101,9 +126,14 @@ const Summary = ({
             analysisId={analysisId}
           />
         )}
-        <Text fontWeight="bold">
-          {formatMessage(messages.aiSummary)} <Icon name="flash" />
-        </Text>
+        <Box display="flex" gap="4px" alignItems="center">
+          {!largeSummariesEnabled && (
+            <Icon name="alert-circle" fill={colors.orange} />
+          )}
+          <Text fontWeight="bold">{formatMessage(messages.aiSummary)}</Text>
+          <Icon name="flash" />
+        </Box>
+
         <StyledInsightsText mt="0px">
           {replaceIdRefsWithLinks({
             insight: isLoading ? deleteTrailingIncompleteIDs(summary) : summary,
@@ -120,6 +150,25 @@ const Summary = ({
         alignItems="center"
         w="100%"
       >
+        <Tippy
+          content={formatMessage(messages.tooltipTextLimit)}
+          disabled={largeSummariesEnabled}
+        >
+          <Box display="flex" gap="4px" alignItems="center">
+            {!largeSummariesEnabled && (
+              <Icon name="alert-circle" fill={colors.orange} />
+            )}
+            <Text
+              m="0px"
+              fontSize="s"
+              color={!largeSummariesEnabled ? 'orange' : 'textPrimary'}
+            >
+              {filteredInputCount} / {totalInputCount}{' '}
+              {formatMessage(messages.inputsSelected)}
+            </Text>
+          </Box>
+        </Tippy>
+
         <Text m="0px" fontSize="s">
           <FormattedMessage
             {...messages.accuracy}
@@ -130,9 +179,11 @@ const Summary = ({
           />
         </Text>
 
-        <Text m="0px" fontSize="s">
-          {formatMessage(messages.generated)} {formatDate(generatedAt)}
-        </Text>
+        {generatedAt && (
+          <Text m="0px" fontSize="s">
+            {timeAgo(Date.parse(generatedAt), locale)}
+          </Text>
+        )}
       </Box>
       <Box display="flex" gap="16px">
         <Button
@@ -170,7 +221,14 @@ const Question = ({
   questionId: string;
   analysisId: string;
 }) => {
-  const { formatMessage, formatDate } = useIntl();
+  const { formatMessage } = useIntl();
+  const locale = useLocale();
+
+  const largeSummariesEnabled = useFeatureFlag({
+    name: 'large_summaries',
+    onlyCheckAllowed: true,
+  });
+
   const { data } = useAnalysisQuestion({ analysisId, id: questionId });
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -190,12 +248,25 @@ const Question = ({
   const answer = data?.data.attributes.answer;
   const filters = data?.data.attributes.filters;
   const accuracy = data?.data.attributes.accuracy;
-  const generatedAt = data?.data.attributes.created_at;
+  const generatedAt = data?.data.attributes.generated_at;
   const missingInputsCount = data?.data.attributes.missing_inputs_count;
+
+  const { data: inputs } = useInfiniteAnalysisInputs({
+    analysisId,
+  });
+
+  const { data: filteredInputs } = useInfiniteAnalysisInputs({
+    analysisId,
+    queryParams: filters,
+  });
+
+  const totalInputCount = inputs?.pages[0].meta.filtered_count || 0;
+  const filteredInputCount = filteredInputs?.pages[0].meta.filtered_count || 0;
 
   const isLoading =
     task?.data.attributes.state === 'queued' ||
     task?.data.attributes.state === 'in_progress';
+
   if (!question || !answer) {
     return null;
   }
@@ -216,9 +287,14 @@ const Question = ({
             analysisId={analysisId}
           />
         )}
-        <Text fontWeight="bold">
-          {question} <Icon name="question-bubble" />
-        </Text>
+        <Box display="flex" gap="4px" alignItems="center">
+          {!largeSummariesEnabled && (
+            <Icon name="alert-circle" fill={colors.orange} />
+          )}
+          <Text fontWeight="bold">{question}</Text>
+          <Icon name="question-bubble" />
+        </Box>
+
         <StyledInsightsText mt="0px">
           {replaceIdRefsWithLinks({
             insight: isLoading ? deleteTrailingIncompleteIDs(answer) : answer,
@@ -235,6 +311,20 @@ const Question = ({
         alignItems="center"
         w="100%"
       >
+        <Box display="flex" gap="4px" alignItems="center">
+          {!largeSummariesEnabled && (
+            <Icon name="alert-circle" fill={colors.orange} />
+          )}
+          <Text
+            m="0px"
+            fontSize="s"
+            color={!largeSummariesEnabled ? 'orange' : 'textPrimary'}
+          >
+            {filteredInputCount} / {totalInputCount}{' '}
+            {formatMessage(messages.inputsSelected)}
+          </Text>
+        </Box>
+
         <Text m="0px" fontSize="s">
           <FormattedMessage
             {...messages.accuracy}
@@ -245,9 +335,11 @@ const Question = ({
           />
         </Text>
 
-        <Text m="0px" fontSize="s">
-          {formatMessage(messages.generated)} {formatDate(generatedAt)}
-        </Text>
+        {generatedAt && (
+          <Text m="0px" fontSize="s">
+            {timeAgo(Date.parse(generatedAt), locale)}
+          </Text>
+        )}
       </Box>
       <Box display="flex" gap="16px">
         <Button
@@ -291,6 +383,12 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
     analysisId: analysis.id,
   });
   const { mutate: addAnalysisSummary } = useAddAnalysisSummary();
+  const { mutate: preCheck } = useAddAnalysisSummaryPreCheck();
+
+  const largeSummariesEnabled = useFeatureFlag({
+    name: 'large_summaries',
+    onlyCheckAllowed: true,
+  });
 
   const inputCount = inputs?.pages[0].meta.filtered_count || 0;
   const selectedInsight = insights?.data[selectedInsightIndex];
@@ -305,12 +403,27 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
       inputCount > 10
     ) {
       setAutomaticSummaryCreated(true);
-      addAnalysisSummary({
-        analysisId: analysis.id,
-        filters: {
-          input_custom_field_no_empty_values: true,
+      preCheck(
+        {
+          analysisId: analysis.id,
+          filters: {
+            input_custom_field_no_empty_values: true,
+          },
         },
-      });
+        {
+          onSuccess: (data) => {
+            if (!data.data.attributes.impossible_reason) {
+              addAnalysisSummary({
+                analysisId: analysis.id,
+                filters: {
+                  input_custom_field_no_empty_values: true,
+                  limit: !largeSummariesEnabled ? 30 : undefined,
+                },
+              });
+            }
+          },
+        }
+      );
     }
   }, [
     analysis.id,
@@ -318,6 +431,8 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
     insights,
     automaticSummaryCreated,
     inputCount,
+    largeSummariesEnabled,
+    preCheck,
   ]);
 
   if (!insights || insights.data.length === 0) {

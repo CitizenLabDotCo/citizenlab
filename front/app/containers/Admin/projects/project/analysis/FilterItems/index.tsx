@@ -75,6 +75,10 @@ const translationKeys: Record<
     translationKey: messages.emptyCustomFields,
     predicate: '=',
   },
+  limit: {
+    translationKey: messages.limit,
+    predicate: '=',
+  },
 };
 
 const FilterItems = ({ filters, isEditable, analysisId }: FilterItemsProps) => {

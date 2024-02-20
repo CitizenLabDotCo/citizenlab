@@ -108,10 +108,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.analysis.percentage',
     defaultMessage: '%',
   },
-  generated: {
-    id: 'app.containers.Admin.projects.project.survey.analysis.generated',
-    defaultMessage: 'Generated:',
-  },
   refresh: {
     id: 'app.containers.Admin.projects.project.survey.analysis.refresh',
     defaultMessage: '{ count } new responses',
@@ -127,5 +123,22 @@ export default defineMessages({
   openAnalysisActions: {
     id: 'app.containers.Admin.projects.project.survey.analysis.openAnalysisActions',
     defaultMessage: 'Open analysis actions',
+  },
+  inputsSelected: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.inputsSelected',
+    defaultMessage: 'inputs selected',
+  },
+  tooltipTextLimit: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.tooltipTextLimit',
+    defaultMessage:
+      'You can summarise a maximum of 30 inputs at a time on your current plan. Talk to your GovSuccess Manager or admin to unlock more.',
+  },
+  otherResponses: {
+    id: 'app.containers.Admin.projects.project.survey.otherResponses',
+    defaultMessage: 'Other responses',
+  },
+  allFiles: {
+    id: 'app.containers.Admin.projects.project.survey.allFiles',
+    defaultMessage: 'All files',
   },
 });

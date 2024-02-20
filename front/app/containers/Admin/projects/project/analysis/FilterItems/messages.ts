@@ -37,4 +37,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsFilter',
     defaultMessage: 'Hide responses with no answer',
   },
+  limit: {
+    id: 'app.containers.AdminPage.projects.project.analysis.limit',
+    defaultMessage: 'Limit',
+  },
 });

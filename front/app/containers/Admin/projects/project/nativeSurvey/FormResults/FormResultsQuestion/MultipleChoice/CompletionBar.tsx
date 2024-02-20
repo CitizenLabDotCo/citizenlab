@@ -20,14 +20,20 @@ const CompletionBar = ({
 }: CompletionBarProps) => (
   <Box width="100%">
     {(leftLabel || rightLabel) && (
-      <Box width="100%" display="flex" justifyContent="space-between">
+      <Box
+        width="100%"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        my="12px"
+      >
         {leftLabel && (
-          <Text variant="bodyM">
+          <Text variant="bodyM" m="0">
             <T value={leftLabel} />
           </Text>
         )}
         {rightLabel && (
-          <Text variant="bodyS" color="textSecondary">
+          <Text variant="bodyS" color="textSecondary" m="0">
             {rightLabel}
           </Text>
         )}
