@@ -190,15 +190,6 @@ const ReactionControl = ({
       <ScreenReaderOnly>
         <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
       </ScreenReaderOnly>
-      <Box mb="24px">
-        <FollowUnfollow
-          followableType="initiatives"
-          followableId={initiative.data.id}
-          followersCount={initiative.data.attributes.followers_count}
-          followerId={initiative.data.relationships.user_follower?.data?.id}
-          buttonStyle="secondary"
-        />
-      </Box>
       <StatusComponent
         initiative={initiative.data}
         initiativeStatus={initiativeStatus.data}
@@ -209,6 +200,15 @@ const ReactionControl = ({
         onScrollToOfficialFeedback={onScrollToOfficialFeedback}
         disabledReason={reactingPermission?.disabledReason}
       />
+      <Box mt="24px">
+        <FollowUnfollow
+          followableType="initiatives"
+          followableId={initiative.data.id}
+          followersCount={initiative.data.attributes.followers_count}
+          followerId={initiative.data.relationships.user_follower?.data?.id}
+          buttonStyle="secondary"
+        />
+      </Box>
     </BorderContainer>
   );
 };
