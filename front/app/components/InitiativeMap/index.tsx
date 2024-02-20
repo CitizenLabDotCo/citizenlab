@@ -129,6 +129,10 @@ const InitiativeMap = ({ list }: Props) => {
     return undefined;
   }, [graphics, theme.colors.tenantPrimary]);
 
+  const layers = useMemo(() => {
+    return initiativesLayer ? [initiativesLayer] : undefined;
+  }, [initiativesLayer]);
+
   const onMapClick = useCallback(
     (event: any, mapView: MapView) => {
       // On map click, we either open an existing initiative OR show the "submit a proposal" popup
@@ -233,7 +237,7 @@ const InitiativeMap = ({ list }: Props) => {
     <StyledMapContainer>
       <EsriMap
         height={isPhoneOrSmaller ? '480px' : '640px'}
-        layers={initiativesLayer ? [initiativesLayer] : undefined}
+        layers={layers}
         onClick={onMapClick}
         onHover={changeCursorOnHover}
       />

@@ -251,6 +251,10 @@ const IdeasMap = memo<Props>(
       theme.colors.tenantPrimary,
     ]);
 
+    const layers = useMemo(() => {
+      return ideasLayer ? [...geoJsonLayers, ideasLayer] : geoJsonLayers;
+    }, [ideasLayer, geoJsonLayers]);
+
     const onMapInit = useCallback(
       (mapView: MapView) => {
         // Save the esriMapView in state
@@ -454,9 +458,7 @@ const IdeasMap = memo<Props>(
                 onInit: onMapInit,
               }}
               height={isMobileOrSmaller ? '68vh' : '80vh'}
-              layers={
-                ideasLayer ? [...geoJsonLayers, ideasLayer] : geoJsonLayers
-              }
+              layers={layers}
               onHover={onMapHover}
               onClick={onMapClick}
             />
