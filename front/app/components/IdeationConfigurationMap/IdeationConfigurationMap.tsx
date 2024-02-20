@@ -9,9 +9,6 @@ import MapHelperOptions from './components/MapHelperOptions';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 
-// style
-import { Box } from '@citizenlab/cl2-component-library';
-
 // utils
 import {
   changeCursorOnHover,
@@ -66,7 +63,7 @@ const IdeationConfigurationMap = memo<Props>(
     }, []);
 
     return (
-      <Box height="700px !important">
+      <>
         <EsriMap
           initialData={{
             center: mapConfig.data.attributes.center_geojson,
@@ -89,7 +86,7 @@ const IdeationConfigurationMap = memo<Props>(
           mapConfig={mapConfig}
           projectId={projectId}
         />
-      </Box>
+      </>
     );
   }
 );

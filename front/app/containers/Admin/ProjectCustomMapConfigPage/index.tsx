@@ -32,6 +32,7 @@ const MapWrapper = styled.div`
   flex: 1;
   margin-left: 60px;
   position: relative;
+  height: 700px;
 `;
 
 interface Props {
