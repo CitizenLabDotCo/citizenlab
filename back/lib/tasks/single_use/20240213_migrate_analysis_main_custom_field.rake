@@ -14,7 +14,7 @@ namespace :migrate_analysis do
       Apartment::Tenant.switch(tenant.schema_name) do
         Rails.logger.info tenant.host
 
-        main_field_ids = []
+        main_field_ids = Analysis::Analysis.pluck(:main_custom_field_id).compact
         Analysis::Analysis.all.each do |analysis|
           next if analysis.main_custom_field.present? # Make idempotent
           next if analysis.participation_method == 'ideation'
@@ -29,6 +29,7 @@ namespace :migrate_analysis do
             .analyses_additional_custom_fields
             .where.not(custom_field_id: main_field_ids)
             .order(:created_at)
+            .includes(:custom_field)
             .map(&:custom_field)
             .find(&:support_free_text_value?)
           if !main_field
