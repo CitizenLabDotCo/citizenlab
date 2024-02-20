@@ -36,10 +36,13 @@ module Analysis
     end
 
     def fallback_custom_fields(analysis)
-      participation_method = Factory.instance.participation_method_for(analysis.participation_context)
-      custom_form = analysis.participation_context.custom_form || participation_method.create_default_form!
+      if !analysis.participation_context.custom_form
+        participation_method = Factory.instance.participation_method_for(analysis.participation_context)
+        participation_method.create_default_form!
+        analysis.participation_context.reload # Necessary to find back the created custom form
+      end
 
-      custom_fields = IdeaCustomFieldsService.new(custom_form).all_fields
+      custom_fields = IdeaCustomFieldsService.new(analysis.participation_context.custom_form).all_fields
       # custom fields can be an array or a scope
       custom_fields.filter(&:support_free_text_value?).map(&:id)
     end

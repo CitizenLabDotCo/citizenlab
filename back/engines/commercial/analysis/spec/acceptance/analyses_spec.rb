@@ -100,8 +100,10 @@ resource 'Analyses' do
       example_request 'Create a project analysis (ideation phase) when no custom_form exists' do
         expect(response_status).to eq 201
         # If no custom_fields are passed, all textual fields must be added automatically
-        expect(response_data.dig(:relationships, :additional_custom_fields, :data)).not_to be_empty
-        expect(json_response_body[:included].map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc body_multiloc location_description])
+        additional_custom_field_ids = response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)
+        expect(additional_custom_field_ids).not_to be_empty
+        included_additional_fields = json_response_body[:included].select { |d| additional_custom_field_ids.include? d[:id] }
+        expect(included_additional_fields.map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc body_multiloc location_description])
 
         # Example tags must be present
         tags = Analysis::Analysis.find(response_data[:id]).tags
@@ -118,8 +120,10 @@ resource 'Analyses' do
       example_request 'Create a project analysis (ideation phase) when the custom_form already exists' do
         expect(response_status).to eq 201
         # If no custom_fields are passed, all textual fields must be added automatically
-        expect(response_data.dig(:relationships, :additional_custom_fields, :data)).not_to be_empty
-        expect(json_response_body[:included].map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc body_multiloc location_description])
+        additional_custom_field_ids = response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)
+        expect(additional_custom_field_ids).not_to be_empty
+        included_additional_fields = json_response_body[:included].select { |d| additional_custom_field_ids.include? d[:id] }
+        expect(included_additional_fields.map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc body_multiloc location_description])
       end
     end
 
