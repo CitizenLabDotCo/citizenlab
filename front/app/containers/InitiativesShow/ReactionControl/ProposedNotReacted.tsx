@@ -170,9 +170,8 @@ const ProposedNotReacted = ({
   const theme = useTheme();
   const reactionCount = initiative.attributes.likes_count;
   const reactionLimit = reacting_threshold;
-  const daysLeft = getPeriodRemainingUntil(initiative.attributes.expires_at);
 
-  const thresholdReachedTooltip = threshold_reached_message ? (
+  const thresholdReachedTooltip = (
     <IconTooltip
       icon="info-outline"
       iconColor={theme.colors.tenantText}
@@ -180,8 +179,6 @@ const ProposedNotReacted = ({
       placement="bottom"
       content={<T value={threshold_reached_message} supportHtml />}
     />
-  ) : (
-    <></>
   );
 
   const tippyContent = disabledReason ? (
@@ -220,7 +217,9 @@ const ProposedNotReacted = ({
           <FormattedMessage
             {...messages.proposedStatusExplanationMobile}
             values={{
-              daysLeft,
+              daysLeft: getPeriodRemainingUntil(
+                initiative.attributes.expires_at
+              ),
               votingThreshold: reacting_threshold,
               proposedStatusExplanationMobileBold: (
                 <b>

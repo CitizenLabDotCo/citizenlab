@@ -110,15 +110,11 @@ interface Props {
   onCancelReaction: () => void;
 }
 
-const ProposedReacted = (props: Props) => {
-  const handleOnCancelReaction = () => {
-    props.onCancelReaction();
-  };
-
-  const {
-    initiative,
-    initiativeSettings: { reacting_threshold },
-  } = props;
+const ProposedReacted = ({
+  initiative,
+  initiativeSettings: { reacting_threshold },
+  onCancelReaction,
+}: Props) => {
   const reactionCount = initiative.attributes.likes_count;
   const reactionLimit = reacting_threshold;
   const daysLeft = getPeriodRemainingUntil(initiative.attributes.expires_at);
@@ -147,7 +143,7 @@ const ProposedReacted = (props: Props) => {
       </ReactedText>
       <UnreactButton
         id="e2e-initiative-cancel-like-button"
-        onClick={handleOnCancelReaction}
+        onClick={onCancelReaction}
       >
         <FormattedMessage {...messages.unvoteLink} />
       </UnreactButton>

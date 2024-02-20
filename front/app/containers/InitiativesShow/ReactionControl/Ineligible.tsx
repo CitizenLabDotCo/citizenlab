@@ -62,17 +62,13 @@ interface Props {
   onScrollToOfficialFeedback: () => void;
 }
 
-const Ineligible = (props: Props) => {
+const Ineligible = ({
+  initiative,
+  initiativeSettings: { eligibility_criteria, reacting_threshold },
+  initiativeStatus,
+  onScrollToOfficialFeedback,
+}: Props) => {
   const theme = useTheme();
-  const handleOnReadAnswer = () => {
-    props.onScrollToOfficialFeedback();
-  };
-
-  const {
-    initiative,
-    initiativeSettings: { eligibility_criteria, reacting_threshold },
-    initiativeStatus,
-  } = props;
   const reactionCount = initiative.attributes.likes_count;
   const reactionLimit = reacting_threshold;
 
@@ -129,7 +125,7 @@ const Ineligible = (props: Props) => {
           barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
         />
       </ReactionCounter>
-      <StyledButton onClick={handleOnReadAnswer}>
+      <StyledButton onClick={onScrollToOfficialFeedback}>
         <FormattedMessage {...messages.readAnswer} />
       </StyledButton>
     </Box>

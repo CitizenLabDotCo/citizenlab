@@ -52,18 +52,14 @@ interface Props {
   onReaction: () => void;
 }
 
-const ThresholdReached = (props: Props) => {
+const ThresholdReached = ({
+  initiative,
+  initiativeSettings: { reacting_threshold, threshold_reached_message },
+  initiativeStatus,
+  userReacted,
+  onReaction,
+}: Props) => {
   const theme = useTheme();
-  const {
-    initiative,
-    initiativeSettings: { reacting_threshold, threshold_reached_message },
-    initiativeStatus,
-    userReacted,
-  } = props;
-  const handleOnReaction = () => {
-    props.onReaction();
-  };
-
   const reactionCount = initiative.attributes.likes_count;
   const reactionLimit = reacting_threshold;
 
@@ -88,17 +84,13 @@ const ThresholdReached = (props: Props) => {
             ),
           }}
         />
-        {threshold_reached_message ? (
-          <IconTooltip
-            icon="info-outline"
-            iconColor={theme.colors.tenantText}
-            theme="light"
-            placement="bottom"
-            content={<T value={threshold_reached_message} supportHtml />}
-          />
-        ) : (
-          <></>
-        )}
+        <IconTooltip
+          icon="info-outline"
+          iconColor={theme.colors.tenantText}
+          theme="light"
+          placement="bottom"
+          content={<T value={threshold_reached_message} supportHtml />}
+        />
       </StatusExplanation>
       <ReactionText>
         <FormattedMessage
@@ -117,7 +109,7 @@ const ThresholdReached = (props: Props) => {
         />
       </ReactionText>
       {!userReacted && (
-        <StyledButton icon="vote-up" onClick={handleOnReaction}>
+        <StyledButton icon="vote-up" onClick={onReaction}>
           <FormattedMessage {...messages.vote} />
         </StyledButton>
       )}
