@@ -30,6 +30,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
 import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
 import SelectFieldOption from './SelectFieldOption';
+import { generateTempId } from 'components/FormBuilder/utils';
 
 interface Props {
   name: string;
@@ -51,19 +52,21 @@ const ConfigSelectWithLocaleSwitcher = ({
   const {
     control,
     formState: { errors: formContextErrors },
-    setValue,
     trigger,
+    watch,
   } = useFormContext();
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(
     platformLocale
   );
   const { formatMessage } = useIntl();
+  const selectOptions = watch(name);
 
   // Handles locale change
   useEffect(() => {
     setSelectedLocale(platformLocale);
     onSelectedLocaleChange?.(platformLocale);
   }, [platformLocale, onSelectedLocaleChange]);
+
   const handleOnSelectedLocaleChange = useCallback(
     (newSelectedLocale: Locale) => {
       setSelectedLocale(newSelectedLocale);
@@ -73,218 +76,226 @@ const ConfigSelectWithLocaleSwitcher = ({
   );
 
   // Handles drag and drop
-  const { move } = useFieldArray({
+  const { move, update, append, remove, insert } = useFieldArray({
     name,
   });
-  const handleDragRow = (fromIndex: number, toIndex: number) => {
-    move(fromIndex, toIndex);
-  };
 
-  const addOption = (
-    value: IOptionsType[],
-    name: string,
-    hasOtherOption: boolean
-  ) => {
-    const newValues = value;
-    const optionIndex = hasOtherOption ? value.length - 1 : value.length;
-    newValues.splice(optionIndex, 0, {
+  const handleDragRow = useCallback((fromIndex: number, toIndex: number) => {
+    move(fromIndex, toIndex);
+  }, []);
+
+  if (!selectedLocale) {
+    return null;
+  }
+
+  const addOption = useCallback(() => {
+    const otherOptionIndex = selectOptions.findIndex(
+      (choice) => choice.other === true
+    );
+    const hasOtherOption = otherOptionIndex !== -1;
+
+    const insertIndex = hasOtherOption
+      ? otherOptionIndex
+      : selectOptions.length;
+
+    const newOption = {
       title_multiloc: {},
       ...(inputType === 'multiselect_image' && { image_id: '' }),
-    });
-    setValue(name, newValues);
-  };
+    };
 
-  const removeOption = (value: IOptionsType[], name: string, index: number) => {
-    const newValues = value;
-    newValues.splice(index, 1);
-    setValue(name, newValues);
-  };
+    insert(insertIndex, newOption);
+  }, [insert, inputType, selectOptions]);
 
-  const addOtherOption = (value: IOptionsType[], name: string) => {
-    const newValues = value;
-    newValues.push({
+  const removeOption = useCallback((index: number) => {
+    remove(index);
+    trigger();
+  }, []);
+
+  const addOtherOption = useCallback(() => {
+    append({
       title_multiloc: { en: 'Other' },
       other: true,
     });
-    setValue(name, newValues);
-  };
+  }, [append]);
+
+  const updateChoice = useCallback(
+    (choice: IOptionsType, index: number) => {
+      update(index, {
+        ...choice,
+        ...(!choice.id && !choice.temp_id ? { temp_id: generateTempId() } : {}),
+      });
+    },
+    [update]
+  );
 
   const defaultOptionValues = [{}];
   const errors = get(formContextErrors, name) as RHFErrors;
   const apiError = errors?.error && ([errors] as CLError[]);
   const validationError = errors?.message;
 
-  if (selectedLocale) {
-    return (
-      <>
-        <Controller
-          name={name}
-          control={control}
-          defaultValue={defaultOptionValues}
-          render={({ field: { ref: _ref, value: options, onBlur } }) => {
-            const choices: IOptionsType[] = options;
-            const hasOtherOption = choices.some(
-              (choice) => choice.other === true
-            );
-            const toggleOtherOption = (value: IOptionsType[], name: string) => {
-              if (hasOtherOption) {
-                removeOption(value, name, value.length - 1);
-              } else {
-                addOtherOption(value, name);
-              }
-            };
-
-            const canDeleteLastOption =
-              allowDeletingAllOptions || choices.length > 1;
-            const validatedValues = choices.map((choice) => ({
-              title_multiloc: choice.title_multiloc,
-            }));
-
-            return (
-              <Box
-                as="fieldset"
-                border="none"
-                p="0"
-                m="0"
-                onBlur={() => {
-                  onBlur();
-                  trigger();
-                }}
-              >
-                <SectionField>
-                  <Box
-                    display="flex"
-                    flexWrap="wrap"
-                    justifyContent="space-between"
-                    marginBottom="12px"
-                  >
-                    <Box marginTop="4px" marginRight="8px">
-                      <Label>{formatMessage(messages.fieldLabel)}</Label>
-                    </Box>
-                    <Box>
-                      <LocaleSwitcher
-                        onSelectedLocaleChange={handleOnSelectedLocaleChange}
-                        locales={!isNilOrError(locales) ? locales : []}
-                        selectedLocale={selectedLocale}
-                        values={validatedValues}
-                      />
-                    </Box>
-                  </Box>
-                  <DndProvider backend={HTML5Backend}>
-                    <List key={choices?.length}>
-                      {choices
-                        ?.sort((a, b) => {
-                          const aValue = a.other ? 1 : 0;
-                          const bValue = b.other ? 1 : 0;
-
-                          return aValue - bValue;
-                        })
-                        .map((choice, index) => {
-                          return (
-                            <Box key={index}>
-                              {choice.other === true ? (
-                                <Row
-                                  key={choice.id || choice.temp_id}
-                                  isLastItem={true}
-                                >
-                                  <SelectFieldOption
-                                    choice={choice}
-                                    index={index}
-                                    name={name}
-                                    choices={choices}
-                                    locale={selectedLocale}
-                                    removeOption={removeOption}
-                                    inputType={inputType}
-                                    canDeleteLastOption={canDeleteLastOption}
-                                  />
-                                </Row>
-                              ) : (
-                                <SortableRow
-                                  id={
-                                    choice.temp_id
-                                      ? `${choice.temp_id}-${index}`
-                                      : `${choice.id}-${index}`
-                                  }
-                                  index={index}
-                                  moveRow={
-                                    choice?.other ? () => {} : handleDragRow
-                                  }
-                                  dropRow={() => {
-                                    // Do nothing, no need to handle dropping a row for now
-                                  }}
-                                  dragByHandle
-                                >
-                                  <SelectFieldOption
-                                    choice={choice}
-                                    index={index}
-                                    name={name}
-                                    choices={choices}
-                                    locale={selectedLocale}
-                                    removeOption={removeOption}
-                                    inputType={inputType}
-                                    canDeleteLastOption={canDeleteLastOption}
-                                  />
-                                </SortableRow>
-                              )}
-                            </Box>
-                          );
-                        })}
-                    </List>
-                  </DndProvider>
-                  <Button
-                    icon="plus-circle"
-                    buttonStyle="secondary"
-                    data-cy="e2e-add-answer"
-                    onClick={() => addOption(choices, name, hasOtherOption)}
-                    text={formatMessage(messages.addAnswer)}
-                  />
-
-                  <Box mt="24px" data-cy="e2e-other-option-toggle">
-                    <Toggle
-                      label={
-                        <Box display="flex">
-                          {formatMessage(messages.otherOption)}
-                          <Box pl="4px">
-                            <IconTooltip
-                              placement="top-start"
-                              content={formatMessage(
-                                messages.otherOptionTooltip
-                              )}
-                            />
-                          </Box>
-                        </Box>
-                      }
-                      checked={hasOtherOption}
-                      onChange={() => toggleOtherOption(choices, name)}
-                    />
-                  </Box>
-
-                  {validationError && (
-                    <Error
-                      marginTop="8px"
-                      marginBottom="8px"
-                      text={validationError}
-                      scrollIntoView={false}
-                    />
-                  )}
-                  {apiError && (
-                    <Error
-                      fieldName={name as TFieldName}
-                      apiErrors={apiError}
-                      marginTop="8px"
-                      marginBottom="8px"
-                      scrollIntoView={false}
-                    />
-                  )}
-                </SectionField>
-              </Box>
-            );
-          }}
-        />
-      </>
+  const toggleOtherOption = useCallback(() => {
+    const hasOtherOption = selectOptions.some(
+      (choice) => choice.other === true
     );
-  }
-  return null;
+    if (hasOtherOption) {
+      removeOption(selectOptions.length - 1);
+    } else {
+      addOtherOption();
+    }
+  }, [selectOptions, addOtherOption, removeOption]);
+
+  return (
+    <>
+      <Controller
+        name={name}
+        control={control}
+        defaultValue={defaultOptionValues}
+        render={({ field: { ref: _ref, value: options, onBlur } }) => {
+          const choices: IOptionsType[] = options;
+          const hasOtherOption = choices.some(
+            (choice) => choice.other === true
+          );
+
+          const canDeleteLastOption =
+            allowDeletingAllOptions || choices.length > 1;
+          const validatedValues = choices.map((choice) => ({
+            title_multiloc: choice.title_multiloc,
+          }));
+
+          return (
+            <Box
+              as="fieldset"
+              border="none"
+              p="0"
+              m="0"
+              onBlur={() => {
+                onBlur();
+                trigger();
+              }}
+            >
+              <SectionField>
+                <Box
+                  display="flex"
+                  flexWrap="wrap"
+                  justifyContent="space-between"
+                  marginBottom="12px"
+                >
+                  <Box marginTop="4px" marginRight="8px">
+                    <Label>{formatMessage(messages.fieldLabel)}</Label>
+                  </Box>
+                  <Box>
+                    <LocaleSwitcher
+                      onSelectedLocaleChange={handleOnSelectedLocaleChange}
+                      locales={!isNilOrError(locales) ? locales : []}
+                      selectedLocale={selectedLocale}
+                      values={validatedValues}
+                    />
+                  </Box>
+                </Box>
+                <DndProvider backend={HTML5Backend}>
+                  <List key={choices?.length}>
+                    {choices
+                      ?.sort((a, b) => {
+                        const aValue = a.other ? 1 : 0;
+                        const bValue = b.other ? 1 : 0;
+
+                        return aValue - bValue;
+                      })
+                      .map((choice, index) => {
+                        return (
+                          <Box key={index}>
+                            {choice.other === true ? (
+                              <Row
+                                key={choice.id || choice.temp_id}
+                                isLastItem={true}
+                              >
+                                <SelectFieldOption
+                                  choice={choice}
+                                  index={index}
+                                  locale={selectedLocale}
+                                  inputType={inputType}
+                                  canDeleteLastOption={canDeleteLastOption}
+                                  removeOption={removeOption}
+                                  onChoiceUpdate={updateChoice}
+                                />
+                              </Row>
+                            ) : (
+                              <SortableRow
+                                id={
+                                  choice.temp_id
+                                    ? `${choice.temp_id}-${index}`
+                                    : `${choice.id}-${index}`
+                                }
+                                index={index}
+                                moveRow={handleDragRow}
+                                dragByHandle
+                              >
+                                <SelectFieldOption
+                                  choice={choice}
+                                  index={index}
+                                  locale={selectedLocale}
+                                  inputType={inputType}
+                                  canDeleteLastOption={canDeleteLastOption}
+                                  removeOption={removeOption}
+                                  onChoiceUpdate={updateChoice}
+                                />
+                              </SortableRow>
+                            )}
+                          </Box>
+                        );
+                      })}
+                  </List>
+                </DndProvider>
+                <Button
+                  icon="plus-circle"
+                  buttonStyle="secondary"
+                  data-cy="e2e-add-answer"
+                  onClick={addOption}
+                  text={formatMessage(messages.addAnswer)}
+                />
+
+                <Box mt="24px" data-cy="e2e-other-option-toggle">
+                  <Toggle
+                    label={
+                      <Box display="flex">
+                        {formatMessage(messages.otherOption)}
+                        <Box pl="4px">
+                          <IconTooltip
+                            placement="top-start"
+                            content={formatMessage(messages.otherOptionTooltip)}
+                          />
+                        </Box>
+                      </Box>
+                    }
+                    checked={hasOtherOption}
+                    onChange={toggleOtherOption}
+                  />
+                </Box>
+
+                {validationError && (
+                  <Error
+                    marginTop="8px"
+                    marginBottom="8px"
+                    text={validationError}
+                    scrollIntoView={false}
+                  />
+                )}
+                {apiError && (
+                  <Error
+                    fieldName={name as TFieldName}
+                    apiErrors={apiError}
+                    marginTop="8px"
+                    marginBottom="8px"
+                    scrollIntoView={false}
+                  />
+                )}
+              </SectionField>
+            </Box>
+          );
+        }}
+      />
+    </>
+  );
 };
 
 export default ConfigSelectWithLocaleSwitcher;
