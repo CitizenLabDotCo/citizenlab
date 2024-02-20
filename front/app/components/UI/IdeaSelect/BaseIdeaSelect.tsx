@@ -23,7 +23,6 @@ interface Props {
   options: Option[];
   components?: { Option: FC };
   getOptionLabel: (option: Option) => any;
-  onMenuOpen?: () => void;
   /* onInputChange should be a stable reference! */
   onInputChange: (searchTerm: string) => void;
   onMenuScrollToBottom: () => void;
@@ -38,7 +37,6 @@ const BaseIdeaSelect = ({
   options,
   components,
   getOptionLabel,
-  onMenuOpen,
   onInputChange,
   onMenuScrollToBottom,
   onChange,
@@ -86,7 +84,6 @@ const BaseIdeaSelect = ({
         styles={selectStyles()}
         filterOption={() => true}
         components={components}
-        onMenuOpen={onMenuOpen}
         onInputChange={handleInputChange}
         onMenuScrollToBottom={onMenuScrollToBottom}
         onChange={handleChange as any}

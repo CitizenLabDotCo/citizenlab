@@ -103,7 +103,6 @@ const IdeaSelect = ({
         onInputChange={setSearchValue}
         onMenuScrollToBottom={() => fetchNextPage()}
         onChange={handleChange}
-        onMenuOpen={handleChange}
       />
     </Box>
   );
