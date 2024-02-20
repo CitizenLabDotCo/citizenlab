@@ -1485,6 +1485,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Download an excel template",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Download survey results",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Download survey as pdf",
+  "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Duplicate another survey",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey": "Edit survey",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Edit survey content",
   "app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning": "Submissions to this survey have started to come in. Changes to the survey may result in data loss and incomplete data in the exported files.",
