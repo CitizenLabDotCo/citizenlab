@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useMemo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // hooks
@@ -100,9 +100,7 @@ const IdeaMapOverlay = memo<Props>(
   ({ projectId, phaseId, className, selectedIdea, onSelectIdea }) => {
     const { data: project } = useProjectById(projectId);
     const { windowWidth } = useWindowSize();
-    const smallerThan1440px = useMemo(() => {
-      return !!(windowWidth && windowWidth <= 1440);
-    }, [windowWidth]);
+    const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
 
     const [scrollContainerElement, setScrollContainerElement] =
       useState<HTMLDivElement | null>(null);

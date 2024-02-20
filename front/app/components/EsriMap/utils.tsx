@@ -79,7 +79,7 @@ export const getMapPinSymbol = ({ color, sizeInPx }: MapPinSymbolProps) => {
   });
 };
 
-export const getEsriMakiSymbol = (iconName: makiIconNames, color: string) => {
+export const getEsriMakiSymbol = (iconName: MakiIconName, color: string) => {
   return fetch(
     // Fetch the SVG from the maki icons endpoint
     `https://unpkg.com/@icon/maki-icons/icons/${iconName.toLowerCase()}.svg`
@@ -103,7 +103,7 @@ export const getEsriMakiSymbol = (iconName: makiIconNames, color: string) => {
     });
 };
 
-type makiIconNames =
+type MakiIconName =
   | 'aerialway'
   | 'airfield'
   | 'airport'

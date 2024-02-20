@@ -55,6 +55,8 @@ import {
 } from './utils';
 import styled, { useTheme } from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // types
 import { IMapConfig } from 'api/map_config/types';
@@ -146,9 +148,17 @@ const IdeasMap = memo<Props>(
     const [hoveredLayerId, setHoveredLayerId] = useState<string | null>(null);
     const [clickedMapLocation, setClickedMapLocation] =
       useState<GeoJSON.Point | null>(null);
-    const [selectedIdea, setSelectedIdea] = useState<string | null>(
-      searchParams.get('selected_idea_id') || null
-    );
+
+    const selectedIdea = searchParams.get('idea_map_id');
+
+    const setSelectedIdea = useCallback((ideaId: string | null) => {
+      if (ideaId) {
+        updateSearchParams({ idea_map_id: ideaId });
+      } else {
+        removeSearchParams(['idea_map_id']);
+      }
+    }, []);
+
     const [ideasSharingLocation, setIdeasSharingLocation] = useState<
       string[] | null
     >(null);
@@ -251,14 +261,30 @@ const IdeasMap = memo<Props>(
       theme.colors.tenantPrimary,
     ]);
 
+    const layers = useMemo(() => {
+      return ideasLayer ? [...geoJsonLayers, ideasLayer] : geoJsonLayers;
+    }, [ideasLayer, geoJsonLayers]);
+
     const onMapInit = useCallback(
       (mapView: MapView) => {
         // Save the esriMapView in state
         if (!esriMapView) {
           setEsriMapview(mapView);
+
+          // If an idea was selected in the URL params, move map to that idea
+          if (selectedIdea) {
+            const point = ideasList.find((idea) => idea.id === selectedIdea)
+              ?.attributes.location_point_geojson;
+
+            if (!point) return;
+
+            setTimeout(() => {
+              goToMapLocation(point, mapView);
+            }, 1000);
+          }
         }
       },
-      [esriMapView]
+      [esriMapView, selectedIdea, ideasList]
     );
 
     const onMapClick = useCallback(
@@ -377,6 +403,7 @@ const IdeasMap = memo<Props>(
         graphics,
         startIdeaButtonNode,
         theme.colors.tenantSecondary,
+        setSelectedIdea,
       ]
     );
 
@@ -433,7 +460,7 @@ const IdeasMap = memo<Props>(
         }
         setSelectedIdea(selectedIdeaId);
       },
-      [ideasList, esriMapView, theme.colors.tenantSecondary]
+      [ideasList, esriMapView, theme.colors.tenantSecondary, setSelectedIdea]
     );
 
     const selectedIdeaData = ideasList?.find(({ id }) => id === selectedIdea);
@@ -454,9 +481,7 @@ const IdeasMap = memo<Props>(
                 zoomWidgetLocation: 'right',
               }}
               height={isMobileOrSmaller ? '68vh' : '80vh'}
-              layers={
-                ideasLayer ? [...geoJsonLayers, ideasLayer] : geoJsonLayers
-              }
+              layers={layers}
               onHover={onMapHover}
               onClick={onMapClick}
               onInit={onMapInit}
