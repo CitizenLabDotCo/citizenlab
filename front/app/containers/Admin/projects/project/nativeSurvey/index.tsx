@@ -79,8 +79,6 @@ const Forms = () => {
     return null;
   }
 
-  console.log(phase.data.attributes.custom_form_persisted);
-
   const {
     downloadPdfLink,
     downloadExcelLink,
