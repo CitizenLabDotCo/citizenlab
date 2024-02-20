@@ -39,11 +39,6 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
 
   const questionPossible = !tooManyInputs && askAQuestionEnabled;
 
-  // const tooltipContent = applyInputsLimit
-  //   ? formatMessage(messages.tooltipTextLimit)
-  //   : tooManyInputs
-  //   ? formatMessage(messages.tooManyInputs)
-  //   : undefined;
   const tooltipContent = !askAQuestionEnabled
     ? formatMessage(messages.askAQuestionUpsellMessage)
     : tooManyInputs
