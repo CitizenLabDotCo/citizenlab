@@ -1,7 +1,7 @@
 import { randomString } from '../../../support/commands';
 import moment = require('moment');
 
-describe.skip('Report builder Comments By Time widget', () => {
+describe('Report builder Comments By Time widget', () => {
   let projectId: string;
   const phaseTitle = randomString();
 
@@ -73,8 +73,6 @@ describe.skip('Report builder Comments By Time widget', () => {
       .clear()
       .type('New Widget Title');
 
-    cy.wait(1000);
-
     // Set project filter
     cy.get('#e2e-report-builder-project-filter-box select').select(
       this.projectId
@@ -83,13 +81,17 @@ describe.skip('Report builder Comments By Time widget', () => {
     // Confirms that the widget displays correctly on live report
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
+
     cy.visit(
       `/admin/reporting/report-builder/${this.reportId}/editor?preview=true`
     );
+
+    cy.wait(1000);
+
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
-    cy.contains('Total : 1').should('be.visible');
+    cy.contains('Total : 1').should('exist');
   });
 
   it('deletes Comments By Time widget correctly', function () {
@@ -99,15 +101,17 @@ describe.skip('Report builder Comments By Time widget', () => {
         position: 'inside',
       }
     );
-    cy.wait(1000);
+
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
 
-    cy.get('#e2e-draggable-comments-by-time-widget').should('exist');
-    cy.get('#e2e-draggable-comments-by-time-widget')
-      .parent()
-      .click({ force: true });
+    cy.get('.e2e-comments-by-time-widget').should('exist');
+    cy.get('.e2e-comments-by-time-widget').parent().click({ force: true });
+
     cy.get('#e2e-delete-button').click();
+
+    cy.get('.e2e-comments-by-time-widget').should('not.exist');
+
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
 
