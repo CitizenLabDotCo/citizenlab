@@ -509,7 +509,7 @@ pt:
     native_survey_not_submitted:
       subject: '%{organizationName}: Quase lá! Envie suas respostas'
       preheader: 'Você não concluiu a resposta da pesquisa na plataforma de participação de %{organizationName}'
-      title_native_survey_not_submitted: 'Você está quase lá! Envie suas respostas'
+      title_native_survey_not_submitted: 'Quase lá! Envie suas respostas'
       body_native_survey_not_submitted: 'Você começou a compartilhar suas respostas em %{phaseTitle} , mas não as enviou. Os envios serão encerrados em %{phaseEndDate}. Clique no botão abaixo para continuar de onde você parou.'
       body_native_survey_not_submitted_no_date: 'Você começou a compartilhar suas respostas em %{phaseTitle} , mas não as enviou. Clique no botão abaixo para continuar de onde você parou.'
       cta_complete_your_survey_response: 'Retome a resposta da pesquisa'
