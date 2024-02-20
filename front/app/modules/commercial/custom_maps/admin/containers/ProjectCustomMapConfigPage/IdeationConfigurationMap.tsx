@@ -73,11 +73,11 @@ const IdeationConfigurationMap = memo<Props>(
             zoom: Number(mapConfig.data.attributes.zoom_level),
             showLayerVisibilityControl: true,
             showLegend: true,
+            onInit: onMapInit,
           }}
           height={'700px'}
           layers={geoJsonLayers}
           onHover={onHover}
-          onInit={onMapInit}
         />
         <LayerHoverLabel
           layer={mapConfig.data.attributes.layers.find(

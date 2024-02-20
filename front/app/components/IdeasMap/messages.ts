@@ -52,8 +52,8 @@ export default defineMessages({
     defaultMessage: 'Submit idea at location',
   },
   userInputs: {
-    id: 'app.components.IdeasMap.userInputs',
-    defaultMessage: 'Inputs from other participants',
+    id: 'app.components.IdeasMap.userInputs2',
+    defaultMessage: 'Inputs from participants',
   },
   submitIdea: {
     id: 'app.components.IdeasMap.submitIdea',
