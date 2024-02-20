@@ -7,7 +7,6 @@ import {
 import clHistory from 'utils/cl-router/history';
 
 // components
-import Outlet from 'components/Outlet';
 import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { PhaseHeader } from './phase/PhaseHeader';
 import ProjectHeader from './projectHeader';
@@ -16,11 +15,10 @@ import ProjectHeader from './projectHeader';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { InsertConfigurationOptions, ITab } from 'typings';
+import { ITab } from 'typings';
 import { IProjectData } from 'api/projects/types';
 
 // utils
-import { insertConfiguration } from 'utils/moduleUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
@@ -66,7 +64,6 @@ export const AdminProjectsProjectIndex = ({
     `admin/projects/${project.id}/phases/new`
   );
   const initialTabs: ITab[] = getIntialTabs(formatMessage);
-  const [tabs, setTabs] = useState<ITab[]>(initialTabs);
 
   const getTabHideConditions = (phase: IPhaseData): TabHideConditions => ({
     ideas: function isIdeaTabHidden() {
@@ -77,6 +74,12 @@ export const AdminProjectsProjectIndex = ({
       return (
         getMethodConfig(phase.attributes.participation_method).formEditor !==
         'simpleFormEditor'
+      );
+    },
+    map: function isMapHidden() {
+      return !(
+        phase.attributes.participation_method === 'ideation' ||
+        phase.attributes.participation_method === 'voting'
       );
     },
     poll: function isPollTabHidden() {
@@ -107,7 +110,7 @@ export const AdminProjectsProjectIndex = ({
     }
     const tabHideConditions = getTabHideConditions(selectedPhase);
     const baseTabsUrl = `/admin/projects/${projectId}`;
-    const cleanedTabs = tabs.filter((tab) => {
+    const cleanedTabs = initialTabs.filter((tab) => {
       if (tabHideConditions[tab.name]) {
         return !tabHideConditions[tab.name](project, phases);
       }
@@ -123,15 +126,6 @@ export const AdminProjectsProjectIndex = ({
     }));
   };
 
-  const handleData = (data: InsertConfigurationOptions<ITab>) => {
-    setTabs((tabs) => insertConfiguration(data)(tabs));
-  };
-
-  const onRemove = (name: string) => {
-    const updatedTabs = tabs.filter((tab) => tab.name !== name);
-    setTabs(updatedTabs);
-  };
-
   return (
     <>
       <ProjectHeader projectId={project.id} />
@@ -143,15 +137,6 @@ export const AdminProjectsProjectIndex = ({
           isBackoffice
         />
       </Box>
-
-      <Outlet
-        id="app.containers.Admin.projects.edit"
-        onData={handleData}
-        onRemove={onRemove}
-        project={project}
-        phases={phases}
-        selectedPhase={selectedPhase}
-      />
       <Box p="8px 24px 24px 24px">
         {!isNewPhaseLink && selectedPhase && (
           <PhaseHeader phase={selectedPhase} tabs={getTabs(project.id)} />
