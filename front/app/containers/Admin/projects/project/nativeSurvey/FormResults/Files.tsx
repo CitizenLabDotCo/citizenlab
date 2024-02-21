@@ -50,7 +50,11 @@ const Files = ({ files }: FilesProps) => {
               start={virtualItem.start}
             >
               <Text m="0px" px="24px">
-                <a href={files[virtualItem.index].url} target="_blank">
+                <a
+                  href={files[virtualItem.index].url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   {files[virtualItem.index].name}
                 </a>
               </Text>

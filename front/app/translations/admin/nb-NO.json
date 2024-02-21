@@ -1507,7 +1507,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Integrer URL-adresse",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Tjeneste",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Du finner mer informasjon om hvordan du integrerer en spørreundersøkelse {surveyServiceTooltipLink}.",
-  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/en/articles/1641202-embedding-your-typeform-survey-in-a-project-phase",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1": "https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "her",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",

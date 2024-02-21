@@ -1507,7 +1507,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL'yi yerleştir",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Hizmet",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Bir anketin nasıl yerleştirileceği hakkında daha fazla bilgiyi {surveyServiceTooltipLink} adresinde bulabilirsiniz.",
-  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/articles/1641202",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1": "https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "buraya",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",

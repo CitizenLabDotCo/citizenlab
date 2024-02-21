@@ -1507,7 +1507,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Bädda in webbadress",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Tjänst",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Du kan hitta mer information om hur du bäddar in en undersökning {surveyServiceTooltipLink}.",
-  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/en/articles/1641202-embedding-your-typeform-survey-in-a-project-phase",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1": "https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "här",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",
