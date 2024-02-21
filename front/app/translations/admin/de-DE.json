@@ -1890,6 +1890,7 @@
   "app.containers.AdminPage.groups.permissions.delete": "Löschen",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Löschen",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Löschen",
+  "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Bitte geben Sie für alle Auswahlmöglichkeiten einen Titel an",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Ja - Nein (Checkbox)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Datum",
   "app.containers.AdminPage.groups.permissions.fieldType_multiline_text": "Lange Antwort",
