@@ -30,11 +30,16 @@ module ParticipationMethod
       [
         CustomField.new(
           id: SecureRandom.uuid,
+          key: 'page1',
           resource: custom_form,
           input_type: 'page'
         ),
         CustomField.new(
           id: SecureRandom.uuid,
+          key: CustomFieldService.new.generate_key(
+            multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title'),
+            false
+          ),
           resource: custom_form,
           input_type: 'select',
           title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title'),
