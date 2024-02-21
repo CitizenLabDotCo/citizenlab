@@ -156,7 +156,7 @@ const ConfigSelectWithLocaleSwitcher = ({
 
   const addOtherOption = useCallback(() => {
     append({
-      title_multiloc: { en: 'Other' },
+      title_multiloc: { [platformLocale]: formatMessage(messages.other) },
       other: true,
     });
   }, [append]);
