@@ -366,9 +366,9 @@ export default defineMessages({
     defaultMessage: 'Survey Service',
   },
   surveyServiceTooltipLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink',
+    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1',
     defaultMessage:
-      'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/faq-s/how-do-i-add-a-survey-to-my-platform',
+      'https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project',
   },
   surveyServiceTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltip',

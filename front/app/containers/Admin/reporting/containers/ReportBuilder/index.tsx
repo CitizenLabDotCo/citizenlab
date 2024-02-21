@@ -67,11 +67,14 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
 
-  const handleEditorChange = useCallback((nodes: SerializedNodes) => {
-    if (Object.keys(nodes).length === 1 && nodes.ROOT) return;
-    setDraftData(nodes);
-    setSaved(false);
-  }, []);
+  const handleEditorChange = useCallback(
+    (nodes: SerializedNodes) => {
+      if (previewEnabled) return;
+      setDraftData(nodes);
+      setSaved(false);
+    },
+    [previewEnabled]
+  );
 
   const handleErrors = (newErrors: ContentBuilderErrors) => {
     setContentBuilderErrors((contentBuilderErrors) => ({

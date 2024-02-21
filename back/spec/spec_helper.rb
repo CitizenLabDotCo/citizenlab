@@ -203,6 +203,13 @@ RSpec.configure do |config|
     ActiveJob::Base.queue_adapter = initial_queue_adapter
   end
 
+  config.around(:each, active_job_que_adapter: true) do |example|
+    initial_queue_adapter = ActiveJob::Base.queue_adapter
+    ActiveJob::Base.queue_adapter = :que
+    example.run
+    ActiveJob::Base.queue_adapter = initial_queue_adapter
+  end
+
   # By default, skip the slow tests and template tests. Can be overriden on the command line.
   config.filter_run_excluding template_test: true
 end
