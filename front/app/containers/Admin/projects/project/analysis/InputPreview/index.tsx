@@ -1,6 +1,11 @@
 import React from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 import useAnalysis from 'api/analyses/useAnalysis';
@@ -43,12 +48,19 @@ const InputListItem = () => {
   const showManageIdeaButton =
     analysis.data.attributes.participation_method === 'ideation' && phaseId;
 
+  const isSurveyAnalysis =
+    analysis.data.attributes.participation_method === 'native_survey';
+
   const mainCustomFieldId =
     analysis.data.relationships?.main_custom_field?.data.id;
+
   const additionalCustomFieldIds =
     analysis.data.relationships?.additional_custom_fields?.data.map(
       (field) => field.id
     );
+
+  const customFieldsInAnalysisIds =
+    [mainCustomFieldId, ...(additionalCustomFieldIds || [])] || [];
 
   const handleAddRemoveAdditionalCustomField = (customFieldId: string) => {
     const newAdditionalCustomFieldIds = additionalCustomFieldIds?.includes(
@@ -88,23 +100,65 @@ const InputListItem = () => {
       )}
 
       {analysis.data.relationships.all_custom_fields.data.map((customField) => (
-        <Box key={customField.id}>
-          {customField.id === mainCustomFieldId && <Box>Main question</Box>}
-          <Button
-            onClick={() => handleAddRemoveAdditionalCustomField(customField.id)}
-            buttonStyle="secondary"
+        <>
+          <Box
+            key={customField.id}
+            bg={
+              customFieldsInAnalysisIds.includes(customField.id)
+                ? colors.background
+                : colors.white
+            }
+            px="8px"
+            py="12px"
           >
-            {additionalCustomFieldIds?.includes(customField.id)
-              ? 'Remove'
-              : 'Add'}
-          </Button>
-          <LongFieldValue
-            customFieldId={customField.id}
-            input={input.data}
-            projectId={analysis.data.relationships.project?.data?.id}
-            phaseId={analysis.data.relationships.phase?.data?.id}
-          />
-        </Box>
+            {isSurveyAnalysis && (
+              <Box mb="8px">
+                {customField.id === mainCustomFieldId ? (
+                  <Box
+                    p="4px 8px"
+                    background={colors.primary}
+                    w="fit-content"
+                    borderRadius="3px"
+                  >
+                    <Text m="0px" color="white" fontSize="xs" fontWeight="bold">
+                      MAIN QUESTION
+                    </Text>
+                  </Box>
+                ) : (
+                  <Box display="flex">
+                    <Button
+                      onClick={() =>
+                        handleAddRemoveAdditionalCustomField(customField.id)
+                      }
+                      buttonStyle="secondary-outlined"
+                      size="s"
+                      p="0px 8px"
+                      fontSize={`${fontSizes.xs}px`}
+                      fontWeight="bold"
+                      icon={
+                        additionalCustomFieldIds?.includes(customField.id)
+                          ? 'close'
+                          : 'plus'
+                      }
+                      iconSize="16px"
+                    >
+                      {additionalCustomFieldIds?.includes(customField.id)
+                        ? 'REMOVE'
+                        : 'ADD TO ANALYSIS'}
+                    </Button>
+                  </Box>
+                )}
+              </Box>
+            )}
+            <LongFieldValue
+              customFieldId={customField.id}
+              input={input.data}
+              projectId={analysis.data.relationships.project?.data?.id}
+              phaseId={analysis.data.relationships.phase?.data?.id}
+            />
+          </Box>
+          <Divider m="0px" />
+        </>
       ))}
 
       <Box id="tags-control" mb="12px">
