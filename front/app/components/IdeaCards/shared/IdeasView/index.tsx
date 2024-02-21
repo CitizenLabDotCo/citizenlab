@@ -3,7 +3,6 @@ import IdeasList from './IdeasList';
 import IdeasMap from 'components/IdeasMap';
 import { IIdeaData } from 'api/ideas/types';
 import { IdeaDefaultSortMethod } from 'api/phases/types';
-import useMapConfig from 'api/map_config/useMapConfig';
 import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
@@ -34,8 +33,6 @@ const IdeasView = ({
   loadingMore,
   onLoadMore,
 }: Props) => {
-  const { data: mapConfig } = useMapConfig(projectId);
-
   return (
     <>
       {view === 'card' && list && (
@@ -55,14 +52,9 @@ const IdeasView = ({
           phaseId={phaseId}
         />
       )}
-      {view === 'map' && projectId && mapConfig && (
+      {view === 'map' && projectId && (
         <Box aria-label={'view-tab-2'} id={'view-panel-2'}>
-          <IdeasMap
-            mapConfig={mapConfig}
-            projectId={projectId}
-            phaseId={phaseId}
-            ideasList={list}
-          />
+          <IdeasMap projectId={projectId} phaseId={phaseId} ideasList={list} />
         </Box>
       )}
     </>

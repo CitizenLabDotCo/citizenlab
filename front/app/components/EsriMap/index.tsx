@@ -29,6 +29,10 @@ import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 
 // Custom Esri styles
 const MapContainer = styled(Box)`
+  .esri-legend--card__message {
+    display: none;
+  }
+
   ${media.phone`
     .esri-legend {
       max-width: 240px !important;
