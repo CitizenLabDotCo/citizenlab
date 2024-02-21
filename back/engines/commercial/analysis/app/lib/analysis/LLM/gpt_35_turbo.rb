@@ -2,7 +2,7 @@
 
 module Analysis
   module LLM
-    class GPT3516k < OpenAIGPT
+    class GPT35Turbo < AzureOpenAI
       def context_window
         16_384
       end
@@ -12,7 +12,7 @@ module Analysis
       end
 
       def gpt_model
-        'gpt-3.5-turbo-16k'
+        'gpt-35-turbo'
       end
     end
   end

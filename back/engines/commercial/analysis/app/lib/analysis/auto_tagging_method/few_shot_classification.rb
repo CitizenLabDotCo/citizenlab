@@ -35,7 +35,7 @@ module Analysis
     private
 
     def llm
-      @llm ||= LLM::GPT48k.new
+      @llm ||= LLM::GPT4Turbo.new
     end
 
     def genereate_prompt(inputs, tags)

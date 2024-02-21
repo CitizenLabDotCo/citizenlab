@@ -66,7 +66,7 @@ RSpec.describe Analysis::SummarizationMethod do
         ]
       end
 
-      mock_llm = instance_double(Analysis::LLM::GPT48k)
+      mock_llm = instance_double(Analysis::LLM::GPT4Turbo)
       plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan
 
       expect(plan).to have_attributes({

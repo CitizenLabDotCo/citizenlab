@@ -225,7 +225,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       idea3 = create(:idea, project: project, title_multiloc: { en: 'We need more houses' })
       create(:tagging, input: idea3, tag: tags[0])
 
-      mock_llm = instance_double(Analysis::LLM::GPT48k)
+      mock_llm = instance_double(Analysis::LLM::GPT4Turbo)
 
       expect_any_instance_of(Analysis::AutoTaggingMethod::FewShotClassification).to receive(:llm).and_return(mock_llm)
       expect(mock_llm).to receive(:chat) do |prompt|
