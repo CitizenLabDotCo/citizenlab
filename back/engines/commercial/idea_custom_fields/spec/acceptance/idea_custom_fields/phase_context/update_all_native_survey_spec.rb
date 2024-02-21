@@ -2798,7 +2798,7 @@ resource 'Idea Custom Fields' do
           #     page,
           #     [error] creating field of wrong input_type to have associated map_config,
           #     [error] creating field associated with non-existent map_config,
-          #     [error] updating field - associated with map_config, when other map_config is already associated with field
+          #     [error] updating field - associating with map_config, when already associated with other map_config
           #   ]
           # }
           request = {
@@ -2841,6 +2841,44 @@ resource 'Idea Custom Fields' do
             '2': { map_config: ['map_config with an ID of map_config_id was not found'] },
             '3': { map_config: { mappable_id: ['has already been taken'] } }
           })
+        end
+
+        # This test documents the choice to force the FE to explicitly remove such an association
+        # by sending a separate request to delete the map_config, using DELETE ...map_configs/:id.
+        example 'Absence of map_config_id does not remove existing association', document: false do
+          custom_field_a = create(:custom_field_point, resource: custom_form)
+          map_config_a = create(:map_config, mappable_id: custom_field_a.id, mappable_type: 'CustomField')
+          custom_field_b = create(:custom_field_point, resource: custom_form)
+          map_config_b = create(:map_config, mappable_id: custom_field_b.id, mappable_type: 'CustomField')
+
+          request = {
+            custom_fields: [
+              { input_type: 'page' },
+              {
+                id: custom_field_a.id,
+                title_multiloc: { 'en' => 'Updated point custom field A' },
+                description_multiloc: { 'en' => 'Updated point custom field A description' },
+                input_type: 'point',
+                required: false,
+                enabled: false
+              },
+              {
+                id: custom_field_b.id,
+                title_multiloc: { 'en' => 'Updated point custom field B' },
+                description_multiloc: { 'en' => 'Updated point custom field B description' },
+                input_type: 'point',
+                required: false,
+                enabled: false,
+                map_config_id: nil
+              }
+            ]
+          }
+
+          do_request request
+          assert_status 200
+
+          expect(custom_field_a.reload.map_config).to eq(map_config_a)
+          expect(custom_field_b.reload.map_config).to eq(map_config_b)
         end
       end
     end
