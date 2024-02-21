@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import {
   Box,
@@ -23,6 +23,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 const InputListItem = () => {
+  const [showAllQuestions, setShowAllQuestions] = useState(false);
   const [searchParams] = useSearchParams();
   const { mutate: updateAnalysis } = useUpdateAnalysis();
 
@@ -91,6 +92,21 @@ const InputListItem = () => {
           </Button>
         </Box>
       )}
+      {isSurveyAnalysis && (
+        <Button
+          onClick={() =>
+            setShowAllQuestions((showAllQuestions) => !showAllQuestions)
+          }
+          buttonStyle="secondary"
+          size="s"
+          icon={showAllQuestions ? 'minus' : 'plus'}
+          mb="20px"
+        >
+          {showAllQuestions
+            ? 'View only selected questions'
+            : 'View all questions'}
+        </Button>
+      )}
       {authorId && author && !isRefetchingAuthor && (
         <Box mt="20px" display="flex" alignItems="center">
           <Avatar size={40} userId={author.data.id} />
@@ -99,67 +115,78 @@ const InputListItem = () => {
         </Box>
       )}
 
-      {analysis.data.relationships.all_custom_fields.data.map((customField) => (
-        <>
-          <Box
-            key={customField.id}
-            bg={
-              customFieldsInAnalysisIds.includes(customField.id)
-                ? colors.background
-                : colors.white
-            }
-            px="8px"
-            py="12px"
-          >
-            {isSurveyAnalysis && (
-              <Box mb="8px">
-                {customField.id === mainCustomFieldId ? (
-                  <Box
-                    p="4px 8px"
-                    background={colors.primary}
-                    w="fit-content"
-                    borderRadius="3px"
-                  >
-                    <Text m="0px" color="white" fontSize="xs" fontWeight="bold">
-                      MAIN QUESTION
-                    </Text>
-                  </Box>
-                ) : (
-                  <Box display="flex">
-                    <Button
-                      onClick={() =>
-                        handleAddRemoveAdditionalCustomField(customField.id)
-                      }
-                      buttonStyle="secondary-outlined"
-                      size="s"
-                      p="0px 8px"
-                      fontSize={`${fontSizes.xs}px`}
-                      fontWeight="bold"
-                      icon={
-                        additionalCustomFieldIds?.includes(customField.id)
-                          ? 'close'
-                          : 'plus'
-                      }
-                      iconSize="16px"
+      {analysis.data.relationships.all_custom_fields.data
+        .filter((customField) =>
+          !isSurveyAnalysis || showAllQuestions
+            ? true
+            : customFieldsInAnalysisIds.includes(customField.id)
+        )
+        .map((customField) => (
+          <>
+            <Box
+              key={customField.id}
+              bg={
+                customFieldsInAnalysisIds.includes(customField.id)
+                  ? colors.background
+                  : colors.white
+              }
+              px="8px"
+              py="16px"
+            >
+              {isSurveyAnalysis && (
+                <Box mb="8px">
+                  {customField.id === mainCustomFieldId ? (
+                    <Box
+                      p="4px 12px"
+                      background={colors.primary}
+                      w="fit-content"
+                      borderRadius="3px"
                     >
-                      {additionalCustomFieldIds?.includes(customField.id)
-                        ? 'REMOVE'
-                        : 'ADD TO ANALYSIS'}
-                    </Button>
-                  </Box>
-                )}
-              </Box>
-            )}
-            <LongFieldValue
-              customFieldId={customField.id}
-              input={input.data}
-              projectId={analysis.data.relationships.project?.data?.id}
-              phaseId={analysis.data.relationships.phase?.data?.id}
-            />
-          </Box>
-          <Divider m="0px" />
-        </>
-      ))}
+                      <Text
+                        m="0px"
+                        color="white"
+                        fontSize="xs"
+                        fontWeight="bold"
+                      >
+                        MAIN QUESTION
+                      </Text>
+                    </Box>
+                  ) : (
+                    <Box display="flex">
+                      <Button
+                        onClick={() =>
+                          handleAddRemoveAdditionalCustomField(customField.id)
+                        }
+                        buttonStyle="secondary-outlined"
+                        size="s"
+                        p="0px 8px"
+                        fontSize={`${fontSizes.xs}px`}
+                        fontWeight="bold"
+                        icon={
+                          additionalCustomFieldIds?.includes(customField.id)
+                            ? 'close'
+                            : 'plus'
+                        }
+                        iconSize="16px"
+                      >
+                        {additionalCustomFieldIds?.includes(customField.id)
+                          ? 'REMOVE'
+                          : 'ADD TO ANALYSIS'}
+                      </Button>
+                    </Box>
+                  )}
+                </Box>
+              )}
+              <LongFieldValue
+                customFieldId={customField.id}
+                input={input.data}
+                projectId={analysis.data.relationships.project?.data?.id}
+                phaseId={analysis.data.relationships.phase?.data?.id}
+              />
+            </Box>
+            <Divider m="0px" />
+          </>
+        ))}
 
       <Box id="tags-control" mb="12px">
         <Divider />
