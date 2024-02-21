@@ -1,16 +1,17 @@
 import { randomString } from '../../../support/commands';
 import moment = require('moment');
 
-let projectId: string;
-const phaseTitle = randomString();
-
 describe('Report builder Posts By Time widget', () => {
-  beforeEach(() => {
+  let projectId: string;
+  let reportId: string;
+
+  before(() => {
     cy.setAdminLoginCookie();
 
     const projectTitle = randomString();
     const projectDescriptionPreview = randomString();
     const projectDescription = randomString();
+    const phaseTitle = randomString();
     const ideaTitle = randomString();
     const ideaContent = randomString();
 
@@ -34,7 +35,6 @@ describe('Report builder Posts By Time widget', () => {
         });
       })
       .then((phase) => {
-        cy.wrap(projectId).as('projectId');
         cy.apiCreateIdea({
           projectId,
           ideaTitle,
@@ -42,10 +42,13 @@ describe('Report builder Posts By Time widget', () => {
           phaseIds: [phase.body.data.id],
         });
       });
+  });
+
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
 
     cy.apiCreateReportBuilder().then((report) => {
-      const reportId = report.body.data.id;
-      cy.wrap(reportId).as('reportId');
+      reportId = report.body.data.id;
       cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
         'saveReportLayout'
       );
@@ -53,13 +56,12 @@ describe('Report builder Posts By Time widget', () => {
     });
   });
 
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
+
   afterEach(() => {
-    cy.get<string>('@reportId').then((reportId) => {
-      cy.apiRemoveReportBuilder(reportId);
-    });
-    cy.get<string>('@projectId').then((projectId) => {
-      cy.apiRemoveProject(projectId);
-    });
+    cy.apiRemoveReportBuilder(reportId);
   });
 
   it('handles Posts By Time widget correctly', function () {
@@ -80,16 +82,12 @@ describe('Report builder Posts By Time widget', () => {
     cy.wait(1000);
 
     // Set project filter
-    cy.get('#e2e-report-builder-project-filter-box select').select(
-      this.projectId
-    );
+    cy.get('#e2e-report-builder-project-filter-box select').select(projectId);
 
     // Confirms that the widget displays correctly on live report
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
-    cy.visit(
-      `/admin/reporting/report-builder/${this.reportId}/editor?preview=true`
-    );
+    cy.visit(`/admin/reporting/report-builder/${reportId}/editor?preview=true`);
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
@@ -115,9 +113,7 @@ describe('Report builder Posts By Time widget', () => {
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
 
-    cy.visit(
-      `/admin/reporting/report-builder/${this.reportId}/editor?preview=true`
-    );
+    cy.visit(`/admin/reporting/report-builder/${reportId}/editor?preview=true`);
     cy.get('#e2e-posts-by-time-widget').should('not.exist');
   });
 });
