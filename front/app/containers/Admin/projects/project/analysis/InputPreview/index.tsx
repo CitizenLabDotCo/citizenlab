@@ -60,6 +60,7 @@ const InputListItem = () => {
       (field) => field.id
     );
 
+  const allCustomFields = analysis.data.relationships.all_custom_fields.data;
   const customFieldsInAnalysisIds =
     [mainCustomFieldId, ...(additionalCustomFieldIds || [])] || [];
 
@@ -103,8 +104,10 @@ const InputListItem = () => {
           mb="20px"
         >
           {showAllQuestions
-            ? 'View only selected questions'
-            : 'View all questions'}
+            ? formatMessage(messages.viewSelectedQuestions)
+            : `${formatMessage(messages.viewAllQuestions)} (${
+                allCustomFields.length
+              })`}
         </Button>
       )}
       {authorId && author && !isRefetchingAuthor && (
@@ -115,7 +118,7 @@ const InputListItem = () => {
         </Box>
       )}
 
-      {analysis.data.relationships.all_custom_fields.data
+      {allCustomFields
         .filter((customField) =>
           !isSurveyAnalysis || showAllQuestions
             ? true
@@ -148,7 +151,7 @@ const InputListItem = () => {
                         fontSize="xs"
                         fontWeight="bold"
                       >
-                        MAIN QUESTION
+                        {formatMessage(messages.mainQuestion).toUpperCase()}
                       </Text>
                     </Box>
                   ) : (
@@ -170,8 +173,8 @@ const InputListItem = () => {
                         iconSize="16px"
                       >
                         {additionalCustomFieldIds?.includes(customField.id)
-                          ? 'REMOVE'
-                          : 'ADD TO ANALYSIS'}
+                          ? formatMessage(messages.remove).toUpperCase()
+                          : formatMessage(messages.addToAnalysis).toUpperCase()}
                       </Button>
                     </Box>
                   )}
