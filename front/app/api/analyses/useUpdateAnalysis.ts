@@ -3,6 +3,7 @@ import { CLErrorsWrapper } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import analysesKeys from './keys';
 import { IAnalysis } from './types';
+import inputsKeys from 'api/analysis_inputs/keys';
 
 type IAnalysisUpdate = {
   id: string;
@@ -27,6 +28,7 @@ const useUpdateAnalysis = () => {
     mutationFn: updateAnalysis,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: analysesKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: inputsKeys.lists() });
     },
   });
 };
