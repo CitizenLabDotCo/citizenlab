@@ -222,7 +222,7 @@ const IdeasMap = memo<Props>(
       if (graphics) {
         return new FeatureLayer({
           source: graphics, // Array of idea graphics
-          title: 'Inputs from participants',
+          title: formatMessage(messages.userInputs),
           id: 'ideasLayer',
           objectIdField: 'ID',
           fields: [
