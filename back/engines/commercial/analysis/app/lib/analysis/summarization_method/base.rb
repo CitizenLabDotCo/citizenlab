@@ -36,8 +36,13 @@ module Analysis
       old_summary = summary.summary
       old_accuracy = summary.accuracy
       old_input_ids = summary.insight.inputs_ids
+      old_custom_field_ids = summary.insight.custom_field_ids
       summary.update!(accuracy: plan.accuracy, summary: '')
-      summary.insight.update!(inputs_ids: filtered_inputs.ids)
+      custom_field_ids = {
+        main_custom_field_id: analysis.main_custom_field_id,
+        additional_custom_field_ids: analysis.additional_custom_field_ids
+      }
+      summary.insight.update!(inputs_ids: filtered_inputs.ids, custom_field_ids: custom_field_ids)
 
       begin
         run(plan)
@@ -46,7 +51,7 @@ module Analysis
         ErrorReporter.report(e)
         task.set_failed!
         summary.update!(accuracy: old_accuracy, summary: old_summary)
-        summary.insight.update!(inputs_ids: old_input_ids)
+        summary.insight.update!(inputs_ids: old_input_ids, custom_field_ids: old_custom_field_ids)
       end
     end
 
