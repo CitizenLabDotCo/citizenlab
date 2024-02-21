@@ -34,6 +34,14 @@ describe('Phase report', () => {
           allow_anonymous_participation: true,
         });
       })
+      .then((phase) => {
+        cy.apiCreateIdea({
+          projectId,
+          ideaTitle: randomString(),
+          ideaContent: randomString(),
+          phaseIds: [phase.body.data.id],
+        });
+      })
       .then(() => {
         return cy.apiCreatePhase({
           projectId,
@@ -124,6 +132,29 @@ describe('Phase report', () => {
 
       cy.wait(1000);
 
+      // Add posts by time widget
+      cy.get('#e2e-draggable-posts-by-time-widget').dragAndDrop(
+        '#e2e-content-builder-frame',
+        {
+          position: 'inside',
+        }
+      );
+
+      cy.wait(1000);
+
+      // Change widget title
+      cy.get('#e2e-analytics-chart-widget-title')
+        .clear()
+        .type('New Widget Title');
+
+      cy.wait(1000);
+
+      // Expect project to already be selected
+      cy.get('#e2e-report-builder-project-filter-box select').should(
+        'have.value',
+        projectId
+      );
+
       // Save report
       cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
         'saveReportLayout'
@@ -131,14 +162,20 @@ describe('Phase report', () => {
       cy.get('#e2e-content-builder-topbar-save').click();
       cy.wait('@saveReportLayout');
 
-      // Go to phase report, ensure it doesn't exist anywhere
+      // Go to phase report, ensure it doesn't exist in future phase
       cy.visit(`/projects/${projectSlug}/3`);
       cy.get('.e2e-phase-description').contains(futureInfoPhaseTitle);
       cy.get('#e2e-phase-report').should('not.exist');
 
+      // Make sure it does exist in current phase
       cy.visit(`/projects/${projectSlug}/2`);
       cy.get('.e2e-phase-description').contains(currentInfoPhaseTitle);
       cy.get('#e2e-phase-report').should('exist').contains('TextEdited text.');
+
+      // Make sure widget is also there
+      cy.get('.recharts-surface:first').trigger('mouseover');
+      cy.contains('New Widget Title').should('exist');
+      cy.contains('Total : 1').should('exist');
 
       // Clean up
       cy.apiRemoveReportBuilder(reportId);
