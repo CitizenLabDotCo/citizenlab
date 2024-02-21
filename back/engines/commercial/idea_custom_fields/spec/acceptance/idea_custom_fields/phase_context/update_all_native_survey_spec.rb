@@ -2752,7 +2752,7 @@ resource 'Idea Custom Fields' do
         let!(:map_config1) { create(:map_config, mappable: nil) }
         let!(:map_config2) { create(:map_config, mappable: nil) }
 
-        example "Associating map_config(s) with 'point' custom field(s)" do
+        example "Relating map_config(s) with 'point' custom field(s)" do
           field_to_update = create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' })
           request = {
             custom_fields: [
@@ -2796,9 +2796,9 @@ resource 'Idea Custom Fields' do
           # request = {
           #   custom_fields: [
           #     page,
-          #     [error] creating field of wrong input_type to have associated map_config,
-          #     [error] creating field associated with non-existent map_config,
-          #     [error] updating field - associating with map_config, when already associated with other map_config
+          #     [error] creating field of wrong input_type to have related map_config,
+          #     [error] creating field related to non-existent map_config,
+          #     [error] updating field - relating with map_config, when already related to other map_config
           #   ]
           # }
           request = {
@@ -2823,7 +2823,7 @@ resource 'Idea Custom Fields' do
               {
                 id: custom_field_point_with_map_config.id,
                 title_multiloc: { 'en' => 'Updating point custom field which is already mappable of other map_config' },
-                description_multiloc: { 'en' => 'Another inserted point custom field description' },
+                description_multiloc: { 'en' => 'Updated point custom field description' },
                 input_type: 'point',
                 required: false,
                 enabled: false,
@@ -2837,15 +2837,15 @@ resource 'Idea Custom Fields' do
 
           json_response = json_parse(response_body)
           expect(json_response[:errors]).to eq({
-            '1': { map_config: { mappable: ['The custom field input_type cannot be associated with a map_config'] } },
+            '1': { map_config: { mappable: ['The custom field input_type cannot be related to a map_config'] } },
             '2': { map_config: ['map_config with an ID of map_config_id was not found'] },
             '3': { map_config: { mappable_id: ['has already been taken'] } }
           })
         end
 
-        # This test documents the choice to force the FE to explicitly remove such an association
+        # This test documents the choice to force the FE to explicitly remove such a relationship
         # by sending a separate request to delete the map_config, using DELETE ...map_configs/:id.
-        example 'Absence of map_config_id does not remove existing association', document: false do
+        example 'Absence of map_config_id does not remove existing relation', document: false do
           custom_field_a = create(:custom_field_point, resource: custom_form)
           map_config_a = create(:map_config, mappable_id: custom_field_a.id, mappable_type: 'CustomField')
           custom_field_b = create(:custom_field_point, resource: custom_form)

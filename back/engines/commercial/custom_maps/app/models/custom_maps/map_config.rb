@@ -36,7 +36,7 @@ module CustomMaps
     def mappable_custom_field_is_input_type_point
       return unless mappable_type == 'CustomField' && mappable.input_type != 'point'
 
-      errors.add(:mappable, message: 'The custom field input_type cannot be associated with a map_config')
+      errors.add(:mappable, message: 'The custom field input_type cannot be related to a map_config')
     end
 
     def center_geojson

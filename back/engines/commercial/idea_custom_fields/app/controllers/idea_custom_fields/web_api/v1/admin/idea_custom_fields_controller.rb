@@ -97,7 +97,7 @@ module IdeaCustomFields
             option_temp_ids_to_ids_mapping_in_field_logic = update_options! field, options_params, errors, index
             option_temp_ids_to_ids_mapping.merge! option_temp_ids_to_ids_mapping_in_field_logic
           end
-          associate_map_config_with_field(field, field_params, errors, index)
+          relate_map_config_to_field(field, field_params, errors, index)
           field.set_list_position(index)
         end
         raise UpdateAllFailedError, errors if errors.present?
@@ -151,12 +151,12 @@ module IdeaCustomFields
       end
     end
 
-    def associate_map_config_with_field(field, field_params, errors, index)
+    def relate_map_config_to_field(field, field_params, errors, index)
       map_config_id = field_params[:map_config_id]
       return unless map_config_id
 
       map_config = CustomMaps::MapConfig.find_by(id: map_config_id)
-      # Add to `errors`` if not found, to avoid a 404 which would prevent the 422 `errors` response
+      # Add to `errors` if not found, to avoid a 404 which would prevent the 422 `errors` response
       add_map_configs_errors(errors, index, ['map_config with an ID of map_config_id was not found']) unless map_config
       return unless map_config
 
