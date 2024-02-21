@@ -201,7 +201,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
           />
           <DraggableElement
-            id="e2e-most-reacted-ideas-widget"
+            id="e2e-draggable-most-reacted-ideas-widget"
             component={
               <MostReactedIdeasWidget
                 title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}

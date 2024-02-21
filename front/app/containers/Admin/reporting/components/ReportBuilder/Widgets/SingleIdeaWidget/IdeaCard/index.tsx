@@ -95,6 +95,7 @@ const IdeaCard = ({
         flexDirection="row"
         justifyContent="flex-start"
         alignItems="center"
+        className="e2e-report-builder-idea-card"
       >
         {rank && (
           <Box
