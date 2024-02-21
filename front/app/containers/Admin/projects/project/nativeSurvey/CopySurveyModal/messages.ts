@@ -8,7 +8,7 @@ export default defineMessages({
   copySurveyDescription: {
     id: 'app.components.formBuilder.copySurveyModal.description',
     defaultMessage:
-      'This will copy all the questions and logic without the answers.',
+      'This will copy all questions and logic without the answers.',
   },
   cancel: {
     id: 'app.components.formBuilder.copySurveyModal.cancel',
