@@ -30,7 +30,7 @@ import Warning from 'components/UI/Warning';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 import { getCurrentPhase } from 'api/phases/utils';
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { getFormValues } from '../../IdeasEditPage/utils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
@@ -232,8 +232,21 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
         typeof newData[key] === 'object' &&
         !Array.isArray(newData[key])
       ) {
-        // Merge objects while maintaining existing attributes and adding missing ones
-        newData[key] = { ...newData[key], ...ideaAttributes[key] };
+        /* Merge objects while maintaining existing attributes and adding missing ones
+         * 1. If the type is file_upload and the content attribute is present in newData and the id is present in ideaAttributes
+         *    then we remove the content to avoid sending a big payload to the backend
+         * 2. Otherwise, we merge newData[key] with ideaAttributes[key]
+         * */
+        if (
+          getElementType(uiSchema, key) === 'file_upload' &&
+          newData[key].content &&
+          ideaAttributes[key].id
+        ) {
+          const { content, ...rest } = newData[key];
+          newData[key] = { ...rest, ...ideaAttributes[key] };
+        } else {
+          newData[key] = { ...newData[key], ...ideaAttributes[key] };
+        }
       }
     }
 
