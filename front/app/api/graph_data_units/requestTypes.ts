@@ -6,6 +6,7 @@ export type ResolvedName =
   | 'SurveyResultsWidget'
   | 'SurveyQuestionResultWidget'
   | 'MostReactedIdeasWidget'
+  | 'SingleIdeaWidget'
   | 'VisitorsWidget'
   | 'VisitorsTrafficSourcesWidget'
   | 'GenderWidget'
@@ -24,6 +25,7 @@ export type ParametersLive =
   | SurveyResultsParams
   | SurveyQuestionResultParams
   | MostReactedIdeasParams
+  | SingleIdeaParams
   | VisitorsParams
   | VisitorsTrafficSourcesParams
   | GenderParams
@@ -69,6 +71,15 @@ export interface MostReactedIdeasProps {
 export interface MostReactedIdeasParams extends BaseParams {
   resolvedName: 'MostReactedIdeasWidget';
   props: MostReactedIdeasProps;
+}
+
+export interface SingleIdeaProps {
+  phaseId?: string | null;
+  ideaId?: string;
+}
+export interface SingleIdeaParams extends BaseParams {
+  resolvedName: 'SingleIdeaWidget';
+  props: SingleIdeaProps;
 }
 
 export interface VisitorsParams extends BaseParams {
