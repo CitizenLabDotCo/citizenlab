@@ -5,6 +5,7 @@ import Button from 'components/UI/Button';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
+import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 
 import Divider from 'components/admin/Divider';
 import Taggings from '../Taggings';
@@ -18,6 +19,7 @@ import messages from './messages';
 
 const InputListItem = () => {
   const [searchParams] = useSearchParams();
+  const { mutate: updateAnalysis } = useUpdateAnalysis();
 
   const phaseId = searchParams.get('phase_id');
   const { formatMessage } = useIntl();
@@ -48,6 +50,20 @@ const InputListItem = () => {
       (field) => field.id
     );
 
+  const handleAddRemoveAdditionalCustomField = (customFieldId: string) => {
+    const newAdditionalCustomFieldIds = additionalCustomFieldIds?.includes(
+      customFieldId
+    )
+      ? additionalCustomFieldIds.filter((id) => id !== customFieldId)
+      : [...(additionalCustomFieldIds || []), customFieldId];
+
+    updateAnalysis({
+      id: analysisId,
+      additional_custom_field_ids: newAdditionalCustomFieldIds,
+      show_insights: true,
+    });
+  };
+
   return (
     <Box data-cy="e2e-analysis-input-preview">
       {showManageIdeaButton && (
@@ -73,19 +89,23 @@ const InputListItem = () => {
       )}
 
       {analysis.data.relationships.all_custom_fields.data.map((customField) => (
-        <>
+        <Box key={customField.id}>
           {customField.id === mainCustomFieldId && <Box>Main question</Box>}
-          {additionalCustomFieldIds?.includes(customField.id) && (
-            <Box>Additional question</Box>
-          )}
+          <Button
+            onClick={() => handleAddRemoveAdditionalCustomField(customField.id)}
+            buttonStyle="secondary"
+          >
+            {additionalCustomFieldIds?.includes(customField.id)
+              ? 'Remove'
+              : 'Add'}
+          </Button>
           <LongFieldValue
-            key={customField.id}
             customFieldId={customField.id}
             input={input.data}
             projectId={analysis.data.relationships.project?.data?.id}
             phaseId={analysis.data.relationships.phase?.data?.id}
           />
-        </>
+        </Box>
       ))}
 
       <Box id="tags-control" mb="12px">

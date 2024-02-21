@@ -6,15 +6,19 @@ import { IAnalysis } from './types';
 
 type IAnalysisUpdate = {
   id: string;
-  show_insights: boolean;
-  additional_custom_fields_ids?: string[];
+  show_insights?: boolean;
+  additional_custom_field_ids?: string[];
 };
 
-const updateAnalysis = ({ id, show_insights }: IAnalysisUpdate) =>
+const updateAnalysis = ({
+  id,
+  show_insights,
+  additional_custom_field_ids,
+}: IAnalysisUpdate) =>
   fetcher<IAnalysis>({
     path: `/analyses/${id}`,
     action: 'patch',
-    body: { show_insights },
+    body: { show_insights, additional_custom_field_ids },
   });
 
 const useUpdateAnalysis = () => {
