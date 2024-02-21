@@ -16,7 +16,7 @@ interface Props {
 const Legend = ({ labels, colors }: Props) => (
   <Box display="flex" flexDirection="row" data-testid="graph-legend">
     {labels.map((label, i) => {
-      const color = colors[i];
+      const color = colors[i % colors.length];
       const lastItem = labels.length - 1 === i;
 
       return (

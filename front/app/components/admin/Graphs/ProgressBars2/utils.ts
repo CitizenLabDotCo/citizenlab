@@ -45,12 +45,6 @@ export const filterZeroes = ({
   percentages: number[];
   colorScheme: string[];
 }) => {
-  if (percentages.length !== colorScheme.length) {
-    throw new Error(
-      'Percentages and colorScheme arrays should have the same length'
-    );
-  }
-
   const nonZeroPercentages: number[] = [];
   const nonZeroColorScheme: string[] = [];
 
@@ -59,7 +53,7 @@ export const filterZeroes = ({
     if (percentage === 0) continue;
 
     nonZeroPercentages.push(percentage);
-    nonZeroColorScheme.push(colorScheme[i]);
+    nonZeroColorScheme.push(colorScheme[i % colorScheme.length]);
   }
 
   return { nonZeroPercentages, nonZeroColorScheme };
