@@ -1,7 +1,7 @@
 import { randomString } from '../../support/commands';
 import moment = require('moment');
 
-describe.skip('Survey template', () => {
+describe('Survey template', () => {
   let projectId: string;
   let projectSlug: string;
   let phaseId: string;
@@ -28,10 +28,17 @@ describe.skip('Survey template', () => {
       })
       .then((phase) => {
         phaseId = phase.body.data.id;
-        // TODO add survey questions
-      });
 
-    // TODO create users and respond to survey
+        return cy.apiCreateSurveyQuestions(phaseId, [
+          'page',
+          'select',
+          'multiselect',
+        ]);
+      })
+      .then(() => {
+        // TODO create users with different genders and shit
+        // TODO make these users fill out the survey
+      });
   });
 
   after(() => {

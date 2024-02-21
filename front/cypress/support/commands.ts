@@ -3,6 +3,8 @@ import './dnd';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 import { IProjectAttributes } from '../../app/api/projects/types';
+import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
+import { Multiloc } from '../../app/typings';
 
 import jwtDecode from 'jwt-decode';
 import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
@@ -75,6 +77,7 @@ declare global {
       apiCreateSmartGroupCustomField: typeof apiCreateSmartGroupCustomField;
       apiRemoveSmartGroup: typeof apiRemoveSmartGroup;
       apiSetPermissionCustomField: typeof apiSetPermissionCustomField;
+      apiCreateSurveyQuestions: typeof apiCreateSurveyQuestions;
     }
   }
 }
@@ -1552,6 +1555,50 @@ function apiRemoveSmartGroup(smartGroupId: string) {
   });
 }
 
+const createBaseCustomField = (input_type: ICustomFieldInputType) => ({
+  description_multiloc: {},
+  enabled: true,
+  id: randomString(),
+  key: randomString(),
+  logic: {},
+  required: false,
+  input_type,
+  options:
+    ['select', 'multiselect'].indexOf(input_type) > -1
+      ? [
+          {
+            temp_id: randomString(),
+            title_multiloc: { en: 'Option 1', 'nl-BE': 'Optie 1' },
+          },
+          {
+            temp_id: randomString(),
+            title_multiloc: { en: 'Option 2', 'nl-BE': 'Optie 2' },
+          },
+        ]
+      : undefined,
+});
+
+function apiCreateSurveyQuestions(
+  phaseId: string,
+  inputTypes: ICustomFieldInputType[]
+) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/admin/phases/${phaseId}/custom_fields/update_all`,
+      body: {
+        custom_fields: inputTypes.map(createBaseCustomField),
+      },
+    });
+  });
+}
+
 // https://stackoverflow.com/a/16012490
 interface Bbox {
   left: number;
@@ -1687,3 +1734,4 @@ Cypress.Commands.add(
   'apiSetPermissionCustomField',
   apiSetPermissionCustomField
 );
+Cypress.Commands.add('apiCreateSurveyQuestions', apiCreateSurveyQuestions);
