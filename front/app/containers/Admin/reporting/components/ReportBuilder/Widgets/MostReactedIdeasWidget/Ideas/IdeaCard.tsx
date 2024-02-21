@@ -70,7 +70,12 @@ const IdeaCard = ({
   const hideTextOverflow = collapseLongText && textOverflow;
 
   return (
-    <PageBreakBox borderTop={BORDER} my="16px" pt="16px">
+    <PageBreakBox
+      borderTop={BORDER}
+      my="16px"
+      pt="16px"
+      className="e2e-report-builder-idea-card"
+    >
       <Box
         display="flex"
         flexDirection="row"
