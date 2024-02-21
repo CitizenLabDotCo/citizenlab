@@ -1,4 +1,4 @@
-import { SurveyResultAttributes, Result } from 'api/survey_results/types';
+import { SurveyResultAttributes } from 'api/survey_results/types';
 import { GenderOption } from 'api/users_by_gender/types';
 import {
   CommentsCountRow,
@@ -25,7 +25,10 @@ import {
   TimeSeriesResponseRow as VisitorsTimeSeriesResponseRow,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/VisitorsWidget/useVisitors/typings';
 import { TrafficSourcesRow } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
+import { ICustomFieldInputType } from 'api/custom_fields/types';
+import { Multiloc } from 'typings';
 
+// Survey results (whole survey, deprecated)
 export type SurveyResultsResponse = {
   data: {
     type: 'report_builder_data_units';
@@ -33,13 +36,54 @@ export type SurveyResultsResponse = {
   };
 };
 
+// Survey question results
+export type Answer = {
+  answer: string | null;
+  count: number;
+};
+
+export type GroupedAnswer = Answer & {
+  groups: { group: string | null; count: number }[];
+};
+
+export type SurveyQuestionMultilocs = {
+  answer: Record<string, Multiloc>;
+};
+
+export type SurveyQuestionMultilocsGrouped = SurveyQuestionMultilocs & {
+  group: Record<string, Multiloc>;
+};
+
+type BaseAttributes = {
+  inputType: ICustomFieldInputType;
+  question: Multiloc;
+  customFieldId: string;
+  required: boolean;
+  totalResponses: number;
+  totalPicks: number;
+};
+
+export type AttributesGrouped = BaseAttributes & {
+  grouped: true;
+  answers: GroupedAnswer[];
+  multilocs: SurveyQuestionMultilocsGrouped;
+  legend: (string | null)[];
+};
+
+export type AttributesUngrouped = BaseAttributes & {
+  grouped: false;
+  answers: Answer[];
+  multilocs: SurveyQuestionMultilocs;
+};
+
+export type SurveyQuestionResultAttributes =
+  | AttributesGrouped
+  | AttributesUngrouped;
+
 export type SurveyQuestionResultResponse = {
   data: {
     type: 'report_builder_data_units';
-    attributes: {
-      result: Result;
-      totalSubmissions: number;
-    };
+    attributes: SurveyQuestionResultAttributes;
   };
 };
 

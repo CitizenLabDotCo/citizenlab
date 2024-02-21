@@ -2,11 +2,7 @@ import React from 'react';
 
 // components
 import { Box, colors, Image } from '@citizenlab/cl2-component-library';
-import CompletionBar from './CompletionBar';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
+import ProgressBars2 from 'components/admin/Graphs/ProgressBars2';
 
 // typings
 import { Answer } from 'api/survey_results/types';
@@ -19,15 +15,14 @@ interface Props {
   totalResponses: number;
 }
 
+const COLOR_SCHEME = [colors.primary];
+
 const MultipleChoice = ({ multipleChoiceAnswers, totalResponses }: Props) => {
-  const { formatMessage } = useIntl();
   const localize = useLocalize();
 
   return (
     <>
       {multipleChoiceAnswers.map(({ answer, responses, image }, index) => {
-        const percentage = Math.round((responses / totalResponses) * 1000) / 10;
-
         return (
           <Box
             key={index}
@@ -46,14 +41,11 @@ const MultipleChoice = ({ multipleChoiceAnswers, totalResponses }: Props) => {
                 />
               </Box>
             )}
-            <CompletionBar
-              bgColor={colors.primary}
-              completed={percentage}
-              leftLabel={answer}
-              rightLabel={formatMessage(messages.choiceCount, {
-                choiceCount: responses,
-                percentage,
-              })}
+            <ProgressBars2
+              values={[responses]}
+              total={totalResponses}
+              colorScheme={COLOR_SCHEME}
+              label={localize(answer)}
             />
           </Box>
         );

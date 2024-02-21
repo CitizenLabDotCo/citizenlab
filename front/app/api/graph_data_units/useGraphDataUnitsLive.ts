@@ -24,6 +24,8 @@ const fetchGraphDataUnitsLive = <Response extends BaseResponseData>({
         group_id: _props.groupId,
         number_of_ideas: _props.numberOfIdeas,
         question_id: _props.questionId,
+        group_mode: _props.groupMode,
+        group_field_id: _props.groupFieldId,
         start_at: _props.startAtMoment?.format('yyyy-MM-DD'),
         end_at: _props.endAtMoment?.format('yyyy-MM-DD'),
       },
