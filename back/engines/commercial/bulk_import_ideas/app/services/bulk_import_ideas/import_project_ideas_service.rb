@@ -296,7 +296,7 @@ module BulkImportIdeas
         locale_email_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
         email = doc.find { |f| f[:name] == locale_email_label }
         email_value = email ? email[:value].gsub(/\s+/, '') : nil # Remove any spaces
-        idea_row[:user_consent] = email_value.match(User::EMAIL_REGEX)
+        idea_row[:user_consent] = email_value ? email_value.match(User::EMAIL_REGEX) : false
       end
 
       if idea_row[:user_consent]
