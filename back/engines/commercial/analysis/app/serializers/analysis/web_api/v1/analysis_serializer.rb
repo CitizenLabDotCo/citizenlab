@@ -13,6 +13,6 @@ class Analysis::WebApi::V1::AnalysisSerializer < WebApi::V1::BaseSerializer
     participation_method = Factory.instance.participation_method_for(analysis.participation_context)
     custom_form = analysis.participation_context.custom_form || participation_method.create_default_form!
 
-    IdeaCustomFieldsService.new(custom_form).all_fields
+    IdeaCustomFieldsService.new(custom_form).all_fields.filter(&:accepts_input?)
   end
 end

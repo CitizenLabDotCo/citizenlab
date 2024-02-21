@@ -59,7 +59,7 @@ class CustomField < ApplicationRecord
     :key,
     presence: true,
     uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/, message: 'only letters, numbers and underscore' },
-    unless: :page_or_section?
+    if: :accepts_input?
   )
   validates :input_type, presence: true, inclusion: INPUT_TYPES
   validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page_or_section?
@@ -147,6 +147,10 @@ class CustomField < ApplicationRecord
 
   def page_or_section?
     page? || section?
+  end
+
+  def accepts_input?
+    !page_or_section?
   end
 
   def custom_form_type?
@@ -272,7 +276,7 @@ class CustomField < ApplicationRecord
 
   def generate_key
     return if key
-    return if page_or_section?
+    return if !accepts_input?
 
     title = title_multiloc.values.first
     return unless title
