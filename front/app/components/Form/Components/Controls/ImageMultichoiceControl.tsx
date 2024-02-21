@@ -123,7 +123,7 @@ const ImageMultichoiceControl = ({
               width={isSmallerThanPhone ? '100%' : 'calc(50% - 8px)'}
               display="flex"
               flexDirection="column"
-              alignItems="flex-start"
+              alignItems="center"
               p="8px"
               border={
                 dataArray.includes(option.value)
@@ -166,9 +166,11 @@ const ImageMultichoiceControl = ({
                   }}
                 />
               </Box>
-              <Text my="12px" mx="4px">
-                {option.label}
-              </Text>
+              <Box display="flex" w="100%" alignSelf="flex-start">
+                <Text my="12px" mx="4px">
+                  {option.label}
+                </Text>
+              </Box>
             </StyledBox>
           ))}
         </Box>

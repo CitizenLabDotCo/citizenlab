@@ -5,6 +5,7 @@ import {
   IconButton,
   Image,
   colors,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 
 const FullscreenImage = ({ src, altText }: Props) => {
   const [fullscreen, setFullscreen] = useState(false);
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   const toggleFullscreen = () => {
     setFullscreen(!fullscreen);
@@ -47,13 +49,24 @@ const FullscreenImage = ({ src, altText }: Props) => {
   }
 
   return (
-    <Box position="relative" display="inline-block">
-      <Box position="relative">
-        <Box maxWidth="100%" maxHeight="100%">
+    <Box
+      position="relative"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Box position="relative" w="100%">
+        <Box
+          maxWidth="100%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
           <Image
             src={src}
             alt={altText}
-            style={{ maxWidth: '100%', maxHeight: '100%' }}
+            maxHeight={isSmallerThanPhone ? 'auto' : '200px'}
+            maxWidth="100%"
           />
         </Box>
         {!fullscreen && (
