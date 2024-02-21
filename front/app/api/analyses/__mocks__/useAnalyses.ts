@@ -17,7 +17,15 @@ export const analysesData: IAnalysisData[] = [
           type: 'project',
         },
       },
-      custom_fields: {
+      all_custom_fields: {
+        data: [
+          {
+            id: '1',
+            type: 'custom_field',
+          },
+        ],
+      },
+      additional_custom_fields: {
         data: [
           {
             id: '1',

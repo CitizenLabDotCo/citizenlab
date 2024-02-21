@@ -37,6 +37,9 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
 
   const { title_multiloc } = input.attributes;
 
+  const mainCustomFieldId =
+    analysis.data.relationships.main_custom_field?.data.id;
+
   return (
     <Box data-cy="e2e-analysis-input-item">
       <Box
@@ -80,26 +83,23 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
 
         {(!title_multiloc || isEmpty(title_multiloc)) && (
           <Box flex="1" w="100%">
-            {analysis.data.relationships.custom_fields.data
-              .slice(0, 3)
-              .map((customField) => (
-                <Text
-                  key={customField.id}
-                  fontSize="s"
-                  color="textSecondary"
-                  m="0px"
-                  textOverflow="ellipsis"
-                  overflow="hidden"
-                  whiteSpace="nowrap"
-                >
-                  <InputShortFieldValue
-                    customFieldId={customField.id}
-                    input={input}
-                    projectId={analysis.data.relationships.project?.data?.id}
-                    phaseId={analysis.data.relationships.phase?.data?.id}
-                  />
-                </Text>
-              ))}
+            {mainCustomFieldId && (
+              <Text
+                fontSize="s"
+                color="textSecondary"
+                m="0px"
+                textOverflow="ellipsis"
+                overflow="hidden"
+                whiteSpace="nowrap"
+              >
+                <InputShortFieldValue
+                  customFieldId={mainCustomFieldId}
+                  input={input}
+                  projectId={analysis.data.relationships.project?.data?.id}
+                  phaseId={analysis.data.relationships.phase?.data?.id}
+                />
+              </Text>
+            )}
           </Box>
         )}
 

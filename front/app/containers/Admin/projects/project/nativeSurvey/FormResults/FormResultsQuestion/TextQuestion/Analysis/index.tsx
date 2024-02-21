@@ -37,10 +37,9 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
 
   const relevantAnalysis =
     analyses?.data &&
-    analyses?.data?.find((analysis) =>
-      analysis.relationships.custom_fields.data.some(
-        (field) => field.id === customFieldId
-      )
+    analyses?.data?.find(
+      (analysis) =>
+        analysis.relationships.main_custom_field?.data.id === customFieldId
     );
 
   // Create an analysis if there are no analyses yet
@@ -49,7 +48,7 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
       addAnalysis({
         projectId: phaseId ? undefined : projectId,
         phaseId,
-        customFieldIds: [customFieldId],
+        mainCustomField: customFieldId,
       });
     }
   }, [

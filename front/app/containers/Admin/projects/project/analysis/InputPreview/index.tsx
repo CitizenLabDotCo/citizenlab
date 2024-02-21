@@ -57,7 +57,7 @@ const InputListItem = () => {
           </Button>
         </Box>
       )}
-      {analysis.data.relationships.custom_fields.data.map((customField) => (
+      {analysis.data.relationships.all_custom_fields.data.map((customField) => (
         <LongFieldValue
           key={customField.id}
           customFieldId={customField.id}
