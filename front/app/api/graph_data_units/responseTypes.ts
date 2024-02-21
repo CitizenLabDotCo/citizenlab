@@ -50,6 +50,16 @@ export type MostReactedIdeasResponse = {
       ideas: IIdeaData[];
       project: IProjectData;
       phase: IPhaseData;
+      idea_images: Record<string, IIdeaImageData[]>;
+    };
+  };
+};
+
+export type SingleIdeaResponse = {
+  data: {
+    type: 'report_builder_data_units';
+    attributes: {
+      idea: IIdeaData;
       idea_images: IIdeaImageData[];
     };
   };

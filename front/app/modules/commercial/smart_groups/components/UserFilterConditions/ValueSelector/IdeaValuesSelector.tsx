@@ -22,6 +22,7 @@ const IdeaValuesSelector = ({ value, onChange }: Props) => {
   };
 
   return (
+    // TODO: use front/app/components/UI/IdeaSelect/index.tsx to show all ideas.
     <MultipleSelect
       value={value}
       options={generateOptions(localize, ideas?.data)}

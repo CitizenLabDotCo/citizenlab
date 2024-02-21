@@ -19,20 +19,20 @@ interface Props {
   label: string;
   projectId: string;
   phaseId?: string;
-  participationMethod: ParticipationMethod;
+  participationMethods: ParticipationMethod[];
   onPhaseFilter: (filter: IOption) => void;
 }
 
 const isCorrectPhase =
-  (participationMethod: ParticipationMethod) => (phase: IPhaseData) => {
-    return phase.attributes.participation_method === participationMethod;
+  (participationMethods: ParticipationMethod[]) => (phase: IPhaseData) => {
+    return participationMethods.includes(phase.attributes.participation_method);
   };
 
 const PhaseFilter = ({
   label,
   projectId,
   phaseId,
-  participationMethod,
+  participationMethods,
   onPhaseFilter,
 }: Props) => {
   const { data: phases } = usePhases(projectId);
@@ -40,9 +40,9 @@ const PhaseFilter = ({
 
   const correctPhases = useMemo(() => {
     return phases
-      ? phases.data.filter(isCorrectPhase(participationMethod))
+      ? phases.data.filter(isCorrectPhase(participationMethods))
       : null;
-  }, [phases, participationMethod]);
+  }, [phases, participationMethods]);
 
   const phaseOptions = useMemo(() => {
     return correctPhases
