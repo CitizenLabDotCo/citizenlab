@@ -18,7 +18,7 @@ const updateAnalysis = ({
   fetcher<IAnalysis>({
     path: `/analyses/${id}`,
     action: 'patch',
-    body: { show_insights, additional_custom_field_ids },
+    body: { analysis: { show_insights, additional_custom_field_ids } },
   });
 
 const useUpdateAnalysis = () => {

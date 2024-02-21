@@ -60,7 +60,6 @@ const InputListItem = () => {
     updateAnalysis({
       id: analysisId,
       additional_custom_field_ids: newAdditionalCustomFieldIds,
-      show_insights: true,
     });
   };
 
