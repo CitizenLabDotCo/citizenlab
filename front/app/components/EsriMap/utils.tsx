@@ -412,7 +412,8 @@ export const createEsriGeoJsonLayers = (
       });
     } else if (geometryType === 'Point') {
       // Get color and icon name
-      const pointColour = layer.geojson?.features[0]?.properties?.fill;
+      const pointColour =
+        layer.geojson?.features[0]?.properties?.fill || colors.grey700;
       const pointSymbol =
         layer.geojson?.features[0]?.properties?.['marker-symbol'];
 
@@ -428,7 +429,7 @@ export const createEsriGeoJsonLayers = (
         // Use the default map pin symbol
         geoJsonLayer.renderer = new SimpleRenderer({
           symbol: getMapPinSymbol({
-            color: pointColour || colors.coolGrey600,
+            color: pointColour,
           }),
         });
       }
