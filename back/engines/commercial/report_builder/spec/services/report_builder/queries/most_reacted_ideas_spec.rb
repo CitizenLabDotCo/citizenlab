@@ -8,12 +8,11 @@ RSpec.describe ReportBuilder::Queries::MostReactedIdeas do
   describe '#run_query' do
     let_it_be(:phase) { create(:phase) }
     let_it_be(:project) { phase.project }
-    # rubocop:disable RSpec/BeforeAfterAll
-    # We use it to work together with let_it_be
-    before(:all) do
-      create_list(:idea, 2, phases: [phase], project_id: project.id)
+    let_it_be(:ideas) do
+      create_list(:idea, 2, phases: [phase], project_id: project.id).tap do |ideas|
+        create(:idea_image, idea: ideas.first)
+      end
     end
-    # rubocop:enable RSpec/BeforeAfterAll
 
     context 'when phase_id is provided' do
       it 'returns serialized data' do
@@ -22,7 +21,12 @@ RSpec.describe ReportBuilder::Queries::MostReactedIdeas do
         expect(result[:ideas].size).to eq(2)
         expect(result[:project][:id]).to eq(project.id)
         expect(result[:phase][:id]).to eq(phase.id)
-        expect(result[:idea_images].size).to eq(0)
+
+        expect(result[:idea_images]).to include({
+          ideas.first.id => [hash_including(attributes: instance_of(Hash))],
+          ideas.second.id => []
+        })
+        expect(result[:idea_images].keys.length).to eq(2)
       end
     end
 
