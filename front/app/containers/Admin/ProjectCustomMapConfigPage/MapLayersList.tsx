@@ -12,6 +12,7 @@ import Tippy from '@tippyjs/react';
 import { SubSectionTitle } from 'components/admin/Section';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import GeoJsonImportButton from './GeoJsonImportButton';
+import EsriImportOptions from './EsriImportOptions';
 
 // hooks
 import useDeleteMapLayer from 'api/map_layers/useDeleteMapLayer';
@@ -22,6 +23,7 @@ import { getLayerColor, getLayerIcon } from '../../../utils/mapUtils/map';
 import addOrderingToLayers, {
   IMapLayerAttributesWithOrdering,
 } from './addOrderingToLayers';
+import { ViewOptions } from '.';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -32,6 +34,7 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import useMapConfig from 'api/map_config/useMapConfig';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div``;
 
@@ -83,6 +86,7 @@ interface Props {
   projectId: string;
   onEditLayer: (layerId: string) => void;
   className?: string;
+  setView: (view: ViewOptions) => void;
 }
 
 const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
@@ -91,11 +95,15 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     onEditLayer,
     className,
     intl: { formatMessage },
+    setView,
     localize,
   }) => {
     const { data: mapConfig } = useMapConfig(projectId);
     const { mutate: deleteProjectMapLayer } = useDeleteMapLayer();
     const { mutate: reorderProjectMapLayer } = useReorderMapLayer();
+    const isEsriIntegrationEnabled = useFeatureFlag({
+      name: 'esri_integration',
+    });
 
     const handleReorderLayers = (mapLayerId: string, newOrder: number) => {
       reorderProjectMapLayer({ projectId, id: mapLayerId, ordering: newOrder });
@@ -132,7 +140,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     return (
       <Container className={className || ''}>
         <SubSectionTitle>
-          <FormattedMessage {...messages.layers} />
+          <FormattedMessage {...messages.mapData} />
           <StyledIconTooltip
             content={
               <FormattedMessage
@@ -222,10 +230,19 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
         )}
 
         {mapConfig?.data?.id && (
-          <GeoJsonImportButton
-            projectId={projectId}
-            mapConfigId={mapConfig.data.id}
-          />
+          <>
+            {isEsriIntegrationEnabled && (
+              <EsriImportOptions
+                projectId={projectId}
+                mapConfigId={mapConfig.data.id}
+                setView={setView}
+              />
+            )}
+            <GeoJsonImportButton
+              projectId={projectId}
+              mapConfigId={mapConfig.data.id}
+            />
+          </>
         )}
       </Container>
     );

@@ -3,6 +3,7 @@ import '@arcgis/core/assets/esri/themes/light/main.css';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
 
 // components
 import Map from '@arcgis/core/Map';
@@ -22,6 +23,7 @@ import { getDefaultBasemap } from './utils';
 import { isNil } from 'utils/helperUtils';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
+import * as intl from '@arcgis/core/intl.js';
 
 // typings
 import { EsriUiElement } from './types';
@@ -78,12 +80,16 @@ const EsriMap = ({
   initialData,
   globalMapSettings,
 }: EsriMapProps) => {
+  const locale = useLocale();
   const isMobileOrSmaller = useBreakpoint('phone');
   const [map, setMap] = useState<Map | null>(null);
   const [mapView, setMapView] = useState<MapView | null>(null);
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   const initialValuesLoaded = useRef(false);
+
+  // Sets the locale of the map
+  intl.setLocale(locale);
 
   // On initial render, create a new map and map view and save them to state variables
   useEffect(() => {

@@ -1,8 +1,8 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 // components
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
 import MapConfigOverview from './MapConfigOverview';
 
@@ -18,14 +18,15 @@ import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
 // styling
 import styled from 'styled-components';
 import IdeationConfigurationMap from '../../../components/IdeationConfigurationMap/IdeationConfigurationMap';
+import FeatureLayerUpload from './FeatureLayerUpload';
 
 const Container = styled.div`
   display: flex;
 `;
 
 const StyledMapConfigOverview = styled(MapConfigOverview)`
-  flex: 0 0 400px;
-  width: 400px;
+  flex: 0 0 520px;
+  width: 520px;
 `;
 
 const MapWrapper = styled.div`
@@ -34,6 +35,8 @@ const MapWrapper = styled.div`
   position: relative;
   height: 700px;
 `;
+
+export type ViewOptions = 'main' | 'featureLayerUpload' | 'webMapUpload';
 
 interface Props {
   className?: string;
@@ -46,6 +49,7 @@ const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
   const { data: appConfig } = useAppConfiguration();
   const { mutate: createProjectMapConfig } = useAddMapConfig();
   const { data: mapConfig, isFetching } = useMapConfig(projectId);
+  const [view, setView] = useState<ViewOptions>('main');
 
   const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig?.data);
   const defaultLat = defaultLatLng[0];
@@ -84,7 +88,20 @@ const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
   if (projectId && mapConfig?.data?.id) {
     return (
       <Container className={className || ''}>
-        <StyledMapConfigOverview projectId={projectId} />
+        {view === 'main' && (
+          <StyledMapConfigOverview projectId={projectId} setView={setView} />
+        )}
+
+        {view === 'featureLayerUpload' && (
+          <Box flex="0 0 520px" width="520px">
+            <FeatureLayerUpload
+              projectId={projectId}
+              setView={setView}
+              mapConfigId={mapConfig?.data.id}
+            />
+          </Box>
+        )}
+
         <MapWrapper>
           <IdeationConfigurationMap
             mapConfig={mapConfig}

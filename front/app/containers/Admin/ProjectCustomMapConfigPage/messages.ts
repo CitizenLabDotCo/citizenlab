@@ -168,4 +168,37 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.saved',
     defaultMessage: `Saved`,
   },
+  mapData: {
+    id: 'app.components.admin.PostManager.mapData',
+    defaultMessage: 'Map data',
+  },
+  importEsriWebMap: {
+    id: 'app.components.admin.PostManager.importEsriWebMap',
+    defaultMessage: 'Import Esri Web Map',
+  },
+  importEsriFeatureLayer: {
+    id: 'app.components.admin.PostManager.importEsriFeatureLayer',
+    defaultMessage: 'Import Esri Feature Layer',
+  },
+  addFeatureLayer: {
+    id: 'app.components.admin.PostManager.addFeatureLayer',
+    defaultMessage: 'Add feature layer',
+  },
+  addFeatureLayerTooltip: {
+    id: 'app.components.admin.PostManager.addFeatureLayerTooltip',
+    defaultMessage: 'Add a new feature layer to the map',
+  },
+  addFeatureLayerInstruction: {
+    id: 'app.components.admin.PostManager.addFeatureLayerInstruction',
+    defaultMessage:
+      'Copy the URL of the feature layer hosted on ArcGIS Online and paste it in the input below:',
+  },
+  cancel2: {
+    id: 'app.components.admin.PostManager.cancel2',
+    defaultMessage: 'Cancel',
+  },
+  import2: {
+    id: 'app.components.admin.PostManager.import2',
+    defaultMessage: 'Import',
+  },
 });

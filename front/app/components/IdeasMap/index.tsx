@@ -188,11 +188,20 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
     );
   }, [windowWidth, containerWidth, tablet]);
 
-  // Create Esri GeoJSON layers from mapConfig layers
-  const geoJsonLayers = useMemo(() => {
-    const layers = mapConfig?.data?.attributes?.layers;
-    if (layers) {
-      return createEsriGeoJsonLayers(layers, localize);
+  // Create Esri layers from mapConfig layers
+  const mapLayers = useMemo(() => {
+    const layers = mapConfig?.data.attributes.layers;
+
+    // All layers are either of type Esri or GeoJSON, so we can check just the first layer
+    if (layers && layers[0].geojson?.features) {
+      return createEsriGeoJsonLayers(
+        mapConfig?.data.attributes.layers,
+        localize
+      );
+    } else if (layers) {
+      return layers.map((layer) => {
+        return new FeatureLayer({ url: layer.layer_url });
+      });
     }
     return [];
   }, [mapConfig, localize]);
@@ -262,8 +271,8 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
   ]);
 
   const layers = useMemo(() => {
-    return ideasLayer ? [...geoJsonLayers, ideasLayer] : geoJsonLayers;
-  }, [ideasLayer, geoJsonLayers]);
+    return ideasLayer ? [...mapLayers, ideasLayer] : mapLayers;
+  }, [ideasLayer, mapLayers]);
 
   const onMapInit = useCallback(
     (mapView: MapView) => {

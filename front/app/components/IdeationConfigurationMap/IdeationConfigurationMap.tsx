@@ -17,6 +17,7 @@ import {
 
 // types
 import { IMapConfig } from 'api/map_config/types';
+import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 
 export interface Props {
   mapConfig: IMapConfig;
@@ -32,11 +33,21 @@ const IdeationConfigurationMap = memo<Props>(
     );
 
     // Create GeoJSON layers to add to Esri map
-    const geoJsonLayers = useMemo(() => {
-      return createEsriGeoJsonLayers(
-        mapConfig.data.attributes.layers,
-        localize
-      );
+    const mapLayers = useMemo(() => {
+      const layers = mapConfig.data.attributes.layers;
+
+      // All layers are either of type Esri or GeoJSON, so we can check just the first layer
+      if (layers && layers[0]?.geojson?.features) {
+        return createEsriGeoJsonLayers(
+          mapConfig.data.attributes.layers,
+          localize
+        );
+      } else if (layers) {
+        return layers.map((layer) => {
+          return new FeatureLayer({ url: layer.layer_url });
+        });
+      }
+      return [];
     }, [mapConfig, localize]);
 
     const onMapInit = useCallback((esriMapView: MapView) => {
@@ -73,7 +84,7 @@ const IdeationConfigurationMap = memo<Props>(
             onInit: onMapInit,
           }}
           height={'700px'}
-          layers={geoJsonLayers}
+          layers={mapLayers}
           onHover={onHover}
         />
         <LayerHoverLabel
