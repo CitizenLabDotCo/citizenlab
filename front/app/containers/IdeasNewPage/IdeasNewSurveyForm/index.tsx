@@ -190,7 +190,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
           newData[key].content &&
           ideaAttributes[key].id
         ) {
-          const { content, ...rest } = newData[key];
+          const { content: _removedContent, ...rest } = newData[key];
           newData[key] = { ...rest, ...ideaAttributes[key] };
         } else {
           newData[key] = { ...newData[key], ...ideaAttributes[key] };
