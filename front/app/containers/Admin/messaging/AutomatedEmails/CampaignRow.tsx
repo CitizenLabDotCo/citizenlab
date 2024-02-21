@@ -7,7 +7,7 @@ import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import { CampaignData } from './types';
 import Button from 'components/UI/Button';
 import CampaignDescription from './CampaignDescription';
-import NewProjectPhaseModal from './NewProjectPhaseModal';
+import NewProjectPhaseModal from './PhaseEmailSettingsModal';
 
 type Props = {
   campaign: CampaignData;

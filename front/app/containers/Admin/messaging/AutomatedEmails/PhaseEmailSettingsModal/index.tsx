@@ -14,7 +14,12 @@ type Props = {
   campaign: CampaignData;
 };
 
-const NewProjectPhaseModal = ({ open, close, onConfirm, campaign }: Props) => {
+const PhaseEmailSettingsModal = ({
+  open,
+  close,
+  onConfirm,
+  campaign,
+}: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const isEnabled = campaign.attributes.enabled;
@@ -74,4 +79,4 @@ const NewProjectPhaseModal = ({ open, close, onConfirm, campaign }: Props) => {
   );
 };
 
-export default NewProjectPhaseModal;
+export default PhaseEmailSettingsModal;
