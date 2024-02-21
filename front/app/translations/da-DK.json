@@ -177,7 +177,7 @@
   "app.components.IdeasMap.a11y_mapTitle": "Kort overblik",
   "app.components.IdeasMap.clickOnMapToAdd": "Klik på kortet for at tilføje dit bidrag",
   "app.components.IdeasMap.clickOnMapToAddAdmin2": "Som administrator kan du klikke på kortet for at tilføje dit input, selv om denne fase ikke er aktiv.",
-  "app.components.IdeasMap.multipleInputsAtLocation": "Flere indgange på dette sted",
+  "app.components.IdeasMap.multipleInputsAtLocation": "Flere input på dette sted",
   "app.components.IdeasMap.noFilteredResults": "De valgte filtre returnerede ingen resultater",
   "app.components.IdeasMap.noResults": "Ingen resultater fundet",
   "app.components.IdeasMap.or": "eller",
