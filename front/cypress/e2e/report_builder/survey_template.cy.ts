@@ -6,19 +6,21 @@ describe('Survey template', () => {
   let projectId: string;
   let projectSlug: string;
   let phaseId: string;
+  let surveyIncluded: any;
   let surveyFields: ICustomFieldResponse[];
 
-  const users = Array(4)
-    .fill(0)
-    .map((_, i) => ({
-      firstName: randomString(),
-      lastName: randomString(),
-      email: randomEmail(),
-      password: randomString(),
-      gender: i % 2 ? 'male' : 'female',
-    }));
+  // const users = Array(4)
+  //   .fill(0)
+  //   .map((_, i) => ({
+  //     firstName: randomString(),
+  //     lastName: randomString(),
+  //     email: randomEmail(),
+  //     password: randomString(),
+  //     gender: i % 2 ? 'male' : 'female',
+  //   }));
 
-  const userIds: string[] = [];
+  // const userIds: string[] = [];
+  let userId: string;
 
   before(() => {
     cy.apiCreateProject({
@@ -46,33 +48,61 @@ describe('Survey template', () => {
         cy.apiCreateSurveyQuestions(phaseId, ['page', 'select', 'multiselect']);
       })
       .then((response) => {
+        surveyIncluded = response.body.included;
         surveyFields = response.body.data;
 
-        users.forEach(({ firstName, lastName, email, password, gender }) => {
-          cy.apiSignup(firstName, lastName, email, password)
-            .then((response) => {
-              userIds.push(response.body.data.id);
+        // users.forEach(({ firstName, lastName, email, password, gender }) => {
+        //   cy.apiSignup(firstName, lastName, email, password)
+        //     .then((response) => {
+        //       userIds.push(response.body.data.id);
 
-              cy.apiUpdateUserCustomFields(email, password, {
-                gender,
-              });
-            })
-            .then(() => {
-              cy.apiCreateSurveyResponse(email, password, projectId, {
-                [surveyFields[1].attributes.key]: 'option_1',
-                [surveyFields[2].attributes.key]: ['option_1', 'option_2'],
-              });
+        //       cy.apiUpdateUserCustomFields(email, password, {
+        //         gender,
+        //       });
+        //     })
+        //     .then(() => {
+        //       cy.apiCreateSurveyResponse(email, password, projectId, {
+        //         [surveyFields[1].attributes.key]: surveyIncluded[0].attributes.key,
+        //         [surveyFields[2].attributes.key]: [
+        //           surveyIncluded[2].attributes.key,
+        //           surveyIncluded[3].attributes.key
+        //         ],
+        //       });
+        //     });
+        // });
+
+        const firstName = randomString();
+        const lastName = randomString();
+        const email = randomEmail();
+        const password = randomString();
+        const gender = 'female';
+
+        cy.apiSignup(firstName, lastName, email, password)
+          .then((response) => {
+            userId = response.body.data.id;
+
+            cy.apiUpdateUserCustomFields(email, password, { gender });
+          })
+          .then(() => {
+            cy.apiCreateSurveyResponse(email, password, projectId, {
+              [surveyFields[1].attributes.key]:
+                surveyIncluded[0].attributes.key,
+              [surveyFields[2].attributes.key]: [
+                surveyIncluded[2].attributes.key,
+                surveyIncluded[3].attributes.key,
+              ],
             });
-        });
+          });
       });
   });
 
   after(() => {
     cy.apiRemoveProject(projectId);
 
-    userIds.forEach((userId) => {
-      cy.apiRemoveUser(userId);
-    });
+    // userIds.forEach((userId) => {
+    //   cy.apiRemoveUser(userId);
+    // });
+    cy.apiRemoveUser(userId);
   });
 
   it('should create a survey template', () => {
@@ -86,20 +116,35 @@ describe('Survey template', () => {
     cy.get('#project-template-radio').click({ force: true });
     cy.get('#projectFilter').select(projectId);
 
-    cy.get('button[data-testid="create-report-button"]').click();
+    cy.get('div[data-testid="create-report-button"] > button').click();
 
     // Ensure we are in the editor
     cy.url().should('include', '/en/admin/reporting/report-builder/');
     cy.url().should('include', `editor?templateProjectId=${projectId}`);
-    cy.get('.e2e-content-builder-frame').should('exist');
+    cy.get('#e2e-content-builder-frame').should('exist');
 
-    // Ensure correct amount of questions (TODO)
+    // Ensure correct amount of questions
+    cy.get('.e2e-survey-question-widget-title').should('have.length', 2);
+    cy.get('.e2e-survey-question-widget-title')
+      .first()
+      .contains('Question: select');
+    cy.get('.e2e-survey-question-widget-title')
+      .eq(1)
+      .contains('Question: multiselect');
+
+    // Ensure correct values
+    cy.get('.e2e-survey-question-ungrouped-bars')
+      .first()
+      .contains('100% (1 choice)');
+    cy.get('.e2e-survey-question-ungrouped-bars')
+      .eq(1)
+      .contains('50% (1 choice)');
 
     // Remove report
     cy.visit('/admin/reporting/report-builder');
     cy.get('#e2e-delete-report-button').click();
 
     // Ensure we're back to the empty state
-    cy.get('#e2e-create-report-button').click();
+    cy.get('#e2e-create-report-button').should('exist');
   });
 });
