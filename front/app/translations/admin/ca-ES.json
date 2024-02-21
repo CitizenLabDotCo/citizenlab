@@ -1507,7 +1507,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Inserir l'URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Servei",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Podeu trobar més informació sobre com inserir una enquesta {surveyServiceTooltipLink}.",
-  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/articles/1641202",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1": "https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "here",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Mico d'enquesta",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",
