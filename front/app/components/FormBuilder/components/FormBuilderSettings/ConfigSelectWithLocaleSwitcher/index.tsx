@@ -159,7 +159,7 @@ const ConfigSelectWithLocaleSwitcher = ({
       title_multiloc: { [platformLocale]: formatMessage(messages.other) },
       other: true,
     });
-  }, [append]);
+  }, [append, platformLocale, formatMessage]);
 
   const updateChoice = useCallback(
     (choice: IOptionsType, index: number) => {
