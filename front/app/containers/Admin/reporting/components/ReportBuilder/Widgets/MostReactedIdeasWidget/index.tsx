@@ -57,6 +57,7 @@ const MostReactedIdeasWidget = ({
     <Card title={title}>
       <ProjectInfo project={project} phase={phase} />
       <Ideas
+        phase={phase}
         ideas={ideas}
         images={ideaImages}
         collapseLongText={collapseLongText}
