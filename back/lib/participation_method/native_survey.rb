@@ -26,6 +26,8 @@ module ParticipationMethod
     end
 
     def default_fields(custom_form)
+      return [] if custom_form.persisted?
+
       multiloc_service = MultilocService.new
       [
         CustomField.new(

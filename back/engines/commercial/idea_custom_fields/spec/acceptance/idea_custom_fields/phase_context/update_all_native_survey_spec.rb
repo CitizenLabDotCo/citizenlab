@@ -428,6 +428,7 @@ resource 'Idea Custom Fields' do
         })
       end
 
+      # TODO: JS - why would it return nothing if there are responses?
       example 'Updating custom fields in a native survey phase when there are responses' do
         IdeaStatus.create_defaults
         create(:idea, project: context.project, creation_phase: context, phases: [context])
