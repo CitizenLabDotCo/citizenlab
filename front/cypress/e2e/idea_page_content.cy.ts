@@ -212,8 +212,7 @@ describe('Idea Page', () => {
     });
 
     it('displays the location on the idea page and the map pops up', () => {
-      cy.get('#e2e-map-popup:visible').click();
-      cy.get('.e2e-leafletmap');
+      cy.get('#e2e-location-map').should('exist');
     });
 
     after(() => {

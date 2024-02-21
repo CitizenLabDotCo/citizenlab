@@ -28,6 +28,7 @@ const StartIdeaButton = ({
   // A portal is needed here as we're inserting our React component into the Esri Map popup as its content
   return createPortal(
     <IdeaButton
+      id="e2e-idea-from-map-button"
       latLng={latlng}
       projectId={projectId}
       phase={phase}

@@ -473,6 +473,7 @@ const IdeasMap = memo<Props>(
             isPostingEnabled={true}
           >
             <EsriMap
+              id="e2e-ideas-map"
               initialData={{
                 center: mapConfig.data.attributes.center_geojson,
                 zoom: Number(mapConfig.data.attributes.zoom_level),
