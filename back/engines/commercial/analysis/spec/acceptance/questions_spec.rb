@@ -25,6 +25,7 @@ resource 'Questions' do
           question: kind_of(String),
           answer: nil,
           filters: {},
+          custom_field_ids: {},
           accuracy: nil,
           created_at: kind_of(String),
           updated_at: kind_of(String),
