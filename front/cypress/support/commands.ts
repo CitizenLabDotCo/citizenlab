@@ -78,6 +78,8 @@ declare global {
       apiRemoveSmartGroup: typeof apiRemoveSmartGroup;
       apiSetPermissionCustomField: typeof apiSetPermissionCustomField;
       apiCreateSurveyQuestions: typeof apiCreateSurveyQuestions;
+      apiUpdateUserCustomFields: typeof apiUpdateUserCustomFields;
+      apiCreateSurveyResponse: typeof apiCreateSurveyResponse;
     }
   }
 }
@@ -321,6 +323,31 @@ function apiUpdateCurrentUser(attrs: IUserUpdate) {
       url: `web_api/v1/users/${userId}`,
       body: {
         user: attrs,
+      },
+    });
+  });
+}
+
+function apiUpdateUserCustomFields(
+  email: string,
+  password: string,
+  custom_field_values: Record<string, any>
+) {
+  return cy.apiLogin(email, password).then((response) => {
+    const jwt = response.body.jwt;
+    const userId = jwtDecode<{ sub: string }>(jwt).sub;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/users/${userId}`,
+      body: {
+        user: {
+          custom_field_values,
+        },
       },
     });
   });
@@ -1555,11 +1582,16 @@ function apiRemoveSmartGroup(smartGroupId: string) {
   });
 }
 
-const createBaseCustomField = (input_type: ICustomFieldInputType) => ({
+const createBaseCustomField = (
+  input_type: ICustomFieldInputType,
+  i: number
+) => ({
+  title_multiloc:
+    input_type === 'page' ? {} : { en: `Question: ${input_type}` },
   description_multiloc: {},
   enabled: true,
   id: randomString(),
-  key: randomString(),
+  key: input_type === 'page' ? 'page_1' : randomString(),
   logic: {},
   required: false,
   input_type,
@@ -1567,12 +1599,12 @@ const createBaseCustomField = (input_type: ICustomFieldInputType) => ({
     ['select', 'multiselect'].indexOf(input_type) > -1
       ? [
           {
-            temp_id: randomString(),
-            title_multiloc: { en: 'Option 1', 'nl-BE': 'Optie 1' },
+            temp_id: `TEMP-ID-${randomString()}`,
+            title_multiloc: { en: `${input_type}: Option 1` },
           },
           {
-            temp_id: randomString(),
-            title_multiloc: { en: 'Option 2', 'nl-BE': 'Optie 2' },
+            temp_id: `TEMP-ID-${randomString()}`,
+            title_multiloc: { en: `${input_type}: Option 2` },
           },
         ]
       : undefined,
@@ -1594,6 +1626,33 @@ function apiCreateSurveyQuestions(
       url: `web_api/v1/admin/phases/${phaseId}/custom_fields/update_all`,
       body: {
         custom_fields: inputTypes.map(createBaseCustomField),
+      },
+    });
+  });
+}
+
+function apiCreateSurveyResponse(
+  email: string,
+  password: string,
+  project_id: string,
+  fields: Record<string, any>
+) {
+  return cy.apiLogin(email, password).then((response) => {
+    const jwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/ideas',
+      body: {
+        idea: {
+          publication_status: 'published',
+          project_id,
+          ...fields,
+        },
       },
     });
   });
@@ -1735,3 +1794,5 @@ Cypress.Commands.add(
   apiSetPermissionCustomField
 );
 Cypress.Commands.add('apiCreateSurveyQuestions', apiCreateSurveyQuestions);
+Cypress.Commands.add('apiUpdateUserCustomFields', apiUpdateUserCustomFields);
+Cypress.Commands.add('apiCreateSurveyResponse', apiCreateSurveyResponse);
