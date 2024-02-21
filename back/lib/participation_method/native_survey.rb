@@ -37,7 +37,7 @@ module ParticipationMethod
         CustomField.new(
           id: SecureRandom.uuid,
           key: CustomFieldService.new.generate_key(
-            multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title'),
+            multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title').values.first,
             false
           ),
           resource: custom_form,
