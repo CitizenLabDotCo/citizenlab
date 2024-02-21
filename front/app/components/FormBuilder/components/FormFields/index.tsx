@@ -90,9 +90,8 @@ const FormFields = ({
       >
         <Drop id="droppable" type={pageDNDType}>
           {nestedGroupData.map((grouping, pageIndex) => {
-            const groupingId = grouping.id || grouping.groupElement.temp_id; // TODO: JS - is this the right way to do this?
             return (
-              <Drag key={groupingId} id={groupingId} index={pageIndex}>
+              <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
                 <FormField
                   field={grouping.groupElement}
                   selectedFieldId={selectedFieldId}
@@ -101,7 +100,7 @@ const FormFields = ({
                   fieldNumbers={fieldNumbers}
                   closeSettings={closeSettings}
                 />
-                <Drop key={groupingId} id={groupingId} type={questionDNDType}>
+                <Drop key={grouping.id} id={grouping.id} type={questionDNDType}>
                   <Box height="100%">
                     {grouping.questions.length === 0 ? (
                       <Box height="0.5px" />

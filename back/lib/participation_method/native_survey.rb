@@ -25,7 +25,6 @@ module ParticipationMethod
       'page'
     end
 
-    # TODO: JS - Saving this does not work from the frontend - ids in the options maybe?
     def default_fields(custom_form)
       multiloc_service = MultilocService.new
       [
