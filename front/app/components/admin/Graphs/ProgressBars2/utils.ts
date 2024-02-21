@@ -23,8 +23,6 @@ export const getRoundedPercentages = (values: number[], total: number) => {
   return roundedPercentages.slice(0, values.length);
 };
 
-export const noZeroes = (number: number) => number !== 0;
-
 export const getBorderRadius = (type: BarType) => {
   switch (type) {
     case 'first':
