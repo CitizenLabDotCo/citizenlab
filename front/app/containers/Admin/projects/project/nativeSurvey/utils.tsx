@@ -11,7 +11,10 @@ import { IPhaseData, UpdatePhaseObject } from 'api/phases/types';
 import { API_PATH } from 'containers/App/constants';
 
 // components
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import {
+  FormBuilderConfig,
+  generateTempId,
+} from 'components/FormBuilder/utils';
 import { Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 
@@ -82,4 +85,68 @@ export const getFormActionsConfig = (
       });
     },
   };
+};
+
+// TODO: JS - Get the correct types in here
+// TODO: JS - Write tests for these functions
+
+// If copying another form, reset IDs for fields and add temp-ids to options
+export const resetCopiedForm = (customFields: any) => {
+  // Set the field IDs
+  let tempIdMap = { survey_end: 'survey_end' };
+  const newFields = customFields?.map((field: any) => {
+    const { id, ...newField } = field;
+    newField.id = `${Math.floor(Date.now() * Math.random())}`;
+    if (newField.input_type === 'page') {
+      newField.temp_id = generateTempId();
+      tempIdMap[id] = newField.temp_id;
+    }
+    if (newField.options?.length > 0) {
+      newField.options = newField.options.map((option: any) => {
+        const { id, ...newOption } = option;
+        newOption.temp_id = generateTempId();
+        tempIdMap[id] = newOption.temp_id;
+        return newOption;
+      });
+    }
+    return newField;
+  });
+
+  // Update the logic
+  return newFields?.map((field: any) => {
+    const { ...newField } = field;
+    if (newField.logic?.rules) {
+      const newRules = newField.logic.rules.map((rule: any) => {
+        return {
+          if: tempIdMap[rule.if],
+          goto_page_id: tempIdMap[rule.goto_page_id],
+        };
+      });
+      newField.logic = { rules: newRules };
+    } else if (newField.logic) {
+      newField.logic = {
+        next_page_id: tempIdMap[newField.logic.next_page_id],
+      };
+    }
+    return newField;
+  });
+};
+
+// If the form is not yet persisted, set temp_ids for the options
+export const resetOptionsIfNotPersisted = (
+  customFields: any,
+  formPersisted: boolean
+) => {
+  return formPersisted
+    ? customFields
+    : customFields?.map((field) => {
+        if (field.options?.length > 0) {
+          field.options = field.options.map((option) => {
+            const { id, ...newOption } = option;
+            newOption.temp_id = generateTempId();
+            return newOption;
+          });
+        }
+        return field;
+      });
 };
