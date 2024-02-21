@@ -97,7 +97,7 @@ module IdeaCustomFields
             option_temp_ids_to_ids_mapping_in_field_logic = update_options! field, options_params, errors, index
             option_temp_ids_to_ids_mapping.merge! option_temp_ids_to_ids_mapping_in_field_logic
           end
-          create_or_update_map_config(field, field_params, errors, index)
+          associate_map_config_with_field(field, field_params, errors, index)
           field.set_list_position(index)
         end
         raise UpdateAllFailedError, errors if errors.present?
@@ -151,40 +151,18 @@ module IdeaCustomFields
       end
     end
 
-    def create_or_update_map_config(field, field_params, errors, index)
+    def associate_map_config_with_field(field, field_params, errors, index)
       map_config_id = field_params[:map_config_id]
       return unless map_config_id
 
-      return if field&.map_config&.id == map_config_id # already associated with the given `custom_field`
-
       map_config = CustomMaps::MapConfig.find_by(id: map_config_id)
+      # Add to `errors`` if not found, to avoid a 404 which would prevent the 422 `errors` response
+      add_map_configs_errors(errors, index, ['map_config with an ID of map_config_id was not found']) unless map_config
+      return unless map_config
+
       unless map_config.update(mappable_id: field.id, mappable_type: 'CustomField')
         add_map_configs_errors(errors, index, map_config.errors)
       end
-
-      # DONE. Is this a `custom_field` with `input_type` of `'point'`
-      #     TRUE => continue
-      #     FALSE => break (no-op)
-      # DONE. Is there a `map_config_id` in its `update_all` params?
-      #     TRUE => continue
-      #     FALSE => break (no-op)
-      # 3. Does `map_config` exist?
-      #     TRUE => continue
-      #     FALSE => error ‘map_config with map_config_id does not exist’
-      # DONE. Is `map_config` already associated with the given `custom_field`?
-      #     TRUE => break (no-op)
-      #     FALSE => continue
-      # 5. Is `map_config` already associated with something else?
-      #     TRUE => error ‘map_config with map_config_id is associated with other resource’ (model validation - also db unique index)
-      #     FALSE => create & save association between `map_config` & `custom_field`
-
-      # map_config_params = map_config_params.merge(mappable_id: field.id, mappable_type: 'CustomField')
-
-      # if field.map_config
-      #   update_map_config(field, map_config_params, errors, index)
-      # else
-      #   create_map_config(map_config_params, errors, index)
-      # end
     end
 
     def add_map_configs_errors(errors, index, map_config_errors)
@@ -192,25 +170,6 @@ module IdeaCustomFields
       errors[index.to_s][:map_config] ||= {}
       errors[index.to_s][:map_config] = map_config_errors
     end
-
-    # def create_map_config(map_config_params, errors, index)
-    #   map_config = CustomMaps::MapConfig.new(map_config_params)
-    #   unless map_config.save
-    #     wrong_input_type_for_map_config_error(errors, index, map_config.errors)
-    #   end
-    # end
-
-    # def update_map_config(field, map_config_params, errors, index)
-    #   unless field.map_config.update(map_config_params)
-    #     wrong_input_type_for_map_config_error(errors, index, map_config.errors)
-    #   end
-    # end
-
-    # def wrong_input_type_for_map_config_error(errors, index, map_config_errors)
-    #   errors[index.to_s] ||= {}
-    #   errors[index.to_s][:map_config] ||= {}
-    #   errors[index.to_s][:map_config] = map_config_errors
-    # end
 
     def delete_field!(field)
       SideFxCustomFieldService.new.before_destroy field, current_user

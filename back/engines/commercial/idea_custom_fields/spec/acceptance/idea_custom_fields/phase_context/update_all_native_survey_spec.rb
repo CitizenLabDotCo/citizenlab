@@ -2789,62 +2789,59 @@ resource 'Idea Custom Fields' do
           expect(new_custom_field.input_type).to eq('point')
         end
 
-        example "[error] Associate map_config with custom field that is not input_type: 'point'", document: false do
+        example '[errors] Responds with multiple numbered errors when such errors present', document: false do
+          custom_field_point_with_map_config = create(:custom_field_point, resource: custom_form)
+          create(:map_config, mappable_id: custom_field_point_with_map_config.id, mappable_type: 'CustomField')
+
+          # request = {
+          #   custom_fields: [
+          #     page,
+          #     [error] creating field of wrong input_type to have associated map_config,
+          #     [error] creating field associated with non-existent map_config,
+          #     [error] updating field - associated with map_config, when other map_config is already associated with field
+          #   ]
+          # }
           request = {
             custom_fields: [
               { input_type: 'page' },
               {
-                title_multiloc: { 'en' => 'Inserted point custom field' },
-                description_multiloc: { 'en' => 'Inserted point custom field description' },
+                title_multiloc: { 'en' => 'Inserted text custom field' },
+                description_multiloc: { 'en' => 'Inserted text custom field description' },
                 input_type: 'text',
                 required: false,
                 enabled: false,
                 map_config_id: map_config1.id
+              },
+              {
+                title_multiloc: { 'en' => 'Inserted point custom field' },
+                description_multiloc: { 'en' => 'Inserted point custom field description' },
+                input_type: 'point',
+                required: false,
+                enabled: false,
+                map_config_id: SecureRandom.uuid
+              },
+              {
+                id: custom_field_point_with_map_config.id,
+                title_multiloc: { 'en' => 'Updating point custom field which is already mappable of other map_config' },
+                description_multiloc: { 'en' => 'Another inserted point custom field description' },
+                input_type: 'point',
+                required: false,
+                enabled: false,
+                map_config_id: map_config2.id
               }
             ]
           }
+
           do_request request
           assert_status 422
 
           json_response = json_parse(response_body)
           expect(json_response[:errors]).to eq({
-            '1': { map_config: { mappable: ['The custom field input_type cannot be associated with a map_config'] } }
+            '1': { map_config: { mappable: ['The custom field input_type cannot be associated with a map_config'] } },
+            '2': { map_config: ['map_config with an ID of map_config_id was not found'] },
+            '3': { map_config: { mappable_id: ['has already been taken'] } }
           })
         end
-
-        # example "[error] Add map_config when updating field that is not input_type: 'point'", document: false do
-        #   field_to_update = create(:custom_field_text, resource: custom_form, title_multiloc: { 'en' => 'Text field' })
-        #   request = {
-        #     custom_fields: [
-        #       { input_type: 'page' },
-        #       {
-        #         id: field_to_update.id,
-        #         title_multiloc: { 'en' => 'Updated text field' },
-        #         description_multiloc: { 'en' => 'Updated text field description' },
-        #         required: true,
-        #         enabled: true,
-        #         map_config_params: {
-        #           center_geojson: {
-        #             type: 'Point',
-        #             coordinates: [
-        #               42.4242,
-        #               24.2424
-        #             ]
-        #           },
-        #           zoom_level: '11',
-        #           tile_provider: 'https://somespecificprovider.com'
-        #         }
-        #       }
-        #     ]
-        #   }
-        #   do_request request
-        #   assert_status 422
-
-        #   json_response = json_parse(response_body)
-        #   expect(json_response[:errors]).to eq({
-        #     '1': { map_config: { mappable: ['The custom field input_type cannot be associated with a map_config'] } }
-        #   })
-        # end
       end
     end
   end
