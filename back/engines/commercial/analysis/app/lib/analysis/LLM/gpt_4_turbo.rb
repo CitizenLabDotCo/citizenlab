@@ -2,7 +2,7 @@
 
 module Analysis
   module LLM
-    class GPT4Turbo < OpenAIGPT
+    class GPT4Turbo < AzureOpenAI
       def context_window
         128_000
       end
@@ -12,7 +12,7 @@ module Analysis
       end
 
       def accuracy
-        0.7
+        0.8
       end
 
       def gpt_model
