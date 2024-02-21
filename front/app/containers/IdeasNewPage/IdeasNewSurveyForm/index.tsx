@@ -11,7 +11,6 @@ import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useDraftIdeaByPhaseId, {
   clearDraftIdea,
 } from 'api/ideas/useDraftIdeaByPhaseId';
-import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 
 // i18n
 import messages from '../messages';
@@ -82,9 +81,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   const { data: draftIdea, status: draftIdeaStatus } =
     useDraftIdeaByPhaseId(phaseId);
-  const { data: remoteFiles, status: remoteFilesStatus } = useIdeaFiles(
-    draftIdea?.data.id
-  );
   const [loadingDraftIdea, setLoadingDraftIdea] = useState(true);
   const [ideaId, setIdeaId] = useState<string | undefined>();
 
@@ -128,34 +124,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   // Try and load in a draft idea if one exists
   useEffect(() => {
-    const uuidRegex =
-      /^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$/i;
-
-    const fieldsContainFiles = (formValues) => {
-      for (const key in formValues) {
-        if (uuidRegex.test(formValues[key])) {
-          return true;
-        }
-      }
-      return false;
-    };
-
-    const combineFileValues = (formValues, files) => {
-      for (const key in formValues) {
-        if (uuidRegex.test(formValues[key])) {
-          files.forEach((file) => {
-            if (file.id === formValues[key]) {
-              formValues[key] = {
-                id: file.id,
-                name: file.attributes.name,
-              };
-            }
-          });
-        }
-      }
-      return formValues;
-    };
-
     if (
       draftIdeaStatus === 'success' &&
       !isNilOrError(draftIdea) &&
@@ -163,33 +131,13 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
       schema
     ) {
       const formValues = getFormValues(draftIdea, schema);
-
-      if (fieldsContainFiles(formValues)) {
-        if (remoteFilesStatus !== 'loading') {
-          const combinedFileValues = combineFileValues(
-            formValues,
-            remoteFiles?.data
-          );
-          setInitialFormData(combinedFileValues);
-          setIdeaId(draftIdea.data.id);
-          setLoadingDraftIdea(false);
-        }
-      } else {
-        setInitialFormData(formValues);
-        setIdeaId(draftIdea.data.id);
-        setLoadingDraftIdea(false);
-      }
+      setInitialFormData(formValues);
+      setIdeaId(draftIdea.data.id);
+      setLoadingDraftIdea(false);
     } else if (draftIdeaStatus === 'error') {
       setLoadingDraftIdea(false);
     }
-  }, [
-    draftIdeaStatus,
-    draftIdea,
-    remoteFilesStatus,
-    remoteFiles,
-    schema,
-    ideaId,
-  ]);
+  }, [draftIdeaStatus, draftIdea, schema, ideaId]);
 
   if (!participationMethodConfig || !phaseId) {
     return null;
