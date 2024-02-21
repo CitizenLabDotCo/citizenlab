@@ -16,6 +16,7 @@ module EmailCampaigns
       # attribute_before_last_save:
       # https://apidock.com/rails/v6.0.0/ActiveRecord/AttributeMethods/Dirty/attribute_before_last_save
       if campaign.enabled_before_last_save &&
+         !campaign.enabled &&
          campaign.instance_of?(EmailCampaigns::Campaigns::ProjectPhaseStarted)
         toggle_project_phase_started(campaign)
       end
