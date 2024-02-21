@@ -166,10 +166,10 @@ resource 'Campaigns' do
         let(:id) { campaign.id }
         let(:enabled) { true }
 
-        example_request 'Update campaign enabled to false' do
+        example_request 'Update campaign enabled to true' do
           assert_status 200
           expect(phase_with_campaign_enabled.reload.campaigns_settings['project_phase_started']).to be true
-          expect(phase_with_campaign_disabled.reload.campaigns_settings['project_phase_started']).to be true
+          expect(phase_with_campaign_disabled.reload.campaigns_settings['project_phase_started']).to be false
         end
       end
     end

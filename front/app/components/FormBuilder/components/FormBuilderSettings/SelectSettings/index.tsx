@@ -12,9 +12,7 @@ type Props = {
   randomizeName: string;
 };
 
-const SelectSettings = ({
-  randomizeName,
-}: Props) => {
+const SelectSettings = ({ randomizeName }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
