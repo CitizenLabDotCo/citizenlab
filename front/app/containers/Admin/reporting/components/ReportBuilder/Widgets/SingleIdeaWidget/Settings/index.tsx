@@ -109,6 +109,7 @@ const Settings = () => {
       setProp((props: Props) => {
         props.projectId = value;
         props.phaseId = undefined;
+        props.ideaId = undefined;
       });
     },
     [setProp]
@@ -118,6 +119,7 @@ const Settings = () => {
     ({ value }: IOption) => {
       setProp((props: Props) => {
         props.phaseId = value;
+        props.ideaId = undefined;
 
         const phase = phases?.data.find((phase) => phase.id === value);
         const phaseAttrs = phase?.attributes;

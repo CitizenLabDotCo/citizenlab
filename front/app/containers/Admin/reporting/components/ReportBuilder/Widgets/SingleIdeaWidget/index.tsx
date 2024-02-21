@@ -52,7 +52,7 @@ const SingleIdeaWidget = ({
     <Card title={title}>
       {emptyMessage ? (
         <NoData message={emptyMessage} />
-      ) : isNil(idea) || isNil(ideaImages) || isNil(phase) ? (
+      ) : isNil(ideaId) || isNil(idea) || isNil(ideaImages) || isNil(phase) ? (
         <NoData message={messages.noIdeaAvailable} />
       ) : (
         <IdeaCard
