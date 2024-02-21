@@ -7,7 +7,7 @@ import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import { CampaignData } from './types';
 import Button from 'components/UI/Button';
 import CampaignDescription from './CampaignDescription';
-import NewProjectPhaseModal from './NewProjectPhaseModal';
+import PhaseEmailSettingsModal from './PhaseEmailSettingsModal';
 
 type Props = {
   campaign: CampaignData;
@@ -39,7 +39,7 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
 
   return (
     <>
-      <NewProjectPhaseModal
+      <PhaseEmailSettingsModal
         open={isNewPhaseModalOpen}
         close={closeNewPhaseModal}
         onConfirm={toggleEnabled}

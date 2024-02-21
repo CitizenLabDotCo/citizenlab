@@ -14,6 +14,7 @@ import { Multiloc } from 'typings';
 interface SharedProps {
   pagebreak?: boolean;
   'data-testid'?: string;
+  className?: string;
   children: React.ReactNode;
 }
 
