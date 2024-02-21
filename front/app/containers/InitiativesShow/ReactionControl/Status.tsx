@@ -114,14 +114,12 @@ const Status = ({ initiative, onScrollToOfficialFeedback }: Props) => {
         },
       };
 
-      const context = {
-        type: 'initiative',
-        action: 'reacting_initiative',
-      } as const;
-
       triggerAuthenticationFlow({
         flow: 'signup',
-        context,
+        context: {
+          type: 'initiative',
+          action: 'reacting_initiative',
+        },
         successAction,
       });
     } else {
