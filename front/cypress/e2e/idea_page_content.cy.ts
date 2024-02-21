@@ -212,7 +212,7 @@ describe('Idea Page', () => {
     });
 
     it('displays the location on the idea page and the map pops up', () => {
-      cy.get('#e2e-location-map').should('exist');
+      cy.get('#e2e-event-map-popup').should('exist');
     });
 
     after(() => {
@@ -287,7 +287,7 @@ describe('Idea location', () => {
     cy.visit(`/ideas/${ideaNoLocationPointTitle}`);
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show-page-content');
-    cy.get('#e2e-map-popup').should('not.exist');
+    cy.get('#e2e-idea-location-map').should('not.exist');
     cy.get('#e2e-address-text-only').should('exist');
   });
 
@@ -296,7 +296,7 @@ describe('Idea location', () => {
     cy.visit(`/ideas/${ideaWithLocationPointTitle}`);
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show-page-content');
-    cy.get('#e2e-map-popup').should('exist');
+    cy.get('#e2e-idea-location-map').should('exist');
     cy.get('#e2e-address-text-only').should('not.exist');
   });
 

@@ -5,6 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import {
+  Box,
   Icon,
   Text,
   colors,
@@ -16,6 +17,7 @@ import {
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 import Button from 'components/UI/Button';
+import IdeaLocationMap from './IdeaLocationMap';
 
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
@@ -55,9 +57,8 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
   const { data: idea } = useIdeaById(ideaId);
   const isTabletOrSmaller = useBreakpoint('tablet');
 
-  const point =
-    (!isNilOrError(idea) && idea.data.attributes?.location_point_geojson) ||
-    null;
+  const point = idea?.data.attributes?.location_point_geojson;
+
   const address = !isNilOrError(idea)
     ? getAddressOrFallbackDMS(
         idea.data.attributes.location_description,
@@ -70,25 +71,43 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
       <Item className={className || ''} compact={compact}>
         <Header>{formatMessage(messages.location)}</Header>
         <Container>
-          <StyledIcon name="position" ariaHidden />
-          <Button
-            m="0px"
-            p="0px"
-            fontSize="m"
-            buttonStyle="text"
-            linkTo={`https://www.google.com/maps/search/?api=1&query=${point?.coordinates[1]},${point?.coordinates[0]}`}
-            openLinkInNewTab={isTabletOrSmaller ? false : true} // On tablet/mobile devices, this will open the app instead
-            pl="0px"
-            style={{
-              textDecoration: 'underline',
-              justifyContent: 'left',
-              textAlign: 'left',
-            }}
-          >
-            <Text mt="4px" color="coolGrey600" m="0px" p="0px" fontSize="s">
-              {address}
-            </Text>
-          </Button>
+          {point && (
+            <Box display="block" width="100%">
+              <Box display="flex">
+                <StyledIcon name="position" ariaHidden />
+                <Button
+                  m="0px"
+                  p="0px"
+                  fontSize="m"
+                  buttonStyle="text"
+                  linkTo={`https://www.google.com/maps/search/?api=1&query=${point?.coordinates[1]},${point?.coordinates[0]}`}
+                  openLinkInNewTab={isTabletOrSmaller ? false : true} // On tablet/mobile devices, this will open the app instead
+                  pl="0px"
+                  style={{
+                    textDecoration: 'underline',
+                    justifyContent: 'left',
+                    textAlign: 'left',
+                  }}
+                >
+                  <Text
+                    mt="4px"
+                    color="coolGrey600"
+                    m="0px"
+                    p="0px"
+                    fontSize="s"
+                  >
+                    {address}
+                  </Text>
+                </Button>
+              </Box>
+
+              <Box width="100%" mt="8px" id="e2e-location-map">
+                <IdeaLocationMap
+                  location={idea?.data.attributes?.location_point_geojson}
+                />
+              </Box>
+            </Box>
+          )}
 
           {!point && (
             <Text
