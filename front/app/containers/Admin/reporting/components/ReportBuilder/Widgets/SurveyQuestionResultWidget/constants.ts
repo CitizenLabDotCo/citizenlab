@@ -1,9 +1,9 @@
-import { ICustomFieldInputType } from 'api/custom_fields/types';
+import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
 
-export const SUPPORTED_INPUT_TYPES_ARRAY = [
+export const SUPPORTED_INPUT_TYPES_ARRAY: IUserCustomFieldInputType[] = [
   'select',
   'multiselect',
-] satisfies ICustomFieldInputType[];
+];
 
 export const SUPPORTED_INPUT_TYPES = new Set<string>(
   SUPPORTED_INPUT_TYPES_ARRAY

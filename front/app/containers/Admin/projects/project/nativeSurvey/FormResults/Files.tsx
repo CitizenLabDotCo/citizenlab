@@ -36,7 +36,7 @@ const Files = ({ files }: FilesProps) => {
     <Box bg={colors.background}>
       <Box borderBottom={`1px solid ${colors.divider}`} p="24px">
         <Text fontWeight="bold" m="0px">
-          { formatMessage(messages.allFiles) } ({files.length})
+          {formatMessage(messages.allFiles)} ({files.length})
         </Text>
       </Box>
 
@@ -50,7 +50,13 @@ const Files = ({ files }: FilesProps) => {
               start={virtualItem.start}
             >
               <Text m="0px" px="24px">
-                <a href={files[virtualItem.index].url} target="_blank">{files[virtualItem.index].name}</a>
+                <a
+                  href={files[virtualItem.index].url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {files[virtualItem.index].name}
+                </a>
               </Text>
               <Divider />
             </Item>

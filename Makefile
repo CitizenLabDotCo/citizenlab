@@ -61,6 +61,11 @@ add-campaign-and-notification:
 blint back-lint-autocorrect:
 	docker compose run web bundle exec rubocop -P --format simple --autocorrect
 
+# Usage example: 
+# make r file=spec/models/idea_spec.rb
+r rspec:
+	docker-compose run --rm web bin/rspec ${file}
+
 # =================
 # E2E tests
 # =================

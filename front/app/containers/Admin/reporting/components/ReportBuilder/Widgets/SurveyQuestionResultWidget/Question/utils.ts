@@ -55,10 +55,6 @@ export const getPhaseIndex = (phases: IPhaseData[], phaseId: string) => {
 const EMPTY_COLOR = colors.coolGrey300;
 
 export const getColorScheme = (length: number) => {
-  if (length > 11) {
-    throw new Error('Too many groups');
-  }
-
   return [...DEFAULT_CATEGORICAL_COLORS.slice(0, length - 1), EMPTY_COLOR];
 };
 
