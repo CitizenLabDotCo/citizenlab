@@ -25,7 +25,7 @@ module ReportBuilder
     def group_by_user_field(question_field_id, user_field_id)
       question = find_question(question_field_id)
       user_field = CustomField.find_by(id: user_field_id)
-      throw "Unsupported user field type: #{user_field.input_type}" unless user_field.input_type == 'select'
+      raise "Unsupported user field type: #{user_field.input_type}" unless user_field.input_type == 'select'
 
       query = @inputs.joins(:author)
 
@@ -42,7 +42,7 @@ module ReportBuilder
     def group_by_other_question(question_field_id, other_question_field_id)
       question = find_question(question_field_id)
       other_question = find_question(other_question_field_id)
-      throw "Unsupported question type: #{other_question.input_type}" unless other_question.input_type == 'select'
+      raise "Unsupported question type: #{other_question.input_type}" unless other_question.input_type == 'select'
 
       query = @inputs.select(
         select_query(question, as: 'answer'),
@@ -64,8 +64,8 @@ module ReportBuilder
 
     def find_question(question_field_id)
       question = @form.custom_fields.find_by(id: question_field_id)
-      throw 'Question not found' unless question
-      throw "Unsupported question type: #{question.input_type}" unless %w[select multiselect].include?(question.input_type)
+      raise 'Question not found' unless question
+      raise "Unsupported question type: #{question.input_type}" unless %w[select multiselect].include?(question.input_type)
 
       question
     end
