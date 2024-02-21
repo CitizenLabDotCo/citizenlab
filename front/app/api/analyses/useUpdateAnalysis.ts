@@ -7,6 +7,7 @@ import { IAnalysis } from './types';
 type IAnalysisUpdate = {
   id: string;
   show_insights: boolean;
+  additional_custom_fields_ids?: string[];
 };
 
 const updateAnalysis = ({ id, show_insights }: IAnalysisUpdate) =>

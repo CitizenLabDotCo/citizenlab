@@ -41,6 +41,13 @@ const InputListItem = () => {
   const showManageIdeaButton =
     analysis.data.attributes.participation_method === 'ideation' && phaseId;
 
+  const mainCustomFieldId =
+    analysis.data.relationships?.main_custom_field?.data.id;
+  const additionalCustomFieldIds =
+    analysis.data.relationships?.additional_custom_fields?.data.map(
+      (field) => field.id
+    );
+
   return (
     <Box data-cy="e2e-analysis-input-preview">
       {showManageIdeaButton && (
@@ -57,23 +64,32 @@ const InputListItem = () => {
           </Button>
         </Box>
       )}
-      {analysis.data.relationships.all_custom_fields.data.map((customField) => (
-        <LongFieldValue
-          key={customField.id}
-          customFieldId={customField.id}
-          input={input.data}
-          projectId={analysis.data.relationships.project?.data?.id}
-          phaseId={analysis.data.relationships.phase?.data?.id}
-        />
-      ))}
       {authorId && author && !isRefetchingAuthor && (
         <Box mt="20px" display="flex" alignItems="center">
           <Avatar size={40} userId={author.data.id} />
           <Text m="0px">{getFullName(author?.data)}</Text>
+          <Divider />
         </Box>
       )}
-      <Divider />
-      <Box id="tags-control">
+
+      {analysis.data.relationships.all_custom_fields.data.map((customField) => (
+        <>
+          {customField.id === mainCustomFieldId && <Box>Main question</Box>}
+          {additionalCustomFieldIds?.includes(customField.id) && (
+            <Box>Additional question</Box>
+          )}
+          <LongFieldValue
+            key={customField.id}
+            customFieldId={customField.id}
+            input={input.data}
+            projectId={analysis.data.relationships.project?.data?.id}
+            phaseId={analysis.data.relationships.phase?.data?.id}
+          />
+        </>
+      ))}
+
+      <Box id="tags-control" mb="12px">
+        <Divider />
         <Taggings onlyShowTagged={false} inputId={selectedInputId} />
       </Box>
     </Box>
