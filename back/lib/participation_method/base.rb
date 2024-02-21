@@ -19,11 +19,6 @@ module ParticipationMethod
       # Default is to do nothing.
     end
 
-    # On creation of the participation context, should the form be created automatically?
-    def auto_create_default_form?
-      true
-    end
-
     def create_default_form!
       # Default is to do nothing.
     end

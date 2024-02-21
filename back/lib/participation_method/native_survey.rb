@@ -25,6 +25,7 @@ module ParticipationMethod
       'page'
     end
 
+    # TODO: JS - Saving this does not work from the frontend - ids in the options maybe?
     def default_fields(custom_form)
       multiloc_service = MultilocService.new
       [
@@ -37,27 +38,24 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           resource: custom_form,
           input_type: 'select',
-          title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.title')
+          title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title'),
+          options: [
+            CustomFieldOption.new(
+              id: SecureRandom.uuid,
+              key: 'option1',
+              title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.option1')
+            ),
+            CustomFieldOption.new(
+              id: SecureRandom.uuid,
+              key: 'option2',
+              title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.option2')
+            )
+          ]
         )
       ]
-      # TODO: JS - Get the custom field options added here
-      # CustomFieldOption.new(
-      #   custom_field: custom_form,
-      #   key: 'option1',
-      #   title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.option1')
-      # )
-      # CustomFieldOption.new(
-      #   custom_field: field,
-      #   key: 'option2',
-      #   title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.option2')
-      # )
     end
 
-    # TODO: JS - Can remove all this
-    def auto_create_default_form?
-      false
-    end
-
+    # TODO: JS - Can we remove this method? Only used by analysis
     def create_default_form!
       form = CustomForm.create(participation_context: phase)
 

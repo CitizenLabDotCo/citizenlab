@@ -251,33 +251,8 @@ resource 'Phases' do
           phase_id = json_response.dig(:data, :id)
           phase_in_db = Phase.find(phase_id)
 
-          # A new native survey phase has a default form.
-          fields = phase_in_db.custom_form.custom_fields
-          expect(fields.size).to eq 2
-          expect(fields.map(&:ordering)).to eq([0, 1])
-          field1 = fields[0]
-          expect(field1.input_type).to eq 'page'
-          field2 = fields[1]
-          expect(field2.input_type).to eq 'select'
-          expect(field2.title_multiloc).to match({
-            'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
-          })
-          options = field2.options
-          expect(options.size).to eq 2
-          expect(options[0].key).to eq 'option1'
-          expect(options[1].key).to eq 'option2'
-          expect(options[0].title_multiloc).to match({
-            'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
-          })
-          expect(options[1].title_multiloc).to match({
-            'en' => an_instance_of(String),
-            'fr-FR' => an_instance_of(String),
-            'nl-NL' => an_instance_of(String)
-          })
+          # A new native survey phase does not have a default form.
+          expect(phase_in_db.custom_form).to be_nil
 
           expect(phase_in_db.participation_method).to eq 'native_survey'
           expect(phase_in_db.title_multiloc).to match title_multiloc

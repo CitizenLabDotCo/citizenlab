@@ -11,6 +11,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 // hooks
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import useLocale from 'hooks/useLocale';
+import usePhase from 'api/phases/usePhase';
 
 // utils
 import { nativeSurveyConfig } from '../utils';
@@ -30,6 +31,7 @@ const SurveyFormBuilder = () => {
   };
   const [searchParams] = useSearchParams();
   const copyFrom = searchParams.get('copy_from');
+  const { data: phase } = usePhase(phaseId);
 
   const locale = useLocale();
   const { data: customFields } = useFormCustomFields({
@@ -38,16 +40,19 @@ const SurveyFormBuilder = () => {
   });
 
   const goBackUrl = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
-  const downloadPdfLink = phaseId
-    ? `${API_PATH}/phases/${phaseId}/custom_fields/to_pdf`
-    : `${API_PATH}/projects/${projectId}/custom_fields/to_pdf`;
+  const downloadPdfLink = `${API_PATH}/phases/${phaseId}/custom_fields/to_pdf`;
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 
+  if (!phase && !customFields) return null;
+
+  const surveyFormPersisted =
+    phase?.data.attributes.custom_form_persisted || false;
+
   // If a copied form, reset IDs for fields and add temp-ids to options
-  const resetCustomFormIds = (customFields: any) => {
+  const resetCopiedForm = (customFields: any) => {
     // Set the field IDs
-    // TODO: Remove key?
+    // TODO: JS - Remove key?
     let tempIdMap = { survey_end: 'survey_end' };
     const newFields = customFields?.map((field: any) => {
       const { id, ...newField } = field;
@@ -70,6 +75,7 @@ const SurveyFormBuilder = () => {
     });
 
     // Update the logic
+    // return newFields;
     return newFields?.map((field: any) => {
       const { ...newField } = field;
       if (newField.logic?.rules) {
@@ -89,9 +95,28 @@ const SurveyFormBuilder = () => {
     });
   };
 
+  // If the form is not yet persisted, set temp_ids for the options
+  const resetOptionsIfNotPersisted = (customFields, formPersisted) => {
+    if (formPersisted) {
+      console.log('already persisted');
+      return customFields;
+    } else {
+      return customFields?.map((field) => {
+        if (field.options?.length > 0) {
+          field.options = field.options.map((option) => {
+            const { id, ...newOption } = option;
+            newOption.temp_id = generateTempId();
+            return newOption;
+          });
+        }
+        return field;
+      });
+    }
+  };
+
   const formCustomFields = copyFrom
-    ? resetCustomFormIds(customFields)
-    : customFields;
+    ? resetCopiedForm(customFields)
+    : resetOptionsIfNotPersisted(customFields, surveyFormPersisted);
 
   const handleExportPDF = async ({ personal_data }: FormValues) => {
     if (isNilOrError(locale)) return;
