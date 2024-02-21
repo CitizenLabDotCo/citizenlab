@@ -39,5 +39,11 @@ module Analysis
         errors.add(:inputs_ids, :should_have_unique_ids, message: 'The log of inputs_ids associated with the summary contains duplicate ids')
       end
     end
+
+    def self.delete_custom_field_references!(custom_field_id)
+      delete_custom_field_references_in_filters!(custom_field_id)
+      where("custom_field_ids->'main_custom_field_id' ? :custom_field_id", custom_field_id: custom_field_id).each(&:destroy!)
+      where("custom_field_ids->'additional_custom_field_ids' ? :custom_field_id", custom_field_id: custom_field_id).each(&:destroy!)
+    end
   end
 end
