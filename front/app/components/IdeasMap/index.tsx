@@ -222,7 +222,7 @@ const IdeasMap = memo<Props>(
       if (graphics) {
         return new FeatureLayer({
           source: graphics, // Array of idea graphics
-          title: formatMessage(messages.userInputs),
+          title: 'Inputs from participants',
           id: 'ideasLayer',
           objectIdField: 'ID',
           fields: [
@@ -242,6 +242,7 @@ const IdeasMap = memo<Props>(
               sizeInPx: 42,
             }),
           }),
+          legendEnabled: false,
           // Add cluster display to this layer
           featureReduction: getClusterConfiguration(theme.colors.tenantPrimary),
           // Add a popup template which is used when multiple ideas share a single location
