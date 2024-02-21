@@ -87,7 +87,8 @@ export const FormEdit = ({
         description_multiloc: object(),
         input_type: string(),
         options: validateOneOptionForMultiSelect(
-          formatMessage(messages.emptyOptionError)
+          formatMessage(messages.emptyOptionError),
+          { multiselect_image: formatMessage(messages.emptyImageOptionError) }
         ),
         maximum: number(),
         minimum_label_multiloc: object(),
