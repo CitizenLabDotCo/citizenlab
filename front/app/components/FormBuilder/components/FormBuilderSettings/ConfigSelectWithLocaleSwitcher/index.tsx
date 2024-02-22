@@ -68,7 +68,7 @@ const ConfigSelectWithLocaleSwitcher = ({
     platformLocale
   );
   const { formatMessage } = useIntl();
-  const selectOptions = useWatch({ name }) || [];
+  const selectOptions = useWatch({ name });
   const imageIds = selectOptions
     .filter((selectOption) => selectOption.image_id)
     .map((selectOption) => selectOption.image_id);

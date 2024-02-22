@@ -140,7 +140,7 @@ export const FormEdit = ({
       setIsUpdatingForm(false);
       setIsSubmitting(false);
     }
-  }, [formCustomFields, isUpdatingForm]);
+  }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
   const closeSettings = () => {
     setSelectedField(undefined);
