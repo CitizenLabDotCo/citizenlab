@@ -12,8 +12,10 @@ resource 'Summaries' do
   end
 
   get 'web_api/v1/analyses/:analysis_id/summaries/:id' do
-    let(:summary) { create(:summary) }
-    let(:analysis_id) { summary.analysis_id }
+    let(:analysis) { create(:analysis)}
+    let(:ideas) { create_list(:idea, 2, project: analysis.project) }
+    let(:summary) { create(:summary, insight_attributes: { analysis: analysis, inputs_ids: ideas.map(&:id) }) }
+    let(:analysis_id) { analysis.id }
     let(:id) { summary.id }
 
     example 'Get one summary by id' do
@@ -28,6 +30,7 @@ resource 'Summaries' do
         attributes: {
           summary: kind_of(String),
           filters: {},
+          inputs_ids: ideas.map(&:id),
           custom_field_ids: {},
           accuracy: nil,
           created_at: kind_of(String),
@@ -88,6 +91,7 @@ resource 'Summaries' do
             reactions_from: 7,
             tag_ids: [tag.id]
           },
+          inputs_ids: nil,
           custom_field_ids: { main_custom_field_id: main_field.id, additional_custom_field_ids: [additional_field.id] },
           accuracy: 0.8,
           missing_inputs_count: 0,
@@ -144,6 +148,7 @@ resource 'Summaries' do
         attributes: {
           summary: nil,
           filters: { reactions_from: 5 },
+          inputs_ids: nil,
           custom_field_ids: {},
           accuracy: 0.8,
           missing_inputs_count: 0,

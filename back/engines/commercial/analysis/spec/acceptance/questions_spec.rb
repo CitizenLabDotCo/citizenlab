@@ -12,7 +12,10 @@ resource 'Questions' do
   end
 
   get 'web_api/v1/analyses/:analysis_id/questions/:id' do
-    let(:question) { create(:analysis_question) }
+    let(:analysis) { create(:analysis)}
+    let(:idea) { create(:idea, project: analysis.project) }
+    let(:analysis_id) { analysis.id }
+    let(:question) { create(:analysis_question, insight_attributes: { analysis: analysis, inputs_ids: [idea.id] }) }
     let(:analysis_id) { question.analysis_id }
     let(:id) { question.id }
 
@@ -25,6 +28,7 @@ resource 'Questions' do
           question: kind_of(String),
           answer: nil,
           filters: {},
+          inputs_ids: [idea.id],
           custom_field_ids: {},
           accuracy: nil,
           created_at: kind_of(String),
@@ -82,6 +86,7 @@ resource 'Questions' do
             comments_from: 5,
             tag_ids: [tag.id]
           },
+          inputs_ids: nil,
           custom_field_ids: { main_custom_field_id: analysis.main_custom_field_id, additional_custom_field_ids: analysis.additional_custom_field_ids },
           accuracy: 0.8,
           missing_inputs_count: 0,
@@ -134,6 +139,7 @@ resource 'Questions' do
           question: nil,
           answer: nil,
           filters: { reactions_from: 5 },
+          inputs_ids: nil,
           custom_field_ids: {},
           accuracy: 0.8,
           missing_inputs_count: 0,
