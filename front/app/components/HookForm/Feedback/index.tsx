@@ -23,30 +23,15 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
       isSubmitSuccessful,
       isSubmitted,
       submitCount,
-      isDirty,
     },
-    reset,
   } = useFormContext();
 
   useEffect(() => {
-    if (submitCount > 0 && isSubmitted) {
+    if (submitCount > 0) {
       scrollToElement({ id: 'feedback' });
-      reset(undefined, {
-        keepValues: true,
-        keepIsSubmitted: true,
-        keepSubmitCount: true,
-      });
       setSuccessMessageIsVisible(true);
-    } else {
-      setSuccessMessageIsVisible(false);
     }
-  }, [submitCount, isSubmitted, reset]);
-
-  useEffect(() => {
-    if (isDirty) {
-      setSuccessMessageIsVisible(false);
-    }
-  }, [isDirty]);
+  }, [submitCount]);
 
   const getAllErrorMessages = () => {
     const errorMessages: Array<{ field: string; message?: string }> = [];
@@ -89,7 +74,7 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
   const errorMessageIsShown =
     (getAllErrorMessages().length > 0 || formContextErrors.submissionError) &&
     !isSubmitSuccessful;
-  const successMessageIsShown = successMessageIsVisible && !errorMessageIsShown;
+  const successMessageIsShown = isSubmitSuccessful && successMessageIsVisible;
 
   return (
     <>

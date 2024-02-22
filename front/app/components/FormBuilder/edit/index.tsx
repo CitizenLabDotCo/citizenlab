@@ -158,7 +158,7 @@ export const FormEdit = ({
   };
 
   const hasErrors = !!Object.keys(errors).length;
-  const editedAndCorrect = isDirty && !hasErrors;
+  const editedAndCorrect = !isSubmitting && isDirty && !hasErrors;
 
   const onFormSubmit = async ({ customFields }: FormValues) => {
     try {
