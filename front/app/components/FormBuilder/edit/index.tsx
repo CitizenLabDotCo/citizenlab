@@ -203,7 +203,7 @@ export const FormEdit = ({
     if (showWarningNotice && builderConfig.getWarningNotice) {
       return builderConfig.getWarningNotice();
     } else if (!hasErrors && builderConfig.getAccessRightsNotice) {
-      return builderConfig.getAccessRightsNotice(projectId, phaseId)
+      return builderConfig.getAccessRightsNotice(projectId, phaseId);
     }
     return null;
   };

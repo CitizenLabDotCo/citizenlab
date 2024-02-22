@@ -18,7 +18,7 @@ import Warning from 'components/UI/Warning';
 // intl
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import AccessRightsNotice from "./AccessRightsNotice";
+import AccessRightsNotice from './AccessRightsNotice';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
   formBuilderTitle: messages.survey,
@@ -49,7 +49,9 @@ export const nativeSurveyConfig: FormBuilderConfig = {
     );
   },
   getAccessRightsNotice: (projectId, phaseId) => {
-    return (projectId && phaseId ? <AccessRightsNotice projectId={projectId} phaseId={phaseId}/> : null);
+    return projectId && phaseId ? (
+      <AccessRightsNotice projectId={projectId} phaseId={phaseId} />
+    ) : null;
   },
 };
 
