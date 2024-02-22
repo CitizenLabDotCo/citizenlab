@@ -183,7 +183,6 @@
   "app.components.IdeasMap.or": "ή",
   "app.components.IdeasMap.signInLinkText": "σύνδεση",
   "app.components.IdeasMap.signUpLinkText": "εγγραφείτε",
-  "app.components.IdeasMap.startIdeaAtLocation": "Υποβολή ιδέας στην τοποθεσία",
   "app.components.IdeasMap.submitIdea2": "Υποβολή εισόδου",
   "app.components.IdeasMap.tapOnMapToAdd": "Πατήστε στο χάρτη για να προσθέσετε την εισήγησή σας",
   "app.components.IdeasMap.tapOnMapToAddAdmin2": "Ως διαχειριστής, μπορείτε να πατήσετε στο χάρτη για να προσθέσετε τη γνώμη σας, ακόμη και αν αυτή η φάση δεν είναι ενεργή.",
