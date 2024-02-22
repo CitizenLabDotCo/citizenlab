@@ -8,6 +8,7 @@ describe('Survey question widget', () => {
   let phaseId: string;
   let surveyIncluded: any;
   let surveyFields: ICustomFieldResponse[];
+  let reportId: string;
 
   const users = Array(4)
     .fill(0)
@@ -70,11 +71,17 @@ describe('Survey question widget', () => {
               });
             });
         });
+      })
+      .then(() => {
+        cy.apiCreateReportBuilder().then((report) => {
+          reportId = report.body.data.id;
+        });
       });
   });
 
   after(() => {
     cy.apiRemoveProject(projectId);
+    cy.apiRemoveReportBuilder(reportId);
 
     userIds.forEach((userId) => {
       cy.apiRemoveUser(userId);
@@ -82,6 +89,41 @@ describe('Survey question widget', () => {
   });
 
   it('handles survey question widget', () => {
+    cy.setAdminLoginCookie();
+    cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
+
+    cy.get('#e2e-draggable-survey-question-result-widget').dragAndDrop(
+      '#e2e-content-builder-frame',
+      {
+        position: 'inside',
+      }
+    );
+
+    cy.wait(1000);
+
+    // Select project, phase and question
+    cy.get('#e2e-report-builder-project-filter-box select').select(projectId);
+    cy.get('#e2e-report-builder-phase-filter').select(phaseId);
+    cy.get('#e2e-question-select').select(surveyFields[2].id);
+
+    // Check if values are correct
+
+    // Group by gender
+    // TODO
+
+    // Group by other survey question
+    // TODO
+
+    // Save
+    // cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+    //   'saveReportLayout'
+    // );
+    // TODO
+
+    // Reload page and check if values are still correct
+    // TODO
+
+    // Remove widget
     // TODO
   });
 });
