@@ -35,11 +35,9 @@ const getTextNumberOfVotes = ({
     formatMessage,
   });
 
-  return formatMessage(messages.numberOfVotes, {
-    numberOfVotes: numberOfVotes.toLocaleString(),
-    voteTerm,
-    votesTerm,
-  });
+  return `${numberOfVotes.toLocaleString()} ${
+    numberOfVotes === 1 ? voteTerm : votesTerm
+  }`;
 };
 
 export { getTextNumberOfVotes };

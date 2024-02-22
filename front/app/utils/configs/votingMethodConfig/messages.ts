@@ -78,11 +78,6 @@ export default defineMessages({
     id: 'app.utils.votingMethodUtils.midSentenceVotes',
     defaultMessage: 'votes',
   },
-  numberOfVotes: {
-    id: 'app.utils.votingMethodUtils.numberOfVotes',
-    defaultMessage:
-      '{numberOfVotes} {numberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}}',
-  },
   budgetingSubmissionInstructionsTotalBudget: {
     id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget',
     defaultMessage:
