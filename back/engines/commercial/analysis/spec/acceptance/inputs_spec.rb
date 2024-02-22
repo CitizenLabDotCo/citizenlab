@@ -31,7 +31,7 @@ resource 'Inputs' do
       parameter :votes_to, 'Filter by number of votes on the input, smaller than or equal to', type: :integer
       parameter :comments_from, 'Filter by number of comments on the input, larger than or equal to', type: :integer
       parameter :comments_to, 'Filter by number of comments on the input, smaller than or equal to', type: :integer
-      parameter :input_custom_field_no_empty_values, 'Filter out inputs with empty values for custom fields', type: :boolean
+      parameter :input_custom_field_no_empty_values, 'Filter out inputs with empty values for the main custom field', type: :boolean
       parameter :limit, 'Limit the number of inputs returned', type: :integer
     end
 
