@@ -1885,7 +1885,6 @@
   "app.utils.votingMethodUtils.midSentenceVote": "vote",
   "app.utils.votingMethodUtils.midSentenceVotes": "votes",
   "app.utils.votingMethodUtils.multipleVotingEnded": "Voting closed on <b>{endDate}.</b> Participants had <b>{maxVotes} {voteTerm} each to distribute between {optionCount} options.</b>",
-  "app.utils.votingMethodUtils.numberOfVotes": "{numberOfVotes} {numberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}}",
   "app.utils.votingMethodUtils.results": "Results",
   "app.utils.votingMethodUtils.singleVotingEnded": "Voting closed on <b>{endDate}.</b> Participants could <b>vote for {maxVotes} options.</b>",
   "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": "Select your preferred options by tapping on “Vote”",
