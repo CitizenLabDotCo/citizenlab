@@ -219,7 +219,6 @@ describe('resetCopiedForm', () => {
 
   it('should replace only goto_page_ids in linear_scale logic rules with TEMP-ID unless the page ID is survey end', () => {
     const linearScaleField = resultCustomFields[3];
-    console.log(linearScaleField.logic);
     expect(linearScaleField.logic.rules[0].if).toEqual(2);
     expect(linearScaleField.logic.rules[0].goto_page_id).toMatch(/^TEMP-ID-/);
     expect(linearScaleField.logic.rules[1].if).toEqual(3);
