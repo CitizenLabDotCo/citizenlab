@@ -38,7 +38,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
   const { title_multiloc } = input.attributes;
 
   const mainCustomFieldId =
-    analysis.data.relationships.main_custom_field?.data.id;
+    analysis.data.relationships.main_custom_field?.data?.id;
 
   return (
     <Box data-cy="e2e-analysis-input-item">

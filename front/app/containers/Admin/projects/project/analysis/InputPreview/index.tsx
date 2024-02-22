@@ -53,7 +53,7 @@ const InputListItem = () => {
     analysis.data.attributes.participation_method === 'native_survey';
 
   const mainCustomFieldId =
-    analysis.data.relationships?.main_custom_field?.data.id;
+    analysis.data.relationships?.main_custom_field?.data?.id;
 
   const additionalCustomFieldIds =
     analysis.data.relationships?.additional_custom_fields?.data.map(
@@ -120,7 +120,7 @@ const InputListItem = () => {
 
       {allCustomFields
         .filter((customField) =>
-          !isSurveyAnalysis || showAllQuestions
+          showAllQuestions
             ? true
             : customFieldsInAnalysisIds.includes(customField.id)
         )
@@ -129,7 +129,8 @@ const InputListItem = () => {
             <Box
               key={customField.id}
               bg={
-                customFieldsInAnalysisIds.includes(customField.id)
+                customFieldsInAnalysisIds.includes(customField.id) &&
+                isSurveyAnalysis
                   ? colors.background
                   : colors.white
               }
@@ -187,12 +188,11 @@ const InputListItem = () => {
                 phaseId={analysis.data.relationships.phase?.data?.id}
               />
             </Box>
-            <Divider m="0px" />
+            {isSurveyAnalysis && <Divider m="0px" />}
           </>
         ))}
 
-      <Box id="tags-control" mb="12px">
-        <Divider />
+      <Box id="tags-control" my="12px">
         <Taggings onlyShowTagged={false} inputId={selectedInputId} />
       </Box>
     </Box>

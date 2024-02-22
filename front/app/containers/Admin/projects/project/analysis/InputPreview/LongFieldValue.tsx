@@ -110,7 +110,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
     case 'title_multiloc':
       return (
         <Box>
-          <Title variant="h3">
+          <Title variant="h3" my="0px">
             <T
               value={input.attributes[customField.data.attributes.key]}
               supportHtml={true}
