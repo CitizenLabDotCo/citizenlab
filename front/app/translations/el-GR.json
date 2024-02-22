@@ -640,7 +640,7 @@
   "app.components.formBuilder.emptyImageOptionError": "Δώστε τουλάχιστον 1 απάντηση. Σημειώστε ότι κάθε απάντηση πρέπει να έχει τίτλο.",
   "app.components.formBuilder.emptyOptionError": "Δώστε τουλάχιστον 1 απάντηση",
   "app.components.formBuilder.emptyTitleError": "Δώστε έναν τίτλο ερώτησης",
-  "app.components.formBuilder.emptyTitleErrorMessage": "Δώστε έναν τίτλο για όλες τις απαντήσεις",
+  "app.components.formBuilder.emptyTitleMessage": "Δώστε έναν τίτλο για όλες τις απαντήσεις",
   "app.components.formBuilder.enable": "Ενεργοποίηση",
   "app.components.formBuilder.errorMessage": "Υπάρχει πρόβλημα, παρακαλούμε διορθώστε το πρόβλημα για να μπορέσετε να αποθηκεύσετε τις αλλαγές σας.",
   "app.components.formBuilder.fieldGroup.description": "Περιγραφή (προαιρετική)",
