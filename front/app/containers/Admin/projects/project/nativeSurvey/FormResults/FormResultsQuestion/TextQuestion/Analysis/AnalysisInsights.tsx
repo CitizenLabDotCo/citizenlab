@@ -108,7 +108,7 @@ const Summary = ({
 
   const refreshDisabled =
     missingInputsCount === 0 ||
-    (largeSummariesEnabled && filteredInputCount + missingInputsCount > 30);
+    (largeSummariesEnabled && filteredInputCount > 30);
 
   if (!summary) {
     return null;
@@ -273,7 +273,7 @@ const Question = ({
 
   const refreshDisabled =
     missingInputsCount === 0 ||
-    (largeSummariesEnabled && filteredInputCount + missingInputsCount > 30);
+    (largeSummariesEnabled && filteredInputCount > 30);
 
   if (!question || !answer) {
     return null;
