@@ -183,7 +183,6 @@
   "app.components.IdeasMap.or": "o",
   "app.components.IdeasMap.signInLinkText": "conectarte",
   "app.components.IdeasMap.signUpLinkText": "inscríbete",
-  "app.components.IdeasMap.startIdeaAtLocation": "Presenta tu idea en el lugar",
   "app.components.IdeasMap.submitIdea2": "Enviar entrada",
   "app.components.IdeasMap.tapOnMapToAdd": "Pincha en el mapa para añadir tu aporte",
   "app.components.IdeasMap.tapOnMapToAddAdmin2": "Como administrador, puedes tocar en el mapa para añadir tu aportación, aunque esta fase no esté activa.",
