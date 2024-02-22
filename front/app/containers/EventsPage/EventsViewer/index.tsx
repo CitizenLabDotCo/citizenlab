@@ -130,7 +130,7 @@ const EventsViewer = ({
   const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
     projectIdsFromUrl || (projectId ? [projectId] : [])
   );
-  const [dateFilter, setDateFilter] = useState<dateFilterKey[] | undefined>(
+  const [dateFilter, setDateFilter] = useState<dateFilterKey[]>(
     dateFilterFromUrl || []
   );
 
@@ -184,7 +184,8 @@ const EventsViewer = ({
 
   // Update date filter URL params based on state, events time will not change after initial render
   useEffect(() => {
-    const hasDateFilter = dateFilter?.length && dateFilter[0] !== 'all';
+    const hasDateFilter =
+      dateFilter.length > 0 ? dateFilter[0] !== 'all' : false;
     if (eventsTime === 'currentAndFuture') {
       updateSearchParams({
         time_period: hasDateFilter ? dateFilter : null,
