@@ -89,7 +89,7 @@ describe('Idea template', () => {
     cy.url().should('include', `editor?templateProjectId=${projectId}`);
     cy.get('#e2e-content-builder-frame').should('exist');
 
-    // TODO actual tests
+    // Test that most reacted ideas widget is shown correctly
     cy.get('.e2e-report-builder-idea-card').should('have.length', 2);
     cy.get('.e2e-report-builder-idea-card')
       .first()
