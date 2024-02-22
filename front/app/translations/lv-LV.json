@@ -183,7 +183,6 @@
   "app.components.IdeasMap.or": "vai",
   "app.components.IdeasMap.signInLinkText": "pierakstīties",
   "app.components.IdeasMap.signUpLinkText": "reģistrēties",
-  "app.components.IdeasMap.startIdeaAtLocation": "Iesniegt ideju atrašanās vietā",
   "app.components.IdeasMap.submitIdea2": "Iesniegt ievades datus",
   "app.components.IdeasMap.tapOnMapToAdd": "Piesitiet uz kartes, lai pievienotu savu ieguldījumu",
   "app.components.IdeasMap.tapOnMapToAddAdmin2": "Kā administrators varat pieskarties kartei, lai pievienotu savu ieguldījumu, pat ja šis posms nav aktīvs.",
