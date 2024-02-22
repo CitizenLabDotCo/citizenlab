@@ -50,7 +50,7 @@ describe('Idea template', () => {
       .then(() => {
         cy.apiCreateIdea({
           projectId,
-          ideaTitle: higherVotedIdeaTitle,
+          ideaTitle: higherLikedIdeaTitle,
           ideaContent,
           phaseIds: [phaseId],
         }).then((idea) => {
