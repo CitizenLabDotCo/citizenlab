@@ -12,6 +12,7 @@ import Point from '@arcgis/core/geometry/Point';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
 import MapView from '@arcgis/core/views/MapView';
+import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 
 // utils
 import { hexToRGBA } from 'utils/helperUtils';
@@ -410,10 +411,20 @@ export const createEsriGeoJsonLayers = (
           },
         }),
       });
+    } else if (geometryType === 'LineString') {
+      const lineColor = layer.geojson?.features[0]?.properties?.stroke;
+      geoJsonLayer.renderer = new SimpleRenderer({
+        symbol: new SimpleLineSymbol({
+          color: lineColor ?? colors.coolGrey600,
+          width: 2,
+        }),
+      });
     } else if (geometryType === 'Point') {
       // Get color and icon name
       const pointColour =
-        layer.geojson?.features[0]?.properties?.fill || colors.grey700;
+        layer.geojson?.features[0]?.properties?.fill ||
+        layer.geojson?.features[0]?.properties?.['marker-color'] ||
+        colors.grey700;
       const pointSymbol =
         layer.geojson?.features[0]?.properties?.['marker-symbol'];
 
