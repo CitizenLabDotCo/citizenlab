@@ -972,6 +972,7 @@
   "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "crwdns1721520:0{limit}crwdne1721520:0",
   "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_maxLength": "crwdns1721522:0{limit}crwdne1721522:0",
   "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength2": "crwdns1721524:0{limit}crwdne1721524:0",
+  "app.containers.IdeasNewPage.ajv_error_number_required": "crwdns1761176:0crwdne1761176:0",
   "app.containers.IdeasNewPage.ajv_error_option_body_multiloc_maxLength": "crwdns1721526:0{limit}crwdne1721526:0",
   "app.containers.IdeasNewPage.ajv_error_option_body_multiloc_minLength": "crwdns1721528:0{limit}crwdne1721528:0",
   "app.containers.IdeasNewPage.ajv_error_option_title_multiloc_maxLength": "crwdns1721530:0{limit}crwdne1721530:0",
