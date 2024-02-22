@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
@@ -35,6 +35,7 @@ import {
 // hooks
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
 
 // intl
 import { WrappedComponentProps } from 'react-intl';
@@ -77,6 +78,14 @@ export const FormEdit = ({
   const { formSavedSuccessMessage, isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const showWarningNotice = totalSubmissions > 0;
+  const {
+    data: formCustomFields,
+    refetch,
+    isFetching,
+  } = useFormCustomFields({
+    projectId,
+    phaseId,
+  });
 
   const schema = object().shape({
     customFields: array().of(
@@ -112,12 +121,22 @@ export const FormEdit = ({
     handleSubmit,
     control,
     formState: { isSubmitting, errors },
+    reset,
   } = methods;
 
   const { append, move, replace } = useFieldArray({
     name: 'customFields',
     control,
   });
+
+  const [isUpdatingForm, setIsUpdatingForm] = useState(false);
+
+  useEffect(() => {
+    if (isUpdatingForm && !isFetching) {
+      reset({ customFields: formCustomFields });
+      setIsUpdatingForm(false);
+    }
+  }, [formCustomFields, isUpdatingForm]);
 
   const closeSettings = () => {
     setSelectedField(undefined);
@@ -174,11 +193,20 @@ export const FormEdit = ({
           maximum: field.maximum.toString(),
         }),
       }));
-      await updateFormCustomFields({
-        projectId,
-        customFields: finalResponseArray,
-        phaseId: isFormPhaseSpecific ? phaseId : undefined,
-      });
+      await updateFormCustomFields(
+        {
+          projectId,
+          customFields: finalResponseArray,
+          phaseId: isFormPhaseSpecific ? phaseId : undefined,
+        },
+        {
+          onSuccess: () => {
+            refetch().then(() => {
+              setIsUpdatingForm(true);
+            });
+          },
+        }
+      );
     } catch (error) {
       handleHookFormSubmissionError(error, setError, 'customFields');
     }
@@ -217,7 +245,7 @@ export const FormEdit = ({
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onFormSubmit)}>
               <FormBuilderTopBar
-                isSubmitting={isSubmitting}
+                isSubmitting={isSubmitting || isUpdatingForm}
                 builderConfig={builderConfig}
               />
               <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
