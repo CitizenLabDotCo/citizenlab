@@ -183,7 +183,6 @@
   "app.components.IdeasMap.or": "eller",
   "app.components.IdeasMap.signInLinkText": "Logg inn",
   "app.components.IdeasMap.signUpLinkText": "Registrer deg",
-  "app.components.IdeasMap.startIdeaAtLocation": "Send inn idé på stedet",
   "app.components.IdeasMap.submitIdea2": "Send inn innspill",
   "app.components.IdeasMap.tapOnMapToAdd": "Trykk på kartet for å legge til dine innspill",
   "app.components.IdeasMap.tapOnMapToAddAdmin2": "Som administrator kan du trykke på kartet for å legge til input, selv om denne fasen ikke er aktiv.",
