@@ -972,6 +972,7 @@
   "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "La descripció del problema ha de tenir més de {limit} caràcters",
   "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_maxLength": "El títol del número ha de tenir menys de {limit} caràcters",
   "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength2": "El títol del comentari ha de tenir més de {limit} caràcters",
+  "app.containers.IdeasNewPage.ajv_error_number_required": "Aquest camp és obligatori, introduïu un número vàlid",
   "app.containers.IdeasNewPage.ajv_error_option_body_multiloc_maxLength": "La descripció de l'opció ha de tenir menys de {limit} caràcters",
   "app.containers.IdeasNewPage.ajv_error_option_body_multiloc_minLength": "La descripció del problema ha de tenir més de {limit} caràcters",
   "app.containers.IdeasNewPage.ajv_error_option_title_multiloc_maxLength": "El títol de l'opció ha de tenir menys de {limit} caràcters",
