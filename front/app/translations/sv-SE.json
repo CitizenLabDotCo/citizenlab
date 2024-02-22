@@ -640,7 +640,7 @@
   "app.components.formBuilder.emptyImageOptionError": "Ange minst 1 svar. Observera att varje svar måste ha en rubrik.",
   "app.components.formBuilder.emptyOptionError": "Lämna minst 1 svar",
   "app.components.formBuilder.emptyTitleError": "Ange en frågetitel",
-  "app.components.formBuilder.emptyTitleErrorMessage": "Ange en titel för alla svar",
+  "app.components.formBuilder.emptyTitleMessage": "Ange en titel för alla svar",
   "app.components.formBuilder.enable": "Aktivera",
   "app.components.formBuilder.errorMessage": "Det finns ett problem – åtgärda problemet för att kunna spara dina ändringar",
   "app.components.formBuilder.fieldGroup.description": "Beskrivning (valfritt)",
