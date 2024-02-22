@@ -13,7 +13,7 @@ import useLocalize from 'hooks/useLocalize';
 
 // intl
 import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 type AccessRightsNoticeProps = {
   projectId: string;
@@ -59,7 +59,7 @@ const AccessRightsNotice = ({
         return localize(customField.attributes.title_multiloc);
       });
 
-  const accessRightsLink = (
+  const accessRightsSettingsLink = (
     <Link to={`/admin/projects/${projectId}/phases/${phaseId}/access-rights`}>
       {formatMessage(messages.accessRightsSettings)}
     </Link>
@@ -76,7 +76,12 @@ const AccessRightsNotice = ({
               <li>{formatMessage(messages.anyoneBullet2)}</li>
             </ul>
             <p>
-              {formatMessage(messages.anyoneOutro)} {accessRightsLink}
+              <FormattedMessage
+                {...messages.anyoneOutro}
+                values={{
+                  accessRightsSettingsLink: accessRightsSettingsLink,
+                }}
+              />
             </p>
           </>
         ) : (
@@ -92,7 +97,12 @@ const AccessRightsNotice = ({
                   </>
                 )}
                 <p>
-                  {formatMessage(messages.userFieldsOutro)} {accessRightsLink}
+                  <FormattedMessage
+                    {...messages.userFieldsOutro}
+                    values={{
+                      accessRightsSettingsLink: accessRightsSettingsLink,
+                    }}
+                  />
                 </p>
               </>
             )}

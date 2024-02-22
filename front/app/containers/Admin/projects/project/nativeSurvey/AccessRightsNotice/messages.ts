@@ -18,7 +18,8 @@ export default defineMessages({
   },
   anyoneOutro: {
     id: 'app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneOutro',
-    defaultMessage: 'If you wish to change this, you can do so in the ',
+    defaultMessage:
+      'If you wish to change this, you can do so in the {accessRightsSettingsLink}',
   },
   userFieldsIntro: {
     id: 'app.components.formBuilder.nativeSurvey.accessRightsNotice.userFieldsIntro',
@@ -28,7 +29,7 @@ export default defineMessages({
   userFieldsOutro: {
     id: 'app.components.formBuilder.nativeSurvey.accessRightsNotice.userFieldsOutro',
     defaultMessage:
-      'To streamline the collection of demographic information and ensure its integration into your user database, we advise incorporating any demographic questions directly into the sign-up/log-in process. To do so, please utilize the',
+      'To streamline the collection of demographic information and ensure its integration into your user database, we advise incorporating any demographic questions directly into the sign-up/log-in process. To do so, please utilize the {accessRightsSettingsLink}',
   },
   accessRightsSettings: {
     id: 'app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings',
