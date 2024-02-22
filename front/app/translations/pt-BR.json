@@ -972,6 +972,7 @@
   "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "A descrição da ideia deve ter mais de {limit} caracteres",
   "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_maxLength": "O título da ideia deve ter menos de {limit} caracteres",
   "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength2": "O título do comentário deve ter mais de {limit} caracteres",
+  "app.containers.IdeasNewPage.ajv_error_number_required": "Este campo é obrigatório, digite um número válido",
   "app.containers.IdeasNewPage.ajv_error_option_body_multiloc_maxLength": "A descrição da ideia deve ser inferior a {limit} caracteres",
   "app.containers.IdeasNewPage.ajv_error_option_body_multiloc_minLength": "A descrição da ideia deve ter mais de {limit} caracteres",
   "app.containers.IdeasNewPage.ajv_error_option_title_multiloc_maxLength": "O título da ideia deve ter menos de {limit} caracteres",
