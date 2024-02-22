@@ -972,6 +972,7 @@
   "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "Die Problembeschreibung muss mehr als {limit} Zeichen lang sein",
   "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_maxLength": "Der Titel der Ausgabe muss weniger als {limit} Zeichen lang sein",
   "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength2": "Der Titel des Kommentars muss mehr als {limit} Zeichen lang sein.",
+  "app.containers.IdeasNewPage.ajv_error_number_required": "Dieses Feld ist erforderlich, bitte geben Sie eine gültige Nummer ein",
   "app.containers.IdeasNewPage.ajv_error_option_body_multiloc_maxLength": "Die Beschreibung der Option muss weniger als {limit} Zeichen lang sein",
   "app.containers.IdeasNewPage.ajv_error_option_body_multiloc_minLength": "Die Problembeschreibung muss mehr als {limit} Zeichen lang sein",
   "app.containers.IdeasNewPage.ajv_error_option_title_multiloc_maxLength": "Der Titel der Option muss weniger als {limit} Zeichen lang sein",
