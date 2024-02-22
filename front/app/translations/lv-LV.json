@@ -640,7 +640,7 @@
   "app.components.formBuilder.emptyImageOptionError": "Sniedziet vismaz 1 atbildi. Lūdzu, ņemiet vērā, ka katrai atbildei ir jābūt nosaukumam.",
   "app.components.formBuilder.emptyOptionError": "Sniedziet vismaz 1 atbildi",
   "app.components.formBuilder.emptyTitleError": "Norādiet jautājuma virsrakstu",
-  "app.components.formBuilder.emptyTitleErrorMessage": "Norādiet nosaukumu visām atbildēm",
+  "app.components.formBuilder.emptyTitleMessage": "Norādiet nosaukumu visām atbildēm",
   "app.components.formBuilder.enable": "Ieslēgt",
   "app.components.formBuilder.errorMessage": "Pastāv problēma, lūdzu, novērsiet problēmu, lai varētu saglabāt izmaiņas.",
   "app.components.formBuilder.fieldGroup.description": "Apraksts (pēc izvēles)",
