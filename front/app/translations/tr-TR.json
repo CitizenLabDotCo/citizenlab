@@ -183,7 +183,6 @@
   "app.components.IdeasMap.or": "veya",
   "app.components.IdeasMap.signInLinkText": "oturum açın",
   "app.components.IdeasMap.signUpLinkText": "kaydolun",
-  "app.components.IdeasMap.startIdeaAtLocation": "Fikri yerinde gönderin",
   "app.components.IdeasMap.submitIdea2": "Girdi gönder",
   "app.components.IdeasMap.tapOnMapToAdd": "Girdi eklemek için haritaya dokunun",
   "app.components.IdeasMap.tapOnMapToAddAdmin2": "Bir yönetici olarak, bu aşama aktif olmasa bile, girdilerinizi eklemek için haritaya dokunabilirsiniz.",
