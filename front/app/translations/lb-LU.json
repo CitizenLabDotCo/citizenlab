@@ -640,7 +640,7 @@
   "app.components.formBuilder.emptyImageOptionError": "Gitt op d'mannst 1 Äntwert. Maacht weg datt all Äntwert en Titel muss hunn.",
   "app.components.formBuilder.emptyOptionError": "Gitt mindestens 1 Äntwert",
   "app.components.formBuilder.emptyTitleError": "Gitt e Froen-Titel un",
-  "app.components.formBuilder.emptyTitleErrorMessage": "Gitt en Titel fir all Äntwerten",
+  "app.components.formBuilder.emptyTitleMessage": "Gitt en Titel fir all Äntwerten",
   "app.components.formBuilder.enable": "Aktivéieren",
   "app.components.formBuilder.errorMessage": "Et gëtt e Problem, wgl. behieft de Problem, fir Är Ännerunge späicheren ze kënnen",
   "app.components.formBuilder.fieldGroup.description": "Beschreiwung (optionell)",
