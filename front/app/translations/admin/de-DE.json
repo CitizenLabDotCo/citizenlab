@@ -2085,7 +2085,7 @@
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Leere Antworten ausblenden",
   "app.containers.AdminPage.projects.project.analysis.inputsWIthoutTags": "Eingaben ohne Tags",
   "app.containers.AdminPage.projects.project.analysis.limit": "Limit",
-  "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Wichtigste Frage",
+  "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Hauptfrage",
   "app.containers.AdminPage.projects.project.analysis.manageIdea": "Idee verwalten",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Keine Antwort",
   "app.containers.AdminPage.projects.project.analysis.noInputs": "Keine Eingaben entsprechen Ihren aktuellen Filtern",
