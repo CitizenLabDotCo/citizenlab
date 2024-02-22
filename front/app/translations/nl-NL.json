@@ -183,7 +183,6 @@
   "app.components.IdeasMap.or": "of",
   "app.components.IdeasMap.signInLinkText": "inloggen",
   "app.components.IdeasMap.signUpLinkText": "registreren",
-  "app.components.IdeasMap.startIdeaAtLocation": "Bijdragen indienen op locatie",
   "app.components.IdeasMap.submitIdea2": "Bijdrage indienen",
   "app.components.IdeasMap.tapOnMapToAdd": "Tik op de kaart om je input toe te voegen",
   "app.components.IdeasMap.tapOnMapToAddAdmin2": "Als beheerder kun je op de kaart tikken om je bijdrage toe te voegen, zelfs als deze fase niet actief is.",
