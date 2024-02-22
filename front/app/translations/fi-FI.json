@@ -640,7 +640,7 @@
   "app.components.formBuilder.emptyImageOptionError": "Anna vähintään 1 vastaus. Huomaa, että jokaisella vastauksella on oltava otsikko.",
   "app.components.formBuilder.emptyOptionError": "Anna vähintään 1 vastaus",
   "app.components.formBuilder.emptyTitleError": "Anna kysymyksen otsikko",
-  "app.components.formBuilder.emptyTitleErrorMessage": "Anna kaikille vastauksille otsikko",
+  "app.components.formBuilder.emptyTitleMessage": "Anna kaikille vastauksille otsikko",
   "app.components.formBuilder.enable": "ota käyttöön",
   "app.components.formBuilder.errorMessage": "On ongelma. Korjaa ongelma, jotta voit tallentaa muutokset",
   "app.components.formBuilder.fieldGroup.description": "kuvaus (vapaaehtoinen)",
