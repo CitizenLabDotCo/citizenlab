@@ -88,7 +88,7 @@ const Summary = ({
   const filters = data?.data.attributes.filters;
   const accuracy = data?.data.attributes.accuracy;
   const generatedAt = data?.data.attributes.generated_at;
-  const missingInputsCount = data?.data.attributes.missing_inputs_count;
+  const missingInputsCount = data?.data.attributes.missing_inputs_count || 0;
 
   const { data: inputs } = useInfiniteAnalysisInputs({
     analysisId,
@@ -105,6 +105,10 @@ const Summary = ({
   const isLoading =
     task?.data.attributes.state === 'queued' ||
     task?.data.attributes.state === 'in_progress';
+
+  const refreshDisabled =
+    missingInputsCount === 0 ||
+    (largeSummariesEnabled && filteredInputCount + missingInputsCount > 30);
 
   if (!summary) {
     return null;
@@ -187,7 +191,7 @@ const Summary = ({
       </Box>
       <Box display="flex" gap="16px">
         <Button
-          disabled={missingInputsCount === 0}
+          disabled={refreshDisabled}
           buttonStyle="secondary-outlined"
           icon="refresh"
           onClick={() => {
@@ -249,7 +253,7 @@ const Question = ({
   const filters = data?.data.attributes.filters;
   const accuracy = data?.data.attributes.accuracy;
   const generatedAt = data?.data.attributes.generated_at;
-  const missingInputsCount = data?.data.attributes.missing_inputs_count;
+  const missingInputsCount = data?.data.attributes.missing_inputs_count || 0;
 
   const { data: inputs } = useInfiniteAnalysisInputs({
     analysisId,
@@ -266,6 +270,10 @@ const Question = ({
   const isLoading =
     task?.data.attributes.state === 'queued' ||
     task?.data.attributes.state === 'in_progress';
+
+  const refreshDisabled =
+    missingInputsCount === 0 ||
+    (largeSummariesEnabled && filteredInputCount + missingInputsCount > 30);
 
   if (!question || !answer) {
     return null;
@@ -343,7 +351,7 @@ const Question = ({
       </Box>
       <Box display="flex" gap="16px">
         <Button
-          disabled={missingInputsCount === 0}
+          disabled={refreshDisabled}
           buttonStyle="secondary-outlined"
           icon="refresh"
           onClick={() => {
