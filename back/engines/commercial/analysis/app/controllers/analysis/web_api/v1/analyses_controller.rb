@@ -58,7 +58,7 @@ module Analysis
           if @analysis.save
             side_fx_service.after_update(@analysis, current_user)
             render json: WebApi::V1::AnalysisSerializer.new(
-              @analysis.reload,
+              @analysis,
               params: jsonapi_serializer_params,
               include: serializer_includes
             ).serializable_hash, status: :ok
