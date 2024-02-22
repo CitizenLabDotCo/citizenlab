@@ -103,12 +103,13 @@ const ImageMultichoiceControl = ({
           </Text>
         )}
         <Box
-          display="flex"
-          flexWrap="wrap"
-          gap="16px"
-          w="100%"
-          justifyContent={isSmallerThanPhone ? 'center' : 'flex-start'}
-          alignItems="stretch"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: isSmallerThanPhone ? '1fr' : 'repeat(2, 50%)',
+            gap: '16px',
+            width: '100%',
+            justifyContent: 'center',
+          }}
         >
           {options?.map((option, index: number) => (
             <StyledBox
@@ -120,7 +121,6 @@ const ImageMultichoiceControl = ({
                   setDidBlur(true);
                 }, 300);
               }}
-              width={isSmallerThanPhone ? '100%' : 'calc(50% - 8px)'}
               display="flex"
               flexDirection="column"
               alignItems="center"
