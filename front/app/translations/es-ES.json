@@ -640,7 +640,7 @@
   "app.components.formBuilder.emptyImageOptionError": "Proporciona al menos 1 respuesta. Ten en cuenta que cada respuesta debe tener un título.",
   "app.components.formBuilder.emptyOptionError": "Proporcionar al menos 1 respuesta",
   "app.components.formBuilder.emptyTitleError": "Proporcionar un título a la pregunta",
-  "app.components.formBuilder.emptyTitleErrorMessage": "Pon un título a todas las respuestas",
+  "app.components.formBuilder.emptyTitleMessage": "Pon un título a todas las respuestas",
   "app.components.formBuilder.enable": "Habilitar",
   "app.components.formBuilder.errorMessage": "Hay un problema, solucione el problema para poder guardar sus cambios",
   "app.components.formBuilder.fieldGroup.description": "Descripción (opcional)",
