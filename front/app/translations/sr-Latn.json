@@ -640,7 +640,7 @@
   "app.components.formBuilder.emptyImageOptionError": "Provide at least 1 answer. Please note that each answer has to have a title.",
   "app.components.formBuilder.emptyOptionError": "Navedi barem 1 odgovor",
   "app.components.formBuilder.emptyTitleError": "Navedi naslov pitanja",
-  "app.components.formBuilder.emptyTitleErrorMessage": "Provide a title for all answers",
+  "app.components.formBuilder.emptyTitleMessage": "Provide a title for all the answers",
   "app.components.formBuilder.enable": "Omogući",
   "app.components.formBuilder.errorMessage": "Došlo je do problema, rešite problem kako bi vaše promene bile sačuvane",
   "app.components.formBuilder.fieldGroup.description": "Opis (opcionalno)",
