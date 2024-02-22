@@ -183,7 +183,6 @@
   "app.components.IdeasMap.or": "tai",
   "app.components.IdeasMap.signInLinkText": "Kirjaudu sisään",
   "app.components.IdeasMap.signUpLinkText": "Kirjaudu",
-  "app.components.IdeasMap.startIdeaAtLocation": "Lähetä idea paikan päällä",
   "app.components.IdeasMap.submitIdea2": "Lähetä syöte",
   "app.components.IdeasMap.tapOnMapToAdd": "Napauta karttaa lisätäksesi syöttötietosi",
   "app.components.IdeasMap.tapOnMapToAddAdmin2": "Järjestelmänvalvojana voit napauttaa karttaa lisätäksesi syöttötietosi, vaikka tämä vaihe ei olisi aktiivinen.",
