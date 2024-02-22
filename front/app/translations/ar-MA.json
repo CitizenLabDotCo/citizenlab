@@ -183,7 +183,6 @@
   "app.components.IdeasMap.or": "أو",
   "app.components.IdeasMap.signInLinkText": "تسجيل الدخول",
   "app.components.IdeasMap.signUpLinkText": "التسجيل",
-  "app.components.IdeasMap.startIdeaAtLocation": "إرسال الفكرة في الموقع",
   "app.components.IdeasMap.submitIdea2": "إرسال المدخلات",
   "app.components.IdeasMap.tapOnMapToAdd": "اضغط على الخريطة لإضافة مدخلاتك",
   "app.components.IdeasMap.tapOnMapToAddAdmin2": "كمسؤول، يمكنك النقر على الخريطة لإضافة مدخلاتك، حتى لو لم تكن هذه المرحلة نشطة.",
