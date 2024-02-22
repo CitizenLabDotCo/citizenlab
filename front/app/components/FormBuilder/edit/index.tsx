@@ -97,7 +97,7 @@ export const FormEdit = ({
         input_type: string(),
         options: validateOneOptionForMultiSelect(
           formatMessage(messages.emptyOptionError),
-          formatMessage(messages.emptyTitleErrorMessage),
+          formatMessage(messages.emptyTitleMessage),
           { multiselect_image: formatMessage(messages.emptyImageOptionError) }
         ),
         maximum: number(),

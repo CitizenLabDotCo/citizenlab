@@ -14,9 +14,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.emptyOptionError',
     defaultMessage: 'Provide at least 1 answer',
   },
-  emptyTitleErrorMessage: {
-    id: 'app.components.formBuilder.emptyTitleErrorMessage',
-    defaultMessage: 'Provide a title for all answers',
+  emptyTitleMessage: {
+    id: 'app.components.formBuilder.emptyTitleMessage',
+    defaultMessage: 'Provide a title for all the answers',
   },
   emptyImageOptionError: {
     id: 'app.components.formBuilder.emptyImageOptionError',
