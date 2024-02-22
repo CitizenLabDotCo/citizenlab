@@ -640,7 +640,7 @@
   "app.components.formBuilder.emptyImageOptionError": "Navedite barem 1 odgovor. Napominjemo da svaki odgovor mora imati naslov.",
   "app.components.formBuilder.emptyOptionError": "Navedite barem 1 odgovor",
   "app.components.formBuilder.emptyTitleError": "Navedite naslov pitanja",
-  "app.components.formBuilder.emptyTitleErrorMessage": "Navedite naslov za sve odgovore",
+  "app.components.formBuilder.emptyTitleMessage": "Navedite naslov za sve odgovore",
   "app.components.formBuilder.enable": "Aktivirano",
   "app.components.formBuilder.errorMessage": "Došlo je do problema, riješite problem kako biste mogli spremiti svoje promjene",
   "app.components.formBuilder.fieldGroup.description": "Opis (nije obvezno)",
