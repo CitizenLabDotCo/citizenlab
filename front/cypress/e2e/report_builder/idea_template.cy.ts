@@ -14,7 +14,7 @@ describe('Idea template', () => {
   const ideaTitle = randomString();
   const ideaContent = randomString();
 
-  const higherVotedIdeaTitle = randomString();
+  const higherLikedIdeaTitle = randomString();
 
   before(() => {
     cy.setAdminLoginCookie();
@@ -93,7 +93,7 @@ describe('Idea template', () => {
     cy.get('.e2e-report-builder-idea-card').should('have.length', 2);
     cy.get('.e2e-report-builder-idea-card')
       .first()
-      .contains(higherVotedIdeaTitle);
+      .contains(higherLikedIdeaTitle);
     cy.get('.e2e-report-builder-idea-card').last().contains(ideaTitle);
 
     // Remove report
