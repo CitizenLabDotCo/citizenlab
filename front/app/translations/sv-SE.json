@@ -972,6 +972,7 @@
   "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "Problembeskrivningen måste vara längre än {limit} tecken",
   "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_maxLength": "Problemtiteln måste vara kortare än {limit} tecken",
   "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength2": "Rubriken för kommentaren måste vara längre än {limit} tecken.",
+  "app.containers.IdeasNewPage.ajv_error_number_required": "Detta fält är obligatoriskt, ange ett giltigt nummer",
   "app.containers.IdeasNewPage.ajv_error_option_body_multiloc_maxLength": "Alternativbeskrivningen måste vara kortare än {limit} tecken",
   "app.containers.IdeasNewPage.ajv_error_option_body_multiloc_minLength": "Problembeskrivningen måste vara längre än {limit} tecken",
   "app.containers.IdeasNewPage.ajv_error_option_title_multiloc_maxLength": "Alternativtiteln måste vara kortare än {limit} tecken",
