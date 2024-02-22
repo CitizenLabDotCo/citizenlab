@@ -640,7 +640,7 @@
   "app.components.formBuilder.emptyImageOptionError": "Fournissez au moins une réponse. Veuillez noter que chaque réponse doit avoir un titre.",
   "app.components.formBuilder.emptyOptionError": "Fournissez au moins 1 réponse",
   "app.components.formBuilder.emptyTitleError": "Donnez un titre à la question",
-  "app.components.formBuilder.emptyTitleErrorMessage": "Donnez un titre à toutes les réponses",
+  "app.components.formBuilder.emptyTitleMessage": "Donnez un titre à toutes les réponses",
   "app.components.formBuilder.enable": "Activer",
   "app.components.formBuilder.errorMessage": "Il y a un problème, veuillez le résoudre pour pouvoir enregistrer vos modifications",
   "app.components.formBuilder.fieldGroup.description": "Description (facultatif)",
