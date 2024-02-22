@@ -47,10 +47,6 @@ export default defineMessages({
     id: 'app.components.IdeasMap.a11y_hideIdeaCard',
     defaultMessage: 'Hide idea card.',
   },
-  startIdeaAtLocation: {
-    id: 'app.components.IdeasMap.startIdeaAtLocation',
-    defaultMessage: 'Submit idea at location',
-  },
   userInputs: {
     id: 'app.components.IdeasMap.userInputs2',
     defaultMessage: 'Inputs from participants',

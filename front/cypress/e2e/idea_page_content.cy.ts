@@ -212,7 +212,7 @@ describe('Idea Page', () => {
     });
 
     it('displays the location on the idea page and the map pops up', () => {
-      cy.get('#e2e-idea-location-mapp').should('exist');
+      cy.get('#e2e-idea-location-map').should('exist');
     });
 
     after(() => {

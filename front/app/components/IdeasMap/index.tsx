@@ -24,6 +24,7 @@ import IdeasAtLocationPopup from './IdeasAtLocationPopup';
 
 import {
   Box,
+  Spinner,
   media,
   useBreakpoint,
   useWindowSize,
@@ -131,7 +132,7 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
   const [searchParams] = useSearchParams();
   const isMobileOrSmaller = useBreakpoint('phone');
   const isTabletOrSmaller = useBreakpoint('tablet');
-  const { data: mapConfig } = useMapConfig(projectId);
+  const { data: mapConfig, isLoading } = useMapConfig(projectId);
 
   // Create div elements to use for inserting React components into Esri map popup
   // Docs: https://developers.arcgis.com/javascript/latest/custom-ui/#introduction
@@ -472,6 +473,10 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
   );
 
   const selectedIdeaData = ideasList?.find(({ id }) => id === selectedIdea);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>
