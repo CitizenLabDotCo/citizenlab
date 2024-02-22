@@ -183,7 +183,6 @@
   "app.components.IdeasMap.or": "ili",
   "app.components.IdeasMap.signInLinkText": "prijava",
   "app.components.IdeasMap.signUpLinkText": "registracija",
-  "app.components.IdeasMap.startIdeaAtLocation": "Pošaljite ideju na mjestu",
   "app.components.IdeasMap.submitIdea2": "Pošaljite unos",
   "app.components.IdeasMap.tapOnMapToAdd": "Dodirnite mapu kako biste dodali svoj unos",
   "app.components.IdeasMap.tapOnMapToAddAdmin2": "Kao administrator, možete dodirnuti kartu da dodate svoj unos, čak i ako ova faza nije aktivna.",
