@@ -640,7 +640,7 @@
   "app.components.formBuilder.emptyImageOptionError": "Provide at least 1 answer. Please note that each answer has to have a title.",
   "app.components.formBuilder.emptyOptionError": "Provide at least 1 answer",
   "app.components.formBuilder.emptyTitleError": "Provide a question title",
-  "app.components.formBuilder.emptyTitleErrorMessage": "Provide a title for all answers",
+  "app.components.formBuilder.emptyTitleMessage": "Provide a title for all the answers",
   "app.components.formBuilder.enable": "Enable",
   "app.components.formBuilder.errorMessage": "There is a problem, please fix the issue to be able to save your changes",
   "app.components.formBuilder.fieldGroup.description": "Description (optional)",
