@@ -45,6 +45,7 @@ declare global {
       apiRemoveIdea: typeof apiRemoveIdea;
       apiRemoveInitiative: typeof apiRemoveInitiative;
       apiLikeInitiative: typeof apiLikeInitiative;
+      apiLikeIdea: typeof apiLikeIdea;
       apiDislikeIdea: typeof apiDislikeIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
       apiAddComment: typeof apiAddComment;
@@ -728,6 +729,21 @@ function apiLikeInitiative(
       },
       method: 'POST',
       url: `web_api/v1/initiatives/${initiativeId}/reactions/up`,
+    });
+  });
+}
+
+function apiLikeIdea(email: string, password: string, ideaId: string) {
+  return cy.apiLogin(email, password).then((response) => {
+    const jwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/ideas/${ideaId}/reactions/up`,
     });
   });
 }
@@ -1735,6 +1751,7 @@ Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
 Cypress.Commands.add('apiCreateInitiative', apiCreateInitiative);
 Cypress.Commands.add('apiRemoveInitiative', apiRemoveInitiative);
+Cypress.Commands.add('apiLikeIdea', apiLikeIdea);
 Cypress.Commands.add('apiDislikeIdea', apiDislikeIdea);
 Cypress.Commands.add(
   'apiCreateOfficialFeedbackForIdea',

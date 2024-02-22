@@ -4,7 +4,6 @@ import moment = require('moment');
 
 describe('Survey question widget', () => {
   let projectId: string;
-  let projectSlug: string;
   let phaseId: string;
   let surveyIncluded: any;
   let surveyFields: ICustomFieldResponse[];
@@ -31,7 +30,6 @@ describe('Survey question widget', () => {
     })
       .then((project) => {
         projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
         return cy.apiCreatePhase({
           projectId,
           title: randomString(),

@@ -9,17 +9,6 @@ describe('Survey template', () => {
   let surveyIncluded: any;
   let surveyFields: ICustomFieldResponse[];
 
-  // const users = Array(4)
-  //   .fill(0)
-  //   .map((_, i) => ({
-  //     firstName: randomString(),
-  //     lastName: randomString(),
-  //     email: randomEmail(),
-  //     password: randomString(),
-  //     gender: i % 2 ? 'male' : 'female',
-  //   }));
-
-  // const userIds: string[] = [];
   let userId: string;
 
   before(() => {
@@ -51,26 +40,6 @@ describe('Survey template', () => {
         surveyIncluded = response.body.included;
         surveyFields = response.body.data;
 
-        // users.forEach(({ firstName, lastName, email, password, gender }) => {
-        //   cy.apiSignup(firstName, lastName, email, password)
-        //     .then((response) => {
-        //       userIds.push(response.body.data.id);
-
-        //       cy.apiUpdateUserCustomFields(email, password, {
-        //         gender,
-        //       });
-        //     })
-        //     .then(() => {
-        //       cy.apiCreateSurveyResponse(email, password, projectId, {
-        //         [surveyFields[1].attributes.key]: surveyIncluded[0].attributes.key,
-        //         [surveyFields[2].attributes.key]: [
-        //           surveyIncluded[2].attributes.key,
-        //           surveyIncluded[3].attributes.key
-        //         ],
-        //       });
-        //     });
-        // });
-
         const firstName = randomString();
         const lastName = randomString();
         const email = randomEmail();
@@ -98,10 +67,6 @@ describe('Survey template', () => {
 
   after(() => {
     cy.apiRemoveProject(projectId);
-
-    // userIds.forEach((userId) => {
-    //   cy.apiRemoveUser(userId);
-    // });
     cy.apiRemoveUser(userId);
   });
 
