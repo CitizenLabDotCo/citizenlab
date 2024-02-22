@@ -83,7 +83,7 @@ describe CustomFieldService do
       create(:custom_field_option, key: 'option_b', custom_field: fields[7], ordering: 2)
 
       schema = service.fields_to_json_schema(fields, locale)
-      pp schema
+
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema).to match(
         { type: 'object',

@@ -33,6 +33,6 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   }
 
   has_many :options, record_type: :custom_field_option, serializer: ::WebApi::V1::CustomFieldOptionSerializer
-  has_one :map_config, class_name: 'CustomMaps::MapConfig', as: :mappable,
-    serializer: ::CustomMaps::WebApi::V1::MapConfigSerializer, if: proc { |object| object.input_type == 'point' }
 end
+
+WebApi::V1::CustomFieldSerializer.include(CustomMaps::Extensions::WebApi::V1::CustomFieldSerializer)
