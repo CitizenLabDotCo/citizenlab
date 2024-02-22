@@ -640,7 +640,7 @@
   "app.components.formBuilder.emptyImageOptionError": "Proporcioneu almenys 1 resposta. Tingueu en compte que cada resposta ha de tenir un títol.",
   "app.components.formBuilder.emptyOptionError": "Proporcioneu almenys 1 resposta",
   "app.components.formBuilder.emptyTitleError": "Proporcioneu un títol de pregunta",
-  "app.components.formBuilder.emptyTitleErrorMessage": "Proporcioneu un títol per a totes les respostes",
+  "app.components.formBuilder.emptyTitleMessage": "Posa un títol per a totes les respostes",
   "app.components.formBuilder.enable": "Activa",
   "app.components.formBuilder.errorMessage": "Hi ha un problema, solucioneu-lo per poder desar els vostres canvis",
   "app.components.formBuilder.fieldGroup.description": "descripció (opcional)",
