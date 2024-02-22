@@ -46,11 +46,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.optional2',
     defaultMessage: 'Optional',
   },
-  choiceCount: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.choiceCount2',
-    defaultMessage:
-      '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
-  },
   openForResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
     defaultMessage: 'Open for responses',

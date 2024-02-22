@@ -98,7 +98,9 @@ export interface IUpdatedPhaseProperties {
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
   document_annotation_embed_url?: string | null;
-  campaigns_settings?: object;
+  campaigns_settings?: {
+    [key in CampaignName]?: boolean;
+  };
 }
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
   projectId: string;
