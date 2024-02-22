@@ -37,6 +37,7 @@ const AdminAllowedTopicsComponent = React.lazy(
 );
 
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
+const ReportTab = lazy(() => import('./project/information/ReportTab'));
 
 export function adminProjectsProjectPath(projectId: string) {
   return `/admin/projects/${projectId}`;
@@ -294,6 +295,14 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <OfflineInputImporter />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'phases/:phaseId/report',
+            element: (
+              <PageLoading>
+                <ReportTab />
               </PageLoading>
             ),
           },
