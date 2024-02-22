@@ -120,7 +120,7 @@ export const FormEdit = ({
     setError,
     handleSubmit,
     control,
-    formState: { isSubmitting, errors },
+    formState: { errors },
     reset,
   } = methods;
 
@@ -129,12 +129,16 @@ export const FormEdit = ({
     control,
   });
 
+  // This tracks form update. We isolate it to avoid setting data on other changes
   const [isUpdatingForm, setIsUpdatingForm] = useState(false);
+  // This tracks form submission and update status
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (isUpdatingForm && !isFetching) {
       reset({ customFields: formCustomFields });
       setIsUpdatingForm(false);
+      setIsSubmitting(false);
     }
   }, [formCustomFields, isUpdatingForm]);
 
@@ -158,6 +162,7 @@ export const FormEdit = ({
 
   const onFormSubmit = async ({ customFields }: FormValues) => {
     try {
+      setIsSubmitting(true);
       const finalResponseArray = customFields.map((field) => ({
         ...(!field.isLocalOnly && { id: field.id }),
         input_type: field.input_type,
@@ -209,6 +214,7 @@ export const FormEdit = ({
       );
     } catch (error) {
       handleHookFormSubmissionError(error, setError, 'customFields');
+      setIsSubmitting(false);
     }
   };
 
@@ -245,7 +251,7 @@ export const FormEdit = ({
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onFormSubmit)}>
               <FormBuilderTopBar
-                isSubmitting={isSubmitting || isUpdatingForm}
+                isSubmitting={isSubmitting}
                 builderConfig={builderConfig}
               />
               <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
