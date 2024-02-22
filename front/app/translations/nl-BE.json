@@ -640,7 +640,7 @@
   "app.components.formBuilder.emptyImageOptionError": "Geef minstens 1 antwoord. Let op dat elk antwoord een titel moet hebben.",
   "app.components.formBuilder.emptyOptionError": "Voer ten minste één antwoord in",
   "app.components.formBuilder.emptyTitleError": "Voer een vraagtitel in",
-  "app.components.formBuilder.emptyTitleErrorMessage": "Geef alle antwoorden een titel",
+  "app.components.formBuilder.emptyTitleMessage": "Geef alle antwoorden een titel",
   "app.components.formBuilder.enable": "Ingeschakeld",
   "app.components.formBuilder.errorMessage": "Er is een probleem opgetreden, los de fout op om je wijzigingen op te slaan",
   "app.components.formBuilder.fieldGroup.description": "Beschrijving (optioneel)",
