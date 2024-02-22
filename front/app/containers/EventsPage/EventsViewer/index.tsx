@@ -86,7 +86,6 @@ interface Props {
   eventsTime: 'past' | 'currentAndFuture';
   className?: string;
   projectId?: string;
-  hideSectionIfNoEvents?: boolean;
   showProjectFilter: boolean;
   showDateFilter?: boolean;
   projectPublicationStatuses: PublicationStatus[];
@@ -99,7 +98,6 @@ const EventsViewer = ({
   eventsTime,
   className,
   projectId,
-  hideSectionIfNoEvents,
   showProjectFilter,
   projectPublicationStatuses,
   attendeeId,
@@ -200,15 +198,6 @@ const EventsViewer = ({
 
   const lastPageNumber =
     (events && getPageNumberFromUrl(events.links?.last)) ?? 1;
-
-  const shouldHideSection =
-    (events && events.data.length === 0 && hideSectionIfNoEvents) ||
-    (isLoading && hideSectionIfNoEvents) ||
-    (isNilOrError(events) && hideSectionIfNoEvents);
-
-  if (shouldHideSection) {
-    return null;
-  }
 
   return (
     <Box className={className} id="project-events">
