@@ -153,7 +153,7 @@ module IdeaCustomFields
 
     def relate_map_config_to_field(field, field_params, errors, index)
       map_config_id = field_params[:map_config_id]
-      return unless map_config_id
+      return if map_config_id.blank?
 
       map_config = CustomMaps::MapConfig.find_by(id: map_config_id)
       # Add to `errors` if not found, to avoid a 404 which would prevent the 422 `errors` response

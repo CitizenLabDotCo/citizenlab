@@ -2845,11 +2845,14 @@ resource 'Idea Custom Fields' do
 
         # This test documents the choice to force the FE to explicitly remove such a relationship
         # by sending a separate request to delete the map_config, using DELETE ...map_configs/:id.
+        # i.e. map_config_id: nil, map_config_id: '', or ommitting map_config_id param will not remove the relation.
         example 'Absence of map_config_id does not remove existing relation', document: false do
           custom_field_a = create(:custom_field_point, resource: custom_form)
           map_config_a = create(:map_config, mappable_id: custom_field_a.id, mappable_type: 'CustomField')
           custom_field_b = create(:custom_field_point, resource: custom_form)
           map_config_b = create(:map_config, mappable_id: custom_field_b.id, mappable_type: 'CustomField')
+          custom_field_c = create(:custom_field_point, resource: custom_form)
+          map_config_c = create(:map_config, mappable_id: custom_field_c.id, mappable_type: 'CustomField')
 
           request = {
             custom_fields: [
@@ -2870,6 +2873,15 @@ resource 'Idea Custom Fields' do
                 required: false,
                 enabled: false,
                 map_config_id: nil
+              },
+              {
+                id: custom_field_c.id,
+                title_multiloc: { 'en' => 'Updated point custom field C' },
+                description_multiloc: { 'en' => 'Updated point custom field B description' },
+                input_type: 'point',
+                required: false,
+                enabled: false,
+                map_config_id: ''
               }
             ]
           }
@@ -2879,6 +2891,7 @@ resource 'Idea Custom Fields' do
 
           expect(custom_field_a.reload.map_config).to eq(map_config_a)
           expect(custom_field_b.reload.map_config).to eq(map_config_b)
+          expect(custom_field_c.reload.map_config).to eq(map_config_c)
         end
       end
     end
