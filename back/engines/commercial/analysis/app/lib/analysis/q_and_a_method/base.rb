@@ -34,8 +34,13 @@ module Analysis
       old_answer = question.answer
       old_accuracy = question.accuracy
       old_input_ids = question.insight.inputs_ids
+      old_custom_field_ids = question.insight.custom_field_ids
       question.update!(accuracy: plan.accuracy, answer: '')
-      question.insight.update!(inputs_ids: filtered_inputs.ids)
+      custom_field_ids = {
+        main_custom_field_id: analysis.main_custom_field_id,
+        additional_custom_field_ids: analysis.additional_custom_field_ids
+      }
+      question.insight.update!(inputs_ids: filtered_inputs.ids, custom_field_ids: custom_field_ids)
 
       begin
         run(plan)
@@ -44,7 +49,7 @@ module Analysis
         ErrorReporter.report(e)
         task.set_failed!
         question.update!(accuracy: old_accuracy, answer: old_answer)
-        question.insight.update!(inputs_ids: old_input_ids)
+        question.insight.update!(inputs_ids: old_input_ids, custom_field_ids: old_custom_field_ids)
       end
     end
 

@@ -28,7 +28,7 @@ module Analysis
         end
       end
 
-      def self.delete_custom_field_references!(custom_field_id)
+      def self.delete_custom_field_references_in_filters!(custom_field_id)
         filters_with_custom_field_id(custom_field_id).each do |object|
           object.filters.reject! { |k, _v| k.match?(/^(author|input)_custom_#{custom_field_id}.*$/) }
           object.save!

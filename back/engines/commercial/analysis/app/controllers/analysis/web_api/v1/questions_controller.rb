@@ -19,10 +19,7 @@ module Analysis
           @question = Question.new(
             background_task: QAndATask.new(analysis: @analysis),
             **question_params,
-            insight_attributes: {
-              analysis: @analysis,
-              filters: filters(params[:question][:filters])
-            }
+            insight_attributes: insight_attributes
           )
           plan = QAndAMethod::Base.plan(@question)
           render json: QuestionPreCheckSerializer.new(
@@ -35,10 +32,7 @@ module Analysis
           @question = Question.new(
             background_task: QAndATask.new(analysis: @analysis),
             **question_params,
-            insight_attributes: {
-              analysis: @analysis,
-              filters: filters(params[:question][:filters])
-            }
+            insight_attributes: insight_attributes
           )
           plan = plan_task
           if !plan.possible?
@@ -99,6 +93,17 @@ module Analysis
 
         def question_params
           params.require(:question).permit(:question)
+        end
+
+        def insight_attributes
+          {
+            analysis: @analysis,
+            filters: filters(params[:question][:filters]),
+            custom_field_ids: {
+              main_custom_field_id: @analysis.main_custom_field_id,
+              additional_custom_field_ids: @analysis.additional_custom_field_ids
+            }
+          }
         end
 
         def side_fx_service
