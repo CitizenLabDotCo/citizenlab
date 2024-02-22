@@ -183,7 +183,6 @@
   "app.components.IdeasMap.or": "ou",
   "app.components.IdeasMap.signInLinkText": "vous connecter",
   "app.components.IdeasMap.signUpLinkText": "s'inscrire",
-  "app.components.IdeasMap.startIdeaAtLocation": "Soumettre une idée sur place",
   "app.components.IdeasMap.submitIdea2": "Soumettre une contribution",
   "app.components.IdeasMap.tapOnMapToAdd": "Tapez sur la carte pour ajouter votre contribution",
   "app.components.IdeasMap.tapOnMapToAddAdmin2": "En tant qu'administrateur, vous pouvez cliquer sur la carte pour ajouter votre contribution, même si cette phase n'est pas active.",
