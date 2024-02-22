@@ -183,7 +183,6 @@
   "app.components.IdeasMap.or": "eller",
   "app.components.IdeasMap.signInLinkText": "logga in",
   "app.components.IdeasMap.signUpLinkText": "registrera dig",
-  "app.components.IdeasMap.startIdeaAtLocation": "Lämna in idé på plats",
   "app.components.IdeasMap.submitIdea2": "Skicka inmatning",
   "app.components.IdeasMap.tapOnMapToAdd": "Tryck på kartan för att lägga till dina indata",
   "app.components.IdeasMap.tapOnMapToAddAdmin2": "Som administratör kan du trycka på kartan för att lägga till dina synpunkter, även om denna fas inte är aktiv.",
