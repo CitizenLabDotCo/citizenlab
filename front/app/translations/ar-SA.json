@@ -640,7 +640,7 @@
   "app.components.formBuilder.emptyImageOptionError": "قم بتقديم إجابة واحدة على الأقل. يرجى ملاحظة أن كل إجابة يجب أن يكون لها عنوان.",
   "app.components.formBuilder.emptyOptionError": "أدخل إجابة واحدة على الأقل",
   "app.components.formBuilder.emptyTitleError": "أدخل عنوان سؤال",
-  "app.components.formBuilder.emptyTitleErrorMessage": "توفير عنوان لجميع الإجابات",
+  "app.components.formBuilder.emptyTitleMessage": "توفير عنوان لجميع الإجابات",
   "app.components.formBuilder.enable": "تمكين",
   "app.components.formBuilder.errorMessage": "توجد مشكلة، يرجى حل المشكلة لتتمكن من حفظ التغييرات التي أجريتها",
   "app.components.formBuilder.fieldGroup.description": "الوصف (اختياري)",
