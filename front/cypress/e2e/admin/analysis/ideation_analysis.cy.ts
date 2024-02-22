@@ -64,10 +64,6 @@ describe('Admin: ideation analysis', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideas`);
     cy.get('#e2e-analysis-banner-button').click();
 
-    // Consent modal
-    cy.get('#e2e-analysis-consent-checkbox').click();
-    cy.get('#e2e-analysis-consent-button').click();
-
     cy.location('pathname').should(
       'include',
       '/en/admin/projects/' + projectId + '/analysis'
