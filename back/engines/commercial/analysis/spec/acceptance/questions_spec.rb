@@ -12,7 +12,7 @@ resource 'Questions' do
   end
 
   get 'web_api/v1/analyses/:analysis_id/questions/:id' do
-    let(:analysis) { create(:analysis)}
+    let(:analysis) { create(:analysis) }
     let(:idea) { create(:idea, project: analysis.project) }
     let(:analysis_id) { analysis.id }
     let(:question) { create(:analysis_question, insight_attributes: { analysis: analysis, inputs_ids: [idea.id] }) }

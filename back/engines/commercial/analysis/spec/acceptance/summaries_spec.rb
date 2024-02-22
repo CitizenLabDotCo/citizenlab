@@ -12,7 +12,7 @@ resource 'Summaries' do
   end
 
   get 'web_api/v1/analyses/:analysis_id/summaries/:id' do
-    let(:analysis) { create(:analysis)}
+    let(:analysis) { create(:analysis) }
     let(:ideas) { create_list(:idea, 2, project: analysis.project) }
     let(:summary) { create(:summary, insight_attributes: { analysis: analysis, inputs_ids: ideas.map(&:id) }) }
     let(:analysis_id) { analysis.id }
