@@ -3,17 +3,23 @@ import { CLErrorsWrapper } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import analysesKeys from './keys';
 import { IAnalysis } from './types';
+import inputsKeys from 'api/analysis_inputs/keys';
 
 type IAnalysisUpdate = {
   id: string;
-  show_insights: boolean;
+  show_insights?: boolean;
+  additional_custom_field_ids?: string[];
 };
 
-const updateAnalysis = ({ id, show_insights }: IAnalysisUpdate) =>
+const updateAnalysis = ({
+  id,
+  show_insights,
+  additional_custom_field_ids,
+}: IAnalysisUpdate) =>
   fetcher<IAnalysis>({
     path: `/analyses/${id}`,
     action: 'patch',
-    body: { show_insights },
+    body: { analysis: { show_insights, additional_custom_field_ids } },
   });
 
 const useUpdateAnalysis = () => {
@@ -22,6 +28,7 @@ const useUpdateAnalysis = () => {
     mutationFn: updateAnalysis,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: analysesKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: inputsKeys.lists() });
     },
   });
 };
