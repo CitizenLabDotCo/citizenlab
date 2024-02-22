@@ -91,13 +91,13 @@ const ConfigSelectWithLocaleSwitcher = ({
       title_multiloc: {},
       ...(inputType === 'multiselect_image' && { image_id: '' }),
     });
-    setValue(name, newValues);
+    setValue(name, newValues, { shouldDirty: true });
   };
 
   const removeOption = (value: IOptionsType[], name: string, index: number) => {
     const newValues = value;
     newValues.splice(index, 1);
-    setValue(name, newValues);
+    setValue(name, newValues, { shouldDirty: true });
   };
 
   const addOtherOption = (value: IOptionsType[], name: string) => {
@@ -106,7 +106,7 @@ const ConfigSelectWithLocaleSwitcher = ({
       title_multiloc: { en: 'Other' },
       other: true,
     });
-    setValue(name, newValues);
+    setValue(name, newValues, { shouldDirty: true });
   };
 
   const defaultOptionValues = [{}];
