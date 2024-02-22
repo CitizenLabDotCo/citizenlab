@@ -88,7 +88,6 @@ export const getFormActionsConfig = (
 };
 
 // TODO: JS - Get the correct types in here
-// TODO: JS - Write tests for these functions
 
 // If copying another form, reset IDs for fields and add temp-ids to options
 export const resetCopiedForm = (customFields: any) => {
@@ -118,7 +117,7 @@ export const resetCopiedForm = (customFields: any) => {
     if (newField.logic?.rules) {
       const newRules = newField.logic.rules.map((rule: any) => {
         return {
-          if: logicIdMap[rule.if],
+          if: newField.input_type === 'select' ? logicIdMap[rule.if] : rule.if,
           goto_page_id: logicIdMap[rule.goto_page_id],
         };
       });

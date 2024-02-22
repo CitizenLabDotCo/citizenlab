@@ -105,7 +105,7 @@ module IdeaCustomFields
 
     def create_field!(field_params, errors, page_temp_ids_to_ids_mapping, index)
       create_params = field_params.except('temp_id').to_h
-      if create_params.key? 'code'
+      if create_params.key? 'code' && !create_params['code'].nil?
         default_field = @participation_method.default_fields(@custom_form).find do |field|
           field.code == create_params['code']
         end

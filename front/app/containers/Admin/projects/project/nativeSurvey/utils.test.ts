@@ -120,11 +120,31 @@ describe('resetCopiedForm', () => {
       description_multiloc: {},
     },
     {
-      input_type: 'text',
-      required: false,
+      id: '7ye89dcaeb249a6a00e26cc39bf9388',
+      input_type: 'linear_scale',
+      logic: {
+        rules: [
+          {
+            if: 2,
+            goto_page_id: '48265b4df96148538e31d88641429e97',
+          },
+          {
+            if: 3,
+            goto_page_id: 'f5ac8a59213b4c6d8e3a95a646d587cc',
+          },
+          {
+            if: 4,
+            goto_page_id: 'survey_end',
+          },
+        ],
+      },
+      required: true,
       enabled: true,
-      title_multiloc: { en: 'Question 1' },
+      title_multiloc: { en: 'linear scale' },
       description_multiloc: {},
+      minimum_label_multiloc: {},
+      maximum_label_multiloc: {},
+      maximum: '5',
     },
     {
       input_type: 'page',
@@ -188,16 +208,24 @@ describe('resetCopiedForm', () => {
   });
 
   it('should replace ids in select logic rules with TEMP-ID unless the page ID is survey end', () => {
-    resultCustomFields.forEach((field) => {
-      if (field.input_type === 'select') {
-        field.logic.rules.forEach((rule) => {
-          expect(rule.if).toMatch(/^TEMP-ID-/);
-          if (rule.goto_page_id !== 'survey_end') {
-            expect(rule.goto_page_id).toMatch(/^TEMP-ID-/);
-          }
-        });
-      }
-    });
+    const selectField = resultCustomFields[1];
+    expect(selectField.logic.rules[0].if).toMatch(/^TEMP-ID-/);
+    expect(selectField.logic.rules[0].goto_page_id).toMatch(/^TEMP-ID-/);
+    expect(selectField.logic.rules[1].if).toMatch(/^TEMP-ID-/);
+    expect(selectField.logic.rules[1].goto_page_id).toMatch(/^TEMP-ID-/);
+    expect(selectField.logic.rules[2].if).toMatch(/^TEMP-ID-/);
+    expect(selectField.logic.rules[2].goto_page_id).toEqual('survey_end');
+  });
+
+  it('should replace only goto_page_ids in linear_scale logic rules with TEMP-ID unless the page ID is survey end', () => {
+    const linearScaleField = resultCustomFields[3];
+    console.log(linearScaleField.logic);
+    expect(linearScaleField.logic.rules[0].if).toEqual(2);
+    expect(linearScaleField.logic.rules[0].goto_page_id).toMatch(/^TEMP-ID-/);
+    expect(linearScaleField.logic.rules[1].if).toEqual(3);
+    expect(linearScaleField.logic.rules[1].goto_page_id).toMatch(/^TEMP-ID-/);
+    expect(linearScaleField.logic.rules[2].if).toEqual(4);
+    expect(linearScaleField.logic.rules[2].goto_page_id).toEqual('survey_end');
   });
 
   it('should replace ids in page logic next_page_id with TEMP-ID unless the page ID is survey end', () => {
