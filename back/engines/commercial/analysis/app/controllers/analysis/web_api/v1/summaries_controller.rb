@@ -18,10 +18,7 @@ module Analysis
         def pre_check
           @summary = Summary.new(
             background_task: SummarizationTask.new(analysis: @analysis),
-            insight_attributes: {
-              analysis: @analysis,
-              filters: filters(params[:summary][:filters])
-            }
+            insight_attributes: insight_attributes
           )
           plan = SummarizationMethod::Base.plan(@summary)
           render json: SummaryPreCheckSerializer.new(
@@ -33,10 +30,7 @@ module Analysis
         def create
           @summary = Summary.new(
             background_task: SummarizationTask.new(analysis: @analysis),
-            insight_attributes: {
-              analysis: @analysis,
-              filters: filters(params[:summary][:filters])
-            }
+            insight_attributes: insight_attributes
           )
           plan = plan_task
           if !plan.possible?
@@ -93,6 +87,17 @@ module Analysis
             .joins(:insight)
             .where(insight: { analysis: @analysis })
             .find(params[:id])
+        end
+
+        def insight_attributes
+          {
+            analysis: @analysis,
+            filters: filters(params[:summary][:filters]),
+            custom_field_ids: {
+              main_custom_field_id: @analysis.main_custom_field_id,
+              additional_custom_field_ids: @analysis.additional_custom_field_ids
+            }
+          }
         end
 
         def side_fx_service

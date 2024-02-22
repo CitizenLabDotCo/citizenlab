@@ -82,6 +82,7 @@ resource 'Questions' do
             comments_from: 5,
             tag_ids: [tag.id]
           },
+          custom_field_ids: { main_custom_field_id: analysis.main_custom_field_id, additional_custom_field_ids: analysis.additional_custom_field_ids },
           accuracy: 0.8,
           missing_inputs_count: 0,
           created_at: kind_of(String),
@@ -133,6 +134,7 @@ resource 'Questions' do
           question: nil,
           answer: nil,
           filters: { reactions_from: 5 },
+          custom_field_ids: {},
           accuracy: 0.8,
           missing_inputs_count: 0,
           created_at: kind_of(String),
