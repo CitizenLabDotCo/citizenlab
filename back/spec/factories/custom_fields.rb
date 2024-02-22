@@ -33,7 +33,7 @@ FactoryBot.define do
       end
       required { false }
       input_type { 'point' }
-      enabled { true } # TODO: Is this needed? A good idea?
+      enabled { true }
 
       trait :for_custom_form do
         association :resource, factory: :custom_form

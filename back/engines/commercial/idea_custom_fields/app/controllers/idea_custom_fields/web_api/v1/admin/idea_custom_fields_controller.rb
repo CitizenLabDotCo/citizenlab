@@ -156,7 +156,7 @@ module IdeaCustomFields
       return if map_config_id.blank?
 
       map_config = CustomMaps::MapConfig.find_by(id: map_config_id)
-      # Add to `errors` if not found, to avoid a 404 which would prevent the 422 `errors` response
+      # Add to `errors` if not found, to avoid a 404 which would interrupt the 422 `errors` response
       add_map_configs_errors(errors, index, ['map_config with an ID of map_config_id was not found']) unless map_config
       return unless map_config
 
