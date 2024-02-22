@@ -7,10 +7,6 @@ import {
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
-// services
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IAppConfigurationSettings } from 'api/app_configuration/types';
-
 // components
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import Button from 'components/UI/Button';
@@ -21,7 +17,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // Types
-import { IInitiativeData } from 'api/initiatives/types';
+import { StatusComponentProps } from './Status';
 
 const Container = styled.div``;
 
@@ -44,21 +40,13 @@ const StyledButton = styled(Button)`
   margin-top: 20px;
 `;
 
-interface Props {
-  initiative: IInitiativeData;
-  initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userReacted: boolean;
-  onReaction: () => void;
-}
-
 const ThresholdReached = ({
   initiative,
   initiativeSettings: { reacting_threshold, threshold_reached_message },
   initiativeStatus,
   userReacted,
   onReaction,
-}: Props) => {
+}: StatusComponentProps) => {
   const theme = useTheme();
   const reactionCount = initiative.attributes.likes_count;
   const reactionLimit = reacting_threshold;

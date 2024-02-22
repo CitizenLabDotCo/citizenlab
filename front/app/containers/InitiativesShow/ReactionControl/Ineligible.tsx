@@ -8,19 +8,13 @@ import {
   Icon,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IAppConfigurationSettings } from 'api/app_configuration/types';
-
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
-
 import ProposalProgressBar from './ProposalProgressBar';
 import Button from 'components/UI/Button';
-
 import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { IInitiativeData } from 'api/initiatives/types';
+import { StatusComponentProps } from './Status';
 
 const StatusIcon = styled(Icon)`
   path {
@@ -54,20 +48,12 @@ const StyledButton = styled(Button)`
   margin-top: 20px;
 `;
 
-interface Props {
-  initiative: IInitiativeData;
-  initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userReacted: boolean;
-  onScrollToOfficialFeedback: () => void;
-}
-
 const Ineligible = ({
   initiative,
   initiativeSettings: { eligibility_criteria, reacting_threshold },
   initiativeStatus,
   onScrollToOfficialFeedback,
-}: Props) => {
+}: StatusComponentProps) => {
   const theme = useTheme();
   const reactionCount = initiative.attributes.likes_count;
   const reactionLimit = reacting_threshold;

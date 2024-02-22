@@ -10,23 +10,17 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { StatusExplanation } from './SharedStyles';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
-
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IAppConfigurationSettings } from 'api/app_configuration/types';
-
 import CountDown from './CountDown';
-
 import Button from 'components/UI/Button';
 import ProposalProgressBar from './ProposalProgressBar';
-
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 import globalMessages from 'utils/messages';
 import T from 'components/T';
 import { darken } from 'polished';
 import Tippy from '@tippyjs/react';
-import { IInitiativeData } from 'api/initiatives/types';
 import { InitiativePermissionsDisabledReason } from 'hooks/useInitiativesPermissions';
+import { StatusComponentProps } from './Status';
 
 const Container = styled.div``;
 
@@ -143,15 +137,6 @@ const TooltipContentText = styled.div`
   }
 `;
 
-interface Props {
-  initiative: IInitiativeData;
-  initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userReacted: boolean;
-  onReaction: () => void;
-  disabledReason: InitiativePermissionsDisabledReason;
-}
-
 const disabledMessages: {
   [key in InitiativePermissionsDisabledReason]: MessageDescriptor;
 } = {
@@ -164,7 +149,7 @@ const ProposedNotReacted = ({
   initiative,
   initiativeSettings: { reacting_threshold, threshold_reached_message },
   disabledReason,
-}: Props) => {
+}: StatusComponentProps) => {
   const theme = useTheme();
   const reactionCount = initiative.attributes.likes_count;
   const reactionLimit = reacting_threshold;

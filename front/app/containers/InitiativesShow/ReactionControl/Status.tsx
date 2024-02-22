@@ -25,7 +25,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import useDeleteInitiativeReaction from 'api/initiative_reactions/useDeleteInitiativeReaction';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-interface ReactionControlComponentProps {
+export interface StatusComponentProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: ProposalsSettings;
@@ -40,7 +40,7 @@ type TComponentMap = {
   [key in InitiativeStatusCode]: {
     [key in
       | 'reacted'
-      | 'notReacted']: React.ComponentType<ReactionControlComponentProps>;
+      | 'notReacted']: React.ComponentType<StatusComponentProps>;
   };
 };
 
