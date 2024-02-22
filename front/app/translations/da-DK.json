@@ -640,7 +640,7 @@
   "app.components.formBuilder.emptyImageOptionError": "Giv mindst 1 svar. Bemærk venligst, at hvert svar skal have en titel.",
   "app.components.formBuilder.emptyOptionError": "Giv mindst 1 svar",
   "app.components.formBuilder.emptyTitleError": "Angiv en spørgsmålstitel",
-  "app.components.formBuilder.emptyTitleErrorMessage": "Giv en titel til alle svar",
+  "app.components.formBuilder.emptyTitleMessage": "Giv en titel til alle svarene",
   "app.components.formBuilder.enable": "Aktiver",
   "app.components.formBuilder.errorMessage": "Der er et problem, udbedre problemet for at kunne gemme dine ændringer",
   "app.components.formBuilder.fieldGroup.description": "Beskrivelse (valgfrit)",
