@@ -18,6 +18,7 @@ import Expand from '@arcgis/core/widgets/Expand';
 import Legend from '@arcgis/core/widgets/Legend';
 import LayerList from '@arcgis/core/widgets/LayerList';
 import WebMap from '@arcgis/core/WebMap';
+import Collection from '@arcgis/core/core/Collection';
 
 // utils
 import { getDefaultBasemap } from './utils';
@@ -231,6 +232,15 @@ const EsriMap = ({
           webMap.remove(layer);
           webMap.add(layer);
         });
+
+        if (layers.find((layer) => layer.id === 'ideasLayer')) {
+          const ideasLayer = layers.find((layer) => layer.id === 'ideasLayer');
+          if (ideasLayer) {
+            webMap.remove(ideasLayer);
+            webMap.add(ideasLayer);
+          }
+        }
+        console.log('Layers: ', webMap.allLayers);
         return;
       }
     });
@@ -262,6 +272,22 @@ const EsriMap = ({
       });
     }
   }, [onClick, mapView]);
+
+  useEffect(() => {
+    webMap?.layers.on('after-changes', function () {
+      console.log('Layers changed! Re-ordering...');
+
+      // TODO : Continue here
+      webMap?.reorder(
+        webMap?.layers.find((layer) => layer.id === 'ideasLayer'),
+        webMap?.layers.length - 1
+      );
+      const basemapCopy = webMap?.basemap.clone();
+      const test = new Collection<Layer>();
+      basemapCopy.referenceLayers = test;
+      webMap.basemap = basemapCopy;
+    });
+  }, [webMap?.layers, webMap]);
 
   useEffect(() => {
     // On map hover, pass the event to hover handler if it was provided

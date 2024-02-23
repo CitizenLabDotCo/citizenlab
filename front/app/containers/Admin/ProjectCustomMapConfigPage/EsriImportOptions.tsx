@@ -17,6 +17,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { getLayerType } from './utils';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   projectId: string;
@@ -29,7 +30,9 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
   const isEsriIntegrationEnabled = useFeatureFlag({ name: 'esri_integration' });
 
   const layerType = getLayerType(mapConfig);
-  const hasExistingWebMap = !!mapConfig?.data?.attributes?.esri_web_map_id;
+  const hasExistingWebMap = !isNilOrError(
+    mapConfig?.data?.attributes?.esri_web_map_id
+  );
 
   const getWebMapDisabledMessage = () => {
     if (!isEsriIntegrationEnabled) {
