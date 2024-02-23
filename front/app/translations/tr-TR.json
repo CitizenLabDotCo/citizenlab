@@ -1131,7 +1131,6 @@
   "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceTwo": "İncelendikten sonra bir e-posta alacaksınız.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} bilgilendirildi. Oylama devam ediyor.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "Eşiğe ulaşan",
-  "app.containers.InitiativesShow.VoteControl.unvoteLink": "Oyumu iptal et",
   "app.containers.InitiativesShow.VoteControl.vote": "Oy verin",
   "app.containers.InitiativesShow.VoteControl.votedText": "Bu öneri bir sonraki aşamaya geçtiğinde bilgilendirileceksiniz. {x, plural, =0 {{xDays} kaldı.} one {{xDays} kaldı.} other {{xDays} kaldı.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Oyunuz gönderildi!",

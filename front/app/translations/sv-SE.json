@@ -1131,7 +1131,6 @@
   "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceTwo": "Du kommer att få ett e-postmeddelande när det har granskats.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} har underrättats. Röstningen är fortfarande öppen.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "Tröskeln har nåtts",
-  "app.containers.InitiativesShow.VoteControl.unvoteLink": "Avbryt min röst",
   "app.containers.InitiativesShow.VoteControl.vote": "Rösta",
   "app.containers.InitiativesShow.VoteControl.votedText": "Du får ett meddelande när detta förslag går till nästa steg. {x, plural, =0 {Det är {xDays} kvar.} one {Det är {xDays} kvar.} other {Det är {xDays} kvar.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Din röst har skickats!",
