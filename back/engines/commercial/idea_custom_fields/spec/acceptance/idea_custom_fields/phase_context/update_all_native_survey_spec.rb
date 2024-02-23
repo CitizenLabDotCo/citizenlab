@@ -22,6 +22,7 @@ resource 'Idea Custom Fields' do
     with_options scope: 'options[]' do
       parameter :id, 'The ID of an existing custom field option to update. When the ID is not provided, a new option is created.', required: false
       parameter :title_multiloc, 'A title of the option, as shown to users, in multiple locales', required: false
+      parameter :image_id, 'If the option has an image, the ID of the image', required: false
     end
 
     let(:context) { create(:phase, participation_method: 'native_survey') }
@@ -429,6 +430,55 @@ resource 'Idea Custom Fields' do
         expect(new_option2.id).to eq option2.id
         expect(new_option2.key).to eq option2.key
         expect(new_option2.title_multiloc).to eq({ 'en' => 'Updated option 2' })
+      end
+
+      example 'Duplicate an option image when a new option is given an image_id already in use' do
+        select_field = create(:custom_field_select, resource: custom_form)
+        option = create(:custom_field_option, custom_field: select_field)
+        option_image = create(:custom_field_option_image, custom_field_option: option)
+
+        request = {
+          custom_fields: [
+            { input_type: 'page' },
+            {
+              id: select_field.id,
+              input_type: select_field.input_type,
+              title_multiloc: select_field.title_multiloc,
+              options: [
+                {
+                  id: option.id,
+                  title_multiloc: option.title_multiloc,
+                  image_id: option_image.id
+                }
+              ]
+            },
+            {
+              input_type: 'select',
+              title_multiloc: { en: 'New field' },
+              required: false,
+              enabled: true,
+              options: [
+                {
+                  temp_id: SecureRandom.uuid,
+                  title_multiloc: { en: 'New option' },
+                  image_id: option_image.id
+                }
+              ]
+            }
+          ]
+        }
+
+        expect(CustomFieldOption.all.count).to eq 1
+        expect(CustomFieldOptionImage.all.count).to eq 1
+
+        do_request request
+
+        assert_status 200
+        expect(CustomFieldOption.all.count).to eq 2
+        expect(CustomFieldOptionImage.all.count).to eq 2
+        expect(FileUtils.compare_file(
+          CustomFieldOptionImage.first.image.file.file, CustomFieldOptionImage.last.image.file.file
+        )).to be_truthy
       end
 
       example 'Remove all custom fields' do
