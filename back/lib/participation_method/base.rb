@@ -19,10 +19,6 @@ module ParticipationMethod
       # Default is to do nothing.
     end
 
-    def create_default_form!
-      # Default is to do nothing.
-    end
-
     def default_fields(_custom_form)
       []
     end

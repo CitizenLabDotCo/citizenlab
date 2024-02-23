@@ -78,9 +78,7 @@ module Analysis
 
         def detect_custom_fields
           container = @analysis.phase || @analysis.project
-          participation_method = Factory.instance.participation_method_for(container)
-          custom_form = container.custom_form || participation_method.create_default_form!
-
+          custom_form = container.custom_form
           custom_fields = IdeaCustomFieldsService.new(custom_form).all_fields
           # custom fields can be an array or a scope
           custom_fields.filter(&:support_free_text_value?).map(&:id)

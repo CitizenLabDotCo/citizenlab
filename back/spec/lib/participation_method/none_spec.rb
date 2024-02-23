@@ -30,12 +30,6 @@ RSpec.describe ParticipationMethod::None do
     end
   end
 
-  describe '#create_default_form!' do
-    it 'does not create a default form' do
-      expect { participation_method.create_default_form! }.not_to change(CustomForm, :count)
-    end
-  end
-
   describe '#default_fields' do
     it 'returns an empty list' do
       expect(

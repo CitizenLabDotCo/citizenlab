@@ -61,20 +61,6 @@ module ParticipationMethod
       ]
     end
 
-    # TODO: JS - Can we remove this method? Only used by analysis
-    def create_default_form!
-      form = CustomForm.create(participation_context: phase)
-
-      default_fields(form).reverse_each do |field|
-        field.save!
-        field.move_to_top
-      end
-
-      phase.reload
-
-      form
-    end
-
     def never_show?
       true
     end

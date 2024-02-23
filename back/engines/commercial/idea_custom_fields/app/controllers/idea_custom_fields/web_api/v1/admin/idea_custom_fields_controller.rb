@@ -282,6 +282,7 @@ module IdeaCustomFields
     def set_custom_form
       container_id = params[secure_constantize(:container_id)]
       @container = secure_constantize(:container_class).find container_id
+      # TODO: JS - This doesn't seem right given the form is always now edited in phase
       @custom_form = CustomForm.find_or_initialize_by participation_context: @container
     end
 

@@ -29,13 +29,6 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#create_default_form!' do
-    it 'creates a default form' do
-      expect { participation_method.create_default_form! }.to change(CustomForm, :count)
-      expect { participation_method.create_default_form! }.to change(CustomField, :count)
-    end
-  end
-
   describe '#default_fields' do
     it 'returns the default ideation fields' do
       expect(
