@@ -13,7 +13,7 @@ module Analysis
 
       def missing_inputs_count
         input_ids_then = inputs_ids || []
-        input_ids_now = analysis.participation_context.idea_ids
+        input_ids_now = InputsFinder.new(analysis, filters.symbolize_keys).execute.map(&:id)
         (input_ids_now - input_ids_then).size
       end
     end

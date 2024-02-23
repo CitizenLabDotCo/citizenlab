@@ -6,7 +6,6 @@ import React, {
   FormEvent,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isNumber } from 'lodash-es';
 import moment from 'moment';
 
 // hooks
@@ -84,7 +83,7 @@ const ListItem = styled.li`
   line-height: normal;
   font-weight: 400;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -232,43 +231,38 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   />
                 </ListItem>
               )}
-            {isNumber(projectParticipantsCount) &&
-              projectParticipantsCount > 0 && (
-                <ListItem id="e2e-project-sidebar-participants-count">
-                  <ListItemIcon ariaHidden name="user" />
-                  <FormattedMessage
-                    {...messages.xParticipants}
-                    values={{ participantsCount: projectParticipantsCount }}
-                  />
-                  {hasNativeSurvey(phases?.data) && isAdminUser && (
-                    <Box mb="4px" ml="4px">
-                      <IconTooltip
-                        placement="top-start"
-                        maxTooltipWidth={200}
-                        iconColor={colors.coolGrey300}
-                        content={
-                          <FormattedMessage
-                            {...messages.participantsTooltip}
-                            values={{
-                              accessRightsLink: (
-                                <Link
-                                  to={`${adminProjectsProjectPath(
-                                    projectId
-                                  )}/settings/access-rights`}
-                                >
-                                  <FormattedMessage
-                                    {...messages.accessRights}
-                                  />
-                                </Link>
-                              ),
-                            }}
-                          />
-                        }
+            <ListItem id="e2e-project-sidebar-participants-count">
+              <ListItemIcon ariaHidden name="user" />
+              <FormattedMessage
+                {...messages.xParticipants}
+                values={{ participantsCount: projectParticipantsCount }}
+              />
+              {isAdminUser && hasNativeSurvey(phases?.data) && (
+                <Box ml="4px">
+                  <IconTooltip
+                    placement="auto"
+                    maxTooltipWidth={200}
+                    iconColor={colors.coolGrey500}
+                    content={
+                      <FormattedMessage
+                        {...messages.participantsTooltip}
+                        values={{
+                          accessRightsLink: (
+                            <Link
+                              to={`${adminProjectsProjectPath(
+                                projectId
+                              )}/settings/access-rights`}
+                            >
+                              <FormattedMessage {...messages.accessRights} />
+                            </Link>
+                          ),
+                        }}
                       />
-                    </Box>
-                  )}
-                </ListItem>
+                    }
+                  />
+                </Box>
               )}
+            </ListItem>
             {phases && phases.data.length > 1 && (
               <ListItem>
                 <ListItemIcon ariaHidden name="timeline" className="timeline" />
@@ -288,7 +282,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 hasProjectEnded &&
                 currentPhase?.attributes.participation_method ===
                   'ideation')) &&
-              isNumber(ideasCount) &&
+              typeof ideasCount === 'number' &&
               ideasCount > 0 && (
                 <ListItem id="e2e-project-sidebar-ideas-count">
                   <ListItemIcon ariaHidden name="idea" />

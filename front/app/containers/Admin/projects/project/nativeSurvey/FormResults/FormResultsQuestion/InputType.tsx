@@ -13,17 +13,24 @@ import { get } from 'lodash-es';
 interface Props {
   inputType: string;
   required: boolean;
+  totalSubmissions: number;
+  totalResponses: number;
 }
 
-const InputType = ({ inputType, required }: Props) => {
+const InputType = ({
+  inputType,
+  required,
+  totalResponses,
+  totalSubmissions,
+}: Props) => {
   const { formatMessage } = useIntl();
-  const inputTypeText = get(messages, inputType.concat('2'), '');
+  const inputTypeText = get(messages, inputType, '');
 
   const requiredOrOptionalText = required
-    ? formatMessage(messages.required2)
-    : formatMessage(messages.optional2);
+    ? formatMessage(messages.required)
+    : formatMessage(messages.optional);
 
-  const inputTypeLabel = `${formatMessage(
+  const inputTypeLabel = `${totalResponses}/${totalSubmissions} - ${formatMessage(
     inputTypeText
   )} - ${requiredOrOptionalText.toLowerCase()}`;
 

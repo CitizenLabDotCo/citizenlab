@@ -141,7 +141,7 @@ const SurveyResultsWidgetSettings = () => {
             fill="textSecondary"
             display="inline"
           />
-          {formatMessage(nativeSurveyMessages.informationText2)}
+          {formatMessage(nativeSurveyMessages.informationText)}
         </Text>
       </Box>
 
@@ -167,7 +167,7 @@ const SurveyResultsWidgetSettings = () => {
             label={formatMessage(messages.surveyPhase)}
             projectId={projectId}
             phaseId={phaseId}
-            participationMethod="native_survey"
+            participationMethods={['native_survey']}
             onPhaseFilter={handlePhaseFilter}
           />
           {phaseId && (

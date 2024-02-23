@@ -65,7 +65,7 @@ export default () => {
   if (showEditPage) {
     return (
       <Container id="e2e-user-edit-profile-page">
-        <UsersEditPageMeta user={authUser.data} />
+        <UsersEditPageMeta authUser={authUser} />
         <ScreenReaderOnly>
           <FormattedMessage
             tagName="h1"

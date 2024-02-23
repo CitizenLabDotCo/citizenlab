@@ -1,5 +1,9 @@
+import { GroupMode } from 'api/graph_data_units/requestTypes';
+
 export interface Props {
   projectId?: string;
   phaseId?: string;
-  fieldId?: string;
+  questionId?: string;
+  groupMode?: GroupMode;
+  groupFieldId?: string;
 }

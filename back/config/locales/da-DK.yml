@@ -44,15 +44,15 @@ da:
     economy_description: Arbejde, økonomi og turisme
     housing: Boliger
     housing_description: Boliger
-    public_space: Offentlige rum og bygninger
+    public_space: Offentlige rum, bygninger og arealer
     public_space_description: Offentlige rum og bygninger
-    safety: Sikkerhed
+    safety: Sikkerhed og tryghed
     safety_description: Sikkerhed
-    education: Uddannelse og ungdom
+    education: Uddannelse
     education_description: Uddannelse og ungdom
-    culture: Kultur, idræt og arrangementer
+    culture: Kultur og fritid
     culture_description: Kultur, idræt og arrangementer
-    health: Helse og velfærd
+    health: Sundhed og velfærd
     health_description: Helse og velfærd
     inclusion: Social inklusion
     inclusion_description: Social inklusion
@@ -146,6 +146,8 @@ da:
       section3:
         title: Detaljer
         description:
+      other:
+        title: Skriv dit svar
   custom_forms:
     categories:
       main_content:

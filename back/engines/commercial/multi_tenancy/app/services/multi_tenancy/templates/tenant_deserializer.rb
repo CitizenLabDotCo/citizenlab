@@ -118,8 +118,6 @@ module MultiTenancy
           end
         end
 
-        DumpTenantJob.perform_later(Tenant.current) unless local_copy
-
         created_objects_ids
       end
 

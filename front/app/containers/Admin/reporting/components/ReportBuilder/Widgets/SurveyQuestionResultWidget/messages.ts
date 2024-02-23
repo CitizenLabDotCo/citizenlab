@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  singleSurveyQuestion: {
-    id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.singleSurveyQuestion',
-    defaultMessage: 'Single survey question',
+  surveyQuestion: {
+    id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.surveyQuestion',
+    defaultMessage: 'Survey question',
   },
   emptyField: {
     id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField',
@@ -20,5 +20,9 @@ export default defineMessages({
   untilNow: {
     id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow',
     defaultMessage: '{date} until now',
+  },
+  noAnswer: {
+    id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer',
+    defaultMessage: 'No answer',
   },
 });

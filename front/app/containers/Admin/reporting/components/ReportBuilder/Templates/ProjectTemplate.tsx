@@ -53,7 +53,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
 
   const templateData = phases ? getTemplateData(phases.data) : null;
 
-  const { data: surveyFields } = useRawCustomFields({
+  const { data: surveyQuestions } = useRawCustomFields({
     phaseId:
       templateData?.participationMethod === 'native_survey'
         ? templateData?.phaseId
@@ -63,7 +63,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
   if (!project || !phases || !templateData) return null;
 
   const { participationMethod, phaseId } = templateData;
-  if (participationMethod === 'native_survey' && !surveyFields) return null;
+  if (participationMethod === 'native_survey' && !surveyQuestions) return null;
 
   const hasPhases = phases.data.length > 0;
 
@@ -91,8 +91,8 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
     });
   };
 
-  const filteredSurveyFields = surveyFields
-    ? surveyFields.data.filter((field) =>
+  const filteredSurveyQuestions = surveyQuestions
+    ? surveyQuestions.data.filter((field) =>
         SUPPORTED_INPUT_TYPES.has(field.attributes.input_type)
       )
     : undefined;
@@ -123,19 +123,17 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
         title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
         {...projectPeriod}
       />
-
-      {filteredSurveyFields && (
-        <div>
-          {filteredSurveyFields.map((field) => (
-            <SurveyQuestionResultWidget
-              key={field.id}
-              projectId={projectId}
-              phaseId={phaseId}
-              fieldId={field.id}
-            />
-          ))}
-        </div>
-      )}
+      <WhiteSpace />
+      {filteredSurveyQuestions?.map((question) => (
+        <Element is={Container} canvas key={question.id}>
+          <SurveyQuestionResultWidget
+            projectId={projectId}
+            phaseId={phaseId}
+            questionId={question.id}
+          />
+          <WhiteSpace />
+        </Element>
+      ))}
       {participationMethod === 'ideation' && (
         <MostReactedIdeasWidget
           title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
@@ -145,7 +143,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
           collapseLongText={false}
         />
       )}
-      <WhiteSpace />
+      {participationMethod === 'ideation' && <WhiteSpace />}
       <TextMultiloc
         text={toMultilocParagraph(
           messages.participants,

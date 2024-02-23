@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy survey_results submission_count index_xlsx delete_inputs]
+  before_action :set_project, only: %i[show update reorder destroy index_xlsx delete_inputs]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -18,9 +18,12 @@ class WebApi::V1::ProjectsController < ApplicationController
     # But could not find a way to eager-load the polymorphic type in the publication
     # scope.
 
-    @projects = Project.where(id: publications.select(:publication_id))
+    # For unknown reasons, `includes` uses joins here. It makes the query complex and slow. So, we use `preload`.
+    # Using `pluck(:publication_id)` instead of `select(:publication_id)` also helps if used with `includes`,
+    # but it doesn't make any difference with `preload`. Still using it in case the query changes.
+    @projects = Project.where(id: publications.pluck(:publication_id))
       .ordered
-      .includes(
+      .preload(
         :project_images,
         :areas,
         :topics,
@@ -39,7 +42,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     instance_options = {
       user_followers: user_followers,
-      timeline_active: TimelineService.new.timeline_active_on_collection(@projects),
+      timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {} # projects don't have children
     }
 
@@ -48,25 +51,6 @@ class WebApi::V1::ProjectsController < ApplicationController
       WebApi::V1::ProjectSerializer,
       params: jsonapi_serializer_params(instance_options),
       include: %i[admin_publication project_images current_phase]
-    )
-  end
-
-  def moderatable
-    if current_user.admin?
-      @projects = Project.all
-    else
-      project_ids = current_user.moderatable_project_ids
-      @projects = Project.where(id: project_ids)
-    end
-
-    @projects = paginate @projects
-
-    @projects.each { |project| authorize project }
-
-    render json: linked_json(
-      @projects,
-      WebApi::V1::ProjectSerializer,
-      params: jsonapi_serializer_params
     )
   end
 

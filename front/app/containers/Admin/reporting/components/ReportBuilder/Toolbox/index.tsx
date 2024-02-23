@@ -26,6 +26,7 @@ import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
+import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
@@ -200,7 +201,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
           />
           <DraggableElement
-            id="e2e-most-reacted-ideas-widget"
+            id="e2e-draggable-most-reacted-ideas-widget"
             component={
               <MostReactedIdeasWidget
                 title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
@@ -209,8 +210,23 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
                 projectId={selectedProjectId}
               />
             }
-            icon="idea"
+            icon="vote-up"
             label={formatMessage(WIDGET_TITLES.MostReactedIdeasWidget)}
+          />
+          <DraggableElement
+            id="e2e-single-idea-widget"
+            component={
+              <SingleIdeaWidget
+                collapseLongText={false}
+                showAuthor={true}
+                showContent={true}
+                showReactions={true}
+                showVotes={true}
+                projectId={selectedProjectId}
+              />
+            }
+            icon="idea"
+            label={formatMessage(WIDGET_TITLES.SingleIdeaWidget)}
           />
         </Accordion>
 

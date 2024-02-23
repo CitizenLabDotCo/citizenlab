@@ -1,13 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
-import customFieldsKeys from './keys';
-import {
-  ICustomFields,
-  CustomFieldsKeys,
-  ICustomFieldsParameters,
-  IFlatCustomField,
-} from './types';
-import { fetchCustomFields } from './useRawCustomFields';
+import { ICustomFieldsParameters, IFlatCustomField } from './types';
+import useRawCustomFields from './useRawCustomFields';
 import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 
 const useCustomFields = ({
@@ -15,19 +7,7 @@ const useCustomFields = ({
   phaseId,
   inputTypes,
 }: ICustomFieldsParameters) => {
-  const result = useQuery<
-    ICustomFields,
-    CLErrors,
-    ICustomFields,
-    CustomFieldsKeys
-  >({
-    queryKey: customFieldsKeys.list({
-      projectId,
-      phaseId,
-      inputTypes,
-    }),
-    queryFn: () => fetchCustomFields({ projectId, phaseId, inputTypes }),
-  });
+  const result = useRawCustomFields({ projectId, phaseId, inputTypes });
 
   const options = useCustomFieldOptions({
     projectId,
@@ -56,6 +36,8 @@ const useCustomFields = ({
                 id: option.data?.data.id,
                 title_multiloc:
                   option.data?.data.attributes.title_multiloc || {},
+                other: option.data?.data.attributes.other || false,
+                image_id: option.data?.data.relationships.image?.data?.id,
               }))
             : [],
       };
