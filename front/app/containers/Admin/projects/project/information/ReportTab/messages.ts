@@ -26,4 +26,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.information.ReportTab.createReport',
     defaultMessage: 'Create a report',
   },
+  areYouSureYouWantToDelete: {
+    id: 'app.containers.Admin.projects.project.information.areYouSureYouWantToDelete',
+    defaultMessage:
+      'Are you sure you want to delete this report? This action cannot be undone.',
+  },
 });
