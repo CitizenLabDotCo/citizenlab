@@ -31,7 +31,12 @@ const ReportPreview = ({ reportId, phaseId }: Props) => {
       reportId={reportId}
       phaseId={phaseId}
     >
-      <Box w="100%" display="flex" alignItems="center" flexDirection="column">
+      <Box
+        w="100%"
+        display="flex"
+        alignItems="flex-start"
+        flexDirection="column"
+      >
         <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
           <Editor isPreview={true}>
             {editorData && <ContentBuilderFrame editorData={editorData} />}
