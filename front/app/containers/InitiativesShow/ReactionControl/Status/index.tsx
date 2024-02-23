@@ -30,9 +30,9 @@ export interface StatusComponentProps {
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: ProposalsSettings;
   userReacted: boolean;
-  onReaction?: () => void;
-  onCancelReaction?: () => void;
-  onScrollToOfficialFeedback?: () => void;
+  onReaction: () => void;
+  onCancelReaction: () => void;
+  onScrollToOfficialFeedback: () => void;
   disabledReason?: InitiativePermissionsDisabledReason | null | undefined;
 }
 

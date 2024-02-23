@@ -15,6 +15,7 @@ import T from 'components/T';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { StatusComponentProps } from '.';
+import ReadAnswerButton from './components/ReadAnswerButton';
 
 const StatusIcon = styled(Icon)`
   path {
@@ -95,25 +96,25 @@ const Ineligible = ({
           )}
         </FormattedMessage>
       </StatusExplanation>
-      <ReactionCounter>
-        <ReactionTexts>
-          <ReactionText>
-            <FormattedMessage
-              {...messages.xVotes}
-              values={{ count: reactionCount }}
-            />
-          </ReactionText>
-          <ReactionText>{reactionLimit}</ReactionText>
-        </ReactionTexts>
-        <ProposalProgressBar
-          reactionCount={reactionCount}
-          reactionLimit={reactionLimit}
-          barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
-        />
-      </ReactionCounter>
-      <StyledButton onClick={onScrollToOfficialFeedback}>
-        <FormattedMessage {...messages.readAnswer} />
-      </StyledButton>
+      <Box mb="24px">
+        <ReactionCounter>
+          <ReactionTexts>
+            <ReactionText>
+              <FormattedMessage
+                {...messages.xVotes}
+                values={{ count: reactionCount }}
+              />
+            </ReactionText>
+            <ReactionText>{reactionLimit}</ReactionText>
+          </ReactionTexts>
+          <ProposalProgressBar
+            reactionCount={reactionCount}
+            reactionLimit={reactionLimit}
+            barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
+          />
+        </ReactionCounter>
+      </Box>
+      <ReadAnswerButton onClick={onScrollToOfficialFeedback} />
     </Box>
   );
 };

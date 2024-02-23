@@ -16,6 +16,7 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import ProposalProgressBar from '../ProposalProgressBar';
 import { StatusComponentProps } from '.';
+import ReadAnswerButton from './components/ReadAnswerButton';
 
 const StatusIcon = styled(Icon)`
   path {
@@ -125,14 +126,7 @@ const Answered = ({
           </Button>
         )}
       </Box>
-      <Button
-        icon="survey-long-answer-2"
-        iconSize="20px"
-        buttonStyle="secondary"
-        onClick={onScrollToOfficialFeedback}
-      >
-        <FormattedMessage {...messages.readAnswer} />
-      </Button>
+      <ReadAnswerButton onClick={onScrollToOfficialFeedback} />
     </Box>
   );
 };
