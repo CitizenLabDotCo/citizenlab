@@ -231,9 +231,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
               )}
               statusLabel={
                 name === 'report' && !isExpired('01-04-2024') ? (
-                  <Box display="inline" ml="8px">
-                    <NewBadge />
-                  </Box>
+                  <NewBadge ml="8px" />
                 ) : null
               }
             />
