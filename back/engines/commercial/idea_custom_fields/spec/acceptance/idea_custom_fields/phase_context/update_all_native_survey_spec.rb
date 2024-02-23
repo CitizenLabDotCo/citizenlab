@@ -289,8 +289,8 @@ resource 'Idea Custom Fields' do
         let!(:field) { create(:custom_field_multiselect_image, resource: custom_form) }
         let!(:option1) { create(:custom_field_option, key: 'option1', custom_field: field) }
         let!(:option2) { create(:custom_field_option, key: 'option2', custom_field: field) }
-        let!(:image1) { create(:custom_field_option_image, custom_field_option: option1, updated_at: '2022-01-01') }
-        let!(:image2) { create(:custom_field_option_image, custom_field_option: option2, updated_at: '2022-01-01') }
+        let!(:image1) { create(:custom_field_option_image, custom_field_option: option1) }
+        let!(:image2) { create(:custom_field_option_image, custom_field_option: option2) }
 
         example 'Remove an image from a custom field option' do
           request = {
@@ -330,7 +330,7 @@ resource 'Idea Custom Fields' do
         end
 
         example 'Update an image on a custom field option' do
-          image = create(:custom_field_option_image)
+          new_image = create(:custom_field_option_image, custom_field_option: nil)
           request = {
             custom_fields: [
               {
@@ -347,7 +347,7 @@ resource 'Idea Custom Fields' do
                   {
                     id: option1.id,
                     title_multiloc: { en: 'Option 1' },
-                    image_id: image.id
+                    image_id: new_image.id
                   },
                   {
                     id: option2.id,
@@ -357,17 +357,78 @@ resource 'Idea Custom Fields' do
               }
             ]
           }
-          expect(image1.updated_at).to be < image1.created_at
 
+          expect(CustomFieldOptionImage.all.count).to eq 3
           do_request request
 
           assert_status 200
           expect(CustomFieldOptionImage.all.count).to eq 2
-          expect(CustomFieldOption.find(option1.id).image.id).to eq image.id
+          expect(CustomFieldOption.find(option1.id).image.id).to eq new_image.id
+          expect(CustomFieldOptionImage.pluck(:custom_field_option_id)).to match_array(
+            [new_image.reload.custom_field_option_id, image2.custom_field_option_id]
+          )
           expect(json_response_body[:included].pluck(:type)).to match_array(
             %w[image custom_field_option image custom_field_option]
           )
         end
+      end
+
+      example 'Update a custom field with options, when it has been removed in another request (another tab)' do
+        select_field = create(:custom_field_select, resource: custom_form, key: 'update_field_xyz')
+        option1 = create(:custom_field_option, custom_field: select_field, key: 'option_1_xyz')
+        option2 = create(:custom_field_option, custom_field: select_field, key: 'option_2_xyz')
+
+        request = {
+          custom_fields: [
+            { input_type: 'page' },
+            {
+              id: select_field.id,
+              input_type: 'multiselect',
+              key: 'update_field_xyz',
+              title_multiloc: { en: 'Updated field' },
+              required: false,
+              enabled: true,
+              options: [
+                {
+                  id: option1.id,
+                  key: 'option_1_xyz',
+                  title_multiloc: { en: 'Updated option 1' }
+                },
+                {
+                  id: option2.id,
+                  key: 'option_2_xyz',
+                  title_multiloc: { en: 'Updated option 2' }
+                }
+              ]
+            }
+          ]
+        }
+
+        # Original fields have been deleted
+        select_field.destroy!
+        expect { select_field.reload }.to raise_error ActiveRecord::RecordNotFound
+        expect { option1.reload }.to raise_error ActiveRecord::RecordNotFound
+        expect { option2.reload }.to raise_error ActiveRecord::RecordNotFound
+
+        do_request request
+
+        assert_status 200
+
+        # Fields and options have been recreated as new fields with the same IDs and keys
+        new_select_field = CustomField.find(select_field.id)
+        expect(new_select_field.id).to eq select_field.id
+        expect(new_select_field.key).to eq select_field.key
+        expect(new_select_field.title_multiloc).to eq({ 'en' => 'Updated field' })
+
+        new_option1 = CustomFieldOption.find(option1.id)
+        expect(new_option1.id).to eq option1.id
+        expect(new_option1.key).to eq option1.key
+        expect(new_option1.title_multiloc).to eq({ 'en' => 'Updated option 1' })
+
+        new_option2 = CustomFieldOption.find(option2.id)
+        expect(new_option2.id).to eq option2.id
+        expect(new_option2.key).to eq option2.key
+        expect(new_option2.title_multiloc).to eq({ 'en' => 'Updated option 2' })
       end
 
       example 'Remove all custom fields' do
@@ -428,9 +489,9 @@ resource 'Idea Custom Fields' do
         })
       end
 
-      # TODO: JS - why would it return nothing if there are responses?
       example 'Updating custom fields in a native survey phase when there are responses' do
         IdeaStatus.create_defaults
+        create(:custom_field, resource: custom_form) # field to ensure custom form has been created
         create(:idea, project: context.project, creation_phase: context, phases: [context])
 
         do_request(custom_fields: [])
@@ -2711,6 +2772,7 @@ resource 'Idea Custom Fields' do
       end
 
       example 'Updating custom fields when there are responses' do
+        create(:custom_field, resource: custom_form) # field to ensure custom form has been created
         IdeaStatus.create_defaults
         create(:idea, project: context.project, phases: [context])
 

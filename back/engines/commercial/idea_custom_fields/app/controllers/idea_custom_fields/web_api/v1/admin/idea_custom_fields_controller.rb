@@ -166,7 +166,7 @@ module IdeaCustomFields
         deleted_options = options.reject { |option| given_ids.include? option.id }
         deleted_options.each { |option| delete_option! option }
         options_params.each_with_index do |option_params, option_index|
-          if option_params[:id]
+          if option_params[:id] && options_by_id[option_params[:id]]
             option = options_by_id[option_params[:id]]
             next unless update_option! option, option_params, errors, field_index, option_index
           else
@@ -200,6 +200,11 @@ module IdeaCustomFields
         option.image.destroy!
       else
         image = CustomFieldOptionImage.find image_id
+        if image.custom_field_option.present? && image.custom_field_option != option
+          # This request is coming from a form copy request, so create a copy of the image
+          image = image.dup
+          image.save!
+        end
         option.update!(image: image)
       end
     end
@@ -247,6 +252,7 @@ module IdeaCustomFields
         :id,
         :temp_id,
         :code,
+        :key,
         :input_type,
         :required,
         :enabled,
@@ -261,6 +267,7 @@ module IdeaCustomFields
           maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
           options: [
             :id,
+            :key,
             :temp_id,
             :image_id,
             :other,
