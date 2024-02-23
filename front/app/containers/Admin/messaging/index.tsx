@@ -1,5 +1,4 @@
-import React from 'react';
-import { isEmpty } from 'lodash-es';
+import React, { useEffect } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { useIntl } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
@@ -30,6 +29,36 @@ const MessagingDashboard = () => {
     name: 'automated_emailing_control',
   });
   const textingEnabled = useFeatureFlag({ name: 'texting' });
+
+  useEffect(() => {
+    if (pathname.match(/\/admin\/messaging$/)) {
+      return;
+    }
+
+    const redirect = (url: string) => {
+      clHistory.replace({
+        pathname: url,
+        search: window.location.search,
+      });
+    };
+
+    if (canManageManualCampaigns && manualEmailingEnabled) {
+      return redirect('/admin/messaging/emails/custom');
+    }
+    if (canManageAutomatedCampaigns && automatedEmailingEnabled) {
+      return redirect('/admin/messaging/emails/automated');
+    }
+    if (textingEnabled) {
+      return redirect('/admin/messaging/texting');
+    }
+  }, [
+    pathname,
+    canManageManualCampaigns,
+    manualEmailingEnabled,
+    canManageAutomatedCampaigns,
+    automatedEmailingEnabled,
+    textingEnabled,
+  ]);
 
   if (!canManageAutomatedCampaigns || !canManageManualCampaigns) {
     return null;
@@ -63,13 +92,6 @@ const MessagingDashboard = () => {
         label: formatMessage(messages.tabTexting),
         url: '/admin/messaging/texting',
         statusLabel: 'Beta',
-      });
-    }
-
-    if (pathname.match(/\/admin\/messaging$/) && !isEmpty(tabs)) {
-      clHistory.replace({
-        pathname: tabs[0].url,
-        search: window.location.search,
       });
     }
 
