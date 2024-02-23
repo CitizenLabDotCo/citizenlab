@@ -10,7 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from '../SharedStyles';
 import ProposalProgressBar from '../ProposalProgressBar';
-import Button from 'components/UI/Button';
 import T from 'components/T';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -43,10 +42,6 @@ const ReactionTexts = styled.div`
 const ReactionText = styled.div`
   font-size: ${fontSizes.base}px;
   color: ${colors.coolGrey600};
-`;
-
-const StyledButton = styled(Button)`
-  margin-top: 20px;
 `;
 
 const Ineligible = ({
