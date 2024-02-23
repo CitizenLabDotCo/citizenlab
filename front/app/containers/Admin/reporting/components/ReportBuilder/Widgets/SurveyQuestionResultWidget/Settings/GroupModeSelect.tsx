@@ -33,6 +33,7 @@ const GroupModeSelect = ({ mode, onChange }: Props) => {
   return (
     <Box width="100%" mb="20px">
       <Select
+        id="e2e-group-mode-select"
         label={formatMessage(messages.groupMode)}
         value={mode ?? ''}
         options={options}
