@@ -5,7 +5,6 @@ import {
   fontSizes,
   Icon,
   Box,
-  Button,
   Text,
 } from '@citizenlab/cl2-component-library';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
@@ -14,6 +13,7 @@ import messages from '../messages';
 import ProposalProgressbar from '../ProposalProgressBar';
 import { StatusComponentProps } from '.';
 import CountDown from '../CountDown';
+import VoteButtons from './components/VoteButtons';
 
 const Container = styled.div`
   display: flex;
@@ -70,7 +70,7 @@ const ProposedReacted = ({
 
   return (
     <Container>
-      <Box ml="auto" mb="16px">
+      <Box ml="auto">
         <CountDown targetTime={initiative.attributes.expires_at} />
       </Box>
       <Box mb="8px">
@@ -118,28 +118,12 @@ const ProposedReacted = ({
           />
         </ReactionCounter>
       </Box>
-      <Box>
-        {userReacted ? (
-          <Button
-            id="e2e-initiative-cancel-like-button"
-            buttonStyle="success"
-            iconSize="20px"
-            icon="check"
-            onClick={onCancelReaction}
-          >
-            <FormattedMessage {...messages.voted} />
-          </Button>
-        ) : (
-          <Button
-            buttonStyle="primary"
-            iconSize="20px"
-            icon="vote-ballot"
-            onClick={onReaction}
-          >
-            <FormattedMessage {...messages.vote} />
-          </Button>
-        )}
-      </Box>
+      <VoteButtons
+        cancelVoteButtonId="e2e-initiative-cancel-like-button"
+        onCancelReaction={onCancelReaction}
+        onReaction={onReaction}
+        userReacted={userReacted}
+      />
     </Container>
   );
 };

@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { StatusWrapper, StatusExplanation } from '../SharedStyles';
-import Button from 'components/UI/Button';
 
 import T from 'components/T';
 import messages from '../messages';
@@ -17,6 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import ProposalProgressBar from '../ProposalProgressBar';
 import { StatusComponentProps } from '.';
 import ReadAnswerButton from './components/ReadAnswerButton';
+import VoteButtons from './components/VoteButtons';
 
 const StatusIcon = styled(Icon)`
   path {
@@ -106,25 +106,11 @@ const Answered = ({
         </ReactionCounter>
       </Box>
       <Box mb="8px">
-        {userReacted ? (
-          <Button
-            buttonStyle="success"
-            iconSize="20px"
-            icon="check"
-            onClick={onCancelReaction}
-          >
-            <FormattedMessage {...messages.voted} />
-          </Button>
-        ) : (
-          <Button
-            buttonStyle="primary"
-            iconSize="20px"
-            icon="vote-ballot"
-            onClick={onReaction}
-          >
-            <FormattedMessage {...messages.vote} />
-          </Button>
-        )}
+        <VoteButtons
+          onCancelReaction={onCancelReaction}
+          onReaction={onReaction}
+          userReacted={userReacted}
+        />
       </Box>
       <ReadAnswerButton onClick={onScrollToOfficialFeedback} />
     </Box>
