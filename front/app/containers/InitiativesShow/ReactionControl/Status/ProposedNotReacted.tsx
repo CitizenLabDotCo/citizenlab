@@ -7,6 +7,7 @@ import {
   media,
   Icon,
   IconTooltip,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import { StatusExplanation } from '../SharedStyles';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
@@ -27,9 +28,6 @@ const Container = styled.div``;
 const CountDownWrapper = styled.div`
   display: flex;
   flex-direction: row-reverse;
-  ${media.tablet`
-    display: none;
-  `}
 `;
 
 const StatusIcon = styled(Icon)`
@@ -149,6 +147,8 @@ const ProposedNotReacted = ({
   initiative,
   initiativeSettings: { reacting_threshold, threshold_reached_message },
   disabledReason,
+  userReacted,
+  onCancelReaction,
 }: StatusComponentProps) => {
   const theme = useTheme();
   const reactionCount = initiative.attributes.likes_count;
@@ -216,21 +216,23 @@ const ProposedNotReacted = ({
           {thresholdReachedTooltip}
         </OnMobile>
       </StatusExplanation>
-      <ReactionCounter>
-        <ReactionText aria-hidden={true}>
-          <ReactionTextLeft id="e2e-initiative-not-reacted-reaction-count">
-            <FormattedMessage
-              {...messages.xVotes}
-              values={{ count: reactionCount }}
-            />
-          </ReactionTextLeft>
-          <ReactionTextRight>{reactionLimit}</ReactionTextRight>
-        </ReactionText>
-        <ProposalProgressBar
-          reactionCount={reactionCount}
-          reactionLimit={reactionLimit}
-        />
-      </ReactionCounter>
+      <Box mb="24px">
+        <ReactionCounter>
+          <ReactionText aria-hidden={true}>
+            <ReactionTextLeft id="e2e-initiative-not-reacted-reaction-count">
+              <FormattedMessage
+                {...messages.xVotes}
+                values={{ count: reactionCount }}
+              />
+            </ReactionTextLeft>
+            <ReactionTextRight>{reactionLimit}</ReactionTextRight>
+          </ReactionText>
+          <ProposalProgressBar
+            reactionCount={reactionCount}
+            reactionLimit={reactionLimit}
+          />
+        </ReactionCounter>
+      </Box>
       <Tippy
         disabled={!tippyContent}
         placement="bottom"
@@ -244,17 +246,28 @@ const ProposedNotReacted = ({
             disabledReason ? disabledReason : ''
           }`}
         >
-          <StyledButton
-            icon="vote-up"
-            aria-describedby="tooltip-content"
-            disabled={!!tippyContent}
-            buttonStyle="primary"
-            onClick={onReaction}
-            id="e2e-initiative-like-button"
-            ariaDisabled={false}
-          >
-            <FormattedMessage {...messages.vote} />
-          </StyledButton>
+          <Box mb="8px">
+            {userReacted ? (
+              <Button
+                buttonStyle="success"
+                iconSize="20px"
+                icon="check"
+                onClick={onCancelReaction}
+              >
+                <FormattedMessage {...messages.voted} />
+              </Button>
+            ) : (
+              <Button
+                id="e2e-initiative-like-button"
+                buttonStyle="primary"
+                iconSize="20px"
+                icon="vote-ballot"
+                onClick={onReaction}
+              >
+                <FormattedMessage {...messages.vote} />
+              </Button>
+            )}
+          </Box>
         </div>
       </Tippy>
     </Container>

@@ -3,20 +3,21 @@ import styled, { keyframes } from 'styled-components';
 import {
   colors,
   fontSizes,
-  media,
   Icon,
+  Box,
+  Button,
+  Text,
 } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import ProposalProgressbar from '../ProposalProgressBar';
 import { StatusComponentProps } from '.';
+import CountDown from '../CountDown';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
 `;
 
 const scaleIn = keyframes`
@@ -31,51 +32,12 @@ const scaleIn = keyframes`
 `;
 
 const StyledIcon = styled(Icon)`
-  fill: ${colors.success};
-  width: 63px;
-  height: 63px;
   animation: ${scaleIn} 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-`;
-
-const ReactedTitle = styled.h4`
-  color: ${(props) => props.theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 600;
-  text-align: center;
-  margin: 0;
-  margin-top: 25px;
-  margin-bottom: 5px;
-  width: 100%;
-`;
-
-const ReactedText = styled.p`
-  color: ${(props) => props.theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  line-height: 21px;
-  text-align: center;
-  margin: 0 0 20px 0;
-  width: 100%;
-`;
-
-const UnreactButton = styled.button`
-  color: ${(props) => props.theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  text-decoration: underline;
-
-  &:hover {
-    color: ${(props) => darken(0.12, props.theme.colors.tenantText)};
-    text-decoration: underline;
-    cursor: pointer;
-  }
 `;
 
 const ReactionCounter = styled.div`
   margin-top: 15px;
   width: 100%;
-  ${media.tablet`
-    display: none;
-  `}
 `;
 
 const ReactionText = styled.div`
@@ -99,6 +61,8 @@ const ProposedReacted = ({
   initiative,
   initiativeSettings: { reacting_threshold },
   onCancelReaction,
+  onReaction,
+  userReacted,
 }: StatusComponentProps) => {
   const reactionCount = initiative.attributes.likes_count;
   const reactionLimit = reacting_threshold;
@@ -106,11 +70,22 @@ const ProposedReacted = ({
 
   return (
     <Container>
-      <StyledIcon ariaHidden name="check-circle" />
-      <ReactedTitle>
-        <FormattedMessage {...messages.votedTitle} />
-      </ReactedTitle>
-      <ReactedText>
+      <Box ml="auto" mb="16px">
+        <CountDown targetTime={initiative.attributes.expires_at} />
+      </Box>
+      <Box mb="8px">
+        <StyledIcon
+          fill={colors.success}
+          width="31px"
+          height="31px"
+          ariaHidden
+          name="check-circle"
+        />
+      </Box>
+      <Text m="0">
+        <b>
+          <FormattedMessage {...messages.votedTitle} />
+        </b>{' '}
         <FormattedMessage
           {...messages.votedText}
           values={{
@@ -125,28 +100,46 @@ const ProposedReacted = ({
             ),
           }}
         />
-      </ReactedText>
-      <UnreactButton
-        id="e2e-initiative-cancel-like-button"
-        onClick={onCancelReaction}
-      >
-        <FormattedMessage {...messages.unvoteLink} />
-      </UnreactButton>
-      <ReactionCounter>
-        <ReactionText aria-hidden={true}>
-          <ReactionTextLeft id="e2e-initiative-reacted-reaction-count">
-            <FormattedMessage
-              {...messages.xVotes}
-              values={{ count: reactionCount }}
-            />
-          </ReactionTextLeft>
-          <ReactionTextRight>{reactionLimit}</ReactionTextRight>
-        </ReactionText>
-        <ProposalProgressbar
-          reactionCount={reactionCount}
-          reactionLimit={reactionLimit}
-        />
-      </ReactionCounter>
+      </Text>
+      <Box mb="16px">
+        <ReactionCounter>
+          <ReactionText aria-hidden={true}>
+            <ReactionTextLeft id="e2e-initiative-reacted-reaction-count">
+              <FormattedMessage
+                {...messages.xVotes}
+                values={{ count: reactionCount }}
+              />
+            </ReactionTextLeft>
+            <ReactionTextRight>{reactionLimit}</ReactionTextRight>
+          </ReactionText>
+          <ProposalProgressbar
+            reactionCount={reactionCount}
+            reactionLimit={reactionLimit}
+          />
+        </ReactionCounter>
+      </Box>
+      <Box>
+        {userReacted ? (
+          <Button
+            id="e2e-initiative-cancel-like-button"
+            buttonStyle="success"
+            iconSize="20px"
+            icon="check"
+            onClick={onCancelReaction}
+          >
+            <FormattedMessage {...messages.voted} />
+          </Button>
+        ) : (
+          <Button
+            buttonStyle="primary"
+            iconSize="20px"
+            icon="vote-ballot"
+            onClick={onReaction}
+          >
+            <FormattedMessage {...messages.vote} />
+          </Button>
+        )}
+      </Box>
     </Container>
   );
 };
