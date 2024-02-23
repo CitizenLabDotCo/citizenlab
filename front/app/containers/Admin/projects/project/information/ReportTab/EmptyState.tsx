@@ -14,12 +14,20 @@ const EmptyState = () => {
     <>
       <Text color="textSecondary">
         {formatMessage(messages.createAReportTo)}
-        <ul>
-          <li>{formatMessage(messages.shareResults)}</li>
-          <li>{formatMessage(messages.createAMoreComplex)}</li>
-        </ul>
-        {formatMessage(messages.thisWillBe)}
       </Text>
+      <ul>
+        <li>
+          <Text m="0" color="textSecondary">
+            {formatMessage(messages.shareResults)}
+          </Text>
+        </li>
+        <li>
+          <Text m="0" color="textSecondary">
+            {formatMessage(messages.createAMoreComplex)}
+          </Text>
+        </li>
+      </ul>
+      <Text color="textSecondary">{formatMessage(messages.thisWillBe)}</Text>
       <Box w="100%" mt="32px" display="flex">
         <Button icon="reports" bgColor={colors.primary} width="auto">
           {formatMessage(messages.createReport)}

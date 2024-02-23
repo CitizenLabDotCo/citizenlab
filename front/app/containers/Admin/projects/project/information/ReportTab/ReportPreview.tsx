@@ -1,16 +1,45 @@
 import React from 'react';
 
 // hooks
-import useReport from 'api/reports/useReport';
+import useReportLayout from 'api/report_layout/useReportLayout';
+
+// context
+import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
+
+// components
+import { Box } from '@citizenlab/cl2-component-library';
+import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+
+// constants
+import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 
 interface Props {
   reportId: string;
+  phaseId: string;
 }
 
-const ReportPreview = ({ reportId }: Props) => {
-  const { data: report } = useReport(reportId);
+const ReportPreview = ({ reportId, phaseId }: Props) => {
+  const { data: reportLayout } = useReportLayout(reportId);
+  if (!reportLayout) return null;
 
-  return <div>{report?.data.attributes.name}</div>;
+  const editorData = reportLayout.data.attributes.craftjs_json;
+
+  return (
+    <ReportContextProvider
+      width="desktop"
+      reportId={reportId}
+      phaseId={phaseId}
+    >
+      <Box w="100%" display="flex" alignItems="center" flexDirection="column">
+        <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
+          <Editor isPreview={true}>
+            {editorData && <ContentBuilderFrame editorData={editorData} />}
+          </Editor>
+        </Box>
+      </Box>
+    </ReportContextProvider>
+  );
 };
 
 export default ReportPreview;

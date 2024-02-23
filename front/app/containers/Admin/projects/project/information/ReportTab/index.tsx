@@ -33,7 +33,11 @@ const ReportTab = () => {
       <Title variant="h3" color="primary">
         {formatMessage(messages.report)}
       </Title>
-      {hasReport ? <ReportPreview reportId={reportId} /> : <EmptyState />}
+      {hasReport ? (
+        <ReportPreview reportId={reportId} phaseId={phase.data.id} />
+      ) : (
+        <EmptyState />
+      )}
     </Box>
   );
 };
