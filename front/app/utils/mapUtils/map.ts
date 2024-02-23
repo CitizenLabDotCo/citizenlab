@@ -66,12 +66,14 @@ export const getTileProvider = (
   return baseGetTileProvider(appConfig);
 };
 
-export const getLayerType = (mapLayer: IMapLayerAttributes | undefined) => {
+export const getGeojsonLayerType = (
+  mapLayer: IMapLayerAttributes | undefined
+) => {
   return mapLayer?.geojson?.features?.[0]?.geometry?.type || 'Point';
 };
 
 export const getLayerColor = (mapLayer: IMapLayerAttributes | undefined) => {
-  const type = getLayerType(mapLayer);
+  const type = getGeojsonLayerType(mapLayer);
   const fillColor: string | undefined =
     mapLayer?.geojson?.features?.[0]?.properties?.fill;
   const markerColor: string | undefined =
@@ -86,7 +88,7 @@ export const getLayerColor = (mapLayer: IMapLayerAttributes | undefined) => {
 };
 
 export const getLayerIcon = (mapLayer: IMapLayerAttributes | undefined) => {
-  const layerType = getLayerType(mapLayer);
+  const layerType = getGeojsonLayerType(mapLayer);
   let iconName: 'location-simple' | 'line' | 'rectangle' = 'rectangle';
 
   if (layerType === 'Point') {

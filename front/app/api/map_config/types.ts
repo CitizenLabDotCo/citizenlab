@@ -9,6 +9,7 @@ export interface IMapConfigAttributes {
   zoom_level?: string;
   tile_provider?: string | null;
   center_geojson?: GeoJSON.Point;
+  esri_web_map_id?: string | null;
 }
 
 export interface IMapConfigRelationships {

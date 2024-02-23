@@ -22,7 +22,7 @@ import { ColorPickerInput, Select } from '@citizenlab/cl2-component-library';
 // utils
 import {
   getLayerColor,
-  getLayerType,
+  getGeojsonLayerType,
   makiIconNames,
   getUnnamedLayerTitleMultiloc,
 } from '../../../utils/mapUtils/map';
@@ -42,6 +42,7 @@ import { IMapLayerAttributes } from 'api/map_layers/types';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 60px;
 `;
 
 const StyledSection = styled(Section)`
@@ -119,7 +120,7 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
       mapConfig?.data?.attributes?.layers?.find(
         (layer) => layer.id === mapLayerId
       ) || undefined;
-    const type = getLayerType(mapLayer);
+    const geojsonDataType = getGeojsonLayerType(mapLayer);
 
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
@@ -280,7 +281,7 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
             />
           </SectionField>
 
-          {type === 'Point' && (
+          {geojsonDataType === 'Point' && (
             <SectionField>
               <Select
                 onChange={handleMarkerSymbolOnChange}

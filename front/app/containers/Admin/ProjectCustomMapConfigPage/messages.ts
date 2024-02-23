@@ -57,14 +57,14 @@ export default defineMessages({
     defaultMessage: 'support article',
   },
   supportArticleUrl: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl',
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/4910983-customize-your-project-map',
+      'https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-view',
   },
   layersTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip2',
     defaultMessage:
-      'We currently support GeoJSON files. Read the {supportArticle} for tips on how to convert and style map layers.',
+      'We currently support GeoJSON files and importing Feature Layers and Web Maps from ArcGIS Online. Read the {supportArticle} for tips on how to add, convert and style map layers.',
   },
   edit: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.edit',
@@ -200,5 +200,59 @@ export default defineMessages({
   import2: {
     id: 'app.components.admin.PostManager.import2',
     defaultMessage: 'Import',
+  },
+  authenticationError: {
+    id: 'app.components.admin.PostManager.authenticationError',
+    defaultMessage:
+      'An authentication error occured while trying to fetch this layer. Please check the URL and that your Esri API key has access to this layer.',
+  },
+  generalApiError: {
+    id: 'app.components.admin.PostManager.generalApiError',
+    defaultMessage:
+      'An error occured while trying to fetch this layer. Please check that the URL is correct.',
+  },
+  defaultEsriError: {
+    id: 'app.components.admin.PostManager.defaultEsriError',
+    defaultMessage:
+      'An error occured while trying to fetch this layer. Please check your network connect and that the URL is correct.',
+  },
+  esriSideError: {
+    id: 'app.components.admin.PostManager.esriSideError',
+    defaultMessage:
+      'An error occured on the ArcGIS application. Please wait a few minutes and try again later.',
+  },
+  layerAdded: {
+    id: 'app.components.admin.PostManager.layerAdded',
+    defaultMessage: 'Layer added successfully',
+  },
+  featureLayerTooltop: {
+    id: 'app.components.admin.PostManager.featureLayerTooltop',
+    defaultMessage:
+      'You can find the Feature Layer URL on the right hand side of the item page on ArcGIS Online.',
+  },
+  webMapRemoveGeojsonTooltip: {
+    id: 'app.components.admin.PostManager.webMapRemoveGeojsonTooltip',
+    defaultMessage:
+      'You may only upload map data as either GeoJSON layers or importing from ArcGIS Online. Please remove any current GeoJSON layers if you wish to connect a Web Map.',
+  },
+  featureLayerRemoveGeojsonTooltip: {
+    id: 'app.components.admin.PostManager.featureLayerRemoveGeojsonTooltip',
+    defaultMessage:
+      'You may only upload map data as either GeoJSON layers or importing from ArcGIS Online. Please remove any current GeoJSON layers if you wish to add a Feature Layer.',
+  },
+  esriAddOnFeatureTooltip: {
+    id: 'app.components.admin.PostManager.esriAddOnFeatureTooltip',
+    defaultMessage:
+      'Importing data from Esri ArcGIS Online is an add-on feature. Talk to your GS manager to unlock it.',
+  },
+  webMapAlreadyExists: {
+    id: 'app.components.admin.PostManager.webMapAlreadyExists',
+    defaultMessage:
+      'You can only add one Web Map at a time. Remove the current one to import a different one.',
+  },
+  geojsonRemoveEsriTooltip: {
+    id: 'app.components.admin.PostManager.geojsonRemoveEsriTooltip',
+    defaultMessage:
+      'You may only upload map data as either GeoJSON layers or importing from ArcGIS Online. Please remove any current ArcGIS layers if you wish to upload a GeoJSON layer.',
   },
 });

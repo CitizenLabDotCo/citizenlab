@@ -13,6 +13,7 @@ import {
   IconTooltip,
   Input,
   Button,
+  Success,
 } from '@citizenlab/cl2-component-library';
 
 // types
@@ -26,6 +27,7 @@ import { request, ErrorTypes, ApiKeyManager } from '@esri/arcgis-rest-request';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAddMapLayer from 'api/map_layers/useAddMapLayer';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { getFeatureLayerInitialTitleMultiloc } from './utils';
 
 type Props = {
   projectId: string;
@@ -39,9 +41,11 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
 
   const [url, setUrl] = useState('');
   const [importError, setImportError] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const tenantLocales = useAppConfigurationLocales();
-  const { mutate: createProjectMapLayer } = useAddMapLayer();
+  const { mutate: createProjectMapLayer, isLoading } = useAddMapLayer();
 
   const addEsriFeatureLayer = () => {
     // First test if we have access to the Feature Layer URL
@@ -52,8 +56,10 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
     request(url, {
       authentication: esriAuthManager,
     })
-      .then(() => {
+      .then((response) => {
         setImportError(false);
+
+        const { serviceDescription } = response;
 
         // Add the new map layer
         if (mapConfigId && !isNilOrError(tenantLocales)) {
@@ -63,7 +69,10 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
               projectId,
               layer_url: url,
               id: mapConfigId,
-              title_multiloc: { en: 'Testing', 'nl-BE': 'Testing nl-BE' }, // TODO
+              title_multiloc: getFeatureLayerInitialTitleMultiloc(
+                serviceDescription,
+                tenantLocales
+              ),
               default_enabled: true,
             },
             {
@@ -71,6 +80,7 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
                 setImportError(true);
               },
               onSuccess: () => {
+                setSuccess(true);
                 setView('main');
               },
             }
@@ -82,27 +92,23 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
 
         switch (e.name) {
           case ErrorTypes.ArcGISRequestError:
-            console.log('A general error from the API');
+            // A general error from the API
+            setErrorMessage(formatMessage(messages.generalApiError));
             break;
 
           case ErrorTypes.ArcGISAuthError:
-            console.log('An authentication error');
-            break;
-
-          case ErrorTypes.ArcGISAccessDeniedError:
-            console.log(
-              'A user denying an authorization request in an oAuth workflow'
-            );
+            // An authentication error
+            setErrorMessage(formatMessage(messages.authenticationError));
             break;
 
           case ErrorTypes.ArcGISTokenRequestError:
-            console.log(
-              'An error response trying to generate a new access token'
-            );
+            // An error response trying to generate a new access token
+            setErrorMessage(formatMessage(messages.esriSideError));
             break;
 
           default:
-            console.log('Default error from Esri - usually a network error.');
+            // Default error from Esri - usually a network error
+            setErrorMessage(formatMessage(messages.defaultEsriError));
         }
       });
   };
@@ -115,7 +121,7 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
         </Title>
         <IconTooltip
           mb="4px"
-          content={<p>TODO: Tooltip w image & link to support article</p>}
+          content={formatMessage(messages.featureLayerTooltop)}
         />
       </Box>
       <Text my="8px" color={'grey800'}>
@@ -128,7 +134,7 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
           setUrl(value);
         }}
         placeholder={
-          'E.g. https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/Congressional_Districts/FeatureServer/0'
+          'https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/Congressional_Districts/FeatureServer/0'
         }
       />
 
@@ -141,17 +147,15 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
         >
           {formatMessage(messages.cancel2)}
         </Button>
-        <Button onClick={addEsriFeatureLayer}>
+        <Button onClick={addEsriFeatureLayer} processing={isLoading}>
           {formatMessage(messages.import2)}
         </Button>
       </Box>
-
+      {success && (
+        <Success text={formatMessage(messages.layerAdded)} showIcon={true} />
+      )}
       {importError && (
-        <Error
-          text={formatMessage(messages.importError)}
-          marginTop="10px"
-          showIcon={true}
-        />
+        <Error text={errorMessage} marginTop="10px" showIcon={true} />
       )}
     </>
   );

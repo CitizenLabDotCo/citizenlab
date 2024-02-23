@@ -133,7 +133,6 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     );
 
     const layers = mapConfig?.data.attributes?.layers;
-
     const layersWithOrdering =
       layers && layers.length > 0 ? addOrderingToLayers(layers) : null;
 
@@ -178,25 +177,40 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                         dropRow={handleDropRow}
                       >
                         <ListItem>
-                          <LayerIcon name={layerIconName} color={layerColor} />
+                          <LayerIcon
+                            name={
+                              mapLayer.type === 'CustomMaps::EsriFeatureLayer'
+                                ? 'map'
+                                : layerIconName
+                            }
+                            color={
+                              mapLayer.type === 'CustomMaps::EsriFeatureLayer'
+                                ? colors.coolGrey600
+                                : layerColor
+                            }
+                          />
                           <LayerName>{layerTitle}</LayerName>
                           <Buttons>
-                            <Tippy
-                              placement="bottom"
-                              content={<FormattedMessage {...messages.edit} />}
-                              hideOnClick={false}
-                              arrow={false}
-                            >
-                              <div>
-                                <EditButton
-                                  icon="edit"
-                                  iconSize="16px"
-                                  buttonStyle="text"
-                                  padding="0px"
-                                  onClick={toggleLayerConfig(mapLayer.id)}
-                                />
-                              </div>
-                            </Tippy>
+                            {mapLayer.type === 'CustomMaps::GeojsonLayer' && (
+                              <Tippy
+                                placement="bottom"
+                                content={
+                                  <FormattedMessage {...messages.edit} />
+                                }
+                                hideOnClick={false}
+                                arrow={false}
+                              >
+                                <div>
+                                  <EditButton
+                                    icon="edit"
+                                    iconSize="16px"
+                                    buttonStyle="text"
+                                    padding="0px"
+                                    onClick={toggleLayerConfig(mapLayer.id)}
+                                  />
+                                </div>
+                              </Tippy>
+                            )}
 
                             <Spacer />
 
@@ -234,14 +248,11 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
             {isEsriIntegrationEnabled && (
               <EsriImportOptions
                 projectId={projectId}
-                mapConfigId={mapConfig.data.id}
                 setView={setView}
+                mapConfig={mapConfig}
               />
             )}
-            <GeoJsonImportButton
-              projectId={projectId}
-              mapConfigId={mapConfig.data.id}
-            />
+            <GeoJsonImportButton projectId={projectId} mapConfig={mapConfig} />
           </>
         )}
       </Container>

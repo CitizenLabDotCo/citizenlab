@@ -5,7 +5,7 @@ import EsriMap from 'components/EsriMap';
 import MapView from '@arcgis/core/views/MapView';
 import LayerHoverLabel from './components/LayerHoverLabel';
 import MapHelperOptions from './components/MapHelperOptions';
-
+import Layer from '@arcgis/core/layers/Layer';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 
@@ -32,20 +32,35 @@ const IdeationConfigurationMap = memo<Props>(
       null
     );
 
-    // Create GeoJSON layers to add to Esri map
+    // Create layers from map config to add to Esri map
     const mapLayers = useMemo(() => {
       const layers = mapConfig.data.attributes.layers;
+      if (layers && layers.length > 0) {
+        // All layers are either of type Esri or GeoJSON, so we can check just the first layer
+        if (layers[0]?.type === 'CustomMaps::GeojsonLayer') {
+          return createEsriGeoJsonLayers(
+            mapConfig.data.attributes.layers,
+            localize
+          );
+        } else if (layers[0]?.type === 'CustomMaps::EsriFeatureLayer') {
+          const esriLayer: Layer[] = [];
 
-      // All layers are either of type Esri or GeoJSON, so we can check just the first layer
-      if (layers && layers[0]?.geojson?.features) {
-        return createEsriGeoJsonLayers(
-          mapConfig.data.attributes.layers,
-          localize
-        );
-      } else if (layers) {
-        return layers.map((layer) => {
-          return new FeatureLayer({ url: layer.layer_url });
-        });
+          // if (layer.layer_url) {
+          //   request(layer.layer_url).then((response) => {
+          //     if (response.layers.length > 1) {
+          //       console.log('Has sub layers...');
+          //     } else {
+          //       console.log('Has 1 layer. Adding...');
+          //       esriLayers.push(new FeatureLayer({ url: layer.layer_url }));
+          //     }
+          //     return esriLayers;
+          //   });
+          // }
+
+          return layers.map((layer) => {
+            return new FeatureLayer({ url: layer.layer_url });
+          });
+        }
       }
       return [];
     }, [mapConfig, localize]);

@@ -15,13 +15,16 @@ import { getUnnamedLayerTitleMultiloc } from '../../../utils/mapUtils/map';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
 
 // components
 import Button from 'components/UI/Button';
+import { IMapConfig } from 'api/map_config/types';
+import { getLayerType } from './utils';
+import Tippy from '@tippyjs/react';
 
 const Container = styled.div``;
 
@@ -62,16 +65,20 @@ const fileAccept = [
 
 interface Props {
   projectId: string;
-  mapConfigId: string;
+  mapConfig: IMapConfig;
   className?: string;
 }
 
 const GeoJsonImportButton = memo<Props>(
-  ({ projectId, mapConfigId, className }) => {
+  ({ projectId, mapConfig, className }) => {
     const { mutate: createProjectMapLayer } = useAddMapLayer();
+    const { formatMessage } = useIntl();
     const tenantLocales = useAppConfigurationLocales();
 
     const [importError, setImportError] = useState(false);
+
+    const layerType = getLayerType(mapConfig);
+    const hasExistingWebMap = !!mapConfig?.data?.attributes?.esri_web_map_id;
 
     const handleGeoJsonImport = (event: any) => {
       const fileReader = new FileReader();
@@ -82,13 +89,13 @@ const GeoJsonImportButton = memo<Props>(
 
         setImportError(false);
 
-        if (mapConfigId && !isNilOrError(tenantLocales)) {
+        if (mapConfig.data.id && !isNilOrError(tenantLocales)) {
           createProjectMapLayer(
             {
               type: 'CustomMaps::GeojsonLayer',
               projectId,
               geojson,
-              id: mapConfigId,
+              id: mapConfig.data.id,
               title_multiloc: getUnnamedLayerTitleMultiloc(tenantLocales),
               default_enabled: true,
             },
@@ -113,10 +120,27 @@ const GeoJsonImportButton = memo<Props>(
         />
 
         <ButtonContainer>
-          <StyledButton icon="upload-file" buttonStyle="secondary">
-            <StyledLabel aria-hidden htmlFor="file-attachment-uploader" />
-            <FormattedMessage {...messages.import} />
-          </StyledButton>
+          <Tippy
+            maxWidth="250px"
+            placement="top"
+            content={formatMessage(messages.geojsonRemoveEsriTooltip)}
+            hideOnClick={true}
+            disabled={layerType === 'CustomMaps::GeojsonLayer'}
+          >
+            <div>
+              <StyledButton
+                icon="upload-file"
+                buttonStyle="secondary"
+                disabled={
+                  layerType === 'CustomMaps::EsriFeatureLayer' ||
+                  hasExistingWebMap
+                }
+              >
+                <StyledLabel aria-hidden htmlFor="file-attachment-uploader" />
+                <FormattedMessage {...messages.import} />
+              </StyledButton>
+            </div>
+          </Tippy>
         </ButtonContainer>
 
         {importError && (

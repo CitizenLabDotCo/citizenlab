@@ -194,7 +194,7 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
     const layers = mapConfig?.data.attributes.layers;
 
     // All layers are either of type Esri or GeoJSON, so we can check just the first layer
-    if (layers && layers[0].geojson?.features) {
+    if (layers && layers[0]?.geojson?.features) {
       return createEsriGeoJsonLayers(
         mapConfig?.data.attributes.layers,
         localize
