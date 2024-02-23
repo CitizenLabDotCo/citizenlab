@@ -48,14 +48,14 @@ export const getIntialTabs = (formatMessage: FormatMessage): ITab[] => {
       name: 'volunteering',
     },
     {
-      label: formatMessage(messages.phaseAccessRights),
-      url: 'access-rights',
-      name: 'access-rights',
-    },
-    {
       label: formatMessage(messages.report),
       url: 'report',
       name: 'report',
+    },
+    {
+      label: formatMessage(messages.phaseAccessRights),
+      url: 'access-rights',
+      name: 'access-rights',
     },
   ];
 };
@@ -103,5 +103,8 @@ export const getTabHideConditions = (
   },
   'access-rights': function isAccessRightsTabHidden() {
     return !isGranularPermissionsEnabled;
+  },
+  report: function isReportTabHidden() {
+    return phase?.attributes.participation_method !== 'information';
   },
 });
