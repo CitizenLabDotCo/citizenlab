@@ -1,45 +1,39 @@
 import React from 'react';
 
+// routing
+import { useParams } from 'react-router-dom';
+
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import usePhase from 'api/phases/usePhase';
 
 // i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // components
-import {
-  Box,
-  Title,
-  Text,
-  Button,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
+import EmptyState from './EmptyState';
+import ReportPreview from './ReportPreview';
 
 const ReportTab = () => {
+  const { phaseId } = useParams();
+  const { data: phase } = usePhase(phaseId);
+
   const phaseReportsEnabled = useFeatureFlag({ name: 'phase_reports' });
   const { formatMessage } = useIntl();
 
-  if (!phaseReportsEnabled) return null;
+  if (!phaseReportsEnabled || !phase) return null;
+
+  const reportId = phase.data.relationships.report?.data?.id;
+  const hasReport = !!reportId;
 
   return (
     <Box>
       <Title variant="h3" color="primary">
         {formatMessage(messages.report)}
       </Title>
-      <Text color="textSecondary">
-        {formatMessage(messages.createAReportTo)}
-        <ul>
-          <li>{formatMessage(messages.shareResults)}</li>
-          <li>{formatMessage(messages.createAMoreComplex)}</li>
-        </ul>
-        {formatMessage(messages.thisWillBe)}
-      </Text>
-      <Box w="100%" mt="32px" display="flex">
-        <Button icon="reports" bgColor={colors.primary} width="auto">
-          {formatMessage(messages.createReport)}
-        </Button>
-      </Box>
+      {hasReport ? <ReportPreview reportId={reportId} /> : <EmptyState />}
     </Box>
   );
 };
