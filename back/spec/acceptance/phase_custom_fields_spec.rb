@@ -97,9 +97,9 @@ resource 'Phase level Custom Fields' do
     end
   end
 
-  # TODO: JS - This is also an odd test - not clear - change to without persisted form fields
   describe 'in an active phase without form fields' do
     let(:project) { create(:project_with_active_native_survey_phase) }
+    let!(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
     let(:phase_id) { project.phases.first.id }
 
     get 'web_api/v1/phases/:phase_id/custom_fields/json_forms_schema' do
