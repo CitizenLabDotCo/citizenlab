@@ -1,5 +1,11 @@
-import { ITab, FormatMessage } from 'typings';
 import messages from './messages';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { IPhaseData } from 'api/phases/types';
+import { ITab, FormatMessage } from 'typings';
+
+type TabHideConditions = {
+  [tabName: string]: () => boolean;
+};
 
 export const getIntialTabs = (formatMessage: FormatMessage): ITab[] => {
   return [
@@ -46,5 +52,56 @@ export const getIntialTabs = (formatMessage: FormatMessage): ITab[] => {
       url: 'access-rights',
       name: 'access-rights',
     },
+    {
+      label: formatMessage(messages.report),
+      url: 'report',
+      name: 'report',
+    },
   ];
 };
+
+type FeatureFlags = {
+  surveys_enabled: boolean;
+  typeform_enabled: boolean;
+  isGranularPermissionsEnabled: boolean;
+};
+
+export const getTabHideConditions = (
+  phase: IPhaseData,
+  {
+    surveys_enabled,
+    typeform_enabled,
+    isGranularPermissionsEnabled,
+  }: FeatureFlags
+): TabHideConditions => ({
+  ideas: function isIdeaTabHidden() {
+    return !getMethodConfig(phase.attributes.participation_method)
+      .showInputManager;
+  },
+  ideaform: function isIdeaFormTabHidden() {
+    return (
+      getMethodConfig(phase.attributes.participation_method).formEditor !==
+      'simpleFormEditor'
+    );
+  },
+  poll: function isPollTabHidden() {
+    return phase.attributes.participation_method !== 'poll';
+  },
+  survey: function isSurveyTabHidden() {
+    return phase.attributes.participation_method !== 'native_survey';
+  },
+  'survey-results': function surveyResultsTabHidden() {
+    return (
+      phase.attributes.participation_method !== 'survey' ||
+      !surveys_enabled ||
+      !typeform_enabled ||
+      (surveys_enabled && phase.attributes.survey_service !== 'typeform')
+    );
+  },
+  volunteering: function isVolunteeringTabHidden() {
+    return phase?.attributes.participation_method !== 'volunteering';
+  },
+  'access-rights': function isAccessRightsTabHidden() {
+    return !isGranularPermissionsEnabled;
+  },
+});

@@ -21,14 +21,13 @@ import { IProjectData } from 'api/projects/types';
 
 // utils
 import { insertConfiguration } from 'utils/moduleUtils';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 // hooks
 import { IPhaseData } from 'api/phases/types';
 import { getCurrentPhase } from 'api/phases/utils';
-import { getIntialTabs } from './tabs';
+import { getIntialTabs, getTabHideConditions } from './tabs';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
@@ -40,10 +39,6 @@ interface DataProps {
   selectedPhase?: IPhaseData;
   setSelectedPhase: (phase: IPhaseData) => void;
 }
-
-type TabHideConditions = {
-  [tabName: string]: (project: IProjectData, phases: IPhaseData[]) => boolean;
-};
 
 const AdminProjectsProjectIndex = ({
   project,
@@ -68,48 +63,20 @@ const AdminProjectsProjectIndex = ({
   const initialTabs: ITab[] = getIntialTabs(formatMessage);
   const [tabs, setTabs] = useState<ITab[]>(initialTabs);
 
-  const getTabHideConditions = (phase: IPhaseData): TabHideConditions => ({
-    ideas: function isIdeaTabHidden() {
-      return !getMethodConfig(phase.attributes.participation_method)
-        .showInputManager;
-    },
-    ideaform: function isIdeaFormTabHidden() {
-      return (
-        getMethodConfig(phase.attributes.participation_method).formEditor !==
-        'simpleFormEditor'
-      );
-    },
-    poll: function isPollTabHidden() {
-      return phase.attributes.participation_method !== 'poll';
-    },
-    survey: function isSurveyTabHidden() {
-      return phase.attributes.participation_method !== 'native_survey';
-    },
-    'survey-results': function surveyResultsTabHidden() {
-      return (
-        phase.attributes.participation_method !== 'survey' ||
-        !surveys_enabled ||
-        !typeform_enabled ||
-        (surveys_enabled && phase.attributes.survey_service !== 'typeform')
-      );
-    },
-    volunteering: function isVolunteeringTabHidden() {
-      return phase?.attributes.participation_method !== 'volunteering';
-    },
-    'access-rights': function isAccessRightsTabHidden() {
-      return !isGranularPermissionsEnabled;
-    },
-  });
-
-  const getTabs = (projectId: string) => {
+  const getTabs = () => {
     if (!selectedPhase) {
       return [];
     }
-    const tabHideConditions = getTabHideConditions(selectedPhase);
-    const baseTabsUrl = `/admin/projects/${projectId}`;
+    const tabHideConditions = getTabHideConditions(selectedPhase, {
+      typeform_enabled,
+      surveys_enabled,
+      isGranularPermissionsEnabled,
+    });
+
+    const baseTabsUrl = `/admin/projects/${project.id}`;
     const cleanedTabs = tabs.filter((tab) => {
       if (tabHideConditions[tab.name]) {
-        return !tabHideConditions[tab.name](project, phases);
+        return !tabHideConditions[tab.name]();
       }
       return true;
     });
@@ -154,7 +121,7 @@ const AdminProjectsProjectIndex = ({
       />
       <Box p="8px 24px 24px 24px">
         {!isNewPhaseLink && selectedPhase && (
-          <PhaseHeader phase={selectedPhase} tabs={getTabs(project.id)} />
+          <PhaseHeader phase={selectedPhase} tabs={getTabs()} />
         )}
 
         <Box p={`${defaultAdminCardPadding}px`} background={colors.white}>
