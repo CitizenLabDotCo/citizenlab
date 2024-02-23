@@ -873,7 +873,6 @@
   "app.containers.InitiativesShow.VoteControl.readAnswer": "Citește răspunsul",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} a fost notificată și vă va oferi un răspuns. Votarea rămâne deschisă.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "Pragul a fost atins",
-  "app.containers.InitiativesShow.VoteControl.unvoteLink": "Anulează votul meu",
   "app.containers.InitiativesShow.VoteControl.vote": "Votează",
   "app.containers.InitiativesShow.VoteControl.votedText": "Veți primi o notificare atunci când această propunere va trece la pasul următor. {x, plural, =0 {There's {xDays} left.} one {Au mai rămas {xDays} left.} other {There are {xDays} zile.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Votul tău a fost trimis!",

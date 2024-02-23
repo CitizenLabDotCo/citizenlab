@@ -707,7 +707,6 @@
   "app.containers.InitiativesShow.VoteControl.readAnswer": "Read answer",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} has been notified. Voting remains open.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "The threshold has been reached",
-  "app.containers.InitiativesShow.VoteControl.unvoteLink": "Cancel my vote",
   "app.containers.InitiativesShow.VoteControl.vote": "Vote",
   "app.containers.InitiativesShow.VoteControl.votedText": "You'll get notified when this proposal goes to the next step. {x, plural, =0 {There's {xDays} left.} one {There's {xDays} left.} other {There are {xDays} left.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Your vote has been submitted!",

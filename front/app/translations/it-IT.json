@@ -1131,7 +1131,6 @@
   "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceTwo": "Riceverai un'e-mail una volta esaminato.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} è stato notificato. Le votazioni rimangono aperte.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "La soglia è stata raggiunta",
-  "app.containers.InitiativesShow.VoteControl.unvoteLink": "Annulla il mio voto",
   "app.containers.InitiativesShow.VoteControl.vote": "Vota",
   "app.containers.InitiativesShow.VoteControl.votedText": "Sarai avvisato quando questa proposta passerà alla fase successiva. {x, plural, =0 {Ci sono {xDays} rimasti.} one {C'è {xDays} a sinistra.} other {Ci sono {xDays} rimasti.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Il tuo voto è stato presentato!",
