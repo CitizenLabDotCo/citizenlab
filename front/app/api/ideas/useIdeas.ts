@@ -4,6 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import ideasKeys from './keys';
 import { IIdeas, IQueryParameters, IdeasKeys } from './types';
 
+// TODO: use front/app/components/UI/IdeaSelect/index.tsx instead of increasing this number.
 export const defaultPageSize = 26;
 
 const fetchIdeas = (queryParameters: IQueryParameters) =>
@@ -17,10 +18,14 @@ const fetchIdeas = (queryParameters: IQueryParameters) =>
     },
   });
 
-const useIdeas = (queryParams: IQueryParameters) => {
+const useIdeas = (
+  queryParams: IQueryParameters,
+  { enabled = true }: { enabled: boolean } = { enabled: true }
+) => {
   return useQuery<IIdeas, CLErrors, IIdeas, IdeasKeys>({
     queryKey: ideasKeys.list(queryParams),
     queryFn: () => fetchIdeas(queryParams),
+    enabled,
   });
 };
 

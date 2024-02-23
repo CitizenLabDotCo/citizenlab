@@ -505,24 +505,13 @@ const AdminPhaseEdit = () => {
           {/* TODO: After PhaseParticipationConfig refactor, it doesn't refetch phase service anymore
             This caused a bug where phase data was not being used after fetching. This is a temporary fix.
             PhaseParticipationConfig needs to be refactored to functional component. */}
-          {phase && (
-            <PhaseParticipationConfig
-              phase={phase}
-              onSubmit={handlePhaseParticipationConfigSubmit}
-              onChange={handlePhaseParticipationConfigChange}
-              apiErrors={errors}
-              appConfig={appConfig}
-            />
-          )}
-          {!phase && (
-            <PhaseParticipationConfig
-              phase={undefined}
-              onSubmit={handlePhaseParticipationConfigSubmit}
-              onChange={handlePhaseParticipationConfigChange}
-              apiErrors={errors}
-              appConfig={appConfig}
-            />
-          )}
+          <PhaseParticipationConfig
+            phase={phase}
+            onSubmit={handlePhaseParticipationConfigSubmit}
+            onChange={handlePhaseParticipationConfigChange}
+            apiErrors={errors}
+            appConfig={appConfig}
+          />
 
           {phase?.data.attributes.participation_method === 'information' && (
             <ReportSection phaseId={phase.data.id} />

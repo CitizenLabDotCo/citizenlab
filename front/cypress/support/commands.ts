@@ -1341,8 +1341,7 @@ function apiEnableProjectDescriptionBuilder({
   });
 }
 
-function apiCreateReportBuilder() {
-  const reportName = randomString();
+function apiCreateReportBuilder(phaseId?: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1355,7 +1354,8 @@ function apiCreateReportBuilder() {
       url: 'web_api/v1/reports',
       body: {
         report: {
-          name: reportName,
+          name: phaseId ? undefined : randomString(),
+          phase_id: phaseId,
         },
       },
     });
