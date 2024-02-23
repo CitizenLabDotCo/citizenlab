@@ -7,6 +7,11 @@ module Analysis
     TAG_TYPE = 'nlp_topic'
     DETECTION_THRESHOLD = 0.8
 
+    def topic_modeling(project_title, inputs)
+      response = run_topic_modeling_prompt(project_title, inputs)
+      parse_topic_modeling_response(response)
+    end
+
     protected
 
     # Use `execute` on the parent class to actually use the method
@@ -41,5 +46,34 @@ module Analysis
     rescue StandardError => e
       raise AutoTaggingFailedError, e
     end
+
+    private
+
+    def llm
+      @llm ||= LLM::GPT4Turbo.new
+    end
+
+    def parse_topic_modeling_response(response)
+      response.split("\n").map do |line|
+        # After https://stackoverflow.com/a/3166005/3585671
+        chars = Regexp.escape(' -')
+        line.gsub(/\A[#{chars}]+|[#{chars}]+\z/, "")
+      end
+    end
+
+    def run_topic_modeling_prompt(project_title, inputs)
+      inputs_texts = input_to_text.format_all(inputs)
+      prompt = LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_texts: inputs_texts, max_topics: max_topics(inputs.size))
+      puts prompt
+      llm.chat(prompt).strip
+    end
+
+    def max_topics(inputs_count)
+      [inputs_count, (Math::log(inputs_count, 5) * 6).ceil].min
+    end
   end
 end
+
+
+
+
