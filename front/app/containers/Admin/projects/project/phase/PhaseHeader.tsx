@@ -27,6 +27,8 @@ import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import Tippy from '@tippyjs/react';
 import { getParticipantMessage } from './utils';
 import PermissionTooltipMessage from './PermissionTooltipMessage';
+import NewBadge from 'components/UI/NewBadge';
+import { isExpired } from 'components/UI/NewBadge/utils';
 
 const Container = styled(Box)`
   ${defaultCardStyle};
@@ -217,7 +219,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
           boxShadow="0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
           background="#FBFBFB"
         >
-          {tabs.map(({ url, label }) => (
+          {tabs.map(({ url, label, name }) => (
             <Tab
               label={label}
               url={url}
@@ -227,6 +229,13 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
                 pathname,
                 url
               )}
+              statusLabel={
+                name === 'report' && !isExpired('01-04-2024') ? (
+                  <Box display="inline" ml="8px">
+                    <NewBadge />
+                  </Box>
+                ) : null
+              }
             />
           ))}
         </Box>

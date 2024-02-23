@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { useIntl } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, StatusLabel, colors } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 import NavigationTabs, {
@@ -91,7 +91,6 @@ const MessagingDashboard = () => {
         name: 'texting',
         label: formatMessage(messages.tabTexting),
         url: '/admin/messaging/texting',
-        statusLabel: 'Beta',
       });
     }
 
@@ -103,13 +102,23 @@ const MessagingDashboard = () => {
   return (
     <>
       <NavigationTabs>
-        {tabs.map(({ url, label, statusLabel }) => (
+        {tabs.map(({ url, label, name }) => (
           <Tab
             label={label}
             url={url}
             key={url}
             active={isTopBarNavActive('/admin/messaging', pathname, url)}
-            statusLabel={statusLabel}
+            statusLabel={
+              name === 'texting' ? (
+                <Box display="inline" ml="12px">
+                  <StatusLabel
+                    text={'Beta'}
+                    backgroundColor={colors.background}
+                    variant="outlined"
+                  />
+                </Box>
+              ) : null
+            }
           />
         ))}
       </NavigationTabs>

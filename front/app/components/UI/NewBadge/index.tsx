@@ -1,29 +1,33 @@
 import React from 'react';
-import moment from 'moment';
 
 // components
-import { Badge } from '@citizenlab/cl2-component-library';
+import { Box, fontSizes, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-interface Props {
-  expiryDate: string;
-}
+// utils
+import { lighten } from 'polished';
 
-const NewBadge = ({ expiryDate }: Props) => {
+const NewBadge = () => {
   const { formatMessage } = useIntl();
 
-  if (expiryDate) {
-    const now = moment();
-    const expiry = moment(expiryDate);
-    if (expiry.isAfter(now)) {
-      return null;
-    }
-  }
-
-  return <Badge>{formatMessage(messages.newBadge)}</Badge>;
+  return (
+    <Box
+      display="inline"
+      style={{
+        fontSize: `${fontSizes.xs}px`,
+        fontWeight: 700,
+        color: colors.teal400,
+      }}
+      bgColor={lighten(0.08)(colors.teal100)}
+      p="1px 4px"
+      borderRadius="4px"
+    >
+      {formatMessage(messages.newBadge)}
+    </Box>
+  );
 };
 
 export default NewBadge;

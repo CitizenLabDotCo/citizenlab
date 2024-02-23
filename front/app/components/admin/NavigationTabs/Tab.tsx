@@ -1,11 +1,6 @@
 import React, { MouseEvent } from 'react';
 
-import {
-  Box,
-  StatusLabel,
-  colors,
-  fontSizes,
-} from '@citizenlab/cl2-component-library';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // style
@@ -75,7 +70,7 @@ type TabProps = {
   label: string;
   url: string;
   active: boolean;
-  statusLabel?: string;
+  statusLabel?: React.ReactNode;
   handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 };
 
@@ -90,15 +85,7 @@ const Tab = ({
   <Container active={active} {...props}>
     <Link to={url} onClick={handleClick}>
       {label}
-      {statusLabel && (
-        <Box ml="12px" display="inline">
-          <StatusLabel
-            text={statusLabel}
-            backgroundColor={colors.background}
-            variant="outlined"
-          />
-        </Box>
-      )}
+      {statusLabel && <>{statusLabel}</>}
     </Link>
   </Container>
 );
