@@ -64,7 +64,6 @@ const AccessRightsNotice = ({
       {formatMessage(messages.accessRightsSettings)}
     </Link>
   );
-  console.log(accessRightsSettingsLink);
 
   return (
     <Box id="e2e-warning-notice" mb="20px">
