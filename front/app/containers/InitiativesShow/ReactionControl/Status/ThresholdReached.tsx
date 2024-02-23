@@ -8,16 +8,16 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // components
-import { StatusWrapper, StatusExplanation } from './SharedStyles';
+import { StatusWrapper, StatusExplanation } from '../SharedStyles';
 import Button from 'components/UI/Button';
 
 // i18n
 import T from 'components/T';
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // Types
-import { StatusComponentProps } from './Status';
+import { StatusComponentProps } from '.';
 
 const Container = styled.div``;
 

@@ -8,19 +8,19 @@ import {
   Icon,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { StatusExplanation } from './SharedStyles';
+import { StatusExplanation } from '../SharedStyles';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
-import CountDown from './CountDown';
+import CountDown from '../CountDown';
 import Button from 'components/UI/Button';
-import ProposalProgressBar from './ProposalProgressBar';
+import ProposalProgressBar from '../ProposalProgressBar';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import globalMessages from 'utils/messages';
 import T from 'components/T';
 import { darken } from 'polished';
 import Tippy from '@tippyjs/react';
 import { InitiativePermissionsDisabledReason } from 'hooks/useInitiativesPermissions';
-import { StatusComponentProps } from './Status';
+import { StatusComponentProps } from '.';
 
 const Container = styled.div``;
 

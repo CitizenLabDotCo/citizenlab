@@ -7,12 +7,12 @@ import {
   Box,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import { StatusWrapper, StatusExplanation } from './SharedStyles';
-import ProposalProgressBar from './ProposalProgressBar';
+import { StatusWrapper, StatusExplanation } from '../SharedStyles';
+import ProposalProgressBar from '../ProposalProgressBar';
 import T from 'components/T';
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { StatusComponentProps } from './Status';
+import { StatusComponentProps } from '.';
 
 const Container = styled.div``;
 

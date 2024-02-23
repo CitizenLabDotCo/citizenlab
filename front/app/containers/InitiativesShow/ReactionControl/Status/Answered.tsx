@@ -8,14 +8,14 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 
-import { StatusWrapper, StatusExplanation } from './SharedStyles';
+import { StatusWrapper, StatusExplanation } from '../SharedStyles';
 import Button from 'components/UI/Button';
 
 import T from 'components/T';
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import ProposalProgressBar from './ProposalProgressBar';
-import { StatusComponentProps } from './Status';
+import ProposalProgressBar from '../ProposalProgressBar';
+import { StatusComponentProps } from '.';
 
 const StatusIcon = styled(Icon)`
   path {

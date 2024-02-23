@@ -9,9 +9,9 @@ import {
 import { darken } from 'polished';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import ProposalProgressbar from './ProposalProgressBar';
-import { StatusComponentProps } from './Status';
+import messages from '../messages';
+import ProposalProgressbar from '../ProposalProgressBar';
+import { StatusComponentProps } from '.';
 
 const Container = styled.div`
   display: flex;
