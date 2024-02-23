@@ -5,19 +5,19 @@ import EsriMap from 'components/EsriMap';
 import MapView from '@arcgis/core/views/MapView';
 import LayerHoverLabel from './components/LayerHoverLabel';
 import MapHelperOptions from './components/MapHelperOptions';
-import Layer from '@arcgis/core/layers/Layer';
+
 // hooks
 import useLocalize from 'hooks/useLocalize';
 
 // utils
 import {
   changeCursorOnHover,
+  createEsriFeatureLayers,
   createEsriGeoJsonLayers,
 } from 'components/EsriMap/utils';
 
 // types
 import { IMapConfig } from 'api/map_config/types';
-import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 
 export interface Props {
   mapConfig: IMapConfig;
@@ -43,23 +43,10 @@ const IdeationConfigurationMap = memo<Props>(
             localize
           );
         } else if (layers[0]?.type === 'CustomMaps::EsriFeatureLayer') {
-          const esriLayer: Layer[] = [];
-
-          // if (layer.layer_url) {
-          //   request(layer.layer_url).then((response) => {
-          //     if (response.layers.length > 1) {
-          //       console.log('Has sub layers...');
-          //     } else {
-          //       console.log('Has 1 layer. Adding...');
-          //       esriLayers.push(new FeatureLayer({ url: layer.layer_url }));
-          //     }
-          //     return esriLayers;
-          //   });
-          // }
-
-          return layers.map((layer) => {
-            return new FeatureLayer({ url: layer.layer_url });
-          });
+          return createEsriFeatureLayers(
+            mapConfig.data.attributes.layers,
+            localize
+          );
         }
       }
       return [];
@@ -97,6 +84,7 @@ const IdeationConfigurationMap = memo<Props>(
             showLayerVisibilityControl: true,
             showLegend: true,
             onInit: onMapInit,
+            webMapId: mapConfig.data.attributes.esri_web_map_id,
           }}
           height={'700px'}
           layers={mapLayers}

@@ -46,6 +46,7 @@ import {
   goToMapLocation,
   esriPointToGeoJson,
   changeCursorOnHover,
+  createEsriFeatureLayers,
 } from 'components/EsriMap/utils';
 import {
   InnerContainer,
@@ -194,15 +195,16 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
     const layers = mapConfig?.data.attributes.layers;
 
     // All layers are either of type Esri or GeoJSON, so we can check just the first layer
-    if (layers && layers[0]?.geojson?.features) {
+    if (layers && layers[0]?.type === 'CustomMaps::GeojsonLayer') {
       return createEsriGeoJsonLayers(
         mapConfig?.data.attributes.layers,
         localize
       );
-    } else if (layers) {
-      return layers.map((layer) => {
-        return new FeatureLayer({ url: layer.layer_url });
-      });
+    } else if (layers && layers[0]?.type === 'CustomMaps::EsriFeatureLayer') {
+      return createEsriFeatureLayers(
+        mapConfig.data.attributes.layers,
+        localize
+      );
     }
     return [];
   }, [mapConfig, localize]);
@@ -251,7 +253,7 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
             sizeInPx: 42,
           }),
         }),
-        legendEnabled: false,
+        legendEnabled: true,
         // Add cluster display to this layer
         featureReduction: getClusterConfiguration(theme.colors.tenantPrimary),
         // Add a popup template which is used when multiple ideas share a single location
@@ -307,6 +309,9 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
       mapView.hitTest(event).then((result) => {
         // Get any map elements underneath map click
         const elements = result.results;
+
+        console.log('elements: ', elements);
+
         if (elements.length > 0) {
           // There are map elements - user clicked a layer, idea pin OR a cluster
           const topElement = elements[0];
@@ -493,6 +498,7 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
               showLayerVisibilityControl: true,
               showLegend: true,
               zoomWidgetLocation: 'right',
+              webMapId: mapConfig?.data.attributes.esri_web_map_id,
               onInit: onMapInit,
             }}
             height={isMobileOrSmaller ? '68vh' : '80vh'}

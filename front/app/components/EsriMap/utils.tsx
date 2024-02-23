@@ -13,6 +13,7 @@ import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
 import MapView from '@arcgis/core/views/MapView';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
+import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 
 // utils
 import { hexToRGBA } from 'utils/helperUtils';
@@ -369,6 +370,42 @@ export const showAddInputPopup = ({
     setSelectedInput(null);
     mapView.openPopup();
   });
+};
+
+// createEsriFeatureLayers
+// Description: Create list of Esri GeoJSON layers from a list of IMapLayerAttributes
+export const createEsriFeatureLayers = (
+  layers: IMapLayerAttributes[],
+  localize: Localize
+) => {
+  // create new Feature Layers from the Map Config layers
+  const esriLayers: Layer[] = [];
+  layers.map((layer) => {
+    if (localize(layer.title_multiloc)) {
+      const title = localize(layer.title_multiloc);
+
+      // Extract number of sublayers if present
+      const titleSplit = title.indexOf('(');
+      const subLayerCount = parseInt(
+        title.substring(titleSplit + 1, title.length - 1),
+        10
+      );
+
+      // If we have sublayers, add a feature layer for each
+      if (subLayerCount > 1) {
+        for (let i = 0; i < subLayerCount; i++) {
+          esriLayers.push(
+            new FeatureLayer({ url: `${layer.layer_url}/${i + 1}` })
+          );
+        }
+      } else {
+        // Otherwise, just add the single feature layer
+        esriLayers.push(new FeatureLayer({ url: layer.layer_url }));
+      }
+      return;
+    }
+  });
+  return esriLayers;
 };
 
 // createEsriGeoJsonLayers

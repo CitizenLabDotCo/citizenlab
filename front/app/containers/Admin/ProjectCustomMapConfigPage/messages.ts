@@ -255,4 +255,18 @@ export default defineMessages({
     defaultMessage:
       'You may only upload map data as either GeoJSON layers or importing from ArcGIS Online. Please remove any current ArcGIS layers if you wish to upload a GeoJSON layer.',
   },
+  addWebMap: {
+    id: 'app.components.admin.PostManager.addWebMap',
+    defaultMessage: 'Add Web Map',
+  },
+  webMapTooltip: {
+    id: 'app.components.admin.PostManager.webMapTooltip',
+    defaultMessage:
+      'You can find the Web Map portal ID on your ArcGIS Online item page, on the right hand side.',
+  },
+  addWebMapInstruction: {
+    id: 'app.components.admin.PostManager.addWebMapInstruction',
+    defaultMessage:
+      'Copy the portal ID of your Web Map from ArcGIS Online and paste it in the input below:',
+  },
 });

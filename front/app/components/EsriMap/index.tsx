@@ -17,6 +17,7 @@ import Point from '@arcgis/core/geometry/Point';
 import Expand from '@arcgis/core/widgets/Expand';
 import Legend from '@arcgis/core/widgets/Legend';
 import LayerList from '@arcgis/core/widgets/LayerList';
+import WebMap from '@arcgis/core/WebMap';
 
 // utils
 import { getDefaultBasemap } from './utils';
@@ -33,6 +34,10 @@ import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 const MapContainer = styled(Box)`
   .esri-legend--card__message {
     display: none;
+  }
+
+  .esri-legend {
+    max-height: 200px !important;
   }
 
   ${media.phone`
@@ -66,6 +71,7 @@ type InitialData = {
   showLegend?: boolean;
   showLayerVisibilityControl?: boolean;
   zoomWidgetLocation?: 'left' | 'right';
+  webMapId?: string | null;
   onInit?: (mapView: MapView) => void;
 };
 
@@ -83,6 +89,7 @@ const EsriMap = ({
   const locale = useLocale();
   const isMobileOrSmaller = useBreakpoint('phone');
   const [map, setMap] = useState<Map | null>(null);
+  const [webMap, setWebMap] = useState<WebMap | null>(null);
   const [mapView, setMapView] = useState<MapView | null>(null);
   const mapRef = useRef<HTMLDivElement | null>(null);
 
@@ -98,7 +105,6 @@ const EsriMap = ({
       const mapView = new MapView({
         container: mapRef.current, // Reference to DOM node that will contain the view
         map: newMap,
-        popupEnabled: false,
         popup: {
           dockEnabled: false,
           dockOptions: {
@@ -142,6 +148,18 @@ const EsriMap = ({
         minZoom: 5,
       };
 
+      // Set web map if it was provided
+      if (initialData?.webMapId) {
+        const webMap = new WebMap({
+          portalItem: {
+            id: initialData?.webMapId,
+          },
+        });
+
+        setWebMap(webMap);
+        mapView.map = webMap;
+      }
+
       // Change location of zoom widget if specified
       if (initialData?.zoomWidgetLocation === 'right') {
         const zoom = mapView.ui.find('zoom');
@@ -162,7 +180,7 @@ const EsriMap = ({
           content: new Legend({
             view: mapView,
             hideLayersNotInCurrentView: false,
-            style: { type: 'card', layout: 'stack' },
+            style: { type: 'classic', layout: 'stack' },
           }),
           view: mapView,
           expanded: isMobileOrSmaller ? false : true,
@@ -207,13 +225,23 @@ const EsriMap = ({
   // Note: This data is dynamic and may change.
   useEffect(() => {
     // Add any map layers which were passed in
+    webMap?.when(() => {
+      if (webMap && layers) {
+        layers.forEach((layer) => {
+          webMap.remove(layer);
+          webMap.add(layer);
+        });
+        return;
+      }
+    });
+
     if (map && layers) {
       map?.removeAll();
       layers.forEach((layer) => {
         map.add(layer);
       });
     }
-  }, [layers, map]);
+  }, [layers, map, webMap]);
 
   useEffect(() => {
     // Add any graphics which were passed in

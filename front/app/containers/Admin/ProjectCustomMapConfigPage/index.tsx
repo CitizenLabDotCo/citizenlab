@@ -19,6 +19,7 @@ import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
 import styled from 'styled-components';
 import IdeationConfigurationMap from '../../../components/IdeationConfigurationMap/IdeationConfigurationMap';
 import FeatureLayerUpload from './FeatureLayerUpload';
+import WebMapUpload from './WebMapUpload';
 
 const Container = styled.div`
   display: flex;
@@ -95,6 +96,16 @@ const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
         {view === 'featureLayerUpload' && (
           <Box flex="0 0 520px" width="520px">
             <FeatureLayerUpload
+              projectId={projectId}
+              setView={setView}
+              mapConfigId={mapConfig?.data.id}
+            />
+          </Box>
+        )}
+
+        {view === 'webMapUpload' && (
+          <Box flex="0 0 520px" width="520px">
+            <WebMapUpload
               projectId={projectId}
               setView={setView}
               mapConfigId={mapConfig?.data.id}

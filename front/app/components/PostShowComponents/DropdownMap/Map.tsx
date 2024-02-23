@@ -3,6 +3,7 @@ import React, { memo, useMemo } from 'react';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
 import {
+  createEsriFeatureLayers,
   createEsriGeoJsonLayers,
   getMapPinSymbol,
 } from 'components/EsriMap/utils';
@@ -22,12 +23,26 @@ const MapComponent = memo<Props>(({ position, projectId }) => {
   const center = position.coordinates;
 
   // Load layers from project
-
   // Create GeoJSON layers to add to Esri map
   const layers = useMemo(() => {
     const mapConfigLayers = mapConfig?.data.attributes.layers;
-    if (mapConfigLayers && mapConfigLayers[0].geojson?.features) {
-      return createEsriGeoJsonLayers(mapConfigLayers, localize);
+    // All layers are either of type Esri or GeoJSON, so we can check just the first layer
+    if (
+      mapConfigLayers &&
+      mapConfigLayers[0]?.type === 'CustomMaps::GeojsonLayer'
+    ) {
+      return createEsriGeoJsonLayers(
+        mapConfig?.data.attributes.layers,
+        localize
+      );
+    } else if (
+      mapConfigLayers &&
+      mapConfigLayers[0]?.type === 'CustomMaps::EsriFeatureLayer'
+    ) {
+      return createEsriFeatureLayers(
+        mapConfig.data.attributes.layers,
+        localize
+      );
     }
     return [];
   }, [mapConfig, localize]);
