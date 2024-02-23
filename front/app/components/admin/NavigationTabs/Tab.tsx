@@ -70,12 +70,14 @@ const Container = styled.div`
 `;
 
 type TabProps = {
+  className?: string;
+  'data-cy'?: string;
   label: string;
   url: string;
   active: boolean;
   statusLabel?: string;
   handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
-} & React.HTMLAttributes<HTMLDivElement>;
+};
 
 const Tab = ({
   label,

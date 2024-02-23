@@ -12,7 +12,6 @@ import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
-import Link from 'utils/cl-router/Link';
 import { isTopBarNavActive } from 'utils/helperUtils';
 import { useIntl } from 'utils/cl-intl';
 
@@ -48,9 +47,7 @@ const IdeasPage = () => {
             url={url}
             key={url}
             active={isTopBarNavActive('/admin/ideas', pathname, url)}
-          >
-            <Link to={url}>{label}</Link>
-          </Tab>
+          />
         ))}
       </NavigationTabs>
 

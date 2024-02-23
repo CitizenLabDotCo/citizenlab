@@ -16,7 +16,6 @@ import useLocalize from 'hooks/useLocalize';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import moment from 'moment';
 import { useLocation, useParams } from 'react-router-dom';
-import Link from 'utils/cl-router/Link';
 import { isTopBarNavActive } from 'utils/helperUtils';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import messages from './messages';
@@ -228,9 +227,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
                 pathname,
                 url
               )}
-            >
-              <Link to={url}>{label}</Link>
-            </Tab>
+            />
           ))}
         </Box>
       </Container>
