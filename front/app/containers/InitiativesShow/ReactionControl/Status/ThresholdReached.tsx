@@ -97,7 +97,7 @@ const ThresholdReached = ({
         />
       </ReactionText>
       {!userReacted && (
-        <StyledButton icon="vote-up" onClick={onReaction}>
+        <StyledButton icon="vote-ballot" onClick={onReaction}>
           <FormattedMessage {...messages.vote} />
         </StyledButton>
       )}
