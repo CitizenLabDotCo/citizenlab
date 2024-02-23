@@ -54,9 +54,13 @@ const AdminProjectsProjectIndex = ({
   const surveys_enabled = useFeatureFlag({
     name: 'surveys',
   });
-  const isGranularPermissionsEnabled = useFeatureFlag({
+  const granular_permissions_enabled = useFeatureFlag({
     name: 'granular_permissions',
   });
+  const phase_reports_enabled = useFeatureFlag({
+    name: 'phase_reports',
+  });
+
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
   );
@@ -70,7 +74,8 @@ const AdminProjectsProjectIndex = ({
     const tabHideConditions = getTabHideConditions(selectedPhase, {
       typeform_enabled,
       surveys_enabled,
-      isGranularPermissionsEnabled,
+      granular_permissions_enabled,
+      phase_reports_enabled,
     });
 
     const baseTabsUrl = `/admin/projects/${project.id}`;

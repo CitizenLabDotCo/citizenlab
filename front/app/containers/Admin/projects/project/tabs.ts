@@ -63,7 +63,8 @@ export const getIntialTabs = (formatMessage: FormatMessage): ITab[] => {
 type FeatureFlags = {
   surveys_enabled: boolean;
   typeform_enabled: boolean;
-  isGranularPermissionsEnabled: boolean;
+  granular_permissions_enabled: boolean;
+  phase_reports_enabled: boolean;
 };
 
 export const getTabHideConditions = (
@@ -71,7 +72,8 @@ export const getTabHideConditions = (
   {
     surveys_enabled,
     typeform_enabled,
-    isGranularPermissionsEnabled,
+    granular_permissions_enabled,
+    phase_reports_enabled,
   }: FeatureFlags
 ): TabHideConditions => ({
   ideas: function isIdeaTabHidden() {
@@ -102,9 +104,12 @@ export const getTabHideConditions = (
     return phase?.attributes.participation_method !== 'volunteering';
   },
   'access-rights': function isAccessRightsTabHidden() {
-    return !isGranularPermissionsEnabled;
+    return !granular_permissions_enabled;
   },
   report: function isReportTabHidden() {
-    return phase?.attributes.participation_method !== 'information';
+    return (
+      phase?.attributes.participation_method !== 'information' ||
+      !phase_reports_enabled
+    );
   },
 });
