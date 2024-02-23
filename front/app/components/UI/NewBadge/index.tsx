@@ -20,14 +20,16 @@ const NewBadge = (props: BoxProps) => {
 
   return (
     <Box
-      display="inline"
+      display="inline-block"
       style={{
         fontSize: `${fontSizes.xs}px`,
         fontWeight: 700,
         color: colors.teal400,
+        transform: 'translateY(-1px)',
+        lineHeight: `${fontSizes.xs}px`,
       }}
       bgColor={lighten(0.08)(colors.teal100)}
-      p="1px 4px"
+      p="4px 6px"
       borderRadius="4px"
       {...props}
     >
