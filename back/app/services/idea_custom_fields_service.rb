@@ -17,9 +17,23 @@ class IdeaCustomFieldsService
   def reportable_fields
     # idea_images_attributes is not supported by XlsxService.
     # Page and section fields do not capture data, so they are excluded.
-    all_fields.select do |field|
+    filtered_fields = all_fields.select do |field|
       field.code != 'idea_images_attributes' && field.input_type != 'page' && field.input_type != 'section'
     end
+
+    insert_reportable_point_fields(filtered_fields)
+  end
+
+  def insert_reportable_point_fields(fields)
+    # Replace a point field with two fields, one for latitude and one for longitude,
+    # so that the XlsxExport::InputSheetGenerator can produce separate columns for latitude and longitude.
+    fields.map do |field|
+      if field.input_type == 'point'
+        [field.point_latitude_field, field.point_longitude_field]
+      else
+        field
+      end
+    end.flatten
   end
 
   def visible_fields

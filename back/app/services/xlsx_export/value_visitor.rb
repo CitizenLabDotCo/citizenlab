@@ -70,8 +70,15 @@ module XlsxExport
       '' # Not supported yet. Field type not used in native surveys, nor in idea forms.
     end
 
-    def visit_point(_field)
-      '' # Not supported yet. Field type not used in native surveys, nor in idea forms.
+    def visit_point(field)
+      value_key = field.key.gsub(/_lat|_lon/, '')
+      coords = model.custom_field_values[value_key]['coordinates']
+
+      if field.key.end_with? '_lat'
+        coords.last.to_s
+      elsif field.key.end_with? '_lon'
+        coords.first.to_s
+      end
     end
 
     def visit_page(_field)

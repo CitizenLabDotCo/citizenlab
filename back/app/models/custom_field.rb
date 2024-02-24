@@ -250,6 +250,30 @@ class CustomField < ApplicationRecord
     )
   end
 
+  def point_latitude_field
+    return unless input_type == 'point'
+
+    CustomField.new(
+      key: "#{key}_lat",
+      input_type: 'point',
+      title_multiloc: title_multiloc.transform_values { |k, v| [k, "#{v} - latitude"] }.to_h,
+      required: true,
+      enabled: true
+    )
+  end
+
+  def point_longitude_field
+    return unless input_type == 'point'
+
+    CustomField.new(
+      key: "#{key}_lon",
+      input_type: 'point',
+      title_multiloc: title_multiloc.transform_values { |k, v| [k, "#{v} - longitude"] }.to_h,
+      required: true,
+      enabled: true
+    )
+  end
+
   def ordered_options
     return [] unless options.any?
 
