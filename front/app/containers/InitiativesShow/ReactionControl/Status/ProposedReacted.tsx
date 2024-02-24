@@ -82,6 +82,7 @@ const ProposedReacted = ({
         onCancelReaction={onCancelReaction}
         onReaction={onReaction}
         userReacted={userReacted}
+        cancelReactionDisabled={false}
       />
     </Container>
   );

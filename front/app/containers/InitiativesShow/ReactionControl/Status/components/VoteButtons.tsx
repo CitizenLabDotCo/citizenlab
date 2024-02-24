@@ -6,10 +6,11 @@ import { StatusComponentProps } from '..';
 
 interface Props {
   userReacted: StatusComponentProps['userReacted'];
-  onCancelReaction?: StatusComponentProps['onCancelReaction'];
+  onCancelReaction: StatusComponentProps['onCancelReaction'];
   onReaction: StatusComponentProps['onReaction'];
   voteButtonId?: string;
   cancelVoteButtonId?: string;
+  cancelReactionDisabled: boolean;
 }
 
 const VoteButtons = ({
@@ -18,6 +19,7 @@ const VoteButtons = ({
   onReaction,
   voteButtonId,
   cancelVoteButtonId,
+  cancelReactionDisabled,
 }: Props) => {
   return (
     <>
@@ -28,7 +30,7 @@ const VoteButtons = ({
           icon="check"
           onClick={onCancelReaction}
           id={cancelVoteButtonId}
-          disabled={onCancelReaction === undefined}
+          disabled={cancelReactionDisabled}
         >
           <FormattedMessage {...messages.voted} />
         </Button>
