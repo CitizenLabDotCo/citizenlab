@@ -75,23 +75,25 @@ const Expired = ({
           }}
         />
       </StatusExplanation>
-      <ReactionCounter>
-        <ReactionTexts aria-hidden={true}>
-          <ReactionText>
-            <FormattedMessage
-              {...messages.xVotes}
-              values={{ count: reactionCount }}
-            />
-          </ReactionText>
-          <ReactionText>{reactionLimit}</ReactionText>
-        </ReactionTexts>
-        <ProposalProgressBar
-          reactionCount={reactionCount}
-          reactionLimit={reactionLimit}
-          barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
-          bgShaded
-        />
-      </ReactionCounter>
+      <Box mb="24px">
+        <ReactionCounter>
+          <ReactionTexts aria-hidden={true}>
+            <ReactionText>
+              <FormattedMessage
+                {...messages.xVotes}
+                values={{ count: reactionCount }}
+              />
+            </ReactionText>
+            <ReactionText>{reactionLimit}</ReactionText>
+          </ReactionTexts>
+          <ProposalProgressBar
+            reactionCount={reactionCount}
+            reactionLimit={reactionLimit}
+            barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
+            bgShaded
+          />
+        </ReactionCounter>
+      </Box>
     </Container>
   );
 };

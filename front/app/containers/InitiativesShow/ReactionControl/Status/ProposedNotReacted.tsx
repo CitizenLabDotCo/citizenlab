@@ -206,7 +206,7 @@ const ProposedNotReacted = ({
           {thresholdReachedTooltip}
         </OnMobile>
       </StatusExplanation>
-      <Box mb="16px">
+      <Box mb="24px">
         <ReactionCounter>
           <ReactionText aria-hidden={true}>
             <ReactionTextLeft id="e2e-initiative-not-reacted-reaction-count">

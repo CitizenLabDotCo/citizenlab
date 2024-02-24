@@ -101,7 +101,7 @@ const ProposedReacted = ({
           }}
         />
       </Text>
-      <Box mb="16px">
+      <Box mb="24px">
         <ReactionCounter>
           <ReactionText aria-hidden={true}>
             <ReactionTextLeft id="e2e-initiative-reacted-reaction-count">
