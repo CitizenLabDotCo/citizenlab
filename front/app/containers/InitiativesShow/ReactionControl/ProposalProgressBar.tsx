@@ -15,7 +15,6 @@ interface Props {
   reactionCount: number;
   reactionLimit: number;
   barColor?: string;
-  bgShaded?: boolean;
   className?: string;
 }
 
@@ -23,7 +22,6 @@ const ProposalProgressBar = ({
   reactionCount,
   reactionLimit,
   barColor,
-  bgShaded = false,
   className,
 }: Props) => {
   const theme = useTheme();
@@ -34,7 +32,6 @@ const ProposalProgressBar = ({
         progress={reactionCount / reactionLimit}
         color={barColor || theme.colors.tenantText}
         bgColor={colors.grey200}
-        bgShaded={bgShaded}
       />
       <ScreenReaderOnly>
         <FormattedMessage
