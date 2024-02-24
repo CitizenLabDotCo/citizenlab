@@ -12,7 +12,6 @@ import {
 import { StatusExplanation } from '../SharedStyles';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import CountDown from '../CountDown';
-import ProposalProgressBar from '../ProposalProgressBar';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from '../messages';
 import globalMessages from 'utils/messages';
@@ -22,6 +21,7 @@ import Tippy from '@tippyjs/react';
 import { InitiativePermissionsDisabledReason } from 'hooks/useInitiativesPermissions';
 import { StatusComponentProps } from '.';
 import VoteButtons from './components/VoteButtons';
+import ReactionCounter from './components/ReactionCounter';
 
 const Container = styled.div`
   display: flex;
@@ -35,30 +35,6 @@ const StatusIcon = styled(Icon)`
   width: 31px;
   height: 31px;
   margin-bottom: 10px;
-`;
-
-const ReactionCounter = styled.div`
-  margin-top: 15px;
-  ${media.tablet`
-    display: none;
-  `}
-`;
-
-const ReactionText = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding-bottom: 4px;
-`;
-
-const ReactionTextLeft = styled.div`
-  font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colors.tenantPrimary};
-`;
-
-const ReactionTextRight = styled.div`
-  font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colors.tenantText};
 `;
 
 const OnDesktop = styled.span`
@@ -135,14 +111,12 @@ const disabledMessages: {
 const ProposedNotReacted = ({
   onReaction,
   initiative,
-  initiativeSettings: { reacting_threshold, threshold_reached_message },
+  initiativeSettings,
   disabledReason,
   userReacted,
   onCancelReaction,
 }: StatusComponentProps) => {
   const theme = useTheme();
-  const reactionCount = initiative.attributes.likes_count;
-  const reactionLimit = reacting_threshold;
 
   const thresholdReachedTooltip = (
     <IconTooltip
@@ -150,7 +124,9 @@ const ProposedNotReacted = ({
       iconColor={theme.colors.tenantText}
       theme="light"
       placement="bottom"
-      content={<T value={threshold_reached_message} supportHtml />}
+      content={
+        <T value={initiativeSettings.threshold_reached_message} supportHtml />
+      }
     />
   );
 
@@ -174,7 +150,7 @@ const ProposedNotReacted = ({
           <FormattedMessage
             {...messages.proposedStatusExplanation}
             values={{
-              votingThreshold: reacting_threshold,
+              votingThreshold: initiativeSettings.reacting_threshold,
               proposedStatusExplanationBold: (
                 <b>
                   <FormattedMessage
@@ -193,7 +169,7 @@ const ProposedNotReacted = ({
               daysLeft: getPeriodRemainingUntil(
                 initiative.attributes.expires_at
               ),
-              votingThreshold: reacting_threshold,
+              votingThreshold: initiativeSettings.reacting_threshold,
               proposedStatusExplanationMobileBold: (
                 <b>
                   <FormattedMessage
@@ -207,21 +183,10 @@ const ProposedNotReacted = ({
         </OnMobile>
       </StatusExplanation>
       <Box mb="24px">
-        <ReactionCounter>
-          <ReactionText aria-hidden={true}>
-            <ReactionTextLeft id="e2e-initiative-not-reacted-reaction-count">
-              <FormattedMessage
-                {...messages.xVotes}
-                values={{ count: reactionCount }}
-              />
-            </ReactionTextLeft>
-            <ReactionTextRight>{reactionLimit}</ReactionTextRight>
-          </ReactionText>
-          <ProposalProgressBar
-            reactionCount={reactionCount}
-            reactionLimit={reactionLimit}
-          />
-        </ReactionCounter>
+        <ReactionCounter
+          initiative={initiative}
+          initiativeSettings={initiativeSettings}
+        />
       </Box>
       <Tippy
         disabled={!tippyContent}
