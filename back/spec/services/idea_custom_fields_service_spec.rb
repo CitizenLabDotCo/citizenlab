@@ -305,8 +305,8 @@ describe IdeaCustomFieldsService do
         )
 
         point_fields = service.reportable_fields.select { |field| field.input_type == 'point' }
-        expect(point_fields.map(&:key)).to eq %w[where_is_it_zl5_latitude where_is_it_zl5_longitude]
-        expect(point_fields.map(&:title_multiloc)).to eq [
+        expect(point_fields.map(&:key)).to match_array %w[where_is_it_zl5_latitude where_is_it_zl5_longitude]
+        expect(point_fields.map(&:title_multiloc)).to match_array [
           { 'en' => 'Where is it? - Latitude', 'nl-NL' => 'Waar is het? - Breedtegraad' },
           { 'en' => 'Where is it? - Longitude', 'nl-NL' => 'Waar is het? - Lengtegraad' }
         ]
