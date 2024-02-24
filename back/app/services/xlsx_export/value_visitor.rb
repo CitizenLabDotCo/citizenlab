@@ -72,6 +72,8 @@ module XlsxExport
 
     def visit_point(field)
       value_key = field.key.gsub(/_latitude|_longitude/, '')
+      return '' if model.custom_field_values[value_key].blank?
+
       coords = model.custom_field_values[value_key]['coordinates']
 
       if field.key.end_with? '_latitude'
