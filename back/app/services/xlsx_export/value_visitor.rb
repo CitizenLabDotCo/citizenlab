@@ -74,12 +74,12 @@ module XlsxExport
       value_key = field.key.delete_suffix('_latitude').delete_suffix('_longitude')
       return '' if model.custom_field_values[value_key].blank?
 
-      coords = model.custom_field_values[value_key]['coordinates']
+      coordinates = model.custom_field_values[value_key]['coordinates']
 
       if field.key.end_with? '_latitude'
-        coords.last.to_s
+        coordinates.last.to_s
       elsif field.key.end_with? '_longitude'
-        coords.first.to_s
+        coordinates.first.to_s
       end
     end
 
