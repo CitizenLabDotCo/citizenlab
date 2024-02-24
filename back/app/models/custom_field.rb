@@ -256,7 +256,9 @@ class CustomField < ApplicationRecord
     CustomField.new(
       key: "#{key}_latitude",
       input_type: 'point',
-      title_multiloc: title_multiloc.transform_values { |k, v| [k, "#{v} - latitude"] }.to_h,
+      title_multiloc: title_multiloc.to_h do |k, v|
+        [k, "#{v} - #{I18n.with_locale(k) { I18n.t('xlsx_export.column_headers.latitude') }}"]
+      end,
       required: true,
       enabled: true
     )
@@ -268,7 +270,9 @@ class CustomField < ApplicationRecord
     CustomField.new(
       key: "#{key}_longitude",
       input_type: 'point',
-      title_multiloc: title_multiloc.transform_values { |k, v| [k, "#{v} - longitude"] }.to_h,
+      title_multiloc: title_multiloc.to_h do |k, v|
+        [k, "#{v} - #{I18n.with_locale(k) { I18n.t('xlsx_export.column_headers.longitude') }}"]
+      end,
       required: true,
       enabled: true
     )
