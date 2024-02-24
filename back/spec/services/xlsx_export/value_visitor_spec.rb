@@ -415,10 +415,28 @@ describe XlsxExport::ValueVisitor do
 
     describe '#visit_point' do
       let(:input_type) { 'point' }
-      let(:value) { true }
+      let(:point_value) do
+        {
+          'type' => 'Point',
+          'coordinates' => [42.42, 24.24]
+        }
+      end
+      let(:model) { create(:idea, custom_field_values: { 'title_of_question_j97' => point_value }) }
 
-      it 'returns the empty string, because the field is not supported yet' do
-        expect(visitor.visit_point(field)).to eq ''
+      context "when field key includes '_lat'" do
+        let(:field_key) { 'title_of_question_j97_lat' }
+
+        it 'returns the latitude value as a string' do
+          expect(visitor.visit_point(field)).to eq '24.24'
+        end
+      end
+
+      context "when field key includes '_lon'" do
+        let(:field_key) { 'title_of_question_j97_lon' }
+
+        it 'returns the longitude value as a string' do
+          expect(visitor.visit_point(field)).to eq '42.42'
+        end
       end
     end
 
