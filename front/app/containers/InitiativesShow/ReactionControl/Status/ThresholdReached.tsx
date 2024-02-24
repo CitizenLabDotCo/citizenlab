@@ -11,7 +11,6 @@ import {
 
 // components
 import { StatusWrapper, StatusExplanation } from '../SharedStyles';
-import Button from 'components/UI/Button';
 
 // i18n
 import T from 'components/T';
@@ -32,10 +31,6 @@ const StatusIcon = styled(Icon)`
   width: 30px;
   height: 30px;
   margin-bottom: 20px;
-`;
-
-const StyledButton = styled(Button)`
-  margin-top: 20px;
 `;
 
 const ReactionCounter = styled.div`
@@ -68,7 +63,6 @@ const ThresholdReached = ({
   initiativeStatus,
   userReacted,
   onReaction,
-  onCancelReaction,
 }: StatusComponentProps) => {
   const theme = useTheme();
   const reactionCount = initiative.attributes.likes_count;
