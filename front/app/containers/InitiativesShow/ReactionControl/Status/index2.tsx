@@ -21,6 +21,7 @@ interface Props extends StatusComponentProps {
   iconName: IconNames;
   statusExplanation: React.ReactNode;
   barColor?: string;
+  cancelReactionDisabled?: boolean;
   showReadAnswerButton?: boolean;
 }
 
@@ -35,6 +36,7 @@ const Status = ({
   iconName,
   statusExplanation,
   barColor,
+  cancelReactionDisabled = false,
   showReadAnswerButton = false,
 }: Props) => {
   return (
@@ -60,6 +62,7 @@ const Status = ({
           onCancelReaction={onCancelReaction}
           onReaction={onReaction}
           userReacted={userReacted}
+          cancelReactionDisabled={cancelReactionDisabled}
         />
       </Box>
       {showReadAnswerButton && (
