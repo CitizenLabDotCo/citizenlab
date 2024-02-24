@@ -5,6 +5,8 @@ import {
   Box,
   Icon,
   IconTooltip,
+  media,
+  colors,
 } from '@citizenlab/cl2-component-library';
 
 // components
@@ -18,6 +20,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // Types
 import { StatusComponentProps } from '.';
+import ProposalProgressBar from '../ProposalProgressBar';
+import VoteButtons from './components/VoteButtons';
 
 const Container = styled.div``;
 
@@ -30,14 +34,32 @@ const StatusIcon = styled(Icon)`
   margin-bottom: 20px;
 `;
 
-const ReactionText = styled.div`
-  font-size: ${fontSizes.base}px;
-  color: ${(props) => props.theme.colors.tenantText};
+const StyledButton = styled(Button)`
   margin-top: 20px;
 `;
 
-const StyledButton = styled(Button)`
-  margin-top: 20px;
+const ReactionCounter = styled.div`
+  margin-top: 15px;
+  ${media.tablet`
+    display: none;
+  `}
+`;
+
+const ReactionText = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 4px;
+`;
+
+const ReactionTextLeft = styled.div`
+  font-size: ${fontSizes.base}px;
+  color: ${(props) => props.theme.colors.tenantPrimary};
+`;
+
+const ReactionTextRight = styled.div`
+  font-size: ${fontSizes.base}px;
+  color: ${(props) => props.theme.colors.tenantText};
 `;
 
 const ThresholdReached = ({
@@ -46,6 +68,7 @@ const ThresholdReached = ({
   initiativeStatus,
   userReacted,
   onReaction,
+  onCancelReaction,
 }: StatusComponentProps) => {
   const theme = useTheme();
   const reactionCount = initiative.attributes.likes_count;
@@ -80,27 +103,27 @@ const ThresholdReached = ({
           content={<T value={threshold_reached_message} supportHtml />}
         />
       </StatusExplanation>
-      <ReactionText>
-        <FormattedMessage
-          {...messages.a11y_xVotesOfRequiredY}
-          values={{
-            votingThreshold: reactionLimit,
-            xVotes: (
-              <b>
-                <FormattedMessage
-                  {...messages.xVotes}
-                  values={{ count: reactionCount }}
-                />
-              </b>
-            ),
-          }}
-        />
-      </ReactionText>
-      {!userReacted && (
-        <StyledButton icon="vote-ballot" onClick={onReaction}>
-          <FormattedMessage {...messages.vote} />
-        </StyledButton>
-      )}
+      <Box mb="24px">
+        <ReactionCounter>
+          <ReactionText aria-hidden={true}>
+            <ReactionTextLeft>
+              <FormattedMessage
+                {...messages.xVotes}
+                values={{ count: reactionCount }}
+              />
+            </ReactionTextLeft>
+            <ReactionTextRight>{reactionLimit}</ReactionTextRight>
+          </ReactionText>
+          <ProposalProgressBar
+            reactionCount={reactionCount}
+            reactionLimit={reactionLimit}
+            barColor={colors.green500}
+          />
+        </ReactionCounter>
+      </Box>
+      <Box mb="8px">
+        <VoteButtons onReaction={onReaction} userReacted={userReacted} />
+      </Box>
     </Container>
   );
 };
