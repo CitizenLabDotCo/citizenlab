@@ -21,10 +21,10 @@ class IdeaCustomFieldsService
       field.code != 'idea_images_attributes' && field.input_type != 'page' && field.input_type != 'section'
     end
 
-    insert_reportable_point_fields(filtered_fields)
+    replace_reportable_point_fields(filtered_fields)
   end
 
-  def insert_reportable_point_fields(fields)
+  def replace_reportable_point_fields(fields)
     # Replace a point field with two fields, one for latitude and one for longitude,
     # so that the XlsxExport::InputSheetGenerator can produce separate columns for latitude and longitude.
     fields.map do |field|

@@ -71,12 +71,12 @@ module XlsxExport
     end
 
     def visit_point(field)
-      value_key = field.key.gsub(/_lat|_lon/, '')
+      value_key = field.key.gsub(/_latitude|_longitude/, '')
       coords = model.custom_field_values[value_key]['coordinates']
 
-      if field.key.end_with? '_lat'
+      if field.key.end_with? '_latitude'
         coords.last.to_s
-      elsif field.key.end_with? '_lon'
+      elsif field.key.end_with? '_longitude'
         coords.first.to_s
       end
     end

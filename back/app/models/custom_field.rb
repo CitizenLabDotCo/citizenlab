@@ -254,7 +254,7 @@ class CustomField < ApplicationRecord
     return unless input_type == 'point'
 
     CustomField.new(
-      key: "#{key}_lat",
+      key: "#{key}_latitude",
       input_type: 'point',
       title_multiloc: title_multiloc.transform_values { |k, v| [k, "#{v} - latitude"] }.to_h,
       required: true,
@@ -266,7 +266,7 @@ class CustomField < ApplicationRecord
     return unless input_type == 'point'
 
     CustomField.new(
-      key: "#{key}_lon",
+      key: "#{key}_longitude",
       input_type: 'point',
       title_multiloc: title_multiloc.transform_values { |k, v| [k, "#{v} - longitude"] }.to_h,
       required: true,

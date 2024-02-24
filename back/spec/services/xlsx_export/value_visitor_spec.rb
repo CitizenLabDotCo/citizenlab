@@ -418,24 +418,24 @@ describe XlsxExport::ValueVisitor do
       let(:point_value) do
         {
           'type' => 'Point',
-          'coordinates' => [42.42, 24.24]
+          'coordinates' => [11.11, 22.22]
         }
       end
       let(:model) { create(:idea, custom_field_values: { 'title_of_question_j97' => point_value }) }
 
-      context "when field key includes '_lat'" do
-        let(:field_key) { 'title_of_question_j97_lat' }
+      context "when field key includes '_longitude'" do
+        let(:field_key) { 'title_of_question_j97_longitude' }
 
-        it 'returns the latitude value as a string' do
-          expect(visitor.visit_point(field)).to eq '24.24'
+        it 'returns the longitude value as a string' do
+          expect(visitor.visit_point(field)).to eq '11.11'
         end
       end
 
-      context "when field key includes '_lon'" do
-        let(:field_key) { 'title_of_question_j97_lon' }
+      context "when field key includes '_latitude'" do
+        let(:field_key) { 'title_of_question_j97_latitude' }
 
-        it 'returns the longitude value as a string' do
-          expect(visitor.visit_point(field)).to eq '42.42'
+        it 'returns the latitude value as a string' do
+          expect(visitor.visit_point(field)).to eq '22.22'
         end
       end
     end
