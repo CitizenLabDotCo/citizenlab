@@ -1,12 +1,11 @@
 import React from 'react';
 
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import {
   colors,
   fontSizes,
   media,
   Icon,
-  IconTooltip,
   Box,
 } from '@citizenlab/cl2-component-library';
 import { StatusExplanation } from '../SharedStyles';
@@ -15,7 +14,6 @@ import CountDown from '../CountDown';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from '../messages';
 import globalMessages from 'utils/messages';
-import T from 'components/T';
 import { darken } from 'polished';
 import Tippy from '@tippyjs/react';
 import { InitiativePermissionsDisabledReason } from 'hooks/useInitiativesPermissions';
@@ -116,20 +114,6 @@ const ProposedNotReacted = ({
   userReacted,
   onCancelReaction,
 }: StatusComponentProps) => {
-  const theme = useTheme();
-
-  const thresholdReachedTooltip = (
-    <IconTooltip
-      icon="info-outline"
-      iconColor={theme.colors.tenantText}
-      theme="light"
-      placement="bottom"
-      content={
-        <T value={initiativeSettings.threshold_reached_message} supportHtml />
-      }
-    />
-  );
-
   const tippyContent = disabledReason ? (
     <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
       <TooltipContentIcon name="lock" ariaHidden />
@@ -160,7 +144,6 @@ const ProposedNotReacted = ({
               ),
             }}
           />
-          {thresholdReachedTooltip}
         </OnDesktop>
         <OnMobile>
           <FormattedMessage
@@ -179,7 +162,6 @@ const ProposedNotReacted = ({
               ),
             }}
           />
-          {thresholdReachedTooltip}
         </OnMobile>
       </StatusExplanation>
       <Box mb="24px">
