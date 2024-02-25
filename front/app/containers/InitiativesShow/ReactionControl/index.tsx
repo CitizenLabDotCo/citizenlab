@@ -2,7 +2,6 @@ import React from 'react';
 
 // components
 import FollowUnfollow from 'components/FollowUnfollow';
-import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
