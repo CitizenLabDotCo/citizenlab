@@ -728,7 +728,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "الرجاء تحديد مرحلة التفكير.",
   "app.containers.Admin.projects.all.askPersonalData": "اسأل البيانات الشخصية",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "انقر فوق \"تصدير بتنسيق pdf\" أدناه لتنزيل نسخة pdf من نموذج الإدخال. انتبه إلى أن حقول الصور وتحميل الملفات والعلامات والمقياس الخطي غير مدعومة حاليًا لإصدار pdf.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "انقر فوق \"تصدير بتنسيق pdf\" أدناه لتنزيل نسخة pdf من الاستطلاع. انتبه إلى أن حقلي Linear Scale وFile Upload غير مدعومين في الوقت الحالي لإصدار pdf.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "انقر فوق \"تصدير بتنسيق pdf\" أدناه لتنزيل نسخة pdf من الاستطلاع. انتبه إلى أن حقول إجابة الموقع والمقياس الخطي وتحميل الملف غير مدعومة حاليًا لإصدار pdf.",
   "app.containers.Admin.projects.all.components.archived": "مؤرشف",
   "app.containers.Admin.projects.all.components.draft": "مسوّدة",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "إدارة",
