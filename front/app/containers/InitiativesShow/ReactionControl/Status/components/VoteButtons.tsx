@@ -2,7 +2,7 @@ import React from 'react';
 import Button from 'components/UI/Button';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { StatusComponentProps } from '..';
+import { StatusComponentProps } from '../../StatusWrapper';
 import Tippy from '@tippyjs/react';
 import DisabledReasonTooltip from './DisabledReasonTooltip';
 

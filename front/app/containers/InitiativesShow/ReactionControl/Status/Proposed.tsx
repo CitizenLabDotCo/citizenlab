@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { StatusComponentProps } from '.';
+import { StatusComponentProps } from '../StatusWrapper';
 import StatusShared from './StatusShared';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import { Text } from '@citizenlab/cl2-component-library';

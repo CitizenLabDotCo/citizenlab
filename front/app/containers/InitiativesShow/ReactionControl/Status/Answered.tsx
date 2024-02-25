@@ -2,7 +2,7 @@ import React from 'react';
 import { colors } from '@citizenlab/cl2-component-library';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { StatusComponentProps } from '.';
+import { StatusComponentProps } from '../StatusWrapper';
 import StatusShared from './StatusShared';
 
 const Answered = (props: StatusComponentProps) => {

@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { Box, Icon, IconNames } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from '../SharedStyles';
 import T from 'components/T';
-import { StatusComponentProps } from '.';
+import { StatusComponentProps } from '../StatusWrapper';
 import ReadAnswerButton from './components/ReadAnswerButton';
 import VoteButtons from './components/VoteButtons';
 import ReactionCounter from './components/ReactionCounter';

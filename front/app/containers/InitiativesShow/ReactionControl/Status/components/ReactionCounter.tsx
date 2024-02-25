@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import ProposalProgressBar from '../../ProposalProgressBar';
-import { StatusComponentProps } from '..';
+import { StatusComponentProps } from '../../StatusWrapper';
 
 const ReactionText = styled.div`
   display: flex;

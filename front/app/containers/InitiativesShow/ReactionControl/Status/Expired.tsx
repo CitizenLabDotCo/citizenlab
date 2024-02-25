@@ -1,7 +1,7 @@
 import React from 'react';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { StatusComponentProps } from '.';
+import { StatusComponentProps } from '../StatusWrapper';
 import StatusShared from './StatusShared';
 
 const Expired = (props: StatusComponentProps) => {

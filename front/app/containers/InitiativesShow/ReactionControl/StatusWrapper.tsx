@@ -1,12 +1,12 @@
 import React from 'react';
 import moment from 'moment';
-import Proposed from './Proposed';
-import Expired from './Expired';
-import ThresholdReached from './ThresholdReached';
-import Answered from './Answered';
-import Ineligible from './Ineligible';
-import ReviewPending from './ReviewPending';
-import ChangesRequested from './ChangesRequested';
+import Proposed from './Status/Proposed';
+import Expired from './Status/Expired';
+import ThresholdReached from './Status/ThresholdReached';
+import Answered from './Status/Answered';
+import Ineligible from './Status/Ineligible';
+import ReviewPending from './Status/ReviewPending';
+import ChangesRequested from './Status/ChangesRequested';
 import { IInitiative, IInitiativeData } from 'api/initiatives/types';
 import {
   InitiativeStatusCode,

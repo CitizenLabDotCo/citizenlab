@@ -8,7 +8,7 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // Types
-import { StatusComponentProps } from '.';
+import { StatusComponentProps } from '../StatusWrapper';
 import StatusShared from './StatusShared';
 
 const ThresholdReached = (props: StatusComponentProps) => {
