@@ -728,7 +728,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Vänligen välj en idéfas.",
   "app.containers.Admin.projects.all.askPersonalData": "Fråga om personuppgifter",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Klicka på \"Exportera som pdf\" nedan för att ladda ner en pdf-version av formuläret. Observera att fälten Bilder, Filuppladdning, Taggar och Linjär skala för närvarande inte stöds för pdf-versionen.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Klicka på \"Exportera som pdf\" nedan för att ladda ner en pdf-version av enkäten. Observera att fälten Linjär skala och Filuppladdning för närvarande inte stöds för pdf-versionen.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Klicka på \"Exportera som pdf\" nedan för att ladda ner en pdf-version av enkäten. Observera att fälten Svar på plats, Linjär skala och Filuppladdning för närvarande inte stöds för pdf-versionen.",
   "app.containers.Admin.projects.all.components.archived": "Arkiverad",
   "app.containers.Admin.projects.all.components.draft": "Utkast",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Hantera",
