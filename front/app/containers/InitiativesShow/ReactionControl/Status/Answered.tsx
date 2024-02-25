@@ -23,6 +23,7 @@ const Answered = (props: StatusComponentProps) => {
         />
       }
       barColor={colors.success}
+      showCountDown
       showVoteButtons
       showReadAnswerButton
     />

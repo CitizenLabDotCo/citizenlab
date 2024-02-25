@@ -7,6 +7,7 @@ import { StatusComponentProps } from '.';
 import ReadAnswerButton from './components/ReadAnswerButton';
 import VoteButtons from './components/VoteButtons';
 import ReactionCounter from './components/ReactionCounter';
+import CountDown from '../CountDown';
 
 const StatusIcon = styled(Icon)`
   path {
@@ -21,6 +22,7 @@ interface Props extends StatusComponentProps {
   iconName: IconNames;
   statusExplanation: React.ReactNode;
   barColor?: string;
+  showCountDown: boolean;
   showVoteButtons?: boolean;
   cancelReactionDisabled?: boolean;
   showReadAnswerButton?: boolean;
@@ -40,9 +42,15 @@ const Status = ({
   cancelReactionDisabled = false,
   showVoteButtons = false,
   showReadAnswerButton = false,
+  showCountDown,
 }: Props) => {
   return (
-    <>
+    <Box display="flex" flexDirection="column">
+      {showCountDown && (
+        <Box ml="auto" mb="16px">
+          <CountDown targetTime={initiative.attributes.expires_at} />
+        </Box>
+      )}
       <Box mb="16px">
         <StatusWrapper>
           <T value={initiativeStatus.attributes.title_multiloc} />
@@ -72,7 +80,7 @@ const Status = ({
       {showReadAnswerButton && (
         <ReadAnswerButton onClick={onScrollToOfficialFeedback} />
       )}
-    </>
+    </Box>
   );
 };
 
