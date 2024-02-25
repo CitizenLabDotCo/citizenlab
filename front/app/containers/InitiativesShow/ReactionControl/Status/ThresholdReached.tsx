@@ -47,6 +47,7 @@ const ThresholdReached = (props: StatusComponentProps) => {
         </>
       }
       barColor={colors.success}
+      showCountDown
       showVoteButtons
       cancelReactionDisabled
     />
