@@ -728,7 +728,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Valitse ideavaihe.",
   "app.containers.Admin.projects.all.askPersonalData": "Kysy henkilötietoja",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Napsauta alla olevaa \"Vie pdf-muodossa\" ladataksesi syöttölomakkeen pdf-version. Huomaa, että tällä hetkellä Kuvat-, Tiedoston lataus-, Tunnisteet- ja Lineaarinen mittakaava -kenttiä ei tueta pdf-versiossa.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Lataa kyselyn pdf-versio napsauttamalla alta \"Vie pdf-muodossa\". Huomaa, että tällä hetkellä Linear Scale- ja File Upload -kenttiä ei tueta pdf-versiossa.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Lataa kyselyn pdf-versio napsauttamalla alta \"Vie pdf-muodossa\". Huomaa, että tällä hetkellä Location Answer, Linear Scale ja File Upload -kenttiä ei tueta pdf-versiossa.",
   "app.containers.Admin.projects.all.components.archived": "Arkistoitu",
   "app.containers.Admin.projects.all.components.draft": "Luonnos",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Muokata",
