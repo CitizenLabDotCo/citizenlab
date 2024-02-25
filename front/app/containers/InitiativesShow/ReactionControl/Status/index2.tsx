@@ -34,9 +34,9 @@ interface Props extends StatusComponentProps {
   statusExplanation: React.ReactNode;
   barColor?: string;
   showCountDown: boolean;
-  showVoteButtons?: boolean;
+  showVoteButtons: boolean;
+  showReadAnswerButton: boolean;
   cancelReactionDisabled?: boolean;
-  showReadAnswerButton?: boolean;
 }
 
 const Status = ({
@@ -50,10 +50,10 @@ const Status = ({
   iconName,
   statusExplanation,
   barColor,
-  cancelReactionDisabled = false,
-  showVoteButtons = false,
-  showReadAnswerButton = false,
   showCountDown,
+  showVoteButtons,
+  showReadAnswerButton,
+  cancelReactionDisabled = false,
 }: Props) => {
   return (
     <Box display="flex" flexDirection="column">
