@@ -24,7 +24,7 @@ const scaleIn = keyframes`
   }
 `;
 
-export const StatusWrapper = styled.div`
+export const StatusHeading = styled.div`
   display: flex;
   font-size: ${fontSizes.base}px;
   font-weight: bold;
@@ -93,9 +93,9 @@ const Status = ({
       )}
       <Box display="flex" mb="16px" alignItems="center">
         <StatusIcon mr="8px" name={iconName} />
-        <StatusWrapper>
+        <StatusHeading>
           <T value={initiativeStatus.attributes.title_multiloc} />
-        </StatusWrapper>
+        </StatusHeading>
       </Box>
       <Box mb="24px">
         <StatusExplanation>{statusExplanation}</StatusExplanation>
