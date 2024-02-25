@@ -37,6 +37,8 @@ const ProposedReacted = (props: StatusComponentProps) => {
         </Text>
       }
       showCountDown
+      showVoteButtons
+      showReadAnswerButton={false}
     />
   );
 };
