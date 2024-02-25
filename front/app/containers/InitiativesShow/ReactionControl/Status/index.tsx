@@ -7,7 +7,7 @@ import { StatusComponentProps } from '../StatusWrapper';
 import ReadAnswerButton from './components/ReadAnswerButton';
 import VoteButtons from './components/VoteButtons';
 import ReactionCounter from './components/ReactionCounter';
-import CountDown from '../CountDown';
+import CountDown from './components/CountDown';
 
 const scaleIn = keyframes`
   0% {
