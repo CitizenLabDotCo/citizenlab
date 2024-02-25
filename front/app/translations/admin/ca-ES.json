@@ -728,7 +728,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Seleccioneu una fase d'ideació.",
   "app.containers.Admin.projects.all.askPersonalData": "Demanar dades personals",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Feu clic a \"Exporta com a pdf\" a continuació per descarregar una versió en pdf del formulari d'entrada. Tingueu en compte que, de moment, els camps Imatges, Pujada de fitxers, Etiquetes i Escala lineal no són compatibles amb la versió pdf.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Feu clic a \"Exporta com a pdf\" a continuació per descarregar una versió en pdf de l'enquesta. Tingueu en compte que, de moment, els camps Escala lineal i Carrega de fitxers no són compatibles amb la versió pdf.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Feu clic a \"Exporta com a pdf\" a continuació per descarregar una versió en pdf de l'enquesta. Tingueu en compte que, de moment, els camps Resposta a la ubicació, Escala lineal i Pujada de fitxers no són compatibles amb la versió pdf.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
   "app.containers.Admin.projects.all.components.draft": "Draft",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Edit",
