@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Box, Icon, IconNames } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from '../SharedStyles';
 import T from 'components/T';
@@ -8,6 +8,17 @@ import ReadAnswerButton from './components/ReadAnswerButton';
 import VoteButtons from './components/VoteButtons';
 import ReactionCounter from './components/ReactionCounter';
 
+const scaleIn = keyframes`
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
 const StatusIcon = styled(Icon)`
   path {
     fill: ${(props) => props.theme.colors.tenantText};
@@ -15,6 +26,7 @@ const StatusIcon = styled(Icon)`
   width: 30px;
   height: 30px;
   margin-bottom: 20px;
+  animation: ${scaleIn} 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
 
 interface Props extends StatusComponentProps {
