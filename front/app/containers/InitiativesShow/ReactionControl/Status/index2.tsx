@@ -54,6 +54,7 @@ const Status = ({
   showVoteButtons,
   showReadAnswerButton,
   cancelReactionDisabled = false,
+  disabledReason,
 }: Props) => {
   return (
     <Box display="flex" flexDirection="column">
@@ -86,6 +87,7 @@ const Status = ({
             onReaction={onReaction}
             userReacted={userReacted}
             cancelReactionDisabled={cancelReactionDisabled}
+            disabledReason={disabledReason}
           />
         </Box>
       )}
