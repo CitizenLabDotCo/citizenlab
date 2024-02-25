@@ -1,7 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import ProposedNotReacted from './ProposedNotReacted';
-import ProposedReacted from './ProposedReacted';
+import Proposed from './Proposed';
 import Expired from './Expired';
 import ThresholdReached from './ThresholdReached';
 import Answered from './Answered';
@@ -36,44 +35,17 @@ export interface StatusComponentProps {
   disabledReason?: InitiativePermissionsDisabledReason | null | undefined;
 }
 
-type TComponentMap = {
-  [key in InitiativeStatusCode]: {
-    [key in
-      | 'reacted'
-      | 'notReacted']: React.ComponentType<StatusComponentProps>;
-  };
-};
-
 /** Maps the initiative status and whether the user reacted or not to the right component to render */
-const componentMap: TComponentMap = {
-  proposed: {
-    reacted: ProposedReacted,
-    notReacted: ProposedNotReacted,
-  },
-  expired: {
-    reacted: Expired,
-    notReacted: Expired,
-  },
-  changes_requested: {
-    reacted: ChangesRequested,
-    notReacted: ChangesRequested,
-  },
-  review_pending: {
-    reacted: ReviewPending,
-    notReacted: ReviewPending,
-  },
-  answered: {
-    reacted: Answered,
-    notReacted: Answered,
-  },
-  threshold_reached: {
-    reacted: ThresholdReached,
-    notReacted: ThresholdReached,
-  },
-  ineligible: {
-    reacted: Ineligible,
-    notReacted: Ineligible,
-  },
+const componentMap: {
+  [key in InitiativeStatusCode]: React.ComponentType<StatusComponentProps>;
+} = {
+  proposed: Proposed,
+  expired: Expired,
+  changes_requested: ChangesRequested,
+  review_pending: ReviewPending,
+  answered: Answered,
+  threshold_reached: ThresholdReached,
+  ineligible: Ineligible,
 };
 
 interface Props {
@@ -151,8 +123,7 @@ const Status = ({ initiative, onScrollToOfficialFeedback }: Props) => {
     initiativeStatus.data.attributes.code === 'proposed' && isExpired
       ? 'expired'
       : initiativeStatus.data.attributes.code;
-  const StatusComponent =
-    componentMap[statusCode][userReacted ? 'reacted' : 'notReacted'];
+  const StatusComponent = componentMap[statusCode];
 
   return (
     <StatusComponent
