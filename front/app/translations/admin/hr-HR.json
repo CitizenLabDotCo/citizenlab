@@ -728,7 +728,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Odaberite fazu ideje.",
   "app.containers.Admin.projects.all.askPersonalData": "Pitajte osobne podatke",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Kliknite ispod na \"Izvezi kao pdf\" za preuzimanje pdf verzije obrasca za unos. Imajte na umu da trenutačno polja Slike, Prijenos datoteke, Oznake i Linearno mjerilo nisu podržana za pdf verziju.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Pritisnite 'Izvezi kao pdf' ispod kako biste preuzeli pdf verziju ankete. Imajte na umu da trenutačno polja Linear Scale i File Upload nisu podržana za pdf verziju.",
   "app.containers.Admin.projects.all.components.archived": "Arhivirano",
   "app.containers.Admin.projects.all.components.draft": "Nacrt",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Uredi",

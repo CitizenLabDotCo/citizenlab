@@ -728,7 +728,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Veuillez sélectionner une phase d'idéation.",
   "app.containers.Admin.projects.all.askPersonalData": "Demander les données personnelles",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Cliquez sur « Exporter en PDF » ci-dessous pour télécharger une version PDF du formulaire. Veuillez noter que, pour le moment, les types de champs suivants ne sont pas pris en charge dans la version PDF : téléchargement d'image, téléchargement de fichier (pièces jointes), étiquettes et échelle linéaire.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Cliquez sur « Exporter en PDF » ci-dessous pour télécharger une version PDF du formulaire. Veuillez noter que, pour le moment, les types de champs suivants ne sont pas pris en charge dans la version PDF : téléchargement de fichier (pièces jointes) et échelle linéaire.",
   "app.containers.Admin.projects.all.components.archived": "Archivé",
   "app.containers.Admin.projects.all.components.draft": "Brouillon",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Gérer",

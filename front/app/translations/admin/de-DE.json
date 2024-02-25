@@ -728,7 +728,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Bitte wählen Sie eine Phase mit einer Ideenfindung aus.",
   "app.containers.Admin.projects.all.askPersonalData": "Persönliche Daten erfragen",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Klicken Sie unten auf 'Als PDF exportieren', um eine PDF-Version des Eingabeformulars herunterzuladen. Bitte beachten Sie, dass die Felder Bilder, Datei-Upload, Tags und Lineare Skalierung in der PDF-Version derzeit nicht unterstützt werden.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Klicken Sie unten auf 'Als PDF exportieren', um eine PDF-Version der Umfrage herunterzuladen. Bitte beachten Sie, dass die Felder \"Lineare Skala\", \"Anzahl\" und \"Datei-Upload\" in der PDF-Version derzeit nicht unterstützt werden.",
   "app.containers.Admin.projects.all.components.archived": "Archiviert",
   "app.containers.Admin.projects.all.components.draft": "Entwurf",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Bearbeiten",
