@@ -21,12 +21,13 @@ class IdeaCustomFieldsService
       field.code != 'idea_images_attributes' && field.input_type != 'page' && field.input_type != 'section'
     end
 
-    replace_reportable_point_fields(filtered_fields)
+    replace_point_fields_with_lat_and_lon_point_fields(filtered_fields)
   end
 
-  def replace_reportable_point_fields(fields)
-    # Replace a point field with two fields, one for latitude and one for longitude,
-    # so that the XlsxExport::InputSheetGenerator can produce separate columns for latitude and longitude.
+  # Replace a point field with two fields, one for latitude and one for longitude,
+  # so that the XlsxExport::InputSheetGenerator and BulkImportIdeas::ImportProjectIdeasService#generate_example_xlsx
+  # can produce separate columns for latitude and longitude.
+  def replace_point_fields_with_lat_and_lon_point_fields(fields)
     fields.map do |field|
       if field.input_type == 'point'
         [field.point_latitude_field, field.point_longitude_field]
@@ -55,8 +56,10 @@ class IdeaCustomFieldsService
   end
 
   def importable_fields
-    ignore_field_types = %w[page section date files image_files point linear_scale file_upload]
-    enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
+    ignore_field_types = %w[page section date files image_files linear_scale file_upload]
+    filtered_fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
+
+    replace_point_fields_with_lat_and_lon_point_fields(filtered_fields)
   end
 
   def enabled_fields
