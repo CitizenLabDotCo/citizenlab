@@ -6,10 +6,7 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import {
-  StatusWrapper,
-  StatusExplanation,
-} from './ReactionControl/SharedStyles';
+import { StatusWrapper, StatusExplanation } from './ReactionControl/Status';
 import useAcceptInitiativeCosponsorshipInvite from 'api/cosponsors_initiatives/useAcceptInitiativeCosponsorshipInvite';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
