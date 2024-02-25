@@ -15,7 +15,6 @@ const StatusIcon = styled(Icon)`
   }
   width: 30px;
   height: 30px;
-  margin-bottom: 20px;
 `;
 
 interface Props extends StatusComponentProps {
@@ -47,16 +46,17 @@ const Status = ({
   return (
     <Box display="flex" flexDirection="column">
       {showCountDown && (
-        <Box ml="auto" mb="16px">
+        <Box ml="auto" mb="24px">
+          {/* Still add (hidden) heading */}
           <CountDown targetTime={initiative.attributes.expires_at} />
         </Box>
       )}
-      <Box mb="16px">
+      <Box display="flex" mb="16px" alignItems="center">
+        <StatusIcon mr="8px" name={iconName} />
         <StatusWrapper>
           <T value={initiativeStatus.attributes.title_multiloc} />
         </StatusWrapper>
       </Box>
-      <StatusIcon name={iconName} />
       <Box mb="24px">
         <StatusExplanation>{statusExplanation}</StatusExplanation>
       </Box>

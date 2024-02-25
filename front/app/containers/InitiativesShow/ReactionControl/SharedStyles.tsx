@@ -1,15 +1,11 @@
 import styled from 'styled-components';
-import { fontSizes, colors } from '@citizenlab/cl2-component-library';
+import { fontSizes } from '@citizenlab/cl2-component-library';
 
 export const StatusWrapper = styled.div`
   display: flex;
-  font-size: ${fontSizes.s}px;
-  text-transform: uppercase;
-  color: ${colors.coolGrey600};
-
-  &.answered {
-    color: ${colors.success};
-  }
+  font-size: ${fontSizes.base}px;
+  font-weight: bold;
+  text-transform: capitalize;
 `;
 
 export const StatusExplanation = styled.div`
