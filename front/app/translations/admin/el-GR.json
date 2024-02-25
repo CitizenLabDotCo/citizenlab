@@ -728,7 +728,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Παρακαλούμε επιλέξτε μια φάση ιδεοληψίας.",
   "app.containers.Admin.projects.all.askPersonalData": "Ζητήστε προσωπικά δεδομένα",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Κάντε κλικ στην επιλογή \"Εξαγωγή ως pdf\" παρακάτω για να κατεβάσετε μια έκδοση pdf της φόρμας εισαγωγής. Λάβετε υπόψη ότι προς το παρόν τα πεδία Εικόνες, Φόρτωση αρχείου, Ετικέτες και Γραμμική κλίμακα δεν υποστηρίζονται από την έκδοση pdf.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Κάντε κλικ στην επιλογή \"Εξαγωγή ως pdf\" παρακάτω για να κατεβάσετε μια έκδοση pdf της έρευνας. Λάβετε υπόψη ότι προς το παρόν τα πεδία Γραμμική κλίμακα και Φόρτωση αρχείου δεν υποστηρίζονται για την έκδοση pdf.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Κάντε κλικ στην επιλογή \"Εξαγωγή ως pdf\" παρακάτω για να κατεβάσετε μια έκδοση pdf της έρευνας. Λάβετε υπόψη ότι προς το παρόν τα πεδία Απάντηση θέσης, Γραμμική κλίμακα και Φόρτωση αρχείου δεν υποστηρίζονται για την έκδοση pdf.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
   "app.containers.Admin.projects.all.components.draft": "Draft",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Edit",
