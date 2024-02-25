@@ -39,7 +39,7 @@ interface Props extends StatusComponentProps {
   cancelReactionDisabled?: boolean;
 }
 
-const Status = ({
+const StatusShared = ({
   onReaction,
   onCancelReaction,
   onScrollToOfficialFeedback,
@@ -98,4 +98,4 @@ const Status = ({
   );
 };
 
-export default Status;
+export default StatusShared;

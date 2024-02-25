@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { StatusComponentProps } from '.';
-import Status from './index2';
+import StatusShared from './StatusShared';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import { Text } from '@citizenlab/cl2-component-library';
 
@@ -12,7 +12,7 @@ const ProposedNotReacted = (props: StatusComponentProps) => {
   );
 
   return (
-    <Status
+    <StatusShared
       {...props}
       iconName={props.userReacted ? 'check-circle' : 'bullseye'}
       statusExplanation={

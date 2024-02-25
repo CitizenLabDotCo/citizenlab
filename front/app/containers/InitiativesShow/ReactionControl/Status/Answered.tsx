@@ -3,11 +3,11 @@ import { colors } from '@citizenlab/cl2-component-library';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { StatusComponentProps } from '.';
-import Status from './index2';
+import StatusShared from './StatusShared';
 
 const Answered = (props: StatusComponentProps) => {
   return (
-    <Status
+    <StatusShared
       {...props}
       iconName="email-check"
       statusExplanation={
