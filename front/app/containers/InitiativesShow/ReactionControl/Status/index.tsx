@@ -114,11 +114,8 @@ const Status = ({ initiative, onScrollToOfficialFeedback }: Props) => {
   const durationAsSeconds = moment
     .duration(expiresAt.diff(moment()))
     .asSeconds();
+  const userReacted = !!initiative.data.relationships.user_reaction?.data;
   const isExpired = durationAsSeconds < 0;
-  const userReacted = !!(
-    initiative.data.relationships.user_reaction &&
-    initiative.data.relationships.user_reaction.data
-  );
   const statusCode =
     initiativeStatus.data.attributes.code === 'proposed' && isExpired
       ? 'expired'
