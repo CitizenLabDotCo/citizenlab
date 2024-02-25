@@ -69,11 +69,12 @@ class CountDown extends PureComponent<Props, State> {
     const start = moment();
     const end = moment(this.props.targetTime, 'YYYY-MM-DDThh:mm:ss.SSSZ');
     const durationAsSeconds = moment.duration(end.diff(start)).asSeconds();
+    const expired = durationAsSeconds <= 0;
     const formattedDuration =
       convertSecondsToDDHHMM(durationAsSeconds).split(':');
-    const daysLeft = formattedDuration[0];
-    const hoursLeft = formattedDuration[1];
-    const minutesLeft = formattedDuration[2];
+    const daysLeft = expired ? '0' : formattedDuration[0];
+    const hoursLeft = expired ? '0' : formattedDuration[1];
+    const minutesLeft = expired ? '0' : formattedDuration[2];
 
     return (
       <Container className={this.props.className}>
