@@ -728,7 +728,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Wielt w.e.g. eng Iddiphase.",
   "app.containers.Admin.projects.all.askPersonalData": "Frot perséinlech Donnéeën",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Klickt op 'Exportéieren als pdf' hei ënnen fir eng pdf Versioun vum Input Formulaire erofzelueden. Sidd bewosst datt am Moment d'Biller, Datei Eroplueden, Tags a Linear Skala Felder net fir d'PDF Versioun ënnerstëtzt ginn.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Klickt op 'Export als pdf' hei ënnen fir eng pdf Versioun vun der Ëmfro erofzelueden. Sidd bewosst datt am Moment d'Linear Skala an d'Datei Eroplueden Felder net fir d'PDF Versioun ënnerstëtzt ginn.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Klickt op 'Export als pdf' hei ënnen fir eng pdf Versioun vun der Ëmfro erofzelueden. Sidd bewosst datt am Moment d'Location Answer, Linear Scale a File Upload Felder net fir d'PDF Versioun ënnerstëtzt ginn.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
   "app.containers.Admin.projects.all.components.draft": "Draft",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Edit",
