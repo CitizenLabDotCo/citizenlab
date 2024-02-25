@@ -12,7 +12,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // typings
 import BorderContainer from '../BorderContainer';
-import StatusWrapper./StatusWrapperWrapper';
+import StatusWrapper from './StatusWrapper';
 import { IInitiative } from 'api/initiatives/types';
 
 interface Props {
