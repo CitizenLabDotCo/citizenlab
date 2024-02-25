@@ -92,7 +92,9 @@ const StatusShared = ({
         </Box>
       )}
       {showReadAnswerButton && (
-        <ReadAnswerButton onClick={onScrollToOfficialFeedback} />
+        <Box mb="8px">
+          <ReadAnswerButton onClick={onScrollToOfficialFeedback} />
+        </Box>
       )}
     </Box>
   );

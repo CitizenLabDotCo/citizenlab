@@ -32,12 +32,10 @@ const ReactionControl = ({
       <ScreenReaderOnly>
         <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
       </ScreenReaderOnly>
-      <Box mb="8px">
-        <Status
-          initiative={initiative}
-          onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-        />
-      </Box>
+      <Status
+        initiative={initiative}
+        onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+      />
       <FollowUnfollow
         followableType="initiatives"
         followableId={initiative.data.id}
