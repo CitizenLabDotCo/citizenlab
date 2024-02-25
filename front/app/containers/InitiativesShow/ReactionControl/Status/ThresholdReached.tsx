@@ -9,13 +9,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // Types
 import { StatusComponentProps } from '../StatusWrapper';
-import StatusShared from './StatusShared';
+import Status from '.';
 
 const ThresholdReached = (props: StatusComponentProps) => {
   const theme = useTheme();
 
   return (
-    <StatusShared
+    <Status
       {...props}
       iconName="email-check"
       statusExplanation={

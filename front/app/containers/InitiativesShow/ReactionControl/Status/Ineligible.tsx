@@ -5,13 +5,13 @@ import T from 'components/T';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { StatusComponentProps } from '../StatusWrapper';
-import StatusShared from './StatusShared';
+import Status from '.';
 
 const Ineligible = (props: StatusComponentProps) => {
   const theme = useTheme();
 
   return (
-    <StatusShared
+    <Status
       {...props}
       iconName="halt"
       statusExplanation={

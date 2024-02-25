@@ -2,11 +2,11 @@ import React from 'react';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { StatusComponentProps } from '../StatusWrapper';
-import StatusShared from './StatusShared';
+import Status from '.';
 
 const Expired = (props: StatusComponentProps) => {
   return (
-    <StatusShared
+    <Status
       {...props}
       iconName="clock"
       statusExplanation={
