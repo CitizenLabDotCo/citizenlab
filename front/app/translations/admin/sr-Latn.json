@@ -728,7 +728,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Please select an ideation phase.",
   "app.containers.Admin.projects.all.askPersonalData": "Ask personal data",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Click 'Export as pdf' below to download a pdf version of the input form. Be aware that at the moment the Images, File Upload, Tags and Linear Scale fields are not supported for the pdf version.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Click 'Export as pdf' below to download a pdf version of the survey. Be aware that at the moment the Linear Scale and File Upload fields are not supported for the pdf version.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Click 'Export as pdf' below to download a pdf version of the survey. Be aware that at the moment the Location Answer, Linear Scale and File Upload fields are not supported for the pdf version.",
   "app.containers.Admin.projects.all.components.archived": "Arhivirano",
   "app.containers.Admin.projects.all.components.draft": "Nacrt",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Upravljajte",
