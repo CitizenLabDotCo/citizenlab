@@ -472,6 +472,8 @@
   "app.components.StatusModule.submittedUntil3": "Din stemme kan afgives indtil",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valgt {numberOfSelectedTopics, plural, =0 {zero topics} et {zero topics} andet {# topics}}.{selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Vis flere handlinger",
+  "app.components.UI.NewLabel.newBadge": "NY",
+  "app.components.UI.PhaseFilter.noAppropriatePhases": "No appropriate phases found for this project",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Fjern",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Oversæt",
