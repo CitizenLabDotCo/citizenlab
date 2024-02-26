@@ -1894,6 +1894,7 @@
   "app.containers.AdminPage.groups.permissions.delete": "Διαγραφή",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Delete",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Delete",
+  "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Δώστε έναν τίτλο για όλες τις επιλογές",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Ναι-όχι (πλαίσιο ελέγχου)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Ημερομηνία",
   "app.containers.AdminPage.groups.permissions.fieldType_multiline_text": "Μεγάλη απάντηση",
