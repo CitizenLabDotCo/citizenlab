@@ -1,5 +1,11 @@
-import { ITab, FormatMessage } from 'typings';
 import messages from './messages';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { IPhaseData } from 'api/phases/types';
+import { ITab, FormatMessage } from 'typings';
+
+type TabHideConditions = {
+  [tabName: string]: () => boolean;
+};
 
 export const getIntialTabs = (formatMessage: FormatMessage): ITab[] => {
   return [
@@ -42,9 +48,68 @@ export const getIntialTabs = (formatMessage: FormatMessage): ITab[] => {
       name: 'volunteering',
     },
     {
+      label: formatMessage(messages.report),
+      url: 'report',
+      name: 'report',
+    },
+    {
       label: formatMessage(messages.phaseAccessRights),
       url: 'access-rights',
       name: 'access-rights',
     },
   ];
 };
+
+type FeatureFlags = {
+  surveys_enabled: boolean;
+  typeform_enabled: boolean;
+  granular_permissions_enabled: boolean;
+  phase_reports_enabled: boolean;
+};
+
+export const getTabHideConditions = (
+  phase: IPhaseData,
+  {
+    surveys_enabled,
+    typeform_enabled,
+    granular_permissions_enabled,
+    phase_reports_enabled,
+  }: FeatureFlags
+): TabHideConditions => ({
+  ideas: function isIdeaTabHidden() {
+    return !getMethodConfig(phase.attributes.participation_method)
+      .showInputManager;
+  },
+  ideaform: function isIdeaFormTabHidden() {
+    return (
+      getMethodConfig(phase.attributes.participation_method).formEditor !==
+      'simpleFormEditor'
+    );
+  },
+  poll: function isPollTabHidden() {
+    return phase.attributes.participation_method !== 'poll';
+  },
+  survey: function isSurveyTabHidden() {
+    return phase.attributes.participation_method !== 'native_survey';
+  },
+  'survey-results': function surveyResultsTabHidden() {
+    return (
+      phase.attributes.participation_method !== 'survey' ||
+      !surveys_enabled ||
+      !typeform_enabled ||
+      (surveys_enabled && phase.attributes.survey_service !== 'typeform')
+    );
+  },
+  volunteering: function isVolunteeringTabHidden() {
+    return phase?.attributes.participation_method !== 'volunteering';
+  },
+  'access-rights': function isAccessRightsTabHidden() {
+    return !granular_permissions_enabled;
+  },
+  report: function isReportTabHidden() {
+    return (
+      phase?.attributes.participation_method !== 'information' ||
+      !phase_reports_enabled
+    );
+  },
+});
