@@ -119,7 +119,7 @@ const CreateReportModal = ({
           mt="0px"
           mb="32px"
         >
-          {/* TODO new description */}
+          {formatMessage(messages.modalDescription)}
         </Text>
         <Box as="fieldset" border="0px" width="100%" p="0px" mt="28px">
           <Label>{formatMessage(otherModalMessages.reportTemplate)}</Label>
