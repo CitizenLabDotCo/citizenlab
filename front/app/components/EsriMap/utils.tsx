@@ -397,14 +397,17 @@ export const createEsriFeatureLayers = (
           esriLayers.push(
             new FeatureLayer({
               url: `${layer.layer_url}/${i + 1}`,
-              id: 'internal',
+              id: `${layer.layer_url}_internal`,
             })
           );
         }
       } else {
         // Otherwise, just add the single feature layer
         esriLayers.push(
-          new FeatureLayer({ url: layer.layer_url, id: 'internal' })
+          new FeatureLayer({
+            url: layer.layer_url,
+            id: `${layer.layer_url}_internal`,
+          })
         );
       }
     }

@@ -319,7 +319,7 @@ const EsriMap = ({
     if (initialData?.webMapId && mapView) {
       const webMap = new WebMap({
         portalItem: {
-          id: initialData?.webMapId,
+          id: initialData.webMapId,
         },
       });
       mapView.map = webMap;
@@ -329,13 +329,7 @@ const EsriMap = ({
       mapView.map = map;
       setWebMap(null);
     }
-  }, [
-    globalMapSettings.tile_provider,
-    initialData?.webMapId,
-    layers,
-    map,
-    mapView,
-  ]);
+  }, [initialData?.webMapId, layers, map, mapView]);
 
   return (
     <>
