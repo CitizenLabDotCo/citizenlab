@@ -5,10 +5,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle',
     defaultMessage: 'Create your first project report',
   },
-  emptyStateDescription: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateDescription',
+  customizeReport: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport',
     defaultMessage:
-      'Customise your report and share it with internal stakeholders or community with a web link.',
+      'Customise your report and share it with internal stakeholders or community as a PDF file.',
   },
   emptyStateButtonText: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText',
@@ -17,11 +17,6 @@ export default defineMessages({
   createReportModalTitle: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle',
     defaultMessage: 'Create a project report',
-  },
-  createReportModalDescription: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalDescription',
-    defaultMessage:
-      'Customise your report and share it with internal stakeholders or community with a web link.',
   },
   createReportModalInputLabel: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel',
