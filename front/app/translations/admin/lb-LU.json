@@ -850,7 +850,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Fänkt mat enger eideler Säit un",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Rapportstitel",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle": "Leet e Rapportstitel un",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "Customise your report and share it with internal stakeholders or community as a PDF file.",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "Passt Äre Bericht un an deelt et mat internen Akteuren oder Gemeinschaft als PDF Datei.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Leet e Rapport un",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Leet Ären éischte Projetsrapport un",
   "app.containers.Admin.reporting.components.ReportBuilderPage.noProjectSelected": "Kee Projet ausgewielt",
