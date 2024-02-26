@@ -63,6 +63,12 @@ resource 'Reactions' do
       assert_status 200
       expect(json_response_body[:reactions].size).to eq(Reaction.count)
       expect(json_response_body[:meta]).to eq(current_page: 1, total_pages: 1)
+      expect(json_response_body[:reactions].first.keys).to match_array(
+        %i[
+          id mode reactable_id reactable_type created_at updated_at
+          user_id idea_id project_id initiative_id
+        ]
+      )
     end
 
     context 'when the page size is smaller than the total number of reactions' do

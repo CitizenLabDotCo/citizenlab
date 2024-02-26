@@ -12,6 +12,7 @@ module PublicApi
 
     def execute
       @scope
+        .includes([:reactable])
         .then { |scope| filter_by_user_id(scope) }
         .then { |scope| filter_by_reactable_type(scope) }
     end
