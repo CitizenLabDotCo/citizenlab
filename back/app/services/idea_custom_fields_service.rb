@@ -70,6 +70,8 @@ class IdeaCustomFieldsService
         fields_with_array_keys[field.key.to_sym] = []
       when 'file_upload'
         fields_with_array_keys[field.key.to_sym] = %i[content name]
+      when 'point'
+        fields_with_array_keys[field.key.to_sym] = [:type, { coordinates: [] }]
       else
         fields_with_simple_keys << field.key.to_sym
       end

@@ -148,7 +148,7 @@ describe ProjectCopyService do
     it 'successfully copies map_configs associated with phase-level form custom_fields' do
       open_ended_project = create(:single_phase_native_survey_project, title_multiloc: { en: 'open ended' })
       form1 = create(:custom_form, participation_context: open_ended_project.phases.first)
-      field1 = create(:custom_field, :for_custom_form, resource: form1)
+      field1 = create(:custom_field_point, :for_custom_form, resource: form1)
       map_config = create(:map_config, zoom_level: 17, mappable: field1)
 
       template = service.export open_ended_project
@@ -170,7 +170,7 @@ describe ProjectCopyService do
     it 'successfully copies map_configs associated with project-level form custom_fields' do
       project = create(:project)
       form1 = create(:custom_form, participation_context: project)
-      field1 = create(:custom_field, :for_custom_form, resource: form1)
+      field1 = create(:custom_field_point, :for_custom_form, resource: form1)
       map_config = create(:map_config, zoom_level: 17, mappable: field1)
 
       template = service.export project

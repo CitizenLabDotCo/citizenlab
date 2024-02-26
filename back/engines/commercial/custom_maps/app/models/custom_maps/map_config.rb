@@ -11,24 +11,33 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  esri_web_map_id :string
-#  mappable_type   :string           not null
-#  mappable_id     :uuid             not null
+#  mappable_type   :string
+#  mappable_id     :uuid
 #
 # Indexes
 #
-#  index_maps_map_configs_on_mappable  (mappable_type,mappable_id)
+#  index_maps_map_configs_on_mappable     (mappable_type,mappable_id)
+#  index_maps_map_configs_on_mappable_id  (mappable_id) UNIQUE
 #
 module CustomMaps
   class MapConfig < ApplicationRecord
     self.table_name = 'maps_map_configs'
 
-    belongs_to :mappable, polymorphic: true
+    belongs_to :mappable, polymorphic: true, optional: true
     has_many :layers, -> { order(:ordering) }, class_name: 'CustomMaps::Layer', dependent: :destroy
     has_many :legend_items, -> { order(:ordering) }, class_name: 'CustomMaps::LegendItem', dependent: :destroy
 
     validates :zoom_level, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 20 }, allow_nil: true
     validates :tile_provider, format: { with: %r{\Ahttps://.+\z} }, allow_nil: true
-    validates :mappable_id, presence: true, uniqueness: true
+    validates :mappable_id, uniqueness: true, allow_nil: true
+    validates :mappable, presence: true, if: -> { mappable_id.present? or mappable_type.present? }
+    validate :mappable_custom_field_supports_map_config
+
+    def mappable_custom_field_supports_map_config
+      return unless mappable_type == 'CustomField' && !mappable.supports_map_config?
+
+      errors.add(:mappable, message: 'The custom field input_type cannot be related to a map_config')
+    end
 
     def center_geojson
       RGeo::GeoJSON.encode(center) if center.present?

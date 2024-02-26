@@ -3,23 +3,24 @@
 module CustomMaps
   module WebApi
     module V1
-      class LayersController < ApplicationController
+      class ProjectMapConfigLayersController < ApplicationController
         before_action :set_layer, except: %i[create]
-        before_action :set_map_config, except: %i[show]
+        before_action :set_project
 
         def create
-          authorize @map_config, :create?, policy_class: MapConfigPolicy
+          authorize @project, :update?
+          @map_config = @project.map_config
           @layer = @map_config.layers.build(create_params)
 
           if @layer.save
-            render json: serialized_layer, status: :created
+            render json: serialized_layer, status: :ok
           else
             render json: layer_errors, status: :unprocessable_entity
           end
         end
 
         def update
-          authorize @layer, :update?, policy_class: MapConfigPolicy
+          authorize @project, :update?
           if @layer.update(update_params)
             render json: serialized_layer, status: :ok
           else
@@ -28,8 +29,7 @@ module CustomMaps
         end
 
         def destroy
-          authorize @layer, :destroy?, policy_class: MapConfigPolicy
-
+          authorize @project, :update?
           if @layer.destroy
             head :no_content
           else
@@ -38,13 +38,12 @@ module CustomMaps
         end
 
         def show
-          authorize @layer, :show?, policy_class: MapConfigPolicy
+          authorize @project
           render json: serialized_layer
         end
 
         def reorder
-          authorize @layer, :create?, policy_class: MapConfigPolicy
-
+          authorize @project, :update?
           if @layer.insert_at(params.dig(:layer, :ordering))
             render json: serialized_layer, status: :ok
           else
@@ -95,10 +94,6 @@ module CustomMaps
 
         def set_layer
           @layer = CustomMaps::Layer.find(params[:id])
-        end
-
-        def set_map_config
-          @map_config = MapConfig.find(params[:map_config_id])
         end
       end
     end

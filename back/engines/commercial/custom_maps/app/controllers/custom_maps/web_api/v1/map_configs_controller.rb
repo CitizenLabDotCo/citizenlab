@@ -3,22 +3,23 @@
 module CustomMaps
   module WebApi
     module V1
-      class ProjectMapConfigsController < ApplicationController
-        before_action :set_project
-        before_action :set_map_config, only: %i[update destroy]
+      class MapConfigsController < ApplicationController
+        before_action :set_map_config, only: %i[show update destroy]
 
         def create
-          authorize @project, :update?
-          @map_config = @project.build_map_config(map_config_params)
+          authorize @map_config, :create?, policy_class: MapConfigPolicy
+          @map_config = MapConfig.new(map_config_params)
 
           if @map_config.save
-            render json: serialized_map_config, status: :ok
+            render json: serialized_map_config, status: :created
           else
             render json: { errors: @map_config.errors.details }, status: :unprocessable_entity
           end
         end
 
         def update
+          authorize @map_config, :update?, policy_class: MapConfigPolicy
+
           if @map_config.update(map_config_params)
             render json: serialized_map_config
           else
@@ -27,6 +28,8 @@ module CustomMaps
         end
 
         def destroy
+          authorize @map_config, :destroy?, policy_class: MapConfigPolicy
+
           if @map_config.destroy
             head :no_content
           else
@@ -35,26 +38,25 @@ module CustomMaps
         end
 
         def show
-          @project = Project.includes(map_config: %i[layers legend_items]).find(params[:project_id])
-          authorize @project
-          @map_config = @project.map_config
+          authorize @map_config, :show?, policy_class: MapConfigPolicy
+
           render json: serialized_map_config, status: :ok
         end
 
         private
 
         def set_map_config
-          authorize @project, :update?
-          @map_config = CustomMaps::MapConfig.find_by!(mappable_id: params[:project_id])
+          @map_config = MapConfig.find(params[:id])
         end
 
         def serialized_map_config
-          CustomMaps::WebApi::V1::MapConfigSerializer.new(@map_config, params: jsonapi_serializer_params)
+          CustomMaps::WebApi::V1::MapConfigSerializer.new(@map_config, params: jsonapi_serializer_params) # Need to include layers, when implemented
             .serializable_hash.to_json
         end
 
         def map_config_params
-          params.require(:map_config).permit(:zoom_level, :tile_provider, :esri_web_map_id, center_geojson: {})
+          params.require(:map_config)
+            .permit(:mappable_id, :mappable_type, :zoom_level, :tile_provider, :esri_web_map_id, center_geojson: {})
         end
       end
     end
