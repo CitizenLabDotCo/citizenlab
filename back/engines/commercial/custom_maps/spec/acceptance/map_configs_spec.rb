@@ -104,11 +104,11 @@ resource 'Map Configs' do
         )
       end
 
-      let(:zoom_level)     { map_config_attributes[:zoom_level] }
-      let(:center_geojson) { RGeo::GeoJSON.encode(map_config_attributes[:center]) }
-      let(:tile_provider)  { map_config_attributes[:tile_provider] }
+      let(:zoom_level)       { map_config_attributes[:zoom_level] }
+      let(:center_geojson)   { RGeo::GeoJSON.encode(map_config_attributes[:center]) }
+      let(:tile_provider)    { map_config_attributes[:tile_provider] }
       let(:esri_web_map_id)  { map_config_attributes[:esri_web_map_id] }
-      let(:esri_base_map_id)  { map_config_attributes[:esri_base_map_id] }
+      let(:esri_base_map_id) { map_config_attributes[:esri_base_map_id] }
 
       example_request 'Creating a map config successfully' do
         expect(status).to eq 200
