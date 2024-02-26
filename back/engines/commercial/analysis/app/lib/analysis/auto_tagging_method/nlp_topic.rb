@@ -11,30 +11,28 @@ module Analysis
     end
 
     def classify(inputs, topics)
-      # Prompt method
-      inputs_text = input_to_text.format_all(inputs)
-      prompt = LLM::Prompt.new.fetch('fully_automated_classifier', inputs_text: inputs_text, topics: topics)
-      puts prompt ### Debugging
-      response = llm.chat(prompt).strip
-      puts response ### Debugging
-
-      # Parse method
-      inputs.zip(response.lines.map(&:strip))
+      response = run_classification_prompt(inputs, topics)
+      inputs.zip(parse_classification_response(response))
     end
 
     protected
 
     # Use `execute` on the parent class to actually use the method
     def run
+      update_progress(0.0)
+
       project_title = analysis.participation_context.project.title_multiloc.values.first
       topics = topic_modeling(project_title, filtered_inputs)
-      filtered_inputs.each_slice(BATCH_SIZE) do |inputs_group|
+      update_progress(10 / (filtered_inputs.size + 10).to_f)
+
+      filtered_inputs.each_slice(BATCH_SIZE).with_index do |inputs_group, i|
         classify(inputs_group, topics).each do |input, topic|
-          puts "#{input.title_multiloc.values.first} => #{topic}" ### Debugging
-          tag = Tag.find_or_create_by!(name: topic, tag_type: TAG_TYPE, analysis: analysis)
-          find_or_create_tagging!(input_id: input.id, tag_id: tag.id)
+          assign_topic!(input, topic)
         end
+        update_progress((i * 10 + 10) / (filtered_inputs.size + 10).to_f)
       end
+
+      update_progress(1.0)
     end
 
     private
@@ -43,22 +41,37 @@ module Analysis
       @llm ||= LLM::GPT4Turbo.new
     end
 
+    def run_topic_modeling_prompt(project_title, inputs)
+      inputs_text = input_to_text.format_all(inputs)
+      prompt = LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_text: inputs_text, max_topics: max_topics(inputs.size))
+      llm.chat(prompt)
+    end
+
     def parse_topic_modeling_response(response)
-      response.split("\n").map do |line|
+      response.lines.map do |line|
         # After https://stackoverflow.com/a/3166005/3585671
         chars = Regexp.escape(' -')
         line.gsub(/\A[#{chars}]+|[#{chars}]+\z/, '')
       end
     end
 
-    def run_topic_modeling_prompt(project_title, inputs)
-      inputs_text = input_to_text.format_all(inputs)
-      prompt = LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_text: inputs_text, max_topics: max_topics(inputs.size))
-      llm.chat(prompt).strip
-    end
-
     def max_topics(inputs_count)
       [inputs_count, (Math.log(inputs_count, 5) * 6).ceil].min
+    end
+
+    def run_classification_prompt(inputs, topics)
+      inputs_text = input_to_text.format_all(inputs)
+      prompt = LLM::Prompt.new.fetch('fully_automated_classifier', inputs_text: inputs_text, topics: topics)
+      llm.chat(prompt)
+    end
+
+    def parse_classification_response(response)
+      response.lines.map(&:strip)
+    end
+
+    def assign_topic!(input, topic)
+      tag = Tag.find_or_create_by!(name: topic, tag_type: TAG_TYPE, analysis: analysis)
+      find_or_create_tagging!(input_id: input.id, tag_id: tag.id)
     end
   end
 end

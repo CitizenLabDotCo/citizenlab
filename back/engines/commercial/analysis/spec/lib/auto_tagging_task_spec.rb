@@ -149,12 +149,12 @@ RSpec.describe Analysis::AutoTaggingTask do
       ideas = create_list(:idea, 2, project: project)
 
       topics_response = <<-RESPONSE
-      - planets
-      - bananas
+        - planets
+        - bananas
       RESPONSE
       classification_response = <<-RESPONSE
-      bananas
-      other
+        bananas
+        other
       RESPONSE
 
       expect_any_instance_of(Analysis::LLM::GPT4Turbo)
