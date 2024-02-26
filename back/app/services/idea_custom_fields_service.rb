@@ -24,19 +24,6 @@ class IdeaCustomFieldsService
     replace_point_fields_with_lat_and_lon_point_fields(filtered_fields)
   end
 
-  # Replace a point field with two fields, one for latitude and one for longitude,
-  # so that the XlsxExport::InputSheetGenerator and BulkImportIdeas::ImportProjectIdeasService#generate_example_xlsx
-  # can produce separate columns for latitude and longitude.
-  def replace_point_fields_with_lat_and_lon_point_fields(fields)
-    fields.map do |field|
-      if field.input_type == 'point'
-        [field.point_latitude_field, field.point_longitude_field]
-      else
-        field
-      end
-    end.flatten
-  end
-
   def visible_fields
     enabled_fields
   end
@@ -152,6 +139,19 @@ class IdeaCustomFieldsService
   end
 
   private
+
+  # Replace a point field with two fields, one for latitude and one for longitude,
+  # so that the XlsxExport::InputSheetGenerator and BulkImportIdeas::ImportProjectIdeasService#generate_example_xlsx
+  # can produce separate columns for latitude and longitude.
+  def replace_point_fields_with_lat_and_lon_point_fields(fields)
+    fields.map do |field|
+      if field.input_type == 'point'
+        [field.point_latitude_field, field.point_longitude_field]
+      else
+        field
+      end
+    end.flatten
+  end
 
   def insert_other_option_text_fields(fields)
     all_fields = []
