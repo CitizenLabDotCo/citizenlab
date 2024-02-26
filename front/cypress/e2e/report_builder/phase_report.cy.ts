@@ -34,6 +34,8 @@ describe('Phase report', () => {
 
   before(() => {
     cy.setAdminLoginCookie();
+    cy.apiRemoveAllReports();
+
     cy.apiCreateProject({
       title: randomString(),
       descriptionPreview: randomString(),

@@ -57,7 +57,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
             <FormattedMessage {...messages.emptyStateTitle} />
           </Title>
           <Text>
-            <FormattedMessage {...messages.emptyStateDescription} />
+            <FormattedMessage {...messages.customizeReport} />
           </Text>
           <Tippy
             maxWidth="250px"

@@ -1,35 +1,49 @@
 import React, { useState } from 'react';
 
+// api
+import useAddReport from 'api/reports/useAddReport';
+import usePhases from 'api/phases/usePhases';
+
 // components
 import Modal from 'components/UI/Modal';
 import {
   Box,
   Title,
   Text,
-  Input,
   Label,
   Radio,
   colors,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import ProjectFilter from 'components/UI/ProjectFilter';
+import PhaseFilter from 'components/UI/PhaseFilter';
 
 // utils
 import clHistory from 'utils/cl-router/history';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
+import otherModalMessages from 'containers/Admin/reporting/components/ReportBuilderPage/messages';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import { IOption } from 'typings';
 
-import useAddReport from 'api/reports/useAddReport';
+// utils
+import { findInitialPhase, PARTICIPATION_METHODS } from './utils';
+
+// typings
+import { IPhaseData } from 'api/phases/types';
+
 interface Props {
+  projectId: string;
+  phaseId: string;
   open: boolean;
   onClose: () => void;
 }
 
-type Template = 'blank' | 'project';
+interface InnerProps extends Props {
+  phases: IPhaseData[];
+}
+
+type Template = 'blank' | 'phase';
 
 interface RadioLabelProps {
   message: MessageDescriptor;
@@ -41,55 +55,52 @@ const RadioLabel = ({ message }: RadioLabelProps) => (
   </Text>
 );
 
-const reportTitleIsTaken = (error: any) => {
-  return error?.errors?.name?.[0]?.error === 'taken';
-};
-
-const CreateReportModal = ({ open, onClose }: Props) => {
+const CreateReportModal = ({
+  phases,
+  projectId,
+  phaseId,
+  open,
+  onClose,
+}: InnerProps) => {
   const { mutate: createReport, isLoading } = useAddReport();
-  const [reportTitle, setReportTitle] = useState('');
-  const [template, setTemplate] = useState<Template>('blank');
-  const [selectedProject, setSelectedProject] = useState<string | undefined>();
+  const [template, setTemplate] = useState<Template>('phase');
+
+  // phaseId refers to the phase that the report will be in (information phase)
+  // templatePhaseId refers to the phase that the report will be based on
+  // (e.g. survey/ideation phase)
+  const [templatePhaseId, setTemplatePhaseId] = useState<string | undefined>(
+    findInitialPhase(phases)
+  );
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const { formatMessage } = useIntl();
-  const reportTitleTooShort = reportTitle.length <= 2;
-
-  const blockSubmit =
-    reportTitleTooShort ||
-    (template === 'project' ? selectedProject === undefined : false);
 
   const toggleTemplate = () => {
-    setTemplate((template) => (template === 'blank' ? 'project' : 'blank'));
+    setTemplate((template) => (template === 'blank' ? 'phase' : 'blank'));
   };
 
-  const handleProjectFilter = (option: IOption) => {
-    setSelectedProject(option.value === '' ? undefined : option.value);
-  };
+  const blockSubmit = template === 'phase' && !phaseId;
 
   const onCreateReport = async () => {
     if (blockSubmit) return;
     setErrorMessage(undefined);
 
     createReport(
-      { name: reportTitle },
+      { phase_id: phaseId },
       {
         onSuccess: (report) => {
           const route = '/admin/reporting/report-builder';
           const path = `${route}/${report.data.id}/editor`;
+
           const params =
-            template === 'project' && selectedProject
-              ? `?templateProjectId=${selectedProject}`
+            template === 'phase' && templatePhaseId
+              ? `?templatePhaseId=${templatePhaseId}`
               : '';
 
           clHistory.push(path + params);
         },
-        onError: (e) => {
-          if (reportTitleIsTaken(e)) {
-            setErrorMessage(formatMessage(messages.reportTitleAlreadyExists));
-          } else {
-            setErrorMessage(formatMessage(messages.anErrorOccurred));
-          }
+        onError: () => {
+          setErrorMessage(formatMessage(otherModalMessages.anErrorOccurred));
         },
       }
     );
@@ -99,7 +110,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
     <Modal opened={open} close={onClose} width="640px">
       <Box display="flex" flexDirection="column" alignItems="center" px="100px">
         <Title variant="h2" color="primary" mt="40px">
-          {formatMessage(messages.createReportModalTitle)}
+          {formatMessage(otherModalMessages.createReportModalTitle)}
         </Title>
         <Text
           color="primary"
@@ -108,43 +119,37 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           mt="0px"
           mb="32px"
         >
-          {formatMessage(messages.customizeReport)}
+          {formatMessage(messages.modalDescription)}
         </Text>
-        <Input
-          className="e2e-create-report-modal-title-input"
-          value={reportTitle}
-          type="text"
-          label={formatMessage(messages.createReportModalInputLabel)}
-          onChange={setReportTitle}
-          disabled={isLoading}
-        />
-        <Box as="fieldset" border="0px" width="100%" p="0px" mt="28px">
-          <Label>{formatMessage(messages.reportTemplate)}</Label>
+        <Box as="fieldset" border="0px" width="100%" p="0px">
+          <Label>{formatMessage(otherModalMessages.reportTemplate)}</Label>
           <Radio
             id="blank-template-radio"
             name="blank-template-radio"
             isRequired
             value="blank"
             currentValue={template}
-            label={<RadioLabel message={messages.blankTemplate} />}
+            label={<RadioLabel message={otherModalMessages.blankTemplate} />}
             onChange={toggleTemplate}
           />
           <Radio
             id="project-template-radio"
             name="project-template-radio"
             isRequired
-            value="project"
+            value="phase"
             currentValue={template}
-            label={<RadioLabel message={messages.projectTemplate} />}
+            label={<RadioLabel message={messages.phaseTemplate} />}
             onChange={toggleTemplate}
           />
         </Box>
-        {template === 'project' && (
+        {template === 'phase' && (
           <Box width="100%" mt="12px">
-            <ProjectFilter
-              projectId={selectedProject}
-              emptyOptionMessage={messages.noProjectSelected}
-              onProjectFilter={handleProjectFilter}
+            <PhaseFilter
+              label={formatMessage(messages.modalDescription)}
+              projectId={projectId}
+              phaseId={templatePhaseId}
+              participationMethods={PARTICIPATION_METHODS}
+              onPhaseFilter={(option) => setTemplatePhaseId(option.value)}
             />
           </Box>
         )}
@@ -163,11 +168,24 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           data-testid="create-report-button"
           onClick={onCreateReport}
         >
-          {formatMessage(messages.emptyStateButtonText)}
+          {formatMessage(otherModalMessages.emptyStateButtonText)}
         </Button>
       </Box>
     </Modal>
   );
 };
 
-export default CreateReportModal;
+const CreateReportModalWrapper = ({ projectId, ...otherProps }: Props) => {
+  const { data: phases } = usePhases(projectId);
+  if (!phases) return null;
+
+  return (
+    <CreateReportModal
+      phases={phases.data}
+      projectId={projectId}
+      {...otherProps}
+    />
+  );
+};
+
+export default CreateReportModalWrapper;

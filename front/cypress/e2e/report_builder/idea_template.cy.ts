@@ -18,6 +18,7 @@ describe('Idea template', () => {
 
   before(() => {
     cy.setAdminLoginCookie();
+    cy.apiRemoveAllReports();
 
     cy.apiCreateProject({
       title: projectTitle,

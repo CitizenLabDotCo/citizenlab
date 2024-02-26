@@ -68,6 +68,7 @@ declare global {
       apiEnableProjectDescriptionBuilder: typeof apiEnableProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
+      apiRemoveAllReports: typeof apiRemoveAllReports;
       apiSetPhasePermission: typeof apiSetPhasePermission;
       apiGetPhasePermission: typeof apiGetPhasePermission;
       intersectsViewport: typeof intersectsViewport;
@@ -1408,18 +1409,45 @@ function apiCreateReportBuilder(phaseId?: string) {
   });
 }
 
-function apiRemoveReportBuilder(reportId: string) {
+function removeReport(reportId: string, jwt: any) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    method: 'DELETE',
+    url: `web_api/v1/reports/${reportId}`,
+  });
+}
+
+function apiRemoveReportBuilder(reportId: string, jwt?: any) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'DELETE',
-      url: `web_api/v1/reports/${reportId}`,
-    });
+    return removeReport(reportId, jwt || adminJwt);
+  });
+}
+
+function apiRemoveAllReports() {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy
+      .request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'GET',
+        url: 'web_api/v1/reports',
+      })
+      .then((response) => {
+        return Promise.all(
+          response.body.data.map((report: any) =>
+            removeReport(report.id, adminJwt)
+          )
+        );
+      });
   });
 }
 
@@ -1786,6 +1814,7 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
 Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);
+Cypress.Commands.add('apiRemoveAllReports', apiRemoveAllReports);
 Cypress.Commands.add(
   'intersectsViewport',
   { prevSubject: true },
