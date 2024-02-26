@@ -71,7 +71,7 @@ module IdeaCustomFields
 
     private
 
-    # Overriden from CustomMaps::Extensions::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
+    # Overriden from CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
     def include_in_index_response
       %i[options options.image]
     end
@@ -156,25 +156,8 @@ module IdeaCustomFields
       end
     end
 
-    def relate_map_config_to_field(field, field_params, errors, index)
-      map_config_id = field_params[:map_config_id]
-      return if map_config_id.blank?
-
-      map_config = CustomMaps::MapConfig.find_by(id: map_config_id)
-      # Add to `errors` if not found, to avoid a 404 which would interrupt the 422 `errors` response
-      add_map_configs_errors(errors, index, ['map_config with an ID of map_config_id was not found']) unless map_config
-      return unless map_config
-
-      unless map_config.update(mappable_id: field.id, mappable_type: 'CustomField')
-        add_map_configs_errors(errors, index, map_config.errors)
-      end
-    end
-
-    def add_map_configs_errors(errors, index, map_config_errors)
-      errors[index.to_s] ||= {}
-      errors[index.to_s][:map_config] ||= {}
-      errors[index.to_s][:map_config] = map_config_errors
-    end
+    # Overriden from CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
+    def relate_map_config_to_field(_field, _field_params, _errors, _index); end
 
     def delete_field!(field)
       SideFxCustomFieldService.new.before_destroy field, current_user
@@ -331,4 +314,4 @@ module IdeaCustomFields
   end
 end
 
-IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController.prepend(CustomMaps::Extensions::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController)
+IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController.prepend(CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController)
