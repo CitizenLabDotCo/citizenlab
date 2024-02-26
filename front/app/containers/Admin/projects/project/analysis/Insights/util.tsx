@@ -29,12 +29,15 @@ const StyledLink = styled(Link)<{ isActive: boolean }>`
     margin-bottom: 4px;
   }
   :hover {
-    color: ${colors.teal500};
+    svg {
+      fill: ${colors.teal500};
+    }
   }
   ${({ isActive }) =>
     isActive &&
-    `color: ${colors.teal500};
-  `}
+    `svg {
+      fill: ${colors.teal500};
+    }`}
 `;
 
 export const replaceIdRefsWithLinks = ({

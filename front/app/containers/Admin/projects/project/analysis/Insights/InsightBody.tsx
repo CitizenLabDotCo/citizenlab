@@ -15,6 +15,7 @@ const StyledInsightsText = styled(Text)`
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import FilterItems from 'containers/Admin/projects/project/analysis/FilterItems';
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
+import { useSearchParams } from 'react-router-dom';
 
 const InsightBody = ({
   text,
@@ -32,6 +33,7 @@ const InsightBody = ({
   generatedAt?: string;
   backgroundTaskId: string;
 }) => {
+  const [search] = useSearchParams();
   const { data: task } = useAnalysisBackgroundTask(
     analysisId,
     backgroundTaskId,
@@ -41,6 +43,8 @@ const InsightBody = ({
   const isLoading =
     task?.data.attributes.state === 'queued' ||
     task?.data.attributes.state === 'in_progress';
+
+  const selectedInputId = search.get('selected_input_id') || undefined;
 
   return (
     <div>
@@ -61,6 +65,7 @@ const InsightBody = ({
             analysisId,
             projectId,
             phaseId,
+            selectedInputId,
           })}
         </StyledInsightsText>
         {isLoading && <Spinner />}
