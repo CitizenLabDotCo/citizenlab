@@ -473,7 +473,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Odabrani {numberOfSelectedTopics, plural, =0 {nula oznaka} one {jedna oznaka} other {# oznaka}}. {selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Prikaži više radnji",
   "app.components.UI.NewLabel.newBadge": "NOVI",
-  "app.components.UI.PhaseFilter.noAppropriatePhases": "No appropriate phases found for this project",
+  "app.components.UI.PhaseFilter.noAppropriatePhases": "Nisu pronađene odgovarajuće faze za ovaj projekt",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Ukloni",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Prevedi",
