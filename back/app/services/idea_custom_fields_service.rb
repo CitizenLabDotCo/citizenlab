@@ -10,7 +10,7 @@ class IdeaCustomFieldsService
     if @custom_form.custom_field_ids.empty?
       @participation_method.default_fields @custom_form
     else
-      @custom_form.custom_fields
+      @custom_form.custom_fields.includes(%i[options])
     end
   end
 
