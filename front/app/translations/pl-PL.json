@@ -472,6 +472,8 @@
   "app.components.StatusModule.submittedUntil3": "Twój głos może zostać oddany do",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Zaznaczono {numberOfSelectedTopics, plural, =0 {zero tematów} one {jeden temat} few {# tematy} many {# tematów} other {# tematy}}. {selectedTopicNames}",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Pokaż więcej działań",
+  "app.components.UI.NewLabel.newBadge": "NOWOŚĆ",
+  "app.components.UI.PhaseFilter.noAppropriatePhases": "No appropriate phases found for this project",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Usuń",
   "app.components.UI.TranslateButton.original": "Oryginał",
   "app.components.UI.TranslateButton.translate": "Przetłumacz",
