@@ -25,7 +25,6 @@ RSpec.describe EmailCampaigns::NativeSurveyNotSubmittedMailer do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)
     end
 
-    # TODO: JS - Complete these tests
     it 'renders the subject' do
       expect(mail.subject).to end_with 'Almost there! Submit your answers'
     end

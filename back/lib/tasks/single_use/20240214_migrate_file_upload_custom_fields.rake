@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Can we do this in pure SQL by joining the file upload fields?
 namespace :single_use do
   desc 'Transform all core data relating to votes into reactions'
   task :migrate_file_upload_custom_fields, %i[persist_changes specify_host] => [:environment] do |_t, args|
