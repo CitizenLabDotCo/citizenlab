@@ -12,6 +12,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import PhaseFilter from 'components/UI/PhaseFilter';
 
 // utils
 import clHistory from 'utils/cl-router/history';
@@ -22,8 +23,10 @@ import otherModalMessages from 'containers/Admin/reporting/components/ReportBuil
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import useAddReport from 'api/reports/useAddReport';
+import { ParticipationMethod } from 'api/phases/types';
 
 interface Props {
+  projectId: string;
   phaseId: string;
   open: boolean;
   onClose: () => void;
@@ -41,7 +44,12 @@ const RadioLabel = ({ message }: RadioLabelProps) => (
   </Text>
 );
 
-const CreateReportModal = ({ phaseId, open, onClose }: Props) => {
+const PARTICIPATION_METHODS: ParticipationMethod[] = [
+  'ideation',
+  'native_survey',
+];
+
+const CreateReportModal = ({ projectId, phaseId, open, onClose }: Props) => {
   const { mutate: createReport, isLoading } = useAddReport();
   const [template, setTemplate] = useState<Template>('phase');
 
@@ -70,7 +78,12 @@ const CreateReportModal = ({ phaseId, open, onClose }: Props) => {
           const route = '/admin/reporting/report-builder';
           const path = `${route}/${report.data.id}/editor`;
 
-          clHistory.push(path);
+          const params =
+            template === 'phase' && templatePhaseId
+              ? `?templatePhaseId=${templatePhaseId}`
+              : '';
+
+          clHistory.push(path + params);
         },
         onError: () => {
           setErrorMessage(formatMessage(otherModalMessages.anErrorOccurred));
@@ -117,7 +130,12 @@ const CreateReportModal = ({ phaseId, open, onClose }: Props) => {
         </Box>
         {template === 'phase' && (
           <Box width="100%" mt="12px">
-            {/* TODO phase filter */}
+            <PhaseFilter
+              label={formatMessage(messages.modalDescription)}
+              projectId={projectId}
+              participationMethods={PARTICIPATION_METHODS}
+              onPhaseFilter={(option) => setTemplatePhaseId(option.value)}
+            />
           </Box>
         )}
         {errorMessage && (

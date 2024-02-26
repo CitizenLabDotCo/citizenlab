@@ -35,4 +35,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.information.ReportTab.phaseTemplate',
     defaultMessage: 'Start with a phase template',
   },
+  modalDescription: {
+    id: 'app.containers.Admin.projects.project.information.ReportTab.modalDescription',
+    defaultMessage: 'Create a report for a past phase, or start from scratch.',
+  },
 });

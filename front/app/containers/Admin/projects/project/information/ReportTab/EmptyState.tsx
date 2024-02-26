@@ -9,10 +9,11 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
+  projectId: string;
   phaseId: string;
 }
 
-const EmptyState = ({ phaseId }: Props) => {
+const EmptyState = ({ projectId, phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const [modalOpened, setModalOpened] = useState<boolean>(false);
 
@@ -47,6 +48,7 @@ const EmptyState = ({ phaseId }: Props) => {
         </Button>
       </Box>
       <CreateReportModal
+        projectId={projectId}
         phaseId={phaseId}
         open={modalOpened}
         onClose={() => {
