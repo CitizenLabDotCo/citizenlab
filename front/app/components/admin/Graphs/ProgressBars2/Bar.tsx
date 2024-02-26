@@ -21,6 +21,7 @@ const Bar = ({ type = 'single', percentage, color }: BarProps) => {
         height="25px"
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
+        className="e2e-progress-bar"
       >
         <rect width="100" height="100" fill={color} />
       </svg>

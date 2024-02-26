@@ -73,6 +73,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
                 bgColor={colors.primary}
                 onClick={onOpenModal}
                 disabled={!isReportBuilderAllowed}
+                id="e2e-create-report-button"
               >
                 <FormattedMessage {...messages.emptyStateButtonText} />
               </Button>

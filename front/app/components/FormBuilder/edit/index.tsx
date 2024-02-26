@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
@@ -50,6 +50,7 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 import { isNewCustomFieldObject } from 'api/custom_fields/util';
+import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
 
 interface FormValues {
   customFields: IFlatCustomField[];
@@ -76,6 +77,7 @@ export const FormEdit = ({
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
+  const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
   const { formSavedSuccessMessage, isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const showWarningNotice = totalSubmissions > 0;
@@ -85,7 +87,7 @@ export const FormEdit = ({
     isFetching,
   } = useFormCustomFields({
     projectId,
-    phaseId,
+    phaseId: isFormPhaseSpecific ? phaseId : undefined,
   });
 
   const schema = object().shape({
@@ -97,7 +99,9 @@ export const FormEdit = ({
         description_multiloc: object(),
         input_type: string(),
         options: validateOneOptionForMultiSelect(
-          formatMessage(messages.emptyOptionError)
+          formatMessage(messages.emptyOptionError),
+          formatMessage(messages.emptyTitleMessage),
+          { multiselect_image: formatMessage(messages.emptyImageOptionError) }
         ),
         maximum: number(),
         minimum_label_multiloc: object(),
@@ -161,6 +165,7 @@ export const FormEdit = ({
   const editedAndCorrect = !isSubmitting && isDirty && !hasErrors;
 
   const onFormSubmit = async ({ customFields }: FormValues) => {
+    setSuccessMessageIsVisible(false);
     try {
       setIsSubmitting(true);
       const finalResponseArray = customFields.map((field) => ({
@@ -208,6 +213,7 @@ export const FormEdit = ({
           onSuccess: () => {
             refetch().then(() => {
               setIsUpdatingForm(true);
+              setSuccessMessageIsVisible(true);
             });
           },
         }
@@ -234,6 +240,10 @@ export const FormEdit = ({
       setSelectedField({ ...selectedField, index: newSelectedFieldIndex });
     }
   };
+
+  const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
+  const showSuccessMessage =
+    successMessageIsVisible && Object.keys(errors).length === 0;
 
   if (!isNilOrError(builderConfig)) {
     return (
@@ -292,7 +302,14 @@ export const FormEdit = ({
                     )}
                     <Feedback
                       successMessage={formatMessage(formSavedSuccessMessage)}
+                      onlyShowErrors
                     />
+                    {showSuccessMessage && (
+                      <SuccessFeedback
+                        successMessage={formatMessage(formSavedSuccessMessage)}
+                        closeSuccessMessage={closeSuccessMessage}
+                      />
+                    )}
                     {showWarningNotice &&
                       builderConfig.getWarningNotice &&
                       builderConfig.getWarningNotice()}
