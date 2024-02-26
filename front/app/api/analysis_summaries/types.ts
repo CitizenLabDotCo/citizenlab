@@ -22,6 +22,10 @@ export interface ISummaryData {
     updated_at: string;
     generated_at: string;
     missing_inputs_count: number;
+    custom_fields_ids: {
+      main_custom_field_id: string | null;
+      additional_custom_field_ids?: string[];
+    };
   };
   relationships: {
     background_task: {

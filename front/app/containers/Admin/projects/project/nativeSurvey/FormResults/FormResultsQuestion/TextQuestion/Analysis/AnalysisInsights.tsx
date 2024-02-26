@@ -159,16 +159,25 @@ const Summary = ({
           disabled={largeSummariesEnabled}
         >
           <Box display="flex" gap="4px" alignItems="center">
-            {!largeSummariesEnabled && (
+            {!largeSummariesEnabled ? (
               <Icon name="alert-circle" fill={colors.orange} />
+            ) : (
+              <Icon
+                name="comment"
+                width="12px"
+                height="12px"
+                fill={colors.black}
+                transform="scaleX(-1)"
+              />
             )}
+
             <Text
               m="0px"
               fontSize="s"
               color={!largeSummariesEnabled ? 'orange' : 'textPrimary'}
+              display="flex"
             >
-              {filteredInputCount} / {totalInputCount}{' '}
-              {formatMessage(messages.inputsSelected)}
+              {filteredInputCount} / {totalInputCount}
             </Text>
           </Box>
         </Tippy>
