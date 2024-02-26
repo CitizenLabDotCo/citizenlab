@@ -1,19 +1,12 @@
 import React from 'react';
 import { colors, Box, Icon } from '@citizenlab/cl2-component-library';
-
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-
-import { StatusWrapper, StatusExplanation } from './SharedStyles';
-
+import { StatusWrapper, StatusExplanation } from '../SharedStyles';
 import T from 'components/T';
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { StatusComponentProps } from '.';
 
-interface Props {
-  initiativeStatus: IInitiativeStatusData;
-}
-
-const ReviewPending = ({ initiativeStatus }: Props) => {
+const ReviewPending = ({ initiativeStatus }: StatusComponentProps) => {
   return (
     <Box>
       <Box mb="16px">

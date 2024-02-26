@@ -1,5 +1,4 @@
 import React from 'react';
-
 import styled, { keyframes } from 'styled-components';
 import {
   colors,
@@ -8,17 +7,11 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
-
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
-
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IAppConfigurationSettings } from 'api/app_configuration/types';
-
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-import ProposalProgressbar from './ProposalProgressBar';
-import { IInitiativeData } from 'api/initiatives/types';
+import messages from '../messages';
+import ProposalProgressbar from '../ProposalProgressBar';
+import { StatusComponentProps } from '.';
 
 const Container = styled.div`
   display: flex;
@@ -102,23 +95,11 @@ const ReactionTextRight = styled.div`
   color: ${(props) => props.theme.colors.tenantText};
 `;
 
-interface Props {
-  initiative: IInitiativeData;
-  initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userReacted: boolean;
-  onCancelReaction: () => void;
-}
-
-const ProposedReacted = (props: Props) => {
-  const handleOnCancelReaction = () => {
-    props.onCancelReaction();
-  };
-
-  const {
-    initiative,
-    initiativeSettings: { reacting_threshold },
-  } = props;
+const ProposedReacted = ({
+  initiative,
+  initiativeSettings: { reacting_threshold },
+  onCancelReaction,
+}: StatusComponentProps) => {
   const reactionCount = initiative.attributes.likes_count;
   const reactionLimit = reacting_threshold;
   const daysLeft = getPeriodRemainingUntil(initiative.attributes.expires_at);
@@ -147,7 +128,7 @@ const ProposedReacted = (props: Props) => {
       </ReactedText>
       <UnreactButton
         id="e2e-initiative-cancel-like-button"
-        onClick={handleOnCancelReaction}
+        onClick={onCancelReaction}
       >
         <FormattedMessage {...messages.unvoteLink} />
       </UnreactButton>

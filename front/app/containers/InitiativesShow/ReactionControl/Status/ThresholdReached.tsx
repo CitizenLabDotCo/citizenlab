@@ -7,21 +7,17 @@ import {
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
-// services
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IAppConfigurationSettings } from 'api/app_configuration/types';
-
 // components
-import { StatusWrapper, StatusExplanation } from './SharedStyles';
+import { StatusWrapper, StatusExplanation } from '../SharedStyles';
 import Button from 'components/UI/Button';
 
 // i18n
 import T from 'components/T';
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // Types
-import { IInitiativeData } from 'api/initiatives/types';
+import { StatusComponentProps } from '.';
 
 const Container = styled.div``;
 
@@ -44,26 +40,14 @@ const StyledButton = styled(Button)`
   margin-top: 20px;
 `;
 
-interface Props {
-  initiative: IInitiativeData;
-  initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userReacted: boolean;
-  onReaction: () => void;
-}
-
-const ThresholdReached = (props: Props) => {
+const ThresholdReached = ({
+  initiative,
+  initiativeSettings: { reacting_threshold, threshold_reached_message },
+  initiativeStatus,
+  userReacted,
+  onReaction,
+}: StatusComponentProps) => {
   const theme = useTheme();
-  const {
-    initiative,
-    initiativeSettings: { reacting_threshold, threshold_reached_message },
-    initiativeStatus,
-    userReacted,
-  } = props;
-  const handleOnReaction = () => {
-    props.onReaction();
-  };
-
   const reactionCount = initiative.attributes.likes_count;
   const reactionLimit = reacting_threshold;
 
@@ -88,17 +72,13 @@ const ThresholdReached = (props: Props) => {
             ),
           }}
         />
-        {threshold_reached_message ? (
-          <IconTooltip
-            icon="info-outline"
-            iconColor={theme.colors.tenantText}
-            theme="light"
-            placement="bottom"
-            content={<T value={threshold_reached_message} supportHtml />}
-          />
-        ) : (
-          <></>
-        )}
+        <IconTooltip
+          icon="info-outline"
+          iconColor={theme.colors.tenantText}
+          theme="light"
+          placement="bottom"
+          content={<T value={threshold_reached_message} supportHtml />}
+        />
       </StatusExplanation>
       <ReactionText>
         <FormattedMessage
@@ -117,7 +97,7 @@ const ThresholdReached = (props: Props) => {
         />
       </ReactionText>
       {!userReacted && (
-        <StyledButton icon="vote-up" onClick={handleOnReaction}>
+        <StyledButton icon="vote-up" onClick={onReaction}>
           <FormattedMessage {...messages.vote} />
         </StyledButton>
       )}

@@ -8,17 +8,14 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IAppConfigurationSettings } from 'api/app_configuration/types';
-
-import { StatusWrapper, StatusExplanation } from './SharedStyles';
+import { StatusWrapper, StatusExplanation } from '../SharedStyles';
 import Button from 'components/UI/Button';
 
 import T from 'components/T';
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { IInitiativeData } from 'api/initiatives/types';
-import ProposalProgressBar from './ProposalProgressBar';
+import ProposalProgressBar from '../ProposalProgressBar';
+import { StatusComponentProps } from '.';
 
 const StatusIcon = styled(Icon)`
   path {
@@ -53,16 +50,6 @@ const ReactionTextRight = styled.div`
   color: ${(props) => props.theme.colors.tenantText};
 `;
 
-interface Props {
-  initiative: IInitiativeData;
-  initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userReacted: boolean;
-  onReaction: () => void;
-  onCancelReaction: () => void;
-  onScrollToOfficialFeedback: () => void;
-}
-
 const Answered = ({
   onReaction,
   onCancelReaction,
@@ -71,7 +58,7 @@ const Answered = ({
   initiativeStatus,
   initiativeSettings: { reacting_threshold },
   userReacted,
-}: Props) => {
+}: StatusComponentProps) => {
   const reactionCount = initiative.attributes.likes_count;
   const reactionLimit = reacting_threshold;
 

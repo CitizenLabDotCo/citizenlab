@@ -182,7 +182,7 @@ const Phone = ({
       <InitiativeContainer>
         <Box px={isSmallerThanTablet ? '0' : padding}>
           <ReactionControl
-            initiativeId={initiativeId}
+            initiative={initiative}
             onScrollToOfficialFeedback={onScrollToOfficialFeedback}
           />
         </Box>

@@ -7,17 +7,12 @@ import {
   Box,
   Icon,
 } from '@citizenlab/cl2-component-library';
-
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IAppConfigurationSettings } from 'api/app_configuration/types';
-
-import { StatusWrapper, StatusExplanation } from './SharedStyles';
-import ProposalProgressBar from './ProposalProgressBar';
-
+import { StatusWrapper, StatusExplanation } from '../SharedStyles';
+import ProposalProgressBar from '../ProposalProgressBar';
 import T from 'components/T';
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { IInitiativeData } from 'api/initiatives/types';
+import { StatusComponentProps } from '.';
 
 const Container = styled.div``;
 
@@ -49,18 +44,11 @@ const ReactionText = styled.div`
   color: ${colors.coolGrey600};
 `;
 
-interface Props {
-  initiative: IInitiativeData;
-  initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userReacted: boolean;
-}
-
 const Expired = ({
   initiative,
   initiativeSettings: { reacting_threshold },
   initiativeStatus,
-}: Props) => {
+}: StatusComponentProps) => {
   const reactionCount = initiative.attributes.likes_count;
   const reactionLimit = reacting_threshold;
 

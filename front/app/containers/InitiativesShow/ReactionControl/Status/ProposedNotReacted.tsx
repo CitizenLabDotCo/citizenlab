@@ -8,25 +8,19 @@ import {
   Icon,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { StatusExplanation } from './SharedStyles';
+import { StatusExplanation } from '../SharedStyles';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
-
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IAppConfigurationSettings } from 'api/app_configuration/types';
-
-import CountDown from './CountDown';
-
+import CountDown from '../CountDown';
 import Button from 'components/UI/Button';
-import ProposalProgressBar from './ProposalProgressBar';
-
+import ProposalProgressBar from '../ProposalProgressBar';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import globalMessages from 'utils/messages';
 import T from 'components/T';
 import { darken } from 'polished';
 import Tippy from '@tippyjs/react';
-import { IInitiativeData } from 'api/initiatives/types';
 import { InitiativePermissionsDisabledReason } from 'hooks/useInitiativesPermissions';
+import { StatusComponentProps } from '.';
 
 const Container = styled.div``;
 
@@ -143,17 +137,6 @@ const TooltipContentText = styled.div`
   }
 `;
 
-interface InputProps {
-  initiative: IInitiativeData;
-  initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
-  userReacted: boolean;
-  onReaction: () => void;
-  disabledReason: InitiativePermissionsDisabledReason;
-}
-
-interface Props extends InputProps {}
-
 const disabledMessages: {
   [key in InitiativePermissionsDisabledReason]: MessageDescriptor;
 } = {
@@ -166,13 +149,12 @@ const ProposedNotReacted = ({
   initiative,
   initiativeSettings: { reacting_threshold, threshold_reached_message },
   disabledReason,
-}: Props) => {
+}: StatusComponentProps) => {
   const theme = useTheme();
   const reactionCount = initiative.attributes.likes_count;
   const reactionLimit = reacting_threshold;
-  const daysLeft = getPeriodRemainingUntil(initiative.attributes.expires_at);
 
-  const thresholdReachedTooltip = threshold_reached_message ? (
+  const thresholdReachedTooltip = (
     <IconTooltip
       icon="info-outline"
       iconColor={theme.colors.tenantText}
@@ -180,8 +162,6 @@ const ProposedNotReacted = ({
       placement="bottom"
       content={<T value={threshold_reached_message} supportHtml />}
     />
-  ) : (
-    <></>
   );
 
   const tippyContent = disabledReason ? (
@@ -220,7 +200,9 @@ const ProposedNotReacted = ({
           <FormattedMessage
             {...messages.proposedStatusExplanationMobile}
             values={{
-              daysLeft,
+              daysLeft: getPeriodRemainingUntil(
+                initiative.attributes.expires_at
+              ),
               votingThreshold: reacting_threshold,
               proposedStatusExplanationMobileBold: (
                 <b>
