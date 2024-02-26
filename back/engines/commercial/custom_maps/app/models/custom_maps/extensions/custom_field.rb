@@ -7,6 +7,10 @@ module CustomMaps
         base.attr_accessor :map_config_id
 
         base.has_one :map_config, class_name: 'CustomMaps::MapConfig', as: :mappable, dependent: :destroy
+
+        def supports_map_config?
+          input_type == 'point'
+        end
       end
     end
   end

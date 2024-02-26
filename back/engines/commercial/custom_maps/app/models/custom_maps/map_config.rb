@@ -31,10 +31,10 @@ module CustomMaps
     validates :tile_provider, format: { with: %r{\Ahttps://.+\z} }, allow_nil: true
     validates :mappable_id, uniqueness: true, allow_nil: true
     validates :mappable, presence: true, if: -> { mappable_id.present? or mappable_type.present? }
-    validate :mappable_custom_field_is_input_type_point
+    validate :mappable_custom_field_supports_map_config
 
-    def mappable_custom_field_is_input_type_point
-      return unless mappable_type == 'CustomField' && mappable.input_type != 'point'
+    def mappable_custom_field_supports_map_config
+      return unless mappable_type == 'CustomField' && !mappable.supports_map_config?
 
       errors.add(:mappable, message: 'The custom field input_type cannot be related to a map_config')
     end
