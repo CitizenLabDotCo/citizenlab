@@ -1892,6 +1892,7 @@
   "app.containers.AdminPage.groups.permissions.delete": "يمسح",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "حذف",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "حذف",
+  "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "يرجى تقديم عنوان لجميع الاختيارات",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "نعم لا (خانة اختيار)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "تاريخ",
   "app.containers.AdminPage.groups.permissions.fieldType_multiline_text": "اجابة طويلة",
