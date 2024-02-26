@@ -2235,7 +2235,7 @@
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.totalIdeas": "Total des idées : {numberOfIdeas}",
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.collapseLongText": "Limiter le taille de la vue",
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.noIdeaAvailable": "Ce projet ou cette phase ne contient aucune idée.",
-  "app.containers.admin.ReportBuilder.SingleIdeaWidget.selectPhase": "Sélectionner la phase",
+  "app.containers.admin.ReportBuilder.SingleIdeaWidget.selectPhase": "Sélectionnez la phase",
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.showAuthor": "Auteur",
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.showContent": "Contenu",
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.showReactions": "Réactions",
