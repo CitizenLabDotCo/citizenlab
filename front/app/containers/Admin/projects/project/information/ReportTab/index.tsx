@@ -71,7 +71,9 @@ const ReportTab = () => {
         )}
       </Box>
       {hasReport ? (
-        <ReportPreview reportId={reportId} phaseId={phase.data.id} />
+        <Box mt="32px">
+          <ReportPreview reportId={reportId} phaseId={phase.data.id} />
+        </Box>
       ) : (
         <EmptyState
           projectId={phase.data.relationships.project.data.id}
