@@ -4,14 +4,14 @@ import { IconTooltip } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { StatusComponentProps } from '.';
-import StatusShared from './StatusShared';
+import { StatusComponentProps } from '../StatusWrapper';
+import Status from '.';
 
 const Ineligible = (props: StatusComponentProps) => {
   const theme = useTheme();
 
   return (
-    <StatusShared
+    <Status
       {...props}
       iconName="halt"
       statusExplanation={

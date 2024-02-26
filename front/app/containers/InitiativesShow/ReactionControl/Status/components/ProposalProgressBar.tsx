@@ -3,7 +3,7 @@ import styled, { useTheme } from 'styled-components';
 import ProgressBar from 'components/UI/ProgressBar';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../messages';
 import { colors } from '@citizenlab/cl2-component-library';
 
 const StyledProgressBar = styled(ProgressBar)`

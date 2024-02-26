@@ -8,14 +8,14 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // Types
-import { StatusComponentProps } from '.';
-import StatusShared from './StatusShared';
+import { StatusComponentProps } from '../StatusWrapper';
+import Status from '.';
 
 const ThresholdReached = (props: StatusComponentProps) => {
   const theme = useTheme();
 
   return (
-    <StatusShared
+    <Status
       {...props}
       iconName="email-check"
       statusExplanation={

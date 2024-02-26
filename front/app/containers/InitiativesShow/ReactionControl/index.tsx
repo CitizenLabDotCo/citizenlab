@@ -12,7 +12,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // typings
 import BorderContainer from '../BorderContainer';
-import Status from './Status';
+import StatusWrapper from './StatusWrapper';
 import { IInitiative } from 'api/initiatives/types';
 
 interface Props {
@@ -31,7 +31,7 @@ const ReactionControl = ({
       <ScreenReaderOnly>
         <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
       </ScreenReaderOnly>
-      <Status
+      <StatusWrapper
         initiative={initiative}
         onScrollToOfficialFeedback={onScrollToOfficialFeedback}
       />

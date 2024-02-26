@@ -3,12 +3,12 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { StatusComponentProps } from '.';
-import StatusShared from './StatusShared';
+import { StatusComponentProps } from '../StatusWrapper';
+import Status from '.';
 
 const ReviewPending = (props: StatusComponentProps) => {
   return (
-    <StatusShared
+    <Status
       {...props}
       iconName="clock"
       statusExplanation={
