@@ -6,7 +6,7 @@ import Status from '.';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import { Text } from '@citizenlab/cl2-component-library';
 
-const ProposedNotReacted = (props: StatusComponentProps) => {
+const Proposed = (props: StatusComponentProps) => {
   const daysLeft = getPeriodRemainingUntil(
     props.initiative.attributes.expires_at
   );
@@ -59,4 +59,4 @@ const ProposedNotReacted = (props: StatusComponentProps) => {
   );
 };
 
-export default ProposedNotReacted;
+export default Proposed;
