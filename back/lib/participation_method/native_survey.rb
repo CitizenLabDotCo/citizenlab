@@ -61,7 +61,7 @@ module ParticipationMethod
       ]
     end
 
-    # TODO: JS - Can we remove this method? Only used by analysis
+    # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
     def create_default_form!
       form = CustomForm.create(participation_context: phase)
 

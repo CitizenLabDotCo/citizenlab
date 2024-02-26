@@ -229,7 +229,7 @@ const Forms = () => {
                 right="70px"
                 content={
                   <>
-                    {uiSchema && importPrintedFormsEnabled && (
+                    {uiSchema && (
                       <>
                         <DropdownListItem
                           onClick={() => {
@@ -256,34 +256,46 @@ const Forms = () => {
                             </Text>
                           </Box>
                         </DropdownListItem>
-                        <DropdownListItem
-                          onClick={() => {
-                            clHistory.push(offlineInputsLink);
-                          }}
-                        >
-                          <Box display="flex" gap="4px" alignItems="center">
-                            <Icon name="plus" fill={colors.coolGrey600} />
-                            <Text my="0px">
-                              {formatMessage(messages.addOfflineInputs)}
-                            </Text>
-                          </Box>
-                        </DropdownListItem>
-                        <DropdownListItem onClick={handleDownloadPDF}>
-                          <Box display="flex" gap="4px" alignItems="center">
-                            <Icon name="download" fill={colors.coolGrey600} />
-                            <Text my="0px">
-                              {formatMessage(messages.downloadSurvey)}
-                            </Text>
-                          </Box>
-                        </DropdownListItem>
-                        <DropdownListItem onClick={downloadExampleFile}>
-                          <Box display="flex" gap="4px" alignItems="center">
-                            <Icon name="download" fill={colors.coolGrey600} />
-                            <Text my="0px">
-                              {formatMessage(messages.downloadExcelTemplate)}
-                            </Text>
-                          </Box>
-                        </DropdownListItem>
+                        {importPrintedFormsEnabled && (
+                          <>
+                            <DropdownListItem
+                              onClick={() => {
+                                clHistory.push(offlineInputsLink);
+                              }}
+                            >
+                              <Box display="flex" gap="4px" alignItems="center">
+                                <Icon name="plus" fill={colors.coolGrey600} />
+                                <Text my="0px">
+                                  {formatMessage(messages.addOfflineInputs)}
+                                </Text>
+                              </Box>
+                            </DropdownListItem>
+                            <DropdownListItem onClick={handleDownloadPDF}>
+                              <Box display="flex" gap="4px" alignItems="center">
+                                <Icon
+                                  name="download"
+                                  fill={colors.coolGrey600}
+                                />
+                                <Text my="0px">
+                                  {formatMessage(messages.downloadSurvey)}
+                                </Text>
+                              </Box>
+                            </DropdownListItem>
+                            <DropdownListItem onClick={downloadExampleFile}>
+                              <Box display="flex" gap="4px" alignItems="center">
+                                <Icon
+                                  name="download"
+                                  fill={colors.coolGrey600}
+                                />
+                                <Text my="0px">
+                                  {formatMessage(
+                                    messages.downloadExcelTemplate
+                                  )}
+                                </Text>
+                              </Box>
+                            </DropdownListItem>
+                          </>
+                        )}
                       </>
                     )}
                     <DropdownListItem onClick={handleDownloadResults}>
