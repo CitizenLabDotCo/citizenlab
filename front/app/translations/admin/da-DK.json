@@ -762,7 +762,7 @@
   "app.containers.Admin.projects.project.information.ReportTab.createAReportTo": "Opret en rapport til:",
   "app.containers.Admin.projects.project.information.ReportTab.createReport": "Opret en rapport",
   "app.containers.Admin.projects.project.information.ReportTab.report": "Rapport",
-  "app.containers.Admin.projects.project.information.ReportTab.shareResults": "Del resultaterne af en tidligere undersøgelse eller idéfase",
+  "app.containers.Admin.projects.project.information.ReportTab.shareResults": "Del resultaterne af en tidligere survey eller idéfase",
   "app.containers.Admin.projects.project.information.ReportTab.thisWillBe": "Dette vil være offentligt tilgængeligt for brugerne, så snart denne fase starter.",
   "app.containers.Admin.projects.project.information.areYouSureYouWantToDelete": "Er du sikker på, at du vil slette denne rapport? Handligen kan ikke fortrydes.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Tilføj til fase",
