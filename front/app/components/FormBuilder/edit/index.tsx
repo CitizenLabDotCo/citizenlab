@@ -86,7 +86,7 @@ export const FormEdit = ({
     isFetching,
   } = useFormCustomFields({
     projectId,
-    phaseId,
+    phaseId: isFormPhaseSpecific ? phaseId : undefined,
   });
 
   const schema = object().shape({
