@@ -74,6 +74,7 @@ const PhaseFilter = ({
   return (
     <Box width="100%" mb="20px">
       <Select
+        id="e2e-report-builder-phase-filter"
         label={label}
         onChange={onPhaseFilter}
         value={phaseId}
