@@ -49,6 +49,7 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 import { isNewCustomFieldObject } from 'api/custom_fields/util';
+import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
 
 interface FormValues {
   customFields: IFlatCustomField[];
@@ -75,6 +76,7 @@ export const FormEdit = ({
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
+  const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
   const { formSavedSuccessMessage, isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const showWarningNotice = totalSubmissions > 0;
@@ -84,7 +86,7 @@ export const FormEdit = ({
     isFetching,
   } = useFormCustomFields({
     projectId,
-    phaseId,
+    phaseId: isFormPhaseSpecific ? phaseId : undefined,
   });
 
   const schema = object().shape({
@@ -161,6 +163,7 @@ export const FormEdit = ({
   const hasErrors = !!Object.keys(errors).length;
 
   const onFormSubmit = async ({ customFields }: FormValues) => {
+    setSuccessMessageIsVisible(false);
     try {
       setIsSubmitting(true);
       const finalResponseArray = customFields.map((field) => ({
@@ -208,6 +211,7 @@ export const FormEdit = ({
           onSuccess: () => {
             refetch().then(() => {
               setIsUpdatingForm(true);
+              setSuccessMessageIsVisible(true);
             });
           },
         }
@@ -234,6 +238,10 @@ export const FormEdit = ({
       setSelectedField({ ...selectedField, index: newSelectedFieldIndex });
     }
   };
+
+  const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
+  const showSuccessMessage =
+    successMessageIsVisible && Object.keys(errors).length === 0;
 
   if (!isNilOrError(builderConfig)) {
     return (
@@ -285,7 +293,14 @@ export const FormEdit = ({
                     )}
                     <Feedback
                       successMessage={formatMessage(formSavedSuccessMessage)}
+                      onlyShowErrors
                     />
+                    {showSuccessMessage && (
+                      <SuccessFeedback
+                        successMessage={formatMessage(formSavedSuccessMessage)}
+                        closeSuccessMessage={closeSuccessMessage}
+                      />
+                    )}
                     {showWarningNotice &&
                       builderConfig.getWarningNotice &&
                       builderConfig.getWarningNotice()}
