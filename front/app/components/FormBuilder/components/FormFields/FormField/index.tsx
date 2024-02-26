@@ -84,7 +84,7 @@ export const FormField = ({
   const hasErrors = !!errors.customFields?.[index];
 
   const showLogicOnRow =
-    field.input_type !== 'page' ? field.logic.rules : field.logic;
+    field.input_type !== 'page' ? field.logic?.rules : field.logic;
 
   const isFieldGrouping = ['page', 'section'].includes(field.input_type);
 

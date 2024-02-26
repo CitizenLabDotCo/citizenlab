@@ -23,16 +23,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
     }
   end
 
-  def generate_question_result(field_id)
-    field = fields.find { |f| f.id == field_id }
-    return unless field
-
-    result = visit field
-    {
-      result: result
-    }
-  end
-
   def visit_select(field)
     values = inputs
       .select("custom_field_values->'#{field.key}' as value")
@@ -132,7 +122,12 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   def visit_select_base(field, values)
     option_keys = field.options.pluck(:key)
-    distribution = Idea.select(:value).from(values).group(:value).order(Arel.sql('COUNT(value) DESC')).count.to_a
+    distribution = Idea
+      .select(:value)
+      .from(values)
+      .group(:value)
+      .order(Arel.sql('COUNT(value) DESC'))
+      .count.to_a
     (option_keys - distribution.pluck(0)).each do |key|
       distribution << [key, 0] # add missing options with 0 responses
     end

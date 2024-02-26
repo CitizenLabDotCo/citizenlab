@@ -32,6 +32,7 @@ const Buttons = ({ reportId, isLoading, onDelete, onEdit }: Props) => {
   return (
     <Box display="flex">
       <Button
+        id="e2e-delete-report-button"
         mr="8px"
         icon="delete"
         buttonStyle="white"

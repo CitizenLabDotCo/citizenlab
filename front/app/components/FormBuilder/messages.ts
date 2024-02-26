@@ -14,6 +14,15 @@ export default defineMessages({
     id: 'app.components.formBuilder.emptyOptionError',
     defaultMessage: 'Provide at least 1 answer',
   },
+  emptyTitleMessage: {
+    id: 'app.components.formBuilder.emptyTitleMessage',
+    defaultMessage: 'Provide a title for all the answers',
+  },
+  emptyImageOptionError: {
+    id: 'app.components.formBuilder.emptyImageOptionError',
+    defaultMessage:
+      'Provide at least 1 answer. Please note that each answer has to have a title.',
+  },
   logicValidationError: {
     id: 'app.components.formBuilder.logicValidationError',
     defaultMessage: 'Logic may not link to prior pages',
@@ -25,5 +34,9 @@ export default defineMessages({
   helmetTitle: {
     id: 'app.components.formBuilder.helmetTitle',
     defaultMessage: 'Form builder',
+  },
+  unsavedChanges: {
+    id: 'app.components.formBuilder.unsavedChanges',
+    defaultMessage: 'You have unsaved changes',
   },
 });
