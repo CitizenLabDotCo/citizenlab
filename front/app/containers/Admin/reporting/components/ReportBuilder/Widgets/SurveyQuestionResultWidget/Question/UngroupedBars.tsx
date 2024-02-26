@@ -26,7 +26,7 @@ const UngroupedBars = ({ attributes }: Props) => {
   const localize = useLocalize();
 
   return (
-    <>
+    <Box className="e2e-survey-question-ungrouped-bars">
       {attributes.answers.map(({ answer, count }, index) => {
         return (
           <Box
@@ -49,7 +49,7 @@ const UngroupedBars = ({ attributes }: Props) => {
           </Box>
         );
       })}
-    </>
+    </Box>
   );
 };
 
