@@ -3,7 +3,7 @@
 module PublicApi
   class ProjectFoldersFinder
     def initialize(scope, publication_status: nil)
-      @scope = scope
+      @scope = scope.includes([:admin_publication])
       @publication_status = publication_status
     end
 
