@@ -2,49 +2,39 @@
 
 module Analysis
   class AutoTaggingMethod::NLPTopic < AutoTaggingMethod::Base
-    include NLPCloudHelpers
-
     TAG_TYPE = 'nlp_topic'
-    DETECTION_THRESHOLD = 0.8
+    BATCH_SIZE = 10
 
     def topic_modeling(project_title, inputs)
       response = run_topic_modeling_prompt(project_title, inputs)
       parse_topic_modeling_response(response)
     end
 
+    def classify(inputs, topics)
+      # Prompt method
+      inputs_text = input_to_text.format_all(inputs)
+      prompt = LLM::Prompt.new.fetch('fully_automated_classifier', inputs_text: inputs_text, topics: topics)
+      puts prompt ### Debugging
+      response = llm.chat(prompt).strip
+      puts response ### Debugging
+
+      # Parse method
+      inputs.zip(response.lines.map(&:strip))
+    end
+
     protected
 
     # Use `execute` on the parent class to actually use the method
     def run
-      total_inputs = filtered_inputs.size
-
-      filtered_inputs.includes(:author).each_with_index do |input, i|
-        update_progress(i / total_inputs.to_f)
-
-        nlp = nlp_cloud_client_for(
-          'fast-gpt-j',
-          deduct_locale(input),
-          gpu: true
-        )
-
-        text = input_to_text.execute(input).values.join("\n")
-        next if text.strip.empty?
-
-        # We retry 10 times due to rate limiting
-        result = retry_rate_limit(10, 2) do
-          nlp.classification(text, multi_class: true)
-        end
-
-        result['labels']
-          .zip(result['scores'])
-          .reject { |(_label, score)| !score || score < DETECTION_THRESHOLD }
-          .each do |(label, _score)|
-          tag = Tag.find_or_create_by!(name: label, tag_type: TAG_TYPE, analysis: analysis)
+      project_title = analysis.participation_context.project.title_multiloc.values.first
+      topics = topic_modeling(project_title, filtered_inputs)
+      filtered_inputs.each_slice(BATCH_SIZE) do |inputs_group|
+        classify(inputs_group, topics).each do |input, topic|
+          puts "#{input.title_multiloc.values.first} => #{topic}" ### Debugging
+          tag = Tag.find_or_create_by!(name: topic, tag_type: TAG_TYPE, analysis: analysis)
           find_or_create_tagging!(input_id: input.id, tag_id: tag.id)
         end
       end
-    rescue StandardError => e
-      raise AutoTaggingFailedError, e
     end
 
     private
@@ -62,9 +52,8 @@ module Analysis
     end
 
     def run_topic_modeling_prompt(project_title, inputs)
-      inputs_texts = input_to_text.format_all(inputs)
-      prompt = LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_texts: inputs_texts, max_topics: max_topics(inputs.size))
-      puts prompt
+      inputs_text = input_to_text.format_all(inputs)
+      prompt = LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_text: inputs_text, max_topics: max_topics(inputs.size))
       llm.chat(prompt).strip
     end
 

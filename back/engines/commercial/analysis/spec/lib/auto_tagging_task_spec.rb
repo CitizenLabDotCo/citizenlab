@@ -146,33 +146,39 @@ RSpec.describe Analysis::AutoTaggingTask do
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
       analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'nlp_topic')
-      idea = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
+      ideas = create_list(:idea, 2, project: project)
 
-      mock_nlp_client = instance_double(NLPCloud::Client)
+      topics_response = <<-RESPONSE
+      - planets
+      - bananas
+      RESPONSE
+      classification_response = <<-RESPONSE
+      bananas
+      other
+      RESPONSE
 
-      expect(mock_nlp_client).to receive(:classification).and_return({
-        'labels' => %w[job space sport],
-        'scores' => [0.2258800745010376, 0.1938474327325821, 0.910988450609147549]
-      })
-      expect_any_instance_of(Analysis::AutoTaggingMethod::NLPTopic)
-        .to receive(:nlp_cloud_client_for)
-        .and_return(
-          mock_nlp_client
-        )
+      expect_any_instance_of(Analysis::LLM::GPT4Turbo)
+        .to receive(:chat)
+        .and_return(topics_response, classification_response)
 
       expect { att.execute }
-        .to change(Analysis::Tag, :count).from(0).to(1)
+        .to change(Analysis::Tag, :count).from(0).to(2)
 
       expect(att.reload).to have_attributes({
         state: 'succeeded',
         progress: nil
       })
 
-      sport_tag = Analysis::Tag.find_by(analysis: analysis, name: 'sport')
-      expect(sport_tag).to be_present
+      bananas_tag = Analysis::Tag.find_by(analysis: analysis, name: 'bananas')
+      byebug
+      expect(bananas_tag).to be_present
+      other_tag = Analysis::Tag.find_by(analysis: analysis, name: 'other')
+      expect(other_tag).to be_present
 
-      expect(idea.tags).to eq([sport_tag])
-      expect(idea.taggings.first.background_task).to eq att
+      expect(ideas.first.tags).to eq([bananas_tag])
+      expect(ideas.first.taggings.first.background_task).to eq att
+      expect(ideas.last.tags).to eq([other_tag])
+      expect(ideas.last.taggings.first.background_task).to eq att
     end
   end
 
