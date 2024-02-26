@@ -2241,7 +2241,7 @@
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.showReactions": "Réactions",
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.showVotes": "Votes",
   "app.containers.admin.ReportBuilder.SingleIdeaWidget.singleIdea": "Idée",
-  "app.containers.admin.ReportBuilder.SingleIdeaWidget.title": "Nom",
+  "app.containers.admin.ReportBuilder.SingleIdeaWidget.title": "Titre",
   "app.containers.admin.ReportBuilder.aboutThisReport": "À propos de ce rapport",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Calendrier des participants",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Graphique",
