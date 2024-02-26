@@ -46,6 +46,10 @@ module Analysis
       atm.execute
     end
 
+    def self.delete_custom_field_references!(custom_field_id)
+      delete_custom_field_references_in_filters!(custom_field_id)
+    end
+
     private
 
     def method_with_tags_ids?
