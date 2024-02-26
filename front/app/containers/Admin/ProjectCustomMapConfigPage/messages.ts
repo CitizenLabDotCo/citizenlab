@@ -269,4 +269,8 @@ export default defineMessages({
     defaultMessage:
       'Copy the portal ID of your Web Map from ArcGIS Online and paste it in the input below:',
   },
+  esriWebMap: {
+    id: 'app.components.admin.PostManager.esriWebMap',
+    defaultMessage: 'Esri Web Map',
+  },
 });

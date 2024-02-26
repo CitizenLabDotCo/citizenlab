@@ -50,7 +50,7 @@ const IdeationConfigurationMap = memo<Props>(
         }
       }
       return [];
-    }, [mapConfig, localize]);
+    }, [localize, mapConfig?.data?.attributes?.layers]);
 
     const onMapInit = useCallback((esriMapView: MapView) => {
       // Save the esriMapView in state

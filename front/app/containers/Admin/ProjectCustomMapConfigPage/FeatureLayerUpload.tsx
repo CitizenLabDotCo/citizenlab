@@ -40,14 +40,18 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
   const { data: appConfig } = useAppConfiguration();
 
   const [url, setUrl] = useState('');
+  const [loading, setLoading] = useState(false);
   const [importError, setImportError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const tenantLocales = useAppConfigurationLocales();
-  const { mutate: createProjectMapLayer, isLoading } = useAddMapLayer();
+  const { mutate: createProjectMapLayer, isLoading: apiCallLoading } =
+    useAddMapLayer();
 
   const addEsriFeatureLayer = () => {
+    setLoading(true);
+
     // First test if we have access to the Feature Layer URL
     const apiKey =
       appConfig?.data.attributes.settings.esri_integration?.api_key;
@@ -80,8 +84,10 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
             {
               onError: () => {
                 setImportError(true);
+                setLoading(false);
               },
               onSuccess: () => {
+                setLoading(false);
                 setSuccess(true);
                 setView('main');
               },
@@ -91,6 +97,7 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
       })
       .catch((e) => {
         setImportError(true);
+        setLoading(false);
 
         switch (e.name) {
           case ErrorTypes.ArcGISRequestError:
@@ -149,7 +156,11 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
         >
           {formatMessage(messages.cancel2)}
         </Button>
-        <Button onClick={addEsriFeatureLayer} processing={isLoading}>
+        <Button
+          disabled={!url || url === ''}
+          onClick={addEsriFeatureLayer}
+          processing={apiCallLoading || loading}
+        >
           {formatMessage(messages.import2)}
         </Button>
       </Box>

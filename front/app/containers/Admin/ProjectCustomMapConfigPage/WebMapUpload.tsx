@@ -35,15 +35,17 @@ type Props = {
 const WebMapUpload = ({ projectId, mapConfigId, setView }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
-  const { mutateAsync: updateProjectMapConfig, isLoading } =
+  const { mutateAsync: updateProjectMapConfig, isLoading: apiCallLoading } =
     useUpdateMapConfig();
 
   const [portalId, setPortalId] = useState('');
+  const [loading, setLoading] = useState(false);
   const [importError, setImportError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const addEsriWebMap = () => {
+    setLoading(true);
     // First test if we have access to the Web Map portal item
     const apiKey =
       appConfig?.data.attributes.settings.esri_integration?.api_key;
@@ -65,6 +67,7 @@ const WebMapUpload = ({ projectId, mapConfigId, setView }: Props) => {
             {
               onSuccess: () => {
                 setSuccess(true);
+                setLoading(false);
                 setView('main');
               },
               onError: () => {
@@ -77,6 +80,7 @@ const WebMapUpload = ({ projectId, mapConfigId, setView }: Props) => {
       })
       .catch((e) => {
         setImportError(true);
+        setLoading(false);
 
         switch (e.name) {
           case ErrorTypes.ArcGISRequestError:
@@ -130,7 +134,11 @@ const WebMapUpload = ({ projectId, mapConfigId, setView }: Props) => {
         >
           {formatMessage(messages.cancel2)}
         </Button>
-        <Button onClick={addEsriWebMap} processing={isLoading}>
+        <Button
+          disabled={!portalId || portalId === ''}
+          onClick={addEsriWebMap}
+          processing={apiCallLoading || loading}
+        >
           {formatMessage(messages.import2)}
         </Button>
       </Box>

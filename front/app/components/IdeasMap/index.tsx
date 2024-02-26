@@ -253,7 +253,7 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
             sizeInPx: 42,
           }),
         }),
-        legendEnabled: true,
+        legendEnabled: false,
         // Add cluster display to this layer
         featureReduction: getClusterConfiguration(theme.colors.tenantPrimary),
         // Add a popup template which is used when multiple ideas share a single location
@@ -309,8 +309,6 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
       mapView.hitTest(event).then((result) => {
         // Get any map elements underneath map click
         const elements = result.results;
-
-        console.log('elements: ', elements);
 
         if (elements.length > 0) {
           // There are map elements - user clicked a layer, idea pin OR a cluster
@@ -498,8 +496,8 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
               showLayerVisibilityControl: true,
               showLegend: true,
               zoomWidgetLocation: 'right',
-              webMapId: mapConfig?.data.attributes.esri_web_map_id,
               onInit: onMapInit,
+              webMapId: mapConfig?.data.attributes.esri_web_map_id,
             }}
             height={isMobileOrSmaller ? '68vh' : '80vh'}
             layers={layers}

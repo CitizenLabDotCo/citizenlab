@@ -57,7 +57,10 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
               : formatMessage(messages.esriAddOnFeatureTooltip)
           }
           hideOnClick={true}
-          disabled={layerType !== 'CustomMaps::GeojsonLayer'}
+          disabled={
+            layerType !== 'CustomMaps::GeojsonLayer' ||
+            !isEsriIntegrationEnabled
+          }
         >
           <div>
             <Button
@@ -80,7 +83,11 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
           placement="top"
           content={getWebMapDisabledMessage()}
           hideOnClick={true}
-          disabled={layerType !== 'CustomMaps::GeojsonLayer'}
+          disabled={
+            !hasExistingWebMap ||
+            layerType === 'CustomMaps::GeojsonLayer' ||
+            !isEsriIntegrationEnabled
+          }
         >
           <div>
             <Button

@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 // components
 import Button from 'components/UI/Button';
 import {
+  Box,
   Icon,
   IconTooltip,
   colors,
@@ -35,6 +36,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import useMapConfig from 'api/map_config/useMapConfig';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
 const Container = styled.div``;
 
@@ -101,6 +103,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     const { data: mapConfig } = useMapConfig(projectId);
     const { mutate: deleteProjectMapLayer } = useDeleteMapLayer();
     const { mutate: reorderProjectMapLayer } = useReorderMapLayer();
+    const { mutateAsync: updateProjectMapConfig } = useUpdateMapConfig();
     const isEsriIntegrationEnabled = useFeatureFlag({
       name: 'esri_integration',
     });
@@ -116,6 +119,16 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
 
       if (window.confirm(message)) {
         deleteProjectMapLayer({ projectId, id: layerId });
+      }
+    };
+
+    const removeWebMap = () => {
+      if (mapConfig?.data.id) {
+        updateProjectMapConfig({
+          projectId,
+          id: mapConfig?.data.id,
+          esri_web_map_id: null,
+        });
       }
     };
 
@@ -180,7 +193,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                           <LayerIcon
                             name={
                               mapLayer.type === 'CustomMaps::EsriFeatureLayer'
-                                ? 'map'
+                                ? 'timeline'
                                 : layerIconName
                             }
                             color={
@@ -241,6 +254,38 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
               </>
             )}
           </StyledSortableList>
+        )}
+        {mapConfig?.data.attributes.esri_web_map_id && (
+          <Box borderBottom={`1px solid ${colors.divider}`} mb="36px">
+            <Box mb="24px" ml="32px">
+              <ListItem>
+                <LayerIcon name="map" color={colors.coolGrey600} />
+                <LayerName>
+                  {formatMessage(messages.esriWebMap)}:{' '}
+                  {mapConfig?.data.attributes.esri_web_map_id}
+                </LayerName>
+                <Buttons>
+                  <Spacer />
+                  <Tippy
+                    placement="bottom"
+                    content={<FormattedMessage {...messages.remove} />}
+                    hideOnClick={false}
+                    arrow={false}
+                  >
+                    <div>
+                      <RemoveButton
+                        icon="delete"
+                        iconSize="16px"
+                        buttonStyle="text"
+                        padding="0px"
+                        onClick={removeWebMap}
+                      />
+                    </div>
+                  </Tippy>
+                </Buttons>
+              </ListItem>
+            </Box>
+          </Box>
         )}
 
         {mapConfig?.data?.id && (

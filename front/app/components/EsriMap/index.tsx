@@ -41,6 +41,10 @@ const MapContainer = styled(Box)`
     max-height: 200px !important;
   }
 
+  .esri-layer-list {
+    max-height: 200px !important;
+  }
+
   ${media.phone`
     .esri-legend {
       max-width: 240px !important;
@@ -92,8 +96,9 @@ const EsriMap = ({
   const [map, setMap] = useState<Map | null>(null);
   const [webMap, setWebMap] = useState<WebMap | null>(null);
   const [mapView, setMapView] = useState<MapView | null>(null);
+  const [referenceLayers, setReferenceLayers] =
+    useState<Collection<Layer> | null>(null);
   const mapRef = useRef<HTMLDivElement | null>(null);
-
   const initialValuesLoaded = useRef(false);
 
   // Sets the locale of the map
@@ -106,6 +111,7 @@ const EsriMap = ({
       const mapView = new MapView({
         container: mapRef.current, // Reference to DOM node that will contain the view
         map: newMap,
+        popupEnabled: false,
         popup: {
           dockEnabled: false,
           dockOptions: {
@@ -157,8 +163,8 @@ const EsriMap = ({
           },
         });
 
-        setWebMap(webMap);
         mapView.map = webMap;
+        setWebMap(webMap);
       }
 
       // Change location of zoom widget if specified
@@ -226,32 +232,56 @@ const EsriMap = ({
   // Note: This data is dynamic and may change.
   useEffect(() => {
     // Add any map layers which were passed in
+
+    // Handle when we're using a webmap
     webMap?.when(() => {
       if (webMap && layers) {
+        // Remove any layers not created by the Web Map
+        const layersToRemove = webMap?.layers?.filter((layer) =>
+          layer?.id?.includes('internal')
+        );
+        if (layersToRemove && layersToRemove?.toArray()?.length > 0) {
+          webMap.removeMany(layersToRemove.toArray());
+        }
+
+        // If there are any Web Map reference layers, re-order so they are below other layers created in our application
+        if (referenceLayers && referenceLayers.length > 0) {
+          const newBasemapLayers = webMap.basemap.baseLayers;
+          webMap.addMany(referenceLayers.toArray());
+          webMap.basemap = new Basemap({
+            baseLayers: newBasemapLayers,
+          });
+        }
+
+        // Add any layers passed in as props
         layers.forEach((layer) => {
-          webMap.remove(layer);
           webMap.add(layer);
         });
 
-        if (layers.find((layer) => layer.id === 'ideasLayer')) {
-          const ideasLayer = layers.find((layer) => layer.id === 'ideasLayer');
-          if (ideasLayer) {
-            webMap.remove(ideasLayer);
-            webMap.add(ideasLayer);
-          }
+        // If we have WebMap reference layers, save them in state
+        const refLayers =
+          webMap.basemap.referenceLayers.length > 0
+            ? webMap.basemap.referenceLayers
+            : undefined;
+
+        if (refLayers?.length && refLayers.length > 0) {
+          setReferenceLayers(refLayers);
         }
-        console.log('Layers: ', webMap.allLayers);
-        return;
       }
     });
 
+    // Handle layers for the default map (when we're not using a Web Map)
     if (map && layers) {
-      map?.removeAll();
-      layers.forEach((layer) => {
-        map.add(layer);
-      });
+      if (mapView) {
+        map.removeAll();
+
+        // mapView.map = map;
+        layers.map((layer) => {
+          map.add(layer);
+        });
+      }
     }
-  }, [layers, map, webMap]);
+  }, [layers, map, mapView, referenceLayers, webMap]);
 
   useEffect(() => {
     // Add any graphics which were passed in
@@ -274,22 +304,6 @@ const EsriMap = ({
   }, [onClick, mapView]);
 
   useEffect(() => {
-    webMap?.layers.on('after-changes', function () {
-      console.log('Layers changed! Re-ordering...');
-
-      // TODO : Continue here
-      webMap?.reorder(
-        webMap?.layers.find((layer) => layer.id === 'ideasLayer'),
-        webMap?.layers.length - 1
-      );
-      const basemapCopy = webMap?.basemap.clone();
-      const test = new Collection<Layer>();
-      basemapCopy.referenceLayers = test;
-      webMap.basemap = basemapCopy;
-    });
-  }, [webMap?.layers, webMap]);
-
-  useEffect(() => {
     // On map hover, pass the event to hover handler if it was provided
     if (onHover && mapView) {
       const debouncedHover = debounce((event: any) => {
@@ -299,6 +313,29 @@ const EsriMap = ({
       mapView.on('pointer-move', debouncedHover);
     }
   }, [onHover, mapView]);
+
+  useEffect(() => {
+    // Set web map if it was provided
+    if (initialData?.webMapId && mapView) {
+      const webMap = new WebMap({
+        portalItem: {
+          id: initialData?.webMapId,
+        },
+      });
+      mapView.map = webMap;
+      setWebMap(webMap);
+    } else if (mapView && map) {
+      // Else, set the default map
+      mapView.map = map;
+      setWebMap(null);
+    }
+  }, [
+    globalMapSettings.tile_provider,
+    initialData?.webMapId,
+    layers,
+    map,
+    mapView,
+  ]);
 
   return (
     <>

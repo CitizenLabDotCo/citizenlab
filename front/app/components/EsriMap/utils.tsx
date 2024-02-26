@@ -395,14 +395,18 @@ export const createEsriFeatureLayers = (
       if (subLayerCount > 1) {
         for (let i = 0; i < subLayerCount; i++) {
           esriLayers.push(
-            new FeatureLayer({ url: `${layer.layer_url}/${i + 1}` })
+            new FeatureLayer({
+              url: `${layer.layer_url}/${i + 1}`,
+              id: 'internal',
+            })
           );
         }
       } else {
         // Otherwise, just add the single feature layer
-        esriLayers.push(new FeatureLayer({ url: layer.layer_url }));
+        esriLayers.push(
+          new FeatureLayer({ url: layer.layer_url, id: 'internal' })
+        );
       }
-      return;
     }
   });
   return esriLayers;
