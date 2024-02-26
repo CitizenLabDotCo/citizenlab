@@ -2859,16 +2859,16 @@ resource 'Idea Custom Fields' do
               { input_type: 'page' },
               {
                 id: custom_field1.id,
-                title_multiloc: { 'en' => 'Updated point custom field A' },
-                description_multiloc: { 'en' => 'Updated point custom field A description' },
+                title_multiloc: { 'en' => 'Updated point custom field 1' },
+                description_multiloc: { 'en' => 'Updated point custom field 1 description' },
                 input_type: 'point',
                 required: false,
                 enabled: false
               },
               {
                 id: custom_field2.id,
-                title_multiloc: { 'en' => 'Updated point custom field B' },
-                description_multiloc: { 'en' => 'Updated point custom field B description' },
+                title_multiloc: { 'en' => 'Updated point custom field 2' },
+                description_multiloc: { 'en' => 'Updated point custom field 2 description' },
                 input_type: 'point',
                 required: false,
                 enabled: false,
@@ -2876,8 +2876,8 @@ resource 'Idea Custom Fields' do
               },
               {
                 id: custom_field3.id,
-                title_multiloc: { 'en' => 'Updated point custom field C' },
-                description_multiloc: { 'en' => 'Updated point custom field B description' },
+                title_multiloc: { 'en' => 'Updated point custom field 3' },
+                description_multiloc: { 'en' => 'Updated point custom field 3 description' },
                 input_type: 'point',
                 required: false,
                 enabled: false,
