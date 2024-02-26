@@ -176,7 +176,7 @@
   "app.components.IdeasMap.a11y_hideIdeaCard": "Cachez la carte des idées.",
   "app.components.IdeasMap.a11y_mapTitle": "Aperçu cartographique",
   "app.components.IdeasMap.clickOnMapToAdd": "Cliquez sur la carte pour ajouter votre contribution",
-  "app.components.IdeasMap.clickOnMapToAddAdmin2": "En tant qu'administrateur, vous pouvez cliquer sur la carte pour ajouter votre contribution, même si cette phase n'est pas active.",
+  "app.components.IdeasMap.clickOnMapToAddAdmin2": "En tant qu'administrateur, vous pouvez cliquer sur la carte pour ajouter une contribution, même si cette phase n'est pas active.",
   "app.components.IdeasMap.multipleInputsAtLocation": "Plusieurs entrées sur ce site",
   "app.components.IdeasMap.noFilteredResults": "Les filtres que vous avez sélectionnés n'ont renvoyé aucun résultat",
   "app.components.IdeasMap.noResults": "Aucun résultat trouvé",
