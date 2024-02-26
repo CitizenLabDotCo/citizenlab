@@ -3,6 +3,8 @@ import './dnd';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 import { IProjectAttributes } from '../../app/api/projects/types';
+import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
+import { Multiloc } from '../../app/typings';
 
 import jwtDecode from 'jwt-decode';
 import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
@@ -43,6 +45,7 @@ declare global {
       apiRemoveIdea: typeof apiRemoveIdea;
       apiRemoveInitiative: typeof apiRemoveInitiative;
       apiLikeInitiative: typeof apiLikeInitiative;
+      apiLikeIdea: typeof apiLikeIdea;
       apiDislikeIdea: typeof apiDislikeIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
       apiAddComment: typeof apiAddComment;
@@ -75,6 +78,9 @@ declare global {
       apiCreateSmartGroupCustomField: typeof apiCreateSmartGroupCustomField;
       apiRemoveSmartGroup: typeof apiRemoveSmartGroup;
       apiSetPermissionCustomField: typeof apiSetPermissionCustomField;
+      apiCreateSurveyQuestions: typeof apiCreateSurveyQuestions;
+      apiUpdateUserCustomFields: typeof apiUpdateUserCustomFields;
+      apiCreateSurveyResponse: typeof apiCreateSurveyResponse;
     }
   }
 }
@@ -318,6 +324,31 @@ function apiUpdateCurrentUser(attrs: IUserUpdate) {
       url: `web_api/v1/users/${userId}`,
       body: {
         user: attrs,
+      },
+    });
+  });
+}
+
+function apiUpdateUserCustomFields(
+  email: string,
+  password: string,
+  custom_field_values: Record<string, any>
+) {
+  return cy.apiLogin(email, password).then((response) => {
+    const jwt = response.body.jwt;
+    const userId = jwtDecode<{ sub: string }>(jwt).sub;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/users/${userId}`,
+      body: {
+        user: {
+          custom_field_values,
+        },
       },
     });
   });
@@ -698,6 +729,21 @@ function apiLikeInitiative(
       },
       method: 'POST',
       url: `web_api/v1/initiatives/${initiativeId}/reactions/up`,
+    });
+  });
+}
+
+function apiLikeIdea(email: string, password: string, ideaId: string) {
+  return cy.apiLogin(email, password).then((response) => {
+    const jwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/ideas/${ideaId}/reactions/up`,
     });
   });
 }
@@ -1552,6 +1598,82 @@ function apiRemoveSmartGroup(smartGroupId: string) {
   });
 }
 
+const createBaseCustomField = (
+  input_type: ICustomFieldInputType,
+  i: number
+) => ({
+  title_multiloc:
+    input_type === 'page' ? {} : { en: `Question: ${input_type}` },
+  description_multiloc: {},
+  enabled: true,
+  id: randomString(),
+  key: input_type === 'page' ? 'page_1' : randomString(),
+  logic: {},
+  required: false,
+  input_type,
+  options:
+    ['select', 'multiselect'].indexOf(input_type) > -1
+      ? [
+          {
+            temp_id: `TEMP-ID-${randomString()}`,
+            title_multiloc: { en: `${input_type}: Option 1` },
+          },
+          {
+            temp_id: `TEMP-ID-${randomString()}`,
+            title_multiloc: { en: `${input_type}: Option 2` },
+          },
+        ]
+      : undefined,
+});
+
+function apiCreateSurveyQuestions(
+  phaseId: string,
+  inputTypes: ICustomFieldInputType[]
+) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/admin/phases/${phaseId}/custom_fields/update_all`,
+      body: {
+        custom_fields: inputTypes.map(createBaseCustomField),
+      },
+    });
+  });
+}
+
+function apiCreateSurveyResponse(
+  email: string,
+  password: string,
+  project_id: string,
+  fields: Record<string, any>
+) {
+  return cy.apiLogin(email, password).then((response) => {
+    const jwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/ideas',
+      body: {
+        idea: {
+          publication_status: 'published',
+          project_id,
+          ...fields,
+        },
+      },
+    });
+  });
+}
+
 // https://stackoverflow.com/a/16012490
 interface Bbox {
   left: number;
@@ -1629,6 +1751,7 @@ Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
 Cypress.Commands.add('apiCreateInitiative', apiCreateInitiative);
 Cypress.Commands.add('apiRemoveInitiative', apiRemoveInitiative);
+Cypress.Commands.add('apiLikeIdea', apiLikeIdea);
 Cypress.Commands.add('apiDislikeIdea', apiDislikeIdea);
 Cypress.Commands.add(
   'apiCreateOfficialFeedbackForIdea',
@@ -1687,3 +1810,6 @@ Cypress.Commands.add(
   'apiSetPermissionCustomField',
   apiSetPermissionCustomField
 );
+Cypress.Commands.add('apiCreateSurveyQuestions', apiCreateSurveyQuestions);
+Cypress.Commands.add('apiUpdateUserCustomFields', apiUpdateUserCustomFields);
+Cypress.Commands.add('apiCreateSurveyResponse', apiCreateSurveyResponse);

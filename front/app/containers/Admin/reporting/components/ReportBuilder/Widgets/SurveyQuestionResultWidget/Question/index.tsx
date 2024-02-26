@@ -56,7 +56,12 @@ const SurveyQuestionResult = ({
 
   return (
     <>
-      <Title variant="h4" mt="0px" mb="8px">
+      <Title
+        variant="h4"
+        mt="0px"
+        mb="8px"
+        className="e2e-survey-question-widget-title"
+      >
         {localize(attributes.question)}
       </Title>
       <Text mt="0px" mb="8px" color="textSecondary" variant="bodyS">
