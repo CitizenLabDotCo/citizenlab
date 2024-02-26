@@ -72,36 +72,73 @@ describe('Idea template', () => {
     cy.apiRemoveUser(userId);
   });
 
-  it('should create an idea template', () => {
-    cy.setAdminLoginCookie();
+  describe('Global report builder', () => {
+    it('should create an idea template', () => {
+      cy.setAdminLoginCookie();
 
-    // Create report from template
-    cy.visit(`/admin/reporting/report-builder`);
-    cy.get('#e2e-create-report-button').click();
+      // Create report from template
+      cy.visit(`/admin/reporting/report-builder`);
+      cy.get('#e2e-create-report-button').click();
 
-    cy.get('.e2e-create-report-modal-title-input').type(randomString());
-    cy.get('#project-template-radio').click({ force: true });
-    cy.get('#projectFilter').select(projectId);
+      cy.get('.e2e-create-report-modal-title-input').type(randomString());
+      cy.get('#project-template-radio').click({ force: true });
+      cy.get('#projectFilter').select(projectId);
 
-    cy.get('div[data-testid="create-report-button"] > button').click();
+      cy.get('div[data-testid="create-report-button"] > button').click();
 
-    // Ensure we are in the editor
-    cy.url().should('include', '/en/admin/reporting/report-builder/');
-    cy.url().should('include', `editor?templateProjectId=${projectId}`);
-    cy.get('#e2e-content-builder-frame').should('exist');
+      // Ensure we are in the editor
+      cy.url().should('include', '/en/admin/reporting/report-builder/');
+      cy.url().should('include', `editor?templateProjectId=${projectId}`);
+      cy.get('#e2e-content-builder-frame').should('exist');
 
-    // Test that most reacted ideas widget is shown correctly
-    cy.get('.e2e-report-builder-idea-card').should('have.length', 2);
-    cy.get('.e2e-report-builder-idea-card')
-      .first()
-      .contains(higherLikedIdeaTitle);
-    cy.get('.e2e-report-builder-idea-card').last().contains(ideaTitle);
+      // Test that most reacted ideas widget is shown correctly
+      cy.get('.e2e-report-builder-idea-card').should('have.length', 2);
+      cy.get('.e2e-report-builder-idea-card')
+        .first()
+        .contains(higherLikedIdeaTitle);
+      cy.get('.e2e-report-builder-idea-card').last().contains(ideaTitle);
 
-    // Remove report
-    cy.visit('/admin/reporting/report-builder');
-    cy.get('#e2e-delete-report-button').click();
+      // Remove report
+      cy.visit('/admin/reporting/report-builder');
+      cy.get('#e2e-delete-report-button').click();
 
-    // Ensure we're back to the empty state
-    cy.get('#e2e-create-report-button').should('exist');
+      // Ensure we're back to the empty state
+      cy.get('#e2e-create-report-button').should('exist');
+    });
+  });
+
+  describe('Phase report builder', () => {
+    it('should create an idea template', () => {
+      cy.setAdminLoginCookie();
+
+      // Create report inside of phase
+      cy.visit(`/en/admin/projects/${projectId}/phases/${phaseId}/report`);
+      cy.get('#e2e-create-report-button').click();
+
+      // Ensure correct phase selected by default
+      cy.get('#e2e-phase-filter').should('have.value', phaseId);
+
+      // Create report from template
+      cy.get('div[data-testid="create-report-button"] > button').click();
+
+      // Ensure we are in the editor
+      cy.url().should('include', `/en/admin/reporting/report-builder/`);
+      cy.url().should('include', `editor?templatePhaseId=${phaseId}`);
+      cy.get('#e2e-content-builder-frame').should('exist');
+
+      // Test that most reacted ideas widget is shown correctly
+      cy.get('.e2e-report-builder-idea-card').should('have.length', 2);
+      cy.get('.e2e-report-builder-idea-card')
+        .first()
+        .contains(higherLikedIdeaTitle);
+      cy.get('.e2e-report-builder-idea-card').last().contains(ideaTitle);
+
+      // Remove report
+      cy.visit(`/en/admin/projects/${projectId}/phases/${phaseId}/report`);
+      cy.get('#e2e-delete-report-button').click();
+
+      // Ensure we're back to the empty state
+      cy.get('#e2e-create-report-button').should('exist');
+    });
   });
 });
