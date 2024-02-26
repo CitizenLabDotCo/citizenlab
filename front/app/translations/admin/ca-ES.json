@@ -1894,6 +1894,7 @@
   "app.containers.AdminPage.groups.permissions.delete": "Suprimeix",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Delete",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Delete",
+  "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Si us plau, proporcioneu un títol per a totes les opcions",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Sí-no (casella de selecció)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Data",
   "app.containers.AdminPage.groups.permissions.fieldType_multiline_text": "Resposta llarga",
