@@ -47,7 +47,7 @@ module Analysis
       response.split("\n").map do |line|
         # After https://stackoverflow.com/a/3166005/3585671
         chars = Regexp.escape(' -')
-        line.gsub(/\A[#{chars}]+|[#{chars}]+\z/, "")
+        line.gsub(/\A[#{chars}]+|[#{chars}]+\z/, '')
       end
     end
 
@@ -58,11 +58,7 @@ module Analysis
     end
 
     def max_topics(inputs_count)
-      [inputs_count, (Math::log(inputs_count, 5) * 6).ceil].min
+      [inputs_count, (Math.log(inputs_count, 5) * 6).ceil].min
     end
   end
 end
-
-
-
-

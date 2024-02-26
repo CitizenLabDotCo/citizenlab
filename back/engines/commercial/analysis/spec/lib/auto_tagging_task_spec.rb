@@ -170,7 +170,6 @@ RSpec.describe Analysis::AutoTaggingTask do
       })
 
       bananas_tag = Analysis::Tag.find_by(analysis: analysis, name: 'bananas')
-      byebug
       expect(bananas_tag).to be_present
       other_tag = Analysis::Tag.find_by(analysis: analysis, name: 'other')
       expect(other_tag).to be_present
