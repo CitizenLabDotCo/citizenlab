@@ -37,7 +37,7 @@ module IdeaCustomFields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         fields,
         params: serializer_params(@custom_form),
-        include: %i[options options.image map_config]
+        include: include_in_index_response
       ).serializable_hash
     end
 
@@ -70,6 +70,11 @@ module IdeaCustomFields
     end
 
     private
+
+    # Overriden from CustomMaps::Extensions::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
+    def include_in_index_response
+      %i[options options.image]
+    end
 
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
       idea_custom_fields_service = IdeaCustomFieldsService.new(@custom_form)
@@ -325,3 +330,5 @@ module IdeaCustomFields
     end
   end
 end
+
+IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController.prepend(CustomMaps::Extensions::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController)
