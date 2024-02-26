@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 
+// api
+import useAddReport from 'api/reports/useAddReport';
+import usePhases from 'api/phases/usePhases';
+
 // components
 import Modal from 'components/UI/Modal';
 import {
@@ -18,18 +22,25 @@ import PhaseFilter from 'components/UI/PhaseFilter';
 import clHistory from 'utils/cl-router/history';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import otherModalMessages from 'containers/Admin/reporting/components/ReportBuilderPage/messages';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import useAddReport from 'api/reports/useAddReport';
-import { ParticipationMethod } from 'api/phases/types';
+// utils
+import { findInitialPhase, PARTICIPATION_METHODS } from './utils';
+
+// typings
+import { IPhaseData } from 'api/phases/types';
 
 interface Props {
   projectId: string;
   phaseId: string;
   open: boolean;
   onClose: () => void;
+}
+
+interface InnerProps extends Props {
+  phases: IPhaseData[];
 }
 
 type Template = 'blank' | 'phase';
@@ -44,19 +55,22 @@ const RadioLabel = ({ message }: RadioLabelProps) => (
   </Text>
 );
 
-const PARTICIPATION_METHODS: ParticipationMethod[] = [
-  'ideation',
-  'native_survey',
-];
-
-const CreateReportModal = ({ projectId, phaseId, open, onClose }: Props) => {
+const CreateReportModal = ({
+  phases,
+  projectId,
+  phaseId,
+  open,
+  onClose,
+}: InnerProps) => {
   const { mutate: createReport, isLoading } = useAddReport();
   const [template, setTemplate] = useState<Template>('phase');
 
   // phaseId refers to the phase that the report will be in (information phase)
   // templatePhaseId refers to the phase that the report will be based on
   // (e.g. survey/ideation phase)
-  const [templatePhaseId, setTemplatePhaseId] = useState<string | undefined>();
+  const [templatePhaseId, setTemplatePhaseId] = useState<string | undefined>(
+    findInitialPhase(phases)
+  );
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const { formatMessage } = useIntl();
@@ -160,4 +174,17 @@ const CreateReportModal = ({ projectId, phaseId, open, onClose }: Props) => {
   );
 };
 
-export default CreateReportModal;
+const CreateReportModalWrapper = ({ projectId, ...otherProps }: Props) => {
+  const { data: phases } = usePhases(projectId);
+  if (!phases) return null;
+
+  return (
+    <CreateReportModal
+      phases={phases.data}
+      projectId={projectId}
+      {...otherProps}
+    />
+  );
+};
+
+export default CreateReportModalWrapper;
