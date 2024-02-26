@@ -199,19 +199,25 @@ module IdeaCustomFields
       if image_id == ''
         option.image.destroy!
       else
-        image = CustomFieldOptionImage.find image_id
-        if image.custom_field_option.present? && image.custom_field_option != option
-          # This request is coming from a form copy request, so create a copy of the image
-          image = image.dup
-          image.save!
+        begin
+          image = CustomFieldOptionImage.find image_id
+          if image.custom_field_option.present? && image.custom_field_option != option
+            # This request is coming from a form copy request, so create a copy of the image
+            image = image.dup
+            image.save!
+          end
+          option.update!(image: image)
+        rescue ActiveRecord::RecordNotFound
+          # NOTE: catching this exception to stop the transaction failing if the image not found by
+          # This will happen if an image select field is saved in a tab when it has been removed in another.
         end
-        option.update!(image: image)
       end
     end
 
     def update_option!(option, option_params, errors, field_index, option_index)
       update_params = option_params.except('image_id')
       option.assign_attributes update_params
+
       SideFxCustomFieldOptionService.new.before_update option, current_user
       if option.save
         SideFxCustomFieldOptionService.new.after_update option, current_user
