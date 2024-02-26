@@ -8,29 +8,24 @@ import { IInsightData } from 'api/analysis_insights/types';
 import {
   Box,
   IconButton,
-  Spinner,
   colors,
   stylingConsts,
-  Text,
   Button,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import FilterItems from '../FilterItems';
 import Rate from './Rate';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
 import messages from './messages';
-import {
-  deleteTrailingIncompleteIDs,
-  removeRefs,
-  replaceIdRefsWithLinks,
-} from './util';
+import { removeRefs } from './util';
+import InsightBody from './InsightBody';
+import InsightFooter from './InsightFooter';
 
 const StyledAnswerText = styled.div`
   white-space: pre-wrap;
@@ -84,7 +79,7 @@ const Question = ({ insight }: Props) => {
   if (!question) return null;
   const hasFilters = !!Object.keys(question.data.attributes.filters).length;
 
-  const phaseId = searchParams.get('phase_id');
+  const phaseId = searchParams.get('phase_id') || undefined;
 
   const handleRestoreFilters = () => {
     setSearchParams({
@@ -133,60 +128,19 @@ const Question = ({ insight }: Props) => {
         />
       </Box>
       <Box>
-        <Box
-          display="flex"
-          alignItems="center"
-          flexWrap="wrap"
-          gap="4px"
-          mb="12px"
-        >
-          {hasFilters && (
-            <>
-              <Text m="0px"> {formatMessage(messages.questionFor)}</Text>
-              <FilterItems
-                filters={question.data.attributes.filters}
-                isEditable={false}
-                analysisId={analysisId}
-              />
-            </>
-          )}
-
-          {!hasFilters && (
-            <Text m="0px">{formatMessage(messages.questionForAllInputs)}</Text>
-          )}
-        </Box>
-
-        <Text color="textSecondary" fontSize="s">
-          {formatDate(question.data.attributes.created_at)}
-        </Text>
-
-        <Text fontWeight="bold">{question.data.attributes.question}</Text>
-        <Box>
-          <StyledAnswerText>
-            {replaceIdRefsWithLinks({
-              insight: processing
-                ? deleteTrailingIncompleteIDs(answer)
-                : answer,
-              analysisId,
-              projectId,
-              phaseId,
-              selectedInputId:
-                searchParams.get('selected_input_id') || undefined,
-            })}
-          </StyledAnswerText>
-          {processing && <Spinner />}
-        </Box>
-        {question.data.attributes.accuracy && (
-          <Box color={colors.teal700} my="16px">
-            <FormattedMessage
-              {...messages.accuracy}
-              values={{
-                accuracy: question.data.attributes.accuracy * 100,
-                percentage: formatMessage(messages.percentage),
-              }}
-            />
-          </Box>
-        )}
+        <InsightBody
+          text={answer}
+          filters={question.data.attributes.filters}
+          analysisId={analysisId}
+          projectId={projectId}
+          phaseId={phaseId}
+          backgroundTaskId={question.data.relationships.background_task.data.id}
+        />
+        <InsightFooter
+          filters={question.data.attributes.filters}
+          generatedAt={question.data.attributes.created_at}
+          analysisId={analysisId}
+        />
       </Box>
       <Box
         display="flex"

@@ -1,41 +1,30 @@
 import React, { useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 
-import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
 import { IInsightData } from 'api/analysis_insights/types';
 
 import {
   Box,
   IconButton,
-  Spinner,
   colors,
   stylingConsts,
   Button,
   IconTooltip,
-  Text,
 } from '@citizenlab/cl2-component-library';
 
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import styled from 'styled-components';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';
-import FilterItems from '../FilterItems';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import Rate from './Rate';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
 
-import {
-  deleteTrailingIncompleteIDs,
-  removeRefs,
-  replaceIdRefsWithLinks,
-} from './util';
-const StyledSummaryText = styled.div`
-  white-space: pre-wrap;
-  word-break: break-word;
-`;
+import { removeRefs } from './util';
+import InsightBody from './InsightBody';
+import InsightFooter from './InsightFooter';
 
 type Props = {
   insight: IInsightData;
@@ -44,7 +33,7 @@ type Props = {
 const Summary = ({ insight }: Props) => {
   const [isCopied, setIsCopied] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const { formatMessage, formatDate } = useIntl();
+  const { formatMessage } = useIntl();
   const { analysisId, projectId } = useParams() as {
     analysisId: string;
     projectId: string;
@@ -54,14 +43,6 @@ const Summary = ({ insight }: Props) => {
     analysisId,
     id: insight.relationships.insightable.data.id,
   });
-
-  const { data: backgroundTask } = useAnalysisBackgroundTask(
-    analysisId,
-    summary?.data.relationships.background_task.data.id
-  );
-  const processing =
-    backgroundTask?.data.attributes.state === 'in_progress' ||
-    backgroundTask?.data.attributes.state === 'queued';
 
   const handleSummaryDelete = (id: string) => {
     if (window.confirm(formatMessage(messages.deleteSummaryConfirmation))) {
@@ -83,9 +64,7 @@ const Summary = ({ insight }: Props) => {
 
   if (!summary) return null;
 
-  const hasFilters = !!Object.keys(summary.data.attributes.filters).length;
-
-  const phaseId = searchParams.get('phase_id');
+  const phaseId = searchParams.get('phase_id') || undefined;
 
   const handleRestoreFilters = () => {
     setSearchParams({
@@ -132,60 +111,19 @@ const Summary = ({ insight }: Props) => {
         />
       </Box>
       <Box>
-        <Box
-          display="flex"
-          alignItems="center"
-          flexWrap="wrap"
-          gap="4px"
-          mb="12px"
-        >
-          {hasFilters && (
-            <>
-              <Text m="0px">{formatMessage(messages.summaryFor)}</Text>
-              <FilterItems
-                filters={summary.data.attributes.filters}
-                isEditable={false}
-                analysisId={analysisId}
-              />
-            </>
-          )}
-
-          {!hasFilters && (
-            <>
-              <Text m="0px">{formatMessage(messages.summaryForAllInputs)}</Text>
-            </>
-          )}
-        </Box>
-
-        <Text color="textSecondary" fontSize="s">
-          {formatDate(summary.data.attributes.created_at)}
-        </Text>
-        <Box>
-          <StyledSummaryText>
-            {replaceIdRefsWithLinks({
-              insight: processing
-                ? deleteTrailingIncompleteIDs(summaryText)
-                : summaryText,
-              analysisId,
-              projectId,
-              phaseId,
-              selectedInputId:
-                searchParams.get('selected_input_id') || undefined,
-            })}
-          </StyledSummaryText>
-          {processing && <Spinner />}
-        </Box>
-        {summary.data.attributes.accuracy && (
-          <Box color={colors.teal700} my="16px">
-            <FormattedMessage
-              {...messages.accuracy}
-              values={{
-                accuracy: summary.data.attributes.accuracy * 100,
-                percentage: formatMessage(messages.percentage),
-              }}
-            />
-          </Box>
-        )}
+        <InsightBody
+          text={summaryText}
+          filters={summary.data.attributes.filters}
+          analysisId={analysisId}
+          projectId={projectId}
+          phaseId={phaseId}
+          backgroundTaskId={summary.data.relationships.background_task.data.id}
+        />
+        <InsightFooter
+          filters={summary.data.attributes.filters}
+          generatedAt={summary.data.attributes.created_at}
+          analysisId={analysisId}
+        />
       </Box>
 
       <Box
