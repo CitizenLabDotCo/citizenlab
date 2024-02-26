@@ -33,6 +33,13 @@ const MapContainer = styled(Box)`
     display: none;
   }
 
+  .esri-legend {
+    max-height: 200px !important;
+  }
+  .esri-layer-list {
+    max-height: 200px !important;
+  }
+
   ${media.phone`
     .esri-legend {
       max-width: 240px !important;
@@ -156,7 +163,7 @@ const EsriMap = ({
           content: new Legend({
             view: mapView,
             hideLayersNotInCurrentView: false,
-            style: { type: 'card', layout: 'stack' },
+            style: { type: 'classic', layout: 'stack' },
           }),
           view: mapView,
           expanded: isMobileOrSmaller ? false : true,
