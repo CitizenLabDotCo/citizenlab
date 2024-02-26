@@ -121,7 +121,7 @@ const CreateReportModal = ({
         >
           {formatMessage(messages.modalDescription)}
         </Text>
-        <Box as="fieldset" border="0px" width="100%" p="0px" mt="28px">
+        <Box as="fieldset" border="0px" width="100%" p="0px">
           <Label>{formatMessage(otherModalMessages.reportTemplate)}</Label>
           <Radio
             id="blank-template-radio"
@@ -147,6 +147,7 @@ const CreateReportModal = ({
             <PhaseFilter
               label={formatMessage(messages.modalDescription)}
               projectId={projectId}
+              phaseId={templatePhaseId}
               participationMethods={PARTICIPATION_METHODS}
               onPhaseFilter={(option) => setTemplatePhaseId(option.value)}
             />
