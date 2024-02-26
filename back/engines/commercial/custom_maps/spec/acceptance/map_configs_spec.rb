@@ -22,6 +22,7 @@ resource 'Map Configs' do
           :with_positioning,
           :with_tile_provider,
           :with_esri_web_map_id,
+          :with_esri_base_map_id,
           :with_geojson_layers,
           :with_legend,
           project: project)
@@ -34,6 +35,7 @@ resource 'Map Configs' do
         expect(attributes['tile_provider']).to eq map_config.tile_provider
         expect(attributes['zoom_level']).to eq map_config.zoom_level.to_s
         expect(attributes['esri_web_map_id']).to eq map_config.esri_web_map_id
+        expect(attributes['esri_base_map_id']).to eq map_config.esri_base_map_id
         expect(attributes['layers'][0]['title_multiloc']).to eq map_config.layers.first.title_multiloc
         expect(attributes['layers'][0]['geojson']).to eq map_config.layers.first.geojson
         expect(attributes['layers'][0]['default_enabled']).to eq map_config.layers.first.default_enabled
@@ -89,16 +91,24 @@ resource 'Map Configs' do
         parameter :center_geojson,  'The coordinates of the map center as a GeoJSON object'
         parameter :tile_provider,   'The tile provider'
         parameter :esri_web_map_id, 'The ID of the Esri web map'
+        parameter :esri_base_map_id, 'The ID of the Esri base map'
       end
 
       let!(:map_config_attributes) do
-        attributes_for(:map_config, :with_tile_provider, :with_positioning, :with_esri_web_map_id)
+        attributes_for(
+          :map_config,
+          :with_tile_provider,
+          :with_positioning,
+          :with_esri_web_map_id,
+          :with_esri_base_map_id
+        )
       end
 
       let(:zoom_level)     { map_config_attributes[:zoom_level] }
       let(:center_geojson) { RGeo::GeoJSON.encode(map_config_attributes[:center]) }
       let(:tile_provider)  { map_config_attributes[:tile_provider] }
       let(:esri_web_map_id)  { map_config_attributes[:esri_web_map_id] }
+      let(:esri_base_map_id)  { map_config_attributes[:esri_base_map_id] }
 
       example_request 'Creating a map config successfully' do
         expect(status).to eq 200
@@ -106,6 +116,7 @@ resource 'Map Configs' do
         expect(attributes['zoom_level']).to      eq zoom_level.to_f.to_s
         expect(attributes['tile_provider']).to   eq tile_provider
         expect(attributes['esri_web_map_id']).to eq esri_web_map_id
+        expect(attributes['esri_base_map_id']).to eq esri_base_map_id
       end
     end
 
@@ -115,6 +126,7 @@ resource 'Map Configs' do
         parameter :center_geojson, 'The coordinates of the map center as a GeoJSON object'
         parameter :tile_provider,  'The tile provider'
         parameter :esri_web_map_id, 'The ID of the Esri web map'
+        parameter :esri_base_map_id, 'The ID of the Esri base map'
       end
 
       let!(:map_config_attributes) { attributes_for(:map_config, :with_tile_provider, :with_positioning) }
@@ -123,6 +135,7 @@ resource 'Map Configs' do
       let(:center_geojson) { { type: 'Point', coordinates: [42.42, 24.24] } }
       let(:tile_provider) { 'https://fake-tile-provider.com/tiles' }
       let(:esri_web_map_id) { 'my-fake-esri-web-map-id-4242' }
+      let(:esri_base_map_id) { 'my-fake-esri-base-map-id-9090' }
 
       context 'when the project already has a map config' do
         before do
@@ -140,6 +153,7 @@ resource 'Map Configs' do
           expect(attributes['zoom_level']).to      eq '11.0'
           expect(attributes['tile_provider']).to   eq 'https://fake-tile-provider.com/tiles'
           expect(attributes['esri_web_map_id']).to eq 'my-fake-esri-web-map-id-4242'
+          expect(attributes['esri_base_map_id']).to eq 'my-fake-esri-base-map-id-9090'
         end
       end
 
@@ -157,6 +171,7 @@ resource 'Map Configs' do
             :with_positioning,
             :with_tile_provider,
             :with_esri_web_map_id,
+            :with_esri_base_map_id,
             :with_geojson_layers,
             :with_legend,
             project: project)
