@@ -31,4 +31,8 @@ export default defineMessages({
     defaultMessage:
       'Are you sure you want to delete this report? This action cannot be undone.',
   },
+  phaseTemplate: {
+    id: 'app.containers.Admin.projects.project.information.ReportTab.phaseTemplate',
+    defaultMessage: 'Start with a phase template',
+  },
 });

@@ -46,10 +46,6 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.shareAsWebLinkDesc',
     defaultMessage: 'This web link is only accessible to admin users.',
   },
-  copyLink: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.copyLink',
-    defaultMessage: 'Copy link',
-  },
   shareAsPdf: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.shareAsPdf',
     defaultMessage: 'Share as PDF',
