@@ -472,6 +472,8 @@
   "app.components.StatusModule.submittedUntil3": "Vous pouvez voter jusqu'au",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Sélectionné {numberOfSelectedTopics, plural, =0 {zéro sujet} one {un sujet} other {# topics}}. {selectedTopicNames}> <notr",
   "app.components.UI.MoreActionsMenu.showMoreActions": "Afficher d'autres actions",
+  "app.components.UI.NewLabel.newBadge": "NOUVEAU",
+  "app.components.UI.PhaseFilter.noAppropriatePhases": "No appropriate phases found for this project",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "Supprimer",
   "app.components.UI.TranslateButton.original": "Original",
   "app.components.UI.TranslateButton.translate": "Traduire",
