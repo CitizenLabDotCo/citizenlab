@@ -36,6 +36,7 @@ import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 30px;
+  margin-right: 8px;
 `;
 
 const Row = styled.div`
@@ -159,13 +160,24 @@ const AdminInitiativeContent = ({
           >
             <FormattedMessage {...messages.delete} />
           </Button>
+          <Button
+            linkTo={`/initiatives/${initiative.data.attributes.slug}`}
+            icon="eye"
+            buttonStyle="secondary"
+            ml="auto"
+            mr="40px"
+          >
+            <FormattedMessage {...messages.view} />
+          </Button>
         </Top>
         <Content>
-          <StyledTitle
-            postId={initiativeId}
-            title={initiativeTitle}
-            postType="initiative"
-          />
+          <Box display="flex" alignItems="center">
+            <StyledTitle
+              postId={initiativeId}
+              title={initiativeTitle}
+              postType="initiative"
+            />
+          </Box>
           <Row>
             <Left>
               {initiativeImageLarge && (

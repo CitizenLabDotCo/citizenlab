@@ -218,6 +218,15 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
         >
           <FormattedMessage {...messages.delete} />
         </Button>
+        <Button
+          linkTo={`/ideas/${idea.data.attributes.slug}`}
+          icon="eye"
+          buttonStyle="secondary"
+          ml="auto"
+          mr="40px"
+        >
+          <FormattedMessage {...messages.view} />
+        </Button>
       </Top>
       <Content>
         {!isNilOrError(project) && (

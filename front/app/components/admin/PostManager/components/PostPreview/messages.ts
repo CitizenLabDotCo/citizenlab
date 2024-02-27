@@ -115,4 +115,8 @@ export default defineMessages({
     defaultMessage:
       'One or more files failed to upload. Please check the file size and format and try again.',
   },
+  view: {
+    id: 'app.components.admin.PostManager.view',
+    defaultMessage: 'View',
+  },
 });
