@@ -218,6 +218,14 @@ resource 'Reports' do
         end
       end
 
+      describe 'updating the visibility of a report' do
+        example 'Visibility successfully updates by report id' do
+          do_request(report: { visible: true })
+          assert_status 200
+          expect(report.reload.visible).to be(true)
+        end
+      end
+
       describe 'side effects', document: false do
         let(:side_fx_service) do
           instance_spy(ReportBuilder::SideFxReportService, 'side_fx_service')
