@@ -10,11 +10,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from '../SharedStyles';
 import ProposalProgressBar from '../ProposalProgressBar';
-import Button from 'components/UI/Button';
 import T from 'components/T';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { StatusComponentProps } from '.';
+import ReadAnswerButton from './components/ReadAnswerButton';
 
 const StatusIcon = styled(Icon)`
   path {
@@ -42,10 +42,6 @@ const ReactionTexts = styled.div`
 const ReactionText = styled.div`
   font-size: ${fontSizes.base}px;
   color: ${colors.coolGrey600};
-`;
-
-const StyledButton = styled(Button)`
-  margin-top: 20px;
 `;
 
 const Ineligible = ({
@@ -95,25 +91,25 @@ const Ineligible = ({
           )}
         </FormattedMessage>
       </StatusExplanation>
-      <ReactionCounter>
-        <ReactionTexts>
-          <ReactionText>
-            <FormattedMessage
-              {...messages.xVotes}
-              values={{ count: reactionCount }}
-            />
-          </ReactionText>
-          <ReactionText>{reactionLimit}</ReactionText>
-        </ReactionTexts>
-        <ProposalProgressBar
-          reactionCount={reactionCount}
-          reactionLimit={reactionLimit}
-          barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
-        />
-      </ReactionCounter>
-      <StyledButton onClick={onScrollToOfficialFeedback}>
-        <FormattedMessage {...messages.readAnswer} />
-      </StyledButton>
+      <Box mb="24px">
+        <ReactionCounter>
+          <ReactionTexts>
+            <ReactionText>
+              <FormattedMessage
+                {...messages.xVotes}
+                values={{ count: reactionCount }}
+              />
+            </ReactionText>
+            <ReactionText>{reactionLimit}</ReactionText>
+          </ReactionTexts>
+          <ProposalProgressBar
+            reactionCount={reactionCount}
+            reactionLimit={reactionLimit}
+            barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
+          />
+        </ReactionCounter>
+      </Box>
+      <ReadAnswerButton onClick={onScrollToOfficialFeedback} />
     </Box>
   );
 };

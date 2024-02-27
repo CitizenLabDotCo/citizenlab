@@ -132,10 +132,6 @@ export default defineMessages({
     defaultMessage:
       '{x, plural, =0 {less than a day} one {one day} other {# days}}',
   },
-  unvoteLink: {
-    id: 'app.containers.InitiativesShow.VoteControl.unvoteLink',
-    defaultMessage: 'Cancel my vote',
-  },
   a11y_xVotesOfRequiredY: {
     id: 'app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY',
     defaultMessage: '{xVotes} out of {votingThreshold} required votes',

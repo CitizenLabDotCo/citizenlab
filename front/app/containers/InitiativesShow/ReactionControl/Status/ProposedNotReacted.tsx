@@ -7,11 +7,11 @@ import {
   media,
   Icon,
   IconTooltip,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import { StatusExplanation } from '../SharedStyles';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import CountDown from '../CountDown';
-import Button from 'components/UI/Button';
 import ProposalProgressBar from '../ProposalProgressBar';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from '../messages';
@@ -21,15 +21,11 @@ import { darken } from 'polished';
 import Tippy from '@tippyjs/react';
 import { InitiativePermissionsDisabledReason } from 'hooks/useInitiativesPermissions';
 import { StatusComponentProps } from '.';
+import VoteButtons from './components/VoteButtons';
 
-const Container = styled.div``;
-
-const CountDownWrapper = styled.div`
+const Container = styled.div`
   display: flex;
-  flex-direction: row-reverse;
-  ${media.tablet`
-    display: none;
-  `}
+  flex-direction: column;
 `;
 
 const StatusIcon = styled(Icon)`
@@ -63,14 +59,6 @@ const ReactionTextLeft = styled.div`
 const ReactionTextRight = styled.div`
   font-size: ${fontSizes.base}px;
   color: ${(props) => props.theme.colors.tenantText};
-`;
-
-const StyledButton = styled(Button)`
-  margin-top: 20px;
-
-  svg {
-    margin-top: -2px;
-  }
 `;
 
 const OnDesktop = styled.span`
@@ -149,6 +137,8 @@ const ProposedNotReacted = ({
   initiative,
   initiativeSettings: { reacting_threshold, threshold_reached_message },
   disabledReason,
+  userReacted,
+  onCancelReaction,
 }: StatusComponentProps) => {
   const theme = useTheme();
   const reactionCount = initiative.attributes.likes_count;
@@ -175,9 +165,9 @@ const ProposedNotReacted = ({
 
   return (
     <Container>
-      <CountDownWrapper>
+      <Box ml="auto">
         <CountDown targetTime={initiative.attributes.expires_at} />
-      </CountDownWrapper>
+      </Box>
       <StatusIcon ariaHidden name="bullseye" />
       <StatusExplanation>
         <OnDesktop>
@@ -216,21 +206,23 @@ const ProposedNotReacted = ({
           {thresholdReachedTooltip}
         </OnMobile>
       </StatusExplanation>
-      <ReactionCounter>
-        <ReactionText aria-hidden={true}>
-          <ReactionTextLeft id="e2e-initiative-not-reacted-reaction-count">
-            <FormattedMessage
-              {...messages.xVotes}
-              values={{ count: reactionCount }}
-            />
-          </ReactionTextLeft>
-          <ReactionTextRight>{reactionLimit}</ReactionTextRight>
-        </ReactionText>
-        <ProposalProgressBar
-          reactionCount={reactionCount}
-          reactionLimit={reactionLimit}
-        />
-      </ReactionCounter>
+      <Box mb="24px">
+        <ReactionCounter>
+          <ReactionText aria-hidden={true}>
+            <ReactionTextLeft id="e2e-initiative-not-reacted-reaction-count">
+              <FormattedMessage
+                {...messages.xVotes}
+                values={{ count: reactionCount }}
+              />
+            </ReactionTextLeft>
+            <ReactionTextRight>{reactionLimit}</ReactionTextRight>
+          </ReactionText>
+          <ProposalProgressBar
+            reactionCount={reactionCount}
+            reactionLimit={reactionLimit}
+          />
+        </ReactionCounter>
+      </Box>
       <Tippy
         disabled={!tippyContent}
         placement="bottom"
@@ -244,17 +236,12 @@ const ProposedNotReacted = ({
             disabledReason ? disabledReason : ''
           }`}
         >
-          <StyledButton
-            icon="vote-up"
-            aria-describedby="tooltip-content"
-            disabled={!!tippyContent}
-            buttonStyle="primary"
-            onClick={onReaction}
-            id="e2e-initiative-like-button"
-            ariaDisabled={false}
-          >
-            <FormattedMessage {...messages.vote} />
-          </StyledButton>
+          <VoteButtons
+            voteButtonId="e2e-initiative-like-button"
+            onCancelReaction={onCancelReaction}
+            onReaction={onReaction}
+            userReacted={userReacted}
+          />
         </div>
       </Tippy>
     </Container>
