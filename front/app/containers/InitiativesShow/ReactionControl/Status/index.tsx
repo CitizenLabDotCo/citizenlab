@@ -25,7 +25,7 @@ const scaleIn = keyframes`
   }
 `;
 
-export const StatusHeading = styled.div`
+export const StatusHeading = styled.h2`
   display: flex;
   font-size: ${fontSizes.base}px;
   font-weight: bold;
