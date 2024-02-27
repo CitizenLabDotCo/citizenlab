@@ -204,6 +204,7 @@
   "app.components.admin.PostManager.title": "Title",
   "app.components.admin.PostManager.topicsTab": "Tags",
   "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
+  "app.components.admin.PostManager.view": "View",
   "app.components.admin.PostManager.votes": "Votes",
   "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Less than a day} one {One day} other {# days}} left",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "from",
