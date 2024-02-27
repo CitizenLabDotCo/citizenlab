@@ -1892,6 +1892,7 @@
   "app.containers.AdminPage.groups.permissions.delete": "Supprimer",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Supprimer",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Supprimer",
+  "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Veuillez fournir un titre pour toutes les options",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Oui-non (case à cocher)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Date",
   "app.containers.AdminPage.groups.permissions.fieldType_multiline_text": "Réponse longue",
