@@ -111,6 +111,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           {formatMessage(messages.createReportModalDescription)}
         </Text>
         <Input
+          className="e2e-create-report-modal-title-input"
           value={reportTitle}
           type="text"
           label={formatMessage(messages.createReportModalInputLabel)}

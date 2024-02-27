@@ -30,7 +30,7 @@ const CommentsByTimeWidget = ({
   };
 
   return (
-    <Card title={title} pagebreak>
+    <Card title={title} className="e2e-comments-by-time-widget" pagebreak>
       <CommentsByTimeCard {...analyticsChartProps} />
     </Card>
   );
