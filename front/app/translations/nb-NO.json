@@ -1141,6 +1141,7 @@
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} ble informert og vil gi et svar. Avstemningen forblir åpen.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "Grensen er nådd",
   "app.containers.InitiativesShow.VoteControl.vote": "Stem ",
+  "app.containers.InitiativesShow.VoteControl.voted": "Stemte",
   "app.containers.InitiativesShow.VoteControl.votedText": "Du vil bli informert når  forslaget går til neste fase. {x, plural, =0 {Der er {xDage} tilbage.} one {Der er {xDage} tilbage.} other {Der er {xDage} tilbage.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Stemmen din har blitt sendt inn",
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Du har ikke rett til å stemme på dette forslaget.",

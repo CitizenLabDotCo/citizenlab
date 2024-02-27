@@ -1141,6 +1141,7 @@
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. S'ha notificat a {orgName}. La votació continua oberta.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "S'ha assolit el llindar",
   "app.containers.InitiativesShow.VoteControl.vote": "Votar",
+  "app.containers.InitiativesShow.VoteControl.voted": "Votat",
   "app.containers.InitiativesShow.VoteControl.votedText": "Rebreu una notificació quan aquesta proposta passi al pas següent. {x, plural, =0 {Queden {xDays}.} one {Queden {xDays}.} other {Queden {xDays}.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "S'ha enviat el vostre vot!",
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "La votació no està activada actualment",

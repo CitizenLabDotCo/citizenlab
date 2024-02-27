@@ -1141,6 +1141,7 @@
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} je obaviješten. Glasanje je i dalje otvoreno.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "Dosegnut je prag",
   "app.containers.InitiativesShow.VoteControl.vote": "Glas",
+  "app.containers.InitiativesShow.VoteControl.voted": "Glasovao",
   "app.containers.InitiativesShow.VoteControl.votedText": "Bit ćete obaviješteni kada ovaj prijedlog prijeđe u sljedeću fazu. {x, plural, =0 {Ostalo je još {xDays}.} one {Ostao je još {xDays}.} other {Ostalo je još {xDays}.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Vaš glas je predan!",
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Glasanje trenutno nije omogućeno",

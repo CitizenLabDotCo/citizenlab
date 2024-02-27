@@ -1141,6 +1141,7 @@
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} gouf benoriichtegt a wäert äntweren. D'Ofstëmmen bleift op.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "D'Schwell gouf erreecht",
   "app.containers.InitiativesShow.VoteControl.vote": "Ofstëmmen",
+  "app.containers.InitiativesShow.VoteControl.voted": "gestëmmt",
   "app.containers.InitiativesShow.VoteControl.votedText": "Dir gitt benoriichtegt soubal Äre Virschlag an di nächst Etapp kënnt. {x, plural, =0 {Et si(nn) {xDays} iwwereg.} one {Et si(nn) {xDays} iwwereg.} other {Et si(nn) {xDays} iwwereg.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Är Stëmm gouf iwwermëttelt!",
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Ofstëmmen ass momentan net aktivéiert",

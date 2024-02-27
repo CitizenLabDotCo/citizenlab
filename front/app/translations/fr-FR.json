@@ -1141,6 +1141,7 @@
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} a été notifié et donnera une réponse. Les votes restent ouverts.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "Le seuil a été atteint",
   "app.containers.InitiativesShow.VoteControl.vote": "Votez",
+  "app.containers.InitiativesShow.VoteControl.voted": "Voté",
   "app.containers.InitiativesShow.VoteControl.votedText": "Vous serez notifié lorsque cette proposition passera à l'étape suivante. {x, plural, =0 {Il ne reste plus de {xDays}.} one {Il reste {xDays} jour.} other {Il reste {xDays} jours.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Votre vote a été soumis !",
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Voter est actuellement désactivé",

@@ -1141,6 +1141,7 @@
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} on ilmoitettu. Äänestys on auki.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "Kynnys on saavutettu",
   "app.containers.InitiativesShow.VoteControl.vote": "Äänestys",
+  "app.containers.InitiativesShow.VoteControl.voted": "Äänestetty",
   "app.containers.InitiativesShow.VoteControl.votedText": "Saat ilmoituksen, kun tämä ehdotus siirtyy seuraavaan vaiheeseen. {x, plural, =0 {{xDays} jäljellä.} one {{xDays} jäljellä.} other {{xDays} jäljellä.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Äänesi on lähetetty!",
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Äänestys ei ole tällä hetkellä käytössä",

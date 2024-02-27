@@ -1141,6 +1141,7 @@
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. Το {orgName} έχει ενημερωθεί. Η ψηφοφορία παραμένει ανοικτή.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "Το όριο έχει επιτευχθεί",
   "app.containers.InitiativesShow.VoteControl.vote": "Ψηφίστε",
+  "app.containers.InitiativesShow.VoteControl.voted": "Ψηφίστηκε",
   "app.containers.InitiativesShow.VoteControl.votedText": "Θα λάβετε ειδοποίηση όταν η πρόταση αυτή περάσει στο επόμενο βήμα. {x, plural, =0 {Απομένει {xDays}.} one {Απομένουν {xDays}.} other {Απομένουν {xDays}.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Η ψήφος σας υποβλήθηκε!",
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Η ψηφοφορία δεν είναι προς το παρόν ενεργοποιημένη",

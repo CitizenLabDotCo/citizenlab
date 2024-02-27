@@ -1141,6 +1141,7 @@
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} has been notified. Voting remains open.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "The threshold has been reached",
   "app.containers.InitiativesShow.VoteControl.vote": "{tenantName, select, stirlingcouncil {Sign here} other {Vote}}",
+  "app.containers.InitiativesShow.VoteControl.voted": "Voted",
   "app.containers.InitiativesShow.VoteControl.votedText": "You'll get notified when this goes to the next step. {x, plural, =0 {There's {xDays} left.} one {There's {xDays} left.} other {There are {xDays} left.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "{tenantName, select, stirlingcouncil {Your signature has been submitted!} other {Your vote has been submitted!}}",
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Responding is restricted to certain user groups who meet a different eligibility criteria.",

@@ -1141,6 +1141,7 @@
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} foi notificado e irá fornecer uma resposta. A votação continua em aberto.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "O limite foi estourado",
   "app.containers.InitiativesShow.VoteControl.vote": "Curtir",
+  "app.containers.InitiativesShow.VoteControl.voted": "Votado",
   "app.containers.InitiativesShow.VoteControl.votedText": "Você será notificado quando esta proposta for para o próximo passo. {x, plural, =0 {Há {xDays} à esquerda.} one {Há {xDays} à esquerda.} other {Há {xDays} à esquerda.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "O seu voto foi enviado com sucesso!",
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Você não tem permissão para votar neste projeto.",

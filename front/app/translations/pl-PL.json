@@ -1141,6 +1141,7 @@
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} został powiadomiony i udzieli odpowiedzi. Głosowanie pozostaje otwarte.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "Próg poparcia został osiągnięty",
   "app.containers.InitiativesShow.VoteControl.vote": "Głosuj",
+  "app.containers.InitiativesShow.VoteControl.voted": "Zagłosowano",
   "app.containers.InitiativesShow.VoteControl.votedText": "Zostaniesz poinformowany, gdy ta propozycja przejdzie do następnego etapu. {x, plural, =0 {Zostało {xDays}.} one {Został {xDays}.} few {Zostało {xDays}.} many {Zostało {xDays}.} other {Zostało {xDays} left.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Twój głos został oddany!",
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Nie masz prawa do głosowania na tą propozycję.",

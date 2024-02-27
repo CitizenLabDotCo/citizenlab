@@ -1141,6 +1141,7 @@
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} ir paziņots. Balsošana joprojām ir atvērta.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "Robežvērtība ir sasniegta",
   "app.containers.InitiativesShow.VoteControl.vote": "Balsot",
+  "app.containers.InitiativesShow.VoteControl.voted": "Balsots",
   "app.containers.InitiativesShow.VoteControl.votedText": "Jūs saņemsiet paziņojumu, kad šis priekšlikums tiks virzīts uz nākamo posmu. {x, plural, =0 {There's {xDays} left.} one {There's {xDays} left.} other {There are {xDays} left.}}",
   "app.containers.InitiativesShow.VoteControl.votedTitle": "Jūsu balsojums ir iesniegts!",
   "app.containers.InitiativesShow.VoteControl.votingNotPermitted": "Balsošana pašlaik nav iespējota",
