@@ -2647,7 +2647,7 @@ CREATE TABLE public.maps_map_configs (
     updated_at timestamp(6) without time zone NOT NULL,
     esri_web_map_id character varying,
     mappable_type character varying,
-    mappable_id uuid
+    mappable_id uuid,
     esri_base_map_id character varying
 );
 
