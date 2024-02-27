@@ -21,10 +21,11 @@ import { IMapConfig } from 'api/map_config/types';
 export interface Props {
   mapConfig: IMapConfig;
   projectId: string;
+  setParentMapView: (mapView: MapView) => void;
 }
 
 const IdeationConfigurationMap = memo<Props>(
-  ({ mapConfig, projectId }: Props) => {
+  ({ mapConfig, projectId, setParentMapView }: Props) => {
     const localize = useLocalize();
     const [mapView, setMapView] = React.useState<MapView | null>(null);
     const [hoveredLayerId, setHoveredLayerId] = React.useState<string | null>(
@@ -39,10 +40,14 @@ const IdeationConfigurationMap = memo<Props>(
       );
     }, [mapConfig, localize]);
 
-    const onMapInit = useCallback((esriMapView: MapView) => {
-      // Save the esriMapView in state
-      setMapView(esriMapView);
-    }, []);
+    const onMapInit = useCallback(
+      (esriMapView: MapView) => {
+        // Save the esriMapView in state
+        setMapView(esriMapView);
+        setParentMapView(esriMapView);
+      },
+      [setParentMapView]
+    );
 
     const onHover = useCallback((event: any, esriMapView: MapView) => {
       // Change cursor when hovering over element

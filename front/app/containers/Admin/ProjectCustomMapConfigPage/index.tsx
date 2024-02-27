@@ -1,10 +1,11 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 // components
 import { Spinner } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
 import MapConfigOverview from './MapConfigOverview';
+import MapView from '@arcgis/core/views/MapView';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -46,6 +47,7 @@ const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
   const { data: appConfig } = useAppConfiguration();
   const { mutate: createProjectMapConfig } = useAddMapConfig();
   const { data: mapConfig, isFetching } = useMapConfig(projectId);
+  const [mapView, setMapView] = useState<MapView | null>(null);
 
   const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig?.data);
   const defaultLat = defaultLatLng[0];
@@ -84,11 +86,12 @@ const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
   if (projectId && mapConfig?.data?.id) {
     return (
       <Container className={className || ''}>
-        <StyledMapConfigOverview projectId={projectId} />
+        <StyledMapConfigOverview projectId={projectId} mapView={mapView} />
         <MapWrapper>
           <IdeationConfigurationMap
             mapConfig={mapConfig}
             projectId={projectId}
+            setParentMapView={setMapView}
           />
         </MapWrapper>
       </Container>

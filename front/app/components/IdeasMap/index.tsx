@@ -66,6 +66,8 @@ import { IIdeaData } from 'api/ideas/types';
 // intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import usePhase from 'api/phases/usePhase';
+import { isAdmin } from 'utils/permissions/roles';
 
 // Note: Existing custom styling
 const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
@@ -128,6 +130,7 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
   const theme = useTheme();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const { data: phase } = usePhase(phaseId);
   const { data: authUser } = useAuthUser();
   const [searchParams] = useSearchParams();
   const isMobileOrSmaller = useBreakpoint('phone');
@@ -293,6 +296,10 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
       // Save clicked location
       setClickedMapLocation(esriPointToGeoJson(event.mapPoint));
 
+      const ideaPostingEnabled =
+        (phase?.data.attributes.posting_enabled && authUser) ||
+        isAdmin(authUser);
+
       // On map click, we either open an existing idea OR show the "submit an idea" popup.
       // This depends on whether the user has clicked an existing map pin.
       mapView.hitTest(event).then((result) => {
@@ -372,7 +379,7 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
               }
             } else {
               // Show the "Submit an idea" popup
-              if (authUser) {
+              if (ideaPostingEnabled) {
                 showAddInputPopup({
                   event,
                   mapView,
@@ -385,7 +392,7 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
           }
         } else {
           // If the user clicked elsewhere on the map, show the "Submit an idea" popup
-          if (authUser) {
+          if (ideaPostingEnabled) {
             showAddInputPopup({
               event,
               mapView,
@@ -398,12 +405,13 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
       });
     },
     [
-      authUser,
-      formatMessage,
       graphics,
-      startIdeaButtonNode,
-      theme.colors.tenantSecondary,
       setSelectedIdea,
+      theme.colors.tenantSecondary,
+      authUser,
+      phase?.data.attributes.posting_enabled,
+      startIdeaButtonNode,
+      formatMessage,
     ]
   );
 
