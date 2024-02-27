@@ -1892,6 +1892,7 @@
   "app.containers.AdminPage.groups.permissions.delete": "Izbrisati",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Izbriši",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Izbriši",
+  "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Navedite naslov za sve opcije",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Da-ne (potvrdni okvir)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Datum",
   "app.containers.AdminPage.groups.permissions.fieldType_multiline_text": "Dug odgovor",
