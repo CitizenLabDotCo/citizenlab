@@ -1132,7 +1132,6 @@
   "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceTwo": "ستتلقى بريدًا إلكترونيًا بمجرد مراجعته.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. تم إخطار {orgName}، وسيتم تقديم الإجابة.\nلا يزال التصويت مفتوحًا.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "تم الوصول إلى الحد المطلوب",
-  "app.containers.InitiativesShow.VoteControl.unvoteLink": "ألغِ تصويتي",
   "app.containers.InitiativesShow.VoteControl.vote": "صوّت",
   "app.containers.InitiativesShow.VoteControl.voted": "تم التصويت",
   "app.containers.InitiativesShow.VoteControl.votedText": "ستتلقى إشعارًا بمجرد انتقال هذا المُقترح إلى الخطوة التالية. {x, plural, =0 {تبقى {xDays}.} one {تبقى {xDays}.} other {تبقى {xDays}.}}",
