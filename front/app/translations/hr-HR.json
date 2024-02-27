@@ -1119,6 +1119,7 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} od {votingThreshold} potrebnih glasova",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Glasovanje ostaje otvoreno.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} je primio prijedlog i dao služben odgovor.",
+  "app.containers.InitiativesShow.VoteControl.cancelVote": "Poništi glas",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "Ovaj prijedlog treba neke izmjene prije nego što bude odobren.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Provjerite službeno ažuriranje za objašnjenje traženih promjena.",
   "app.containers.InitiativesShow.VoteControl.days": "dani",
