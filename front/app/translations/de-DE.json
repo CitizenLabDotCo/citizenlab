@@ -1910,7 +1910,7 @@
   "app.utils.votingMethodUtils.submittedBudgetsCountText": "Personen haben ihre Budgets eingereicht",
   "app.utils.votingMethodUtils.submittedVoteCountText": "Person hat ihre Stimme abgegeben",
   "app.utils.votingMethodUtils.submittedVotesCountText": "Personen haben ihre Stimme abgegeben",
-  "app.utils.votingMethodUtils.vote": "Auswählen",
+  "app.utils.votingMethodUtils.vote": "Stimme",
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Stimme eingereicht 🎉",
   "app.utils.votingMethodUtils.votes": "Stimmen",
   "app.utils.votingMethodUtils.votesCast": "Abgegebene Stimmen",
