@@ -22,6 +22,7 @@ const ChangesRequested = (props: StatusComponentProps) => {
         </>
       }
       showCountDown={false}
+      showProgressBar={false}
       showVoteButtons={false}
       showReadAnswerButton={false}
     />

@@ -53,6 +53,7 @@ const ProposedNotReacted = (props: StatusComponentProps) => {
         )
       }
       showCountDown
+      showProgressBar
       showVoteButtons
       showReadAnswerButton={false}
     />

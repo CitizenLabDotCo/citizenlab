@@ -29,6 +29,7 @@ const ReviewPending = (props: StatusComponentProps) => {
         </>
       }
       showCountDown={false}
+      showProgressBar={false}
       showVoteButtons={false}
       showReadAnswerButton={false}
     />

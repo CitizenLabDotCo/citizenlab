@@ -61,6 +61,7 @@ interface Props extends StatusComponentProps {
   statusExplanation: React.ReactNode;
   barColor?: string;
   showCountDown: boolean;
+  showProgressBar: boolean;
   showVoteButtons: boolean;
   showReadAnswerButton: boolean;
   cancelReactionDisabled?: boolean;
@@ -78,6 +79,7 @@ const Status = ({
   statusExplanation,
   barColor,
   showCountDown,
+  showProgressBar,
   showVoteButtons,
   showReadAnswerButton,
   cancelReactionDisabled = false,
@@ -100,13 +102,15 @@ const Status = ({
       <Box mb="24px">
         <StatusExplanation>{statusExplanation}</StatusExplanation>
       </Box>
-      <Box mb="24px">
-        <ReactionCounter
-          initiative={initiative}
-          initiativeSettings={initiativeSettings}
-          barColor={barColor}
-        />
-      </Box>
+      {showProgressBar && (
+        <Box mb="24px">
+          <ReactionCounter
+            initiative={initiative}
+            initiativeSettings={initiativeSettings}
+            barColor={barColor}
+          />
+        </Box>
+      )}
       {showVoteButtons && (
         <Box mb="8px">
           <VoteButtons
