@@ -99,8 +99,8 @@ export default defineMessages({
     defaultMessage: 'inputs selected',
   },
   additionalCustomFields: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Insights.additionalCustomFields',
-    defaultMessage: 'This insight also includes the following questions:',
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.customFields',
+    defaultMessage: 'This insight includes the following questions:',
   },
   aiSummary: {
     id: 'app.containers.Admin.projects.project.analysis.aiSummary',
