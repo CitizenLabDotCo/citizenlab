@@ -84,8 +84,9 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
           content={getWebMapDisabledMessage()}
           hideOnClick={true}
           disabled={
-            !hasExistingWebMap ||
-            layerType === 'CustomMaps::GeojsonLayer' ||
+            (!hasExistingWebMap &&
+              layerType === 'CustomMaps::EsriFeatureLayer') ||
+            layerType !== 'CustomMaps::GeojsonLayer' ||
             !isEsriIntegrationEnabled
           }
         >

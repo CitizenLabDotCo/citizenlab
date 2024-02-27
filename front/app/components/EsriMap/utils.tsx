@@ -485,6 +485,7 @@ export const createEsriGeoJsonLayers = (
         geoJsonLayer.renderer = new SimpleRenderer({
           symbol: getMapPinSymbol({
             color: pointColour,
+            sizeInPx: 36,
           }),
         });
       }

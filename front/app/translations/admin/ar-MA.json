@@ -1318,8 +1318,6 @@
   "app.containers.admin.ContentBuilder.twoColumnLayoutVariant2-1": "عمودان بعرض 60% و30% على الترتيب",
   "app.containers.admin.ContentBuilder.twoEvenColumnLayout": "عمودان متساويان",
   "app.containers.admin.ContentBuilder.urlPlaceholder": "https://example.com",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.collapseLongText": "طي النص الطويل",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable": "لا تتوفر أي أسئلة لهذا المشروع أو هذه المرحلة.",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas": "عدد الأفكار",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.showMore": "اعرض المزيد",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.title": "العنوان",

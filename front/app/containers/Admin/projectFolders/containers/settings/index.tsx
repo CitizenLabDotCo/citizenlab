@@ -58,7 +58,7 @@ const FolderSettings = ({ params }: WithRouterProps) => {
   }
 
   return (
-    <Box p="40px">
+    <Box p={mode === 'new' ? '40px' : '0'}>
       {mode === 'new' && <StyledGoBackButton onClick={goBack} />}
       <Container mode={mode}>
         {mode === 'edit' ? (

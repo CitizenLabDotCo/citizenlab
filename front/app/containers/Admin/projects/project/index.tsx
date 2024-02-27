@@ -43,7 +43,7 @@ type TabHideConditions = {
   [tabName: string]: (project: IProjectData, phases: IPhaseData[]) => boolean;
 };
 
-export const AdminProjectsProjectIndex = ({
+const AdminProjectsProjectIndex = ({
   project,
   phases,
   selectedPhase,
@@ -215,8 +215,8 @@ export default () => {
 
   return (
     <AdminProjectsProjectIndex
-      project={project?.data}
-      phases={phases?.data}
+      project={project.data}
+      phases={phases.data}
       selectedPhase={selectedPhase}
       setSelectedPhase={setSelectedPhase}
     />

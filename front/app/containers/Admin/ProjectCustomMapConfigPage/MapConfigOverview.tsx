@@ -7,6 +7,7 @@ import MapCenterAndZoomConfig from './MapCenterAndZoomConfig';
 import { SectionTitle } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
 import { Text } from '@citizenlab/cl2-component-library';
+import MapView from '@arcgis/core/views/MapView';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -45,55 +46,63 @@ const StyledMapCenterAndZoomConfig = styled(MapCenterAndZoomConfig)``;
 
 interface Props {
   projectId: string;
+  mapView?: MapView | null;
   className?: string;
   setView: (view: ViewOptions) => void;
 }
 
-const MapConfigOverview = memo<Props>(({ projectId, className, setView }) => {
-  const [editedMapLayerId, setEditedMapLayerId] = useState<string | null>(null);
+const MapConfigOverview = memo<Props>(
+  ({ projectId, className, setView, mapView }) => {
+    const [editedMapLayerId, setEditedMapLayerId] = useState<string | null>(
+      null
+    );
 
-  const openLayerConfig = (layerId: string) => {
-    setEditedMapLayerId(layerId);
-  };
+    const openLayerConfig = (layerId: string) => {
+      setEditedMapLayerId(layerId);
+    };
 
-  const closeLayerConfig = () => {
-    setEditedMapLayerId(null);
-  };
+    const closeLayerConfig = () => {
+      setEditedMapLayerId(null);
+    };
 
-  return (
-    <Container className={className || ''}>
-      <Header>
-        <TitleContainer>
-          <StyledSectionTitle>
-            <FormattedMessage {...messages.mapConfigurationTitle} />
-          </StyledSectionTitle>
-        </TitleContainer>
-        <Text color="textSecondary">
-          <FormattedMessage {...messages.mapConfigurationDescription} />
-        </Text>
-        <Warning>
-          <FormattedMessage {...messages.mapLocationWarning} />
-        </Warning>
-      </Header>
+    return (
+      <Container className={className || ''}>
+        <Header>
+          <TitleContainer>
+            <StyledSectionTitle>
+              <FormattedMessage {...messages.mapConfigurationTitle} />
+            </StyledSectionTitle>
+          </TitleContainer>
+          <Text color="textSecondary">
+            <FormattedMessage {...messages.mapConfigurationDescription} />
+          </Text>
+          <Warning>
+            <FormattedMessage {...messages.mapLocationWarning} />
+          </Warning>
+        </Header>
 
-      {!editedMapLayerId ? (
-        <>
-          <StyledMapLayersList
+        {!editedMapLayerId ? (
+          <>
+            <StyledMapLayersList
+              projectId={projectId}
+              onEditLayer={openLayerConfig}
+              setView={setView}
+            />
+            <StyledMapCenterAndZoomConfig
+              projectId={projectId}
+              mapView={mapView}
+            />
+          </>
+        ) : (
+          <MapLayerConfig
             projectId={projectId}
-            onEditLayer={openLayerConfig}
-            setView={setView}
+            mapLayerId={editedMapLayerId}
+            onClose={closeLayerConfig}
           />
-          <StyledMapCenterAndZoomConfig projectId={projectId} />
-        </>
-      ) : (
-        <MapLayerConfig
-          projectId={projectId}
-          mapLayerId={editedMapLayerId}
-          onClose={closeLayerConfig}
-        />
-      )}
-    </Container>
-  );
-});
+        )}
+      </Container>
+    );
+  }
+);
 
 export default MapConfigOverview;

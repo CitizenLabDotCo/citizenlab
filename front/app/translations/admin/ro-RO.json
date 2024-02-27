@@ -1318,8 +1318,6 @@
   "app.containers.admin.ContentBuilder.twoColumnLayoutVariant2-1": "2 columns with 60% and 30% width respectively",
   "app.containers.admin.ContentBuilder.twoEvenColumnLayout": "2 even columns",
   "app.containers.admin.ContentBuilder.urlPlaceholder": "https://example.com",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.collapseLongText": "Collapse long text",
-  "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable": "There are no questions available for this project or phase.",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas": "Number of ideas",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.showMore": "Show more",
   "app.containers.admin.ReportBuilder.MostVotedIdeasWidget.title": "Title",
