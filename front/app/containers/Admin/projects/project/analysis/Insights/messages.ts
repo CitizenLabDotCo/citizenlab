@@ -98,4 +98,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.inputsSelected',
     defaultMessage: 'inputs selected',
   },
+  additionalCustomFields: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.additionalCustomFields',
+    defaultMessage: 'This insight also includes the following questions:',
+  },
 });

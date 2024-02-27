@@ -64,7 +64,6 @@ const InsightFooter = ({
     onlyCheckAllowed: true,
   });
 
-  console.log(additionalCustomFieldsIds);
   return (
     <Box
       display="flex"
@@ -101,14 +100,31 @@ const InsightFooter = ({
         </Box>
       </Tippy>
 
-      {additionalCustomFieldsIds?.map((customFieldId) => (
-        <CustomFieldTitle
-          key={customFieldId}
-          customFieldId={customFieldId}
-          projectId={projectId}
-          phaseId={phaseId}
-        />
-      ))}
+      {additionalCustomFieldsIds && (
+        <Tippy
+          content={
+            <Box p="12px">
+              {formatMessage(messages.additionalCustomFields)}
+              <ul>
+                {additionalCustomFieldsIds?.map((customFieldId) => (
+                  <li key={customFieldId}>
+                    <CustomFieldTitle
+                      key={customFieldId}
+                      customFieldId={customFieldId}
+                      projectId={projectId}
+                      phaseId={phaseId}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </Box>
+          }
+        >
+          <Box>
+            <Icon name="page" />
+          </Box>
+        </Tippy>
+      )}
 
       {generatedAt && (
         <Text m="0px" fontSize="s">
