@@ -69,6 +69,15 @@ resource 'Reactions' do
           user_id idea_id project_id initiative_id
         ]
       )
+      initiative = json_response_body[:reactions].find { |r| r[:id] == initiative_reactions.first.id }
+      expect(initiative[:initiative_id]).not_to be_nil
+      expect(initiative[:idea_id]).to be_nil
+      expect(initiative[:project_id]).to be_nil
+
+      idea = json_response_body[:reactions].find { |r| r[:id] == idea_reactions.first.id }
+      expect(idea[:initiative_id]).to be_nil
+      expect(idea[:idea_id]).not_to be_nil
+      expect(idea[:project_id]).not_to be_nil
     end
 
     context 'when the page size is smaller than the total number of reactions' do
