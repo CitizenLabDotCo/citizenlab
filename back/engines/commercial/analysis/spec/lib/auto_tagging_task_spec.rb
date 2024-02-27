@@ -162,7 +162,7 @@ RSpec.describe Analysis::AutoTaggingTask do
         .and_return(topics_response, classification_response)
 
       expect { att.execute }
-        .to change(Analysis::Tag, :count).from(0).to(2)
+        .to change(Analysis::Tag, :count).from(0).to(1)
 
       expect(att.reload).to have_attributes({
         state: 'succeeded',
@@ -172,12 +172,12 @@ RSpec.describe Analysis::AutoTaggingTask do
       bananas_tag = Analysis::Tag.find_by(analysis: analysis, name: 'bananas')
       expect(bananas_tag).to be_present
       other_tag = Analysis::Tag.find_by(analysis: analysis, name: 'other')
-      expect(other_tag).to be_present
+      expect(other_tag).not_to be_present
 
-      expect(ideas.first.tags).to eq([bananas_tag])
+      expect(ideas.first.tags).to eq [bananas_tag]
       expect(ideas.first.taggings.first.background_task).to eq att
-      expect(ideas.last.tags).to eq([other_tag])
-      expect(ideas.last.taggings.first.background_task).to eq att
+      expect(ideas.last.tags).to eq []
+      expect(ideas.last.taggings).to eq []
     end
   end
 

@@ -70,6 +70,8 @@ module Analysis
     end
 
     def assign_topic!(input, topic)
+      return if topic == 'other'
+
       tag = Tag.find_or_create_by!(name: topic, tag_type: TAG_TYPE, analysis: analysis)
       find_or_create_tagging!(input_id: input.id, tag_id: tag.id)
     end
