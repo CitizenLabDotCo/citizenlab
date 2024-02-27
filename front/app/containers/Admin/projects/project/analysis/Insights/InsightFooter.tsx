@@ -67,7 +67,8 @@ const InsightFooter = ({
     onlyCheckAllowed: true,
   });
 
-  const additionalCustomFieldIds = customFieldIds?.additional_custom_field_ids;
+  const additionalCustomFieldIds =
+    customFieldIds?.additional_custom_field_ids || [];
   const mainCustomFieldId = customFieldIds?.main_custom_field_id;
   return (
     <Box
@@ -106,7 +107,7 @@ const InsightFooter = ({
         </Box>
       </Tippy>
 
-      {(additionalCustomFieldIds || [])?.length > 0 && (
+      {additionalCustomFieldIds?.length > 0 && (
         <Tippy
           zIndex={99999}
           content={
@@ -140,7 +141,7 @@ const InsightFooter = ({
               height="20px"
               fill={colors.textPrimary}
             />
-            <div> {`${additionalCustomFieldIds?.length || 0 + 1}`}</div>
+            <div> {`${additionalCustomFieldIds.length + 1}`}</div>
           </Box>
         </Tippy>
       )}

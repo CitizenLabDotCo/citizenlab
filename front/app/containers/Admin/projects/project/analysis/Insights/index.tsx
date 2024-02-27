@@ -72,7 +72,7 @@ const Insights = () => {
           variant="bodyXs"
           color={applyInputsLimit ? 'orange' : 'textSecondary'}
         >
-          {`${filteredInputsCount}/${inputsCount}`}{' '}
+          {`${filteredInputsCount} / ${inputsCount}`}{' '}
           {formatMessage(messages.inputsSelected)}
         </Text>
       </Box>
