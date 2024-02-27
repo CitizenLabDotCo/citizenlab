@@ -1132,7 +1132,6 @@
   "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceTwo": "Recibirás un correo electrónico cuando se haya revisado.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} ha sido notificada y le dará una respuesta. La votación sigue abierta.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "Se ha alcanzado el límite",
-  "app.containers.InitiativesShow.VoteControl.unvoteLink": "Cancelar mi voto",
   "app.containers.InitiativesShow.VoteControl.vote": "Votar",
   "app.containers.InitiativesShow.VoteControl.voted": "Votado",
   "app.containers.InitiativesShow.VoteControl.votedText": "Se le notificará cuando esta propuesta pase al siguiente paso. {x, plural, =0 {There's {xDays} left.} one {There's {xDays} left.} other {There are {xDays} left.}}",
