@@ -21,14 +21,15 @@ resource 'Map Configs' do
   shared_examples 'GET map_config' do
     get 'web_api/v1/map_configs/:map_config_id' do
       let!(:map_config) do
-        create(:map_config,
+        create(
+          :map_config,
           :with_positioning,
           :with_tile_provider,
           :with_esri_web_map_id,
           :with_esri_base_map_id,
           :with_geojson_layers,
-          :with_legend,
-          project: project)
+          :with_legend
+        )
       end
       let(:map_config_id) { map_config.id }
 
