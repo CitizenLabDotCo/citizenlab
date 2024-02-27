@@ -1,5 +1,4 @@
 import React from 'react';
-import { colors } from '@citizenlab/cl2-component-library';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { StatusComponentProps } from '../StatusWrapper';
