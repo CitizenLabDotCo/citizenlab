@@ -13,6 +13,7 @@ import Box, {
   BoxDisplayProps,
   BoxZIndexProps,
 } from '../Box';
+import { Placement } from 'tippy.js';
 
 export const ContentWrapper = styled.div<{ tippytheme: 'light' | undefined }>`
   padding: 5px;
@@ -61,22 +62,7 @@ export type Props = {
   className?: string;
   content: ReactChild;
   icon?: IconNames;
-  placement?:
-    | 'auto-start'
-    | 'auto'
-    | 'auto-end'
-    | 'top-start'
-    | 'top'
-    | 'top-end'
-    | 'right-start'
-    | 'right'
-    | 'right-end'
-    | 'bottom-end'
-    | 'bottom'
-    | 'bottom-start'
-    | 'left-end'
-    | 'left'
-    | 'left-start';
+  placement?: Placement;
   theme?: 'light';
   iconSize?: string;
   iconColor?: string;
