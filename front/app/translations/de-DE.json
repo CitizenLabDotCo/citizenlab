@@ -1119,6 +1119,7 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} von {votingThreshold} erforderlichen Stimmen",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Abstimmung bleibt geöffnet",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} hat den Vorschlag erhalten und eine offizielle Antwort gegeben.",
+  "app.containers.InitiativesShow.VoteControl.cancelVote": "Abstimmung abbrechen",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "Dieser Vorschlag bedarf noch einiger Änderungen, bevor er genehmigt werden kann.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Im offiziellen Update finden Sie eine Erklärung der gewünschten Änderungen.",
   "app.containers.InitiativesShow.VoteControl.days": "Tage",
