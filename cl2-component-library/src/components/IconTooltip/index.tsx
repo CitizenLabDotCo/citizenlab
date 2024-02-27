@@ -14,7 +14,7 @@ import Box, {
   BoxZIndexProps,
 } from '../Box';
 
-const ContentWrapper = styled.div<{ tippytheme: 'light' | undefined }>`
+export const ContentWrapper = styled.div<{ tippytheme: 'light' | undefined }>`
   padding: 5px;
 
   a {

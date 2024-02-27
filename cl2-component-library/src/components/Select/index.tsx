@@ -8,10 +8,9 @@ import styled from 'styled-components';
 import { defaultInputStyle, colors, isRtl } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 
-const Arrow = styled(Icon)`
+export const SelectIcon = styled(Icon)`
   fill: #999;
   pointer-events: none;
-  transform: rotate(90deg);
   margin: auto;
   position: absolute;
   top: 0;
@@ -24,26 +23,26 @@ const Arrow = styled(Icon)`
   `}
 `;
 
-const Container = styled.div`
+export const SelectContainer = styled.div`
   position: relative;
   outline: none !important;
 
   &.enabled {
     &:hover {
-      ${Arrow} {
+      ${SelectIcon} {
         fill: ${colors.black};
       }
     }
 
     &:focus {
-      ${Arrow} {
+      ${SelectIcon} {
         fill: ${colors.black};
       }
     }
   }
 
   &.disabled {
-    ${Arrow} {
+    ${SelectIcon} {
       fill: #666;
     }
   }
@@ -57,7 +56,7 @@ const Container = styled.div`
   }
 `;
 
-const SelectWrapper = styled.div`
+export const SelectWrapper = styled.div`
   width: 100%;
   position: relative;
   select {
@@ -152,7 +151,7 @@ class Select extends PureComponent<Props> {
     const showPlaceholder = selectedValue === placeholderValue;
 
     return (
-      <Container
+      <SelectContainer
         className={`${className} ${disabled ? 'disabled' : 'enabled'}`}
       >
         {label && (
@@ -204,13 +203,13 @@ class Select extends PureComponent<Props> {
                 </option>
               ))}
           </select>
-          <Arrow
-            name="chevron-right"
+          <SelectIcon
+            name="chevron-down"
             ariaHidden
             className={`arrow ${disabled ? 'disabled' : 'enabled'}`}
           />
         </SelectWrapper>
-      </Container>
+      </SelectContainer>
     );
   }
 }
