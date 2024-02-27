@@ -21,7 +21,7 @@ export default defineMessages({
   featureLockedReason: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.featureLockedReason',
     defaultMessage:
-      'This is not included in your current plan, talk to your Government Success Manager or admin to unlock it.',
+      'This is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
   },
   none: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none',
