@@ -24,7 +24,7 @@ export const SelectIcon = styled(Icon)`
   `}
 `;
 
-export const SelectContainer = styled.div`
+const Container = styled.div`
   position: relative;
   outline: none !important;
 
@@ -154,7 +154,7 @@ class Select extends PureComponent<Props> {
     const showPlaceholder = selectedValue === placeholderValue;
 
     return (
-      <SelectContainer
+      <Container
         className={`${className} ${disabled ? 'disabled' : 'enabled'}`}
       >
         {label && (
@@ -217,7 +217,7 @@ class Select extends PureComponent<Props> {
             className={`arrow ${disabled ? 'disabled' : 'enabled'}`}
           />
         </SelectWrapper>
-      </SelectContainer>
+      </Container>
     );
   }
 }

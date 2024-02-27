@@ -12,7 +12,6 @@ import Select, {
   Props as SelectProps,
   SelectIcon,
   SelectWrapper,
-  SelectContainer,
 } from './components/Select';
 import InputMultiloc, {
   Props as InputMultilocProps,
@@ -124,7 +123,6 @@ export {
   Select,
   SelectWrapper,
   SelectIcon,
-  SelectContainer,
   SelectProps,
   SearchInput,
   SearchInputProps,
