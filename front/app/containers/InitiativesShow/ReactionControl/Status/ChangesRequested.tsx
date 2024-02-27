@@ -1,38 +1,30 @@
 import React from 'react';
-import { colors, Box, Icon } from '@citizenlab/cl2-component-library';
-import { StatusWrapper, StatusExplanation } from '../SharedStyles';
-import T from 'components/T';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { StatusComponentProps } from '.';
+import { StatusComponentProps } from '../StatusWrapper';
+import Status from '.';
 
-const ChangesRequested = ({ initiativeStatus }: StatusComponentProps) => {
+const ChangesRequested = (props: StatusComponentProps) => {
   return (
-    <Box>
-      <Box mb="16px">
-        <StatusWrapper>
-          <T value={initiativeStatus.attributes.title_multiloc} />
-        </StatusWrapper>
-      </Box>
-      <Icon
-        ariaHidden
-        name="halt"
-        fill={colors.red600}
-        width="30px"
-        height="30px"
-        mb="20px"
-      />
-      <StatusExplanation>
-        <b>
+    <Status
+      {...props}
+      iconName="halt"
+      statusExplanation={
+        <>
+          <b>
+            <FormattedMessage
+              {...messages.changesRequestedStatusExplanationBold}
+            />
+          </b>{' '}
           <FormattedMessage
-            {...messages.changesRequestedStatusExplanationBold}
+            {...messages.changesRequestedStatusExplanationSentenceTwo}
           />
-        </b>{' '}
-        <FormattedMessage
-          {...messages.changesRequestedStatusExplanationSentenceTwo}
-        />
-      </StatusExplanation>
-    </Box>
+        </>
+      }
+      showCountDown={false}
+      showVoteButtons={false}
+      showReadAnswerButton={false}
+    />
   );
 };
 

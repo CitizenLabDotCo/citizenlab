@@ -2,7 +2,6 @@ import React from 'react';
 
 // components
 import FollowUnfollow from 'components/FollowUnfollow';
-import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -13,7 +12,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // typings
 import BorderContainer from '../BorderContainer';
-import Status from './Status';
+import StatusWrapper from './StatusWrapper';
 import { IInitiative } from 'api/initiatives/types';
 
 interface Props {
@@ -32,12 +31,10 @@ const ReactionControl = ({
       <ScreenReaderOnly>
         <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
       </ScreenReaderOnly>
-      <Box mb="8px">
-        <Status
-          initiative={initiative}
-          onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-        />
-      </Box>
+      <StatusWrapper
+        initiative={initiative}
+        onScrollToOfficialFeedback={onScrollToOfficialFeedback}
+      />
       <FollowUnfollow
         followableType="initiatives"
         followableId={initiative.data.id}

@@ -1,8 +1,8 @@
 import React from 'react';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { StatusComponentProps } from '.';
-import Status from './index2';
+import { StatusComponentProps } from '../StatusWrapper';
+import Status from '.';
 
 const Expired = (props: StatusComponentProps) => {
   return (
