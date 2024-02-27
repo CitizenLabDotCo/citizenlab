@@ -78,7 +78,7 @@ export default defineMessages({
     defaultMessage: 'Collect feedback on a document',
   },
   documentDescription: {
-    id: 'app.containers.AdminPage.phase.methodPicker.votingDescription',
+    id: 'app.containers.AdminPage.phase.methodPicker.documentDescription',
     defaultMessage:
       'Embed an interactive PDF and collect comments and feedback with Konveio.',
   },
