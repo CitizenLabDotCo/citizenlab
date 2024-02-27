@@ -127,7 +127,7 @@ export default defineMessages({
     defaultMessage: 'Lacks in-platform AI-powered insights',
   },
   lacksReportingText: {
-    id: 'app.containers.AdminPage.phase.methodPicker.lacksAIText',
+    id: 'app.containers.AdminPage.phase.methodPicker.lacksReportingText',
     defaultMessage:
       'Lacks in-platform reporting and data visualisation and processing',
   },
