@@ -11,8 +11,6 @@ interface Props {
   onCancelReaction: StatusComponentProps['onCancelReaction'];
   onReaction: StatusComponentProps['onReaction'];
   disabledReason: StatusComponentProps['disabledReason'];
-  voteButtonId?: string;
-  cancelVoteButtonId?: string;
   cancelReactionDisabled: boolean;
 }
 
@@ -21,8 +19,6 @@ const VoteButtons = ({
   onCancelReaction,
   onReaction,
   disabledReason,
-  voteButtonId,
-  cancelVoteButtonId,
   cancelReactionDisabled,
 }: Props) => {
   const tippyContent = disabledReason ? (
@@ -37,7 +33,7 @@ const VoteButtons = ({
           iconSize="20px"
           icon="check"
           onClick={onCancelReaction}
-          id={cancelVoteButtonId}
+          id="e2e-proposal-cancel-vote-button"
           disabled={cancelReactionDisabled}
         >
           <FormattedMessage {...messages.voted} />
@@ -55,7 +51,7 @@ const VoteButtons = ({
             iconSize="20px"
             icon="vote-ballot"
             onClick={onReaction}
-            id={voteButtonId}
+            id="e2e-proposal-vote-button"
           >
             <FormattedMessage {...messages.vote} />
           </Button>

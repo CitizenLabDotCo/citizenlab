@@ -42,7 +42,7 @@ const ReactionCounter = ({
   return (
     <Box id={id}>
       <ReactionText aria-hidden={true}>
-        <ReactionTextLeft>
+        <ReactionTextLeft id="e2e-initiative-reaction-count">
           <FormattedMessage
             {...messages.xVotes}
             values={{ count: reactionCount }}
