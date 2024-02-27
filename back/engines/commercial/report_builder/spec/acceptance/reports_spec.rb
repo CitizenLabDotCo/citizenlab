@@ -55,7 +55,7 @@ resource 'Reports' do
             name: report.name,
             created_at: report.created_at.iso8601(3),
             updated_at: report.updated_at.iso8601(3),
-            visible: false
+            visible: true
           },
           relationships: {
             layout: { data: { id: layout.id, type: 'content_builder_layout' } },
