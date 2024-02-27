@@ -63,6 +63,7 @@ const QuestionSelect = ({
   return (
     <Box width="100%" mb="20px">
       <Select
+        className="e2e-question-select"
         label={label}
         value={questionId}
         options={questionOptions}
