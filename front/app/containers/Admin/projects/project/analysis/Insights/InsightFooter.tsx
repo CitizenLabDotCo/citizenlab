@@ -141,7 +141,9 @@ const InsightFooter = ({
               height="20px"
               fill={colors.textPrimary}
             />
-            <div> {`${additionalCustomFieldIds.length + 1}`}</div>
+            <Text m="0px" fontSize="s">
+              {`${additionalCustomFieldIds.length + 1}`}
+            </Text>
           </Box>
         </Tippy>
       )}
