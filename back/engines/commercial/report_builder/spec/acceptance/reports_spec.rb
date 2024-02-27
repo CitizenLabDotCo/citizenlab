@@ -220,9 +220,9 @@ resource 'Reports' do
 
       describe 'updating the visibility of a report' do
         example 'Visibility successfully updates by report id' do
-          do_request(report: { visible: true })
+          do_request(report: { visible: false })
           assert_status 200
-          expect(report.reload.visible).to be(true)
+          expect(report.reload.visible).to be(false)
         end
       end
 
