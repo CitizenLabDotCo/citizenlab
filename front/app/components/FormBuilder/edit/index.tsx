@@ -78,6 +78,8 @@ export const FormEdit = ({
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
+  const [accessRightsMessageIsVisible, setAccessRightsMessageIsVisible] =
+    useState(true);
   const { formSavedSuccessMessage, isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const showWarningNotice = totalSubmissions > 0;
@@ -245,11 +247,27 @@ export const FormEdit = ({
   const showSuccessMessage =
     successMessageIsVisible && Object.keys(errors).length === 0;
 
+  const handleAccessRightsClose = () => setAccessRightsMessageIsVisible(false);
+
   const showWarnings = () => {
-    if (showWarningNotice && builderConfig.getWarningNotice) {
+    if (editedAndCorrect) {
+      return (
+        <Box mb="8px">
+          <Warning>{formatMessage(messages.unsavedChanges)}</Warning>
+        </Box>
+      );
+    } else if (showWarningNotice && builderConfig.getWarningNotice) {
       return builderConfig.getWarningNotice();
-    } else if (!hasErrors && builderConfig.getAccessRightsNotice) {
-      return builderConfig.getAccessRightsNotice(projectId, phaseId);
+    } else if (
+      !hasErrors &&
+      builderConfig.getAccessRightsNotice &&
+      accessRightsMessageIsVisible
+    ) {
+      return builderConfig.getAccessRightsNotice(
+        projectId,
+        phaseId,
+        handleAccessRightsClose
+      );
     }
     return null;
   };
@@ -302,13 +320,7 @@ export const FormEdit = ({
                         />
                       </Box>
                     )}
-                    {editedAndCorrect && (
-                      <Box mb="8px">
-                        <Warning>
-                          {formatMessage(messages.unsavedChanges)}
-                        </Warning>
-                      </Box>
-                    )}
+
                     <Feedback
                       successMessage={formatMessage(formSavedSuccessMessage)}
                       onlyShowErrors

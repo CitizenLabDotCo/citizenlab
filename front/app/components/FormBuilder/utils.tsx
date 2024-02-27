@@ -46,7 +46,8 @@ export type FormBuilderConfig = {
   getWarningNotice?: () => void;
   getAccessRightsNotice?: (
     projectId: string | undefined,
-    phaseId: string | undefined
+    phaseId: string | undefined,
+    handleClose: () => void
   ) => void;
 
   goBackUrl?: string;

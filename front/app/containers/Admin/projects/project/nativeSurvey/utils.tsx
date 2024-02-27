@@ -48,9 +48,13 @@ export const nativeSurveyConfig: FormBuilderConfig = {
       </Box>
     );
   },
-  getAccessRightsNotice: (projectId, phaseId) => {
+  getAccessRightsNotice: (projectId, phaseId, handleClose) => {
     return projectId && phaseId ? (
-      <AccessRightsNotice projectId={projectId} phaseId={phaseId} />
+      <AccessRightsNotice
+        projectId={projectId}
+        phaseId={phaseId}
+        handleClose={handleClose}
+      />
     ) : null;
   },
 };
