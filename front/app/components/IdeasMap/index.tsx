@@ -152,7 +152,9 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
   const [clickedMapLocation, setClickedMapLocation] =
     useState<GeoJSON.Point | null>(null);
 
-  const selectedIdea = searchParams.get('idea_map_id');
+  const selectedIdea = useMemo(() => {
+    return searchParams.get('idea_map_id');
+  }, [searchParams]);
 
   const setSelectedIdea = useCallback((ideaId: string | null) => {
     if (ideaId) {
@@ -168,7 +170,9 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
 
   // Existing handling for dynamic container width
   const { windowWidth } = useWindowSize();
-  const tablet = windowWidth <= viewportWidths.tablet;
+  const tablet = useMemo(() => {
+    return windowWidth <= viewportWidths.tablet;
+  }, [windowWidth]);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
@@ -321,10 +325,19 @@ const IdeasMap = memo<Props>(({ projectId, phaseId, ideasList }: Props) => {
               );
             } else if (graphicId) {
               // User clicked an idea pin or layer.
-              const ideaId = graphics?.at(graphicId - 1)?.attributes.ideaId;
+              const ideaId =
+                topElement.layer.id === 'ideasLayer'
+                  ? graphics?.at(graphicId - 1)?.attributes.ideaId
+                  : undefined;
+
+              const ideasAtClickCount = elements.filter(
+                (element) =>
+                  element.type === 'graphic' &&
+                  element?.graphic?.layer.id === 'ideasLayer'
+              ).length;
 
               // If there are multiple ideas at this same location (overlapping pins), show the idea selection popup.
-              if (elements.length > 1 && mapView.zoom >= 19) {
+              if (ideasAtClickCount > 1 && mapView.zoom >= 19) {
                 goToMapLocation(
                   esriPointToGeoJson(topElement.mapPoint),
                   mapView

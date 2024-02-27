@@ -22,10 +22,12 @@ import { getDefaultBasemap } from './utils';
 import { isNil } from 'utils/helperUtils';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
+import * as intl from '@arcgis/core/intl.js';
 
 // typings
 import { EsriUiElement } from './types';
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
+import useLocale from 'hooks/useLocale';
 
 // Custom Esri styles
 const MapContainer = styled(Box)`
@@ -86,11 +88,15 @@ const EsriMap = ({
   globalMapSettings,
 }: EsriMapProps) => {
   const isMobileOrSmaller = useBreakpoint('phone');
+  const locale = useLocale();
   const [map, setMap] = useState<Map | null>(null);
   const [mapView, setMapView] = useState<MapView | null>(null);
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   const initialValuesLoaded = useRef(false);
+
+  // Sets the locale of the map
+  intl.setLocale(locale);
 
   // On initial render, create a new map and map view and save them to state variables
   useEffect(() => {
