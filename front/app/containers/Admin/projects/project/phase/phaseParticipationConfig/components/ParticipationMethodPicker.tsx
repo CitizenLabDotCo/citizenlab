@@ -32,6 +32,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { ApiErrors } from '..';
 import { IPhase, ParticipationMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
+import MethodPicker from './MethodPicker';
 
 interface Props {
   participation_method: ParticipationMethod;
@@ -112,6 +113,7 @@ const ParticipationMethodPicker = ({
       )}
       {!config.isMethodLocked ? (
         <>
+          <MethodPicker />
           <ParticipationMethodRadio
             onChange={handleParticipationMethodOnChange}
             currentValue={participation_method}

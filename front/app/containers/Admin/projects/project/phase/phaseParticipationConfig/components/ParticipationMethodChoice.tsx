@@ -36,6 +36,7 @@ const ParticipationMethodChoice = ({
       flexDirection="column"
       borderRadius="3px"
       border={`1px solid ${borderColor}`}
+      background={selected || isHover ? backgroundColor : colors.white}
       padding="16px"
       gap="8px"
       flex="1 0 0"
