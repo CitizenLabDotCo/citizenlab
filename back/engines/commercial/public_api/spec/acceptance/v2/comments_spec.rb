@@ -45,9 +45,8 @@ resource 'Comments' do
       expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
       expect(json_response_body[:comments].first.keys).to match_array(
         %i[
-          id body post_type post_id parent_id author_id created_at updated_at
+          id body post_type post_id project_id parent_id author_id created_at updated_at
           body_updated_at children_count dislikes_count likes_count publication_status
-          project_id idea_id initiative_id
         ]
       )
     end

@@ -65,27 +65,28 @@ resource 'Reactions' do
       expect(json_response_body[:reactions].first.keys).to match_array(
         %i[
           id mode reactable_id reactable_type created_at updated_at
-          user_id idea_id project_id initiative_id
+          user_id post_id post_type project_id
         ]
       )
+
       initiative = json_response_body[:reactions].find { |r| r[:id] == initiative_reactions.first.id }
-      expect(initiative[:initiative_id]).not_to be_nil
-      expect(initiative[:idea_id]).to be_nil
+      expect(initiative[:post_type]).to eq 'Initiative'
+      expect(initiative[:post_id]).to eq initiative_reactions.first.reactable.id
       expect(initiative[:project_id]).to be_nil
 
       idea = json_response_body[:reactions].find { |r| r[:id] == idea_reactions.first.id }
-      expect(idea[:initiative_id]).to be_nil
-      expect(idea[:idea_id]).not_to be_nil
-      expect(idea[:project_id]).not_to be_nil
+      expect(idea[:post_type]).to eq 'Idea'
+      expect(idea[:post_id]).to eq idea_reactions.first.reactable.id
+      expect(idea[:project_id]).to eq idea_reactions.first.reactable.project_id
 
       initiative_comment = json_response_body[:reactions].find { |r| r[:id] == initiative_comment_reaction.id }
-      expect(initiative_comment[:initiative_id]).not_to be_nil
-      expect(initiative_comment[:idea_id]).to be_nil
+      expect(initiative_comment[:post_type]).to eq 'Initiative'
+      expect(initiative_comment[:post_id]).not_to be_nil
       expect(initiative_comment[:project_id]).to be_nil
 
       idea_comment = json_response_body[:reactions].find { |r| r[:id] == idea_comment_reaction.id }
-      expect(idea_comment[:initiative_id]).to be_nil
-      expect(idea_comment[:idea_id]).not_to be_nil
+      expect(idea_comment[:post_type]).to eq 'Idea'
+      expect(idea_comment[:post_id]).not_to be_nil
       expect(idea_comment[:project_id]).not_to be_nil
     end
 

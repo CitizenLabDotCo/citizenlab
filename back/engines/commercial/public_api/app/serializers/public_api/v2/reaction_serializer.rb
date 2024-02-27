@@ -12,27 +12,30 @@ class PublicApi::V2::ReactionSerializer < PublicApi::V2::BaseSerializer
 
   attribute(:reactable_type) { classname_to_type(object.reactable_type) }
 
-  attribute(:idea_id) do
-    if object.reactable_type == 'Idea'
+  attribute(:post_type) do
+    case object.reactable_type
+    when 'Idea', 'Initiative'
+      object.reactable_type
+    when 'Comment'
+      object.reactable.post_type
+    end
+  end
+
+  attribute(:post_id) do
+    case object.reactable_type
+    when 'Idea', 'Initiative'
       object.reactable.id
-    elsif object.reactable_type == 'Comment'
-      object.reactable.post_type == 'Idea' ? object.reactable.post_id : nil
+    when 'Comment'
+      object.reactable.post_id
     end
   end
 
   attribute(:project_id) do
-    if object.reactable_type == 'Idea'
-      object.reactable&.project_id
-    elsif object.reactable_type == 'Comment'
-      object.reactable&.post_type == 'Idea' ? object.reactable&.post&.project_id : nil
-    end
-  end
-
-  attribute(:initiative_id) do
-    if object.reactable_type == 'Initiative'
-      object.reactable&.id
-    elsif object.reactable_type == 'Comment'
-      object.reactable&.post_type == 'Initiative' ? object.reactable&.post_id : nil
+    case object.reactable_type
+    when 'Idea'
+      object.reactable.project_id
+    when 'Comment'
+      object.reactable.post.project_id if object.reactable.post_type == 'Idea'
     end
   end
 end
