@@ -82,4 +82,53 @@ export default defineMessages({
     defaultMessage:
       'Embed an interactive PDF and collect comments and feedback with Konveio.',
   },
+  surveyOptions: {
+    id: 'app.containers.AdminPage.phase.methodPicker.surveyOptions',
+    defaultMessage: 'Survey options',
+  },
+  survey: {
+    id: 'app.containers.AdminPage.phase.methodPicker.survey',
+    defaultMessage: 'Survey',
+  },
+  aiPoweredInsights: {
+    id: 'app.containers.AdminPage.phase.methodPicker.aiPoweredInsights',
+    defaultMessage: 'AI-powered insights',
+  },
+  manyQuestionTypes: {
+    id: 'app.containers.AdminPage.phase.methodPicker.manyQuestionTypes',
+    defaultMessage: 'Wide range of question types',
+  },
+  logic: {
+    id: 'app.containers.AdminPage.phase.methodPicker.logic',
+    defaultMessage: 'Logic',
+  },
+  linkWithReportBuilder: {
+    id: 'app.containers.AdminPage.phase.methodPicker.linkWithReportBuilder',
+    defaultMessage: 'Link with in-platform report builder',
+  },
+  quickPoll: {
+    id: 'app.containers.AdminPage.phase.methodPicker.quickPoll',
+    defaultMessage: 'Quick poll',
+  },
+  quickPollDescription: {
+    id: 'app.containers.AdminPage.phase.methodPicker.quickPollDescription',
+    defaultMessage: 'Set up a short, multiple-choice questionnaire.',
+  },
+  externalSurvey: {
+    id: 'app.containers.AdminPage.phase.methodPicker.externalSurvey',
+    defaultMessage: 'External survey',
+  },
+  embedSurvey: {
+    id: 'app.containers.AdminPage.phase.methodPicker.embedSurvey',
+    defaultMessage: 'Embed a third-party survey',
+  },
+  lacksAIText: {
+    id: 'app.containers.AdminPage.phase.methodPicker.lacksAIText',
+    defaultMessage: 'Lacks in-platform AI-powered insights',
+  },
+  lacksReportingText: {
+    id: 'app.containers.AdminPage.phase.methodPicker.lacksAIText',
+    defaultMessage:
+      'Lacks in-platform reporting and data visualisation and processing',
+  },
 });
