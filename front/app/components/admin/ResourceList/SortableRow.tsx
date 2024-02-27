@@ -17,7 +17,7 @@ interface Props {
   className?: string;
   isLastItem?: boolean;
   moveRow: (fromIndex: number, toIndex: number) => void;
-  dropRow: (itemId: string, toIndex: number) => void;
+  dropRow?: (itemId: string, toIndex: number) => void;
   children?: React.ReactNode;
   dataTestid?: string;
   dragByHandle?: boolean;
@@ -116,8 +116,10 @@ const SortableRow = ({
       isDragging: monitor.isDragging(),
     }),
     end: (_item, monitor) => {
-      const { id, index } = monitor.getItem();
-      dropRow(id, index);
+      if (dropRow) {
+        const { id, index } = monitor.getItem();
+        dropRow(id, index);
+      }
     },
   });
 

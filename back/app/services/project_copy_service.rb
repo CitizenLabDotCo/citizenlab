@@ -390,6 +390,7 @@ class ProjectCopyService < TemplateService
         'zoom_level' => map_config.zoom_level&.to_f,
         'tile_provider' => map_config.tile_provider,
         'esri_web_map_id' => map_config.esri_web_map_id,
+        'esri_base_map_id' => map_config.esri_base_map_id,
         'created_at' => shift_timestamp(map_config.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(map_config.updated_at, shift_timestamps)&.iso8601
       }
@@ -502,7 +503,7 @@ class ProjectCopyService < TemplateService
         'title_multiloc' => event.title_multiloc,
         'description_multiloc' => event.description_multiloc,
         'location_multiloc' => event.location_multiloc,
-        'location_point' => event.location_point_geojson,
+        'location_point_geojson' => event.location_point_geojson,
         'online_link' => event.online_link,
         'start_at' => shift_timestamp(event.start_at, shift_timestamps)&.iso8601,
         'end_at' => shift_timestamp(event.end_at, shift_timestamps)&.iso8601,

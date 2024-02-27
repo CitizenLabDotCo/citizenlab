@@ -38,5 +38,9 @@ FactoryBot.define do
     trait :with_esri_web_map_id do
       esri_web_map_id { SecureRandom.uuid }
     end
+
+    trait :with_esri_base_map_id do
+      esri_base_map_id { SecureRandom.uuid }
+    end
   end
 end
