@@ -29,6 +29,7 @@ const Expired = (props: StatusComponentProps) => {
       }
       barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
       showCountDown
+      showProgressBar
       showVoteButtons={false}
       showReadAnswerButton={false}
     />

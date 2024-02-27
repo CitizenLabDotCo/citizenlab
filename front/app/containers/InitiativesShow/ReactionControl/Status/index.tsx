@@ -4,6 +4,7 @@ import {
   Box,
   Icon,
   IconNames,
+  colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
@@ -12,6 +13,7 @@ import ReadAnswerButton from './components/ReadAnswerButton';
 import VoteButtons from './components/VoteButtons';
 import ReactionCounter from './components/ReactionCounter';
 import CountDown from './components/CountDown';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const scaleIn = keyframes`
   0% {
@@ -24,7 +26,7 @@ const scaleIn = keyframes`
   }
 `;
 
-export const StatusHeading = styled.div`
+export const StatusHeading = styled.h2`
   display: flex;
   font-size: ${fontSizes.base}px;
   font-weight: bold;
@@ -61,6 +63,7 @@ interface Props extends StatusComponentProps {
   statusExplanation: React.ReactNode;
   barColor?: string;
   showCountDown: boolean;
+  showProgressBar: boolean;
   showVoteButtons: boolean;
   showReadAnswerButton: boolean;
   cancelReactionDisabled?: boolean;
@@ -78,6 +81,7 @@ const Status = ({
   statusExplanation,
   barColor,
   showCountDown,
+  showProgressBar,
   showVoteButtons,
   showReadAnswerButton,
   cancelReactionDisabled = false,
@@ -87,6 +91,8 @@ const Status = ({
     <Box display="flex" flexDirection="column">
       {showCountDown && (
         <Box ml="auto" mb="24px">
+          {/* Translation is still coming in a later PR. This is not visible. */}
+          <ScreenReaderOnly>Time left to vote:</ScreenReaderOnly>
           {/* Still add (hidden) heading */}
           <CountDown targetTime={initiative.attributes.expires_at} />
         </Box>
@@ -100,13 +106,15 @@ const Status = ({
       <Box mb="24px">
         <StatusExplanation>{statusExplanation}</StatusExplanation>
       </Box>
-      <Box mb="24px">
-        <ReactionCounter
-          initiative={initiative}
-          initiativeSettings={initiativeSettings}
-          barColor={barColor}
-        />
-      </Box>
+      {showProgressBar && (
+        <Box mb="24px">
+          <ReactionCounter
+            initiative={initiative}
+            initiativeSettings={initiativeSettings}
+            barColor={barColor || colors.success}
+          />
+        </Box>
+      )}
       {showVoteButtons && (
         <Box mb="8px">
           <VoteButtons

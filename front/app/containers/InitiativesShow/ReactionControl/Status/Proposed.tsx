@@ -53,6 +53,7 @@ const Proposed = (props: StatusComponentProps) => {
         )
       }
       showCountDown
+      showProgressBar
       showVoteButtons
       showReadAnswerButton={false}
     />
