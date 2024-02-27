@@ -7,7 +7,7 @@ RSpec.describe Tasks::SingleUse::Services::FileUploadCustomFieldMigrationService
   subject(:service) { described_class.new }
 
   describe '#migrate' do
-    let!(:file_upload_custom_field) { create(:custom_field, input_type: 'file_upload', key: 'file_upload_field') }
+    let!(:file_upload_custom_field) { create(:custom_field, input_type: 'file_upload', resource_type: 'CustomForm', key: 'file_upload_field') }
     let!(:idea_file) { create(:idea_file, name: 'myfile.pdf') }
     let!(:idea) { create(:idea, custom_field_values: { file_upload_custom_field.key => idea_file.id }) }
 

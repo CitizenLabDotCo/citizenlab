@@ -11,7 +11,7 @@ class Tasks::SingleUse::Services::FileUploadCustomFieldMigrationService
     Rails.logger.info 'Migrating file upload format for idea custom fields.'
     Rails.logger.info "Persist: #{persist_changes}"
 
-    custom_field_keys = CustomField.where(input_type: 'file_upload').pluck(:key)
+    custom_field_keys = CustomField.where(input_type: 'file_upload', resource_type: 'CustomForm').pluck(:key)
     ideas = Idea.where.not(custom_field_values: {})
     @stats[:ideas] = ideas.count
 
@@ -31,7 +31,6 @@ class Tasks::SingleUse::Services::FileUploadCustomFieldMigrationService
       end
 
       if save_idea && persist_changes
-        # TODO: JS - Is there any impact on the updated_at dates changing?
         idea.save!
         @stats[:ideas_updated] += 1
       end
