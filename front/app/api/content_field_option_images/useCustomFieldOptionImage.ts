@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueries } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { CustomFieldOptionKeys, ICustomFieldOptionImage } from './types';
@@ -21,6 +21,19 @@ const useCustomFieldOptionImage = ({ imageId }: { imageId?: string }) => {
     queryFn: () => fetchCustomFieldOptionImage({ imageId }),
     enabled: !!imageId,
   });
+};
+
+export const useCustomFieldOptionImages = (imageIds: string[]) => {
+  const queries = imageIds.map((imageId) => {
+    return {
+      queryKey: customFieldOptionKeys.item({
+        id: imageId,
+      }),
+      queryFn: () => fetchCustomFieldOptionImage({ imageId }),
+    };
+  });
+
+  return useQueries({ queries });
 };
 
 export default useCustomFieldOptionImage;

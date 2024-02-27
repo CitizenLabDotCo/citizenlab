@@ -5,6 +5,9 @@ import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
 import TwoColumn, { twoColumnTitle } from './TwoColumn';
 import AboutReportWidget, { aboutReportTitle } from './AboutReportWidget';
 import SurveyResultsWidget, { surveyResultsTitle } from './SurveyResultsWidget';
+import SurveyQuestionResultWidget, {
+  surveyQuestionResultTitle,
+} from './SurveyQuestionResultWidget';
 import VisitorsWidget, { visitorsTitle } from './ChartWidgets/VisitorsWidget';
 import VisitorsTrafficSourcesWidget, {
   visitorsTrafficSourcesTitle,
@@ -17,6 +20,7 @@ import ActiveUsersWidget, {
 import MostReactedIdeasWidget, {
   mostReactedIdeasTitle,
 } from './MostReactedIdeasWidget';
+import SingleIdeaWidget, { singleIdeaTitle } from './SingleIdeaWidget';
 import PostsByTimeWidget, {
   postsByTimeTitle,
 } from './ChartWidgets/PostsByTimeWidget';
@@ -41,13 +45,15 @@ export const WIDGETS = {
   ImageMultiloc,
   WhiteSpace,
   AboutReportWidget,
-  SurveyResultsWidget,
+  SurveyResultsWidget, // TODO: remove this widget (TAN-1022)
+  SurveyQuestionResultWidget,
   VisitorsWidget,
   VisitorsTrafficSourcesWidget,
   AgeWidget,
   GenderWidget,
   ActiveUsersWidget,
   MostReactedIdeasWidget,
+  SingleIdeaWidget,
   PostsByTimeWidget,
   CommentsByTimeWidget,
   ReactionsByTimeWidget,
@@ -63,7 +69,9 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   ImageMultiloc: imageMultilocTitle,
   AboutReportWidget: aboutReportTitle,
   SurveyResultsWidget: surveyResultsTitle,
+  SurveyQuestionResultWidget: surveyQuestionResultTitle,
   MostReactedIdeasWidget: mostReactedIdeasTitle,
+  SingleIdeaWidget: singleIdeaTitle,
   VisitorsWidget: visitorsTitle,
   VisitorsTrafficSourcesWidget: visitorsTrafficSourcesTitle,
   AgeWidget: ageTitle,
@@ -92,6 +100,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
   'SurveyResultsWidget',
+  'SurveyQuestionResultWidget',
 ] satisfies WidgetName[]);
 
 export const hasNoPointerEvents = (nodeName: string) => {

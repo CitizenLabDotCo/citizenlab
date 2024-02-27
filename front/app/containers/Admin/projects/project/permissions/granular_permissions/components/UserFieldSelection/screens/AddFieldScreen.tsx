@@ -62,7 +62,8 @@ export const AddFieldScreen = ({
 
   const schema = object({
     options: validateOneOptionForMultiSelect(
-      formatMessage(messages.atLeastOneOptionError)
+      formatMessage(messages.atLeastOneOptionError),
+      formatMessage(messages.emptyTitleErrorMessage)
     ),
     input_type: string().required(formatMessage(messages.selectValueError)),
     title_multiloc: validateMultiloc(

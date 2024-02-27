@@ -11,7 +11,9 @@ module ReportBuilder
         ideas: serialize(ideas, ::WebApi::V1::IdeaSerializer),
         project: serialize(project, ::WebApi::V1::ProjectSerializer),
         phase: serialize(phase, ::WebApi::V1::PhaseSerializer),
-        idea_images: serialize(ideas.flat_map(&:idea_images), ::WebApi::V1::ImageSerializer)
+        idea_images: ideas.each_with_object({}) do |idea, obj|
+          obj[idea.id] = serialize(idea.idea_images, ::WebApi::V1::ImageSerializer)
+        end
       }
     end
 

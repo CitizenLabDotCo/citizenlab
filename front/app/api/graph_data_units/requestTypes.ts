@@ -4,7 +4,9 @@ import { Moment } from 'moment';
 // live
 export type ResolvedName =
   | 'SurveyResultsWidget'
+  | 'SurveyQuestionResultWidget'
   | 'MostReactedIdeasWidget'
+  | 'SingleIdeaWidget'
   | 'VisitorsWidget'
   | 'VisitorsTrafficSourcesWidget'
   | 'GenderWidget'
@@ -21,7 +23,9 @@ export interface BaseParams {
 
 export type ParametersLive =
   | SurveyResultsParams
+  | SurveyQuestionResultParams
   | MostReactedIdeasParams
+  | SingleIdeaParams
   | VisitorsParams
   | VisitorsTrafficSourcesParams
   | GenderParams
@@ -39,6 +43,20 @@ export interface SurveyResultsParams extends BaseParams {
   props: SurveyResultsProps;
 }
 
+export type GroupMode = 'user_field' | 'survey_question';
+
+export interface SurveyQuestionResultProps {
+  phaseId: string;
+  questionId: string;
+  groupMode?: GroupMode;
+  groupFieldId?: string;
+}
+
+export interface SurveyQuestionResultParams extends BaseParams {
+  resolvedName: 'SurveyQuestionResultWidget';
+  props: SurveyQuestionResultProps;
+}
+
 export interface AnalyticsProps {
   projectId?: string | undefined;
   startAtMoment?: Moment | null | undefined;
@@ -53,6 +71,15 @@ export interface MostReactedIdeasProps {
 export interface MostReactedIdeasParams extends BaseParams {
   resolvedName: 'MostReactedIdeasWidget';
   props: MostReactedIdeasProps;
+}
+
+export interface SingleIdeaProps {
+  phaseId?: string | null;
+  ideaId?: string;
+}
+export interface SingleIdeaParams extends BaseParams {
+  resolvedName: 'SingleIdeaWidget';
+  props: SingleIdeaProps;
 }
 
 export interface VisitorsParams extends BaseParams {
