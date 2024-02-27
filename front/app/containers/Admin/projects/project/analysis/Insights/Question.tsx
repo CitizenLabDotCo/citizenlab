@@ -104,10 +104,7 @@ const Question = ({ insight }: Props) => {
           analysisId={analysisId}
           projectId={projectId}
           phaseId={phaseId}
-          additionalCustomFieldsIds={
-            question.data.attributes.custom_field_ids
-              ?.additional_custom_field_ids
-          }
+          customFieldIds={question.data.attributes.custom_field_ids}
         />
       </Box>
       <Box display="flex" gap="16px" alignItems="center" mt="16px">
@@ -137,7 +134,7 @@ const Question = ({ insight }: Props) => {
           theme="light"
           iconSize="24px"
           iconColor={colors.textPrimary}
-          placement="left-end"
+          placement="top"
         />
         <IconButton
           iconName="delete"

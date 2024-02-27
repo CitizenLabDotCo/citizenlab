@@ -105,10 +105,7 @@ const Summary = ({ insight }: Props) => {
           analysisId={analysisId}
           projectId={projectId}
           phaseId={phaseId}
-          additionalCustomFieldsIds={
-            summary.data.attributes.custom_field_ids
-              ?.additional_custom_field_ids
-          }
+          customFieldIds={summary.data.attributes.custom_field_ids}
         />
       </Box>
 
@@ -137,7 +134,7 @@ const Summary = ({ insight }: Props) => {
           theme="light"
           iconSize="24px"
           iconColor={colors.textPrimary}
-          placement="left-end"
+          placement="top"
         />
         <IconButton
           iconName="delete"

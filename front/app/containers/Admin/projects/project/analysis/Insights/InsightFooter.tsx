@@ -35,14 +35,17 @@ const InsightFooter = ({
   analysisId,
   projectId,
   phaseId,
-  additionalCustomFieldsIds,
+  customFieldIds,
 }: {
   filters?: IInputsFilterParams;
   generatedAt?: string;
   analysisId: string;
   projectId: string;
   phaseId?: string;
-  additionalCustomFieldsIds?: string[];
+  customFieldIds?: {
+    additional_custom_field_ids?: string[];
+    main_custom_field_id: string | null;
+  };
 }) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
@@ -64,6 +67,8 @@ const InsightFooter = ({
     onlyCheckAllowed: true,
   });
 
+  const additionalCustomFieldIds = customFieldIds?.additional_custom_field_ids;
+  const mainCustomFieldId = customFieldIds?.main_custom_field_id;
   return (
     <Box
       display="flex"
@@ -71,6 +76,7 @@ const InsightFooter = ({
       alignItems="center"
       w="100%"
       pr="16px"
+      mb="20px"
     >
       <Tippy
         content={formatMessage(messages.tooltipTextLimit)}
@@ -84,7 +90,7 @@ const InsightFooter = ({
               name="comment"
               width="12px"
               height="12px"
-              fill={colors.black}
+              fill={colors.textPrimary}
               transform="scaleX(-1)"
             />
           )}
@@ -100,16 +106,23 @@ const InsightFooter = ({
         </Box>
       </Tippy>
 
-      {additionalCustomFieldsIds && (
+      {(additionalCustomFieldIds || [])?.length > 0 && (
         <Tippy
+          zIndex={99999}
           content={
             <Box p="12px">
               {formatMessage(messages.additionalCustomFields)}
               <ul>
-                {additionalCustomFieldsIds?.map((customFieldId) => (
+                <li>
+                  <CustomFieldTitle
+                    customFieldId={mainCustomFieldId}
+                    projectId={projectId}
+                    phaseId={phaseId}
+                  />
+                </li>
+                {additionalCustomFieldIds?.map((customFieldId) => (
                   <li key={customFieldId}>
                     <CustomFieldTitle
-                      key={customFieldId}
                       customFieldId={customFieldId}
                       projectId={projectId}
                       phaseId={phaseId}
@@ -120,8 +133,14 @@ const InsightFooter = ({
             </Box>
           }
         >
-          <Box>
-            <Icon name="page" />
+          <Box display="flex" alignItems="center" gap="4px">
+            <Icon
+              name="page"
+              width="20px"
+              height="20px"
+              fill={colors.textPrimary}
+            />
+            <div> {`${additionalCustomFieldIds?.length || 0 + 1}`}</div>
           </Box>
         </Tippy>
       )}

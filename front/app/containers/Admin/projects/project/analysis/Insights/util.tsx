@@ -23,10 +23,11 @@ export const deleteTrailingIncompleteIDs = (str: string | null) => {
 };
 
 const StyledLink = styled(Link)<{ isActive: boolean }>`
-  color: ${colors.black};
+  color: ${colors.textPrimary};
   svg {
     transform: scaleX(-1);
     margin-bottom: 4px;
+    fill: ${colors.textPrimary};
   }
   :hover {
     svg {
