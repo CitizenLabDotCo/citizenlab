@@ -1132,7 +1132,6 @@
   "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceTwo": "Dir kritt eng E-Mail eemol et iwwerpréift ass.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} gouf benoriichtegt a wäert äntweren. D'Ofstëmmen bleift op.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "D'Schwell gouf erreecht",
-  "app.containers.InitiativesShow.VoteControl.unvoteLink": "Meng Ofstëmmung réckgängeg maachen",
   "app.containers.InitiativesShow.VoteControl.vote": "Ofstëmmen",
   "app.containers.InitiativesShow.VoteControl.voted": "gestëmmt",
   "app.containers.InitiativesShow.VoteControl.votedText": "Dir gitt benoriichtegt soubal Äre Virschlag an di nächst Etapp kënnt. {x, plural, =0 {Et si(nn) {xDays} iwwereg.} one {Et si(nn) {xDays} iwwereg.} other {Et si(nn) {xDays} iwwereg.}}",
