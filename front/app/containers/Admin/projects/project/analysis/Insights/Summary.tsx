@@ -24,6 +24,7 @@ import { removeRefs } from './util';
 import InsightBody from './InsightBody';
 import InsightFooter from './InsightFooter';
 import Divider from 'components/admin/Divider';
+import SummaryHeader from './SummaryHeader';
 
 type Props = {
   insight: IInsightData;
@@ -87,10 +88,11 @@ const Summary = ({ insight }: Props) => {
   const summaryText = summary.data.attributes.summary;
 
   return (
-    <Box key={summary.data.id} mb="8px" position="relative">
+    <Box key={summary.data.id} mb="24px" position="relative">
       <Divider />
 
       <Box>
+        <SummaryHeader />
         <InsightBody
           text={summaryText}
           filters={summary.data.attributes.filters}

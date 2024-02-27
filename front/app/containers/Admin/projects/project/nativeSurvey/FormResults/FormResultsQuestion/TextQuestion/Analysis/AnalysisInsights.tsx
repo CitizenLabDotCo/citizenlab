@@ -4,7 +4,6 @@ import {
   IconButton,
   colors,
   Text,
-  Icon,
 } from '@citizenlab/cl2-component-library';
 import { IAnalysisData } from 'api/analyses/types';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
@@ -27,6 +26,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 import InsightBody from 'containers/Admin/projects/project/analysis/Insights/InsightBody';
 import InsightFooter from 'containers/Admin/projects/project/analysis/Insights/InsightFooter';
+import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/SummaryHeader';
+import QuestionHeader from 'containers/Admin/projects/project/analysis/Insights/QuestionHeader';
 
 // Convert all values in the filters object to strings
 // This is necessary because the filters are passed as query params
@@ -95,13 +96,7 @@ const Summary = ({
       gap="16px"
     >
       <Box overflowY="auto" h="100%">
-        <Box display="flex" gap="4px" alignItems="center">
-          {!largeSummariesEnabled && (
-            <Icon name="alert-circle" fill={colors.orange} />
-          )}
-          <Text fontWeight="bold">{formatMessage(messages.aiSummary)}</Text>
-          <Icon name="flash" />
-        </Box>
+        <SummaryHeader />
         <InsightBody
           text={summary}
           filters={filters}
@@ -204,13 +199,7 @@ const Question = ({
       gap="16px"
     >
       <Box overflowY="auto" h="100%">
-        <Box display="flex" gap="4px" alignItems="center">
-          {!largeSummariesEnabled && (
-            <Icon name="alert-circle" fill={colors.orange} />
-          )}
-          <Text fontWeight="bold">{question}</Text>
-          <Icon name="question-bubble" width="20px" height="20px" />
-        </Box>
+        <QuestionHeader question={question} />
         <InsightBody
           text={answer}
           filters={filters}

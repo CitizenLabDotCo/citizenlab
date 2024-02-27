@@ -23,6 +23,7 @@ import { removeRefs } from './util';
 import InsightBody from './InsightBody';
 import InsightFooter from './InsightFooter';
 import Divider from 'components/admin/Divider';
+import QuestionHeader from './QuestionHeader';
 
 type Props = {
   insight: IInsightData;
@@ -86,10 +87,11 @@ const Question = ({ insight }: Props) => {
   const answer = question.data.attributes.answer;
 
   return (
-    <Box key={question.data.id} mb="8px" position="relative">
+    <Box key={question.data.id} mb="24px" position="relative">
       <Divider />
 
       <Box>
+        <QuestionHeader question={question.data.attributes.question} />
         <InsightBody
           text={answer}
           filters={question.data.attributes.filters}

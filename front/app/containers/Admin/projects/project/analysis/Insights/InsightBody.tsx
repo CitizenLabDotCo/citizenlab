@@ -16,6 +16,7 @@ import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import FilterItems from 'containers/Admin/projects/project/analysis/FilterItems';
 import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
 import { useSearchParams } from 'react-router-dom';
+import { isEmpty } from 'lodash-es';
 
 const InsightBody = ({
   text,
@@ -49,7 +50,7 @@ const InsightBody = ({
   return (
     <div>
       <>
-        {filters && (
+        {filters && !isEmpty(filters) && (
           <Box mb="16px">
             <FilterItems
               filters={filters}
