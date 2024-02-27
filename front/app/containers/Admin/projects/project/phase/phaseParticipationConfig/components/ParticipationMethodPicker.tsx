@@ -172,10 +172,8 @@ const ParticipationMethodPicker = ({
               value="native_survey"
               name="participationmethod"
               id="participationmethod-native_survey"
-              disabled={isExistingProjectOrPhase}
               label={
                 <LabelHeaderDescription
-                  disabled={isExistingProjectOrPhase}
                   header={<FormattedMessage {...messages.createNativeSurvey} />}
                   description={
                     <FormattedMessage

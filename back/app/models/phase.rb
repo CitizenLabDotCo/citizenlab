@@ -99,7 +99,7 @@ class Phase < ApplicationRecord
   validate :validate_campaigns_settings_keys_and_values
 
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
-  validate :validate_participation_method_change, on: :update
+  # validate :validate_participation_method_change, on: :update
 
   # ideation? or voting?
   with_options if: :can_contain_ideas? do
@@ -348,13 +348,13 @@ class Phase < ApplicationRecord
     self.input_term ||= DEFAULT_INPUT_TERM
   end
 
-  def validate_participation_method_change
-    return unless participation_method_changed?
-
-    return if participation_method_was != 'native_survey' && participation_method != 'native_survey'
-
-    errors.add :participation_method, :change_not_permitted, message: 'change is not permitted'
-  end
+  # def validate_participation_method_change
+  #   return unless participation_method_changed?
+  #
+  #   true
+  #   # return if participation_method_was != 'native_survey' && participation_method != 'native_survey'
+  #   # errors.add :participation_method, :change_not_permitted, message: 'change is not permitted'
+  # end
 
   def validate_voting
     Factory.instance.voting_method_for(self).validate_phase

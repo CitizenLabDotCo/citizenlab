@@ -5,7 +5,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     super()
     form = phase.custom_form || CustomForm.new(participation_context: phase)
     @fields = IdeaCustomFieldsService.new(form).enabled_fields # It would be nice if we could use reportable_fields instead
-    @inputs = phase.ideas.published
+    @inputs = phase.ideas.native_survey.published
     @locales = AppConfiguration.instance.settings('core', 'locales')
   end
 
