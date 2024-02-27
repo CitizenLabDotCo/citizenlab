@@ -117,6 +117,11 @@ const Summary = ({
         filters={filters}
         generatedAt={generatedAt}
         analysisId={analysisId}
+        projectId={projectId}
+        phaseId={phaseId}
+        additionalCustomFieldsIds={
+          data?.data.attributes.custom_field_ids?.additional_custom_field_ids
+        }
       />
 
       <Box display="flex" gap="16px">
@@ -222,6 +227,11 @@ const Question = ({
         filters={filters}
         generatedAt={generatedAt}
         analysisId={analysisId}
+        projectId={projectId}
+        phaseId={phaseId}
+        additionalCustomFieldsIds={
+          data?.data.attributes.custom_field_ids?.additional_custom_field_ids
+        }
       />
       <Box display="flex" gap="16px">
         <Button

@@ -103,6 +103,12 @@ const Summary = ({ insight }: Props) => {
           filters={summary.data.attributes.filters}
           generatedAt={summary.data.attributes.created_at}
           analysisId={analysisId}
+          projectId={projectId}
+          phaseId={phaseId}
+          additionalCustomFieldsIds={
+            summary.data.attributes.custom_field_ids
+              ?.additional_custom_field_ids
+          }
         />
       </Box>
 

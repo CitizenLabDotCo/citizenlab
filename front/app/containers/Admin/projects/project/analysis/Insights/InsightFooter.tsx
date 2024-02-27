@@ -10,15 +10,39 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { timeAgo } from 'utils/dateUtils';
 import useLocale from 'hooks/useLocale';
 import Tippy from '@tippyjs/react';
+import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
+import useLocalize from 'hooks/useLocalize';
+
+const CustomFieldTitle = ({ customFieldId, projectId, phaseId }) => {
+  const localize = useLocalize();
+  const containerId: { projectId?: string; phaseId?: string } = {};
+  if (phaseId) {
+    containerId.phaseId = phaseId;
+  } else {
+    containerId.projectId = projectId;
+  }
+  const { data: customField } = useIdeaCustomField({
+    customFieldId,
+    ...containerId,
+  });
+
+  return <>{localize(customField?.data.attributes.title_multiloc)}</>;
+};
 
 const InsightFooter = ({
   filters,
   generatedAt,
   analysisId,
+  projectId,
+  phaseId,
+  additionalCustomFieldsIds,
 }: {
   filters?: IInputsFilterParams;
   generatedAt?: string;
   analysisId: string;
+  projectId: string;
+  phaseId?: string;
+  additionalCustomFieldsIds?: string[];
 }) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
@@ -39,6 +63,8 @@ const InsightFooter = ({
     name: 'large_summaries',
     onlyCheckAllowed: true,
   });
+
+  console.log(additionalCustomFieldsIds);
   return (
     <Box
       display="flex"
@@ -74,6 +100,15 @@ const InsightFooter = ({
           </Text>
         </Box>
       </Tippy>
+
+      {additionalCustomFieldsIds?.map((customFieldId) => (
+        <CustomFieldTitle
+          key={customFieldId}
+          customFieldId={customFieldId}
+          projectId={projectId}
+          phaseId={phaseId}
+        />
+      ))}
 
       {generatedAt && (
         <Text m="0px" fontSize="s">

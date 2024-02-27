@@ -102,6 +102,12 @@ const Question = ({ insight }: Props) => {
           filters={question.data.attributes.filters}
           generatedAt={question.data.attributes.created_at}
           analysisId={analysisId}
+          projectId={projectId}
+          phaseId={phaseId}
+          additionalCustomFieldsIds={
+            question.data.attributes.custom_field_ids
+              ?.additional_custom_field_ids
+          }
         />
       </Box>
       <Box display="flex" gap="16px" alignItems="center" mt="16px">
