@@ -1132,7 +1132,6 @@
   "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceTwo": "crwdns1732226:0crwdne1732226:0",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "crwdns1732228:0{thresholdReachedStatusExplanationBold}crwdnd1732228:0{orgName}crwdne1732228:0",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "crwdns1732230:0crwdne1732230:0",
-  "app.containers.InitiativesShow.VoteControl.unvoteLink": "crwdns1732232:0crwdne1732232:0",
   "app.containers.InitiativesShow.VoteControl.vote": "crwdns1732234:0crwdne1732234:0",
   "app.containers.InitiativesShow.VoteControl.voted": "crwdns1732236:0crwdne1732236:0",
   "app.containers.InitiativesShow.VoteControl.votedText": "crwdns1732238:0x={x}crwdnd1732238:0xDays={xDays}crwdnd1732238:0xDays={xDays}crwdnd1732238:0xDays={xDays}crwdne1732238:0",
