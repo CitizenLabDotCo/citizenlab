@@ -1,18 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-  colors,
-  fontSizes,
-  media,
-  Box,
-  Icon,
-} from '@citizenlab/cl2-component-library';
+import { colors, Box, Icon } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from '../SharedStyles';
-import ProposalProgressBar from '../ProposalProgressBar';
 import T from 'components/T';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { StatusComponentProps } from '.';
+import ReactionCounter from './components/ReactionCounter';
 
 const Container = styled.div``;
 
@@ -25,33 +19,11 @@ const StatusIcon = styled(Icon)`
   margin-bottom: 20px;
 `;
 
-const ReactionCounter = styled.div`
-  margin-top: 15px;
-  ${media.tablet`
-    display: none;
-  `}
-`;
-
-const ReactionTexts = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding-bottom: 4px;
-`;
-
-const ReactionText = styled.div`
-  font-size: ${fontSizes.base}px;
-  color: ${colors.coolGrey600};
-`;
-
 const Expired = ({
   initiative,
-  initiativeSettings: { reacting_threshold },
+  initiativeSettings,
   initiativeStatus,
 }: StatusComponentProps) => {
-  const reactionCount = initiative.attributes.likes_count;
-  const reactionLimit = reacting_threshold;
-
   return (
     <Container>
       <Box mb="16px">
@@ -68,7 +40,9 @@ const Expired = ({
               <b>
                 <FormattedMessage
                   {...messages.expiredStatusExplanationBold}
-                  values={{ votingThreshold: reacting_threshold }}
+                  values={{
+                    votingThreshold: initiativeSettings.reacting_threshold,
+                  }}
                 />
               </b>
             ),
@@ -76,23 +50,11 @@ const Expired = ({
         />
       </StatusExplanation>
       <Box mb="24px">
-        <ReactionCounter>
-          <ReactionTexts aria-hidden={true}>
-            <ReactionText>
-              <FormattedMessage
-                {...messages.xVotes}
-                values={{ count: reactionCount }}
-              />
-            </ReactionText>
-            <ReactionText>{reactionLimit}</ReactionText>
-          </ReactionTexts>
-          <ProposalProgressBar
-            reactionCount={reactionCount}
-            reactionLimit={reactionLimit}
-            barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
-            bgShaded
-          />
-        </ReactionCounter>
+        <ReactionCounter
+          initiative={initiative}
+          initiativeSettings={initiativeSettings}
+          barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
+        />
       </Box>
     </Container>
   );

@@ -2,19 +2,17 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import {
   colors,
-  fontSizes,
-  media,
   Box,
   Icon,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from '../SharedStyles';
-import ProposalProgressBar from '../ProposalProgressBar';
 import T from 'components/T';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { StatusComponentProps } from '.';
 import ReadAnswerButton from './components/ReadAnswerButton';
+import ReactionCounter from './components/ReactionCounter';
 
 const StatusIcon = styled(Icon)`
   path {
@@ -25,34 +23,13 @@ const StatusIcon = styled(Icon)`
   margin-bottom: 20px;
 `;
 
-const ReactionCounter = styled.div`
-  margin-top: 15px;
-  ${media.tablet`
-    display: none;
-  `}
-`;
-
-const ReactionTexts = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding-bottom: 4px;
-`;
-
-const ReactionText = styled.div`
-  font-size: ${fontSizes.base}px;
-  color: ${colors.coolGrey600};
-`;
-
 const Ineligible = ({
   initiative,
-  initiativeSettings: { eligibility_criteria, reacting_threshold },
+  initiativeSettings,
   initiativeStatus,
   onScrollToOfficialFeedback,
 }: StatusComponentProps) => {
   const theme = useTheme();
-  const reactionCount = initiative.attributes.likes_count;
-  const reactionLimit = reacting_threshold;
 
   return (
     <Box>
@@ -78,36 +55,28 @@ const Ineligible = ({
           {(text) => (
             <>
               {text}
-              {eligibility_criteria && (
-                <IconTooltip
-                  icon="info-outline"
-                  iconColor={theme.colors.tenantText}
-                  theme="light"
-                  placement="bottom"
-                  content={<T value={eligibility_criteria} supportHtml />}
-                />
-              )}
+              <IconTooltip
+                icon="info-outline"
+                iconColor={theme.colors.tenantText}
+                theme="light"
+                placement="bottom"
+                content={
+                  <T
+                    value={initiativeSettings.eligibility_criteria}
+                    supportHtml
+                  />
+                }
+              />
             </>
           )}
         </FormattedMessage>
       </StatusExplanation>
       <Box mb="24px">
-        <ReactionCounter>
-          <ReactionTexts>
-            <ReactionText>
-              <FormattedMessage
-                {...messages.xVotes}
-                values={{ count: reactionCount }}
-              />
-            </ReactionText>
-            <ReactionText>{reactionLimit}</ReactionText>
-          </ReactionTexts>
-          <ProposalProgressBar
-            reactionCount={reactionCount}
-            reactionLimit={reactionLimit}
-            barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
-          />
-        </ReactionCounter>
+        <ReactionCounter
+          initiative={initiative}
+          initiativeSettings={initiativeSettings}
+          barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
+        />
       </Box>
       <ReadAnswerButton onClick={onScrollToOfficialFeedback} />
     </Box>
