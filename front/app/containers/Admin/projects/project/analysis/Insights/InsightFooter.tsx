@@ -17,7 +17,6 @@ const InsightFooter = ({
   analysisId,
 }: {
   filters?: IInputsFilterParams;
-
   generatedAt?: string;
   analysisId: string;
 }) => {
@@ -46,6 +45,7 @@ const InsightFooter = ({
       justifyContent="space-between"
       alignItems="center"
       w="100%"
+      pr="16px"
     >
       <Tippy
         content={formatMessage(messages.tooltipTextLimit)}

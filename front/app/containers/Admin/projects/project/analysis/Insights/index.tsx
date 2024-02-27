@@ -58,7 +58,7 @@ const Insights = () => {
       </Box>
       <Box
         m="0"
-        mb="12px"
+        my="8px"
         display="flex"
         justifyContent="center"
         alignItems="center"
