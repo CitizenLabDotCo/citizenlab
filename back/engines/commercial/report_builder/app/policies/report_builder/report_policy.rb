@@ -45,7 +45,7 @@ module ReportBuilder
       elsif user.present? && user.project_or_folder_moderator?
         if record.phase?
           if PhasePolicy.new(user, record.phase).show?
-            record.phase.started? || access_to_data?
+            (record.phase.started? && record.visible?) || access_to_data?
           else
             false
           end
@@ -82,7 +82,10 @@ module ReportBuilder
     end
 
     def phase_started_and_accessible?
-      record.phase? && PhasePolicy.new(user, record.phase).show? && record.phase.started?
+      record.phase? &&
+        PhasePolicy.new(user, record.phase).show? &&
+        record.phase.started? &&
+        record.visible?
     end
   end
 end
