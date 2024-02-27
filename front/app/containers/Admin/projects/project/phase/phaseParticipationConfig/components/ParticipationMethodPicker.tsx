@@ -152,11 +152,7 @@ const ParticipationMethodPicker = ({
               key="survey"
               title={formatMessage(messages2.surveyTitle)}
               subtitle={formatMessage(messages2.surveyDescription)}
-              onClick={(event) => {
-                event.preventDefault();
-                setShowSurveyOptions(true);
-                setSelectedMethod(null);
-              }}
+              onClick={(event) => handleMethodSelect(event, 'native_survey')}
               image={surveyImage}
               selected={showSurveyOptions}
             />
