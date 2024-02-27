@@ -390,6 +390,7 @@ class ProjectCopyService < TemplateService
         'zoom_level' => map_config.zoom_level&.to_f,
         'tile_provider' => map_config.tile_provider,
         'esri_web_map_id' => map_config.esri_web_map_id,
+        'esri_base_map_id' => map_config.esri_base_map_id,
         'created_at' => shift_timestamp(map_config.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(map_config.updated_at, shift_timestamps)&.iso8601
       }
