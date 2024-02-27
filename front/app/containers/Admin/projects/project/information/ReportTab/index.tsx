@@ -74,7 +74,7 @@ const ReportTab = () => {
                     visible: !report.data.attributes.visible,
                   });
                 }}
-                label={'Report visible to public'}
+                label={formatMessage(messages.reportVisible)}
               />
             </Box>
             <Buttons
