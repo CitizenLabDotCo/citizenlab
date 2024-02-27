@@ -1951,6 +1951,7 @@
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projects and folders",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI Analysis",
   "app.containers.AdminPage.projects.project.analysis.Insights.accuracy": "Accuracy: {accuracy}{percentage}",
+  "app.containers.AdminPage.projects.project.analysis.Insights.additionalCustomFields": "This insight also includes the following questions:",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Ask",
   "app.containers.AdminPage.projects.project.analysis.Insights.askAQuestionUpsellMessage": "Instead of summarising, you can ask relevant questions to your data. This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Ask a question",
