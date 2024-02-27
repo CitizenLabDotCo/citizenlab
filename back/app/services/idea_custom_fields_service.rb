@@ -46,8 +46,8 @@ class IdeaCustomFieldsService
     ignore_field_types = %w[page section date files image_files linear_scale file_upload]
     filtered_fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
 
-    # Currently, importing of latitude and longitude for point fields is not yet implemented, but the fields are still
-    # included in the importable fields list. This is because thiss list is used to generate the example template
+    # Importing of latitude and longitude for point fields is not yet implemented, but the fields are still
+    # included in the importable fields list. This is because this list is used to generate the example template
     # XLSX file, where we want to show the latitude and longitude fields as separate columns.
     replace_point_fields_with_lat_and_lon_point_fields(filtered_fields)
   end
