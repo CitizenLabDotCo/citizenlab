@@ -1119,6 +1119,7 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} av {votingThreshold} röster som krävs",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Röstningen är fortfarande öppen.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} tog emot förslaget och gav ett officiellt svar.",
+  "app.containers.InitiativesShow.VoteControl.cancelVote": "Avbryt röst",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "Detta förslag kräver vissa ändringar innan det kan godkännas.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Se den officiella uppdateringen för en förklaring av de begärda ändringarna.",
   "app.containers.InitiativesShow.VoteControl.days": "dagar",
