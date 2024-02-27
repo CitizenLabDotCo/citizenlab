@@ -194,7 +194,7 @@ const ParticipationMethodPicker = ({
               <Tippy
                 maxWidth="250px"
                 placement="right-end"
-                content={formatMessage(messages2.contactGovSuccessToAccess)}
+                content={formatMessage(messages.contactGovSuccessToAccess)}
                 // Don't show Tippy tooltip if the feature is enabled
                 disabled={documentAnnotationEnabled}
                 hideOnClick={false}
