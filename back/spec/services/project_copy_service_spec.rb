@@ -242,7 +242,7 @@ describe ProjectCopyService do
         'title_multiloc' => event.title_multiloc,
         'description_multiloc' => event.description_multiloc,
         'location_multiloc' => event.location_multiloc,
-        'location_point' => event.location_point_geojson,
+        'location_point_geojson' => event.location_point_geojson,
         'online_link' => event.online_link,
         'address_1' => event.address_1,
         'address_2_multiloc' => event.address_2_multiloc,

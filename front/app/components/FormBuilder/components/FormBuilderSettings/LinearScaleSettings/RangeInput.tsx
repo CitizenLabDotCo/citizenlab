@@ -60,7 +60,7 @@ const RangeInput = ({
                     value={value}
                     options={rangeOptions}
                     onChange={(value) => {
-                      setValue(maximumName, value.value);
+                      setValue(maximumName, value.value, { shouldDirty: true });
                     }}
                   />
                 </Box>

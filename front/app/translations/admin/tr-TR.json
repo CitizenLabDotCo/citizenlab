@@ -1891,6 +1891,7 @@
   "app.containers.AdminPage.groups.permissions.delete": "Silme",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Sil",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Sil",
+  "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Lütfen tüm seçenekler için bir başlık belirtin",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Evet-hayır (onay kutusu)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Tarih",
   "app.containers.AdminPage.groups.permissions.fieldType_multiline_text": "Uzun cevap",

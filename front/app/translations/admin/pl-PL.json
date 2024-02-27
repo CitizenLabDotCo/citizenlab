@@ -1891,6 +1891,7 @@
   "app.containers.AdminPage.groups.permissions.delete": "Usuń",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Usuń",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Usuń",
+  "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Podaj tytuł dla wszystkich opcji",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Tak-nie (pole wyboru)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Data",
   "app.containers.AdminPage.groups.permissions.fieldType_multiline_text": "Długa odpowiedź",

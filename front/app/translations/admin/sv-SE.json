@@ -1891,6 +1891,7 @@
   "app.containers.AdminPage.groups.permissions.delete": "Ta bort",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Radera",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Radera",
+  "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Ange en titel för alla alternativ",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Ja-nej (kryssruta)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Datum",
   "app.containers.AdminPage.groups.permissions.fieldType_multiline_text": "Långt svar",

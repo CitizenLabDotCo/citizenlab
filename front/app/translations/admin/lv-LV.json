@@ -1891,6 +1891,7 @@
   "app.containers.AdminPage.groups.permissions.delete": "Dzēst",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Dzēst",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Dzēst",
+  "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Lūdzu, norādiet nosaukumu visām izvēlēm",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Jā-nē (izvēles rūtiņa)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Datums",
   "app.containers.AdminPage.groups.permissions.fieldType_multiline_text": "Garā atbilde",

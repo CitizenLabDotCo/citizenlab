@@ -2648,6 +2648,7 @@ CREATE TABLE public.maps_map_configs (
     esri_web_map_id character varying,
     mappable_type character varying,
     mappable_id uuid
+    esri_base_map_id character varying
 );
 
 
@@ -7440,6 +7441,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240130170644'),
 ('20240206165004'),
 ('20240214125557'),
-('20240215170108');
-
-
+('20240215170108'),
+('20240226170510');

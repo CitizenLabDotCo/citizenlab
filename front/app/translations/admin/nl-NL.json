@@ -1891,6 +1891,7 @@
   "app.containers.AdminPage.groups.permissions.delete": "Verwijder",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Verwijder",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Verwijderen",
+  "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Geef alle keuzes een titel",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Ja-nee (selectievakje)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Datum",
   "app.containers.AdminPage.groups.permissions.fieldType_multiline_text": "Lang antwoord",

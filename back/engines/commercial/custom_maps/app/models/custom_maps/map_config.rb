@@ -13,6 +13,7 @@
 #  esri_web_map_id :string
 #  mappable_type   :string
 #  mappable_id     :uuid
+#  esri_base_map_id :string
 #
 # Indexes
 #

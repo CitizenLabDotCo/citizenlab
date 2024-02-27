@@ -1891,6 +1891,7 @@
   "app.containers.AdminPage.groups.permissions.delete": "Slet",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Slet",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Slet",
+  "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Angiv venligst en titel for alle valg",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Ja-nej (afkrydsningsfelt)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Dato",
   "app.containers.AdminPage.groups.permissions.fieldType_multiline_text": "Langt svar",
