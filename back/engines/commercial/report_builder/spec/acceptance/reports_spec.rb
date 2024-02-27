@@ -54,7 +54,8 @@ resource 'Reports' do
             },
             name: report.name,
             created_at: report.created_at.iso8601(3),
-            updated_at: report.updated_at.iso8601(3)
+            updated_at: report.updated_at.iso8601(3),
+            visible: false
           },
           relationships: {
             layout: { data: { id: layout.id, type: 'content_builder_layout' } },
@@ -113,7 +114,8 @@ resource 'Reports' do
             },
             name: name,
             created_at: be_a(String),
-            updated_at: be_a(String)
+            updated_at: be_a(String),
+            visible: false
           },
           relationships: {
             layout: { data: { id: be_a(String), type: 'content_builder_layout' } },
