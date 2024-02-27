@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -6,18 +7,15 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // components
 import {
   IconTooltip,
-  Radio,
   Text,
   Box,
-  Badge,
-  colors,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import { LabelHeaderDescription } from './shared/labels';
-import { ParticipationMethodRadio } from './shared/styling';
 import Warning from 'components/UI/Warning';
 import Tippy from '@tippyjs/react';
+import ParticipationMethodChoice from './ParticipationMethodChoice';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -32,7 +30,18 @@ import { isNilOrError } from 'utils/helperUtils';
 import { ApiErrors } from '..';
 import { IPhase, ParticipationMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-import MethodPicker from './MethodPicker';
+
+// assets
+import ideationImage from './assets/ideation.png';
+import surveyImage from './assets/survey.png';
+import votingImage from './assets/voting.png';
+import informationImage from './assets/information.png';
+import volunteeringImage from './assets/volunteering.png';
+import documentImage from './assets/document.png';
+
+const LeftAlignedList = styled.ul`
+  text-align: left;
+`;
 
 interface Props {
   participation_method: ParticipationMethod;
@@ -54,6 +63,9 @@ const ParticipationMethodPicker = ({
   handleParticipationMethodOnChange,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const [selectedMethod, setSelectedMethod] =
+    useState<ParticipationMethod | null>(participation_method);
+  const [showSurveyOptions, setShowSurveyOptions] = useState(false);
   const documentAnnotationAllowed = useFeatureFlag({
     name: 'konveio_document_annotation',
     onlyCheckAllowed: true,
@@ -70,9 +82,6 @@ const ParticipationMethodPicker = ({
   const volunteeringEnabled = useFeatureFlag({
     name: 'volunteering',
   });
-  const phaseReportsEnabled = useFeatureFlag({
-    name: 'phase_reports',
-  });
 
   const chooseParticipationMethod = () => {
     if (!isNilOrError(phase) && phase.data) {
@@ -87,6 +96,16 @@ const ParticipationMethodPicker = ({
     !isNilOrError(project) || !isNilOrError(phase?.data);
 
   const config = getMethodConfig(chooseParticipationMethod());
+
+  const handleMethodSelect = (event, method: ParticipationMethod) => {
+    event.preventDefault();
+    const isSurveyCategory = ['native_survey', 'survey', 'poll'].includes(
+      method
+    );
+    setShowSurveyOptions(isSurveyCategory);
+    setSelectedMethod(method);
+    handleParticipationMethodOnChange(method);
+  };
 
   return (
     <SectionField>
@@ -113,191 +132,157 @@ const ParticipationMethodPicker = ({
       )}
       {!config.isMethodLocked ? (
         <>
-          <MethodPicker />
-          <ParticipationMethodRadio
-            onChange={handleParticipationMethodOnChange}
-            currentValue={participation_method}
-            value="ideation"
-            name="participationmethod"
-            id="participationmethod-ideation"
-            label={
-              <LabelHeaderDescription
-                header={<FormattedMessage {...messages.inputAndFeedback} />}
-                description={
-                  <FormattedMessage {...messages.inputAndFeedbackDescription} />
-                }
+          <Box
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '16px',
+            }}
+          >
+            <ParticipationMethodChoice
+              key="ideation"
+              title={formatMessage(messages2.ideationTitle)}
+              subtitle={formatMessage(messages2.ideationDescription)}
+              onClick={(event) => handleMethodSelect(event, 'ideation')}
+              image={ideationImage}
+              selected={selectedMethod === 'ideation'}
+            />
+
+            <ParticipationMethodChoice
+              key="survey"
+              title={formatMessage(messages2.surveyTitle)}
+              subtitle={formatMessage(messages2.surveyDescription)}
+              onClick={(event) => {
+                event.preventDefault();
+                setShowSurveyOptions(true);
+                setSelectedMethod(null);
+              }}
+              image={surveyImage}
+              selected={showSurveyOptions}
+            />
+
+            <ParticipationMethodChoice
+              key="voting"
+              title={formatMessage(messages2.votingTitle)}
+              subtitle={formatMessage(messages2.votingDescription)}
+              onClick={(event) => handleMethodSelect(event, 'voting')}
+              image={votingImage}
+              selected={selectedMethod === 'voting'}
+            />
+
+            <ParticipationMethodChoice
+              key="information"
+              title={formatMessage(messages2.informationTitle)}
+              subtitle={formatMessage(messages2.informationDescription)}
+              onClick={(event) => handleMethodSelect(event, 'information')}
+              image={informationImage}
+              selected={selectedMethod === 'information'}
+            />
+
+            {volunteeringEnabled && (
+              <ParticipationMethodChoice
+                key="volunteering"
+                title={formatMessage(messages2.volunteeringTitle)}
+                subtitle={formatMessage(messages2.volunteeringDescription)}
+                onClick={(event) => handleMethodSelect(event, 'volunteering')}
+                image={volunteeringImage}
+                selected={selectedMethod === 'volunteering'}
               />
-            }
-          />
-          <ParticipationMethodRadio
-            onChange={handleParticipationMethodOnChange}
-            currentValue={participation_method}
-            value="voting"
-            name="participationmethod"
-            id="participationmethod-voting"
-            label={
-              <LabelHeaderDescription
-                header={
-                  <FormattedMessage
-                    {...messages.conductVotingOrPrioritizationText}
+            )}
+
+            {documentAnnotationAllowed && (
+              <Tippy
+                maxWidth="250px"
+                placement="right-end"
+                content={formatMessage(messages2.contactGovSuccessToAccess)}
+                // Don't show Tippy tooltip if the feature is enabled
+                disabled={documentAnnotationEnabled}
+                hideOnClick={false}
+              >
+                <div>
+                  <ParticipationMethodChoice
+                    key="document"
+                    title={formatMessage(messages2.documentTitle)}
+                    subtitle={formatMessage(messages2.documentDescription)}
+                    onClick={(event) =>
+                      handleMethodSelect(event, 'document_annotation')
+                    }
+                    image={documentImage}
+                    selected={selectedMethod === 'document_annotation'}
                   />
-                }
-                description={
-                  <FormattedMessage
-                    {...messages.conductVotingOrPrioritizationDescriptionText}
-                  />
-                }
-              />
-            }
-          />
-          {pollsEnabled && (
-            <ParticipationMethodRadio
-              onChange={handleParticipationMethodOnChange}
-              currentValue={participation_method}
-              value="poll"
-              name="participationmethod"
-              id="participationmethod-poll"
-              label={
-                <LabelHeaderDescription
-                  header={<FormattedMessage {...messages.createPoll} />}
-                  description={
-                    <FormattedMessage {...messages.createPollDescription} />
-                  }
-                />
-              }
-            />
-          )}
-          {nativeSurveysEnabled && (
-            <ParticipationMethodRadio
-              onChange={handleParticipationMethodOnChange}
-              currentValue={participation_method}
-              value="native_survey"
-              name="participationmethod"
-              id="participationmethod-native_survey"
-              disabled={isExistingProjectOrPhase}
-              label={
-                <LabelHeaderDescription
-                  disabled={isExistingProjectOrPhase}
-                  header={<FormattedMessage {...messages.createNativeSurvey} />}
-                  description={
-                    <FormattedMessage
-                      {...messages.createNativeSurveyDescription}
-                    />
-                  }
-                />
-              }
-            />
-          )}
-          {showSurveys && (
-            <ParticipationMethodRadio
-              onChange={handleParticipationMethodOnChange}
-              currentValue={participation_method}
-              value="survey"
-              name="participationmethod"
-              id="participationmethod-survey"
-              label={
-                <LabelHeaderDescription
-                  header={
-                    <FormattedMessage {...messages.createExternalSurveyText} />
-                  }
-                  description={
-                    <FormattedMessage {...messages.createSurveyDescription} />
-                  }
-                />
-              }
-            />
-          )}
-          {documentAnnotationAllowed && (
-            <Tippy
-              maxWidth="250px"
-              placement="right-end"
-              content={formatMessage(messages.contactGovSuccessToAccess)}
-              // Don't show Tippy tooltip if the feature is enabled
-              disabled={documentAnnotationEnabled}
-              hideOnClick={false}
-            >
-              <div>
-                <ParticipationMethodRadio
-                  disabled={!documentAnnotationEnabled}
-                  onChange={handleParticipationMethodOnChange}
-                  currentValue={participation_method}
-                  value="document_annotation"
-                  name="participationmethod"
-                  id="participationmethod-document_annotation"
-                  label={
-                    <LabelHeaderDescription
-                      disabled={!documentAnnotationEnabled}
-                      header={
-                        <FormattedMessage
-                          {...messages.documentAnnotationMethod}
-                        />
-                      }
-                      description={
-                        <FormattedMessage
-                          {...messages.documentAnnotationMethodDescription}
-                        />
-                      }
-                    />
-                  }
-                />
-              </div>
-            </Tippy>
-          )}
-          {volunteeringEnabled && (
-            <ParticipationMethodRadio
-              onChange={handleParticipationMethodOnChange}
-              currentValue={participation_method}
-              value="volunteering"
-              name="participationmethod"
-              id="participationmethod-volunteering"
-              label={
-                <LabelHeaderDescription
-                  header={<FormattedMessage {...messages.findVolunteers} />}
-                  description={
-                    <FormattedMessage
-                      {...messages.findVolunteersDescriptionText}
-                    />
-                  }
-                />
-              }
-            />
-          )}
-          <Radio
-            onChange={handleParticipationMethodOnChange}
-            currentValue={participation_method}
-            value="information"
-            name="participationmethod"
-            id="participationmethod-information"
-            label={
-              <LabelHeaderDescription
-                header={
-                  phaseReportsEnabled ? (
+                </div>
+              </Tippy>
+            )}
+
+            {showSurveyOptions && (
+              <>
+                <Box style={{ gridColumn: '1 / span 3' }}>
+                  <Title my="0px" variant="h6" color="primary" textAlign="left">
+                    {formatMessage(messages2.surveyOptions)}
+                  </Title>
+                </Box>
+
+                {nativeSurveysEnabled && (
+                  <ParticipationMethodChoice
+                    onClick={(event) =>
+                      handleMethodSelect(event, 'native_survey')
+                    }
+                    title={formatMessage(messages2.survey)}
+                    selected={selectedMethod === 'native_survey'}
+                  >
                     <>
-                      <FormattedMessage
-                        {...messages2.shareInformationOrResults}
-                      />
-                      <Box display="inline" ml="8px">
-                        <Badge className="inverse" color={colors.primary}>
-                          <FormattedMessage {...messages2.new} />
-                        </Badge>
-                      </Box>
+                      <LeftAlignedList>
+                        <li>
+                          <FormattedMessage {...messages2.aiPoweredInsights} />
+                        </li>
+                        <li>
+                          <FormattedMessage {...messages2.manyQuestionTypes} />
+                        </li>
+                        <li>
+                          <FormattedMessage {...messages2.logic} />
+                        </li>
+                        <li>
+                          <FormattedMessage
+                            {...messages2.linkWithReportBuilder}
+                          />
+                        </li>
+                      </LeftAlignedList>
                     </>
-                  ) : (
-                    <FormattedMessage {...messages.shareInformation} />
-                  )
-                }
-                description={
-                  phaseReportsEnabled ? (
-                    <FormattedMessage {...messages2.provideInformation} />
-                  ) : (
-                    <FormattedMessage
-                      {...messages.shareInformationDescription}
-                    />
-                  )
-                }
-              />
-            }
-          />
+                  </ParticipationMethodChoice>
+                )}
+
+                {pollsEnabled && (
+                  <ParticipationMethodChoice
+                    onClick={(event) => handleMethodSelect(event, 'poll')}
+                    title={formatMessage(messages2.quickPoll)}
+                    selected={selectedMethod === 'poll'}
+                  >
+                    <>{formatMessage(messages2.quickPollDescription)}</>
+                  </ParticipationMethodChoice>
+                )}
+
+                {showSurveys && (
+                  <ParticipationMethodChoice
+                    onClick={(event) => handleMethodSelect(event, 'survey')}
+                    title={formatMessage(messages2.externalSurvey)}
+                    selected={selectedMethod === 'survey'}
+                  >
+                    <>
+                      <FormattedMessage {...messages2.embedSurvey} />
+                      <LeftAlignedList>
+                        <li>
+                          <FormattedMessage {...messages2.lacksAIText} />
+                        </li>
+                        <li>
+                          <FormattedMessage {...messages2.lacksReportingText} />
+                        </li>
+                      </LeftAlignedList>
+                    </>
+                  </ParticipationMethodChoice>
+                )}
+              </>
+            )}
+          </Box>
           <Error apiErrors={apiErrors && apiErrors.participation_method} />
         </>
       ) : (
