@@ -1119,6 +1119,7 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} vun {votingThreshold} erfuerderleche Stëmmen",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} D'Ofstëmme bleift op.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} huet de Virschlag kritt an eng offiziell Äntwert ginn.",
+  "app.containers.InitiativesShow.VoteControl.cancelVote": "Ofstëmmen ofbriechen",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "Dës Propositioun brauch e puer Ännerungen ier se guttgeheescht ka ginn.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Kuckt den offiziellen Update fir eng Erklärung vun den ugefrote Ännerungen.",
   "app.containers.InitiativesShow.VoteControl.days": "Deeg",
