@@ -13,6 +13,7 @@ import ReadAnswerButton from './components/ReadAnswerButton';
 import VoteButtons from './components/VoteButtons';
 import ReactionCounter from './components/ReactionCounter';
 import CountDown from './components/CountDown';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const scaleIn = keyframes`
   0% {
@@ -90,6 +91,8 @@ const Status = ({
     <Box display="flex" flexDirection="column">
       {showCountDown && (
         <Box ml="auto" mb="24px">
+          {/* Translation is still coming in a later PR. This is not visible. */}
+          <ScreenReaderOnly>Time left to vote:</ScreenReaderOnly>
           {/* Still add (hidden) heading */}
           <CountDown targetTime={initiative.attributes.expires_at} />
         </Box>
