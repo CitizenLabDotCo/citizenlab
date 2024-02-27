@@ -426,6 +426,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            report_data_grouping: {
+              enabled: true,
+              allowed: true
+            },
             input_form_custom_fields: {
               enabled: true,
               allowed: true
