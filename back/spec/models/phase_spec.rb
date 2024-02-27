@@ -70,7 +70,7 @@ RSpec.describe Phase do
       expect(p.save).to be true
     end
 
-    it 'can be changed from a transitive method to another one' do
+    it 'can be changed from ideation to voting' do
       phase = create(:phase, participation_method: 'ideation')
       phase.participation_method = 'voting'
       phase.voting_method = 'budgeting'
@@ -79,21 +79,19 @@ RSpec.describe Phase do
       expect(phase.save).to be true
     end
 
-    it 'cannot be changed from a transitive method to a non-transitive one' do
+    it 'can be changed from ideation to native_survey' do
       phase = create(:phase, participation_method: 'ideation')
       phase.participation_method = 'native_survey'
       phase.ideas_order = nil
-      expect(phase.save).to be false
-      expect(phase.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
+      expect(phase.save).to be true
     end
 
-    it 'cannot be changed from a non-transitive method to a transitive one' do
+    it 'can be changed from native_survey to ideation' do
       phase = create(:phase, participation_method: 'native_survey')
       phase.participation_method = 'voting'
       phase.voting_method = 'budgeting'
       phase.voting_max_total = 200
-      expect(phase.save).to be false
-      expect(phase.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
+      expect(phase.save).to be true
     end
   end
 

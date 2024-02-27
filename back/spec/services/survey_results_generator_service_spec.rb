@@ -389,7 +389,7 @@ RSpec.describe SurveyResultsGeneratorService do
     create(:idea_status_proposed)
     idea_file = create(:idea_file)
     create(
-      :idea,
+      :native_survey_response,
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
@@ -401,7 +401,7 @@ RSpec.describe SurveyResultsGeneratorService do
       idea_files: [idea_file]
     )
     create(
-      :idea,
+      :native_survey_response,
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
@@ -411,7 +411,7 @@ RSpec.describe SurveyResultsGeneratorService do
       }
     )
     create(
-      :idea,
+      :native_survey_response,
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
@@ -423,7 +423,7 @@ RSpec.describe SurveyResultsGeneratorService do
       }
     )
     create(
-      :idea,
+      :native_survey_response,
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
@@ -435,7 +435,7 @@ RSpec.describe SurveyResultsGeneratorService do
       }
     )
     create(
-      :idea,
+      :native_survey_response,
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
@@ -444,7 +444,7 @@ RSpec.describe SurveyResultsGeneratorService do
       }
     )
     create(
-      :idea,
+      :native_survey_response,
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
@@ -452,12 +452,12 @@ RSpec.describe SurveyResultsGeneratorService do
         "#{select_field.key}_other" => 'Seattle'
       }
     )
-    create(:idea, project: project, phases: phases_of_inputs, custom_field_values: {})
+    create(:native_survey_response, project: project, phases: phases_of_inputs, custom_field_values: {})
 
     { 1 => 2, 2 => 5, 3 => 7, 4 => 0, 5 => 1 }.each do |value, count|
       count.times do
         create(
-          :idea,
+          :native_survey_response,
           project: project,
           phases: phases_of_inputs,
           custom_field_values: { linear_scale_field.key => value }
