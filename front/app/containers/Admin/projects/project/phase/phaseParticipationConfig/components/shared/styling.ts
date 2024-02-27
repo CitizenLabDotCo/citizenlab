@@ -59,10 +59,6 @@ export const StyledA = styled.a`
   }
 `;
 
-export const ParticipationMethodRadio = styled(Radio)`
-  margin-bottom: 25px;
-`;
-
 export const LabelText = styled.div`
   display: flex;
   flex-direction: column;
