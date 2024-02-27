@@ -221,12 +221,14 @@ const LargerThanPhone = ({
                 <CosponsorShipReminder initiativeId={initiativeId} />
               </Box>
             )}
-            <StyledTopics
-              postType="initiative"
-              postTopicIds={initiative.data.relationships.topics.data.map(
-                (topic) => topic.id
-              )}
-            />
+            {initiative.data.relationships.topics.data.length > 0 && (
+              <StyledTopics
+                postType="initiative"
+                postTopicIds={initiative.data.relationships.topics.data.map(
+                  (topic) => topic.id
+                )}
+              />
+            )}
             <InitiativeHeader>
               <Title
                 postType="initiative"
@@ -300,7 +302,7 @@ const LargerThanPhone = ({
                 <FormattedMessage tagName="h2" {...messages.a11y_voteControl} />
               </ScreenReaderOnly>
               <ReactionControl
-                initiativeId={initiativeId}
+                initiative={initiative}
                 onScrollToOfficialFeedback={onScrollToOfficialFeedback}
                 id="e2e-initiative-reaction-control"
               />
