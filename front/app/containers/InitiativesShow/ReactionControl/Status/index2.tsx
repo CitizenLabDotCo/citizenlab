@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Box, Icon, IconNames } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from '../SharedStyles';
 import T from 'components/T';
@@ -9,12 +9,24 @@ import VoteButtons from './components/VoteButtons';
 import ReactionCounter from './components/ReactionCounter';
 import CountDown from '../CountDown';
 
+const scaleIn = keyframes`
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
 const StatusIcon = styled(Icon)`
   path {
     fill: ${(props) => props.theme.colors.tenantText};
   }
   width: 30px;
   height: 30px;
+  animation: ${scaleIn} 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 `;
 
 interface Props extends StatusComponentProps {
@@ -22,9 +34,9 @@ interface Props extends StatusComponentProps {
   statusExplanation: React.ReactNode;
   barColor?: string;
   showCountDown: boolean;
-  showVoteButtons?: boolean;
+  showVoteButtons: boolean;
+  showReadAnswerButton: boolean;
   cancelReactionDisabled?: boolean;
-  showReadAnswerButton?: boolean;
 }
 
 const Status = ({
@@ -38,10 +50,11 @@ const Status = ({
   iconName,
   statusExplanation,
   barColor,
-  cancelReactionDisabled = false,
-  showVoteButtons = false,
-  showReadAnswerButton = false,
   showCountDown,
+  showVoteButtons,
+  showReadAnswerButton,
+  cancelReactionDisabled = false,
+  disabledReason,
 }: Props) => {
   return (
     <Box display="flex" flexDirection="column">
@@ -74,6 +87,7 @@ const Status = ({
             onReaction={onReaction}
             userReacted={userReacted}
             cancelReactionDisabled={cancelReactionDisabled}
+            disabledReason={disabledReason}
           />
         </Box>
       )}

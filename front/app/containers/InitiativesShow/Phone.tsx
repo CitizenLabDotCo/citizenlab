@@ -215,14 +215,16 @@ const Phone = ({
         <ScreenReaderOnly>
           <FormattedMessage tagName="h2" {...messages.invisibleTitleContent} />
         </ScreenReaderOnly>
-        <Box mb="20px">
-          <Topics
-            postType="initiative"
-            postTopicIds={initiative.data.relationships.topics.data.map(
-              (topic) => topic.id
-            )}
-          />
-        </Box>
+        {initiative.data.relationships.topics.data.length > 0 && (
+          <Box mb="20px">
+            <Topics
+              postType="initiative"
+              postTopicIds={initiative.data.relationships.topics.data.map(
+                (topic) => topic.id
+              )}
+            />
+          </Box>
+        )}
         <Box mb="32px">
           <Body
             postId={initiativeId}
