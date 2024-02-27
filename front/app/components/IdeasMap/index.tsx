@@ -152,9 +152,7 @@ const IdeasMap = memo<Props>(
     const [clickedMapLocation, setClickedMapLocation] =
       useState<GeoJSON.Point | null>(null);
 
-    const selectedIdea = useMemo(() => {
-      return searchParams.get('idea_map_id');
-    }, [searchParams]);
+    const selectedIdea = searchParams.get('idea_map_id');
 
     const setSelectedIdea = useCallback((ideaId: string | null) => {
       if (ideaId) {
