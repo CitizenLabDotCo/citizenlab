@@ -728,7 +728,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Por favor, selecione uma fase de idealização.",
   "app.containers.Admin.projects.all.askPersonalData": "Solicitar dados pessoais",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Clique em 'Exportar como PDF' abaixo para baixar uma versão em PDF do formulário de entrada. Esteja ciente de que no momento os campos Imagens, Upload de Arquivos, Tags e Escala Linear não são suportados para a versão pdf.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Clique em 'Exportar como PDF' abaixo para baixar uma versão em PDF da pesquisa. Esteja ciente de que no momento os campos Escala Linear e Upload de Arquivo não são suportados para a versão pdf.",
   "app.containers.Admin.projects.all.components.archived": "Arquivado",
   "app.containers.Admin.projects.all.components.draft": "Rascunho",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Gerenciar",

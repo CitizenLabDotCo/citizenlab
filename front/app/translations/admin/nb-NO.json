@@ -728,7 +728,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Velg en idéfase.",
   "app.containers.Admin.projects.all.askPersonalData": "Spør personlige data",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Klikk \"Eksporter som pdf\" nedenfor for å laste ned en pdf-versjon av inndataskjemaet. Vær oppmerksom på at feltene Bilder, Filopplasting, Tagger og Lineær skala for øyeblikket ikke støttes for pdf-versjonen.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Klikk \"Eksporter som pdf\" nedenfor for å laste ned en pdf-versjon av undersøkelsen. Vær oppmerksom på at for øyeblikket støttes ikke feltene Lineær skala og Filopplasting for pdf-versjonen.",
   "app.containers.Admin.projects.all.components.archived": "Arkivert",
   "app.containers.Admin.projects.all.components.draft": "Utkast",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Rediger",
