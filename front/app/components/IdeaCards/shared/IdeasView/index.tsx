@@ -3,7 +3,7 @@ import IdeasList from './IdeasList';
 import IdeasMap from 'components/IdeasMap';
 import { IIdeaData } from 'api/ideas/types';
 import { IdeaDefaultSortMethod } from 'api/phases/types';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import useMapConfig from 'api/map_config/useMapConfig';
 
 interface Props {
@@ -34,7 +34,11 @@ const IdeasView = ({
   loadingMore,
   onLoadMore,
 }: Props) => {
-  const { data: mapConfig } = useMapConfig(projectId);
+  const { data: mapConfig, isLoading } = useMapConfig(projectId);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>
