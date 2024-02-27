@@ -79,6 +79,7 @@ group :test do
 
   # Adds rspec matchers and helpers for testing html structure and styling.
   gem 'capybara', '~> 3.39'
+  # gem 'bullet'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
