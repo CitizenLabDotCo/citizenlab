@@ -17,20 +17,19 @@ resource 'Reactions' do
     create_list(:reaction2, 2, :for_initiative, created_at: '2020-01-02', updated_at: '2021-01-02')
   end
 
-  let_it_be(:comment_reactions) do
-    idea_comment = create(:comment)
-    initiative_comment = create(:comment, :on_initiative)
+  # Comment reactions
+  let_it_be(:idea_comment_reaction) do
+    create(
+      :reaction2, reactable: create(:comment),
+      created_at: '2020-01-03', updated_at: '2021-01-03'
+    )
+  end
 
-    [
-      create(
-        :reaction2, reactable: initiative_comment,
-        created_at: '2020-01-03', updated_at: '2021-01-03'
-      ),
-      create(
-        :reaction2, reactable: idea_comment,
-        created_at: '2020-01-03', updated_at: '2021-01-03'
-      )
-    ]
+  let_it_be(:initiative_comment_reaction) do
+    create(
+      :reaction2, reactable: create(:comment, :on_initiative),
+      created_at: '2020-01-03', updated_at: '2021-01-03'
+    )
   end
 
   get '/api/v2/reactions' do
@@ -78,6 +77,16 @@ resource 'Reactions' do
       expect(idea[:initiative_id]).to be_nil
       expect(idea[:idea_id]).not_to be_nil
       expect(idea[:project_id]).not_to be_nil
+
+      initiative_comment = json_response_body[:reactions].find { |r| r[:id] == initiative_comment_reaction.id }
+      expect(initiative_comment[:initiative_id]).not_to be_nil
+      expect(initiative_comment[:idea_id]).to be_nil
+      expect(initiative_comment[:project_id]).to be_nil
+
+      idea_comment = json_response_body[:reactions].find { |r| r[:id] == idea_comment_reaction.id }
+      expect(idea_comment[:initiative_id]).to be_nil
+      expect(idea_comment[:idea_id]).not_to be_nil
+      expect(idea_comment[:project_id]).not_to be_nil
     end
 
     context 'when the page size is smaller than the total number of reactions' do
@@ -127,7 +136,7 @@ resource 'Reactions' do
 
       example_request 'Lists only the reactions for comments' do
         assert_status 200
-        expect(json_response_body[:reactions].size).to eq(comment_reactions.size)
+        expect(json_response_body[:reactions].size).to eq(2)
       end
     end
 
