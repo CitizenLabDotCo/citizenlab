@@ -1119,6 +1119,7 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "مطلوب {xVotes} من أصل {votingThreshold} صوت/أصوات",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} لا يزال التصويت مفتوحًا.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "تم استلام المُقترح من قِبل {orgName} وتقديم إجابة رسمية.",
+  "app.containers.InitiativesShow.VoteControl.cancelVote": "ألغِ التصويت",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "يحتاج هذا الاقتراح إلى بعض التغييرات قبل الموافقة عليه.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "تحقق من التحديث الرسمي للحصول على شرح للتغييرات المطلوبة.",
   "app.containers.InitiativesShow.VoteControl.days": "أيام",
