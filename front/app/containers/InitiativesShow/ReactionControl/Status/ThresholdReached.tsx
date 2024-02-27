@@ -1,14 +1,6 @@
 import React from 'react';
-import styled, { useTheme } from 'styled-components';
-import {
-  Box,
-  Icon,
-  IconTooltip,
-  colors,
-} from '@citizenlab/cl2-component-library';
-
-// components
-import { StatusWrapper, StatusExplanation } from '../SharedStyles';
+import { useTheme } from 'styled-components';
+import { IconTooltip, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
@@ -17,39 +9,17 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // Types
 import { StatusComponentProps } from '.';
-import VoteButtons from './components/VoteButtons';
-import ReactionCounter from './components/ReactionCounter';
+import Status from './index2';
 
-const Container = styled.div``;
-
-const StatusIcon = styled(Icon)`
-  path {
-    fill: ${(props) => props.theme.colors.tenantText};
-  }
-  width: 30px;
-  height: 30px;
-  margin-bottom: 20px;
-`;
-
-const ThresholdReached = ({
-  initiative,
-  initiativeSettings,
-  initiativeStatus,
-  userReacted,
-  onReaction,
-}: StatusComponentProps) => {
+const ThresholdReached = (props: StatusComponentProps) => {
   const theme = useTheme();
 
   return (
-    <Container>
-      <Box mb="16px">
-        <StatusWrapper>
-          <T value={initiativeStatus.attributes.title_multiloc} />
-        </StatusWrapper>
-      </Box>
-      <StatusIcon ariaHidden name="email-check" />
-      <Box mb="24px">
-        <StatusExplanation>
+    <Status
+      {...props}
+      iconName="email-check"
+      statusExplanation={
+        <>
           <FormattedMessage
             {...messages.thresholdReachedStatusExplanation}
             values={{
@@ -69,24 +39,18 @@ const ThresholdReached = ({
             placement="bottom"
             content={
               <T
-                value={initiativeSettings.threshold_reached_message}
+                value={props.initiativeSettings.threshold_reached_message}
                 supportHtml
               />
             }
           />
-        </StatusExplanation>
-      </Box>
-      <Box mb="24px">
-        <ReactionCounter
-          initiative={initiative}
-          initiativeSettings={initiativeSettings}
-          barColor={colors.green500}
-        />
-      </Box>
-      <Box mb="8px">
-        <VoteButtons onReaction={onReaction} userReacted={userReacted} />
-      </Box>
-    </Container>
+        </>
+      }
+      barColor={colors.success}
+      showCountDown
+      showVoteButtons
+      cancelReactionDisabled
+    />
   );
 };
 

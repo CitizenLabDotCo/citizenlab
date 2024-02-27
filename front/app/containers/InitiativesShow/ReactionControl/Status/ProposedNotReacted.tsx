@@ -206,6 +206,7 @@ const ProposedNotReacted = ({
             onCancelReaction={onCancelReaction}
             onReaction={onReaction}
             userReacted={userReacted}
+            cancelReactionDisabled={false}
           />
         </div>
       </Tippy>
