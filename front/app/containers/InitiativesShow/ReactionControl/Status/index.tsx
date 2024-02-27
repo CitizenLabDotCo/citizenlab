@@ -4,6 +4,7 @@ import {
   Box,
   Icon,
   IconNames,
+  colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
@@ -107,7 +108,7 @@ const Status = ({
           <ReactionCounter
             initiative={initiative}
             initiativeSettings={initiativeSettings}
-            barColor={barColor}
+            barColor={barColor || colors.success}
           />
         </Box>
       )}
