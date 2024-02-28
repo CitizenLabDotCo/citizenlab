@@ -43,6 +43,12 @@ resource 'Comments' do
       assert_status 200
       expect(json_response_body[:comments].size).to eq 5
       expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
+      expect(json_response_body[:comments].first.keys).to match_array(
+        %i[
+          id body post_type post_id project_id parent_id author_id created_at updated_at
+          body_updated_at children_count dislikes_count likes_count publication_status
+        ]
+      )
     end
 
     context 'when the page size is smaller than the total number of comments' do
