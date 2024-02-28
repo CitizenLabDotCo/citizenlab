@@ -89,8 +89,8 @@ const IdeationConfigurationMap = memo<Props>(
             showLayerVisibilityControl: true,
             showLegend: true,
             onInit: onMapInit,
-            webMapId: mapConfig.data.attributes.esri_web_map_id,
           }}
+          webMapId={mapConfig.data.attributes.esri_web_map_id}
           height={'700px'}
           layers={mapLayers}
           onHover={onHover}

@@ -63,6 +63,7 @@ export type EsriMapProps = {
   initialData?: InitialData;
   layers?: Layer[];
   graphics?: Graphic[];
+  webMapId?: string | null;
   onClick?: (event: any, mapView: MapView) => void;
   onHover?: (event: any, mapView: MapView) => void;
   globalMapSettings: AppConfigurationMapSettings;
@@ -77,7 +78,6 @@ type InitialData = {
   showLegend?: boolean;
   showLayerVisibilityControl?: boolean;
   zoomWidgetLocation?: 'left' | 'right';
-  webMapId?: string | null;
   onInit?: (mapView: MapView) => void;
 };
 
@@ -89,6 +89,7 @@ const EsriMap = ({
   graphics,
   onClick,
   onHover,
+  webMapId,
   initialData,
   globalMapSettings,
 }: EsriMapProps) => {
@@ -165,10 +166,10 @@ const EsriMap = ({
       };
 
       // Set web map if it was provided
-      if (initialData?.webMapId) {
+      if (webMapId) {
         const webMap = new WebMap({
           portalItem: {
-            id: initialData?.webMapId,
+            id: webMapId,
           },
         });
 
@@ -235,7 +236,14 @@ const EsriMap = ({
 
       initialValuesLoaded.current = true;
     }
-  }, [globalMapSettings, initialData, isMobileOrSmaller, map, mapView]);
+  }, [
+    globalMapSettings,
+    initialData,
+    isMobileOrSmaller,
+    map,
+    mapView,
+    webMapId,
+  ]);
 
   // Load dynamic data that was passed in.
   // Note: This data is dynamic and may change.
@@ -317,10 +325,10 @@ const EsriMap = ({
 
   useEffect(() => {
     // Set web map if it was provided
-    if (initialData?.webMapId && mapView) {
+    if (webMapId && mapView) {
       const webMap = new WebMap({
         portalItem: {
-          id: initialData.webMapId,
+          id: webMapId,
         },
       });
       mapView.map = webMap;
@@ -330,7 +338,7 @@ const EsriMap = ({
       mapView.map = map;
       setWebMap(null);
     }
-  }, [initialData?.webMapId, layers, map, mapView]);
+  }, [webMapId, layers, map, mapView]);
 
   return (
     <>
