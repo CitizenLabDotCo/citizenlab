@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "Došlo je do problema prilikom slanja obrasca. Molimo vas da provjerite pogreške i pokušate ponovo.",
   "app.components.formBuilder.Page": "Stranica",
   "app.components.formBuilder.addAnswer": "Dodaj odgovor",
+  "app.components.formBuilder.ai": "AI",
+  "app.components.formBuilder.aiUpsellText": "Ako imate pristup našem AI paketu, moći ćete sažeti i kategorizirati tekstualne odgovore pomoću AI",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Otkazati",
   "app.components.formBuilder.chooseMany": "Odaberite mnogo",
   "app.components.formBuilder.chooseOne": "Odaberite jedan",
