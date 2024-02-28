@@ -1937,6 +1937,7 @@
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Utilizzare questa impostazione se è importante raccogliere nome, cognome e risposte alle domande demografiche a livello di piattaforma. Potrebbe aumentare la barriera alla partecipazione.",
   "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Le risposte alle domande demografiche saranno memorizzate nei profili degli utenti. Le domande verranno poste solo agli utenti che non hanno mai risposto prima. Le risposte a queste domande saranno accessibili anche tramite l'esportazione dei dati di partecipazione, accessibile sia ai moderatori che agli amministratori.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Porre domande ai partecipanti",
+  "app.containers.AdminPage.phase.methodPicker.addOn": "Aggiungi",
   "app.containers.AdminPage.phase.methodPicker.aiPoweredInsights": "Approfondimenti basati sull'intelligenza artificiale",
   "app.containers.AdminPage.phase.methodPicker.documentDescription": "Incorpora un PDF interattivo e raccogli commenti e feedback con Konveio.",
   "app.containers.AdminPage.phase.methodPicker.documentTitle": "Raccogli il feedback su un documento",
