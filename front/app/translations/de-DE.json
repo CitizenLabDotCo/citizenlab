@@ -1491,7 +1491,7 @@
   "app.containers.SignUp.skip": "Diesen Schritt überspringen",
   "app.containers.SignUp.tacError": "Sie müssen unseren Nutzungsbedingungen zustimmen, um fortfahren zu können",
   "app.containers.SignUp.thePrivacyPolicy": "die Verarbeitung meiner personenbezogenen Daten zu den in den Datenschutzinformationen angeführten Zwecken",
-  "app.containers.SignUp.theTermsAndConditions": "die Nutzungsbedingungen",
+  "app.containers.SignUp.theTermsAndConditions": "den Nutzungsbedingungen",
   "app.containers.SignUp.unknownError": "Etwas ging schief. Bitte versuchen Sie es später nochmal.",
   "app.containers.SignUp.viennaConsentEmail": "E-Mail-Adresse",
   "app.containers.SignUp.viennaConsentFirstName": "Vorname (sofern vorhanden)",
