@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "C'è stato un problema nell'invio del modulo. Si prega di controllare eventuali errori e riprovare.",
   "app.components.formBuilder.Page": "Pagina",
   "app.components.formBuilder.addAnswer": "Aggiungi risposta",
+  "app.components.formBuilder.ai": "AI",
+  "app.components.formBuilder.aiUpsellText": "Se hai accesso al nostro pacchetto AI, sarai in grado di riassumere e categorizzare le risposte al testo con l'AI.",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Annullamento",
   "app.components.formBuilder.chooseMany": "Scegliere molti",
   "app.components.formBuilder.chooseOne": "Scegliere uno",
