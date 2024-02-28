@@ -1937,6 +1937,7 @@
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Benotzt dës Astellung wann Numm, Familljennumm an Äntwerten op demographesch Froen op Plattformniveau fir Iech wichteg ass. Et kann d'Barrière fir d'Participatioun erhéijen.",
   "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Äntwerten op demographesch Froen ginn a Benotzerprofile gespäichert. Froen ginn nëmme fir Benotzer gefrot, déi se net virdrun geäntwert hunn. Äntwerten op dës Froen wäerten och zougänglech sinn iwwer den Export vun Participatiounsdaten, dee souwuel fir Moderatoren wéi och Admins zougänglech ass.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Stellt Froen un d'Participanten",
+  "app.containers.AdminPage.phase.methodPicker.addOn": "Zousaz",
   "app.containers.AdminPage.phase.methodPicker.aiPoweredInsights": "AI-ugedriwwen Abléck",
   "app.containers.AdminPage.phase.methodPicker.documentDescription": "Embed en interaktiven PDF a sammelt Kommentaren a Feedback mat Konveio.",
   "app.containers.AdminPage.phase.methodPicker.documentTitle": "Sammelt Feedback op engem Dokument",
