@@ -89,13 +89,21 @@ export default defineMessages({
     defaultMessage:
       'Instead of summarising, you can ask relevant questions to your data. This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
   },
-  inputsSelected: {
-    id: 'app.containers.Admin.projects.project.analysis.Insights.inputsSelected',
-    defaultMessage: 'inputs selected',
-  },
   tooltipTextLimit: {
-    id: 'app.containers.Admin.projects.project.analysis.Insights.tooltipTextLimit',
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.tooltipTextLimit',
     defaultMessage:
       'You can summarise a maximum of 30 inputs at a time on your current plan. Talk to your GovSuccess Manager or admin to unlock more.',
+  },
+  inputsSelected: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.inputsSelected',
+    defaultMessage: 'inputs selected',
+  },
+  additionalCustomFields: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.customFields',
+    defaultMessage: 'This insight includes the following questions:',
+  },
+  aiSummary: {
+    id: 'app.containers.Admin.projects.project.analysis.aiSummary',
+    defaultMessage: 'AI summary',
   },
 });

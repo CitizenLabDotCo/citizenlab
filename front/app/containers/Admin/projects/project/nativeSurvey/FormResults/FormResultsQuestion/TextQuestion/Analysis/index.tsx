@@ -18,8 +18,19 @@ import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import messages from '../../../messages';
 import { useIntl } from 'utils/cl-intl';
+import styled from 'styled-components';
 
-const Analysis = ({ customFieldId }: { customFieldId: string }) => {
+const StyledDropdownListItem = styled(DropdownListItem)`
+  text-align: left;
+`;
+
+const Analysis = ({
+  customFieldId,
+  textResponsesCount,
+}: {
+  customFieldId: string;
+  textResponsesCount: number;
+}) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const { formatMessage } = useIntl();
   const { mutate: addAnalysis } = useAddAnalysis();
@@ -44,7 +55,12 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
 
   // Create an analysis if there are no analyses yet
   useEffect(() => {
-    if (analyses && customFieldId && !relevantAnalysis) {
+    if (
+      analyses &&
+      customFieldId &&
+      !relevantAnalysis &&
+      textResponsesCount > 10
+    ) {
       addAnalysis({
         projectId: phaseId ? undefined : projectId,
         phaseId,
@@ -58,6 +74,7 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
     projectId,
     phaseId,
     addAnalysis,
+    textResponsesCount,
   ]);
 
   const toggleDropdown = () => {
@@ -91,7 +108,7 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
               onClickOutside={() => setDropdownOpened(false)}
               content={
                 <>
-                  <DropdownListItem
+                  <StyledDropdownListItem
                     onClick={() => {
                       updateAnalysis(
                         {
@@ -111,7 +128,7 @@ const Analysis = ({ customFieldId }: { customFieldId: string }) => {
                     ) : (
                       formatMessage(messages.hideSummaries)
                     )}
-                  </DropdownListItem>
+                  </StyledDropdownListItem>
                 </>
               }
             />

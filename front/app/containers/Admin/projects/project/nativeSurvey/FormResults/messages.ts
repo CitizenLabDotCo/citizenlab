@@ -96,10 +96,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.explore',
     defaultMessage: 'Explore',
   },
-  aiSummary: {
-    id: 'app.containers.Admin.projects.project.survey.aiSummary',
-    defaultMessage: 'AI summary',
-  },
   accuracy: {
     id: 'app.containers.Admin.projects.project.survey.analysis.accuracy',
     defaultMessage: 'Accuracy: {accuracy}{percentage}',

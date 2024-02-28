@@ -4,7 +4,6 @@ import {
   IconButton,
   colors,
   Text,
-  Icon,
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { IAnalysisData } from 'api/analyses/types';
@@ -15,31 +14,21 @@ import useRegenerateAnalysisQuestion from 'api/analysis_questions/useRegenerateA
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
-import {
-  deleteTrailingIncompleteIDs,
-  replaceIdRefsWithLinks,
-} from 'containers/Admin/projects/project/analysis/Insights/util';
-import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 
-const StyledInsightsText = styled(Text)`
-  white-space: pre-wrap;
-  word-break: break-word;
-`;
+import { useParams } from 'react-router-dom';
 
 import Button from 'components/UI/Button';
 import { stringify } from 'qs';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
-import FilterItems from 'containers/Admin/projects/project/analysis/FilterItems';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
-import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
-import { timeAgo } from 'utils/dateUtils';
-import useLocale from 'hooks/useLocale';
-import Tippy from '@tippyjs/react';
+import InsightBody from 'containers/Admin/projects/project/analysis/Insights/InsightBody';
+import InsightFooter from 'containers/Admin/projects/project/analysis/Insights/InsightFooter';
+import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/SummaryHeader';
+import QuestionHeader from 'containers/Admin/projects/project/analysis/Insights/QuestionHeader';
 
 // Convert all values in the filters object to strings
 // This is necessary because the filters are passed as query params
@@ -63,7 +52,6 @@ const Summary = ({
   analysisId: string;
 }) => {
   const { formatMessage } = useIntl();
-  const locale = useLocale();
 
   const largeSummariesEnabled = useFeatureFlag({
     name: 'large_summaries',
@@ -74,44 +62,30 @@ const Summary = ({
     projectId: string;
     phaseId: string;
   };
+
   const { data } = useAnalysisSummary({ analysisId, id: summaryId });
-  const { data: task } = useAnalysisBackgroundTask(
-    analysisId,
-    data?.data.relationships.background_task.data.id,
-    true
-  );
 
   const { mutate: regenerateSummary, isLoading: isLoadingRegenerateSummary } =
     useRegenerateAnalysisSummary();
 
   const summary = data?.data.attributes.summary;
   const filters = data?.data.attributes.filters;
-  const accuracy = data?.data.attributes.accuracy;
   const generatedAt = data?.data.attributes.generated_at;
   const missingInputsCount = data?.data.attributes.missing_inputs_count || 0;
-
-  const { data: inputs } = useInfiniteAnalysisInputs({
-    analysisId,
-  });
 
   const { data: filteredInputs } = useInfiniteAnalysisInputs({
     analysisId,
     queryParams: filters,
   });
 
-  const totalInputCount = inputs?.pages[0].meta.filtered_count || 0;
   const filteredInputCount = filteredInputs?.pages[0].meta.filtered_count || 0;
-
-  const isLoading =
-    task?.data.attributes.state === 'queued' ||
-    task?.data.attributes.state === 'in_progress';
 
   const refreshDisabled =
     missingInputsCount === 0 ||
     (largeSummariesEnabled && filteredInputCount > 30);
 
   if (!summary) {
-    return null;
+    return <Spinner />;
   }
 
   return (
@@ -123,72 +97,27 @@ const Summary = ({
       gap="16px"
     >
       <Box overflowY="auto" h="100%">
-        {filters && (
-          <FilterItems
-            filters={filters}
-            isEditable={false}
-            analysisId={analysisId}
-          />
-        )}
-        <Box display="flex" gap="4px" alignItems="center">
-          {!largeSummariesEnabled && (
-            <Icon name="alert-circle" fill={colors.orange} />
-          )}
-          <Text fontWeight="bold">{formatMessage(messages.aiSummary)}</Text>
-          <Icon name="flash" />
-        </Box>
-
-        <StyledInsightsText mt="0px">
-          {replaceIdRefsWithLinks({
-            insight: isLoading ? deleteTrailingIncompleteIDs(summary) : summary,
-            analysisId,
-            projectId,
-            phaseId,
-          })}
-        </StyledInsightsText>
-        {isLoading && <Spinner />}
+        <SummaryHeader />
+        <InsightBody
+          text={summary}
+          filters={filters}
+          analysisId={analysisId}
+          projectId={projectId}
+          phaseId={phaseId}
+          generatedAt={generatedAt}
+          backgroundTaskId={data?.data.relationships.background_task.data.id}
+        />
       </Box>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        w="100%"
-      >
-        <Tippy
-          content={formatMessage(messages.tooltipTextLimit)}
-          disabled={largeSummariesEnabled}
-        >
-          <Box display="flex" gap="4px" alignItems="center">
-            {!largeSummariesEnabled && (
-              <Icon name="alert-circle" fill={colors.orange} />
-            )}
-            <Text
-              m="0px"
-              fontSize="s"
-              color={!largeSummariesEnabled ? 'orange' : 'textPrimary'}
-            >
-              {filteredInputCount} / {totalInputCount}{' '}
-              {formatMessage(messages.inputsSelected)}
-            </Text>
-          </Box>
-        </Tippy>
 
-        <Text m="0px" fontSize="s">
-          <FormattedMessage
-            {...messages.accuracy}
-            values={{
-              accuracy: accuracy ? accuracy * 100 : 0,
-              percentage: formatMessage(messages.percentage),
-            }}
-          />
-        </Text>
+      <InsightFooter
+        filters={filters}
+        generatedAt={generatedAt}
+        analysisId={analysisId}
+        projectId={projectId}
+        phaseId={phaseId}
+        customFieldIds={data?.data.attributes.custom_field_ids}
+      />
 
-        {generatedAt && (
-          <Text m="0px" fontSize="s">
-            {timeAgo(Date.parse(generatedAt), locale)}
-          </Text>
-        )}
-      </Box>
       <Box display="flex" gap="16px">
         <Button
           disabled={refreshDisabled}
@@ -226,7 +155,6 @@ const Question = ({
   analysisId: string;
 }) => {
   const { formatMessage } = useIntl();
-  const locale = useLocale();
 
   const largeSummariesEnabled = useFeatureFlag({
     name: 'large_summaries',
@@ -239,44 +167,28 @@ const Question = ({
     phaseId: string;
   };
 
-  const { data: task } = useAnalysisBackgroundTask(
-    analysisId,
-    data?.data.relationships.background_task.data.id,
-    true
-  );
-
   const { mutate: regenerateQuestion, isLoading: isLoadingRegenerateQuestion } =
     useRegenerateAnalysisQuestion();
 
   const question = data?.data.attributes.question;
   const answer = data?.data.attributes.answer;
   const filters = data?.data.attributes.filters;
-  const accuracy = data?.data.attributes.accuracy;
   const generatedAt = data?.data.attributes.generated_at;
   const missingInputsCount = data?.data.attributes.missing_inputs_count || 0;
-
-  const { data: inputs } = useInfiniteAnalysisInputs({
-    analysisId,
-  });
 
   const { data: filteredInputs } = useInfiniteAnalysisInputs({
     analysisId,
     queryParams: filters,
   });
 
-  const totalInputCount = inputs?.pages[0].meta.filtered_count || 0;
   const filteredInputCount = filteredInputs?.pages[0].meta.filtered_count || 0;
-
-  const isLoading =
-    task?.data.attributes.state === 'queued' ||
-    task?.data.attributes.state === 'in_progress';
 
   const refreshDisabled =
     missingInputsCount === 0 ||
     (largeSummariesEnabled && filteredInputCount > 30);
 
   if (!question || !answer) {
-    return null;
+    return <Spinner />;
   }
 
   return (
@@ -288,67 +200,25 @@ const Question = ({
       gap="16px"
     >
       <Box overflowY="auto" h="100%">
-        {filters && (
-          <FilterItems
-            filters={filters}
-            isEditable={false}
-            analysisId={analysisId}
-          />
-        )}
-        <Box display="flex" gap="4px" alignItems="center">
-          {!largeSummariesEnabled && (
-            <Icon name="alert-circle" fill={colors.orange} />
-          )}
-          <Text fontWeight="bold">{question}</Text>
-          <Icon name="question-bubble" />
-        </Box>
-
-        <StyledInsightsText mt="0px">
-          {replaceIdRefsWithLinks({
-            insight: isLoading ? deleteTrailingIncompleteIDs(answer) : answer,
-            analysisId,
-            projectId,
-            phaseId,
-          })}
-        </StyledInsightsText>
-        {isLoading && <Spinner />}
+        <QuestionHeader question={question} />
+        <InsightBody
+          text={answer}
+          filters={filters}
+          analysisId={analysisId}
+          projectId={projectId}
+          phaseId={phaseId}
+          generatedAt={generatedAt}
+          backgroundTaskId={data?.data.relationships.background_task.data.id}
+        />
       </Box>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        w="100%"
-      >
-        <Box display="flex" gap="4px" alignItems="center">
-          {!largeSummariesEnabled && (
-            <Icon name="alert-circle" fill={colors.orange} />
-          )}
-          <Text
-            m="0px"
-            fontSize="s"
-            color={!largeSummariesEnabled ? 'orange' : 'textPrimary'}
-          >
-            {filteredInputCount} / {totalInputCount}{' '}
-            {formatMessage(messages.inputsSelected)}
-          </Text>
-        </Box>
-
-        <Text m="0px" fontSize="s">
-          <FormattedMessage
-            {...messages.accuracy}
-            values={{
-              accuracy: accuracy ? accuracy * 100 : 0,
-              percentage: formatMessage(messages.percentage),
-            }}
-          />
-        </Text>
-
-        {generatedAt && (
-          <Text m="0px" fontSize="s">
-            {timeAgo(Date.parse(generatedAt), locale)}
-          </Text>
-        )}
-      </Box>
+      <InsightFooter
+        filters={filters}
+        generatedAt={generatedAt}
+        analysisId={analysisId}
+        projectId={projectId}
+        phaseId={phaseId}
+        customFieldIds={data?.data.attributes.custom_field_ids}
+      />
       <Box display="flex" gap="16px">
         <Button
           disabled={refreshDisabled}
