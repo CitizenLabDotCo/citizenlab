@@ -223,7 +223,7 @@ de:
     anonymous: 'Anonym'
   form_builder:
     default_select_field:
-      title: 'Ihre Frage'
+      title: 'Frage'
       option1: 'Option 1'
       option2: 'Option 2'
     survey_end_page:
