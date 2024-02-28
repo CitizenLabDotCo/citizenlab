@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "Hi ha hagut un problema en enviar el formulari. Comproveu si hi ha errors i torneu-ho a provar.",
   "app.components.formBuilder.Page": "Pàgina",
   "app.components.formBuilder.addAnswer": "Afegir resposta",
+  "app.components.formBuilder.ai": "AI",
+  "app.components.formBuilder.aiUpsellText": "Si teniu accés al nostre paquet d'IA, podreu resumir i categoritzar les respostes de text amb AI",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Cancel · lar",
   "app.components.formBuilder.chooseMany": "Trieu-ne molts",
   "app.components.formBuilder.chooseOne": "Escull un",
