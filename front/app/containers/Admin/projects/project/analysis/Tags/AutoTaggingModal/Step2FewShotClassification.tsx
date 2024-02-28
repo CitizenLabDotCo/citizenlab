@@ -44,6 +44,11 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
       <Text>{formatMessage(messages.fewShotSubtitle)}</Text>
       <Text>{formatMessage(messages.fewShotSubtitle2)}</Text>
       <Box>
+        {customTags?.length === 0 && (
+          <Text textAlign="center" fontWeight="bold">
+            {formatMessage(messages.fewShotsEmpty)}
+          </Text>
+        )}
         {customTags?.map((tag) => (
           <Box key={tag.id} display="flex" justifyContent="flex-start" mb="8px">
             <Checkbox
