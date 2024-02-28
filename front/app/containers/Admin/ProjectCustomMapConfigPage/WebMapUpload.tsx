@@ -15,6 +15,7 @@ import {
   Button,
   Success,
 } from '@citizenlab/cl2-component-library';
+import tooltipImage from './images/esri_portal_id_example.png';
 
 // types
 import { ViewOptions } from '.';
@@ -111,7 +112,17 @@ const WebMapUpload = ({ projectId, mapConfigId, setView }: Props) => {
         <Title my="4px" variant="h5" color={'coolGrey600'} fontWeight="bold">
           {formatMessage(messages.addWebMap)}
         </Title>
-        <IconTooltip mb="4px" content={formatMessage(messages.webMapTooltip)} />
+        <IconTooltip
+          mb="4px"
+          content={
+            <>
+              <Box mb="8px">
+                <img src={tooltipImage} alt="" width="100%" />
+              </Box>
+              {formatMessage(messages.webMapTooltip)}
+            </>
+          }
+        />
       </Box>
       <Text my="8px" color={'grey800'}>
         {formatMessage(messages.addWebMapInstruction)}

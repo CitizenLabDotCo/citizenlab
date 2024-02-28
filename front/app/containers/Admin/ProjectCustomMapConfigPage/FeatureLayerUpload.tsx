@@ -15,6 +15,7 @@ import {
   Button,
   Success,
 } from '@citizenlab/cl2-component-library';
+import tooltipImage from './images/esri_feature_url_example.png';
 
 // types
 import { ViewOptions } from '.';
@@ -130,7 +131,14 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
         </Title>
         <IconTooltip
           mb="4px"
-          content={formatMessage(messages.featureLayerTooltop)}
+          content={
+            <>
+              <Box mb="8px">
+                <img src={tooltipImage} alt="" width="100%" />
+              </Box>
+              {formatMessage(messages.featureLayerTooltop)}
+            </>
+          }
         />
       </Box>
       <Text my="8px" color={'grey800'}>
