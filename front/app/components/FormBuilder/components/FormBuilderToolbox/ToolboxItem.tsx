@@ -7,6 +7,7 @@ import {
   Icon,
   IconNames,
   Text,
+  Badge,
   colors,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
@@ -14,6 +15,7 @@ import Tippy from '@tippyjs/react';
 // services
 import { ICustomFieldInputType } from 'api/custom_fields/types';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 interface Props {
   label: string;
@@ -24,6 +26,7 @@ interface Props {
   inputType?: ICustomFieldInputType;
   disabled?: boolean;
   disabledTooltipMessage?: MessageDescriptor;
+  showAIUpsell?: boolean;
 }
 
 const AddIcon = styled(Icon).attrs({ name: 'plus' })`
@@ -57,6 +60,7 @@ const ToolboxItem = ({
   inputType,
   disabled,
   disabledTooltipMessage,
+  showAIUpsell,
   ...rest
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -113,6 +117,30 @@ const ToolboxItem = ({
           >
             {label}
           </Text>
+          {showAIUpsell && (
+            <Tippy
+              interactive={true}
+              placement="bottom"
+              theme={'dark'}
+              content={
+                <Box style={{ cursor: 'default' }}>
+                  <Text my="8px" color="white" fontSize="s">
+                    {formatMessage(messages.aiUpsellText)}
+                  </Text>
+                </Box>
+              }
+            >
+              <Box mx="6px" w="6px">
+                <Badge
+                  color={colors.teal}
+                  className="inverse"
+                  style={{ padding: '1px 6px' }}
+                >
+                  {formatMessage(messages.ai)}
+                </Badge>
+              </Box>
+            </Tippy>
+          )}
           {!disabled && <AddIcon />}
         </StyledBox>
       </Box>
