@@ -7,6 +7,7 @@ import MapCenterAndZoomConfig from './MapCenterAndZoomConfig';
 import { SectionTitle } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
 import { Text } from '@citizenlab/cl2-component-library';
+import MapView from '@arcgis/core/views/MapView';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -44,10 +45,11 @@ const StyledMapCenterAndZoomConfig = styled(MapCenterAndZoomConfig)``;
 
 interface Props {
   projectId: string;
+  mapView?: MapView | null;
   className?: string;
 }
 
-const MapConfigOverview = memo<Props>(({ projectId, className }) => {
+const MapConfigOverview = memo<Props>(({ projectId, className, mapView }) => {
   const [editedMapLayerId, setEditedMapLayerId] = useState<string | null>(null);
 
   const openLayerConfig = (layerId: string) => {
@@ -80,7 +82,10 @@ const MapConfigOverview = memo<Props>(({ projectId, className }) => {
             projectId={projectId}
             onEditLayer={openLayerConfig}
           />
-          <StyledMapCenterAndZoomConfig projectId={projectId} />
+          <StyledMapCenterAndZoomConfig
+            projectId={projectId}
+            mapView={mapView}
+          />
         </>
       ) : (
         <MapLayerConfig

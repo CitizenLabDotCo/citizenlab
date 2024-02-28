@@ -3,24 +3,19 @@ import { isEmpty, inRange } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import useUpdateMapConfig from 'modules/commercial/custom_maps/api/map_config/useUpdateMapConfig';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useMapConfig from '../../../api/map_config/useMapConfig';
+import useMapConfig from 'api/map_config/useMapConfig';
 
 // components
 import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { SubSectionTitle } from 'components/admin/Section';
+import MapView from '@arcgis/core/views/MapView';
 
 // utils
-import { getCenter, getZoomLevel } from '../../../utils/map';
-
-// events
-import {
-  setLeafletMapCenter,
-  setLeafletMapZoom,
-} from 'components/UI/LeafletMap/events';
+import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -29,6 +24,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
+import { goToMapLocation } from 'components/EsriMap/utils';
 
 const Container = styled.div`
   display: flex;
@@ -81,6 +77,7 @@ const SaveButton = styled(Button)`
 interface Props {
   projectId: string;
   className?: string;
+  mapView?: MapView | null;
 }
 
 interface IFormValues {
@@ -90,7 +87,7 @@ interface IFormValues {
 }
 
 const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
-  ({ projectId, className, intl: { formatMessage } }) => {
+  ({ projectId, className, mapView, intl: { formatMessage } }) => {
     const { data: appConfig } = useAppConfiguration();
     const { mutateAsync: updateProjectMapConfig } = useUpdateMapConfig();
     const { data: mapConfig } = useMapConfig(projectId);
@@ -179,6 +176,26 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
       setProcessing(false);
       setErrors({});
       setTouched(false);
+
+      // Move map to new position
+      if (
+        mapView &&
+        formValues.defaultLng &&
+        formValues.defaultLat &&
+        formValues.defaultZoom
+      ) {
+        goToMapLocation(
+          {
+            type: 'Point',
+            coordinates: [
+              parseFloat(formValues.defaultLng),
+              parseFloat(formValues.defaultLat),
+            ],
+          },
+          mapView,
+          formValues.defaultZoom || undefined
+        );
+      }
     };
 
     const formError = (errorResponse) => {
@@ -217,9 +234,6 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
             },
             zoom_level: defaultZoom,
           });
-
-          setLeafletMapCenter([defaultLat, defaultLng]);
-          setLeafletMapZoom(parseInt(defaultZoom, 10));
           formSuccess();
         } catch (error) {
           formError(error);

@@ -174,18 +174,8 @@ export function endsWith(
   return false;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function isFunction(f): f is Function {
-  return f instanceof Function;
-}
-
 export function isString(s: unknown): s is string {
   return typeof s === 'string';
-}
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function isOrReturnsString(s: any, ...args: any[]): s is Function {
-  return isString(s) || (isFunction(s) && isString(s(...args)));
 }
 
 export const isTopBarNavActive = (
@@ -229,3 +219,16 @@ export const isObject = (
 ): v is Record<string | number | symbol, any> => {
   return Object.prototype.toString.call(v) === '[object Object]';
 };
+
+// Src: https://stackoverflow.com/a/28056903
+export function hexToRGBA(hex: string, alpha: number) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+
+  if (alpha) {
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  } else {
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+}
