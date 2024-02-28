@@ -163,7 +163,7 @@ module BulkImportIdeas
           if idea_row[:user_email].present?
             author.email = idea_row[:user_email]
           else
-            author.unique_code = SecureRandom.uuid
+            author.unique_code = "IMPORT-#{SecureRandom.uuid}"
           end
 
           if author.save
