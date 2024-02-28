@@ -20,6 +20,7 @@ module PublicApi
 
     def list_phases(base_query)
       phases = base_query
+        .includes([:project])
         .order(created_at: :desc)
         .page(params[:page_number])
         .per(num_per_page)
