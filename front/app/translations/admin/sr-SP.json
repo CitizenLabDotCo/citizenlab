@@ -1937,6 +1937,7 @@
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Користите ово подешавање ако вам је важно прикупљање имена, презимена и одговора на демографска питања на нивоу платформе. То може повећати баријеру за учешће.",
   "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Одговори на демографска питања биће сачувани у корисничким профилима. Питања ће бити постављена само корисницима који на њих раније нису одговорили. Одговори на ова питања биће доступни и путем извоза података о учешћу, који је доступан и модераторима и администраторима.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Постављајте питања учесницима",
+  "app.containers.AdminPage.phase.methodPicker.addOn": "Add on",
   "app.containers.AdminPage.phase.methodPicker.aiPoweredInsights": "AI-powered insights",
   "app.containers.AdminPage.phase.methodPicker.documentDescription": "Embed an interactive PDF and collect comments and feedback with Konveio.",
   "app.containers.AdminPage.phase.methodPicker.documentTitle": "Collect feedback on a document",
