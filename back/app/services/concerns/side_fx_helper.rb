@@ -33,4 +33,12 @@ module SideFxHelper
   def remove_user_from_past_activities_with_item(item, user)
     user.activities.where(item: item).update_all(user_id: nil)
   end
+
+  def clean_rgeo_attributes(serialized_resource)
+    serialized_resource.each do |k, v|
+      next unless v.is_a?(RGeo::Geographic::SphericalPointImpl)
+
+      serialized_resource[k] = { 'lon' => v.x, 'lat' => v.y }
+    end
+  end
 end
