@@ -897,7 +897,6 @@
   "app.containers.Admin.tools.esriDisabled": "A integração com o Esri é um recurso complementar. Entre em contato com o seu gerente do GovSuccess se você quiser obter mais informações sobre isso.",
   "app.containers.Admin.tools.esriIntegration2": "Integração com o Esri",
   "app.containers.Admin.tools.esriIntegrationButton": "Habilitar Esri",
-  "app.containers.Admin.tools.esriIntegrationDescription2": "Conecte sua conta Esri e importe suas camadas do ArcGIS Online diretamente para seus projetos de mapeamento.",
   "app.containers.Admin.tools.esriIntegrationImageAlt": "Logotipo da Esri",
   "app.containers.Admin.tools.esriKeyInputDescription": "Adicione sua chave Esri API para permitir a importação de suas camadas de mapa do ArcGIS Online nas guias de mapa em projetos.",
   "app.containers.Admin.tools.esriKeyInputLabel": "Chave da API da Esri",

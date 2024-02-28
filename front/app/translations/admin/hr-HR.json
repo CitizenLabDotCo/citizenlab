@@ -897,7 +897,6 @@
   "app.containers.Admin.tools.esriDisabled": "Esri integracija je dodatna značajka. Kontaktirajte svog GovSuccess Managera ako želite više informacija o ovome.",
   "app.containers.Admin.tools.esriIntegration2": "Esri integracija",
   "app.containers.Admin.tools.esriIntegrationButton": "Omogućite Esri",
-  "app.containers.Admin.tools.esriIntegrationDescription2": "Povežite svoj Esri račun i uvezite svoje slojeve iz ArcGIS Online izravno u svoje projekte mapiranja.",
   "app.containers.Admin.tools.esriIntegrationImageAlt": "Esri logo",
   "app.containers.Admin.tools.esriKeyInputDescription": "Dodajte svoj Esri API ključ kako biste omogućili uvoz slojeva karte iz ArcGIS Online u kartice karte u projektima.",
   "app.containers.Admin.tools.esriKeyInputLabel": "Esri API ključ",

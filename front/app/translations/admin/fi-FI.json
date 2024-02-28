@@ -897,7 +897,6 @@
   "app.containers.Admin.tools.esriDisabled": "Esri-integraatio on lisäominaisuus. Ota yhteyttä GovSuccess Manageriin, jos haluat lisätietoja tästä.",
   "app.containers.Admin.tools.esriIntegration2": "Esri-integraatio",
   "app.containers.Admin.tools.esriIntegrationButton": "Ota Esri käyttöön",
-  "app.containers.Admin.tools.esriIntegrationDescription2": "Yhdistä Esri-tilisi ja tuo tasosi ArcGIS Onlinesta suoraan karttaprojekteihisi.",
   "app.containers.Admin.tools.esriIntegrationImageAlt": "Esri logo",
   "app.containers.Admin.tools.esriKeyInputDescription": "Lisää Esri API -avain salliaksesi karttatasosi tuomisen ArcGIS Onlinesta projektien karttavälilehdillä.",
   "app.containers.Admin.tools.esriKeyInputLabel": "Esri API avain",

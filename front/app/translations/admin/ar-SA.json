@@ -897,7 +897,6 @@
   "app.containers.Admin.tools.esriDisabled": "يعد تكامل Esri ميزة إضافية. اتصل بمدير GovSuccess الخاص بك إذا كنت تريد المزيد من المعلومات حول هذا الأمر.",
   "app.containers.Admin.tools.esriIntegration2": "التكامل إسري",
   "app.containers.Admin.tools.esriIntegrationButton": "تمكين إزري",
-  "app.containers.Admin.tools.esriIntegrationDescription2": "قم بتوصيل حساب Esri الخاص بك واستورد طبقاتك من ArcGIS Online مباشرة إلى مشاريع رسم الخرائط الخاصة بك.",
   "app.containers.Admin.tools.esriIntegrationImageAlt": "شعار إسري",
   "app.containers.Admin.tools.esriKeyInputDescription": "أضف مفتاح Esri API الخاص بك للسماح باستيراد طبقات الخريطة من ArcGIS Online في علامات تبويب الخريطة في المشروعات.",
   "app.containers.Admin.tools.esriKeyInputLabel": "مفتاح Esri API",
