@@ -4,6 +4,7 @@ import {
   IconButton,
   colors,
   Text,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { IAnalysisData } from 'api/analyses/types';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
@@ -84,7 +85,7 @@ const Summary = ({
     (largeSummariesEnabled && filteredInputCount > 30);
 
   if (!summary) {
-    return null;
+    return <Spinner />;
   }
 
   return (
@@ -187,7 +188,7 @@ const Question = ({
     (largeSummariesEnabled && filteredInputCount > 30);
 
   if (!question || !answer) {
-    return null;
+    return <Spinner />;
   }
 
   return (
