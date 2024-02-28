@@ -213,9 +213,9 @@ const ParticipationMethodPicker = ({
             {showSurveyOptions && (
               <>
                 <Box style={{ gridColumn: '1 / span 3' }}>
-                  <Title my="0px" variant="h6" color="primary" textAlign="left">
+                  <SubSectionTitle>
                     {formatMessage(messages2.surveyOptions)}
-                  </Title>
+                  </SubSectionTitle>
                 </Box>
 
                 {nativeSurveysEnabled && (
