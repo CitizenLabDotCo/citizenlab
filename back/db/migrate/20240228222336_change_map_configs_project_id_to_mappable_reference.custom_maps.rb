@@ -1,4 +1,4 @@
-# This migration comes from custom_maps (originally 20240215165946)
+# This migration comes from custom_maps (originally 20240228222205)
 class ChangeMapConfigsProjectIdToMappableReference < ActiveRecord::Migration[7.0]
   # rubocop:disable Rails/ApplicationRecord
   class StubMapsMapConfig < ActiveRecord::Base
