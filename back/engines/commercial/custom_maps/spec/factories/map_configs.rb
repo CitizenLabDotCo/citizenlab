@@ -13,7 +13,7 @@ FactoryBot.define do
 
     trait :with_positioning do
       center { RGeo::Cartesian.factory.point(Faker::Address.longitude, Faker::Address.latitude) }
-      zoom_level { 14 }
+      zoom_level { rand(1..20) }
     end
 
     trait :with_tile_provider do
