@@ -30,10 +30,8 @@ module Analysis
           assign_topic!(input, topic)
         end
         processed_inputs_count = (i + 1) * BATCH_SIZE
-        update_progress((processed_inputs_count + 10) / (filtered_inputs.size + 10).to_f)
+        update_progress([(processed_inputs_count + 10) / (filtered_inputs.size + 10).to_f, 0.99].min)
       end
-
-      update_progress(1.0)
     end
 
     private
