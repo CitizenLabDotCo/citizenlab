@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "Iesniedzot veidlapu, radās kļūda. Lūdzu, pārbaudiet, vai nav kļūdu, un mēģiniet vēlreiz.",
   "app.components.formBuilder.Page": "Lapa",
   "app.components.formBuilder.addAnswer": "Pievienot atbildi",
+  "app.components.formBuilder.ai": "AI",
+  "app.components.formBuilder.aiUpsellText": "Ja jums ir piekļuve mūsu mākslīgā intelekta paketei, jūs varēsiet apkopot un kategorizēt teksta atbildes, izmantojot mākslīgo intelektu.",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Atcelt",
   "app.components.formBuilder.chooseMany": "Izvēlieties daudzus",
   "app.components.formBuilder.chooseOne": "Izvēlieties vienu",
