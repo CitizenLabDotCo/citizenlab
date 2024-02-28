@@ -2054,7 +2054,6 @@
   "app.containers.AdminPage.projects.project.analysis.comments": "Asuntos",
   "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Demografía",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "La tabla de domicilios es demasiado grande para mostrarla",
-  "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsFilter": "Ocultar respuestas sin respuesta",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Respuestas",
   "app.containers.AdminPage.projects.project.analysis.end": "Término",
   "app.containers.AdminPage.projects.project.analysis.filter": "Mostrar sólo entradas con este valor",
