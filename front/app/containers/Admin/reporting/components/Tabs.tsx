@@ -83,7 +83,7 @@ const DashboardTabs = ({
               name === 'project_reports' ? (
                 <Box display="inline" ml="12px">
                   <StatusLabel
-                    text={'Beta'}
+                    text={formatMessage(messages.deprecated)}
                     backgroundColor={colors.background}
                     variant="outlined"
                   />

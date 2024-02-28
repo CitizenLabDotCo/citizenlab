@@ -4,7 +4,8 @@ import React, { memo } from 'react';
 import useProjects from 'api/projects/useProjects';
 
 // components
-import { Title } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
+import Warning from 'components/UI/Warning';
 import { List, Row } from 'components/admin/ResourceList';
 import {
   RowButton,
@@ -35,6 +36,11 @@ const ReportTab = memo(() => {
 
   return (
     <>
+      <Box mb="20px">
+        <Warning>
+          <FormattedMessage {...messages.deprecatedMessage} />
+        </Warning>
+      </Box>
       <Title variant="h1" color="primary" mt="0px" mb="32px">
         <FormattedMessage {...messages.selectAProject} />
       </Title>
