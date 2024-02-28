@@ -69,6 +69,10 @@ FactoryBot.define do
         follow: {
           enabled: true,
           allowed: true
+        },
+        dev_extensive_logging: {
+          enabled: true,
+          allowed: true
         }
       })
     end

@@ -470,6 +470,10 @@ module MultiTenancy
             user_session_recording: {
               enabled: true,
               allowed: true
+            },
+            dev_extensive_logging: {
+              enabled: true,
+              allowed: true
             }
           })
         )
