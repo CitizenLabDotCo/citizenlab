@@ -180,7 +180,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
     return <FormattedMessage {...messages.surveyTitle} {...props} />;
   },
   showInputManager: false,
-  isMethodLocked: false, // TODO: JS - temporary to test backend
+  isMethodLocked: true,
   renderCTABar: (props: CTABarProps) => {
     return <NativeSurveyCTABar project={props.project} phases={props.phases} />;
   },
