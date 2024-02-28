@@ -13,6 +13,7 @@ module CustomMaps
           @map_config = @project.build_map_config(map_config_params)
 
           if @map_config.save
+            @side_fx_service.after_create(@map_config, current_user)
             render json: serialized_map_config, status: :ok
           else
             render json: { errors: @map_config.errors.details }, status: :unprocessable_entity
@@ -29,7 +30,9 @@ module CustomMaps
         end
 
         def destroy
-          if @map_config.destroy
+          map_config = @map_config.destroy
+          if map_config.destroyed?
+            @side_fx_service.after_destroy(map_config, current_user)
             head :no_content
           else
             render json: { errors: @map_config.errors.details }, status: :unprocessable_entity
