@@ -284,7 +284,6 @@ const EsriMap = ({
       if (mapView) {
         map.removeAll();
 
-        // mapView.map = map;
         layers.map((layer) => {
           map.add(layer);
         });
