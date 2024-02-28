@@ -34,4 +34,8 @@ export default defineMessages({
     defaultMessage:
       'Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
   },
+  tabReports: {
+    id: 'app.containers.Admin.Insights.tabReports',
+    defaultMessage: 'Reports',
+  },
 });
