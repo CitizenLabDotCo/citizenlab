@@ -74,4 +74,12 @@ Rails.application.configure do
   # config.rails_semantic_logger.started    = true
   # config.rails_semantic_logger.processing = true
   # config.rails_semantic_logger.rendered   = true
+
+  # Uncomment to catch N+1 queries when running tests
+  # config.after_initialize do
+  #   Bullet.enable = true
+  #   Bullet.rails_logger = true
+  #   Bullet.bullet_logger = true
+  #   Bullet.raise = true # for testing
+  # end
 end

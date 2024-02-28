@@ -44,7 +44,7 @@ const Toggle = ({ name, ...rest }: ToggleProps) => {
               {...rest}
               checked={value}
               onChange={() => {
-                setValue(name, !currentValue);
+                setValue(name, !currentValue, { shouldDirty: true });
               }}
             />
           );

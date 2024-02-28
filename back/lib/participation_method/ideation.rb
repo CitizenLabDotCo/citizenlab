@@ -281,8 +281,6 @@ module ParticipationMethod
         field.move_to_top
       end
 
-      phase.reload
-
       form
     end
 

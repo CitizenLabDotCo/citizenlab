@@ -1882,6 +1882,7 @@
   "app.containers.AdminPage.groups.permissions.delete": "Poistaa",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Poistaa",
   "app.containers.AdminPage.groups.permissions.deleteModeratorLabel": "Poistaa",
+  "app.containers.AdminPage.groups.permissions.emptyTitleErrorMessage": "Anna kaikille vaihtoehdoille otsikko",
   "app.containers.AdminPage.groups.permissions.fieldType_checkbox": "Kyllä-ei (valintaruutu)",
   "app.containers.AdminPage.groups.permissions.fieldType_date": "Päivämäärä",
   "app.containers.AdminPage.groups.permissions.fieldType_multiline_text": "Pitkä vastaus",
