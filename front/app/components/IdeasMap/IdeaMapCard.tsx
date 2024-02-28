@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -12,13 +12,6 @@ import {
   colors,
   viewportWidths,
 } from '@citizenlab/cl2-component-library';
-
-// events
-import {
-  setLeafletMapHoveredMarker,
-  leafletMapHoveredMarker$,
-  setLeafletMapSelectedMarker,
-} from 'components/UI/LeafletMap/events';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -46,7 +39,7 @@ import { darken } from 'polished';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // typings
-import { IIdeaMarkerData } from 'api/idea_markers/types';
+import { IIdeaData } from 'api/ideas/types';
 
 const Container = styled.div`
   text-align: left;
@@ -132,22 +125,22 @@ const FooterValue = styled.div`
 `;
 
 interface Props {
-  ideaMarker: IIdeaMarkerData;
+  idea: IIdeaData;
+  onSelectIdea: (ideaId: string | null) => void;
   onClose?: () => void;
   className?: string;
   projectId: string;
   phaseId?: string;
+  hovered?: boolean;
 }
 
 const IdeaMapCard = memo<Props>(
-  ({ ideaMarker, onClose, className, projectId, phaseId }) => {
+  ({ idea, onClose, className, projectId, phaseId, onSelectIdea, hovered }) => {
     const { data: appConfig } = useAppConfiguration();
     const { data: phase } = usePhase(phaseId || null);
     const { data: project } = useProjectById(projectId);
     const { windowWidth } = useWindowSize();
     const tablet = windowWidth <= viewportWidths.tablet;
-    const [hovered, setHovered] = useState(false);
-
     const phaseData = phase?.data;
 
     const votingMethodConfig = getVotingMethodConfig(
@@ -157,32 +150,16 @@ const IdeaMapCard = memo<Props>(
     const isParticipatoryBudgetPhase =
       phaseData?.attributes.voting_method === 'budgeting';
 
-    useEffect(() => {
-      const subscriptions = [
-        leafletMapHoveredMarker$.subscribe((hoverredIdeaId) => {
-          if (!tablet) {
-            setHovered(hoverredIdeaId === ideaMarker.id);
-          }
-        }),
-      ];
-
-      return () => {
-        subscriptions.forEach((subscription) => subscription.unsubscribe());
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tablet]);
-
     const handleOnClick = (event: React.FormEvent) => {
       event?.preventDefault();
-
-      updateSearchParams({ idea_map_id: ideaMarker.id });
+      updateSearchParams({ idea_map_id: idea.id });
 
       if (tablet) {
-        clHistory.push(`/ideas/${ideaMarker.attributes.slug}?go_back=true`, {
+        clHistory.push(`/ideas/${idea.attributes.slug}?go_back=true`, {
           scrollToTop: true,
         });
       } else {
-        setLeafletMapSelectedMarker(ideaMarker.id);
+        onSelectIdea(idea.id);
       }
     };
 
@@ -192,22 +169,14 @@ const IdeaMapCard = memo<Props>(
       }
     };
 
-    const handleOnMouseEnter = () => {
-      setLeafletMapHoveredMarker(ideaMarker.id);
-    };
-
-    const handleOnMouseLeave = () => {
-      setLeafletMapHoveredMarker(null);
-    };
-
     const handleCloseButtonClick = (event: React.MouseEvent) => {
       event.stopPropagation();
       onClose?.();
     };
 
-    if (!isNilOrError(appConfig) && !isNilOrError(ideaMarker) && project) {
+    if (!isNilOrError(appConfig) && !isNilOrError(idea) && project) {
       const tenantCurrency = appConfig.data.attributes.settings.core.currency;
-      const ideaBudget = ideaMarker.attributes?.budget;
+      const ideaBudget = idea.attributes?.budget;
       const reactingActionDescriptor =
         project.data.attributes.action_descriptor.reacting_idea;
 
@@ -235,8 +204,6 @@ const IdeaMapCard = memo<Props>(
           className={`${className || ''} ${hovered ? 'hover' : ''}`}
           onClick={handleOnClick}
           onKeyPress={handleOnKeyPress}
-          onMouseEnter={handleOnMouseEnter}
-          onMouseLeave={handleOnMouseLeave}
           role="button"
           tabIndex={0}
           id="e2e-idea-map-card"
@@ -252,12 +219,12 @@ const IdeaMapCard = memo<Props>(
             />
           )}
           <Title height={showVoteInput ? '28px' : '44px'}>
-            <T value={ideaMarker.attributes.title_multiloc} />
+            <T value={idea.attributes.title_multiloc} />
           </Title>
           {showVoteInput && phaseData && (
             <Box mb="20px">
               {votingMethodConfig.getIdeaCardVoteInput({
-                ideaId: ideaMarker.id,
+                ideaId: idea.id,
                 phase: phaseData,
               })}
             </Box>
@@ -281,7 +248,7 @@ const IdeaMapCard = memo<Props>(
                   <FooterItem>
                     <LikeIcon name="vote-up" />
                     <FooterValue id="e2e-map-card-like-count">
-                      {ideaMarker.attributes.likes_count}
+                      {idea.attributes.likes_count}
                     </FooterValue>
                   </FooterItem>
 
@@ -289,7 +256,7 @@ const IdeaMapCard = memo<Props>(
                     <FooterItem>
                       <DislikeIcon name="vote-down" />
                       <FooterValue id="e2e-map-card-dislike-count">
-                        {ideaMarker.attributes.dislikes_count}
+                        {idea.attributes.dislikes_count}
                       </FooterValue>
                     </FooterItem>
                   )}
@@ -298,9 +265,7 @@ const IdeaMapCard = memo<Props>(
             {showCommentCount && (
               <FooterItem>
                 <CommentIcon name="comments" />
-                <FooterValue>
-                  {ideaMarker.attributes.comments_count}
-                </FooterValue>
+                <FooterValue>{idea.attributes.comments_count}</FooterValue>
               </FooterItem>
             )}
           </Box>

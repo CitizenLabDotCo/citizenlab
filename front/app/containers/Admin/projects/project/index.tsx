@@ -7,7 +7,6 @@ import {
 import clHistory from 'utils/cl-router/history';
 
 // components
-import Outlet from 'components/Outlet';
 import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { PhaseHeader } from './phase/PhaseHeader';
 import ProjectHeader from './projectHeader';
@@ -16,11 +15,10 @@ import ProjectHeader from './projectHeader';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { InsertConfigurationOptions, ITab } from 'typings';
+import { ITab } from 'typings';
 import { IProjectData } from 'api/projects/types';
 
 // utils
-import { insertConfiguration } from 'utils/moduleUtils';
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
@@ -34,7 +32,6 @@ import usePhases from 'api/phases/usePhases';
 import { getTimelineTab } from './timeline/utils';
 
 interface DataProps {
-  phases: IPhaseData[];
   project: IProjectData;
   selectedPhase?: IPhaseData;
   setSelectedPhase: (phase: IPhaseData) => void;
@@ -42,7 +39,6 @@ interface DataProps {
 
 const AdminProjectsProjectIndex = ({
   project,
-  phases,
   selectedPhase,
   setSelectedPhase,
 }: DataProps) => {
@@ -64,8 +60,7 @@ const AdminProjectsProjectIndex = ({
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
   );
-  const initialTabs: ITab[] = getIntialTabs(formatMessage);
-  const [tabs, setTabs] = useState<ITab[]>(initialTabs);
+  const [tabs] = useState<ITab[]>(getIntialTabs(formatMessage));
 
   const getTabs = () => {
     if (!selectedPhase) {
@@ -95,15 +90,6 @@ const AdminProjectsProjectIndex = ({
     }));
   };
 
-  const handleData = (data: InsertConfigurationOptions<ITab>) => {
-    setTabs((tabs) => insertConfiguration(data)(tabs));
-  };
-
-  const onRemove = (name: string) => {
-    const updatedTabs = tabs.filter((tab) => tab.name !== name);
-    setTabs(updatedTabs);
-  };
-
   return (
     <>
       <ProjectHeader projectId={project.id} />
@@ -115,15 +101,6 @@ const AdminProjectsProjectIndex = ({
           isBackoffice
         />
       </Box>
-
-      <Outlet
-        id="app.containers.Admin.projects.edit"
-        onData={handleData}
-        onRemove={onRemove}
-        project={project}
-        phases={phases}
-        selectedPhase={selectedPhase}
-      />
       <Box p="8px 24px 24px 24px">
         {!isNewPhaseLink && selectedPhase && (
           <PhaseHeader phase={selectedPhase} tabs={getTabs()} />
@@ -203,7 +180,6 @@ export default () => {
   return (
     <AdminProjectsProjectIndex
       project={project.data}
-      phases={phases.data}
       selectedPhase={selectedPhase}
       setSelectedPhase={setSelectedPhase}
     />
