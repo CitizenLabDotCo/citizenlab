@@ -1937,6 +1937,7 @@
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Ad, soyad ve platform düzeyindeki demografik soruların yanıtlarını toplamak sizin için önemliyse bu ayarı kullanın. Katılım için engeli artırabilir.",
   "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Demografik sorulara verilen yanıtlar kullanıcı profillerinde saklanacaktır. Sorular yalnızca daha önce cevap vermemiş kullanıcılara sorulacaktır. Bu soruların yanıtlarına hem moderatörler hem de yöneticiler tarafından erişilebilen katılım verisi dışa aktarımı yoluyla da erişilebilecektir.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Katılımcılara sorular sorun",
+  "app.containers.AdminPage.phase.methodPicker.addOn": "Ekleme",
   "app.containers.AdminPage.phase.methodPicker.aiPoweredInsights": "Yapay zeka destekli içgörüler",
   "app.containers.AdminPage.phase.methodPicker.documentDescription": "Konveio ile interaktif bir PDF yerleştirin ve yorum ve geri bildirim toplayın.",
   "app.containers.AdminPage.phase.methodPicker.documentTitle": "Bir belge hakkında geri bildirim toplama",
