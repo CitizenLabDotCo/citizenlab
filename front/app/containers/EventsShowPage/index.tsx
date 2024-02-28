@@ -28,13 +28,11 @@ import { useParams } from 'react-router-dom';
 
 // hooks
 import useEvent from 'api/events/useEvent';
-import useLocale from 'hooks/useLocale';
 import useProjectById from 'api/projects/useProjectById';
 import useEventImage from 'api/event_images/useEventImage';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 const InnerContainer = styled(Box)`
