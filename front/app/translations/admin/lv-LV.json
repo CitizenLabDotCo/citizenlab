@@ -897,7 +897,6 @@
   "app.containers.Admin.tools.esriDisabled": "Esri integrācija ir papildfunkcija. Sazinieties ar savu GovSuccess menedžeri, ja vēlaties saņemt vairāk informācijas par to.",
   "app.containers.Admin.tools.esriIntegration2": "Esri integrācija",
   "app.containers.Admin.tools.esriIntegrationButton": "Iespējot Esri",
-  "app.containers.Admin.tools.esriIntegrationDescription2": "Pievienojiet savu Esri kontu un importējiet slāņus no ArcGIS Online tieši savos kartēšanas projektos.",
   "app.containers.Admin.tools.esriIntegrationImageAlt": "Esri logotips",
   "app.containers.Admin.tools.esriKeyInputDescription": "Pievienojiet savu Esri API atslēgu, lai varētu importēt kartes slāņus no ArcGIS Online projektu karšu cilnēs.",
   "app.containers.Admin.tools.esriKeyInputLabel": "Esri API atslēga",

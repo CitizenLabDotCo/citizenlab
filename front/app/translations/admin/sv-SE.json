@@ -897,7 +897,6 @@
   "app.containers.Admin.tools.esriDisabled": "Integrationen med Esri är en tilläggsfunktion. Kontakta din GovSuccess Manager om du vill ha mer information om detta.",
   "app.containers.Admin.tools.esriIntegration2": "Integration med Esri",
   "app.containers.Admin.tools.esriIntegrationButton": "Aktivera Esri",
-  "app.containers.Admin.tools.esriIntegrationDescription2": "Anslut ditt Esri-konto och importera dina lager från ArcGIS Online direkt till dina mappningsprojekt.",
   "app.containers.Admin.tools.esriIntegrationImageAlt": "Esri-logotyp",
   "app.containers.Admin.tools.esriKeyInputDescription": "Lägg till din Esri API-nyckel för att kunna importera dina kartlager från ArcGIS Online i kartflikarna i projekt.",
   "app.containers.Admin.tools.esriKeyInputLabel": "API-nyckel för Esri",

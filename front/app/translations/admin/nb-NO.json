@@ -897,7 +897,6 @@
   "app.containers.Admin.tools.esriDisabled": "Esri-integrasjonen er en tilleggsfunksjon. Kontakt din GovSuccess Manager hvis du ønsker mer informasjon om dette.",
   "app.containers.Admin.tools.esriIntegration2": "Esri-integrasjon",
   "app.containers.Admin.tools.esriIntegrationButton": "Aktiver Esri",
-  "app.containers.Admin.tools.esriIntegrationDescription2": "Koble til Esri-kontoen din og importer lagene dine fra ArcGIS Online direkte til kartprosjektene dine.",
   "app.containers.Admin.tools.esriIntegrationImageAlt": "Esri-logo",
   "app.containers.Admin.tools.esriKeyInputDescription": "Legg til Esri API-nøkkelen for å tillate import av kartlagene fra ArcGIS Online i kartfanene i prosjekter.",
   "app.containers.Admin.tools.esriKeyInputLabel": "Esri API-nøkkel",
