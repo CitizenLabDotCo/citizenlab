@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "Došlo je do problema prilikom slanja forme. Molimo vas da proverite greške i pokušate ponovo.",
   "app.components.formBuilder.Page": "Stranica",
   "app.components.formBuilder.addAnswer": "Dodaj odgovor",
+  "app.components.formBuilder.ai": "AI",
+  "app.components.formBuilder.aiUpsellText": "If you have access to our AI package, you will be able to summarise and categorise text responses with AI",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Cancel",
   "app.components.formBuilder.chooseMany": "Izaberi više",
   "app.components.formBuilder.chooseOne": "Izaberi jedno",
