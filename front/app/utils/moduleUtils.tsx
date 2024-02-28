@@ -1,4 +1,3 @@
-import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import { Moment } from 'moment';
 import React, { FunctionComponent, ReactElement } from 'react';
 import PageLoading from 'components/UI/PageLoading';
@@ -18,11 +17,9 @@ import { IProjectData } from 'api/projects/types';
 import { ManagerType } from 'components/admin/PostManager';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { AuthProvider } from 'containers/Authentication/steps/AuthProviders';
-import { Point } from 'components/UI/LeafletMap/typings';
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
-import { LatLngTuple } from 'leaflet';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { TNotificationData } from 'api/notifications/types';
@@ -117,13 +114,6 @@ export interface OutletsPropertyMap {
     projectId: string;
     children: OutletRenderProps;
   };
-  'app.containers.Admin.projects.edit': {
-    onData: (data: InsertConfigurationOptions<ITab>) => void;
-    project: IProjectData;
-    phases: IPhaseData[] | null;
-    selectedPhase?: IPhaseData;
-    onRemove: (name: string) => void;
-  };
   'app.containers.Admin.projects.edit.settings': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
     project: IProjectData;
@@ -142,17 +132,6 @@ export interface OutletsPropertyMap {
     projectId?: string | null;
     handleAssigneeFilterChange: (value: string | undefined) => void;
     type: ManagerType;
-  };
-  'app.components.Map.leafletConfig': {
-    onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
-    projectId?: string;
-    centerLatLng?: LatLngTuple;
-    zoomLevel?: number;
-    points?: Point[];
-  };
-  'app.components.Map.Legend': {
-    projectId?: string;
-    className?: string;
   };
   'app.components.VerificationModal.buttons': {
     onClick: (method: TVerificationMethod) => void;

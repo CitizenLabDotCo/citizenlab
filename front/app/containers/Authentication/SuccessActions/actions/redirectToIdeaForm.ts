@@ -7,7 +7,6 @@ import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
 // typings
-import { LatLng } from 'leaflet';
 import { IUser, IUserData } from 'api/users/types';
 
 // api
@@ -19,7 +18,7 @@ import { fetchPhase } from 'api/phases/usePhase';
 
 export interface RedirectToIdeaFormParams {
   projectSlug: string;
-  latLng?: LatLng | null;
+  latLng?: GeoJSON.Point | null;
   phaseId?: string;
   authUser?: IUser;
 }
@@ -44,7 +43,9 @@ export const redirectToIdeaForm =
 
     if (disabledReason !== 'postingLimitedMaxReached') {
       trackEventByName(tracks.redirectedToIdeaFrom);
-      const positionParams = latLng ? { lat: latLng.lat, lng: latLng.lng } : {};
+      const positionParams = latLng
+        ? { lat: latLng.coordinates[1], lng: latLng.coordinates[0] }
+        : {};
       clHistory.push(
         {
           pathname: `/projects/${projectSlug}/ideas/new`,
