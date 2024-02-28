@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "Form gönderilirken bir sorun oluştu. Lütfen olası hataları düzeltip tekrar deneyin.",
   "app.components.formBuilder.Page": "Sayfa",
   "app.components.formBuilder.addAnswer": "Cevap ekle",
+  "app.components.formBuilder.ai": "YAPAY ZEKA",
+  "app.components.formBuilder.aiUpsellText": "Yapay zeka paketimize erişiminiz varsa, metin yanıtlarını yapay zeka ile özetleyebilir ve kategorilere ayırabilirsiniz",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "İptal",
   "app.components.formBuilder.chooseMany": "Çok sayıda seçin",
   "app.components.formBuilder.chooseOne": "Birini seçin",
