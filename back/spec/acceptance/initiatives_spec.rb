@@ -460,6 +460,12 @@ resource 'Initiatives' do
         expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything)
       end
 
+      example 'Does not add the author as a follower of the initiative', document: false do
+        expect { do_request }.not_to change(Follower, :count)
+        initiative_id = response_data[:id]
+        expect(Follower.where(followable_id: initiative_id, user: @user)).not_to exist
+      end
+
       describe 'when anonymous posting is not allowed' do
         let(:allow_anonymous_participation) { false }
 

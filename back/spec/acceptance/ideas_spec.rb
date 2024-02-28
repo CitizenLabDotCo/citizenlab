@@ -810,6 +810,10 @@ resource 'Ideas' do
           expect(response_data.dig(:relationships, :author, :data)).to be_nil
         end
 
+        example 'Does not add the author as a follower', document: false do
+          expect { do_request }.not_to change(Follower, :count)
+        end
+
         example 'Does not log activities for the author', document: false do
           expect { do_request }.not_to have_enqueued_job(LogActivityJob).with(anything, anything, @user, anything, anything)
         end

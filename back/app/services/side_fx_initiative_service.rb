@@ -108,9 +108,9 @@ class SideFxInitiativeService
   end
 
   def after_publish(initiative, user)
-    add_autoreaction initiative, user
-    log_activity_jobs_after_published initiative, user
-    create_followers initiative, user
+    add_autoreaction(initiative, user)
+    log_activity_jobs_after_published(initiative, user)
+    create_followers(initiative, user) unless initiative.anonymous?
   end
 
   def set_assignee(initiative)
