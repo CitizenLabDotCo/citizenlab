@@ -228,7 +228,7 @@ de:
       option2: 'Option 2'
     survey_end_page:
       title: 'Ende der Umfrage'
-      description: "Bitte übermitteln Sie Ihre Antworten, indem Sie unten auf \"Umfrage abschicken\" klicken."
+      description: "Antworten übermitteln, indem Sie auf \"Umfrage abschicken\" klicken."
     pdf_export:
       personal_data: 'Persönliche Daten'
       personal_data_explanation_ideation: "Wir werden Ihren Beitrag an die Online-Beteiligungsplattform von %{organizationName} weiterleiten. Wenn Sie möchten, dass Ihr Name als Autor*in dieses Beitrags angezeigt wird und Sie Aktualisierungen zu Ihrem Beitrag per E-Mail erhalten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir erstellen ein Konto für Sie. Ihre E-Mail ist nicht öffentlich und wird nur von %{organizationName} verwendet. Wenn Sie anonym bleiben möchten oder nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."
