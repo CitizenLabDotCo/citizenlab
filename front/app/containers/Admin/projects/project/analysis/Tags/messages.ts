@@ -250,4 +250,8 @@ export default defineMessages({
     defaultMessage:
       'This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
   },
+  recommended: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.recommended',
+    defaultMessage: 'Recommended',
+  },
 });
