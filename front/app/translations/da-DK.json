@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "Der opstod et problem med at indsende formularen. Kontroller for eventuelle fejl, og prøv igen.",
   "app.components.formBuilder.Page": "Side",
   "app.components.formBuilder.addAnswer": "Tilføj svar",
+  "app.components.formBuilder.ai": "AI",
+  "app.components.formBuilder.aiUpsellText": "Hvis du har adgang til vores AI-pakke, vil du kunne opsummere og kategorisere tekstsvar med AI.",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Afbryd",
   "app.components.formBuilder.chooseMany": "Vælg mange",
   "app.components.formBuilder.chooseOne": "Vælg en",
