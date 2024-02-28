@@ -50,19 +50,19 @@ export default defineMessages({
     id: 'app.containers.AdminPage.phase.methodPicker.votingTitle',
     defaultMessage: 'Conduct a voting or prioritization exercise',
   },
-  votingDescription: {
-    id: 'app.containers.AdminPage.phase.methodPicker.votingDescription',
+  votingDescription1: {
+    id: 'app.containers.AdminPage.phase.methodPicker.votingDescription1',
     defaultMessage:
-      'Select a voting method, and have users prioritise between a few different options',
+      'Select a voting method, and have users prioritise between a few different options.',
   },
   informationTitle: {
     id: 'app.containers.AdminPage.phase.methodPicker.informationTitle',
     defaultMessage: 'Share information',
   },
-  informationDescription: {
-    id: 'app.containers.AdminPage.phase.methodPicker.informationDescription',
+  reportingDescription: {
+    id: 'app.containers.AdminPage.phase.methodPicker.reportingDescription',
     defaultMessage:
-      'Provide information to users, visualise results from other phases, create data rich reports.',
+      'Provide information to users, visualise results from other phases and create data rich reports.',
   },
   volunteeringTitle: {
     id: 'app.containers.AdminPage.phase.methodPicker.volunteeringTitle',
