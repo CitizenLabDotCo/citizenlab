@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "Et gouf e Problem beim Ofschécken vum Formulaire. Préift dësen wgl. ob  Feeler a probéiert et nach eng Kéier.",
   "app.components.formBuilder.Page": "Säit",
   "app.components.formBuilder.addAnswer": "Äntwert bäifügen",
+  "app.components.formBuilder.ai": "AI",
+  "app.components.formBuilder.aiUpsellText": "Wann Dir Zougang zu eisem AI Package hutt, kënnt Dir Textreaktiounen mat AI zesummefaassen an kategoriséieren",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Ofbriechen",
   "app.components.formBuilder.chooseMany": "Vill auswielen",
   "app.components.formBuilder.chooseOne": "Een auswielen",
