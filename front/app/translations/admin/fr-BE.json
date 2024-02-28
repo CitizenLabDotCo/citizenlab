@@ -2054,7 +2054,6 @@
   "app.containers.AdminPage.projects.project.analysis.comments": "Commentaires",
   "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Données démographiques",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "Le tableau des domiciles est trop grand pour être affiché",
-  "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsFilter": "Cacher les réponses vides",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Réponses",
   "app.containers.AdminPage.projects.project.analysis.end": "Fin",
   "app.containers.AdminPage.projects.project.analysis.filter": "Afficher uniquement les contributions ayant cette valeur",

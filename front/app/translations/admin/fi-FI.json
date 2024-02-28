@@ -2054,7 +2054,6 @@
   "app.containers.AdminPage.projects.project.analysis.comments": "Kommentit",
   "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Väestötiedot",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "Kotipaikkataulukko on liian suuri näytettäväksi",
-  "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsFilter": "Piilota vastaukset ilman vastausta",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Vastaukset",
   "app.containers.AdminPage.projects.project.analysis.end": "Loppu",
   "app.containers.AdminPage.projects.project.analysis.filter": "Näytä vain syötteet tällä arvolla",

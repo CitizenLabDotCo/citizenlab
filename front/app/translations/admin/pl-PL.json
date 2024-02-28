@@ -2054,7 +2054,6 @@
   "app.containers.AdminPage.projects.project.analysis.comments": "Komentarze",
   "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Dane demograficzne",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "Wykres miejsca zamieszkania jest zbyt duży, aby go wyświetlić",
-  "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsFilter": "Ukryj odpowiedzi bez odpowiedzi",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Odpowiedzi",
   "app.containers.AdminPage.projects.project.analysis.end": "Koniec",
   "app.containers.AdminPage.projects.project.analysis.filter": "Wyświetlaj tylko wejścia z tą wartością",
