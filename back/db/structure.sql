@@ -134,8 +134,8 @@ DROP TRIGGER IF EXISTS que_job_notify ON public.que_jobs;
 DROP INDEX IF EXISTS public.users_unique_lower_email_idx;
 DROP INDEX IF EXISTS public.spam_reportable_index;
 DROP INDEX IF EXISTS public.report_builder_published_data_units_report_id_idx;
-DROP INDEX IF EXISTS public.que_poll_idx_with_job_schema_version;
 DROP INDEX IF EXISTS public.que_poll_idx;
+DROP INDEX IF EXISTS public.que_jobs_kwargs_gin_idx;
 DROP INDEX IF EXISTS public.que_jobs_data_gin_idx;
 DROP INDEX IF EXISTS public.que_jobs_args_gin_idx;
 DROP INDEX IF EXISTS public.moderation_statuses_moderatable;
@@ -747,7 +747,8 @@ CREATE TABLE public.que_jobs (
     expired_at timestamp with time zone,
     args jsonb DEFAULT '[]'::jsonb NOT NULL,
     data jsonb DEFAULT '{}'::jsonb NOT NULL,
-    job_schema_version integer DEFAULT 1,
+    job_schema_version integer NOT NULL,
+    kwargs jsonb DEFAULT '{}'::jsonb NOT NULL,
     CONSTRAINT error_length CHECK (((char_length(last_error_message) <= 500) AND (char_length(last_error_backtrace) <= 10000))),
     CONSTRAINT job_class_length CHECK ((char_length(
 CASE job_class
@@ -765,7 +766,7 @@ WITH (fillfactor='90');
 -- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON TABLE public.que_jobs IS '5';
+COMMENT ON TABLE public.que_jobs IS '6';
 
 
 --
@@ -6007,17 +6008,17 @@ CREATE INDEX que_jobs_data_gin_idx ON public.que_jobs USING gin (data jsonb_path
 
 
 --
+-- Name: que_jobs_kwargs_gin_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX que_jobs_kwargs_gin_idx ON public.que_jobs USING gin (kwargs jsonb_path_ops);
+
+
+--
 -- Name: que_poll_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX que_poll_idx ON public.que_jobs USING btree (queue, priority, run_at, id) WHERE ((finished_at IS NULL) AND (expired_at IS NULL));
-
-
---
--- Name: que_poll_idx_with_job_schema_version; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX que_poll_idx_with_job_schema_version ON public.que_jobs USING btree (job_schema_version, queue, priority, run_at, id) WHERE ((finished_at IS NULL) AND (expired_at IS NULL));
+CREATE INDEX que_poll_idx ON public.que_jobs USING btree (job_schema_version, queue, priority, run_at, id) WHERE ((finished_at IS NULL) AND (expired_at IS NULL));
 
 
 --
@@ -7432,6 +7433,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240130170644'),
 ('20240206165004'),
 ('20240214125557'),
-('20240226170510');
+('20240226170510'),
+('20240228145938');
 
 
