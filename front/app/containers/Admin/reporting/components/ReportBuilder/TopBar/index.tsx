@@ -36,7 +36,7 @@ type ContentBuilderTopBarProps = {
   hasPendingState: boolean;
   selectedLocale: Locale;
   reportId: string;
-  templateProjectId?: string;
+  isTemplate: boolean;
   saved: boolean;
   previewEnabled: boolean;
   setSaved: React.Dispatch<React.SetStateAction<boolean>>;
@@ -49,7 +49,7 @@ const ContentBuilderTopBar = ({
   selectedLocale,
   hasPendingState,
   reportId,
-  templateProjectId,
+  isTemplate,
   saved,
   previewEnabled,
   setSaved,
@@ -83,7 +83,7 @@ const ContentBuilderTopBar = ({
   const doGoBack = () => {
     const goBackUrl =
       projectId && phaseId
-        ? `/admin/projects/${projectId}/phases/${phaseId}/setup`
+        ? `/admin/projects/${projectId}/phases/${phaseId}/report`
         : '/admin/reporting/report-builder';
 
     clHistory.push(goBackUrl);
@@ -115,21 +115,27 @@ const ContentBuilderTopBar = ({
     };
   }, [saved]);
 
+  // This useEffect handles autosave for templates
   useEffect(() => {
     if (initialized) return;
 
-    if (!templateProjectId) {
+    if (!isTemplate) {
       setInitialized(true);
       return;
     }
 
     const nodes = query.getSerializedNodes();
     const firstNode = nodes.ROOT?.nodes[0];
-    const numberOfNodes = Object.keys(nodes).length;
 
-    if (!firstNode || numberOfNodes < 5) return;
+    if (!firstNode) return;
 
-    if (nodes?.[firstNode].displayName === 'ProjectTemplate') {
+    const displayName = nodes?.[firstNode].displayName;
+
+    if (['ProjectTemplate', 'PhaseTemplate'].includes(displayName)) {
+      const numberOfNodes = Object.keys(nodes).length;
+
+      if (displayName === 'ProjectTemplate' && numberOfNodes < 5) return;
+
       setTimeout(() => {
         updateReportLayout(
           {
@@ -148,7 +154,7 @@ const ContentBuilderTopBar = ({
 
     setInitialized(true);
   }, [
-    templateProjectId,
+    isTemplate,
     query,
     initialized,
     reportId,

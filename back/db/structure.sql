@@ -3095,7 +3095,8 @@ CREATE TABLE public.report_builder_reports (
     owner_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    phase_id uuid
+    phase_id uuid,
+    visible boolean DEFAULT false NOT NULL
 );
 
 
@@ -7432,6 +7433,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240130170644'),
 ('20240206165004'),
 ('20240214125557'),
-('20240226170510');
+('20240226170510'),
+('20240227092300');
 
 

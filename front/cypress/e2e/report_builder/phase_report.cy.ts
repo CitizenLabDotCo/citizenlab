@@ -34,6 +34,8 @@ describe('Phase report', () => {
 
   before(() => {
     cy.setAdminLoginCookie();
+    cy.apiRemoveAllReports();
+
     cy.apiCreateProject({
       title: randomString(),
       descriptionPreview: randomString(),
@@ -120,9 +122,36 @@ describe('Phase report', () => {
     });
   });
 
-  it('is visible in current phase', () => {
+  it('is not visible in current phase if visibility toggle set to false', () => {
     cy.setAdminLoginCookie();
-    cy.apiCreateReportBuilder(currentInfoPhaseId).then((report) => {
+    cy.apiCreateReportBuilder(currentInfoPhaseId, false).then((report) => {
+      const reportId = report.body.data.id;
+
+      cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
+
+      // Add text widget
+      addTextWidget();
+
+      // Save report
+      saveReport(reportId);
+
+      // Go to phase report, ensure it doesn't exist anywhere
+      cy.visit(`/projects/${projectSlug}/3`);
+      cy.get('.e2e-phase-description').contains(futureInfoPhaseTitle);
+      cy.get('#e2e-phase-report').should('not.exist');
+
+      cy.visit(`/projects/${projectSlug}/2`);
+      cy.get('.e2e-phase-description').contains(currentInfoPhaseTitle);
+      cy.get('#e2e-phase-report').should('not.exist');
+
+      // Clean up
+      cy.apiRemoveReportBuilder(reportId);
+    });
+  });
+
+  it('is visible in current phase if visibility toggle set to true', () => {
+    cy.setAdminLoginCookie();
+    cy.apiCreateReportBuilder(currentInfoPhaseId, true).then((report) => {
       const reportId = report.body.data.id;
 
       cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);

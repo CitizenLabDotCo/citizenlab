@@ -12,7 +12,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import ProjectFilter from '../../_shared/ProjectFilter';
-import PhaseFilter from '../../_shared/PhaseFilter';
+import PhaseFilter from 'components/UI/PhaseFilter';
 import QuestionSelect from './QuestionSelect';
 import GroupModeSelect from './GroupModeSelect';
 import UserFieldSelect from './UserFieldSelect';

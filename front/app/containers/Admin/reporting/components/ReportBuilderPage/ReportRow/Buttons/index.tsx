@@ -5,7 +5,6 @@ import Tippy from '@tippyjs/react';
 import useReport from 'api/reports/useReport';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import PrintReportButton from './PrintReportButton';
 
@@ -30,7 +29,7 @@ const Buttons = ({ reportId, isLoading, onDelete, onEdit }: Props) => {
     report.data.attributes.action_descriptor.editing_report.enabled;
 
   return (
-    <Box display="flex">
+    <>
       <Button
         id="e2e-delete-report-button"
         mr="8px"
@@ -63,7 +62,7 @@ const Buttons = ({ reportId, isLoading, onDelete, onEdit }: Props) => {
         </div>
       </Tippy>
       <PrintReportButton reportId={reportId} />
-    </Box>
+    </>
   );
 };
 

@@ -1,9 +1,8 @@
-import React from 'react';
-import { isEmpty } from 'lodash-es';
+import React, { useEffect } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { useIntl } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, StatusLabel, colors } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 import NavigationTabs, {
@@ -30,6 +29,36 @@ const MessagingDashboard = () => {
     name: 'automated_emailing_control',
   });
   const textingEnabled = useFeatureFlag({ name: 'texting' });
+
+  useEffect(() => {
+    if (pathname.match(/\/admin\/messaging$/)) {
+      return;
+    }
+
+    const redirect = (url: string) => {
+      clHistory.replace({
+        pathname: url,
+        search: window.location.search,
+      });
+    };
+
+    if (canManageManualCampaigns && manualEmailingEnabled) {
+      return redirect('/admin/messaging/emails/custom');
+    }
+    if (canManageAutomatedCampaigns && automatedEmailingEnabled) {
+      return redirect('/admin/messaging/emails/automated');
+    }
+    if (textingEnabled) {
+      return redirect('/admin/messaging/texting');
+    }
+  }, [
+    pathname,
+    canManageManualCampaigns,
+    manualEmailingEnabled,
+    canManageAutomatedCampaigns,
+    automatedEmailingEnabled,
+    textingEnabled,
+  ]);
 
   if (!canManageAutomatedCampaigns || !canManageManualCampaigns) {
     return null;
@@ -62,14 +91,6 @@ const MessagingDashboard = () => {
         name: 'texting',
         label: formatMessage(messages.tabTexting),
         url: '/admin/messaging/texting',
-        statusLabel: 'Beta',
-      });
-    }
-
-    if (pathname.match(/\/admin\/messaging$/) && !isEmpty(tabs)) {
-      clHistory.replace({
-        pathname: tabs[0].url,
-        search: window.location.search,
       });
     }
 
@@ -81,13 +102,23 @@ const MessagingDashboard = () => {
   return (
     <>
       <NavigationTabs>
-        {tabs.map(({ url, label, statusLabel }) => (
+        {tabs.map(({ url, label, name }) => (
           <Tab
             label={label}
             url={url}
             key={url}
             active={isTopBarNavActive('/admin/messaging', pathname, url)}
-            statusLabel={statusLabel}
+            statusLabel={
+              name === 'texting' ? (
+                <Box display="inline" ml="12px">
+                  <StatusLabel
+                    text={'Beta'}
+                    backgroundColor={colors.background}
+                    variant="outlined"
+                  />
+                </Box>
+              ) : null
+            }
           />
         ))}
       </NavigationTabs>
