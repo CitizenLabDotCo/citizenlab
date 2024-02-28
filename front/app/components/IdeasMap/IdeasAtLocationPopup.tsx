@@ -37,7 +37,7 @@ const IdeasAtLocationPopup = ({
       {ideas.map((idea) => (
         <Button
           key={idea.id}
-          width="100%"
+          width="fit-content"
           mb="12px"
           onClick={() => {
             setSelectedIdea(idea.id);

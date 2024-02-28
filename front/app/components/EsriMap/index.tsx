@@ -26,6 +26,7 @@ import { isNil } from 'utils/helperUtils';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 import * as intl from '@arcgis/core/intl.js';
+import esriConfig from '@arcgis/core/config';
 
 // typings
 import { EsriUiElement } from './types';
@@ -93,6 +94,7 @@ const EsriMap = ({
 }: EsriMapProps) => {
   const locale = useLocale();
   const isMobileOrSmaller = useBreakpoint('phone');
+  const { data: appConfig } = useAppConfiguration();
   const [map, setMap] = useState<Map | null>(null);
   const [webMap, setWebMap] = useState<WebMap | null>(null);
   const [mapView, setMapView] = useState<MapView | null>(null);
@@ -103,6 +105,13 @@ const EsriMap = ({
 
   // Sets the locale of the map
   intl.setLocale(locale);
+
+  // Set Esri API key
+  const esriApiKey =
+    appConfig?.data.attributes.settings.esri_integration?.api_key;
+  if (esriApiKey) {
+    esriConfig.apiKey = esriApiKey;
+  }
 
   // On initial render, create a new map and map view and save them to state variables
   useEffect(() => {
@@ -236,14 +245,6 @@ const EsriMap = ({
     // Handle when we're using a webmap
     webMap?.when(() => {
       if (webMap && layers) {
-        // Remove any layers not created by the Web Map
-        const layersToRemove = webMap?.layers?.filter((layer) =>
-          layer?.id?.includes('internal')
-        );
-        if (layersToRemove && layersToRemove?.toArray()?.length > 0) {
-          webMap.removeMany(layersToRemove.toArray());
-        }
-
         // If there are any Web Map reference layers, re-order so they are below other layers created in our application
         if (referenceLayers && referenceLayers.length > 0) {
           const newBasemapLayers = webMap.basemap.baseLayers;

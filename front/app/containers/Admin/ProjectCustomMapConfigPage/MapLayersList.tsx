@@ -290,7 +290,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
 
         {mapConfig?.data?.id && (
           <>
-            {isEsriIntegrationEnabled && (
+            {isEsriIntegrationEnabled && ( // TODO: Remove hiding of buttons once Esri integration is released + internal training done
               <EsriImportOptions
                 projectId={projectId}
                 setView={setView}

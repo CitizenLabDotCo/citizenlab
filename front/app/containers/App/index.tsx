@@ -38,7 +38,6 @@ import MainHeader from 'containers/MainHeader';
 import Meta from './Meta';
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
-import esriConfig from '@arcgis/core/config';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -123,13 +122,6 @@ const App = ({ children }: Props) => {
         };
 
         script.src = 'https://cdn.weglot.com/weglot.min.js';
-      }
-
-      // Set Esri API key
-      const esriApiKey =
-        appConfiguration.data.attributes.settings.esri_integration?.api_key;
-      if (esriApiKey) {
-        esriConfig.apiKey = esriApiKey;
       }
 
       if (

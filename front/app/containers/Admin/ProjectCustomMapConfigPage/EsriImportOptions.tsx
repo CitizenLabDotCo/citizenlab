@@ -34,6 +34,11 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
     mapConfig?.data?.attributes?.esri_web_map_id
   );
 
+  const webMapUploadDisabled =
+    hasExistingWebMap ||
+    layerType === 'CustomMaps::GeojsonLayer' ||
+    !isEsriIntegrationEnabled;
+
   const getWebMapDisabledMessage = () => {
     if (!isEsriIntegrationEnabled) {
       return formatMessage(messages.esriAddOnFeatureTooltip);
@@ -83,12 +88,7 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
           placement="top"
           content={getWebMapDisabledMessage()}
           hideOnClick={true}
-          disabled={
-            (!hasExistingWebMap &&
-              layerType === 'CustomMaps::EsriFeatureLayer') ||
-            layerType !== 'CustomMaps::GeojsonLayer' ||
-            !isEsriIntegrationEnabled
-          }
+          disabled={!webMapUploadDisabled}
         >
           <div>
             <Button
@@ -97,11 +97,7 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
               onClick={() => {
                 setView('webMapUpload');
               }}
-              disabled={
-                hasExistingWebMap ||
-                layerType === 'CustomMaps::GeojsonLayer' ||
-                !isEsriIntegrationEnabled
-              }
+              disabled={webMapUploadDisabled}
             >
               {formatMessage(messages.importEsriWebMap)}
             </Button>

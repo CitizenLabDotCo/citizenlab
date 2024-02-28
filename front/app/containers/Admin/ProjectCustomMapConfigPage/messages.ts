@@ -207,9 +207,9 @@ export default defineMessages({
       'An authentication error occured while trying to fetch this layer. Please check the URL and that your Esri API key has access to this layer.',
   },
   generalApiError: {
-    id: 'app.components.admin.PostManager.generalApiError',
+    id: 'app.components.admin.PostManager.generalApiError2',
     defaultMessage:
-      'An error occured while trying to fetch this layer. Please check that the URL is correct.',
+      'An error occured while trying to fetch this item. Please check that the URL or Portal ID is correct and you have access to this item.',
   },
   defaultEsriError: {
     id: 'app.components.admin.PostManager.defaultEsriError',
@@ -251,9 +251,9 @@ export default defineMessages({
       'You can only add one Web Map at a time. Remove the current one to import a different one.',
   },
   geojsonRemoveEsriTooltip: {
-    id: 'app.components.admin.PostManager.geojsonRemoveEsriTooltip',
+    id: 'app.components.admin.PostManager.geojsonRemoveEsriTooltip2',
     defaultMessage:
-      'You may only upload map data as either GeoJSON layers or importing from ArcGIS Online. Please remove any current ArcGIS layers if you wish to upload a GeoJSON layer.',
+      'You may only upload map data as either GeoJSON layers or importing from ArcGIS Online. Please remove any ArcGIS data if you wish to upload a GeoJSON layer.',
   },
   addWebMap: {
     id: 'app.components.admin.PostManager.addWebMap',

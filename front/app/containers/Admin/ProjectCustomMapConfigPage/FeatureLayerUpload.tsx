@@ -63,7 +63,7 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
       .then((response) => {
         setImportError(false);
 
-        const { serviceDescription } = response;
+        const { serviceDescription, serviceItemId } = response;
         const subLayerCount = response.layers.length;
 
         // Add the new map layer
@@ -75,7 +75,7 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
               layer_url: url,
               id: mapConfigId,
               title_multiloc: getFeatureLayerInitialTitleMultiloc(
-                serviceDescription,
+                serviceDescription || serviceItemId,
                 tenantLocales,
                 subLayerCount
               ),

@@ -397,7 +397,6 @@ export const createEsriFeatureLayers = (
           esriLayers.push(
             new FeatureLayer({
               url: `${layer.layer_url}/${i + 1}`,
-              id: `${layer.layer_url}_internal`,
             })
           );
         }
@@ -406,7 +405,6 @@ export const createEsriFeatureLayers = (
         esriLayers.push(
           new FeatureLayer({
             url: layer.layer_url,
-            id: `${layer.layer_url}_internal`,
           })
         );
       }

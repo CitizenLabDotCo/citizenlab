@@ -18,6 +18,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import clHistory from 'utils/cl-router/history';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
@@ -38,13 +39,20 @@ const EsriKeyInput = () => {
   } = useUpdateAppConfiguration();
 
   const saveApiKey = () => {
-    updateAppConfiguration({
-      settings: {
-        esri_integration: {
-          api_key: apiKey,
+    updateAppConfiguration(
+      {
+        settings: {
+          esri_integration: {
+            api_key: apiKey,
+          },
         },
       },
-    });
+      {
+        onSuccess: () => {
+          invalidateQueryCache();
+        },
+      }
+    );
   };
 
   return (
