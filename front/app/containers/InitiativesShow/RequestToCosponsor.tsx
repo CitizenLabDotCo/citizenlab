@@ -6,10 +6,7 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import {
-  StatusWrapper,
-  StatusExplanation,
-} from './ReactionControl/SharedStyles';
+import { StatusHeading, StatusExplanation } from './ReactionControl/Status';
 import useAcceptInitiativeCosponsorshipInvite from 'api/cosponsors_initiatives/useAcceptInitiativeCosponsorshipInvite';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
@@ -66,7 +63,7 @@ const RequestToCosponsor = ({ initiativeId }: Props) => {
     return (
       <BorderContainer>
         <Box mb="16px">
-          <StatusWrapper>{formatMessage(messages.cosponsor)}</StatusWrapper>
+          <StatusHeading>{formatMessage(messages.cosponsor)}</StatusHeading>
         </Box>
         <Box mb="20px">
           <Icon

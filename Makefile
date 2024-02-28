@@ -66,6 +66,11 @@ blint back-lint-autocorrect:
 r rspec:
 	docker-compose run --rm web bin/rspec ${file}
 
+# Usage example: 
+# make feature-toggle feature=initiative_cosponsors enabled=true
+feature-toggle:
+	docker-compose run web "bin/rails runner \"enabled = ${enabled}; feature = '${feature}'; Tenant.find_by(host: 'localhost').switch!; c = AppConfiguration.first; c.settings['${feature}'] ||= {}; c.settings['${feature}']['allowed'] = ${enabled}; c.settings['${feature}']['enabled'] = ${enabled}; c.save!\""
+
 # =================
 # E2E tests
 # =================

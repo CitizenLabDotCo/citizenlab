@@ -35,4 +35,8 @@ export default defineMessages({
     id: 'app.components.formBuilder.helmetTitle',
     defaultMessage: 'Form builder',
   },
+  unsavedChanges: {
+    id: 'app.components.formBuilder.unsavedChanges',
+    defaultMessage: 'You have unsaved changes',
+  },
 });
