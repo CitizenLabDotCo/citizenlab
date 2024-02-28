@@ -135,4 +135,21 @@ export default defineMessages({
     id: 'app.containers.AdminPage.phase.methodPicker.addOn',
     defaultMessage: 'Add on',
   },
+  changingMethod: {
+    id: 'app.components.formBuilder.changingMethod',
+    defaultMessage: 'Changing method',
+  },
+  changeMethodWarning: {
+    id: 'app.components.formBuilder.changeMethodWarning',
+    defaultMessage:
+      'Changing methods can lead to hiding any input data generated or received while using the previous method.',
+  },
+  confirmMethodChange: {
+    id: 'app.components.formBuilder.confirmMethodChange',
+    defaultMessage: 'Yes, continue',
+  },
+  cancelMethodChange: {
+    id: 'app.components.formBuilder.cancelMethodChange',
+    defaultMessage: 'Cancel',
+  },
 });
