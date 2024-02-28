@@ -13,13 +13,13 @@ import { useTheme } from 'styled-components';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 export interface Props {
-  eventLocation?: GeoJSON.Point | null;
+  location?: GeoJSON.Point | null;
 }
 
-const LocationMap = memo<Props>(({ eventLocation }: Props) => {
+const IdeaLocationMap = memo<Props>(({ location }: Props) => {
   const theme = useTheme();
   const isPhoneOrSmaller = useBreakpoint('phone');
-  const locationPoint = useRef<GeoJSON.Point | null>(eventLocation || null);
+  const locationPoint = useRef<GeoJSON.Point | null>(location || null);
 
   const graphics = useMemo(() => {
     // Create point graphic for event location
@@ -36,8 +36,9 @@ const LocationMap = memo<Props>(({ eventLocation }: Props) => {
 
   return (
     <EsriMap
+      id="e2e-idea-location-map"
       initialData={{
-        center: eventLocation,
+        center: location,
         zoom: 18,
         showFullscreenOption: isPhoneOrSmaller ? false : true,
       }}
@@ -47,4 +48,4 @@ const LocationMap = memo<Props>(({ eventLocation }: Props) => {
   );
 });
 
-export default LocationMap;
+export default IdeaLocationMap;

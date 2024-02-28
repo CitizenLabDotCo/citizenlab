@@ -349,11 +349,12 @@ describe('timeline project with no active ideation phase', () => {
     // Select map view
     cy.get('#view-tab-2').click();
     // Click map to open popup
-    cy.get('.leaflet-map-pane').click('bottom', { force: true });
+    cy.get('#e2e-ideas-map').should('exist');
+    cy.wait(1000);
+    cy.get('#e2e-ideas-map').click('center');
+    cy.wait(1000);
     // Add idea button should appear, click it
-    cy.get('.leaflet-popup-content').within(() => {
-      cy.get('#e2e-cta-button').get('button').click({ force: true });
-    });
+    cy.get('#e2e-idea-from-map-button').click();
     // Shold redirect to new idea page with phase id in URL
     cy.url().should('include', `/projects/${projectTitle}/ideas/new`);
     cy.url().should('include', 'phase_id');

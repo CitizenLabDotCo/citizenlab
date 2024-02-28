@@ -19,6 +19,11 @@ export const getIntialTabs = (formatMessage: FormatMessage): ITab[] => {
       name: 'ideaform',
     },
     {
+      label: formatMessage(messages.mapTab),
+      url: 'map',
+      name: 'map',
+    },
+    {
       label: formatMessage(messages.pollTab),
       url: 'polls',
       feature: 'polls',
