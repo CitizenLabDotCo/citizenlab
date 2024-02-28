@@ -200,9 +200,12 @@ const ParticipationMethodPicker = ({
                     key="document"
                     title={formatMessage(messages2.documentTitle)}
                     subtitle={formatMessage(messages2.documentDescription)}
-                    onClick={(event) =>
-                      handleMethodSelect(event, 'document_annotation')
-                    }
+                    onClick={(event) => {
+                      event.preventDefault();
+                      if (documentAnnotationEnabled) {
+                        handleMethodSelect(event, 'document_annotation');
+                      }
+                    }}
                     image={documentImage}
                     selected={selectedMethod === 'document_annotation'}
                   />
