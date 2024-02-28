@@ -15,6 +15,7 @@ class PermissionsService
     actions = Permission.available_actions scope
     remove_extras_actions(scope, actions)
     add_missing_actions(scope, actions)
+    fix_permitted_by(scope)
   end
 
   def update_global_permissions
@@ -109,6 +110,12 @@ class PermissionsService
   def missing_actions(scope, actions = nil)
     actions ||= Permission.available_actions(scope)
     actions - Permission.where(permission_scope: scope).pluck(:action)
+  end
+
+  def fix_permitted_by(scope)
+    if !scope.native_survey?
+      Permission.where(permission_scope: scope, permitted_by: 'everyone').update!(permitted_by: 'users')
+    end
   end
 
   def denied_reason(permission, user)
