@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "حدثت مشكلة أثناء إرسال النموذج. يرجى التحقق بحثًا عن أي أخطاء وإعادة المحاولة.",
   "app.components.formBuilder.Page": "الصفحة",
   "app.components.formBuilder.addAnswer": "إضافة إجابة",
+  "app.components.formBuilder.ai": "منظمة العفو الدولية",
+  "app.components.formBuilder.aiUpsellText": "إذا كان لديك حق الوصول إلى حزمة الذكاء الاصطناعي الخاصة بنا، فستتمكن من تلخيص وتصنيف الردود النصية باستخدام الذكاء الاصطناعي",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "يلغي",
   "app.components.formBuilder.chooseMany": "اختيار متعدد",
   "app.components.formBuilder.chooseOne": "اختيار واحد",
