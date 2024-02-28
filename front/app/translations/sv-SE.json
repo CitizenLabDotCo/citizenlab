@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "Ett problem uppstod när formuläret skulle skickas. Kontrollera om det finns några fel och försök igen.",
   "app.components.formBuilder.Page": "Sida",
   "app.components.formBuilder.addAnswer": "Lägg till svar",
+  "app.components.formBuilder.ai": "AI",
+  "app.components.formBuilder.aiUpsellText": "Om du har tillgång till vårt AI-paket kommer du att kunna sammanfatta och kategorisera textsvar med AI",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Avbryt",
   "app.components.formBuilder.chooseMany": "Välj flera",
   "app.components.formBuilder.chooseOne": "Välj en",
