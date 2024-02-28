@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "There was an issue submitting the form. Please check for any errors and try again.",
   "app.components.formBuilder.Page": "Page",
   "app.components.formBuilder.addAnswer": "Add answer",
+  "app.components.formBuilder.ai": "AI",
+  "app.components.formBuilder.aiUpsellText": "If you have access to our AI package, you will be able to summarise and categorise text responses with AI",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Cancel",
   "app.components.formBuilder.chooseMany": "Choose many",
   "app.components.formBuilder.chooseOne": "Choose one",
