@@ -113,7 +113,7 @@ class PermissionsService
   end
 
   def fix_permitted_by(scope)
-    if !scope.native_survey?
+    if scope && !scope.native_survey?
       Permission.where(permission_scope: scope, permitted_by: 'everyone').update!(permitted_by: 'users')
     end
   end
