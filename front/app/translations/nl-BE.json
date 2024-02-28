@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "Er was een probleem met het verzenden van het formulier. Controleer op eventuele fouten en probeer het opnieuw.",
   "app.components.formBuilder.Page": "Pagina",
   "app.components.formBuilder.addAnswer": "Voeg antwoord toe",
+  "app.components.formBuilder.ai": "AI",
+  "app.components.formBuilder.aiUpsellText": "Als je toegang hebt tot ons AI-pakket, kun je tekstreacties samenvatten en categoriseren met AI.",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Annuleer",
   "app.components.formBuilder.chooseMany": "Kies er meer",
   "app.components.formBuilder.chooseOne": "Kies er één",
