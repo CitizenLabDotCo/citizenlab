@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "Lomakkeen lähettämisessä oli ongelma. Tarkista mahdolliset virheet ja yritä uudelleen.",
   "app.components.formBuilder.Page": "Sivu",
   "app.components.formBuilder.addAnswer": "Lisää vastaus",
+  "app.components.formBuilder.ai": "AI",
+  "app.components.formBuilder.aiUpsellText": "Jos sinulla on pääsy tekoälypakettimme, voit tehdä yhteenvedon ja luokitella tekstivastaukset tekoälyllä",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Peruuttaa",
   "app.components.formBuilder.chooseMany": "Valitse monta",
   "app.components.formBuilder.chooseOne": "Valitse yksi",
