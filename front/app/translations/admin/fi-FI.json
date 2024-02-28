@@ -1937,6 +1937,7 @@
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Käytä tätä asetusta, jos nimen, sukunimen ja vastausten kerääminen alustatason demografisiin kysymyksiin on sinulle tärkeää. Se voi lisätä osallistumisen esteitä.",
   "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Vastaukset demografisiin kysymyksiin tallennetaan käyttäjäprofiileihin. Kysymyksiä esitetään vain käyttäjille, jotka eivät ole vastanneet niihin aiemmin. Vastaukset näihin kysymyksiin ovat saatavilla myös osallistumistietojen viennin kautta, joka on sekä moderaattoreiden että ylläpitäjien käytettävissä.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Esitä kysymyksiä osallistujille",
+  "app.containers.AdminPage.phase.methodPicker.addOn": "Lisää",
   "app.containers.AdminPage.phase.methodPicker.aiPoweredInsights": "Tekoälypohjaisia oivalluksia",
   "app.containers.AdminPage.phase.methodPicker.documentDescription": "Upota interaktiivinen PDF ja kerää kommentteja ja palautetta Konveion avulla.",
   "app.containers.AdminPage.phase.methodPicker.documentTitle": "Kerää palautetta asiakirjasta",
