@@ -52,7 +52,17 @@ const ParticipationMethodChoice = ({
       onClick={onClick}
       style={{ cursor: 'pointer' }}
     >
-      {image && <Image width="188px" src={image} alt={'Ideation'} w="100%" />}
+      {image && (
+        <Image
+          width="188px"
+          src={image}
+          alt={'Ideation'}
+          w="100%"
+          style={{
+            ...(selected ? {} : { filter: 'grayscale(100%)', opacity: '50%' }),
+          }}
+        />
+      )}
       {title && (
         <Title
           my="0px"
