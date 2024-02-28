@@ -128,7 +128,9 @@ class SurveyResultsGeneratorService < FieldVisitorService
       .group(:value)
       .order(Arel.sql('COUNT(value) DESC'))
       .count.to_a
-
+    (option_keys - distribution.pluck(0)).each do |key|
+      distribution << [key, 0] # add missing options with 0 responses
+    end
     sorted_distribution = distribution.sort_by { |k, _v| k == 'other' ? 1 : 0 } # other should always be last
     filtered_distribution = sorted_distribution.select { |(value, _count)| option_keys.include? value }
     option_titles = field.options.each_with_object({}) do |option, accu|

@@ -25,6 +25,11 @@ export const getIntialTabs = (formatMessage: FormatMessage): ITab[] => {
       name: 'ideaform',
     },
     {
+      label: formatMessage(messages.mapTab),
+      url: 'map',
+      name: 'map',
+    },
+    {
       label: formatMessage(messages.pollTab),
       url: 'polls',
       feature: 'polls',
@@ -84,6 +89,12 @@ export const getTabHideConditions = (
     return (
       getMethodConfig(phase.attributes.participation_method).formEditor !==
       'simpleFormEditor'
+    );
+  },
+  map: function isMapHidden() {
+    return !(
+      phase.attributes.participation_method === 'ideation' ||
+      phase.attributes.participation_method === 'voting'
     );
   },
   poll: function isPollTabHidden() {
