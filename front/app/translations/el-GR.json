@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "Υπήρξε πρόβλημα με την υποβολή της φόρμας. Ελέγξτε για τυχόν σφάλματα και προσπαθήστε ξανά.",
   "app.components.formBuilder.Page": "Σελίδα",
   "app.components.formBuilder.addAnswer": "Προσθέστε απάντηση",
+  "app.components.formBuilder.ai": "AI",
+  "app.components.formBuilder.aiUpsellText": "Εάν έχετε πρόσβαση στο πακέτο τεχνητής νοημοσύνης, θα μπορείτε να συνοψίζετε και να κατηγοριοποιείτε απαντήσεις κειμένου με τεχνητή νοημοσύνη.",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Ακύρωση",
   "app.components.formBuilder.chooseMany": "Επιλέξτε πολλά",
   "app.components.formBuilder.chooseOne": "Επιλέξτε ένα",
