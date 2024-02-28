@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "Un problème est survenu lors de la soumission du formulaire. Veuillez vérifier s'il y a des erreurs et réessayer.",
   "app.components.formBuilder.Page": "Page",
   "app.components.formBuilder.addAnswer": "Ajouter une réponse",
+  "app.components.formBuilder.ai": "AI",
+  "app.components.formBuilder.aiUpsellText": "Si vous avez accès à notre progiciel d'IA, vous pourrez résumer et catégoriser les réponses textuelles à l'aide de l'IA.",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Annuler",
   "app.components.formBuilder.chooseMany": "Choix multiple",
   "app.components.formBuilder.chooseOne": "Choisissez une option",
