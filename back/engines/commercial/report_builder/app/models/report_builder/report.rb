@@ -47,7 +47,7 @@ module ReportBuilder
     end
 
     def public?
-      phase.started? && visible?
+      phase? && phase.started? && visible?
     end
   end
 end
