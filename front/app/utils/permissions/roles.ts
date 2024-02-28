@@ -23,11 +23,10 @@ interface IRoleRegisty {
 
 export type TRole = IRoleRegisty[keyof IRoleRegisty];
 
-const userHasRole = (user: IUser, role: TRole['type']) => {
-  return !!(
-    user.data.attributes?.roles &&
-    user.data.attributes.roles?.find((r) => r.type === role)
-  );
+export const userHasRole = (user: IUser, role: TRole['type']) => {
+  const result = user.data.attributes.roles?.find((r) => r.type === role);
+
+  return result !== undefined;
 };
 
 export const isAdmin = (user?: IUser | null | undefined | Error) => {
