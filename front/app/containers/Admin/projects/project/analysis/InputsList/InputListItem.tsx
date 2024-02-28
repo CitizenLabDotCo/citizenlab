@@ -107,25 +107,25 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
           <Box display="flex" gap="8px">
             {typeof input.attributes.likes_count === 'number' && (
               <Box display="flex" gap="4px">
-                <Icon width="20px" height="20px" name="vote-up" />
+                <Icon width="16px" height="16px" name="vote-up" />
                 <span> {input.attributes.likes_count}</span>
               </Box>
             )}
             {typeof input.attributes.dislikes_count === 'number' && (
               <Box display="flex" gap="4px">
-                <Icon width="20px" height="20px" name="vote-down" />
+                <Icon width="16px" height="16px" name="vote-down" />
                 <span> {input.attributes.dislikes_count}</span>
               </Box>
             )}
             {typeof input.attributes.votes_count === 'number' && (
               <Box display="flex" gap="4px">
-                <Icon width="20px" height="20px" name="vote-ballot" />
+                <Icon width="16px" height="16px" name="vote-ballot" />
                 <span> {input.attributes.votes_count}</span>
               </Box>
             )}
             {typeof input.attributes.comments_count === 'number' && (
               <Box display="flex" gap="4px">
-                <Icon width="20px" height="20px" name="comments" />
+                <Icon width="16px" height="16px" name="comments" />
                 <span> {input.attributes.comments_count}</span>
               </Box>
             )}
