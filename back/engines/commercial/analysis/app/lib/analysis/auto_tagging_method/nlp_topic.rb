@@ -29,7 +29,8 @@ module Analysis
         classify(inputs_group, topics).each do |input, topic|
           assign_topic!(input, topic)
         end
-        update_progress(((i * 10) + 10) / (filtered_inputs.size + 10).to_f)
+        processed_inputs_count = (i + 1) * BATCH_SIZE
+        update_progress((processed_inputs_count + 10) / (filtered_inputs.size + 10).to_f)
       end
 
       update_progress(1.0)
