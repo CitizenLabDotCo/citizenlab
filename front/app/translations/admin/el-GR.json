@@ -1937,6 +1937,7 @@
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Χρησιμοποιήστε αυτή τη ρύθμιση εάν η συλλογή ονόματος, επωνύμου και απαντήσεων σε δημογραφικές ερωτήσεις επιπέδου πλατφόρμας είναι σημαντική για εσάς. Μπορεί να αυξήσει το εμπόδιο για τη συμμετοχή.",
   "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Οι απαντήσεις στις δημογραφικές ερωτήσεις θα αποθηκεύονται στα προφίλ των χρηστών. Οι ερωτήσεις θα τίθενται μόνο σε χρήστες που δεν έχουν απαντήσει σε αυτές στο παρελθόν. Οι απαντήσεις σε αυτές τις ερωτήσεις θα είναι επίσης προσβάσιμες μέσω της εξαγωγής δεδομένων συμμετοχής, στην οποία έχουν πρόσβαση τόσο οι συντονιστές όσο και οι διαχειριστές.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Κάντε ερωτήσεις στους συμμετέχοντες",
+  "app.containers.AdminPage.phase.methodPicker.addOn": "Προσθήκη",
   "app.containers.AdminPage.phase.methodPicker.aiPoweredInsights": "Γνωριμίες με βάση την τεχνητή νοημοσύνη",
   "app.containers.AdminPage.phase.methodPicker.documentDescription": "Ενσωματώστε ένα διαδραστικό PDF και συλλέξτε σχόλια και σχόλια με το Konveio.",
   "app.containers.AdminPage.phase.methodPicker.documentTitle": "Συλλογή ανατροφοδότησης για ένα έγγραφο",
