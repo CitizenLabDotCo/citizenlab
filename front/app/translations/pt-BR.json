@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "Houve um problema com o envio do formulário. Por favor, verifique se há algum erro e tente novamente.",
   "app.components.formBuilder.Page": "Página",
   "app.components.formBuilder.addAnswer": "Acrescentar resposta",
+  "app.components.formBuilder.ai": "IA",
+  "app.components.formBuilder.aiUpsellText": "Se você tiver acesso ao nosso pacote de IA, poderá resumir e categorizar respostas de texto com IA",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Cancelar",
   "app.components.formBuilder.chooseMany": "Escolha muitos",
   "app.components.formBuilder.chooseOne": "Escolha um",
