@@ -1937,7 +1937,7 @@
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Gebruik deze instelling als u het verzamelen van naam, achternaam en antwoorden op demografische vragen op platformniveau belangrijk vindt. Het kan de drempel voor deelname verhogen.",
   "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Antwoorden op demografische vragen worden opgeslagen in gebruikersprofielen. De vragen zullen alleen gesteld worden aan gebruikers die ze nog niet eerder beantwoord hebben. Antwoorden op deze vragen zullen ook beschikbaar zijn via de export van deelnamegegevens, die toegankelijk is voor beheerders.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Vragen stellen aan de deelnemers",
-  "app.containers.AdminPage.phase.methodPicker.addOn": "Toevoegen",
+  "app.containers.AdminPage.phase.methodPicker.addOn": "Add-on",
   "app.containers.AdminPage.phase.methodPicker.aiPoweredInsights": "AI-gestuurde inzichten",
   "app.containers.AdminPage.phase.methodPicker.documentDescription": "Voeg een interactieve PDF in en verzamel reacties en feedback met Konveio.",
   "app.containers.AdminPage.phase.methodPicker.documentTitle": "Verzamel feedback op een document",
