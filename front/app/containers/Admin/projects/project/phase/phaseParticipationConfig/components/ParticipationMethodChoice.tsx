@@ -33,6 +33,7 @@ const ParticipationMethodChoice = ({
   return (
     <Box
       display="flex"
+      width="240px"
       flexDirection="column"
       borderRadius="3px"
       border={`1px solid ${borderColor}`}
@@ -51,13 +52,15 @@ const ParticipationMethodChoice = ({
       onClick={onClick}
       style={{ cursor: 'pointer' }}
     >
-      {image && <Image width="188px" src={image} alt={'Ideation'} />}
+      {image && <Image width="188px" src={image} alt={'Ideation'} w="100%" />}
       {title && (
         <Title
           my="0px"
           variant="h6"
           color={selected ? 'primary' : 'coolGrey500'}
           textAlign="left"
+          width="100%"
+          style={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}
         >
           {title}
         </Title>
@@ -68,6 +71,8 @@ const ParticipationMethodChoice = ({
           variant="bodyS"
           color={selected ? 'primary' : 'coolGrey500'}
           textAlign="left"
+          width="100%"
+          style={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}
         >
           {children}
         </Text>
@@ -78,6 +83,8 @@ const ParticipationMethodChoice = ({
           variant="bodyS"
           color={selected ? 'primary' : 'coolGrey500'}
           textAlign="left"
+          width="100%"
+          style={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}
         >
           {subtitle}
         </Text>
