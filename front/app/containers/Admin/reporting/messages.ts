@@ -38,4 +38,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.tabReports',
     defaultMessage: 'Reports',
   },
+  deprecated: {
+    id: 'app.containers.Admin.reporting.deprecated',
+    defaultMessage: 'DEPRECATED',
+  },
 });

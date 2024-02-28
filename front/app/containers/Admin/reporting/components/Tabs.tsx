@@ -10,6 +10,7 @@ import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
+import { Box, StatusLabel, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -50,7 +51,7 @@ const DashboardTabs = ({
     const projectReportsTab = {
       label: formatMessage(messages.tabReports),
       url: '/admin/reporting/reports',
-      name: 'reports',
+      name: 'project_reports',
     };
 
     return [
@@ -72,12 +73,23 @@ const DashboardTabs = ({
   return (
     <>
       <NavigationTabs>
-        {tabs.map(({ url, label }) => (
+        {tabs.map(({ url, label, name }) => (
           <Tab
             label={label}
             url={url}
             key={url}
             active={isTopBarNavActive('/admin/reporting', pathname, url)}
+            statusLabel={
+              name === 'project_reports' ? (
+                <Box display="inline" ml="12px">
+                  <StatusLabel
+                    text={'Beta'}
+                    backgroundColor={colors.background}
+                    variant="outlined"
+                  />
+                </Box>
+              ) : null
+            }
           />
         ))}
       </NavigationTabs>
