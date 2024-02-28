@@ -20,7 +20,7 @@ describe('useDeleteInitiativeReaction', () => {
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useDeleteInitiativeReaction(),
+      () => useDeleteInitiativeReaction({ initiativeId: 'initiativeId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -28,7 +28,6 @@ describe('useDeleteInitiativeReaction', () => {
 
     act(() => {
       result.current.mutate({
-        initiativeId: 'initiativeId',
         reactionId: 'reactionId',
       });
     });
@@ -44,7 +43,7 @@ describe('useDeleteInitiativeReaction', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useDeleteInitiativeReaction(),
+      () => useDeleteInitiativeReaction({ initiativeId: 'initiativeId' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -52,7 +51,6 @@ describe('useDeleteInitiativeReaction', () => {
 
     act(() => {
       result.current.mutate({
-        initiativeId: 'initiativeId',
         reactionId: 'reactionId',
       });
     });
