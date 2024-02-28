@@ -2033,6 +2033,7 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.other": "Other",
   "app.containers.AdminPage.projects.project.analysis.Tags.platformTags": "Tags: Platform tags",
   "app.containers.AdminPage.projects.project.analysis.Tags.platformTagsDescription": "Assign the existing platform tags that the author picked when posting",
+  "app.containers.AdminPage.projects.project.analysis.Tags.recommended": "Recommended",
   "app.containers.AdminPage.projects.project.analysis.Tags.renameTag": "Rename tag",
   "app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalCancel": "Cancel",
   "app.containers.AdminPage.projects.project.analysis.Tags.renameTagModalNameLabel": "Name",
