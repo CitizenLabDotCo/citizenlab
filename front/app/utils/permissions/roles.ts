@@ -71,7 +71,7 @@ export const isRegularUser = (user?: IUser | null) => {
   return false;
 };
 
-export const isProjectModerator = (user?: IUser | null, projectId?: string) => {
+export const isProjectModerator = (user: IUser, projectId?: string) => {
   return (
     isModerator(user) &&
     (!projectId ||
