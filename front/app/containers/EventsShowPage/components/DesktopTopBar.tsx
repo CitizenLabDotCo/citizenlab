@@ -39,10 +39,10 @@ interface Props {
 
 const TopBar = ({ project, event }: Props) => {
   const location = useLocation();
-  const user = useAuthUser();
+  const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();
-  const isAdminUser = isAdmin(user.data);
-  const isModerator = isProjectModerator(user.data, project.id);
+  const isAdminUser = isAdmin(user);
+  const isModerator = user ? isProjectModerator(user, project.id) : false;
 
   return (
     <Bar>
