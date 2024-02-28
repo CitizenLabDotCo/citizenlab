@@ -1937,6 +1937,7 @@
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Utilitzeu aquesta configuració si és important per a vostè recollir el nom, els cognoms i les respostes a preguntes demogràfiques a nivell de plataforma. Pot augmentar la barrera per a la participació.",
   "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Les respostes a preguntes demogràfiques s'emmagatzemaran als perfils d'usuari. Només es faran preguntes als usuaris que no les hagin respost abans. Les respostes a aquestes preguntes també seran accessibles mitjançant l'exportació de dades de participació, que és accessible tant per als moderadors com per als administradors.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Feu preguntes als participants",
+  "app.containers.AdminPage.phase.methodPicker.addOn": "Afegir",
   "app.containers.AdminPage.phase.methodPicker.aiPoweredInsights": "Estadístiques basades en IA",
   "app.containers.AdminPage.phase.methodPicker.documentDescription": "Insereix un PDF interactiu i recull comentaris i comentaris amb Konveio.",
   "app.containers.AdminPage.phase.methodPicker.documentTitle": "Recollir comentaris sobre un document",
