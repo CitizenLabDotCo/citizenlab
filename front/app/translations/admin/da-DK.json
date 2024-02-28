@@ -2446,7 +2446,7 @@
   "app.modules.navbar.admin.containers.pageHeader": "Sider og menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Din navigationslinje kan vise op til fem sider ud over siderne Startside og Projekter. Du kan omdøbe menupunkter, omarrangere og tilføje nye sider med dit eget indhold.",
   "app.modules.project_management.admin.components.permissionsTab": "Adgangsrettigheder",
-  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.featureLockedReason": "Dette er ikke inkluderet i din nuværende plan. Tal med din Government Success Manager eller administrator for at låse det op.",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.featureLockedReason": "Dette er ikke inkluderet i jeres nuværende licensplan. Kontakt Søren Kielgast eller jeres administrator for at låse det op.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupBySurveyQuestion": "Gruppér efter survey spørgsmål",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupByUserField": "Gruppér efter brugerfelt",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupMode": "Gruppetilstand",
