@@ -2019,6 +2019,7 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.fewShotSubtitle": "Select maximum 9 tags you would like the inputs to be distributed between.",
   "app.containers.AdminPage.projects.project.analysis.Tags.fewShotSubtitle2": "The classification is based on the inputs currently assigned to the tags. The computer will try to follow your example.",
   "app.containers.AdminPage.projects.project.analysis.Tags.fewShotTitle": "Tags: By example",
+  "app.containers.AdminPage.projects.project.analysis.Tags.fewShotsEmpty": "You do not have any custom tags yet.",
   "app.containers.AdminPage.projects.project.analysis.Tags.fullyAutomatedDescription": "The computer automatically detects tags and assigns them to your inputs.",
   "app.containers.AdminPage.projects.project.analysis.Tags.fullyAutomatedTitle": "Tags: Fully automated",
   "app.containers.AdminPage.projects.project.analysis.Tags.fullyAutomatedTooltip": "Works well when your projects covers a broad range of tags. Good place to start.",
