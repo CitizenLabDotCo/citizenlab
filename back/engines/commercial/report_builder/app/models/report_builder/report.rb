@@ -45,5 +45,9 @@ module ReportBuilder
     def phase?
       !phase_id.nil?
     end
+
+    def public?
+      phase.started? && visible?
+    end
   end
 end

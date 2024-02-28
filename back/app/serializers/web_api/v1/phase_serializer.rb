@@ -51,7 +51,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     user_basket object, params
   end
 
-  has_one :report, serializer: ReportBuilder::WebApi::V1::ReportSerializer
+  has_one :report, if: :public?, serializer: ReportBuilder::WebApi::V1::ReportSerializer
 
   has_many :permissions
 
