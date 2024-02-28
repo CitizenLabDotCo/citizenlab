@@ -136,10 +136,12 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
 
   # Submit response for each user
   let_it_be(:responses) do
-    build_list(:idea, 11) do |record, index|
+    IdeaStatus.create_defaults
+    build_list(:native_survey_response, 11) do |record, index|
       record.author = users[index]
       record.project = project
       record.phases = [phase]
+      record.creation_phase = phase
       record.custom_field_values = if index == 8
         {
           city_survey_question.key => city_survey_response(index),

@@ -4,7 +4,7 @@ module ReportBuilder
   class SurveyResponseGrouper
     def initialize(phase)
       @form = phase.custom_form || CustomForm.new(participation_context: phase)
-      @inputs = phase.ideas.published
+      @inputs = phase.ideas.native_survey.published
     end
 
     def get_result(question_field_id)
