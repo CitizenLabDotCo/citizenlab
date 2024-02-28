@@ -23,7 +23,7 @@ const MapComponent = memo<Props>(({ position, projectId }) => {
   const center = position.coordinates;
 
   // Load layers from project
-  // Create GeoJSON layers to add to Esri map
+  // Create Esri layers to add to map
   const layers = useMemo(() => {
     const mapConfigLayers = mapConfig?.data.attributes.layers;
     // All layers are either of type Esri or GeoJSON, so we can check just the first layer

@@ -373,7 +373,7 @@ export const showAddInputPopup = ({
 };
 
 // createEsriFeatureLayers
-// Description: Create list of Esri GeoJSON layers from a list of IMapLayerAttributes
+// Description: Create list of Esri Feature layers from a list of IMapLayerAttributes
 export const createEsriFeatureLayers = (
   layers: IMapLayerAttributes[],
   localize: Localize
