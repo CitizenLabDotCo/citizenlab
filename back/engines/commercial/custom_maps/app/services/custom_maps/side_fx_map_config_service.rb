@@ -4,9 +4,11 @@ module CustomMaps
   class SideFxMapConfigService < BaseSideFxService
     include SideFxHelper
 
-    def before_create(map_config, user); end
+    def before_create(_map_config, _user); end
 
-    def before_update(map_config, user); end
+    def before_update(_map_config, _user); end
+
+    def before_destroy(_map_config, _user); end
 
     def after_destroy(frozen_resource, user)
       serialized_resource = clean_time_attributes(frozen_resource.attributes)
