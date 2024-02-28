@@ -38,7 +38,7 @@ module SideFxHelper
     serialized_resource.each do |k, v|
       next unless v.is_a?(RGeo::Geographic::SphericalPointImpl)
 
-      serialized_resource[k] = { 'lon' => v.x, 'lat' => v.y }
+      serialized_resource[k] = { 'longitude' => v.x, 'latitude' => v.y }
     end
   end
 end
