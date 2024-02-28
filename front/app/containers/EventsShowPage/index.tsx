@@ -68,7 +68,6 @@ const EventImage = styled(Image)`
 
 const EventsShowPage = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const locale = useLocale();
   const localize = useLocalize();
   const { eventId } = useParams() as {
     eventId: string;
@@ -95,14 +94,14 @@ const EventsShowPage = () => {
     return <PageNotFound />;
   }
 
-  if (isNilOrError(locale) || !project) {
+  if (!project) {
     return null;
   }
 
   return (
     <>
       {isSmallerThanTablet && (
-        <MobileTopBar projectId={event?.data.relationships.project.data.id} />
+        <MobileTopBar projectId={event.data.relationships.project.data.id} />
       )}
       <Container>
         <InnerContainer>
@@ -113,22 +112,22 @@ const EventsShowPage = () => {
           <Box display="flex" id="e2e-idea-show-page-content">
             <Box flex="1 1 100%">
               <Title id="e2e-event-title" variant="h1">
-                {localize(event?.data.attributes.title_multiloc)}
+                {localize(event.data.attributes.title_multiloc)}
               </Title>
-              <ProjectLink project={project?.data} />
+              <ProjectLink project={project.data} />
               {largeImage && (
                 <Box aria-hidden="true">
                   <EventImage src={largeImage} alt="" />
                 </Box>
               )}
               <Box mb="40px">
-                {event && <EventDescription event={event?.data} />}
-                {isSmallerThanTablet && event && (
+                <EventDescription event={event.data} />
+                {isSmallerThanTablet && (
                   <InformationSectionMobile event={event.data} />
                 )}
               </Box>
             </Box>
-            {!isSmallerThanTablet && event && (
+            {!isSmallerThanTablet && (
               <InformationColumnDesktop event={event.data} />
             )}
           </Box>
