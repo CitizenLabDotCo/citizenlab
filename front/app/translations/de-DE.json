@@ -623,6 +623,8 @@
   "app.components.form.submitApiError": "Es gab ein Problem beim Absenden des Formulars. Bitte prüfe auf Fehler und versuche es erneut.",
   "app.components.formBuilder.Page": "Seite",
   "app.components.formBuilder.addAnswer": "Antwort hinzufügen",
+  "app.components.formBuilder.ai": "AI",
+  "app.components.formBuilder.aiUpsellText": "Wenn Sie Zugang zu unserem KI-Paket haben, können Sie Textantworten mit KI zusammenfassen und kategorisieren",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Abbrechen",
   "app.components.formBuilder.chooseMany": "Wählen Sie mehrere",
   "app.components.formBuilder.chooseOne": "Wählen Sie eine Option",
