@@ -6,12 +6,14 @@ module CustomMaps
       class LayersController < ApplicationController
         before_action :set_layer, except: %i[create]
         before_action :set_map_config, except: %i[show]
+        before_action :set_side_effects_service, only: %i[create update destroy]
 
         def create
           authorize @map_config, :create?, policy_class: MapConfigPolicy
           @layer = @map_config.layers.build(create_params)
 
           if @layer.save
+            @side_fx_service.after_create(@layer, current_user)
             render json: serialized_layer, status: :created
           else
             render json: layer_errors, status: :unprocessable_entity
@@ -21,6 +23,7 @@ module CustomMaps
         def update
           authorize @layer, :update?, policy_class: MapConfigPolicy
           if @layer.update(update_params)
+            @side_fx_service.after_update(@layer, current_user)
             render json: serialized_layer, status: :ok
           else
             render json: layer_errors, status: :unprocessable_entity
@@ -30,7 +33,9 @@ module CustomMaps
         def destroy
           authorize @layer, :destroy?, policy_class: MapConfigPolicy
 
-          if @layer.destroy
+          layer = @layer.destroy
+          if layer.destroyed?
+            @side_fx_service.after_destroy(layer, current_user)
             head :no_content
           else
             render json: layer_errors, status: :unprocessable_entity
@@ -99,6 +104,10 @@ module CustomMaps
 
         def set_map_config
           @map_config = MapConfig.find(params[:map_config_id])
+        end
+
+        def set_side_effects_service
+          @side_fx_service = SideFxLayerService.new
         end
       end
     end

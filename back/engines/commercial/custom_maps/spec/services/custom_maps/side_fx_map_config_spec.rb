@@ -8,7 +8,7 @@ describe CustomMaps::SideFxMapConfigService do
   let(:map_config) { create(:map_config) }
 
   describe 'after_create' do
-    it "logs a 'created' action when a area is created" do
+    it "logs a 'created' action when a map_config is created" do
       expect { service.after_create(map_config, user) }
         .to have_enqueued_job(LogActivityJob)
         .with(map_config, 'created', user, map_config.created_at.to_i, project_id: map_config.project_id)
