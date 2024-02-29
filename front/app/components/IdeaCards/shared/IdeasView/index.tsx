@@ -3,6 +3,8 @@ import IdeasList from './IdeasList';
 import IdeasMap from 'components/IdeasMap';
 import { IIdeaData } from 'api/ideas/types';
 import { IdeaDefaultSortMethod } from 'api/phases/types';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import useMapConfig from 'api/map_config/useMapConfig';
 
 interface Props {
   view: 'card' | 'map';
@@ -32,6 +34,12 @@ const IdeasView = ({
   loadingMore,
   onLoadMore,
 }: Props) => {
+  const { data: mapConfig, isLoading } = useMapConfig(projectId || undefined);
+
+  if (projectId && isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <>
       {view === 'card' && list && (
@@ -51,18 +59,15 @@ const IdeasView = ({
           phaseId={phaseId}
         />
       )}
-      {/*
-        IdeasMap is only used in projects at the moment,
-        so I narrowed down the projectId type.
-      */}
       {view === 'map' && projectId && (
-        <IdeasMap
-          ariaLabelledBy={'view-tab-2'}
-          id={'view-panel-2'}
-          projectId={projectId}
-          phaseId={phaseId}
-          tabIndex={0}
-        />
+        <Box aria-label={'view-tab-2'} id={'view-panel-2'}>
+          <IdeasMap
+            projectId={projectId}
+            phaseId={phaseId}
+            ideasList={list}
+            mapConfig={mapConfig}
+          />
+        </Box>
       )}
     </>
   );
