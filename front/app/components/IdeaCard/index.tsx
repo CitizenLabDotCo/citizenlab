@@ -30,6 +30,7 @@ import styled from 'styled-components';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
+import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'api/phases/usePhase';
 import useIdeaImage from 'api/idea_images/useIdeaImage';
@@ -101,7 +102,9 @@ const IdeaCard = ({
   const smallerThanTablet = useBreakpoint('tablet');
 
   const localize = useLocalize();
-
+  const { data: project } = useProjectById(
+    idea.data.relationships.project.data.id
+  );
   const { data: phase } = usePhase(phaseId);
 
   const phaseData = phase?.data;
@@ -184,6 +187,7 @@ const IdeaCard = ({
         <Box>
           <Interactions idea={idea} phase={phaseData || null} />
           <Footer
+            project={project}
             idea={idea.data}
             hideIdeaStatus={hideIdeaStatus}
             participationMethod={participationMethod}
