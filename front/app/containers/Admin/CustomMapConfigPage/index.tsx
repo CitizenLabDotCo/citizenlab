@@ -44,7 +44,7 @@ interface Props {
   className?: string;
 }
 
-const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
+const CustomMapConfigPage = memo<Props>(({ className }) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
@@ -137,4 +137,4 @@ const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
   );
 });
 
-export default ProjectCustomMapConfigPage;
+export default CustomMapConfigPage;

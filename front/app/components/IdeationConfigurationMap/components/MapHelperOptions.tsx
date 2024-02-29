@@ -7,7 +7,7 @@ import Tippy from '@tippyjs/react';
 
 // utils
 import styled from 'styled-components';
-import messages from '../../../containers/Admin/ProjectCustomMapConfigPage/messages';
+import messages from 'containers/Admin/CustomMapConfigPage/messages';
 
 // hooks
 import { useIntl } from 'utils/cl-intl';

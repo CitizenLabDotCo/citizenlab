@@ -61,6 +61,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',
   },
+  locationAnswer: {
+    id: 'app.components.formBuilder.locationAnswer',
+    defaultMessage: 'Location answer',
+  },
   proposedBudget: {
     id: 'app.components.formBuilder.proposedBudget',
     defaultMessage: 'Proposed budget',

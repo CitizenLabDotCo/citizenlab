@@ -36,7 +36,7 @@ const AdminAllowedTopicsComponent = React.lazy(
   () => import('./project/topics')
 );
 const AdminCustomMapConfigComponent = React.lazy(
-  () => import('containers/Admin/ProjectCustomMapConfigPage')
+  () => import('containers/Admin/CustomMapConfigPage')
 );
 
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));

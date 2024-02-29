@@ -135,6 +135,7 @@ export interface IAppConfigurationSettings {
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
   initiative_review?: AppConfigurationFeature;
+  input_form_mapping_question?: AppConfigurationFeature;
   initiative_cosponsors?: AppConfigurationFeature;
   fragments?: {
     allowed: boolean;

@@ -26,7 +26,8 @@ export type ICustomFieldInputType =
   | 'files'
   | 'image_files'
   | 'topic_ids'
-  | 'multiselect_image';
+  | 'multiselect_image'
+  | 'point';
 
 export type IOptionsType = {
   id?: string;
@@ -51,6 +52,7 @@ export interface IAttributes {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   input_type: ICustomFieldInputType;
+  map_config_id?: string | null;
   required: boolean;
   isRequiredEditable?: boolean;
   isEnabledEditable?: boolean;

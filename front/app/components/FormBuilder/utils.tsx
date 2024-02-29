@@ -20,6 +20,7 @@ import SelectSettings from './components/FormBuilderSettings/SelectSettings';
 // utils
 import { uuid4 } from '@sentry/utils';
 import { isNilOrError } from 'utils/helperUtils';
+import PointSettings from './components/FormBuilderSettings/PointSettings';
 
 export type FormBuilderConfig = {
   formBuilderTitle: MessageDescriptor;
@@ -141,6 +142,12 @@ export function getAdditionalSettings(
           locales={locales}
         />
       );
+    case 'point':
+      return (
+        <PointSettings
+          mapConfigIdName={`customFields.${field.index}.map_config_id`}
+        />
+      );
     default:
       return null;
   }
@@ -214,6 +221,9 @@ const getInputTypeStringKey = (
       break;
     case 'file_upload':
       translatedStringKey = messages.fileUpload;
+      break;
+    case 'point':
+      translatedStringKey = messages.locationAnswer;
       break;
   }
 

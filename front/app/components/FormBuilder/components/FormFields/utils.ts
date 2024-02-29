@@ -81,6 +81,8 @@ const getCustomFieldBadgeLabel = (
       return messages.linearScale;
     case 'file_upload':
       return messages.fileUpload;
+    case 'point':
+      return messages.locationAnswer;
     default:
       return messages.default;
   }
