@@ -475,6 +475,7 @@
   "app.components.StatusModule.submittedUntil3": "crwdns1464690:0crwdne1464690:0",
   "app.components.TopicsPicker.numberOfSelectedTopics": "crwdns213680:0numberOfSelectedTopics={numberOfSelectedTopics}crwdnd213680:0selectedTopicNames={selectedTopicNames}crwdne213680:0",
   "app.components.UI.MoreActionsMenu.showMoreActions": "crwdns213682:0crwdne213682:0",
+  "app.components.UI.NewLabel.newBadge": "crwdns1845182:0crwdne1845182:0",
   "app.components.UI.RemoveImageButton.a11y_removeImage": "crwdns213684:0crwdne213684:0",
   "app.components.UI.TranslateButton.original": "crwdns213686:0crwdne213686:0",
   "app.components.UI.TranslateButton.translate": "crwdns213688:0crwdne213688:0",
