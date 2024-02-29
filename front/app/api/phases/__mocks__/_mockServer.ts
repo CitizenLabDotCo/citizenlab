@@ -28,6 +28,7 @@ export const phasesData: IPhaseData[] = [
       campaigns_settings: { project_phase_started: true },
       votes_count: 0,
       baskets_count: 0,
+      report_public: false,
     },
     relationships: {
       permissions: {
@@ -71,6 +72,7 @@ export const phasesData: IPhaseData[] = [
       campaigns_settings: { project_phase_started: true },
       votes_count: 0,
       baskets_count: 0,
+      report_public: false,
     },
     relationships: {
       permissions: {
@@ -110,6 +112,7 @@ export const phasesData: IPhaseData[] = [
       campaigns_settings: { project_phase_started: true },
       votes_count: 0,
       baskets_count: 0,
+      report_public: false,
     },
     relationships: {
       permissions: {
@@ -154,6 +157,7 @@ export const mockPhaseInformationData: IPhaseData = {
     campaigns_settings: { project_phase_started: true },
     votes_count: 0,
     baskets_count: 0,
+    report_public: false,
   },
   relationships: {
     permissions: {
@@ -197,6 +201,7 @@ export const mockPhaseIdeationData: IPhaseData = {
     campaigns_settings: { project_phase_started: true },
     votes_count: 0,
     baskets_count: 0,
+    report_public: false,
   },
   relationships: {
     permissions: {
@@ -242,6 +247,7 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     campaigns_settings: { project_phase_started: true },
     votes_count: 0,
     baskets_count: 0,
+    report_public: false,
   },
   relationships: {
     permissions: {
@@ -287,6 +293,7 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     campaigns_settings: { project_phase_started: true },
     votes_count: 0,
     baskets_count: 0,
+    report_public: false,
   },
   relationships: {
     permissions: {

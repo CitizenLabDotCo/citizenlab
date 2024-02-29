@@ -10,7 +10,7 @@ import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
-import { Box, StatusLabel, colors } from '@citizenlab/cl2-component-library';
+import { Box, Badge, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -79,14 +79,12 @@ const DashboardTabs = ({
             url={url}
             key={url}
             active={isTopBarNavActive('/admin/reporting', pathname, url)}
-            statusLabel={
+            badge={
               name === 'project_reports' ? (
                 <Box display="inline" ml="12px">
-                  <StatusLabel
-                    text={formatMessage(messages.deprecated)}
-                    backgroundColor={colors.background}
-                    variant="outlined"
-                  />
+                  <Badge color={colors.background}>
+                    {formatMessage(messages.deprecated)}
+                  </Badge>
                 </Box>
               ) : null
             }
