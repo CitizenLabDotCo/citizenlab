@@ -26,8 +26,8 @@ const Footer = ({
 
   const commentingEnabled =
     project.data.attributes.action_descriptor.commenting_idea.enabled;
-  const projectHasComments = project.data.attributes.comments_count > 0;
-  const showCommentCount = commentingEnabled || projectHasComments;
+  const ideaHasComments = idea.attributes.comments_count > 0;
+  const showCommentCount = commentingEnabled || ideaHasComments;
 
   // the participationMethod checks ensure that the footer is not shown on
   // e.g. /ideas index page because there's no participationMethod
