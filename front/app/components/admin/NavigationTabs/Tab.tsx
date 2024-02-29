@@ -70,7 +70,7 @@ type TabProps = {
   label: string;
   url: string;
   active: boolean;
-  statusLabel?: React.ReactNode;
+  badge?: React.ReactNode;
   handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 };
 
@@ -78,14 +78,14 @@ const Tab = ({
   label,
   url,
   active,
-  statusLabel,
+  badge,
   handleClick,
   ...props
 }: TabProps) => (
   <Container active={active} {...props}>
     <Link to={url} onClick={handleClick}>
       {label}
-      {statusLabel && <>{statusLabel}</>}
+      {badge && <>{badge}</>}
     </Link>
   </Container>
 );
