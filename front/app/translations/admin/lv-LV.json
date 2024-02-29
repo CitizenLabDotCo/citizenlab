@@ -728,6 +728,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Lūdzu, izvēlieties ideju fāzi.",
   "app.containers.Admin.projects.all.askPersonalData": "Pieprasīt personas datus",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Noklikšķiniet uz \"Eksportēt kā pdf\", lai lejupielādētu ievades veidlapas pdf versiju. Ņemiet vērā, ka pašlaik pdf versijā netiek atbalstīti lauki Attēli, Failu augšupielāde, Tags un Lineārais mērogs.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Noklikšķiniet uz \"Eksportēt kā pdf\", lai lejupielādētu aptaujas pdf versiju. Ņemiet vērā, ka pašlaik pdf versijā netiek atbalstīti lauki \"Atrašanās vietas atbilde\", \"Lineārais mērogs\" un \"Failu augšupielāde\".",
   "app.containers.Admin.projects.all.components.archived": "Arhivēts",
   "app.containers.Admin.projects.all.components.draft": "Melnraksts",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Rediģēt",
