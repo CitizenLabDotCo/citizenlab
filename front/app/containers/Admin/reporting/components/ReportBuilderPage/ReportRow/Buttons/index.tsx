@@ -17,10 +17,9 @@ interface Props {
   reportId: string;
   isLoading: boolean;
   onDelete: () => void;
-  onEdit: () => void;
 }
 
-const Buttons = ({ reportId, isLoading, onDelete, onEdit }: Props) => {
+const Buttons = ({ reportId, isLoading, onDelete }: Props) => {
   const { data: report } = useReport(reportId);
   const { formatMessage } = useIntl();
 
@@ -54,9 +53,9 @@ const Buttons = ({ reportId, isLoading, onDelete, onEdit }: Props) => {
             mr="8px"
             icon="edit"
             buttonStyle="secondary"
-            onClick={onEdit}
             disabled={isLoading || !canEdit}
             iconSize="18px"
+            linkTo={`/admin/reporting/report-builder/${reportId}/editor`}
           >
             {formatMessage(messages.edit)}
           </Button>
