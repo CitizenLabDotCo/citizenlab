@@ -728,6 +728,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Selecteer een ideeënfase.",
   "app.containers.Admin.projects.all.askPersonalData": "Vraag persoonlijke gegevens",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Klik hieronder op 'Exporteer als pdf' om een pdf-versie van het invulformulier te downloaden. Let op: op dit moment worden de velden Afbeeldingen, Bestand uploaden, Tags en Lineaire schaal niet ondersteund voor de pdf-versie.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Klik hieronder op 'Exporteer als pdf' om een pdf-versie van de vragenlijst te downloaden. Houd er rekening mee dat op dit moment de velden Locatie, Lineaire schaal en Bestanden Uploaden niet worden ondersteund voor de pdf-versie.",
   "app.containers.Admin.projects.all.components.archived": "Gearchiveerd",
   "app.containers.Admin.projects.all.components.draft": "Concept",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Beheren",
