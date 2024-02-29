@@ -291,7 +291,7 @@
   "app.components.formBuilder.copySurveyModal.cancel": "Annuler",
   "app.components.formBuilder.copySurveyModal.description": "Cela copiera les questions et la logique, mais pas les réponses.",
   "app.components.formBuilder.copySurveyModal.duplicate": "Dupliquer",
-  "app.components.formBuilder.copySurveyModal.noAppropriatePhases": "Aucune phase appropriée n'a été trouvée dans ce projet",
+  "app.components.formBuilder.copySurveyModal.noAppropriatePhases": "Aucune phase compatible n'a été trouvée pour ce projet",
   "app.components.formBuilder.copySurveyModal.noPhaseSelected": "Aucune phase n'a été sélectionnée. Veuillez d'abord sélectionner une phase.",
   "app.components.formBuilder.copySurveyModal.noProject": "Aucun projet",
   "app.components.formBuilder.copySurveyModal.noProjectSelected": "Aucun projet n'a été sélectionné. Veuillez d'abord sélectionner un projet.",
