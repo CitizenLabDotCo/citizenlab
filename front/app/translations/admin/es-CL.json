@@ -728,6 +728,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Selecciona una fase de ideación.",
   "app.containers.Admin.projects.all.askPersonalData": "Pide datos personales",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Haz clic en \"Exportar como pdf\" para descargar una versión pdf del formulario de entrada. Ten en cuenta que, por el momento, los campos Imágenes, Carga de archivos, Etiquetas y Escala lineal no son compatibles con la versión pdf.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Haz clic en \"Exportar como pdf\" para descargar una versión pdf de la encuesta. Ten en cuenta que, por el momento, los campos Respuesta de ubicación, Escala lineal y Carga de archivos no son compatibles con la versión pdf.",
   "app.containers.Admin.projects.all.components.archived": "Archivado",
   "app.containers.Admin.projects.all.components.draft": "Borrador",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Administrar",
