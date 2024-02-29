@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :setup_and_support do # rubocop:disable Metrics/BlockLength
+namespace :setup_and_support do
   desc 'Mass official feedback'
   task :mass_official_feedback, %i[url host locale] => [:environment] do |_t, args|
     # ID, Feedback, Feedback Author Name, Feedback Email, New Status
