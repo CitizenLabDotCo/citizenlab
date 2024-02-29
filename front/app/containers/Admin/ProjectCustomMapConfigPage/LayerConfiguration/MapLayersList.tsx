@@ -12,25 +12,25 @@ import {
 import Tippy from '@tippyjs/react';
 import { SubSectionTitle } from 'components/admin/Section';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import GeoJsonImportButton from './GeoJsonImportButton';
-import EsriImportOptions from './EsriImportOptions';
+import GeoJsonImportButton from '../DataImportOptions/GeoJsonImportButton';
+import EsriImportOptions from '../DataImportOptions/EsriImportOptions';
 
 // hooks
 import useDeleteMapLayer from 'api/map_layers/useDeleteMapLayer';
 import useReorderMapLayer from 'api/map_layers/useReorderMapLayer';
 
 // utils
-import { getLayerColor, getLayerIcon } from '../../../utils/mapUtils/map';
+import { getLayerColor, getLayerIcon } from '../../../../utils/mapUtils/map';
 import addOrderingToLayers, {
   IMapLayerAttributesWithOrdering,
 } from './addOrderingToLayers';
-import { ViewOptions } from '.';
+import { ViewOptions } from '..';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // styling
 import styled from 'styled-components';

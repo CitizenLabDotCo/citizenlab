@@ -25,12 +25,12 @@ import {
   getGeojsonLayerType,
   makiIconNames,
   getUnnamedLayerTitleMultiloc,
-} from '../../../utils/mapUtils/map';
+} from '../../../../utils/mapUtils/map';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // styling
 import styled from 'styled-components';

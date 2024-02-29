@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // components
 import Error from 'components/UI/Error';
@@ -15,10 +15,10 @@ import {
   Button,
   Success,
 } from '@citizenlab/cl2-component-library';
-import tooltipImage from './images/esri_feature_url_example.png';
+import tooltipImage from '../TooltipImages/esri_feature_url_example.png';
 
 // types
-import { ViewOptions } from '.';
+import { ViewOptions } from '..';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -28,7 +28,7 @@ import { request, ErrorTypes, ApiKeyManager } from '@esri/arcgis-rest-request';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAddMapLayer from 'api/map_layers/useAddMapLayer';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { getFeatureLayerInitialTitleMultiloc } from './utils';
+import { getFeatureLayerInitialTitleMultiloc } from '../utils';
 
 type Props = {
   projectId: string;

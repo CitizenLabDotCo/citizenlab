@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // components
 import Error from 'components/UI/Error';
@@ -15,10 +15,10 @@ import {
   Button,
   Success,
 } from '@citizenlab/cl2-component-library';
-import tooltipImage from './images/esri_portal_id_example.png';
+import tooltipImage from '../TooltipImages/esri_portal_id_example.png';
 
 // types
-import { ViewOptions } from '.';
+import { ViewOptions } from '..';
 
 // utils
 import { request, ErrorTypes, ApiKeyManager } from '@esri/arcgis-rest-request';

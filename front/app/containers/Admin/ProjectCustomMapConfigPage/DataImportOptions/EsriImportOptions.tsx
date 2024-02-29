@@ -6,17 +6,17 @@ import Tippy from '@tippyjs/react';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // types
-import { ViewOptions } from '.';
+import { ViewOptions } from '..';
 import { IMapConfig } from 'api/map_config/types';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
-import { getLayerType } from './utils';
+import { getLayerType } from '../utils';
 
 interface Props {
   projectId: string;

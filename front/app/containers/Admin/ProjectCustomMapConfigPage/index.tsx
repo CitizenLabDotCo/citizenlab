@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 // components
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
-import MapConfigOverview from './MapConfigOverview';
+import MapConfigOverview from './MapConfiguration/MapConfigOverview';
 import MapView from '@arcgis/core/views/MapView';
 
 // hooks
@@ -19,8 +19,8 @@ import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
 // styling
 import styled from 'styled-components';
 import IdeationConfigurationMap from '../../../components/IdeationConfigurationMap/IdeationConfigurationMap';
-import FeatureLayerUpload from './FeatureLayerUpload';
-import WebMapUpload from './WebMapUpload';
+import FeatureLayerUpload from './DataImportOptions/FeatureLayerUpload';
+import WebMapUpload from './DataImportOptions/WebMapUpload';
 
 const Container = styled.div`
   display: flex;
