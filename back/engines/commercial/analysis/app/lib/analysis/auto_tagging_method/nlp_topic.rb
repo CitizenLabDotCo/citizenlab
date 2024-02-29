@@ -12,7 +12,9 @@ module Analysis
 
     def classify(inputs, topics)
       response = run_classification_prompt(inputs, topics)
-      inputs.zip(parse_classification_response(response))
+      assigned_topics = parse_classification_response(response)
+      # byebug if inputs.size != assigned_topics.size
+      inputs.zip(assigned_topics)
     end
 
     protected
@@ -32,6 +34,8 @@ module Analysis
         processed_inputs_count = (i + 1) * BATCH_SIZE
         update_progress([(processed_inputs_count + 10) / (filtered_inputs.size + 10).to_f, 0.99].min)
       end
+    rescue StandardError => e
+      raise AutoTaggingFailedError, e
     end
 
     private
@@ -47,7 +51,7 @@ module Analysis
     end
 
     def parse_topic_modeling_response(response)
-      response.lines.map do |line|
+      response.lines.map(&:strip).map do |line|
         # After https://stackoverflow.com/a/3166005/3585671
         chars = Regexp.escape(' -')
         line.gsub(/\A[#{chars}]+|[#{chars}]+\z/, '')

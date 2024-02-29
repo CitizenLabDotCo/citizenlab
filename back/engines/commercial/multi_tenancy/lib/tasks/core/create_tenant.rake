@@ -349,6 +349,22 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         user_session_recording: {
           enabled: false,
           allowed: false
+        },
+        analysis: {
+          enabled: true,
+          allowed: true
+        },
+        large_summaries: {
+          enabled: true,
+          allowed: true
+        },
+        ask_a_question: {
+          enabled: true,
+          allowed: true
+        },
+        advanced_autotagging: {
+          enabled: true,
+          allowed: true
         }
       }
     )
