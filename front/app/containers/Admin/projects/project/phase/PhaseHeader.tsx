@@ -229,9 +229,11 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
                 pathname,
                 url
               )}
-              statusLabel={
+              badge={
                 name === 'report' && !isExpired('01-04-2024') ? (
-                  <NewBadge ml="8px" />
+                  <Box display="inline" ml="8px">
+                    <NewBadge />
+                  </Box>
                 ) : null
               }
             />

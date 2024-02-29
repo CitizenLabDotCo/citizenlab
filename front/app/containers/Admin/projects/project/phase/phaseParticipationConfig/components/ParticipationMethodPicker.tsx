@@ -274,7 +274,11 @@ const ParticipationMethodPicker = ({
                       <FormattedMessage
                         {...messages2.shareInformationOrResults}
                       />
-                      {!isExpired('01-04-2024') && <NewBadge ml="8px" />}
+                      {!isExpired('01-04-2024') && (
+                        <Box display="inline" ml="8px">
+                          <NewBadge />
+                        </Box>
+                      )}
                     </>
                   ) : (
                     <FormattedMessage {...messages.shareInformation} />
