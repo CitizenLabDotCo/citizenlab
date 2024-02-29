@@ -3,10 +3,16 @@ import Radio, { Props as RadioProps } from './components/Radio';
 import Label from './components/Label';
 import Error from './components/Error';
 import Icon, { IconProps, IconNames } from './components/Icon';
-import IconTooltip from './components/IconTooltip';
+import IconTooltip, {
+  ContentWrapper as TooltipContentWrapper,
+} from './components/IconTooltip';
 import Toggle from './components/Toggle';
 import Input, { InputProps } from './components/Input';
-import Select, { Props as SelectProps } from './components/Select';
+import Select, {
+  Props as SelectProps,
+  SelectIcon,
+  SelectWrapper,
+} from './components/Select';
 import InputMultiloc, {
   Props as InputMultilocProps,
 } from './components/Input/InputMultiloc';
@@ -106,6 +112,7 @@ export {
   IconProps,
   IconNames,
   IconTooltip,
+  TooltipContentWrapper,
   Toggle,
   Input,
   InputMultiloc,
@@ -114,6 +121,8 @@ export {
   InputMultilocWithLocaleSwitcherProps,
   InputProps,
   Select,
+  SelectWrapper,
+  SelectIcon,
   SelectProps,
   SearchInput,
   SearchInputProps,

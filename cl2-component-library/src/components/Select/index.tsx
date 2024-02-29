@@ -7,11 +7,11 @@ import { IOption, InputSize } from '../../utils/typings';
 import styled from 'styled-components';
 import { defaultInputStyle, colors, isRtl } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
+import { Placement } from 'tippy.js';
 
-const Arrow = styled(Icon)`
+export const SelectIcon = styled(Icon)`
   fill: #999;
   pointer-events: none;
-  transform: rotate(90deg);
   margin: auto;
   position: absolute;
   top: 0;
@@ -30,20 +30,20 @@ const Container = styled.div`
 
   &.enabled {
     &:hover {
-      ${Arrow} {
+      ${SelectIcon} {
         fill: ${colors.black};
       }
     }
 
     &:focus {
-      ${Arrow} {
+      ${SelectIcon} {
         fill: ${colors.black};
       }
     }
   }
 
   &.disabled {
-    ${Arrow} {
+    ${SelectIcon} {
       fill: #666;
     }
   }
@@ -57,7 +57,7 @@ const Container = styled.div`
   }
 `;
 
-const SelectWrapper = styled.div`
+export const SelectWrapper = styled.div`
   width: 100%;
   position: relative;
   select {
@@ -91,6 +91,7 @@ export interface Props extends DefaultProps {
   options: IOption[] | null;
   label?: string | JSX.Element | null;
   labelTooltipText?: string | JSX.Element | null;
+  labelTooltipPlacement?: Placement;
   className?: string;
   size?: InputSize;
   placeholder?: string;
@@ -140,6 +141,7 @@ class Select extends PureComponent<Props> {
       canBeEmpty,
       label,
       labelTooltipText,
+      labelTooltipPlacement,
       size,
       value,
       placeholder,
@@ -158,7 +160,12 @@ class Select extends PureComponent<Props> {
         {label && (
           <Label htmlFor={id}>
             <span>{label}</span>
-            {labelTooltipText && <IconTooltip content={labelTooltipText} />}
+            {labelTooltipText && (
+              <IconTooltip
+                content={labelTooltipText}
+                placement={labelTooltipPlacement}
+              />
+            )}
           </Label>
         )}
         <SelectWrapper size={size}>
@@ -204,8 +211,8 @@ class Select extends PureComponent<Props> {
                 </option>
               ))}
           </select>
-          <Arrow
-            name="chevron-right"
+          <SelectIcon
+            name="chevron-down"
             ariaHidden
             className={`arrow ${disabled ? 'disabled' : 'enabled'}`}
           />
