@@ -76,7 +76,6 @@ class Project < ApplicationRecord
 
   attr_accessor :folder_changed, :folder_was
 
-  after_save :reassign_moderators, if: :folder_changed?
   after_commit :clear_folder_changes, if: :folder_changed?
 
   INTERNAL_ROLES = %w[open_idea_box].freeze

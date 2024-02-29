@@ -3,17 +3,9 @@
 class SideFxFolderModeratorService
   include SideFxHelper
 
-  def before_create(moderator, folder, _current_user)
-    folder.projects.each do |project|
-      moderator.add_role('project_moderator', project_id: project.id)
-    end
-  end
+  def before_create(moderator, folder, _current_user); end
 
-  def before_destroy(moderator, folder, _current_user)
-    folder.projects.each do |project|
-      moderator.delete_role('project_moderator', project_id: project.id)
-    end
-  end
+  def before_destroy(moderator, folder, _current_user); end
 
   def after_create(moderator, folder, current_user)
     ::SideFxUserService.new.after_update moderator, current_user
