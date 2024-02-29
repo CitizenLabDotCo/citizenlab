@@ -1943,7 +1943,7 @@
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Poser des questions aux participants",
   "app.containers.AdminPage.phase.methodPicker.addOn": "Ajouter",
   "app.containers.AdminPage.phase.methodPicker.aiPoweredInsights": "Des informations alimentées par l'IA",
-  "app.containers.AdminPage.phase.methodPicker.documentDescription": "Incorporez un PDF interactif et recueillez des commentaires et des retours avec Konveio.",
+  "app.containers.AdminPage.phase.methodPicker.documentDescription": "Incorporez un PDF interactif et recueillez des commentaires avec Konveio.",
   "app.containers.AdminPage.phase.methodPicker.documentTitle": "Recueillir des commentaires sur un document",
   "app.containers.AdminPage.phase.methodPicker.embedSurvey": "Intégrer une enquête réalisée par un tiers",
   "app.containers.AdminPage.phase.methodPicker.externalSurvey": "Enquête externe",
