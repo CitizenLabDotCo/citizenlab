@@ -756,7 +756,6 @@
   "app.containers.AccessibilityStatement.title": "Helppokäyttöisyyslausunto",
   "app.containers.AccessibilityStatement.userGeneratedContent": "Käyttäjien luoma sisältö",
   "app.containers.AccessibilityStatement.workshops": "Työpajat",
-  "app.containers.Admin.Insights.tabReports": "Raportit",
   "app.containers.AdminPage.DashboardPage.labelProjectFilter": "Valitse projekti",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Kyselyn loppu",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Luo älykäs ryhmä",

@@ -63,6 +63,7 @@ export interface IPhaseAttributes {
   /** For budgeting it's: for each idea multiply price of the idea
    * with the idea's baskets_count, then sum all those to get the total idea votes for the phase  */
   votes_count: number;
+  report_public: boolean;
 }
 
 export interface IPhases {

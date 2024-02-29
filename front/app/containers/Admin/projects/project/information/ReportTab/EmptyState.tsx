@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
 import { Text, Box, Button, colors } from '@citizenlab/cl2-component-library';
+import CreateReportModal from './CreateReportModal';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-const EmptyState = () => {
+interface Props {
+  projectId: string;
+  phaseId: string;
+}
+
+const EmptyState = ({ projectId, phaseId }: Props) => {
   const { formatMessage } = useIntl();
+  const [modalOpened, setModalOpened] = useState<boolean>(false);
 
   return (
     <>
@@ -29,10 +36,26 @@ const EmptyState = () => {
       </ul>
       <Text color="textSecondary">{formatMessage(messages.thisWillBe)}</Text>
       <Box w="100%" mt="32px" display="flex">
-        <Button icon="reports" bgColor={colors.primary} width="auto">
+        <Button
+          id="e2e-create-report-button"
+          icon="reports"
+          bgColor={colors.primary}
+          width="auto"
+          onClick={() => {
+            setModalOpened(true);
+          }}
+        >
           {formatMessage(messages.createReport)}
         </Button>
       </Box>
+      <CreateReportModal
+        projectId={projectId}
+        phaseId={phaseId}
+        open={modalOpened}
+        onClose={() => {
+          setModalOpened(false);
+        }}
+      />
     </>
   );
 };

@@ -15,18 +15,18 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // shared widgets
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // report builder widgets
-import TextMultiloc from '../Widgets/TextMultiloc';
-import AboutReportWidget from '../Widgets/AboutReportWidget';
-import TwoColumn from '../Widgets/TwoColumn';
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
-import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
-import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
-import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
-import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
-import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
-import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
+import TextMultiloc from '../../Widgets/TextMultiloc';
+import AboutReportWidget from '../../Widgets/AboutReportWidget';
+import TwoColumn from '../../Widgets/TwoColumn';
+import GenderWidget from '../../Widgets/ChartWidgets/GenderWidget';
+import AgeWidget from '../../Widgets/ChartWidgets/AgeWidget';
+import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
+import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
+import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
+import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 
 // i18n
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
@@ -38,7 +38,7 @@ import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod'
 import { getTemplateData } from './getTemplateData';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 import { withoutSpacing } from 'utils/textUtils';
-import { SUPPORTED_INPUT_TYPES } from '../Widgets/SurveyQuestionResultWidget/constants';
+import { SUPPORTED_INPUT_TYPES } from '../../Widgets/SurveyQuestionResultWidget/constants';
 
 export interface Props {
   reportId: string;

@@ -54,11 +54,13 @@ const ReportRow = ({ report }: Props) => {
             userId={report.relationships.owner.data.id}
           />
         </Box>
-        <Buttons
-          reportId={report.id}
-          isLoading={isLoading}
-          onDelete={handleDeleteReport}
-        />
+        <Box display="flex">
+          <Buttons
+            reportId={report.id}
+            isLoading={isLoading}
+            onDelete={handleDeleteReport}
+          />
+        </Box>
       </Box>
     </ListItem>
   );

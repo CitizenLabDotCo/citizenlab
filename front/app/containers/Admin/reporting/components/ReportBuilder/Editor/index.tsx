@@ -13,6 +13,7 @@ import { WIDGETS } from '../Widgets';
 
 // templates
 import ProjectTemplate from '../Templates/ProjectTemplate';
+import PhaseTemplate from '../Templates/PhaseTemplate';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -25,6 +26,7 @@ const resolver = {
   Container,
   ...WIDGETS,
   ProjectTemplate,
+  PhaseTemplate,
 };
 
 // Without this, craftjs sometimes crashes.

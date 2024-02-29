@@ -173,12 +173,31 @@ RSpec.describe ReportBuilder::ReportPolicy do
           it { expect(scope.resolve.count).to eq(0) }
         end
 
-        context 'when user cannot moderate phase' do
+        context 'when user cannot moderate phase, and report is visible' do
           let_it_be(:user) { create(:project_moderator) }
           let_it_be(:report) { create(:report, phase: current_phase, layout: layout) }
 
           it { is_expected.not_to permit(:show) }
           it { is_expected.to permit(:layout) }
+          it { is_expected.not_to permit(:create) }
+          it { is_expected.not_to permit(:destroy) }
+          it { is_expected.not_to permit(:update) }
+          it { expect(scope.resolve.count).to eq(0) }
+        end
+
+        context 'when user cannot moderate phase, and report is not visible' do
+          let_it_be(:user) { create(:project_moderator) }
+          let_it_be(:report) do
+            create(
+              :report,
+              phase: current_phase,
+              layout: layout,
+              visible: false
+            )
+          end
+
+          it { is_expected.not_to permit(:show) }
+          it { is_expected.not_to permit(:layout) }
           it { is_expected.not_to permit(:create) }
           it { is_expected.not_to permit(:destroy) }
           it { is_expected.not_to permit(:update) }
@@ -227,11 +246,22 @@ RSpec.describe ReportBuilder::ReportPolicy do
         it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
       end
 
-      context 'phase started' do
+      context 'phase started and report visible' do
         let_it_be(:report) { create(:report, phase: current_phase) }
 
         it { is_expected.not_to permit(:show) }
         it { is_expected.to permit(:layout) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:destroy) }
+        it { is_expected.not_to permit(:update) }
+        it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
+      end
+
+      context 'phase started and report not visible' do
+        let_it_be(:report) { create(:report, phase: current_phase, visible: false) }
+
+        it { is_expected.not_to permit(:show) }
+        it { is_expected.not_to permit(:layout) }
         it { is_expected.not_to permit(:create) }
         it { is_expected.not_to permit(:destroy) }
         it { is_expected.not_to permit(:update) }
@@ -266,11 +296,22 @@ RSpec.describe ReportBuilder::ReportPolicy do
         it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
       end
 
-      context 'phase started' do
+      context 'phase started and report visible' do
         let_it_be(:report) { create(:report, phase: current_phase) }
 
         it { is_expected.not_to permit(:show) }
         it { is_expected.to permit(:layout) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:destroy) }
+        it { is_expected.not_to permit(:update) }
+        it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
+      end
+
+      context 'phase started and report not visible' do
+        let_it_be(:report) { create(:report, phase: current_phase, visible: false) }
+
+        it { is_expected.not_to permit(:show) }
+        it { is_expected.not_to permit(:layout) }
         it { is_expected.not_to permit(:create) }
         it { is_expected.not_to permit(:destroy) }
         it { is_expected.not_to permit(:update) }

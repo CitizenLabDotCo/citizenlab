@@ -120,6 +120,7 @@ const PieChartByCategory = ({
               currentGroupFilterLabel={currentGroupFilterLabel}
               startAt={startAt}
               endAt={endAt}
+              currentProjectFilter={project}
             />
           )}
         </GraphCardHeader>

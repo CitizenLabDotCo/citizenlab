@@ -28,6 +28,7 @@ export const phasesDataMockDataWithoutId = {
     campaigns_settings: { project_phase_started: true },
     votes_count: 0,
     baskets_count: 0,
+    report_public: false,
   },
   relationships: {
     permissions: {
