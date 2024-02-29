@@ -78,7 +78,7 @@ const GeoJsonImportButton = memo<Props>(
     const [importError, setImportError] = useState(false);
 
     const layerType = getLayerType(mapConfig);
-    const hasExistingWebMap = !!mapConfig?.data?.attributes?.esri_web_map_id;
+    const hasExistingWebMap = !!mapConfig.data.attributes.esri_web_map_id;
 
     const handleGeoJsonImport = (event: any) => {
       const fileReader = new FileReader();

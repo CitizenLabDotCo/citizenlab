@@ -28,6 +28,7 @@ import {
   DEFAULT_TILE_PROVIDER,
   MAPTILER_ATTRIBUTION,
 } from './constants';
+import { IMapConfig } from 'api/map_config/types';
 
 // getDefaultBasemap
 // Description: Gets the correct basemap given a certain tileProvider URL.
@@ -380,7 +381,7 @@ export const createEsriFeatureLayers = (
 ) => {
   // create new Feature Layers from the Map Config layers
   const esriLayers: Layer[] = [];
-  layers.map((layer) => {
+  layers.forEach((layer) => {
     if (localize(layer.title_multiloc)) {
       const title = localize(layer.title_multiloc);
 
@@ -411,6 +412,28 @@ export const createEsriFeatureLayers = (
     }
   });
   return esriLayers;
+};
+
+// parseLayers
+// Description: Parse the layers from the map config and create Esri layers
+export const parseLayers = (
+  mapConfig: IMapConfig | undefined,
+  localize: Localize
+) => {
+  const mapConfigLayers = mapConfig?.data.attributes.layers;
+  // All layers are either of type Esri or GeoJSON, so we can check just the first layer
+  if (
+    mapConfigLayers &&
+    mapConfigLayers[0]?.type === 'CustomMaps::GeojsonLayer'
+  ) {
+    return createEsriGeoJsonLayers(mapConfig?.data.attributes.layers, localize);
+  } else if (
+    mapConfigLayers &&
+    mapConfigLayers[0]?.type === 'CustomMaps::EsriFeatureLayer'
+  ) {
+    return createEsriFeatureLayers(mapConfig.data.attributes.layers, localize);
+  }
+  return [];
 };
 
 // createEsriGeoJsonLayers

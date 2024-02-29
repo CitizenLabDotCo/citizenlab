@@ -104,16 +104,6 @@ const EsriMap = ({
   const mapRef = useRef<HTMLDivElement | null>(null);
   const initialValuesLoaded = useRef(false);
 
-  // Sets the locale of the map
-  intl.setLocale(locale);
-
-  // Set Esri API key
-  const esriApiKey =
-    appConfig?.data.attributes.settings.esri_integration?.api_key;
-  if (esriApiKey) {
-    esriConfig.apiKey = esriApiKey;
-  }
-
   // On initial render, create a new map and map view and save them to state variables
   useEffect(() => {
     if (mapRef.current) {
@@ -284,7 +274,7 @@ const EsriMap = ({
       if (mapView) {
         map.removeAll();
 
-        layers.map((layer) => {
+        layers.forEach((layer) => {
           map.add(layer);
         });
       }
@@ -338,6 +328,20 @@ const EsriMap = ({
       setWebMap(null);
     }
   }, [webMapId, layers, map, mapView]);
+
+  useEffect(() => {
+    // Sets the locale of the map
+    intl.setLocale(locale);
+  }, [locale]);
+
+  useEffect(() => {
+    // Set Esri API key
+    const esriApiKey =
+      appConfig?.data.attributes.settings.esri_integration?.api_key;
+    if (esriApiKey) {
+      esriConfig.apiKey = esriApiKey;
+    }
+  }, [appConfig?.data.attributes.settings.esri_integration?.api_key]);
 
   return (
     <>

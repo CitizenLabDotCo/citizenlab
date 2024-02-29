@@ -10,11 +10,7 @@ import MapHelperOptions from './components/MapHelperOptions';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
-import {
-  changeCursorOnHover,
-  createEsriFeatureLayers,
-  createEsriGeoJsonLayers,
-} from 'components/EsriMap/utils';
+import { changeCursorOnHover, parseLayers } from 'components/EsriMap/utils';
 
 // types
 import { IMapConfig } from 'api/map_config/types';
@@ -35,23 +31,8 @@ const IdeationConfigurationMap = memo<Props>(
 
     // Create layers from map config to add to Esri map
     const mapLayers = useMemo(() => {
-      const layers = mapConfig.data.attributes.layers;
-      if (layers && layers.length > 0) {
-        // All layers are either of type Esri or GeoJSON, so we can check just the first layer
-        if (layers[0]?.type === 'CustomMaps::GeojsonLayer') {
-          return createEsriGeoJsonLayers(
-            mapConfig.data.attributes.layers,
-            localize
-          );
-        } else if (layers[0]?.type === 'CustomMaps::EsriFeatureLayer') {
-          return createEsriFeatureLayers(
-            mapConfig.data.attributes.layers,
-            localize
-          );
-        }
-      }
-      return [];
-    }, [localize, mapConfig?.data?.attributes?.layers]);
+      return parseLayers(mapConfig, localize);
+    }, [mapConfig, localize]);
 
     const onMapInit = useCallback(
       (esriMapView: MapView) => {
