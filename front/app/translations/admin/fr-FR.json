@@ -1962,7 +1962,7 @@
   "app.containers.AdminPage.phase.methodPicker.surveyDescription": "Comprenez les besoins et la façon de penser de vos utilisateurs grâce à un large éventail de types de questions privées.",
   "app.containers.AdminPage.phase.methodPicker.surveyOptions": "Options d'enquête",
   "app.containers.AdminPage.phase.methodPicker.surveyTitle": "Créer une enquête",
-  "app.containers.AdminPage.phase.methodPicker.volunteeringDescription": "Demandez aux utilisateurs de se porter volontaires pour des activités et des causes ou trouvez des participants pour un panel.",
+  "app.containers.AdminPage.phase.methodPicker.volunteeringDescription": "Demandez aux utilisateurs de se porter volontaires pour des activités et des causes, ou trouver des participants pour un panel.",
   "app.containers.AdminPage.phase.methodPicker.volunteeringTitle": "Recruter des participants ou des bénévoles",
   "app.containers.AdminPage.phase.methodPicker.votingDescription1": "Choisissez une méthode de vote et demandez aux utilisateurs d'établir un ordre de priorité entre différentes options.",
   "app.containers.AdminPage.phase.methodPicker.votingTitle": "Organiser un vote ou un exercice de priorisation",
