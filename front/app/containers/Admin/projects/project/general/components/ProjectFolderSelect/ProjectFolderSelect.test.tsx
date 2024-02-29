@@ -8,10 +8,6 @@ jest.mock('utils/permissions', () => {
   return { usePermission: () => mockPermission };
 });
 
-beforeEach(() => {
-  mockPermission = false;
-});
-
 const projectFolders = {
   data: [
     { id: 'folder1', attributes: { title_multiloc: { en: 'Folder 1' } } },
@@ -23,13 +19,7 @@ jest.mock('api/project_folders/useProjectFolders', () => () => {
   return { data: projectFolders };
 });
 
-const mockUser = {
-  data: {
-    id: 'userId',
-  },
-};
-
-jest.mock('api/me/useAuthUser', () => () => ({ data: mockUser }));
+jest.mock('api/me/useAuthUser');
 
 describe('ProjectFolderSelect', () => {
   it('should render', () => {
