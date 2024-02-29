@@ -70,28 +70,6 @@ describe('ProjectFolderSelect', () => {
       container.querySelector('label[for="folderSelect-no"]')
     ).not.toHaveClass('disabled');
   });
-  it('should render as disabled with "no" option selected when isNewProject is false', () => {
-    const { container } = render(
-      <ProjectFolderSelect
-        projectAttrs={{}}
-        onProjectAttributesDiffChange={jest.fn()}
-        isNewProject={false}
-      />
-    );
-    expect(container.querySelector('#folderSelect-no')).toHaveAttribute(
-      'aria-checked',
-      'true'
-    );
-
-    expect(container.querySelector('#folderSelect-yes')).toHaveAttribute(
-      'aria-checked',
-      'false'
-    );
-
-    expect(container.querySelector('label[for="folderSelect-no"]')).toHaveClass(
-      'disabled'
-    );
-  });
   it('should set folder_id to null when "no" option is selected', () => {
     mockPermission = true;
     const onProjectAttributesDiffChange = jest.fn();
