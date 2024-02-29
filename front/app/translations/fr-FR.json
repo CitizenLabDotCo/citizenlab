@@ -627,7 +627,7 @@
   "app.components.formBuilder.Page": "Page",
   "app.components.formBuilder.addAnswer": "Ajouter une réponse",
   "app.components.formBuilder.ai": "IA",
-  "app.components.formBuilder.aiUpsellText": "Si vous avez accès à notre progiciel d'IA, vous pourrez résumer et catégoriser les réponses textuelles à l'aide de l'IA.",
+  "app.components.formBuilder.aiUpsellText": "Si vous avez accès à notre package IA, vous pourrez résumer et catégoriser les réponses textuelles à l'aide de l'IA",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Annuler",
   "app.components.formBuilder.chooseMany": "Choix multiple",
   "app.components.formBuilder.chooseOne": "Choisissez une option",
