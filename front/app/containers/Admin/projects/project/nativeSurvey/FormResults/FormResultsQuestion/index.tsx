@@ -5,6 +5,7 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import InputType from './InputType';
 import MultipleChoice from './MultipleChoice';
 import TextQuestion from './TextQuestion';
+import Files from '../Files';
 
 // i18n
 import T from 'components/T';
@@ -13,18 +14,12 @@ import T from 'components/T';
 import { snakeCase } from 'lodash-es';
 
 // typings
-import { Locale, Multiloc } from 'typings';
-import { Answer } from 'api/survey_results/types';
+import { Locale } from 'typings';
+import { Result } from 'api/survey_results/types';
 
-type FormResultsQuestionProps = {
+type FormResultsQuestionProps = Result & {
   locale: Locale;
-  question: Multiloc;
-  inputType: string;
-  answers?: Answer[];
-  totalResponses: number;
-  required: boolean;
-  customFieldId: string;
-  textResponses?: { answer: string }[];
+  totalSubmissions: number;
 };
 
 const FormResultsQuestion = ({
@@ -33,30 +28,49 @@ const FormResultsQuestion = ({
   inputType,
   answers,
   totalResponses,
+  totalSubmissions,
   required,
   customFieldId,
   textResponses = [],
+  files = [],
 }: FormResultsQuestionProps) => {
-  const isMultipleChoice = !!answers;
+  const isMultipleChoiceAndHasAnswers = !!answers;
+  const hasTextResponses = textResponses && textResponses.length > 0;
 
   return (
-    <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
-      <Title variant="h3" mt="12px" mb="12px">
-        <T value={question} />
-      </Title>
-      <InputType inputType={inputType} required={required} />
-      {isMultipleChoice ? (
-        <MultipleChoice
-          multipleChoiceAnswers={answers}
+    <>
+      <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
+        <Title variant="h3" mt="12px" mb="12px">
+          <T value={question} />
+        </Title>
+        <InputType
+          inputType={inputType}
+          required={required}
+          totalSubmissions={totalSubmissions}
           totalResponses={totalResponses}
         />
-      ) : (
-        <TextQuestion
-          textResponses={textResponses}
-          customFieldId={customFieldId}
-        />
-      )}
-    </Box>
+        {isMultipleChoiceAndHasAnswers && (
+          <MultipleChoice
+            multipleChoiceAnswers={answers}
+            totalResponses={totalResponses}
+          />
+        )}
+        {hasTextResponses && (
+          <TextQuestion
+            textResponses={textResponses}
+            customFieldId={customFieldId}
+            hasOtherResponses={isMultipleChoiceAndHasAnswers}
+          />
+        )}
+        {files && files.length > 0 && (
+          <Box display="flex" gap="24px" mt={answers ? '20px' : '0'} w="50%">
+            <Box flex="1">
+              <Files files={files} />
+            </Box>
+          </Box>
+        )}
+      </Box>
+    </>
   );
 };
 

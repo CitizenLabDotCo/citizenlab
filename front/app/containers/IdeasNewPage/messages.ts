@@ -367,6 +367,10 @@ export default defineMessages({
     defaultMessage:
       'The issue description must be more than {limit} characters long',
   },
+  ajv_error_number_required: {
+    id: 'app.containers.IdeasNewPage.ajv_error_number_required',
+    defaultMessage: 'This field is required, please enter a valid number',
+  },
   leaveSurveyConfirmationQuestion: {
     id: 'app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion',
     defaultMessage: 'Are you sure you want to leave this survey?',

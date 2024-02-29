@@ -126,7 +126,7 @@ describe('Survey builder', () => {
     );
   });
 
-  it('deletes a field when the delete button is clicked', () => {
+  it.only('deletes a field when the delete button is clicked', () => {
     cy.visit(
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
@@ -150,7 +150,8 @@ describe('Survey builder', () => {
     cy.contains(questionTitle).should('exist').click();
 
     // Click to delete the field
-    cy.get(`[data-cy="e2e-delete-field"]`).click();
+    cy.get('[data-cy="e2e-more-field-actions"]').eq(1).click({ force: true });
+    cy.get('.e2e-more-actions-list button').contains('Delete').click();
 
     // Save the survey
     cy.get('form').submit();

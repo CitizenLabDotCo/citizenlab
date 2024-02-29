@@ -32,9 +32,12 @@ const QuestionFilter = ({
   const fitleredResults =
     !isNilOrError(formResults) &&
     formResults.data.attributes.results.filter((result) => {
-      return (
-        result.inputType !== 'text' && result.inputType !== 'multiline_text'
-      );
+      return ![
+        'multiline_text',
+        'text',
+        'file_upload',
+        'multiselect_image',
+      ].includes(result.inputType);
     });
   if (!fitleredResults || fitleredResults.length === 0) {
     // This never seems to get shown

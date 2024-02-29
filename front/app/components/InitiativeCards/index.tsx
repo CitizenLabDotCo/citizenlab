@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, lazy } from 'react';
 import { isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -7,7 +7,6 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // components
-import InitiativesMap from 'components/InitiativesMap';
 import {
   Spinner,
   useWindowSize,
@@ -16,6 +15,7 @@ import {
   fontSizes,
   viewportWidths,
   defaultCardStyle,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
@@ -29,6 +29,7 @@ import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import { ScreenReaderOnly } from 'utils/a11y';
 import EmptyProposals from './EmptyProposals';
 import ProposalsList from './ProposalsList';
+const InitiativeMap = lazy(() => import('components/InitiativeMap'));
 
 // router
 import { useSearchParams } from 'react-router-dom';
@@ -490,10 +491,9 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
                   )}
 
                   {selectedView === 'map' && (
-                    <InitiativesMap
-                      ariaLabelledBy={'view-tab-2'}
-                      id={'view-panel-2'}
-                    />
+                    <Box aria-labelledby={'view-tab-2'} id={'view-panel-2'}>
+                      <InitiativeMap list={flatInitiatives} />
+                    </Box>
                   )}
                 </>
               ) : (

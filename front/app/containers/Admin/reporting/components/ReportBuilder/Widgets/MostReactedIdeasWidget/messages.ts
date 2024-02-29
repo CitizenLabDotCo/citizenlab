@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.numberOfIdeas',
     defaultMessage: 'Number of ideas',
   },
-  collapseLongText: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.collapseLongText',
-    defaultMessage: 'Collapse long text',
-  },
   showMore: {
     id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.showMore',
     defaultMessage: 'Show more',
@@ -30,8 +26,7 @@ export default defineMessages({
     defaultMessage: 'Ideation phase',
   },
   noIdeasAvailable: {
-    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable',
-    defaultMessage:
-      'There are no questions available for this project or phase.',
+    id: 'app.containers.admin.ReportBuilder.MostVotedIdeasWidget.noIdeasAvailable1',
+    defaultMessage: 'There are no ideas available for this project or phase.',
   },
 });

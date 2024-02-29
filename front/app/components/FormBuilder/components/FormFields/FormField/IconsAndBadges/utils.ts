@@ -33,6 +33,8 @@ const getCustomFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
       return 'survey-long-answer-2';
     case 'multiselect':
       return 'survey-multiple-choice-2';
+    case 'multiselect_image':
+      return 'image';
     case 'select':
       return 'survey-single-choice';
     case 'number':

@@ -46,7 +46,7 @@ class WebApi::V1::TopicsController < ApplicationController
       return
     end
 
-    render json: linked_json(topics, WebApi::V1::TopicSerializer, params: jsonapi_serializer_params)
+    render json: linked_json(topics, WebApi::V1::TopicSerializer, params: jsonapi_serializer_params(user_followers: user_followers))
   end
 
   def show

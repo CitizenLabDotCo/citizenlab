@@ -113,9 +113,7 @@ describe('Input form builder', () => {
       .find('#e2e-idea-topics')
       .find('.e2e-idea-topic')
       .should('have.length', 1);
-    cy.get('#e2e-idea-show')
-      .find('#e2e-map-popup')
-      .contains('Boulevard Anspach');
+    cy.get('#e2e-idea-show').contains('Boulevard Anspach');
 
     // Verify warning for altering the form is present in form builder
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideaform`);

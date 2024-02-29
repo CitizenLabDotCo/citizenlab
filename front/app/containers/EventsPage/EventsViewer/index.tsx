@@ -86,7 +86,6 @@ interface Props {
   eventsTime: 'past' | 'currentAndFuture';
   className?: string;
   projectId?: string;
-  hideSectionIfNoEvents?: boolean;
   showProjectFilter: boolean;
   showDateFilter?: boolean;
   projectPublicationStatuses: PublicationStatus[];
@@ -99,7 +98,6 @@ const EventsViewer = ({
   eventsTime,
   className,
   projectId,
-  hideSectionIfNoEvents,
   showProjectFilter,
   projectPublicationStatuses,
   attendeeId,
@@ -132,7 +130,7 @@ const EventsViewer = ({
   const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
     projectIdsFromUrl || (projectId ? [projectId] : [])
   );
-  const [dateFilter, setDateFilter] = useState<dateFilterKey[] | undefined>(
+  const [dateFilter, setDateFilter] = useState<dateFilterKey[]>(
     dateFilterFromUrl || []
   );
 
@@ -186,7 +184,8 @@ const EventsViewer = ({
 
   // Update date filter URL params based on state, events time will not change after initial render
   useEffect(() => {
-    const hasDateFilter = dateFilter?.length && dateFilter[0] !== 'all';
+    const hasDateFilter =
+      dateFilter.length > 0 ? dateFilter[0] !== 'all' : false;
     if (eventsTime === 'currentAndFuture') {
       updateSearchParams({
         time_period: hasDateFilter ? dateFilter : null,
@@ -200,15 +199,6 @@ const EventsViewer = ({
 
   const lastPageNumber =
     (events && getPageNumberFromUrl(events.links?.last)) ?? 1;
-
-  const shouldHideSection =
-    (events && events.data.length === 0 && hideSectionIfNoEvents) ||
-    (isLoading && hideSectionIfNoEvents) ||
-    (isNilOrError(events) && hideSectionIfNoEvents);
-
-  if (shouldHideSection) {
-    return null;
-  }
 
   return (
     <Box className={className} id="project-events">

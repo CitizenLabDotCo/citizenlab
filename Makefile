@@ -61,6 +61,16 @@ add-campaign-and-notification:
 blint back-lint-autocorrect:
 	docker compose run web bundle exec rubocop -P --format simple --autocorrect
 
+# Usage example: 
+# make r file=spec/models/idea_spec.rb
+r rspec:
+	docker-compose run --rm web bin/rspec ${file}
+
+# Usage example: 
+# make feature-toggle feature=initiative_cosponsors enabled=true
+feature-toggle:
+	docker-compose run web "bin/rails runner \"enabled = ${enabled}; feature = '${feature}'; Tenant.find_by(host: 'localhost').switch!; c = AppConfiguration.first; c.settings['${feature}'] ||= {}; c.settings['${feature}']['allowed'] = ${enabled}; c.settings['${feature}']['enabled'] = ${enabled}; c.save!\""
+
 # =================
 # E2E tests
 # =================

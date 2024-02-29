@@ -23,7 +23,7 @@ gem 'bcrypt', '~> 3.1.7'
 # gem 'capistrano-rails', group: :development
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem 'rack-cors'
+gem 'rack-cors', '2.0.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -79,6 +79,7 @@ group :test do
 
   # Adds rspec matchers and helpers for testing html structure and styling.
   gem 'capybara', '~> 3.39'
+  # gem 'bullet'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -192,16 +193,13 @@ commercial_engines = [
   'custom_idea_statuses',
   'custom_maps',
   'flag_inappropriate_content',
-  'geographic_dashboard',
   'google_tag_manager',
   'idea_assignment',
   'idea_custom_fields',
   'impact_tracking',
-  'insights',
   'machine_translations',
   'matomo',
   'moderation',
-  'nlp',
   'posthog_integration',
   'public_api',
   'remove_vendor_branding',

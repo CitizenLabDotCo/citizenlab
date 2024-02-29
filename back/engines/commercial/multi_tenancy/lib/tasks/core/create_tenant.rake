@@ -2,13 +2,13 @@
 
 namespace :cl2_back do # rubocop:disable Metrics/BlockLength
   desc 'Create a tenant with given host and optional template'
-  task :create_tenant, %i[host template] => [:environment] do |_t, args| # rubocop:disable Metrics/BlockLength
+  task :create_tenant, %i[host template locales] => [:environment] do |_t, args| # rubocop:disable Metrics/BlockLength
     host = args[:host] || raise("Please provide the 'host' arg")
     tenant_template = args[:template] || 'e2etests_template'
     Tenant.find_by(host: host)&.destroy!
 
     settings = SettingsService.new.minimal_required_settings(
-      locales: %w[en nl-BE nl-NL fr-BE],
+      locales: (args[:locales]&.split(';')&.map(&:strip) || %w[en nl-BE nl-NL fr-BE]),
       lifecycle_stage: 'not_applicable'
     ).deep_merge(
       {
@@ -109,14 +109,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           allowed: true,
           enabled: true
         },
-        similar_ideas: {
-          enabled: false,
-          allowed: true
-        },
-        geographic_dashboard: {
-          enabled: true,
-          allowed: true
-        },
         intercom: {
           enabled: true,
           allowed: true
@@ -212,14 +204,6 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
             'initiatives.default_posting_tips',
             locales: CL2_SUPPORTED_LOCALES
           )
-        },
-        insights_manual_flow: {
-          enabled: false,
-          allowed: false
-        },
-        insights_nlp_flow: {
-          enabled: false,
-          allowed: false
         },
         polls: {
           enabled: true,

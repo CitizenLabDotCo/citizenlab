@@ -68,7 +68,7 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
         <ParticipationCTAContent
           currentPhase={currentPhase}
           hasUserParticipated={false}
-          CTAButton={<CTAButton projectId={project.id} phase={currentPhase} />}
+          CTAButton={<CTAButton project={project} phase={currentPhase} />}
           participationState={
             <Text color="white" m="0px" fontSize="s" aria-live="polite">
               {votesCounter}

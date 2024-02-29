@@ -17,7 +17,7 @@ import Card from '../_shared/Card';
 import SurveyResults from './SurveyResults';
 import NoData from '../_shared/NoData';
 import ProjectFilter from '../_shared/ProjectFilter';
-import PhaseFilter from '../_shared/PhaseFilter';
+import PhaseFilter from 'components/UI/PhaseFilter';
 import QuestionFilter from './QuestionFilter';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -141,7 +141,7 @@ const SurveyResultsWidgetSettings = () => {
             fill="textSecondary"
             display="inline"
           />
-          {formatMessage(nativeSurveyMessages.informationText2)}
+          {formatMessage(nativeSurveyMessages.informationText)}
         </Text>
       </Box>
 
@@ -167,7 +167,7 @@ const SurveyResultsWidgetSettings = () => {
             label={formatMessage(messages.surveyPhase)}
             projectId={projectId}
             phaseId={phaseId}
-            participationMethod="native_survey"
+            participationMethods={['native_survey']}
             onPhaseFilter={handlePhaseFilter}
           />
           {phaseId && (

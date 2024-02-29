@@ -35,8 +35,16 @@ class TestVisitor < FieldVisitorService
     'select from visitor'
   end
 
+  def visit_select_image(_field)
+    'select_image from visitor'
+  end
+
   def visit_multiselect(_field)
     'multiselect from visitor'
+  end
+
+  def visit_multiselect_image(_field)
+    'multiselect_image from visitor'
   end
 
   def visit_checkbox(_field)
@@ -446,6 +454,21 @@ RSpec.describe CustomField do
     it 'cannot be less than 0' do
       field.minimum_select_count = -1
       expect(field.valid?).to be false
+    end
+  end
+
+  describe '#other_option_text_field' do
+    let(:field) { create(:custom_field_multiselect, :with_options, key: 'select_field') }
+
+    it 'returns a text field when the field has an other option' do
+      create(:custom_field_option, custom_field: field, key: 'other', other: true)
+      expect(field.other_option_text_field).not_to be_nil
+      expect(field.other_option_text_field.key).to eq 'select_field_other'
+      expect(field.other_option_text_field.input_type).to eq 'text'
+    end
+
+    it 'returns nil otherwise' do
+      expect(field.other_option_text_field).to be_nil
     end
   end
 end

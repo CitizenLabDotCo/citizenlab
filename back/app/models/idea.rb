@@ -123,7 +123,7 @@ class Idea < ApplicationRecord
   after_update :fix_comments_count_on_projects
 
   pg_search_scope :search_by_all,
-    against: %i[title_multiloc body_multiloc custom_field_values],
+    against: %i[title_multiloc body_multiloc custom_field_values slug],
     using: { tsearch: { prefix: true } }
 
   scope :with_some_topics, (proc do |topics|
@@ -269,7 +269,6 @@ end
 
 Idea.include(SmartGroups::Concerns::ValueReferenceable)
 Idea.include(FlagInappropriateContent::Concerns::Flaggable)
-Idea.include(Insights::Concerns::Input)
 Idea.include(Moderation::Concerns::Moderatable)
 Idea.include(MachineTranslations::Concerns::Translatable)
 Idea.include(IdeaAssignment::Extensions::Idea)

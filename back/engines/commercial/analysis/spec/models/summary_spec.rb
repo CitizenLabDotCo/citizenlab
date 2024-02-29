@@ -39,5 +39,14 @@ RSpec.describe Analysis::Summary do
 
       it { is_expected.to eq 0 }
     end
+
+    context 'when filtered inputs were added' do
+      before do
+        create(:idea, project: project, published_at: (Time.now - 20.days))
+        summary.insight.update!(filters: { published_at_from: (Time.now - 3.days).strftime('%Y-%m-%d') })
+      end
+
+      it { is_expected.to eq 0 }
+    end
   end
 end

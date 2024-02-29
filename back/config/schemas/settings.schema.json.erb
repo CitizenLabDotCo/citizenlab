@@ -470,8 +470,8 @@
 
       "maps": {
         "type": "object",
-        "title": "CustomMaps",
-        "description":  "Enable maps for all projects.",
+        "title": "Maps Default Settings",
+        "description":  "Default settings for maps. Note that 'allowed' and 'enabled' settings are redundant and toggling them will not have any effect.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -482,7 +482,7 @@
             "description": "The OSM or basemap.at compatible tile provider URL pattern (https is required).",
             "type": "string",
             "pattern": "^https:\/\/.+",
-            "default": "<%= ENV.fetch('DEFAULT_MAPS_TILE_PROVIDER', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')%>"
+            "default": "<%= ENV.fetch('DEFAULT_MAPS_TILE_PROVIDER', 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=R0U21P01bsRLx7I7ZRqp')%>"
           },
           "map_center": {
             "title": "Map Center",
@@ -928,30 +928,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "clustering": {
-        "type": "object",
-        "title": "Clustering",
-        "description":  "Allows admins to analyze ideas by creating clustered visualizations.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "similar_ideas": {
-        "type": "object",
-        "title": "Similar Ideas",
-        "description":  "Show links to similar ideas when viewing an idea. Still in beta.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 

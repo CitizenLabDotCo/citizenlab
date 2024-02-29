@@ -146,6 +146,8 @@ it:
       section3:
         title: Dettagli
         description:
+      other:
+        title: Scrivi la tua risposta
   custom_forms:
     categories:
       main_content:

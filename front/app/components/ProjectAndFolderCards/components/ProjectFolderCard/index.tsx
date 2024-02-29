@@ -1,7 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
-import bowser from 'bowser';
 import { TLayout } from 'components/ProjectAndFolderCards';
 
 // router
@@ -72,6 +71,8 @@ const Container = styled(Link)`
     min-height: 580px;
     padding-left: 30px;
     padding-right: 30px;
+    padding-top: 20px;
+    padding-bottom: 30px;
 
     ${media.phone`
       width: 100%;
@@ -80,6 +81,8 @@ const Container = styled(Link)`
 
   &.small {
     min-height: 540px;
+    padding-top: 18px;
+    padding-bottom: 25px;
 
     &.threecolumns {
       ${media.tablet`
@@ -97,19 +100,9 @@ const Container = styled(Link)`
     `}
   }
 
-  &.medium {
-    padding-top: 20px;
-    padding-bottom: 30px;
-  }
-
-  &.small {
-    padding-top: 18px;
-    padding-bottom: 25px;
-  }
-
-  &.desktop {
+  ${media.desktop`
     ${defaultCardHoverStyle};
-  }
+  `}
 
   ${media.phone`
     width: 100%;
@@ -473,9 +466,7 @@ const ProjectFolderCard = memo<Props>(
 
     return (
       <Container
-        className={`${className} ${layout} ${size} ${
-          !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-        } e2e-folder-card e2e-admin-publication-card`}
+        className={`${className} ${layout} ${size} e2e-folder-card e2e-admin-publication-card`}
         to={folderUrl}
         scrollToTop
         onClick={() => {

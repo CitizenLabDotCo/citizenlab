@@ -3,7 +3,7 @@ import { Result } from 'api/survey_results/types';
 
 const results: Result[] = [
   {
-    inputType: '',
+    inputType: 'text',
     question: { en: 'q0' },
     totalResponses: 5,
     answers: [],
@@ -11,7 +11,7 @@ const results: Result[] = [
     customFieldId: '1',
   },
   {
-    inputType: '',
+    inputType: 'text',
     question: { en: 'q1' },
     totalResponses: 5,
     answers: [],
@@ -19,7 +19,7 @@ const results: Result[] = [
     customFieldId: '2',
   },
   {
-    inputType: '',
+    inputType: 'text',
     question: { en: 'q2' },
     totalResponses: 5,
     answers: [],
@@ -27,7 +27,7 @@ const results: Result[] = [
     customFieldId: '3',
   },
   {
-    inputType: '',
+    inputType: 'text',
     question: { en: 'q3' },
     totalResponses: 5,
     answers: [],
@@ -35,7 +35,7 @@ const results: Result[] = [
     customFieldId: '4',
   },
   {
-    inputType: '',
+    inputType: 'text',
     question: { en: 'q4' },
     totalResponses: 5,
     answers: [],

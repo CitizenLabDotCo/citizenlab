@@ -25,12 +25,15 @@ export type ICustomFieldInputType =
   | 'html_multiloc'
   | 'files'
   | 'image_files'
-  | 'topic_ids';
+  | 'topic_ids'
+  | 'multiselect_image';
 
 export type IOptionsType = {
   id?: string;
   title_multiloc: Multiloc;
+  other?: boolean;
   temp_id?: string;
+  image_id?: string;
 };
 
 export type QuestionRuleType = { if: string | number; goto_page_id: string };
@@ -70,6 +73,8 @@ export interface IAttributes {
   minimum_select_count?: number;
   maximum_select_count?: number;
   select_count_enabled?: boolean;
+  other?: boolean;
+  random_option_ordering?: boolean;
 }
 
 export interface ICustomFieldResponse {
@@ -111,6 +116,7 @@ export type IFlatCreateCustomField = Optional<
   | 'minimum_label_multiloc'
   | 'maximum_label_multiloc'
   | 'maximum'
+  | 'random_option_ordering'
 > & {
   isLocalOnly: boolean;
 };

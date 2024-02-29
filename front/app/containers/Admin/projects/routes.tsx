@@ -35,8 +35,12 @@ const AdminProjectVolunteeringEdit = lazy(
 const AdminAllowedTopicsComponent = React.lazy(
   () => import('./project/topics')
 );
+const AdminCustomMapConfigComponent = React.lazy(
+  () => import('containers/Admin/ProjectCustomMapConfigPage')
+);
 
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
+const ReportTab = lazy(() => import('./project/information/ReportTab'));
 
 export function adminProjectsProjectPath(projectId: string) {
   return `/admin/projects/${projectId}`;
@@ -234,6 +238,14 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
+            path: 'phases/:phaseId/map',
+            element: (
+              <PageLoading>
+                <AdminCustomMapConfigComponent />
+              </PageLoading>
+            ),
+          },
+          {
             path: 'phases/:phaseId/volunteering/causes/new',
             element: (
               <PageLoading>
@@ -294,6 +306,14 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <OfflineInputImporter />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'phases/:phaseId/report',
+            element: (
+              <PageLoading>
+                <ReportTab />
               </PageLoading>
             ),
           },

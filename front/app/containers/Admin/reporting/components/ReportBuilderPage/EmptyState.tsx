@@ -57,7 +57,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
             <FormattedMessage {...messages.emptyStateTitle} />
           </Title>
           <Text>
-            <FormattedMessage {...messages.emptyStateDescription} />
+            <FormattedMessage {...messages.customizeReport} />
           </Text>
           <Tippy
             maxWidth="250px"
@@ -73,6 +73,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
                 bgColor={colors.primary}
                 onClick={onOpenModal}
                 disabled={!isReportBuilderAllowed}
+                id="e2e-create-report-button"
               >
                 <FormattedMessage {...messages.emptyStateButtonText} />
               </Button>

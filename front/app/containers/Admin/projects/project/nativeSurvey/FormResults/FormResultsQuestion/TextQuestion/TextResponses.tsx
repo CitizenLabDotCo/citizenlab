@@ -18,9 +18,13 @@ type TextResponsesProps = {
   textResponses: {
     answer: string;
   }[];
+  hasOtherResponses?: boolean;
 };
 
-const TextResponses = ({ textResponses }: TextResponsesProps) => {
+const TextResponses = ({
+  textResponses,
+  hasOtherResponses,
+}: TextResponsesProps) => {
   const parentRef = React.useRef(null);
   const { formatMessage } = useIntl();
 
@@ -35,7 +39,10 @@ const TextResponses = ({ textResponses }: TextResponsesProps) => {
     <Box bg={colors.background}>
       <Box borderBottom={`1px solid ${colors.divider}`} p="24px">
         <Text fontWeight="bold" m="0px">
-          {formatMessage(messages.allResponses)} ({textResponses.length})
+          {hasOtherResponses
+            ? formatMessage(messages.otherResponses)
+            : formatMessage(messages.allResponses)}{' '}
+          ({textResponses.length})
         </Text>
       </Box>
 

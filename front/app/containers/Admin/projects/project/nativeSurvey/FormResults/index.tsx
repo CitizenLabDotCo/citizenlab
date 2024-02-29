@@ -37,10 +37,10 @@ const FormResults = () => {
 
   const surveyResponseMessage =
     totalSubmissions > 0
-      ? formatMessage(messages.totalSurveyResponses2, {
+      ? formatMessage(messages.totalSurveyResponses, {
           count: totalSubmissions,
         })
-      : formatMessage(messages.noSurveyResponses2);
+      : formatMessage(messages.noSurveyResponses);
 
   return (
     <Box width="100%">
@@ -61,6 +61,7 @@ const FormResults = () => {
               required,
               customFieldId,
               textResponses,
+              files,
             },
             index
           ) => {
@@ -72,9 +73,11 @@ const FormResults = () => {
                 inputType={inputType}
                 answers={answers}
                 totalResponses={totalResponses}
+                totalSubmissions={totalSubmissions}
                 required={required}
                 customFieldId={customFieldId}
                 textResponses={textResponses}
+                files={files}
               />
             );
           }

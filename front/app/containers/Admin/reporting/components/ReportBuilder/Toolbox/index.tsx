@@ -19,13 +19,14 @@ import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
-import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
+import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
+import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
@@ -192,18 +193,15 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             // TODO: Add in the default project / phase
           }
           <DraggableElement
-            id="e2e-draggable-survey-results-widget"
+            id="e2e-draggable-survey-question-result-widget"
             component={
-              <SurveyResultsWidget
-                title={toMultiloc(WIDGET_TITLES.SurveyResultsWidget)}
-                projectId={selectedProjectId}
-              />
+              <SurveyQuestionResultWidget projectId={selectedProjectId} />
             }
             icon="survey"
-            label={formatMessage(WIDGET_TITLES.SurveyResultsWidget)}
+            label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
           />
           <DraggableElement
-            id="e2e-most-reacted-ideas-widget"
+            id="e2e-draggable-most-reacted-ideas-widget"
             component={
               <MostReactedIdeasWidget
                 title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
@@ -212,8 +210,23 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
                 projectId={selectedProjectId}
               />
             }
-            icon="idea"
+            icon="vote-up"
             label={formatMessage(WIDGET_TITLES.MostReactedIdeasWidget)}
+          />
+          <DraggableElement
+            id="e2e-single-idea-widget"
+            component={
+              <SingleIdeaWidget
+                collapseLongText={false}
+                showAuthor={true}
+                showContent={true}
+                showReactions={true}
+                showVotes={true}
+                projectId={selectedProjectId}
+              />
+            }
+            icon="idea"
+            label={formatMessage(WIDGET_TITLES.SingleIdeaWidget)}
           />
         </Accordion>
 

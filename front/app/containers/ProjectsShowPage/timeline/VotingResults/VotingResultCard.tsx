@@ -1,9 +1,7 @@
 import React from 'react';
-import bowser from 'bowser';
 
 // api
 import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
 import useIdeaImage from 'api/idea_images/useIdeaImage';
 
 // i18n
@@ -51,10 +49,10 @@ const Container = styled(Link)`
   ${defaultCardStyle};
   cursor: pointer;
 
-  &.desktop {
+  ${media.desktop`
     ${defaultCardHoverStyle};
     transform: translate(0px, -2px);
-  }
+  `}
 
   @media (max-width: 1220px) and (min-width: 1023px) {
     min-height: calc(
@@ -159,14 +157,13 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
-  const { data: project } = useProjectById(idea.relationships.project.data.id);
   const { data: ideaImage } = useIdeaImage(
     idea.id,
     idea.relationships.idea_images.data?.[0]?.id
   );
   const smallerThanPhone = useBreakpoint('phone');
 
-  if (!phase || !project) return null;
+  if (!phase) return null;
 
   const budget = idea.attributes.budget;
   const ideaTitle = localize(idea.attributes.title_multiloc);
@@ -189,9 +186,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
       id={idea.id}
       to={url}
       onClick={handleClick}
-      className={`e2e-card ${
-        !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
-      }`}
+      className={'e2e-card'}
     >
       {image && (
         <IdeaCardImageWrapper>
@@ -247,7 +242,6 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
           </Box>
         </Body>
         <Footer
-          project={project}
           idea={idea}
           hideIdeaStatus={true}
           participationMethod="voting"

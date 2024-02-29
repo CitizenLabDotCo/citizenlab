@@ -71,10 +71,10 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
   };
 
   const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
-  const successMessageIsShown = isSubmitSuccessful && successMessageIsVisible;
   const errorMessageIsShown =
     (getAllErrorMessages().length > 0 || formContextErrors.submissionError) &&
     !isSubmitSuccessful;
+  const successMessageIsShown = isSubmitSuccessful && successMessageIsVisible;
 
   return (
     <>

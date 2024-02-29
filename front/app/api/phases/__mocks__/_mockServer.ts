@@ -26,6 +26,9 @@ export const phasesData: IPhaseData[] = [
       presentation_mode: 'card',
       ideas_count: 3,
       campaigns_settings: { project_phase_started: true },
+      votes_count: 0,
+      baskets_count: 0,
+      report_public: false,
     },
     relationships: {
       permissions: {
@@ -67,6 +70,9 @@ export const phasesData: IPhaseData[] = [
       reacting_dislike_limited_max: 0,
       ideas_count: 3,
       campaigns_settings: { project_phase_started: true },
+      votes_count: 0,
+      baskets_count: 0,
+      report_public: false,
     },
     relationships: {
       permissions: {
@@ -104,6 +110,9 @@ export const phasesData: IPhaseData[] = [
       input_term: 'idea',
       ideas_count: 3,
       campaigns_settings: { project_phase_started: true },
+      votes_count: 0,
+      baskets_count: 0,
+      report_public: false,
     },
     relationships: {
       permissions: {
@@ -146,6 +155,9 @@ export const mockPhaseInformationData: IPhaseData = {
     presentation_mode: 'card',
     ideas_count: 3,
     campaigns_settings: { project_phase_started: true },
+    votes_count: 0,
+    baskets_count: 0,
+    report_public: false,
   },
   relationships: {
     permissions: {
@@ -187,6 +199,9 @@ export const mockPhaseIdeationData: IPhaseData = {
     input_term: 'idea',
     ideas_count: 3,
     campaigns_settings: { project_phase_started: true },
+    votes_count: 0,
+    baskets_count: 0,
+    report_public: false,
   },
   relationships: {
     permissions: {
@@ -230,6 +245,9 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     reacting_dislike_enabled: false,
     reacting_dislike_limited_max: 0,
     campaigns_settings: { project_phase_started: true },
+    votes_count: 0,
+    baskets_count: 0,
+    report_public: false,
   },
   relationships: {
     permissions: {
@@ -273,6 +291,9 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     survey_embed_url: 'myTestSurvey.google_forms.com',
     ideas_count: 2,
     campaigns_settings: { project_phase_started: true },
+    votes_count: 0,
+    baskets_count: 0,
+    report_public: false,
   },
   relationships: {
     permissions: {

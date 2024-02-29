@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
@@ -6,11 +6,7 @@ import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import { object, boolean, array, string, number } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-// styles
-import styled from 'styled-components';
-
 // components
-import { RightColumn } from 'containers/Admin';
 import {
   Box,
   Spinner,
@@ -23,6 +19,7 @@ import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSe
 import FormFields from 'components/FormBuilder/components/FormFields';
 import Error from 'components/UI/Error';
 import Feedback from 'components/HookForm/Feedback';
+import Warning from 'components/UI/Warning';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -39,6 +36,7 @@ import {
 // hooks
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
 
 // intl
 import { WrappedComponentProps } from 'react-intl';
@@ -52,16 +50,7 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 import { isNewCustomFieldObject } from 'api/custom_fields/util';
-
-const StyledRightColumn = styled(RightColumn)`
-  height: calc(100vh - ${stylingConsts.menuHeight}px);
-  z-index: 2;
-  margin: 0;
-  max-width: 100%;
-  align-items: center;
-  padding-bottom: 100px;
-  overflow-y: auto;
-`;
+import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
 
 interface FormValues {
   customFields: IFlatCustomField[];
@@ -88,10 +77,18 @@ export const FormEdit = ({
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
-  const { groupingType, formSavedSuccessMessage, isFormPhaseSpecific } =
-    builderConfig;
+  const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
+  const { formSavedSuccessMessage, isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const showWarningNotice = totalSubmissions > 0;
+  const {
+    data: formCustomFields,
+    refetch,
+    isFetching,
+  } = useFormCustomFields({
+    projectId,
+    phaseId: isFormPhaseSpecific ? phaseId : undefined,
+  });
 
   const schema = object().shape({
     customFields: array().of(
@@ -102,7 +99,9 @@ export const FormEdit = ({
         description_multiloc: object(),
         input_type: string(),
         options: validateOneOptionForMultiSelect(
-          formatMessage(messages.emptyOptionError)
+          formatMessage(messages.emptyOptionError),
+          formatMessage(messages.emptyTitleMessage),
+          { multiselect_image: formatMessage(messages.emptyImageOptionError) }
         ),
         maximum: number(),
         minimum_label_multiloc: object(),
@@ -124,42 +123,36 @@ export const FormEdit = ({
     setError,
     handleSubmit,
     control,
-    formState: { isSubmitting, errors },
-    trigger,
+    formState: { errors, isDirty },
+    reset,
   } = methods;
 
-  const { fields, append, remove, move, replace } = useFieldArray({
+  const { append, move, replace } = useFieldArray({
     name: 'customFields',
     control,
   });
+
+  // This tracks form update. We isolate it to avoid setting data on other changes
+  const [isUpdatingForm, setIsUpdatingForm] = useState(false);
+  // This tracks form submission and update status
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (isUpdatingForm && !isFetching) {
+      reset({ customFields: formCustomFields });
+      setIsUpdatingForm(false);
+      setIsSubmitting(false);
+    }
+  }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
   const closeSettings = () => {
     setSelectedField(undefined);
   };
 
-  const handleDelete = (fieldIndex: number) => {
-    const field = fields[fieldIndex];
-
-    // When the first group is deleted, it's questions go to the next group
-    if (fieldIndex === 0 && field.input_type === groupingType) {
-      const nextGroupIndex = fields.findIndex(
-        (field, fieldIndex) =>
-          field.input_type === groupingType && fieldIndex !== 0
-      );
-      move(nextGroupIndex, 0);
-      remove(1);
-    } else {
-      remove(fieldIndex);
-    }
-
-    closeSettings();
-    trigger();
-  };
-
-  const onAddField = (field: IFlatCreateCustomField) => {
+  const onAddField = (field: IFlatCreateCustomField, index: number) => {
     const newField = {
       ...field,
-      index: !isNilOrError(fields) ? fields.length : 0,
+      index,
     };
 
     if (isNewCustomFieldObject(newField)) {
@@ -169,9 +162,12 @@ export const FormEdit = ({
   };
 
   const hasErrors = !!Object.keys(errors).length;
+  const editedAndCorrect = !isSubmitting && isDirty && !hasErrors;
 
   const onFormSubmit = async ({ customFields }: FormValues) => {
+    setSuccessMessageIsVisible(false);
     try {
+      setIsSubmitting(true);
       const finalResponseArray = customFields.map((field) => ({
         ...(!field.isLocalOnly && { id: field.id }),
         input_type: field.input_type,
@@ -187,8 +183,9 @@ export const FormEdit = ({
         key: field.key,
         code: field.code,
         description_multiloc: field.description_multiloc || {},
-        ...((field.input_type === 'multiselect' ||
-          field.input_type === 'select') && {
+        ...(['select', 'multiselect', 'multiselect_image'].includes(
+          field.input_type
+        ) && {
           // TODO: This will get messy with more field types, abstract this in some way
           options: field.options || {},
           maximum_select_count: field.select_count_enabled
@@ -198,6 +195,7 @@ export const FormEdit = ({
             ? field.minimum_select_count || '0'
             : null,
           select_count_enabled: field.select_count_enabled,
+          random_option_ordering: field.random_option_ordering,
         }),
         ...(field.input_type === 'linear_scale' && {
           minimum_label_multiloc: field.minimum_label_multiloc || {},
@@ -205,22 +203,26 @@ export const FormEdit = ({
           maximum: field.maximum.toString(),
         }),
       }));
-      await updateFormCustomFields({
-        projectId,
-        customFields: finalResponseArray,
-        phaseId: isFormPhaseSpecific ? phaseId : undefined,
-      });
+      await updateFormCustomFields(
+        {
+          projectId,
+          customFields: finalResponseArray,
+          phaseId: isFormPhaseSpecific ? phaseId : undefined,
+        },
+        {
+          onSuccess: () => {
+            refetch().then(() => {
+              setIsUpdatingForm(true);
+              setSuccessMessageIsVisible(true);
+            });
+          },
+        }
+      );
     } catch (error) {
       handleHookFormSubmissionError(error, setError, 'customFields');
+      setIsSubmitting(false);
     }
   };
-
-  // Group is only deletable when we have more than one group
-  const isGroupDeletable =
-    fields.filter((field) => field.input_type === groupingType).length > 1;
-  const isDeleteDisabled = !(
-    selectedField?.input_type !== groupingType || isGroupDeletable
-  );
 
   const reorderFields = (
     result: DragAndDropResult,
@@ -238,6 +240,10 @@ export const FormEdit = ({
       setSelectedField({ ...selectedField, index: newSelectedFieldIndex });
     }
   };
+
+  const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
+  const showSuccessMessage =
+    successMessageIsVisible && Object.keys(errors).length === 0;
 
   if (!isNilOrError(builderConfig)) {
     return (
@@ -259,13 +265,24 @@ export const FormEdit = ({
                 builderConfig={builderConfig}
               />
               <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
-                <FormBuilderToolbox
-                  onAddField={onAddField}
-                  builderConfig={builderConfig}
-                  move={move}
-                />
-                <StyledRightColumn>
-                  <Box width="1000px">
+                <Box width="210px">
+                  <FormBuilderToolbox
+                    onAddField={onAddField}
+                    builderConfig={builderConfig}
+                    move={move}
+                  />
+                </Box>
+                <Box
+                  flex="1.8"
+                  border="1px solid #ccc"
+                  overflowY="auto"
+                  zIndex="2"
+                  margin="0px"
+                  paddingBottom="100px"
+                  height={`calc(100vh - ${stylingConsts.menuHeight}px)`}
+                  px="30px"
+                >
+                  <Box mt="16px">
                     {hasErrors && (
                       <Box mb="16px">
                         <Error
@@ -276,9 +293,23 @@ export const FormEdit = ({
                         />
                       </Box>
                     )}
+                    {editedAndCorrect && (
+                      <Box mb="8px">
+                        <Warning>
+                          {formatMessage(messages.unsavedChanges)}
+                        </Warning>
+                      </Box>
+                    )}
                     <Feedback
                       successMessage={formatMessage(formSavedSuccessMessage)}
+                      onlyShowErrors
                     />
+                    {showSuccessMessage && (
+                      <SuccessFeedback
+                        successMessage={formatMessage(formSavedSuccessMessage)}
+                        closeSuccessMessage={closeSuccessMessage}
+                      />
+                    )}
                     {showWarningNotice &&
                       builderConfig.getWarningNotice &&
                       builderConfig.getWarningNotice()}
@@ -293,20 +324,23 @@ export const FormEdit = ({
                         selectedFieldId={selectedField?.id}
                         handleDragEnd={reorderFields}
                         builderConfig={builderConfig}
+                        closeSettings={closeSettings}
                       />
                     </Box>
                   </Box>
-                </StyledRightColumn>
-                {!isNilOrError(selectedField) && (
-                  <FormBuilderSettings
-                    key={selectedField.id}
-                    field={selectedField}
-                    onDelete={handleDelete}
-                    onClose={closeSettings}
-                    isDeleteDisabled={isDeleteDisabled}
-                    builderConfig={builderConfig}
-                  />
-                )}
+                </Box>
+                <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
+                  {!isNilOrError(selectedField) && (
+                    <Box>
+                      <FormBuilderSettings
+                        key={selectedField.id}
+                        field={selectedField}
+                        closeSettings={closeSettings}
+                        builderConfig={builderConfig}
+                      />
+                    </Box>
+                  )}
+                </Box>
               </Box>
             </form>
           </FormProvider>

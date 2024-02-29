@@ -2,7 +2,6 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 import { get, isEmpty, transform } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
-import bowser from 'bowser';
 import moment from 'moment';
 
 // utils
@@ -418,7 +417,6 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
                   onChange={onStartDateChange}
                   value={startDate}
                   error={startDateError}
-                  placeholder={bowser.msie ? 'YYYY-MM-DD' : undefined}
                 />
               </Box>
               <Select

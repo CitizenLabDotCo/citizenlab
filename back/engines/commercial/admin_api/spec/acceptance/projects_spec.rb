@@ -60,27 +60,14 @@ resource 'Project', admin_api: true do
     end
 
     describe 'Import a project template' do
-      example 'it imports a project' do
-        do_request(tenant_id: tenant.id, project: { template_yaml: template.to_yaml, folder_id: folder.id })
-        expect(status).to eq(200)
+      example 'enqueues an AdminApi::CopyProjectJob' do
+        template_yaml = template.to_yaml
 
-        tenant.switch do
-          project = Project.first
+        expect do
+          do_request(tenant_id: tenant.id, project: { template_yaml: template_yaml, folder_id: folder.id })
+        end.to enqueue_job(AdminApi::CopyProjectJob).with(template_yaml, folder.id)
 
-          expect(template['models']['project'].first.dig('title_multiloc', 'en')).to eq project.title_multiloc['en']
-          expect(template['models']['phase'].size).to eq project.phases.count
-          expect(template['models']['phase'].pluck('start_at')).to match_array project.phases.map(&:start_at).map(&:iso8601)
-          expect(project.folder_id).to eq folder.id
-        end
-      end
-
-      if defined?(NLP)
-        example 'it enqueues DumpTenantJob once if NLP defined' do
-          expect do
-            do_request(tenant_id: tenant.id, project: { template_yaml: template.to_yaml, folder_id: folder.id })
-          end
-            .to have_enqueued_job(DumpTenantJob)
-        end
+        expect(status).to eq(202)
       end
     end
   end

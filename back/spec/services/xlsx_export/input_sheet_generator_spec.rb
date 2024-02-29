@@ -378,6 +378,50 @@ describe XlsxExport::InputSheetGenerator do
         end
       end
 
+      context 'when there are "other" options' do
+        let(:include_private_attributes) { false }
+
+        it 'Generates an sheet with the phase inputs, including the "other" column' do
+          create(:custom_field_option, custom_field: multiselect_field, key: 'other', title_multiloc: { 'en' => 'Other' }, other: true)
+          survey_response1.update!(custom_field_values: { multiselect_field.key => %w[cat dog other], "#{multiselect_field.key}_other" => 'Fish' })
+          expect(xlsx).to match([
+            {
+              sheet_name: 'My sheet',
+              column_headers: [
+                'ID',
+                'What are your favourite pets?',
+                'Type your answer',
+                'Submitted at',
+                'Project'
+              ],
+              rows: [
+                [
+                  survey_response1.id,
+                  'Cat, Dog, Other',
+                  'Fish',
+                  an_instance_of(DateTime), # created_at
+                  phase.project.title_multiloc['en']
+                ],
+                [
+                  survey_response2.id,
+                  'Cat',
+                  '',
+                  an_instance_of(DateTime), # created_at
+                  phase.project.title_multiloc['en']
+                ],
+                [
+                  survey_response3.id,
+                  'Dog',
+                  '',
+                  an_instance_of(DateTime), # created_at
+                  phase.project.title_multiloc['en']
+                ]
+              ]
+            }
+          ])
+        end
+      end
+
       context 'with private attributes' do
         let(:include_private_attributes) { true }
 

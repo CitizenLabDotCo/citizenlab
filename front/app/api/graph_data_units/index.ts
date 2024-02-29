@@ -1,29 +1,40 @@
 import {
+  AgeProps,
+  AnalyticsProps,
+  GenderProps,
+  MostReactedIdeasProps,
+  SingleIdeaProps,
+  SurveyResultsProps,
+  SurveyQuestionResultProps,
+  VisitorsTrafficSourcesProps,
+} from './requestTypes';
+import {
   ActiveUsersResponse,
   CommentsByTimeResponse,
   MostReactedIdeasResponse,
   PostsByTimeResponse,
   ReactionsByTimeResponse,
+  SingleIdeaResponse,
   SurveyResultsResponse,
+  SurveyQuestionResultResponse,
   UsersByBirthyearResponse,
   UsersByGenderResponse,
   VisitorsResponse,
   VisitorsTrafficSourcesResponse,
 } from './responseTypes';
-import {
-  AgeProps,
-  AnalyticsProps,
-  GenderProps,
-  MostReactedIdeasProps,
-  SurveyResultsProps,
-  VisitorsTrafficSourcesProps,
-} from './requestTypes';
 import useGraphDataUnits from './useGraphDataUnits';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
 
 export const useSurveyResults = (props: SurveyResultsProps) => {
   return useGraphDataUnits<SurveyResultsResponse>({
     resolvedName: 'SurveyResultsWidget',
+    props,
+  });
+};
+
+export const useSurveyQuestionResult = (props: SurveyQuestionResultProps) => {
+  return useGraphDataUnits<SurveyQuestionResultResponse>({
+    resolvedName: 'SurveyQuestionResultWidget',
     props,
   });
 };
@@ -35,6 +46,19 @@ export const useMostReactedIdeas = (
   return useGraphDataUnits<MostReactedIdeasResponse>(
     {
       resolvedName: 'MostReactedIdeasWidget',
+      props,
+    },
+    { enabled }
+  );
+};
+
+export const useSingleIdea = (
+  props: SingleIdeaProps,
+  { enabled }: { enabled: boolean }
+) => {
+  return useGraphDataUnits<SingleIdeaResponse>(
+    {
+      resolvedName: 'SingleIdeaWidget',
       props,
     },
     { enabled }

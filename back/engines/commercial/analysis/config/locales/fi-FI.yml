@@ -1,0 +1,3 @@
+fi:
+  analysis:
+    example_tag_n: Esimerkkitunniste %{n}
