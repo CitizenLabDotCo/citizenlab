@@ -31,7 +31,7 @@ const MessagingDashboard = () => {
   const textingEnabled = useFeatureFlag({ name: 'texting' });
 
   useEffect(() => {
-    if (pathname.match(/\/admin\/messaging$/)) {
+    if (!pathname.match(/\/admin\/messaging$/)) {
       return;
     }
 
