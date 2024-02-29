@@ -145,6 +145,7 @@ class WebApi::V1::IdeasController < ApplicationController
     input.phase_ids = [phase.id] if phase_ids.empty?
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
+    # TODO: JS - not saving anonymous correctly?
     if (phase.native_survey? && phase.allow_anonymous_participation?) || current_user.nil?
       input.anonymous = true
     end
