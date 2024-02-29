@@ -8,6 +8,7 @@ import FooterWithReactionControl from './FooterWithReactionControl';
 import { IProject } from 'api/projects/types';
 import { IIdeaData } from 'api/ideas/types';
 import { ParticipationMethod } from 'api/phases/types';
+import useProjectById from 'api/projects/useProjectById';
 
 interface Props {
   project?: IProject;
@@ -16,12 +17,9 @@ interface Props {
   participationMethod: ParticipationMethod | undefined;
 }
 
-const Footer = ({
-  project,
-  idea,
-  hideIdeaStatus,
-  participationMethod,
-}: Props) => {
+const Footer = ({ idea, hideIdeaStatus, participationMethod }: Props) => {
+  const { data: project } = useProjectById(idea.relationships.project.data.id);
+
   if (!project) return null;
 
   const commentingEnabled =
