@@ -24,7 +24,6 @@ resource 'Map Configs' do
           :with_esri_web_map_id,
           :with_esri_base_map_id,
           :with_geojson_layers,
-          :with_legend,
           project: project)
       end
 
@@ -141,7 +140,6 @@ resource 'Map Configs' do
             :with_positioning,
             :with_tile_provider,
             :with_esri_feature_layers,
-            :with_legend,
             project: project)
         end
 
@@ -171,7 +169,6 @@ resource 'Map Configs' do
             :with_esri_web_map_id,
             :with_esri_base_map_id,
             :with_geojson_layers,
-            :with_legend,
             project: project)
         end
 
