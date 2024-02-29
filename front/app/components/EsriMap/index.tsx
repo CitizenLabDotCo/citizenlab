@@ -155,7 +155,7 @@ const EsriMap = ({
         minZoom: 5,
       };
 
-      // Set web map if it was provided
+      // Set Web Map if it was provided
       if (webMapId) {
         const webMap = new WebMap({
           portalItem: {
@@ -235,29 +235,34 @@ const EsriMap = ({
     webMapId,
   ]);
 
-  // Load dynamic data that was passed in.
-  // Note: This data is dynamic and may change.
+  // Following useEffects are used for loading dynamic data that is passed in.
+  // Description: This data is dynamic and may change during runtime.
+
   useEffect(() => {
     // Add any map layers which were passed in
 
-    // Handle when we're using a webmap
+    // If we're using a Web Map from ArcGIS Online, add the layers to the Web Map
     webMap?.when(() => {
       if (webMap && layers) {
-        // If there are any Web Map reference layers, re-order so they are below other layers created in our application
+        // If the Web Map has any reference layers, re-order so they sit below any additional layers that were uploaded or created in our application
+        // Reference layers: https://developers.arcgis.com/javascript/latest/api-reference/esri-Basemap.html#referenceLayers
         if (referenceLayers && referenceLayers.length > 0) {
+          // Get the current basemap layers
           const newBasemapLayers = webMap.basemap.baseLayers;
+          // Add the reference layers to the new basemap layers list
           webMap.addMany(referenceLayers.toArray());
+          // Set the WebMap basemap so it includes the Web Map reference layers
           webMap.basemap = new Basemap({
             baseLayers: newBasemapLayers,
           });
         }
 
-        // Add any layers passed in as props
+        // Add layers that passed in as props to the Web Map
         layers.forEach((layer) => {
           webMap.add(layer);
         });
 
-        // If we have WebMap reference layers, save them in state
+        // If the WebMap has reference layers, save them in state
         const refLayers =
           webMap.basemap.referenceLayers.length > 0
             ? webMap.basemap.referenceLayers
@@ -269,7 +274,9 @@ const EsriMap = ({
       }
     });
 
-    // Handle layers for the default map (when we're not using a Web Map)
+    // Add the layers to the default Map object
+    // Note: If we're using a Web Map and decide to remove it, then the default Map which appears again
+    // will already have any layers the admin added.
     if (map && layers) {
       if (mapView) {
         map.removeAll();
@@ -313,7 +320,7 @@ const EsriMap = ({
   }, [onHover, mapView]);
 
   useEffect(() => {
-    // Set web map if it was provided
+    // Set the Web Map if it was provided
     if (webMapId && mapView) {
       const webMap = new WebMap({
         portalItem: {
@@ -323,7 +330,7 @@ const EsriMap = ({
       mapView.map = webMap;
       setWebMap(webMap);
     } else if (mapView && map) {
-      // Else, set the default map
+      // Oterwise, we use the default Map
       mapView.map = map;
       setWebMap(null);
     }
@@ -335,7 +342,7 @@ const EsriMap = ({
   }, [locale]);
 
   useEffect(() => {
-    // Set Esri API key
+    // Set the Esri API key
     const esriApiKey =
       appConfig?.data.attributes.settings.esri_integration?.api_key;
     if (esriApiKey) {

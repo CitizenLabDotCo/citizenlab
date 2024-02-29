@@ -80,6 +80,9 @@ const GeoJsonImportButton = memo<Props>(
     const layerType = getLayerType(mapConfig);
     const hasExistingWebMap = !!mapConfig.data.attributes.esri_web_map_id;
 
+    const geoJsonImportDisabled =
+      layerType === 'CustomMaps::EsriFeatureLayer' || hasExistingWebMap;
+
     const handleGeoJsonImport = (event: any) => {
       const fileReader = new FileReader();
       fileReader.readAsText(event.target.files[0], 'UTF-8');
@@ -125,16 +128,13 @@ const GeoJsonImportButton = memo<Props>(
             placement="top"
             content={formatMessage(messages.geojsonRemoveEsriTooltip)}
             hideOnClick={true}
-            disabled={layerType === 'CustomMaps::GeojsonLayer'}
+            disabled={!geoJsonImportDisabled}
           >
             <div>
               <StyledButton
                 icon="upload-file"
                 buttonStyle="secondary"
-                disabled={
-                  layerType === 'CustomMaps::EsriFeatureLayer' ||
-                  hasExistingWebMap
-                }
+                disabled={geoJsonImportDisabled}
               >
                 <StyledLabel aria-hidden htmlFor="file-attachment-uploader" />
                 <FormattedMessage {...messages.import} />
