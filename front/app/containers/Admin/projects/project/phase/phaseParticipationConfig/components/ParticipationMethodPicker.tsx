@@ -9,8 +9,6 @@ import {
   Radio,
   Text,
   Box,
-  Badge,
-  colors,
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -18,6 +16,7 @@ import { LabelHeaderDescription } from './shared/labels';
 import { ParticipationMethodRadio } from './shared/styling';
 import Warning from 'components/UI/Warning';
 import Tippy from '@tippyjs/react';
+import NewBadge from 'components/UI/NewBadge';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -27,6 +26,7 @@ import messages2 from './messages';
 // utils
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
+import { isExpired } from 'components/UI/NewBadge/utils';
 
 // typings
 import { ApiErrors } from '..';
@@ -274,11 +274,11 @@ const ParticipationMethodPicker = ({
                       <FormattedMessage
                         {...messages2.shareInformationOrResults}
                       />
-                      <Box display="inline" ml="8px">
-                        <Badge className="inverse" color={colors.primary}>
-                          <FormattedMessage {...messages2.new} />
-                        </Badge>
-                      </Box>
+                      {!isExpired('01-04-2024') && (
+                        <Box display="inline" ml="8px">
+                          <NewBadge />
+                        </Box>
+                      )}
                     </>
                   ) : (
                     <FormattedMessage {...messages.shareInformation} />

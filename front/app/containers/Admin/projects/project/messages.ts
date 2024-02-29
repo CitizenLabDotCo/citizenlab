@@ -579,4 +579,8 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2',
     defaultMessage: 'Input Manager tab',
   },
+  report: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.report',
+    defaultMessage: 'Report',
+  },
 });
