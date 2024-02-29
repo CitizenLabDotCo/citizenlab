@@ -53,7 +53,14 @@ module CustomMaps
         end
 
         def map_config_params
-          params.require(:map_config).permit(:zoom_level, :tile_provider, :esri_web_map_id, center_geojson: {})
+          params.require(:map_config)
+            .permit(
+              :zoom_level,
+              :tile_provider,
+              :esri_web_map_id,
+              :esri_base_map_id,
+              center_geojson: {}
+            )
         end
       end
     end

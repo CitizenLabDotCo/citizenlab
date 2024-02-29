@@ -1,7 +1,11 @@
 import { IOptionsType } from 'api/custom_fields/types';
 import { object, array, TestContext } from 'yup';
 
-const validateOneOptionForMultiSelect = (message: string) => {
+const validateOneOptionForMultiSelect = (
+  noOptionGenericMessage: string,
+  everyOptionTitleMessage: string,
+  specificControlNoOptionMessage?: { [key: string]: string }
+) => {
   return array()
     .of(
       object().shape({
@@ -10,22 +14,51 @@ const validateOneOptionForMultiSelect = (message: string) => {
     )
     .when('input_type', (input_type: string, schema) => {
       if (['multiselect', 'select', 'multiselect_image'].includes(input_type)) {
-        return schema.test(
-          'one-option',
-          message,
-          (options: IOptionsType[], testContext: TestContext) => {
-            if (testContext.parent.key === 'topic_ids') {
-              return true;
+        const noOptionMessage =
+          specificControlNoOptionMessage &&
+          Object.prototype.hasOwnProperty.call(
+            specificControlNoOptionMessage,
+            input_type
+          )
+            ? specificControlNoOptionMessage[input_type]
+            : noOptionGenericMessage;
+
+        return schema
+          .test(
+            'one-option',
+            noOptionMessage,
+            (options: IOptionsType[], testContext: TestContext) => {
+              if (testContext.parent.key === 'topic_ids') {
+                return true;
+              }
+              return options
+                ? options.some((option: IOptionsType) => {
+                    return Object.values(option.title_multiloc).some(
+                      (value: string) => value !== ''
+                    );
+                  })
+                : false;
             }
-            return options
-              ? options.some((option: IOptionsType) => {
-                  return Object.values(option.title_multiloc).some(
-                    (value: string) => value !== ''
-                  );
-                })
-              : false;
-          }
-        );
+          )
+          .test(
+            'every-option-has-title',
+            everyOptionTitleMessage,
+            (options: IOptionsType[], testContext: TestContext) => {
+              if (testContext.parent.key === 'topic_ids') {
+                return true;
+              }
+              return options
+                ? options.every((option: IOptionsType) => {
+                    return (
+                      Object.keys(option.title_multiloc).length > 0 &&
+                      Object.values(option.title_multiloc).some(
+                        (value: string) => value !== ''
+                      )
+                    );
+                  })
+                : false;
+            }
+          );
       }
       return schema;
     });

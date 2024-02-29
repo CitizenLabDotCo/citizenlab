@@ -202,7 +202,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
   );
 
   const getAjvErrorMessage: AjvErrorGetter = useCallback(
-    (error) => {
+    (error, uischema) => {
       return (
         messages[
           `ajv_error_${uiSchema?.options?.inputTerm}_${
@@ -215,6 +215,9 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
             getFieldNameFromPath(error.instancePath) ||
             error?.params?.missingProperty
           }_${error.keyword}`
+        ] ||
+        messages[
+          `ajv_error_${uischema?.options?.input_type}_${error.keyword}`
         ] ||
         undefined
       );

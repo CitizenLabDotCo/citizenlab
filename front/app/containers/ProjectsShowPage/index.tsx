@@ -165,7 +165,6 @@ const ProjectsShowPage = ({ project }: Props) => {
               eventsTime="currentAndFuture"
               title={formatMessage(messages.upcomingAndOngoingEvents)}
               fallbackMessage={messages.noUpcomingOrOngoingEvents}
-              hideSectionIfNoEvents={true}
               projectPublicationStatuses={['published', 'draft', 'archived']}
             />
             <EventsViewer
@@ -174,7 +173,6 @@ const ProjectsShowPage = ({ project }: Props) => {
               eventsTime="past"
               title={formatMessage(messages.pastEvents)}
               fallbackMessage={messages.noPastEvents}
-              hideSectionIfNoEvents={true}
               projectPublicationStatuses={['published', 'draft', 'archived']}
               showDateFilter={false}
             />

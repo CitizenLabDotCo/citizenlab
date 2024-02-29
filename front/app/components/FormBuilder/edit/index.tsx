@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useParams } from 'react-router-dom';
@@ -19,6 +19,7 @@ import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSe
 import FormFields from 'components/FormBuilder/components/FormFields';
 import Error from 'components/UI/Error';
 import Feedback from 'components/HookForm/Feedback';
+import Warning from 'components/UI/Warning';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -35,6 +36,7 @@ import {
 // hooks
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
 
 // intl
 import { WrappedComponentProps } from 'react-intl';
@@ -48,6 +50,7 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 import { isNewCustomFieldObject } from 'api/custom_fields/util';
+import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
 
 interface FormValues {
   customFields: IFlatCustomField[];
@@ -74,9 +77,18 @@ export const FormEdit = ({
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
+  const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
   const { formSavedSuccessMessage, isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const showWarningNotice = totalSubmissions > 0;
+  const {
+    data: formCustomFields,
+    refetch,
+    isFetching,
+  } = useFormCustomFields({
+    projectId,
+    phaseId: isFormPhaseSpecific ? phaseId : undefined,
+  });
 
   const schema = object().shape({
     customFields: array().of(
@@ -87,7 +99,9 @@ export const FormEdit = ({
         description_multiloc: object(),
         input_type: string(),
         options: validateOneOptionForMultiSelect(
-          formatMessage(messages.emptyOptionError)
+          formatMessage(messages.emptyOptionError),
+          formatMessage(messages.emptyTitleMessage),
+          { multiselect_image: formatMessage(messages.emptyImageOptionError) }
         ),
         maximum: number(),
         minimum_label_multiloc: object(),
@@ -109,13 +123,27 @@ export const FormEdit = ({
     setError,
     handleSubmit,
     control,
-    formState: { isSubmitting, errors },
+    formState: { errors, isDirty },
+    reset,
   } = methods;
 
   const { append, move, replace } = useFieldArray({
     name: 'customFields',
     control,
   });
+
+  // This tracks form update. We isolate it to avoid setting data on other changes
+  const [isUpdatingForm, setIsUpdatingForm] = useState(false);
+  // This tracks form submission and update status
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (isUpdatingForm && !isFetching) {
+      reset({ customFields: formCustomFields });
+      setIsUpdatingForm(false);
+      setIsSubmitting(false);
+    }
+  }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
   const closeSettings = () => {
     setSelectedField(undefined);
@@ -134,9 +162,12 @@ export const FormEdit = ({
   };
 
   const hasErrors = !!Object.keys(errors).length;
+  const editedAndCorrect = !isSubmitting && isDirty && !hasErrors;
 
   const onFormSubmit = async ({ customFields }: FormValues) => {
+    setSuccessMessageIsVisible(false);
     try {
+      setIsSubmitting(true);
       const finalResponseArray = customFields.map((field) => ({
         ...(!field.isLocalOnly && { id: field.id }),
         input_type: field.input_type,
@@ -172,13 +203,24 @@ export const FormEdit = ({
           maximum: field.maximum.toString(),
         }),
       }));
-      await updateFormCustomFields({
-        projectId,
-        customFields: finalResponseArray,
-        phaseId: isFormPhaseSpecific ? phaseId : undefined,
-      });
+      await updateFormCustomFields(
+        {
+          projectId,
+          customFields: finalResponseArray,
+          phaseId: isFormPhaseSpecific ? phaseId : undefined,
+        },
+        {
+          onSuccess: () => {
+            refetch().then(() => {
+              setIsUpdatingForm(true);
+              setSuccessMessageIsVisible(true);
+            });
+          },
+        }
+      );
     } catch (error) {
       handleHookFormSubmissionError(error, setError, 'customFields');
+      setIsSubmitting(false);
     }
   };
 
@@ -198,6 +240,10 @@ export const FormEdit = ({
       setSelectedField({ ...selectedField, index: newSelectedFieldIndex });
     }
   };
+
+  const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
+  const showSuccessMessage =
+    successMessageIsVisible && Object.keys(errors).length === 0;
 
   if (!isNilOrError(builderConfig)) {
     return (
@@ -247,9 +293,23 @@ export const FormEdit = ({
                         />
                       </Box>
                     )}
+                    {editedAndCorrect && (
+                      <Box mb="8px">
+                        <Warning>
+                          {formatMessage(messages.unsavedChanges)}
+                        </Warning>
+                      </Box>
+                    )}
                     <Feedback
                       successMessage={formatMessage(formSavedSuccessMessage)}
+                      onlyShowErrors
                     />
+                    {showSuccessMessage && (
+                      <SuccessFeedback
+                        successMessage={formatMessage(formSavedSuccessMessage)}
+                        closeSuccessMessage={closeSuccessMessage}
+                      />
+                    )}
                     {showWarningNotice &&
                       builderConfig.getWarningNotice &&
                       builderConfig.getWarningNotice()}

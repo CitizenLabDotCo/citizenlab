@@ -274,14 +274,12 @@ module ParticipationMethod
     end
 
     def create_default_form!
-      form = CustomForm.create(participation_context: phase)
+      form = CustomForm.create(participation_context: phase.project)
 
       default_fields(form).reverse_each do |field|
         field.save!
         field.move_to_top
       end
-
-      phase.reload
 
       form
     end

@@ -121,7 +121,9 @@ const ScaleLabelsInput = ({
                         onChange={(value) => {
                           const updatedMultiloc = minLabelMultiloc;
                           updatedMultiloc[selectedLocale] = value;
-                          setValue(minimumLabelName, updatedMultiloc);
+                          setValue(minimumLabelName, updatedMultiloc, {
+                            shouldDirty: true,
+                          });
                         }}
                         onKeyDown={handleKeyDown}
                       />
@@ -136,7 +138,9 @@ const ScaleLabelsInput = ({
                         onChange={(value) => {
                           const updatedMultiloc = maxLabelMultiloc;
                           updatedMultiloc[selectedLocale] = value;
-                          setValue(maximumLabelName, updatedMultiloc);
+                          setValue(maximumLabelName, updatedMultiloc, {
+                            shouldDirty: true,
+                          });
                         }}
                         onKeyDown={handleKeyDown}
                       />
