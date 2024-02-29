@@ -2,7 +2,6 @@ import React from 'react';
 
 // routing
 import { useParams } from 'react-router-dom';
-import clHistory from 'utils/cl-router/history';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -41,12 +40,6 @@ const ReportTab = () => {
     }
   };
 
-  const handleEditReport = () => {
-    if (!report) return;
-    const reportPath = `/admin/reporting/report-builder/${report.data.id}`;
-    clHistory.push(`${reportPath}/editor`);
-  };
-
   const reportId = phase.data.relationships.report?.data?.id;
   const hasReport = !!reportId;
 
@@ -66,7 +59,6 @@ const ReportTab = () => {
             reportId={reportId}
             isLoading={isLoading}
             onDelete={handleDeleteReport}
-            onEdit={handleEditReport}
           />
         )}
       </Box>
