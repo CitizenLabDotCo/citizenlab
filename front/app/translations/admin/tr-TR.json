@@ -728,6 +728,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Lütfen bir fikir aşaması seçin.",
   "app.containers.Admin.projects.all.askPersonalData": "Kişisel verileri sorun",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Giriş formunun pdf versiyonunu indirmek için aşağıdaki 'Pdf olarak dışa aktar' seçeneğine tıklayın. Şu anda Görüntüler, Dosya Yükleme, Etiketler ve Doğrusal Ölçek alanlarının pdf sürümü için desteklenmediğini unutmayın.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Anketin pdf versiyonunu indirmek için aşağıdaki 'Pdf olarak dışa aktar' seçeneğine tıklayın. Şu anda Konum Yanıtı, Doğrusal Ölçek ve Dosya Yükleme alanlarının pdf sürümü için desteklenmediğini unutmayın.",
   "app.containers.Admin.projects.all.components.archived": "Arşivlenmiş",
   "app.containers.Admin.projects.all.components.draft": "Taslak",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Düzenle",
