@@ -39,4 +39,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.information.ReportTab.modalDescription',
     defaultMessage: 'Create a report for a past phase, or start from scratch.',
   },
+  reportVisible: {
+    id: 'app.containers.Admin.projects.project.information.ReportTab.reportVisible',
+    defaultMessage: 'Report visible to public',
+  },
 });
