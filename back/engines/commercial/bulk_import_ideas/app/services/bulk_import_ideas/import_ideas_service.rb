@@ -163,7 +163,7 @@ module BulkImportIdeas
           if idea_row[:user_email].present?
             author.email = idea_row[:user_email]
           else
-            author.unique_code = "IMPORT-#{SecureRandom.uuid}"
+            author.unique_code = SecureRandom.uuid
           end
 
           if author.save
@@ -174,6 +174,7 @@ module BulkImportIdeas
         end
       end
 
+      idea_attributes[:anonymous] = !idea_row[:user_consent]
       idea_attributes[:author] = author
       @imported_users.include? author # Was the user created in this import
     end

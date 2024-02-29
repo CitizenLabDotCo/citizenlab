@@ -35,6 +35,7 @@
 #  followings_count                    :integer          default(0), not null
 #  onboarding                          :jsonb            not null
 #  unique_code                         :string
+#  anonymous                           :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -144,6 +145,8 @@ class User < ApplicationRecord
   scope :from_follows, (proc do |follows|
     where(id: joins(:follows).where(follows: follows))
   end)
+
+  scope :not_anonymous, -> { where anonymous: false }
 
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
   has_many :initiatives, foreign_key: :author_id, dependent: :nullify

@@ -10,7 +10,7 @@ module UserCustomFields
     #   users who participated in this project
     # @option params [Range] :registration_date_range date range, the finder will only
     #   return users who completed registration within this date range
-    def initialize(user_scope = User, params = {})
+    def initialize(user_scope = User.not_anonymous, params = {})
       @user_scope = user_scope
       @params = params
     end

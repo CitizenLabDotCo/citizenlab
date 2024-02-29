@@ -35,6 +35,7 @@ module AnonymousParticipation
         anon_user = User.find_by(unique_code: author_hash)
         self.author = anon_user || User.create!(
           unique_code: author_hash || SecureRandom.uuid,
+          anonymous: true,
           locale: author.locale || AppConfiguration.instance.settings('core', 'locales').first
         )
       end

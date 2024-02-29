@@ -110,7 +110,7 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(project.reload.ideas_count).to eq 0
       expect(ideas[0].idea_import).not_to be_nil
       expect(ideas[0].idea_import.page_range).to eq %w[1 2]
-      expect(ideas[0].idea_import.user_created).to be false
+      expect(ideas[0].idea_import.user_created).to be false # TODO: This should always be true now really
       expect(ideas[0].idea_import.user_consent).to be false
       expect(ideas[1].idea_import).not_to be_nil
       expect(ideas[1].idea_import.page_range).to eq %w[3 4]
@@ -213,6 +213,7 @@ describe BulkImportIdeas::ImportIdeasService do
       )
     end
 
+    # TODO: JS - is this logic still correct - should it import an anonymous user
     it 'does not import a user if there is a problem with saving a named user' do
       project = create(:project, title_multiloc: { 'en' => 'Project title' })
       idea_rows = [
@@ -230,7 +231,7 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(User.count).to eq 1
     end
 
-    it 'imports a user with no email if first name & consent are present' do
+    it 'imports a user with no email and unique code if first name & consent are present' do
       project = create(:project)
       idea_rows = [
         {
@@ -251,6 +252,31 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(author.unique_code).not_to be_nil
     end
 
+    it 'creates an anonymous user if no consent is present' do
+      project = create(:project)
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_id: project.id,
+          user_consent: false,
+          user_first_name: 'Todd',
+          user_last_name: 'McTodd',
+          email: 'todd@todd.com'
+        }
+      ]
+      service.import_ideas idea_rows
+
+      author = project.reload.ideas.first.author
+      expect(author).not_to be_nil
+      expect(author.first_name).to be_nil
+      expect(author.first_name).to be_nil
+      expect(author.email).to be_nil
+      expect(author.unique_code).not_to be_nil
+      expect(author.anonymous).to be true
+    end
+
+    # TODO: JS - don't know what this test is supposed to do
     context 'surveys' do
       it 'can import surveys with' do
         project = create(:single_phase_native_survey_project)

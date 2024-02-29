@@ -1339,7 +1339,8 @@ CREATE TABLE public.users (
     new_email character varying,
     followings_count integer DEFAULT 0 NOT NULL,
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
-    unique_code character varying
+    unique_code character varying,
+    anonymous boolean DEFAULT false NOT NULL
 );
 
 
@@ -7432,6 +7433,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240130170644'),
 ('20240206165004'),
 ('20240214125557'),
-('20240226170510');
+('20240226170510'),
+('20240229211021');
 
 
