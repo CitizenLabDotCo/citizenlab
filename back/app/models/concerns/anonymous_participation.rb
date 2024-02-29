@@ -27,13 +27,16 @@ module AnonymousParticipation
 
     private
 
-    # Ensure author is always nil if anonymous is set and anonymous is false if author is present
+    # Create or use a placeholder user by author_hash if anonymous is set and ensure anonymous is false if author is already present
     def set_anonymous_values
       set_author_hash if author_id_changed? || anonymous_changed?
       if anonymous_changed?(to: true)
-        self.author = nil
-      elsif author_id.present?
-        self.anonymous = false
+        # TODO: JS - This is Changing the behaviour of the anonymous avatars
+        anon_user = User.find_by(unique_code: author_hash)
+        self.author = anon_user || User.create!(
+          unique_code: author_hash || SecureRandom.uuid,
+          locale: author.locale || AppConfiguration.instance.settings('core', 'locales').first
+        )
       end
     end
 
