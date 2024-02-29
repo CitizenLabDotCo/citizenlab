@@ -5,23 +5,19 @@ import IdeaCardFooter from './IdeaCardFooter';
 import FooterWithReactionControl from './FooterWithReactionControl';
 
 // typings
-import { IProject } from 'api/projects/types';
 import { IIdeaData } from 'api/ideas/types';
 import { ParticipationMethod } from 'api/phases/types';
+import useProjectById from 'api/projects/useProjectById';
 
 interface Props {
-  project?: IProject;
   idea: IIdeaData;
   hideIdeaStatus: boolean;
   participationMethod: ParticipationMethod | undefined;
 }
 
-const Footer = ({
-  project,
-  idea,
-  hideIdeaStatus,
-  participationMethod,
-}: Props) => {
+const Footer = ({ idea, hideIdeaStatus, participationMethod }: Props) => {
+  const { data: project } = useProjectById(idea.relationships.project.data.id);
+
   if (!project) return null;
 
   const commentingEnabled =
