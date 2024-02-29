@@ -25,6 +25,7 @@ export interface Report {
     action_descriptor: {
       editing_report: EditingReport;
     };
+    visible: boolean;
   };
   relationships: {
     layout: {

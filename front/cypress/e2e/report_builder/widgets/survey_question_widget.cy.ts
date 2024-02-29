@@ -101,7 +101,7 @@ describe('Survey question widget', () => {
 
     // Select project, phase and question
     cy.get('#e2e-report-builder-project-filter-box select').select(projectId);
-    cy.get('#e2e-report-builder-phase-filter').select(phaseId);
+    cy.get('#e2e-phase-filter').select(phaseId);
     cy.get('.e2e-question-select select').first().select(surveyFields[2].id);
 
     // Check if values are correct

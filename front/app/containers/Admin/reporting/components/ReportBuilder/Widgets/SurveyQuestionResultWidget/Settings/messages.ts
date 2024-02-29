@@ -13,6 +13,16 @@ export default defineMessages({
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupMode',
     defaultMessage: 'Group mode',
   },
+  groupModeTooltip: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupModeTooltip',
+    defaultMessage:
+      'Group survey responses by any user field (gender, location, age, etc) or other survey questions.',
+  },
+  featureLockedReason: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.featureLockedReason',
+    defaultMessage:
+      'This is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
   none: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none',
     defaultMessage: 'None',

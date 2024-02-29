@@ -9,7 +9,7 @@ const deleteReport = (id: string) =>
     action: 'delete',
   });
 
-const useDeletereport = () => {
+const useDeleteReport = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -30,4 +30,4 @@ const useDeletereport = () => {
   });
 };
 
-export default useDeletereport;
+export default useDeleteReport;
