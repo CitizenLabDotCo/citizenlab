@@ -728,6 +728,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Wybierz fazę tworzenia pomysłu.",
   "app.containers.Admin.projects.all.askPersonalData": "Zapytaj o dane osobowe",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm2": "Kliknij \"Eksportuj jako pdf\" poniżej, aby pobrać wersję pdf formularza wprowadzania danych. Pamiętaj, że obecnie pola Obrazy, Przesyłanie plików, Tagi i Skala liniowa nie są obsługiwane w wersji pdf.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Kliknij \"Eksportuj jako pdf\" poniżej, aby pobrać wersję pdf ankiety. Pamiętaj, że obecnie pola Odpowiedź lokalizacji, Skala liniowa i Przesyłanie pliku nie są obsługiwane w wersji pdf.",
   "app.containers.Admin.projects.all.components.archived": "Zarchiwizowany",
   "app.containers.Admin.projects.all.components.draft": "Szkic",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Zarządzaj",
