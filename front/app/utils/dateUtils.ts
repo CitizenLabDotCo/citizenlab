@@ -35,21 +35,59 @@ type RelativeTimeFormatUnit =
 export function timeAgo(dateInput: number, locale: Locale) {
   const date = new Date(dateInput);
   const formatter = new Intl.RelativeTimeFormat(locale);
+
+  // get days in year
+  const getDaysInYear = (year: number) => {
+    if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
+      return 366; // Leap year
+    } else {
+      return 365; // Non-leap year
+    }
+  };
+  const getDaysInMonth = (year: number, month: number) => {
+    return new Date(year, month + 1, 0).getDate();
+  };
+
   const ranges = {
-    years: 3600 * 24 * 365,
-    months: 3600 * 24 * 30,
+    years: (year: number) => 3600 * 24 * getDaysInYear(year),
+    months: (year: number, month: number) =>
+      3600 * 24 * getDaysInMonth(year, month),
     weeks: 3600 * 24 * 7,
     days: 3600 * 24,
     hours: 3600,
     minutes: 60,
     seconds: 1,
   };
+
   const secondsElapsed = (date.getTime() - Date.now()) / 1000;
 
   for (const key in ranges) {
-    if (ranges[key] <= Math.abs(secondsElapsed)) {
-      const delta = secondsElapsed / ranges[key];
-      return formatter.format(Math.round(delta), key as RelativeTimeFormatUnit);
+    if (key === 'months') {
+      const value = ranges[key](date.getFullYear(), date.getMonth());
+      if (value <= Math.abs(secondsElapsed)) {
+        const delta = secondsElapsed / value;
+        return formatter.format(
+          Math.round(delta),
+          key as RelativeTimeFormatUnit
+        );
+      }
+    } else if (key === 'years') {
+      const value = ranges[key](date.getFullYear());
+      if (value <= Math.abs(secondsElapsed)) {
+        const delta = secondsElapsed / value;
+        return formatter.format(
+          Math.round(delta),
+          key as RelativeTimeFormatUnit
+        );
+      }
+    } else {
+      if (ranges[key] <= Math.abs(secondsElapsed)) {
+        const delta = secondsElapsed / ranges[key];
+        return formatter.format(
+          Math.round(delta),
+          key as RelativeTimeFormatUnit
+        );
+      }
     }
   }
   return undefined;
