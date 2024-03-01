@@ -48,10 +48,10 @@ module EmailCampaigns
       Campaigns::StatusChangeOnInitiativeYouFollow,
       Campaigns::ThresholdReachedForAdmin,
       Campaigns::UserDigest,
-      Campaigns::VotingPhaseStarted,
-      Campaigns::VotingBasketSubmitted,
       Campaigns::VotingBasketNotSubmitted,
+      Campaigns::VotingBasketSubmitted,
       Campaigns::VotingLastChance,
+      Campaigns::VotingPhaseStarted,
       Campaigns::VotingResults,
       Campaigns::Welcome,
       Campaigns::YourProposedInitiativesDigest
