@@ -77,6 +77,7 @@ module MultiTenancy
               custom_field: CustomField.where.not(code: 'domicile').or(CustomField.where(code: nil))
             )
           ),
+          CustomFieldOptionImage => serialize_records(CustomFieldOptionImage),
 
           # Custom maps
           CustomMaps::Layer => serialize_records(CustomMaps::Layer),

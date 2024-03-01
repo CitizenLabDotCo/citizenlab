@@ -10,6 +10,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  phase_id   :uuid
+#  visible    :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -43,6 +44,10 @@ module ReportBuilder
 
     def phase?
       !phase_id.nil?
+    end
+
+    def public?
+      phase? && phase.started? && visible?
     end
   end
 end

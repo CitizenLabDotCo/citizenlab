@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputFormTab',
     defaultMessage: 'Input form',
   },
+  mapTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.mapTab',
+    defaultMessage: 'Map',
+  },
   volunteeringTab: {
     id: 'app.containers.AdminPage.ProjectEdit.volunteeringTab',
     defaultMessage: 'Volunteering',
@@ -366,9 +370,9 @@ export default defineMessages({
     defaultMessage: 'Survey Service',
   },
   surveyServiceTooltipLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink',
+    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1',
     defaultMessage:
-      'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/faq-s/how-do-i-add-a-survey-to-my-platform',
+      'https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project',
   },
   surveyServiceTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltip',
@@ -574,5 +578,9 @@ export default defineMessages({
   optionsPageText: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2',
     defaultMessage: 'Input Manager tab',
+  },
+  report: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.report',
+    defaultMessage: 'Report',
   },
 });

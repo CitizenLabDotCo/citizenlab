@@ -1,13 +1,11 @@
 import { RuleEffect } from '@jsonforms/core';
-import Ajv from 'ajv';
+import { customAjv } from 'components/Form';
 import {
   getFilteredDataForUserPath,
   getPageSchema,
   isPageCategorization,
   PageType,
 } from 'components/Form/Components/Layouts/utils';
-
-const customAjv = new Ajv({ useDefaults: 'empty', removeAdditional: true });
 
 describe('getPageSchema', () => {
   it('should return the page schema from a schema with many pages', () => {

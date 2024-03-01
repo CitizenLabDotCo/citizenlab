@@ -4,7 +4,6 @@ import React from 'react';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import InputType from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/InputType';
 import MultipleChoice from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MultipleChoice';
-import TextQuestion from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/TextQuestion';
 
 // i18n
 import T from 'components/T';
@@ -13,18 +12,12 @@ import T from 'components/T';
 import { snakeCase } from 'lodash-es';
 
 // typings
-import { Locale, Multiloc } from 'typings';
-import { Answer } from 'api/survey_results/types';
+import { Locale } from 'typings';
+import { Result } from 'api/survey_results/types';
 
-type FormResultsQuestionProps = {
+type FormResultsQuestionProps = Result & {
   locale: Locale;
-  question: Multiloc;
-  inputType: string;
-  answers?: Answer[];
-  totalResponses: number;
-  required: boolean;
-  customFieldId: string;
-  textResponses?: { answer: string }[];
+  totalSubmissions: number;
 };
 
 const FormResultsQuestion = ({
@@ -34,29 +27,30 @@ const FormResultsQuestion = ({
   answers,
   totalResponses,
   required,
-  customFieldId,
-  textResponses = [],
+  totalSubmissions,
 }: FormResultsQuestionProps) => {
-  const isMultipleChoice = !!answers;
+  const isMultipleChoiceAndHasAnswers = !!answers;
 
   return (
-    <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
-      <Title variant="h5" mt="12px" mb="12px">
-        <T value={question} />
-      </Title>
-      <InputType inputType={inputType} required={required} />
-      {isMultipleChoice ? (
-        <MultipleChoice
-          multipleChoiceAnswers={answers}
+    <>
+      <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
+        <Title variant="h5" mt="12px" mb="12px">
+          <T value={question} />
+        </Title>
+        <InputType
+          inputType={inputType}
+          required={required}
+          totalSubmissions={totalSubmissions}
           totalResponses={totalResponses}
         />
-      ) : (
-        <TextQuestion
-          textResponses={textResponses}
-          customFieldId={customFieldId}
-        />
-      )}
-    </Box>
+        {isMultipleChoiceAndHasAnswers && (
+          <MultipleChoice
+            multipleChoiceAnswers={answers}
+            totalResponses={totalResponses}
+          />
+        )}
+      </Box>
+    </>
   );
 };
 export default FormResultsQuestion;

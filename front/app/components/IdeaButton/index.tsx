@@ -25,7 +25,6 @@ import tracks from './tracks';
 import styled from 'styled-components';
 
 // typings
-import { LatLng } from 'leaflet';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useProjectById from 'api/projects/useProjectById';
@@ -43,7 +42,7 @@ const ButtonWrapper = styled.div``;
 export interface Props extends Omit<ButtonProps, 'onClick'> {
   id?: string;
   projectId: string;
-  latLng?: LatLng | null;
+  latLng?: GeoJSON.Point | null;
   inMap?: boolean;
   className?: string;
   phase: IPhaseData | undefined;
@@ -88,7 +87,9 @@ const IdeaButton = memo<Props>(
     const redirectToIdeaForm = () => {
       trackEventByName(tracks.redirectedToIdeaFrom);
 
-      const positionParams = latLng ? { lat: latLng.lat, lng: latLng.lng } : {};
+      const positionParams = latLng
+        ? { lat: latLng.coordinates[1], lng: latLng.coordinates[0] }
+        : {};
 
       clHistory.push(
         {

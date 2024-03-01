@@ -60,6 +60,7 @@ type IProjectFolderSubmitState =
 
 interface Props {
   mode: 'edit' | 'new';
+  // This is wrong. Can be undefined if mode is 'new'
   projectFolderId: string;
 }
 

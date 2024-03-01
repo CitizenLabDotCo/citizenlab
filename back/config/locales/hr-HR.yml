@@ -146,6 +146,8 @@ hr:
       section3:
         title: Pojedinosti
         description:
+      other:
+        title: Upišite svoj odgovor
   custom_forms:
     categories:
       main_content:

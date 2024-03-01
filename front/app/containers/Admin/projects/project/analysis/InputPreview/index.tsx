@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
@@ -17,6 +17,9 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 const InputListItem = () => {
+  const [searchParams] = useSearchParams();
+
+  const phaseId = searchParams.get('phase_id');
   const { formatMessage } = useIntl();
   const { selectedInputId } = useSelectedInputContext();
   const { analysisId } = useParams() as { analysisId: string };
@@ -35,12 +38,15 @@ const InputListItem = () => {
 
   if (!analysis || !input || !selectedInputId) return null;
 
+  const showManageIdeaButton =
+    analysis.data.attributes.participation_method === 'ideation' && phaseId;
+
   return (
     <Box data-cy="e2e-analysis-input-preview">
-      {analysis.data.attributes.participation_method === 'ideation' && (
+      {showManageIdeaButton && (
         <Box display="flex" justifyContent="flex-end">
           <Button
-            linkTo={`/admin/projects/${analysis.data.relationships.project?.data?.id}/ideas?selected_idea_id=${selectedInputId}`}
+            linkTo={`/admin/projects/${analysis.data.relationships.project?.data?.id}/phases/${phaseId}/ideas?selected_idea_id=${selectedInputId}`}
             openLinkInNewTab
             buttonStyle="secondary"
             icon="settings"

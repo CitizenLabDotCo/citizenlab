@@ -97,9 +97,9 @@ class UiSchemaGeneratorService < FieldVisitorService
     }.tap do |options|
       unless field.multiloc?
         options[:input_type] = field.input_type
-        field.options.map { |option| multiloc_service.t(option.title_multiloc) }
+        field.ordered_options.map { |option| multiloc_service.t(option.title_multiloc) }
         if field.input_type == 'select'
-          options[:enumNames] = field.options.map { |option| multiloc_service.t(option.title_multiloc) }
+          options[:enumNames] = field.ordered_options.map { |option| multiloc_service.t(option.title_multiloc) }
         end
       end
     end

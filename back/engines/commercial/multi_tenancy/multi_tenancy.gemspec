@@ -17,9 +17,6 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir['{app,config,db,lib}/**/*', 'README.md']
 
-  # CitizenLab engines
-  spec.add_dependency 'nlp'
-
   spec.add_dependency 'rails', '~> 7.0'
   spec.add_dependency 'ros-apartment', '>=2.9.0'
 

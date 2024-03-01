@@ -61,7 +61,7 @@ export const PageRuleInput = ({
     const value = {
       next_page_id: page.value,
     };
-    setValue(name, value);
+    setValue(name, value, { shouldDirty: true });
     setIsRuleInvalid(!isPageRuleValid(fields, fieldId, page.value));
     trigger();
   };
@@ -69,7 +69,7 @@ export const PageRuleInput = ({
   const removeRule = () => {
     setSelectedPage(undefined);
     setShowRuleInput(false);
-    setValue(name, {});
+    setValue(name, {}, { shouldDirty: true });
     if (validationError) {
       trigger();
     }

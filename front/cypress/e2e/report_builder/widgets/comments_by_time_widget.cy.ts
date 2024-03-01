@@ -1,11 +1,13 @@
 import { randomString } from '../../../support/commands';
 import moment = require('moment');
 
-describe.skip('Report builder Comments By Time widget', () => {
+describe('Report builder Comments By Time widget', () => {
   let projectId: string;
+  let reportId: string;
+
   const phaseTitle = randomString();
 
-  beforeEach(() => {
+  before(() => {
     cy.setAdminLoginCookie();
 
     cy.apiCreateProject({
@@ -27,8 +29,6 @@ describe.skip('Report builder Comments By Time widget', () => {
         });
       })
       .then((phase) => {
-        cy.wrap(projectId).as('projectId');
-
         cy.apiCreateIdea({
           projectId,
           ideaTitle: randomString(),
@@ -38,10 +38,13 @@ describe.skip('Report builder Comments By Time widget', () => {
           cy.apiAddComment(idea.body.data.id, 'idea', randomString());
         });
       });
+  });
 
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
     cy.apiCreateReportBuilder().then((report) => {
-      const reportId = report.body.data.id;
-      cy.wrap(reportId).as('reportId');
+      reportId = report.body.data.id;
+
       cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
         'saveReportLayout'
       );
@@ -49,13 +52,12 @@ describe.skip('Report builder Comments By Time widget', () => {
     });
   });
 
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
+
   afterEach(() => {
-    cy.get<string>('@reportId').then((reportId) => {
-      cy.apiRemoveReportBuilder(reportId);
-    });
-    cy.get<string>('@projectId').then((projectId) => {
-      cy.apiRemoveProject(projectId);
-    });
+    cy.apiRemoveReportBuilder(reportId);
   });
 
   it('handles Comments By Time widget correctly', function () {
@@ -73,23 +75,21 @@ describe.skip('Report builder Comments By Time widget', () => {
       .clear()
       .type('New Widget Title');
 
-    cy.wait(1000);
-
     // Set project filter
-    cy.get('#e2e-report-builder-project-filter-box select').select(
-      this.projectId
-    );
+    cy.get('#e2e-report-builder-project-filter-box select').select(projectId);
 
     // Confirms that the widget displays correctly on live report
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
-    cy.visit(
-      `/admin/reporting/report-builder/${this.reportId}/editor?preview=true`
-    );
+
+    cy.visit(`/admin/reporting/report-builder/${reportId}/editor?preview=true`);
+
+    cy.wait(1000);
+
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
-    cy.contains('Total : 1').should('be.visible');
+    cy.contains('Total : 1').should('exist');
   });
 
   it('deletes Comments By Time widget correctly', function () {
@@ -99,21 +99,21 @@ describe.skip('Report builder Comments By Time widget', () => {
         position: 'inside',
       }
     );
-    cy.wait(1000);
+
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
 
-    cy.get('#e2e-draggable-comments-by-time-widget').should('exist');
-    cy.get('#e2e-draggable-comments-by-time-widget')
-      .parent()
-      .click({ force: true });
+    cy.get('.e2e-comments-by-time-widget').should('exist');
+    cy.get('.e2e-comments-by-time-widget').parent().click({ force: true });
+
     cy.get('#e2e-delete-button').click();
+
+    cy.get('.e2e-comments-by-time-widget').should('not.exist');
+
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
 
-    cy.visit(
-      `/admin/reporting/report-builder/${this.reportId}/editor?preview=true`
-    );
+    cy.visit(`/admin/reporting/report-builder/${reportId}/editor?preview=true`);
     cy.get('#e2e-comments-by-time-widget').should('not.exist');
   });
 });

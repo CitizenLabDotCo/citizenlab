@@ -1,12 +1,14 @@
 import { randomString, randomEmail } from '../../../support/commands';
 import moment = require('moment');
 
-let projectId: string;
-const phaseTitle = randomString();
+describe('Report builder Reactions By Time widget', () => {
+  let projectId: string;
+  let reportId: string;
+  let userId: string;
 
-describe.skip('Report builder Reactions By Time widget', () => {
-  beforeEach(() => {
+  before(() => {
     cy.setAdminLoginCookie();
+    const phaseTitle = randomString();
 
     cy.apiCreateProject({
       title: randomString(),
@@ -28,7 +30,6 @@ describe.skip('Report builder Reactions By Time widget', () => {
         });
       })
       .then((phase) => {
-        cy.wrap(projectId).as('projectId');
         cy.apiCreateIdea({
           projectId,
           ideaTitle: randomString(),
@@ -39,16 +40,19 @@ describe.skip('Report builder Reactions By Time widget', () => {
           const password = randomString();
           cy.apiSignup(randomString(), randomString(), email, password).then(
             (user) => {
-              cy.wrap((user as any).body.data.id).as('userId');
+              userId = user.body.data.id;
               cy.apiDislikeIdea(email, password, idea.body.data.id);
             }
           );
         });
       });
+  });
+
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
 
     cy.apiCreateReportBuilder().then((report) => {
-      const reportId = report.body.data.id;
-      cy.wrap(reportId).as('reportId');
+      reportId = report.body.data.id;
       cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
         'saveReportLayout'
       );
@@ -56,16 +60,13 @@ describe.skip('Report builder Reactions By Time widget', () => {
     });
   });
 
+  after(() => {
+    cy.apiRemoveProject(projectId);
+    cy.apiRemoveUser(userId);
+  });
+
   afterEach(() => {
-    cy.get<string>('@reportId').then((reportId) => {
-      cy.apiRemoveReportBuilder(reportId);
-    });
-    cy.get<string>('@projectId').then((projectId) => {
-      cy.apiRemoveProject(projectId);
-    });
-    cy.get<string>('@userId').then((userId) => {
-      cy.apiRemoveUser(userId);
-    });
+    cy.apiRemoveReportBuilder(reportId);
   });
 
   it('handles Reactions By Time widget correctly', function () {
@@ -86,20 +87,16 @@ describe.skip('Report builder Reactions By Time widget', () => {
     cy.wait(1000);
 
     // Set project filter
-    cy.get('#e2e-report-builder-project-filter-box select').select(
-      this.projectId
-    );
+    cy.get('#e2e-report-builder-project-filter-box select').select(projectId);
 
     // Confirms that button displays and functions correctly on live page
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
-    cy.visit(
-      `/admin/reporting/report-builder/${this.reportId}/editor?preview=true`
-    );
+    cy.visit(`/admin/reporting/report-builder/${reportId}/editor?preview=true`);
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
-    cy.contains('Dislikes : 1').should('be.visible');
+    cy.contains('Dislikes : 1').should('exist');
   });
 
   it('deletes Reactions By Time widget correctly', function () {
@@ -121,9 +118,7 @@ describe.skip('Report builder Reactions By Time widget', () => {
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
 
-    cy.visit(
-      `/admin/reporting/report-builder/${this.reportId}/editor?preview=true`
-    );
+    cy.visit(`/admin/reporting/report-builder/${reportId}/editor?preview=true`);
     cy.get('#e2e-reactions-by-time-widget').should('not.exist');
   });
 });

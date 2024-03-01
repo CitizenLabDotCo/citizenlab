@@ -17,7 +17,6 @@ import messages from '../../../messages';
 
 // utils
 import { isNilOrError, isPage } from 'utils/helperUtils';
-import bowser from 'bowser';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { trackEventByName } from 'utils/analytics';
 
@@ -33,10 +32,6 @@ const RightContainer = styled(Box)`
   height: ${({ theme }) => theme.menuHeight}px;
   margin-right: 30px;
 
-  &.ie {
-    margin-right: 50px;
-  }
-
   ${media.desktop`
     margin-right: 40px;
   `}
@@ -48,9 +43,7 @@ const RightContainer = styled(Box)`
     flex-direction: row-reverse;
     margin-left: 30px;
 
-    &.ie {
-      margin-left: 50px;
-    }
+
     ${media.desktop`
         margin-left: 40px;
     `}
@@ -58,7 +51,7 @@ const RightContainer = styled(Box)`
     ${media.phone`
         margin-left: 20px;
     `}
-    `}
+  `}
 `;
 
 const NavItem = styled(Box)`
@@ -123,7 +116,7 @@ const MobileNavbarContent = () => {
 
   return (
     <nav ref={containerRef}>
-      <RightContainer className={bowser.msie ? 'ie' : ''}>
+      <RightContainer>
         {!isEmailSettingsPage && (
           <>
             {tenantLocales.length > 1 && locale && (

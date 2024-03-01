@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.multipleChoice',
     defaultMessage: 'Multiple choice',
   },
+  multipleChoiceImage: {
+    id: 'app.components.formBuilder.multipleChoiceImage',
+    defaultMessage: 'Image choice',
+  },
   singleChoice: {
     id: 'app.components.formBuilder.singleChoice',
     defaultMessage: 'Single choice',
@@ -145,15 +149,6 @@ export default defineMessages({
     id: 'app.components.formBuilder.editButtonLabel',
     defaultMessage: 'Edit',
   },
-  deleteFieldWithLogicConfirmationQuestion: {
-    id: 'app.components.formBuilder.deleteFieldWithLogicConfirmationQuestion',
-    defaultMessage:
-      'Deleting this page will also delete the logic associated with it. Are you sure you want to delete it?',
-  },
-  confirmDeleteFieldWithLogicButtonText: {
-    id: 'app.components.formBuilder.confirmDeleteFieldWithLogicButtonText',
-    defaultMessage: 'Yes, delete page',
-  },
   invalidLogicBadgeMessage: {
     id: 'app.components.formBuilder.invalidLogicBadgeMessage',
     defaultMessage: 'Invalid logic',
@@ -165,14 +160,6 @@ export default defineMessages({
   optional: {
     id: 'app.components.formBuilder.optional',
     defaultMessage: 'Optional',
-  },
-  deleteResultsInfo: {
-    id: 'app.components.formBuilder.deleteResultsInfo',
-    defaultMessage: 'This cannot be undone',
-  },
-  cancelDeleteButtonText: {
-    id: 'app.components.formBuilder.cancelDeleteButtonText',
-    defaultMessage: 'Cancel',
   },
   // Logic Settings
   formEnd: {
@@ -239,5 +226,22 @@ export default defineMessages({
     id: 'app.components.formBuilder.fieldIsNotVisibleTooltip',
     defaultMessage:
       'Currently, answers to these questions are only available in the exported excel file on Input Manager, and not visible to the users.',
+  },
+  leaveBuilderConfirmationQuestion: {
+    id: 'app.components.formBuilder.leaveBuilderConfirmationQuestion',
+    defaultMessage: 'Are you sure you want to leave?',
+  },
+  leaveBuilderText: {
+    id: 'app.components.formBuilder.leaveBuilderText',
+    defaultMessage:
+      "You have unsaved changes. Please save before leaving. If you leave, you'll lose your changes.",
+  },
+  confirmLeaveBuilderButtonText: {
+    id: 'app.components.formBuilder.confirmLeaveBuilderButtonText',
+    defaultMessage: 'Yes, I want to leave',
+  },
+  cancelLeaveBuilderButtonText: {
+    id: 'app.components.formBuilder.cancelLeaveBuilderButtonText',
+    defaultMessage: 'Cancel',
   },
 });

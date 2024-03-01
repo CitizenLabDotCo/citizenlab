@@ -152,6 +152,24 @@ FactoryBot.define do
       end
     end
 
+    factory :custom_field_multiselect_image do
+      title_multiloc do
+        {
+          'en' => 'Choose an image'
+        }
+      end
+      required { false }
+      input_type { 'multiselect_image' }
+      enabled { true }
+
+      trait :with_options do
+        after(:create) do |cf|
+          create(:custom_field_option, custom_field: cf, key: 'image1', image: create(:custom_field_option_image))
+          create(:custom_field_option, custom_field: cf, key: 'image2', image: create(:custom_field_option_image))
+        end
+      end
+    end
+
     factory :custom_field_checkbox do
       title_multiloc do
         {

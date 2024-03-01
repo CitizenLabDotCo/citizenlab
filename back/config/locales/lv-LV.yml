@@ -146,6 +146,8 @@ lv:
       section3:
         title: Sīkāka informācija
         description:
+      other:
+        title: Ierakstiet savu atbildi
   custom_forms:
     categories:
       main_content:

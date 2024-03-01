@@ -36,6 +36,7 @@ interface FormFieldsProps {
   ) => void;
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
+  closeSettings: () => void;
 }
 
 const FormFields = ({
@@ -43,6 +44,7 @@ const FormFields = ({
   selectedFieldId,
   handleDragEnd,
   builderConfig,
+  closeSettings,
 }: FormFieldsProps) => {
   const { watch, trigger } = useFormContext();
   const locale = useLocale();
@@ -96,6 +98,7 @@ const FormFields = ({
                   onEditField={onEditField}
                   builderConfig={builderConfig}
                   fieldNumbers={fieldNumbers}
+                  closeSettings={closeSettings}
                 />
                 <Drop key={grouping.id} id={grouping.id} type={questionDNDType}>
                   <Box height="100%">
@@ -117,6 +120,7 @@ const FormFields = ({
                                 onEditField={onEditField}
                                 builderConfig={builderConfig}
                                 fieldNumbers={fieldNumbers}
+                                closeSettings={closeSettings}
                               />
                             </Drag>
                           ) : (

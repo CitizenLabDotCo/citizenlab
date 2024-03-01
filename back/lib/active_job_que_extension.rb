@@ -19,6 +19,11 @@ module ActiveJobQueExtension
     self.class.should_retry ? super : expire
   end
 
+  def destroy_in(delay)
+    finish
+    DeleteQueJobJob.set(wait: delay).perform_later(job_id)
+  end
+
   # Removing the freeze step from
   # https://github.com/que-rb/que/blob/77c6b92952b821898c393239ce0e4047b17d7dae/lib/que/active_job/extensions.rb#L14
   def perform(*args)

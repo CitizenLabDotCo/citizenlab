@@ -146,6 +146,8 @@ ar:
       section3:
         title: تفاصيل
         description:
+      other:
+        title: أكتب أجابتك
   custom_forms:
     categories:
       main_content:

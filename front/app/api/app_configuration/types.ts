@@ -150,8 +150,6 @@ export interface IAppConfigurationSettings {
   workshops?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   manual_emailing?: AppConfigurationFeature;
-  insights_manual_flow?: AppConfigurationFeature;
-  insights_nlp_flow?: AppConfigurationFeature;
   automated_emailing_control?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -228,6 +226,7 @@ export interface IAppConfigurationSettings {
   permissions_custom_fields?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
+  report_data_grouping?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
   user_blocking?: AppConfigurationFeature & {
     duration: boolean;
@@ -248,7 +247,7 @@ export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 
-interface AppConfigurationMapSettings extends AppConfigurationFeature {
+export interface AppConfigurationMapSettings extends AppConfigurationFeature {
   map_center: {
     lat: string;
     long: string;

@@ -51,7 +51,9 @@ describe('Form builder page element', () => {
     cy.get('[data-cy="e2e-field-group-description-multiloc"]')
       .click()
       .type('Page description');
-    cy.get('#e2e-settings-done-button').click();
+    cy.get('[data-cy="e2e-form-builder-close-settings"]')
+      .find('button')
+      .click({ force: true });
 
     // Add number field to the next page
     cy.get('[data-cy="e2e-number-field"]').click();
@@ -92,6 +94,8 @@ describe('Form builder page element', () => {
     cy.visit(
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
+
+    // Add a second page
     cy.get('[data-cy="e2e-page"]').click();
     cy.get('#e2e-field-group-title-multiloc').type('Page title', {
       force: true,
@@ -99,14 +103,26 @@ describe('Form builder page element', () => {
     cy.get('[data-cy="e2e-field-group-description-multiloc"]')
       .click()
       .type('Page description');
-    cy.get('#e2e-settings-done-button').click();
+    cy.get('[data-cy="e2e-form-builder-close-settings"]').click({
+      force: true,
+    });
 
-    // Click to show the settings
-    cy.contains('Page title').should('exist').click();
-    cy.get(`[data-cy="e2e-delete-field"]`).click();
+    // Check that we have options to delete the first page since we have two pages
+    cy.get('[data-cy="e2e-field-row"]')
+      .first()
+      .find('[data-cy="e2e-more-field-actions"]')
+      .should('exist');
+    cy.get('[data-cy="e2e-more-field-actions"]').eq(0).click({ force: true });
+    cy.get('.e2e-more-actions-list button').contains('Delete');
 
-    // Check to see that the first and now only page is not deletable
-    cy.get('[data-cy="e2e-field-row"]').first().click();
-    cy.get('[data-cy="e2e-delete-field"]').should('have.attr', 'disabled');
+    // Delete the second page
+    cy.get('[data-cy="e2e-more-field-actions"]').eq(2).click({ force: true });
+    cy.get('.e2e-more-actions-list button').contains('Delete').click();
+
+    // Check that we don't have options to delete the first page since we only have one page
+    cy.get('[data-cy="e2e-field-row"]')
+      .first()
+      .find('[data-cy="e2e-more-field-actions"]')
+      .should('not.exist');
   });
 });
