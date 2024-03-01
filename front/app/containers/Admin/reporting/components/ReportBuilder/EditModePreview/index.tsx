@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // components
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import MobileButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/MobileButton';
-import PDFButton from './PDFButton';
+import PDFButton from '../ViewContainer/PDFButton';
 import DesktopButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/DesktopButton';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import PDFWrapper from '../ViewContainer/PDFWrapper';

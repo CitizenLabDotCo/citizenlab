@@ -22,7 +22,8 @@ import Toolbox from '../../components/ReportBuilder/Toolbox';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from '../../components/ReportBuilder/Settings';
-import PDFWrapper from '../../components/ReportBuilder/ViewContainer/PDFWrapper';
+import ViewPicker from '../../components/ReportBuilder/ViewContainer/ViewPicker';
+import ViewContainer from '../../components/ReportBuilder/ViewContainer';
 
 // templates
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
@@ -38,6 +39,7 @@ import { Locale } from 'typings';
 import { ReportLayout } from 'api/report_layout/types';
 import { isEmpty } from 'lodash-es';
 import { ReportResponse } from 'api/reports/types';
+import { View } from '../../components/ReportBuilder/ViewContainer/typings';
 
 interface Props {
   report: ReportResponse;
@@ -70,6 +72,7 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
   const [search] = useSearchParams();
   const templateProjectId = search.get('templateProjectId');
   const templatePhaseId = search.get('templatePhaseId');
+  const [view, setView] = useState<View>('pdf');
 
   const { craftjs_json } = reportLayout.attributes;
   const isEmptyReport = isEmpty(craftjs_json);
@@ -136,7 +139,8 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
               platformLocale={platformLocale}
             >
               <StyledRightColumn>
-                <PDFWrapper>
+                {!!phaseId && <ViewPicker view={view} setView={setView} />}
+                <ViewContainer view={view}>
                   <Frame editorData={initialData}>
                     {isEmptyReport && templateProjectId ? (
                       <ProjectTemplate
@@ -147,7 +151,7 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
                       <PhaseTemplate phaseId={templatePhaseId} />
                     ) : null}
                   </Frame>
-                </PDFWrapper>
+                </ViewContainer>
               </StyledRightColumn>
             </LanguageProvider>
             <Settings />
