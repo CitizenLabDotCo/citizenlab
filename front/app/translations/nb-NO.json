@@ -1119,6 +1119,7 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} av {votingThreshold} nødvendige stemmer",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Avstemmingen forblir åpen.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} mottok forslaget og har gitt et offisielt svar.",
+  "app.containers.InitiativesShow.VoteControl.cancelVote": "Angre stemme",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "Dette forslaget trenger noen endringer før det kan godkjennes.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Sjekk den offisielle oppdateringen for en forklaring på de forespurte endringene.",
   "app.containers.InitiativesShow.VoteControl.days": "dager",
