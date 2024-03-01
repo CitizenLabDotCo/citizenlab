@@ -149,6 +149,8 @@ const ContentBuilderTopBar = ({
           {
             onSuccess: () => {
               setSaved(true);
+
+              removeSearchParams(['templateProjectId', 'templatePhaseId']);
             },
           }
         );
