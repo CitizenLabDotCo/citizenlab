@@ -47,7 +47,6 @@ module Analysis
           puts "#{processed_inputs.size} / #{filtered_inputs.size}" ### DEBUG
         end
       end
-      ### byebug
     rescue StandardError => e
       raise AutoTaggingFailedError, e
     end
@@ -99,9 +98,10 @@ module Analysis
     end
 
     def do_while_pool_is_running(pool, &block)
-      while pool.queue_length > 0 ### pool.running?
+      while pool.running?
         pool.wait_for_termination(0.1)
         block.call
+        pool.shutdown if pool.running? && pool.queue_length.zero?
       end
       block.call
     end
