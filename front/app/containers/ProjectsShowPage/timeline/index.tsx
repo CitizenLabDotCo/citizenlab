@@ -111,13 +111,10 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
 
     const reportId = selectedPhase.relationships.report?.data?.id;
 
-    const phaseHasStarted =
-      pastPresentOrFuture(selectedPhase.attributes.start_at) !== 'future';
-
     const showReport =
       selectedPhase.attributes.participation_method === 'information' &&
       !!reportId &&
-      phaseHasStarted;
+      selectedPhase.attributes.report_public;
 
     return (
       <StyledSectionContainer

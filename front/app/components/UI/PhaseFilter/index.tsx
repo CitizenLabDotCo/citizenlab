@@ -9,7 +9,7 @@ import { Box, Select, Spinner, Text } from '@citizenlab/cl2-component-library';
 // i18n
 import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // typings
 import { IOption } from 'typings';
@@ -74,7 +74,7 @@ const PhaseFilter = ({
   return (
     <Box width="100%" mb="20px">
       <Select
-        id="e2e-report-builder-phase-filter"
+        id="e2e-phase-filter"
         label={label}
         onChange={onPhaseFilter}
         value={phaseId}
