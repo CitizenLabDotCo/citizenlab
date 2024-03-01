@@ -49,6 +49,9 @@ module EmailCampaigns
       Campaigns::ThresholdReachedForAdmin,
       Campaigns::UserDigest,
       Campaigns::VotingPhaseStarted,
+      Campaigns::VotingBasketSubmitted,
+      Campaigns::VotingBasketNotSubmitted,
+      Campaigns::VotingLastChance,
       Campaigns::VotingResults,
       Campaigns::Welcome,
       Campaigns::YourProposedInitiativesDigest
