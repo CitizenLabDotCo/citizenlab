@@ -23,6 +23,14 @@ module CustomMaps
 
     private
 
+    def clean_rgeo_attributes(serialized_resource)
+      serialized_resource.each do |k, v|
+        next unless v.is_a?(RGeo::Geographic::SphericalPointImpl)
+  
+        serialized_resource[k] = { 'longitude' => v.x, 'latitude' => v.y }
+      end
+    end
+
     def resource_name
       :map_config
     end
