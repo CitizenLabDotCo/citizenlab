@@ -61,6 +61,31 @@ services:
     tty: true
     stdin_open: true
 
+  # Temporary service running v1 of the que worker to process jobs with
+  # job_schema_version = 1. This service is mostly there for testing purposes as
+  # production and staging environments are using another docker-compose file.
+  que-1:
+    container_name: cl-que-1
+    depends_on:
+      - "postgres"
+      - "mailcatcher"
+      - "rabbitmq"
+    build:
+      context: .
+      dockerfile: back/Dockerfile
+    working_dir: /cl2_back/gemfile-que-1
+    command: bundle exec que ../config/environment.rb
+    volumes:
+      - "./back:/cl2_back"
+      - bundle_path:/bundle
+    env_file:
+      - "env_files/back-safe.env"
+      - "env_files/back-secret.env"
+    environment:
+      BUNDLE_PATH: /bundle
+    tty: true
+    stdin_open: true
+
   rabbitmq:
     container_name: cl-back-rabbit
     image: "rabbitmq:3.8-management"
