@@ -1119,6 +1119,7 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} no {votingThreshold} nepieciešamajām balsīm",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Balsošana paliek atvērta.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} saņēma priekšlikumu un sniedza oficiālu atbildi.",
+  "app.containers.InitiativesShow.VoteControl.cancelVote": "Atcelt balsojumu",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "Pirms priekšlikuma apstiprināšanas tajā ir jāveic dažas izmaiņas.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Pārbaudiet oficiālo atjauninājumu, lai uzzinātu par pieprasīto izmaiņu skaidrojumu.",
   "app.containers.InitiativesShow.VoteControl.days": "dienas",
