@@ -140,11 +140,6 @@ class Phase < ApplicationRecord
     validates :presentation_mode, presence: true
   end
 
-  # ideation?
-  with_options if: :ideation? do
-    validates :presentation_mode, presence: true
-  end
-
   # voting?
   with_options if: :voting? do
     validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
@@ -168,6 +163,12 @@ class Phase < ApplicationRecord
   scope :starting_on, lambda { |date|
     where(start_at: date)
   }
+
+  # native_survey?
+  with_options if: :native_survey? do
+    validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
+    validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
+  end
 
   scope :published, lambda {
     joined = includes(project: { admin_publication: :parent })
