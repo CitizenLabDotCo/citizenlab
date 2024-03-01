@@ -222,6 +222,7 @@ const AuthProviders = memo<Props>(
             flow={flow}
             authProvider="azureactivedirectory"
             onContinue={onSelectAuthProvider}
+            id="azure-ad-login-button"
           >
             <FormattedMessage
               {...messages.continueWithAzure}

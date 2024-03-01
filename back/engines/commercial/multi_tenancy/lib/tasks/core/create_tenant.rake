@@ -353,6 +353,12 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           enabled: true,
           allowed: true
         },
+        azure_ad_login: {
+          enabled: true,
+          allowed: true,
+          tenant: '',
+          client_id: ''
+        },
         multi_language_platform: {
           enabled: true,
           allowed: true
