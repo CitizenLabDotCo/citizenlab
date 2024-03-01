@@ -72,7 +72,7 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
   const [search] = useSearchParams();
   const templateProjectId = search.get('templateProjectId');
   const templatePhaseId = search.get('templatePhaseId');
-  const [view, setView] = useState<View>('pdf');
+  const [view, setView] = useState<View>('phone');
 
   const { craftjs_json } = reportLayout.attributes;
   const isEmptyReport = isEmpty(craftjs_json);

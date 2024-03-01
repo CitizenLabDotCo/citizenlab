@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 // components
-import PDFWrapper from './PDFWrapper';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, BoxProps } from '@citizenlab/cl2-component-library';
 
 // constants
-import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
+import {
+  MAX_REPORT_WIDTH,
+  A4_WIDTH,
+  A4_HEIGHT,
+} from 'containers/Admin/reporting/constants';
 
 // typings
 import { View } from './typings';
@@ -15,31 +18,57 @@ interface Props {
   children: React.ReactNode;
 }
 
-const ViewContainer = ({ view, children }: Props) => {
+// We solve it like this because the boxes and the children have to
+// stay the same and not remount. If the children (i.e. the frame)
+// remount everything breaks.
+const getBoxProps = (view: View) => {
   if (view === 'pdf') {
-    return <PDFWrapper>{children}</PDFWrapper>;
+    const outerBox: BoxProps = {
+      width: A4_WIDTH,
+    };
+
+    const innerBox: BoxProps = {
+      background: 'white',
+      px: '30px',
+      py: '30px',
+      width: '100%',
+      minHeight: A4_HEIGHT,
+    };
+
+    return { outerBox, innerBox };
   }
 
+  const outerBox: BoxProps = {
+    height: '620px',
+    border: 'solid black',
+    borderWidth: '40px 20px 20px 20px',
+    zIndex: '1',
+    mb: '12px',
+    width: view === 'phone' ? '360px' : '1140px',
+    py: view === 'phone' ? '20px' : '40px',
+    borderRadius: '20px',
+    overflowX: 'hidden',
+    overflowY: 'scroll',
+    background: 'white',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+  };
+
+  const innerBox: BoxProps = {
+    maxWidth: MAX_REPORT_WIDTH,
+    w: '100%',
+  };
+
+  return { outerBox, innerBox };
+};
+
+const ViewContainer = ({ view, children }: Props) => {
+  const { outerBox, innerBox } = useMemo(() => getBoxProps(view), [view]);
+
   return (
-    <Box
-      height="620px"
-      border="solid black"
-      borderWidth="40px 20px 20px 20px"
-      zIndex="1"
-      mb="12px"
-      width={view === 'phone' ? '360px' : '1140px'}
-      py={view === 'phone' ? '20px' : '40px'}
-      borderRadius="20px"
-      overflowX="hidden"
-      overflowY="scroll"
-      background="white"
-      display="flex"
-      alignItems="center"
-      flexDirection="column"
-    >
-      <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
-        {children}
-      </Box>
+    <Box {...outerBox}>
+      <Box {...innerBox}>{children}</Box>
     </Box>
   );
 };
