@@ -3,18 +3,18 @@
 module Analysis
   class AutoTaggingMethod::NLPTopic < AutoTaggingMethod::Base
     TAG_TYPE = 'nlp_topic'
-    BATCH_SIZE = 10
+    POOL_SIZE = 8
 
     def topic_modeling(project_title, inputs)
       response = run_topic_modeling_prompt(project_title, inputs)
       parse_topic_modeling_response(response)
     end
 
-    def classify(inputs, topics)
-      response = run_classification_prompt(inputs, topics)
-      assigned_topics = parse_classification_response(response)
-      # byebug if inputs.size != assigned_topics.size
-      inputs.zip(assigned_topics)
+    def classify(input, topics)
+      # response = run_classification_prompt(input, topics)
+      # parse_classification_response(response)
+
+      run_classification_prompt(input, topics)
     end
 
     protected
@@ -27,27 +27,45 @@ module Analysis
       topics = topic_modeling(project_title, filtered_inputs)
       update_progress(10 / (filtered_inputs.size + 10).to_f)
 
-      filtered_inputs.each_slice(BATCH_SIZE).with_index do |inputs_group, i|
-        classify(inputs_group, topics).each do |input, topic|
-          assign_topic!(input, topic)
+      pool = Concurrent::FixedThreadPool.new(POOL_SIZE)
+      results = Concurrent::Hash.new
+
+      filtered_inputs.each do |input|
+        pool.post do
+          ErrorReporter.handle do
+            results[input.id] = classify(input, topics)
+          end
         end
-        processed_inputs_count = (i + 1) * BATCH_SIZE
-        update_progress([(processed_inputs_count + 10) / (filtered_inputs.size + 10).to_f, 0.99].min)
       end
+      processed_inputs = []
+      do_while_pool_is_running(pool) do
+        (results.keys - processed_inputs).each do |input_id|
+          topic = results[input_id]
+          assign_topic!(input_id, topic)
+          processed_inputs << input_id
+          update_progress([(processed_inputs.size + 10) / (filtered_inputs.size + 10).to_f, 0.99].min)
+          puts "#{processed_inputs.size} / #{filtered_inputs.size}" ### DEBUG
+        end
+      end
+      ### byebug
     rescue StandardError => e
       raise AutoTaggingFailedError, e
     end
 
     private
 
-    def llm
-      @llm ||= LLM::GPT4Turbo.new
+    def gpt4
+      @gpt4 ||= LLM::GPT4Turbo.new
+    end
+
+    def gpt3
+      @gpt3 ||= LLM::GPT35Turbo.new
     end
 
     def run_topic_modeling_prompt(project_title, inputs)
       inputs_text = input_to_text.format_all(inputs)
       prompt = LLM::Prompt.new.fetch('topic_modeling', project_title: project_title, inputs_text: inputs_text, max_topics: max_topics(inputs.size))
-      llm.chat(prompt)
+      gpt4.chat(prompt)
     end
 
     def parse_topic_modeling_response(response)
@@ -62,21 +80,30 @@ module Analysis
       [inputs_count, (Math.log(inputs_count, 5) * 6).ceil].min
     end
 
-    def run_classification_prompt(inputs, topics)
-      inputs_text = input_to_text.format_all(inputs)
+    def run_classification_prompt(input, topics)
+      inputs_text = input_to_text.format_all([input])
       prompt = LLM::Prompt.new.fetch('fully_automated_classifier', inputs_text: inputs_text, topics: topics)
-      llm.chat(prompt)
+      gpt3.chat(prompt)
     end
 
-    def parse_classification_response(response)
-      response.lines.map(&:strip)
-    end
+    # def parse_classification_response(response)
+    #   # response.lines.map(&:strip)
+    #   response.strip
+    # end
 
-    def assign_topic!(input, topic)
+    def assign_topic!(input_id, topic)
       return if topic == 'other'
 
       tag = Tag.find_or_create_by!(name: topic, tag_type: TAG_TYPE, analysis: analysis)
-      find_or_create_tagging!(input_id: input.id, tag_id: tag.id)
+      find_or_create_tagging!(input_id: input_id, tag_id: tag.id)
+    end
+
+    def do_while_pool_is_running(pool, &block)
+      while pool.queue_length > 0 ### pool.running?
+        pool.wait_for_termination(0.1)
+        block.call
+      end
+      block.call
     end
   end
 end

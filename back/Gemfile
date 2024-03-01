@@ -162,6 +162,7 @@ gem 'mjml-rails', '~> 4.9'
 gem 'cloudfront-rails', '~> 0.4'
 gem 'google-cloud-document_ai'
 gem 'combine_pdf'
+gem 'concurrent-ruby', '~> 1.2.3'
 
 free_engines = %w[
   document_annotation
