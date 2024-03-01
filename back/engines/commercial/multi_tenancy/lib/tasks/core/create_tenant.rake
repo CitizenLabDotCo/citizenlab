@@ -357,6 +357,12 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         report_data_grouping: {
           enabled: true,
           allowed: true
+        },
+        azure_ad_login: {
+          enabled: true,
+          allowed: true,
+          tenant: '',
+          client_id: ''
         }
       }
     )
