@@ -51,7 +51,7 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
 
       command = campaign.generate_commands(recipient: moderator).first
       payload_first_top_idea = command.dig(:event_payload, :top_ideas, 0)
-      first_top_idea = Idea.find(payload_first_top_idea.fetch(:id))
+      first_top_idea = Idea.find_by(id: payload_first_top_idea.fetch(:id))
       expected_author_name = "#{first_top_idea.author.first_name} #{first_top_idea.author.last_name[0]}."
 
       expect(payload_first_top_idea[:author_name]).to eq(expected_author_name)
