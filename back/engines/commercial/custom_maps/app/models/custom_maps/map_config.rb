@@ -49,11 +49,9 @@ module CustomMaps
     end
 
     def project_id
-      resource.project_id if resource_type == 'Project'
-    end
+      return nil unless mappable_type == 'Project'
 
-    def custom_field_id
-      resource.custom_field_id if resource_type == 'CustomField'
+      mappable&.id
     end
   end
 end
