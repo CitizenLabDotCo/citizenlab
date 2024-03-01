@@ -6,14 +6,13 @@ module CustomMaps
       class ProjectMapConfigsController < ApplicationController
         before_action :set_project
         before_action :set_map_config, only: %i[update destroy]
-        before_action :set_side_effects_service, only: %i[create update destroy]
 
         def create
           authorize @project, :update?
           @map_config = @project.build_map_config(map_config_params)
 
           if @map_config.save
-            @side_fx_service.after_create(@map_config, current_user)
+            side_fx_service.after_create(@map_config, current_user)
             render json: serialized_map_config, status: :ok
           else
             render json: { errors: @map_config.errors.details }, status: :unprocessable_entity
@@ -22,7 +21,7 @@ module CustomMaps
 
         def update
           if @map_config.update(map_config_params)
-            @side_fx_service.after_update(@map_config, current_user)
+            side_fx_service.after_update(@map_config, current_user)
             render json: serialized_map_config
           else
             render json: { errors: @map_config.errors.details }, status: :unprocessable_entity
@@ -32,7 +31,7 @@ module CustomMaps
         def destroy
           map_config = @map_config.destroy
           if map_config.destroyed?
-            @side_fx_service.after_destroy(map_config, current_user)
+            side_fx_service.after_destroy(map_config, current_user)
             head :no_content
           else
             render json: { errors: @map_config.errors.details }, status: :unprocessable_entity
@@ -62,8 +61,8 @@ module CustomMaps
           params.require(:map_config).permit(:zoom_level, :tile_provider, :esri_web_map_id, center_geojson: {})
         end
 
-        def set_side_effects_service
-          @side_fx_service = SideFxMapConfigService.new
+        def side_fx_service
+          @side_fx_service ||= SideFxMapConfigService.new
         end
       end
     end
