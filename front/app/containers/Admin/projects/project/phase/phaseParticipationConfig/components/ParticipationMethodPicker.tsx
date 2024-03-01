@@ -150,17 +150,6 @@ const ParticipationMethodPicker = ({
             />
           )}
         </SubSectionTitle>
-        {isExistingProjectOrPhase && (
-          <Box id="e2e-participation-method-warning" mb="24px">
-            <Warning>
-              <FormattedMessage
-                {...(!isNilOrError(phase)
-                  ? messages.phaseMethodChangeWarning
-                  : messages.projectMethodChangeWarning)}
-              />
-            </Warning>
-          </Box>
-        )}
         {!config.isMethodLocked ? (
           <>
             <Box
