@@ -174,7 +174,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
 
   if (!idea || !project) return null;
 
-  const handleClickDelete = () => () => {
+  const handleClickDelete = () => {
     const deleteConfirmationMessage =
       messages.deleteInputInTimelineConfirmation;
 
@@ -218,7 +218,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
         >
           <FormattedMessage {...messages.view} />
         </Button>
-        <Button buttonStyle="text" icon="delete" onClick={handleClickDelete()}>
+        <Button buttonStyle="text" icon="delete" onClick={handleClickDelete}>
           <FormattedMessage {...messages.delete} />
         </Button>
       </Top>
