@@ -12,7 +12,6 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
-import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
@@ -39,9 +38,7 @@ type ContentBuilderTopBarProps = {
   reportId: string;
   isTemplate: boolean;
   saved: boolean;
-  previewEnabled: boolean;
   setSaved: React.Dispatch<React.SetStateAction<boolean>>;
-  setPreviewEnabled: () => void;
   setSelectedLocale: React.Dispatch<React.SetStateAction<Locale>>;
 };
 
@@ -52,9 +49,7 @@ const ContentBuilderTopBar = ({
   reportId,
   isTemplate,
   saved,
-  previewEnabled,
   setSaved,
-  setPreviewEnabled,
   setSelectedLocale,
 }: ContentBuilderTopBarProps) => {
   const [initialized, setInitialized] = useState(false);
@@ -221,12 +216,6 @@ const ContentBuilderTopBar = ({
           selectedLocale={selectedLocale}
           onSelectLocale={setSelectedLocale}
         />
-        <Box mx="24px">
-          <PreviewToggle
-            checked={previewEnabled}
-            onChange={setPreviewEnabled}
-          />
-        </Box>
         <Box mr="20px">
           <PrintReportButton reportId={reportId} />
         </Box>
