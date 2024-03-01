@@ -204,6 +204,7 @@
   "app.components.admin.PostManager.title": "Başlık",
   "app.components.admin.PostManager.topicsTab": "Etiketler",
   "app.components.admin.PostManager.topicsTabTooltipText": "Sürükle ve bırak yöntemini kullanarak bir girdiye etiket ekleyin.",
+  "app.components.admin.PostManager.view": "Görünüm",
   "app.components.admin.PostManager.votes": "Oylar",
   "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Bir günden az} one {Bir gün} other {# gün}} sol",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "kimden",
