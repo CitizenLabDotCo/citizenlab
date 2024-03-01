@@ -424,7 +424,7 @@ export const createEsriFeatureLayers = (
 // parseLayers
 // Description: Parse the layers from the map config and create Esri layers
 export const parseLayers = (
-  mapConfig: IMapConfig | undefined,
+  mapConfig: IMapConfig | null | undefined,
   localize: Localize
 ) => {
   const mapConfigLayers = mapConfig?.data.attributes.layers;
@@ -438,7 +438,7 @@ export const parseLayers = (
     mapConfigLayers &&
     mapConfigLayers[0]?.type === 'CustomMaps::EsriFeatureLayer'
   ) {
-    return createEsriFeatureLayers(mapConfig.data.attributes.layers, localize);
+    return createEsriFeatureLayers(mapConfig?.data.attributes.layers, localize);
   }
   return [];
 };

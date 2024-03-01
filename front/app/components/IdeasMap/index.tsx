@@ -37,14 +37,13 @@ import useAuthUser from 'api/me/useAuthUser';
 
 // utils
 import {
-  createEsriGeoJsonLayers,
   getMapPinSymbol,
   getClusterConfiguration,
   showAddInputPopup,
   goToMapLocation,
   esriPointToGeoJson,
   changeCursorOnHover,
-  createEsriFeatureLayers,
+  parseLayers,
 } from 'components/EsriMap/utils';
 import {
   InnerContainer,
@@ -197,21 +196,7 @@ const IdeasMap = memo<Props>(
 
     // Create Esri layers from mapConfig layers
     const mapLayers = useMemo(() => {
-      const layers = mapConfig?.data.attributes.layers;
-
-      // All layers are either of type Esri or GeoJSON, so we can check just the first layer
-      if (layers && layers[0]?.type === 'CustomMaps::GeojsonLayer') {
-        return createEsriGeoJsonLayers(
-          mapConfig?.data.attributes.layers,
-          localize
-        );
-      } else if (layers && layers[0]?.type === 'CustomMaps::EsriFeatureLayer') {
-        return createEsriFeatureLayers(
-          mapConfig.data.attributes.layers,
-          localize
-        );
-      }
-      return [];
+      return parseLayers(mapConfig, localize);
     }, [mapConfig, localize]);
 
     // Create a point graphics layer for idea pins
