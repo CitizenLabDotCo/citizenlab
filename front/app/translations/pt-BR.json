@@ -1119,6 +1119,7 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} fora de {votingThreshold} votos necessários",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} A votação continua em aberto.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} recebeu a proposta e fez uma resposta oficial.",
+  "app.containers.InitiativesShow.VoteControl.cancelVote": "Cancelar votação",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "Esta proposta necessita de algumas alterações antes de ser aprovada.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Consulte a atualização oficial para obter uma explicação das alterações solicitadas.",
   "app.containers.InitiativesShow.VoteControl.days": "dias",
