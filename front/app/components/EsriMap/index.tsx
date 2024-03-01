@@ -13,16 +13,17 @@ import Layer from '@arcgis/core/layers/Layer';
 import Graphic from '@arcgis/core/Graphic';
 import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Fullscreen from '@arcgis/core/widgets/Fullscreen';
-import Point from '@arcgis/core/geometry/Point';
-import Expand from '@arcgis/core/widgets/Expand';
-import Legend from '@arcgis/core/widgets/Legend';
-import LayerList from '@arcgis/core/widgets/LayerList';
 import WebMap from '@arcgis/core/WebMap';
 import Collection from '@arcgis/core/core/Collection';
 
 // utils
-import { getDefaultBasemap } from './utils';
-import { isNil } from 'utils/helperUtils';
+import {
+  addMapLegend,
+  getDefaultBasemap,
+  handleWebMapReferenceLayers,
+  setMapCenter,
+  showLayerVisibilityControls,
+} from './utils';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 import * as intl from '@arcgis/core/intl.js';
@@ -69,7 +70,7 @@ export type EsriMapProps = {
   globalMapSettings: AppConfigurationMapSettings;
 };
 
-type InitialData = {
+export type InitialData = {
   center?: GeoJSON.Point | null;
   zoom?: number;
   maxZoom?: number;
@@ -96,11 +97,13 @@ const EsriMap = ({
   const locale = useLocale();
   const isMobileOrSmaller = useBreakpoint('phone');
   const { data: appConfig } = useAppConfiguration();
+
   const [map, setMap] = useState<Map | null>(null);
   const [webMap, setWebMap] = useState<WebMap | null>(null);
   const [mapView, setMapView] = useState<MapView | null>(null);
   const [referenceLayers, setReferenceLayers] =
     useState<Collection<Layer> | null>(null);
+
   const mapRef = useRef<HTMLDivElement | null>(null);
   const initialValuesLoaded = useRef(false);
 
@@ -108,9 +111,11 @@ const EsriMap = ({
   useEffect(() => {
     if (mapRef.current) {
       const newMap = new Map();
+      const webMap = webMapId && new WebMap({ portalItem: { id: webMapId } }); // If webMapId is provided, create a Web Map
+
       const mapView = new MapView({
         container: mapRef.current, // Reference to DOM node that will contain the view
-        map: newMap,
+        map: webMap || newMap, // Use the Web Map if it exists, or the default Map
         popupEnabled: false,
         popup: {
           dockEnabled: false,
@@ -121,31 +126,25 @@ const EsriMap = ({
       });
 
       setMap(newMap);
+      setWebMap(webMap || null);
       setMapView(mapView);
+
       return () => {
         mapView.destroy();
       };
     }
 
     return;
-  }, []);
+  }, [webMapId]);
 
   // Load initial map configuration data that was passed in.
   // Note: This data is static and will not change.
   useEffect(() => {
     if (!initialValuesLoaded.current && mapView && map) {
       // Set map center
-      mapView.center = !isNil(initialData?.center)
-        ? new Point({
-            latitude: initialData?.center.coordinates[1],
-            longitude: initialData?.center.coordinates[0],
-          })
-        : new Point({
-            latitude: Number(globalMapSettings.map_center?.lat) || 0,
-            longitude: Number(globalMapSettings.map_center?.long) || 0,
-          });
+      setMapCenter(mapView, initialData, globalMapSettings);
 
-      // Set the basemap
+      // Set the basemap & initial extent
       map.basemap = new Basemap({
         baseLayers: [getDefaultBasemap(globalMapSettings.tile_provider)],
       });
@@ -154,18 +153,6 @@ const EsriMap = ({
         maxZoom: initialData?.maxZoom || 22,
         minZoom: 5,
       };
-
-      // Set Web Map if it was provided
-      if (webMapId) {
-        const webMap = new WebMap({
-          portalItem: {
-            id: webMapId,
-          },
-        });
-
-        mapView.map = webMap;
-        setWebMap(webMap);
-      }
 
       // Change location of zoom widget if specified
       if (initialData?.zoomWidgetLocation === 'right') {
@@ -183,33 +170,12 @@ const EsriMap = ({
 
       // Add map legend if set
       if (initialData?.showLegend) {
-        const legend = new Expand({
-          content: new Legend({
-            view: mapView,
-            hideLayersNotInCurrentView: false,
-            style: { type: 'classic', layout: 'stack' },
-          }),
-          view: mapView,
-          expanded: isMobileOrSmaller ? false : true,
-          mode: 'floating',
-        });
-
-        mapView.ui.add(legend, 'bottom-right');
+        addMapLegend(mapView, isMobileOrSmaller);
       }
 
       // Show layer visibility controls if set
       if (initialData?.showLayerVisibilityControl) {
-        const layerList = new Expand({
-          content: new LayerList({
-            view: mapView,
-          }),
-          view: mapView,
-          expanded: false,
-          mode: 'floating',
-        });
-        mapView.ui.add(layerList, {
-          position: 'bottom-right',
-        });
+        showLayerVisibilityControls(mapView);
       }
 
       // Add any ui elements that were passed in
@@ -233,51 +199,17 @@ const EsriMap = ({
     map,
     mapView,
     webMapId,
+    webMap,
   ]);
 
-  // Following useEffects are used for loading dynamic data that is passed in.
+  // The following useEffects are used for handling dynamic data that is passed in.
   // Description: This data is dynamic and may change during runtime.
 
   useEffect(() => {
     // Add any map layers which were passed in
 
-    // If we're using a Web Map from ArcGIS Online, add the layers to the Web Map
-    webMap?.when(() => {
-      if (webMap && layers) {
-        // If the Web Map has any reference layers, re-order so they sit below any additional layers that were uploaded or created in our application
-        // Reference layers: https://developers.arcgis.com/javascript/latest/api-reference/esri-Basemap.html#referenceLayers
-        if (referenceLayers && referenceLayers.length > 0) {
-          // Get the current basemap layers
-          const newBasemapLayers = webMap.basemap.baseLayers;
-          // Add the reference layers to the new basemap layers list
-          webMap.addMany(referenceLayers.toArray());
-          // Set the WebMap basemap so it includes the Web Map reference layers
-          webMap.basemap = new Basemap({
-            baseLayers: newBasemapLayers,
-          });
-        }
-
-        // Add layers that passed in as props to the Web Map
-        layers.forEach((layer) => {
-          webMap.add(layer);
-        });
-
-        // If the WebMap has reference layers, save them in state
-        const refLayers =
-          webMap.basemap.referenceLayers.length > 0
-            ? webMap.basemap.referenceLayers
-            : undefined;
-
-        if (refLayers?.length && refLayers.length > 0) {
-          setReferenceLayers(refLayers);
-        }
-      }
-    });
-
-    // Add the layers to the default Map object
-    // Note: If we're using a Web Map and decide to remove it, then the default Map which appears again
-    // will already have any layers the admin added.
-    if (map && layers) {
+    // If we're not using a Web Map, add the layers to the default Map object
+    if (map && layers && !webMap) {
       if (mapView) {
         map.removeAll();
 
@@ -286,6 +218,23 @@ const EsriMap = ({
         });
       }
     }
+
+    // Otherwise add the layers into the WebMap
+    webMap &&
+      webMap.when(() => {
+        if (layers) {
+          // If the Web Map has any reference layers, re-order them so the layer hierarchy is correct
+          if (referenceLayers && referenceLayers.length > 0) {
+            handleWebMapReferenceLayers(webMap, referenceLayers);
+          }
+          // Now, add any additional layers that passed in as props to the Web Map
+          layers.forEach((layer) => {
+            webMap.add(layer);
+          });
+          // If the WebMap has reference layers, save them in state
+          setReferenceLayers(webMap.basemap?.referenceLayers || null);
+        }
+      });
   }, [layers, map, mapView, referenceLayers, webMap]);
 
   useEffect(() => {
@@ -319,22 +268,10 @@ const EsriMap = ({
     }
   }, [onHover, mapView]);
 
+  // If webMapId changes, re-load the initial settings
   useEffect(() => {
-    // Set the Web Map if it was provided
-    if (webMapId && mapView) {
-      const webMap = new WebMap({
-        portalItem: {
-          id: webMapId,
-        },
-      });
-      mapView.map = webMap;
-      setWebMap(webMap);
-    } else if (mapView && map) {
-      // Oterwise, we use the default Map
-      mapView.map = map;
-      setWebMap(null);
-    }
-  }, [webMapId, layers, map, mapView]);
+    initialValuesLoaded.current = false;
+  }, [webMapId]);
 
   useEffect(() => {
     // Sets the locale of the map
