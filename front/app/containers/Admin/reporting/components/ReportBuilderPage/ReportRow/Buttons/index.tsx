@@ -8,6 +8,9 @@ import useReport from 'api/reports/useReport';
 import Button from 'components/UI/Button';
 import PrintReportButton from './PrintReportButton';
 
+// styling
+import { colors } from '@citizenlab/cl2-component-library';
+
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
@@ -34,6 +37,7 @@ const Buttons = ({ reportId, isLoading, onDelete }: Props) => {
         mr="8px"
         icon="delete"
         buttonStyle="white"
+        textColor={colors.textSecondary}
         onClick={onDelete}
         processing={isLoading}
         disabled={isLoading || !canEdit}
