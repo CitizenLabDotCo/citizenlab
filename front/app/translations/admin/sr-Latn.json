@@ -204,6 +204,7 @@
   "app.components.admin.PostManager.title": "Naziv",
   "app.components.admin.PostManager.topicsTab": "Teme",
   "app.components.admin.PostManager.topicsTabTooltipText": "Kliknite i prevucite kako biste dodali teme ovom unosu.",
+  "app.components.admin.PostManager.view": "View",
   "app.components.admin.PostManager.votes": "Glasovi",
   "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Мање од једног дана} one {Једног дана} other {# дана}} лево",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "od",
