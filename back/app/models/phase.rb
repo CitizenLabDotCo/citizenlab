@@ -32,15 +32,17 @@
 #  reacting_dislike_limited_max  :integer          default(10)
 #  posting_method                :string           default("unlimited"), not null
 #  posting_limited_max           :integer          default(1)
-#  document_annotation_embed_url :string
 #  allow_anonymous_participation :boolean          default(FALSE), not null
-#  campaigns_settings            :jsonb
+#  document_annotation_embed_url :string
 #  voting_method                 :string
 #  voting_max_votes_per_idea     :integer
 #  voting_term_singular_multiloc :jsonb
 #  voting_term_plural_multiloc   :jsonb
 #  baskets_count                 :integer          default(0), not null
 #  votes_count                   :integer          default(0), not null
+#  campaigns_settings            :jsonb
+#  native_survey_title_multiloc  :jsonb
+#  native_survey_button_multiloc :jsonb
 #
 # Indexes
 #
@@ -132,6 +134,11 @@ class Phase < ApplicationRecord
     numericality: { only_integer: true, greater_than: 0 },
     if: %i[can_contain_ideas? reacting_dislike_limited?]
   validates :allow_anonymous_participation, inclusion: { in: [true, false] }
+
+  # ideation?
+  with_options if: :ideation? do
+    validates :presentation_mode, presence: true
+  end
 
   # ideation?
   with_options if: :ideation? do

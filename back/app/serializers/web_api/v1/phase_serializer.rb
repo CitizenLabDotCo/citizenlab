@@ -27,6 +27,13 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     end
   end
 
+  with_options if: proc { |phase|
+    phase.native_survey?
+  } do
+    attribute :native_survey_title_multiloc
+    attribute :native_survey_button_multiloc
+  end
+
   attribute :votes_count, if: proc { |phase, params|
     phase.voting? \
     && (

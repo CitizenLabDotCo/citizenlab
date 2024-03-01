@@ -123,6 +123,8 @@ resource 'Phases' do
         parameter :ideas_order, 'The default order of ideas.'
         parameter :input_term, 'The input term for something.'
         parameter :campaigns_settings, "A hash, only including keys in #{Phase::CAMPAIGNS} and with only boolean values", required: true
+        parameter :native_survey_title_multiloc, 'A title for the native survey.'
+        parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
       end
 
       ValidationErrorHelper.new.error_fields(self, Phase)
@@ -244,6 +246,8 @@ resource 'Phases' do
 
       context 'native survey' do
         let(:phase) { build(:native_survey_phase) }
+        let(:native_survey_title_multiloc) { { 'en' => 'Planning survey' } }
+        let(:native_survey_button_multiloc) { { 'en' => 'Fill in the form' } }
 
         example 'Create a native survey phase', document: false do
           do_request
@@ -284,6 +288,10 @@ resource 'Phases' do
           expect(phase_in_db.description_multiloc).to match description_multiloc
           expect(phase_in_db.start_at).to eq start_at
           expect(phase_in_db.end_at).to eq end_at
+          expect(phase_in_db.native_survey_title_multiloc['en']).to eq 'Planning survey'
+          expect(phase_in_db.native_survey_button_multiloc['en']).to eq 'Fill in the form'
+          expect(json_response.dig(:data, :attributes, :native_survey_title_multiloc, :en)).to eq 'Planning survey'
+          expect(json_response.dig(:data, :attributes, :native_survey_button_multiloc, :en)).to eq 'Fill in the form'
 
           # A native survey phase still has some ideation-related state, all column defaults.
           expect(phase_in_db.input_term).to eq 'idea'
