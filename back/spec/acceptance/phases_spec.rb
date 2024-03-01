@@ -518,7 +518,7 @@ resource 'Phases' do
       end
 
       context 'on a native survey phase' do
-        let(:phase) { create(:phase, participation_method: 'native_survey', project: @project) }
+        let(:phase) { create(:native_survey_phase, project: @project) }
 
         example 'Deleting a phase deletes all survey responses', document: false do
           ideation_phase = create(:phase, participation_method: 'ideation', project: @project, start_at: (phase.start_at - 7.days), end_at: (phase.start_at - 1.day))

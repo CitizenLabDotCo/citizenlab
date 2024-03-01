@@ -24,7 +24,7 @@ resource 'Idea Custom Fields' do
       parameter :title_multiloc, 'A title of the option, as shown to users, in multiple locales', required: false
     end
 
-    let(:context) { create(:phase, participation_method: 'native_survey') }
+    let(:context) { create(:native_survey_phase) }
     let(:custom_form) { create(:custom_form, participation_context: context) }
     let(:phase_id) { context.id }
 

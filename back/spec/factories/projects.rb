@@ -107,17 +107,16 @@ FactoryBot.define do
 
     factory :project_with_active_native_survey_phase do
       after(:create) do |project, _evaluator|
-        project.phases << create(:active_phase, project: project, participation_method: 'native_survey')
+        project.phases << create(:active_native_survey_phase, project: project)
       end
     end
 
     factory :project_with_active_and_future_native_survey_phase do
       after(:create) do |project, _evaluator|
-        active_phase = create(:active_phase, project: project, participation_method: 'native_survey')
+        active_phase = create(:active_native_survey_phase, project: project)
         future_phase = create(
-          :phase,
+          :native_survey_phase,
           project: project,
-          participation_method: 'native_survey',
           start_at: active_phase.end_at + 30.days,
           end_at: active_phase.end_at + 60.days
         )
@@ -129,16 +128,14 @@ FactoryBot.define do
     factory :project_with_past_and_future_native_survey_phase do
       after(:create) do |project, _evaluator|
         past_phase = create(
-          :phase,
+          :native_survey_phase,
           project: project,
-          participation_method: 'native_survey',
           start_at: 60.days.ago,
           end_at: 30.days.ago
         )
         future_phase = create(
-          :phase,
+          :native_survey_phase,
           project: project,
-          participation_method: 'native_survey',
           start_at: 30.days.from_now,
           end_at: 60.days.from_now
         )
@@ -178,9 +175,8 @@ FactoryBot.define do
           end_at: 30.days.ago
         )
         current_phase = create(
-          :phase,
+          :native_survey_phase,
           project: project,
-          participation_method: 'native_survey',
           start_at: 10.days.ago,
           end_at: 60.days.from_now
         )
@@ -261,9 +257,8 @@ FactoryBot.define do
     factory :project_with_future_native_survey_phase do
       after(:create) do |project, _evaluator|
         future_phase = create(
-          :phase,
+          :native_survey_phase,
           project: project,
-          participation_method: 'native_survey',
           start_at: 10.days.from_now,
           end_at: 40.days.from_now
         )
