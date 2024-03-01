@@ -204,6 +204,7 @@
   "app.components.admin.PostManager.title": "Titre",
   "app.components.admin.PostManager.topicsTab": "Étiquettes",
   "app.components.admin.PostManager.topicsTabTooltipText": "Ajoutez des étiquettes à une contribution en les glissant vers l'étiquette de votre choix.",
+  "app.components.admin.PostManager.view": "Voir",
   "app.components.admin.PostManager.votes": "Votes",
   "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Moins d'un jour restant} one {Un jour restant} other {# jours restants}}",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "de ",
