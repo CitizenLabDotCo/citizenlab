@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 // hooks
@@ -38,7 +38,7 @@ import {
   CraftJson,
   ContentBuilderErrors,
 } from 'components/admin/ContentBuilder/typings';
-import { SerializedNodes } from '@craftjs/core';
+import { SerializedNode } from '@craftjs/core';
 import { Locale } from 'typings';
 import { ReportLayout } from 'api/report_layout/types';
 import { isEmpty } from 'lodash-es';
@@ -48,6 +48,24 @@ interface Props {
   report: ReportResponse;
   reportLayout: ReportLayout;
 }
+
+const ROOT_NODE: SerializedNode = {
+  type: 'div',
+  isCanvas: true,
+  props: {
+    id: 'e2e-content-builder-frame',
+  },
+  displayName: 'div',
+  custom: {},
+  hidden: false,
+  nodes: [],
+  linkedNodes: {},
+  parent: undefined as unknown as string, // Bug in CraftJS types
+};
+
+const INITIAL_NODES: CraftJson = {
+  ROOT: ROOT_NODE,
+};
 
 const ReportBuilder = ({ report, reportLayout }: Props) => {
   const reportId = report.data.id;
@@ -59,24 +77,26 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
   const templatePhaseId = search.get('templatePhaseId');
   const previewEnabled = search.get('preview') === 'true';
 
+  const [initialData] = useState(() => {
+    if (templateProjectId || templatePhaseId) {
+      return undefined;
+    }
+
+    const { craftjs_json } = reportLayout.attributes;
+
+    if (isEmpty(craftjs_json)) {
+      return INITIAL_NODES;
+    }
+
+    return craftjs_json;
+  });
+
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale>(platformLocale);
-  const [draftData, setDraftData] = useState<CraftJson>(
-    reportLayout.attributes.craftjs_json
-  );
 
   const [saved, setSaved] = useState(!templateProjectId);
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
-
-  const handleEditorChange = useCallback(
-    (nodes: SerializedNodes) => {
-      if (previewEnabled) return;
-      setDraftData(nodes);
-      setSaved(false);
-    },
-    [previewEnabled]
-  );
 
   const handleErrors = (newErrors: ContentBuilderErrors) => {
     setContentBuilderErrors((contentBuilderErrors) => ({
@@ -92,35 +112,13 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
     });
   };
 
-  // initialData is needed for the Frame, to have the correct initial data
-  // when it first loads. After this initial render, craftjs maintains its state
-  // internally, so we don't need to update it anymore.
-  // If you try to update initial data after this initial render, it will just lead
-  // to an infinite state update loop.
-  // HOWEVER, when switching back and forth between the preview, the Frame
-  // will unmount and remount. At this moment, it needs to have the latest data.
-  // So only in this case do we need to update initialData.
-  // That's why we do it when you switch to preview mode, so that when you switch
-  // back later, it's already up to date.
-  // Very tricky behavior of craftjs. Ask me (Luuc) if you have any questions.
-  const [initialData, setInitialData] = useState(
-    isEmpty(draftData) ? undefined : draftData
-  );
-
   const handlePreview = () => {
     const nextState = !previewEnabled;
-    const userSwitchingToPreview = nextState === true;
-
-    if (userSwitchingToPreview) {
-      setInitialData(draftData);
-    }
 
     nextState
       ? updateSearchParams({ preview: 'true' })
       : removeSearchParams(['preview']);
   };
-
-  const previewData = isEmpty(draftData) ? undefined : draftData;
 
   const hasError =
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
@@ -135,8 +133,7 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
       >
         <Editor
           isPreview={previewEnabled}
-          onNodesChange={handleEditorChange}
-          key={selectedLocale}
+          onNodesChange={() => setSaved(false)}
         >
           <TopBar
             hasError={hasError}
@@ -178,7 +175,7 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
           {previewEnabled && (
             <Box justifyContent="center">
               <EditModePreview
-                previewData={previewData}
+                previewData={initialData}
                 selectedLocale={selectedLocale}
               />
             </Box>

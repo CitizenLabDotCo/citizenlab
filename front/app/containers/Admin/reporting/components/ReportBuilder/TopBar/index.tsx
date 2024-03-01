@@ -164,7 +164,7 @@ const ContentBuilderTopBar = ({
   ]);
 
   return (
-    <Container>
+    <Container id="e2e-report-builder-topbar">
       <Modal opened={showQuitModal} close={closeModal}>
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
