@@ -1119,6 +1119,7 @@
   "app.containers.InitiativesShow.VoteControl.a11y_xVotesOfRequiredY": "{xVotes} des {votingThreshold} votes requis",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanation": "{answeredStatusExplanationBold} Voter reste possible.",
   "app.containers.InitiativesShow.VoteControl.answeredStatusExplanationBold": "{orgName} à reçu cette proposition et a donné une réponse officielle.",
+  "app.containers.InitiativesShow.VoteControl.cancelVote": "Annuler le vote",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold": "Cette proposition nécessite quelques modifications avant de pouvoir être approuvée.",
   "app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo": "Veuillez consulter la mise à jour officielle pour obtenir une explication des changements demandés.",
   "app.containers.InitiativesShow.VoteControl.days": "jours",
