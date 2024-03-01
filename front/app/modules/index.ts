@@ -7,7 +7,6 @@ import flagInappropriateContentConfiguration from './commercial/flag_inappropria
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import machineTranslationsConfiguration from './commercial/machine_translations';
 
-import customMapsConfiguration from './commercial/custom_maps';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
 import googleAnalyticsConfiguration from './commercial/google_analytics';
 import intercomConfiguration from './commercial/intercom';
@@ -85,9 +84,6 @@ export default loadModules([
   },
   {
     configuration: adminProjectTemplatesConfiguration,
-  },
-  {
-    configuration: customMapsConfiguration,
   },
   {
     configuration: idAuth0Configuration,

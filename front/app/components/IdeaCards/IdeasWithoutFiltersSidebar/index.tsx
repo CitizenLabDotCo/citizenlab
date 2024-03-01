@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
@@ -190,7 +190,9 @@ const IdeasWithoutFiltersSidebar = ({
 
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteIdeas(ideaQueryParameters);
-  const list = data?.pages.map((page) => page.data).flat();
+  const list = useMemo(() => {
+    return data?.pages.map((page) => page.data).flat();
+  }, [data?.pages]);
   const { data: phase } = usePhase(phaseId);
 
   const handleSearchOnChange = useCallback(

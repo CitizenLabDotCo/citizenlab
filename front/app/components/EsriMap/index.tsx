@@ -10,18 +10,47 @@ import MapView from '@arcgis/core/views/MapView';
 import Basemap from '@arcgis/core/Basemap';
 import Layer from '@arcgis/core/layers/Layer';
 import Graphic from '@arcgis/core/Graphic';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Fullscreen from '@arcgis/core/widgets/Fullscreen';
 import Point from '@arcgis/core/geometry/Point';
+import Expand from '@arcgis/core/widgets/Expand';
+import Legend from '@arcgis/core/widgets/Legend';
+import LayerList from '@arcgis/core/widgets/LayerList';
 
 // utils
 import { getDefaultBasemap } from './utils';
 import { isNil } from 'utils/helperUtils';
 import { debounce } from 'lodash-es';
+import styled from 'styled-components';
+import * as intl from '@arcgis/core/intl.js';
 
 // typings
 import { EsriUiElement } from './types';
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
+import useLocale from 'hooks/useLocale';
+
+// Custom Esri styles
+const MapContainer = styled(Box)`
+  .esri-legend--card__message {
+    display: none;
+  }
+
+  .esri-legend {
+    max-height: 200px !important;
+  }
+  .esri-layer-list {
+    max-height: 200px !important;
+  }
+
+  ${media.phone`
+    .esri-legend {
+      max-width: 240px !important;
+    }
+    .esri-layer-list {
+      max-width: 220px !important;
+    }
+  `}
+`;
 
 export type EsriMapProps = {
   id?: string;
@@ -41,6 +70,10 @@ type InitialData = {
   maxZoom?: number;
   uiElements?: EsriUiElement[];
   showFullscreenOption?: boolean;
+  showLegend?: boolean;
+  showLayerVisibilityControl?: boolean;
+  zoomWidgetLocation?: 'left' | 'right';
+  onInit?: (mapView: MapView) => void;
 };
 
 const EsriMap = ({
@@ -49,16 +82,21 @@ const EsriMap = ({
   width,
   layers,
   graphics,
-  initialData,
   onClick,
   onHover,
+  initialData,
   globalMapSettings,
 }: EsriMapProps) => {
+  const isMobileOrSmaller = useBreakpoint('phone');
+  const locale = useLocale();
   const [map, setMap] = useState<Map | null>(null);
   const [mapView, setMapView] = useState<MapView | null>(null);
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   const initialValuesLoaded = useRef(false);
+
+  // Sets the locale of the map
+  intl.setLocale(locale);
 
   // On initial render, create a new map and map view and save them to state variables
   useEffect(() => {
@@ -67,11 +105,17 @@ const EsriMap = ({
       const mapView = new MapView({
         container: mapRef.current, // Reference to DOM node that will contain the view
         map: newMap,
+        popupEnabled: false,
+        popup: {
+          dockEnabled: false,
+          dockOptions: {
+            breakpoint: false,
+          },
+        },
       });
 
       setMap(newMap);
       setMapView(mapView);
-
       return () => {
         mapView.destroy();
       };
@@ -105,12 +149,49 @@ const EsriMap = ({
         minZoom: 5,
       };
 
+      // Change location of zoom widget if specified
+      if (initialData?.zoomWidgetLocation === 'right') {
+        const zoom = mapView.ui.find('zoom');
+        mapView.ui.add(zoom, 'top-right');
+      }
+
       // Add fullscreen widget if set
       if (initialData?.showFullscreenOption) {
         const fullscreen = new Fullscreen({
           view: mapView,
         });
         mapView.ui.add(fullscreen, 'top-right');
+      }
+
+      // Add map legend if set
+      if (initialData?.showLegend) {
+        const legend = new Expand({
+          content: new Legend({
+            view: mapView,
+            hideLayersNotInCurrentView: false,
+            style: { type: 'classic', layout: 'stack' },
+          }),
+          view: mapView,
+          expanded: isMobileOrSmaller ? false : true,
+          mode: 'floating',
+        });
+
+        mapView.ui.add(legend, 'bottom-right');
+      }
+
+      // Show layer visibility controls if set
+      if (initialData?.showLayerVisibilityControl) {
+        const layerList = new Expand({
+          content: new LayerList({
+            view: mapView,
+          }),
+          view: mapView,
+          expanded: false,
+          mode: 'floating',
+        });
+        mapView.ui.add(layerList, {
+          position: 'bottom-right',
+        });
       }
 
       // Add any ui elements that were passed in
@@ -120,9 +201,14 @@ const EsriMap = ({
         });
       }
 
+      // Run onInit function if it was provided
+      if (initialData?.onInit) {
+        initialData.onInit(mapView);
+      }
+
       initialValuesLoaded.current = true;
     }
-  }, [globalMapSettings, initialData, map, mapView]);
+  }, [globalMapSettings, initialData, isMobileOrSmaller, map, mapView]);
 
   // Load dynamic data that was passed in.
   // Note: This data is dynamic and may change.
@@ -157,10 +243,11 @@ const EsriMap = ({
   }, [onClick, mapView]);
 
   useEffect(() => {
+    // On map hover, pass the event to hover handler if it was provided
     if (onHover && mapView) {
       const debouncedHover = debounce((event: any) => {
         onHover(event, mapView);
-      }, 100);
+      }, 60);
 
       mapView.on('pointer-move', debouncedHover);
     }
@@ -168,7 +255,7 @@ const EsriMap = ({
 
   return (
     <>
-      <Box
+      <MapContainer
         id={id}
         ref={mapRef}
         width={width ? `${width}` : '100%'}

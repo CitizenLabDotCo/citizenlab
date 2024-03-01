@@ -28,7 +28,7 @@ const LocationMap = memo<Props>(({ eventLocation }: Props) => {
         longitude: locationPoint?.current?.coordinates[0],
         latitude: locationPoint?.current?.coordinates[1],
       }),
-      symbol: getMapPinSymbol(theme.colors.tenantPrimary),
+      symbol: getMapPinSymbol({ color: theme.colors.tenantPrimary }),
     });
 
     return [pointGraphic];

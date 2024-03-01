@@ -30,6 +30,7 @@ export const reportsData: Report[] = [
           disabled_reason: null,
         },
       },
+      visible: false,
     },
     relationships: {
       layout: {
@@ -59,6 +60,7 @@ export const reportsData: Report[] = [
           disabled_reason: null,
         },
       },
+      visible: false,
     },
     relationships: {
       layout: {

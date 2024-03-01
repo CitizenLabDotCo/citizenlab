@@ -43,6 +43,10 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     object.previous_phase_end_at_updated?
   end
 
+  attribute :report_public do |phase|
+    phase.report&.public?
+  end
+
   belongs_to :project
 
   has_one :user_basket, if: proc { |object, params|
