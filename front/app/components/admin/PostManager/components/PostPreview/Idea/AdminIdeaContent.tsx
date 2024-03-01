@@ -218,7 +218,12 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
         >
           <FormattedMessage {...messages.view} />
         </Button>
-        <Button buttonStyle="text" icon="delete" onClick={handleClickDelete}>
+        <Button
+          id="e2e-input-manager-side-modal-delete-button"
+          buttonStyle="text"
+          icon="delete"
+          onClick={handleClickDelete}
+        >
           <FormattedMessage {...messages.delete} />
         </Button>
       </Top>
