@@ -526,7 +526,6 @@ class PhaseParticipationConfig extends PureComponent<
           <StyledSection>
             <ParticipationMethodPicker
               phase={this.props.phase}
-              project={this.props.project?.data}
               participation_method={participation_method}
               showSurveys={showSurveys}
               apiErrors={apiErrors}

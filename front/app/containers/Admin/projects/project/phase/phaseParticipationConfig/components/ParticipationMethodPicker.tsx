@@ -16,7 +16,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import Warning from 'components/UI/Warning';
 import Tippy from '@tippyjs/react';
 import ParticipationMethodChoice from './ParticipationMethodChoice';
 import Modal from 'components/UI/Modal';
@@ -34,7 +33,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // typings
 import { ApiErrors } from '..';
 import { IPhase, ParticipationMethod } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
 
 // assets
 import ideationImage from './assets/ideation.png';
@@ -51,7 +49,6 @@ const LeftAlignedList = styled.ul`
 interface Props {
   participation_method: ParticipationMethod;
   phase?: IPhase | undefined | null;
-  project?: IProjectData | undefined | null;
   showSurveys: boolean;
   apiErrors: ApiErrors;
   handleParticipationMethodOnChange: (
@@ -64,7 +61,6 @@ const ParticipationMethodPicker = ({
   showSurveys,
   apiErrors,
   phase,
-  project,
   handleParticipationMethodOnChange,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -105,9 +101,6 @@ const ParticipationMethodPicker = ({
     // fallback config to control the radio behaviour.
     return 'ideation';
   };
-
-  const isExistingProjectOrPhase =
-    !isNilOrError(project) || !isNilOrError(phase?.data);
 
   const config = getMethodConfig(chooseParticipationMethod());
 
