@@ -77,15 +77,16 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
   const templatePhaseId = search.get('templatePhaseId');
   const previewEnabled = search.get('preview') === 'true';
 
+  const { craftjs_json } = reportLayout.attributes;
+  const isEmptyReport = isEmpty(craftjs_json);
+
   const [initialData] = useState(() => {
-    if (templateProjectId || templatePhaseId) {
-      return undefined;
-    }
-
-    const { craftjs_json } = reportLayout.attributes;
-
-    if (isEmpty(craftjs_json)) {
-      return INITIAL_NODES;
+    if (isEmptyReport) {
+      if (templateProjectId || templatePhaseId) {
+        return undefined;
+      } else {
+        return INITIAL_NODES;
+      }
     }
 
     return craftjs_json;
@@ -157,12 +158,12 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
                 <StyledRightColumn>
                   <PDFWrapper>
                     <Frame editorData={initialData}>
-                      {templateProjectId ? (
+                      {isEmptyReport && templateProjectId ? (
                         <ProjectTemplate
                           reportId={reportId}
                           projectId={templateProjectId}
                         />
-                      ) : templatePhaseId ? (
+                      ) : isEmptyReport && templatePhaseId ? (
                         <PhaseTemplate phaseId={templatePhaseId} />
                       ) : null}
                     </Frame>

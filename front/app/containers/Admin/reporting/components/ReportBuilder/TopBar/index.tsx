@@ -30,6 +30,7 @@ import clHistory from 'utils/cl-router/history';
 
 // types
 import { Locale } from 'typings';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 type ContentBuilderTopBarProps = {
   hasError: boolean;
@@ -99,6 +100,8 @@ const ContentBuilderTopBar = ({
       {
         onSuccess: () => {
           setSaved(true);
+
+          removeSearchParams(['templateProjectId', 'templatePhaseId']);
         },
       }
     );

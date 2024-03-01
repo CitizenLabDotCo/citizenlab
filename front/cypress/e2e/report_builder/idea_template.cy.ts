@@ -105,6 +105,60 @@ describe('Idea template', () => {
       // Ensure we're back to the empty state
       cy.get('#e2e-create-report-button').should('exist');
     });
+
+    it('creates a report from a template and allows editing it', () => {
+      cy.setAdminLoginCookie();
+      cy.apiCreateReportBuilder().then((report) => {
+        const reportId = report.body.data.id;
+        cy.visit(
+          `/admin/reporting/report-builder/${reportId}/editor?templateProjectId=${projectId}`
+        );
+
+        cy.wait(1000);
+
+        // Edit text
+        cy.get('.e2e-text-box').eq(2).click('center');
+        cy.get('.ql-editor').click();
+        const text = randomString();
+
+        cy.wait(1000);
+
+        cy.get('.ql-editor').clear().type(text, { force: true });
+
+        cy.wait(1000);
+
+        // Expect this to be visible on screen
+        cy.get('.e2e-text-box').eq(2).should('contain.text', text);
+
+        cy.wait(1000);
+
+        // Switch locale
+        cy.get('#e2e-report-builder-topbar .e2e-localeswitcher.nl-BE').click();
+
+        // Validate that new text is there
+        cy.get('.e2e-text-box')
+          .eq(2)
+          .should('contain.text', 'Samenvatting van het verslag');
+
+        // Switch back
+        cy.get('#e2e-report-builder-topbar .e2e-localeswitcher.en').click();
+
+        // Previous edited text should still be there
+        cy.get('.e2e-text-box').eq(2).should('contain.text', text);
+
+        // Save report
+        cy.get('#e2e-content-builder-topbar-save').click();
+
+        // Refresh page
+        cy.reload();
+
+        // Validate that the edited text is still there
+        cy.get('.e2e-text-box').eq(2).should('contain.text', text);
+
+        // Remove report
+        cy.apiRemoveReportBuilder(reportId);
+      });
+    });
   });
 
   describe('Phase report builder', () => {
