@@ -205,27 +205,21 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
       <Top>
         <Button
           mr="8px"
-          buttonStyle="secondary"
+          buttonStyle="primary"
           icon="edit"
           onClick={handleClickEdit}
         >
           <FormattedMessage {...messages.edit} />
         </Button>
         <Button
-          icon="delete"
-          buttonStyle="delete"
-          onClick={handleClickDelete()}
-        >
-          <FormattedMessage {...messages.delete} />
-        </Button>
-        <Button
           linkTo={`/ideas/${idea.data.attributes.slug}`}
           icon="eye"
           buttonStyle="secondary"
-          ml="auto"
-          mr="40px"
         >
           <FormattedMessage {...messages.view} />
+        </Button>
+        <Button buttonStyle="text" icon="delete" onClick={handleClickDelete()}>
+          <FormattedMessage {...messages.delete} />
         </Button>
       </Top>
       <Content>

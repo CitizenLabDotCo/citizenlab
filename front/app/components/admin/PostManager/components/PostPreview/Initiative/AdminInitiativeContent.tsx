@@ -148,26 +148,20 @@ const AdminInitiativeContent = ({
           <Button
             mr="8px"
             icon="edit"
-            buttonStyle="secondary"
+            buttonStyle="primary"
             onClick={handleClickEdit}
           >
             <FormattedMessage {...messages.edit} />
           </Button>
           <Button
-            icon="delete"
-            buttonStyle="delete"
-            onClick={handleClickDelete}
-          >
-            <FormattedMessage {...messages.delete} />
-          </Button>
-          <Button
             linkTo={`/initiatives/${initiative.data.attributes.slug}`}
             icon="eye"
             buttonStyle="secondary"
-            ml="auto"
-            mr="40px"
           >
             <FormattedMessage {...messages.view} />
+          </Button>
+          <Button icon="delete" buttonStyle="text" onClick={handleClickDelete}>
+            <FormattedMessage {...messages.delete} />
           </Button>
         </Top>
         <Content>
