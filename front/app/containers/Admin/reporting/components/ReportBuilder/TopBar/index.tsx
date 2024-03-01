@@ -216,7 +216,7 @@ const ContentBuilderTopBar = ({
           selectedLocale={selectedLocale}
           onSelectLocale={setSelectedLocale}
         />
-        <Box mr="20px">
+        <Box mx="20px">
           <PrintReportButton reportId={reportId} />
         </Box>
         <SaveButton

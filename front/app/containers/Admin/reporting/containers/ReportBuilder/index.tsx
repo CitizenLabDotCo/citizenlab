@@ -22,7 +22,7 @@ import Toolbox from '../../components/ReportBuilder/Toolbox';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from '../../components/ReportBuilder/Settings';
-import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrapper';
+import PDFWrapper from '../../components/ReportBuilder/ViewContainer/PDFWrapper';
 
 // templates
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';

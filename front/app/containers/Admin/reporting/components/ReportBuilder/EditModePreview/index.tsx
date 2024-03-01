@@ -6,7 +6,7 @@ import MobileButton from 'components/admin/ContentBuilder/EditModePreview/ViewBu
 import PDFButton from './PDFButton';
 import DesktopButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/DesktopButton';
 import Frame from 'components/admin/ContentBuilder/Frame';
-import PDFWrapper from './PDFWrapper';
+import PDFWrapper from '../ViewContainer/PDFWrapper';
 
 // hooks
 import useLocale from 'hooks/useLocale';
