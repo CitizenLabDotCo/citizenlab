@@ -349,6 +349,14 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         user_session_recording: {
           enabled: false,
           allowed: false
+        },
+        phase_reports: {
+          enabled: true,
+          allowed: true
+        },
+        report_data_grouping: {
+          enabled: true,
+          allowed: true
         }
       }
     )
