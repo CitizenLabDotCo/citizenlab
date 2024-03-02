@@ -62,34 +62,22 @@ export function timeAgo(dateInput: number, locale: Locale) {
   const secondsElapsed = (date.getTime() - Date.now()) / 1000;
 
   for (const key in ranges) {
+    let value: number;
+
     if (key === 'months') {
-      const value = ranges[key](date.getFullYear(), date.getMonth());
-      if (value <= Math.abs(secondsElapsed)) {
-        const delta = secondsElapsed / value;
-        return formatter.format(
-          Math.round(delta),
-          key as RelativeTimeFormatUnit
-        );
-      }
+      value = ranges['months'](date.getFullYear(), date.getMonth());
     } else if (key === 'years') {
-      const value = ranges[key](date.getFullYear());
-      if (value <= Math.abs(secondsElapsed)) {
-        const delta = secondsElapsed / value;
-        return formatter.format(
-          Math.round(delta),
-          key as RelativeTimeFormatUnit
-        );
-      }
+      value = ranges['years'](date.getFullYear());
     } else {
-      if (ranges[key] <= Math.abs(secondsElapsed)) {
-        const delta = secondsElapsed / ranges[key];
-        return formatter.format(
-          Math.round(delta),
-          key as RelativeTimeFormatUnit
-        );
-      }
+      value = ranges[key];
+    }
+
+    if (value <= Math.abs(secondsElapsed)) {
+      const delta = secondsElapsed / value;
+      return formatter.format(Math.round(delta), key as RelativeTimeFormatUnit);
     }
   }
+
   return undefined;
 }
 
