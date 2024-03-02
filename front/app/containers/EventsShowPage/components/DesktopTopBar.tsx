@@ -19,9 +19,9 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // api
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 import useAuthUser from 'api/me/useAuthUser';
 import { IEventData } from 'api/events/types';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 const Bar = styled.div`
   display: flex;
@@ -34,17 +34,13 @@ const Bar = styled.div`
 `;
 interface Props {
   project: IProjectData;
-  event?: IEventData;
+  event: IEventData;
 }
 
 const TopBar = ({ project, event }: Props) => {
   const location = useLocation();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
-  const isAdminUser = authUser ? isAdmin(authUser) : false;
-  const isModerator = authUser
-    ? isProjectModerator(authUser, project.id)
-    : false;
 
   return (
     <Bar>
@@ -58,7 +54,7 @@ const TopBar = ({ project, event }: Props) => {
               : clHistory.push(`/projects/${project.attributes.slug}`);
           }}
         />
-        {(isAdminUser || isModerator) && event && (
+        {authUser && canModerateProject(project.id, authUser) && (
           <Button
             buttonStyle="secondary"
             m="0px"

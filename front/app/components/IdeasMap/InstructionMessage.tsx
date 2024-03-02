@@ -10,7 +10,7 @@ import messages from './messages';
 import useAuthUser from 'api/me/useAuthUser';
 
 // utils
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 type Props = {
   projectId: string;
@@ -21,16 +21,13 @@ const InstructionMessage = ({ projectId }: Props) => {
   const { data: authUser } = useAuthUser();
   const isTabletOrSmaller = useBreakpoint('tablet');
 
-  const isAdminOrModerator = authUser
-    ? isAdmin(authUser) || isProjectModerator(authUser, projectId)
-    : false;
-
   const getInstructionMessage = () => {
-    if (isAdminOrModerator) {
+    if (authUser && canModerateProject(projectId, authUser)) {
       return isTabletOrSmaller
         ? formatMessage(messages.tapOnMapToAddAdmin)
         : formatMessage(messages.clickOnMapToAddAdmin);
     }
+
     return isTabletOrSmaller
       ? formatMessage(messages.tapOnMapToAdd)
       : formatMessage(messages.clickOnMapToAdd);
