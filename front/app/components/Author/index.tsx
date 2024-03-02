@@ -146,7 +146,8 @@ const Author = memo(
       author &&
       (projectId
         ? canModerateProject(projectId, { data: author.data })
-        : isAdmin({ data: author.data }));
+        : // When component is used for proposals
+          isAdmin({ data: author.data }));
 
     if (!isNilOrError(locale)) {
       return (

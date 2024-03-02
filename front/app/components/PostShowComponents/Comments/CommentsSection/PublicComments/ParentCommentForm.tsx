@@ -39,6 +39,7 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { useLocation } from 'react-router-dom';
+import { isAdmin } from 'utils/permissions/roles';
 
 const StyledAvatar = styled(Avatar)`
   margin-left: -4px;
@@ -287,7 +288,10 @@ const ParentCommentForm = ({
     textareaElement.current = element;
   };
 
-  const isModerator = canModerateProject(projectId, authUser);
+  const isModerator = projectId
+    ? canModerateProject(projectId, authUser)
+    : // When component is used for proposals
+      isAdmin({ data: authUser.data });
 
   const placeholderMessage: MessageDescriptor = isAdminPage
     ? messages.visibleToUsersPlaceholder
@@ -300,7 +304,7 @@ const ParentCommentForm = ({
         userId={authUser.data.id}
         size={30}
         isLinkToProfile={!!authUser.data.id}
-        moderator={isModerator}
+        showModeratorStyles={isModerator}
       />
       <FormContainer
         className="ideaCommentForm"

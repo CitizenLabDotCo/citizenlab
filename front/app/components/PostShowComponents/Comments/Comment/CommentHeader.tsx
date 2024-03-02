@@ -13,6 +13,7 @@ import messages from '../messages';
 import { IPresentComment } from 'api/comments/types';
 import useUserById from 'api/users/useUserById';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { isAdmin } from 'utils/permissions/roles';
 
 const Container = styled.div`
   display: flex;
@@ -77,9 +78,12 @@ const CommentHeader = ({
   const { formatMessage } = useIntl();
   const { data: author } = useUserById(authorId);
 
-  const isModerator = author
-    ? canModerateProject(projectId, { data: author.data })
-    : false;
+  const isModerator =
+    author &&
+    (projectId
+      ? canModerateProject(projectId, { data: author.data })
+      : // When component is used for proposals
+        isAdmin({ data: author.data }));
 
   // With the current implementation, this needs to always render,
   // even if author is null/undefined.
@@ -94,7 +98,7 @@ const CommentHeader = ({
           isLinkToProfile={typeof authorId === 'string'}
           size={30}
           projectId={projectId}
-          showModeration={isModerator}
+          showModeration
           createdAt={commentAttributes.created_at}
           avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
           horizontalLayout={true}
