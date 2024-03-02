@@ -51,11 +51,8 @@ export const isModerator = (user: IUser) => {
   In the backend, it's used for data integrity.
   Most of the times it's used it's to make sure that we don't accept test data from CL employees as valid data.
 */
-export const isSuperAdmin = (user?: IUser | null | Error) => {
-  if (!isNilOrError(user)) {
-    return user.data.attributes?.highest_role === 'super_admin';
-  }
-  return false;
+export const isSuperAdmin = (user: IUser) => {
+  return user.data.attributes.highest_role === 'super_admin';
 };
 
 export const isRegularUser = (user?: IUser | null) => {
