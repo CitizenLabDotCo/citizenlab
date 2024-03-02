@@ -35,12 +35,12 @@ export function canModerateProject(project: IProjectData, user: IUser) {
   return (
     isAdmin(user) ||
     (typeof projectFolderId === 'string' &&
-      canModerateParentFolder(user, projectFolderId)) ||
+      canModerateFolderOfProject(user, projectFolderId)) ||
     isProjectModerator(user, projectId)
   );
 }
 
-function canModerateParentFolder(user: IUser, projectFolderId: string) {
+function canModerateFolderOfProject(user: IUser, projectFolderId: string) {
   return userModeratesFolder(user.data, projectFolderId);
 }
 
