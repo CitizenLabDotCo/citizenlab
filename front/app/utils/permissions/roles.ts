@@ -37,14 +37,10 @@ export const isAdmin = (user?: IUser | null | undefined | Error) => {
   return false;
 };
 
-export const isModerator = (user?: IUser | null | undefined | Error) => {
-  if (!isNilOrError(user)) {
-    return ['project_moderator', 'project_folder_moderator'].includes(
-      user.data.attributes.highest_role
-    );
-  }
-
-  return false;
+export const isModerator = (user: IUser) => {
+  return ['project_moderator', 'project_folder_moderator'].includes(
+    user.data.attributes.highest_role
+  );
 };
 
 /*

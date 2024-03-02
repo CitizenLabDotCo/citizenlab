@@ -111,7 +111,7 @@ const AdminPage = memo<Props & WithRouterProps>(
           clHistory.push('/admin/dashboard/overview');
         }
 
-        if (isModerator(authUser)) {
+        if (authUser && isModerator(authUser)) {
           clHistory.push('/admin/projects');
         }
       }
