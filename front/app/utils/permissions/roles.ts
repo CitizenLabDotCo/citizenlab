@@ -1,5 +1,4 @@
 import { IUser } from 'api/users/types';
-import { isNilOrError } from 'utils/helperUtils';
 
 interface IProjectModeratorRole {
   type: 'project_moderator';
@@ -51,12 +50,8 @@ export const isSuperAdmin = (user: IUser) => {
   return user.data.attributes.highest_role === 'super_admin';
 };
 
-export const isRegularUser = (user?: IUser | null) => {
-  if (!isNilOrError(user)) {
-    // Every user with a role higher than "user" can be considered a moderator
-    return user.data.attributes.highest_role === 'user';
-  }
-  return false;
+export const isRegularUser = (user: IUser) => {
+  return user.data.attributes.highest_role === 'user';
 };
 
 export const isProjectModerator = (user: IUser, projectId: string) => {
