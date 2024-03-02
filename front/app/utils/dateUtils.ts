@@ -63,10 +63,10 @@ export function timeAgo(dateInput: number, locale: Locale) {
   for (const key in ranges) {
     let value: number;
 
-    if (key === 'months') {
-      value = ranges['months'](date.getFullYear(), date.getMonth());
-    } else if (key === 'years') {
+    if (key === 'years') {
       value = ranges['years'](date.getFullYear());
+    } else if (key === 'months') {
+      value = ranges['months'](date.getFullYear(), date.getMonth());
     } else {
       value = ranges[key];
     }
