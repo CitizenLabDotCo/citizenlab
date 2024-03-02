@@ -24,6 +24,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { timeAgo } from 'utils/dateUtils';
+import { isAdmin } from 'utils/permissions/roles';
 
 const Container = styled.div`
   display: flex;
@@ -140,10 +141,12 @@ const Author = memo(
   }: Props) => {
     const locale = useLocale();
     const { data: author } = useUserById(authorId);
-    const authorCanModerate =
-      !isNilOrError(author) &&
+    const showModeratorStyles =
       showModeration &&
-      canModerateProject(projectId, { data: author.data });
+      author &&
+      (projectId
+        ? canModerateProject(projectId, { data: author.data })
+        : isAdmin({ data: author.data }));
 
     if (!isNilOrError(locale)) {
       return (
@@ -155,7 +158,7 @@ const Author = memo(
                 authorHash={authorHash}
                 size={size}
                 isLinkToProfile={isLinkToProfile}
-                moderator={authorCanModerate}
+                showModeratorStyles={showModeratorStyles}
                 bgColor={avatarBadgeBgColor}
               />
             )}
@@ -170,7 +173,7 @@ const Author = memo(
                 <UserName
                   userId={authorId}
                   isLinkToProfile={isLinkToProfile}
-                  canModerate={authorCanModerate}
+                  showModeratorStyles={showModeratorStyles}
                   fontWeight={fontWeight}
                   fontSize={fontSize}
                   color={color}

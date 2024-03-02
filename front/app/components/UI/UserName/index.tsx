@@ -82,7 +82,7 @@ interface Props extends StyleProps {
   isLinkToProfile?: boolean;
   hideLastName?: boolean;
   anonymous?: boolean;
-  canModerate?: boolean;
+  showModeratorStyles?: boolean;
 }
 
 const UserName = ({
@@ -95,7 +95,7 @@ const UserName = ({
   underline,
   italic,
   color,
-  canModerate,
+  showModeratorStyles,
   anonymous,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -161,7 +161,7 @@ const UserName = ({
 
     const classNames = `
       ${className || ''}
-      ${canModerate ? 'canModerate' : ''}
+      ${showModeratorStyles ? 'canModerate' : ''}
       ${isLinkToProfile ? 'isLinkToProfile' : ''}
       e2e-username
     `;
