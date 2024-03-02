@@ -29,12 +29,8 @@ export const userHasRole = (user: IUser, role: TRole['type']) => {
   return result !== undefined;
 };
 
-export const isAdmin = (user?: IUser | null | undefined | Error) => {
-  if (!isNilOrError(user)) {
-    return !!user && userHasRole(user, 'admin');
-  }
-
-  return false;
+export const isAdmin = (user: IUser) => {
+  return userHasRole(user, 'admin');
 };
 
 export const isModerator = (user: IUser) => {
