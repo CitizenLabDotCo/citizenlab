@@ -14,6 +14,7 @@ import { IPresentComment } from 'api/comments/types';
 import useUserById from 'api/users/useUserById';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { isAdmin } from 'utils/permissions/roles';
+import useProjectById from 'api/projects/useProjectById';
 
 const Container = styled.div`
   display: flex;
@@ -77,11 +78,12 @@ const CommentHeader = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: author } = useUserById(authorId);
+  const { data: project } = useProjectById(projectId);
 
   const isModerator =
     author &&
-    (projectId
-      ? canModerateProject(projectId, { data: author.data })
+    (project
+      ? canModerateProject(project.data, { data: author.data })
       : // When component is used for proposals
         isAdmin({ data: author.data }));
 

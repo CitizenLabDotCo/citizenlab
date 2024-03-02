@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
 // components
@@ -31,6 +30,7 @@ import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermis
 // types
 import ProjectMoreActionsMenu, { ActionType } from './ProjectMoreActionsMenu';
 import { IAdminPublicationData } from 'api/admin_publications/types';
+import useProjectById from 'api/projects/useProjectById';
 
 export const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
@@ -75,15 +75,17 @@ const ProjectRow = ({
   const { data: authUser } = useAuthUser();
   const projectId = publication.relationships.publication.data.id;
   const publicationStatus = publication.attributes.publication_status;
+  const { data: project } = useProjectById(projectId);
 
-  if (isNilOrError(authUser)) {
+  if (!authUser || !project) {
     return null;
   }
+
   const userCanModerateProject =
     // This means project is in a folder
     (typeof folderId === 'string' &&
       userModeratesFolder(authUser.data, folderId)) ||
-    canModerateProject(projectId, {
+    canModerateProject(project.data, {
       data: authUser.data,
     });
 

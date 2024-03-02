@@ -36,6 +36,7 @@ import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
 import { isAdmin } from 'utils/permissions/roles';
+import useProjectById from 'api/projects/useProjectById';
 
 const StyledAvatar = styled(Avatar)`
   margin-left: -4px;
@@ -93,6 +94,7 @@ const ChildCommentForm = ({
   const locale = useLocale();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
+  const { data: project } = useProjectById(projectId);
 
   const {
     mutate: addCommentToIdeaComment,
@@ -316,8 +318,8 @@ const ChildCommentForm = ({
   };
 
   if (focused) {
-    const isModerator = projectId
-      ? canModerateProject(projectId, authUser)
+    const isModerator = project
+      ? canModerateProject(project.data, authUser)
       : // When component is used for proposals
         isAdmin({ data: authUser.data });
 

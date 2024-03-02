@@ -40,6 +40,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { useLocation } from 'react-router-dom';
 import { isAdmin } from 'utils/permissions/roles';
+import useProjectById from 'api/projects/useProjectById';
 
 const StyledAvatar = styled(Avatar)`
   margin-left: -4px;
@@ -121,6 +122,7 @@ const ParentCommentForm = ({
     useState(false);
   const { data: idea } = useIdeaById(ideaId);
   const projectId = idea ? idea.data.relationships.project.data.id : null;
+  const { data: project } = useProjectById(projectId);
 
   const processing =
     addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
@@ -288,8 +290,8 @@ const ParentCommentForm = ({
     textareaElement.current = element;
   };
 
-  const isModerator = projectId
-    ? canModerateProject(projectId, authUser)
+  const isModerator = project
+    ? canModerateProject(project.data, authUser)
     : // When component is used for proposals
       isAdmin({ data: authUser.data });
 

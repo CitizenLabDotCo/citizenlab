@@ -54,7 +54,7 @@ const TopBar = ({ project, event }: Props) => {
               : clHistory.push(`/projects/${project.attributes.slug}`);
           }}
         />
-        {authUser && canModerateProject(project.id, authUser) && (
+        {authUser && canModerateProject(project, authUser) && (
           <Button
             buttonStyle="secondary"
             m="0px"

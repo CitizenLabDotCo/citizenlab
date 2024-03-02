@@ -170,7 +170,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     const phase_ids =
       phaseId &&
       authUser &&
-      canModerateProject(project.data.id, { data: authUser.data })
+      canModerateProject(project.data, { data: authUser.data })
         ? [phaseId]
         : null;
 
@@ -236,7 +236,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
 
   const canUserEditProject =
     !isNilOrError(authUser) &&
-    canModerateProject(project.data.id, { data: authUser.data });
+    canModerateProject(project.data, { data: authUser.data });
 
   const isSurvey = config.postType === 'nativeSurvey';
   const isAnonymousSurvey = isSurvey && allowAnonymousPosting;
