@@ -7,9 +7,9 @@ import { get, isFunction, isNil } from 'lodash-es';
 import { IUser } from 'api/users/types';
 import {
   isRegularUser,
-  isProjectModerator,
   isAdmin,
   isSuperAdmin,
+  isModerator,
 } from 'utils/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
@@ -94,7 +94,7 @@ const configuration: ModuleConfiguration = {
                 locale: user.data.attributes.locale,
                 isSuperAdmin: isSuperAdmin(user),
                 isAdmin: isAdmin(user),
-                isProjectModerator: isProjectModerator(user),
+                isModerator: isModerator(user),
                 highestRole: user.data.attributes.highest_role,
               },
               {
