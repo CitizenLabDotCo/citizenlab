@@ -1,5 +1,5 @@
 import { IUserData, IUser } from 'api/users/types';
-import { isAdmin, TRole } from 'utils/permissions/roles';
+import { isAdmin, TRole, userHasRole } from 'utils/permissions/roles';
 import { IProjectFolderData } from 'api/project_folders/types';
 import {
   definePermissionRule,
@@ -10,16 +10,8 @@ import {
   isModeratorRoute,
 } from 'utils/permissions/rules/routePermissions';
 import { IAppConfigurationData } from 'api/app_configuration/types';
-import { isNilOrError } from 'utils/helperUtils';
 
-export function userModeratesFolder(
-  user: IUserData | null,
-  projectFolderId: string
-) {
-  if (isNilOrError(user)) {
-    return false;
-  }
-
+export function userModeratesFolder(user: IUserData, projectFolderId: string) {
   return (
     isAdmin({ data: user }) ||
     !!user.attributes?.roles?.find((role: TRole) => {
@@ -32,9 +24,7 @@ export function userModeratesFolder(
 }
 
 export function isProjectFolderModerator(user: IUserData) {
-  return !!user.attributes?.roles?.find((role: TRole) => {
-    return role.type === 'project_folder_moderator';
-  });
+  return userHasRole({ data: user }, 'project_folder_moderator');
 }
 
 // rules
@@ -44,7 +34,6 @@ const canUserAccessAdminFolderRoute = (
   tenant: IAppConfigurationData
 ) => {
   const hasAdminFolderRouteAccess =
-    !isNilOrError(user) &&
     isProjectFolderModerator(user.data) &&
     // folder mods have the same
     // access rights as project mods
