@@ -40,7 +40,10 @@ export function canModerateProject(project: IProjectData, user: IUser) {
   );
 }
 
-function canModerateFolderOfProject(user: IUser, projectFolderId: string) {
+export function canModerateFolderOfProject(
+  user: IUser,
+  projectFolderId: string
+) {
   return userModeratesFolder(user.data, projectFolderId);
 }
 
