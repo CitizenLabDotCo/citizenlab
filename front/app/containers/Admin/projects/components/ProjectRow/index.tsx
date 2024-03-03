@@ -25,7 +25,6 @@ import ManageButton from './ManageButton';
 // resources
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import useAuthUser from 'api/me/useAuthUser';
-import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 // types
 import ProjectMoreActionsMenu, { ActionType } from './ProjectMoreActionsMenu';
@@ -81,13 +80,9 @@ const ProjectRow = ({
     return null;
   }
 
-  const userCanModerateProject =
-    // This means project is in a folder
-    (typeof folderId === 'string' &&
-      userModeratesFolder(authUser.data, folderId)) ||
-    canModerateProject(project.data, {
-      data: authUser.data,
-    });
+  const userCanModerateProject = canModerateProject(project.data, {
+    data: authUser.data,
+  });
 
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {
