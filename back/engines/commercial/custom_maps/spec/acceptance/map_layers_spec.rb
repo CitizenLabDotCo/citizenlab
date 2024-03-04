@@ -12,7 +12,6 @@ resource 'Map Layers' do
       :with_positioning,
       :with_tile_provider,
       :with_geojson_layers,
-      :with_legend,
       project: geojson_map_project)
   end
   let(:geojson_map_project_id) { geojson_map_project.id }
@@ -23,7 +22,6 @@ resource 'Map Layers' do
       :with_positioning,
       :with_tile_provider,
       :with_esri_feature_layers,
-      :with_legend,
       project: esri_map_project)
   end
   let(:esri_map_project_id) { esri_map_project.id }
