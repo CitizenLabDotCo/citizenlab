@@ -213,6 +213,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
         </Button>
         <Button
           linkTo={`/ideas/${idea.data.attributes.slug}`}
+          openLinkInNewTab
           icon="eye"
           buttonStyle="secondary"
         >

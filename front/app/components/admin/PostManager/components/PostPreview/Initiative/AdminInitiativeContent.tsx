@@ -155,6 +155,7 @@ const AdminInitiativeContent = ({
           </Button>
           <Button
             linkTo={`/initiatives/${initiative.data.attributes.slug}`}
+            openLinkInNewTab
             icon="eye"
             buttonStyle="secondary"
           >
