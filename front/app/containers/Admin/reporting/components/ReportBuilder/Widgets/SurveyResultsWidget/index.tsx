@@ -17,7 +17,7 @@ import Card from '../_shared/Card';
 import SurveyResults from './SurveyResults';
 import NoData from '../_shared/NoData';
 import ProjectFilter from '../_shared/ProjectFilter';
-import PhaseFilter from '../_shared/PhaseFilter';
+import PhaseFilter from 'components/UI/PhaseFilter';
 import QuestionFilter from './QuestionFilter';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 

@@ -13,8 +13,9 @@ import ResolutionControl, {
 } from 'components/admin/ResolutionControl';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 
-import { colors } from '@citizenlab/cl2-component-library';
+import { colors, Box } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
+import Warning from 'components/UI/Warning';
 
 // services
 
@@ -159,6 +160,11 @@ const ProjectReport = () => {
 
   return (
     <>
+      <Box mb="20px">
+        <Warning>
+          <FormattedMessage {...messages.deprecatedMessage} />
+        </Warning>
+      </Box>
       <RowSection>
         <PageTitle>
           <T value={project.data.attributes.title_multiloc} />

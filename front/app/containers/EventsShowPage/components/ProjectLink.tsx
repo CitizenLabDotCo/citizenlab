@@ -19,19 +19,15 @@ import useLocalize from 'hooks/useLocalize';
 import { IProjectData } from 'api/projects/types';
 
 type ProjectLinkProps = {
-  project: IProjectData | undefined;
+  project: IProjectData;
 };
 
 const ProjectLink = ({ project }: ProjectLinkProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const isMobileOrSmaller = useBreakpoint('phone');
-  const projectTitleLocalized = localize(project?.attributes.title_multiloc);
-  const projectSlug = project?.attributes.slug;
-
-  if (!project) {
-    return null;
-  }
+  const projectTitleLocalized = localize(project.attributes.title_multiloc);
+  const projectSlug = project.attributes.slug;
 
   return (
     <Box display="flex" my={isMobileOrSmaller ? '12px' : '24px'} gap="8px">
