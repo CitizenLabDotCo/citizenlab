@@ -11,8 +11,6 @@ import {
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
-
-// routing
 import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';

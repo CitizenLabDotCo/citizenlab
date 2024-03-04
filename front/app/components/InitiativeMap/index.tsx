@@ -6,8 +6,6 @@ import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Renderer from '@arcgis/core/renderers/SimpleRenderer';
 import MapView from '@arcgis/core/views/MapView';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-
-// auth
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { stringify } from 'qs';

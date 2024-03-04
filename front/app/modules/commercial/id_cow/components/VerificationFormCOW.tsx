@@ -30,7 +30,6 @@ import usersKeys from 'api/users/keys';
 import { verifyCOW } from '../api/verification_methods/verify';
 import messages from '../messages';
 
-// images
 import helpImage from './COWHelpImage.png';
 
 interface Props {

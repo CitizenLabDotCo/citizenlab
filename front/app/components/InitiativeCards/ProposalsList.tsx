@@ -10,7 +10,6 @@ import Centerer from 'components/UI/Centerer';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// Types
 import { IInitiativeData } from 'api/initiatives/types';
 
 import messages from './messages';

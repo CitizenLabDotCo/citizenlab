@@ -8,8 +8,6 @@ import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
-
-// Types
 import { StatusComponentProps } from '../StatusWrapper';
 
 import Status from '.';

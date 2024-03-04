@@ -1,12 +1,22 @@
 import React, { FormEvent } from 'react';
 
-import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';
-
 import { Label, Radio, fontSizes } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import styled from 'styled-components';
+import { CRUDParams } from 'typings';
+
+import { SectionField } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import TextArea from 'components/UI/TextArea';
+
+import { injectIntl } from 'utils/cl-intl';
+import getSubmitState from 'utils/getSubmitState';
+
+import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';
+
+import messages from './messages';
 
 const timeout = 300;
 
@@ -46,17 +56,6 @@ const ReportReason = styled.div`
     }
   }
 `;
-
-import { CRUDParams } from 'typings';
-
-import { SectionField } from 'components/admin/Section';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import TextArea from 'components/UI/TextArea';
-
-import { injectIntl } from 'utils/cl-intl';
-import getSubmitState from 'utils/getSubmitState';
-
-import messages from './messages';
 
 interface Props extends CRUDParams {
   reasonCodes: ReasonCode[];

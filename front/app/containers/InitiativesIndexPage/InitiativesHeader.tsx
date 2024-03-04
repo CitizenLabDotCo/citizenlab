@@ -4,8 +4,6 @@ import { media, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import AvatarBubbles from 'components/AvatarBubbles';
-
-// images
 import InitiativeButton from 'components/InitiativeButton';
 import T from 'components/T';
 import Warning from 'components/UI/Warning';

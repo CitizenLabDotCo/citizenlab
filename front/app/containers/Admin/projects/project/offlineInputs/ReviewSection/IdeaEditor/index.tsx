@@ -7,8 +7,6 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-
-// routing
 import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
 import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';

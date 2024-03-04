@@ -10,7 +10,6 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 
-// images
 import illustration from './illustration.png';
 import messages from './messages';
 

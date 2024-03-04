@@ -18,8 +18,6 @@ import useProjectById from 'api/projects/useProjectById';
 
 import messages from '../messages';
 
-// routing
-
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
   height: ${(props) => props.theme.mobileTopBarHeight}px;

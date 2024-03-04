@@ -1,7 +1,5 @@
 import React from 'react';
 
-// images
-
 import {
   Box,
   Image,

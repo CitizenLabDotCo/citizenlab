@@ -15,7 +15,6 @@ import { isNil } from 'utils/helperUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
 
-// Types
 import messages from './messages';
 
 import { SeatInfoProps, SeatNumbersType, SeatTypeMessageDescriptor } from '.';

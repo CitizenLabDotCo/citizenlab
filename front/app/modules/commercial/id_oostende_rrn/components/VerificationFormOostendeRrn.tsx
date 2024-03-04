@@ -31,8 +31,6 @@ import { TVerificationMethod } from 'api/verification_methods/types';
 import { verifyOostendeRrn } from '../api/verification_methods/verify';
 import messages from '../messages';
 
-// images
-
 interface Props {
   onCancel: () => void;
   onVerified: () => void;

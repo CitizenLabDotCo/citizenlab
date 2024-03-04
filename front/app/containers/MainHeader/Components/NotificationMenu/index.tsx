@@ -1,14 +1,15 @@
 import React, { lazy, Suspense, useState } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
+
 import { trackEventByName } from 'utils/analytics';
+
+import useMarkAllAsRead from 'api/notifications/useMarkAllAsRead';
 
 import NotificationCount from './components/NotificationCount';
 import tracks from './tracks';
+
 const NotificationsDropdown = lazy(() => import('./NotificationsDropdown'));
-
-import { Box } from '@citizenlab/cl2-component-library';
-
-import useMarkAllAsRead from 'api/notifications/useMarkAllAsRead';
 
 const NotificationMenu = () => {
   const { mutate: markAllAsRead } = useMarkAllAsRead();

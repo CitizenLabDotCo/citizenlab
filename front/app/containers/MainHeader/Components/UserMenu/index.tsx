@@ -1,15 +1,15 @@
 import React, { useState, lazy, Suspense } from 'react';
 
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-
-import User from './User';
-const UserMenuDropdown = lazy(() => import('./UserMenuDropdown'));
-
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import User from './User';
+
+const UserMenuDropdown = lazy(() => import('./UserMenuDropdown'));
 
 const Container = styled.div`
   height: 100%;

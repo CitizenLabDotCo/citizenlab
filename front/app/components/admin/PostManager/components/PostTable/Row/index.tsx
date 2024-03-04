@@ -13,8 +13,6 @@ import { IPhaseData } from 'api/phases/types';
 
 import useLocale from 'hooks/useLocale';
 
-// Types
-
 import { ManagerType, TFilterMenu } from '../../..';
 
 // lazy-loaded components

@@ -26,8 +26,6 @@ import PrintReportButton from '../../ReportBuilderPage/ReportRow/Buttons/PrintRe
 
 import messages from './messages';
 
-// routing
-
 type ContentBuilderTopBarProps = {
   hasError: boolean;
   hasPendingState: boolean;

@@ -20,8 +20,6 @@ import messages from '../messages';
 
 import ViewCustomPageButton from './ViewCustomPageButton';
 
-// routing
-
 const CustomPagesEditSettings = ({
   intl: { formatMessage },
 }: WrappedComponentProps) => {
