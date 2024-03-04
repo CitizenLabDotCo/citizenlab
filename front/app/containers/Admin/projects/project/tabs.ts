@@ -4,7 +4,6 @@ import { IPhaseData } from 'api/phases/types';
 import { ITab, FormatMessage } from 'typings';
 
 export type IPhaseTab = ITab & {
-  disabled?: boolean;
   disabledTooltipText?: string;
 };
 
@@ -77,8 +76,9 @@ export const getTabs = (
       label: formatMessage(messages.reportTab),
       url: 'report',
       name: 'report',
-      disabled: !phase_reports_enabled,
-      disabledTooltipText: formatMessage(messages.lockedTooltip),
+      disabledTooltipText: phase_reports_enabled
+        ? undefined
+        : formatMessage(messages.lockedTooltip),
     },
     granular_permissions_enabled && {
       label: formatMessage(messages.phaseAccessRights),

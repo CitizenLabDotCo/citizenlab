@@ -80,7 +80,6 @@ type TabProps = {
   active: boolean;
   badge?: React.ReactNode;
   handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
-  disabled?: boolean;
   disabledTooltipText?: string;
 };
 
@@ -89,7 +88,6 @@ const Tab = ({
   url,
   badge,
   handleClick,
-  disabled,
   disabledTooltipText,
   ...props
 }: TabProps) => (
@@ -97,7 +95,7 @@ const Tab = ({
     interactive={false}
     placement="bottom"
     theme={''}
-    disabled={!disabled}
+    disabled={!disabledTooltipText}
     maxWidth={350}
     content={
       <TooltipContentWrapper tippytheme="light">
@@ -105,7 +103,7 @@ const Tab = ({
       </TooltipContentWrapper>
     }
   >
-    <Container disable={disabled} {...props}>
+    <Container disable={!!disabledTooltipText} {...props}>
       <Link to={url} onClick={handleClick}>
         {label}
         {badge && <>{badge}</>}
