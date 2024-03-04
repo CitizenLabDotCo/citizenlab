@@ -13,7 +13,6 @@ import { Locale } from 'typings';
 
 import Error from 'components/UI/Error';
 
-// Utils
 import getMentions from 'api/mentions/getMentions';
 import { MentionRoles } from 'api/mentions/types';
 

@@ -9,8 +9,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import useLocale from 'hooks/useLocale';
 
-// Context
-
 const MultilocInputLayout = ({
   schema,
   uischema,

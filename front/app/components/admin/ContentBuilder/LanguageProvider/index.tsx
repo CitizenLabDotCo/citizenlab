@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-// Utils
 import moment from 'moment';
 import { IntlProvider } from 'react-intl';
 import { Locale } from 'typings';

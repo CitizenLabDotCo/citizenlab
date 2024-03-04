@@ -29,15 +29,10 @@ import { FormContext } from 'components/Form/contexts';
 import { FormSection } from 'components/UI/FormComponents';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-// Context
-
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
-
-// Utils
-
 import {
   extractElementsByOtherOptionLogic,
   isVisible,

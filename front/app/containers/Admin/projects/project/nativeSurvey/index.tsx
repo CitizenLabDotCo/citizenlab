@@ -22,7 +22,6 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-// Utils
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
