@@ -2444,7 +2444,6 @@
   "app.modules.navbar.admin.containers.pageHeader": "Sivut ja valikko",
   "app.modules.navbar.admin.containers.pageSubtitle": "Navigointipalkkisi voi näyttää jopa viisi sivua aloitussivun ja projektisivujen lisäksi. Voit nimetä valikkokohtia uudelleen, järjestää uudelleen ja lisätä uusia sivuja omalla sisällölläsi.",
   "app.modules.project_management.admin.components.permissionsTab": "Käyttöoikeudet",
-  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.featureLockedReason": "Tämä ei sisälly nykyiseen suunnitelmaasi. Keskustele hallituksen menestyspäällikön tai järjestelmänvalvojan kanssa avataksesi sen.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupBySurveyQuestion": "Ryhmittele kyselyn mukaan",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupByUserField": "Ryhmittele käyttäjäkentän mukaan",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupMode": "Ryhmätila",
