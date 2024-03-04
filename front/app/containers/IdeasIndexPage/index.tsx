@@ -20,8 +20,6 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import IdeasIndexMeta from './IdeaIndexMeta';
 import messages from './messages';
 
-// style
-
 const Container = styled.main`
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px

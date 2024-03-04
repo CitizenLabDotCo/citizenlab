@@ -26,8 +26,6 @@ import { HeaderTitle } from './StyledComponents';
 
 import tracks from './tracks';
 
-// style
-
 s;
 
 const duartion = 350;

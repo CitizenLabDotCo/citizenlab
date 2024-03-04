@@ -25,8 +25,6 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase, getInputTerm, getLastPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
-// style
-
 const Container = styled.div``;
 
 const SeeIdeasButton = styled(Button)`

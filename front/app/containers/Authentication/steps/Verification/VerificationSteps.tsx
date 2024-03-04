@@ -17,8 +17,6 @@ import {
 } from 'api/verification_methods/types';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
-// style
-
 import VerificationMethods from './VerificationMethods';
 
 const Container = styled.div`

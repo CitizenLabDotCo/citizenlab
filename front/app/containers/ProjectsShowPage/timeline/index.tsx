@@ -7,8 +7,6 @@ import {
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
 import { useParams } from 'react-router-dom';
-
-// style
 import styled from 'styled-components';
 
 import ContentContainer from 'components/ContentContainer';

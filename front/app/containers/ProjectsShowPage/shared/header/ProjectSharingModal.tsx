@@ -14,8 +14,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
-// style
-
 interface Props {
   projectId: string;
   opened: boolean;

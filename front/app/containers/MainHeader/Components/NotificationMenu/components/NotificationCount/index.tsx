@@ -16,8 +16,6 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import messages from '../../messages';
 
-// style
-
 const Container = styled.div`
   position: relative;
 `;

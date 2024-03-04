@@ -43,8 +43,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import messages from '../messages';
 
-// styles
-
 const LinkedProjectContainer = styled(Box)<{ disabled: boolean }>`
   &:hover {
     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};

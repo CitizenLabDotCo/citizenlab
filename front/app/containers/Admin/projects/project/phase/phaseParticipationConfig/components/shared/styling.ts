@@ -11,8 +11,6 @@ import { Section, SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 
-// style
-
 export const Container = styled.div``;
 
 export const StyledSection = styled(Section)`

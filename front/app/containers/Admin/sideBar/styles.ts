@@ -4,8 +4,6 @@ import styled from 'styled-components';
 
 import Button from 'components/UI/Button';
 
-// style
-
 export const ItemMenu = styled(Button)`
   color: ${colors.coolGrey600};
   display: flex;

@@ -9,8 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { MessageDescriptor } from 'react-intl';
-
-// style
 import styled, { css } from 'styled-components';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

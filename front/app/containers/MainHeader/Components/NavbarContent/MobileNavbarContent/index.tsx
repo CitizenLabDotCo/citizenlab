@@ -24,8 +24,6 @@ import ShowFullMenuButton from './ShowFullMenuButton';
 
 // tracking
 
-// style
-
 const RightContainer = styled(Box)`
   display: flex;
   align-items: center;

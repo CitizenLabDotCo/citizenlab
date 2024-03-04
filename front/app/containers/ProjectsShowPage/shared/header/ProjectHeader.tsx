@@ -28,8 +28,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
 import ProjectInfo from './ProjectInfo';
 
-// style
-
 const Container = styled.div`
   padding-top: 30px;
   padding-bottom: 65px;

@@ -24,8 +24,6 @@ import useLocale from 'hooks/useLocale';
 
 import LanguageSelectorPopup from './LanguageSelectorPopup';
 import messages from './messages';
-
-// style
 import { ItemMenu, StyledBox } from './styles';
 
 export const UserMenu = () => {

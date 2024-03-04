@@ -10,8 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import ReactResizeDetector from 'react-resize-detector';
-
-// style
 import styled, { useTheme } from 'styled-components';
 
 import T from 'components/T';

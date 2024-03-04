@@ -13,9 +13,6 @@ import messages from '../../messages';
 
 import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
 import DesktopNavbarItem from './DesktopNavbarItem';
-
-// style
-
 import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 
 const Container = styled.nav`

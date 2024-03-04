@@ -17,8 +17,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import messages from 'containers/ProjectsShowPage/messages';
-
-// style
 import { darken, rgba } from 'polished';
 import styled, { css } from 'styled-components';
 

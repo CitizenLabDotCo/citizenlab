@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { IconButton } from '@citizenlab/cl2-component-library';
-
-// style
 import { useTheme } from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';

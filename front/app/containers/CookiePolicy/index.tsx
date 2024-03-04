@@ -21,8 +21,6 @@ import messages from './messages';
 
 // events
 
-// styles
-
 const StyledButton = styled.button`
   color: ${colors.teal};
   font-weight: inherit;

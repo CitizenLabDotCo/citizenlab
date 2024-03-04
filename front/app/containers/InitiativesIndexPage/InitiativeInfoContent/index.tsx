@@ -7,8 +7,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
-// style
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocalize from 'hooks/useLocalize';

@@ -19,8 +19,6 @@ import useUserById from 'api/users/useUserById';
 
 import messages from './messages';
 
-// style
-
 const UserWrapper = styled.div`
   display: flex;
   align-items: center;

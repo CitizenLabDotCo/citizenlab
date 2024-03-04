@@ -37,9 +37,6 @@ import InitiativeBanner from './InitiativeBanner';
 import messages from './messages';
 import PostedBy from './PostedBy';
 import ReactionControl from './ReactionControl';
-
-// style
-
 import {
   columnsGapDesktop,
   columnsGapTablet,

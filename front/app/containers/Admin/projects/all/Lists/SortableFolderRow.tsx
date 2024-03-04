@@ -6,8 +6,6 @@ import { SortableRow } from 'components/admin/ResourceList';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-// style
-
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAuthUser from 'api/me/useAuthUser';

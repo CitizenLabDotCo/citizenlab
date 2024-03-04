@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-// styles
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';

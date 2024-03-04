@@ -22,9 +22,6 @@ import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
-
-// style
-
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';

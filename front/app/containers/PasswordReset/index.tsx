@@ -8,8 +8,6 @@ import { adopt } from 'react-adopt';
 import { Helmet } from 'react-helmet';
 import { WrappedComponentProps } from 'react-intl';
 
-// style
-
 // resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,

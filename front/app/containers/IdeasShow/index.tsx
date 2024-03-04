@@ -34,9 +34,6 @@ import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
-
-// style
-
 import { columnsGapDesktop } from './styleConstants';
 
 import usePhases from 'api/phases/usePhases';

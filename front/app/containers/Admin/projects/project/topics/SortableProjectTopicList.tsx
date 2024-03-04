@@ -19,7 +19,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError, byId } from 'utils/helperUtils';
 
-// styles
 import { IProjectAllowedInputTopicData } from 'api/project_allowed_input_topics/types';
 import useDeleteAllowedProjectInputTopic from 'api/project_allowed_input_topics/useDeleteProjectAllowedInputTopic';
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';

@@ -16,8 +16,6 @@ import useNotifications from 'api/notifications/useNotifications';
 import EmptyStateImg from '../assets/no_notification_image.svg';
 import messages from '../messages';
 
-// styles
-
 import Notification from './Notification';
 
 const EmptyStateText = styled.div`

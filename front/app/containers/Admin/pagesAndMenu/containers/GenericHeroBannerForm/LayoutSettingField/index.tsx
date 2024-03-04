@@ -26,8 +26,6 @@ import TwoColumnLayoutInactive from './layout_previews/two_column_layout_inactiv
 import TwoRowLayoutActive from './layout_previews/two_row_layout_active.jpg';
 import TwoRowLayoutInactive from './layout_previews/two_row_layout_inactive.jpg';
 
-// style
-
 const LayoutPreview = styled.img`
   width: 220px;
 `;

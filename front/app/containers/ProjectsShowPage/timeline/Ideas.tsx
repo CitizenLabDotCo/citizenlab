@@ -13,8 +13,6 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getInputTermMessage } from 'utils/i18n';
 
-// style
-
 import { IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';

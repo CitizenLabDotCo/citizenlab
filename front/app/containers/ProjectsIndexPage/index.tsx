@@ -12,8 +12,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import ProjectsIndexMeta from './ProjectsIndexMeta';
 
-// style
-
 const Container = styled.main`
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px

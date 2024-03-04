@@ -7,8 +7,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// style
 import styled from 'styled-components';
 
 import Button from 'components/UI/Button';

@@ -13,9 +13,6 @@ import { Popup } from 'semantic-ui-react';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-
-// style
-
 import { isNilOrError } from 'utils/helperUtils';
 
 import useAuthUser from 'api/me/useAuthUser';

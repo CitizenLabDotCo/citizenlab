@@ -20,8 +20,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 
-// style
-
 const TopContainer = styled.div`
   width: 100%;
   margin-top: -5px;

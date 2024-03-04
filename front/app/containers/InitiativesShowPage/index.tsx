@@ -3,8 +3,6 @@ import React from 'react';
 import { Spinner, media } from '@citizenlab/cl2-component-library';
 import InitiativesShow from 'containers/InitiativesShow';
 import { useParams } from 'react-router-dom';
-
-// style
 import styled from 'styled-components';
 
 import PageNotFound from 'components/PageNotFound';

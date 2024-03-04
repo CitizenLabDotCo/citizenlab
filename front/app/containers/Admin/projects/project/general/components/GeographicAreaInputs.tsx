@@ -20,8 +20,6 @@ import useLocalize from 'hooks/useLocalize';
 import { TOnProjectAttributesDiffChangeFunction } from '..';
 import { LabelHeaderDescription } from '../../phase/phaseParticipationConfig/components/shared/labels';
 
-// styles
-
 import messages from '../messages';
 
 import { StyledSectionField, StyledMultipleSelect } from './styling';

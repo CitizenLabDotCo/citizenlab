@@ -34,9 +34,6 @@ import InitiativeBanner from './InitiativeBanner';
 import messages from './messages';
 import PostedByMobile from './PostedByMobile';
 import ReactionControl from './ReactionControl';
-
-// style
-
 import RequestToCosponsor from './RequestToCosponsor';
 import {
   pageContentMaxWidth,

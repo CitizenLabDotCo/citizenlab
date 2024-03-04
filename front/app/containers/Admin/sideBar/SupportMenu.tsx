@@ -12,8 +12,6 @@ import { Popup } from 'semantic-ui-react';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-
-// style
 import { ItemMenu, StyledBox } from './styles';
 
 export const SupportMenu = () => {

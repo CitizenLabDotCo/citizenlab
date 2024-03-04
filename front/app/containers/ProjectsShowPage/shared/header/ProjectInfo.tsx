@@ -20,8 +20,6 @@ import useProjectById from 'api/projects/useProjectById';
 
 import ProjectInfoSideBar from './ProjectInfoSideBar';
 
-// style
-
 const Container = styled.div`
   display: flex;
   flex-direction: row;

@@ -27,8 +27,6 @@ const ModeratorProjectList = React.lazy(
 );
 const AdminProjectList = React.lazy(() => import('./Lists/AdminProjectList'));
 
-// style
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';

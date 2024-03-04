@@ -42,8 +42,6 @@ import ProjectActionButtons from '../ProjectActionButtons';
 import ProjectSharingModal from '../ProjectSharingModal';
 import { hasEmbeddedSurvey, hasNativeSurvey } from '../utils';
 
-// style
-
 const Container = styled.div``;
 
 const About = styled.div`

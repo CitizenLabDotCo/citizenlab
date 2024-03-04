@@ -19,8 +19,6 @@ import InitiativesHeader from './InitiativesHeader';
 import InitiativesIndexMeta from './InitiativesIndexMeta';
 import messages from './messages';
 
-// style
-
 const Container = styled.main``;
 
 const FooterBanner = styled.div`

@@ -14,8 +14,6 @@ import { isTopBarNavActive } from 'utils/helperUtils';
 
 import messages from './messages';
 
-// styles
-
 const InitiativesPage = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();

@@ -23,9 +23,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import messages from '../../messages';
-
-// style
-
 import ProjectsListItem from '../ProjectsListItem';
 
 const NavigationDropdown = styled.li`

@@ -1,6 +1,5 @@
 import React from 'react';
 
-// style
 import { defaultCardStyle, media } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import styled from 'styled-components';

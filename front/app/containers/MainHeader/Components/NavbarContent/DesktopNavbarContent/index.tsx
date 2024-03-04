@@ -9,8 +9,6 @@ import {
   Button,
 } from '@citizenlab/cl2-component-library';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// style
 import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 

@@ -5,7 +5,6 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import User from './User';
 const UserMenuDropdown = lazy(() => import('./UserMenuDropdown'));
 
-// style
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';

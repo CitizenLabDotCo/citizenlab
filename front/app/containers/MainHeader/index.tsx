@@ -10,8 +10,6 @@ import DesktopNavbarContent from './Components/NavbarContent/DesktopNavbarConten
 import MobileNavbarContent from './Components/NavbarContent/MobileNavbarContent';
 import TenantLogo from './Components/TenantLogo';
 
-// style
-
 const Container = styled.header`
   width: 100vw;
   height: ${({ theme }) => theme.menuHeight}px;

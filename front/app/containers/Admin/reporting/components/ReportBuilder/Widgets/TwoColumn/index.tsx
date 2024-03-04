@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-// styles
 import { Element } from '@craftjs/core';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';

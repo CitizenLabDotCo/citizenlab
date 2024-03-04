@@ -12,8 +12,6 @@ import JSConfetti from 'js-confetti';
 
 // context
 
-// style
-
 import { isError } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';

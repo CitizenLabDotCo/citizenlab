@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 import { FormattedMessage } from 'utils/cl-intl';
-// style
 
 const Container = styled(VerticalCenterer)`
   font-size: ${fontSizes.l}px;

@@ -11,8 +11,6 @@ import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
 
-// style
-
 const Container = styled.div`
   display: flex;
   gap: 15px;

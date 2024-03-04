@@ -14,7 +14,6 @@ import styled from 'styled-components';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
-// style
 import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';

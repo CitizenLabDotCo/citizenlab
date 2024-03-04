@@ -1,6 +1,5 @@
 import React from 'react';
 
-// style
 import { fontSizes } from '@citizenlab/cl2-component-library';
 import { FormattedTime, FormattedDate } from 'react-intl';
 import styled from 'styled-components';

@@ -8,7 +8,6 @@ import UserName from 'components/UI/UserName';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-// style
 import useAuthUser from 'api/me/useAuthUser';
 
 import VerificationBadge from './VerificationBadge';

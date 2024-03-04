@@ -12,8 +12,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-// style
-
 // svg
 import illustration from './illustration.svg';
 import messages from './messages';

@@ -27,9 +27,6 @@ import { IProjectFolderData } from 'api/project_folders/types';
 import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
 
 import messages from './messages';
-
-// style
-
 import ProjectFolderDescription from './ProjectFolderDescription';
 import ProjectFolderHeader from './ProjectFolderHeader';
 import ProjectFolderProjectCards from './ProjectFolderProjectCards';
