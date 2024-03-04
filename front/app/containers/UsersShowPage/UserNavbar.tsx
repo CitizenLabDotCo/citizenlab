@@ -1,8 +1,5 @@
 import React, { memo } from 'react';
 
-import { useLocation } from 'react-router-dom';
-
-s;
 import {
   fontSizes,
   media,
@@ -10,6 +7,7 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ScreenReaderOnly } from 'utils/a11y';

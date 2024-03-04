@@ -24,9 +24,9 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddProjectFile from 'api/project_files/useAddProjectFile';
 import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';

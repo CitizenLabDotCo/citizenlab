@@ -6,8 +6,6 @@ import messages from './messages';
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';
 
-// Hooks
-
 export default () => {
   const isUserBlockingEnabled = useFeatureFlag({
     name: 'user_blocking',

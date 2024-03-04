@@ -7,7 +7,6 @@ import BaseEditor from 'components/admin/ContentBuilder/Editor';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
-
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';

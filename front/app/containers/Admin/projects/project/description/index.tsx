@@ -20,8 +20,6 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWi
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
-
-// Hooks
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import useProjectById from 'api/projects/useProjectById';

@@ -1,7 +1,5 @@
 import React, { memo, useState } from 'react';
 
-// Hooks
-
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { IOption } from 'typings';

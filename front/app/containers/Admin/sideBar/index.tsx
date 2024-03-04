@@ -37,8 +37,6 @@ import { UserMenu } from './UserMenu';
 
 // resources
 
-// Hooks
-
 const Menu = styled.div`
   z-index: 10;
   flex: 0 0 auto;

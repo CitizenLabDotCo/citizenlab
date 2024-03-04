@@ -21,7 +21,6 @@ import UserSelect from 'components/UI/UserSelect';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isRegularUser } from 'utils/permissions/roles';
 
-// Hooks
 import { getFullName } from 'utils/textUtils';
 
 import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';

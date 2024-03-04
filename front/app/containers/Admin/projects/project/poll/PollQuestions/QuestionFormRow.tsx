@@ -11,7 +11,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 // Typings
 import { isNilOrError } from 'utils/helperUtils';
 
-// Hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 

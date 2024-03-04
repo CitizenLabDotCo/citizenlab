@@ -16,8 +16,6 @@ import messages from '../../messages';
 import EmptyState from './EmptyState';
 import ExampleFrame from './ExampleFrame';
 
-// Hooks
-
 /** Modulo function, since JS's native `%` remainder function works differently for negative numbers */
 const mod = (n: number, m: number) => ((n % m) + m) % m;
 

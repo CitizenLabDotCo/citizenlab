@@ -44,7 +44,6 @@ const ImageAndAttachmentsSection = lazy(
 );
 import Warning from 'components/UI/Warning';
 
-// Hooks
 import useTopics from 'api/topics/useTopics';
 import { IInitiativeData } from 'api/initiatives/types';
 import { IInitiativeImageData } from 'api/initiative_images/types';

@@ -22,9 +22,6 @@ import messages from './messages';
 import ProfileDeletion from './ProfileDeletion';
 import ProfileForm from './ProfileForm';
 import UsersEditPageMeta from './UsersEditPageMeta';
-
-// Hooks
-
 import VerificationStatus from './VerificationStatus';
 
 const Container = styled.main`

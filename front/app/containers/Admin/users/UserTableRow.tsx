@@ -26,8 +26,6 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
-
-// Hooks
 import { getFullName } from 'utils/textUtils';
 
 import { IUserData } from 'api/users/types';

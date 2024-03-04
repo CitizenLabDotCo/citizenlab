@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 
-// Hooks
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
 

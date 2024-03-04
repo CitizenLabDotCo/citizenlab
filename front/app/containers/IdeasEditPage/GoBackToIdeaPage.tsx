@@ -6,7 +6,6 @@ import Button from 'components/UI/Button';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 
-// Hooks
 import { IIdeaData } from 'api/ideas/types';
 
 import useLocalize from 'hooks/useLocalize';
