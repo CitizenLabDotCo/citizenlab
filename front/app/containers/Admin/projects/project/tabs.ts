@@ -4,7 +4,6 @@ import { IPhaseData } from 'api/phases/types';
 import { ITab, FormatMessage } from 'typings';
 
 export type IPhaseTab = ITab & {
-  hidden?: boolean;
   disabled?: boolean;
   disabledTooltipText?: string;
 };
