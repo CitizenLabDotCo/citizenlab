@@ -13,7 +13,7 @@ import messages from '../messages';
 import { IPresentComment } from 'api/comments/types';
 import useUserById from 'api/users/useUserById';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import { isAdmin } from 'utils/permissions/roles';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 
 const Container = styled.div`
   display: flex;
@@ -82,13 +82,11 @@ const CommentHeader = ({
     author &&
     (projectId
       ? canModerateProject(projectId, { data: author.data })
-      : // When component is used for proposals
-        isAdmin({ data: author.data }));
+      : canModerateInitiative({ data: author.data }));
 
   // With the current implementation, this needs to always render,
   // even if author is null/undefined.
   // Otherwise we won't render CommentHeader in comments of deleted users.
-
   return (
     <Container className={className || ''}>
       <Left>

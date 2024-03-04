@@ -35,7 +35,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
-import { isAdmin } from 'utils/permissions/roles';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 
 const StyledAvatar = styled(Avatar)`
   margin-left: -4px;
@@ -318,8 +318,7 @@ const ChildCommentForm = ({
   if (focused) {
     const isModerator = projectId
       ? canModerateProject(projectId, authUser)
-      : // When component is used for proposals
-        isAdmin({ data: authUser.data });
+      : canModerateInitiative(authUser);
 
     return (
       <Box

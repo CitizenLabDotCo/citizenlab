@@ -39,7 +39,7 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { useLocation } from 'react-router-dom';
-import { isAdmin } from 'utils/permissions/roles';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 
 const StyledAvatar = styled(Avatar)`
   margin-left: -4px;
@@ -290,8 +290,7 @@ const ParentCommentForm = ({
 
   const isModerator = projectId
     ? canModerateProject(projectId, authUser)
-    : // When component is used for proposals
-      isAdmin({ data: authUser.data });
+    : canModerateInitiative(authUser);
 
   const placeholderMessage: MessageDescriptor = isAdminPage
     ? messages.visibleToUsersPlaceholder
