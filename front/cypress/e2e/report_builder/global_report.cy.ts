@@ -34,7 +34,7 @@ describe('Global report', () => {
     // Switch locale
     cy.get('#e2e-report-builder-topbar .e2e-localeswitcher.nl-BE').click();
 
-    // Validate that new text is there
+    // Validate that text for other locale is present
     cy.get('.e2e-text-box').should('contain.text', 'Tekst');
 
     // Switch back

@@ -135,7 +135,7 @@ describe('Idea template', () => {
         // Switch locale
         cy.get('#e2e-report-builder-topbar .e2e-localeswitcher.nl-BE').click();
 
-        // Validate that new text is there
+        // Validate that text for other locale is present
         cy.get('.e2e-text-box')
           .eq(2)
           .should('contain.text', 'Samenvatting van het verslag');
