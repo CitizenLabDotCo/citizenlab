@@ -200,7 +200,7 @@ export const FormEdit = ({
         ...(field.input_type === 'linear_scale' && {
           minimum_label_multiloc: field.minimum_label_multiloc || {},
           maximum_label_multiloc: field.maximum_label_multiloc || {},
-          maximum: field.maximum.toString(),
+          maximum: field.maximum?.toString() || '5',
         }),
       }));
       await updateFormCustomFields(

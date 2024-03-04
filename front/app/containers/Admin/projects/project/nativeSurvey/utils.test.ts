@@ -1,9 +1,11 @@
 import { resetOptionsIfNotPersisted, resetCopiedForm } from './utils';
+import { IFlatCustomField } from 'api/custom_fields/types';
 
 describe('resetOptionsIfNotPersisted', () => {
-  const customFields = [
+  const customFields: IFlatCustomField[] = [
     {
       id: '53b0aea7-8f23-472e-a790-08a2e9c375f7',
+      type: 'custom_field',
       input_type: 'select',
       logic: {},
       required: false,
@@ -12,7 +14,6 @@ describe('resetOptionsIfNotPersisted', () => {
         en: 'Your question',
       },
       key: 'your_question_6nx',
-      code: null,
       description_multiloc: {},
       options: [
         {
@@ -30,9 +31,12 @@ describe('resetOptionsIfNotPersisted', () => {
           other: false,
         },
       ],
-      maximum_select_count: null,
-      minimum_select_count: null,
       random_option_ordering: false,
+      minimum_label_multiloc: {},
+      maximum_label_multiloc: {},
+      ordering: 1,
+      updated_at: '2024-01-01T00:00:00.000Z',
+      created_at: '2024-01-01T00:00:00.000Z',
     },
   ];
 
@@ -51,20 +55,24 @@ describe('resetOptionsIfNotPersisted', () => {
 });
 
 describe('resetCopiedForm', () => {
-  const customFields = [
+  const customFields: IFlatCustomField[] = [
     {
       id: '83d2dd6c-93f8-42c8-a099-870aa0fb205f',
+      type: 'custom_field',
       input_type: 'page',
       logic: {},
       required: false,
       enabled: true,
       title_multiloc: {},
       key: 'page1',
-      code: null,
       description_multiloc: {},
+      ordering: 1,
+      updated_at: '2024-01-01T00:00:00.000Z',
+      created_at: '2024-01-01T00:00:00.000Z',
     },
     {
       id: '53b0aea7-8f23-472e-a790-08a2e9c375f7',
+      type: 'custom_field',
       input_type: 'select',
       logic: {
         rules: [
@@ -88,7 +96,6 @@ describe('resetCopiedForm', () => {
         en: 'Your question',
       },
       key: 'your_question_6nx',
-      code: null,
       description_multiloc: {},
       options: [
         {
@@ -106,22 +113,32 @@ describe('resetCopiedForm', () => {
           title_multiloc: { en: 'Option 3' },
         },
       ],
-      maximum_select_count: null,
-      minimum_select_count: null,
+      minimum_label_multiloc: {},
+      maximum_label_multiloc: {},
       random_option_ordering: false,
+      ordering: 2,
+      updated_at: '2024-01-01T00:00:00.000Z',
+      created_at: '2024-01-01T00:00:00.000Z',
     },
     {
-      input_type: 'page',
       id: 'f966eb8caeb249a6a00e26cc39bf93ea',
+      type: 'custom_field',
+      input_type: 'page',
+      key: 'page2',
       logic: { next_page_id: 'f5ac8a59213b4c6d8e3a95a646d587cc' },
       required: false,
       enabled: true,
       title_multiloc: {},
       description_multiloc: {},
+      ordering: 3,
+      updated_at: '2024-01-01T00:00:00.000Z',
+      created_at: '2024-01-01T00:00:00.000Z',
     },
     {
       id: '7ye89dcaeb249a6a00e26cc39bf9388',
+      type: 'custom_field',
       input_type: 'linear_scale',
+      key: 'linear_scale_xyz',
       logic: {
         rules: [
           {
@@ -142,41 +159,66 @@ describe('resetCopiedForm', () => {
       enabled: true,
       title_multiloc: { en: 'linear scale' },
       description_multiloc: {},
-      minimum_label_multiloc: {},
-      maximum_label_multiloc: {},
-      maximum: '5',
+      maximum: 5,
+      ordering: 4,
+      updated_at: '2024-01-01T00:00:00.000Z',
+      created_at: '2024-01-01T00:00:00.000Z',
     },
     {
-      input_type: 'page',
       id: '48265b4df96148538e31d88641429e97',
+      type: 'custom_field',
+      input_type: 'page',
+      key: 'page3',
       logic: { next_page_id: 'survey_end' },
       required: false,
       enabled: true,
       title_multiloc: {},
       description_multiloc: {},
+      ordering: 5,
+      updated_at: '2024-01-01T00:00:00.000Z',
+      created_at: '2024-01-01T00:00:00.000Z',
     },
     {
+      id: 'b52c69f7-06d2-4393-ae94-b8a9dcc53399',
+      type: 'custom_field',
       input_type: 'text',
+      key: 'text_xyz',
+      logic: {},
       required: false,
       enabled: true,
       title_multiloc: { en: 'Question 2' },
       description_multiloc: {},
+      ordering: 6,
+      updated_at: '2024-01-01T00:00:00.000Z',
+      created_at: '2024-01-01T00:00:00.000Z',
     },
     {
-      input_type: 'page',
       id: 'f5ac8a59213b4c6d8e3a95a646d587cc',
+      type: 'custom_field',
+      input_type: 'page',
+      key: 'page4',
       logic: {},
       required: false,
       enabled: true,
       title_multiloc: { en: '' },
       description_multiloc: {},
+      ordering: 7,
+      updated_at: '2024-01-01T00:00:00.000Z',
+      created_at: '2024-01-01T00:00:00.000Z',
     },
     {
+      id: 'b3ff26bd-0857-4bce-b2fa-f11f760e101b',
+      type: 'custom_field',
       input_type: 'text',
+      key: 'text_dfg',
+      logic: {},
       required: false,
       enabled: true,
       title_multiloc: { en: 'Question 3' },
       description_multiloc: {},
+      ordering: 8,
+      updated_at: '2024-01-01T00:00:00.000Z',
+      created_at: '2024-01-01T00:00:00.000Z',
     },
   ];
 
@@ -199,7 +241,7 @@ describe('resetCopiedForm', () => {
   it('should add remove id and add temp_id to all custom field options', () => {
     resultCustomFields.forEach((field) => {
       if (field.input_type === 'select') {
-        field.options.forEach((option) => {
+        field.options?.forEach((option) => {
           expect(option.id).toBe(undefined);
           expect(option.temp_id).toMatch(/^TEMP-ID-/);
         });
@@ -209,6 +251,7 @@ describe('resetCopiedForm', () => {
 
   it('should replace ids in select logic rules with TEMP-ID unless the page ID is survey end', () => {
     const selectField = resultCustomFields[1];
+    if (!selectField.logic.rules) return;
     expect(selectField.logic.rules[0].if).toMatch(/^TEMP-ID-/);
     expect(selectField.logic.rules[0].goto_page_id).toMatch(/^TEMP-ID-/);
     expect(selectField.logic.rules[1].if).toMatch(/^TEMP-ID-/);
@@ -219,6 +262,7 @@ describe('resetCopiedForm', () => {
 
   it('should replace only goto_page_ids in linear_scale logic rules with TEMP-ID unless the page ID is survey end', () => {
     const linearScaleField = resultCustomFields[3];
+    if (!linearScaleField.logic.rules) return;
     expect(linearScaleField.logic.rules[0].if).toEqual(2);
     expect(linearScaleField.logic.rules[0].goto_page_id).toMatch(/^TEMP-ID-/);
     expect(linearScaleField.logic.rules[1].if).toEqual(3);

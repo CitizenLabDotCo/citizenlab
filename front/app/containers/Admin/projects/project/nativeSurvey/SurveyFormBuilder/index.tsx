@@ -46,10 +46,10 @@ const SurveyFormBuilder = () => {
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 
-  if (!phase && !customFields) return null;
+  if (!phase || !customFields) return null;
 
   const surveyFormPersisted =
-    phase?.data.attributes.custom_form_persisted || false;
+    phase.data.attributes.custom_form_persisted || false;
 
   const formCustomFields = copyFrom
     ? resetCopiedForm(customFields)
