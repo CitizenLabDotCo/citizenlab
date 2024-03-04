@@ -33,7 +33,7 @@ const CopySurveyModal = ({
   const [projectId, setProjectId] = useState();
   const [phaseId, setPhaseId] = useState();
 
-  // TODO: JS - very similar to what happens in report builder - could we combine?
+  // TODO: Very similar to what happens in report builder - could we combine?
   const handleProjectFilter = useCallback(
     ({ value }: IOption) => {
       setProjectId(value);
