@@ -8,10 +8,8 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import { forOwn, isEmpty } from 'lodash-es';
-import { Multiloc, Locale } from 'typings';
-
-s;
 import styled from 'styled-components';
+import { Multiloc, Locale } from 'typings';
 
 import { Section } from 'components/admin/Section';
 import Button from 'components/UI/Button';

@@ -6,9 +6,6 @@ import {
   colors,
   media,
 } from '@citizenlab/cl2-component-library';
-
-s;
-
 import { darken } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';

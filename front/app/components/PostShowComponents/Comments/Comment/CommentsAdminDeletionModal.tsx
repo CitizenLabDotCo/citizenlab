@@ -6,7 +6,6 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { MessageDescriptor } from 'react-intl';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-
 import styled from 'styled-components';
 import { string, object } from 'yup';
 

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-s;
 import {
   colors,
   fontSizes,

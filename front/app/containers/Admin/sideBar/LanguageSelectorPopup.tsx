@@ -15,8 +15,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
 import messages from './messages';
-
-s;
 import { ItemMenu } from './styles';
 
 interface Props {

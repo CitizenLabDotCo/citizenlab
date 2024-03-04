@@ -20,9 +20,6 @@ import useProjectById from 'api/projects/useProjectById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from '../messages';
-
-s;
-
 import {
   pageContentMaxWidth,
   contentFadeInDuration,

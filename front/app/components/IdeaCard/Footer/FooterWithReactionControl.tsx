@@ -9,8 +9,6 @@ import { IIdeaData } from 'api/ideas/types';
 
 import CommentCount from './CommentCount';
 
-s;
-
 const Container = styled.footer`
   display: flex;
   align-items: center;

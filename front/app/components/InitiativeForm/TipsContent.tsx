@@ -1,6 +1,5 @@
 import React from 'react';
 
-s;
 import { fontSizes } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 

@@ -7,8 +7,6 @@ import clHistory from 'utils/cl-router/history';
 import { IIdeaData } from 'api/ideas/types';
 
 import CommentCount from './CommentCount';
-
-s;
 import ReadMoreButton from './ReadMoreButton';
 
 interface Props {

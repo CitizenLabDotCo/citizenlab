@@ -9,8 +9,6 @@ import {
   fieldTypes,
 } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
 import { FormProvider, useForm } from 'react-hook-form';
-
-s;
 import { Multiloc } from 'typings';
 import { object, string } from 'yup';
 

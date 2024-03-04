@@ -19,19 +19,15 @@ import { TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
 import useAuthUser from 'api/me/useAuthUser';
 import useNavbarItems from 'api/navbar/useNavbarItems';
+import { DEFAULT_PAGE_SLUGS } from 'api/navbar/util';
+import useProjects from 'api/projects/useProjects';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
 import SiteMapMeta from './SiteMapMeta';
-
-s;
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import useProjects from 'api/projects/useProjects';
-import { DEFAULT_PAGE_SLUGS } from 'api/navbar/util';
 
 const Container = styled.div`
   min-height: calc(
