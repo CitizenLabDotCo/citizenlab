@@ -1,4 +1,3 @@
-// authentication
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 import { Locale } from 'typings';
 
@@ -11,12 +10,7 @@ import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAc
 import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 import checkUser from 'api/users/checkUser';
 
-// cache
-
 import tracks from '../../tracks';
-
-// events
-
 import {
   GetRequirements,
   UpdateState,

@@ -11,7 +11,6 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { useIntl } from 'utils/cl-intl';
 
 import ProjectFilter from '../../_shared/ProjectFilter';
-
 import messages from '../messages';
 import { ChartWidgetProps } from '../typings';
 

@@ -20,8 +20,6 @@ import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
 
-// context
-
 import useLocalize from 'hooks/useLocalize';
 
 import PrintReportButton from '../../ReportBuilderPage/ReportRow/Buttons/PrintReportButton';

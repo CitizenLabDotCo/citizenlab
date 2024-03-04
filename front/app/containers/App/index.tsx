@@ -1,32 +1,5 @@
 import 'focus-visible';
-import GlobalStyle from 'global-styles';
-import 'intersection-observer';
-import { includes, uniq } from 'lodash-es';
-import moment from 'moment';
-
-import 'moment-timezone';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-
-import { useLocation } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
-import { Locale } from 'typings';
-
-import ErrorBoundary from 'components/ErrorBoundary';
-
-import { trackPage } from 'utils/analytics';
-import {
-  endsWith,
-  isIdeaShowPage,
-  isInitiativeShowPage,
-  isPage,
-} from 'utils/helperUtils';
-
-import { appLocalesMomentPairs, locales } from 'containers/App/constants';
-
-// context
-import { PreviousPathnameContext } from 'context';
-
-const ConsentManager = lazy(() => import('components/ConsentManager'));
 
 import {
   Box,
@@ -36,36 +9,48 @@ import {
   getTheme,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-
-import Navigate from 'utils/cl-router/Navigate';
-
+import { configureScope } from '@sentry/react';
+import { appLocalesMomentPairs, locales } from 'containers/App/constants';
 import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
+import { PreviousPathnameContext } from 'context';
+import GlobalStyle from 'global-styles';
+import 'intersection-observer';
+import { includes, uniq } from 'lodash-es';
+import 'moment-timezone';
+import moment from 'moment';
+import { useLocation } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+import { Locale } from 'typings';
 
-import Meta from './Meta';
-const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
-const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
-
-// auth
+import ErrorBoundary from 'components/ErrorBoundary';
 import HasPermission from 'components/HasPermission';
 
-import { IAppConfigurationStyle } from 'api/app_configuration/types';
-import useDeleteSelf from 'api/users/useDeleteSelf';
-
+import { trackPage } from 'utils/analytics';
+import Navigate from 'utils/cl-router/Navigate';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import eventEmitter from 'utils/eventEmitter';
+import {
+  endsWith,
+  isIdeaShowPage,
+  isInitiativeShowPage,
+  isPage,
+} from 'utils/helperUtils';
 import { localeStream } from 'utils/locale';
 
+import { IAppConfigurationStyle } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+import useDeleteSelf from 'api/users/useDeleteSelf';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import eventEmitter from 'utils/eventEmitter';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-
-import useAuthUser from 'api/me/useAuthUser';
-
-import { configureScope } from '@sentry/react';
-
+import Meta from './Meta';
 import UserSessionRecordingModal from './UserSessionRecordingModal';
+
+const ConsentManager = lazy(() => import('components/ConsentManager'));
+const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
+const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 
 interface Props {
   children: React.ReactNode;

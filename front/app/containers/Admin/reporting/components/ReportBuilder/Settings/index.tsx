@@ -6,7 +6,6 @@ import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuild
 import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from 'components/admin/ContentBuilder/constants';
 import Settings from 'components/admin/ContentBuilder/Settings/Settings';
 
-// events
 import { SelectedNode } from 'components/admin/ContentBuilder/Settings/typings';
 
 import eventEmitter from 'utils/eventEmitter';

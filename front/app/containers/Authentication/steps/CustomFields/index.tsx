@@ -2,8 +2,6 @@ import React, { useEffect, FormEvent } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-// events
-
 import {
   AuthenticationData,
   SetError,

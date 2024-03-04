@@ -1,6 +1,5 @@
 import { useContext, useCallback } from 'react';
 
-// context
 import CustomIntlContext from 'containers/LanguageProvider/CustomIntlContext';
 import { MessageDescriptor } from 'react-intl';
 import { Locale } from 'typings';

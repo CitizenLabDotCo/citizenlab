@@ -1,7 +1,5 @@
 import React from 'react';
 
-// context
-
 import { Box } from '@citizenlab/cl2-component-library';
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
 import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';

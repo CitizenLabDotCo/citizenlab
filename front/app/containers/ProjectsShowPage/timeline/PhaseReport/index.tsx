@@ -6,8 +6,6 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
-
-// context
 import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 import { getReportWidth } from 'containers/Admin/reporting/utils/getReportWidth';

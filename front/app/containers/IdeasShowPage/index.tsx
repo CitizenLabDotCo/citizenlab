@@ -17,7 +17,6 @@ import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
-// context
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';

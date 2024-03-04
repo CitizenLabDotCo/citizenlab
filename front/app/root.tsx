@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 
-import { render } from 'react-dom';
-
 import 'assets/css/reset.min.css';
 import 'assets/fonts/fonts.css';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
 import 'react-datepicker/dist/react-datepicker.css';
+
 import * as Sentry from '@sentry/react';
 import { wrapUseRoutes } from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
@@ -16,6 +15,7 @@ import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
+import { render } from 'react-dom';
 import {
   createRoutesFromChildren,
   matchRoutes,

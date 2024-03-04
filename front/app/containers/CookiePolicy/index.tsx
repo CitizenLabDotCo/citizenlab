@@ -19,8 +19,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 import messages from './messages';
 
-// events
-
 const StyledButton = styled.button`
   color: ${colors.teal};
   font-weight: inherit;

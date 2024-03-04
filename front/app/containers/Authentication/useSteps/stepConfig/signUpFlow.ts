@@ -1,4 +1,3 @@
-// authentication
 import { trackEventByName } from 'utils/analytics';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 

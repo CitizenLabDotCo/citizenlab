@@ -9,9 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 import JSConfetti from 'js-confetti';
-
-// context
-
 import { isError } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';

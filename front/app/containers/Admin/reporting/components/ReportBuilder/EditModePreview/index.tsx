@@ -14,9 +14,6 @@ import { Locale } from 'typings';
 import DesktopButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/DesktopButton';
 import MobileButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/MobileButton';
 import Frame from 'components/admin/ContentBuilder/Frame';
-
-// context
-
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { CraftJson } from 'components/admin/ContentBuilder/typings';
 

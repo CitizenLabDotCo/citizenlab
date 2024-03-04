@@ -1,16 +1,7 @@
 import React, { useState, lazy, Suspense } from 'react';
 
-import { isAdmin, isRegularUser } from 'utils/permissions/roles';
-
 import { Tr, Td, Box, colors } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-
-const ChangeSeatModal = lazy(
-  () => import('components/admin/SeatBasedBilling/ChangeSeatModal')
-);
-
-// Events --- For error handling
-
 import styled from 'styled-components';
 
 import BlockUser from 'components/admin/UserBlockModals/BlockUser';
@@ -24,6 +15,7 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
+import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 
 import { IUserData } from 'api/users/types';
@@ -34,6 +26,10 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import events from './events';
 import messages from './messages';
+
+const ChangeSeatModal = lazy(
+  () => import('components/admin/SeatBasedBilling/ChangeSeatModal')
+);
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;

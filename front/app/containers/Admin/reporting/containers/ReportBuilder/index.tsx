@@ -26,7 +26,6 @@ import useReport from 'api/reports/useReport';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-// context
 import EditModePreview from '../../components/ReportBuilder/EditModePreview';
 import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrapper';
 import Editor from '../../components/ReportBuilder/Editor';
