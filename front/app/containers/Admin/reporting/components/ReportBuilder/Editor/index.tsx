@@ -3,7 +3,6 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
 
-// widgets
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 import PhaseTemplate from '../Templates/PhaseTemplate';

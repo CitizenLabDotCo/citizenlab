@@ -16,7 +16,6 @@ import { IQueryParameters } from 'api/users/types';
 import useUsers from 'api/users/useUsers';
 
 import events from './events';
-
 import NoUsers from './NoUsers';
 import UserTable from './UserTable';
 import UserTableActions from './UserTableActions';

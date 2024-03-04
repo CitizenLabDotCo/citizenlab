@@ -18,9 +18,6 @@ import DonutChart from './DonutChart';
 import messages from './messages';
 import ProgressBars from './ProgressBars';
 import StackedBars from './StackedBars';
-
-s;
-
 import usePostsFeedback from './usePostsFeedback';
 import hookMessages from './usePostsFeedback/messages';
 

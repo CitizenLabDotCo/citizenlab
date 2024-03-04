@@ -13,35 +13,35 @@ import JSConfetti from 'js-confetti';
 // context
 
 // style
-import styled from 'styled-components';
 
-import { IProjectData } from 'api/projects/types';
-
-import { isValidPhase } from './phaseParam';
-import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
-import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { scrollToElement } from 'utils/scroll';
 import { isError } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+
 import ErrorBoundary from 'components/ErrorBoundary';
 import PageNotFound from 'components/PageNotFound';
 import Centerer from 'components/UI/Centerer';
 import Unauthorized from 'components/Unauthorized';
-import { useIntl } from 'utils/cl-intl';
 
+import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
 import messages from 'utils/messages';
+import { scrollToElement } from 'utils/scroll';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { VotingContext } from 'api/baskets_ideas/useVoting';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
+import { IProjectData } from 'api/projects/types';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocale from 'hooks/useLocale';
 
+import { isValidPhase } from './phaseParam';
 import ProjectCTABar from './ProjectCTABar';
 import ProjectHeader from './shared/header/ProjectHeader';
 import ProjectHelmet from './shared/header/ProjectHelmet';

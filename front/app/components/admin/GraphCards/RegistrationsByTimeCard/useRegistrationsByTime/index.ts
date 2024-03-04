@@ -9,7 +9,6 @@ import useAnalytics from 'api/analytics/useAnalytics';
 import { parseTimeSeries, parseExcelData } from './parse';
 import { query } from './query';
 import { getTranslations } from './translations';
-
 import { QueryParameters, Response } from './typings';
 
 export default function useRegistrationsByTime({

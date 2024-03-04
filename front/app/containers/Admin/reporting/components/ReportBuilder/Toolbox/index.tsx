@@ -18,7 +18,6 @@ import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
-// widgets
 import {
   FormattedMessage,
   useIntl,
@@ -40,15 +39,15 @@ import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
+import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
-import TextMultiloc from '../Widgets/TextMultiloc';
-import TwoColumn from '../Widgets/TwoColumn';
-import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
 import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
-import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
+import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
+import TextMultiloc from '../Widgets/TextMultiloc';
+import TwoColumn from '../Widgets/TwoColumn';
 
 type ReportBuilderToolboxProps = {
   reportId: string;

@@ -8,9 +8,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import PostedBy from 'containers/IdeasShow/components/MetaInformation/PostedBy';
 import IdeaProposedBudget from 'containers/IdeasShow/components/ProposedBudget/IdeaProposedBudget';
-
-import styled from 'styled-components';
 import { darken } from 'polished';
+import styled from 'styled-components';
+
 import {
   Top,
   Content,
@@ -24,8 +24,8 @@ import Title from 'components/PostShowComponents/Title';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import { isNilOrError } from 'utils/helperUtils';
@@ -38,6 +38,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
+
 import useLocalize from 'hooks/useLocalize';
 
 import messages from '../messages';

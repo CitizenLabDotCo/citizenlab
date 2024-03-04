@@ -38,14 +38,16 @@ import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { CampaignName } from 'api/campaigns/types';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import { IPhaseFiles } from 'api/phase_files/types';
 import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
 import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
+import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
+import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
-import useAddPhase from 'api/phases/useAddPhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
@@ -57,11 +59,6 @@ import PhaseParticipationConfig, {
 
 import CampaignRow from './CampaignRow';
 import messages from './messages';
-
-import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
-
-import { CampaignName } from 'api/campaigns/types';
-
 import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';

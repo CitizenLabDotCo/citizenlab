@@ -1,16 +1,16 @@
 import React from 'react';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-const ClaveUnicaButton = React.lazy(
-  () => import('../../../components/UI/ClaveUnicaButton')
-);
 import { TVerificationMethodName } from 'api/verification_methods/types';
 import { isLastVerificationMethod } from 'api/verification_methods/util';
 
 import messages from './messages';
 
-import { FormattedMessage } from 'utils/cl-intl';
+const ClaveUnicaButton = React.lazy(
+  () => import('../../../components/UI/ClaveUnicaButton')
+);
 
 const verificationMethodName: TVerificationMethodName = 'clave_unica';
 const configuration: ModuleConfiguration = {

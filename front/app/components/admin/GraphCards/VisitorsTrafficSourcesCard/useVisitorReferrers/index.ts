@@ -7,7 +7,6 @@ import { getPageNumberFromUrl } from '../../_utils/pagination';
 import { parseTableData } from './parse';
 import { referrersListQuery, referrersTotalQuery } from './query';
 import { getTranslations } from './translations';
-
 import {
   QueryParameters,
   ReferrerListResponse,
