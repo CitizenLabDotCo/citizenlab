@@ -19,7 +19,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { getLayerType } from '../utils';
 
 interface Props {
-  projectId: string;
   setView: (view: ViewOptions) => void;
   mapConfig: IMapConfig;
 }

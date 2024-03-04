@@ -24,7 +24,7 @@ describe('useDeleteMapLayer', () => {
     });
 
     act(() => {
-      result.current.mutate({ id: 'id', projectId: 'projectId' });
+      result.current.mutate({ id: 'id', mapConfigId: 'mapConfigId' });
     });
 
     await waitFor(() => expect(result.current.data).not.toBe(undefined));
@@ -42,7 +42,7 @@ describe('useDeleteMapLayer', () => {
     });
 
     act(() => {
-      result.current.mutate({ id: 'id', projectId: 'projectId' });
+      result.current.mutate({ id: 'id', mapConfigId: 'mapConfigId' });
     });
 
     await waitFor(() => expect(result.current.isError).toBe(true));

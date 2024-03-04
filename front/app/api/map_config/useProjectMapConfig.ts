@@ -10,12 +10,12 @@ const fetchMapConfig = async ({ projectId }: { projectId?: string }) =>
     action: 'get',
   });
 
-const useMapConfig = (projectId?: string) => {
+const useProjectMapConfig = (projectId?: string) => {
   return useQuery<IMapConfig, CLErrors, IMapConfig, MapConfigKeys>({
-    queryKey: mapConfigKeys.item({ id: projectId }),
+    queryKey: mapConfigKeys.item({ projectId }),
     queryFn: () => fetchMapConfig({ projectId }),
     enabled: !!projectId,
   });
 };
 
-export default useMapConfig;
+export default useProjectMapConfig;

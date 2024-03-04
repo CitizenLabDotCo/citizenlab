@@ -25,19 +25,18 @@ import { request, ErrorTypes, ApiKeyManager } from '@esri/arcgis-rest-request';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useUpdateProjectMapConfig from 'api/map_config/useUpdateProjectMapConfig';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
 type Props = {
-  projectId: string;
   setView: (view: ViewOptions) => void;
   mapConfigId: string;
 };
 
-const WebMapUpload = ({ projectId, mapConfigId, setView }: Props) => {
+const WebMapUpload = ({ mapConfigId, setView }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
-  const { mutateAsync: updateProjectMapConfig, isLoading: apiCallLoading } =
-    useUpdateProjectMapConfig();
+  const { mutateAsync: updateMapConfig, isLoading: apiCallLoading } =
+    useUpdateMapConfig();
 
   const [portalId, setPortalId] = useState('');
   const [loading, setLoading] = useState(false);
@@ -59,10 +58,9 @@ const WebMapUpload = ({ projectId, mapConfigId, setView }: Props) => {
         setImportError(false);
         if (mapConfigId) {
           // Save the web map ID to the map config
-          updateProjectMapConfig(
+          updateMapConfig(
             {
-              projectId,
-              id: mapConfigId,
+              mapConfigId,
               esri_web_map_id: portalId,
             },
             {

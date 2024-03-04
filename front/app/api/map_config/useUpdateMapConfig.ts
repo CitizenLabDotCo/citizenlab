@@ -15,14 +15,19 @@ const updateMapConfig = ({ mapConfigId, ...map_config }: IMapConfigUpdate) =>
     body: { map_config },
   });
 
-const useUpdateMapConfig = (mapConfigId: string) => {
+const useUpdateMapConfig = (projectId?: string) => {
   const queryClient = useQueryClient();
   return useMutation<IMapConfig, CLErrors, IMapConfigUpdate>({
     mutationFn: updateMapConfig,
     onSuccess: async (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: mapConfigKeys.item({ id: variables.mapConfigId }),
+        queryKey: mapConfigKeys.item({ mapConfigId: variables.mapConfigId }),
       });
+      if (projectId) {
+        queryClient.invalidateQueries({
+          queryKey: mapConfigKeys.item({ projectId }),
+        });
+      }
     },
   });
 };

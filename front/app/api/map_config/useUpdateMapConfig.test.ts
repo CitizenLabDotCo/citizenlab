@@ -6,7 +6,7 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import useUpdateProjectMapConfig from './useUpdateProjectMapConfig';
+import useUpdateMapConfig from './useUpdateMapConfig';
 
 const apiPath = '*/projects/:projectId/map_config';
 
@@ -16,19 +16,18 @@ const server = setupServer(
   })
 );
 
-describe('useUpdateProjectMapConfig', () => {
+describe('useUpdateMapConfig', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUpdateProjectMapConfig(), {
+    const { result, waitFor } = renderHook(() => useUpdateMapConfig(), {
       wrapper: createQueryClientWrapper(),
     });
 
     act(() => {
       result.current.mutate({
-        id: 'id',
-        projectId: '1',
+        mapConfigId: '1',
       });
     });
 
@@ -43,13 +42,12 @@ describe('useUpdateProjectMapConfig', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUpdateProjectMapConfig(), {
+    const { result, waitFor } = renderHook(() => useUpdateMapConfig(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {
       result.current.mutate({
-        id: 'id',
-        projectId: '1',
+        mapConfigId: '1',
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

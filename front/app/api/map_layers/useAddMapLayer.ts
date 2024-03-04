@@ -5,24 +5,29 @@ import { IMapLayer, IMapLayerAttributes } from './types';
 import mapConfigKeys from '../map_config/keys';
 
 type IMapLayerAdd = {
-  projectId: string;
+  mapConfigId: string;
 } & IMapLayerAttributes;
 
-const addLayer = async ({ projectId, ...layer }: IMapLayerAdd) =>
+const addLayer = async ({ mapConfigId, ...layer }: IMapLayerAdd) =>
   fetcher<IMapLayer>({
-    path: `/projects/${projectId}/map_config/layers`,
+    path: `/map_configs/${mapConfigId}/layers`,
     action: 'post',
     body: { layer },
   });
 
-const useAddMapLayer = () => {
+const useAddMapLayer = (projectId?: string) => {
   const queryClient = useQueryClient();
   return useMutation<IMapLayer, CLErrors, IMapLayerAdd>({
     mutationFn: addLayer,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: mapConfigKeys.item({ id: variables.projectId }),
+        queryKey: mapConfigKeys.item({ mapConfigId: variables.mapConfigId }),
       });
+      if (projectId) {
+        queryClient.invalidateQueries({
+          queryKey: mapConfigKeys.item({ projectId }),
+        });
+      }
     },
   });
 };

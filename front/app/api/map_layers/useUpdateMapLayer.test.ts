@@ -27,7 +27,7 @@ describe('useUpdateMapLayer', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        projectId: 'projectId',
+        mapConfigId: 'mapConfigId',
         title_multiloc: { en: 'name' },
         geojson: { type: 'FeatureCollection', features: [] },
       });
@@ -51,7 +51,7 @@ describe('useUpdateMapLayer', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        projectId: 'projectId',
+        mapConfigId: 'mapConfigId',
         title_multiloc: { en: 'name' },
         geojson: { type: 'FeatureCollection', features: [] },
       });

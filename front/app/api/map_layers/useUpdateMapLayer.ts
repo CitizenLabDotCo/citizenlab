@@ -6,23 +6,28 @@ import mapConfigKeys from '../map_config/keys';
 
 const updateMapLayer = ({
   id,
-  projectId,
+  mapConfigId,
   ...layer
 }: IMapLayerUpdateAttributes) =>
   fetcher<IMapLayer>({
-    path: `/projects/${projectId}/map_config/layers/${id}`,
+    path: `/map_configs/${mapConfigId}/layers/${id}`,
     action: 'patch',
     body: { layer },
   });
 
-const useUpdateMapLayer = () => {
+const useUpdateMapLayer = (projectId?: string) => {
   const queryClient = useQueryClient();
   return useMutation<IMapLayer, CLErrors, IMapLayerUpdateAttributes>({
     mutationFn: updateMapLayer,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: mapConfigKeys.item({ id: variables.projectId }),
+        queryKey: mapConfigKeys.item({ mapConfigId: variables.mapConfigId }),
       });
+      if (projectId) {
+        queryClient.invalidateQueries({
+          queryKey: mapConfigKeys.item({ projectId }),
+        });
+      }
     },
   });
 };

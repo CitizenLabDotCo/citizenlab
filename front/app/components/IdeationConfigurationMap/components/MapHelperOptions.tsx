@@ -11,11 +11,11 @@ import messages from 'containers/Admin/CustomMapConfigPage/messages';
 
 // hooks
 import { useIntl } from 'utils/cl-intl';
-import useUpdateProjectMapConfig from 'api/map_config/useUpdateProjectMapConfig';
 
 // types
 import { IMapConfig } from 'api/map_config/types';
 import { goToMapLocation } from 'components/EsriMap/utils';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
 const GoToDefaultViewportButtonWrapper = styled.div`
   position: absolute;
@@ -38,12 +38,11 @@ const SetAsDefaultViewportButtonWrapper = styled.div`
 type Props = {
   mapView: MapView | null;
   mapConfig: IMapConfig;
-  projectId: string;
 };
 
-const MapHelperOptions = ({ mapView, mapConfig, projectId }: Props) => {
+const MapHelperOptions = ({ mapView, mapConfig }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: updateProjectMapConfig } = useUpdateProjectMapConfig();
+  const { mutateAsync: updateMapConfig } = useUpdateMapConfig();
 
   const goToDefaultMapView = () => {
     const centerPoint = mapConfig?.data.attributes.center_geojson;
@@ -58,9 +57,8 @@ const MapHelperOptions = ({ mapView, mapConfig, projectId }: Props) => {
 
   const setAsDefaultMapView = () => {
     if ((mapView?.center.longitude, mapView?.center.latitude)) {
-      updateProjectMapConfig({
-        projectId,
-        id: mapConfig?.data.id,
+      updateMapConfig({
+        mapConfigId: mapConfig?.data.id,
         center_geojson: {
           type: 'Point',
           coordinates: [mapView.center.longitude, mapView.center.latitude],

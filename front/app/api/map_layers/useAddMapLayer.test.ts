@@ -28,7 +28,7 @@ describe('useAddMapLayer', () => {
     act(() => {
       result.current.mutate({
         type: 'CustomMaps::GeojsonLayer',
-        projectId: '1',
+        mapConfigId: '1',
         id: 'id',
         title_multiloc: {
           en: 'test',
@@ -55,7 +55,7 @@ describe('useAddMapLayer', () => {
     act(() => {
       result.current.mutate({
         type: 'CustomMaps::GeojsonLayer',
-        projectId: '1',
+        mapConfigId: '1',
         id: 'id',
         title_multiloc: {
           en: 'test',

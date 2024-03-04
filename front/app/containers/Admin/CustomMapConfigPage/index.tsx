@@ -9,7 +9,7 @@ import MapView from '@arcgis/core/views/MapView';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useMapConfig from 'api/map_config/useMapConfig';
+import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import useAddProjectMapConfig from 'api/map_config/useAddProjectMapConfig';
 
 // utils
@@ -52,7 +52,8 @@ const ProjectCustomMapConfigPage = memo<Props>(
     };
     const { data: appConfig } = useAppConfiguration();
     const { mutate: createProjectMapConfig } = useAddProjectMapConfig();
-    const { data: projectMapConfig, isFetching } = useMapConfig(projectId);
+    const { data: projectMapConfig, isFetching } =
+      useProjectMapConfig(projectId);
     const [view, setView] = useState<ViewOptions>('main');
     const [mapView, setMapView] = useState<MapView | null>(null);
 
@@ -104,7 +105,6 @@ const ProjectCustomMapConfigPage = memo<Props>(
         <Container className={className || ''}>
           {view === 'main' && mapConfig && (
             <StyledMapConfigOverview
-              projectId={projectId}
               setView={setView}
               mapView={mapView}
               mapConfig={mapConfig}
@@ -114,7 +114,6 @@ const ProjectCustomMapConfigPage = memo<Props>(
           {view === 'featureLayerUpload' && (
             <Box flex="0 0 520px" width="520px">
               <FeatureLayerUpload
-                projectId={projectId}
                 setView={setView}
                 mapConfigId={mapConfig?.data.id}
               />
@@ -124,7 +123,6 @@ const ProjectCustomMapConfigPage = memo<Props>(
           {view === 'webMapUpload' && (
             <Box flex="0 0 520px" width="520px">
               <WebMapUpload
-                projectId={projectId}
                 setView={setView}
                 mapConfigId={mapConfig?.data.id}
               />
@@ -134,7 +132,6 @@ const ProjectCustomMapConfigPage = memo<Props>(
           <MapWrapper>
             <IdeationConfigurationMap
               mapConfig={mapConfig}
-              projectId={projectId}
               setParentMapView={setMapView}
             />
           </MapWrapper>

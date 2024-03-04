@@ -28,7 +28,7 @@ describe('useReorderMapLayer', () => {
       result.current.mutate({
         id: 'id',
         ordering: 1,
-        projectId: 'projectId',
+        mapConfigId: 'mapConfigId',
       });
     });
 
@@ -50,7 +50,7 @@ describe('useReorderMapLayer', () => {
       result.current.mutate({
         id: 'id',
         ordering: 1,
-        projectId: 'projectId',
+        mapConfigId: 'mapConfigId',
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

@@ -34,9 +34,10 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import useMapConfig from 'api/map_config/useMapConfig';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useUpdateProjectMapConfig from 'api/map_config/useUpdateProjectMapConfig';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
+import { IMapConfig } from 'api/map_config/types';
+import { useParams } from 'react-router-dom';
 
 const Container = styled.div``;
 
@@ -85,7 +86,7 @@ const Spacer = styled.div`
 `;
 
 interface Props {
-  projectId: string;
+  mapConfig: IMapConfig;
   onEditLayer: (layerId: string) => void;
   className?: string;
   setView: (view: ViewOptions) => void;
@@ -93,23 +94,30 @@ interface Props {
 
 const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
   ({
-    projectId,
+    mapConfig,
     onEditLayer,
     className,
     intl: { formatMessage },
     setView,
     localize,
   }) => {
-    const { data: mapConfig } = useMapConfig(projectId);
-    const { mutate: deleteProjectMapLayer } = useDeleteMapLayer();
-    const { mutate: reorderProjectMapLayer } = useReorderMapLayer();
-    const { mutateAsync: updateProjectMapConfig } = useUpdateProjectMapConfig();
+    const { projectId } = useParams() as {
+      projectId: string;
+    };
+
+    const { mutate: deleteProjectMapLayer } = useDeleteMapLayer(projectId);
+    const { mutate: reorderProjectMapLayer } = useReorderMapLayer(projectId);
+    const { mutateAsync: updateMapConfig } = useUpdateMapConfig(projectId);
     const isEsriIntegrationEnabled = useFeatureFlag({
       name: 'esri_integration',
     });
 
     const handleReorderLayers = (mapLayerId: string, newOrder: number) => {
-      reorderProjectMapLayer({ projectId, id: mapLayerId, ordering: newOrder });
+      reorderProjectMapLayer({
+        mapConfigId: mapConfig.data.id,
+        id: mapLayerId,
+        ordering: newOrder,
+      });
     };
 
     const removeLayer = (layerId: string) => (event: React.FormEvent) => {
@@ -118,15 +126,14 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
       const message = formatMessage(messages.deleteConfirmation);
 
       if (window.confirm(message)) {
-        deleteProjectMapLayer({ projectId, id: layerId });
+        deleteProjectMapLayer({ mapConfigId: mapConfig.data.id, id: layerId });
       }
     };
 
     const removeWebMap = () => {
       if (mapConfig?.data.id) {
-        updateProjectMapConfig({
-          projectId,
-          id: mapConfig?.data.id,
+        updateMapConfig({
+          mapConfigId: mapConfig?.data.id,
           esri_web_map_id: null,
         });
       }
@@ -291,13 +298,9 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
         {mapConfig?.data?.id && (
           <>
             {isEsriIntegrationEnabled && ( // TODO: Remove hiding of buttons once Esri integration is released + internal training done
-              <EsriImportOptions
-                projectId={projectId}
-                setView={setView}
-                mapConfig={mapConfig}
-              />
+              <EsriImportOptions setView={setView} mapConfig={mapConfig} />
             )}
-            <GeoJsonImportButton projectId={projectId} mapConfig={mapConfig} />
+            <GeoJsonImportButton mapConfig={mapConfig} />
           </>
         )}
       </Container>

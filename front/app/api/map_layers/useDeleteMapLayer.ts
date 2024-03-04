@@ -2,21 +2,32 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import mapConfigKeys from '../map_config/keys';
 
-const deleteMapLayer = ({ id, projectId }: { id: string; projectId: string }) =>
+const deleteMapLayer = ({
+  id,
+  mapConfigId,
+}: {
+  id: string;
+  mapConfigId: string;
+}) =>
   fetcher({
-    path: `/projects/${projectId}/map_config/layers/${id}`,
+    path: `/map_configs/${mapConfigId}/layers/${id}`,
     action: 'delete',
   });
 
-const useDeleteMapLayer = () => {
+const useDeleteMapLayer = (projectId?: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: deleteMapLayer,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: mapConfigKeys.item({ id: variables.projectId }),
+        queryKey: mapConfigKeys.item({ mapConfigId: variables.mapConfigId }),
       });
+      if (projectId) {
+        queryClient.invalidateQueries({
+          queryKey: mapConfigKeys.item({ projectId }),
+        });
+      }
     },
   });
 };

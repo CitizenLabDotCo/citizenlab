@@ -29,17 +29,20 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAddMapLayer from 'api/map_layers/useAddMapLayer';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { getFeatureLayerInitialTitleMultiloc } from '../utils';
+import { useParams } from 'react-router-dom';
 
 type Props = {
-  projectId: string;
   setView: (view: ViewOptions) => void;
   mapConfigId: string;
 };
 
-const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
+const FeatureLayerUpload = ({ mapConfigId, setView }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
 
+  const { projectId } = useParams() as {
+    projectId: string;
+  };
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [importError, setImportError] = useState(false);
@@ -48,7 +51,7 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
 
   const tenantLocales = useAppConfigurationLocales();
   const { mutate: createProjectMapLayer, isLoading: apiCallLoading } =
-    useAddMapLayer();
+    useAddMapLayer(projectId);
 
   const addEsriFeatureLayer = () => {
     setLoading(true);
@@ -72,8 +75,8 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
           createProjectMapLayer(
             {
               type: 'CustomMaps::EsriFeatureLayer',
-              projectId,
               layer_url: url,
+              mapConfigId,
               id: mapConfigId,
               title_multiloc: getFeatureLayerInitialTitleMultiloc(
                 serviceDescription || serviceItemId,

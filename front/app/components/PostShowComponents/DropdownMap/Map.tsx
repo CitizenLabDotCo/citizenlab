@@ -4,7 +4,7 @@ import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
 import { getMapPinSymbol, parseLayers } from 'components/EsriMap/utils';
 import { useTheme } from 'styled-components';
-import useMapConfig from 'api/map_config/useMapConfig';
+import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import useLocalize from 'hooks/useLocalize';
 
 export interface Props {
@@ -13,7 +13,7 @@ export interface Props {
 }
 
 const MapComponent = memo<Props>(({ position, projectId }) => {
-  const { data: mapConfig } = useMapConfig(projectId || undefined);
+  const { data: mapConfig } = useProjectMapConfig(projectId || undefined);
   const localize = useLocalize();
   const theme = useTheme();
   const center = position.coordinates;

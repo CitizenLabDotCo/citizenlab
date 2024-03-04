@@ -6,7 +6,6 @@ import useUpdateMapLayer from 'api/map_layers/useUpdateMapLayer';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useMapConfig from 'api/map_config/useMapConfig';
 
 // components
 import {
@@ -38,6 +37,8 @@ import styled from 'styled-components';
 // typing
 import { Multiloc, IOption } from 'typings';
 import { IMapLayerAttributes } from 'api/map_layers/types';
+import { IMapConfig } from 'api/map_config/types';
+import { useParams } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -74,8 +75,8 @@ const CancelButton = styled(Button)`
 `;
 
 interface Props {
-  projectId: string;
   mapLayerId: string;
+  mapConfig: IMapConfig;
   className?: string;
   onClose: () => void;
 }
@@ -111,10 +112,10 @@ const getEditableTitleMultiloc = (
 };
 
 const MapLayerConfig = memo<Props & WrappedComponentProps>(
-  ({ projectId, mapLayerId, className, onClose, intl: { formatMessage } }) => {
-    const { mutateAsync: updateProjectMapLayer } = useUpdateMapLayer();
+  ({ mapConfig, mapLayerId, className, onClose, intl: { formatMessage } }) => {
+    const { projectId } = useParams() as { projectId: string };
+    const { mutateAsync: updateProjectMapLayer } = useUpdateMapLayer(projectId);
     const tenantLocales = useAppConfigurationLocales();
-    const { data: mapConfig } = useMapConfig(projectId);
 
     const mapLayer =
       mapConfig?.data?.attributes?.layers?.find(
@@ -242,8 +243,8 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
 
         try {
           await updateProjectMapLayer({
-            projectId,
             id: mapLayer.id,
+            mapConfigId: mapConfig?.data?.id,
             title_multiloc,
             geojson,
           });

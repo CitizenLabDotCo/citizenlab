@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 
-import useMapConfig from './useMapConfig';
+import useMapConfig from './useProjectMapConfig';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';

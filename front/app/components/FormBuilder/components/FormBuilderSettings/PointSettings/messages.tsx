@@ -9,8 +9,4 @@ export default defineMessages({
     id: 'app.components.formBuilder.configureMap',
     defaultMessage: 'Configure map',
   },
-  configureMapTooltip: {
-    id: 'app.components.formBuilder.configureMapTooltip',
-    defaultMessage: 'Configure the map',
-  },
 });

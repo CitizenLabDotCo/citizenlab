@@ -46,7 +46,6 @@ const StyledMapLayersList = styled(MapLayersList)`
 const StyledMapCenterAndZoomConfig = styled(MapCenterAndZoomConfig)``;
 
 interface Props {
-  projectId: string;
   mapView?: MapView | null;
   mapConfig: IMapConfig;
   className?: string;
@@ -54,7 +53,7 @@ interface Props {
 }
 
 const MapConfigOverview = memo<Props>(
-  ({ projectId, className, mapConfig, setView, mapView }) => {
+  ({ className, mapConfig, setView, mapView }) => {
     const [editedMapLayerId, setEditedMapLayerId] = useState<string | null>(
       null
     );
@@ -70,37 +69,40 @@ const MapConfigOverview = memo<Props>(
     return (
       <Container className={className || ''}>
         <Header>
-          <TitleContainer>
-            <StyledSectionTitle>
-              <FormattedMessage {...messages.mapConfigurationTitle} />
-            </StyledSectionTitle>
-          </TitleContainer>
+          {!mapConfig && ( // Show only on project map configuration
+            <TitleContainer>
+              <StyledSectionTitle>
+                <FormattedMessage {...messages.mapConfigurationTitle} />
+              </StyledSectionTitle>
+            </TitleContainer>
+          )}
           <Text color="textSecondary">
             <FormattedMessage {...messages.mapConfigurationDescription} />
           </Text>
-          <Warning>
-            <FormattedMessage {...messages.mapLocationWarning} />
-          </Warning>
+          {!mapConfig && ( // Show only on project map configuration
+            <Warning>
+              <FormattedMessage {...messages.mapLocationWarning} />
+            </Warning>
+          )}
         </Header>
 
         {!editedMapLayerId ? (
           <>
             <StyledMapLayersList
-              projectId={projectId}
               onEditLayer={openLayerConfig}
               setView={setView}
+              mapConfig={mapConfig}
             />
             <StyledMapCenterAndZoomConfig
-              projectId={projectId}
               mapView={mapView}
               mapConfig={mapConfig}
             />
           </>
         ) : (
           <MapLayerConfig
-            projectId={projectId}
             mapLayerId={editedMapLayerId}
             onClose={closeLayerConfig}
+            mapConfig={mapConfig}
           />
         )}
       </Container>

@@ -75,7 +75,6 @@ const SaveButton = styled(Button)`
 `;
 
 interface Props {
-  projectId: string;
   className?: string;
   mapView?: MapView | null;
   mapConfig: IMapConfig;
@@ -90,9 +89,7 @@ interface IFormValues {
 const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
   ({ className, mapConfig, mapView, intl: { formatMessage } }) => {
     const { data: appConfig } = useAppConfiguration();
-    const { mutateAsync: updateMapConfig } = useUpdateMapConfig(
-      mapConfig.data.id
-    );
+    const { mutateAsync: updateMapConfig } = useUpdateMapConfig();
 
     const defaultLatLng = getCenter(
       undefined,

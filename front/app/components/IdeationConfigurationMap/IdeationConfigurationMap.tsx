@@ -17,12 +17,11 @@ import { IMapConfig } from 'api/map_config/types';
 
 export interface Props {
   mapConfig: IMapConfig;
-  projectId: string;
   setParentMapView: (mapView: MapView) => void;
 }
 
 const IdeationConfigurationMap = memo<Props>(
-  ({ mapConfig, projectId, setParentMapView }: Props) => {
+  ({ mapConfig, setParentMapView }: Props) => {
     const localize = useLocalize();
     const [mapView, setMapView] = React.useState<MapView | null>(null);
     const [hoveredLayerId, setHoveredLayerId] = React.useState<string | null>(
@@ -81,11 +80,7 @@ const IdeationConfigurationMap = memo<Props>(
             (layer) => layer?.id === hoveredLayerId
           )}
         />
-        <MapHelperOptions
-          mapView={mapView}
-          mapConfig={mapConfig}
-          projectId={projectId}
-        />
+        <MapHelperOptions mapView={mapView} mapConfig={mapConfig} />
       </>
     );
   }
