@@ -10,8 +10,6 @@ import PasswordInput from 'components/HookForm/PasswordInput';
 import Button from 'components/UI/Button';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-
-// errors
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,

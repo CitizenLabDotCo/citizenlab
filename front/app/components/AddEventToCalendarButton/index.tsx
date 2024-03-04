@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
 import { Box, Text, Button, Error } from '@citizenlab/cl2-component-library';
-
-// util
 import { API_PATH } from 'containers/App/constants';
 import saveAs from 'file-saver';
 import { useTheme } from 'styled-components';

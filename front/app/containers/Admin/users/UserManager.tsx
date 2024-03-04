@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 
 import Error from 'components/UI/Error';
 
-// Events
 import eventEmitter from 'utils/eventEmitter';
 import { isNil } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';

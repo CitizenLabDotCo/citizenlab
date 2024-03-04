@@ -9,8 +9,6 @@ import Input from 'components/HookForm/Input';
 import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
-
-// errors
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,

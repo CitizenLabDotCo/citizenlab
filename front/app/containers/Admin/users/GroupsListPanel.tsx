@@ -22,8 +22,6 @@ import useUsersCount from 'api/users_count/useUsersCount';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// Events
-
 import events, { MembershipAdd } from './events';
 import messages from './messages';
 import tracks from './tracks';

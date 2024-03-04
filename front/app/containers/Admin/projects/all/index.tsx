@@ -10,24 +10,20 @@ import Outlet from 'components/Outlet';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-// localisation
-
 import { isAdmin } from 'utils/permissions/roles';
 import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import CreateProject from './CreateProject';
+import messages from './messages';
 
 const ModeratorProjectList = React.lazy(
   () => import('./Lists/ModeratorProjectList')
 );
 const AdminProjectList = React.lazy(() => import('./Lists/AdminProjectList'));
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import messages from './messages';
 
 const Container = styled.div``;
 

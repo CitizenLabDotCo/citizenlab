@@ -1,5 +1,16 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
 
+import {
+  Label,
+  IconTooltip,
+  colors,
+  quillEditedContent,
+  media,
+  fontSizes,
+  defaultStyles,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 import { debounce } from 'lodash-es';
 import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
@@ -11,19 +22,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import usePrevious from 'hooks/usePrevious';
 
-// quill
 import 'quill/dist/quill.snow.css';
-
-import {
-  Label,
-  IconTooltip,
-  colors,
-  quillEditedContent,
-  media,
-  fontSizes,
-  defaultStyles,
-  isRtl,
-} from '@citizenlab/cl2-component-library';
 
 import {
   ImageBlot,
@@ -33,8 +32,6 @@ import {
 } from './altTextToImagesModule';
 import messages from './messages';
 import tracks from './tracks';
-
-import Tippy from '@tippyjs/react';
 
 const DropdownList = styled.div`
   display: flex;

@@ -21,9 +21,6 @@ import { insertConfiguration } from 'utils/moduleUtils';
 
 import messages from './messages';
 import { HeaderTitle } from './StyledComponents';
-
-// analytics
-
 import tracks from './tracks';
 
 const duartion = 350;

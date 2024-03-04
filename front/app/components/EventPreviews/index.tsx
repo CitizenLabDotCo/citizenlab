@@ -16,8 +16,6 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 import EventPreviewCard from './EventPreviewCard';
 import messages from './messages';
 
-// util
-
 type EventPreviewsProps = {
   projectId?: string;
 };

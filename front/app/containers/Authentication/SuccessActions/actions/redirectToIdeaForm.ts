@@ -4,8 +4,6 @@ import tracks from 'components/IdeaButton/tracks';
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { trackEventByName } from 'utils/analytics';
-
-// history
 import clHistory from 'utils/cl-router/history';
 
 import { fetchPhase } from 'api/phases/usePhase';

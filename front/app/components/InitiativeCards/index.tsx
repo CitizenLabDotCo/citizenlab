@@ -1,7 +1,5 @@
 import React, { useState, useCallback, useMemo, lazy } from 'react';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import {
   Spinner,
   useWindowSize,
@@ -13,9 +11,6 @@ import {
   Box,
 } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
-
-const InitiativeMap = lazy(() => import('components/InitiativeMap'));
-
 import { MessageDescriptor } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -32,6 +27,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { isNilOrError } from 'utils/helperUtils';
 
 import useInfitineInitiatives from 'api/initiatives/useInfiniteInitiatives';
 import useInitiativesFilterCounts from 'api/initiatives_filter_counts/useInitiativesFilterCounts';
@@ -43,6 +39,8 @@ import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
 import TopicFilterBox from './TopicFilterBox';
 import tracks from './tracks';
+
+const InitiativeMap = lazy(() => import('components/InitiativeMap'));
 
 const gapWidth = 35;
 

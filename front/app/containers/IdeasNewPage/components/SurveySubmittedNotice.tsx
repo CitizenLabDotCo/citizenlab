@@ -11,8 +11,6 @@ import {
 import PageContainer from 'components/UI/PageContainer';
 
 import { useIntl } from 'utils/cl-intl';
-
-// util
 import clHistory from 'utils/cl-router/history';
 
 import { IProjectData } from 'api/projects/types';

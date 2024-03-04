@@ -29,8 +29,6 @@ import tracks from './tracks';
 import UserManager from './UserManager';
 import UsersGroupHeader from './UsersGroupHeader';
 
-// Events
-
 const UsersGroup = () => {
   const queryClient = useQueryClient();
   const isVerificationEnabled = useFeatureFlag({ name: 'verification' });

@@ -16,6 +16,8 @@ import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
+import { MembershipType } from 'api/groups/types';
+
 import messages from './messages';
 
 type Props = {
@@ -27,8 +29,6 @@ export interface NormalFormValues {
   title_multiloc: Multiloc;
   membership_type: MembershipType;
 }
-
-import { MembershipType } from 'api/groups/types';
 
 export const Fill = styled.div`
   padding-top: 40px;

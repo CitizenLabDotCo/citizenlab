@@ -16,6 +16,7 @@ import useIdeas from 'api/ideas/useIdeas';
 import { TPhases } from 'api/phases/types';
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
+import { IProjectData } from 'api/projects/types';
 import useTopics from 'api/topics/useTopics';
 
 import ActionBar from './components/ActionBar';
@@ -36,11 +37,10 @@ import {
   ThreeColumns,
   TopActionBar,
 } from '.';
+
 const LazyPostPreview = lazy(
   () => import('components/admin/PostManager/components/PostPreview')
 );
-
-import { IProjectData } from 'api/projects/types';
 
 interface Props {
   // When the PostManager is used in /admin/projects, we pass down the current project id as a prop

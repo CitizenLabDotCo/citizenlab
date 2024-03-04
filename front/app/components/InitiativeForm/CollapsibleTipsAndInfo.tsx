@@ -1,9 +1,8 @@
 import React from 'react';
 
-import CollapsibleBox from 'components/UI/CollapsibleBox';
-const TipsContent = React.lazy(() => import('./TipsContent'));
-
 import { colors } from '@citizenlab/cl2-component-library';
+
+import CollapsibleBox from 'components/UI/CollapsibleBox';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -12,6 +11,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
+const TipsContent = React.lazy(() => import('./TipsContent'));
 
 interface Props {
   className?: string;

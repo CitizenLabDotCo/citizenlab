@@ -2,17 +2,13 @@ import React, { useState, lazy, Suspense } from 'react';
 
 import { Input, IconButton, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
+import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
-import { ScreenReaderOnly } from 'utils/a11y';
-
-const PasswordStrengthBar = lazy(() => import('react-password-strength-bar'));
 import Error from 'components/UI/Error';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { injectIntl } from 'utils/cl-intl';
-
-import { WrappedComponentProps } from 'react-intl';
-
 import { isNilOrError } from 'utils/helperUtils';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -22,6 +18,8 @@ import useLocale from 'hooks/useLocale';
 import messages from './messages';
 
 import { Props as WrapperProps } from './';
+
+const PasswordStrengthBar = lazy(() => import('react-password-strength-bar'));
 
 const Container = styled.div`
   position: relative;

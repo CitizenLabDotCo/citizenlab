@@ -28,9 +28,6 @@ import { IGroupMemberships } from 'api/group_memberships/types';
 import useAddMembership from 'api/group_memberships/useAddMembership';
 import { MembershipType } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
-
-// Events
-
 import usersKeys from 'api/users/keys';
 
 import events, { MembershipAdd } from './events';
