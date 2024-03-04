@@ -165,13 +165,11 @@ const AdminInitiativeContent = ({
           </Button>
         </Top>
         <Content>
-          <Box display="flex" alignItems="center">
-            <StyledTitle
-              postId={initiativeId}
-              title={initiativeTitle}
-              postType="initiative"
-            />
-          </Box>
+          <StyledTitle
+            postId={initiativeId}
+            title={initiativeTitle}
+            postType="initiative"
+          />
           <Row>
             <Left>
               {initiativeImageLarge && (
