@@ -1,4 +1,3 @@
-// Libraries
 import React, { FormEvent, useEffect, useState, useRef } from 'react';
 
 import { Button } from '@citizenlab/cl2-component-library';
@@ -19,8 +18,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IUpdatedComment } from 'api/comments/types';
-
-// Styling
 
 // Typings
 

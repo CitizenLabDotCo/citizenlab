@@ -13,8 +13,6 @@ import { ICommentData } from 'api/comments/types';
 import { commentAdded$, commentDeleted$ } from '../../../events';
 import messages from '../../../messages';
 
-// a11y
-
 import ParentComment from './ParentComment';
 
 const Container = styled.div`

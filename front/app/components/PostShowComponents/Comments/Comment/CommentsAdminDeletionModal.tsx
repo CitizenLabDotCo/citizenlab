@@ -1,4 +1,3 @@
-// Libraries
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
@@ -8,7 +7,6 @@ import { MessageDescriptor } from 'react-intl';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 
-// Styling
 import styled from 'styled-components';
 import { string, object } from 'yup';
 

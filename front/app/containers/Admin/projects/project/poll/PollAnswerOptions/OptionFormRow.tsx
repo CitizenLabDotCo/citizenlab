@@ -1,4 +1,3 @@
-// Libraries
 import React, { useEffect, useState } from 'react';
 
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';

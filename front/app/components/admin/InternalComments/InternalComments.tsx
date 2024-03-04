@@ -12,9 +12,6 @@ import { useIntl } from 'utils/cl-intl';
 import { IInternalCommentData } from 'api/internal_comments/types';
 
 import { commentAdded$, commentDeleted$ } from './events';
-
-// a11y
-
 import InternalParentComment from './InternalParentComment';
 
 const Container = styled.div`

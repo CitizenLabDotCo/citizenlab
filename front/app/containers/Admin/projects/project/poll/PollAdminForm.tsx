@@ -1,4 +1,3 @@
-// Libraries
 import React, { useState, Fragment } from 'react';
 
 import { clone } from 'lodash-es';

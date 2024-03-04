@@ -1,4 +1,3 @@
-// Libraries
 import React, { useState } from 'react';
 
 import { colors, Text } from '@citizenlab/cl2-component-library';

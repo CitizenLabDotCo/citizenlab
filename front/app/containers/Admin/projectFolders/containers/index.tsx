@@ -1,4 +1,3 @@
-// Libraries
 import React from 'react';
 
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';

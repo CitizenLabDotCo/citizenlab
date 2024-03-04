@@ -1,4 +1,3 @@
-// Libraries
 import React, { FormEvent, useState } from 'react';
 
 import { isRtl } from '@citizenlab/cl2-component-library';
@@ -19,8 +18,6 @@ import { deleteCommentModalClosed } from '../events';
 import messages from '../messages';
 
 import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
-
-// Styling
 
 const Container = styled.div`
   display: flex;

@@ -1,4 +1,3 @@
-// Libraries
 import React from 'react';
 
 import messages from 'containers/Admin/dashboard/messages';

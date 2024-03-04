@@ -1,4 +1,3 @@
-// Libraries
 import React, { useState } from 'react';
 
 import {
@@ -11,8 +10,6 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-
-// Styling
 import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';

@@ -1,4 +1,3 @@
-// Libraries
 import React, { ReactNode } from 'react';
 
 import { fontSizes, colors, Box } from '@citizenlab/cl2-component-library';

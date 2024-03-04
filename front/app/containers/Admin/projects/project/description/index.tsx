@@ -31,8 +31,6 @@ import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 import messages from './messages';
 
-// Styling
-
 // Typing
 
 interface Props {
