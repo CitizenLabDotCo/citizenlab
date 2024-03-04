@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
-// components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
@@ -18,7 +17,6 @@ import {
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
@@ -32,7 +30,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
 import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
 
-// utils
 import { getMentionRoles } from './utils';
 
 const Container = styled.div`

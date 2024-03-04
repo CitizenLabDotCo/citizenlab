@@ -1,6 +1,5 @@
 import React, { useState, lazy } from 'react';
 
-// components
 import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
@@ -8,11 +7,9 @@ import PDFExportModal, {
 // router
 import { useParams } from 'react-router-dom';
 
-// hooks
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import useLocale from 'hooks/useLocale';
 
-// utils
 import { nativeSurveyConfig } from '../utils';
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
 import { isNilOrError } from 'utils/helperUtils';

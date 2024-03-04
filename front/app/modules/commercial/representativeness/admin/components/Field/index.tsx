@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { omit } from 'lodash-es';
 
-// hooks
 import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import useReferenceDistributionData, {
   RemoteFormValues,
 } from '../../api/reference_distribution/useReferenceDistributionData';
 
-// components
 import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
 import FieldTitle from './FieldTitle';
 import FieldContent from './FieldContent';
 
-// utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import {
   getInitialValues,
@@ -25,7 +22,6 @@ import {
 } from '../../utils/form';
 import { isSupported } from '../../containers/Dashboard/utils';
 
-// typings
 import useDeleteReferenceDistribution from '../../api/reference_distribution/useDeleteReferenceDistribution';
 import useAddReferenceDistribution from '../../api/reference_distribution/useAddReferenceDistribution';
 import {

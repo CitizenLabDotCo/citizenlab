@@ -1,14 +1,11 @@
 import React, { FormEvent } from 'react';
 
-// styling
 import { darken } from 'polished';
 import styled from 'styled-components';
 
-// components
 import Button from 'components/UI/Button';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 

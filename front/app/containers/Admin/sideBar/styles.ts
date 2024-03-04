@@ -1,6 +1,5 @@
 import { rgba } from 'polished';
 
-// components
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 

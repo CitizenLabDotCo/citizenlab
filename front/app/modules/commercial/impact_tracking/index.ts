@@ -1,9 +1,6 @@
-// utils
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { events$ } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
-
-// constants
 
 const signUpInTracks = {
   signInEmailPasswordCompleted: 'Sign in - email & password sign-in completed',

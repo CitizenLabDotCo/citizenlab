@@ -1,6 +1,5 @@
 import React, { memo, useState } from 'react';
 
-// components
 import MapLayersList from './MapLayersList';
 import MapLayerConfig from './MapLayerConfig';
 import MapCenterAndZoomConfig from './MapCenterAndZoomConfig';
@@ -9,11 +8,9 @@ import Warning from 'components/UI/Warning';
 import { Text } from '@citizenlab/cl2-component-library';
 import MapView from '@arcgis/core/views/MapView';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// styling
 import styled from 'styled-components';
 
 const Container = styled.div``;

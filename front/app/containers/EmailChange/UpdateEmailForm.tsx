@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 
-// intl
 import messages from './messages';
-
-// services & hooks
 
 import { useIntl } from 'utils/cl-intl';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 
-// components
 import {
   Title,
   StyledButton,
@@ -25,7 +21,6 @@ import { FormValues } from '.';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import Input from 'components/HookForm/Input';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import useUpdateUser from 'api/users/useUpdateUser';
 import { IUserData } from 'api/users/types';

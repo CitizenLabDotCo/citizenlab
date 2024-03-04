@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs';
 // Resources
 import { IGroupData } from 'api/groups/types';
 
-// hooks
 import useBlockedUsercount from 'api/blocked_users/useBlockedUsersCount';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -20,7 +19,6 @@ import Button from 'components/UI/Button';
 import T from 'components/T';
 import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
-// i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 

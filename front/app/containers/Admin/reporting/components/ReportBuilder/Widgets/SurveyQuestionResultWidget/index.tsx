@@ -1,18 +1,14 @@
 import React from 'react';
 
-// hooks
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
-// components
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import NoData from '../_shared/NoData';
 import Question from './Question';
 import Settings from './Settings';
 
-// i18n
 import messages from './messages';
 
-// utils
 import { getEmptyMessage } from '../utils';
 
 //  typings

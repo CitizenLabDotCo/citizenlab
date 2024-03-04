@@ -4,17 +4,14 @@ import styled from 'styled-components';
 // context
 import { ReportContextProvider } from '../../context/ReportContext';
 
-// hooks
 import useReport from 'api/reports/useReport';
 import useReportLayout from 'api/report_layout/useReportLayout';
 
-// components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import { Spinner, Box } from '@citizenlab/cl2-component-library';
 import Editor from '../../components/ReportBuilder/Editor';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
-// constants
 import { A4_WIDTH } from '../../constants';
 
 const Centerer = styled.div`

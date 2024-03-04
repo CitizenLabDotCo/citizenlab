@@ -1,20 +1,16 @@
 import React from 'react';
 
-// styling
 import styled from 'styled-components';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-// components
 import { TextCell } from 'components/admin/ResourceList';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// typings
 import { Multiloc } from 'typings';
 
 const Container = styled.div`

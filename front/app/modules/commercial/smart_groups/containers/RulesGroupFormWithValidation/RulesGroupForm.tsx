@@ -4,28 +4,16 @@ import React from 'react';
 // Components
 import { SectionField } from 'components/admin/Section';
 
-import { FooterContainer, Fill } from 'containers/Admin/users/NormalGroupForm';
-
 import { Button, Label } from '@citizenlab/cl2-component-library';
-import { HookFormUserFilterConditions } from '../../components/UserFilterConditions';
-
-// i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import adminUsersMessages from 'containers/Admin/users/messages';
 
 // Styling
-import styled from 'styled-components';
 
-// form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object, array, number } from 'yup';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+import adminUsersMessages from 'containers/Admin/users/messages';
+import { FooterContainer, Fill } from 'containers/Admin/users/NormalGroupForm';
+import { useForm, FormProvider } from 'react-hook-form';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 
 const SSectionField = styled(SectionField)`
   max-width: 570px;
@@ -33,7 +21,18 @@ const SSectionField = styled(SectionField)`
 
 // Typings
 import { Multiloc } from 'typings';
+import { string, object, array, number } from 'yup';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+
+import { HookFormUserFilterConditions } from '../../components/UserFilterConditions';
 import { TRule } from '../../components/UserFilterConditions/rules';
+
+import messages from './messages';
 
 export interface RulesFormValues {
   rules: TRule[];

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-// components
 import {
   Box,
   useBreakpoint,
@@ -19,14 +18,12 @@ import VerticalCenterer from 'components/VerticalCenterer';
 // context
 import { VotingContext } from 'api/baskets_ideas/useVoting';
 
-// hooks
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import useProjectById from 'api/projects/useProjectById';
 
 // style
 import styled from 'styled-components';
 
-// utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';

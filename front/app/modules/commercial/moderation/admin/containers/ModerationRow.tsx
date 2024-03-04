@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import moment from 'moment';
 
-// components
 import { Tr, Td, Icon, colors } from '@citizenlab/cl2-component-library';
 import ModerationContentCell from './ModerationContentCell';
 import Checkbox from 'components/UI/Checkbox';
@@ -9,7 +8,6 @@ import Outlet from 'components/Outlet';
 import Tippy from '@tippyjs/react';
 import Link from 'utils/cl-router/Link';
 
-// i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
@@ -19,18 +17,15 @@ import useLocalize from 'hooks/useLocalize';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// styling
 import styled from 'styled-components';
 import { rgba } from 'polished';
 
-// typings
 import {
   IModerationData,
   TBelongsTo,
   TModeratableType,
 } from 'api/moderations/types';
 
-// hooks
 import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
 
 const Container = styled(Tr)<{ bgColor: string; flagged: boolean }>`

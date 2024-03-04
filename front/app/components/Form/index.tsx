@@ -8,10 +8,8 @@ import {
   Layout,
 } from '@jsonforms/core';
 
-// styling
 import styled from 'styled-components';
 
-// components
 import {
   Box,
   fontSizes,
@@ -22,20 +20,16 @@ import Wrapper from './Components/Wrapper';
 import Fields from './Components/Fields';
 import ButtonBar from './Components/ButtonBar';
 
-// hooks
 import useObserveEvent from 'hooks/useObserveEvent';
 
-// i18n
 import messages from './messages';
 import useLocale from 'hooks/useLocale';
 import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { sanitizeFormData, isValidData } from './utils';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 
-// typings
 import { CLErrors, Locale } from 'typings';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
 

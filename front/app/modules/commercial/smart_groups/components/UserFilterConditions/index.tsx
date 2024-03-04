@@ -3,11 +3,9 @@ import { clone } from 'lodash-es';
 import styled from 'styled-components';
 import { TRule } from './rules';
 
-// components
 import Button from 'components/UI/Button';
 import Rule from './Rule';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -15,7 +13,6 @@ import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'containers/Admin/users/tracks';
 
-// styling
 import { colors } from '@citizenlab/cl2-component-library';
 
 import Error from 'components/UI/Error';

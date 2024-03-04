@@ -2,11 +2,9 @@ import React from 'react';
 import { Select } from 'semantic-ui-react';
 import { memoize } from 'lodash-es';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
-// utils
 import useUsers from 'api/users/useUsers';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUser, IUsers } from 'api/users/types';

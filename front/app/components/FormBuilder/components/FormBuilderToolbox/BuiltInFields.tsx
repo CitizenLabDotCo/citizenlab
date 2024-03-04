@@ -1,18 +1,14 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-// intl
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
-// components
 import ToolboxItem from './ToolboxItem';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
-// types
 import { IFlatCustomField } from 'api/custom_fields/types';
 
-// utils
 import { builtInFieldKeys, BuiltInKeyType } from 'components/FormBuilder/utils';
 
 interface BuiltInFieldsProps {

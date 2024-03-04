@@ -1,17 +1,13 @@
 import React from 'react';
 
-// components
 import TerminologyConfig from 'components/admin/TerminologyConfig';
 
 // resources
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// i18n
 import messages from '../messages';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 

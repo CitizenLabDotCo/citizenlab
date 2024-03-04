@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import ResolutionControl, {
   IResolution,
@@ -8,11 +7,9 @@ import ResolutionControl, {
 import ProjectFilter from '../components/filters/ProjectFilter';
 import TimeControl from '../components/TimeControl';
 
-// i18n
 import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 
-// typings
 import { IOption } from 'typings';
 import { Moment } from 'moment';
 

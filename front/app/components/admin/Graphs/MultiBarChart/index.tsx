@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 
-// styling
 import {
   legacyColors,
   sizes,
   animation,
 } from 'components/admin/Graphs/styling';
 
-// components
 import {
   BarChart as RechartsBarChart,
   Bar,
@@ -21,12 +19,10 @@ import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
 
-// utils
 import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
 import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 import { truncate } from 'utils/textUtils';
 
-// typings
 import { Props } from './typings';
 import {
   GraphDimensions,

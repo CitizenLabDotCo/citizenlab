@@ -1,13 +1,10 @@
 import React, { Fragment } from 'react';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// styling
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 
-// components
 import {
   Radio,
   Title,
@@ -16,15 +13,12 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// utils
 import { getDestinationConfig, IDestination, TCategory } from '../destinations';
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { IAppConfigurationData } from 'api/app_configuration/types';
 
 const Container = styled.div`

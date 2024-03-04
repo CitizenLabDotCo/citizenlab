@@ -1,20 +1,16 @@
 import React from 'react';
 
-// components
 import { Box, Button, isRtl } from '@citizenlab/cl2-component-library';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 // router
 import clHistory from 'utils/cl-router/history';
 
-// styling
 import styled from 'styled-components';
 
-// typings
 import { IProjectData } from 'api/projects/types';
 import { useLocation } from 'react-router-dom';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 

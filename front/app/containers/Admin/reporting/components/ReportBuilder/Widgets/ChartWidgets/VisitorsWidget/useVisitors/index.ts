@@ -1,7 +1,6 @@
 // parse
 import { parseStats, parseTimeSeries } from './parse';
 
-// typings
 import { QueryParameters } from './typings';
 import { useMemo, useState } from 'react';
 import { IResolution } from 'components/admin/ResolutionControl';

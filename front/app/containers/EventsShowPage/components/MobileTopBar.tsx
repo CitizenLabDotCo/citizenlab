@@ -1,14 +1,11 @@
 import React from 'react';
 
-// hooks
 import useProjectById from 'api/projects/useProjectById';
 import { useLocation } from 'react-router-dom';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
-// components
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import {
   useBreakpoint,
@@ -20,7 +17,6 @@ import {
 // routing
 import clHistory from 'utils/cl-router/history';
 
-// styling
 import styled from 'styled-components';
 
 const Container = styled.div`

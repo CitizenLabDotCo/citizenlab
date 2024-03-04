@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 
-// components
 import Button from 'components/UI/Button';
 import {
   Icon,
@@ -13,23 +12,19 @@ import { SubSectionTitle } from 'components/admin/Section';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import GeoJsonImportButton from './GeoJsonImportButton';
 
-// hooks
 import useDeleteMapLayer from 'api/map_layers/useDeleteMapLayer';
 import useReorderMapLayer from 'api/map_layers/useReorderMapLayer';
 
-// utils
 import { getLayerColor, getLayerIcon } from '../../../utils/mapUtils/map';
 import addOrderingToLayers, {
   IMapLayerAttributesWithOrdering,
 } from './addOrderingToLayers';
 
-// i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
-// styling
 import styled from 'styled-components';
 import useMapConfig from 'api/map_config/useMapConfig';
 

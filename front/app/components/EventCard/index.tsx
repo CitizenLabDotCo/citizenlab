@@ -1,9 +1,7 @@
 import React, { memo } from 'react';
 
-// components
 import EventInformation from './EventInformation';
 
-// types
 import { IEventData } from 'api/events/types';
 
 // style
@@ -13,7 +11,6 @@ import {
   defaultCardStyle,
 } from '@citizenlab/cl2-component-library';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 

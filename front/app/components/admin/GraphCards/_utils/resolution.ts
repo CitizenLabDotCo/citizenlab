@@ -1,7 +1,5 @@
-// i18n
 import messages from '../messages';
 
-// typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { FormatMessage } from 'typings';
 import moment from 'moment';

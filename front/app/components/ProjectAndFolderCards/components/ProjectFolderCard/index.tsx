@@ -6,11 +6,9 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 // router
 import Link from 'utils/cl-router/Link';
 
-// components
 import Image from 'components/UI/Image';
 import FollowUnfollow from 'components/FollowUnfollow';
 
-// i18n
 import T from 'components/T';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -33,11 +31,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 
-// hooks
 import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
 
-// services
 import {
   getCardImageUrl,
   CARD_IMAGE_ASPECT_RATIO,

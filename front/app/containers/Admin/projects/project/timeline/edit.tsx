@@ -41,7 +41,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -53,7 +52,6 @@ import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
 import { useParams } from 'react-router-dom';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import CampaignRow from './CampaignRow';

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import {
   Box,
   Icon,
@@ -19,10 +18,8 @@ import {
 import Button from 'components/UI/Button';
 import IdeaLocationMap from './IdeaLocationMap';
 
-// utils
 import { getAddressOrFallbackDMS } from 'utils/map';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 

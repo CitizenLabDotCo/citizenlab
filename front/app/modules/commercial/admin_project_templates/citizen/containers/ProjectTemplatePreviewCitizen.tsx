@@ -3,7 +3,6 @@ import { get } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
-// components
 import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';
 import {
   Icon,
@@ -12,18 +11,15 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
 // resources
 import useAuthUser from 'api/me/useAuthUser';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../admin/containers/messages';
 
-// styling
 import styled from 'styled-components';
 import { darken } from 'polished';
 

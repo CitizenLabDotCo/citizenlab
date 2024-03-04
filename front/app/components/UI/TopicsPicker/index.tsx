@@ -6,15 +6,12 @@ import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, lighten } from 'polished';
 
-// types
 import { ITopicData } from 'api/topics/types';
 
-// intl
 import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// hooks
 import useTopics from 'api/topics/useTopics';
 import useLocalize from 'hooks/useLocalize';
 

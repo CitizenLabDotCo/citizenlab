@@ -1,9 +1,7 @@
-// i18n
 import messages from './messages';
 import moduleMessages from 'components/admin/GraphCards/messages';
 import cardMessages from '../messages';
 
-// typings
 import { FormatMessage } from 'typings';
 
 export interface Translations {

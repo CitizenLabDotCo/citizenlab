@@ -1,7 +1,6 @@
 import React from 'react';
 import EventsViewer from './EventsViewer';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-// i18n
 import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';

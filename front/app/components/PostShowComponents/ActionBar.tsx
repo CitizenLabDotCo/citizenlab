@@ -8,7 +8,6 @@ import { GetLocaleChildProps } from 'resources/GetLocale';
 
 import Outlet from 'components/Outlet';
 
-// types
 import { IInitiativeData } from 'api/initiatives/types';
 
 const Container = styled.div`

@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import * as clipboard from 'clipboard-polyfill';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
@@ -9,7 +8,6 @@ import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import { gql, useQuery } from '@apollo/client';
 import { client } from '../utils/apolloUtils';
 
-// components
 import Button from 'components/UI/Button';
 import {
   Icon,
@@ -22,7 +20,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import T from 'components/T';
 import Centerer from 'components/UI/Centerer';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

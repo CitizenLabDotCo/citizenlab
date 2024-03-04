@@ -1,17 +1,14 @@
 import React, { memo, useCallback, useState } from 'react';
 
-// utils
 import eventEmitter from 'utils/eventEmitter';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 
-// components
 import Button from 'components/UI/Button';
 import UseTemplateModal from './UseTemplateModal';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

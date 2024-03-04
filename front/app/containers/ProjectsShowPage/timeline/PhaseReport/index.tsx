@@ -1,9 +1,7 @@
 import React from 'react';
 
-// hooks
 import useReportLayout from 'api/report_layout/useReportLayout';
 
-// components
 import {
   Box,
   useBreakpoint,
@@ -15,11 +13,9 @@ import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 // context
 import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 
-// constants
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 
-// utils
 import { getReportWidth } from 'containers/Admin/reporting/utils/getReportWidth';
 
 interface Props {

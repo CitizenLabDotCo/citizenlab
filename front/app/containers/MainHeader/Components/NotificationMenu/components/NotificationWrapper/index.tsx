@@ -9,13 +9,10 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 
-// utils
-
 import { timeAgo } from 'utils/dateUtils';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 
-// hooks
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';

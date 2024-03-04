@@ -1,11 +1,9 @@
-// utils
 import {
   getDateFilter,
   getDateFilterLastPeriod,
   getInterval,
 } from 'components/admin/GraphCards/_utils/query';
 
-// typings
 import { Query, QuerySchema } from 'api/analytics/types';
 import { QueryParameters } from './typings';
 import moment from 'moment';

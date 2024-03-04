@@ -1,17 +1,14 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// utils
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
 
-// hooks
 import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import useDeleteUserCustomFieldsOption from 'api/user_custom_fields_options/useDeleteUserCustomFieldsOption';
 import useLocalize from 'hooks/useLocalize';
 import useReorderUserCustomFieldOption from 'api/user_custom_fields_options/useReorderUserCustomFieldsOption';
 
-// components
 import {
   SortableList,
   SortableRow,
@@ -20,7 +17,6 @@ import {
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 
-// i18n
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';

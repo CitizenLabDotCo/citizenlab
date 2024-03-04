@@ -1,4 +1,3 @@
-// utils
 import { map, orderBy } from 'lodash-es';
 import {
   rename,
@@ -8,10 +7,9 @@ import {
   convertDomicileData,
 } from 'utils/dataUtils';
 
-// typings
 import { TCustomFieldCode } from 'api/user_custom_fields/types';
 import { IUsersByDomicile } from 'api/users_by_domicile/types';
-// i18n
+
 import messages from 'containers/Admin/dashboard/messages';
 import { InjectedLocalized } from 'utils/localize';
 import { MessageDescriptor } from 'react-intl';

@@ -2,12 +2,10 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-// components
 import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
 import CommentSorting from './CommentSorting';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
@@ -22,7 +20,6 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
-// typings
 import { CommentsSort } from 'api/comments/types';
 import CommentingProposalDisabled from './CommentingProposalDisabled';
 
@@ -30,14 +27,12 @@ import CommentingProposalDisabled from './CommentingProposalDisabled';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 
-// hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComments from 'api/comments/useComments';
 import CommentingIdeaDisabled from './CommentingIdeaDisabled';
 
-// utils
 import { isPage } from 'utils/helperUtils';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 import { useInView } from 'react-intersection-observer';

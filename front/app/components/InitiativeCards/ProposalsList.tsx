@@ -3,12 +3,10 @@ import React from 'react';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// components
 import InitiativeCard from 'components/InitiativeCard';
 import { Spinner, Button, media } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 

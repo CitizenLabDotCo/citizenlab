@@ -1,4 +1,3 @@
-// utils
 import {
   getProjectFilter,
   getDateFilter,
@@ -6,7 +5,6 @@ import {
   getInterval,
 } from '../../_utils/query';
 
-// typings
 import { QueryParameters } from './typings';
 import { Query, QuerySchema, AggregationsConfig } from 'api/analytics/types';
 

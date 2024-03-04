@@ -1,29 +1,31 @@
 import React, { useEffect } from 'react';
 
-// hooks
-import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useLocale from 'hooks/useLocale';
-
-// components
 import { Box, Text, Label } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import TextButton from '../_components/TextButton';
-import PoliciesMarkup from '../Policies/PoliciesMarkup';
-
-// i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import sharedMessages from '../messages';
-import containerMessages from '../../messages';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { DEFAULT_VALUES, getSchema, FormValues } from './form';
+import { SetError, State } from 'containers/Authentication/typings';
+import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
+import { useForm, FormProvider } from 'react-hook-form';
+
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import { StyledPasswordIconTooltip } from 'components/smallForm';
+import Button from 'components/UI/Button';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
+
+import containerMessages from '../../messages';
+import tracks from '../../tracks';
+import TextButton from '../_components/TextButton';
+import PoliciesMarkup from '../Policies/PoliciesMarkup';
+
+import messages from './messages';
+
+import sharedMessages from '../messages';
+
+import { DEFAULT_VALUES, getSchema, FormValues } from './form';
 
 // errors
 import {
@@ -32,18 +34,12 @@ import {
 } from 'utils/errorUtils';
 
 // tracks
-import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// constants
 import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 
-// typings
 import { Parameters as CreateAccountParameters } from 'api/authentication/sign_up/createAccountWithPassword';
-import { SetError, State } from 'containers/Authentication/typings';
 
 interface Props {
   state: State;

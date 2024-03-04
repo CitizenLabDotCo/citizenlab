@@ -1,15 +1,12 @@
 import React, { useEffect, FormEvent } from 'react';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
 
-// components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 import Button from 'components/UI/Button';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -20,11 +17,9 @@ import { trackEventByName } from 'utils/analytics';
 // events
 import eventEmitter from 'utils/eventEmitter';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { hasRequiredFields } from 'api/custom_fields_json_form_schema/utils';
 
-// typings
 import {
   AuthenticationData,
   SetError,

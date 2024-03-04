@@ -1,19 +1,15 @@
 import React from 'react';
 
-// hooks
 import useLocale from 'hooks/useLocale';
 
 // tracks
 import tracks from '../tracks';
 import { trackEventByName } from 'utils/analytics';
 
-// components
 import Outlet from 'components/Outlet';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { IIdea } from 'api/ideas/types';
 
 interface Props {

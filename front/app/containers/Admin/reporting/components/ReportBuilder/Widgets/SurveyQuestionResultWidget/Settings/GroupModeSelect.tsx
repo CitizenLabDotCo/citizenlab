@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Select,
@@ -12,14 +11,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// typings
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type Option = { value: GroupMode | ''; label: string };

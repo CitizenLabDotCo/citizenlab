@@ -6,7 +6,6 @@ import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import { object, boolean, array, string, number } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-// components
 import {
   Box,
   Spinner,
@@ -21,7 +20,6 @@ import Error from 'components/UI/Error';
 import Feedback from 'components/HookForm/Feedback';
 import Warning from 'components/UI/Warning';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import validateElementTitle from 'utils/yup/validateElementTitle';
@@ -33,12 +31,10 @@ import {
   DragAndDropResult,
 } from './utils';
 
-// hooks
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 
-// intl
 import { WrappedComponentProps } from 'react-intl';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';

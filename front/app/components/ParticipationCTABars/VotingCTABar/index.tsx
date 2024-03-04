@@ -1,21 +1,17 @@
 import React, { useMemo } from 'react';
 
-// components
 import { Text } from '@citizenlab/cl2-component-library';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import ErrorToast from 'components/ErrorToast';
 import CTAButton from './CTAButton';
 
-// hooks
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 
-// utils
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,

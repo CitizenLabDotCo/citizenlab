@@ -1,11 +1,8 @@
-// styling
 import { legacyColors } from './styling';
 
-// utils
 import { isEmpty } from 'lodash-es';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-// typings
 import { Tooltip, TooltipConfig, Margin, Legend } from './typings';
 import { LegendDimensions } from './_components/Legend/typings';
 

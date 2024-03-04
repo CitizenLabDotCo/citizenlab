@@ -5,7 +5,6 @@ import { IEventFileData } from 'api/event_files/types';
 import { IIdeaFileData } from 'api/idea_files/types';
 import { darken } from 'polished';
 
-// components
 import { Icon, colors, media } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`

@@ -4,14 +4,11 @@ import { H3, H4 } from './';
 import T from 'components/T';
 import Link from 'utils/cl-router/Link';
 
-// components
 import TimelineProject from './TimelineProject';
 
-// hooks
 import useEvents from 'api/events/useEvents';
 import useProjectById from 'api/projects/useProjectById';
 
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

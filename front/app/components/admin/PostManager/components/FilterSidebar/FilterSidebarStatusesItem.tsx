@@ -7,7 +7,6 @@ import { Menu } from 'semantic-ui-react';
 import { useDrop } from 'react-dnd';
 import T from 'components/T';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 

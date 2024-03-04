@@ -1,7 +1,6 @@
 // libraries
 import React, { useRef, useEffect, useState } from 'react';
 
-// components
 import DesktopNavItems from './Components/DesktopNavItems';
 import MobileNavbarContent from './Components/NavbarContent/MobileNavbarContent';
 import DesktopNavbarContent from './Components/NavbarContent/DesktopNavbarContent';

@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import PageNotFound from 'components/PageNotFound';
 import InitiativesShow from 'containers/InitiativesShow';
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
@@ -8,7 +7,6 @@ import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 import { Spinner, media } from '@citizenlab/cl2-component-library';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInitiativeBySlug from 'api/initiatives/useInitiativeBySlug';
 import { useParams } from 'react-router-dom';

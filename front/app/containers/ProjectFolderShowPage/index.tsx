@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
 import ProjectFolderHeader from './ProjectFolderHeader';
 import ProjectFolderDescription from './ProjectFolderDescription';
@@ -19,12 +18,10 @@ import FollowUnfollow from 'components/FollowUnfollow';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
 import { useParams } from 'react-router-dom';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -32,11 +29,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { maxPageWidth } from './styles';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
-// typings
 import { IProjectFolderData } from 'api/project_folders/types';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 

@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 
-// components
 import PieChart from 'components/admin/Graphs/PieChart';
 import renderTooltip from './renderTooltip';
 
-// styling
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
-// typings
 import { GenderSerie } from './typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 

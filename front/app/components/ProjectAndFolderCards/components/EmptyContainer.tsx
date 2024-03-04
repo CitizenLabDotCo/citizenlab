@@ -1,6 +1,5 @@
 import React from 'react';
 
-// styling
 import styled from 'styled-components';
 import {
   defaultCardStyle,
@@ -9,7 +8,6 @@ import {
   Image,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
 

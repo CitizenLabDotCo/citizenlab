@@ -1,9 +1,7 @@
 import React, { useRef, useState } from 'react';
 
-// hooks
 import useVisitorReferrerTypes from './useVisitorReferrerTypes';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import GraphCard from 'components/admin/GraphCard';
 import EmptyPieChart from '../EmptyPieChart';
@@ -12,15 +10,12 @@ import Table from './Table';
 import TableModal from './TableModal';
 import ReferrerListLink from './RefferListLink';
 
-// i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-// utils
 import getXlsxData from './getXlsxData';
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { ProjectId, Dates } from '../typings';
 import { View } from 'components/admin/GraphCard/ViewToggle';
 

@@ -1,18 +1,14 @@
 import React, { memo, useRef, useMemo, useCallback } from 'react';
 
-// components
 import EsriMap from 'components/EsriMap';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
 import MapView from '@arcgis/core/views/MapView';
 
-// utils
 import { getMapPinSymbol } from 'components/EsriMap/utils';
 
-// types
 import { SubmitState } from '../edit';
 
-// hooks
 import { useTheme } from 'styled-components';
 
 export interface Props {

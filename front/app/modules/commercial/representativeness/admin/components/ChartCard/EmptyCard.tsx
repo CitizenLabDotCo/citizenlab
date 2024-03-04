@@ -3,10 +3,8 @@ import React from 'react';
 // images
 import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 
-// components
 import {
   Box,
   Title,
@@ -17,14 +15,11 @@ import {
 import { StyledBackgroundImage } from '../../containers/Dashboard/EmptyState';
 import Button from 'components/UI/Button';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styling
 import styled from 'styled-components';
 
-// typings
 import { Multiloc } from 'typings';
 
 const StyledStatusLabel = styled(StatusLabel)`

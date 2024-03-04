@@ -7,7 +7,6 @@ import {
 } from '@jsonforms/core';
 import React, { useState } from 'react';
 
-// components
 import ErrorDisplay from '../ErrorDisplay';
 import { Box, colors, Text, Radio } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -15,7 +14,6 @@ import VerificationIcon from '../VerificationIcon';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// utils
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { getOptions, getSubtextElement } from './controlUtils';
 

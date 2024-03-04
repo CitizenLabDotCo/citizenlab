@@ -1,24 +1,19 @@
 import React, { useRef } from 'react';
 
-// hooks
 import { useUsersByAgeLive } from 'api/graph_data_units';
 
-// components
 import GraphCard from 'components/admin/GraphCard';
 import Chart from './Chart';
 import { Box } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from 'containers/Admin/dashboard/messages';
 import { useIntl } from 'utils/cl-intl';
 
-// typings
 import { QueryParameters } from './typings';
 import { isNilOrError } from 'utils/helperUtils';
 import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
 import moment from 'moment';
 
-// utils
 import convertToGraphFormat from './convertToGraphFormat';
 
 interface Props extends QueryParameters {

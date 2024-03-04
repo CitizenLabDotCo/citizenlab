@@ -12,7 +12,6 @@ import SeatSetSuccess from 'components/admin/SeatBasedBilling/SeatSetSuccess';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// hooks
 import useExceedsSeats from 'hooks/useExceedsSeats';
 
 // Utils

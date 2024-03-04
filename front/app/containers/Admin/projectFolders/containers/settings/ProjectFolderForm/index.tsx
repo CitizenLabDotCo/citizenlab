@@ -17,21 +17,18 @@ import useAdminPublication from 'api/admin_publications/useAdminPublication';
 import useDeleteProjectFolderImage from 'api/project_folder_images/useDeleteProjectFolderImage';
 import useAddProjectFolderImage from 'api/project_folder_images/useAddProjectFolderImage';
 
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // typing
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
-// utils
 import { validateSlug } from 'utils/textUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isEmpty, isEqual } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
-// components
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';

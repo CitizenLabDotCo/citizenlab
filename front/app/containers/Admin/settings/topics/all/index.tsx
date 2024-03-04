@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 
-// hooks
 import useTopics from 'api/topics/useTopics';
 
-// i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// components
 import {
   Section,
   SectionDescription,
@@ -24,7 +21,6 @@ import Modal, {
   Content,
 } from 'components/UI/Modal';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import useDeleteTopic from 'api/topics/useDeleteTopic';
 

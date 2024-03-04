@@ -4,11 +4,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import useUpdateMapLayer from 'api/map_layers/useUpdateMapLayer';
 
-// hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useMapConfig from 'api/map_config/useMapConfig';
 
-// components
 import {
   Section,
   SectionField,
@@ -19,7 +17,6 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { ColorPickerInput, Select } from '@citizenlab/cl2-component-library';
 
-// utils
 import {
   getLayerColor,
   getLayerType,
@@ -27,12 +24,10 @@ import {
   getUnnamedLayerTitleMultiloc,
 } from '../../../utils/mapUtils/map';
 
-// i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
-// styling
 import styled from 'styled-components';
 
 // typing

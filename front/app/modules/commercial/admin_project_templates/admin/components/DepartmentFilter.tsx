@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
@@ -8,12 +7,10 @@ import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import { gql, useQuery } from '@apollo/client';
 import { client } from '../../utils/apolloUtils';
 
-// components
 import FilterSelector, {
   IFilterSelectorValue,
 } from 'components/FilterSelector';
 
-// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';

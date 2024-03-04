@@ -2,16 +2,11 @@ import React, { memo } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
-// typings
-
-// services
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 
-// components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 
 // events
@@ -21,10 +16,8 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// styling
 import styled from 'styled-components';
 
-// typings
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useProjectById from 'api/projects/useProjectById';

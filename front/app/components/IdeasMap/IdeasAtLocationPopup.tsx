@@ -1,17 +1,13 @@
 import React from 'react';
 
-// components
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import MapView from '@arcgis/core/views/MapView';
 import { Spacer } from 'components/UI/FormComponents';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 
-// types
 import { IIdeaData } from 'api/ideas/types';
 
-// utils
 import { createPortal } from 'react-dom';
 
 type Props = {

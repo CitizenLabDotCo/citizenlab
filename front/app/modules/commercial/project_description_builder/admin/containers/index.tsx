@@ -1,11 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 
-// components
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import ProjectDescriptionBuilderEditModePreview from '../components/ProjectDescriptionBuilderEditModePreview';
 
-// craft
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import Editor from '../components/Editor';
 import ProjectDescriptionBuilderToolbox from '../components/ProjectDescriptionBuilderToolbox';
@@ -14,17 +12,14 @@ import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWr
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
-// hooks
 import useLocale from 'hooks/useLocale';
 import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectById from 'api/projects/useProjectById';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';

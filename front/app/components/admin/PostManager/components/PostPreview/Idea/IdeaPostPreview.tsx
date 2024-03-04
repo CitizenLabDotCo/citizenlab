@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import AdminIdeaEdit from 'components/admin/PostManager/components/PostPreview/Idea/AdminIdeaEdit';
 import AdminIdeaContent from 'components/admin/PostManager/components/PostPreview/Idea/AdminIdeaContent';
 import { PreviewMode } from 'components/admin/PostManager';

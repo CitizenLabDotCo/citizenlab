@@ -2,11 +2,9 @@ import React, { FormEvent, ChangeEvent } from 'react';
 import { getBase64FromFile } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styling
 import styled from 'styled-components';
 import {
   colors,

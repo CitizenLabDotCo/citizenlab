@@ -12,7 +12,6 @@ import Button from 'components/UI/Button';
 // Typings
 import { Multiloc, Locale } from 'typings';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import useLocale from 'hooks/useLocale';

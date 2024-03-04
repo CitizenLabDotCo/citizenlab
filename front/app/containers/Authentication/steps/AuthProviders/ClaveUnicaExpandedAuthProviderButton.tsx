@@ -1,12 +1,9 @@
 import React, { memo, useCallback, useState } from 'react';
 
-// components
 import Consent from './Consent';
 
-// styling
 import styled from 'styled-components';
 
-// typings
 import { SignUpInFlow } from 'containers/Authentication/typings';
 import { AuthProvider } from '.';
 import { fontSizes } from '@citizenlab/cl2-component-library';

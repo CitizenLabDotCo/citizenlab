@@ -1,27 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import useLocalize from 'hooks/useLocalize';
-import { isEqual } from 'lodash-es';
 
 // resources
-import { isNilOrError } from 'utils/helperUtils';
-import moment from 'moment';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import styled from 'styled-components';
-import messages from './messages';
-import ResolutionControl, {
-  IResolution,
-} from 'components/admin/ResolutionControl';
-import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 
 import { colors, Box } from '@citizenlab/cl2-component-library';
+import { isEqual } from 'lodash-es';
+import moment from 'moment';
 import { MessageDescriptor } from 'react-intl';
-import Warning from 'components/UI/Warning';
-
-// services
-
-// components
-import { SectionTitle, PageTitle } from 'components/admin/Section';
-import T from 'components/T';
 
 import HorizontalBarChartWithoutStream from './Charts/HorizontalBarChartWithoutStream';
 import IdeasByStatusChart from './Charts/IdeasByStatusChart';
@@ -36,9 +20,25 @@ import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
 import { activeUsersByTimeCumulativeXlsxEndpoint } from 'api/active_users_by_time/util';
 import usePhases from 'api/phases/usePhases';
 import { useParams } from 'react-router-dom';
-import useProjectById from 'api/projects/useProjectById';
+import styled from 'styled-components';
+import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
+import ResolutionControl, {
+  IResolution,
+} from 'components/admin/ResolutionControl';
+import { SectionTitle, PageTitle } from 'components/admin/Section';
+import T from 'components/T';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
 import useIdeas from 'api/ideas/useIdeas';
 import { ParticipationMethod } from 'api/phases/types';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from './messages';
 
 const Section = styled.div`
   margin-bottom: 20px;

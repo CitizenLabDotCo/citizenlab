@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Spinner,
@@ -20,19 +19,16 @@ import InformationSectionMobile from './components/InformationSectionMobile';
 import Image from 'components/UI/Image';
 import ProjectLink from './components/ProjectLink';
 
-// styling
 import styled from 'styled-components';
 
 // router
 import { useParams } from 'react-router-dom';
 
-// hooks
 import useEvent from 'api/events/useEvent';
 import useProjectById from 'api/projects/useProjectById';
 import useEventImage from 'api/event_images/useEventImage';
 import useLocalize from 'hooks/useLocalize';
 
-// utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 const InnerContainer = styled(Box)`

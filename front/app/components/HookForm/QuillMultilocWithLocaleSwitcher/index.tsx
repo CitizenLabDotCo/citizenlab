@@ -4,7 +4,6 @@ import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext, FieldError } from 'react-hook-form';
 import { Locale, CLError, RHFErrors } from 'typings';
 
-// components
 import QuillMultilocWithLocaleSwitcherComponent, {
   Props as QuillMultilocWithLocaleSwitcherComponentProps,
 } from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';

@@ -1,23 +1,19 @@
 import React from 'react';
 import { ChartWidgetProps } from '../typings';
 
-// components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import DateRangePicker from 'components/admin/DateRangePicker';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import ProjectFilter from '../../_shared/ProjectFilter';
 
-// hooks
 import { useIntl } from 'utils/cl-intl';
 import { useNode } from '@craftjs/core';
 
-// utils
 import moment, { Moment } from 'moment';
 
 // messages
 import messages from '../messages';
 
-// typings
 import { IOption, Multiloc } from 'typings';
 
 const ChartWidgetSettings = () => {

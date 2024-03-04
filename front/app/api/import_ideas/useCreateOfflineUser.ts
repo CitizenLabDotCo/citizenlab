@@ -1,11 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 
-// keys
 import usersKeys from 'api/users/keys';
 import groupsKeys from 'api/groups/keys';
 
-// typings
 import { IUser } from 'api/users/types';
 import { CLErrorsWrapper } from 'typings';
 import { CreateOfflineIdeasParams } from './types';

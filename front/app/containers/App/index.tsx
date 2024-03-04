@@ -3,8 +3,17 @@ import GlobalStyle from 'global-styles';
 import 'intersection-observer';
 import { includes, uniq } from 'lodash-es';
 import moment from 'moment';
+
 import 'moment-timezone';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
+
+import { useLocation } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+import { Locale } from 'typings';
+
+import ErrorBoundary from 'components/ErrorBoundary';
+
+import { trackPage } from 'utils/analytics';
 import {
   endsWith,
   isIdeaShowPage,
@@ -12,17 +21,14 @@ import {
   isPage,
 } from 'utils/helperUtils';
 
-// constants
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
 
 // context
 import { PreviousPathnameContext } from 'context';
-import { trackPage } from 'utils/analytics';
 
 // analytics
 const ConsentManager = lazy(() => import('components/ConsentManager'));
 
-// components
 import {
   Box,
   Spinner,
@@ -31,10 +37,12 @@ import {
   getTheme,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import ErrorBoundary from 'components/ErrorBoundary';
+
 import Navigate from 'utils/cl-router/Navigate';
+
 import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
+
 import Meta from './Meta';
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
@@ -42,29 +50,26 @@ const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 // auth
 import HasPermission from 'components/HasPermission';
 
-// services
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
 import useDeleteSelf from 'api/users/useDeleteSelf';
+
 import { localeStream } from 'utils/locale';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import { useLocation } from 'react-router-dom';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
 
 // style
-import { ThemeProvider } from 'styled-components';
 
-// typings
-import { Locale } from 'typings';
-
-// utils
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+
 import useAuthUser from 'api/me/useAuthUser';
+
 import { configureScope } from '@sentry/react';
+
 import UserSessionRecordingModal from './UserSessionRecordingModal';
 
 interface Props {

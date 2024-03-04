@@ -7,12 +7,10 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 // router
 import Link from 'utils/cl-router/Link';
 
-// components
 import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
 import FollowUnfollow from 'components/FollowUnfollow';
 
-// services
 import { getProjectUrl } from 'api/projects/utils';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 
@@ -25,7 +23,6 @@ import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO,
 } from 'api/project_images/useProjectImages';
 
-// i18n
 import T from 'components/T';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -48,7 +45,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { rgba, darken } from 'polished';
 
-// utils
 import { getInputTermMessage } from 'utils/i18n';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';

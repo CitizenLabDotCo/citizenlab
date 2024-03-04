@@ -2,10 +2,8 @@ import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 
-// types
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import styled from 'styled-components';

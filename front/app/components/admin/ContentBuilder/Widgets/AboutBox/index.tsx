@@ -1,10 +1,8 @@
 import React from 'react';
 
-// components
 import ProjectInfoSideBar from 'containers/ProjectsShowPage/shared/header/ProjectInfoSideBar';
 import { Box } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from './messages';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 import { useParams } from 'react-router-dom';

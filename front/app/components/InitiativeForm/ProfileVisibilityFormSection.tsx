@@ -5,7 +5,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import { Text, IconTooltip } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import profileVisibilityMessages from 'containers/IdeasNewPage/IdeasNewForm/messages';
 import { useParams } from 'react-router-dom';

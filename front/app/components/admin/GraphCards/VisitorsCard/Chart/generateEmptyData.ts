@@ -1,8 +1,6 @@
-// utils
 import { getEmptyRow } from '../useVisitors/parse';
 import { emptyDateRange } from '../../_utils/timeSeries';
 
-// typings
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 

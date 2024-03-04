@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-// styling
 import styled from 'styled-components';
 import {
   colors,
@@ -12,25 +11,20 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 
-// components
 import Link from 'utils/cl-router/Link';
 import GradientSrc from './gradient.svg';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import AuthorAvatar from './AuthorAvatar';
 
-// i18n
 import messages from '../../MostReactedIdeasWidget/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// utils
 import checkTextOverflow, { MEDIUM_LINE_HEIGHT } from './checkTextOverflow';
 
-// types
 import { IIdeaImageData } from 'api/idea_images/types';
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 
-// i18n
 import useLocalize from 'hooks/useLocalize';
 import { getTextNumberOfVotes } from 'utils/configs/votingMethodConfig/textNumberOfVotes';
 

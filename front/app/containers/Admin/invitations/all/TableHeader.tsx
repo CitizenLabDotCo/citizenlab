@@ -1,13 +1,10 @@
 import React from 'react';
 
-// components
 import { Thead, Tr, Th, Text, colors } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// typings
 import { SortAttribute } from 'api/invites/types';
 import { SortDirection } from 'utils/paginationUtils';
 

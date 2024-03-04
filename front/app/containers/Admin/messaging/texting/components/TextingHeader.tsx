@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 
-// components
 import Button from 'components/UI/Button';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 

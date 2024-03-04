@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import FileAttachments from 'components/UI/FileAttachments';
 import { Box, media } from '@citizenlab/cl2-component-library';
 import SharingButtons from 'components/Sharing/SharingButtons';
@@ -18,10 +17,8 @@ import Outlet from 'components/Outlet';
 import InitiativeBanner from './InitiativeBanner';
 import CosponsorsSection from './CosponsorsSection';
 
-// utils
 import { getAddressOrFallbackDMS } from 'utils/map';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
@@ -39,11 +36,9 @@ import {
   contentFadeInEasing,
 } from './styleConstants';
 
-// hooks
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
-// types
 import useInitiativeReviewRequired from './hooks/useInitiativeReviewRequired';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';

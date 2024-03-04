@@ -1,8 +1,6 @@
-// utils
 import { isEqual } from 'lodash-es';
 import { isValidEmail } from 'utils/validate';
 
-// typings
 import { IIdeas } from 'api/ideas/types';
 import { IUser } from 'api/users/types';
 import { UserFormData } from './typings';

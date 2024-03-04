@@ -1,12 +1,9 @@
 import React, { memo } from 'react';
 
-// hooks
 import useProjectById from 'api/projects/useProjectById';
 
-// components
 import Warning from 'components/UI/Warning';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

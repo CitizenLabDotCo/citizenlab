@@ -1,6 +1,5 @@
 import React from 'react';
 
-// styling
 import styled from 'styled-components';
 import {
   media,
@@ -10,13 +9,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 
-// components
 import ContentContainer from 'components/ContentContainer';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

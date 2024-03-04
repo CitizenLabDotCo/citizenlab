@@ -1,14 +1,11 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import Warning from 'components/UI/Warning';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
-// i18n
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 

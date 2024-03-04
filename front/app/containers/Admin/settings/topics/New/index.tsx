@@ -1,11 +1,9 @@
 import React from 'react';
 import clHistory from 'utils/cl-router/history';
 
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// components
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
 import TopicForm from '../TopicForm';

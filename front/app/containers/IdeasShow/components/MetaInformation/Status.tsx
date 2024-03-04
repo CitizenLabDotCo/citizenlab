@@ -4,17 +4,12 @@ import {
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 
-// hooks
 import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 
-// components
 import StatusBadge from 'components/StatusBadge';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// utils
 
 interface Props {
   statusId: string;

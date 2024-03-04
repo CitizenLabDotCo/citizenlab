@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '@arcgis/core/assets/esri/themes/light/main.css';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// components
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
 import Basemap from '@arcgis/core/Basemap';
@@ -17,14 +15,12 @@ import Expand from '@arcgis/core/widgets/Expand';
 import Legend from '@arcgis/core/widgets/Legend';
 import LayerList from '@arcgis/core/widgets/LayerList';
 
-// utils
 import { getDefaultBasemap } from './utils';
 import { isNil } from 'utils/helperUtils';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 import * as intl from '@arcgis/core/intl.js';
 
-// typings
 import { EsriUiElement } from './types';
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 import useLocale from 'hooks/useLocale';

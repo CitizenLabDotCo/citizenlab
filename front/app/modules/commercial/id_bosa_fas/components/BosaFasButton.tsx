@@ -3,13 +3,10 @@ import { AUTH_PATH } from 'containers/App/constants';
 import { removeUrlLocale } from 'utils/locale';
 import { getJwt } from 'utils/auth/jwt';
 
-// typings
 import { TVerificationMethod } from 'api/verification_methods/types';
 
-// components
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 

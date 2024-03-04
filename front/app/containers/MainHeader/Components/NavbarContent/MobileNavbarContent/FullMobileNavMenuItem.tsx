@@ -1,10 +1,8 @@
 import React from 'react';
 
-// styling
 import styled from 'styled-components';
 import { darken } from 'polished';
 
-// components
 import Link from 'utils/cl-router/Link';
 import {
   Icon,

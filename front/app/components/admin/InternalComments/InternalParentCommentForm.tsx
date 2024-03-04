@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { isString, trim } from 'lodash-es';
 
-// components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Avatar from 'components/Avatar';
@@ -16,7 +15,6 @@ import {
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
@@ -27,13 +25,11 @@ import { commentAdded } from './events';
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
 
-// hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
 import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
 import useAuthUser from 'api/me/useAuthUser';
 
-// utils
 import { getMentionRoles } from './utils';
 
 const Container = styled.div`

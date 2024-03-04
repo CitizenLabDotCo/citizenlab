@@ -4,20 +4,15 @@ import moment from 'moment';
 // api
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 
-// components
 import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// styling
 import styled from 'styled-components';
 
-// utils
 import { truncate } from 'utils/textUtils';
 
-// typings
 import { IIdeaData, IIdeas } from 'api/ideas/types';
 
 const StyledButton = styled(Button)``;

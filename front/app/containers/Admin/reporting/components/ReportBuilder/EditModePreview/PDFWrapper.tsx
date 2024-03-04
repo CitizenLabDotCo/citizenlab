@@ -1,9 +1,7 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 
-// constants
 import { A4_WIDTH, A4_HEIGHT } from 'containers/Admin/reporting/constants';
 
 const PDFWrapper = ({ children }) => {

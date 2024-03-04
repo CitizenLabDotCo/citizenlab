@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useReport from 'api/reports/useReport';
 import useReportLayout from 'api/report_layout/useReportLayout';
@@ -11,10 +10,8 @@ import useLocale from 'hooks/useLocale';
 import { ReportContextProvider } from '../../context/ReportContext';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
-// components
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
-// craft
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import Editor from '../../components/ReportBuilder/Editor';
 import TopBar from '../../components/ReportBuilder/TopBar';
@@ -29,11 +26,9 @@ import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrappe
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
 import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
 
-// utils
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
-// typings
 import {
   CraftJson,
   ContentBuilderErrors,

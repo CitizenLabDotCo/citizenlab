@@ -4,11 +4,9 @@ import React, { useState } from 'react';
 import useUserById from 'api/users/useUserById';
 import useInfiniteUsers from 'api/users/useInfiniteUsers';
 
-// components
 import BaseUserSelect from './BaseUserSelect';
 import OptionLabel from './OptionLabel';
 
-// typings
 import { IUserData } from 'api/users/types';
 import { Option } from './typings';
 import { optionIsUser } from './utils';

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-// components
 import {
   Box,
   colors,
@@ -13,7 +12,6 @@ import {
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 
-// intl
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isRuleValid } from 'utils/yup/validateLogic';

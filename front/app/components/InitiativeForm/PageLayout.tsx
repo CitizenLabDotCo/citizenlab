@@ -3,7 +3,6 @@ import React from 'react';
 // libraries
 import clHistory from 'utils/cl-router/history';
 
-// components
 import GoBackButton from 'components/UI/GoBackButton';
 import TipsBox from './TipsBox';
 import ContentContainer from 'components/ContentContainer';
@@ -14,7 +13,6 @@ import Fragment from 'components/Fragment';
 import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

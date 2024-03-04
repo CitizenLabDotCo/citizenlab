@@ -2,12 +2,8 @@
 import React, { useRef } from 'react';
 import { map, isEmpty } from 'lodash-es';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
 
-// typings
-
-// components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   IGraphUnit,
@@ -21,7 +17,6 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { Popup } from 'semantic-ui-react';
 import { Icon } from '@citizenlab/cl2-component-library';
 
-// styling
 import styled from 'styled-components';
 
 import { isNilOrError } from 'utils/helperUtils';

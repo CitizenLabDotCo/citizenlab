@@ -1,9 +1,7 @@
 import React, { useCallback } from 'react';
 
-// craft
 import { useNode } from '@craftjs/core';
 
-// components
 import {
   Box,
   Text,
@@ -17,13 +15,11 @@ import QuestionSelect from './QuestionSelect';
 import GroupModeSelect from './GroupModeSelect';
 import UserFieldSelect from './UserFieldSelect';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import widgetMessages from '../../messages';
 import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
-// typings
 import { IOption } from 'typings';
 import { Props } from '../typings';
 import { GroupMode } from 'api/graph_data_units/requestTypes';

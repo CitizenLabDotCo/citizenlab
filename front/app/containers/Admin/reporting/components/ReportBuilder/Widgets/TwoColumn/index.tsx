@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 
 // styles
@@ -8,16 +7,13 @@ import styled from 'styled-components';
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
-// craft
 import { TwoColumnSettings } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import { Element } from '@craftjs/core';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-// i18n
 import messages from 'components/admin/ContentBuilder/Widgets/TwoColumn/messages';
 
-// typings
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
 import { Layout } from 'components/admin/GraphCards/typings';
 

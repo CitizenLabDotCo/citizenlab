@@ -1,9 +1,7 @@
 import React, { memo, FormEvent } from 'react';
 
-// components
 import Button from 'components/UI/Button';
 
-// styling
 import styled from 'styled-components';
 import { colors } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';

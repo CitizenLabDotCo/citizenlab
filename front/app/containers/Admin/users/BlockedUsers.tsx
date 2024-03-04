@@ -5,7 +5,6 @@ import React from 'react';
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';
 
-// i18n
 import messages from './messages';
 
 // Hooks

@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// components
 import { Tr, TrProps } from '@citizenlab/cl2-component-library';
 
 const StyledRow = styled(Tr)<{ undraggable: boolean }>`

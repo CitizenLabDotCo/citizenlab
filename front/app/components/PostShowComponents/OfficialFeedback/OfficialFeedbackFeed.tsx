@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import Button from 'components/UI/Button';
 import OfficialFeedbackPost from './OfficialFeedbackPost';
 
@@ -13,7 +12,6 @@ import {
   isRtl,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedDate } from 'react-intl';

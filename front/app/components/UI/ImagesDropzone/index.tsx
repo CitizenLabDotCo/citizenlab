@@ -3,7 +3,6 @@ import Dropzone, { Accept } from 'react-dropzone';
 import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
 
-// components
 import {
   Icon,
   colors,
@@ -12,18 +11,15 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
-// i18n
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// utils
 import { getBase64FromFile } from 'utils/fileUtils';
 
 // style
 import styled from 'styled-components';
 
-// typings
 import { UploadFile } from 'typings';
 import RemoveImageButton from '../RemoveImageButton';
 

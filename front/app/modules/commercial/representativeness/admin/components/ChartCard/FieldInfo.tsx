@@ -1,16 +1,12 @@
 import React from 'react';
 
-// components
 import { Text, Icon, colors } from '@citizenlab/cl2-component-library';
 
-// styling
 import styled from 'styled-components';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// typings
 import { IncludedUsers } from '../../hooks/parseReferenceData';
 
 const StyledIcon = styled(Icon)`

@@ -3,15 +3,12 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { isError } from 'lodash-es';
 
-// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-// utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 

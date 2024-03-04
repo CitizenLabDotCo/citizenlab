@@ -1,15 +1,12 @@
 import React, { useMemo } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
 
-// components
 import { ResponsiveContainer } from 'recharts';
 import FakeLegend from './Legend/FakeLegend';
 import { Box } from '@citizenlab/cl2-component-library';
 
-// utils
 import { debounce, isEqual } from 'lodash-es';
 
-// typings
 import { Percentage } from 'typings';
 import {
   GraphDimensions,

@@ -9,11 +9,9 @@ import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// components
 import {
   Box,
   Title,
@@ -26,8 +24,6 @@ import IdeaList from './IdeaList';
 import IdeaEditor from './IdeaEditor';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
-
-// styling
 
 const ReviewSection = () => {
   const { projectId, phaseId } = useParams() as {

@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 
-// components
 import PieChart from 'components/admin/Graphs/PieChart';
 import renderTooltip from 'containers/Admin/dashboard/users/Charts/GenderChart/renderTooltip';
 
-// utils
 import { makeLegendItem } from 'containers/Admin/dashboard/users/Charts/GenderChart/Chart';
 
-// typings
 import { GenderSerie } from 'containers/Admin/dashboard/users/Charts/GenderChart/typings';
 import { Layout } from 'components/admin/GraphCards/typings';
 

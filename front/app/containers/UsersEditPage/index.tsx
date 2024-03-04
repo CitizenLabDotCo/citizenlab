@@ -5,7 +5,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // router
 import clHistory from 'utils/cl-router/history';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

@@ -1,10 +1,7 @@
-// i18n
 import messages from 'containers/Admin/dashboard/messages';
 
-// utils
 import { binBirthyear } from 'utils/dataUtils';
 
-// typings
 import { FormatMessage } from 'typings';
 import { UsersByBirthyearResponse } from 'api/graph_data_units/responseTypes';
 

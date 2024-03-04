@@ -1,11 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// components
 import {
   IconTooltip,
   Box,
@@ -17,7 +15,6 @@ import UserSearch from '../../components/UserSearch';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import { Section } from 'components/admin/Section';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const ModeratorSubSection = styled(Section)`

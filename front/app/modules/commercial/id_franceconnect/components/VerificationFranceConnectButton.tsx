@@ -3,13 +3,10 @@ import { AUTH_PATH } from 'containers/App/constants';
 import { removeUrlLocale } from 'utils/locale';
 import { getJwt } from 'utils/auth/jwt';
 
-// typings
 import { TVerificationMethod } from 'api/verification_methods/types';
 
-// components
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 
-// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';

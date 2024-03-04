@@ -1,6 +1,5 @@
 import React, { memo, useCallback } from 'react';
 
-// components
 import {
   Icon,
   Spinner,
@@ -15,7 +14,6 @@ import SearchInput from 'components/UI/SearchInput';
 import IdeaMapCard from '../IdeaMapCard';
 import Centerer from 'components/UI/Centerer';
 
-// hooks
 import useLocale from 'hooks/useLocale';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import usePhase from 'api/phases/usePhase';
@@ -24,16 +22,12 @@ import usePhase from 'api/phases/usePhase';
 import { useSearchParams } from 'react-router-dom';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
-// services
-
-// i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
 
-// utils
 import { isFieldEnabled } from 'utils/projectUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';

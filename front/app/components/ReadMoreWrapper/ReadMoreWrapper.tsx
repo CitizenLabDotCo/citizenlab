@@ -1,11 +1,9 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { isEmpty } from 'lodash-es';
 
-// components
 import Button from 'components/UI/Button';
 import ReactResizeDetector from 'react-resize-detector';
 
-// i18n
 import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';

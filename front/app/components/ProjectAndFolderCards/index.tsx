@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import { omitBy } from 'lodash-es';
 
-// hooks
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 
-// components
 import ProjectAndFolderCardsInner from './ProjectAndFolderCardsInner';
 
-// utils
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// typings
 import { PublicationStatus } from 'api/projects/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';

@@ -1,7 +1,6 @@
 // parse
 import { parseTimeSeries, parseStats } from './parse';
 
-// typings
 import { QueryParameters } from './typings';
 import { useMemo, useState } from 'react';
 

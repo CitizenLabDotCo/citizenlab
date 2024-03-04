@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { isString, trim } from 'lodash-es';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 
-// components
 import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextArea';
 import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/ErrorMessage';
 import Avatar from 'components/Avatar';
@@ -15,11 +14,9 @@ import OldAnonymousParticipationConfirmationModal from 'components/AnonymousPart
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 
-// i18n
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
-// services
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 // resources
@@ -31,7 +28,6 @@ import { commentAdded } from '../../events';
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
 
-// hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';

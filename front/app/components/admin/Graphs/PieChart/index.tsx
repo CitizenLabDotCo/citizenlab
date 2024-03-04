@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 
-// styling
 import { animation } from '../styling';
 
-// components
 import {
   PieChart as RechartsPieChart,
   Tooltip,
@@ -15,11 +13,9 @@ import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
 
-// utils
 import { getPieConfig } from './utils';
 import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 
-// typings
 import { Props } from './typings';
 import {
   GraphDimensions,

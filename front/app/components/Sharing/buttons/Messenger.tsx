@@ -2,10 +2,8 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { clickSocialSharingLink, Medium } from '../utils';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';

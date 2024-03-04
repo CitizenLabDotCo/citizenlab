@@ -1,13 +1,10 @@
 import React from 'react';
 
-// components
 import { Text } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from '../../messages';
 import { useIntl } from 'utils/cl-intl';
 
-// utils
 import { get } from 'lodash-es';
 
 interface Props {

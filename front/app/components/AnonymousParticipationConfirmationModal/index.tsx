@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Title,
@@ -12,7 +11,6 @@ import {
 import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
 
-// intl
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

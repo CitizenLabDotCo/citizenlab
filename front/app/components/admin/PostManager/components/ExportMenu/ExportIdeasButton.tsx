@@ -2,7 +2,6 @@ import React from 'react';
 import Button from 'components/UI/Button';
 import { fontSizes } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from '../../messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { exportType } from '../ExportMenu';

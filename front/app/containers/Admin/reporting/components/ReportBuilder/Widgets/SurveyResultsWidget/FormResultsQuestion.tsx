@@ -1,17 +1,13 @@
 import React from 'react';
 
-// components
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import InputType from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/InputType';
 import MultipleChoice from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MultipleChoice';
 
-// i18n
 import T from 'components/T';
 
-// utils
 import { snakeCase } from 'lodash-es';
 
-// typings
 import { Locale } from 'typings';
 import { Result } from 'api/survey_results/types';
 

@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-// components
 import SideModal from 'components/UI/SideModal';
 import IdeaPostPreview from './Idea/IdeaPostPreview';
 import InitiativePostPreview from './Initiative/InitiativePostPreview';
 
-// styling
 import styled from 'styled-components';
 import { colors } from '@citizenlab/cl2-component-library';
 
-// typings
 import { ManagerType, PreviewMode } from '../..';
 
 export const Container = styled.div`

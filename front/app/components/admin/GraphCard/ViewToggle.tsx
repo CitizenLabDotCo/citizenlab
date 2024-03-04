@@ -1,9 +1,7 @@
 import React from 'react';
 
-// components
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 
-// styling
 import styled from 'styled-components';
 
 const TAB_ITEMS: ITabItem[] = [

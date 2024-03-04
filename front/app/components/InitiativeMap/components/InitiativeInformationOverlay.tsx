@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import InitiativePreview from './InitiativePreview';
 import CloseIconButton from 'components/UI/CloseIconButton';

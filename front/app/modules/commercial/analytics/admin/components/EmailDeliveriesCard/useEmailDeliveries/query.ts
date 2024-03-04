@@ -1,10 +1,8 @@
-// utils
 import {
   getDateFilter,
   getInterval,
 } from 'components/admin/GraphCards/_utils/query';
 
-// typings
 import { QueryParameters } from './typings';
 import { Query, QuerySchema } from 'api/analytics/types';
 

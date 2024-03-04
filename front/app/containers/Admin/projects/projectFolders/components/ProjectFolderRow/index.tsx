@@ -1,31 +1,28 @@
 import React, { memo, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import { Icon, Box, Spinner, colors } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
 import {
   RowContent,
   RowContentInner,
   RowTitle,
   RowButton,
 } from 'containers/Admin/projects/components/StyledComponents';
-import FolderMoreActionsMenu from './FolderMoreActionsMenu';
-import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
 
 // styles
 import styled from 'styled-components';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import Error from 'components/UI/Error';
 
-// hooks
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
+
+import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAuthUser from 'api/me/useAuthUser';
 
-// services
-import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
-import { IAdminPublicationData } from 'api/admin_publications/types';
+import FolderMoreActionsMenu from './FolderMoreActionsMenu';
+import messages from './messages';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;

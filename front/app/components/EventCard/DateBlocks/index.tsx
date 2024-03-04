@@ -1,12 +1,10 @@
 import React, { memo } from 'react';
 import moment from 'moment';
 
-// components
 import { EventDateBlockWrapper } from './styling';
 import DateBlockSingleYear from './DateBlockSingleYear';
 import DateBlocksMultiYear from './DateBlocksMultiYear';
 
-// styling
 import styled from 'styled-components';
 import { media } from '@citizenlab/cl2-component-library';
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
-// components
 import {
   SortableList,
   SortableRow,
@@ -25,7 +24,6 @@ import useCustomPages from 'api/custom_pages/useCustomPages';
 import useUpdateArea from 'api/areas/useUpdateArea';
 import AreaTermConfig from './AreaTermConfig';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import T from 'components/T';
 import useLocalize from 'hooks/useLocalize';

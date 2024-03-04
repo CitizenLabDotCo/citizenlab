@@ -1,13 +1,11 @@
 import React from 'react';
 
-// components
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
 import ProjectInfoSideBar from './ProjectInfoSideBar';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
 
-// hooks
 import useProjectById from 'api/projects/useProjectById';
 import useProjectFiles from 'api/project_files/useProjectFiles';
 import {
@@ -18,7 +16,6 @@ import {
   isRtl,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import T from 'components/T';
 
 // style

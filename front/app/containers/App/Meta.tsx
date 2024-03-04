@@ -5,10 +5,8 @@ import { Helmet } from 'react-helmet';
 
 // resources
 
-// i18n
 import messages from './messages';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { imageSizes } from 'utils/fileUtils';
 import { API_PATH } from 'containers/App/constants';

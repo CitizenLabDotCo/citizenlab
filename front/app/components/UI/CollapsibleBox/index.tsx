@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useState, Suspense } from 'react';
 
-// components
 import {
   Icon,
   IconNames,
@@ -12,7 +11,6 @@ import {
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-// styling
 import styled from 'styled-components';
 import { darken } from 'polished';
 

@@ -1,10 +1,8 @@
 import React from 'react';
 
-// components
 import CategoryCard from './CategoryCard';
 import ContentContainer from './ContentContainer';
 
-// typings
 import { CategorizedDestinations, IPreferences } from '../typings';
 import { TCategory } from '../destinations';
 

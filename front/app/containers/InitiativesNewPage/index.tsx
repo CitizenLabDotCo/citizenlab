@@ -12,14 +12,11 @@ import { parse } from 'qs';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { PreviousPathnameContext } from 'context';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
-// components
 import PageNotFound from 'components/PageNotFound';
 import InitiativesNewMeta from './InitiativesNewMeta';
 import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';

@@ -6,7 +6,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import useUpdateInternalComment from 'api/internal_comments/useUpdateInternalComment';
 import { IUpdatedInternalComment } from 'api/internal_comments/types';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
@@ -25,7 +24,6 @@ import useInternalComment from 'api/internal_comments/useInternalComment';
 import useLocale from 'hooks/useLocale';
 import { Button } from '@citizenlab/cl2-component-library';
 
-// utils
 import { getMentionRoles } from '../utils';
 import {
   getCommentContent,

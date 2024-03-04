@@ -1,17 +1,13 @@
 import React from 'react';
 
-// components
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
-// intl
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// utils
 import Tippy from '@tippyjs/react';
 
 import powerBIImage from './power-bi.png';

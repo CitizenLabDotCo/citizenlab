@@ -4,7 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
-// components
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
@@ -18,13 +17,11 @@ import {
 import FollowUnfollow from 'components/FollowUnfollow';
 import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
 
-// hooks
 import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useIntl } from 'utils/cl-intl';
 
-// i18n
 import messages from 'containers/ProjectsShowPage/messages';
 
 // style

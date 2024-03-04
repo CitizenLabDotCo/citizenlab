@@ -1,11 +1,9 @@
 import React from 'react';
 
-// components
 import { ListItem, Box, Title } from '@citizenlab/cl2-component-library';
 import EditedText from './EditedText';
 import Buttons from './Buttons';
 
-// i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 

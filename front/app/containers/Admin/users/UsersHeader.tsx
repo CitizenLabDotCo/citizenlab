@@ -4,7 +4,6 @@ import React, { memo } from 'react';
 // Components
 import Button from 'components/UI/Button';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

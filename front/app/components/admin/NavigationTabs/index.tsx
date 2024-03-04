@@ -8,7 +8,6 @@ import {
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
 
-// components
 import Tab from './Tab';
 import TabsPageLayout from './TabsPageLayout';
 

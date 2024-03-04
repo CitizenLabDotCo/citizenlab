@@ -1,7 +1,6 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import QuillEditor, {
   Props as QuillEditorProps,
 } from 'components/UI/QuillEditor';
@@ -11,14 +10,12 @@ import {
   Label,
 } from '@citizenlab/cl2-component-library';
 
-// hooks
 import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // style
 import styled from 'styled-components';
 
-// typings
 import { Locale, Multiloc } from 'typings';
 
 const Container = styled.div``;

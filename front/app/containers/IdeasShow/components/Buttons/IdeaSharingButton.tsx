@@ -1,12 +1,10 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import { getInputTermMessage } from 'utils/i18n';
 
-// hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useLocalize from 'hooks/useLocalize';
 import useAuthUser from 'api/me/useAuthUser';

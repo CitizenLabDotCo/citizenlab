@@ -1,20 +1,17 @@
 import React, { useRef } from 'react';
 import { isEmpty } from 'lodash-es';
 
-// intl
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import T from 'components/T';
 
-// styling
 import {
   sizes,
   DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
 
-// components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   GraphCardHeader,
@@ -28,10 +25,8 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import BarChartByCategory from 'components/admin/Graphs/BarChartByCategory';
 import PieChartByCategory from 'components/admin/Graphs/PieChartByCategory';
 
-// typings
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import createConvertAndMergeSeries, {
   ISupportedDataType,

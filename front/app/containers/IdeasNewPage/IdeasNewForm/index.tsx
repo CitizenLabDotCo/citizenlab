@@ -11,11 +11,9 @@ import useInputSchema from 'hooks/useInputSchema';
 import { useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
 
-// i18n
 import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 
-// components
 import Form from 'components/Form';
 import IdeasNewMeta from '../IdeasNewMeta';
 import PageContainer from 'components/UI/PageContainer';
@@ -27,7 +25,6 @@ import AnonymousParticipationConfirmationModal from 'components/AnonymousPartici
 import Warning from 'components/UI/Warning';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 
-// utils
 import { geocode, reverseGeocode } from 'utils/locationTools';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getLocationGeojson } from '../utils';
@@ -36,7 +33,6 @@ import { getCurrentPhase } from 'api/phases/utils';
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
-// types
 import { Multiloc } from 'typings';
 import { IPhases, IPhaseData } from 'api/phases/types';
 import useLocale from 'hooks/useLocale';

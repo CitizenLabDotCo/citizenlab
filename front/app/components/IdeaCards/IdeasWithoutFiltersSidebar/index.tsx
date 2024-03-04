@@ -1,48 +1,45 @@
 import React, { useCallback, useMemo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
-import useLocale from 'hooks/useLocale';
 import {
   Spinner,
   useBreakpoint,
   media,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import useProjectById from 'api/projects/useProjectById';
-import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 
 // router
 import { useSearchParams } from 'react-router-dom';
 
 // tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
 
-// components
-import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
-import SelectSort, { Sort } from '../shared/Filters/SortFilterDropdown';
-import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import IdeasView from '../shared/IdeasView';
 
-// i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-// constants
+import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
+import { trackEventByName } from 'utils/analytics';
 
-// typings
-import { isFieldEnabled } from 'utils/projectUtils';
-import { IQueryParameters } from 'api/ideas/types';
 import usePhase from 'api/phases/usePhase';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
+import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import { IQueryParameters } from 'api/ideas/types';
+import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import { IdeaDefaultSortMethod } from 'api/phases/types';
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocale from 'hooks/useLocale';
+
+import SelectSort, { Sort } from '../shared/Filters/SortFilterDropdown';
+import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
+import tracks from '../tracks';
 
 const Container = styled.div`
   width: 100%;

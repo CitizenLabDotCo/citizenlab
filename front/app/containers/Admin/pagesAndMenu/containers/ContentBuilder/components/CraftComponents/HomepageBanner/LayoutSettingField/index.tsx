@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   fontSizes,
@@ -19,7 +18,7 @@ import TwoRowLayoutInactive from './layout_previews/two_row_layout_inactive.jpg'
 
 // style
 import styled from 'styled-components';
-// i18n
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { THomepageBannerLayout } from '..';

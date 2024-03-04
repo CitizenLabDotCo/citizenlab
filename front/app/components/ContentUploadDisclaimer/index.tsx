@@ -1,10 +1,8 @@
 import React from 'react';
 
-// components
 import { Text, Box, Button } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 

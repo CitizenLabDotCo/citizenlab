@@ -1,13 +1,10 @@
 import React from 'react';
 
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// components
 import { FormSection } from 'components/UI/FormComponents';
 
-// styling
 import styled from 'styled-components';
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';

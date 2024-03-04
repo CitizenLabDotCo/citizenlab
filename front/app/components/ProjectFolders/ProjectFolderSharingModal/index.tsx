@@ -1,16 +1,13 @@
 import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import Modal from 'components/UI/Modal';
 import SharingButtons from 'components/Sharing/SharingButtons';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderbById from 'api/project_folders/useProjectFolderById';
 import { useIntl } from 'utils/cl-intl';
 
-// i18n
 import T from 'components/T';
 import messages from './messages';
 

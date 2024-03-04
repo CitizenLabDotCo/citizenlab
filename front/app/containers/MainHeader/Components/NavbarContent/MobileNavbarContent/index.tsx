@@ -1,21 +1,19 @@
 import React, { Suspense, useRef, useState } from 'react';
 
-// components
 import LanguageSelector from '../../LanguageSelector';
 import NotificationMenu from '../../NotificationMenu';
 import ShowFullMenuButton from './ShowFullMenuButton';
 import { Box, Button, media, isRtl } from '@citizenlab/cl2-component-library';
 import FullMobileNavMenu from './FullMobileNavMenu';
-// hooks
+
 import useAuthUser from 'api/me/useAuthUser';
 import UserMenu from '../../UserMenu';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-// intl
+
 import { useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
 
-// utils
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { trackEventByName } from 'utils/analytics';

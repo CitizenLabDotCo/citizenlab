@@ -2,18 +2,15 @@
 import React, { useRef } from 'react';
 import { isEmpty, map, orderBy } from 'lodash-es';
 
-// intl
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
-// styling
 import {
   legacyColors,
   sizes,
   DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
 
-// components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   GraphCardHeader,
@@ -25,10 +22,8 @@ import BarChart from 'components/admin/Graphs/BarChart';
 
 // resources
 
-// types
 import { IGraphFormat } from 'typings';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { ideasByStatusXlsxEndpoint } from 'api/ideas_by_status/util';
 import useIdeasByStatus from 'api/ideas_by_status/useIdeasByStatus';

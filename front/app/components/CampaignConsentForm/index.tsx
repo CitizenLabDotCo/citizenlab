@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// components
 import {
   Accordion,
   Box,
@@ -12,21 +11,17 @@ import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
 import Feedback from './feedback';
 import { ScreenReaderOnly } from 'utils/a11y';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { groupCampaignsConsent, sortGroupedCampaignConsents } from './utils';
 
-// hooks
 import useCampaignConsents from 'api/campaign_consents/useCampaignConsents';
 import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignConsents';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// typings
 import {
   CampaignConsent,
   CampaignConsentChild,

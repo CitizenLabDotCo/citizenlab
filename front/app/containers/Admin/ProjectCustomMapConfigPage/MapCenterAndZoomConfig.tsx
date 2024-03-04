@@ -1,30 +1,26 @@
 import React, { memo, useState, useEffect } from 'react';
-import { isEmpty, inRange } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
-// services
-import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useMapConfig from 'api/map_config/useMapConfig';
-
-// components
+import MapView from '@arcgis/core/views/MapView';
 import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
+import { isEmpty, inRange } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+
+import { SubSectionTitle } from 'components/admin/Section';
+import { goToMapLocation } from 'components/EsriMap/utils';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { SubSectionTitle } from 'components/admin/Section';
-import MapView from '@arcgis/core/views/MapView';
 
-// utils
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useMapConfig from 'api/map_config/useMapConfig';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
+
 import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
 
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
-
-// styling
-import styled from 'styled-components';
-import { goToMapLocation } from 'components/EsriMap/utils';
 
 const Container = styled.div`
   display: flex;

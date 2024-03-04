@@ -8,7 +8,6 @@ import SelectPreviewDevice, {
 } from 'components/admin/SelectPreviewDevice';
 import { UploadFile } from 'typings';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 

@@ -1,18 +1,14 @@
 import React from 'react';
 
-// components
 import NavbarItemForm, { FormValues } from '../../components/NavbarItemForm';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getInitialFormValues, createNavbarItemUpdateData } from './utils';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 

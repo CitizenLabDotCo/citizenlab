@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// components
 import {
   Box,
   Text,
@@ -10,15 +9,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import BinInputsHeader from './BinInputsHeader';
 
-// i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 
-// styling
 import styled from 'styled-components';
 
-// utils
 import {
   getLowerBoundLimits,
   getUpperBoundLimits,
@@ -27,7 +23,6 @@ import {
 import { clamp } from 'lodash-es';
 import { indices } from 'utils/helperUtils';
 
-// typings
 import { Bins } from '../../../api/reference_distribution/types';
 
 const RemoveBinButton = styled.button`

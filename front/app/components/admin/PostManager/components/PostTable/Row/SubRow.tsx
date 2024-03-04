@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import { Tr, Td, colors } from '@citizenlab/cl2-component-library';
 import PhasesSelector from './selectors/PhasesSelector';
 import TopicsSelector from './selectors/TopicsSelector';
@@ -8,7 +7,6 @@ import ProjectSelector from './selectors/ProjectSelector';
 import IdeasStatusSelector from './selectors/IdeasStatusSelector';
 import InitiativesStatusSelector from './selectors/InitiativesStatusSelector';
 
-// typings
 import { TFilterMenu } from '../../..';
 import { IPhaseData } from 'api/phases/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-// components
 import {
   Box,
   Image as ImageComponent,
@@ -16,11 +15,9 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { Multiloc, UploadFile } from 'typings';
 
-// craft
 import { useEditor, useNode } from '@craftjs/core';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
-// i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 
@@ -31,7 +28,6 @@ import {
   IMAGE_LOADED_EVENT,
 } from 'components/admin/ContentBuilder/constants';
 
-// hooks
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 import useLocalize from 'hooks/useLocalize';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';

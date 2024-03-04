@@ -1,11 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-// intl
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
 import messages from '../../messages';
 
-// styling
 import styled from 'styled-components';
 import {
   sizes,
@@ -19,7 +17,6 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   GraphCard,
@@ -30,11 +27,9 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { HiddenLabel } from 'utils/a11y';
 import BarChart from 'components/admin/Graphs/BarChart';
 
-// typings
 import { IResource } from '..';
 import { IGraphFormat, IOption } from 'typings';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { ideasByTopicXlsxEndpoint } from 'api/ideas_by_topic/util';
 import { commentsByTopicXlsxEndpoint } from 'api/comments_by_topic/util';

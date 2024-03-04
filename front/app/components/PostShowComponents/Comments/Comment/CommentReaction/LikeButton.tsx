@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Icon,
   colors,
@@ -9,11 +8,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
-// styling
 import styled from 'styled-components';
 
 const Container = styled.li`

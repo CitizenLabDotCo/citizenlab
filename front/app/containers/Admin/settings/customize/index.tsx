@@ -1,36 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { get, has, isEmpty, omitBy } from 'lodash-es';
 
-// components
+import { get, has, isEmpty, omitBy } from 'lodash-es';
+import styled from 'styled-components';
+import { UploadFile, Multiloc } from 'typings';
+
 import { Section, SectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import Branding from './Branding';
 
 // style
-import styled from 'styled-components';
 
-// utils
+import { useIntl } from 'utils/cl-intl';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import getSubmitState from './getSubmitState';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import sharedSettingsMessages from '../messages';
-
-// services
 import {
   IAppConfigurationStyle,
   IAppConfiguration,
   IAppConfigurationSettings,
 } from 'api/app_configuration/types';
-
-// typings
-import { UploadFile, Multiloc } from 'typings';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useLocale from 'hooks/useLocale';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+
+import useLocale from 'hooks/useLocale';
+
+import sharedSettingsMessages from '../messages';
+
+import Branding from './Branding';
+import getSubmitState from './getSubmitState';
+import messages from './messages';
 
 export interface IAttributesDiff {
   settings?: Partial<IAppConfigurationSettings>;

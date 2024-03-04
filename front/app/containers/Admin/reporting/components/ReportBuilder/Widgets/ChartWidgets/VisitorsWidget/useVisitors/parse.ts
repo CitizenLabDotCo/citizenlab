@@ -1,10 +1,8 @@
 import moment, { Moment } from 'moment';
 
-// utils
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
 import { get } from 'utils/helperUtils';
 
-// typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { TimeSeries, TimeSeriesResponseRow, TimeSeriesRow } from './typings';
 import { VisitorsResponse } from 'api/graph_data_units/responseTypes';

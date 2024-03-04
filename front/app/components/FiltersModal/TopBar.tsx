@@ -1,13 +1,10 @@
 import React, { MouseEvent } from 'react';
 
-// components
 import CloseIconButton from 'components/UI/CloseIconButton';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// styling
 import styled from 'styled-components';
 import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';

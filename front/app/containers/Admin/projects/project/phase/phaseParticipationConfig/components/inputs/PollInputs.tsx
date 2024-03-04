@@ -1,15 +1,12 @@
 import React from 'react';
 
-// components
 import { IconTooltip, Toggle } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../../messages';
 
-// typings
 import { ApiErrors } from '../..';
 
 interface Props {

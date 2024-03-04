@@ -6,23 +6,18 @@ import {
 } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 
-// components
 import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { PhaseHeader } from './phase/PhaseHeader';
 import ProjectHeader from './projectHeader';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 
-// typings
 import { ITab } from 'typings';
 import { IProjectData } from 'api/projects/types';
 
-// utils
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-// hooks
 import { IPhaseData } from 'api/phases/types';
 import { getCurrentPhase } from 'api/phases/utils';
 import { getIntialTabs, getTabHideConditions } from './tabs';

@@ -1,8 +1,6 @@
-// utils
 import { getEmptyRow } from './useActiveUsers/parse';
 import { emptyDateRange } from 'components/admin/GraphCards/_utils/timeSeries';
 
-// typings
 import { Moment } from 'moment';
 import { IResolution } from 'components/admin/ResolutionControl';
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import Title from 'components/PostShowComponents/Title';
 import PostedBy from 'containers/IdeasShow/components/MetaInformation/PostedBy';
 import Body from 'components/PostShowComponents/Body';
@@ -27,16 +26,12 @@ import {
   Container,
 } from 'components/admin/PostManager/components/PostPreview';
 
-// services
-
 // resources
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
-// utils
 import { getAddressOrFallbackDMS } from 'utils/map';
 
-// i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';

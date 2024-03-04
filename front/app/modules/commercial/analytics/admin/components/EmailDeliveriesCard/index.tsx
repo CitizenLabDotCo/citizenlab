@@ -1,19 +1,15 @@
 import React, { useRef } from 'react';
 
-// hooks
 import useEmailDeliveries from './useEmailDeliveries';
 
-// components
 import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
 import EmailDeliveriesStats from './EmailDeliveriesStats';
 import Chart from './Chart';
 
-// i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-// typings
 import {
   ProjectId,
   Dates,

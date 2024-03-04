@@ -1,13 +1,10 @@
 import React from 'react';
 
-// types
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
-// components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';

@@ -1,7 +1,6 @@
 import React from 'react';
 import { every, isEmpty, isFunction } from 'lodash-es';
 
-// components
 import {
   Table,
   Tbody,
@@ -18,18 +17,14 @@ import IdeaHeaderRow from './header/IdeaHeaderRow';
 import InitiativesHeaderRow from './header/InitiativesHeaderRow';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
-// services
 import { IPhaseData } from 'api/phases/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 
-// styling
 import styled from 'styled-components';
 
-// i18n
 import { ManagerType, TFilterMenu } from '../..';
 
-// typings
 import { Sort as IdeasSort, IIdeaData } from 'api/ideas/types';
 import {
   IInitiativeData,

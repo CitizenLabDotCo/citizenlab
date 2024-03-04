@@ -1,7 +1,5 @@
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { IAppConfiguration } from 'api/app_configuration/types';
 import { IUser } from 'api/users/types';
 

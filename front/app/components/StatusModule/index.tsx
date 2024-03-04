@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Button,
@@ -23,11 +22,9 @@ import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// utils
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
-// intl
 import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 
@@ -54,7 +51,6 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
 
-  // intl
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 

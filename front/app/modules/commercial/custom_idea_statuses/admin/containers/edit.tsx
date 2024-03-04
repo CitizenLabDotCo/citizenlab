@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
 import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
@@ -12,7 +11,6 @@ import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// components
 import { Section, SectionTitle } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
 import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';

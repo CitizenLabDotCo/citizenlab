@@ -3,12 +3,10 @@ import React from 'react';
 // routing
 import { useParams } from 'react-router-dom';
 
-// i18n
 import messages from '../messages';
 import ownMessages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// components
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import InputManager, {
@@ -17,7 +15,6 @@ import InputManager, {
 import AnalysisBanner from './AnalysisBanner';
 import NewIdeaButton from './NewIdeaButton';
 
-// hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';

@@ -1,27 +1,29 @@
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { isEqual } from 'lodash-es';
 
-// components
-import ParticipationMethodPicker from './components/ParticipationMethodPicker';
-import VotingInputs from './components/inputs/VotingInputs';
-import PollInputs from './components/inputs/PollInputs';
-import SurveyInputs from './components/inputs/SurveyInputs';
-import NativeSurveyInputs from './components/inputs/NativeSurveyInputs';
-import IdeationInputs from './components/inputs/IdeationInputs';
-import { Container, StyledSection } from './components/shared/styling';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import {
   Box,
   IconTooltip,
   Input,
   IOption,
 } from '@citizenlab/cl2-component-library';
+import { isEqual } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { CLErrors, Multiloc } from 'typings';
+
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
-// services
 import { IProject } from 'api/projects/types';
+import IdeationInputs from './components/inputs/IdeationInputs';
+import NativeSurveyInputs from './components/inputs/NativeSurveyInputs';
+import PollInputs from './components/inputs/PollInputs';
+import VotingInputs from './components/inputs/VotingInputs';
+import ParticipationMethodPicker from './components/ParticipationMethodPicker';
+import SurveyInputs from './components/inputs/SurveyInputs';
+import { Container, StyledSection } from './components/shared/styling';
+
 import {
   IdeaDefaultSortMethod,
   InputTerm,
@@ -30,23 +32,20 @@ import {
   TSurveyService,
   VotingMethod,
 } from 'api/phases/types';
+
 import eventEmitter from 'utils/eventEmitter';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+
 import messages from '../../messages';
 
-// utils
 import getOutput from './utils/getOutput';
 import validate from './utils/validate';
+
 import { anyIsDefined } from 'utils/helperUtils';
 
-// typings
-import { CLErrors, Multiloc } from 'typings';
 import { IAppConfiguration } from 'api/app_configuration/types';
 import { getDefaultSortMethodFallback } from 'api/phases/utils';
 

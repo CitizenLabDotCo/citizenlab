@@ -1,7 +1,5 @@
-// component
 import { RightColumn } from 'containers/Admin';
 
-// styling
 import styled from 'styled-components';
 import { stylingConsts } from '@citizenlab/cl2-component-library';
 

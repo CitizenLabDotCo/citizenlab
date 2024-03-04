@@ -1,10 +1,8 @@
 import React from 'react';
 
-// components
 import IdeaCardFooter from './IdeaCardFooter';
 import FooterWithReactionControl from './FooterWithReactionControl';
 
-// typings
 import { IIdeaData } from 'api/ideas/types';
 import { ParticipationMethod } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';

@@ -1,4 +1,3 @@
-// craft
 import { useNode } from '@craftjs/core';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
@@ -7,7 +6,6 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import { isPage } from 'utils/helperUtils';
 import { REPORT_BUILDER, EDITOR } from 'containers/Admin/reporting/routes';
 
-// hooks
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
 import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
 

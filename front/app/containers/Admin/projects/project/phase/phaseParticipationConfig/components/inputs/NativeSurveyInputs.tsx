@@ -1,10 +1,8 @@
 import React from 'react';
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 
-// components
 import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 
-// intl
 import messages from '../messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

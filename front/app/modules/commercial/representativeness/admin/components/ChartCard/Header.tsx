@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Title,
@@ -11,7 +10,6 @@ import {
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import ViewToggle, { View } from 'components/admin/GraphCard/ViewToggle';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 

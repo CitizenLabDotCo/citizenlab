@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
 
-// styling
 import styled from 'styled-components';
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';

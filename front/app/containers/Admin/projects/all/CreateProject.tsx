@@ -4,21 +4,19 @@ import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { InsertConfigurationOptions } from 'typings';
-// components
+
 import Outlet from 'components/Outlet';
 import { Icon, colors } from '@citizenlab/cl2-component-library';
 import AdminProjectsProjectGeneral from 'containers/Admin/projects/project/general';
 import { HeaderTitle } from './StyledComponents';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 
-// utils
 import eventEmitter from 'utils/eventEmitter';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';

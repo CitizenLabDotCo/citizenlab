@@ -5,7 +5,6 @@ import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { getInputTermMessage } from 'utils/i18n';
@@ -14,18 +13,15 @@ import { getInputTermMessage } from 'utils/i18n';
 import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
-// components
 import { Spinner } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
-// styling
 import styled from 'styled-components';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-// constants
 import {
   pageContentMaxWidth,
   contentFadeInDuration,
@@ -33,7 +29,6 @@ import {
   contentFadeInDelay,
 } from '../styleConstants';
 
-// utils
 import { isString } from 'utils/helperUtils';
 import { getInputTerm } from 'api/phases/utils';
 

@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 
-// components
 import {
   Radio,
   IconTooltip,
@@ -19,11 +18,9 @@ import {
   ReactingLimitInput,
 } from '../../shared/styling';
 
-// i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../../../messages';
 
-// typings
 import { ApiErrors } from '../../..';
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';

@@ -1,19 +1,15 @@
 import React from 'react';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
-// typings
 import { IOption } from 'typings';
 
 // styles
 import styled from 'styled-components';
 
-// components
 import { Select, Label } from '@citizenlab/cl2-component-library';
 
 // analytics

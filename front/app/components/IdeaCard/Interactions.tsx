@@ -6,10 +6,8 @@ import useBasket from 'api/baskets/useBasket';
 // config
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
-// utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
-// types
 import { IIdea } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 

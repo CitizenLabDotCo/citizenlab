@@ -6,15 +6,11 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 
-// components
 import { Button, Icon, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-// styling
 
 // tracks
 import tracks from './tracks';
@@ -28,12 +24,10 @@ import eventEmitter from 'utils/eventEmitter';
 import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-// utils
 import { isButtonEnabled } from './utils';
 import { isNil } from 'utils/helperUtils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
-// typings
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { IPhaseData } from 'api/phases/types';
 

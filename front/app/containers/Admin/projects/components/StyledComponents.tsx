@@ -2,7 +2,6 @@
 import styled from 'styled-components';
 import { fontSizes } from '@citizenlab/cl2-component-library';
 
-// components
 import Button from 'components/UI/Button';
 import T from 'components/T';
 

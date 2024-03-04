@@ -1,10 +1,8 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 
-// components
 import FeatureFlag from 'components/FeatureFlag';
 import { FormSection } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
@@ -19,11 +17,9 @@ import Avatar from 'components/Avatar';
 // events
 import { triggerVerificationOnly } from 'containers/Authentication/events';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/UsersEditPage/messages';
 
-// styling
 import styled from 'styled-components';
 import { darken } from 'polished';
 

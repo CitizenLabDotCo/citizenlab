@@ -3,12 +3,10 @@ import { get } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
-// components
 import Button from 'components/UI/Button';
 import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';
 import UseTemplateModal from '../components/UseTemplateModal';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -16,7 +14,6 @@ import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'containers/Admin/projects/all/tracks';
 
-// styling
 import styled from 'styled-components';
 
 const Container = styled.div`

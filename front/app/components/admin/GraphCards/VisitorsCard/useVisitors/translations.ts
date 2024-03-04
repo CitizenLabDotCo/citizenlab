@@ -1,10 +1,8 @@
-// i18n
 import messages from './messages';
 import moduleMessages from '../../messages';
 import cardMessages from '../messages';
 import { getTimePeriodTranslations } from '../../_utils/resolution';
 
-// typings
 import { FormatMessage } from 'typings';
 
 export interface Translations {

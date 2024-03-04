@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Title,
   Box,
@@ -10,11 +9,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 // import RepresentativenessArticleLink from '../../components/RepresentativenessArticleLink';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styling
 import styled from 'styled-components';
 
 const StyledStatusLabel = styled(StatusLabel)`

@@ -1,20 +1,16 @@
 import React from 'react';
 
-// components
 import { Button } from '@citizenlab/cl2-component-library';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 
-// hooks
 import { useTheme } from 'styled-components';
 import useEvents from 'api/events/useEvents';
 
-// utils
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
 import { getCurrentPhase } from 'api/phases/utils';
 import { scrollToElement } from 'utils/scroll';
 import moment from 'moment';
 
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 

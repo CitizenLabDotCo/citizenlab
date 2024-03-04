@@ -1,11 +1,9 @@
 import React from 'react';
 
-// components
 import { List } from 'components/admin/ResourceList';
 import DefaultTopicRow from './DefaultTopicRow';
 import CustomTopicRow from './CustomTopicRow';
 
-// typings
 import { ITopicData } from 'api/topics/types';
 
 interface Props {

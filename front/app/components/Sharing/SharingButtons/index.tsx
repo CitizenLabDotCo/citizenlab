@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   BoxFlexProps,
@@ -14,11 +13,9 @@ import WhatsApp from '../buttons/WhatsApp';
 import Email from '../buttons/Email';
 import CopyLink from '../buttons/CopyLink';
 
-// i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// utils
 import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 
 interface Props {

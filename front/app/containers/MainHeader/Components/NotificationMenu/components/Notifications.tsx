@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Spinner,
@@ -11,7 +10,6 @@ import InfiniteScroll from 'react-infinite-scroller';
 import Notification from './Notification';
 import EmptyStateImg from '../assets/no_notification_image.svg';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 

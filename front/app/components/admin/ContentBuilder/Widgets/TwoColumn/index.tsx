@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Radio,
@@ -13,15 +12,12 @@ import {
 // styles
 import styled from 'styled-components';
 
-// craft
 import { useNode, Element } from '@craftjs/core';
 import Container from '../Container';
 
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// typings
 import { ColumnLayout } from '../../typings';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 

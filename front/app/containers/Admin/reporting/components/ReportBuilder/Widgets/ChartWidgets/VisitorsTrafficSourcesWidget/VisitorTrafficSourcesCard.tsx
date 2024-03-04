@@ -1,21 +1,16 @@
 import React from 'react';
 
-// hooks
 import useVisitorReferrerTypes from './useVisitorReferrerTypes';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import Chart from './Chart';
 import NoData from '../../_shared/NoData';
 
-// i18n
 import messages from '../messages';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
 
 type Props = ProjectId & Dates;

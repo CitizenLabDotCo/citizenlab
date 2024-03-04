@@ -1,9 +1,7 @@
-// utils
 import { requestBlob } from 'utils/requestBlob';
 import { saveAs } from 'file-saver';
 import { reportError } from 'utils/loggingUtils';
 
-// typings
 import { Locale } from 'typings';
 
 interface Params {

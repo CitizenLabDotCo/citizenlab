@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react';
 
-// hooks
 import usePhase from 'api/phases/usePhase';
 
-// components
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
@@ -11,7 +9,6 @@ import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 import { useSearchParams } from 'react-router-dom';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 import { getInputTermMessage } from 'utils/i18n';
@@ -19,10 +16,8 @@ import { getInputTermMessage } from 'utils/i18n';
 // style
 import styled from 'styled-components';
 
-// utils
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
-// typings
 import { IPhaseData } from 'api/phases/types';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
@@ -40,7 +35,6 @@ interface InnerProps {
 }
 
 interface QueryParameters {
-  // constants
   'page[number]': number;
   'page[size]': number;
   projects: string[];

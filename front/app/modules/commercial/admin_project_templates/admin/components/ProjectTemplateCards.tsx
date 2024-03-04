@@ -1,9 +1,8 @@
 import React, { memo } from 'react';
 import { get } from 'lodash-es';
-// hooks
+
 import useLocalize from 'hooks/useLocalize';
 
-// components
 import ProjectTemplateCard from './ProjectTemplateCard';
 import SearchInput from 'components/UI/SearchInput';
 import { Spinner, colors, fontSizes } from '@citizenlab/cl2-component-library';
@@ -13,7 +12,6 @@ import PurposeFilter from './PurposeFilter';
 import ParticipationLevelFilter from './ParticipationLevelFilter';
 import Centerer from 'components/UI/Centerer';
 
-// i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';

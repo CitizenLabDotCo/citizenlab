@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 
-// components
 import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
-// styling
+
 import styled from 'styled-components';
 import { media } from '@citizenlab/cl2-component-library';
 import {

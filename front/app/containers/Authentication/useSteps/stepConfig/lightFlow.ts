@@ -15,7 +15,6 @@ import { trackEventByName } from 'utils/analytics';
 // events
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
-// typings
 import {
   GetRequirements,
   UpdateState,

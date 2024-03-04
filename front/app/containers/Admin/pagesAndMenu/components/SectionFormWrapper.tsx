@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import PageWrapper from 'components/admin/PageWrapper';
 import { SectionDescription } from 'components/admin/Section';

@@ -3,7 +3,6 @@ import { isEmpty, get } from 'lodash-es';
 import { reportError } from 'utils/loggingUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import { Input, IconTooltip } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import Collapse from 'components/UI/Collapse';
@@ -19,13 +18,10 @@ import {
   HelpImage,
 } from 'containers/Authentication/steps/AuthProviders/styles';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 
-// services
 import { verifyCOW } from '../api/verification_methods/verify';
 
-// i18n
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';

@@ -1,11 +1,9 @@
 import React from 'react';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// components
 import { RowButton } from '../StyledComponents';
 
 interface Props {

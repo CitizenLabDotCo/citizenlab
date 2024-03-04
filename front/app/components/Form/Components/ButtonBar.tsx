@@ -1,10 +1,8 @@
 import React, { memo, ReactElement } from 'react';
 
-// components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style

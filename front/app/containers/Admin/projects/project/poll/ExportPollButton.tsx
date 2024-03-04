@@ -5,11 +5,9 @@ import React from 'react';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// components
 import Button from 'components/UI/Button';
 import exportPollResponses from 'api/poll_responses/exportPollResponses';
 
-// i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';

@@ -1,4 +1,3 @@
-// utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // cookies
@@ -10,7 +9,6 @@ import {
 } from './destinations';
 import { IConsentCookie } from './consent';
 
-// typings
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import { CategorizedDestinations, IPreferences } from './typings';
 import { IUserData } from 'api/users/types';

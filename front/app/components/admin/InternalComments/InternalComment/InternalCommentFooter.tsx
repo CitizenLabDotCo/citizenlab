@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import InternalCommentReplyButton from './InternalCommentReplyButton';
 import InternalCommentsMoreActions from './InternalCommentsMoreActions';
 
@@ -8,7 +7,6 @@ import InternalCommentsMoreActions from './InternalCommentsMoreActions';
 import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 
-// hooks
 import useInternalComment from 'api/internal_comments/useInternalComment';
 
 const footerHeight = '30px';

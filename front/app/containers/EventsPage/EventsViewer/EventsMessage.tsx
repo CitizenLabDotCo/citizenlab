@@ -1,9 +1,7 @@
 import React from 'react';
 
-// components
 import VerticalCenterer from 'components/VerticalCenterer';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { MessageDescriptor } from 'react-intl';
 // style

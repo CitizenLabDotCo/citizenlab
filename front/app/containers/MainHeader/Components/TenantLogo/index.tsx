@@ -3,14 +3,11 @@ import styled from 'styled-components';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// components
 import { Image } from '@citizenlab/cl2-component-library';
 
 const Logo = styled(Image)`

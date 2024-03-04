@@ -2,7 +2,6 @@ import React from 'react';
 import { IProjectData } from 'api/projects/types';
 import styled from 'styled-components';
 
-// components
 import Timeline from './Timeline';
 import { Section } from 'components/admin/Section';
 

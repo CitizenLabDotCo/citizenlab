@@ -5,12 +5,10 @@ import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 // resources
 import { IProjectModerationRightsReceivedNotificationData } from 'api/notifications/types';
 
-// i18n
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 
-// components
 import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 

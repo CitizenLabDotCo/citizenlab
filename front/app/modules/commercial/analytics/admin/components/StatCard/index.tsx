@@ -1,18 +1,14 @@
 import React, { ReactElement } from 'react';
 
-// components
 import GraphCard from 'components/admin/GraphCard';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import EmptyState from 'components/admin/Graphs/_components/EmptyState';
 import Statistic from 'components/admin/Graphs/Statistic';
 
-// hooks
 import useStatCard from './useStatCard';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { StatCardTemplateProps } from './useStatCard/typings';
 import { useIntl } from 'utils/cl-intl';
 

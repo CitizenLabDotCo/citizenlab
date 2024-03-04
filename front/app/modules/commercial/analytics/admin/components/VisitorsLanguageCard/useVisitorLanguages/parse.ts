@@ -2,10 +2,8 @@ import { Response, PieRow } from './typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { Translations } from './translations';
 
-// styling
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
-// utils
 import { roundPercentages } from 'utils/math';
 
 export const parsePieData = (

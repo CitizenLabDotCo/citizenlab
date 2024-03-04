@@ -1,13 +1,10 @@
 import React from 'react';
 
-// components
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-// styling
 import styled from 'styled-components';
 
 const PageNavigationButton = styled.button<{ disabled: boolean }>`

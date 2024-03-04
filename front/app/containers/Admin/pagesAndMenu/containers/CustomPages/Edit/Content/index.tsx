@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import PageWrapper from 'components/admin/PageWrapper';
 import SectionToggle, {
   ISectionToggleData,
@@ -8,14 +7,12 @@ import SectionToggle, {
 import { Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
 
 import { TCustomPageEnabledSetting } from 'api/custom_pages/types';
 
-// hooks
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
@@ -23,7 +20,6 @@ import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 // routing
 import { useParams } from 'react-router-dom';
 
-// utils
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -32,7 +28,6 @@ export interface ICustomPageSectionToggleData extends ISectionToggleData {
   hideSection?: boolean;
 }
 
-// types
 const CustomPagesEditContent = () => {
   const { mutate: updateCustomPage } = useUpdateCustomPage();
   const { formatMessage } = useIntl();

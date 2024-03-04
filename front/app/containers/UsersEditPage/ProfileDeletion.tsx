@@ -4,17 +4,14 @@ import React, { PureComponent } from 'react';
 // Styles
 import styled from 'styled-components';
 
-// components
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 
-// intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
-// utils
 import DeletionDialog from './DeletionDialog';
 
 const Row = styled.div`

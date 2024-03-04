@@ -1,8 +1,6 @@
-// utils
 import { roundPercentage } from 'utils/math';
 import { get } from 'utils/helperUtils';
 
-// typings
 import { ReferrerRow, ReferrersTotalRow, TableRow } from './typings';
 import { Translations } from './translations';
 

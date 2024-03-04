@@ -1,6 +1,5 @@
 import React, { ChangeEvent } from 'react';
 
-// components
 import {
   Thead,
   Tr,
@@ -9,19 +8,15 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../messages';
 
-// utils
 import { roundPercentage } from 'utils/math';
 
-// typings
 import { CellConfiguration, Override } from 'typings';
 import { Sort as IdeasSort } from 'api/ideas/types';
 import { SortDirection } from 'utils/paginationUtils';
 
-// hooks
 import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
 import SortableHeaderCell from './SortableHeaderCell';
 

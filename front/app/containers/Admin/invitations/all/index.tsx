@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// components
 import {
   Table,
   Tbody,
@@ -16,14 +15,11 @@ import TableHeader from './TableHeader';
 import TableRow from './TableRow';
 import SearchInput from 'components/UI/SearchInput';
 
-// i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styling
 import styled from 'styled-components';
 
-// utils
 import { API_PATH } from 'containers/App/constants';
 import { requestBlob } from 'utils/requestBlob';
 import { isEmpty } from 'lodash-es';

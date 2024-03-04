@@ -3,7 +3,6 @@ import React from 'react';
 // react hook form
 import { Controller, useFormContext } from 'react-hook-form';
 
-// components
 import {
   Box,
   Label,
@@ -12,7 +11,6 @@ import {
   Select,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';

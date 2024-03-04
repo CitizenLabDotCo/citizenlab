@@ -2,11 +2,9 @@
 import React, { useRef } from 'react';
 import { isEmpty } from 'lodash-es';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from '../../../containers/Admin/dashboard/messages';
 
-// components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   IGraphUnit,
@@ -20,10 +18,8 @@ import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
 
 // resources
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// types
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
 import useLocalize from 'hooks/useLocalize';

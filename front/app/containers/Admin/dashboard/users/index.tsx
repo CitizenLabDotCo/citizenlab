@@ -2,7 +2,6 @@
 import React, { PureComponent } from 'react';
 import moment, { Moment } from 'moment';
 
-// components
 import ChartFilters from './ChartFilters';
 import { GraphsContainer } from 'components/admin/GraphWrappers';
 import Charts from './Charts';

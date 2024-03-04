@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { find } from 'lodash-es';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 

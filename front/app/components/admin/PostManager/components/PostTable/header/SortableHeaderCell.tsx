@@ -1,7 +1,6 @@
 import React from 'react';
 import { Sort as IdeasSort } from 'api/ideas/types';
 
-// components
 import { Th, colors } from '@citizenlab/cl2-component-library';
 
 interface Props {

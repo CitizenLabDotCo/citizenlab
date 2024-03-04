@@ -4,12 +4,10 @@ import React from 'react';
 import usePhase from 'api/phases/usePhase';
 import useIdeaImage from 'api/idea_images/useIdeaImage';
 
-// i18n
 import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// components
 import {
   useBreakpoint,
   Box,
@@ -25,7 +23,6 @@ import Footer from 'components/IdeaCard/Footer';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import ProgressBar from './ProgressBar';
 
-// styling
 import styled from 'styled-components';
 
 // router
@@ -33,7 +30,6 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
-// typings
 import { IIdeaData } from 'api/ideas/types';
 
 const cardPadding = '17px';

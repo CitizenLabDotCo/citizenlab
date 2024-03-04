@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { isPage } from 'utils/helperUtils';
 
-// components
 import {
   Icon,
   Box,
@@ -17,7 +16,6 @@ import { SupportMenu } from './SupportMenu';
 import { UserMenu } from './UserMenu';
 import NotificationsPopup from './NotificationsPopup';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -38,7 +36,6 @@ import useIdeasCount from 'api/idea_count/useIdeasCount';
 import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
 import { isAdmin } from 'utils/permissions/roles';
 
-// typings
 import { IUser } from 'api/users/types';
 
 const Menu = styled.div`

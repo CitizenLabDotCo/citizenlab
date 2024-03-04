@@ -1,7 +1,5 @@
-// typings
 import { Mapping, Pie, PieConfig } from './typings';
 
-// styling
 import { categoricalColorScheme } from '../styling';
 
 const DEFAULT_START_ANGLE = 90;

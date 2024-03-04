@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// components
 import ExportIdeasButton from './ExportIdeasButton';
 import ExportIdeasCommentsButton from './ExportIdeasCommentsButton';
 import ExportInitiativesButton from './ExportInitiativesButton';

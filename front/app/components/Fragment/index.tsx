@@ -3,7 +3,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import qs from 'qs';
 
-// styling
 import styled from 'styled-components';
 
 // resources

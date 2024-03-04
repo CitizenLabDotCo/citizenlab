@@ -7,15 +7,12 @@ import { IProjectData } from 'api/projects/types';
 import { Multiloc } from 'typings';
 import { IPhaseData, UpdatePhaseObject } from 'api/phases/types';
 
-// utils
 import { API_PATH } from 'containers/App/constants';
 
-// components
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import { Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 
-// intl
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 

@@ -1,23 +1,18 @@
 import React from 'react';
 
-// hooks
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import Chart from './Chart';
 import NoData from '../../_shared/NoData';
 
-// i18n
 import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { serieHasValues } from '../utils';
 import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/GenderChart/convertToGraphFormat';
 
-// types
 import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
 import { useUsersByGender } from 'api/graph_data_units';
 

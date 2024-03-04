@@ -16,7 +16,6 @@ const StyledLink = styled(Link)`
   }
 `;
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 

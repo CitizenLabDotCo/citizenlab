@@ -1,40 +1,34 @@
 import React, { useState, useMemo, useEffect } from 'react';
+
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import { isEmpty, isEqual } from 'lodash-es';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+
+import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
+import { ProposalsSettings } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useNavbarItems from 'api/navbar/useNavbarItems';
+import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
+import useNavbarItems from 'api/navbar/useNavbarItems';
 
-// services
-import { ProposalsSettings } from 'api/app_configuration/types';
-import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
-
-// components
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import ProposalsFeatureToggle from './ProposalsFeatureToggle';
-import Thresholds from './Thresholds';
-import ThresholdReachedMessage from './ThresholdReachedMessage';
-import EligibilityCriteria from './EligibilityCriteria';
-import PostingTips from './PostingTips';
-import PageBody from './PageBody';
-import SubmitButton from './SubmitButton';
-import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
-import { Box, Title, colors } from '@citizenlab/cl2-component-library';
-import RequireReviewToggle from './RequireReviewToggle';
-import Cosponsors from './Cosponsors';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// styling
-import styled from 'styled-components';
-
-// typings
-import { Multiloc } from 'typings';
+import Cosponsors from './Cosponsors';
+import EligibilityCriteria from './EligibilityCriteria';
+import PostingTips from './PostingTips';
+import ProposalsFeatureToggle from './ProposalsFeatureToggle';
+import ThresholdReachedMessage from './ThresholdReachedMessage';
+import Thresholds from './Thresholds';
+import PageBody from './PageBody';
+import SubmitButton from './SubmitButton';
+import RequireReviewToggle from './RequireReviewToggle';
 
 const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 10px;

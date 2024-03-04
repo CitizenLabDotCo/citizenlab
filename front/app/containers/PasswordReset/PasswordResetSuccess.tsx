@@ -9,11 +9,9 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// utils
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import clHistory from 'utils/cl-router/history';
 

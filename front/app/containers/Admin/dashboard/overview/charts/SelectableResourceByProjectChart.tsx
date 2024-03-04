@@ -2,13 +2,10 @@
 import React from 'react';
 import { map, orderBy } from 'lodash-es';
 
-// components
 import SelectableResourceChart from './SelectableResourceChart';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 
-// typings
 import { IOption } from 'typings';
 import { IResource } from '..';
 import { IResolution } from 'components/admin/ResolutionControl';

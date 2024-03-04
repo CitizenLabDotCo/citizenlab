@@ -1,10 +1,8 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// components
 import PasswordInputComponent from './PasswordInput';
 
 type PasswordErrors = {

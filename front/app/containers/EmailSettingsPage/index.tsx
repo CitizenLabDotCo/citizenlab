@@ -2,23 +2,20 @@
 import React, { useEffect, useState } from 'react';
 
 // Components
+import { colors } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+
 import CampaignConsentForm from 'components/CampaignConsentForm';
+
+import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignConsents';
+
 import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 
 // Styles
-import styled from 'styled-components';
-import { colors } from '@citizenlab/cl2-component-library';
-
-// typings
-import { Multiloc } from 'typings';
-
-// hooks
-import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignConsents';
-
-// utils
 
 // routing
-import { useSearchParams } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;

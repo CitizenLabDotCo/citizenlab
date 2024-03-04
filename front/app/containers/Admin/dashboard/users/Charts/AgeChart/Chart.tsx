@@ -1,14 +1,11 @@
 import React from 'react';
 
-// components
 import BarChart from 'components/admin/Graphs/BarChart';
 import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
 
-// i18n
 import messages from 'containers/Admin/dashboard/messages';
 import { useIntl } from 'utils/cl-intl';
 
-// typings
 import { AgeSerie } from './typings';
 
 interface Props {

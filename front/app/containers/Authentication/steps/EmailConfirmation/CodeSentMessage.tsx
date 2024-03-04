@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 
-// components
 import { Box, Icon, Success, colors } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

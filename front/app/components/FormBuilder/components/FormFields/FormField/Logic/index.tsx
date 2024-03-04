@@ -1,16 +1,13 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import { QuestionRuleDisplay } from './QuestionRuleDisplay';
 import { PageRuleDisplay } from './PageRuleDisplay';
 
-// i18n
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
 import useLocale from 'hooks/useLocale';
 
-// utils
 import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
 import {
   getOptionRule,
@@ -20,7 +17,6 @@ import {
   getTitleFromPageId,
 } from './utils';
 
-// typings
 import { IFlatCustomField } from 'api/custom_fields/types';
 
 interface Props {

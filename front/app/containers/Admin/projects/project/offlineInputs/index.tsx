@@ -9,7 +9,6 @@ import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 
-// components
 import {
   Box,
   Spinner,
@@ -19,8 +18,6 @@ import {
 import TopBar from './TopBar';
 import ImportModal from './ImportModal';
 import ReviewSection from './ReviewSection';
-
-// styling
 
 const OfflineInputImporter = () => {
   const { projectId, phaseId } = useParams() as {

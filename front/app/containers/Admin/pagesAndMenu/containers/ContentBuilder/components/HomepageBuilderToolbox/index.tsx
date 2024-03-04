@@ -1,11 +1,9 @@
 import React from 'react';
 
-// i18n
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import messages from '../../messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// components
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -22,7 +20,6 @@ import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCar
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import Proposals from '../CraftComponents/Proposals';
 
-// types
 import { Locale } from 'typings';
 import Events from '../CraftComponents/Events';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';

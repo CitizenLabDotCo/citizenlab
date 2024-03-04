@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 import {
@@ -9,12 +8,10 @@ import {
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 
-// i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { FormattedDate } from 'react-intl';
 import messages from './messages';
 
-// hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUserById from 'api/users/useUserById';
 

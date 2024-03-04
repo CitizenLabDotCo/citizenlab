@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
 
-// hooks
 import useSteps from './useSteps';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { useTheme } from 'styled-components';
 
-// components
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import AuthProviders from './steps/AuthProviders';
@@ -31,12 +29,10 @@ import ClaveUnicaEmail from './steps/ClaveUnicaEmail';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-// i18n
 import { MessageDescriptor, useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import errorMessages from 'components/UI/Error/messages';
 
-// typings
 import { ModalProps, ErrorCode } from './typings';
 import VerificationSuccess from './steps/VerificationSuccess';
 import T from 'components/T';

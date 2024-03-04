@@ -2,18 +2,15 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-// i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-// utils
 import { getFullName, stripHtml } from 'utils/textUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { imageSizes } from 'utils/fileUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
-// hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useUserById from 'api/users/useUserById';
 import useLocale from 'hooks/useLocale';

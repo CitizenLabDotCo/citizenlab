@@ -4,10 +4,8 @@ import { omitBy, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'api/me/useAuthUser';
 
-// components
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
-// styling
 import styled from 'styled-components';
 const surveyHeightDesktop = '600px';
 const surveyHeightMobile = '500px';

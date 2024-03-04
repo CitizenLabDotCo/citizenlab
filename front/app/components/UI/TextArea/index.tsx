@@ -1,7 +1,6 @@
 import React from 'react';
 import { isEmpty } from 'lodash-es';
 
-// components
 import Error from 'components/UI/Error';
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -15,7 +14,7 @@ import {
 
 // style
 import styled from 'styled-components';
-// typings
+
 import { Locale } from 'typings';
 
 const Container = styled.div``;

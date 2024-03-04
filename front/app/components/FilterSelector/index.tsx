@@ -9,7 +9,6 @@ import {
   without,
 } from 'lodash-es';
 
-// components
 import Title from './title';
 import ValuesList from './valuesList';
 import {

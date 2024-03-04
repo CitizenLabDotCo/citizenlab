@@ -3,10 +3,8 @@ import React from 'react';
 
 // Services
 
-// hooks
 import { Localize } from 'hooks/useLocalize';
 
-// i18n
 import { getLocalizedWithFallback } from 'utils/i18n';
 
 // Typing

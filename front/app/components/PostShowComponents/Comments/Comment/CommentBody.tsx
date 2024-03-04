@@ -6,7 +6,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import useUpdateComment from 'api/comments/useUpdateComment';
 import { IUpdatedComment } from 'api/comments/types';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
@@ -29,7 +28,6 @@ import { Button } from '@citizenlab/cl2-component-library';
 import { commentTranslateButtonClicked$ } from '../events';
 import useLocalize from 'hooks/useLocalize';
 
-// utils
 import {
   getCommentContent,
   getEditableCommentContent,

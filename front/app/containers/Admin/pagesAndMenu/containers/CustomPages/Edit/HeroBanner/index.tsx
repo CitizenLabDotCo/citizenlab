@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-// types
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { CLErrors } from 'typings';
 
-// components
 import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields';
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
 import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
@@ -12,7 +10,6 @@ import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/Generic
 import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
 import ShownOnPageBadge from 'containers/Admin/pagesAndMenu/components/ShownOnPageBadge';
 
-// utils
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import { isNilOrError, isNil } from 'utils/helperUtils';
 
@@ -23,7 +20,6 @@ import { useParams } from 'react-router-dom';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import { ICustomPageAttributes } from 'api/custom_pages/types';
 
-// i18n
 import messages from '../../../GenericHeroBannerForm/messages';
 import HelmetIntl from 'components/HelmetIntl';
 import useLocalize from 'hooks/useLocalize';

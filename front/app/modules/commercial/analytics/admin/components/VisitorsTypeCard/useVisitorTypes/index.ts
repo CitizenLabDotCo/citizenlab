@@ -1,17 +1,13 @@
-// services
 import { Query, QuerySchema } from 'api/analytics/types';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
 
 // parse
 import { parsePieData, parseExcelData } from './parse';
 
-// typings
 import { Response, QueryParameters } from './typings';
 
-// utils
 import {
   getProjectFilter,
   getDateFilter,

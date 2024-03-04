@@ -1,10 +1,8 @@
 import React from 'react';
 import { SerializedNodes } from '@craftjs/core';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 
-// craft
 import BaseEditor from 'components/admin/ContentBuilder/Editor';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { parse } from 'qs';
 
-// components
 import { Spinner } from '@citizenlab/cl2-component-library';
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
@@ -9,12 +8,10 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import SurveySubmittedNotice from './components/SurveySubmittedNotice';
 import IdeasNewForm from './IdeasNewForm';
 
-// hooks
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 import usePhases from 'api/phases/usePhases';
 import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
 
-// utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { useParams } from 'react-router-dom';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';

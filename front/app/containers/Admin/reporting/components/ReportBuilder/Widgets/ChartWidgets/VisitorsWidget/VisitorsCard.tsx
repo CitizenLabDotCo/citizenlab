@@ -1,28 +1,23 @@
 import React from 'react';
 
-// hooks
 import useVisitors from './useVisitors';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import NoData from '../../_shared/NoData';
 import Chart from './Chart';
 import Statistic from 'components/admin/Graphs/Statistic';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
 
-// typings
 import {
   ProjectId,
   Dates,
   Resolution,
 } from 'components/admin/GraphCards/typings';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
 type Props = ProjectId & Dates & Resolution;

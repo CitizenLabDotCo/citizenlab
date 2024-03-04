@@ -9,14 +9,12 @@ import {
 } from 'api/users/useUpdateUser';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
-// utils
 import {
   requiredCustomFields,
   requiredBuiltInFields,
   showOnboarding,
 } from './utils';
 
-// typings
 import { GetRequirements } from 'containers/Authentication/typings';
 import { Step, BuiltInFieldsUpdate } from './typings';
 import { OnboardingType } from 'api/authentication/authentication_requirements/types';

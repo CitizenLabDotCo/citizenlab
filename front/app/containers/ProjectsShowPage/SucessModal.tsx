@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 
@@ -8,14 +7,11 @@ import usePhases from 'api/phases/usePhases';
 import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
-// styling
 import rocket from 'assets/img/rocket.png';
 
-// components
 import { Box, Title, Image } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 
-// utils
 import {
   getMethodConfig,
   getPhase,

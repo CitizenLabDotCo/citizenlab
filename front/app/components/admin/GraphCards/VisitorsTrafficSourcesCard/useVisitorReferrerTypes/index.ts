@@ -1,11 +1,9 @@
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
 
 // parse
 import { parsePieData, parseExcelData } from './parse';
 
-// typings
 import { QueryParameters } from './typings';
 
 import { useVisitorsTrafficSourcesLive } from 'api/graph_data_units';

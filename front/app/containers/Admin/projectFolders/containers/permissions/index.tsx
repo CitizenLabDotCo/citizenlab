@@ -1,38 +1,35 @@
 import React, { useState, lazy, Suspense } from 'react';
-import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// utils
-
-// services
-import useProjectFolderModerators from 'api/project_folder_moderators/useProjectFolderModerators';
-import { isRegularUser } from 'utils/permissions/roles';
-
-// i18n
 import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// components
-import { SubSectionTitle } from 'components/admin/Section';
 import { IconTooltip, Box, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
 import { List, Row } from 'components/admin/ResourceList';
-import Avatar from 'components/Avatar';
 const AddModeratorsModal = lazy(
   () => import('components/admin/SeatBasedBilling/AddModeratorsModal')
 );
-import UserSelect from 'components/UI/UserSelect';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
+import { SubSectionTitle } from 'components/admin/Section';
+import Avatar from 'components/Avatar';
+import Button from 'components/UI/Button';
+import UserSelect from 'components/UI/UserSelect';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isRegularUser } from 'utils/permissions/roles';
 
 // Hooks
-import useExceedsSeats from 'hooks/useExceedsSeats';
-import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
-import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
 import { getFullName } from 'utils/textUtils';
 
-// typings
+import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
+import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
+import useProjectFolderModerators from 'api/project_folder_moderators/useProjectFolderModerators';
 import { IUserData } from 'api/users/types';
+
+import useExceedsSeats from 'hooks/useExceedsSeats';
 
 const StyledA = styled.a`
   &:hover {

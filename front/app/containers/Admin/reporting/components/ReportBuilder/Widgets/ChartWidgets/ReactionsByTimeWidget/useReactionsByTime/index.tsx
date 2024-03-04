@@ -1,12 +1,10 @@
 import { useMemo, useState } from 'react';
 
-// hooks
 import { useReactionsByTime } from 'api/graph_data_units';
 
 // parse
 import { parseTimeSeries } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/parse';
 
-// typings
 import { QueryParameters } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
 
 export default function useReactionsByTime123({

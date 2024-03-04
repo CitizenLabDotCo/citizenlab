@@ -2,12 +2,10 @@ import React from 'react';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
 
-// hooks
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useLocalize from 'hooks/useLocalize';
 
-// components
 import FullscreenModal from 'components/UI/FullscreenModal';
 import TenantLogo from '../../TenantLogo';
 import FullMobileNavMenuItem from './FullMobileNavMenuItem';
@@ -16,10 +14,8 @@ import FullMobileNavMenuItem from './FullMobileNavMenuItem';
 import styled from 'styled-components';
 import { darken } from 'polished';
 
-// i18n
 import messages from '../../../messages';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import getNavbarItemPropsArray from '../../DesktopNavItems/getNavbarItemPropsArray';

@@ -7,7 +7,6 @@ import { getJwt } from 'utils/auth/jwt';
 import styled from 'styled-components';
 import icon from './clave-unica-icon.svg';
 
-// typings
 import { TVerificationMethod } from 'api/verification_methods/types';
 
 // CSS extracted from the official Clave Unica button

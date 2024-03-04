@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 
-// components
 import {
   Image as ImageComponent,
   colors,
@@ -12,18 +11,15 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 // image upload
 import { Multiloc } from 'typings';
 
-// craft
 import { useEditor } from '@craftjs/core';
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
-// i18n
 import messages from 'components/admin/ContentBuilder/Widgets/ImageMultiloc/messages';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
 import { IMAGE_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 
 export interface Props {

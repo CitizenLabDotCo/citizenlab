@@ -2,12 +2,10 @@ import React from 'react';
 import { TwitterShareButton } from 'react-share';
 import { Medium } from '../utils';
 
-// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
-// components
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
 // style

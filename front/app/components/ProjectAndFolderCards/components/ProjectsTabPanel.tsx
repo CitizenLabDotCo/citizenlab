@@ -4,15 +4,12 @@ import getCardSizes from './getCardSizes';
 import { isEqual } from 'lodash-es';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
-// components
 import ProjectCard from 'components/ProjectCard';
 import ProjectFolderCard from './ProjectFolderCard';
 
-// types
 import { BaseProps, TCardSize } from './PublicationStatusTabs';
 import { PublicationTab } from '../';
 
-// utils
 import { getTabId, getTabPanelId } from './Topbar/Tabs';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 

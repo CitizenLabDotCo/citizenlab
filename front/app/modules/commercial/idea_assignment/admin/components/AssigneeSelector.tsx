@@ -1,16 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// typings
 import { IOption } from 'typings';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import { Select } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 

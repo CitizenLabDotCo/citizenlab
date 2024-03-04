@@ -2,7 +2,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { forOwn, isEmpty } from 'lodash-es';
 
-// components
 import {
   Box,
   Input,
@@ -15,10 +14,8 @@ import { Section } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import Button from 'components/UI/Button';
 
-// utils
 import { isPage, isNilOrError } from 'utils/helperUtils';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -26,10 +23,9 @@ import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// typings
 import { Multiloc, Locale } from 'typings';
 
-// stylings
+s;
 import styled from 'styled-components';
 import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
 import useAddInitiativeOfficialFeedback from 'api/initiative_official_feedback/useAddInitiativeOfficialFeedback';

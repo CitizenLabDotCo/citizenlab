@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { isEmpty } from 'lodash-es';
 
-// services
+import { Box, colors, Title } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import styled from 'styled-components';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
 import { IPermissionData } from 'api/permissions/types';
 
-// components
-import ActionForm from './ActionForm';
 import UserFieldSelection from '../../components/UserFieldSelection/UserFieldSelection';
-import { Box, colors, Title } from '@citizenlab/cl2-component-library';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import ActionForm from './ActionForm';
+
 import messages from './messages';
-
-// utils
 import {
   getPermissionActionSectionSubtitle,
   HandlePermissionChangeProps,

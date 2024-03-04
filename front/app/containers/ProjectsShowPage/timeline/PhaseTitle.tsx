@@ -1,6 +1,5 @@
 import React from 'react';
 
-// hooks
 import usePhase from 'api/phases/usePhase';
 import {
   useWindowSize,
@@ -12,11 +11,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
 
-// i18n
 import messages from 'containers/ProjectsShowPage/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// utils
 import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 // style

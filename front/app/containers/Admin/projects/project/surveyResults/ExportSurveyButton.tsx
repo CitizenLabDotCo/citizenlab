@@ -1,17 +1,13 @@
 // Libraries
 import React from 'react';
 
-// typings
-
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// components
 import Button from 'components/UI/Button';
 import { exportSurveyResults } from 'api/survey_results/utils';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 

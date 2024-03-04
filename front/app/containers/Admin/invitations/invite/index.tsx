@@ -6,30 +6,17 @@ import React, {
   Suspense,
   ChangeEvent,
 } from 'react';
-import { isString, isEmpty } from 'lodash-es';
+
 import { getBase64FromFile } from 'utils/fileUtils';
 
-// components
-import Error from 'components/UI/Error';
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import Tabs from 'components/UI/Tabs';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionField } from 'components/admin/Section';
-import HelmetIntl from 'components/HelmetIntl';
+import { isString, isEmpty } from 'lodash-es';
 
 const InviteUsersWithSeatsModal = lazy(
   () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
 );
-import TemplateTab from './TemplateTab';
-import ManualTab from './ManualTab';
 const InvitationOptions = lazy(() => import('./InvitationOptions'));
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useExceedsSeats from 'hooks/useExceedsSeats';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// services
 import {
   IInviteError,
   INewBulkInvite,
@@ -41,16 +28,25 @@ import useBulkInviteCountNewSeatsEmails from 'api/invites/useBulkInviteCountNewS
 import useBulkInviteXLSX from 'api/invites/useBulkInviteXLSX';
 import useBulkInviteCountNewSeatsXLSX from 'api/invites/useBulkInviteCountNewSeatsXLSX';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
-// styling
 import styled from 'styled-components';
 
-// typings
 import { Locale, IOption } from 'typings';
+import { Section, SectionField } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import HelmetIntl from 'components/HelmetIntl';
+import Error from 'components/UI/Error';
+import Tabs from 'components/UI/Tabs';
 import Warning from 'components/UI/Warning';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import useExceedsSeats from 'hooks/useExceedsSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import ManualTab from './ManualTab';
+import TemplateTab from './TemplateTab';
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 35px;

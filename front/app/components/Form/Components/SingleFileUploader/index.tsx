@@ -1,18 +1,15 @@
 import React from 'react';
 
-// components
 import SingleFileInput from 'components/UI/SingleFileUploader/FileInput';
 import FileDisplay from 'components/UI/SingleFileUploader/FileDisplay';
 import Error from 'components/UI/Error';
 
-// typings
 import { CLErrors, UploadFile } from 'typings';
 
 // style
 import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 
-// i18n
 import messages from '../../../UI/FileUploader/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Box } from '@citizenlab/cl2-component-library';

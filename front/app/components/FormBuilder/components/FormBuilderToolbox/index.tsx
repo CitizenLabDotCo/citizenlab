@@ -2,11 +2,9 @@ import React from 'react';
 import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 
-// intl
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
-// components
 import ToolboxItem from './ToolboxItem';
 import {
   Box,
@@ -18,18 +16,15 @@ import {
 import BuiltInFields from './BuiltInFields';
 import LayoutFields from './LayoutFields';
 
-// types
 import {
   ICustomFieldInputType,
   IFlatCreateCustomField,
   IFlatCustomField,
 } from 'api/custom_fields/types';
 
-// hooks
 import useLocale from 'hooks/useLocale';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import {
   generateTempId,

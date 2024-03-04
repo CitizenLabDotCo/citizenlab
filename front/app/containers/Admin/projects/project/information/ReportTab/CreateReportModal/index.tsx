@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import useAddReport from 'api/reports/useAddReport';
 import usePhases from 'api/phases/usePhases';
 
-// components
 import Modal from 'components/UI/Modal';
 import {
   Box,
@@ -18,18 +17,14 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import PhaseFilter from 'components/UI/PhaseFilter';
 
-// utils
 import clHistory from 'utils/cl-router/history';
 
-// i18n
 import messages from '../messages';
 import otherModalMessages from 'containers/Admin/reporting/components/ReportBuilderPage/messages';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-// utils
 import { findInitialPhase, PARTICIPATION_METHODS } from './utils';
 
-// typings
 import { IPhaseData } from 'api/phases/types';
 
 interface Props {

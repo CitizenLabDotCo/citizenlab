@@ -1,12 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
 import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'api/me/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
 
-// components
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import ReactionControl from 'components/ReactionControl';
 import {
@@ -23,17 +21,14 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import clHistory from 'utils/cl-router/history';
 import { useSearchParams } from 'react-router-dom';
 
-// styling
 import styled from 'styled-components';
 import { lighten } from 'polished';
 
-// utils
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { isIdeaInParticipationContext } from 'api/phases/utils';
 
-// typings
 import { IdeaReactingDisabledReason } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 

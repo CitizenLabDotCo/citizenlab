@@ -1,9 +1,7 @@
 import React from 'react';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -11,13 +9,11 @@ import messages from './messages';
 import styled from 'styled-components';
 import { fontSizes } from '@citizenlab/cl2-component-library';
 
-// components
 import Button from 'components/UI/Button';
 import FormattedAnchor from 'components/FormattedAnchor';
 import Link from 'utils/cl-router/Link';
 import clHistory from 'utils/cl-router/history';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import eventEmitter from 'utils/eventEmitter';
 import useLocalize from 'hooks/useLocalize';

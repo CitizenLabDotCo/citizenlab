@@ -3,13 +3,10 @@ import React from 'react';
 // api
 import useReport from 'api/reports/useReport';
 
-// components
 import Button from 'components/UI/Button';
 
-// styling
 import { colors } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 

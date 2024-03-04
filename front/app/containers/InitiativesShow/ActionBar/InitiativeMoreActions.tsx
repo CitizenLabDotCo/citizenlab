@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-// components
 import HasPermission from 'components/HasPermission';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
 import WarningModal from 'components/WarningModal';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import warningMessages from 'components/WarningModal/messages';
@@ -16,10 +14,8 @@ import warningMessages from 'components/WarningModal/messages';
 // router
 import clHistory from 'utils/cl-router/history';
 
-// hooks
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
-// types
 import { IInitiativeData } from 'api/initiatives/types';
 
 const Container = styled.div``;

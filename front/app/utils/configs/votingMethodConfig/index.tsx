@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import AddToBasketButton from 'components/VoteInputs/budgeting/AddToBasketButton';
 import AddToBasketBox from 'components/VoteInputs/budgeting/AddToBasketBox';
 import AssignMultipleVotesInput from 'components/VoteInputs/multiple/AssignMultipleVotesInput';
@@ -8,16 +7,13 @@ import AssignMultipleVotesBox from 'components/VoteInputs/multiple/AssignMultipl
 import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
 import AssignSingleVoteBox from 'components/VoteInputs/single/AssignSingleVoteBox';
 
-// i18n
 import messages from './messages';
 import { Localize } from 'hooks/useLocalize';
 import { MessageDescriptor } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// utils
 import { getLocalisedDateString } from 'utils/dateUtils';
 
-// types
 import { IPhaseData, VotingMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { IAppConfiguration } from 'api/app_configuration/types';

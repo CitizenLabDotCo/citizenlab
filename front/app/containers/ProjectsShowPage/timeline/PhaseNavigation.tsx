@@ -10,14 +10,12 @@ import { trackEventByName } from 'utils/analytics';
 import { useParams } from 'react-router-dom';
 import setPhaseURL from './setPhaseURL';
 
-// components
 import { Button, colors, isRtl } from '@citizenlab/cl2-component-library';
 
 // api
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-// i18n
 import messages from 'containers/ProjectsShowPage/messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
@@ -25,11 +23,9 @@ import { WrappedComponentProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 
-// utils
 import { getCurrentPhase, getLatestRelevantPhase } from 'api/phases/utils';
 import { isValidPhase } from '../phaseParam';
 
-// typings
 import { IPhaseData } from 'api/phases/types';
 
 const Container = styled.div`

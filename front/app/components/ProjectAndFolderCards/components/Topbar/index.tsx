@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useTopics from 'api/topics/useTopics';
 import useAreas from 'api/areas/useAreas';
 import useLocalize from 'hooks/useLocalize';
 
-// components
 import Tabs from './Tabs';
 import { ScreenReaderOnly } from 'utils/a11y';
 import SelectTopics from './SelectTopics';
 import SelectAreas from './SelectAreas';
 import SearchInput from 'components/UI/SearchInput';
 
-// styling
 import styled from 'styled-components';
 import {
   useBreakpoint,
@@ -23,17 +20,13 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getShowFilters, getShowFiltersLabel } from './show';
 import clHistory from 'utils/cl-router/history';
-
-// typings
 
 import { PublicationTab } from '../..';
 import { useSearchParams } from 'react-router-dom';

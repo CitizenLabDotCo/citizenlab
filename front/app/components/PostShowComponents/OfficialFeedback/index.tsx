@@ -1,10 +1,9 @@
 import React, { memo } from 'react';
 
-// components
 import OfficialFeedbackForm from './OfficialFeedbackForm';
 import OfficialFeedbackFeed from './OfficialFeedbackFeed';
 
-// stylings
+s;
 import styled from 'styled-components';
 
 interface Props {

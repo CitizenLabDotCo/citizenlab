@@ -1,7 +1,6 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
-// components
 import {
   Icon,
   Dropdown,
@@ -12,15 +11,12 @@ import Link from 'utils/cl-router/Link';
 import ProjectsListItem from '../ProjectsListItem';
 import T from 'components/T';
 
-// hooks
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useLocalize from 'hooks/useLocalize';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// utils
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
@@ -28,7 +24,6 @@ import messages from '../../messages';
 import styled from 'styled-components';
 import { rgba, darken } from 'polished';
 
-// typings
 import { Multiloc } from 'typings';
 
 const NavigationDropdown = styled.li`

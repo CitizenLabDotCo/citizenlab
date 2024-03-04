@@ -1,7 +1,6 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-// components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
@@ -10,11 +9,9 @@ import Toggle from 'components/HookForm/Toggle';
 // Typings
 import { Locale } from 'typings';
 
-// intl
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// utils
 import { getAdditionalSettings } from 'components/FormBuilder/utils';
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import useLocale from 'hooks/useLocale';

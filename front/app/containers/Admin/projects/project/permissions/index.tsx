@@ -1,17 +1,14 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// components
 import { Section, SectionTitle } from 'components/admin/Section';
 import ProjectManagement from './containers/ProjectManagement';
 import ProjectVisibility from './containers/ProjectVisibility';
 import { Title, Text } from '@citizenlab/cl2-component-library';
 
-// hooks
 import useProjectById from 'api/projects/useProjectById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import usePhase from 'api/phases/usePhase';

@@ -6,7 +6,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import useTopics from 'api/topics/useTopics';
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 
-// i18n
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';

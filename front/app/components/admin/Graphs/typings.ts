@@ -1,4 +1,3 @@
-// typings
 import { RefObject } from 'react';
 import { Percentage } from 'typings';
 import { NilOrError } from 'utils/helperUtils';

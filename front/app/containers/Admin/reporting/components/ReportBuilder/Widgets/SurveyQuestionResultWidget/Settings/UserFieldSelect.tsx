@@ -3,18 +3,14 @@ import React, { useMemo } from 'react';
 // api
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-// i18n
 import useLocalize, { Localize } from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// components
 import { Box, Select } from '@citizenlab/cl2-component-library';
 
-// constants
 import { SUPPORTED_INPUT_TYPES_ARRAY } from '../constants';
 
-// typings
 import { IOption } from 'typings';
 import { IUserCustomFields } from 'api/user_custom_fields/types';
 

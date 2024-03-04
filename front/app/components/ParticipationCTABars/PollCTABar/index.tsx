@@ -4,10 +4,8 @@ import React, { useEffect, useState, FormEvent } from 'react';
 import { Button } from '@citizenlab/cl2-component-library';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 
-// hooks
 import { useTheme } from 'styled-components';
 
-// services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
 import {
@@ -15,10 +13,8 @@ import {
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
 
-// utils
 import { scrollToElement } from 'utils/scroll';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 

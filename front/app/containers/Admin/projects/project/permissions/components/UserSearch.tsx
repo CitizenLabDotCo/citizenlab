@@ -3,12 +3,10 @@ import React, { Suspense, memo, useState, lazy } from 'react';
 // Services
 import { isRegularUser } from 'utils/permissions/roles';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useExceedsSeats from 'hooks/useExceedsSeats';
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -23,7 +21,6 @@ import UserSelect from 'components/UI/UserSelect';
 // Style
 import styled from 'styled-components';
 
-// typings
 import { IUserData } from 'api/users/types';
 
 const AddButton = styled(Button)`

@@ -1,12 +1,10 @@
 import React, { useCallback } from 'react';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-// styling
 import styled, { useTheme } from 'styled-components';
 import {
   colors,
@@ -18,13 +16,10 @@ import {
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
 
-// components
 import Button from 'components/UI/Button';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { scrollToTop } from 'utils/scroll';

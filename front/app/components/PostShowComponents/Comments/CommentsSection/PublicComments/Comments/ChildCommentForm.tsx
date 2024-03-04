@@ -4,10 +4,8 @@ import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
-// services
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-// components
 import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextArea';
 import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/ErrorMessage';
 import Actions from 'components/PostShowComponents/Comments/CommentForm/Actions';
@@ -19,7 +17,6 @@ import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
 

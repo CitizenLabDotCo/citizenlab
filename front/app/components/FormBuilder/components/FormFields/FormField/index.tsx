@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import { get } from 'lodash-es';
 
-// components
 import {
   Box,
   Title,
@@ -17,11 +16,9 @@ import Logic from './Logic';
 import IconsAndBadges from './IconsAndBadges';
 import { FlexibleRow } from '../../FlexibleRow';
 
-// styling
 import styled from 'styled-components';
 import { rgba } from 'polished';
 
-// utils
 import { getFieldBackgroundColor } from '../utils';
 import {
   FormBuilderConfig,
@@ -33,7 +30,6 @@ import {
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// typings
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,

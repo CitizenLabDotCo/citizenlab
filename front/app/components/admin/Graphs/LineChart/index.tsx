@@ -6,7 +6,6 @@ import {
   animation,
 } from 'components/admin/Graphs/styling';
 
-// components
 import {
   LineChart as RechartsLineChart,
   CartesianGrid,
@@ -19,14 +18,11 @@ import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
 
-// styling
 import { colors } from '../styling';
 
-// utils
 import { getLineConfigs } from './utils';
 import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 
-// typings
 import { Props } from './typings';
 import {
   GraphDimensions,

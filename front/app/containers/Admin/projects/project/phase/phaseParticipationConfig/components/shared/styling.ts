@@ -1,4 +1,3 @@
-// components
 import {
   Input,
   Radio,

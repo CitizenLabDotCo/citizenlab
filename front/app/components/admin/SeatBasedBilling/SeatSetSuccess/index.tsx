@@ -1,7 +1,6 @@
 import React from 'react';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// components
 import {
   Title,
   Text,
@@ -15,7 +14,6 @@ import {
   TSeatType,
 } from 'components/admin/SeatBasedBilling/SeatInfo';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 

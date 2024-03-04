@@ -1,7 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import CommentReplyButton from './CommentReplyButton';
 import CommentsMoreActions from './CommentsMoreActions';
 import CommentReaction from './CommentReaction';
@@ -11,7 +10,6 @@ import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 
-// hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComment from 'api/comments/useComment';
 

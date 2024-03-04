@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// components
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 
 const StyledIcon = styled(Icon)`

@@ -1,17 +1,14 @@
 import React, { MouseEvent, KeyboardEvent, useState, useCallback } from 'react';
 
-// components
 import ScreenReaderContent from './ScreenReaderContent';
 import ReactionButton from './ReactionButton';
 
-// services
 import { IdeaReactingDisabledReason } from 'api/ideas/types';
 import { getLatestRelevantPhase } from 'api/phases/utils';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { includes } from 'lodash-es';
 
@@ -19,7 +16,6 @@ import { includes } from 'lodash-es';
 import styled from 'styled-components';
 import { isRtl } from '@citizenlab/cl2-component-library';
 
-// typings
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import useIdeaReaction from 'api/idea_reactions/useIdeaReaction';

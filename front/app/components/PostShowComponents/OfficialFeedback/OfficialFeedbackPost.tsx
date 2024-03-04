@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 
-// typings
 import { Multiloc } from 'typings';
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
 
-// components
 import OfficialFeedbackForm from './OfficialFeedbackForm';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import T from 'components/T';
@@ -22,7 +20,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { FormattedDate } from 'react-intl';

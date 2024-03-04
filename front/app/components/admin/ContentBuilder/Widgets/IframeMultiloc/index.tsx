@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   IconTooltip,
@@ -10,12 +9,10 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
-// intl
 import messages from './messages';
 import sharedMessages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
 
-// craft
 import { useNode } from '@craftjs/core';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
@@ -23,7 +20,6 @@ import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPaddi
 import eventEmitter from 'utils/eventEmitter';
 import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';
 
-// types
 import { Locale, Multiloc } from 'typings';
 
 import { isValidUrl } from 'utils/validate';

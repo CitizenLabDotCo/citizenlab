@@ -1,13 +1,10 @@
 import React from 'react';
 
-// components
 import UserName from 'components/UI/UserName';
 
-// styling
 import styled from 'styled-components';
 import { fontSizes } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 

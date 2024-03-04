@@ -1,13 +1,11 @@
 import React from 'react';
 
-// components
 import EventsPageMeta from './EventsPageMeta';
 import SectionContainer from 'components/SectionContainer';
 import CurrentAndUpcomingEvents from './CurrentAndUpcomingEvents';
 import PastEvents from './PastEvents';
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 

@@ -18,7 +18,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useAuthUser from 'api/me/useAuthUser';

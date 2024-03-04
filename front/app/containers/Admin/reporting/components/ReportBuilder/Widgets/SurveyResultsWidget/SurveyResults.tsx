@@ -1,23 +1,19 @@
 import React, { useMemo } from 'react';
 
-// hooks
 import useLocale from 'hooks/useLocale';
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
 import { useSurveyResults } from 'api/graph_data_units';
 
-// components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import NoData from '../_shared/NoData';
 import FormResultsQuestion from './FormResultsQuestion';
 import Dot from './Dot';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
-// i18n
 import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { useIntl } from 'utils/cl-intl';
 import { createResultRows } from './utils';

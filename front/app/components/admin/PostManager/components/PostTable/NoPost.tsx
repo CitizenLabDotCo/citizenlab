@@ -1,11 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// i18n
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// components
 import Button from 'components/UI/Button';
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { ManagerType } from '../..';

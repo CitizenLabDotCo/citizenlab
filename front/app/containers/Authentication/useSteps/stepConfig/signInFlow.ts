@@ -9,10 +9,8 @@ import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
 
-// utils
 import { requiredCustomFields, showOnboarding } from './utils';
 
-// typings
 import {
   AuthenticationData,
   AuthProvider,

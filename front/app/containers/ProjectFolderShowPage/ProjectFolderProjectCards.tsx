@@ -1,18 +1,17 @@
 import React from 'react';
-import { isEmpty } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
+import { media } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import styled from 'styled-components';
+
 import ProjectCard from 'components/ProjectCard';
 
-// hooks
+import { isNilOrError } from 'utils/helperUtils';
+
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
 // style
-import styled from 'styled-components';
-import { media } from '@citizenlab/cl2-component-library';
 
-// typings
 import { PublicationStatus } from 'api/projects/types';
 
 const Container = styled.div`

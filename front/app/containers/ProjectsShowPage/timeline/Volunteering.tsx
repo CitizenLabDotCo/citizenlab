@@ -1,9 +1,7 @@
 import React from 'react';
 
-// components
 import Volunteering from '../shared/volunteering';
 
-// styling
 import styled from 'styled-components';
 import usePhase from 'api/phases/usePhase';
 

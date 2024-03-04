@@ -2,15 +2,10 @@
 import React from 'react';
 import { isEqual } from 'lodash-es';
 
-// components
 import CustomFieldGraph from './CustomFieldGraph';
 
-// utils
-
-// hooks
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-// typings
 import { IProjectData } from 'api/projects/types';
 import {
   IUserCustomFieldData,

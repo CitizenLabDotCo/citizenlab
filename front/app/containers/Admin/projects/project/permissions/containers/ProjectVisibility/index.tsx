@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { fontSizes, Radio } from '@citizenlab/cl2-component-library';
 
-// components
 import {
   Section,
   SubSectionTitle,
@@ -10,13 +9,11 @@ import {
 } from 'components/admin/Section';
 import ProjectGroupsList from './ProjectGroupsList';
 
-// i18n
 import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 
-// hooks
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 

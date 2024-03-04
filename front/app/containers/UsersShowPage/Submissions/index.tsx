@@ -11,7 +11,6 @@ import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
 interface QueryParameters {
-  // constants
   'page[number]': number;
   'page[size]': number;
   author: string;

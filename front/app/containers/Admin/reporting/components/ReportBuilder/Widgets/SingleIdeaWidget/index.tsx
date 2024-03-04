@@ -1,23 +1,18 @@
 import React from 'react';
 
-// components
 import Card from '../_shared/Card';
 import NoData from '../_shared/NoData';
 import Settings from './Settings';
 import IdeaCard from './IdeaCard';
 
-// i18n
 import messages from './messages';
 
-// typings
 import { Props } from './typings';
 
-// hooks
 import { getEmptyMessage } from '../utils';
 import { useSingleIdea } from 'api/graph_data_units';
 import usePhase from 'api/phases/usePhase';
 
-// utils
 import { isNil } from 'utils/helperUtils';
 
 const SingleIdeaWidget = ({

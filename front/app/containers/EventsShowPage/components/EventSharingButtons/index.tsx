@@ -1,20 +1,15 @@
 import React from 'react';
 
-// components
 import SharingButtons from 'components/Sharing/SharingButtons';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 import useAuthUser from 'api/me/useAuthUser';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// types
 import { IEventData } from 'api/events/types';
 import { BoxFlexProps } from '@citizenlab/cl2-component-library';
 

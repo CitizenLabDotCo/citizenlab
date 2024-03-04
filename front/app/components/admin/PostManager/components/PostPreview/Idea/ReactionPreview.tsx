@@ -1,17 +1,14 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 // resources
 import useIdeaById from 'api/ideas/useIdeaById';
 
-// i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styling
 import styled from 'styled-components';
 
 const Container = styled.div`

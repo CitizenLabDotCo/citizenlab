@@ -6,14 +6,12 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 
-// components
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import Button, {
   ButtonStyles,
   Props as OriginalButtonProps,
 } from 'components/UI/Button';
 
-// typings
 import { Omit } from 'typings';
 
 export type ISubmitState =

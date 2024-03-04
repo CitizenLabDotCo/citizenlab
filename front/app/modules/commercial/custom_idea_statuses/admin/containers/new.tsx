@@ -5,7 +5,6 @@ import clHistory from 'utils/cl-router/history';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import GoBackButton from 'components/UI/GoBackButton';
 import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';
 import { Section, SectionTitle } from 'components/admin/Section';

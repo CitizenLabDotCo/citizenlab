@@ -3,7 +3,6 @@ import React from 'react';
 // styles
 import styled from 'styled-components';
 
-// components
 import {
   Title,
   Box,
@@ -13,11 +12,9 @@ import {
 import Button from 'components/UI/Button';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
-// intl
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// typings
 import { SelectedNode } from './typings';
 
 const StyledBox = styled(Box)`

@@ -2,7 +2,6 @@ import React, { lazy, Suspense, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import useProjectById from 'api/projects/useProjectById';
 
-// components
 import Container from './components/Container';
 import IdeaMeta from './components/IdeaMeta';
 import DesktopTopBar from './components/DesktopTopBar';
@@ -23,7 +22,6 @@ import ErrorToast from 'components/ErrorToast';
 import FollowUnfollow from 'components/FollowUnfollow';
 import Tippy from '@tippyjs/react';
 
-// i18n
 import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -32,17 +30,14 @@ import messages from './messages';
 import styled from 'styled-components';
 import { columnsGapDesktop } from './styleConstants';
 
-// hooks
 import usePhases from 'api/phases/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 
-// types
 import { IIdea } from 'api/ideas/types';
 import { IProjectData } from 'api/projects/types';
 import { IIdeaImages } from 'api/idea_images/types';
 
-// utils
 import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
 import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
 import { usePermission } from 'utils/permissions';

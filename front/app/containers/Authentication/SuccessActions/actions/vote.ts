@@ -7,7 +7,6 @@ import basketsIdeasKeys from 'api/baskets_ideas/keys';
 import { fetchBasketsIdeas } from 'api/baskets_ideas/useBasketsIdeas';
 import phasesKeys from 'api/phases/keys';
 
-// utils
 import { isIdeaInBasket } from 'components/VoteInputs/budgeting/AddToBasketButton/utils';
 import { IPhaseData } from 'api/phases/types';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-// components
 import Topbar from './components/Topbar';
 import EmptyContainer from './components/EmptyContainer';
 import PublicationStatusTabs from './components/PublicationStatusTabs';
@@ -14,14 +13,11 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 
-// i18n
 import messages from './messages';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getAvailableTabs, getCurrentTab } from './utils';
 
-// typings
 import { PublicationTab, Props as BaseProps } from '.';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';

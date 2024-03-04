@@ -15,12 +15,10 @@ import PollAdminForm from './PollAdminForm';
 import { SectionDescription } from 'components/admin/Section';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 
-// hooks
 import usePhase from 'api/phases/usePhase';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 

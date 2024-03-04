@@ -1,18 +1,15 @@
 // libraries
 import React, { memo } from 'react';
 
-// intl
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 
-// styling
 import styled from 'styled-components';
 import { legacyColors } from 'components/admin/Graphs/styling';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import {
   IGraphUnit,
@@ -23,7 +20,6 @@ import {
 import BarChart from 'components/admin/Graphs/BarChart';
 import { LabelList, LabelProps } from 'recharts';
 
-// types
 import { IGraphPoint } from 'typings';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 

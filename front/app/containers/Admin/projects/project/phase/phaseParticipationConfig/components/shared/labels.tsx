@@ -1,11 +1,9 @@
 import React from 'react';
 
-// components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { LabelText, LabelWrapper } from './styling';
 import FormattedCurrency from 'utils/currency/FormattedCurrency';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../../messages';
 

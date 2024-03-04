@@ -13,7 +13,6 @@ import { Label, Radio, fontSizes } from '@citizenlab/cl2-component-library';
 import TextArea from 'components/UI/TextArea';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
-// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';

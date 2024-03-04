@@ -1,14 +1,11 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // api

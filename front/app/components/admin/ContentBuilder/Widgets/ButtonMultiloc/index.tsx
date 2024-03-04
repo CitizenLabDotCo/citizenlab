@@ -1,9 +1,7 @@
 import React from 'react';
 
-// craft
 import { useNode, useEditor } from '@craftjs/core';
 
-// components
 import {
   Radio,
   Box,
@@ -17,11 +15,9 @@ import ButtonComponent from 'components/UI/Button';
 
 import { darken } from 'polished';
 
-// hooks
 import { useTheme } from 'styled-components';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
-// intl
 import messages from './messages';
 import sharedMessages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';

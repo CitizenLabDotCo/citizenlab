@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// components
 import Button from 'components/UI/Button';
 import { Box } from '@citizenlab/cl2-component-library';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
@@ -8,22 +7,18 @@ import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// hooks
 import { useParams } from 'react-router-dom';
 import usePhases from 'api/phases/usePhases';
 import useLocale from 'hooks/useLocale';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// utils
 import { getCurrentPhase } from 'api/phases/utils';
 import { saveIdeaFormAsPDF } from './saveIdeaFormAsPDF';
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { requestBlob } from 'utils/requestBlob';
 import { API_PATH } from 'containers/App/constants';

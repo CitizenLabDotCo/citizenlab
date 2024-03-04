@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Table,
   Tbody,
@@ -10,7 +9,6 @@ import {
 import HeaderRow from './HeaderRow';
 import Row from './Row';
 
-// typings
 import { RepresentativenessData } from '../../../hooks/parseReferenceData';
 
 interface Props {

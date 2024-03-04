@@ -1,6 +1,6 @@
 import React from 'react';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
-// services
+
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
 interface Props {

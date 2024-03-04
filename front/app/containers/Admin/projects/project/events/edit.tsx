@@ -2,7 +2,6 @@ import React, { useState, useEffect, FormEvent, lazy } from 'react';
 import moment from 'moment';
 import { isEmpty, get, isError } from 'lodash-es';
 
-// components
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import ErrorComponent from 'components/UI/Error';
@@ -29,11 +28,9 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 // router
 import clHistory from 'utils/cl-router/history';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// hooks
 import useAddEvent from 'api/events/useAddEvent';
 import useUpdateEvent from 'api/events/useUpdateEvent';
 import useEvent from 'api/events/useEvent';
@@ -47,11 +44,9 @@ import useLocale from 'hooks/useLocale';
 import { useTheme } from 'styled-components';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
-// typings
 import { Multiloc, CLError, UploadFile } from 'typings';
 import { IEvent, IEventProperties } from 'api/events/types';
 
-// utils
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';

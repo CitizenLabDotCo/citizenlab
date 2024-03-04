@@ -1,13 +1,11 @@
 import moment, { Moment } from 'moment';
 
-// utils
 import {
   timeSeriesParser,
   calculateCumulativeSerie,
 } from 'components/admin/GraphCards/_utils/timeSeries';
 import { get } from 'utils/helperUtils';
 
-// typings
 import { TimeSeriesResponseRow, TimeSeries, TimeSeriesRow } from './typings';
 import { Translations } from './translations';
 import { IResolution } from 'components/admin/ResolutionControl';

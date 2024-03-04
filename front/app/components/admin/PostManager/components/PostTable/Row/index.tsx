@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, MouseEvent } from 'react';
 import { ManagerType, TFilterMenu } from '../../..';
 
-// services
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -12,7 +11,6 @@ import styled from 'styled-components';
 import { colors } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
 import useLocale from 'hooks/useLocale';
 
 // Types

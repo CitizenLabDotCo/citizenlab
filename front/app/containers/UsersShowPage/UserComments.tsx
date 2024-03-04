@@ -2,7 +2,6 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { groupBy } from 'lodash-es';
 
-// components
 import PostCommentGroup from './PostCommentGroup';
 import Button from 'components/UI/Button';
 import {

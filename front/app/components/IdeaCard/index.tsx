@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 
-// components
 import {
   useBreakpoint,
   Box,
@@ -22,19 +21,15 @@ import clHistory from 'utils/cl-router/history';
 import { useSearchParams } from 'react-router-dom';
 import Link from 'utils/cl-router/Link';
 
-// types
 import { IIdea } from 'api/ideas/types';
 
-// styling
 import styled from 'styled-components';
 
-// hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'api/phases/usePhase';
 import useIdeaImage from 'api/idea_images/useIdeaImage';
 
-// utils
 import { scrollToElement } from 'utils/scroll';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 

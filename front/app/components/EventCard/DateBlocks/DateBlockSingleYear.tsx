@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 
-// components
 import { EventDateBlock, EventDate, EventYear } from './styling';
 import DayAndMonth from './DayAndMonth';
 

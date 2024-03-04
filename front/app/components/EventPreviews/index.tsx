@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import { Title } from '@citizenlab/cl2-component-library';
 import EventPreviewCard from './EventPreviewCard';
 import HorizontalScroll from 'components/HorizontalScroll';
@@ -11,7 +10,6 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 

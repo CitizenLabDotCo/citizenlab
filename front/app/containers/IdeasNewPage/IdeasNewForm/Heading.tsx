@@ -16,12 +16,10 @@ import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import { useSearchParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 
-// i18n
 import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// typings
 import { IProjectData } from 'api/projects/types';
 
 type Props = {

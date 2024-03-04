@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 import { SectionField } from 'components/admin/Section';
@@ -20,16 +19,14 @@ import {
 import OptionList from 'components/HookForm/OptionList';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 
-// hooks
 import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-// intls
+s;
 import { useIntl } from 'utils/cl-intl';
 import messages from '../../../containers/Granular/messages';
 import { Multiloc } from 'typings';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { getLabelForInputType } from '../../../containers/Granular/utils';

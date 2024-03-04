@@ -1,12 +1,9 @@
 import React from 'react';
 
-// hooks
 import useLocale from 'hooks/useLocale';
 
-// components
 import PoliciesForm from './PoliciesForm';
 
-// typings
 import { SetError, State } from '../../typings';
 import { isNilOrError } from 'utils/helperUtils';
 

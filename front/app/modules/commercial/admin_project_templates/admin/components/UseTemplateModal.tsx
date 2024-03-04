@@ -4,14 +4,12 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 
-// utils
 import eventEmitter from 'utils/eventEmitter';
 
 // graphql
 import { gql, useQuery, useMutation } from '@apollo/client';
 import { client } from '../../utils/apolloUtils';
 
-// hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useAuthUser from 'api/me/useAuthUser';
@@ -23,7 +21,6 @@ import {
 import { isAdmin } from 'utils/permissions/roles';
 import useLocalize from 'hooks/useLocalize';
 
-// components
 import {
   Input,
   Icon,
@@ -39,7 +36,6 @@ import Error from 'components/UI/Error';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';
 
-// i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
@@ -48,7 +44,6 @@ import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 
-// styling
 import styled from 'styled-components';
 import { darken } from 'polished';
 
@@ -56,7 +51,6 @@ import { darken } from 'polished';
 import projectsKeys from 'api/projects/keys';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
-// typings
 import { Locale, Multiloc, IOption } from 'typings';
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import meKeys from 'api/me/keys';

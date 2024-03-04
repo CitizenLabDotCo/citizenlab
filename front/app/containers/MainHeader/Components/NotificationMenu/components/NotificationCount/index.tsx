@@ -2,11 +2,9 @@ import React from 'react';
 import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
-// components
 import {
   IconButton,
   Box,

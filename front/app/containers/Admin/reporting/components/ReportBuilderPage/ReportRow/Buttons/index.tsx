@@ -4,14 +4,11 @@ import Tippy from '@tippyjs/react';
 // api
 import useReport from 'api/reports/useReport';
 
-// components
 import Button from 'components/UI/Button';
 import PrintReportButton from './PrintReportButton';
 
-// styling
 import { colors } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 

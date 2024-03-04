@@ -1,16 +1,11 @@
-// services
-
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
 
 // parse
 import { parseTimeSeries, parseExcelData } from './parse';
 
-// utils
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
-// typings
 import { QueryParameters } from './typings';
 import { useMemo, useState } from 'react';
 import { usePostsByTimeLive } from 'api/graph_data_units';

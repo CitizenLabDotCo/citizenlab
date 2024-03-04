@@ -1,7 +1,6 @@
 import React from 'react';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
-// components
 import Title from 'components/PostShowComponents/Title';
 import Body from 'components/PostShowComponents/Body';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
@@ -19,14 +18,12 @@ import {
 import ReactionIndicator from 'components/InitiativeCard/ReactionIndicator';
 import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from '../messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
 
-// hooks
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';

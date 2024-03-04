@@ -1,12 +1,9 @@
-// styling
 import { colors } from 'components/admin/Graphs/styling';
 
-// utils
 import { sum, roundPercentage, roundPercentages } from 'utils/math';
 import { capitalize } from 'lodash-es';
 import { get } from 'utils/helperUtils';
 
-// typings
 import { FeedbackRow, StatusRow, StackedBarsRow } from './typings';
 import { Translations } from './translations';
 import { Localize } from 'hooks/useLocalize';

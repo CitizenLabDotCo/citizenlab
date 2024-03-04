@@ -2,22 +2,18 @@ import React, { memo, useState, useCallback, MouseEvent } from 'react';
 import { truncate } from 'lodash-es';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// components
 import {
   LocaleSwitcher,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// styling
 import styled from 'styled-components';
 import { darken } from 'polished';
 
-// typings
 import { Multiloc, Locale } from 'typings';
 
 const Container = styled.div`

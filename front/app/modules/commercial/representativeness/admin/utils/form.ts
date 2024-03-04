@@ -1,8 +1,6 @@
-// utils
 import { forEachBin } from './bins';
 import { isEqual } from 'lodash-es';
 
-// typings
 import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
 import {
   IBinnedDistribution,

@@ -6,7 +6,6 @@ import ValueSelector from './ValueSelector';
 import Button from 'components/UI/Button';
 import { TRule, ruleTypeConstraints } from './rules';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

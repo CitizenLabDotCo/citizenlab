@@ -13,7 +13,6 @@ import { trackEventByName } from 'utils/analytics';
 // events
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
-// utils
 import {
   requiredCustomFields,
   requiredBuiltInFields,
@@ -21,7 +20,6 @@ import {
   showOnboarding,
 } from './utils';
 
-// typings
 import {
   GetRequirements,
   SetError,

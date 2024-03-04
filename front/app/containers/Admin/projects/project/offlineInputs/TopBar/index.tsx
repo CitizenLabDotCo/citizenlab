@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom';
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
 
-// components
 import {
   Box,
   Title,
@@ -19,12 +18,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 
-// i18n
 import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-
-// styling
 
 interface Props {
   onClickPDFImport: () => void;

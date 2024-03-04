@@ -1,10 +1,8 @@
 import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 
-// craft
 import { useEditor } from '@craftjs/core';
 
-// components
 import {
   Box,
   Icon,

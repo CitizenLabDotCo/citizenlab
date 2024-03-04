@@ -35,7 +35,6 @@ import ReactionsByTimeWidget, {
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpace/messages';
 
-// typings
 import { MessageDescriptor } from 'utils/cl-intl';
 
 export const WIDGETS = {

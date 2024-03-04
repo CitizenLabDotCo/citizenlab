@@ -6,13 +6,11 @@ import tracks from 'components/IdeaButton/tracks';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
-// typings
 import { IUser, IUserData } from 'api/users/types';
 
 // api
 import { fetchProjectBySlug } from 'api/projects/useProjectBySlug';
 
-// utils
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { fetchPhase } from 'api/phases/usePhase';
 

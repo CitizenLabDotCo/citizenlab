@@ -1,23 +1,18 @@
 import React, { useRef } from 'react';
 
-// hooks
 import { useUsersByGenderLive } from 'api/graph_data_units';
 
-// components
 import GraphCard from 'components/admin/GraphCard';
 import { NoDataContainer } from 'components/admin/GraphWrappers';
 import Chart from './Chart';
 
-// i18n
 import messages from 'containers/Admin/dashboard/messages';
 import { useIntl } from 'utils/cl-intl';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import convertToGraphFormat from './convertToGraphFormat';
 import moment from 'moment';
 
-// typings
 import { QueryParameters } from './typings';
 import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
 

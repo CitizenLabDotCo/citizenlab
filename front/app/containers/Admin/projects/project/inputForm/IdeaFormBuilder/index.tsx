@@ -1,16 +1,13 @@
 import React, { useState, lazy } from 'react';
 
-// hooks
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import { useParams } from 'react-router-dom';
 import useLocale from 'hooks/useLocale';
 
-// components
 import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
 
-// utils
 import { ideationConfig } from '../utils';
 import { saveIdeaFormAsPDF } from '../saveIdeaFormAsPDF';
 import { isNilOrError } from 'utils/helperUtils';

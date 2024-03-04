@@ -1,7 +1,6 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-// components
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import {
   builtInFieldKeys,
@@ -9,15 +8,12 @@ import {
 } from 'components/FormBuilder/utils';
 import { FormField } from './FormField';
 
-// i18n
 import useLocale from 'hooks/useLocale';
 
-// utils
 import { getFieldNumbers } from '../utils';
 import { isNilOrError } from 'utils/helperUtils';
 import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
 
-// typings
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,

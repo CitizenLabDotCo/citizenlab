@@ -2,14 +2,11 @@ import React, { memo, FormEvent, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
-// utils
 import { isNilOrError, byId } from 'utils/helperUtils';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// components
 import Button from 'components/UI/Button';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import Warning from 'components/UI/Warning';
@@ -23,7 +20,6 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import { Spinner, Box, fontSizes } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 
-// hooks
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import useTopics from 'api/topics/useTopics';
 import useDeleteAllowedProjectInputTopic from 'api/project_allowed_input_topics/useDeleteProjectAllowedInputTopic';

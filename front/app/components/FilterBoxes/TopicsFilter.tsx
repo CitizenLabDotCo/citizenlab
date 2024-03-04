@@ -2,11 +2,9 @@ import React, { memo, useCallback, MouseEvent } from 'react';
 import { isError, includes } from 'lodash-es';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// styling
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
   fontSizes,
@@ -14,18 +12,14 @@ import {
   defaultCardStyle,
 } from '@citizenlab/cl2-component-library';
 
-// components
 import T from 'components/T';
 
-// styling
 import styled from 'styled-components';
 import { darken } from 'polished';
 import { Header, Title } from './styles';
 
-// typings
 import { ITopicData } from 'api/topics/types';
 
-// intl
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const Container = styled.div`

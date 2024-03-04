@@ -1,9 +1,7 @@
 import React, { memo, useCallback } from 'react';
 
-// components
 import TopicsFilter from 'components/FilterBoxes/TopicsFilter';
 
-// styling
 import useTopics from 'api/topics/useTopics';
 
 interface Props {

@@ -1,10 +1,8 @@
 import React from 'react';
 
-// i18n
 import messages from './messages';
 import { useFormatMessageWithLocale } from 'utils/cl-intl';
 
-// components
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import TextMultiloc from '../TextMultiloc';
 import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
@@ -13,14 +11,12 @@ import { Box } from '@citizenlab/cl2-component-library';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import TenantLogo from 'containers/MainHeader/Components/TenantLogo';
 
-// hooks
 import useReport from 'api/reports/useReport';
 import useUserById from 'api/users/useUserById';
 import useProjectById from 'api/projects/useProjectById';
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-// utils
 import { getFullName, withoutSpacing } from 'utils/textUtils';
 import { getPeriod } from './utils';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';

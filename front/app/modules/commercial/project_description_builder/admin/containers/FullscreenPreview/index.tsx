@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 
-// hooks
 import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import useLocale from 'hooks/useLocale';
 import useProjectById from 'api/projects/useProjectById';
 import { useParams, useSearchParams } from 'react-router-dom';
 
-// components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import Editor from '../../components/Editor';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
-// types
 import { SerializedNodes } from '@craftjs/core';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import useLocalize from 'hooks/useLocalize';

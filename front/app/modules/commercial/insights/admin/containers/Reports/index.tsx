@@ -3,7 +3,6 @@ import React, { memo } from 'react';
 // api
 import useProjects from 'api/projects/useProjects';
 
-// components
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import { List, Row } from 'components/admin/ResourceList';
@@ -14,14 +13,11 @@ import {
 } from 'containers/Admin/projects/components/StyledComponents';
 import PageWrapper from 'components/admin/PageWrapper';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { PublicationStatus } from 'api/projects/types';
 
 const publicationStatuses: PublicationStatus[] = ['published', 'archived'];

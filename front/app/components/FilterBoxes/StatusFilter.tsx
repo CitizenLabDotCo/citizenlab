@@ -2,13 +2,11 @@ import React, { memo, useCallback, MouseEvent } from 'react';
 import { capitalize, get } from 'lodash-es';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// components
 import T from 'components/T';
-// styling
+
 import styled from 'styled-components';
 import {
   fontSizes,
@@ -21,7 +19,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { darken } from 'polished';
 import { Header, Title } from './styles';
 
-// typings
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativesFilterCounts } from 'api/initiatives_filter_counts/types';

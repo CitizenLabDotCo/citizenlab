@@ -1,19 +1,15 @@
 import React from 'react';
 
-// components
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import InputType from './InputType';
 import MultipleChoice from './MultipleChoice';
 import TextQuestion from './TextQuestion';
 import Files from '../Files';
 
-// i18n
 import T from 'components/T';
 
-// utils
 import { snakeCase } from 'lodash-es';
 
-// typings
 import { Locale } from 'typings';
 import { Result } from 'api/survey_results/types';
 

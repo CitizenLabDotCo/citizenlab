@@ -2,7 +2,6 @@ import React from 'react';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import PageNotFound from 'components/PageNotFound';
 import InitiativesIndexMeta from './InitiativesIndexMeta';
 import InitiativesHeader from './InitiativesHeader';
@@ -11,10 +10,8 @@ import ContentContainer from 'components/ContentContainer';
 import CityLogoSection from 'components/CityLogoSection';
 import InitiativeButton from 'components/InitiativeButton';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

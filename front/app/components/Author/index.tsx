@@ -1,14 +1,11 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 
-// services
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-// hooks
 import useUserById from 'api/users/useUserById';
 import useLocale from 'hooks/useLocale';
 

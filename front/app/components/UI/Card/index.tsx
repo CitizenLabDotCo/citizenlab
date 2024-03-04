@@ -1,10 +1,8 @@
 import React, { memo, MouseEvent } from 'react';
 
-// components
 import Link from 'utils/cl-router/Link';
 import Image from 'components/UI/Image';
 
-// styling
 import styled from 'styled-components';
 import {
   useBreakpoint,

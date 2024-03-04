@@ -6,7 +6,6 @@ import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import { TextCell, Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 

@@ -4,11 +4,9 @@ import { ITopicData } from 'api/topics/types';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
-// components
 import { Row } from 'components/admin/ResourceList';
 import { RowContent, RowContentInner, RowTitle } from './RowStyles';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 

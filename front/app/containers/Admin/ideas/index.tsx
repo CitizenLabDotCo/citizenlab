@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 
-// components
 import HelmetIntl from 'components/HelmetIntl';
 import Outlet from 'components/Outlet';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
@@ -15,7 +14,6 @@ import NavigationTabs, {
 import { isTopBarNavActive } from 'utils/helperUtils';
 import { useIntl } from 'utils/cl-intl';
 
-// i18n
 import messages from './messages';
 
 const IdeasPage = () => {

@@ -1,7 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 const CompleteProfileStep = lazy(() => import('./CompleteProfileStep'));
 const VerificationOnboardingStep = lazy(
   () => import('./VerificationOnboardingStep')
@@ -19,7 +18,6 @@ import tracks from '../tracks';
 import styled from 'styled-components';
 import { media, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 
-// hooks
 import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';
 import useDismissOnboardingCampaign from 'api/onboarding_campaigns/useDismissOnboardingCampaign';
 import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';

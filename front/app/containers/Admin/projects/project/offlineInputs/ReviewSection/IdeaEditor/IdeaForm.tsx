@@ -1,17 +1,13 @@
 import React, { useCallback } from 'react';
 
-// i18n
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import Fields from 'components/Form/Components/Fields';
 
-// utils
 import { customAjv } from 'components/Form';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
-// typings
 import {
   FormData,
   ApiErrorGetter,

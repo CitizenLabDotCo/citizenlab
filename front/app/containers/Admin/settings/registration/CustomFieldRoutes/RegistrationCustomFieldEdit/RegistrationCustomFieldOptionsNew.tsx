@@ -2,11 +2,9 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// components
 import { Section, SectionTitle } from 'components/admin/Section';
 import RegistrationCustomFieldOptionsForm, {
   FormValues,

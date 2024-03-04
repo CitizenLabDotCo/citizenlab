@@ -10,7 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 
-// i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from 'components/UI/FileUploader/messages';
 

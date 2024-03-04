@@ -1,24 +1,20 @@
 import React from 'react';
 
-// components
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 import ProjectsListContent from './ProjectsListContent';
 import HelmetIntl from 'components/HelmetIntl';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 
-// utils
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 import { adminCustomPageContentPath } from '../../routes';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
 import messages from './messages';
 
 const ProjectList = () => {

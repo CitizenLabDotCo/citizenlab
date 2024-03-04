@@ -2,7 +2,6 @@ import React from 'react';
 import { Medium } from '../utils';
 import { FacebookShareButton } from 'react-share';
 
-// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';

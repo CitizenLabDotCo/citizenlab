@@ -1,19 +1,15 @@
 import React from 'react';
 
-// styling
 import {
   colors,
   DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
 
-// components
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 import renderTooltip from './renderTooltip';
 
-// utils
 import { formatPercentage, emptyString } from './utils';
 
-// typings
 import { RepresentativenessData } from '../../hooks/parseReferenceData';
 
 interface Props {

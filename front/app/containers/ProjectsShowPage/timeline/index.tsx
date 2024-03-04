@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 
-// components
 import Timeline from './Timeline';
 import PhaseSurvey from './Survey';
 import PhasePoll from './Poll';
@@ -23,24 +22,20 @@ import { Box, colors, isRtl } from '@citizenlab/cl2-component-library';
 import setPhaseURL from './setPhaseURL';
 import { useParams } from 'react-router-dom';
 
-// hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useLocale from 'hooks/useLocale';
 
-// i18n
 import messages from 'containers/ProjectsShowPage/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
 
-// utils
 import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
 import { isValidPhase } from '../phaseParam';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
-// typings
 import { IPhaseData } from 'api/phases/types';
 
 const StyledSectionContainer = styled(SectionContainer)`

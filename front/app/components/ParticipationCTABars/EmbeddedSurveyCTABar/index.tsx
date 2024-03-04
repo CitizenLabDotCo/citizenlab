@@ -1,27 +1,22 @@
 import React, { useEffect, useState } from 'react';
 
-// components
 import { Button } from '@citizenlab/cl2-component-library';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 
-// hooks
 import { useTheme } from 'styled-components';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-// services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
 
-// utils
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 

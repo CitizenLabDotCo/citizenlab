@@ -6,7 +6,6 @@ import { H2 } from '.';
 import Project from './Project';
 import Link from 'utils/cl-router/Link';
 
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

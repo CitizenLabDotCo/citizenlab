@@ -1,20 +1,16 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import { List } from 'components/admin/ResourceList';
 import Project from './Project';
 import Link from 'utils/cl-router/Link';
 import Warning from 'components/UI/Warning';
 
-// hooks
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { adminCustomPageSettingsPath } from '../../routes';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { ICustomPageData } from 'api/custom_pages/types';

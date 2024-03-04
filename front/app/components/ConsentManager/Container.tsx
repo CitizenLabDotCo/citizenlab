@@ -1,10 +1,8 @@
 import React, { FormEvent, useState, useCallback } from 'react';
 
-// components
 import PreferencesModal from './PreferencesModal';
 import Banner from './Banner';
 
-// typings
 import { CategorizedDestinations, IPreferences } from './typings';
 import { TCategory } from './destinations';
 import useObserveEvent from 'hooks/useObserveEvent';

@@ -6,12 +6,10 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import { IOfficialFeedbackOnIdeaYouFollowNotificationData } from 'api/notifications/types';
 
-// i18n
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getInputTermMessage } from 'utils/i18n';
 
-// components
 import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 import T from 'components/T';

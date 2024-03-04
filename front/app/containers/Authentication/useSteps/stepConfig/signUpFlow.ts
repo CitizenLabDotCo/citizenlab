@@ -16,10 +16,8 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
 
-// utils
 import { askCustomFields, showOnboarding } from './utils';
 
-// typings
 import {
   AuthenticationData,
   AuthProvider,

@@ -1,9 +1,7 @@
 import React from 'react';
 
-// components
 import { Box, colors, media, Text } from '@citizenlab/cl2-component-library';
 
-// hooks
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 import messages from './messages';
 import styled from 'styled-components';

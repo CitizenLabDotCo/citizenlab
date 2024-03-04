@@ -2,7 +2,6 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { useQuery } from '@tanstack/react-query';
 import customFieldsKeys from './keys';
 
-// typings
 import {
   ICustomFields,
   ICustomFieldInputType,

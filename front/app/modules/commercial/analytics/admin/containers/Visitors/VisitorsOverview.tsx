@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import moment, { Moment } from 'moment';
 
-// hooks
 import { useIntl } from 'utils/cl-intl';
 
-// components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import ChartFilters from 'containers/Admin/dashboard/overview/ChartFilters';
 import Charts from './Charts';
 import Warning from 'components/UI/Warning';
 
-// utils
 import { getSensibleResolution } from 'containers/Admin/dashboard/overview/getSensibleResolution';
 
-// typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { IOption } from 'typings';
 

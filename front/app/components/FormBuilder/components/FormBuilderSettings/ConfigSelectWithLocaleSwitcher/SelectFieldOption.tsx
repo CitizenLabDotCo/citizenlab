@@ -1,6 +1,5 @@
 import React, { useState, memo } from 'react';
 
-// components
 import {
   Box,
   Button,
@@ -10,14 +9,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
 import { Locale, UploadFile } from 'typings';
 
-// utils
 import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
 import useAddCustomFieldOptionImage from 'api/content_field_option_images/useAddCustomFieldOptionImage';
 

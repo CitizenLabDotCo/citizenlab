@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from 'react';
 
-// components
 const IdeasWithFiltersSidebar = lazy(() => import('./IdeasWithFiltersSidebar'));
 const IdeasWithoutFiltersSidebar = lazy(
   () => import('./IdeasWithoutFiltersSidebar')
@@ -8,14 +7,11 @@ const IdeasWithoutFiltersSidebar = lazy(
 import { Props as WithSidebarProps } from './IdeasWithFiltersSidebar';
 import { Props as WithoutSidebarProps } from './IdeasWithoutFiltersSidebar';
 
-// styling
 import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 
-// typings
 import { MessageDescriptor } from 'react-intl';
 
 const Container = styled.div`

@@ -1,6 +1,3 @@
-// services
-
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
 
@@ -15,7 +12,6 @@ import {
   parseExcelData,
 } from './parse';
 
-// typings
 import { QueryParameters, Response } from './typings';
 import useAnalytics from 'api/analytics/useAnalytics';
 import { useState } from 'react';

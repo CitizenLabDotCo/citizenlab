@@ -1,9 +1,7 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 
-// craft
 import { UserComponent } from '@craftjs/core';
 import Events from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/Events';
 import Proposals from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/Proposals';

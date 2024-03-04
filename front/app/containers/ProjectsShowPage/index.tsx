@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-// components
 import ProjectHelmet from './shared/header/ProjectHelmet';
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
@@ -21,7 +20,6 @@ import Centerer from 'components/UI/Centerer';
 import ErrorBoundary from 'components/ErrorBoundary';
 import JSConfetti from 'js-confetti';
 
-// hooks
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -34,16 +32,13 @@ import { useIntl } from 'utils/cl-intl';
 // context
 import { VotingContext } from 'api/baskets_ideas/useVoting';
 
-// i18n
 import messages from 'utils/messages';
 
 // style
 import styled from 'styled-components';
 
-// typings
 import { IProjectData } from 'api/projects/types';
 
-// utils
 import { isValidPhase } from './phaseParam';
 import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
 import { isUnauthorizedRQ } from 'utils/errorUtils';

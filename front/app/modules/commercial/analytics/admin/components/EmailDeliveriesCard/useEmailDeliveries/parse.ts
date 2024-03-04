@@ -1,11 +1,9 @@
 import moment, { Moment } from 'moment';
 
-// utils
 import { groupBy } from 'lodash-es';
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
 import { keys } from 'utils/helperUtils';
 
-// typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import {
   Response,

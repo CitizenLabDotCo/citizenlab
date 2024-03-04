@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// components
 import Modal from 'components/UI/Modal';
 import {
   Box,
@@ -12,14 +11,11 @@ import {
 import BinInputs from './BinInputs';
 import Warning from 'components/UI/Warning';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styling
 import styled from 'styled-components';
 
-// utils
 import {
   getExampleBins,
   isExampleBins,
@@ -31,7 +27,6 @@ import {
 } from '../../../utils/bins';
 import { isEqual } from 'lodash-es';
 
-// typings
 import { Bins } from '../../../api/reference_distribution/types';
 
 const ClearAllButton = styled.button`

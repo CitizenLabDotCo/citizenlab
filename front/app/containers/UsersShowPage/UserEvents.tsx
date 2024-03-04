@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import PastEvents from 'containers/EventsPage/PastEvents';
 import CurrentAndUpcomingEvents from 'containers/EventsPage/CurrentAndUpcomingEvents';
 import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
@@ -8,16 +7,13 @@ import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 // style
 import styled from 'styled-components';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// hooks
 import useEventsByUserId from 'api/events/useEventsByUserId';
 import { useParams } from 'react-router-dom';
 import useUserBySlug from 'api/users/useUserBySlug';
 
-// utils
 import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`

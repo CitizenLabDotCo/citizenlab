@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
-// components
 import {
   RowContent,
   RowContentInner,
@@ -28,7 +27,6 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import useAuthUser from 'api/me/useAuthUser';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
-// types
 import ProjectMoreActionsMenu, { ActionType } from './ProjectMoreActionsMenu';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 

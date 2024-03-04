@@ -1,12 +1,8 @@
 import React, { useRef } from 'react';
 import { isEmpty } from 'lodash-es';
 
-// intl
-
-// typings
 import { IActiveUsersByTime } from 'api/active_users_by_time/types';
 
-// components
 import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
@@ -19,7 +15,6 @@ import {
 import BarChart from 'components/admin/Graphs/BarChart';
 import { IResolution } from 'components/admin/ResolutionControl';
 
-// utils
 import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import useActiveUsersByTime from 'api/active_users_by_time/useActiveUsersByTime';

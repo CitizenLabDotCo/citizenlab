@@ -1,9 +1,7 @@
 import React, { memo } from 'react';
 
-// components
 import TipsContent from './TipsContent';
 
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

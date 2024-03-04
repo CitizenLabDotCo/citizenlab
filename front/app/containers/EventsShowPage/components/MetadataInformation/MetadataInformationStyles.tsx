@@ -1,4 +1,3 @@
-// components
 import { Icon, colors, isRtl } from '@citizenlab/cl2-component-library';
 
 // styles

@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 import useReferenceData from '../../hooks/useReferenceData';
 import useRScore from '../../api/r_score/useRScore';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import EmptyCard from './EmptyCard';
 import Header from './Header';
@@ -13,17 +11,14 @@ import Chart from './Chart';
 import Table from './Table';
 import Footer from './Footer';
 
-// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import fieldMessages from '../Field/messages';
 
-// utils
 import { getLegendLabels } from './utils';
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import {
   IUserCustomFieldData,
   TCustomFieldCode,

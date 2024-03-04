@@ -1,16 +1,12 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import Warning from 'components/UI/Warning';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 
-// services
 import { IIdea, IdeaCommentingDisabledReason } from 'api/ideas/types';
 
-// i18n
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import globalMessages from 'utils/messages';

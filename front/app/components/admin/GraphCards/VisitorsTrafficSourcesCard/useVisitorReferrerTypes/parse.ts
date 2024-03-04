@@ -1,10 +1,7 @@
-// styling
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
-// utils
 import { roundPercentages } from 'utils/math';
 
-// typings
 import { PieRow } from './typings';
 import { Translations } from './translations';
 import { VisitorsTrafficSourcesResponse } from 'api/graph_data_units/responseTypes';

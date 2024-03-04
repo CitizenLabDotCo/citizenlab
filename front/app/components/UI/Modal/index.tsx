@@ -6,10 +6,8 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import eventEmitter from 'utils/eventEmitter';
 import { FocusOn } from 'react-focus-on';
 
-// i18n
 import messages from './messages';
 
-// components
 import {
   Box,
   media,

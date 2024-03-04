@@ -1,4 +1,3 @@
-// typings
 import { IdeaVotingDisabledReason } from 'api/ideas/types';
 import {
   ActionDescriptorFutureEnabled,

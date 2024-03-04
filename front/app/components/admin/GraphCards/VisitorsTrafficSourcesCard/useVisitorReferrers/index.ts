@@ -1,17 +1,12 @@
-// services
-
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
 
 // parse
 import { parseTableData } from './parse';
 
-// utils
 import { referrersListQuery, referrersTotalQuery } from './query';
 import { getPageNumberFromUrl } from '../../_utils/pagination';
 
-// typings
 import {
   QueryParameters,
   ReferrerListResponse,

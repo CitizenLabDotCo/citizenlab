@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// components
 import Modal from 'components/UI/Modal';
 import {
   Box,
@@ -15,10 +14,8 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import ProjectFilter from 'components/UI/ProjectFilter';
 
-// utils
 import clHistory from 'utils/cl-router/history';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { IOption } from 'typings';

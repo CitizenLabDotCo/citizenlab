@@ -6,13 +6,11 @@ import React, {
   useCallback,
 } from 'react';
 
-// hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useBasketsIdeas from './useBasketsIdeas';
 import useVoteForIdea from './useVoteForIdea';
 
-// utils
 import { getCurrentPhase } from 'api/phases/utils';
 import { isNil } from 'utils/helperUtils';
 

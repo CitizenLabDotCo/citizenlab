@@ -2,11 +2,9 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { Mode } from './StatusChangeFormWrapper';
 
-// intl
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
-// components
 import OfficialFeedbackPost from 'components/PostShowComponents/OfficialFeedback/OfficialFeedbackPost';
 import {
   Radio,
@@ -20,10 +18,8 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Error from 'components/UI/Error';
 import Button from 'components/UI/Button';
 
-// styling
 import styled from 'styled-components';
 
-// typings
 import { Multiloc, Locale, MultilocFormValues } from 'typings';
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';

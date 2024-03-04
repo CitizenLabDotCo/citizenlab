@@ -7,12 +7,10 @@ import useAuthUser from 'api/me/useAuthUser';
 import { usePermission } from 'utils/permissions';
 import HasPermission from 'components/HasPermission';
 
-// components
 import Sidebar from './sideBar/';
 import styled from 'styled-components';
 import { colors, media } from '@citizenlab/cl2-component-library';
 
-// utils
 import clHistory from 'utils/cl-router/history';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 

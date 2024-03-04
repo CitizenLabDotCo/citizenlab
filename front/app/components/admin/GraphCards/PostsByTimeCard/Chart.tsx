@@ -1,17 +1,13 @@
 import React, { useMemo } from 'react';
 
-// styling
 import { MARGINS } from 'components/admin/GraphCards/_utils/style';
 
-// components
 import LineBarChart from 'components/admin/Graphs/LineBarChart';
 
-// utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
 
-// typings
 import { Dates, Resolution, Layout } from 'components/admin/GraphCards/typings';
 import { TimeSeries } from './usePostsByTime/typings';
 

@@ -1,6 +1,5 @@
 import React from 'react';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
@@ -15,7 +14,6 @@ import tracks from '../tracks';
 import styled from 'styled-components';
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
-// types
 import { IInternalCommentData } from 'api/internal_comments/types';
 import useUserById from 'api/users/useUserById';
 

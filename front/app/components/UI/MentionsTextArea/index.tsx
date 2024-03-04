@@ -4,7 +4,6 @@ import { isString, isEmpty, capitalize } from 'lodash-es';
 // libraries
 import { MentionsInput, Mention, MentionItem } from 'react-mentions';
 
-// components
 import Error from 'components/UI/Error';
 
 // style
@@ -19,7 +18,6 @@ import { transparentize } from 'polished';
 // Utils
 import { extractIdsFromValue } from './utils';
 
-// typings
 import { Locale } from 'typings';
 import { MentionRoles } from 'api/mentions/types';
 

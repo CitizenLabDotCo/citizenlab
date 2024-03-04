@@ -5,7 +5,6 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useVoting from 'api/baskets_ideas/useVoting';
 
-// components
 import AddToBasketButton from './AddToBasketButton';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
@@ -17,7 +16,6 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
@@ -25,10 +23,8 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 // styles
 import styled from 'styled-components';
 
-// utils
 import { isNil } from 'utils/helperUtils';
 
-// typings
 import { IPhaseData } from 'api/phases/types';
 
 const IdeaPageContainer = styled.div`

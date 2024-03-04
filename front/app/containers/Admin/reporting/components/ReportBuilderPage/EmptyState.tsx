@@ -3,7 +3,6 @@ import React from 'react';
 // images
 import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 
-// components
 import {
   Box,
   Image,
@@ -14,15 +13,12 @@ import {
 import Button from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
 
-// styling
 import styled from 'styled-components';
 
-// i18n
 import messages from './messages';
 import sharedMessages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const StyledBackgroundImage = styled(Image)`

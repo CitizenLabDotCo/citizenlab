@@ -1,14 +1,12 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import AvatarBubbles from 'components/AvatarBubbles';
 import InitiativeInfoContent from './InitiativeInfoContent';
 import Warning from 'components/UI/Warning';
 
 // resources
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

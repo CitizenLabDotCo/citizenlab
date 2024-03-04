@@ -4,12 +4,10 @@ import getSubmitState from 'utils/getSubmitState';
 import { Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
-// components
 import {
   SectionTitle,
   SubSectionTitle,
@@ -26,11 +24,9 @@ import CustomFieldsSignupText from './CustomFieldsSignupText';
 import Topics from 'components/Topics';
 import Areas from 'components/Areas';
 
-// i18n
 import messages from 'containers/Admin/settings/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// typings
 import {
   IAppConfigurationSettings,
   IUpdatedAppConfigurationProperties,

@@ -1,17 +1,14 @@
 import React, { FormEvent } from 'react';
 
-// components
 import Modal from 'components/UI/Modal';
 import Footer from './Footer';
 import Preferences from './Preferences';
 import ContentContainer from './ContentContainer';
 import { Title } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// typings
 import { TCategory } from '../destinations';
 import { CategorizedDestinations, IPreferences } from '../typings';
 

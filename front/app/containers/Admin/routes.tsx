@@ -15,23 +15,19 @@ import projectFoldersRoutes from './projectFolders/routes';
 import reportingRoutes from './reporting/routes';
 import toolsRoutes from './tools/routes';
 
-// components
 import PageLoading from 'components/UI/PageLoading';
 import { Navigate, useLocation } from 'react-router-dom';
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
 import Unauthorized from 'components/Unauthorized';
 
-// hooks
 import { usePermission } from 'utils/permissions';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
-// utils
 import { isNilOrError, isUUID } from 'utils/helperUtils';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
-// typings
 import { IAppConfigurationData } from 'api/app_configuration/types';
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>

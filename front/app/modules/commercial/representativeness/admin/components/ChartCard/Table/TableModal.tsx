@@ -1,13 +1,11 @@
 import React from 'react';
 
-// components
 import Modal from 'components/UI/Modal';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Table from './Table';
 import FieldInfo, { Props as FieldInfoProps } from '../FieldInfo';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
-// typings
 import { RepresentativenessData } from '../../../hooks/parseReferenceData';
 
 interface Props extends FieldInfoProps {

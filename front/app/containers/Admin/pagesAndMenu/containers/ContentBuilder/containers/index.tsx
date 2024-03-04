@@ -3,10 +3,8 @@ import React, { useState, useRef, useEffect } from 'react';
 // styles
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
-// components
 import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
 
-// craft
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import Editor from '../components/Editor';
 import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
@@ -15,14 +13,11 @@ import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWr
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
-// hooks
 import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';

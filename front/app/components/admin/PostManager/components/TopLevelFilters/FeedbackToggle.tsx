@@ -3,7 +3,6 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { isFunction } from 'lodash-es';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
@@ -19,10 +18,8 @@ import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
 
-// typings
 import { ManagerType } from '../..';
 
-// components
 import CountBadge from 'components/UI/CountBadge';
 
 const size = 21;

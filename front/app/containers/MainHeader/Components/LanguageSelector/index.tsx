@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// components
 import {
   Icon,
   Dropdown,
@@ -10,22 +8,19 @@ import {
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import { shortenedAppLocalePairs } from 'containers/App/constants';
+import styled, { useTheme } from 'styled-components';
+import { Locale } from 'typings';
 
-// services
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { updateLocale } from 'utils/locale';
 
-// hooks
-import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
+import useLocale from 'hooks/useLocale';
+
 // style
-import styled, { useTheme } from 'styled-components';
 
-// i18n
-import { shortenedAppLocalePairs } from 'containers/App/constants';
-
-// typings
-import { Locale } from 'typings';
 import { getSelectedLocale } from './utils';
 
 const DropdownButtonText = styled.div`

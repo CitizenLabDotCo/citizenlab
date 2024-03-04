@@ -1,7 +1,6 @@
 // Libraries
 import React, { FormEvent, useState } from 'react';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 

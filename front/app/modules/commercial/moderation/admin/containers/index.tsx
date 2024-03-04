@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 
-// components
 import {
   Table,
   Thead,
@@ -25,14 +24,12 @@ import SelectProject from './SelectProject';
 import SearchInput from 'components/UI/SearchInput';
 import Outlet from 'components/Outlet';
 
-// hooks
 import useModerations from 'api/moderations/useModerations';
 import useModerationsCount from 'api/moderation_count/useModerationsCount';
 import useRemoveInappropriateContentFlag from 'api/inappropriate_content_flags/useRemoveInappropriateContentFlag';
 import useUpdateModerationStatus from 'api/moderations/useUpdateModerationStatus';
 import useAuthUser from 'api/me/useAuthUser';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -40,15 +37,12 @@ import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// styling
 import styled from 'styled-components';
 
-// utils
 import { isAdmin } from 'utils/permissions/roles';
 import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 
-// typings
 import { IOption, InsertConfigurationOptions } from 'typings';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 

@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 // router
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 
-// components
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import HelmetIntl from 'components/HelmetIntl';
 import NavigationTabs, {
@@ -11,7 +10,6 @@ import NavigationTabs, {
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
 
-// i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 

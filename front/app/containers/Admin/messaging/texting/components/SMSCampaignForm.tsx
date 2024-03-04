@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-// components
 import TextArea from 'components/UI/TextArea';
 import Button from 'components/UI/Button';
 import { Label, Box, Error } from '@citizenlab/cl2-component-library';
 import RemainingCharacters from '../components/RemainingCharacters';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 

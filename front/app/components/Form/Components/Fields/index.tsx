@@ -9,15 +9,12 @@ import {
   Layout,
 } from '@jsonforms/core';
 
-// i18n
 import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 
-// utils
 import { selectRenderers } from './formConfig';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 import { parseRequiredMultilocsSchema } from 'components/Form/parseRequiredMultilocs';
 
-// typings
 import { CLErrors, Locale } from 'typings';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from '../../typings';
 import Ajv, { ErrorObject } from 'ajv';

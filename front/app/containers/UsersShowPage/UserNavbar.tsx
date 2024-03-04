@@ -14,11 +14,9 @@ import {
 import styled from 'styled-components';
 import { rgba } from 'polished';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// hooks
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 import useFeatureFlag from 'hooks/useFeatureFlag';

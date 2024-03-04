@@ -1,21 +1,17 @@
 import React from 'react';
 
-// components
+import { useMostReactedIdeas } from 'api/graph_data_units';
+
 import Card from '../_shared/Card';
-import ProjectInfo from './ProjectInfo';
-import Ideas from './Ideas';
 import NoData from '../_shared/NoData';
+import { getEmptyMessage } from '../utils';
+
+import Ideas from './Ideas';
+import messages from './messages';
+import ProjectInfo from './ProjectInfo';
 import Settings from './Settings';
 
-// i18n
-import messages from './messages';
-
-// typings
 import { Props } from './typings';
-
-// hooks
-import { useMostReactedIdeas } from 'api/graph_data_units';
-import { getEmptyMessage } from '../utils';
 
 const MostReactedIdeasWidget = ({
   title,

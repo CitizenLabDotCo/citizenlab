@@ -1,10 +1,8 @@
 import React from 'react';
 
-// components
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 
-// styling
 import styled from 'styled-components';
 import {
   colors,
@@ -14,7 +12,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
 
-// typings
 import { IIdeaData } from 'api/ideas/types';
 
 const StyledAvatar = styled(Avatar)`

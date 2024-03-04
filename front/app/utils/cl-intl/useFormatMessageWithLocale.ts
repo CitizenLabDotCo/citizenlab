@@ -2,16 +2,12 @@ import { useContext, useCallback } from 'react';
 
 // context
 import CustomIntlContext from 'containers/LanguageProvider/CustomIntlContext';
+import { MessageDescriptor } from 'react-intl';
+import { Locale } from 'typings';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// utils
 import { handleFormatMessage, FormatMessageValues } from './useIntl';
-
-// typings
-import { Locale } from 'typings';
-import { MessageDescriptor } from 'react-intl';
 
 const useFormatMessageWithLocale = () => {
   const intlShapes = useContext(CustomIntlContext);

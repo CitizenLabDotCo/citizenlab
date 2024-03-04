@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 
-// types
 import { IPollQuestionData } from 'api/poll_questions/types';
 
-// components
 import Button from 'components/UI/Button';
 import PollSingleChoice from './PollSingleChoice';
 import PollMultipleChoice from './PollMultipleChoice';
@@ -19,15 +17,12 @@ import {
 // style
 import styled from 'styled-components';
 
-// hooks
 import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
 import useAuthUser from 'api/me/useAuthUser';
 
-// i18n
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// utils
 import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
 
 const PollContainer = styled.div`

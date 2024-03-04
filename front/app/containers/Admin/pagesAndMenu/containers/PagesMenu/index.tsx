@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import Button from 'components/UI/Button';
 import { Outlet as RouterOutlet } from 'react-router-dom';

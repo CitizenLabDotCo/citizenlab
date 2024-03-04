@@ -1,9 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 
-// hooks
 import useVisitorReferrers from './useVisitorReferrers';
 
-// components
 import {
   Box,
   Table,
@@ -19,16 +17,11 @@ import {
 import Pagination from 'components/Pagination';
 import ReferrerListLink from './RefferListLink';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styling
-
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { ProjectId, Dates } from '../typings';
 
 interface PercentageProps {

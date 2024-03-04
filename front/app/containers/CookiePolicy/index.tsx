@@ -2,14 +2,12 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-// i18n
 import { FormattedMessage, injectIntl, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
 
-// components
 import Fragment from 'components/Fragment';
 
 import {

@@ -2,22 +2,17 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { capitalize } from 'lodash-es';
 
-// components
 import FilterSelector from 'components/FilterSelector';
 
-// styling
 import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 import useTopics from 'api/topics/useTopics';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// services
 import { coreSettings } from 'api/app_configuration/utils';
 
 interface SelectTopicsProps {

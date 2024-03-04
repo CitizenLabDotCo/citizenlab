@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Input,
@@ -12,11 +11,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import AuthorInput from './AuthorInput';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// typings
 import { UserFormData } from './typings';
 import { SelectedAuthor } from './AuthorInput/typings';
 

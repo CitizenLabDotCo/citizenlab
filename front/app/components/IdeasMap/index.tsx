@@ -8,7 +8,6 @@ import React, {
   useState,
 } from 'react';
 
-// components
 import EsriMap from 'components/EsriMap';
 import MapView from '@arcgis/core/views/MapView';
 import LayerHoverLabel from 'components/IdeationConfigurationMap/components/LayerHoverLabel';
@@ -30,12 +29,10 @@ import {
   viewportWidths,
 } from '@citizenlab/cl2-component-library';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 import { useSearchParams } from 'react-router-dom';
 import useAuthUser from 'api/me/useAuthUser';
 
-// utils
 import {
   createEsriGeoJsonLayers,
   getMapPinSymbol,
@@ -58,11 +55,9 @@ import { CSSTransition } from 'react-transition-group';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
-// types
 import { IIdeaData } from 'api/ideas/types';
 import { IMapConfig } from 'api/map_config/types';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import usePhase from 'api/phases/usePhase';

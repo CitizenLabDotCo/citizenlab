@@ -15,7 +15,6 @@ import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useUpdateUser from 'api/users/useUpdateUser';
 import useCreateOfflineUser from 'api/import_ideas/useCreateOfflineUser';
 
-// components
 import {
   Box,
   Button,
@@ -26,12 +25,10 @@ import MetaBox from './MetaBox';
 import IdeaForm from './IdeaForm';
 import UserForm from './UserForm';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 import messages from '../messages';
 
-// utils
 import { isValidData } from 'components/Form/utils';
 import { customAjv } from 'components/Form';
 import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
@@ -44,7 +41,6 @@ import {
   getUserChanges,
 } from './utils';
 
-// typings
 import { FormData } from 'components/Form/typings';
 import { CLErrors } from 'typings';
 import { UserFormData } from './typings';

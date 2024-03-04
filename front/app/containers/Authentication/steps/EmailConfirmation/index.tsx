@@ -1,23 +1,15 @@
 import React, { useMemo, useState, FormEvent } from 'react';
 
-// services
-import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import CodeSentMessage from './CodeSentMessage';
-import FooterNotes from './FooterNotes';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
+
 import Input from 'components/HookForm/Input';
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
 
 // errors
 import {
@@ -25,8 +17,13 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 
-// typings
+import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
+
 import { State, SetError } from '../../typings';
+
+import CodeSentMessage from './CodeSentMessage';
+import FooterNotes from './FooterNotes';
+import messages from './messages';
 
 interface Props {
   state: State;

@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 
-// components
 import GraphCard from 'components/admin/GraphCard';
 import { Box, fontSizes, media } from '@citizenlab/cl2-component-library';
 import DonutChart from './DonutChart';
@@ -8,18 +7,15 @@ import ProgressBars from './ProgressBars';
 import StackedBars from './StackedBars';
 import Button from 'components/UI/Button';
 
-// stylings
+s;
 import styled from 'styled-components';
 
-// i18n
 import hookMessages from './usePostsFeedback/messages';
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-// hooks
 import usePostsFeedback from './usePostsFeedback';
 
-// typings
 import { isNilOrError } from 'utils/helperUtils';
 import {
   ProjectId,

@@ -1,19 +1,14 @@
 import React from 'react';
 
-// hooks
 import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
 import useLocale from 'hooks/useLocale';
 
-// components
 import Form from 'components/Form';
 
-// i18n
 import messages from './messages';
 
-// utils
 import { forOwn } from 'lodash-es';
 
-// typings
 import { ErrorObject } from 'ajv';
 import { IUserData } from 'api/users/types';
 import { isNilOrError } from 'utils/helperUtils';

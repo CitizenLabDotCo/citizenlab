@@ -13,7 +13,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 
-// i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';

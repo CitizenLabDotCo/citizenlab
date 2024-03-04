@@ -1,18 +1,15 @@
 import React from 'react';
 
-// components
 import FileInput from './FileInput';
 import FileDisplay, { FileType } from './FileDisplay';
 import Error from 'components/UI/Error';
 
-// typings
 import { CLErrors, UploadFile } from 'typings';
 
 // style
 import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 

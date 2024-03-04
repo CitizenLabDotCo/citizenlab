@@ -8,7 +8,6 @@ import tracks from './tracks';
 import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
-// components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import InitiativeMeta from './InitiativeMeta';

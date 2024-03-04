@@ -1,17 +1,14 @@
 import React from 'react';
 import moment from 'moment';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAnalytics from 'api/analytics/useAnalytics';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
-// typings
 import { Query } from 'api/analytics/types';
 import { Response } from '../../components/VisitorsLanguageCard/useVisitorLanguages/typings';
 
-// components
 import VisitorsOverview from './VisitorsOverview';
 import { isAdmin } from 'utils/permissions/roles';
 

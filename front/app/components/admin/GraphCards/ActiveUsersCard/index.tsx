@@ -1,23 +1,18 @@
 import React, { useRef } from 'react';
 
-// hooks
 import useActiveUsers from './useActiveUsers';
 
-// components
 import GraphCard from 'components/admin/GraphCard';
 import { Box } from '@citizenlab/cl2-component-library';
 import Statistic from 'components/admin/Graphs/Statistic';
 import Chart from './Chart';
 
-// i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 import { getTimePeriodTranslationByResolution } from 'components/admin/GraphCards/_utils/resolution';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import {
   ProjectId,
   Dates,

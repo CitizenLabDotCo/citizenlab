@@ -1,15 +1,12 @@
 import React from 'react';
 
-// components
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import SMSCampaignForm from '../components/SMSCampaignForm';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-// utils
 import clHistory from 'utils/cl-router/history';
 
-// styling
 import styled from 'styled-components';
 
 const StyledSMSCampaignForm = styled(SMSCampaignForm)`

@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
 import Button from 'components/UI/Button';
 import { Box, LocaleSwitcher, colors } from '@citizenlab/cl2-component-library';
 import { Top } from 'components/admin/PostManager/components/PostPreview';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// typings
 import { Locale } from 'typings';
 
-// hooks
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';

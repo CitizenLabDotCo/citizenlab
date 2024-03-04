@@ -1,9 +1,7 @@
 import React from 'react';
 
-// hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 
-// components
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
 import VerticalCenterer from 'components/VerticalCenterer';
@@ -12,7 +10,6 @@ import IdeasEditForm from './IdeasEditForm';
 
 // router
 
-// utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { useParams } from 'react-router-dom';
 

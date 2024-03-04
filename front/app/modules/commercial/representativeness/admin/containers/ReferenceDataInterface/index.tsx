@@ -1,19 +1,15 @@
 import React from 'react';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Header from './Header';
 import Fields from './Fields';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// utils
 import { isAdmin } from 'utils/permissions/roles';
 
 const ReferenceDataInterface = () => {

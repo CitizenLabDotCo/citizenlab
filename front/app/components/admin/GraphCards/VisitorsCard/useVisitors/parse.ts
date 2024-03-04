@@ -1,12 +1,10 @@
 import moment, { Moment } from 'moment';
 
-// utils
 import { round } from 'lodash-es';
 import { timeSeriesParser } from '../../_utils/timeSeries';
 import { keys, get } from 'utils/helperUtils';
 import { RESOLUTION_TO_MESSAGE_KEY } from '../../_utils/resolution';
 
-// typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import {
   Response,

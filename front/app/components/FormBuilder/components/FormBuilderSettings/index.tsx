@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// components
 import {
   Box,
   Title,
@@ -12,21 +11,17 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 import { LogicSettings } from './LogicSettings';
 import { ContentSettings } from './ContentSettings';
 
-// intl
 import messages from '../messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// types
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-// hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { useFormContext } from 'react-hook-form';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getFieldNumbers } from '../utils';
 import {

@@ -1,9 +1,7 @@
 import React, { useCallback } from 'react';
 
-// craft
 import { useNode } from '@craftjs/core';
 
-// styling
 import {
   colors,
   stylingConsts,
@@ -12,7 +10,6 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
-// components
 import Card from '../_shared/Card';
 import SurveyResults from './SurveyResults';
 import NoData from '../_shared/NoData';
@@ -21,13 +18,11 @@ import PhaseFilter from 'components/UI/PhaseFilter';
 import QuestionFilter from './QuestionFilter';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import widgetMessages from '../messages';
 import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
-// types
 import { IOption, Multiloc } from 'typings';
 import { getEmptyMessage } from '../utils';
 

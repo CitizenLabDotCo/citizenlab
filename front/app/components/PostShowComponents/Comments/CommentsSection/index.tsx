@@ -1,13 +1,11 @@
 import React, { useState, MouseEvent } from 'react';
 
-// components
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Tab } from 'components/admin/NavigationTabs';
 import PublicComments from './PublicComments';
 import InternalComments from 'components/admin/InternalComments';
 import Warning from 'components/UI/Warning';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
@@ -18,7 +16,6 @@ import { tabBorderSize } from 'components/admin/NavigationTabs/tabsStyleConstant
 // Types
 import { ITab } from 'typings';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';

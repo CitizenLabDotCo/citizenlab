@@ -1,7 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import TypeformSurvey from './TypeformSurvey';
 import SurveymonkeySurvey from './SurveymonkeySurvey';
 import GoogleFormsSurvey from './GoogleFormsSurvey';
@@ -12,19 +11,15 @@ import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
 import SnapSurvey from './SnapSurvey';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 
-// i18n
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 import globalMessages from 'utils/messages';
 
-// styling
 import styled from 'styled-components';
 import SurveyXact from './SurveyXact';
 
-// utils
 import { IProjectData, SurveyDisabledReason } from 'api/projects/types';
 import ParticipationPermission from '../ParticipationPermission';
 import { TSurveyService } from 'api/phases/types';

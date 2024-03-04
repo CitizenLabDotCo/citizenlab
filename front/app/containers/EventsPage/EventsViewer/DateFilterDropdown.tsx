@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 
-// components
 import FilterSelector from 'components/FilterSelector';
 import { Box } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 

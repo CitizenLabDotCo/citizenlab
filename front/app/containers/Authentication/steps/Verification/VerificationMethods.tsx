@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 
-// components
 import {
   Spinner,
   Text,
@@ -9,14 +8,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
 
-// hooks
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
 
 // style
 import styled from 'styled-components';
 
-// typings
 import { TVerificationMethod } from 'api/verification_methods/types';
 import Outlet from 'components/Outlet';
 

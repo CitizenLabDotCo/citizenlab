@@ -1,10 +1,8 @@
 import React from 'react';
 
-// intl
 import messages from '../messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// components
 import {
   Input,
   Box,

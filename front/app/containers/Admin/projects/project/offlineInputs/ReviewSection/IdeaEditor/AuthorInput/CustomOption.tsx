@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 
-// components
 import {
   Box,
   Icon,
@@ -8,18 +7,14 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-// styling
 import styled from 'styled-components';
 
-// utils
 import { optionIsUser } from 'components/UI/UserSelect/utils';
 import { isValidEmail } from 'utils/validate';
 
-// typings
 import { Option } from 'components/UI/UserSelect/typings';
 
 const NewUserButton = styled.button<{ disabled: boolean }>`

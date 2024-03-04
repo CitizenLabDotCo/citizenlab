@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import Card from '../../_shared/Card';
 import GenderCard from './GenderCard';
 
@@ -10,10 +9,8 @@ import messages from '../messages';
 // settings
 import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 
-// types
 import { ChartWidgetProps } from '../typings';
 
-// utils
 import moment from 'moment';
 
 const GenderWidget = ({

@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { includes, isNil } from 'lodash-es';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// components
 import Checkbox from 'components/UI/Checkbox';
 import {
   Dropdown,

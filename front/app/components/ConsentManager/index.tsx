@@ -1,10 +1,8 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
-// components
 import Container from './Container';
 
 // cookies
@@ -19,7 +17,6 @@ import { allCategories, TCategory } from './destinations';
 // events
 import eventEmitter from 'utils/eventEmitter';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import {
   getCurrentPreferences,
@@ -29,7 +26,6 @@ import {
   getConsentRequired,
 } from './utils';
 
-// typings
 import { IPreferences } from './typings';
 
 const ConsentManager = () => {

@@ -1,23 +1,18 @@
 import React from 'react';
 
-// components
 import { Helmet } from 'react-helmet';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-// utils
 import { stripHtml } from 'utils/textUtils';
 import { imageSizes } from 'utils/fileUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
-// i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-// typings
 import { IProjectFolderData } from 'api/project_folders/types';
 import useLocalize from 'hooks/useLocalize';
 

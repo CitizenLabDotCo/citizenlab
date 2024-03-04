@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 
-// hooks
 import useReferenceDistributionData from '../../api/reference_distribution/useReferenceDistributionData';
 
-// components
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import Header from './Header';
 import Options from './Options';
@@ -12,14 +10,11 @@ import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
 import BinModal from './BinModal';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// utils
 import { isSubmittingAllowed, FormValues } from '../../utils/form';
 
-// typings
 import { Bins } from '../../api/reference_distribution/types';
 
 interface Props {

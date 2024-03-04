@@ -1,15 +1,12 @@
 import React from 'react';
 
-// components
 import { Tooltip } from 'recharts';
 import { Box } from '@citizenlab/cl2-component-library';
 import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 
-// i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// typings
 import { StackedBarsRow } from '../usePostsFeedback/typings';
 
 export const stackedBarTooltip =

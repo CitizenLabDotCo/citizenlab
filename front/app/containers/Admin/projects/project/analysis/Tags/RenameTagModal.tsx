@@ -1,10 +1,8 @@
 import React from 'react';
 
-// intl
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-// components
 import { Button, colors, Title, Box } from '@citizenlab/cl2-component-library';
 
 import useUpdateAnalysisTag from 'api/analysis_tags/useUpdateAnalysisTag';

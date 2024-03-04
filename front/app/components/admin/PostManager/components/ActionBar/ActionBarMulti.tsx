@@ -4,15 +4,12 @@ import React, { useState } from 'react';
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
-// components
 import { Button, Icon } from 'semantic-ui-react';
 import WarningModal from 'components/WarningModal';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// typings
 import { ManagerType } from '../..';
 
 interface Props {

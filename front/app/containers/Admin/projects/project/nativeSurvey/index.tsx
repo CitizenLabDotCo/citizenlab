@@ -3,7 +3,6 @@ import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
 import { saveAs } from 'file-saver';
 
-// components
 import {
   Box,
   Title,
@@ -23,10 +22,8 @@ import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
 
-// i18n
 import messages from './messages';
 
-// hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
 import useLocale from 'hooks/useLocale';

@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'components/PostShowComponents/Comments/messages';
 
@@ -16,7 +15,6 @@ import tracks from 'components/PostShowComponents/Comments/tracks';
 import styled from 'styled-components';
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
-// types
 import useComment from 'api/comments/useComment';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';

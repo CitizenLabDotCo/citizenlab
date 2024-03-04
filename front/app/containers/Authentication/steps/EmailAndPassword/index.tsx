@@ -1,43 +1,38 @@
 import React, { useEffect } from 'react';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-// components
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import TextLink from '../_components/TextLink';
-import TextButton from '../_components/TextButton';
-
-// i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import sharedMessages from '../messages';
-import messages from './messages';
-import containerMessages from '../../messages';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { SetError } from 'containers/Authentication/typings';
+import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
+import { useForm, FormProvider } from 'react-hook-form';
 import { string, object, boolean } from 'yup';
-import Input from 'components/HookForm/Input';
-import PasswordInput from 'components/HookForm/PasswordInput';
+
 import Checkbox from 'components/HookForm/Checkbox';
+import Input from 'components/HookForm/Input';
+import Button from 'components/UI/Button';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import containerMessages from '../../messages';
+import tracks from '../../tracks';
+import TextButton from '../_components/TextButton';
+import TextLink from '../_components/TextLink';
+
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+
+import sharedMessages from '../messages';
+
+import messages from './messages';
+
+import PasswordInput from 'components/HookForm/PasswordInput';
 
 // errors
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
-
-// utils
 import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
-
-// typings
-import { SetError } from 'containers/Authentication/typings';
 
 interface Props {
   loading: boolean;

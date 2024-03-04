@@ -1,10 +1,8 @@
 import React from 'react';
 
-// intl
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-// components
 import {
   Box,
   CardButton,
@@ -16,7 +14,6 @@ import { SubSectionTitle } from 'components/admin/Section';
 import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';
 import SingleVotingIcon from './CardIcons/SingleVotingIcon';
 
-// types
 import { VotingMethod } from 'api/phases/types';
 
 type VotingMethodSelectorProps = {

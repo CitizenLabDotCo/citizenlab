@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 
-// components
 import FilterSelector from 'components/FilterSelector';
 
-// i18n
 import useLocalize from 'hooks/useLocalize';
 import { useSearchParams } from 'react-router-dom';
 import useProjects from 'api/projects/useProjects';

@@ -5,7 +5,6 @@ import {
   Resolver,
 } from '@craftjs/core';
 
-// craft
 import RenderNode from './RenderNode';
 
 type EditorProps = {

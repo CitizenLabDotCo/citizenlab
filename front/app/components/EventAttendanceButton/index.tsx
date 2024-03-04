@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// components
 import {
   Box,
   Button,
@@ -13,7 +12,6 @@ import Modal from 'components/UI/Modal';
 import { EventModalConfetti } from './EventModalConfetti';
 import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
 
-// types
 import { IEventData } from 'api/events/types';
 
 // api
@@ -23,7 +21,6 @@ import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttenda
 import useEventsByUserId from 'api/events/useEventsByUserId';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 
-// intl
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
@@ -32,7 +29,6 @@ import useLocalize from 'hooks/useLocalize';
 import { useTheme } from 'styled-components';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-// utils
 import { getEventDateString } from 'utils/dateUtils';
 
 type EventAttendanceButtonProps = {

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet';
 import { StyledContentContainer } from 'components/smallForm';
@@ -21,14 +20,11 @@ import { object, string } from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { ErrorCode } from 'containers/Authentication/typings';
 import { ERROR_CODE_MESSAGES } from 'containers/Authentication/Modal';
 

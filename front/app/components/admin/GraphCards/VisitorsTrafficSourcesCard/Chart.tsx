@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 
-// components
 import PieChart from 'components/admin/Graphs/PieChart';
 import renderTooltip from './renderTooltip';
 
-// typings
 import { PieRow } from './useVisitorReferrerTypes/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 

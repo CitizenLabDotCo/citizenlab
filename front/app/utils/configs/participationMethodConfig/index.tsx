@@ -1,30 +1,26 @@
 import React, { ReactNode } from 'react';
 
-// intl
-import { FormattedMessage } from '../../cl-intl';
-import messages from '../../messages';
-
-// services
-import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
-import { IProjectData } from 'api/projects/types';
-import { IPhaseData, ParticipationMethod } from 'api/phases/types';
-
-// components
-import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
+import DocumentAnnotationCTABar from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
+import EmbeddedSurveyCTABar from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
+import EventsCTABar from 'components/ParticipationCTABars/EventsCTABar';
 import IdeationCTABar from 'components/ParticipationCTABars/IdeationCTABar';
 import NativeSurveyCTABar from 'components/ParticipationCTABars/NativeSurveyCTABar';
-import EmbeddedSurveyCTABar from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
-import VotingCTABar from 'components/ParticipationCTABars/VotingCTABar';
 import VolunteeringCTABar from 'components/ParticipationCTABars/VolunteeringCTABar';
 import PollCTABar from 'components/ParticipationCTABars/PollCTABar';
-import DocumentAnnotationCTABar from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
-import EventsCTABar from 'components/ParticipationCTABars/EventsCTABar';
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
+import VotingCTABar from 'components/ParticipationCTABars/VotingCTABar';
+import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
-// utils
-import { isNilOrError, NilOrError } from '../../helperUtils';
 import clHistory from 'utils/cl-router/history';
+
 import { IIdea } from 'api/ideas/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
+import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
+import { IProjectData } from 'api/projects/types';
+
+import { FormattedMessage } from '../../cl-intl';
+import { isNilOrError, NilOrError } from '../../helperUtils';
+import messages from '../../messages';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },

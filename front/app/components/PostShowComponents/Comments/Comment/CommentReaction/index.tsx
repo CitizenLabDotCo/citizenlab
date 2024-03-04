@@ -1,12 +1,10 @@
 import React, { MouseEvent, useState, useEffect } from 'react';
 
-// components
 import LikeButton from './LikeButton';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-// hooks
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
@@ -14,12 +12,10 @@ import useAddCommentReaction from 'api/comment_reactions/useAddCommentReaction';
 import useDeleteCommentReaction from 'api/comment_reactions/useDeleteCommentReaction';
 import useCommentReaction from 'api/comment_reactions/useCommentReaction';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { trackLike, trackCancelLike } from './trackReaction';
 
-// typings
 import { ICommentData } from 'api/comments/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 

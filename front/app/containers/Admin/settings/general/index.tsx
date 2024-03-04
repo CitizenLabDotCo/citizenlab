@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// components
 import { Success, Error, Toggle } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import { Section, SubSectionTitle } from 'components/admin/Section';
 import Outlet from 'components/Outlet';
-import Form from './Form';
 
-// services
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
 import {
   TAppConfigurationSetting,
   IAppConfigurationSettingsCore,
@@ -21,6 +17,10 @@ import {
 // Utils
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+
+import messages from '../messages';
+
+import Form from './Form';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;

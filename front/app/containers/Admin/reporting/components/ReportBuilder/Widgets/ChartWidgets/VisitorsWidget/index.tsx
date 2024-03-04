@@ -1,17 +1,14 @@
 import React from 'react';
 
-// components
 import Card from '../../_shared/Card';
 import VisitorsCard from './VisitorsCard';
 
-// utils
 import moment from 'moment';
 
 // settings
 import messages from '../messages';
 import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 
-// types
 import { IResolution } from 'components/admin/ResolutionControl';
 import { ChartWidgetProps } from '../typings';
 

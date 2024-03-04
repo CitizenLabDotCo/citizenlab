@@ -1,39 +1,34 @@
 import React from 'react';
 
-// hooks
+import { Box, Text, Button } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import { UploadFile, Locale } from 'typings';
+import { object, string, mixed, boolean } from 'yup';
+
+import Checkbox from 'components/HookForm/Checkbox';
+import Feedback from 'components/HookForm/Feedback';
+import SingleFileUploader from 'components/HookForm/SingleFileUploader';
+import Link from 'utils/cl-router/Link';
 import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
 import useLocale from 'hooks/useLocale';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
 // router
-import { useParams } from 'react-router-dom';
-import Link from 'utils/cl-router/Link';
 
-// components
-import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 import LocalePicker from './LocalePicker';
-import PhaseSelector from './PhaseSelector';
-import SingleFileUploader from 'components/HookForm/SingleFileUploader';
-import Checkbox from 'components/HookForm/Checkbox';
-import Feedback from 'components/HookForm/Feedback';
-
-// i18n
 import messages from './messages';
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import PhaseSelector from './PhaseSelector';
 
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { object, string, mixed, boolean } from 'yup';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
-// utils
 import { canContainIdeas, getCurrentPhase } from 'api/phases/utils';
+
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import { UploadFile, Locale } from 'typings';
 import { IProject } from 'api/projects/types';
 import { IPhases } from 'api/phases/types';
 

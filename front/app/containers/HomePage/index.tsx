@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react';
 import clHistory from 'utils/cl-router/history';
 
-// components
 import { canAccessRoute } from 'utils/permissions/rules/routePermissions';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useKeyPress from 'hooks/useKeyPress';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import Viewer from './Viewer';

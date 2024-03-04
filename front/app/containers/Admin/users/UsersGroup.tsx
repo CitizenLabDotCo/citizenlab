@@ -1,7 +1,6 @@
 // Libraries
 import React, { useState } from 'react';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
@@ -15,7 +14,6 @@ import UserManager from './UserManager';
 import eventEmitter from 'utils/eventEmitter';
 import events from './events';
 
-// i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';

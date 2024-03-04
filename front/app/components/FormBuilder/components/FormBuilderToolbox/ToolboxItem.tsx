@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// components
 import {
   Box,
   Icon,
@@ -11,7 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
-// services
 import { ICustomFieldInputType } from 'api/custom_fields/types';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 

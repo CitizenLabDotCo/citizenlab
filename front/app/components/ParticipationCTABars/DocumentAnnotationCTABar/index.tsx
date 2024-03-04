@@ -4,20 +4,16 @@ import React, { useEffect, useState } from 'react';
 import { Button } from '@citizenlab/cl2-component-library';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 
-// hooks
 import { useTheme } from 'styled-components';
 
-// services
 import { IPhaseData } from 'api/phases/types';
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 
-// utils
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 

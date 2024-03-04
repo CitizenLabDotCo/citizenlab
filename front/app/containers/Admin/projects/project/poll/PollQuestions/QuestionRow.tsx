@@ -17,7 +17,6 @@ const EditTitleButton = styled(Button)`
   display: inline-block;
 `;
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import WrongOptionsIndicator from './WrongOptionsIndicator';

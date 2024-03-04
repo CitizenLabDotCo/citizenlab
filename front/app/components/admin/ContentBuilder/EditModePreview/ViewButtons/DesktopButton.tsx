@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import ViewButton from './ViewButton';
 import { Icon, colors } from '@citizenlab/cl2-component-library';
 

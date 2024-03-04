@@ -8,16 +8,13 @@ import useVoting from 'api/baskets_ideas/useVoting';
 // styles
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-// components
 import WhiteBox from '../_shared/WhiteBox';
 import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
 
-// intl
 import messages from '../_shared/messages';
 import ownMessages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// typings
 import { IPhaseData } from 'api/phases/types';
 
 interface Props {

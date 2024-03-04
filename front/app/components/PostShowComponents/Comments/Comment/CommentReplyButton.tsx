@@ -1,6 +1,5 @@
 import React from 'react';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
@@ -16,10 +15,8 @@ import tracks from '../tracks';
 import styled from 'styled-components';
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
-// utils
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
-// types
 import { IIdeaData } from 'api/ideas/types';
 import { ICommentData } from 'api/comments/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';

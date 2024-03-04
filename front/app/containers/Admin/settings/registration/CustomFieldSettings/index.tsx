@@ -6,14 +6,12 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { isEqual, clone } from 'lodash-es';
 
-// i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import customfieldMessages from 'containers/Admin/settings/registration/CustomFieldRoutes/messages';
 import T from 'components/T';
 
-// components
 import Button from 'components/UI/Button';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import {
@@ -38,7 +36,6 @@ import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
 
 // cache
 
-// styling
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useDeleteUserCustomField from 'api/user_custom_fields/useDeleteUserCustomField';
 import useReorderUserCustomField from 'api/user_custom_fields/useReorderUserCustomField';

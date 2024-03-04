@@ -11,17 +11,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-// hooks
 import useUserById from 'api/users/useUserById';
 
-// services
 import { IUserData } from 'api/users/types';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// components
 import Tippy from '@tippyjs/react';
 
 const Name = styled.span<{

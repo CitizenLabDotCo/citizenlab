@@ -2,15 +2,12 @@ import * as React from 'react';
 import styled from 'styled-components';
 import clHistory from 'utils/cl-router/history';
 
-// services & resources
 import { isDraft } from 'api/campaigns/util';
 import GetGroup from 'resources/GetGroup';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
-// components
 import Button from 'components/UI/Button';
 import {
   StatusLabel,
@@ -26,10 +23,8 @@ import T from 'components/T';
 import Modal from 'components/UI/Modal';
 import Stamp from './Stamp';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// styling
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useAuthUser from 'api/me/useAuthUser';

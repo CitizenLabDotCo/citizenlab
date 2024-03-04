@@ -1,11 +1,9 @@
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/translations';
 
 // parse
 import { parsePieData } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/parse';
 
-// typings
 import { QueryParameters } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
 
 import { useVisitorsTrafficSources } from 'api/graph_data_units';

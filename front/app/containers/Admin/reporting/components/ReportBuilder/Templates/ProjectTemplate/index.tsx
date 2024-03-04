@@ -1,16 +1,13 @@
 import React from 'react';
 import moment from 'moment';
 
-// hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 
-// craft
 import { Element } from '@craftjs/core';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 
 // shared widgets
@@ -28,12 +25,10 @@ import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 
-// i18n
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import messages from './messages';
 import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 
-// utils
 import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
 import { getTemplateData } from './getTemplateData';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';

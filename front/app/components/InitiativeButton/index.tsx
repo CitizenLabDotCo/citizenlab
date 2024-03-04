@@ -1,6 +1,5 @@
 import React from 'react';
 
-// hooks
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 // events

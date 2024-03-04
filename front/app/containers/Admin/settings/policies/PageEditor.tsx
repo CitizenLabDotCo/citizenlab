@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// components
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import PageForm, { FormValues } from 'components/PageForm';
 
@@ -13,13 +11,11 @@ import { handleAddPageFiles, handleRemovePageFiles } from 'api/page_files/util';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-// styling
 import styled from 'styled-components';
 import useAddPagesFile from 'api/page_files/useAddPageFile';
 import useDeletePageFile from 'api/page_files/useDeletePageFile';

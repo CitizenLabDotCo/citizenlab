@@ -16,7 +16,6 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 // tracking
 import { trackPage } from 'utils/analytics';
 
-// styling
 import styled from 'styled-components';
 import { Box, media } from '@citizenlab/cl2-component-library';
 

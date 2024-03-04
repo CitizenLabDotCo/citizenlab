@@ -5,16 +5,13 @@ import IdeaButton from 'components/IdeaButton';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-// hooks
 import { useTheme } from 'styled-components';
 import useAuthUser from 'api/me/useAuthUser';
 
-// services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 
-// utils
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,

@@ -1,11 +1,9 @@
 import React from 'react';
 
-// hooks
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
-// components
 import {
   IconButton,
   colors,
@@ -18,7 +16,6 @@ import NotificationMenu from '../../NotificationMenu';
 import LanguageSelector from '../../LanguageSelector';
 import UserMenu from '../../UserMenu';
 
-// utils
 import clHistory from 'utils/cl-router/history';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { isNilOrError, isPage } from 'utils/helperUtils';
@@ -27,7 +24,6 @@ import { isNilOrError, isPage } from 'utils/helperUtils';
 import styled, { useTheme } from 'styled-components';
 import { darken } from 'polished';
 
-// intl
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
 

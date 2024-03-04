@@ -6,7 +6,6 @@ import { cloneDeep, get } from 'lodash-es';
 // react hook form
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
-// components
 import {
   Box,
   Label,
@@ -23,7 +22,6 @@ import Error, { TFieldName } from 'components/UI/Error';
 import { Locale, CLError, RHFErrors, Multiloc } from 'typings';
 import { IOptionsType } from 'api/custom_fields/types';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { generateTempId } from 'components/FormBuilder/utils';
 

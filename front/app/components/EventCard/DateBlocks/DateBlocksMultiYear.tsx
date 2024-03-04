@@ -1,14 +1,11 @@
 import React, { memo } from 'react';
 
-// components
 import { EventDateBlockWrapper, EventDateBlockLabel } from './styling';
 import DateBlockSingleYear from './DateBlockSingleYear';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// styling
 import styled from 'styled-components';
 
 const FirstDateBlockWrapper = styled.div`

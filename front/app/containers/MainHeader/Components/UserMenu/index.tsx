@@ -1,7 +1,6 @@
 import React, { useState, lazy, Suspense } from 'react';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// components
 import User from './User';
 const UserMenuDropdown = lazy(() => import('./UserMenuDropdown'));
 

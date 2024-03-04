@@ -1,13 +1,11 @@
 import React from 'react';
 import { ILocationInfo } from 'typings';
 
-// components
 import InitiativeForm, { FormValues } from 'components/InitiativeForm';
 
 // style
 import clHistory from 'utils/cl-router/history';
 
-// intl
 import { parsePosition } from 'utils/locationTools';
 
 // api

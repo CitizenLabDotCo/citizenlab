@@ -9,12 +9,10 @@ import AllCauses from './AllCauses';
 import { SectionDescription } from 'components/admin/Section';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
 
-// hooks
 import usePhase from 'api/phases/usePhase';
 
 const PhaseContainer = styled.div`

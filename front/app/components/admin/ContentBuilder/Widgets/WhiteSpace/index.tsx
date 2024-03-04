@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Radio,
@@ -10,10 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Divider from 'components/admin/Divider';
 
-// craft
 import { useNode } from '@craftjs/core';
 
-// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

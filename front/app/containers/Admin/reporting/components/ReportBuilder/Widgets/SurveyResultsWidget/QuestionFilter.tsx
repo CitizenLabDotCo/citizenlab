@@ -1,10 +1,8 @@
 import React, { ChangeEvent } from 'react';
 
-// hooks
 import useFormResults from 'api/survey_results/useSurveyResults';
 import useLocalize from 'hooks/useLocalize';
 
-// utils
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { Box, Checkbox, Text } from '@citizenlab/cl2-component-library';

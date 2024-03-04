@@ -8,7 +8,6 @@ import useCause from 'api/causes/useCause';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import CauseForm, { SubmitValues } from './CauseForm';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

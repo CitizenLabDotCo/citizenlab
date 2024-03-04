@@ -1,20 +1,15 @@
 import React, { lazy } from 'react';
 
-// components
 import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 const LocationMap = lazy(() => import('./LocationMap'));
 
-// styling
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
 
-// types
 import { IEventData } from 'api/events/types';
 
-// hooks
 import useLocale from 'hooks/useLocale';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
 export interface Props {

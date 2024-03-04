@@ -6,7 +6,6 @@ import { signInFlow } from './signInFlow';
 import { signUpFlow } from './signUpFlow';
 import { claveUnicaFlow } from './claveUnicaFlow';
 
-// typings
 import {
   GetRequirements,
   UpdateState,

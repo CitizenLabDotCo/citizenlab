@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-// components
 import {
   Box,
   Icon,
@@ -10,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
-// utils
 import styled from 'styled-components';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -20,7 +18,6 @@ import {
   VOTES_EXCEEDED_ERROR_EVENT,
 } from './events';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 

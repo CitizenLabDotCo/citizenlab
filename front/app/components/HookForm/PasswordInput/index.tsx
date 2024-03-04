@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import Error, { TFieldName } from 'components/UI/Error';
 import { Label } from '@citizenlab/cl2-component-library';
 import PasswordInputComponent, {
@@ -8,7 +7,6 @@ import PasswordInputComponent, {
 } from 'components/UI/PasswordInput';
 import { Controller, useFormContext } from 'react-hook-form';
 
-// typings
 import { CLError, RHFErrors } from 'typings';
 
 interface Props

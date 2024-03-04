@@ -1,11 +1,9 @@
 import React from 'react';
 
-// components
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import { Title } from 'components/smallForm';
 import Button from 'components/UI/Button';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

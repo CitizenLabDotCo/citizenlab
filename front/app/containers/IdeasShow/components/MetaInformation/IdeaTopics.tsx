@@ -7,7 +7,6 @@ import Topics from 'components/PostShowComponents/Topics';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 

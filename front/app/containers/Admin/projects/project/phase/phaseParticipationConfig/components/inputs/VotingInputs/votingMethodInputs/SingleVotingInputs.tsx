@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 
-// intl
 import messages from '../messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// components
 import { Input, Box, Radio } from '@citizenlab/cl2-component-library';
 import {
   SectionField,

@@ -1,18 +1,14 @@
 import React, { useMemo } from 'react';
 
-// components
 import FilterSelector from 'components/FilterSelector';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import useLocalize from 'hooks/useLocalize';
 
-// hooks
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import useTopics from 'api/topics/useTopics';
 
-// utils
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 
 interface Props {

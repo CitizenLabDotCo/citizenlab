@@ -1,13 +1,10 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
-// utils
 import { optionIsIdea } from './utils';
 
-// typings
 import { Option } from './typings';
 import useLocalize from 'hooks/useLocalize';
 

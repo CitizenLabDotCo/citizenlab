@@ -13,7 +13,6 @@ import messages from './messages';
 
 import T from 'components/T';
 
-// hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';

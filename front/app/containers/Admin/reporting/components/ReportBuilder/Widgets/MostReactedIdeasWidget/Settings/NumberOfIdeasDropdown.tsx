@@ -1,13 +1,10 @@
 import React, { useCallback } from 'react';
 
-// components
 import { Label, Select } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 
-// typings
 import { IOption } from 'typings';
 
 interface Props {

@@ -1,10 +1,8 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 
-// components
 import IdeaButton from 'components/IdeaButton';
 
-// hooks
 import usePhases from 'api/phases/usePhases';
 
 type Props = {

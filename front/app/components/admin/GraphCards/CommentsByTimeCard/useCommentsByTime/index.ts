@@ -1,19 +1,17 @@
-// i18n
+import { useMemo, useState } from 'react';
+
+import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
+
 import { useIntl } from 'utils/cl-intl';
+
+import { useCommentsByTimeLive } from 'api/graph_data_units';
+
+import { parseTimeSeries, parseExcelData } from './parse';
 import { getTranslations } from './translations';
 
 // parse
-import { parseTimeSeries, parseExcelData } from './parse';
 
-// utils
-import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
-
-// typings
 import { QueryParameters } from './typings';
-import { useMemo, useState } from 'react';
-
-// hooks
-import { useCommentsByTimeLive } from 'api/graph_data_units';
 
 export default function useCommentsByTime({
   projectId,

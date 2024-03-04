@@ -1,20 +1,18 @@
 import React, { memo } from 'react';
 
-// components
-import ProjectFolderShareButton from '../../components/ProjectFolders/ProjectFolderShareButton';
-import {
-  HeaderImage,
-  HeaderImageContainer,
-} from 'components/ProjectableHeader';
-
-// hooks
 import { useWindowSize, Box, media } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
 
-// typings
+import {
+  HeaderImage,
+  HeaderImageContainer,
+} from 'components/ProjectableHeader';
+
 import { IProjectFolderData } from 'api/project_folders/types';
+
+import ProjectFolderShareButton from '../../components/ProjectFolders/ProjectFolderShareButton';
 
 const StyledProjectFolderShareButton = styled(ProjectFolderShareButton)`
   ${media.tablet`

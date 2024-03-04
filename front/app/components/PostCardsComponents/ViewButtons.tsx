@@ -9,7 +9,6 @@ import React, {
 import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import {
   Icon,
   defaultStyles,
@@ -17,11 +16,9 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// styling
 import styled from 'styled-components';
 import { darken } from 'polished';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

@@ -1,11 +1,9 @@
 import React from 'react';
 
-// hooks
 import usePhases from 'api/phases/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// components
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import MetaInformation from '../MetaInformation';
 import ReactionControl from 'components/ReactionControl';
@@ -14,10 +12,8 @@ import SharingButtonComponent from '../Buttons/SharingButtonComponent';
 import FollowUnfollow from 'components/FollowUnfollow';
 import GoToCommentsButton from '../Buttons/GoToCommentsButton';
 
-// styling
 import { rightColumnWidthDesktop } from '../../styleConstants';
 
-// utils
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import {
   getCurrentPhase,

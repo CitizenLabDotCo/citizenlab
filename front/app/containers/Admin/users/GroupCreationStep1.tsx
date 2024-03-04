@@ -5,7 +5,6 @@ import React, { memo } from 'react';
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
-// i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';

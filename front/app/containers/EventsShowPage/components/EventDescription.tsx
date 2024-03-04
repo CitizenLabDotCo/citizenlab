@@ -4,12 +4,10 @@ import { isNilOrError } from 'utils/helperUtils';
 // api
 import useEventFiles from 'api/event_files/useEventFiles';
 
-// components
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
 import { Box } from '@citizenlab/cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
 
-// typings
 import { IEventData } from 'api/events/types';
 
 interface Props {

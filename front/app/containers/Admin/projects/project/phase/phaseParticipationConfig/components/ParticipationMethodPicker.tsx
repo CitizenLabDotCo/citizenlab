@@ -1,9 +1,7 @@
 import React from 'react';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// components
 import {
   IconTooltip,
   Radio,
@@ -18,17 +16,14 @@ import Warning from 'components/UI/Warning';
 import Tippy from '@tippyjs/react';
 import NewBadge from 'components/UI/NewBadge';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
 import messages2 from './messages';
 
-// utils
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 import { isExpired } from 'components/UI/NewBadge/utils';
 
-// typings
 import { ApiErrors } from '..';
 import { IPhase, ParticipationMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';

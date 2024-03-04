@@ -1,7 +1,6 @@
 import React from 'react';
 import moment from 'moment';
 
-// components
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import {
   Box,
@@ -32,7 +31,6 @@ import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 
-// i18n
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import reportBuilderMessages from '../../../messages';
 import { WIDGET_TITLES } from '../Widgets';
@@ -43,13 +41,11 @@ import {
   MessageDescriptor,
 } from 'utils/cl-intl';
 
-// hooks
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjects from 'api/projects/useProjects';
 
-// utils
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 import { isModerator } from 'utils/permissions/roles';
 

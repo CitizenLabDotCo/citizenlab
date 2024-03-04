@@ -1,12 +1,9 @@
 import React from 'react';
 
-// hooks
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-// intl
 import useLocalize from 'hooks/useLocalize';
 
-// components
 import BarChartByCategory from 'components/admin/Graphs/BarChartByCategory';
 import PieChartByCategory from 'components/admin/Graphs/PieChartByCategory';
 import AreaChart from './AreaChart';
@@ -14,7 +11,6 @@ import GenderChart from './GenderChart';
 import AgeChart from './AgeChart';
 import { Box } from '@citizenlab/cl2-component-library';
 
-// typings
 import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
 import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 

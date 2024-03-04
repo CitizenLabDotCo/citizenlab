@@ -1,9 +1,7 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 
-// craft
 import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
 import RenderNode from './RenderNode';
 

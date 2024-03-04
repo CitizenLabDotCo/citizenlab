@@ -2,12 +2,10 @@ import React from 'react';
 
 // Router
 
-// i18n
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import messages from '../../messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// components
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -25,7 +23,6 @@ import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultil
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 
-// types
 import { Locale } from 'typings';
 
 type ProjectDescriptionBuilderToolboxProps = {

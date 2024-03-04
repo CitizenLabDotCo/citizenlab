@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 
-// components
 import SharingButtons from 'components/Sharing/SharingButtons';
 import {
   Spinner,
@@ -11,7 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
 
-// i18n
 import { MessageDescriptor } from 'react-intl';
 
 import messages from './messages';
@@ -24,7 +22,6 @@ import tracks from './tracks';
 // style
 import rocket from 'assets/img/rocket.png';
 
-// hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useProjectById from 'api/projects/useProjectById';

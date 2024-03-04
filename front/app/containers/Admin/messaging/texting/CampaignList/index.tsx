@@ -1,9 +1,7 @@
 import React from 'react';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import Button from 'components/UI/Button';
 import {
   Icon,
@@ -17,11 +15,9 @@ import TextCampaignListRow from './TextCampaignListRow';
 // resources
 import useTextingCampaigns from 'api/texting_campaigns/useTextingCampaigns';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
-// styling
 import styled from 'styled-components';
 
 const NoCampaignsWrapper = styled.div`

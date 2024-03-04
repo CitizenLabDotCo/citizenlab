@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 
-// components
 import { Text, Box, Button, colors } from '@citizenlab/cl2-component-library';
 import CreateReportModal from './CreateReportModal';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 

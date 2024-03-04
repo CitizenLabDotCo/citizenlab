@@ -2,13 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { colors, IconTooltip } from '@citizenlab/cl2-component-library';
 
-// services
 import { getFlagType } from '../../utils';
 
-// hooks
 import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
 
-// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';

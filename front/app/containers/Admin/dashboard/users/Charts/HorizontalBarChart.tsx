@@ -2,18 +2,15 @@
 import React from 'react';
 import { isEmpty } from 'lodash-es';
 
-// intl
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../../messages';
 
-// styling
 import {
   sizes,
   DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
 
-// components
 import {
   IGraphUnit,
   GraphCardHeader,
@@ -26,10 +23,8 @@ import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // resources
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// types
 import { IGraphFormat } from 'typings';
 
 interface Props {

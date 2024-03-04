@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Button,
@@ -10,14 +9,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import PageContainer from 'components/UI/PageContainer';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // util
 import clHistory from 'utils/cl-router/history';
 
-// types
 import { IProjectData } from 'api/projects/types';
 
 type Props = {

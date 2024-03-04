@@ -1,6 +1,5 @@
 import moment, { Moment } from 'moment';
 
-// utils
 import {
   timeSeriesParser,
   calculateCumulativeSerie,
@@ -8,7 +7,6 @@ import {
 import { get } from 'utils/helperUtils';
 import { sumBy } from 'lodash-es';
 
-// typings
 import {
   Response,
   TimeSeriesResponseRow,

@@ -1,13 +1,10 @@
 import React from 'react';
 
-// components
 import { Box, Text, Input } from '@citizenlab/cl2-component-library';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// utils
 import { parsePopulationValue } from '../../../utils/options';
 
 interface Props {

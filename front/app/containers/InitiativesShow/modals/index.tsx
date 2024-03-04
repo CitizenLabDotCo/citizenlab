@@ -1,14 +1,11 @@
 import React from 'react';
 
-// components
 import Modal from 'components/UI/Modal';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
-// types
 import InitiativeCreatedModalContent from './InitiativeCreatedModalContent';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

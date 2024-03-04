@@ -1,6 +1,5 @@
 import React, { useCallback, MouseEvent, useState, useEffect } from 'react';
 
-// components
 import {
   Icon,
   media,
@@ -14,15 +13,12 @@ import clHistory from 'utils/cl-router/history';
 import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// styling
 import styled from 'styled-components';
 import { lighten } from 'polished';
 
-// utils
 import { isString } from 'lodash-es';
 
 const Container = styled.div`

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 
-// components
 import { Box, Text, Button, Error } from '@citizenlab/cl2-component-library';
 
-// intl
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 

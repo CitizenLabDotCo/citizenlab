@@ -10,7 +10,6 @@ import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 // Typings
 import { IOption } from 'typings';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 

@@ -9,10 +9,9 @@ import {
   colors,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-// typings
+
 import { ITab } from 'typings';
 
-// components
 import FeatureFlag from 'components/FeatureFlag';
 import Tab from './Tab';
 

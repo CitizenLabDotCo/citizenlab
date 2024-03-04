@@ -8,7 +8,6 @@ import ExportSurveyButton from './ExportSurveyButton';
 import T from 'components/T';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
-// i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';

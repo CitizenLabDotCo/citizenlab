@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   defaultCardHoverStyle,
@@ -17,7 +16,6 @@ import useLocalize from 'hooks/useLocalize';
 import styled, { useTheme } from 'styled-components';
 import moment from 'moment';
 
-// utils
 import clHistory from 'utils/cl-router/history';
 
 // typing

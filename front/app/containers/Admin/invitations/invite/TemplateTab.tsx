@@ -1,7 +1,7 @@
 import React, { useRef, ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { SectionField, SectionTitle } from 'components/admin/Section';
-// i18n
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import {

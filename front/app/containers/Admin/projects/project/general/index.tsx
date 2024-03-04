@@ -4,7 +4,6 @@ import { isEmpty, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
 
-// components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
 import SlugInput from 'components/admin/SlugInput';
@@ -36,7 +35,6 @@ import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
 import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-// hooks
 import useProjectById from 'api/projects/useProjectById';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectFiles from 'api/project_files/useProjectFiles';
@@ -64,11 +62,9 @@ import projectPermissionKeys from 'api/project_permissions/keys';
 import useAddProjectImage from 'api/project_images/useAddProjectImage';
 import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// utils
 import { validateSlug } from 'utils/textUtils';
 import validateTitle from './utils/validateTitle';
 import { isNilOrError } from 'utils/helperUtils';

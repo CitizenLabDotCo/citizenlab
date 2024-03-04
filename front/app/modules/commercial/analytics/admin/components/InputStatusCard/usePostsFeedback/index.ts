@@ -1,7 +1,5 @@
-// services
 import { Query, QuerySchema } from 'api/analytics/types';
 
-// i18n
 import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
@@ -19,14 +17,12 @@ import {
   parseExcelData,
 } from './parse';
 
-// utils
 import { isEmptyResponse } from './utils';
 import {
   getProjectFilter,
   getDateFilter,
 } from 'components/admin/GraphCards/_utils/query';
 
-// typings
 import { QueryParameters, Response } from './typings';
 import useAnalytics from 'api/analytics/useAnalytics';
 

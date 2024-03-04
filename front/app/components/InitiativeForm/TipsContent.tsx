@@ -4,7 +4,6 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { fontSizes } from '@citizenlab/cl2-component-library';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
 

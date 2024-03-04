@@ -3,21 +3,17 @@ import React from 'react';
 // api
 import { useSurveyQuestionResult } from 'api/graph_data_units';
 
-// components
 import { Title, Text, Box } from '@citizenlab/cl2-component-library';
 import GroupedBars from './GroupedBars';
 import UngroupedBars from './UngroupedBars';
 import Source from './Source';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 import messages from '../messages';
 
-// utils
 import { getColorScheme, getLegendLabels } from './utils';
 
-// typings
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 import Legend from 'components/admin/Graphs/Legend';
 

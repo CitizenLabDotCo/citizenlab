@@ -1,12 +1,10 @@
 // libraries
 import React, { memo } from 'react';
 
-// intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
-// styling
 import styled from 'styled-components';
 import {
   legacyColors,
@@ -17,7 +15,6 @@ import {
 // resources
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import {
   BarChart,
   Bar,
@@ -37,7 +34,6 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 
-// types
 import { IGraphPoint } from 'typings';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 

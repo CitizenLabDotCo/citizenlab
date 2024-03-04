@@ -1,13 +1,10 @@
 import React from 'react';
 import { isNumber } from 'lodash-es';
 
-// services
 import { IAvatarData } from 'api/avatars/types';
 
-// i18n
 import messages from './messages';
 
-// styling
 import styled from 'styled-components';
 import { colors } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';

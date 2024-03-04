@@ -9,18 +9,15 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// hooks
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
 import useDeleteIdeaStatus from 'api/idea_statuses/useDeleteIdeaStatus';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 
-// components
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
   Section,

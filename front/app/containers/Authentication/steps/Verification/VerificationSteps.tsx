@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 
-// components
 import VerificationMethods from './VerificationMethods';
 import Outlet from 'components/Outlet';
 
@@ -11,7 +10,6 @@ import useVerificationMethods from 'api/verification_methods/useVerificationMeth
 // style
 import styled from 'styled-components';
 
-// typings
 import {
   TVerificationMethod,
   verificationTypesLeavingPlatform,
@@ -19,7 +17,6 @@ import {
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { AuthenticationData } from 'containers/Authentication/typings';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 

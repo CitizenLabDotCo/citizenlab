@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { InsertConfigurationOptions } from 'typings';
 
-// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';

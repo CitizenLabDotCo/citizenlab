@@ -17,7 +17,6 @@ import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSetti
 import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
 import SelectSettings from './components/FormBuilderSettings/SelectSettings';
 
-// utils
 import { uuid4 } from '@sentry/utils';
 import { isNilOrError } from 'utils/helperUtils';
 

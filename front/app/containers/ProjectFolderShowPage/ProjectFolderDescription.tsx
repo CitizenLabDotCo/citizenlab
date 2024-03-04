@@ -1,7 +1,6 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import ReactResizeDetector from 'react-resize-detector';
@@ -17,7 +16,6 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import T from 'components/T';
 import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
@@ -27,7 +25,6 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import styled, { useTheme } from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 
-// typings
 import { IProjectFolderData } from 'api/project_folders/types';
 
 const desktopCollapsedDescriptionMaxHeight = 99999;

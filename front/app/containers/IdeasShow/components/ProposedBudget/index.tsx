@@ -5,18 +5,14 @@ import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSche
 import useLocale from 'hooks/useLocale';
 import useIdeaById from 'api/ideas/useIdeaById';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import IdeaProposedBudget from './IdeaProposedBudget';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
-// styling
 import styled from 'styled-components';
 
-// utils
 import { isFieldEnabled } from 'utils/projectUtils';
 
 const BodySectionTitle = styled.h2`

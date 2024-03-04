@@ -1,13 +1,10 @@
 import React from 'react';
 
-// styling
 import styled from 'styled-components';
 import { fontSizes, colors, isRtl } from '@citizenlab/cl2-component-library';
 
-// components
 import Button from 'components/UI/Button';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-// components
 import {
   Section,
   SectionTitle,
@@ -18,15 +17,11 @@ import {
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Warning from 'components/UI/Warning';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// utils
-
 import { get } from 'lodash-es';
 
-// typings
 import { UploadFile } from 'typings';
 
 const ContrastWarning = styled(Warning)`

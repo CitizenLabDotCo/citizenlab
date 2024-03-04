@@ -2,10 +2,8 @@ import React, { MouseEvent, ChangeEvent, ReactNode } from 'react';
 import { uniq } from 'lodash-es';
 import { useDrag } from 'react-dnd';
 
-// services
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 
-// components
 import { TitleLink } from '.';
 import StyledRow from './StyledRow';
 import { Icon } from 'semantic-ui-react';
@@ -19,7 +17,6 @@ import AssigneeSelect from '../AssigneeSelect';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
 
-// typings
 import { TFilterMenu, ManagerType } from '../../..';
 
 // events
@@ -28,11 +25,9 @@ import events, {
   StatusChangeModalOpen,
 } from 'components/admin/PostManager/events';
 
-// hooks
 import useInitiatives from 'api/initiatives/useInitiatives';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 
-// types
 import { IInitiativeData } from 'api/initiatives/types';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';

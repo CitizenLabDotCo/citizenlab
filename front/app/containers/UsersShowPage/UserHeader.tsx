@@ -5,7 +5,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import { isAdmin } from 'utils/permissions/roles';
 
-// components
 import Avatar from 'components/Avatar';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Button from 'components/UI/Button';
@@ -20,7 +19,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from './messages';
@@ -29,12 +27,10 @@ import blockUserMessages from 'components/admin/UserBlockModals/messages';
 // style
 import styled from 'styled-components';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'api/me/useAuthUser';
 import useUserBySlug from 'api/users/useUserBySlug';
 
-// utils
 import { getFullName } from 'utils/textUtils';
 
 const BlockUser = React.lazy(

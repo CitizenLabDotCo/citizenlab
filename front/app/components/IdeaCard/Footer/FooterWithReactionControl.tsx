@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import StatusBadge from 'components/StatusBadge';
 import ReactionControl from 'components/ReactionControl';
 import CommentCount from './CommentCount';

@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import { Button, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
@@ -14,17 +13,14 @@ import eventEmitter from 'utils/eventEmitter';
 import { VOTES_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // routing
 import { useSearchParams } from 'react-router-dom';
 
-// utils
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
-// types
 import { IPhaseData } from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 

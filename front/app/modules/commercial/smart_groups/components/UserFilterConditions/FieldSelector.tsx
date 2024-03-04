@@ -20,7 +20,6 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 

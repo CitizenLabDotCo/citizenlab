@@ -1,9 +1,7 @@
 import React from 'react';
 
-// craft
 import { useNode } from '@craftjs/core';
 
-// components
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import {
   Box,
@@ -14,11 +12,9 @@ import {
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
-// hooks
 import { useTheme } from 'styled-components';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
-// i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 import { Multiloc } from 'typings';

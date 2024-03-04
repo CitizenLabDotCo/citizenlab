@@ -15,7 +15,6 @@ import OptionFormRow from './OptionFormRow';
 import OptionRow from './OptionRow';
 import QuestionDetailsFormRow from '../PollQuestions/QuestionDetailsFormRow';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 

@@ -10,7 +10,6 @@ import {
   useWatch,
 } from 'react-hook-form';
 
-// components
 import {
   Box,
   Label,
@@ -23,14 +22,12 @@ import { SectionField } from 'components/admin/Section';
 import { List, Row, SortableRow } from 'components/admin/ResourceList';
 import Error, { TFieldName } from 'components/UI/Error';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
 import { Locale, CLError, RHFErrors } from 'typings';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
 import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
@@ -38,7 +35,6 @@ import SelectFieldOption, { OptionImageType } from './SelectFieldOption';
 import { generateTempId } from 'components/FormBuilder/utils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
-// hooks
 import { useCustomFieldOptionImages } from 'api/content_field_option_images/useCustomFieldOptionImage';
 import usePrevious from 'hooks/usePrevious';
 

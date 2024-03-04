@@ -1,16 +1,11 @@
 import React, { useMemo } from 'react';
 
-// components
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { StyledSelect } from './styling';
 
-// i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../../messages';
 
-// constants
-
-// typings
 import { FormatMessage, IOption } from 'typings';
 import { MessageDescriptor } from 'react-intl';
 import { InputTerm } from 'api/phases/types';

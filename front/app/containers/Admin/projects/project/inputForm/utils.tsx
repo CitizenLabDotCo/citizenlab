@@ -1,12 +1,9 @@
-// types
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import Warning from 'components/UI/Warning';
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 
-// intl
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 

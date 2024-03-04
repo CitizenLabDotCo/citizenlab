@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import ContentContainer from 'components/ContentContainer';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
@@ -18,7 +17,6 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import usePageFiles from 'api/page_files/usePageFiles';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
@@ -26,10 +24,8 @@ import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// styling
 import styled from 'styled-components';
 
 const PageTitle = styled.h1`

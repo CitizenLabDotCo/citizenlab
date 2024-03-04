@@ -1,15 +1,11 @@
 import React from 'react';
 
-// components
 import Icon from './Icon';
 
-// styling
 import { colors } from '../../styling';
 
-// utils
 import { itemsMatch, getLegendTranslate } from './utils';
 
-// typings
 import {
   LegendItem,
   GraphDimensions,

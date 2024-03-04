@@ -1,8 +1,6 @@
-// i18n
 import messages from './messages';
 import cardMessages from '../messages';
 
-// typings
 import { FormatMessage } from 'typings';
 
 export interface Translations {

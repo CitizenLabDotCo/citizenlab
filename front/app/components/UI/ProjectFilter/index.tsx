@@ -1,13 +1,10 @@
 import React, { useMemo } from 'react';
 
-// hooks
 import useProjects from 'api/projects/useProjects';
 import useAuthUser from 'api/me/useAuthUser';
 
-// styling
 import styled from 'styled-components';
 
-// components
 import {
   Select,
   Box,
@@ -16,12 +13,10 @@ import {
   BoxProps,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import useLocalize, { Localize } from 'hooks/useLocalize';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// typings
 import { IOption } from 'typings';
 import { IProjectData, PublicationStatus } from 'api/projects/types';
 

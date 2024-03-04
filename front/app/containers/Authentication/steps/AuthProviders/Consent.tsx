@@ -1,12 +1,10 @@
 import React, { memo } from 'react';
 
-// components
 import Link from 'utils/cl-router/Link';
 import Checkbox from 'components/UI/Checkbox';
 import Error from 'components/UI/Error';
 import { Box, fontSizes } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

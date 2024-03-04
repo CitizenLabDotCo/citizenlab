@@ -1,7 +1,5 @@
-// styling
 import { legacyColors } from '../styling';
 
-// typings
 import { Mapping } from './typings';
 import { Bars, BarConfig } from '../MultiBarChart/typings';
 

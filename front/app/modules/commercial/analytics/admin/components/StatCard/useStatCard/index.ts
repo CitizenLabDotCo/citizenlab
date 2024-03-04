@@ -1,13 +1,11 @@
-// services
+import { useState } from 'react';
 
-// utils
-import { formatLabels, parseExcelData } from './parse';
 import { useIntl } from 'utils/cl-intl';
 
-// typings
-import { SingleCountResponse, StatCardQueryParameters } from './typings';
 import useAnalytics from 'api/analytics/useAnalytics';
-import { useState } from 'react';
+
+import { formatLabels, parseExcelData } from './parse';
+import { SingleCountResponse, StatCardQueryParameters } from './typings';
 
 export default function useStatCard({
   messages,

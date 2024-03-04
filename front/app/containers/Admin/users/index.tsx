@@ -3,7 +3,6 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // Resources
 
-// components
 import HelmetIntl from 'components/HelmetIntl';
 import Modal from 'components/UI/Modal';
 import GroupsListPanel from './GroupsListPanel';
@@ -45,7 +44,6 @@ const ChildWrapper = styled.div`
   overflow-y: auto;
 `;
 
-// i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 

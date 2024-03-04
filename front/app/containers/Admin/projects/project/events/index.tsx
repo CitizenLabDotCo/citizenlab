@@ -8,11 +8,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
-// hooks
 import useEvents from 'api/events/useEvents';
 import useDeleteEvent from 'api/events/useDeleteEvent';
 
-// components
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';

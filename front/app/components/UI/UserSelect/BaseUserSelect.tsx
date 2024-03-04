@@ -1,17 +1,13 @@
 import React, { useMemo, FC, useEffect } from 'react';
 import ReactSelect from 'react-select';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 
-// styling
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
-// utils
 import { debounce } from 'lodash-es';
 import { getOptionId } from './utils';
 
-// typings
 import { IUserData } from 'api/users/types';
 import { Option } from './typings';
 

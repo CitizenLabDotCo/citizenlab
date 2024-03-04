@@ -1,21 +1,16 @@
 import React from 'react';
 
-// i18n
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
-// components
 import Title from 'components/PostShowComponents/Title';
 import { Box, isRtl, media } from '@citizenlab/cl2-component-library';
 import IdeaMoreActions from './IdeaMoreActions';
 
-// styling
 import styled from 'styled-components';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { IIdea } from 'api/ideas/types';
 
 const IdeaHeader = styled.div`

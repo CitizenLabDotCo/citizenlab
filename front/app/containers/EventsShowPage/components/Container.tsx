@@ -1,6 +1,5 @@
 import React from 'react';
 
-// styling
 import { pageContentMaxWidth } from '../styleConstants';
 import styled from 'styled-components';
 

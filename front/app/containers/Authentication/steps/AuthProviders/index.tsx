@@ -1,6 +1,5 @@
 import React, { memo, useCallback } from 'react';
 
-// components
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import Or from 'components/UI/Or';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
@@ -12,18 +11,14 @@ import TextButton from '../_components/TextButton';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// styling
 import styled from 'styled-components';
 
-// typings
 import { SSOProvider } from 'api/authentication/singleSignOn';
 import { ErrorCode } from 'containers/Authentication/typings';
 
-// utils
 import ClaveUnicaExpandedAuthProviderButton from './ClaveUnicaExpandedAuthProviderButton';
 
 const Container = styled.div`

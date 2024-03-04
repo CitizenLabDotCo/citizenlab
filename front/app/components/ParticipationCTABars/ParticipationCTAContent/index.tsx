@@ -3,10 +3,8 @@ import React from 'react';
 // Components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-// services
 import { IPhaseData } from 'api/phases/types';
 
-// styling
 import { useTheme } from 'styled-components';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import TimeIndicator from './TimeIndicator';

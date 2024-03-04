@@ -14,14 +14,11 @@ import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductio
 import MapView from '@arcgis/core/views/MapView';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 
-// utils
 import { hexToRGBA } from 'utils/helperUtils';
 
-// types
 import { Localize } from 'hooks/useLocalize';
 import { IMapLayerAttributes } from 'api/map_layers/types';
 
-// constants
 import {
   BASEMAP_AT_ATTRIBUTION,
   DEFAULT_TILE_PROVIDER,

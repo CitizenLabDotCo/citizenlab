@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// components
 import {
   Box,
   Title,
@@ -11,15 +10,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 
-// hooks
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// utils
 import clHistory from 'utils/cl-router/history';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 

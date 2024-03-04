@@ -1,18 +1,14 @@
 // libraries
 import React, { useRef } from 'react';
 
-// intl
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from 'containers/Admin/dashboard/messages';
 
-// utils
 import renderTooltip from 'containers/Admin/dashboard/users/Charts/renderPieChartByCategoryTooltip';
 import { roundPercentages } from 'utils/math';
 
-// styling
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
-// components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   IGraphUnit,
@@ -27,7 +23,6 @@ import PieChart from 'components/admin/Graphs/PieChart';
 
 // resources
 
-// typings
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { IGraphFormat } from 'typings';
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';

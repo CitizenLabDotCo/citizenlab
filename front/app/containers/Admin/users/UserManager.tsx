@@ -21,7 +21,6 @@ import { MembershipType } from 'api/groups/types';
 import useUsers from 'api/users/useUsers';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-// utils
 import { isNil } from 'utils/helperUtils';
 
 // Typings

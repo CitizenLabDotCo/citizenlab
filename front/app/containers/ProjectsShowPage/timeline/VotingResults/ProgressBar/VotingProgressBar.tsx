@@ -1,6 +1,5 @@
 import React from 'react';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 import assignMultipleVotesInputMessages from 'components/VoteInputs/multiple/AssignMultipleVotesInput/messages';

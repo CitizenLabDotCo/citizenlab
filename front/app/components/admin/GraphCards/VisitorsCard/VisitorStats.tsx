@@ -1,18 +1,14 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import Statistic from 'components/admin/Graphs/Statistic';
 
-// i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 import { getTimePeriodTranslationByResolution } from '../_utils/resolution';
 
-// utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-// typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Stats } from './useVisitors/typings';
 

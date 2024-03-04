@@ -8,11 +8,9 @@ import useAuthUser from 'api/me/useAuthUser';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// utils
 import { isAdmin } from 'utils/permissions/roles';
 import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
-// components
 import CreateProject from './CreateProject';
 import PageWrapper from 'components/admin/PageWrapper';
 import { SectionDescription } from 'components/admin/Section';

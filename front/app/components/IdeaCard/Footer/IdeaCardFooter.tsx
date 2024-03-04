@@ -1,16 +1,13 @@
 import React from 'react';
 
-// components
 import CommentCount from './CommentCount';
 import { Box } from '@citizenlab/cl2-component-library';
 
-// types
 import { IIdeaData } from 'api/ideas/types';
 
 // styles
 import ReadMoreButton from './ReadMoreButton';
 
-// utils
 import clHistory from 'utils/cl-router/history';
 
 interface Props {

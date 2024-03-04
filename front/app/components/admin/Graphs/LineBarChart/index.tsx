@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 
-// styling
 import { legacyColors, sizes, colors } from 'components/admin/Graphs/styling';
 
-// components
 import {
   ComposedChart,
   CartesianGrid,
@@ -19,15 +17,12 @@ import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
 import { Legend as ILegend } from 'components/admin/Graphs/typings';
 
-// i18n
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import dashboardMessages from 'containers/Admin/dashboard/messages';
 
-// utils
 import { hasNoData, parseMargin } from '../utils';
 import { toFullMonth } from 'utils/dateUtils';
 
-// typings
 import { Props } from './typings';
 import {
   GraphDimensions,

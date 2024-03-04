@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
 
-// hooks
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import useLocalize from 'hooks/useLocalize';
 
-// components
 import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 import OptionInput from './OptionInput';
 import Button from 'components/UI/Button';
 
-// i18n
 import messages from './messages';
 import binMessages from '../BinModal/messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import {
   getPercentages,
@@ -24,7 +20,6 @@ import {
   formatBinOptions,
 } from '../../../utils/options';
 
-// typings
 import { FormValues } from '../../../utils/form';
 import { Bins } from '../../../api/reference_distribution/types';
 

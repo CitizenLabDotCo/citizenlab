@@ -7,17 +7,14 @@ import {
 } from '@jsonforms/core';
 import React, { useState } from 'react';
 
-// utils
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { getOptions, getSubtextElement } from './controlUtils';
 
-// components
 import VerificationIcon from '../VerificationIcon';
 import { Box, Checkbox, colors, Text } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from '../ErrorDisplay';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 

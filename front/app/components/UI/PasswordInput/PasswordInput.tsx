@@ -8,11 +8,9 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { Props as WrapperProps } from './';
 import { darken } from 'polished';
 
-// components
 const PasswordStrengthBar = lazy(() => import('react-password-strength-bar'));
 import Error from 'components/UI/Error';
 
-// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';

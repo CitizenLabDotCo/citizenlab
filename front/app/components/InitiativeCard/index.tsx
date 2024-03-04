@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import Card from 'components/UI/Card';
 import {
   Box,
@@ -12,7 +11,6 @@ import Author from 'components/Author';
 import ReactionIndicator from './ReactionIndicator';
 import FollowUnfollow from 'components/FollowUnfollow';
 
-// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -20,7 +18,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
 
-// hooks
 import useUserById from 'api/users/useUserById';
 import useInitiativeImage from 'api/initiative_images/useInitiativeImage';
 import useLocalize from 'hooks/useLocalize';

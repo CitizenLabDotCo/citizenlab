@@ -1,11 +1,9 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
 
-// components
 import InternalParentComment from './InternalParentComment';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
 
-// services
 import { IInternalCommentData } from 'api/internal_comments/types';
 
 // events
@@ -14,7 +12,6 @@ import { commentAdded$, commentDeleted$ } from './events';
 // style
 import styled from 'styled-components';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 

@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Button,
@@ -19,10 +18,8 @@ import useVoting from 'api/baskets_ideas/useVoting';
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-// styling
 import { useTheme } from 'styled-components';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
@@ -30,7 +27,6 @@ import messages from './messages';
 // routing
 import { useSearchParams } from 'react-router-dom';
 
-// utils
 import { isNil } from 'utils/helperUtils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import {
@@ -38,7 +34,6 @@ import {
   getPlusButtonDisabledMessage,
 } from './utils';
 
-// typings
 import { IPhaseData } from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 

@@ -1,19 +1,15 @@
 import React, { memo } from 'react';
 
-// components
 import BreadCrumbs from 'components/PostShowComponents/Breadcrumbs';
 import ActionBarLayout from 'components/PostShowComponents/ActionBar';
 import InitiativeMoreActions from './InitiativeMoreActions';
 
 import messages from '../messages';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// styling
 import styled from 'styled-components';
 
-// hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useLocale from 'hooks/useLocale';
 

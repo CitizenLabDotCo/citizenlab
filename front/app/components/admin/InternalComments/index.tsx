@@ -1,7 +1,6 @@
 // libraries
 import React, { useState } from 'react';
 
-// components
 import InternalParentCommentForm from './InternalParentCommentForm';
 import InternalComments from './InternalComments';
 import InternalCommentSorting from './InternalCommentSorting';
@@ -14,7 +13,6 @@ import {
   isRtl,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
@@ -25,7 +23,6 @@ import styled from 'styled-components';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useInternalComments from 'api/internal_comments/useInternalComments';

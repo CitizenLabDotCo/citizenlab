@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
-// components
 import {
   Box,
   Toggle,
@@ -15,10 +14,8 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import Error from 'components/UI/Error';
 import homepageMessages from 'containers/HomePage/messages';
 
-// craft
 import { useNode } from '@craftjs/core';
 
-// hooks
 import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
 
 import messages from './messages';

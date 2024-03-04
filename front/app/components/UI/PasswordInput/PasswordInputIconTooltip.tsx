@@ -1,7 +1,6 @@
 import React from 'react';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 

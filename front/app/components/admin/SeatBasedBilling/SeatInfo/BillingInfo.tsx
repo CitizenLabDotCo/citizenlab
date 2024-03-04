@@ -16,7 +16,6 @@ import {
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
 
-// types
 import { SeatInfoProps, SeatNumbersType, SeatTypeMessageDescriptor } from '.';
 
 // Intl

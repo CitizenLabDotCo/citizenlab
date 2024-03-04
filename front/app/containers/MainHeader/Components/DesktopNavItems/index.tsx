@@ -1,10 +1,8 @@
 import React from 'react';
 
-// hooks
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 
-// components
 import DesktopNavbarItem from './DesktopNavbarItem';
 import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
 
@@ -12,11 +10,9 @@ import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
 import styled from 'styled-components';
 import { media, isRtl } from '@citizenlab/cl2-component-library';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 
-// i18n
 import messages from '../../messages';
 import { useIntl } from 'utils/cl-intl';
 

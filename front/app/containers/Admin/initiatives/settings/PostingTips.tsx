@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   SectionField,
   SubSectionTitleWithDescription,
@@ -8,11 +7,9 @@ import {
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import { StyledSectionDescription } from '.';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// typings
 import { Multiloc, Locale } from 'typings';
 
 interface Props {

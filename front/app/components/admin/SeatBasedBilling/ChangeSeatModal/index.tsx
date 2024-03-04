@@ -10,7 +10,6 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import messages from './messages';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useExceedsSeats from 'hooks/useExceedsSeats';
 

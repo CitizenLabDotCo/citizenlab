@@ -1,10 +1,8 @@
 import React, { useMemo } from 'react';
 
-// styling
 import { MARGINS } from 'components/admin/GraphCards/_utils/style';
 import { legacyColors } from 'components/admin/Graphs/styling';
 
-// components
 import LineBarChart from 'components/admin/Graphs/LineBarChart';
 
 // i18
@@ -12,12 +10,10 @@ import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './useReactionsByTime/translations';
 import messages from 'containers/Admin/dashboard/messages';
 
-// utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
 
-// typings
 import { Dates, Resolution, Layout } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { TimeSeries } from './useReactionsByTime/typings';

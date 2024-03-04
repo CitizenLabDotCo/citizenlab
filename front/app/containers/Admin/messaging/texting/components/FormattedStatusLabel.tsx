@@ -3,13 +3,10 @@ import React from 'react';
 // messages
 import messages from '../../messages';
 
-// typings
 import { TTextingCampaignStatus } from 'api/texting_campaigns/types';
 
-// components
 import { StatusLabel, colors } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 
 interface FormattedStatusLabelProps {

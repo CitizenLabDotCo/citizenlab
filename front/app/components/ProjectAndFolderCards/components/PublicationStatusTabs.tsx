@@ -1,11 +1,7 @@
 import React from 'react';
 
-// components
 import ProjectsTabPanel from './ProjectsTabPanel';
 
-// hooks
-
-// types
 import { TLayout, PublicationTab } from '..';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 

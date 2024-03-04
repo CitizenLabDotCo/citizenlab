@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-// components
 import {
   Box,
   IOption,
@@ -13,14 +12,11 @@ import {
 import Error from 'components/UI/Error';
 import Button from 'components/UI/Button';
 
-// intl
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// types
 import { IFlatCustomField, LogicType } from 'api/custom_fields/types';
 
-// utils
 import { isPageRuleValid } from 'utils/yup/validateLogic';
 
 type RuleInputProps = {

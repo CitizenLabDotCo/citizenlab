@@ -4,15 +4,12 @@ import React, { useMemo, useState } from 'react';
 import useInfiniteUsers from 'api/users/useInfiniteUsers';
 import useUserById from 'api/users/useUserById';
 
-// components
 import BaseUserSelect from 'components/UI/UserSelect/BaseUserSelect';
 import OptionLabel from 'components/UI/UserSelect/OptionLabel';
 import CustomOption from './CustomOption';
 
-// utils
 import { optionIsUser } from 'components/UI/UserSelect/utils';
 
-// typings
 import { SelectedAuthor } from './typings';
 import { Option } from 'components/UI/UserSelect/typings';
 

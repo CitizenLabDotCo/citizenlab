@@ -4,13 +4,11 @@ import React, { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
-// components
 import ContentContainer from 'components/ContentContainer';
 import { IdeaCardsWithFiltersSidebar } from 'components/IdeaCards';
 import CityLogoSection from 'components/CityLogoSection';
 import IdeasIndexMeta from './IdeaIndexMeta';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -23,7 +21,6 @@ import {
   isRtl,
 } from '@citizenlab/cl2-component-library';
 
-// typings
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 const Container = styled.main`
@@ -80,7 +77,6 @@ const PageTitle = styled.h1`
 `;
 
 export interface QueryParameters {
-  // constants
   'page[number]': number;
   'page[size]': number;
   project_publication_status: 'published';

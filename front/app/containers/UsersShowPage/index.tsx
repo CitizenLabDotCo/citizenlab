@@ -5,16 +5,13 @@ import { PreviousPathnameContext } from 'context';
 // router
 import { useParams, Outlet as RouterOutlet } from 'react-router-dom';
 
-// components
 import ContentContainer from 'components/ContentContainer';
 import UsersShowPageMeta from './UsersShowPageMeta';
 import Button from 'components/UI/Button';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// hooks
 import useUserBySlug from 'api/users/useUserBySlug';
 
 // style
@@ -25,10 +22,8 @@ import UserNavbar from './UserNavbar';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import Unauthorized from 'components/Unauthorized';
 
-// utils
 import { isError } from 'utils/helperUtils';
 
-// typings
 import { IUserData } from 'api/users/types';
 
 const NotFoundContainer = styled.main`

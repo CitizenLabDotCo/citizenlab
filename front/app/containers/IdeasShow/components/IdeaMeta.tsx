@@ -6,10 +6,8 @@ import { Helmet } from 'react-helmet';
 
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 
-// i18n
 import useLocalize from 'hooks/useLocalize';
 
-// utils
 import { getFullName, stripHtml } from 'utils/textUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { imageSizes } from 'utils/fileUtils';

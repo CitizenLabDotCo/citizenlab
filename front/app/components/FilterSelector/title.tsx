@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { removeFocusAfterMouseClick, isPage } from 'utils/helperUtils';
 
-// components
 import { Icon, fontSizes, colors } from '@citizenlab/cl2-component-library';
 
 // style

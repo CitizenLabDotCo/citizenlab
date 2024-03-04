@@ -7,7 +7,6 @@ import Button from 'components/UI/Button';
 import { Row, TextCell } from 'components/admin/ResourceList';
 import { Box } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 

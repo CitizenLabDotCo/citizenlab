@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 
-// components
 import {
   Box,
   Icon,
@@ -11,17 +10,14 @@ import {
 import { Popup } from 'semantic-ui-react';
 import Notifications from 'containers/MainHeader/Components/NotificationMenu/components/Notifications';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
 import { StyledBox } from './styles';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useMarkAllAsRead from 'api/notifications/useMarkAllAsRead';
 

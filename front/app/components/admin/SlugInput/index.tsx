@@ -8,7 +8,6 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import slugInputMessages from 'components/HookForm/SlugInput/messages';
 import messages from './messages';
 
-// typings
 import { CLErrors } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 

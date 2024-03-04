@@ -7,7 +7,6 @@ import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
 import 'quill/dist/quill.snow.css';
 
-// components
 import {
   Label,
   IconTooltip,
@@ -19,7 +18,6 @@ import {
   isRtl,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -27,7 +25,6 @@ import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// styling
 import styled from 'styled-components';
 
 import {
@@ -36,7 +33,7 @@ import {
   KeepHTML,
   attributes,
 } from './altTextToImagesModule';
-// typings
+
 import { Locale } from 'typings';
 import Tippy from '@tippyjs/react';
 
