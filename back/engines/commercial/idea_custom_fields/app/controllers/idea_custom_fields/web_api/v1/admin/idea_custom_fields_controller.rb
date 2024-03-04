@@ -105,7 +105,7 @@ module IdeaCustomFields
 
     def create_field!(field_params, errors, page_temp_ids_to_ids_mapping, index)
       create_params = field_params.except('temp_id').to_h
-      if create_params.key? 'code'
+      if create_params.key?('code') && !create_params['code'].nil?
         default_field = @participation_method.default_fields(@custom_form).find do |field|
           field.code == create_params['code']
         end
@@ -166,7 +166,7 @@ module IdeaCustomFields
         deleted_options = options.reject { |option| given_ids.include? option.id }
         deleted_options.each { |option| delete_option! option }
         options_params.each_with_index do |option_params, option_index|
-          if option_params[:id]
+          if option_params[:id] && options_by_id[option_params[:id]]
             option = options_by_id[option_params[:id]]
             next unless update_option! option, option_params, errors, field_index, option_index
           else
@@ -199,14 +199,25 @@ module IdeaCustomFields
       if image_id == ''
         option.image.destroy!
       else
-        image = CustomFieldOptionImage.find image_id
-        option.update!(image: image)
+        begin
+          image = CustomFieldOptionImage.find image_id
+          if image.custom_field_option.present? && image.custom_field_option != option
+            # This request is coming from a form copy request, so create a copy of the image
+            image = image.dup
+            image.save!
+          end
+          option.update!(image: image)
+        rescue ActiveRecord::RecordNotFound
+          # NOTE: catching this exception to stop the transaction failing if the image not found by
+          # This will happen if an image select field is saved in a tab when it has been removed in another.
+        end
       end
     end
 
     def update_option!(option, option_params, errors, field_index, option_index)
       update_params = option_params.except('image_id')
       option.assign_attributes update_params
+
       SideFxCustomFieldOptionService.new.before_update option, current_user
       if option.save
         SideFxCustomFieldOptionService.new.after_update option, current_user
@@ -247,6 +258,7 @@ module IdeaCustomFields
         :id,
         :temp_id,
         :code,
+        :key,
         :input_type,
         :required,
         :enabled,
@@ -261,6 +273,7 @@ module IdeaCustomFields
           maximum_label_multiloc: CL2_SUPPORTED_LOCALES,
           options: [
             :id,
+            :key,
             :temp_id,
             :image_id,
             :other,
