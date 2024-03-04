@@ -185,7 +185,11 @@ jobs:
       # Solutions: upgrade Nokogiri (requires newer Ruby) or
       # Compile and link Nokogiri against new libxml2
       # https://github.com/sparklemotion/nokogiri/security/advisories/GHSA-xc9x-jj77-9p9j
-      - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284 GHSA-xc9x-jj77-9p9j
+      #
+      # CVE-2023-51774
+      # It has been fixed by upgrading to json-jwt to 1.16.6, but the CVE data has not
+      # been updated yet. So we can safely ignore it.
+      - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284 GHSA-xc9x-jj77-9p9j CVE-2023-51774
 
   back-license-check:
     resource_class: small
