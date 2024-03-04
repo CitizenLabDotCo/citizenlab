@@ -56,6 +56,9 @@ const AdminProjectsProjectIndex = ({
     phase_reports_enabled: useFeatureFlag({
       name: 'phase_reports',
     }),
+    report_builder_enabled: useFeatureFlag({
+      name: 'report_builder',
+    }),
   };
 
   const isNewPhaseLink = pathname.endsWith(
