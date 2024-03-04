@@ -59,7 +59,6 @@ export const getTabs = (
       label: formatMessage(messages.surveyTab),
       url: 'native-survey',
       name: 'survey',
-      active: (url: string) => url.endsWith('native-survey'),
     },
     phase.attributes.participation_method === 'survey' &&
       surveys_enabled &&

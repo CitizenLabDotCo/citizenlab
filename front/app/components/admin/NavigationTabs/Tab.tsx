@@ -1,7 +1,12 @@
 import React, { MouseEvent } from 'react';
 
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import {
+  TooltipContentWrapper,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
+import Tippy from '@tippyjs/react';
 
 // style
 import styled, { css } from 'styled-components';
@@ -59,39 +64,73 @@ const Container = styled.div`
     // border-color: ${colors.primary}; TODO : set accent color in component library
 
     a {
-        color: ${colors.primary};
+      color: ${colors.primary};
     }`}
   `}
 `;
 
-type TabProps = {
-  className?: string;
-  'data-cy'?: string;
+type TabContentProps = {
   label: string;
   url: string;
-  active: boolean;
   badge?: React.ReactNode;
-  disabled?: boolean;
-  disabledTooltip?: string;
   handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 };
 
+const TabContent = ({ label, url, badge, handleClick }: TabContentProps) => (
+  <Link to={url} onClick={handleClick}>
+    {label}
+    {badge && <>{badge}</>}
+  </Link>
+);
+
+type TabProps = TabContentProps & {
+  className?: string;
+  'data-cy'?: string;
+  active: boolean;
+  disabled?: boolean;
+  disabledTooltip?: string;
+};
+
 const Tab = ({
-  label,
-  url,
   active,
-  badge,
-  handleClick,
   disabled,
   disabledTooltip,
+  label,
+  url,
+  badge,
+  handleClick,
   ...props
-}: TabProps) => (
-  <Container active={active} {...props}>
-    <Link to={url} onClick={handleClick}>
-      {label}
-      {badge && <>{badge}</>}
-    </Link>
-  </Container>
-);
+}: TabProps) =>
+  disabled ? (
+    <Tippy
+      interactive={false}
+      placement="bottom"
+      theme={''}
+      maxWidth={350}
+      content={
+        <TooltipContentWrapper tippytheme="light">
+          {disabledTooltip}
+        </TooltipContentWrapper>
+      }
+    >
+      <Container active={active} {...props}>
+        <TabContent
+          label={label}
+          url={url}
+          badge={badge}
+          handleClick={handleClick}
+        />
+      </Container>
+    </Tippy>
+  ) : (
+    <Container active={active} {...props}>
+      <TabContent
+        label={label}
+        url={url}
+        badge={badge}
+        handleClick={handleClick}
+      />
+    </Container>
+  );
 
 export default Tab;
