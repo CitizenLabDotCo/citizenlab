@@ -83,6 +83,7 @@ const AdminProjectEventEdit = () => {
   const theme = useTheme();
   const locale = useLocale();
 
+  // api
   const { mutate: addEvent } = useAddEvent();
   const { data: event, isInitialLoading } = useEvent(id);
   const { mutate: updateEvent } = useUpdateEvent();

@@ -1,4 +1,3 @@
-// libraries
 import React, { useRef } from 'react';
 
 import { Icon } from '@citizenlab/cl2-component-library';

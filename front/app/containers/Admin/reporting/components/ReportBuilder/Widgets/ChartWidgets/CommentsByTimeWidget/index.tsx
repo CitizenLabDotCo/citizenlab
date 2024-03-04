@@ -1,16 +1,17 @@
 import React from 'react';
 
-import Card from '../../_shared/Card';
-import CommentsByTimeCard from './CommentsByTimeCard';
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
-
+import messages from 'containers/Admin/dashboard/messages';
 import moment from 'moment';
 
 // settings
-import messages from 'containers/Admin/dashboard/messages';
 
 import { IResolution } from 'components/admin/ResolutionControl';
+
+import Card from '../../_shared/Card';
+import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 import { ChartWidgetProps } from '../typings';
+
+import CommentsByTimeCard from './CommentsByTimeCard';
 
 const CommentsByTimeWidget = ({
   title,

@@ -9,7 +9,7 @@ import { IIdeaData } from 'api/ideas/types';
 
 import CommentCount from './CommentCount';
 
-// styles
+s;
 
 const Container = styled.footer`
   display: flex;

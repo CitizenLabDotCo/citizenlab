@@ -1,8 +1,8 @@
+// Libraries
 import React from 'react';
 
 import messages from 'containers/Admin/dashboard/messages';
 import { orderBy } from 'lodash-es';
-
 import { WrappedComponentProps } from 'react-intl';
 
 import { injectIntl } from 'utils/cl-intl';

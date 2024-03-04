@@ -1,21 +1,22 @@
 import React from 'react';
 
-import messages from '../messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
 import {
   Input,
   Box,
   Error,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // typing
 import { ApiErrors } from '../../../..';
 import { VotingAmountInputError } from '../../../shared/styling';
-import { Multiloc } from 'typings';
+import messages from '../messages';
 
 interface Props {
   voting_max_total?: number | null;

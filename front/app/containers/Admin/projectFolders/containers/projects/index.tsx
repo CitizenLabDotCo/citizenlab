@@ -17,8 +17,6 @@ import messages from '../messages';
 import ItemsInFolder from './ItemsInFolder';
 import ItemsNotInFolder from './ItemsNotInFolder';
 
-// style
-
 const Container = styled.div`
   min-height: 60vh;
 `;

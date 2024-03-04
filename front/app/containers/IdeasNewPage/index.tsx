@@ -1,25 +1,27 @@
 import React from 'react';
-import { parse } from 'qs';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
-import Unauthorized from 'components/Unauthorized';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { parse } from 'qs';
+import { useParams } from 'react-router-dom';
+
 import PageNotFound from 'components/PageNotFound';
+import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { getIdeaPostingRules } from 'utils/actionTakingRules';
+import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
+
+import { isNilOrError } from 'utils/helperUtils';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
 import SurveySubmittedNotice from './components/SurveySubmittedNotice';
 import IdeasNewForm from './IdeasNewForm';
 
-import useProjectBySlug from 'api/projects/useProjectBySlug';
-import usePhases from 'api/phases/usePhases';
-import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
-
-import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { useParams } from 'react-router-dom';
-import { getIdeaPostingRules } from 'utils/actionTakingRules';
-import useAuthUser from 'api/me/useAuthUser';
 import { getCurrentPhase } from 'api/phases/utils';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import { isNilOrError } from 'utils/helperUtils';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();

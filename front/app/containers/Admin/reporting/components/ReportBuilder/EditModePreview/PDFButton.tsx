@@ -1,7 +1,8 @@
 import React from 'react';
 
-import ViewButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/ViewButton';
 import { Icon, colors } from '@citizenlab/cl2-component-library';
+
+import ViewButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/ViewButton';
 
 interface Props {
   active: boolean;

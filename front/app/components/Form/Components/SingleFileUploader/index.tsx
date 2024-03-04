@@ -8,8 +8,6 @@ import Error from 'components/UI/Error';
 import FileDisplay from 'components/UI/SingleFileUploader/FileDisplay';
 import SingleFileInput from 'components/UI/SingleFileUploader/FileInput';
 
-// style
-
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 

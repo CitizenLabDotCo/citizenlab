@@ -1,25 +1,26 @@
 import React from 'react';
-import { SerializedNodes } from '@craftjs/core';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { SerializedNodes } from '@craftjs/core';
 
 import BaseEditor from 'components/admin/ContentBuilder/Editor';
+import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // widgets
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
-import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
-import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
-import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
+import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+
+import Events from '../CraftComponents/Events';
 import HomepageBanner from '../CraftComponents/HomepageBanner';
 import Projects from '../CraftComponents/Projects';
 import Proposals from '../CraftComponents/Proposals';
-import Events from '../CraftComponents/Events';
 
 type EditorProps = {
   children?: React.ReactNode;

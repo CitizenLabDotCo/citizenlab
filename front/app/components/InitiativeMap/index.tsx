@@ -12,8 +12,6 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { stringify } from 'qs';
 import { useSearchParams } from 'react-router-dom';
-
-// style
 import styled, { useTheme } from 'styled-components';
 
 import EsriMap from 'components/EsriMap';

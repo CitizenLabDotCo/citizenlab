@@ -1,17 +1,19 @@
 import React, { memo, Fragment } from 'react';
 
+import { List, Row } from 'components/admin/ResourceList';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { List, Row } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
-import { ListHeader, HeaderTitle } from '../StyledComponents';
-import NonSortableFolderRow from './NonSortableFolderRow';
-
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import { ListHeader, HeaderTitle } from '../StyledComponents';
+
+import NonSortableFolderRow from './NonSortableFolderRow';
 
 const ModeratorProjectList = memo(() => {
   const { data } = useAdminPublications({

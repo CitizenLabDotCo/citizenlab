@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { IInputsData } from 'api/analysis_inputs/types';
-import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
-
 import {
   Box,
   Title,
@@ -11,18 +8,22 @@ import {
   Button,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
+import { xor } from 'lodash-es';
+import { FormattedDate } from 'react-intl';
 
 import T from 'components/T';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import { FormattedDate } from 'react-intl';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
-import { xor } from 'lodash-es';
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import { IInputsData } from 'api/analysis_inputs/types';
+import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
+import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import messages from '../messages';
+import tracks from '../tracks';
 
 type Props = {
   customFieldId: string;

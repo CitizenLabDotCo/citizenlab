@@ -19,8 +19,6 @@ import Header from './Header';
 import tracks from './tracks';
 import { hasReferenceData } from './utils';
 
-// tracks
-
 const hasAnyReferenceData = (userCustomFields: IUserCustomFieldData[]) =>
   userCustomFields.some(hasReferenceData);
 

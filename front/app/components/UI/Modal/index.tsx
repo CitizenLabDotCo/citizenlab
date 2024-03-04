@@ -28,13 +28,9 @@ import eventEmitter from 'utils/eventEmitter';
 
 import messages from './messages';
 
-// resources
-
 // animations
 
 import tracks from './tracks';
-
-// style
 
 const desktopOpacityTimeout = 500;
 const mobileOpacityTimeout = 250;

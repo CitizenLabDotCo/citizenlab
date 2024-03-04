@@ -1,7 +1,5 @@
 import React, { useCallback } from 'react';
 
-import { useNode } from '@craftjs/core';
-
 import {
   Box,
   Text,
@@ -9,20 +7,24 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import ProjectFilter from '../../_shared/ProjectFilter';
+import { useNode } from '@craftjs/core';
+import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
+import { IOption } from 'typings';
+
 import PhaseFilter from 'components/UI/PhaseFilter';
-import QuestionSelect from './QuestionSelect';
-import GroupModeSelect from './GroupModeSelect';
-import UserFieldSelect from './UserFieldSelect';
 
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import widgetMessages from '../../messages';
-import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
-import { IOption } from 'typings';
-import { Props } from '../typings';
 import { GroupMode } from 'api/graph_data_units/requestTypes';
+
+import ProjectFilter from '../../_shared/ProjectFilter';
+import widgetMessages from '../../messages';
+import { Props } from '../typings';
+
+import GroupModeSelect from './GroupModeSelect';
+import messages from './messages';
+import QuestionSelect from './QuestionSelect';
+import UserFieldSelect from './UserFieldSelect';
 
 const Settings = () => {
   const { formatMessage } = useIntl();

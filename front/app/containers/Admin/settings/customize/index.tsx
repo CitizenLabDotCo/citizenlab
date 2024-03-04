@@ -7,8 +7,6 @@ import { UploadFile, Multiloc } from 'typings';
 import { Section, SectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
-// style
-
 import { useIntl } from 'utils/cl-intl';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';

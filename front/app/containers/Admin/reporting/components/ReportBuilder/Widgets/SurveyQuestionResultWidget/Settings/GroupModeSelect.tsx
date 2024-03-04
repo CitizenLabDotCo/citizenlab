@@ -12,11 +12,12 @@ import {
 import Tippy from '@tippyjs/react';
 
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from './messages';
 
 type Option = { value: GroupMode | ''; label: string };
 

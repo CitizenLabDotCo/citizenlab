@@ -1,17 +1,18 @@
 import React from 'react';
 
-import useLocale from 'hooks/useLocale';
-import useLocalize from 'hooks/useLocalize';
+import { Box, isRtl, media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import Title from 'components/PostShowComponents/Title';
-import { Box, isRtl, media } from '@citizenlab/cl2-component-library';
-import IdeaMoreActions from './IdeaMoreActions';
-
-import styled from 'styled-components';
 
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IIdea } from 'api/ideas/types';
+
+import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
+
+import IdeaMoreActions from './IdeaMoreActions';
 
 const IdeaHeader = styled.div`
   display: flex;

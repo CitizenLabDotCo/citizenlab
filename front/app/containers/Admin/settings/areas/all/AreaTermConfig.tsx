@@ -4,12 +4,12 @@ import TerminologyConfig from 'components/admin/TerminologyConfig';
 
 // resources
 
+import { isNilOrError } from 'utils/helperUtils';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
 import messages from '../messages';
-
-import { isNilOrError } from 'utils/helperUtils';
-import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
 interface Props {
   className?: string;

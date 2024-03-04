@@ -10,7 +10,6 @@ import Ideas from './Ideas';
 import messages from './messages';
 import ProjectInfo from './ProjectInfo';
 import Settings from './Settings';
-
 import { Props } from './typings';
 
 const MostReactedIdeasWidget = ({

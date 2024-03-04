@@ -12,7 +12,6 @@ import IdeaProposedBudget from 'containers/IdeasShow/components/ProposedBudget/I
 import Button from 'components/UI/Button';
 import T from 'components/T';
 
-// resources
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
@@ -23,7 +22,6 @@ import messages from '../messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import useLocalize from 'hooks/useLocalize';
 
-// style
 import styled from 'styled-components';
 import { darken } from 'polished';
 import {

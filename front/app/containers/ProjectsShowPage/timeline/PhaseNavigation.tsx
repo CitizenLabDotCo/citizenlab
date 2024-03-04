@@ -11,7 +11,6 @@ import { findIndex } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-// style
 import styled from 'styled-components';
 
 import { trackEventByName } from 'utils/analytics';

@@ -27,8 +27,6 @@ import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
 import NumberInput from './NumberInput';
 
-// api
-
 import {
   getMinusButtonDisabledMessage,
   getPlusButtonDisabledMessage,
@@ -56,7 +54,6 @@ const AssignMultipleVotesInput = ({
   // participation context
   const basketId = phase.relationships?.user_basket?.data?.id;
 
-  // api
   const { data: basket } = useBasket(basketId);
   const { data: idea } = useIdeaById(ideaId);
 

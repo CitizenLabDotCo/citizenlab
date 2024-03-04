@@ -26,26 +26,21 @@ import Link from 'utils/cl-router/Link';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
+import { isAdmin } from 'utils/permissions/roles';
+import { scrollToElement } from 'utils/scroll';
 
-import usePhases from 'api/phases/usePhases';
-import useProjectById from 'api/projects/useProjectById';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
-import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
-
-import { isAdmin } from 'utils/permissions/roles';
-
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 import ProjectActionButtons from '../ProjectActionButtons';
 import ProjectSharingModal from '../ProjectSharingModal';
-
-import { scrollToElement } from 'utils/scroll';
-
 import { hasEmbeddedSurvey, hasNativeSurvey } from '../utils';
-
-import { getInputTermMessage } from 'utils/i18n';
 
 // style
 

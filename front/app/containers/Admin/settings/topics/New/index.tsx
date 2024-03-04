@@ -1,15 +1,16 @@
 import React from 'react';
-import clHistory from 'utils/cl-router/history';
+
+import { Section, SectionTitle } from 'components/admin/Section';
+import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-import GoBackButton from 'components/UI/GoBackButton';
-import { Section, SectionTitle } from 'components/admin/Section';
-import TopicForm from '../TopicForm';
+import clHistory from 'utils/cl-router/history';
 
 import { ITopicAdd } from 'api/topics/types';
 import useAddTopic from 'api/topics/useAddTopic';
+
+import messages from '../messages';
+import TopicForm from '../TopicForm';
 
 const New = () => {
   const { mutate: addTopic } = useAddTopic();

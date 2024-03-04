@@ -3,7 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { CLErrors, UploadFile } from 'typings';
 
-// style
 import Error from 'components/UI/Error';
 
 import { ScreenReaderOnly } from 'utils/a11y';

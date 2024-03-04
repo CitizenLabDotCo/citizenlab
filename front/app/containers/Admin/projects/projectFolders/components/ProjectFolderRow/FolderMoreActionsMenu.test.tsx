@@ -1,10 +1,13 @@
 import React from 'react';
-import FolderMoreActionsMenu, { Props } from './FolderMoreActionsMenu';
+
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
 import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
+
 import { IUserData } from 'api/users/types';
 
-import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+import FolderMoreActionsMenu, { Props } from './FolderMoreActionsMenu';
 
 const props: Props = {
   folderId: 'folderId',

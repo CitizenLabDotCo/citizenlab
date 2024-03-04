@@ -1,24 +1,25 @@
 // libraries
 import React from 'react';
+
 import { Helmet } from 'react-helmet';
 
 // resources
 
-import useIdeaImages from 'api/idea_images/useIdeaImages';
-
-import useLocalize from 'hooks/useLocalize';
-
-import { getFullName, stripHtml } from 'utils/textUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { imageSizes } from 'utils/fileUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import useUserById from 'api/users/useUserById';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useProjectById from 'api/projects/useProjectById';
-import useLocale from 'hooks/useLocale';
+import { imageSizes } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getFullName, stripHtml } from 'utils/textUtils';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
+import useUserById from 'api/users/useUserById';
+
+import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 
 interface Props {
   ideaId: string;

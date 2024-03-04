@@ -10,8 +10,6 @@ import useProjectById from 'api/projects/useProjectById';
 
 import messages from './messages';
 
-// style
-
 const Container = styled.div`
   width: 100%;
 `;

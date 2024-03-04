@@ -16,7 +16,6 @@ import {
 } from 'utils/errorUtils';
 
 import TextButton from '../_components/TextButton';
-
 import sharedMessages from '../messages';
 
 import messages from './messages';

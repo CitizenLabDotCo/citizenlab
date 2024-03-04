@@ -1,15 +1,14 @@
 import React, { memo, useRef, useMemo, useCallback } from 'react';
 
-import EsriMap from 'components/EsriMap';
-import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
 import MapView from '@arcgis/core/views/MapView';
+import { useTheme } from 'styled-components';
 
+import EsriMap from 'components/EsriMap';
 import { getMapPinSymbol } from 'components/EsriMap/utils';
 
 import { SubmitState } from '../edit';
-
-import { useTheme } from 'styled-components';
 
 export interface Props {
   mapHeight?: string;

@@ -1,17 +1,18 @@
 import React from 'react';
 
+import { BoxFlexProps } from '@citizenlab/cl2-component-library';
+
 import SharingButtons from 'components/Sharing/SharingButtons';
 
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-import useLocalize from 'hooks/useLocalize';
-import useAuthUser from 'api/me/useAuthUser';
-
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IEventData } from 'api/events/types';
-import { BoxFlexProps } from '@citizenlab/cl2-component-library';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from './messages';
 
 interface Props {
   event: IEventData;

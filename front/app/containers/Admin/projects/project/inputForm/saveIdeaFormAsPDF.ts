@@ -1,9 +1,9 @@
 import { API_PATH } from 'containers/App/constants';
-import { requestBlob } from 'utils/requestBlob';
 import { saveAs } from 'file-saver';
-import { reportError } from 'utils/loggingUtils';
-
 import { Locale } from 'typings';
+
+import { reportError } from 'utils/loggingUtils';
+import { requestBlob } from 'utils/requestBlob';
 
 interface Params {
   locale: Locale;

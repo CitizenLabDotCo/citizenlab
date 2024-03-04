@@ -1,15 +1,17 @@
 import React from 'react';
 
 import { Box, Title, colors, Spinner } from '@citizenlab/cl2-component-library';
+
+import InputManager from 'components/admin/PostManager/InputManager';
 import { SectionDescription } from 'components/admin/Section';
 
 // resources
-import { PublicationStatus } from 'api/projects/types';
-
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+
+import { PublicationStatus } from 'api/projects/types';
 import useProjects from 'api/projects/useProjects';
-import InputManager from 'components/admin/PostManager/InputManager';
+
+import messages from '../messages';
 
 const IdeasTab = () => {
   const { data: projects, isLoading } = useProjects({

@@ -5,7 +5,6 @@ import styled, { css } from 'styled-components';
 
 import Link from 'utils/cl-router/Link';
 
-// style
 import {
   tabLineHeight,
   tabPadding,

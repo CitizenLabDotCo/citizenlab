@@ -1,4 +1,3 @@
-// libraries
 import React, { useState } from 'react';
 
 import { Dropdown, fontSizes } from '@citizenlab/cl2-component-library';

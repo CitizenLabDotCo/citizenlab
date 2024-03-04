@@ -1,4 +1,5 @@
 import React, { useState, lazy, Suspense } from 'react';
+
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import User from './User';
@@ -6,7 +7,9 @@ const UserMenuDropdown = lazy(() => import('./UserMenuDropdown'));
 
 // style
 import styled from 'styled-components';
+
 import useAuthUser from 'api/me/useAuthUser';
+
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`

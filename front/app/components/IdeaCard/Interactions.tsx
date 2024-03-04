@@ -1,7 +1,5 @@
 import React from 'react';
 
-// api
-
 // config
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { pastPresentOrFuture } from 'utils/dateUtils';

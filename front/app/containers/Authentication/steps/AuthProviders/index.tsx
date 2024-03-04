@@ -1,25 +1,27 @@
 import React, { memo, useCallback } from 'react';
 
-import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
-import Or from 'components/UI/Or';
-import FranceConnectButton from 'components/UI/FranceConnectButton';
-import Outlet from 'components/Outlet';
 import { Text } from '@citizenlab/cl2-component-library';
-import TextButton from '../_components/TextButton';
 
 // resources
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-import styled from 'styled-components';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
 import { ErrorCode } from 'containers/Authentication/typings';
+import styled from 'styled-components';
+import Outlet from 'components/Outlet';
+import FranceConnectButton from 'components/UI/FranceConnectButton';
+import Or from 'components/UI/Or';
 
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import TextButton from '../_components/TextButton';
+
+import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import ClaveUnicaExpandedAuthProviderButton from './ClaveUnicaExpandedAuthProviderButton';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

@@ -1,10 +1,12 @@
 import { isEqual } from 'lodash-es';
+
 import { isValidEmail } from 'utils/validate';
 
 import { IIdeas } from 'api/ideas/types';
-import { IUser } from 'api/users/types';
-import { UserFormData } from './typings';
 import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
+import { IUser } from 'api/users/types';
+
+import { UserFormData } from './typings';
 
 export const getNextIdeaId = (ideaId: string, ideas: IIdeas) => {
   const numberOfIdeas = ideas.data.length;

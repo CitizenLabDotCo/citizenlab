@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import styled from 'styled-components';
 import {
   colors,
   stylingConsts,
@@ -10,23 +9,25 @@ import {
   Image,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-import Link from 'utils/cl-router/Link';
-import GradientSrc from './gradient.svg';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import AuthorAvatar from './AuthorAvatar';
 
-import messages from '../../MostReactedIdeasWidget/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import checkTextOverflow, { MEDIUM_LINE_HEIGHT } from './checkTextOverflow';
+import Link from 'utils/cl-router/Link';
+import { getTextNumberOfVotes } from 'utils/configs/votingMethodConfig/textNumberOfVotes';
 
 import { IIdeaImageData } from 'api/idea_images/types';
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
-import { getTextNumberOfVotes } from 'utils/configs/votingMethodConfig/textNumberOfVotes';
+
+import messages from '../../MostReactedIdeasWidget/messages';
+
+import AuthorAvatar from './AuthorAvatar';
+import checkTextOverflow, { MEDIUM_LINE_HEIGHT } from './checkTextOverflow';
+import GradientSrc from './gradient.svg';
 
 interface Props {
   rank?: number;

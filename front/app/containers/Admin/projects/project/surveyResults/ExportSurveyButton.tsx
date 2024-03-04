@@ -1,13 +1,17 @@
 import React from 'react';
 
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+// analytics
 
 import Button from 'components/UI/Button';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+
 import { exportSurveyResults } from 'api/survey_results/utils';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+
+import tracks from './tracks';
 
 interface Props {
   phaseId: string;

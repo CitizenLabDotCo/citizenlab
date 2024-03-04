@@ -7,7 +7,7 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 
-// styles
+s;
 
 import { darken } from 'polished';
 import { WrappedComponentProps } from 'react-intl';

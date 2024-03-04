@@ -4,7 +4,6 @@ import { ILocationInfo } from 'typings';
 
 import InitiativeForm, { FormValues } from 'components/InitiativeForm';
 
-// style
 import clHistory from 'utils/cl-router/history';
 import { parsePosition } from 'utils/locationTools';
 

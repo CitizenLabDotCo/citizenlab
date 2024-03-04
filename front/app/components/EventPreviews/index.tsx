@@ -10,7 +10,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import useEvents from 'api/events/useEvents';
 
-// api
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';

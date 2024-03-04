@@ -14,8 +14,6 @@ import CommentReaction from './CommentReaction';
 import CommentReplyButton from './CommentReplyButton';
 import CommentsMoreActions from './CommentsMoreActions';
 
-// style
-
 const footerHeight = '30px';
 const footerTopMargin = '6px';
 

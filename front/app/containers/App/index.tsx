@@ -60,8 +60,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import eventEmitter from 'utils/eventEmitter';
 
-// style
-
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 import useAuthUser from 'api/me/useAuthUser';

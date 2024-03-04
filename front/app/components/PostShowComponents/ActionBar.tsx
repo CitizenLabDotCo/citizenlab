@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-// styles
+s;
 import { colors, media } from '@citizenlab/cl2-component-library';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import styled from 'styled-components';

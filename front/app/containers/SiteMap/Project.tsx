@@ -1,16 +1,18 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { H3, H4 } from './';
-import T from 'components/T';
-import Link from 'utils/cl-router/Link';
 
-import TimelineProject from './TimelineProject';
+import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
 
 import useEvents from 'api/events/useEvents';
 import useProjectById from 'api/projects/useProjectById';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import TimelineProject from './TimelineProject';
+
+import { H3, H4 } from './';
 
 interface Props {
   projectId: string;

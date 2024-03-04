@@ -23,8 +23,6 @@ import styled from 'styled-components';
 import Title from './title';
 import ValuesList from './valuesList';
 
-// style
-
 const Container = styled(Box)`
   display: inline-block;
   position: relative;

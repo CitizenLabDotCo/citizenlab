@@ -7,29 +7,32 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
+import { useLocation } from 'react-router-dom';
+import { Multiloc } from 'typings';
+
 import {
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import DefaultViewPicker from '../../shared/DefaultViewPicker';
-import { ToggleRow } from '../../shared/styling';
-import VotingMethodSelector from './VotingMethodSelector';
-import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
-import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
-import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
-import Link from 'utils/cl-router/Link';
 import Warning from 'components/UI/Warning';
-import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../../../../messages';
+import Link from 'utils/cl-router/Link';
+
+import { VotingMethod } from 'api/phases/types';
 
 import { ApiErrors } from '../../..';
-import { Multiloc } from 'typings';
+import messages from '../../../../../messages';
+import DefaultViewPicker from '../../shared/DefaultViewPicker';
+import { ToggleRow } from '../../shared/styling';
 
-import { useLocation } from 'react-router-dom';
-import { VotingMethod } from 'api/phases/types';
+import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
+import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
+
+import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
+import VotingMethodSelector from './VotingMethodSelector';
 
 export interface VotingInputsProps {
   voting_method: VotingMethod | null | undefined;

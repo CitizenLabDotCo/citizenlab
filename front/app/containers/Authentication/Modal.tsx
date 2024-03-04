@@ -1,21 +1,28 @@
 import React, { useEffect } from 'react';
 
-import useSteps from './useSteps';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import T from 'components/T';
+import Error from 'components/UI/Error';
+import errorMessages from 'components/UI/Error/messages';
 import Modal from 'components/UI/Modal';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { MessageDescriptor, useIntl, FormattedMessage } from 'utils/cl-intl';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from './messages';
 import AuthProviders from './steps/AuthProviders';
-import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
-import EmailAndPassword from './steps/EmailAndPassword';
-import EmailConfirmation from './steps/EmailConfirmation';
-import Verification from './steps/Verification';
-import CustomFields from './steps/CustomFields';
-import Onboarding from './steps/Onboarding';
-import Invitation from './steps/Invitation';
 import ChangeEmail from './steps/ChangeEmail';
+import CustomFields from './steps/CustomFields';
+import EmailAndPassword from './steps/EmailAndPassword';
+import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
+import EmailConfirmation from './steps/EmailConfirmation';
+import Onboarding from './steps/Onboarding';
+import Verification from './steps/Verification';
+import Invitation from './steps/Invitation';
 import LightFlowStart from './steps/LightFlowStart';
 import EmailPolicies from './steps/Policies/EmailPolicies';
 import GooglePolicies from './steps/Policies/GooglePolicies';
@@ -26,19 +33,15 @@ import BuiltInFields from './steps/BuiltInFields';
 import Password from './steps/Password';
 import Success from './steps/Success';
 import ClaveUnicaEmail from './steps/ClaveUnicaEmail';
-import Error from 'components/UI/Error';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { MessageDescriptor, useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import errorMessages from 'components/UI/Error/messages';
-
-import { ModalProps, ErrorCode } from './typings';
 import VerificationSuccess from './steps/VerificationSuccess';
-import T from 'components/T';
+import { ModalProps, ErrorCode } from './typings';
+
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import { IPhasePermissionAction } from 'api/permissions/types';
 import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
+
+import useSteps from './useSteps';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];
 

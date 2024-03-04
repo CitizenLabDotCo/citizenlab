@@ -1,12 +1,13 @@
 import React from 'react';
 
-import Editor from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Editor';
-import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { Box } from '@citizenlab/cl2-component-library';
+import Editor from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Editor';
+
+import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
 import eventEmitter from 'utils/eventEmitter';
 
-import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 
 const handleLoadImages = () => {

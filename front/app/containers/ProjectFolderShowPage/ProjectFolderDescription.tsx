@@ -1,12 +1,5 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-import FileAttachments from 'components/UI/FileAttachments';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import ReactResizeDetector from 'react-resize-detector';
-import Button from 'components/UI/Button';
-
-import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
 import {
   useWindowSize,
   Box,
@@ -15,17 +8,25 @@ import {
   isRtl,
   colors,
 } from '@citizenlab/cl2-component-library';
-
-import T from 'components/T';
-import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import ReactResizeDetector from 'react-resize-detector';
 
 // style
 import styled, { useTheme } from 'styled-components';
-import { ScreenReaderOnly } from 'utils/a11y';
 
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import FileAttachments from 'components/UI/FileAttachments';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
 import { IProjectFolderData } from 'api/project_folders/types';
+
+import messages from './messages';
 
 const desktopCollapsedDescriptionMaxHeight = 99999;
 const mobileCollapsedDescriptionMaxHeight = 180;

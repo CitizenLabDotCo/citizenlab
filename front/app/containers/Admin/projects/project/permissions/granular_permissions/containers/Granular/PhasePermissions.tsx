@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
 
-import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 import {
   Accordion,
   Box,
   colors,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { PhaseActionForm } from '../../components/PhaseActionForm';
+
+import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
 import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
-import { HandlePermissionChangeProps } from './utils';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
+
+import { PhaseActionForm } from '../../components/PhaseActionForm';
+
+import messages from './messages';
+import { HandlePermissionChangeProps } from './utils';
 
 interface Props {
   project: IProjectData;

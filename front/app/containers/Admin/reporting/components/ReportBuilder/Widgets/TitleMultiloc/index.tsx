@@ -5,7 +5,6 @@ import { useNode } from '@craftjs/core';
 import messages from 'containers/Admin/reporting/components/ReportBuilder/Widgets/TitleMultiloc/messages';
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 import styled from 'styled-components';
-
 import { Multiloc } from 'typings';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';

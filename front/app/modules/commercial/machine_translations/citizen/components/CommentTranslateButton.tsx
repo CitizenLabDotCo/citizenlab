@@ -11,8 +11,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// style
-
 import useComment from 'api/comments/useComment';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';

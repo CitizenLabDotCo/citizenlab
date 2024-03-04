@@ -1,6 +1,5 @@
 import React from 'react';
 
-// style
 import {
   Box,
   Text,

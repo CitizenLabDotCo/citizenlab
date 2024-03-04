@@ -2,7 +2,6 @@ import React, { useState, MouseEvent } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-// style
 import styled, { css } from 'styled-components';
 
 // Types

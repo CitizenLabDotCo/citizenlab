@@ -17,33 +17,33 @@ const InviteUsersWithSeatsModal = lazy(
 );
 const InvitationOptions = lazy(() => import('./InvitationOptions'));
 
-import {
-  IInviteError,
-  INewBulkInvite,
-  IInvitesNewSeats,
-} from 'api/invites/types';
-
-import useBulkInviteEmails from 'api/invites/useBulkInviteEmails';
-import useBulkInviteCountNewSeatsEmails from 'api/invites/useBulkInviteCountNewSeatsEmails';
-import useBulkInviteXLSX from 'api/invites/useBulkInviteXLSX';
-import useBulkInviteCountNewSeatsXLSX from 'api/invites/useBulkInviteCountNewSeatsXLSX';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
 import styled from 'styled-components';
-
 import { Locale, IOption } from 'typings';
+
 import { Section, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import HelmetIntl from 'components/HelmetIntl';
 import Error from 'components/UI/Error';
 import Tabs from 'components/UI/Tabs';
 import Warning from 'components/UI/Warning';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import {
+  IInviteError,
+  INewBulkInvite,
+  IInvitesNewSeats,
+} from 'api/invites/types';
+import useBulkInviteCountNewSeatsEmails from 'api/invites/useBulkInviteCountNewSeatsEmails';
+import useBulkInviteCountNewSeatsXLSX from 'api/invites/useBulkInviteCountNewSeatsXLSX';
+import useBulkInviteEmails from 'api/invites/useBulkInviteEmails';
+import useBulkInviteXLSX from 'api/invites/useBulkInviteXLSX';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useExceedsSeats from 'hooks/useExceedsSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from '../messages';
 
 import ManualTab from './ManualTab';
 import TemplateTab from './TemplateTab';

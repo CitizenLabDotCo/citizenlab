@@ -1,18 +1,18 @@
 import React from 'react';
-import FranceConnectImage from './franceconnect.png';
+
+import { Image, colors } from '@citizenlab/cl2-component-library';
+import oldMessages from 'containers/Authentication/steps/AuthProviders/messages';
+import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
+import styled from 'styled-components';
+
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-import { Image, colors } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-
-import styled from 'styled-components';
-
-import { useIntl } from 'utils/cl-intl';
+import FranceConnectImage from './franceconnect.png';
 import messages from './messages';
-import oldMessages from 'containers/Authentication/steps/AuthProviders/messages';
-
-import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
 
 const Container = styled.div`
   margin-top: 12px;

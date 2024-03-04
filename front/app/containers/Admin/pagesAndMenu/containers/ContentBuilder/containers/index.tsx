@@ -2,31 +2,35 @@ import React, { useState, useRef, useEffect } from 'react';
 
 // styles
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import { SerializedNodes } from '@craftjs/core';
+import { isEmpty } from 'lodash-es';
+import { Locale } from 'typings';
 
-import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
-
-import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
-import Editor from '../components/Editor';
-import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
-import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
-import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
-import useLocale from 'hooks/useLocale';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-import { SerializedNodes } from '@craftjs/core';
-import { Locale } from 'typings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
-import { isEmpty } from 'lodash-es';
-import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
+
 import HomepageBanner from '../components/CraftComponents/HomepageBanner';
 import Projects from '../components/CraftComponents/Projects';
+
 import { useTheme } from 'styled-components';
+
+import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
+
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
+
+import Editor from '../components/Editor';
+import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
+import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
+import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
 
 const HomepageBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);

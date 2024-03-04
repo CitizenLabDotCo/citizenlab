@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   screen,
   render,
@@ -6,8 +7,10 @@ import {
   waitFor,
   userEvent,
 } from 'utils/testUtils/rtl';
-import CustomPageSettingsForm from './';
+
 import { ProjectsFilterTypes } from 'api/custom_pages/types';
+
+import CustomPageSettingsForm from './';
 
 const titleEN = 'title en';
 const titleNL = 'title nl';

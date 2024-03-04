@@ -23,9 +23,10 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { requestBlob } from 'utils/requestBlob';
+
 import { IGroupMemberships } from 'api/group_memberships/types';
-import { MembershipType } from 'api/groups/types';
 import useAddMembership from 'api/group_memberships/useAddMembership';
+import { MembershipType } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
 
 // Events

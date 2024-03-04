@@ -6,20 +6,19 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import { isString } from 'lodash-es';
+import { lighten } from 'polished';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+
 import ReactionIndicator from 'components/InitiativeCard/ReactionIndicator';
 
 // router
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-import styled from 'styled-components';
-import { lighten } from 'polished';
-
-import { isString } from 'lodash-es';
 
 const Container = styled.div`
   // should use props.theme.mobileTopBarHeight but it needs to have the

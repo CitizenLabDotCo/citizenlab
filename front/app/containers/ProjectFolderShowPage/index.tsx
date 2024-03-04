@@ -1,11 +1,5 @@
 import React from 'react';
 
-import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
-import ProjectFolderHeader from './ProjectFolderHeader';
-import ProjectFolderDescription from './ProjectFolderDescription';
-import ProjectFolderProjectCards from './ProjectFolderProjectCards';
-import Button from 'components/UI/Button';
-import PageNotFound from 'components/PageNotFound';
 import {
   Box,
   Spinner,
@@ -13,27 +7,37 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
 import ContentContainer from 'components/ContentContainer';
 import FollowUnfollow from 'components/FollowUnfollow';
+import PageNotFound from 'components/PageNotFound';
+import Button from 'components/UI/Button';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
-import { useParams } from 'react-router-dom';
 
 import messages from './messages';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
-import styled from 'styled-components';
-import { maxPageWidth } from './styles';
 
-import { isNilOrError } from 'utils/helperUtils';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 import { IProjectFolderData } from 'api/project_folders/types';
+
 import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
+import ProjectFolderDescription from './ProjectFolderDescription';
+import ProjectFolderHeader from './ProjectFolderHeader';
+import ProjectFolderProjectCards from './ProjectFolderProjectCards';
+import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
+import { maxPageWidth } from './styles';
 
 const Container = styled.main`
   flex: 1 0 auto;

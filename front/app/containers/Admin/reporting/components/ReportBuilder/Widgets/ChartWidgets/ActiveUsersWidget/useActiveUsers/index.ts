@@ -1,10 +1,10 @@
 // parse
-import { parseTimeSeries, parseStats } from './parse';
-
-import { QueryParameters } from './typings';
 import { useMemo, useState } from 'react';
 
 import { useActiveUsers as useActiveUsersData } from 'api/graph_data_units';
+
+import { parseTimeSeries, parseStats } from './parse';
+import { QueryParameters } from './typings';
 
 export default function useActiveUsers({
   projectId,

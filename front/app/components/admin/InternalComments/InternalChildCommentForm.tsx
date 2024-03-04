@@ -1,4 +1,3 @@
-// libraries
 import React, { useEffect, useRef, useState } from 'react';
 
 import {
@@ -28,8 +27,6 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { commentReplyButtonClicked$, commentAdded } from './events';
 import tracks from './tracks';
-
-// style
 
 import { getMentionRoles } from './utils';
 

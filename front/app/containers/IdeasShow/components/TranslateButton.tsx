@@ -1,16 +1,16 @@
 import React from 'react';
 
-import useLocale from 'hooks/useLocale';
-
 // tracks
-import tracks from '../tracks';
-import { trackEventByName } from 'utils/analytics';
-
 import Outlet from 'components/Outlet';
 
+import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IIdea } from 'api/ideas/types';
+
+import useLocale from 'hooks/useLocale';
+
+import tracks from '../tracks';
 
 interface Props {
   idea: IIdea;

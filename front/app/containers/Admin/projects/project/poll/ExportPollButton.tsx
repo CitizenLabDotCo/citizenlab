@@ -1,15 +1,19 @@
+// Libraries
 import React from 'react';
 
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+// analytics
+import { snakeCase } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
 
 import Button from 'components/UI/Button';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+
 import exportPollResponses from 'api/poll_responses/exportPollResponses';
 
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { snakeCase } from 'lodash-es';
+import tracks from './tracks';
 
 interface Props {
   phaseId: string;

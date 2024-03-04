@@ -2,14 +2,15 @@ import React from 'react';
 
 import FollowUnfollow from 'components/FollowUnfollow';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import { IInitiative } from 'api/initiatives/types';
 
 import BorderContainer from '../BorderContainer';
+
+import messages from './messages';
 import StatusWrapper from './StatusWrapper';
-import { IInitiative } from 'api/initiatives/types';
 
 interface Props {
   initiative: IInitiative;

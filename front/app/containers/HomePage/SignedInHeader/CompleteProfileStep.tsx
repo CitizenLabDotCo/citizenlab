@@ -17,8 +17,6 @@ import SkipButton from './SkipButton';
 
 import { Left, Right, Text, HeaderContent, Icons, StyledAvatar } from './';
 
-// style
-
 const CompleteProfileIcon = styled(Icon)`
   width: 48px;
   height: 48px;

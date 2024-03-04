@@ -1,25 +1,27 @@
 import React from 'react';
 
-import usePhases from 'api/phases/usePhases';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import MetaInformation from '../MetaInformation';
-import ReactionControl from 'components/ReactionControl';
-import IdeaSharingButton from '../Buttons/IdeaSharingButton';
-import SharingButtonComponent from '../Buttons/SharingButtonComponent';
+
 import FollowUnfollow from 'components/FollowUnfollow';
-import GoToCommentsButton from '../Buttons/GoToCommentsButton';
+import ReactionControl from 'components/ReactionControl';
 
-import { rightColumnWidthDesktop } from '../../styleConstants';
-
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+
+import useIdeaById from 'api/ideas/useIdeaById';
+import usePhases from 'api/phases/usePhases';
 import {
   getCurrentPhase,
   isIdeaInParticipationContext,
 } from 'api/phases/utils';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { rightColumnWidthDesktop } from '../../styleConstants';
+import GoToCommentsButton from '../Buttons/GoToCommentsButton';
+import IdeaSharingButton from '../Buttons/IdeaSharingButton';
+import SharingButtonComponent from '../Buttons/SharingButtonComponent';
+import MetaInformation from '../MetaInformation';
 
 interface Props {
   ideaId: string;

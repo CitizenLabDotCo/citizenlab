@@ -1,23 +1,26 @@
 import React from 'react';
 
 // libraries
-import { Helmet } from 'react-helmet';
 
 // resources
 
-import messages from './messages';
-
-import { isNilOrError } from 'utils/helperUtils';
-import { imageSizes } from 'utils/fileUtils';
 import { API_PATH } from 'containers/App/constants';
-import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
-import useLocalize from 'hooks/useLocalize';
+import { Helmet } from 'react-helmet';
+
 import { useIntl } from 'utils/cl-intl';
-import useLocale from 'hooks/useLocale';
-import useAuthUser from 'api/me/useAuthUser';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { imageSizes } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
+
+import messages from './messages';
 
 const Meta = () => {
   const locale = useLocale();

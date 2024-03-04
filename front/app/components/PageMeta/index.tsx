@@ -1,4 +1,3 @@
-// libraries
 import React from 'react';
 
 import { isError } from 'lodash-es';

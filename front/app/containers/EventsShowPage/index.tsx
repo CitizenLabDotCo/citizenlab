@@ -7,29 +7,32 @@ import {
   media,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import PageNotFound from 'components/PageNotFound';
+import Image from 'components/UI/Image';
+import Unauthorized from 'components/Unauthorized';
+import VerticalCenterer from 'components/VerticalCenterer';
+
+import { isUnauthorizedRQ } from 'utils/errorUtils';
+
+import useEventImage from 'api/event_images/useEventImage';
+import useEvent from 'api/events/useEvent';
+
+import useProjectById from 'api/projects/useProjectById';
 import Container from './components/Container';
 import InformationColumnDesktop from './components/InformationColumnDesktop';
 import DesktopTopBar from './components/DesktopTopBar';
-import Unauthorized from 'components/Unauthorized';
-import PageNotFound from 'components/PageNotFound';
-import VerticalCenterer from 'components/VerticalCenterer';
+
+import InformationSectionMobile from './components/InformationSectionMobile';
 import MobileTopBar from './components/MobileTopBar';
 import EventDescription from './components/EventDescription';
-import InformationSectionMobile from './components/InformationSectionMobile';
-import Image from 'components/UI/Image';
 import ProjectLink from './components/ProjectLink';
 
-import styled from 'styled-components';
-
 // router
-import { useParams } from 'react-router-dom';
 
-import useEvent from 'api/events/useEvent';
-import useProjectById from 'api/projects/useProjectById';
-import useEventImage from 'api/event_images/useEventImage';
 import useLocalize from 'hooks/useLocalize';
-
-import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 const InnerContainer = styled(Box)`
   min-height: calc(

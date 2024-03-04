@@ -1,9 +1,10 @@
 import React from 'react';
 
+import messages from 'containers/Admin/dashboard/messages';
+
 import BarChart from 'components/admin/Graphs/BarChart';
 import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
 
-import messages from 'containers/Admin/dashboard/messages';
 import { useIntl } from 'utils/cl-intl';
 
 import { AgeSerie } from './typings';

@@ -1,15 +1,15 @@
 import React, { ReactNode } from 'react';
 
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import styled from 'styled-components';
+
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import messages from './messages';
-
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-import styled from 'styled-components';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
+
+import messages from './messages';
 
 const Container = styled.div`
   position: relative;

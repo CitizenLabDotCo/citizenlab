@@ -1,21 +1,23 @@
 // authentication
+import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
+
+import { trackEventByName } from 'utils/analytics';
+
 import signIn from 'api/authentication/sign_in_out/signIn';
 import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 
-import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
+// events
 
 // tracks
 import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
-
-import { requiredCustomFields, showOnboarding } from './utils';
-
 import {
   AuthenticationData,
   AuthProvider,
   GetRequirements,
 } from '../../typings';
+
 import { Step } from './typings';
+import { requiredCustomFields, showOnboarding } from './utils';
 
 export const signInFlow = (
   getAuthenticationData: () => AuthenticationData,

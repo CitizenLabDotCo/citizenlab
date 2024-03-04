@@ -1,11 +1,10 @@
 import React from 'react';
 
-// styles
+s;
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 
-// resources
 import GetIdeasCount, {
   GetIdeasCountChildProps,
 } from 'resources/GetIdeasCount';

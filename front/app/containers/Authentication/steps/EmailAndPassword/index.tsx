@@ -9,30 +9,30 @@ import { string, object, boolean } from 'yup';
 
 import Checkbox from 'components/HookForm/Checkbox';
 import Input from 'components/HookForm/Input';
+import PasswordInput from 'components/HookForm/PasswordInput';
 import Button from 'components/UI/Button';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import {
+  isCLErrorsWrapper,
+  handleHookFormSubmissionError,
+} from 'utils/errorUtils';
+import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import containerMessages from '../../messages';
 import tracks from '../../tracks';
 import TextButton from '../_components/TextButton';
 import TextLink from '../_components/TextLink';
-
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-
 import sharedMessages from '../messages';
 
 import messages from './messages';
 
-import PasswordInput from 'components/HookForm/PasswordInput';
-
 // errors
-import {
-  isCLErrorsWrapper,
-  handleHookFormSubmissionError,
-} from 'utils/errorUtils';
-import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
-import { trackEventByName } from 'utils/analytics';
 
 interface Props {
   loading: boolean;

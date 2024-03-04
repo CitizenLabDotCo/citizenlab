@@ -6,16 +6,15 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
 import styled from 'styled-components';
 
+import { Option } from 'components/UI/UserSelect/typings';
 import { optionIsUser } from 'components/UI/UserSelect/utils';
+
+import { useIntl } from 'utils/cl-intl';
 import { isValidEmail } from 'utils/validate';
 
-import { Option } from 'components/UI/UserSelect/typings';
+import messages from './messages';
 
 const NewUserButton = styled.button<{ disabled: boolean }>`
   background-color: ${colors.successLight};

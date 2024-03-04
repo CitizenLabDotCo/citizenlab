@@ -8,10 +8,11 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
+import activeUsersMessages from 'components/admin/GraphCards/ActiveUsersCard/messages';
 
 import { useIntl } from 'utils/cl-intl';
-import activeUsersMessages from 'components/admin/GraphCards/ActiveUsersCard/messages';
+
+import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 
 const _ChartWidgetSettings = () => {
   const { formatMessage } = useIntl();

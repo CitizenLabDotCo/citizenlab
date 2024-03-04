@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// api
 import { IUserData } from 'api/users/types';
 import useInfiniteUsers from 'api/users/useInfiniteUsers';
 import useUserById from 'api/users/useUserById';

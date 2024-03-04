@@ -1,7 +1,4 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
-import useIdeaById from 'api/ideas/useIdeaById';
-import { isNilOrError } from 'utils/helperUtils';
 
 import {
   Box,
@@ -15,12 +12,17 @@ import {
   Header,
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
-import Button from 'components/UI/Button';
-import IdeaLocationMap from './IdeaLocationMap';
+import styled from 'styled-components';
 
-import { getAddressOrFallbackDMS } from 'utils/map';
+import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getAddressOrFallbackDMS } from 'utils/map';
+
+import useIdeaById from 'api/ideas/useIdeaById';
+
+import IdeaLocationMap from './IdeaLocationMap';
 import messages from './messages';
 
 const Container = styled.div`

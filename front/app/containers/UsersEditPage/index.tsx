@@ -1,31 +1,37 @@
 import React from 'react';
+
+import { colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import CampaignsConsentForm from 'components/CampaignConsentForm';
+import Unauthorized from 'components/Unauthorized';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 // router
-import clHistory from 'utils/cl-router/history';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import FragmentForm from './FragmentForm';
+import LoginCredentials from './LoginCredentials';
 import messages from './messages';
 
 import ProfileForm from './ProfileForm';
-import CampaignsConsentForm from 'components/CampaignConsentForm';
 
 import ProfileDeletion from './ProfileDeletion';
 import UsersEditPageMeta from './UsersEditPageMeta';
-import FragmentForm from './FragmentForm';
-import Unauthorized from 'components/Unauthorized';
 
 // Styles
-import styled from 'styled-components';
-import { colors } from '@citizenlab/cl2-component-library';
-import { ScreenReaderOnly } from 'utils/a11y';
 
 // Hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
+
 import VerificationStatus from './VerificationStatus';
-import LoginCredentials from './LoginCredentials';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.main`
   width: 100%;

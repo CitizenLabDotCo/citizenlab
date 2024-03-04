@@ -6,29 +6,26 @@ import {
   IconTooltip,
   Label,
 } from '@citizenlab/cl2-component-library';
-
 import { yupResolver } from '@hookform/resolvers/yup';
-
-import FileUploader from 'components/HookForm/FileUploader';
+import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 import { FormProvider, useForm } from 'react-hook-form';
+import { WrappedComponentProps } from 'react-intl';
+import { useParams } from 'react-router-dom';
+import { UploadFile } from 'typings';
 import { mixed, object } from 'yup';
 
-import { UploadFile } from 'typings';
-
-import useCustomPageById from 'api/custom_pages/useCustomPageById';
-import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
-import { useParams } from 'react-router-dom';
-
-import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
-import { WrappedComponentProps } from 'react-intl';
 import { SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
 import Feedback from 'components/HookForm/Feedback';
+import FileUploader from 'components/HookForm/FileUploader';
+
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 import useAddPagesFile from 'api/page_files/useAddPageFile';
 import useDeletePageFile from 'api/page_files/useDeletePageFile';
 import usePageFiles from 'api/page_files/usePageFiles';

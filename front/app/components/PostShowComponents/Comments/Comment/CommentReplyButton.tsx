@@ -1,6 +1,5 @@
 import React from 'react';
 
-// style
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';

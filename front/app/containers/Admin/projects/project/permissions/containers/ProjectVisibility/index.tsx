@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+
 import { fontSizes, Radio } from '@citizenlab/cl2-component-library';
+import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 
 import {
   Section,
   SubSectionTitle,
   SectionField,
 } from 'components/admin/Section';
-import ProjectGroupsList from './ProjectGroupsList';
 
-import { WrappedComponentProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
+
+import messages from './messages';
+import ProjectGroupsList from './ProjectGroupsList';
 
 const ViewingRightsSection = styled(Section)`
   margin-bottom: 30px;

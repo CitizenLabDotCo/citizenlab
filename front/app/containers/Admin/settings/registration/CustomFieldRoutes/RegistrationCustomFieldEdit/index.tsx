@@ -15,7 +15,6 @@ import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,
 } from 'api/user_custom_fields/types';
-
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import { isBuiltInField } from 'api/user_custom_fields/util';
 

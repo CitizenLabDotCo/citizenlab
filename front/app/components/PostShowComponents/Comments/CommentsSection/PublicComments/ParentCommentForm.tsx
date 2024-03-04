@@ -30,10 +30,6 @@ import tracks from '../../tracks';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-// resources
-
-// style
-
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 
 import useLocale from 'hooks/useLocale';

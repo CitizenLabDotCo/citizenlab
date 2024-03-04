@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
+
+import { media } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import styled from 'styled-components';
 
 import HelmetIntl from 'components/HelmetIntl';
+import Outlet from 'components/Outlet';
 import Modal from 'components/UI/Modal';
-import GroupsListPanel from './GroupsListPanel';
-import GroupCreationStep1 from './GroupCreationStep1';
-import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
-
-import styled from 'styled-components';
-import { media } from '@citizenlab/cl2-component-library';
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,14 +40,17 @@ const ChildWrapper = styled.div`
 `;
 
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import messages from './messages';
 
 // Services
 import { IGroupData, MembershipType } from 'api/groups/types';
-
-import Outlet from 'components/Outlet';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAddGroup from 'api/groups/useAddGroup';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import GroupCreationStep1 from './GroupCreationStep1';
+import GroupsListPanel from './GroupsListPanel';
+import messages from './messages';
+import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 
 export type GroupCreationModal = false | 'step1' | MembershipType;
 

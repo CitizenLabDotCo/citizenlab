@@ -6,7 +6,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-// style
 interface Props {
   copyLink: string;
 }

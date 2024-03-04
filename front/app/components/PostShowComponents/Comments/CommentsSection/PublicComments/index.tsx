@@ -1,4 +1,3 @@
-// libraries
 import React, { useState } from 'react';
 
 import {
@@ -12,7 +11,6 @@ import {
 import { useInView } from 'react-intersection-observer';
 import { useLocation } from 'react-router-dom';
 
-// style
 import styled from 'styled-components';
 
 import { trackEventByName } from 'utils/analytics';

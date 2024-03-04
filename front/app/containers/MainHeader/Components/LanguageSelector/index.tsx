@@ -19,8 +19,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
 
-// style
-
 import { getSelectedLocale } from './utils';
 
 const DropdownButtonText = styled.div`

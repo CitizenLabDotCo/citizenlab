@@ -1,34 +1,5 @@
 import React, { FormEvent, useEffect, useState } from 'react';
-import moment, { Moment } from 'moment';
-import { isEmpty } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
 
-// Api
-import { IPhaseFiles } from 'api/phase_files/types';
-import eventEmitter from 'utils/eventEmitter';
-import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
-import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
-import usePhaseFiles from 'api/phase_files/usePhaseFiles';
-import usePhases from 'api/phases/usePhases';
-import usePhase from 'api/phases/usePhase';
-import useAddPhase from 'api/phases/useAddPhase';
-import useUpdatePhase from 'api/phases/useUpdatePhase';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import Error from 'components/UI/Error';
-import DateRangePicker from 'components/admin/DateRangePicker';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import {
-  Section,
-  SectionField,
-  SubSectionTitle,
-} from 'components/admin/Section';
-import PhaseParticipationConfig, {
-  IPhaseParticipationConfig,
-} from '../phase/phaseParticipationConfig';
-import FileUploader from 'components/UI/FileUploader';
 import {
   Text,
   Checkbox,
@@ -37,27 +8,65 @@ import {
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
+import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
+import { isEmpty } from 'lodash-es';
+import moment, { Moment } from 'moment';
+import { useParams } from 'react-router-dom';
+import { CLErrors, UploadFile, Multiloc } from 'typings';
+
+import DateRangePicker from 'components/admin/DateRangePicker';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import Error from 'components/UI/Error';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import clHistory from 'utils/cl-router/history';
+
+// Api
+import eventEmitter from 'utils/eventEmitter';
+import { IPhaseFiles } from 'api/phase_files/types';
+import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
+import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
+import usePhaseFiles from 'api/phase_files/usePhaseFiles';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+import useAddPhase from 'api/phases/useAddPhase';
+import useUpdatePhase from 'api/phases/useUpdatePhase';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import {
+  Section,
+  SectionField,
+  SubSectionTitle,
+} from 'components/admin/Section';
+
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useLocalize from 'hooks/useLocalize';
+
+import PhaseParticipationConfig, {
+  IPhaseParticipationConfig,
+} from '../phase/phaseParticipationConfig';
+
+import FileUploader from 'components/UI/FileUploader';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import CampaignRow from './CampaignRow';
 import messages from './messages';
 
-import { CLErrors, UploadFile, Multiloc } from 'typings';
 import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
-import { useParams } from 'react-router-dom';
 
 import { isNilOrError } from 'utils/helperUtils';
+
 import useCampaigns from 'api/campaigns/useCampaigns';
-import CampaignRow from './CampaignRow';
-import useLocalize from 'hooks/useLocalize';
-import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
-import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import { CampaignName } from 'api/campaigns/types';
+
 import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
+
 import { defaultAdminCardPadding } from 'utils/styleConstants';
-import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 

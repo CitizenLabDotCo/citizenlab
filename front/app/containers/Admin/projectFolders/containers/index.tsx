@@ -1,24 +1,31 @@
+// Libraries
 import React from 'react';
+
+import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import TabbedResource from 'components/admin/TabbedResource';
+import Button from 'components/UI/Button';
+import GoBackButton from 'components/UI/GoBackButton';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 // Services
 import { isAdmin } from 'utils/permissions/roles';
 
-import GoBackButton from 'components/UI/GoBackButton';
-import TabbedResource from 'components/admin/TabbedResource';
-import Button from 'components/UI/Button';
-import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
+// Components
 
 // Localisation
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+
+import useLocalize from 'hooks/useLocalize';
+
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
-
-import useLocalize from 'hooks/useLocalize';
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
-import useAuthUser from 'api/me/useAuthUser';
 
 const TopContainer = styled.div`
   width: 100%;

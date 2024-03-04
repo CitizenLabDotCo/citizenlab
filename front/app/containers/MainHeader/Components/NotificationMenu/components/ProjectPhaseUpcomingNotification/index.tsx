@@ -1,12 +1,15 @@
 import React, { memo } from 'react';
+
+import { FormattedDate } from 'react-intl';
+
+import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
 import { IProjectPhaseUpcomingNotificationData } from 'api/notifications/types';
 
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 import NotificationWrapper from '../NotificationWrapper';
-import T from 'components/T';
-import { FormattedDate } from 'react-intl';
 
 interface Props {
   notification: IProjectPhaseUpcomingNotificationData;

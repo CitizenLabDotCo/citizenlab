@@ -7,17 +7,17 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
+
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
-import Link from 'utils/cl-router/Link';
-
+import messages from './messages';
 import { saveTemplateFile } from './saveTemplateFile';
 
 const PowerBITemplates = () => {

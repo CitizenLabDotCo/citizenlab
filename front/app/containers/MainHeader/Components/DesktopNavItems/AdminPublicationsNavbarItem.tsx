@@ -1,5 +1,4 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 import {
   Icon,
@@ -7,24 +6,25 @@ import {
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
-import ProjectsListItem from '../ProjectsListItem';
+import { rgba, darken } from 'polished';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+
 import T from 'components/T';
 
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useLocalize from 'hooks/useLocalize';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // style
-import styled from 'styled-components';
-import { rgba, darken } from 'polished';
 
-import { Multiloc } from 'typings';
+import ProjectsListItem from '../ProjectsListItem';
 
 const NavigationDropdown = styled.li`
   display: flex;

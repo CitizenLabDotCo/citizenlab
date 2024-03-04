@@ -1,13 +1,13 @@
 import React from 'react';
 
-import styled from 'styled-components';
 import { fontSizes } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
-
-import Link from 'utils/cl-router/Link';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
 import T from 'components/T';
-import { Multiloc } from 'typings';
+
+import Link from 'utils/cl-router/Link';
 
 const NavigationItemBorder = styled.div`
   height: 6px;

@@ -1,5 +1,6 @@
 import React from 'react';
 
+// routing
 import {
   Box,
   Title,
@@ -11,6 +12,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+// api
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';

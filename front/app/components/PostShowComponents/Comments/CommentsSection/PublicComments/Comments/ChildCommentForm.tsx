@@ -1,4 +1,3 @@
-// libraries
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
@@ -32,8 +31,6 @@ import messages from '../../../messages';
 import tracks from '../../../tracks';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-// style
 
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 

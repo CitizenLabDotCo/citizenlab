@@ -16,16 +16,16 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
 import { isNilOrError } from 'utils/helperUtils';
+
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import useAuthUser from 'api/me/useAuthUser';
+
 import CancelUpdate from './CancelUpdate';
+import messages from './messages';
 import UpdateEmailForm from './UpdateEmailForm';
 
 // hook form
-
-import messages from './messages';
 
 export type FormValues = {
   email: string;

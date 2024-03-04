@@ -1,7 +1,4 @@
 import React, { ReactNode } from 'react';
-import styled from 'styled-components';
-
-import { TagType } from 'api/analysis_tags/types';
 
 import {
   Box,
@@ -14,15 +11,20 @@ import {
   Label,
   Radio,
 } from '@citizenlab/cl2-component-library';
-import Tag from '../Tag';
-import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
-import FilterItems from '../../FilterItems';
-import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import { isEmpty } from 'lodash-es';
-import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { useIntl } from 'utils/cl-intl';
+
 import useAnalysis from 'api/analyses/useAnalysis';
+import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
+import { IInputsFilterParams } from 'api/analysis_inputs/types';
+import { TagType } from 'api/analysis_tags/types';
+
+import FilterItems from '../../FilterItems';
+import messages from '../messages';
+import Tag from '../Tag';
 
 const AutoTagMethodContainer = styled.div<{ disabled: boolean }>`
   background-color: ${colors.grey100};

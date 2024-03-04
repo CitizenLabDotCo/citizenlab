@@ -7,15 +7,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { isString, isEmpty, capitalize } from 'lodash-es';
 
-// libraries
 import { transparentize } from 'polished';
 import { MentionsInput, Mention, MentionItem } from 'react-mentions';
 import styled, { useTheme } from 'styled-components';
 import { Locale } from 'typings';
 
 import Error from 'components/UI/Error';
-
-// style
 
 // Utils
 import getMentions from 'api/mentions/getMentions';

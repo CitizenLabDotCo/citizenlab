@@ -1,24 +1,26 @@
 import React from 'react';
 
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
+import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// styles
+s;
 import styled from 'styled-components';
 import { fontSizes } from '@citizenlab/cl2-component-library';
 
 import Button from 'components/UI/Button';
 import FormattedAnchor from 'components/FormattedAnchor';
-import Link from 'utils/cl-router/Link';
-import clHistory from 'utils/cl-router/history';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import eventEmitter from 'utils/eventEmitter';
-import useLocalize from 'hooks/useLocalize';
-import { WrappedComponentProps } from 'react-intl';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
+
+import { WrappedComponentProps } from 'react-intl';
+
+import messages from './messages';
 
 const Container = styled.div`
   padding: 0px 10px;

@@ -1,4 +1,3 @@
-// libraries
 import React, { useRef } from 'react';
 
 import { isEmpty } from 'lodash-es';
@@ -15,9 +14,6 @@ import {
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 import { useIntl } from 'utils/cl-intl';
-
-// resources
-
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';

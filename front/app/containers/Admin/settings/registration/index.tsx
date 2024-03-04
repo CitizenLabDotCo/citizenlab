@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import getSubmitState from 'utils/getSubmitState';
-import { Multiloc } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
+import messages from 'containers/Admin/settings/messages';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
 import {
   SectionTitle,
@@ -14,24 +11,29 @@ import {
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import CustomFieldSettings from './CustomFieldSettings';
-import ToggleUserConfirmation from './ToggleUserConfirmation';
-import ToggleShowFollowPreferences from './ToggleShowFollowPreferences';
-import CustomFieldsSignupText from './CustomFieldsSignupText';
-import Topics from 'components/Topics';
 import Areas from 'components/Areas';
+import Topics from 'components/Topics';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-import messages from 'containers/Admin/settings/messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import getSubmitState from 'utils/getSubmitState';
+import { isNilOrError } from 'utils/helperUtils';
 
 import {
   IAppConfigurationSettings,
   IUpdatedAppConfigurationProperties,
   TAppConfigurationSettingCore,
 } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import CustomFieldSettings from './CustomFieldSettings';
+import CustomFieldsSignupText from './CustomFieldsSignupText';
+import ToggleShowFollowPreferences from './ToggleShowFollowPreferences';
+import ToggleUserConfirmation from './ToggleUserConfirmation';
 
 export const LabelTooltip = styled.div`
   display: flex;

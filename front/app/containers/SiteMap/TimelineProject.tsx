@@ -1,11 +1,14 @@
 import React from 'react';
-import { IProjectData } from 'api/projects/types';
-import Link from 'utils/cl-router/Link';
+
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import Link from 'utils/cl-router/Link';
+
 import usePhases from 'api/phases/usePhases';
+import { IProjectData } from 'api/projects/types';
+
+import messages from './messages';
 
 interface Props {
   project: IProjectData;

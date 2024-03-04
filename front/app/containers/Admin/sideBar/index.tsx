@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { isPage } from 'utils/helperUtils';
 
 import {
   Icon,
@@ -10,30 +9,36 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import MenuItem from './MenuItem';
-import Link from 'utils/cl-router/Link';
-import { SupportMenu } from './SupportMenu';
-import { UserMenu } from './UserMenu';
-import NotificationsPopup from './NotificationsPopup';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+import { InsertConfigurationOptions } from 'typings';
+
+import Outlet from 'components/Outlet';
 
 import { useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isPage } from 'utils/helperUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
+
+import useIdeasCount from 'api/idea_count/useIdeasCount';
+import useAuthUser from 'api/me/useAuthUser';
+import MenuItem from './MenuItem';
+
 import messages from './messages';
+import NotificationsPopup from './NotificationsPopup';
+import { SupportMenu } from './SupportMenu';
+import { UserMenu } from './UserMenu';
 
 // style
-import styled from 'styled-components';
 
 // resources
-import Outlet from 'components/Outlet';
-import { InsertConfigurationOptions } from 'typings';
-import { insertConfiguration } from 'utils/moduleUtils';
 
 import defaultNavItems, { NavItem } from './navItems';
 
 // Hooks
-import { useLocation } from 'react-router-dom';
-import useAuthUser from 'api/me/useAuthUser';
-import useIdeasCount from 'api/idea_count/useIdeasCount';
+
 import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
+
 import { isAdmin } from 'utils/permissions/roles';
 
 import { IUser } from 'api/users/types';

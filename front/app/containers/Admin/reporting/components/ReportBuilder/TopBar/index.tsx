@@ -27,6 +27,8 @@ import PrintReportButton from '../../ReportBuilderPage/ReportRow/Buttons/PrintRe
 import messages from './messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
+// routing
 import clHistory from 'utils/cl-router/history';
 
 type ContentBuilderTopBarProps = {

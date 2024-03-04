@@ -5,12 +5,13 @@ import {
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import { Section, SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
-import { Section, SectionField } from 'components/admin/Section';
 
 // style
-import styled from 'styled-components';
 
 export const Container = styled.div``;
 

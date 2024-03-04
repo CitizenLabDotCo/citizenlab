@@ -19,7 +19,6 @@ import { isValidEmail } from 'utils/validate';
 
 import sendPasswordResetMail from 'api/authentication/reset_password/sendPasswordResetEmail';
 
-// style
 import messages from './messages';
 
 interface Props {}

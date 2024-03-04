@@ -17,21 +17,19 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import useBlockedUsercount from 'api/blocked_users/useBlockedUsersCount';
 import { IGroupData } from 'api/groups/types';
+import useGroups from 'api/groups/useGroups';
+import useUsersCount from 'api/users_count/useUsersCount';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Events
 
 import events, { MembershipAdd } from './events';
-
 import messages from './messages';
 
 // tracking
 
 import tracks from './tracks';
-
-import useGroups from 'api/groups/useGroups';
-import useUsersCount from 'api/users_count/useUsersCount';
 
 const Container = styled.div`
   flex: 1;

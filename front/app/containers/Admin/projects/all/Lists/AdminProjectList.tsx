@@ -1,6 +1,5 @@
 import React, { Fragment, memo } from 'react';
 
-// style
 import styled from 'styled-components';
 
 import { SortableList, SortableRow } from 'components/admin/ResourceList';

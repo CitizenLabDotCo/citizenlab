@@ -12,8 +12,6 @@ import { IProjectFolderData } from 'api/project_folders/types';
 
 import messages from './messages';
 
-// style
-
 const Container = styled.div``;
 
 const ShareButton = styled(Button)``;

@@ -16,7 +16,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
-// resources
 import useAuthUser from 'api/me/useAuthUser';
 
 import messages from '../../admin/containers/messages';

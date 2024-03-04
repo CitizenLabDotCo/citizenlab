@@ -3,13 +3,11 @@ import React, { FormEvent } from 'react';
 // router
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
-
 import { PasswordResetSuccess } from 'containers/PasswordReset/PasswordResetSuccess';
 import { isString } from 'lodash-es';
 import { parse } from 'qs';
 import { adopt } from 'react-adopt';
 import { Helmet } from 'react-helmet';
-
 import { WrappedComponentProps } from 'react-intl';
 
 // style
@@ -18,8 +16,8 @@ import { WrappedComponentProps } from 'react-intl';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-
 import { CLError } from 'typings';
+
 import {
   StyledContentContainer,
   Title,

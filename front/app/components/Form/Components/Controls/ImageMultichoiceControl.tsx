@@ -27,8 +27,6 @@ import { getOptions, getSubtextElement } from './controlUtils';
 import imageFile from './emptyImage.png';
 import messages from './messages';
 
-// style
-
 const StyledBox = styled(Box)`
   background-color: ${colors.grey100};
   position: relative;

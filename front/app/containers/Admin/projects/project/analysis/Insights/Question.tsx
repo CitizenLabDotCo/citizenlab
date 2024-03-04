@@ -1,9 +1,4 @@
 import React, { useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
-
-import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';
-import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
-import { IInsightData } from 'api/analysis_insights/types';
 
 import {
   Box,
@@ -15,17 +10,23 @@ import {
   Button,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import styled from 'styled-components';
-import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import FilterItems from '../FilterItems';
-import Rate from './Rate';
-
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { useParams, useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+
 import { trackEventByName } from 'utils/analytics';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
+import { IInsightData } from 'api/analysis_insights/types';
+import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';
+import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
+
+import FilterItems from '../FilterItems';
+
 import messages from './messages';
+import Rate from './Rate';
 import {
   deleteTrailingIncompleteIDs,
   removeRefs,

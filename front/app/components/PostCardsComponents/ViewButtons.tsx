@@ -24,7 +24,6 @@ import useLocale from 'hooks/useLocale';
 
 import messages from './messages';
 
-// tracks
 import tracks from './tracks';
 
 const Container = styled.div`

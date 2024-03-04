@@ -1,24 +1,29 @@
 import React, { useState, useCallback } from 'react';
+
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import { SerializedNodes } from '@craftjs/core';
+import { isEmpty } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useReport from 'api/reports/useReport';
+import { Locale } from 'typings';
+import Frame from 'components/admin/ContentBuilder/Frame';
+import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import useReportLayout from 'api/report_layout/useReportLayout';
+import useReport from 'api/reports/useReport';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import useLocale from 'hooks/useLocale';
 
 // context
-import { ReportContextProvider } from '../../context/ReportContext';
-import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-
-import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
-
-import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
+import EditModePreview from '../../components/ReportBuilder/EditModePreview';
 import Editor from '../../components/ReportBuilder/Editor';
+import { ReportContextProvider } from '../../context/ReportContext';
+
 import TopBar from '../../components/ReportBuilder/TopBar';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
-import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
-import Frame from 'components/admin/ContentBuilder/Frame';
-import EditModePreview from '../../components/ReportBuilder/EditModePreview';
+
 import Settings from '../../components/ReportBuilder/Settings';
 import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrapper';
 
@@ -33,10 +38,8 @@ import {
   CraftJson,
   ContentBuilderErrors,
 } from 'components/admin/ContentBuilder/typings';
-import { SerializedNodes } from '@craftjs/core';
-import { Locale } from 'typings';
+
 import { ReportLayout } from 'api/report_layout/types';
-import { isEmpty } from 'lodash-es';
 import { ReportResponse } from 'api/reports/types';
 
 interface Props {

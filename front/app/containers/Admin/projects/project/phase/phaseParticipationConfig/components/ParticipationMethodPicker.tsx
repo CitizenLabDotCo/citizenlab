@@ -1,32 +1,34 @@
 import React from 'react';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import {
   IconTooltip,
   Radio,
   Text,
   Box,
 } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import { LabelHeaderDescription } from './shared/labels';
-import { ParticipationMethodRadio } from './shared/styling';
-import Warning from 'components/UI/Warning';
-import Tippy from '@tippyjs/react';
 import NewBadge from 'components/UI/NewBadge';
+import { isExpired } from 'components/UI/NewBadge/utils';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
-import messages2 from './messages';
-
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
-import { isExpired } from 'components/UI/NewBadge/utils';
 
-import { ApiErrors } from '..';
 import { IPhase, ParticipationMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { ApiErrors } from '..';
+import messages from '../../../messages';
+
+import messages2 from './messages';
+import { LabelHeaderDescription } from './shared/labels';
+import { ParticipationMethodRadio } from './shared/styling';
 
 interface Props {
   participation_method: ParticipationMethod;

@@ -15,7 +15,6 @@ import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-// style
 import clickOutside from 'utils/containers/clickOutside';
 import eventEmitter from 'utils/eventEmitter';
 

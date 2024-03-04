@@ -1,11 +1,12 @@
 import React from 'react';
 
+import { isNilOrError } from 'utils/helperUtils';
+
 import useLocale from 'hooks/useLocale';
 
-import PoliciesForm from './PoliciesForm';
-
 import { SetError, State } from '../../typings';
-import { isNilOrError } from 'utils/helperUtils';
+
+import PoliciesForm from './PoliciesForm';
 
 interface Props {
   state: State;

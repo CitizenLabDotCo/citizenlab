@@ -1,5 +1,7 @@
 import React, { lazy } from 'react';
+
 import PageLoading from 'components/UI/PageLoading';
+
 import moduleConfiguration from 'modules';
 
 const AdminIdeasContainer = lazy(() => import('./index'));

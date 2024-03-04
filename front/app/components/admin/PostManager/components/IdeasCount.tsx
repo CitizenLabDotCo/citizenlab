@@ -9,7 +9,7 @@ import useIdeasCount from 'api/idea_count/useIdeasCount';
 
 import messages from '../messages';
 
-// styles
+s;
 
 const Container = styled.div`
   height: 100%;

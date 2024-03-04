@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { List } from 'components/admin/ResourceList';
-import DefaultTopicRow from './DefaultTopicRow';
-import CustomTopicRow from './CustomTopicRow';
 
 import { ITopicData } from 'api/topics/types';
+
+import CustomTopicRow from './CustomTopicRow';
+import DefaultTopicRow from './DefaultTopicRow';
 
 interface Props {
   topics: ITopicData[];

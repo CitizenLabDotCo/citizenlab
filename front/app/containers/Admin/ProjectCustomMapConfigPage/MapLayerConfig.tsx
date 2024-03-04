@@ -1,21 +1,27 @@
 import React, { memo, useEffect, useState } from 'react';
+
+import { ColorPickerInput, Select } from '@citizenlab/cl2-component-library';
 import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-
-import useUpdateMapLayer from 'api/map_layers/useUpdateMapLayer';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useMapConfig from 'api/map_config/useMapConfig';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+import { Multiloc, IOption } from 'typings';
 
 import {
   Section,
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { ColorPickerInput, Select } from '@citizenlab/cl2-component-library';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import useMapConfig from 'api/map_config/useMapConfig';
+import useUpdateMapLayer from 'api/map_layers/useUpdateMapLayer';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import {
   getLayerColor,
@@ -24,14 +30,10 @@ import {
   getUnnamedLayerTitleMultiloc,
 } from '../../../utils/mapUtils/map';
 
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
-import styled from 'styled-components';
-
 // typing
-import { Multiloc, IOption } from 'typings';
+
 import { IMapLayerAttributes } from 'api/map_layers/types';
 
 const Container = styled.div`

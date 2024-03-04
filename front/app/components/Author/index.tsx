@@ -21,8 +21,6 @@ import useUserById from 'api/users/useUserById';
 
 import useLocale from 'hooks/useLocale';
 
-// style
-
 import messages from './messages';
 
 const Container = styled.div`

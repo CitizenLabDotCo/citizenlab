@@ -1,15 +1,18 @@
 import React from 'react';
 
-import Modal from 'components/UI/Modal';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
+import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import useInitiativeReviewRequired from '../hooks/useInitiativeReviewRequired';
 import messages from '../messages';
 
 import InitiativeCreatedModalContent from './InitiativeCreatedModalContent';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useInitiativeReviewRequired from '../hooks/useInitiativeReviewRequired';
 
 interface Props {
   initiativeIdForSocialSharing: string | null;

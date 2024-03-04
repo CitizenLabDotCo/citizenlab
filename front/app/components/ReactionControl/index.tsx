@@ -9,17 +9,14 @@ import styled from 'styled-components';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { isNilOrError } from 'utils/helperUtils';
 
-// style
-
 import { TReactionMode } from 'api/idea_reactions/types';
 import useAddIdeaReaction from 'api/idea_reactions/useAddIdeaReaction';
 import useDeleteIdeaReaction from 'api/idea_reactions/useDeleteIdeaReaction';
 import useIdeaReaction from 'api/idea_reactions/useIdeaReaction';
+import { IdeaReactingDisabledReason } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
-
-import { IdeaReactingDisabledReason } from 'api/ideas/types';
 import { getLatestRelevantPhase } from 'api/phases/utils';
 
 import ReactionButton from './ReactionButton';

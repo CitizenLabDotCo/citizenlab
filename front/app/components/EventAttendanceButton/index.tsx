@@ -19,7 +19,6 @@ import { getEventDateString } from 'utils/dateUtils';
 
 import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
 
-// api
 import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
 import { IEventData } from 'api/events/types';
 import useEventsByUserId from 'api/events/useEventsByUserId';
@@ -30,8 +29,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import { EventModalConfetti } from './EventModalConfetti';
 import messages from './messages';
-
-// style
 
 type EventAttendanceButtonProps = {
   event: IEventData;

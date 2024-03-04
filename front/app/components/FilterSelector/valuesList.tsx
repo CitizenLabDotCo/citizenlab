@@ -13,8 +13,6 @@ import Checkbox from 'components/UI/Checkbox';
 
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-// style
-
 const List = styled.ul`
   margin: 0;
   padding: 0;

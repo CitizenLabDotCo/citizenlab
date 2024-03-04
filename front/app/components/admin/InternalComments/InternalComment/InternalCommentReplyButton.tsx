@@ -14,8 +14,6 @@ import useUserById from 'api/users/useUserById';
 import { commentReplyButtonClicked } from '../events';
 import tracks from '../tracks';
 
-// style
-
 const Container = styled.li`
   display: flex;
   align-items: center;

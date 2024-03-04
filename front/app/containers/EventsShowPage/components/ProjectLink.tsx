@@ -9,12 +9,15 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
 
 // router
 import Link from 'utils/cl-router/Link';
-import useLocalize from 'hooks/useLocalize';
+
 import { IProjectData } from 'api/projects/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from '../messages';
 
 type ProjectLinkProps = {
   project: IProjectData;

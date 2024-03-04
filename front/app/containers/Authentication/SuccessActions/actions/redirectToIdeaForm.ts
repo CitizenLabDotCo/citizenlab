@@ -1,4 +1,3 @@
-// tracks
 import { stringify } from 'qs';
 
 import tracks from 'components/IdeaButton/tracks';

@@ -1,17 +1,18 @@
 import React from 'react';
 
+import moment from 'moment';
+
 import Card from '../../_shared/Card';
-import AgeCard from './AgeCard';
 
 // messages
+import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 import messages from '../messages';
 
 // settings
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 
 import { ChartWidgetProps } from '../typings';
 
-import moment from 'moment';
+import AgeCard from './AgeCard';
 
 const AgeWidget = ({ title, projectId, startAt, endAt }: ChartWidgetProps) => {
   const props = {

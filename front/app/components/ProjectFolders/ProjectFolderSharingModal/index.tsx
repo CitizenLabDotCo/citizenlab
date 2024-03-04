@@ -14,8 +14,6 @@ import useProjectFolderbById from 'api/project_folders/useProjectFolderById';
 
 import messages from './messages';
 
-// style
-
 interface Props {
   projectFolderId: string;
   opened: boolean;

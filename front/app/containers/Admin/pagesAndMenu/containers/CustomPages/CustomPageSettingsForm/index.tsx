@@ -18,13 +18,16 @@ import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
+import Select from 'components/HookForm/Select';
 import SlugInput from 'components/HookForm/SlugInput';
+import Tabs from 'components/HookForm/Tabs';
 import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { slugRegEx } from 'utils/textUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-
-import Tabs from 'components/HookForm/Tabs';
-import Select from 'components/HookForm/Select';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IAreaData } from 'api/areas/types';
@@ -38,12 +41,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
-
 import messages from '../messages';
-
-import { useIntl } from 'utils/cl-intl';
 
 // styles
 

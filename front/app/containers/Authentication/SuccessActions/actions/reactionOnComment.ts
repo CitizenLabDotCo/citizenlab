@@ -1,12 +1,14 @@
-import { IUserData } from 'api/users/types';
-import { addCommentReaction } from 'api/comment_reactions/useAddCommentReaction';
-import { deleteCommentReaction } from 'api/comment_reactions/useDeleteCommentReaction';
 import {
   trackLike,
   trackCancelLike,
 } from 'components/PostShowComponents/Comments/Comment/CommentReaction/trackReaction';
-import commentsKeys from 'api/comments/keys';
+
 import { queryClient } from 'utils/cl-react-query/queryClient';
+
+import { addCommentReaction } from 'api/comment_reactions/useAddCommentReaction';
+import { deleteCommentReaction } from 'api/comment_reactions/useDeleteCommentReaction';
+import commentsKeys from 'api/comments/keys';
+import { IUserData } from 'api/users/types';
 
 export interface ReactionOnCommentParams {
   alreadyReacted: boolean;

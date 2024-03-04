@@ -16,7 +16,7 @@ import useLocale from 'hooks/useLocale';
 
 import messages from './messages';
 
-// styles
+s;
 import { ItemMenu } from './styles';
 
 interface Props {

@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { useIntl } from 'utils/cl-intl';
 import oldMessages from 'containers/Authentication/steps/AuthProviders/messages';
 
 import FranceConnectButton from 'components/UI/FranceConnectButton';
+
+import { useIntl } from 'utils/cl-intl';
 
 interface Props {
   onLogin: () => void;

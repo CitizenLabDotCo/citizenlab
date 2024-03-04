@@ -1,16 +1,18 @@
 import React from 'react';
-import { POLICY_PAGES } from 'api/custom_pages/types';
 
-import styled from 'styled-components';
 import { colors } from '@citizenlab/cl2-component-library';
+import pagesAndMenuMessages from 'containers/Admin/pagesAndMenu/messages';
+import styled from 'styled-components';
 
-import Link from 'utils/cl-router/Link';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import PageEditor from './PageEditor';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+
+import { POLICY_PAGES } from 'api/custom_pages/types';
+
 import messages from './messages';
-import pagesAndMenuMessages from 'containers/Admin/pagesAndMenu/messages';
+import PageEditor from './PageEditor';
 
 export const StyledLink = styled(Link)`
   color: ${colors.textSecondary};

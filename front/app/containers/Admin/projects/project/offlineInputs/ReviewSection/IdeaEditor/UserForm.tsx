@@ -9,13 +9,13 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import AuthorInput from './AuthorInput';
 
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
-import { UserFormData } from './typings';
+import AuthorInput from './AuthorInput';
 import { SelectedAuthor } from './AuthorInput/typings';
+import messages from './messages';
+import { UserFormData } from './typings';
 
 interface Props {
   userFormData: UserFormData;

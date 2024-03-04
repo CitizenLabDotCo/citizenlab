@@ -1,19 +1,21 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+
 import { List } from 'components/admin/ResourceList';
-import Project from './Project';
-import Link from 'utils/cl-router/Link';
 import Warning from 'components/UI/Warning';
 
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
+
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import { ICustomPageData } from 'api/custom_pages/types';
+
 import { adminCustomPageSettingsPath } from '../../routes';
 
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { ICustomPageData } from 'api/custom_pages/types';
+import Project from './Project';
 
 interface Props {
   customPage: ICustomPageData;

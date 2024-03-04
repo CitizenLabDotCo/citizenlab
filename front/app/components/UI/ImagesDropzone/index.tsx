@@ -10,7 +10,6 @@ import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
 import Dropzone, { Accept } from 'react-dropzone';
 import { WrappedComponentProps } from 'react-intl';
 
-// style
 import styled from 'styled-components';
 import { UploadFile } from 'typings';
 

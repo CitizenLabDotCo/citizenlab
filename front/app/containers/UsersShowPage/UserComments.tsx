@@ -1,9 +1,5 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { groupBy } from 'lodash-es';
 
-import PostCommentGroup from './PostCommentGroup';
-import Button from 'components/UI/Button';
 import {
   Title,
   useBreakpoint,
@@ -11,19 +7,24 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import { groupBy } from 'lodash-es';
+import { darken, rgba } from 'polished';
 import { useParams } from 'react-router-dom';
-import useUserBySlug from 'api/users/useUserBySlug';
-
-// style
 import styled, { useTheme } from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { darken, rgba } from 'polished';
+import Button from 'components/UI/Button';
+
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
 import useComments from 'api/comments/useComments';
 import useAuthUser from 'api/me/useAuthUser';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
+import useUserBySlug from 'api/users/useUserBySlug';
+
+import messages from './messages';
+import PostCommentGroup from './PostCommentGroup';
 
 const Container = styled.div`
   display: flex;

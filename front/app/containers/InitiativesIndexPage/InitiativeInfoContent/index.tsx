@@ -1,15 +1,19 @@
 import React, { memo } from 'react';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 // style
-import styled from 'styled-components';
-import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import useLocalize from 'hooks/useLocalize';
+
+import messages from '../messages';
 
 const Content = styled.div`
   color: ${colors.textSecondary};

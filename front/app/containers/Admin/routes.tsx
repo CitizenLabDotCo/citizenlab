@@ -1,10 +1,20 @@
 import React, { lazy } from 'react';
+
 import moduleConfiguration from 'modules';
 
 // routes
+import { Navigate, useLocation } from 'react-router-dom';
+
+import PageLoading from 'components/UI/PageLoading';
+import Unauthorized from 'components/Unauthorized';
+
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { isNilOrError, isUUID } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
+
+import { IAppConfigurationData } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import createDashboardRoutes from './dashboard/routes';
-import createAdminInitiativesRoutes from './initiatives/routes';
-import createAdminUsersRoutes from './users/routes';
 import invitationsRoutes from './invitations/routes';
 import createAdminProjectsRoutes from './projects/routes';
 import settingsRoutes from './settings/routes';
@@ -15,20 +25,13 @@ import projectFoldersRoutes from './projectFolders/routes';
 import reportingRoutes from './reporting/routes';
 import toolsRoutes from './tools/routes';
 
-import PageLoading from 'components/UI/PageLoading';
-import { Navigate, useLocation } from 'react-router-dom';
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
-import Unauthorized from 'components/Unauthorized';
 
-import { usePermission } from 'utils/permissions';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
-import { isNilOrError, isUUID } from 'utils/helperUtils';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-
-import { IAppConfigurationData } from 'api/app_configuration/types';
+import createAdminInitiativesRoutes from './initiatives/routes';
+import createAdminUsersRoutes from './users/routes';
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments.length === 4 &&

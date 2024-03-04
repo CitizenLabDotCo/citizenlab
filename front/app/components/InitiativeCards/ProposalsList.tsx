@@ -1,10 +1,7 @@
 import React from 'react';
 
-// tracks
-
 import { Spinner, Button, media } from '@citizenlab/cl2-component-library';
 
-// style
 import { rgba } from 'polished';
 import styled, { useTheme } from 'styled-components';
 

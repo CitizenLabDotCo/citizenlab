@@ -1,23 +1,26 @@
 import React, { useMemo } from 'react';
 
-import useLocale from 'hooks/useLocale';
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
-import { useSurveyResults } from 'api/graph_data_units';
-
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import NoData from '../_shared/NoData';
-import FormResultsQuestion from './FormResultsQuestion';
-import Dot from './Dot';
+
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
-import messages from './messages';
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { useSurveyResults } from 'api/graph_data_units';
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
-import { isNilOrError } from 'utils/helperUtils';
-import { useIntl } from 'utils/cl-intl';
-import { createResultRows } from './utils';
+import NoData from '../_shared/NoData';
 import { BORDER } from '../constants';
+
+import Dot from './Dot';
+import FormResultsQuestion from './FormResultsQuestion';
+import messages from './messages';
+import { createResultRows } from './utils';
 
 type Props = {
   phaseId: string;

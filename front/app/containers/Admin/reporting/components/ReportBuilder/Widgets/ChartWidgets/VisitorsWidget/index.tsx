@@ -1,16 +1,17 @@
 import React from 'react';
 
-import Card from '../../_shared/Card';
-import VisitorsCard from './VisitorsCard';
-
 import moment from 'moment';
 
 // settings
-import messages from '../messages';
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 
 import { IResolution } from 'components/admin/ResolutionControl';
+
+import Card from '../../_shared/Card';
+import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
+import messages from '../messages';
 import { ChartWidgetProps } from '../typings';
+
+import VisitorsCard from './VisitorsCard';
 
 const VisitorsWidget = ({
   title,

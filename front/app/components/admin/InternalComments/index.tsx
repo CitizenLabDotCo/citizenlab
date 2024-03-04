@@ -1,4 +1,3 @@
-// libraries
 import React, { useState } from 'react';
 
 import {
@@ -25,8 +24,6 @@ import useInternalComments from 'api/internal_comments/useInternalComments';
 import InternalComments from './InternalComments';
 import InternalCommentSorting from './InternalCommentSorting';
 import InternalParentCommentForm from './InternalParentCommentForm';
-
-// style
 
 import tracks from './tracks';
 

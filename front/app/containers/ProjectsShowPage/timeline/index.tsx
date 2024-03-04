@@ -1,18 +1,5 @@
 import React, { useMemo } from 'react';
 
-import Timeline from './Timeline';
-import PhaseSurvey from './Survey';
-import PhasePoll from './Poll';
-import PhaseVolunteering from './Volunteering';
-import PhaseIdeas from './Ideas';
-import ContentContainer from 'components/ContentContainer';
-import PhaseNavigation from './PhaseNavigation';
-import {
-  ProjectPageSectionTitle,
-  maxPageWidth,
-} from 'containers/ProjectsShowPage/styles';
-import SectionContainer from 'components/SectionContainer';
-import PhaseDocumentAnnotation from './PhaseDocumentAnnotation';
 import StatusModule from 'components/StatusModule';
 import VotingResults from './VotingResults';
 import PhaseReport from './PhaseReport';
@@ -27,16 +14,32 @@ import usePhases from 'api/phases/usePhases';
 import useLocale from 'hooks/useLocale';
 
 import messages from 'containers/ProjectsShowPage/messages';
+import {
+  ProjectPageSectionTitle,
+  maxPageWidth,
+} from 'containers/ProjectsShowPage/styles';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
 
-import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
-import { isValidPhase } from '../phaseParam';
+import ContentContainer from 'components/ContentContainer';
+import SectionContainer from 'components/SectionContainer';
+
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import { IPhaseData } from 'api/phases/types';
+import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
+
+import { isValidPhase } from '../phaseParam';
+
+import PhaseIdeas from './Ideas';
+import PhaseDocumentAnnotation from './PhaseDocumentAnnotation';
+import PhaseNavigation from './PhaseNavigation';
+import PhasePoll from './Poll';
+import PhaseSurvey from './Survey';
+import Timeline from './Timeline';
+import PhaseVolunteering from './Volunteering';
 
 const StyledSectionContainer = styled(SectionContainer)`
   display: flex;

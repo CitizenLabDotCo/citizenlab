@@ -3,20 +3,20 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
-
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { PreviousPathnameContext } from 'context';
 import { omit } from 'lodash-es';
-
 import { Multiloc } from 'typings';
+
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import PageContainer from 'components/UI/PageContainer';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isError, isNilOrError } from 'utils/helperUtils';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { usePermission } from 'utils/permissions';
 
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';

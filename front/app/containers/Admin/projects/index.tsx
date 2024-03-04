@@ -1,6 +1,8 @@
 import React from 'react';
-import HelmetIntl from 'components/HelmetIntl';
+
 import { Outlet as RouterOutlet } from 'react-router-dom';
+
+import HelmetIntl from 'components/HelmetIntl';
 
 import messages from './messages';
 

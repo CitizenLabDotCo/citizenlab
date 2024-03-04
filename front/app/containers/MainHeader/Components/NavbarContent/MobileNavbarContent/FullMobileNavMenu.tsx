@@ -1,26 +1,30 @@
 import React from 'react';
+
+import { Box, media, colors } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+import CloseIconButton from 'components/UI/CloseIconButton';
+import FullscreenModal from 'components/UI/FullscreenModal';
+
 import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
+import useNavbarItems from 'api/navbar/useNavbarItems';
+
+import useLocalize from 'hooks/useLocalize';
 import tracks from '../../../tracks';
 
-import useNavbarItems from 'api/navbar/useNavbarItems';
-import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
-import useLocalize from 'hooks/useLocalize';
-
-import FullscreenModal from 'components/UI/FullscreenModal';
+import getNavbarItemPropsArray from '../../DesktopNavItems/getNavbarItemPropsArray';
 import TenantLogo from '../../TenantLogo';
+
 import FullMobileNavMenuItem from './FullMobileNavMenuItem';
 
 // styles
-import styled from 'styled-components';
-import { darken } from 'polished';
 
 import messages from '../../../messages';
-
-import { isNilOrError } from 'utils/helperUtils';
-import CloseIconButton from 'components/UI/CloseIconButton';
-import getNavbarItemPropsArray from '../../DesktopNavItems/getNavbarItemPropsArray';
-import { useIntl } from 'utils/cl-intl';
-import { Box, media, colors } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   height: 100%;

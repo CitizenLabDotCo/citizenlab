@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// resources
 import useIdeaById from 'api/ideas/useIdeaById';
 
 import messages from '../messages';

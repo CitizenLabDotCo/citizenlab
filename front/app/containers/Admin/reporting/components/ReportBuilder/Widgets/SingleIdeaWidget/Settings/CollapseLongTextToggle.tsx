@@ -2,8 +2,9 @@ import React from 'react';
 
 import { colors, Toggle } from '@citizenlab/cl2-component-library';
 
-import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 interface Props {
   collapseLongText: boolean;

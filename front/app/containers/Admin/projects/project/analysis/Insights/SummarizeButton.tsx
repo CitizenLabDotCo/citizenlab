@@ -1,20 +1,23 @@
+import React, { useEffect, useState } from 'react';
+
 import {
   Box,
   Button,
   Text,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
-import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
-import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
-import { ISummaryPreCheck } from 'api/analysis_summary_pre_check/types';
-
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
-import { trackEventByName } from 'utils/analytics';
+import { useParams } from 'react-router-dom';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
+
+import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
+import { ISummaryPreCheck } from 'api/analysis_summary_pre_check/types';
+import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
+
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+
 import messages from './messages';
 
 const SummarizeButton = () => {

@@ -17,7 +17,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import useUserById from 'api/users/useUserById';
 
-// styles
+s;
 
 export const Container = styled.div<{ size: number }>`
   flex: 0 0 ${({ size }) => size}px;

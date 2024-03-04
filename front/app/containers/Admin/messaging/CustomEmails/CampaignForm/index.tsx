@@ -22,9 +22,6 @@ import Select from 'components/HookForm/Select';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-// resources
-
 import { getFullName } from 'utils/textUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 

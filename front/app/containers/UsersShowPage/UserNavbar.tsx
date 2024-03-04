@@ -1,29 +1,31 @@
 import React, { memo } from 'react';
+
 import { useLocation } from 'react-router-dom';
 
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
-
-// styles
+s;
 import {
   fontSizes,
   media,
   Icon,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 import { rgba } from 'polished';
+import styled from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
-import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAuthUser from 'api/me/useAuthUser';
-import useEventsByUserId from 'api/events/useEventsByUserId';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+
+import useEventsByUserId from 'api/events/useEventsByUserId';
+import useAuthUser from 'api/me/useAuthUser';
+import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
+import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 import { IUserData } from 'api/users/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from './messages';
 
 const UserNavbarWrapper = styled.div`
   width: 100%;

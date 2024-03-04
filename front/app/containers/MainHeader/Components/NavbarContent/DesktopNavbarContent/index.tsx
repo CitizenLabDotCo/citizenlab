@@ -1,9 +1,5 @@
 import React from 'react';
 
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
-
 import {
   IconButton,
   colors,
@@ -12,20 +8,25 @@ import {
   isRtl,
   Button,
 } from '@citizenlab/cl2-component-library';
-import NotificationMenu from '../../NotificationMenu';
-import LanguageSelector from '../../LanguageSelector';
-import UserMenu from '../../UserMenu';
-
-import clHistory from 'utils/cl-router/history';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // style
-import styled, { useTheme } from 'styled-components';
 import { darken } from 'polished';
+import styled, { useTheme } from 'styled-components';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError, isPage } from 'utils/helperUtils';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocale from 'hooks/useLocale';
+
 import messages from '../../../messages';
+import LanguageSelector from '../../LanguageSelector';
+import NotificationMenu from '../../NotificationMenu';
+import UserMenu from '../../UserMenu';
 
 const Right = styled.div`
   display: flex;

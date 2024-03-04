@@ -10,7 +10,6 @@ import {
 import { isEmpty } from 'lodash-es';
 import TextareaAutosize from 'react-textarea-autosize';
 
-// style
 import styled from 'styled-components';
 import { Locale } from 'typings';
 

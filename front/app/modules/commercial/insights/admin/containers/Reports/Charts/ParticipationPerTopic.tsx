@@ -4,8 +4,6 @@ import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import { map, sortBy } from 'lodash-es';
 import styled from 'styled-components';
 
-// resources
-
 import {
   GraphCard,
   GraphCardInner,

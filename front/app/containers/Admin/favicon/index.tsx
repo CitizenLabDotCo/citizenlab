@@ -11,9 +11,6 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import getSubmitState from 'utils/getSubmitState';
-
-// resources
-
 import { isNilOrError } from 'utils/helperUtils';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

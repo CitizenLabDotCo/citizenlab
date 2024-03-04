@@ -1,13 +1,17 @@
 import React from 'react';
-import { useTheme } from 'styled-components';
+
 import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import T from 'components/T';
-import messages from '../messages';
+
 import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 // Types
 import { StatusComponentProps } from '../StatusWrapper';
+
 import Status from '.';
 
 const ThresholdReached = (props: StatusComponentProps) => {

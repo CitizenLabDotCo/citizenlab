@@ -1,16 +1,18 @@
 import React from 'react';
 
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
 import { Button, colors, Title, Box } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { object, string } from 'yup';
+
+import Input from 'components/HookForm/Input';
+
+import { useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import useUpdateAnalysisTag from 'api/analysis_tags/useUpdateAnalysisTag';
-import { object, string } from 'yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import Input from 'components/HookForm/Input';
+
+import messages from './messages';
 
 type RenameTagProps = {
   closeRenameModal: () => void;

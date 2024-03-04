@@ -2,11 +2,12 @@
 import React, { useState, FormEvent } from 'react';
 
 // Services
-import useAddSpamReport from 'api/spam_reports/useAddSpamReport';
+import { ModalContentContainer } from 'components/UI/Modal';
+
 import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';
+import useAddSpamReport from 'api/spam_reports/useAddSpamReport';
 
 import ReportForm from './SpamReportForm';
-import { ModalContentContainer } from 'components/UI/Modal';
 
 interface Props {
   targetType: 'comments' | 'ideas' | 'initiatives';

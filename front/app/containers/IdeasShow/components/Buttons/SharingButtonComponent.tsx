@@ -1,8 +1,10 @@
 import React from 'react';
-import IdeaCTAButton from './IdeaCTAButton';
 
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../../messages';
+
+import IdeaCTAButton from './IdeaCTAButton';
 
 interface Props {
   onClick?: () => void;

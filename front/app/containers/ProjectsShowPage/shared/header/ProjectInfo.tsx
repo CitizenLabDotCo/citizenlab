@@ -1,13 +1,5 @@
 import React from 'react';
 
-import Fragment from 'components/Fragment';
-import FileAttachments from 'components/UI/FileAttachments';
-import ProjectInfoSideBar from './ProjectInfoSideBar';
-import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
-import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
-
-import useProjectById from 'api/projects/useProjectById';
-import useProjectFiles from 'api/project_files/useProjectFiles';
 import {
   Title,
   Box,
@@ -15,11 +7,20 @@ import {
   media,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
+import Fragment from 'components/Fragment';
+import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
+import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
 import T from 'components/T';
+import FileAttachments from 'components/UI/FileAttachments';
+
+import useProjectFiles from 'api/project_files/useProjectFiles';
+import useProjectById from 'api/projects/useProjectById';
+
+import ProjectInfoSideBar from './ProjectInfoSideBar';
 
 // style
-import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;

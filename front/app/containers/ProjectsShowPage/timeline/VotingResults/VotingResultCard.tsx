@@ -8,10 +8,8 @@ import {
   media,
   Text,
 } from '@citizenlab/cl2-component-library';
-
-import ProgressBar from './ProgressBar';
-
 import styled from 'styled-components';
+
 import Footer from 'components/IdeaCard/Footer';
 import Image from 'components/UI/Image';
 
@@ -31,6 +29,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import ImagePlaceholder from './ImagePlaceholder';
 import messages from './messages';
+import ProgressBar from './ProgressBar';
 import Rank from './Rank';
 
 const cardPadding = '17px';

@@ -1,29 +1,32 @@
 import React, { useEffect, FormEvent } from 'react';
 
-import useAuthUser from 'api/me/useAuthUser';
-import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
-
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
-import Button from 'components/UI/Button';
-
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
 // tracks
-import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
 
-import eventEmitter from 'utils/eventEmitter';
+// events
 
-import { isNilOrError } from 'utils/helperUtils';
 import { hasRequiredFields } from 'api/custom_fields_json_form_schema/utils';
 
 import {
   AuthenticationData,
   SetError,
 } from 'containers/Authentication/typings';
+import Button from 'components/UI/Button';
+import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+
+import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
+import useAuthUser from 'api/me/useAuthUser';
+
 import useLocale from 'hooks/useLocale';
+
+import tracks from '../../tracks';
+
+import messages from './messages';
 
 interface Props {
   authenticationData: AuthenticationData;

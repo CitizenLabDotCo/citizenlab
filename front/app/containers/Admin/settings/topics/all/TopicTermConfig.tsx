@@ -3,13 +3,12 @@ import React from 'react';
 import TerminologyConfig from 'components/admin/TerminologyConfig';
 
 // resources
-import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+import { isNilOrError } from 'utils/helperUtils';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
 import messages from './messages';
-
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   className?: string;

@@ -1,32 +1,35 @@
 import React, { memo } from 'react';
 
-import { isNilOrError } from 'utils/helperUtils';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+import messages from 'containers/ProjectsShowPage/messages';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+import styled from 'styled-components';
 
 import ContentContainer from 'components/ContentContainer';
-import ProjectInfo from './ProjectInfo';
-import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
-import Button from 'components/UI/Button';
+import FollowUnfollow from 'components/FollowUnfollow';
 import Outlet from 'components/Outlet';
+import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
+
+import Button from 'components/UI/Button';
+import { isNilOrError } from 'utils/helperUtils';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import useProjectById from 'api/projects/useProjectById';
 import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
+import ProjectInfo from './ProjectInfo';
 import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
-import FollowUnfollow from 'components/FollowUnfollow';
-import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
 
-import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'api/me/useAuthUser';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { useIntl } from 'utils/cl-intl';
 
-import messages from 'containers/ProjectsShowPage/messages';
-
 // style
-import styled from 'styled-components';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 const Container = styled.div`
   padding-top: 30px;

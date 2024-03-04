@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 
+// api
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';

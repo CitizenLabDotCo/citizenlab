@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-// resources
-
 import { colors, Box } from '@citizenlab/cl2-component-library';
 import { isEqual } from 'lodash-es';
 import moment from 'moment';
 import { MessageDescriptor } from 'react-intl';
-
-import usePhases from 'api/phases/usePhases';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
 import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
 import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
@@ -23,10 +20,11 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import { activeUsersByTimeCumulativeXlsxEndpoint } from 'api/active_users_by_time/util';
 
+import { activeUsersByTimeCumulativeXlsxEndpoint } from 'api/active_users_by_time/util';
 import useIdeas from 'api/ideas/useIdeas';
 import { ParticipationMethod } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';

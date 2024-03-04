@@ -1,4 +1,3 @@
-// libraries
 import React, { useRef } from 'react';
 
 import messages from 'containers/Admin/dashboard/messages';
@@ -18,8 +17,6 @@ import {
   PieChartStyleFixesDiv,
 } from 'components/admin/GraphWrappers';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-
-// resources
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { roundPercentages } from 'utils/math';

@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 
 import { Dropdown } from '@citizenlab/cl2-component-library';
-
-// style
 import styled from 'styled-components';
 
 import Button from 'components/UI/Button';

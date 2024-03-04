@@ -1,31 +1,34 @@
 import React from 'react';
+
+import { PreviousPathnameContext } from 'context';
 import { isNumber } from 'lodash-es';
 
 // libraries
-import clHistory from 'utils/cl-router/history';
-import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { reverseGeocode } from 'utils/locationTools';
 import { parse } from 'qs';
-
-// resources
+import { adopt } from 'react-adopt';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { PreviousPathnameContext } from 'context';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'utils/permissions/roles';
-
-import PageNotFound from 'components/PageNotFound';
-import InitiativesNewMeta from './InitiativesNewMeta';
-import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
-import PageLayout from 'components/InitiativeForm/PageLayout';
-import { ILocationInfo } from 'typings';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import { ILocationInfo } from 'typings';
+
+import PageLayout from 'components/InitiativeForm/PageLayout';
+import PageNotFound from 'components/PageNotFound';
+
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+import { reverseGeocode } from 'utils/locationTools';
+
+// resources
+
+import { isAdmin } from 'utils/permissions/roles';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
+import InitiativesNewMeta from './InitiativesNewMeta';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;

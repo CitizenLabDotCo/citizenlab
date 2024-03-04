@@ -1,19 +1,23 @@
+import React, { useState } from 'react';
+
 import {
   Box,
   IconButton,
   colors,
   Text,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { useIntl } from 'utils/cl-intl';
+
 import { IAnalysisData } from 'api/analyses/types';
 import useAnalysisInsightsWithIds from 'api/analysis_insights/useAnalysisInsightsById';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
-import React, { useState } from 'react';
-import { useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
+
 import { replaceIdRefsWithLinks } from '../../../../../analysis/Insights/util';
-import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import messages from '../../../messages';
 
 const StyledInsightsText = styled(Text)`
   white-space: pre-wrap;

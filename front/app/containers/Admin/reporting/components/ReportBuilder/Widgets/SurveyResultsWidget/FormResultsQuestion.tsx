@@ -3,12 +3,11 @@ import React from 'react';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import InputType from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/InputType';
 import MultipleChoice from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MultipleChoice';
+import { snakeCase } from 'lodash-es';
+import { Locale } from 'typings';
 
 import T from 'components/T';
 
-import { snakeCase } from 'lodash-es';
-
-import { Locale } from 'typings';
 import { Result } from 'api/survey_results/types';
 
 type FormResultsQuestionProps = Result & {

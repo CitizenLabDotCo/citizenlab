@@ -1,9 +1,12 @@
+import React from 'react';
+
 import TimeControl from 'containers/Admin/dashboard/components/TimeControl';
 import moment from 'moment';
-import React from 'react';
 import { useSearchParams } from 'react-router-dom';
+
 import { trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
 import tracks from '../../tracks';
 
 const TimeFilter = () => {

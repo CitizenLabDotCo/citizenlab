@@ -1,11 +1,13 @@
 import moment, { Moment } from 'moment';
 
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
+import { IResolution } from 'components/admin/ResolutionControl';
+
 import { get } from 'utils/helperUtils';
 
-import { TimeSeriesResponseRow, TimeSeriesRow, TimeSeries } from './typings';
-import { IResolution } from 'components/admin/ResolutionControl';
 import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes';
+
+import { TimeSeriesResponseRow, TimeSeriesRow, TimeSeries } from './typings';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),

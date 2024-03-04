@@ -25,8 +25,6 @@ import VerificationIcon from '../VerificationIcon';
 import { getSubtextElement } from './controlUtils';
 import messages from './messages';
 
-// style
-
 const LinearScaleControl = ({
   data,
   path,

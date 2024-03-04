@@ -12,8 +12,6 @@ import { ICommentData } from 'api/comments/types';
 
 import { commentAdded$, commentDeleted$ } from '../../../events';
 
-// style
-
 import messages from '../../../messages';
 
 // a11y

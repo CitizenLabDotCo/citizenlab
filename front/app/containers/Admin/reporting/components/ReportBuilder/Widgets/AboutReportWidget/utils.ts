@@ -1,6 +1,7 @@
 import moment from 'moment';
-import messages from './messages';
 import { FormatMessage } from 'typings';
+
+import messages from './messages';
 
 export const getPeriod = ({
   startAt,

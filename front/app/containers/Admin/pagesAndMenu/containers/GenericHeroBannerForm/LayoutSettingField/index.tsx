@@ -6,7 +6,18 @@ import {
   Radio,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import {
+  ICustomPageAttributes,
+  TCustomPageBannerLayout,
+} from 'api/custom_pages/types';
+
+import messages from '../messages';
 
 import FullWidthBannerLayoutActive from './layout_previews/full_width_banner_layout_active.jpg';
 import FullWidthBannerLayoutInactive from './layout_previews/full_width_banner_layout_inactive.jpg';
@@ -16,15 +27,6 @@ import TwoRowLayoutActive from './layout_previews/two_row_layout_active.jpg';
 import TwoRowLayoutInactive from './layout_previews/two_row_layout_inactive.jpg';
 
 // style
-import styled from 'styled-components';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-import {
-  ICustomPageAttributes,
-  TCustomPageBannerLayout,
-} from 'api/custom_pages/types';
 
 const LayoutPreview = styled.img`
   width: 220px;

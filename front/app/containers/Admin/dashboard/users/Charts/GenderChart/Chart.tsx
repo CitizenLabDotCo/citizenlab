@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import PieChart from 'components/admin/Graphs/PieChart';
-import renderTooltip from './renderTooltip';
-
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 
+import renderTooltip from './renderTooltip';
 import { GenderSerie } from './typings';
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 
 interface Props {
   innerRef?: React.RefObject<any>;

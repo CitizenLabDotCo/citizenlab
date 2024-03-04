@@ -1,6 +1,6 @@
 import React from 'react';
 
-// styles
+s;
 import {
   colors,
   fontSizes,

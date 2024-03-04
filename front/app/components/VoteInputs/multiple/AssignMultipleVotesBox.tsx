@@ -1,12 +1,10 @@
 import React, { memo } from 'react';
 
-// api
-
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// styles
+s;
 
 import { isNil } from 'utils/helperUtils';
 

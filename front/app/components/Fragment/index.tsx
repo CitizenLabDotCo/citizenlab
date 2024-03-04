@@ -2,8 +2,6 @@ import React, { PureComponent } from 'react';
 
 import qs from 'qs';
 import { adopt } from 'react-adopt';
-
-// resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';

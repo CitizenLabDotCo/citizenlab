@@ -1,19 +1,20 @@
 import React from 'react';
 
-import NavbarItemForm, { FormValues } from '../../components/NavbarItemForm';
-import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
-
-import { isNilOrError } from 'utils/helperUtils';
-import { getInitialFormValues, createNavbarItemUpdateData } from './utils';
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
+import { useParams } from 'react-router-dom';
 
 import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import useNavbarItems from 'api/navbar/useNavbarItems';
+import useUpdateNavbarItem from 'api/navbar/useUpdateNavbarItem';
 
 import useLocalize from 'hooks/useLocalize';
-import useNavbarItems from 'api/navbar/useNavbarItems';
 
-import useUpdateNavbarItem from 'api/navbar/useUpdateNavbarItem';
-import { useParams } from 'react-router-dom';
+import NavbarItemForm, { FormValues } from '../../components/NavbarItemForm';
+
+import { getInitialFormValues, createNavbarItemUpdateData } from './utils';
 
 const EditNavbarItemForm = () => {
   const { navbarItemId } = useParams() as { navbarItemId: string };

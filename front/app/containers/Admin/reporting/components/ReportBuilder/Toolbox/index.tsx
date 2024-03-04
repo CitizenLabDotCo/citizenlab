@@ -1,7 +1,5 @@
 import React from 'react';
-import moment from 'moment';
 
-import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import {
   Box,
   Title,
@@ -9,15 +7,32 @@ import {
   Spinner,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
+import moment from 'moment';
+
+import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
+import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 
 // shared widgets
+import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 // widgets
+import {
+  FormattedMessage,
+  useIntl,
+  useFormatMessageWithLocale,
+  MessageDescriptor,
+} from 'utils/cl-intl';
+
+import useAuthUser from 'api/me/useAuthUser';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import reportBuilderMessages from '../../../messages';
+import AboutReportWidget from '../Widgets/AboutReportWidget';
+import ImageMultiloc from '../Widgets/ImageMultiloc';
 import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
-import ImageMultiloc from '../Widgets/ImageMultiloc';
-import AboutReportWidget from '../Widgets/AboutReportWidget';
 import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
@@ -29,24 +44,10 @@ import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
 import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
 import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
-import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
-
-import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
-import reportBuilderMessages from '../../../messages';
 import { WIDGET_TITLES } from '../Widgets';
-import {
-  FormattedMessage,
-  useIntl,
-  useFormatMessageWithLocale,
-  MessageDescriptor,
-} from 'utils/cl-intl';
 
-import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useAuthUser from 'api/me/useAuthUser';
 import useProjects from 'api/projects/useProjects';
 
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 import { isModerator } from 'utils/permissions/roles';
 
 type ReportBuilderToolboxProps = {

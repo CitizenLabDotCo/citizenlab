@@ -1,15 +1,16 @@
 import React from 'react';
+
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 // typing
-import { IEventData } from 'api/events/types';
-
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import SingleDateStylized from './SingleDateStylized';
+import { useTheme } from 'styled-components';
 
 import { toThreeLetterMonth } from 'utils/dateUtils';
 
-import { useTheme } from 'styled-components';
+import { IEventData } from 'api/events/types';
+
+import SingleDateStylized from './SingleDateStylized';
 
 interface Props {
   event: IEventData;

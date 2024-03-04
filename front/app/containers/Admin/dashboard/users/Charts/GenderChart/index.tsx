@@ -1,20 +1,20 @@
 import React, { useRef } from 'react';
 
-import { useUsersByGenderLive } from 'api/graph_data_units';
+import messages from 'containers/Admin/dashboard/messages';
+import moment from 'moment';
 
 import GraphCard from 'components/admin/GraphCard';
 import { NoDataContainer } from 'components/admin/GraphWrappers';
-import Chart from './Chart';
 
-import messages from 'containers/Admin/dashboard/messages';
 import { useIntl } from 'utils/cl-intl';
-
 import { isNilOrError } from 'utils/helperUtils';
-import convertToGraphFormat from './convertToGraphFormat';
-import moment from 'moment';
 
-import { QueryParameters } from './typings';
+import { useUsersByGenderLive } from 'api/graph_data_units';
 import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
+
+import Chart from './Chart';
+import convertToGraphFormat from './convertToGraphFormat';
+import { QueryParameters } from './typings';
 
 interface Props extends QueryParameters {
   currentGroupFilterLabel?: string;

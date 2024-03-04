@@ -1,4 +1,3 @@
-// libraries
 import React, { useState, useEffect } from 'react';
 
 import {
@@ -20,8 +19,6 @@ import useUserById from 'api/users/useUserById';
 
 import InternalCommentBody from './InternalCommentBody';
 import InternalCommentFooter from './InternalCommentFooter';
-
-// style
 
 import InternalCommentHeader from './InternalCommentHeader';
 

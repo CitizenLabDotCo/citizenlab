@@ -7,7 +7,6 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// style
 import styled from 'styled-components';
 import { Locale, Multiloc } from 'typings';
 

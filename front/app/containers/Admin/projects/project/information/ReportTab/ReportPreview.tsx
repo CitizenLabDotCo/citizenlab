@@ -1,15 +1,15 @@
 import React from 'react';
 
-import useReportLayout from 'api/report_layout/useReportLayout';
-
 // context
-import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
+import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
+import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
+
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
-import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
+import useReportLayout from 'api/report_layout/useReportLayout';
 
 interface Props {
   reportId: string;

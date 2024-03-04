@@ -11,7 +11,6 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
-// api
 import { useTheme } from 'styled-components';
 
 import Warning from 'components/UI/Warning';
@@ -50,7 +49,6 @@ const unsubmitBasket = async (
 const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const { data: appConfig } = useAppConfiguration();
 
-  // style
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
 

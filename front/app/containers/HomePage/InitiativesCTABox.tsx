@@ -1,10 +1,5 @@
 import React, { useCallback } from 'react';
 
-import useAuthUser from 'api/me/useAuthUser';
-
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-import styled, { useTheme } from 'styled-components';
 import {
   colors,
   fontSizes,
@@ -14,14 +9,18 @@ import {
   Icon,
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import styled, { useTheme } from 'styled-components';
 
 import Button from 'components/UI/Button';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { isNilOrError } from 'utils/helperUtils';
 import { scrollToTop } from 'utils/scroll';
+
+import useAuthUser from 'api/me/useAuthUser';
+
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

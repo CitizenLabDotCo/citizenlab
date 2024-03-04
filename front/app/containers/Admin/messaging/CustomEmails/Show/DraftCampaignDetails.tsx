@@ -1,15 +1,20 @@
 import React from 'react';
-import { ICampaignData } from 'api/campaigns/types';
-import useDeleteCampaign from 'api/campaigns/useDeleteCampaign';
-import clHistory from 'utils/cl-router/history';
+
+import GetCampaign from 'resources/GetCampaign';
+import styled from 'styled-components';
+
+import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-import GetCampaign from 'resources/GetCampaign';
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import Button from 'components/UI/Button';
+
+import { ICampaignData } from 'api/campaigns/types';
+import useDeleteCampaign from 'api/campaigns/useDeleteCampaign';
+
+import messages from '../../messages';
+
 import PreviewFrame from './PreviewFrame';
-import styled from 'styled-components';
 
 const ButtonWrapper = styled.div`
   margin: 40px 0;

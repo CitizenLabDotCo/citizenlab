@@ -1,5 +1,7 @@
 import * as React from 'react';
+
 import { render, screen } from 'utils/testUtils/rtl';
+
 import ManageButton from './ManageButton';
 
 jest.mock('utils/cl-router/Link');

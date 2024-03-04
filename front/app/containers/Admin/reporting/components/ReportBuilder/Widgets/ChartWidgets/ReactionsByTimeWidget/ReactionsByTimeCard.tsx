@@ -1,15 +1,10 @@
 import React from 'react';
 
-import useReactionsByTime from './useReactionsByTime';
-
 // router
 
 import { Box } from '@citizenlab/cl2-component-library';
-import NoData from '../../_shared/NoData';
+
 import Chart from 'components/admin/GraphCards/ReactionsByTimeCard/Chart';
-
-import messages from '../messages';
-
 import {
   ProjectId,
   Dates,
@@ -17,6 +12,11 @@ import {
 } from 'components/admin/GraphCards/typings';
 
 import { isNilOrError } from 'utils/helperUtils';
+
+import NoData from '../../_shared/NoData';
+import messages from '../messages';
+
+import useReactionsByTime from './useReactionsByTime';
 
 type Props = ProjectId & Dates & Resolution;
 

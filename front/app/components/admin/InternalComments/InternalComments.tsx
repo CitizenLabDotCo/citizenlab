@@ -13,8 +13,6 @@ import { IInternalCommentData } from 'api/internal_comments/types';
 
 import { commentAdded$, commentDeleted$ } from './events';
 
-// style
-
 // a11y
 
 import InternalParentComment from './InternalParentComment';

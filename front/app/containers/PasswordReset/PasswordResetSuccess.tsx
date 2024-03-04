@@ -7,12 +7,12 @@ import {
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import clHistory from 'utils/cl-router/history';
+
+import messages from './messages';
 
 export const PasswordResetSuccess = () => {
   const signIn = () => {

@@ -1,26 +1,32 @@
+// Libraries
 import React, { useState } from 'react';
+
+import { colors, Text } from '@citizenlab/cl2-component-library';
+import { Icon } from 'semantic-ui-react';
+import styled from 'styled-components';
+
+import { Row, TextCell, List } from 'components/admin/ResourceList';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services / Data loading
-import { IPollQuestionData } from 'api/poll_questions/types';
 import { IPollOptionData } from 'api/poll_options/types';
+import useDeletePollOption from 'api/poll_options/useDeletePollOption';
+import usePollOptions from 'api/poll_options/usePollOptions';
+import { IPollQuestionData } from 'api/poll_questions/types';
 
-import T from 'components/T';
-import Button from 'components/UI/Button';
-import { Icon } from 'semantic-ui-react';
-import { Row, TextCell, List } from 'components/admin/ResourceList';
-import OptionFormRow from './OptionFormRow';
-import OptionRow from './OptionRow';
+// Components
+
+import messages from '../messages';
 import QuestionDetailsFormRow from '../PollQuestions/QuestionDetailsFormRow';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import OptionFormRow from './OptionFormRow';
+import OptionRow from './OptionRow';
 
 // Style
-import styled from 'styled-components';
-import { colors, Text } from '@citizenlab/cl2-component-library';
-import usePollOptions from 'api/poll_options/usePollOptions';
-import useDeletePollOption from 'api/poll_options/useDeletePollOption';
 
 const Container = styled.div``;
 

@@ -1,7 +1,8 @@
 import React from 'react';
-import EventsViewer from './EventsViewer';
 
 import { useIntl } from 'utils/cl-intl';
+
+import EventsViewer from './EventsViewer';
 import messages from './messages';
 
 type Props = {

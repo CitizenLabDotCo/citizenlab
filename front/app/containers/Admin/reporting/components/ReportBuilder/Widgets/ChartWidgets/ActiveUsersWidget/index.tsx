@@ -1,16 +1,17 @@
 import React from 'react';
 
+import moment from 'moment';
+
+import { IResolution } from 'components/admin/ResolutionControl';
+
 import Card from '../../_shared/Card';
+import messages from '../messages';
+import { ChartWidgetProps } from '../typings';
+
 import ActiveUsers from './ActiveUsersCard';
 import ChartWidgetSettings from './ChartWidgetSettings';
 
-import moment from 'moment';
-
 // settings
-import messages from '../messages';
-
-import { IResolution } from 'components/admin/ResolutionControl';
-import { ChartWidgetProps } from '../typings';
 
 const ActiveUsersWidget = ({
   title,

@@ -1,31 +1,44 @@
 import React, { useRef } from 'react';
+
+import { Box, media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import Outlet from 'components/Outlet';
+import Body from 'components/PostShowComponents/Body';
+import DropdownMap from 'components/PostShowComponents/DropdownMap';
+import Image from 'components/PostShowComponents/Image';
+import Title from 'components/PostShowComponents/Title';
+import Topics from 'components/PostShowComponents/Topics';
+import SharingButtons from 'components/Sharing/SharingButtons';
+import FileAttachments from 'components/UI/FileAttachments';
 import { isNilOrError } from 'utils/helperUtils';
 
-import FileAttachments from 'components/UI/FileAttachments';
-import { Box, media } from '@citizenlab/cl2-component-library';
-import SharingButtons from 'components/Sharing/SharingButtons';
-import Topics from 'components/PostShowComponents/Topics';
-import Title from 'components/PostShowComponents/Title';
-import DropdownMap from 'components/PostShowComponents/DropdownMap';
-import Body from 'components/PostShowComponents/Body';
-import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import PostedBy from './PostedBy';
+
+import { getAddressOrFallbackDMS } from 'utils/map';
+import { usePermission } from 'utils/permissions';
+
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 import ActionBar from './ActionBar';
+import PostedBy from './PostedBy';
 import ReactionControl from './ReactionControl';
-import Outlet from 'components/Outlet';
+
 import InitiativeBanner from './InitiativeBanner';
 import CosponsorsSection from './CosponsorsSection';
 
-import { getAddressOrFallbackDMS } from 'utils/map';
-
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
-import useLocalize from 'hooks/useLocalize';
 
 // style
-import styled from 'styled-components';
+
 import { ScreenReaderOnly } from 'utils/a11y';
+
 import {
   columnsGapDesktop,
   columnsGapTablet,
@@ -35,17 +48,13 @@ import {
   contentFadeInDuration,
   contentFadeInEasing,
 } from './styleConstants';
-
-import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-
 import useInitiativeReviewRequired from './hooks/useInitiativeReviewRequired';
-import useLocale from 'hooks/useLocale';
+
 import useAuthUser from 'api/me/useAuthUser';
-import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
-import { usePermission } from 'utils/permissions';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
+
 import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
+
 import CosponsorShipReminder from './CosponsorShipReminder';
 
 const Container = styled.main`

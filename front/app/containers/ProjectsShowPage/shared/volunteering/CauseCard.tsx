@@ -17,15 +17,14 @@ import styled, { useTheme } from 'styled-components';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Image from 'components/UI/Image';
-
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { isEmptyMultiloc } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isEmptyMultiloc } from 'utils/helperUtils';
+
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
-
 import { ICauseData } from 'api/causes/types';
 import useAddVolunteer from 'api/causes/useAddVolunteer';
 import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';

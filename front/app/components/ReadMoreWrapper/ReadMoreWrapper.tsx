@@ -12,8 +12,6 @@ import {
 import messages from 'containers/ProjectsShowPage/messages';
 import { isEmpty } from 'lodash-es';
 import ReactResizeDetector from 'react-resize-detector';
-
-// style
 import styled, { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 

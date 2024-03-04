@@ -11,7 +11,6 @@ import { IPermissionData } from 'api/permissions/types';
 import UserFieldSelection from '../../components/UserFieldSelection/UserFieldSelection';
 
 import ActionForm from './ActionForm';
-
 import messages from './messages';
 import {
   getPermissionActionSectionSubtitle,

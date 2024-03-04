@@ -6,6 +6,7 @@ import { IconButton } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../../../messages';
 
 interface Props {

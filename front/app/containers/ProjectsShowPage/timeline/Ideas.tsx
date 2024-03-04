@@ -1,25 +1,25 @@
 import React, { useMemo } from 'react';
 
-import usePhase from 'api/phases/usePhase';
+import messages from 'containers/ProjectsShowPage/messages';
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 // router
-import { useSearchParams } from 'react-router-dom';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getInputTermMessage } from 'utils/i18n';
 
 // style
-import styled from 'styled-components';
-
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import { IPhaseData } from 'api/phases/types';
-import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
+import usePhase from 'api/phases/usePhase';
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
 const Container = styled.div``;

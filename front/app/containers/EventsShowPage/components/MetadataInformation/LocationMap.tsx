@@ -1,13 +1,12 @@
 import React, { memo, useMemo, useRef } from 'react';
 
-import EsriMap from 'components/EsriMap';
-import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
-
-import { getMapPinSymbol } from 'components/EsriMap/utils';
-
-import { useTheme } from 'styled-components';
+import Graphic from '@arcgis/core/Graphic';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
+
+import EsriMap from 'components/EsriMap';
+import { getMapPinSymbol } from 'components/EsriMap/utils';
 
 export interface Props {
   eventLocation?: GeoJSON.Point | null;

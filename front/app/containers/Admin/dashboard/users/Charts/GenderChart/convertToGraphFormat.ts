@@ -1,10 +1,11 @@
 import messages from 'containers/Admin/dashboard/messages';
+import { FormatMessage } from 'typings';
 
 import { roundPercentages } from 'utils/math';
 
-import { GenderSerie } from './typings';
 import { genderOptions } from 'api/users_by_gender/types';
-import { FormatMessage } from 'typings';
+
+import { GenderSerie } from './typings';
 
 interface GraphData {
   data: {

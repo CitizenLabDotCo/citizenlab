@@ -1,17 +1,16 @@
 import React from 'react';
 
-import FormattedStatusLabel from '../components/FormattedStatusLabel';
-
-import { ITextingCampaignData } from 'api/texting_campaigns/types';
-
 // style
-import styled from 'styled-components';
 import { fontSizes } from '@citizenlab/cl2-component-library';
-
 import { FormattedTime, FormattedDate } from 'react-intl';
+import styled from 'styled-components';
 
 import clHistory from 'utils/cl-router/history';
 import { truncate } from 'utils/textUtils';
+
+import { ITextingCampaignData } from 'api/texting_campaigns/types';
+
+import FormattedStatusLabel from '../components/FormattedStatusLabel';
 
 interface Props {
   campaign: ITextingCampaignData;

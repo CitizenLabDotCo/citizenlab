@@ -1,9 +1,10 @@
 import React from 'react';
 
-import Volunteering from '../shared/volunteering';
-
 import styled from 'styled-components';
+
 import usePhase from 'api/phases/usePhase';
+
+import Volunteering from '../shared/volunteering';
 
 const Container = styled.div``;
 

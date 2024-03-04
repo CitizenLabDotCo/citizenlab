@@ -1,5 +1,4 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 
 import {
   Box,
@@ -10,24 +9,27 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import IdeasShow from 'containers/IdeasShow';
-import IdeaShowPageTopBar from './IdeaShowPageTopBar';
+import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
 import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 // context
-import { VotingContext } from 'api/baskets_ideas/useVoting';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
 
+import { VotingContext } from 'api/baskets_ideas/useVoting';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
-import useProjectById from 'api/projects/useProjectById';
 
 // style
-import styled from 'styled-components';
 
-import { isUnauthorizedRQ } from 'utils/errorUtils';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
-import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
+import useProjectById from 'api/projects/useProjectById';
+
+import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
   position: fixed;

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 
-import FilterSelector from 'components/FilterSelector';
 import { Box } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
+
+import FilterSelector from 'components/FilterSelector';
 
 import { useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
 // router
-import { useSearchParams } from 'react-router-dom';
 
 type Props = {
   onChange: (dateFilterValue: string[]) => void;

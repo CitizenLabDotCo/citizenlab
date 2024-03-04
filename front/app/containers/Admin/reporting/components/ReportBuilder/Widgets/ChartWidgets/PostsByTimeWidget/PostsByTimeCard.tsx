@@ -1,13 +1,8 @@
 import React from 'react';
 
-import usePostsByTime from './usePostsByTime';
-
 import { Box } from '@citizenlab/cl2-component-library';
-import NoData from '../../_shared/NoData';
+
 import Chart from 'components/admin/GraphCards/PostsByTimeCard/Chart';
-
-import messages from '../messages';
-
 import {
   ProjectId,
   Dates,
@@ -15,6 +10,11 @@ import {
 } from 'components/admin/GraphCards/typings';
 
 import { isNilOrError } from 'utils/helperUtils';
+
+import NoData from '../../_shared/NoData';
+import messages from '../messages';
+
+import usePostsByTime from './usePostsByTime';
 
 type Props = ProjectId & Dates & Resolution;
 

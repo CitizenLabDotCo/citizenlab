@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 
-import useLocale from 'hooks/useLocale';
-
-import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
-import Editor from '../../components/Editor';
-import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { isNilOrError } from 'utils/helperUtils';
-
 import { SerializedNodes } from '@craftjs/core';
 import { useSearchParams } from 'react-router-dom';
 import { Locale } from 'typings';
+
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
+
+import { isNilOrError } from 'utils/helperUtils';
+
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
+
+import useLocale from 'hooks/useLocale';
+
+import Editor from '../../components/Editor';
 
 export const FullScreenPreview = () => {
   const [search] = useSearchParams();

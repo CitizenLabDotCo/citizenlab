@@ -22,13 +22,13 @@ import messages from '../messages';
 
 import Cosponsors from './Cosponsors';
 import EligibilityCriteria from './EligibilityCriteria';
+import PageBody from './PageBody';
 import PostingTips from './PostingTips';
 import ProposalsFeatureToggle from './ProposalsFeatureToggle';
+import RequireReviewToggle from './RequireReviewToggle';
+import SubmitButton from './SubmitButton';
 import ThresholdReachedMessage from './ThresholdReachedMessage';
 import Thresholds from './Thresholds';
-import PageBody from './PageBody';
-import SubmitButton from './SubmitButton';
-import RequireReviewToggle from './RequireReviewToggle';
 
 const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 10px;

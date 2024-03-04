@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-// styles
+s;
 
 import { IUserData } from 'api/users/types';
 import useUserById from 'api/users/useUserById';

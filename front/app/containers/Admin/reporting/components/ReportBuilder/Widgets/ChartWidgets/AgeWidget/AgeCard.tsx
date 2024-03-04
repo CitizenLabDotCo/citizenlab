@@ -1,20 +1,20 @@
 import React from 'react';
 
-import useLayout from 'containers/Admin/reporting/hooks/useLayout';
-import { useUsersByAge } from 'api/graph_data_units';
-
 import { Box } from '@citizenlab/cl2-component-library';
-import NoData from '../../_shared/NoData';
-import BarChart from 'components/admin/Graphs/BarChart';
-
-import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
-
-import { serieHasValues, formatLargeNumber } from '../utils';
 import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/AgeChart/convertToGraphFormat';
+import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 import { ProjectId, Dates, Layout } from 'components/admin/GraphCards/typings';
+import BarChart from 'components/admin/Graphs/BarChart';
 import { Margin } from 'components/admin/Graphs/typings';
+
+import { useIntl } from 'utils/cl-intl';
+
+import { useUsersByAge } from 'api/graph_data_units';
+
+import NoData from '../../_shared/NoData';
+import messages from '../messages';
+import { serieHasValues, formatLargeNumber } from '../utils';
 
 const MARGINS: Record<Layout, Margin | undefined> = {
   wide: {

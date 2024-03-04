@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
 import { Text, Box, Button, colors } from '@citizenlab/cl2-component-library';
-import CreateReportModal from './CreateReportModal';
 
 import { useIntl } from 'utils/cl-intl';
+
+import CreateReportModal from './CreateReportModal';
 import messages from './messages';
 
 interface Props {

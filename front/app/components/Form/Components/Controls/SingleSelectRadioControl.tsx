@@ -22,8 +22,6 @@ import VerificationIcon from '../VerificationIcon';
 import { getOptions, getSubtextElement } from './controlUtils';
 import messages from './messages';
 
-// style
-
 const StyledBox = styled(Box)`
   cursor: pointer;
   background-color: ${colors.grey100};

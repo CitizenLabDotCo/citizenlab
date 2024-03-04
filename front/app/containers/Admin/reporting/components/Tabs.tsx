@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
+import { Box, Badge, colors } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
-import { Box, Badge, colors } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-import { isNilOrError, isTopBarNavActive } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError, isTopBarNavActive } from 'utils/helperUtils';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from '../messages';
 
 interface Props {
   showReportBuilderTab: boolean;

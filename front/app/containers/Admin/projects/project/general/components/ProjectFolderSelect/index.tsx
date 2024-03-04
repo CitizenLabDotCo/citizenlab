@@ -20,8 +20,8 @@ import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermis
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
-
 import { IUpdatedProjectProperties } from 'api/projects/types';
+
 import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';

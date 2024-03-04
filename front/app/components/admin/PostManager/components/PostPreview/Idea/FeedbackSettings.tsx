@@ -4,7 +4,7 @@ import { Select, Label } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { IOption } from 'typings';
 
-// styles
+s;
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

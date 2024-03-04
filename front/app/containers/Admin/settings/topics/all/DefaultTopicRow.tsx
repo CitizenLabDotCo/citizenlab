@@ -1,14 +1,16 @@
 import React from 'react';
 
-import { ITopicData } from 'api/topics/types';
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
 import { Row } from 'components/admin/ResourceList';
-import { RowContent, RowContentInner, RowTitle } from './RowStyles';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { ITopicData } from 'api/topics/types';
 
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { RowContent, RowContentInner, RowTitle } from './RowStyles';
 
 const DefaultTopicLabel = styled.span``;
 

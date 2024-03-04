@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { pageContentMaxWidth } from '../styleConstants';
 import styled from 'styled-components';
+
+import { pageContentMaxWidth } from '../styleConstants';
 
 const Main = styled.main`
   width: 100%;

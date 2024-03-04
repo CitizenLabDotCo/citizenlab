@@ -7,6 +7,8 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+// routing
 import { lighten } from 'polished';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';

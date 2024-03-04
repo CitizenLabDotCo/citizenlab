@@ -7,7 +7,6 @@ import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-// style
 import messages from '../messages';
 
 interface Props {

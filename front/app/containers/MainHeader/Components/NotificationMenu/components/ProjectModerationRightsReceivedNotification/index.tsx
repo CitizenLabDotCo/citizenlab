@@ -1,16 +1,18 @@
 import React, { memo } from 'react';
-import { stopPropagation } from 'utils/helperUtils';
+
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
+
+import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { stopPropagation } from 'utils/helperUtils';
 
 // resources
 import { IProjectModerationRightsReceivedNotificationData } from 'api/notifications/types';
 
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
-
 import NotificationWrapper from '../NotificationWrapper';
-import Link from 'utils/cl-router/Link';
 
 interface Props {
   notification: IProjectModerationRightsReceivedNotificationData;

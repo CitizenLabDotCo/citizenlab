@@ -1,10 +1,6 @@
-// libraries
 import React, { memo } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
-
-// resources
-
 import {
   BarChart,
   Bar,

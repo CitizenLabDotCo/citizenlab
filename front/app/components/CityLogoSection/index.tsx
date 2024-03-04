@@ -15,8 +15,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 
-// style
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;

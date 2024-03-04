@@ -1,14 +1,13 @@
 import React from 'react';
 
-import AuthorSelect from './AuthorSelect';
 import {
   Icon,
   fontSizes,
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
-
 import styled from 'styled-components';
 
+import AuthorSelect from './AuthorSelect';
 import { SelectedAuthor } from './typings';
 
 const FakeInput = styled.div`

@@ -1,16 +1,20 @@
+import React, { useEffect, useState } from 'react';
+
 import {
   Box,
   Button,
   Text,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
-import useAddAnalysisQuestionPreCheck from 'api/analysis_question_pre_check/useAddAnalysisQuestionPreCheck';
-import { IQuestionPreCheck } from 'api/analysis_question_pre_check/types';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
+
+import { IQuestionPreCheck } from 'api/analysis_question_pre_check/types';
+import useAddAnalysisQuestionPreCheck from 'api/analysis_question_pre_check/useAddAnalysisQuestionPreCheck';
+
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+
 import messages from './messages';
 
 const QuestionButton = ({ onClick }: { onClick: () => void }) => {

@@ -10,8 +10,6 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-// style
-
 import useIdeaById from 'api/ideas/useIdeaById';
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useInternalComments from 'api/internal_comments/useInternalComments';

@@ -1,20 +1,20 @@
 import React, { useRef } from 'react';
 
-import { useUsersByAgeLive } from 'api/graph_data_units';
-
-import GraphCard from 'components/admin/GraphCard';
-import Chart from './Chart';
 import { Box } from '@citizenlab/cl2-component-library';
-
 import messages from 'containers/Admin/dashboard/messages';
-import { useIntl } from 'utils/cl-intl';
-
-import { QueryParameters } from './typings';
-import { isNilOrError } from 'utils/helperUtils';
-import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
 import moment from 'moment';
 
+import GraphCard from 'components/admin/GraphCard';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { useUsersByAgeLive } from 'api/graph_data_units';
+import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
+
+import Chart from './Chart';
 import convertToGraphFormat from './convertToGraphFormat';
+import { QueryParameters } from './typings';
 
 interface Props extends QueryParameters {
   currentGroupFilterLabel?: string | undefined;

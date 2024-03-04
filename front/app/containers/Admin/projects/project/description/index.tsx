@@ -26,9 +26,12 @@ import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
+// Components
 import Error from 'components/UI/Error';
 
 import messages from './messages';
+
+// Styling
 
 // Typing
 

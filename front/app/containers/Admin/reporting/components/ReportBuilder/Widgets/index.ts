@@ -1,18 +1,4 @@
 // report builder widgets
-import TitleMultiloc, { titleMultilocTitle } from './TitleMultiloc';
-import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
-import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
-import TwoColumn, { twoColumnTitle } from './TwoColumn';
-import AboutReportWidget, { aboutReportTitle } from './AboutReportWidget';
-import SurveyResultsWidget, { surveyResultsTitle } from './SurveyResultsWidget';
-import SurveyQuestionResultWidget, {
-  surveyQuestionResultTitle,
-} from './SurveyQuestionResultWidget';
-import VisitorsWidget, { visitorsTitle } from './ChartWidgets/VisitorsWidget';
-import VisitorsTrafficSourcesWidget, {
-  visitorsTrafficSourcesTitle,
-} from './ChartWidgets/VisitorsTrafficSourcesWidget';
-import AgeWidget, { ageTitle } from './ChartWidgets/AgeWidget';
 import GenderWidget, { genderTitle } from './ChartWidgets/GenderWidget';
 import ActiveUsersWidget, {
   activeUsersTitle,
@@ -36,6 +22,20 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpace/messages';
 
 import { MessageDescriptor } from 'utils/cl-intl';
+import AboutReportWidget, { aboutReportTitle } from './AboutReportWidget';
+import AgeWidget, { ageTitle } from './ChartWidgets/AgeWidget';
+import VisitorsTrafficSourcesWidget, {
+  visitorsTrafficSourcesTitle,
+} from './ChartWidgets/VisitorsTrafficSourcesWidget';
+import VisitorsWidget, { visitorsTitle } from './ChartWidgets/VisitorsWidget';
+import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
+import SurveyQuestionResultWidget, {
+  surveyQuestionResultTitle,
+} from './SurveyQuestionResultWidget';
+import SurveyResultsWidget, { surveyResultsTitle } from './SurveyResultsWidget';
+import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
+import TitleMultiloc, { titleMultilocTitle } from './TitleMultiloc';
+import TwoColumn, { twoColumnTitle } from './TwoColumn';
 
 export const WIDGETS = {
   TwoColumn,

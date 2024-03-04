@@ -1,10 +1,14 @@
+import React from 'react';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
 import BannerButton, {
   BannerButtonStyle,
 } from 'components/LandingPages/citizen/BannerButton';
-import useLocalize from 'hooks/useLocalize';
-import React from 'react';
+
 import { isNilOrError } from 'utils/helperUtils';
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
+import useLocalize from 'hooks/useLocalize';
 
 interface Props {
   buttonStyle: BannerButtonStyle;

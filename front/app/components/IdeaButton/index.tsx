@@ -4,8 +4,6 @@ import Tippy from '@tippyjs/react';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-// tracks
-
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { stringify } from 'qs';
 import styled from 'styled-components';

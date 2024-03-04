@@ -1,12 +1,16 @@
+// Libraries
 import React from 'react';
+
+// Components
+import styled, { css } from 'styled-components';
 
 import Avatar from 'components/Avatar';
 
 // Style
-import styled, { css } from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
+
 import useMemberships from 'api/group_memberships/useMemberships';
 import useUserById from 'api/users/useUserById';
-import { isNilOrError } from 'utils/helperUtils';
 
 const AvatarWrapper = styled.div`
   padding: 2px;
@@ -47,6 +51,7 @@ const GroupAvatarWrapper = styled.div<{ count: number }>`
       : css``};
 `;
 
+// Typings
 interface Props {
   groupId: string;
   className?: string;

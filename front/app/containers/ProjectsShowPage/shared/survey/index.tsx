@@ -1,28 +1,27 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-import TypeformSurvey from './TypeformSurvey';
-import SurveymonkeySurvey from './SurveymonkeySurvey';
-import GoogleFormsSurvey from './GoogleFormsSurvey';
-import EnalyzerSurvey from './EnalyzerSurvey';
-import QualtricsSurvey from './QualtricsSurvey';
-import SmartSurvey from './SmartSurvey';
-import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
-import SnapSurvey from './SnapSurvey';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
-
-import useAuthUser from 'api/me/useAuthUser';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 import globalMessages from 'utils/messages';
 
 import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
+import useAuthUser from 'api/me/useAuthUser';
 import SurveyXact from './SurveyXact';
 
+import { TSurveyService } from 'api/phases/types';
 import { IProjectData, SurveyDisabledReason } from 'api/projects/types';
 import ParticipationPermission from '../ParticipationPermission';
-import { TSurveyService } from 'api/phases/types';
+import EnalyzerSurvey from './EnalyzerSurvey';
+import GoogleFormsSurvey from './GoogleFormsSurvey';
+import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
+import QualtricsSurvey from './QualtricsSurvey';
+import SmartSurvey from './SmartSurvey';
+import SnapSurvey from './SnapSurvey';
+import SurveymonkeySurvey from './SurveymonkeySurvey';
+import TypeformSurvey from './TypeformSurvey';
 
 const Container = styled.div`
   position: relative;

@@ -2,11 +2,10 @@ import React from 'react';
 
 import { Box, Title, Text, Button } from '@citizenlab/cl2-component-library';
 
-import messages from './messages';
-
 import { useIntl } from 'utils/cl-intl';
-
 import clHistory from 'utils/cl-router/history';
+
+import messages from './messages';
 
 const CancelUpdate = () => {
   const { formatMessage } = useIntl();

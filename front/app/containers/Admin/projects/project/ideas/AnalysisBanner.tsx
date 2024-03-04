@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   Icon,
@@ -11,17 +10,22 @@ import {
   Title,
   Checkbox,
 } from '@citizenlab/cl2-component-library';
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { useParams } from 'react-router-dom';
-import clHistory from 'utils/cl-router/history';
-import useAnalyses from 'api/analyses/useAnalyses';
-import useAddAnalysis from 'api/analyses/useAddAnalysis';
-import Modal from 'components/UI/Modal';
 import { Divider } from 'semantic-ui-react';
 
-import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import Modal from 'components/UI/Modal';
+
 import { trackEventByName } from 'utils/analytics';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
+import useAddAnalysis from 'api/analyses/useAddAnalysis';
+import useAnalyses from 'api/analyses/useAnalyses';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from './messages';
 
 const ConsentModal = ({ onClose }: { onClose: () => void }) => {
   const [checked, setChecked] = useState(false);

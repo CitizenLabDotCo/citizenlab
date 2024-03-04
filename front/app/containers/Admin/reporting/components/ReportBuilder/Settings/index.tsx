@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { useEditor, ROOT_NODE } from '@craftjs/core';
-
-import Settings from 'components/admin/ContentBuilder/Settings/Settings';
-
-import eventEmitter from 'utils/eventEmitter';
-import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from 'components/admin/ContentBuilder/constants';
-
 import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 
+import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from 'components/admin/ContentBuilder/constants';
+import Settings from 'components/admin/ContentBuilder/Settings/Settings';
+
+// events
 import { SelectedNode } from 'components/admin/ContentBuilder/Settings/typings';
+
+import eventEmitter from 'utils/eventEmitter';
 
 const ReportBuilderSettings = () => {
   const { actions, selectedNode, isEnabled } = useEditor((state, query) => {

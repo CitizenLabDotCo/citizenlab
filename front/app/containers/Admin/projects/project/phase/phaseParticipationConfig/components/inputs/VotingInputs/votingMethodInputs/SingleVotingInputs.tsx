@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 
-import messages from '../messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
 import { Input, Box, Radio } from '@citizenlab/cl2-component-library';
+import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
+
 import {
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
 // typing
 import { ApiErrors } from '../../../..';
 import { VotingAmountInputError } from '../../../shared/styling';
-import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
+import messages from '../messages';
 
 interface Props {
   voting_max_total?: number | null;

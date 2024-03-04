@@ -30,8 +30,6 @@ import messages from './messages';
 
 import tracks from './tracks';
 
-// style
-
 import { getInputTerm } from 'api/phases/utils';
 
 import useLocalize from 'hooks/useLocalize';

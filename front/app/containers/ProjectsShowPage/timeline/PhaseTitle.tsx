@@ -1,6 +1,5 @@
 import React from 'react';
 
-import usePhase from 'api/phases/usePhase';
 import {
   useWindowSize,
   media,
@@ -9,15 +8,16 @@ import {
   viewportWidths,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import useLocalize from 'hooks/useLocalize';
-
 import messages from 'containers/ProjectsShowPage/messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import styled from 'styled-components';
 
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 // style
-import styled from 'styled-components';
+import usePhase from 'api/phases/usePhase';
+
+import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div<{ descriptionHasContent: boolean }>`
   display: flex;

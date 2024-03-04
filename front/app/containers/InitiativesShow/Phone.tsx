@@ -1,28 +1,41 @@
 import React, { useRef } from 'react';
+
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
+import styled from 'styled-components';
+
+import Outlet from 'components/Outlet';
+import Body from 'components/PostShowComponents/Body';
+import DropdownMap from 'components/PostShowComponents/DropdownMap';
+import Image from 'components/PostShowComponents/Image';
+import Title from 'components/PostShowComponents/Title';
+import Topics from 'components/PostShowComponents/Topics';
+import FileAttachments from 'components/UI/FileAttachments';
 import { isNilOrError } from 'utils/helperUtils';
 
-import FileAttachments from 'components/UI/FileAttachments';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Topics from 'components/PostShowComponents/Topics';
-import Title from 'components/PostShowComponents/Title';
-import DropdownMap from 'components/PostShowComponents/DropdownMap';
-import Body from 'components/PostShowComponents/Body';
-import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import PostedByMobile from './PostedByMobile';
-import ReactionControl from './ReactionControl';
-import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
-import Outlet from 'components/Outlet';
 
 import { getAddressOrFallbackDMS } from 'utils/map';
+import { usePermission } from 'utils/permissions';
+
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
+import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
+import PostedByMobile from './PostedByMobile';
+import ReactionControl from './ReactionControl';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
-import useLocalize from 'hooks/useLocalize';
 
 // style
-import styled from 'styled-components';
+
 import { ScreenReaderOnly } from 'utils/a11y';
+
+import RequestToCosponsor from './RequestToCosponsor';
 import {
   pageContentMaxWidth,
   contentFadeInDelay,
@@ -30,17 +43,12 @@ import {
   contentFadeInEasing,
 } from './styleConstants';
 
-import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-
-import useLocale from 'hooks/useLocale';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
-import { usePermission } from 'utils/permissions';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
-import RequestToCosponsor from './RequestToCosponsor';
+
 import Cosponsors from './Cosponsors';
 import InitiativeBanner from './InitiativeBanner';
-import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
+
 import CosponsorShipReminder from './CosponsorShipReminder';
 
 const padding = '32px';

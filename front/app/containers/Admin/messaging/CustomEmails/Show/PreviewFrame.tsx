@@ -1,7 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
-import Frame from 'react-frame-component';
+
 import { API_PATH } from 'containers/App/constants';
+import Frame from 'react-frame-component';
+import styled from 'styled-components';
+
 import { getJwt } from 'utils/auth/jwt';
 
 const StyledFrame = styled(Frame)`

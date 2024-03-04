@@ -7,7 +7,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// styles
+s;
 import styled from 'styled-components';
 
 import Author from 'components/Author';

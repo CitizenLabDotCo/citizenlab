@@ -1,11 +1,15 @@
+import React, { KeyboardEvent, MouseEvent } from 'react';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import SignUpButton from 'containers/HomePage/SignUpButton';
+
 import BannerButton, {
   BannerButtonStyle,
 } from 'components/LandingPages/citizen/BannerButton';
-import SignUpButton from 'containers/HomePage/SignUpButton';
-import useLocalize from 'hooks/useLocalize';
-import React, { KeyboardEvent, MouseEvent } from 'react';
+
 import { isNilOrError } from 'utils/helperUtils';
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
+import useLocalize from 'hooks/useLocalize';
 
 interface Props {
   buttonStyle: BannerButtonStyle;

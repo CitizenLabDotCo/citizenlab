@@ -1,19 +1,18 @@
 import React from 'react';
 
+import messages from 'containers/ProjectsShowPage/messages';
 import { Helmet } from 'react-helmet';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useAuthUser from 'api/me/useAuthUser';
-
-import { stripHtml } from 'utils/textUtils';
-import { imageSizes } from 'utils/fileUtils';
+import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { imageSizes } from 'utils/fileUtils';
+import { stripHtml } from 'utils/textUtils';
 
-import messages from 'containers/ProjectsShowPage/messages';
-import { useIntl } from 'utils/cl-intl';
-
+import useAuthUser from 'api/me/useAuthUser';
 import { IProjectData } from 'api/projects/types';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocalize from 'hooks/useLocalize';
 
 interface Props {

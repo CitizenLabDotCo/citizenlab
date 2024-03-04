@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
-import { IPhaseFileData } from 'api/phase_files/types';
-import { IEventFileData } from 'api/event_files/types';
-import { IIdeaFileData } from 'api/idea_files/types';
-import { darken } from 'polished';
 
 import { Icon, colors, media } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+import { IEventFileData } from 'api/event_files/types';
+import { IIdeaFileData } from 'api/idea_files/types';
+import { IPhaseFileData } from 'api/phase_files/types';
 
 const Container = styled.div`
   display: flex;

@@ -1,13 +1,14 @@
 import React from 'react';
 
 import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import Error from 'components/UI/Error';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import messages from '../../../../messages';
 
 import { ApiErrors } from '../..';
+import messages from '../../../../messages';
 
 interface Props {
   presentation_mode: 'card' | 'map' | null | undefined;

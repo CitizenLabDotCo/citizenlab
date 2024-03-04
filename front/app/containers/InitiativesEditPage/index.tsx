@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 
-// libraries
 import { media } from '@citizenlab/cl2-component-library';
 import { PreviousPathnameContext } from 'context';
 import { useParams } from 'react-router-dom';
@@ -13,8 +12,6 @@ import PageNotFound from 'components/PageNotFound';
 import clHistory from 'utils/cl-router/history';
 import { isAdmin, isSuperAdmin, isRegularUser } from 'utils/permissions/roles';
 
-// resources
-
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
@@ -25,8 +22,6 @@ import useLocale from 'hooks/useLocale';
 
 import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
 import InitiativesEditMeta from './InitiativesEditMeta';
-
-// style
 
 const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
   width: 100%;

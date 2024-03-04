@@ -15,8 +15,6 @@ import tracks from '../../tracks';
 import messages from './messages';
 import UseTemplateModal from './UseTemplateModal';
 
-// style
-
 const duration = 300;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 

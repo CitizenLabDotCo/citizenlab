@@ -31,8 +31,6 @@ import IdeaMapCard from '../IdeaMapCard';
 
 import messages from '../messages';
 
-// style
-
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';

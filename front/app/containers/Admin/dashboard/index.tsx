@@ -1,18 +1,21 @@
 import React, { memo } from 'react';
+
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 import HelmetIntl from 'components/HelmetIntl';
-import DashboardTabs from './components/DashboardTabs';
 
-import useAuthUser from 'api/me/useAuthUser';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// permissions
+import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
+import useAuthUser from 'api/me/useAuthUser';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import DashboardTabs from './components/DashboardTabs';
+
+// permissions
+
+import messages from './messages';
 import { getAdminTabs } from './tabs';
 
 export const DashboardsPage = memo(() => {

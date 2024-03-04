@@ -1,14 +1,16 @@
 import React from 'react';
 
 import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../../messages';
+
+import { IdeaDefaultSortMethod } from 'api/phases/types';
 
 import { ApiErrors } from '../../..';
-import { IdeaDefaultSortMethod } from 'api/phases/types';
+import messages from '../../../../../messages';
 
 interface Props {
   options: { key: string; value: string }[];

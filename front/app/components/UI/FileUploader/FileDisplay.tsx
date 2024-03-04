@@ -15,7 +15,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
 
-// styles
+s;
 
 import messages from './messages';
 

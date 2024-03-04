@@ -1,25 +1,27 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
+import { WrappedComponentProps } from 'react-intl';
 
-import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import useDeleteUserCustomFieldsOption from 'api/user_custom_fields_options/useDeleteUserCustomFieldsOption';
-import useLocalize from 'hooks/useLocalize';
-import useReorderUserCustomFieldOption from 'api/user_custom_fields_options/useReorderUserCustomFieldsOption';
-
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
   SortableList,
   SortableRow,
   TextCell,
 } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
+
+import { injectIntl } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
+import useDeleteUserCustomFieldsOption from 'api/user_custom_fields_options/useDeleteUserCustomFieldsOption';
+import useReorderUserCustomFieldOption from 'api/user_custom_fields_options/useReorderUserCustomFieldsOption';
+import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+
+import useLocalize from 'hooks/useLocalize';
 
 import messages from '../messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 const RegistrationCustomFieldOptions = memo(
   ({

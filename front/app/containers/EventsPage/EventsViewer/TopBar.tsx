@@ -1,13 +1,15 @@
 import React, { memo } from 'react';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import styled, { useTheme } from 'styled-components';
 
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import DateFilterDropdown from './DateFilterDropdown';
 
-import styled, { useTheme } from 'styled-components';
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
+import DateFilterDropdown from './DateFilterDropdown';
 
 import { dateFilterKey } from '.';
 

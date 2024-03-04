@@ -1,15 +1,17 @@
 import React, { memo } from 'react';
 
-import Link from 'utils/cl-router/Link';
+import { Box, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import Checkbox from 'components/UI/Checkbox';
 import Error from 'components/UI/Error';
-import { Box, fontSizes } from '@citizenlab/cl2-component-library';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;

@@ -1,29 +1,31 @@
 import React, { useState, useEffect } from 'react';
+
+import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
+import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 import {
   Outlet as RouterOutlet,
   useParams,
   useLocation,
 } from 'react-router-dom';
-import clHistory from 'utils/cl-router/history';
-
-import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
-import { PhaseHeader } from './phase/PhaseHeader';
-import ProjectHeader from './projectHeader';
+import { ITab } from 'typings';
 
 import { useIntl } from 'utils/cl-intl';
-
-import { ITab } from 'typings';
-import { IProjectData } from 'api/projects/types';
-
-import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
+import clHistory from 'utils/cl-router/history';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase } from 'api/phases/utils';
-import { getIntialTabs, getTabHideConditions } from './tabs';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import { IProjectData } from 'api/projects/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { PhaseHeader } from './phase/PhaseHeader';
+import ProjectHeader from './projectHeader';
+
+import { getIntialTabs, getTabHideConditions } from './tabs';
+
+import useProjectById from 'api/projects/useProjectById';
+
 import { getTimelineTab } from './timeline/utils';
 
 interface DataProps {

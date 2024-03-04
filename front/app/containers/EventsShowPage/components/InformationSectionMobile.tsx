@@ -1,18 +1,20 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import EventAttendanceButton from 'components/EventAttendanceButton';
-import ParticipantsCount from './MetadataInformation/ParticipantsCount';
-import OnlineLink from './MetadataInformation/OnlineLink';
-import FullEventTime from './MetadataInformation/EventTimeTextual';
-import Location from './MetadataInformation/Location';
-import EventDateStylized from './MetadataInformation/EventDateStylized';
-import EventSharingButtons from './EventSharingButtons';
+import moment from 'moment';
 
-// typing
+import EventAttendanceButton from 'components/EventAttendanceButton';
+
 import { IEventData } from 'api/events/types';
 
-import moment from 'moment';
+import EventSharingButtons from './EventSharingButtons';
+import EventDateStylized from './MetadataInformation/EventDateStylized';
+import FullEventTime from './MetadataInformation/EventTimeTextual';
+import Location from './MetadataInformation/Location';
+import OnlineLink from './MetadataInformation/OnlineLink';
+import ParticipantsCount from './MetadataInformation/ParticipantsCount';
+
+// typing
 
 interface Props {
   event: IEventData;

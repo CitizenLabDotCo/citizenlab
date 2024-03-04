@@ -1,9 +1,5 @@
 import React from 'react';
 
-import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
-
-import styled from 'styled-components';
 import {
   colors,
   isRtl,
@@ -11,6 +7,10 @@ import {
   Box,
 } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
+import styled from 'styled-components';
+
+import Avatar from 'components/Avatar';
+import UserName from 'components/UI/UserName';
 
 import { IIdeaData } from 'api/ideas/types';
 

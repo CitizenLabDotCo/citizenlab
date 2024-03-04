@@ -1,10 +1,10 @@
+import { colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import { SectionField } from 'components/admin/Section';
+import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import FileUploader from 'components/UI/FileUploader';
-import { SectionField } from 'components/admin/Section';
-
-import styled from 'styled-components';
-import { colors } from '@citizenlab/cl2-component-library';
 
 // other
 export const TIMEOUT = 350;

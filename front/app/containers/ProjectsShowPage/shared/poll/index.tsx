@@ -1,21 +1,19 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
-import usePollQuestions from 'api/poll_questions/usePollQuestions';
-
-import FormCompleted from './FormCompleted';
-import PollForm from './PollForm';
 
 import styled from 'styled-components';
 
-import messages from './messages';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { isNilOrError } from 'utils/helperUtils';
 import globalMessages from 'utils/messages';
 
+import usePhase from 'api/phases/usePhase';
+import usePollQuestions from 'api/poll_questions/usePollQuestions';
 import { PollDisabledReason } from 'api/projects/types';
+import useProjectById from 'api/projects/useProjectById';
 
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import FormCompleted from './FormCompleted';
+import messages from './messages';
+import PollForm from './PollForm';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};

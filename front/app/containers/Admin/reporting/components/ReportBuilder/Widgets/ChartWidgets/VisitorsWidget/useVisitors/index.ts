@@ -1,11 +1,13 @@
 // parse
-import { parseStats, parseTimeSeries } from './parse';
 
-import { QueryParameters } from './typings';
 import { useMemo, useState } from 'react';
+
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import { useVisitors as useVisitorsData } from 'api/graph_data_units';
+
+import { parseStats, parseTimeSeries } from './parse';
+import { QueryParameters } from './typings';
 
 export default function useVisitors({
   projectId,

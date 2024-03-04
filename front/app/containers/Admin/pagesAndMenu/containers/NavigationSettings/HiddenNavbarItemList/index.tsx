@@ -1,11 +1,9 @@
 import React, { useMemo } from 'react';
 
 import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
-
-import messages from './messages';
-
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import { WrappedComponentProps } from 'react-intl';
+
 import { List, Row } from 'components/admin/ResourceList';
 
 import { injectIntl } from 'utils/cl-intl';
@@ -22,6 +20,7 @@ import useNavbarItems from 'api/navbar/useNavbarItems';
 import { getNavbarItemSlug } from 'api/navbar/util';
 
 import Header from './Header';
+import messages from './messages';
 
 const FIXED_PAGES_SET = new Set<TCustomPageCode>([
   'terms-and-conditions',

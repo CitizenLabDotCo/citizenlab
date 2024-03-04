@@ -10,27 +10,26 @@ import { object, string, mixed, boolean } from 'yup';
 import Checkbox from 'components/HookForm/Checkbox';
 import Feedback from 'components/HookForm/Feedback';
 import SingleFileUploader from 'components/HookForm/SingleFileUploader';
+
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
 import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
-import useLocale from 'hooks/useLocale';
+import { IPhases } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
+import { canContainIdeas, getCurrentPhase } from 'api/phases/utils';
+import { IProject } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
+
+import useLocale from 'hooks/useLocale';
 
 // router
 
 import LocalePicker from './LocalePicker';
 import messages from './messages';
 import PhaseSelector from './PhaseSelector';
-
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-import { canContainIdeas, getCurrentPhase } from 'api/phases/utils';
-
-import { isNilOrError } from 'utils/helperUtils';
-
-import { IProject } from 'api/projects/types';
-import { IPhases } from 'api/phases/types';
 
 interface OuterProps {
   onFinishImport: () => void;

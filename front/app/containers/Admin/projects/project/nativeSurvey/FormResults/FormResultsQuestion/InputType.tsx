@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
 
-import messages from '../../messages';
 import { useIntl } from 'utils/cl-intl';
 
-import { get } from 'lodash-es';
+import messages from '../../messages';
 
 interface Props {
   inputType: string;

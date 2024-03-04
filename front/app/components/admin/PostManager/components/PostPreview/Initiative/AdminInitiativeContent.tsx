@@ -1,18 +1,15 @@
 import React from 'react';
 
+import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import PostedBy from 'containers/InitiativesShow/PostedBy';
+import styled from 'styled-components';
+
 import {
   Top,
   Content,
   Container,
 } from 'components/admin/PostManager/components/PostPreview';
 import ReactionIndicator from 'components/InitiativeCard/ReactionIndicator';
-import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
-import PostedBy from 'containers/InitiativesShow/PostedBy';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
 import Body from 'components/PostShowComponents/Body';
 import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
@@ -21,6 +18,7 @@ import Title from 'components/PostShowComponents/Title';
 import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
 
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

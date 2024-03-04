@@ -1,28 +1,35 @@
+// Libraries
 import React, { useState, Fragment } from 'react';
+
+import { clone } from 'lodash-es';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { clone } from 'lodash-es';
 import styled from 'styled-components';
 
 // Services / Data loading
 
-import { isNilOrError } from 'utils/helperUtils';
+import { Multiloc } from 'typings';
 
 import { List } from 'components/admin/ResourceList';
+
+// Components
 import Button from 'components/UI/Button';
-import QuestionRow from './PollQuestions/QuestionRow';
-import QuestionFormRow from './PollQuestions/QuestionFormRow';
-import OptionForm from './PollAnswerOptions/OptionForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { isNilOrError } from 'utils/helperUtils';
 
-import { Multiloc } from 'typings';
+// Typings
+
+import { IPollQuestionData } from 'api/poll_questions/types';
 import useAddPollQuestion from 'api/poll_questions/useAddPollQuestion';
 import useDeletePollQuestion from 'api/poll_questions/useDeletePollQuestion';
-import { IPollQuestionData } from 'api/poll_questions/types';
-import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
 import useReorderPollQuestion from 'api/poll_questions/useReorderPollQuestion';
+import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
+
+import messages from './messages';
+import OptionForm from './PollAnswerOptions/OptionForm';
+import QuestionFormRow from './PollQuestions/QuestionFormRow';
+import QuestionRow from './PollQuestions/QuestionRow';
 
 const StyledList = styled(List)`
   margin: 10px 0;

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 
-import PieChart from 'components/admin/Graphs/PieChart';
-import renderTooltip from 'containers/Admin/dashboard/users/Charts/GenderChart/renderTooltip';
-
 import { makeLegendItem } from 'containers/Admin/dashboard/users/Charts/GenderChart/Chart';
-
+import renderTooltip from 'containers/Admin/dashboard/users/Charts/GenderChart/renderTooltip';
 import { GenderSerie } from 'containers/Admin/dashboard/users/Charts/GenderChart/typings';
+
 import { Layout } from 'components/admin/GraphCards/typings';
+import PieChart from 'components/admin/Graphs/PieChart';
 
 interface Props {
   layout?: Layout;

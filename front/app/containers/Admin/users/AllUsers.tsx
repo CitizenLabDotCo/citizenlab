@@ -1,9 +1,8 @@
 import React from 'react';
 
+import messages from './messages';
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';
-
-import messages from './messages';
 
 const AllUsers = () => (
   <>

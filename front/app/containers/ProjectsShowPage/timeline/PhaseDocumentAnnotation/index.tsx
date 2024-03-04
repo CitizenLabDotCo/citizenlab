@@ -1,11 +1,15 @@
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 import React from 'react';
+
 import { Box } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { IPhaseData } from 'api/phases/types';
 import DocumentAnnotation from 'containers/ProjectsShowPage/shared/document_annotation';
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
+
+import messages from './messages';
 
 interface Props {
   project: IProjectData;

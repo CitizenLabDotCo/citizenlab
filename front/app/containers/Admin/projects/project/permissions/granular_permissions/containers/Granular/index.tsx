@@ -1,9 +1,12 @@
 import React from 'react';
-import { IProjectData } from 'api/projects/types';
+
 import styled from 'styled-components';
 
-import Timeline from './Timeline';
 import { Section } from 'components/admin/Section';
+
+import { IProjectData } from 'api/projects/types';
+
+import Timeline from './Timeline';
 
 const StyledSection = styled(Section)`
   margin-bottom: 30px;

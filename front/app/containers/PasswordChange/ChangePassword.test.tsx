@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   screen,
   render,
@@ -6,8 +7,10 @@ import {
   waitFor,
   userEvent,
 } from 'utils/testUtils/rtl';
-import ChangePassword from '.';
+
 import { IUserData } from 'api/users/types';
+
+import ChangePassword from '.';
 
 const mockUserData: IUserData = {
   id: 'userId',

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-// api
-
 import { Icon, Button } from 'semantic-ui-react';
 
 import WarningModal from 'components/WarningModal';

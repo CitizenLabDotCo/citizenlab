@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 
-import TextArea from 'components/UI/TextArea';
-import Button from 'components/UI/Button';
 import { Label, Box, Error } from '@citizenlab/cl2-component-library';
-import RemainingCharacters from '../components/RemainingCharacters';
 
-import { isNilOrError } from 'utils/helperUtils';
+import Button from 'components/UI/Button';
+import TextArea from 'components/UI/TextArea';
+
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { ITextingCampaignData } from 'api/texting_campaigns/types';
 import useAddTextingCampaign from 'api/texting_campaigns/useAddTextingCampaign';
 import useUpdateTextingCampaign from 'api/texting_campaigns/useUpdateTextingCampaign';
+
+import RemainingCharacters from '../components/RemainingCharacters';
 
 interface Props {
   className?: string;

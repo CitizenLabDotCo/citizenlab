@@ -9,18 +9,19 @@ import SharingModalContent from 'components/PostShowComponents/SharingModalConte
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { isString } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
 
 import usePhases from 'api/phases/usePhases';
 import { getInputTerm } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from '../messages';
 
 // router
-
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // animations
 
@@ -30,8 +31,6 @@ import {
   contentFadeInEasing,
   contentFadeInDelay,
 } from '../styleConstants';
-
-import { isString } from 'utils/helperUtils';
 
 const Main = styled.main`
   width: 100%;

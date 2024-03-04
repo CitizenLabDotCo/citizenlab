@@ -1,11 +1,13 @@
 import React from 'react';
+
+import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
 import { IInitiativeResubmittedForReviewNotificationData } from 'api/notifications/types';
 
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 import NotificationWrapper from '../NotificationWrapper';
-import T from 'components/T';
 
 type Props = {
   notification: IInitiativeResubmittedForReviewNotificationData;

@@ -1,8 +1,6 @@
 // libraries
 import React, { Component, MouseEvent } from 'react';
 
-import Button from 'components/UI/Button';
-import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import {
   Toggle,
   Badge,
@@ -17,6 +15,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
+import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import {
   Section,
   SectionTitle,
@@ -24,6 +23,7 @@ import {
   SubSectionTitle,
 } from 'components/admin/Section';
 import T from 'components/T';
+import Button from 'components/UI/Button';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';

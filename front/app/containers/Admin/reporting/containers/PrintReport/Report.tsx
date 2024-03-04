@@ -1,18 +1,19 @@
 import React from 'react';
-import styled from 'styled-components';
 
 // context
-import { ReportContextProvider } from '../../context/ReportContext';
 
-import useReport from 'api/reports/useReport';
-import useReportLayout from 'api/report_layout/useReportLayout';
-
-import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import { Spinner, Box } from '@citizenlab/cl2-component-library';
-import Editor from '../../components/ReportBuilder/Editor';
-import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import styled from 'styled-components';
 
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
+
+import useReportLayout from 'api/report_layout/useReportLayout';
+import useReport from 'api/reports/useReport';
+
+import Editor from '../../components/ReportBuilder/Editor';
 import { A4_WIDTH } from '../../constants';
+import { ReportContextProvider } from '../../context/ReportContext';
 
 const Centerer = styled.div`
   display: flex;

@@ -10,36 +10,33 @@ import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import { StyledPasswordIconTooltip } from 'components/smallForm';
 import Button from 'components/UI/Button';
+import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import {
+  isCLErrorsWrapper,
+  handleHookFormSubmissionError,
+} from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { Parameters as CreateAccountParameters } from 'api/authentication/sign_up/createAccountWithPassword';
+
 import useLocale from 'hooks/useLocale';
 
 import containerMessages from '../../messages';
 import tracks from '../../tracks';
 import TextButton from '../_components/TextButton';
+import sharedMessages from '../messages';
 import PoliciesMarkup from '../Policies/PoliciesMarkup';
 
+import { DEFAULT_VALUES, getSchema, FormValues } from './form';
 import messages from './messages';
 
-import sharedMessages from '../messages';
-
-import { DEFAULT_VALUES, getSchema, FormValues } from './form';
-
 // errors
-import {
-  isCLErrorsWrapper,
-  handleHookFormSubmissionError,
-} from 'utils/errorUtils';
 
 // tracks
-
-import { isNilOrError } from 'utils/helperUtils';
-
-import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
-
-import { Parameters as CreateAccountParameters } from 'api/authentication/sign_up/createAccountWithPassword';
 
 interface Props {
   state: State;

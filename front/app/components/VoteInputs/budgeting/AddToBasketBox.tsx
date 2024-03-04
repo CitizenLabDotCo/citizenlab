@@ -1,7 +1,5 @@
 import React, { memo } from 'react';
 
-// api
-
 import {
   Box,
   Text,
@@ -11,7 +9,7 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 
-// styles
+s;
 import styled from 'styled-components';
 
 import { ScreenReaderOnly } from 'utils/a11y';

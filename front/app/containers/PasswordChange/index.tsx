@@ -5,8 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet';
 import { useForm, FormProvider } from 'react-hook-form';
 
-// style
-
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';

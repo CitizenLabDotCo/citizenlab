@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 
-import useTopics from 'api/topics/useTopics';
-
-import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
   Section,
   SectionDescription,
@@ -12,17 +8,22 @@ import {
   StyledLink,
 } from 'components/admin/Section';
 import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
-import TopicTermConfig from './TopicTermConfig';
-import TopicsList from './TopicsList';
 import Modal, {
   ModalContentContainer,
   ButtonsWrapper,
   Content,
 } from 'components/UI/Modal';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+
 import useDeleteTopic from 'api/topics/useDeleteTopic';
+import useTopics from 'api/topics/useTopics';
+
+import messages from '../messages';
+
+import TopicsList from './TopicsList';
+import TopicTermConfig from './TopicTermConfig';
 
 const AllTopics = () => {
   const { data: topics } = useTopics({ includeStaticPages: true });

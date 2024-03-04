@@ -1,17 +1,18 @@
 import React from 'react';
+
+import { useParams } from 'react-router-dom';
+
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 // Services
 import useCause from 'api/causes/useCause';
-
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import CauseForm, { SubmitValues } from './CauseForm';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-import { useParams } from 'react-router-dom';
 import useUpdateCause from 'api/causes/useUpdateCause';
+
+import CauseForm, { SubmitValues } from './CauseForm';
+import messages from './messages';
 
 const EditCause = () => {
   const { mutateAsync: updateCause } = useUpdateCause();

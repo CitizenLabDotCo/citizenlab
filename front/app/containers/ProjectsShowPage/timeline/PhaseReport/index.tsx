@@ -1,22 +1,21 @@
 import React from 'react';
 
-import useReportLayout from 'api/report_layout/useReportLayout';
-
 import {
   Box,
   useBreakpoint,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
-import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
 // context
-import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
-
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
-
+import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 import { getReportWidth } from 'containers/Admin/reporting/utils/getReportWidth';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+
+import useReportLayout from 'api/report_layout/useReportLayout';
 
 interface Props {
   reportId: string;

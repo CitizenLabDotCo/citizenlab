@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 
 // module
-import { InsertConfigurationOptions, ITab } from 'typings';
-import { insertConfiguration } from 'utils/moduleUtils';
 
-import HelmetIntl from 'components/HelmetIntl';
-import Outlet from 'components/Outlet';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
+import { InsertConfigurationOptions, ITab } from 'typings';
+
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
-import { isTopBarNavActive } from 'utils/helperUtils';
+import HelmetIntl from 'components/HelmetIntl';
+import Outlet from 'components/Outlet';
+
 import { useIntl } from 'utils/cl-intl';
+import { isTopBarNavActive } from 'utils/helperUtils';
+import { insertConfiguration } from 'utils/moduleUtils';
 
 import messages from './messages';
 

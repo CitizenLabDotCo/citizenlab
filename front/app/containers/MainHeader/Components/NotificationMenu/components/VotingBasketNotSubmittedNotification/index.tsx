@@ -1,9 +1,10 @@
 import React, { memo } from 'react';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
 import { IVotingBasketNotSubmittedNotificationData } from 'api/notifications/types';
 
 import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 import NotificationWrapper from '../NotificationWrapper';
 
 type Props = {

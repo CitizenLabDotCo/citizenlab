@@ -1,9 +1,5 @@
 import React, { useRef, ChangeEvent } from 'react';
-import styled from 'styled-components';
-import { SectionField, SectionTitle } from 'components/admin/Section';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
 import {
   fontSizes,
   Text,
@@ -11,11 +7,18 @@ import {
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import Error from 'components/UI/Error';
-import { saveAs } from 'file-saver';
-import { requestBlob } from 'utils/requestBlob';
 import { API_PATH } from 'containers/App/constants';
+import { saveAs } from 'file-saver';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+import { SectionField, SectionTitle } from 'components/admin/Section';
+import Error from 'components/UI/Error';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { requestBlob } from 'utils/requestBlob';
+
+import messages from '../messages';
 
 const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 15px;

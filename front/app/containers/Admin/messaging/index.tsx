@@ -1,17 +1,22 @@
 import React, { useEffect } from 'react';
-import clHistory from 'utils/cl-router/history';
-import { useIntl } from 'utils/cl-intl';
-import HelmetIntl from 'components/HelmetIntl';
+
 import { Box } from '@citizenlab/cl2-component-library';
-import messages from './messages';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
+
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
+import HelmetIntl from 'components/HelmetIntl';
+
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { isTopBarNavActive } from 'utils/helperUtils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import { usePermission } from 'utils/permissions';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from './messages';
 
 const MessagingDashboard = () => {
   const { formatMessage } = useIntl();

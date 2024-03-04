@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import Modal from 'components/UI/Modal';
 import {
   Box,
   Title,
@@ -10,17 +9,20 @@ import {
   Radio,
   colors,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-import ProjectFilter from 'components/UI/ProjectFilter';
-
-import clHistory from 'utils/cl-router/history';
-
-import messages from './messages';
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { IOption } from 'typings';
 
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import Modal from 'components/UI/Modal';
+import ProjectFilter from 'components/UI/ProjectFilter';
+
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
 import useAddReport from 'api/reports/useAddReport';
+
+import messages from './messages';
+
 interface Props {
   open: boolean;
   onClose: () => void;

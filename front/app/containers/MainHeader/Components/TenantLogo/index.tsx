@@ -1,14 +1,15 @@
 import React from 'react';
+
+import { Image } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-import { Image } from '@citizenlab/cl2-component-library';
+import messages from '../../messages';
 
 const Logo = styled(Image)`
   max-width: 100%;

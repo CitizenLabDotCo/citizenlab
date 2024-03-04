@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Text, stylingConsts } from '@citizenlab/cl2-component-library';
-
 import { useTheme } from 'styled-components';
 
 interface Props {

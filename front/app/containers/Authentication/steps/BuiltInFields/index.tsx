@@ -1,35 +1,30 @@
 import React, { useEffect } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import Input from 'components/HookForm/Input';
-import PasswordInput from 'components/HookForm/PasswordInput';
-
 // errors
-import {
-  isCLErrorsWrapper,
-  handleHookFormSubmissionError,
-} from 'utils/errorUtils';
 
 // tracks
-import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
 
-import { isNilOrError } from 'utils/helperUtils';
-
-import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
-
-import { BuiltInFieldsUpdate } from '../../useSteps/stepConfig/typings';
 import {
   AuthenticationData,
   SetError,
 } from 'containers/Authentication/typings';
 import { useForm, FormProvider } from 'react-hook-form';
-import Button from 'components/UI/Button';
 
+import Input from 'components/HookForm/Input';
+import PasswordInput from 'components/HookForm/PasswordInput';
+import Button from 'components/UI/Button';
+import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
+
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import {
+  isCLErrorsWrapper,
+  handleHookFormSubmissionError,
+} from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
@@ -38,9 +33,11 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import useLocale from 'hooks/useLocale';
 
+import tracks from '../../tracks';
+import { BuiltInFieldsUpdate } from '../../useSteps/stepConfig/typings';
 import sharedMessages from '../messages';
-import { DEFAULT_VALUES, getSchema } from './form';
 
+import { DEFAULT_VALUES, getSchema } from './form';
 import messages from './messages';
 
 interface BaseProps {

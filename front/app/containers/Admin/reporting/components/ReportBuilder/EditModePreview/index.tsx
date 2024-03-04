@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
-import MobileButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/MobileButton';
-import PDFButton from './PDFButton';
-import DesktopButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/DesktopButton';
-import Frame from 'components/admin/ContentBuilder/Frame';
-import PDFWrapper from './PDFWrapper';
-
-import useLocale from 'hooks/useLocale';
-
-// context
-import {
-  ReportContextProvider,
-  useReportContext,
-} from 'containers/Admin/reporting/context/ReportContext';
-import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-
 import {
   A4_WIDTH,
   MAX_REPORT_WIDTH,
 } from 'containers/Admin/reporting/constants';
-
+import {
+  ReportContextProvider,
+  useReportContext,
+} from 'containers/Admin/reporting/context/ReportContext';
 import { Locale } from 'typings';
+
+import DesktopButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/DesktopButton';
+import MobileButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/MobileButton';
+import Frame from 'components/admin/ContentBuilder/Frame';
+
+// context
+
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { CraftJson } from 'components/admin/ContentBuilder/typings';
+
+import useLocale from 'hooks/useLocale';
+
+import PDFButton from './PDFButton';
+import PDFWrapper from './PDFWrapper';
 
 interface Props {
   previewData?: CraftJson;

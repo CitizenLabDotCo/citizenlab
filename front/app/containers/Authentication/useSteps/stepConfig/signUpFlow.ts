@@ -1,31 +1,31 @@
 // authentication
-import { handleOnSSOClick } from 'api/authentication/singleSignOn';
-import createAccountWithPassword, {
-  Parameters as CreateAccountParameters,
-} from 'api/authentication/sign_up/createAccountWithPassword';
+import { trackEventByName } from 'utils/analytics';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
+import createAccountWithPassword, {
+  Parameters as CreateAccountParameters,
+} from 'api/authentication/sign_up/createAccountWithPassword';
+import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 import {
   updateUser,
   invalidateCacheAfterUpdateUser,
 } from 'api/users/useUpdateUser';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 
 // tracks
 import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
-
-import { askCustomFields, showOnboarding } from './utils';
-
 import {
   AuthenticationData,
   AuthProvider,
   GetRequirements,
   UpdateState,
 } from '../../typings';
+
 import { Step } from './typings';
-import { OnboardingType } from 'api/authentication/authentication_requirements/types';
+import { askCustomFields, showOnboarding } from './utils';
 
 export const signUpFlow = (
   getAuthenticationData: () => AuthenticationData,

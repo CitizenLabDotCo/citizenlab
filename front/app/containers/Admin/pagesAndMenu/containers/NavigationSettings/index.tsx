@@ -1,8 +1,9 @@
 import React from 'react';
+
 import { Box } from '@citizenlab/cl2-component-library';
 
-import VisibleNavbarItemList from './VisibleNavbarItemList';
 import HiddenNavbarItemList from './HiddenNavbarItemList';
+import VisibleNavbarItemList from './VisibleNavbarItemList';
 
 const NavigationSettings = () => (
   <>

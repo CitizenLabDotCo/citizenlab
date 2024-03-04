@@ -8,7 +8,6 @@ import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
 // cache
 
-// tracks
 import tracks from '../../tracks';
 
 import {

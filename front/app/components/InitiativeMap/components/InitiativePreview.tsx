@@ -7,8 +7,6 @@ import {
   Title,
   Box,
 } from '@citizenlab/cl2-component-library';
-
-// style
 import styled from 'styled-components';
 
 import Body from 'components/PostShowComponents/Body';

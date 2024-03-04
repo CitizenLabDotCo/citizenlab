@@ -19,6 +19,8 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 import T from 'components/T';
 import Image from 'components/UI/Image';
 
+import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
@@ -36,12 +38,8 @@ import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import messages from './messages';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
 
 import tracks from './tracks';
-
-// style
-import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);

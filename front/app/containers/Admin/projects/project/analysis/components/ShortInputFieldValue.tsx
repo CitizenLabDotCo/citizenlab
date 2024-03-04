@@ -1,11 +1,15 @@
 import React, { useMemo } from 'react';
 
-import T from 'components/T';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import { FormattedDate } from 'react-intl';
 import { isNil } from 'lodash-es';
-import { IIdeaCustomField } from 'api/idea_custom_fields/types';
+import { FormattedDate } from 'react-intl';
+
+import T from 'components/T';
+
 import { useIntl } from 'utils/cl-intl';
+
+import { IIdeaCustomField } from 'api/idea_custom_fields/types';
+import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+
 import messages from '../messages';
 
 type Props = {

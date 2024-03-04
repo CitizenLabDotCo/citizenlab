@@ -1,18 +1,19 @@
 import React from 'react';
 
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-
-import useLocalize from 'hooks/useLocalize';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import BarChartByCategory from 'components/admin/Graphs/BarChartByCategory';
 import PieChartByCategory from 'components/admin/Graphs/PieChartByCategory';
-import AreaChart from './AreaChart';
-import GenderChart from './GenderChart';
-import AgeChart from './AgeChart';
-import { Box } from '@citizenlab/cl2-component-library';
 
 import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
+
+import useLocalize from 'hooks/useLocalize';
+
+import AgeChart from './AgeChart';
+import AreaChart from './AreaChart';
+import GenderChart from './GenderChart';
 
 interface Props {
   currentGroupFilter: string | undefined;

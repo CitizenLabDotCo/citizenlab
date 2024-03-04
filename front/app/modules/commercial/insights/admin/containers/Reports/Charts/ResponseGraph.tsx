@@ -1,7 +1,4 @@
-// libraries
 import React, { memo } from 'react';
-
-// resources
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';

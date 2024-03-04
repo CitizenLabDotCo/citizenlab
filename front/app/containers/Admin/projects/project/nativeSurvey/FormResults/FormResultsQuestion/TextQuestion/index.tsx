@@ -1,10 +1,11 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { Box } from '@citizenlab/cl2-component-library';
-import TextResponses from './TextResponses';
 import Analysis from './Analysis';
+import TextResponses from './TextResponses';
 
 interface Props {
   textResponses: { answer: string }[];

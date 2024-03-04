@@ -7,22 +7,22 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { Popup } from 'semantic-ui-react';
 import Notifications from 'containers/MainHeader/Components/NotificationMenu/components/Notifications';
+import tracks from 'containers/MainHeader/Components/NotificationMenu/tracks';
+import { Popup } from 'semantic-ui-react';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
 // style
-import { StyledBox } from './styles';
 
 import { isNilOrError } from 'utils/helperUtils';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useMarkAllAsRead from 'api/notifications/useMarkAllAsRead';
 
-import { trackEventByName } from 'utils/analytics';
-import tracks from 'containers/MainHeader/Components/NotificationMenu/tracks';
+import messages from './messages';
+import { StyledBox } from './styles';
 
 export const NotificationsPopup = () => {
   const { formatMessage } = useIntl();

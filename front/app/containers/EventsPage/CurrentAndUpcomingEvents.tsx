@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import EventsViewer from './EventsViewer';
+import { WrappedComponentProps } from 'react-intl';
 
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+
+import EventsViewer from './EventsViewer';
 import messages from './messages';
 
 type Props = {

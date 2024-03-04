@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
-import { exportVolunteers } from 'api/causes/util';
 import useCauses from 'api/causes/useCauses';
+import { exportVolunteers } from 'api/causes/util';
+
+import messages from './messages';
 
 interface Props {
   phaseId: string;

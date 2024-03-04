@@ -28,8 +28,6 @@ import { client } from '../utils/apolloUtils';
 
 import messages from './messages';
 
-// style
-
 const Arrow = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="134.282 57.93 18.666 24" aria-hidden={true} {...props}>

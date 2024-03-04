@@ -1,15 +1,5 @@
 import React, { useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 
-import {
-  RowContent,
-  RowContentInner,
-  RowTitle,
-  RowButton,
-  ActionsRowContainer,
-} from '../StyledComponents';
-import PublicationStatusLabel from '../PublicationStatusLabel';
 import {
   IconNames,
   StatusLabel,
@@ -17,18 +7,33 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import Error from 'components/UI/Error';
-import GroupsTag from './GroupsTag';
+
+import { isNilOrError } from 'utils/helperUtils';
+import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import { IAdminPublicationData } from 'api/admin_publications/types';
+import useAuthUser from 'api/me/useAuthUser';
+
+import PublicationStatusLabel from '../PublicationStatusLabel';
+import {
+  RowContent,
+  RowContentInner,
+  RowTitle,
+  RowButton,
+  ActionsRowContainer,
+} from '../StyledComponents';
+
 import AdminTag from './AdminTag';
+import GroupsTag from './GroupsTag';
 import ManageButton from './ManageButton';
 
 // resources
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import useAuthUser from 'api/me/useAuthUser';
-import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 import ProjectMoreActionsMenu, { ActionType } from './ProjectMoreActionsMenu';
-import { IAdminPublicationData } from 'api/admin_publications/types';
 
 export const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;

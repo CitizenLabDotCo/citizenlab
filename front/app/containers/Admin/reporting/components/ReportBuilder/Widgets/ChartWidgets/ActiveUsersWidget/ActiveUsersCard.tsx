@@ -16,7 +16,6 @@ import NoData from '../../_shared/NoData';
 import messages from '../messages';
 
 import Chart from './Chart';
-
 import useActiveUsers from './useActiveUsers';
 
 type Props = ProjectId & Dates & Resolution;

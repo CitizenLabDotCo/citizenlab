@@ -7,15 +7,17 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+
 import PageContainer from 'components/UI/PageContainer';
 
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
 // util
 import clHistory from 'utils/cl-router/history';
 
 import { IProjectData } from 'api/projects/types';
+
+import messages from './messages';
 
 type Props = {
   project: IProjectData;

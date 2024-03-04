@@ -1,5 +1,6 @@
 import React from 'react';
 
+// api
 import { Text } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

@@ -10,8 +10,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
-// style
-
 import { PublicationStatus } from 'api/projects/types';
 
 const Container = styled.div`

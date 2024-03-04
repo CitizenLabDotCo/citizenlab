@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-
-// resources
-
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { Multiloc, MultilocFormValues } from 'typings';

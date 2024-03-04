@@ -6,16 +6,17 @@ import {
   colors,
   media,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import Outlet from 'components/Outlet';
 import Centerer from 'components/UI/Centerer';
 
+import { TVerificationMethod } from 'api/verification_methods/types';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+
 import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
 
 // style
-import styled from 'styled-components';
-
-import { TVerificationMethod } from 'api/verification_methods/types';
-import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   display: flex;

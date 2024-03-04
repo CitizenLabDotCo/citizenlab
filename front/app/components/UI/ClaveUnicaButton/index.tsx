@@ -6,8 +6,6 @@ import styled from 'styled-components';
 import { getJwt } from 'utils/auth/jwt';
 import { removeUrlLocale } from 'utils/locale';
 
-// style
-
 import { TVerificationMethod } from 'api/verification_methods/types';
 
 import icon from './clave-unica-icon.svg';

@@ -12,11 +12,12 @@ import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
-import { injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
 
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+
+import messages from '../messages';
 
 export interface FormValues {
   title_multiloc: Multiloc;

@@ -11,11 +11,15 @@ import Input from 'components/HookForm/Input';
 import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
-
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { isValidEmail } from 'utils/validate';
+
+import { SSOProvider } from 'api/authentication/singleSignOn';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
@@ -24,11 +28,6 @@ import sharedMessages from '../messages';
 import SSOButtons from './SSOButtons';
 
 // errors
-import { isValidEmail } from 'utils/validate';
-
-import { SSOProvider } from 'api/authentication/singleSignOn';
-
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   loading: boolean;

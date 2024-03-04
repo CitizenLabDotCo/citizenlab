@@ -1,6 +1,5 @@
 import React, { FormEvent } from 'react';
 
-// api
 import { Button, Icon, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -23,7 +22,6 @@ import { IPhaseData } from 'api/phases/types';
 
 import messages from './messages';
 
-// tracks
 import tracks from './tracks';
 import { isButtonEnabled } from './utils';
 

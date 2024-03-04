@@ -1,10 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import ProjectHelmet from './shared/header/ProjectHelmet';
-import Unauthorized from 'components/Unauthorized';
-import PageNotFound from 'components/PageNotFound';
-import ProjectHeader from './shared/header/ProjectHeader';
-import TimelineContainer from './timeline';
 import {
   Box,
   Spinner,
@@ -12,12 +7,8 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-import Navigate from 'utils/cl-router/Navigate';
-import SuccessModal from './SucessModal';
-import ProjectCTABar from './ProjectCTABar';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
-import Centerer from 'components/UI/Centerer';
-import ErrorBoundary from 'components/ErrorBoundary';
+
 import JSConfetti from 'js-confetti';
 
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
@@ -44,7 +35,19 @@ import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { scrollToElement } from 'utils/scroll';
 import { isError } from 'lodash-es';
+import ErrorBoundary from 'components/ErrorBoundary';
+import PageNotFound from 'components/PageNotFound';
+import Centerer from 'components/UI/Centerer';
+import Unauthorized from 'components/Unauthorized';
+
+import Navigate from 'utils/cl-router/Navigate';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+
+import ProjectCTABar from './ProjectCTABar';
+import ProjectHeader from './shared/header/ProjectHeader';
+import ProjectHelmet from './shared/header/ProjectHelmet';
+import SuccessModal from './SucessModal';
+import TimelineContainer from './timeline';
 
 const confetti = new JSConfetti();
 

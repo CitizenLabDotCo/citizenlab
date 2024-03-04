@@ -1,6 +1,6 @@
 import React from 'react';
 
-// styles
+s;
 
 import { Select, Label } from '@citizenlab/cl2-component-library';
 import { memoize } from 'lodash-es';

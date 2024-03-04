@@ -10,9 +10,6 @@ import {
 // router
 import { useSearchParams } from 'react-router-dom';
 
-// tracks
-
-// style
 import styled from 'styled-components';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';

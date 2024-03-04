@@ -1,4 +1,3 @@
-// libraries
 import React, { useRef } from 'react';
 
 import { isEmpty, map, orderBy } from 'lodash-es';
@@ -17,8 +16,6 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-
-// resources
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

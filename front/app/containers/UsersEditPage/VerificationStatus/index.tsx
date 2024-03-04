@@ -1,26 +1,25 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-import useAuthUser from 'api/me/useAuthUser';
-
-import FeatureFlag from 'components/FeatureFlag';
-import { FormSection } from 'components/UI/FormComponents';
-import Button from 'components/UI/Button';
 import {
   Icon,
   fontSizes,
   colors,
   media,
 } from '@citizenlab/cl2-component-library';
-import Avatar from 'components/Avatar';
-
 import { triggerVerificationOnly } from 'containers/Authentication/events';
+import messages from 'containers/UsersEditPage/messages';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+import Avatar from 'components/Avatar';
+import FeatureFlag from 'components/FeatureFlag';
+import Button from 'components/UI/Button';
+import { FormSection } from 'components/UI/FormComponents';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/UsersEditPage/messages';
+import { isNilOrError } from 'utils/helperUtils';
 
-import styled from 'styled-components';
-import { darken } from 'polished';
+import useAuthUser from 'api/me/useAuthUser';
 
 const Container = styled(FormSection)`
   display: flex;

@@ -1,15 +1,20 @@
 import React from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+// Components
+import { Multiloc } from 'typings';
+
+import { Row, TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { Row, TextCell } from 'components/admin/ResourceList';
-import { Box } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from '../messages';
 
-import { Multiloc } from 'typings';
+// Typings
 
 const StyledButton = styled(Button)`
   display: inline-block;

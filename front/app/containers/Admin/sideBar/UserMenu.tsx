@@ -23,7 +23,6 @@ import { IUserData } from 'api/users/types';
 import useLocale from 'hooks/useLocale';
 
 import LanguageSelectorPopup from './LanguageSelectorPopup';
-
 import messages from './messages';
 
 // style

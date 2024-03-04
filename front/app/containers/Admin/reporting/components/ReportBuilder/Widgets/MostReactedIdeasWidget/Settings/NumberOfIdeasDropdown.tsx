@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 
 import { Label, Select } from '@citizenlab/cl2-component-library';
+import { IOption } from 'typings';
 
-import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 
-import { IOption } from 'typings';
+import messages from '../messages';
 
 interface Props {
   numberOfIdeas: number;

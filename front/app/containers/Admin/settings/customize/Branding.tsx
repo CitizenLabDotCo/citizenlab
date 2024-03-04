@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
+
+import {
+  Label,
+  ColorPickerInput,
+  calculateContrastRatio,
+  hexToRgb,
+} from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
 import styled from 'styled-components';
+import { UploadFile } from 'typings';
 
 import {
   Section,
@@ -8,21 +17,12 @@ import {
   SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
-import {
-  Label,
-  ColorPickerInput,
-  calculateContrastRatio,
-  hexToRgb,
-} from '@citizenlab/cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
-
-import { get } from 'lodash-es';
-
-import { UploadFile } from 'typings';
 
 const ContrastWarning = styled(Warning)`
   margin-top: 10px;

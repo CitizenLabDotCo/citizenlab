@@ -22,7 +22,6 @@ import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 

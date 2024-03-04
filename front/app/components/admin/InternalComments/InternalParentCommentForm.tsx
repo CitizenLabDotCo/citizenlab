@@ -9,9 +9,9 @@ import { isString, trim } from 'lodash-es';
 
 // tracking
 
-// style
 import { hideVisually } from 'polished';
 import styled from 'styled-components';
+
 import Avatar from 'components/Avatar';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import Button from 'components/UI/Button';

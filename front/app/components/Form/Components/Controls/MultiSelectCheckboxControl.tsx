@@ -9,7 +9,6 @@ import {
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 
-// style
 import { darken } from 'polished';
 import styled from 'styled-components';
 

@@ -6,24 +6,27 @@ import {
   Toggle,
   IOption,
 } from '@citizenlab/cl2-component-library';
+
+import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
+
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+
+import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
+
+import { ApiErrors } from '../../..';
+import messages from '../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
-import SortingPicker from './SortingPicker';
 import {
   StyledSectionField,
   ToggleRow,
   ReactingLimitInput,
 } from '../../shared/styling';
 
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../../messages';
-
-import { ApiErrors } from '../../..';
-import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
-import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
+import SortingPicker from './SortingPicker';
 
 interface Props {
   isCustomInputTermEnabled: boolean;

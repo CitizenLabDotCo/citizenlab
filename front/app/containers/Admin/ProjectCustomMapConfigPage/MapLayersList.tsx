@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 
-import Button from 'components/UI/Button';
 import {
   Icon,
   IconTooltip,
@@ -8,25 +7,27 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-import { SubSectionTitle } from 'components/admin/Section';
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import GeoJsonImportButton from './GeoJsonImportButton';
 
-import useDeleteMapLayer from 'api/map_layers/useDeleteMapLayer';
-import useReorderMapLayer from 'api/map_layers/useReorderMapLayer';
-
-import { getLayerColor, getLayerIcon } from '../../../utils/mapUtils/map';
-import addOrderingToLayers, {
-  IMapLayerAttributesWithOrdering,
-} from './addOrderingToLayers';
-
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 import styled from 'styled-components';
+import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import { SubSectionTitle } from 'components/admin/Section';
+import Button from 'components/UI/Button';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+
 import useMapConfig from 'api/map_config/useMapConfig';
+import useDeleteMapLayer from 'api/map_layers/useDeleteMapLayer';
+import useReorderMapLayer from 'api/map_layers/useReorderMapLayer';
+
+import { getLayerColor, getLayerIcon } from '../../../utils/mapUtils/map';
+
+import addOrderingToLayers, {
+  IMapLayerAttributesWithOrdering,
+} from './addOrderingToLayers';
+import GeoJsonImportButton from './GeoJsonImportButton';
 
 const Container = styled.div``;
 

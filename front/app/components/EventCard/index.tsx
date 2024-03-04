@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 
-// style
 import {
   defaultCardHoverStyle,
   defaultCardStyle,

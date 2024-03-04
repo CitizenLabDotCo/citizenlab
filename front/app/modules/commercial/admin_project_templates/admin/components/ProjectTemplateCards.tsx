@@ -21,8 +21,6 @@ import ProjectTemplateCard from './ProjectTemplateCard';
 
 import PurposeFilter from './PurposeFilter';
 
-// style
-
 const Container = styled.div`
   margin-bottom: 15px;
 `;

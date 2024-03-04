@@ -11,8 +11,6 @@ import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IInitiativeData } from 'api/initiatives/types';
 import { IPhaseData } from 'api/phases/types';
 
-// style
-
 import useLocale from 'hooks/useLocale';
 
 // Types

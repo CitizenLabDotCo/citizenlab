@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { IOption } from 'typings';
+
 import BaseProjectFilter from 'components/UI/ProjectFilter';
 
 import messages from './messages';
-
-import { IOption } from 'typings';
 
 interface Props {
   projectId?: string;

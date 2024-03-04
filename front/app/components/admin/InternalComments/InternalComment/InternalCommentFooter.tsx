@@ -8,8 +8,6 @@ import useInternalComment from 'api/internal_comments/useInternalComment';
 import InternalCommentReplyButton from './InternalCommentReplyButton';
 import InternalCommentsMoreActions from './InternalCommentsMoreActions';
 
-// style
-
 const footerHeight = '30px';
 const footerTopMargin = '6px';
 

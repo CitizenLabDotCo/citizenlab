@@ -12,6 +12,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
+// api
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FormattedMessageComponent from 'utils/cl-intl/FormattedMessage';
 import { isNilOrError } from 'utils/helperUtils';

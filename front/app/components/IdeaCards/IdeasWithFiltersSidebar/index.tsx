@@ -31,8 +31,6 @@ import tracks from '../tracks';
 import FiltersModal from './FiltersModal';
 import FiltersSideBar from './FiltersSideBar';
 
-// style
-
 const gapWidth = 35;
 
 const Container = styled.div`

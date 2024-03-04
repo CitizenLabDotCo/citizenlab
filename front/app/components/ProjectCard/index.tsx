@@ -34,7 +34,6 @@ import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 import { getProjectUrl } from 'api/projects/utils';
 
-// resources
 import usePhases from 'api/phases/usePhases';
 import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO,
@@ -46,8 +45,6 @@ import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 
 import tracks from './tracks';
-
-// style
 
 import { getInputTermMessage } from 'utils/i18n';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';

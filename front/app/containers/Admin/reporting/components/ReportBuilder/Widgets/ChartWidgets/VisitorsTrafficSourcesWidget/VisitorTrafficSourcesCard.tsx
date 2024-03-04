@@ -1,17 +1,17 @@
 import React from 'react';
 
-import useVisitorReferrerTypes from './useVisitorReferrerTypes';
+import { Box } from '@citizenlab/cl2-component-library';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-import { Box } from '@citizenlab/cl2-component-library';
-import Chart from './Chart';
-import NoData from '../../_shared/NoData';
-
-import messages from '../messages';
+import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
+import NoData from '../../_shared/NoData';
+import messages from '../messages';
+
+import Chart from './Chart';
+import useVisitorReferrerTypes from './useVisitorReferrerTypes';
 
 type Props = ProjectId & Dates;
 

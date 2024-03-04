@@ -1,14 +1,14 @@
 import React, { memo } from 'react';
 
-import Poll from '../shared/poll';
+import messages from 'containers/ProjectsShowPage/messages';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+import styled from 'styled-components';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import usePhase from 'api/phases/usePhase';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
-
-import styled from 'styled-components';
+import Poll from '../shared/poll';
 
 const Container = styled.div``;
 

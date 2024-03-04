@@ -1,14 +1,15 @@
 import React from 'react';
 
 import { ListItem, Box, Title } from '@citizenlab/cl2-component-library';
-import EditedText from './EditedText';
-import Buttons from './Buttons';
 
-import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-import useDeleteReport from 'api/reports/useDeleteReport';
 import { Report } from 'api/reports/types';
+import useDeleteReport from 'api/reports/useDeleteReport';
+
+import Buttons from './Buttons';
+import EditedText from './EditedText';
+import messages from './messages';
 
 interface Props {
   report: Report;

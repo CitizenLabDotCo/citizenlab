@@ -1,12 +1,14 @@
 import React from 'react';
-import moment from 'moment';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Title } from 'components/smallForm';
+import moment from 'moment';
 import { useSearchParams } from 'react-router-dom';
-import Link from 'utils/cl-router/Link';
+
+import { Title } from 'components/smallForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+
 import messages from './messages';
 
 const DisabledAccount = () => {

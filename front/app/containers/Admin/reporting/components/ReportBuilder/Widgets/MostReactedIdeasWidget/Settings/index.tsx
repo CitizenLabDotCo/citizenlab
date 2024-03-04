@@ -12,7 +12,6 @@ import { useIntl } from 'utils/cl-intl';
 import ProjectFilter from '../../_shared/ProjectFilter';
 import widgetMessages from '../../messages';
 import CollapseLongTextToggle from '../../SingleIdeaWidget/Settings/CollapseLongTextToggle';
-
 import messages from '../messages';
 import { Props } from '../typings';
 

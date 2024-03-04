@@ -14,14 +14,12 @@ import { SubSectionTitle } from 'components/admin/Section';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
 import { isNilOrError } from 'utils/helperUtils';
+
 import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
 import useDeleteNavbarItem from 'api/navbar/useDeleteNavbarItem';
-
 import useNavbarItems from 'api/navbar/useNavbarItems';
-
 import useReorderNavbarItem from 'api/navbar/useReorderNavbarItems';
 import { getNavbarItemSlug } from 'api/navbar/util';
 

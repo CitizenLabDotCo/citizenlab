@@ -1,7 +1,10 @@
-import messages from './messages';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { IPhaseData } from 'api/phases/types';
 import { ITab, FormatMessage } from 'typings';
+
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+
+import { IPhaseData } from 'api/phases/types';
+
+import messages from './messages';
 
 type TabHideConditions = {
   [tabName: string]: () => boolean;

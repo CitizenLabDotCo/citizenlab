@@ -1,4 +1,5 @@
 import React, { lazy } from 'react';
+
 import PageLoading from 'components/UI/PageLoading';
 
 const AdminInvitationsContainer = lazy(() => import('.'));

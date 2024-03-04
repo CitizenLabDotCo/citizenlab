@@ -7,19 +7,21 @@ import { Multiloc } from 'typings';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
+import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import PageContainer from 'components/UI/PageContainer';
-
 import Warning from 'components/UI/Warning';
+
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import useAuthUser from 'api/me/useAuthUser';
-import usePhases from 'api/phases/usePhases';
-import usePhase from 'api/phases/usePhase';
-import useInputSchema from 'hooks/useInputSchema';
 import useAddIdea from 'api/ideas/useAddIdea';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+
+import useInputSchema from 'hooks/useInputSchema';
 
 import IdeasNewMeta from '../IdeasNewMeta';
 import messages from '../messages';
@@ -44,8 +46,6 @@ import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { IPhases, IPhaseData } from 'api/phases/types';
 
 import useLocale from 'hooks/useLocale';
-
-import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 
 import { IProject } from 'api/projects/types';
 

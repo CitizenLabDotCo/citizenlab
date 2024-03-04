@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-// styles
+s;
 import {
   colors,
   fontSizes,
@@ -22,7 +22,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 
-// resources
 import useDeleteIdeaOfficialFeedback from 'api/idea_official_feedback/useDeleteIdeaOfficialFeedback';
 import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
 import useDeleteInitiativeOfficialFeedback from 'api/initiative_official_feedback/useDeleteInitiativeOfficialFeedback';

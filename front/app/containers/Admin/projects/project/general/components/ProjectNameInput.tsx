@@ -1,15 +1,18 @@
 import React from 'react';
 
 import { IconTooltip } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-import { StyledSectionField, StyledInputMultiloc } from './styling';
+import { Multiloc, CLErrors } from 'typings';
+
 import { SubSectionTitle } from 'components/admin/Section';
+import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 
 import { IUpdatedProjectProperties } from 'api/projects/types';
-import { Multiloc, CLErrors } from 'typings';
+
+import messages from '../messages';
+
+import { StyledSectionField, StyledInputMultiloc } from './styling';
 
 interface Props {
   titleMultiloc: IUpdatedProjectProperties['title_multiloc'];

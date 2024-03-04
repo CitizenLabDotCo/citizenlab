@@ -19,15 +19,15 @@ import { TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
 import useAuthUser from 'api/me/useAuthUser';
 import useNavbarItems from 'api/navbar/useNavbarItems';
+
 import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';
 import SiteMapMeta from './SiteMapMeta';
 
-// styles
+s;
 
-// resources
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import useProjects from 'api/projects/useProjects';

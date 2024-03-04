@@ -1,4 +1,3 @@
-// style
 import {
   BoxPositionProps,
   BoxPaddingProps,

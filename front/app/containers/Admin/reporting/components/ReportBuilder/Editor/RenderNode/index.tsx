@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // craft
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'components/admin/ContentBuilder/Editor/RenderNode/messages';
 import {
   WIDGET_TITLES,
   hasNoPointerEvents,
   hasChildren,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
+import styled from 'styled-components';
+
+import messages from 'components/admin/ContentBuilder/Editor/RenderNode/messages';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>

@@ -1,15 +1,17 @@
 import React from 'react';
+
 import {
   Header,
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 
-import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
-
 import StatusBadge from 'components/StatusBadge';
 
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
+
+import messages from './messages';
 
 interface Props {
   statusId: string;

@@ -1,24 +1,25 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 
-import VerificationMethods from './VerificationMethods';
+import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
+import { AuthenticationData } from 'containers/Authentication/typings';
+import styled from 'styled-components';
+
 import Outlet from 'components/Outlet';
 
 // resource hooks
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { isNilOrError } from 'utils/helperUtils';
+
 import useAuthUser from 'api/me/useAuthUser';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
-
-// style
-import styled from 'styled-components';
-
 import {
   TVerificationMethod,
   verificationTypesLeavingPlatform,
 } from 'api/verification_methods/types';
-import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
-import { AuthenticationData } from 'containers/Authentication/typings';
+import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
-import { isNilOrError } from 'utils/helperUtils';
-import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
+// style
+
+import VerificationMethods from './VerificationMethods';
 
 const Container = styled.div`
   display: flex;

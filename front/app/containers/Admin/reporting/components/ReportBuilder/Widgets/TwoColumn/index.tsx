@@ -3,18 +3,16 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // styles
-import styled from 'styled-components';
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
-
-import { TwoColumnSettings } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import { Element } from '@craftjs/core';
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
+import styled from 'styled-components';
 
-import messages from 'components/admin/ContentBuilder/Widgets/TwoColumn/messages';
-
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import { TwoColumnSettings } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import messages from 'components/admin/ContentBuilder/Widgets/TwoColumn/messages';
 import { Layout } from 'components/admin/GraphCards/typings';
 
 export type TwoColumnProps = {

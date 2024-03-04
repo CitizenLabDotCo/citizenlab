@@ -8,9 +8,6 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
-// api
-
-// style
 import moment from 'moment';
 import styled, { useTheme } from 'styled-components';
 

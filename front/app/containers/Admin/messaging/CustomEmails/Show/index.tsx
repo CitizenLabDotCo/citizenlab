@@ -1,14 +1,6 @@
 import * as React from 'react';
-import styled from 'styled-components';
-import clHistory from 'utils/cl-router/history';
+import { useState } from 'react';
 
-import { isDraft } from 'api/campaigns/util';
-import GetGroup from 'resources/GetGroup';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-
-import Button from 'components/UI/Button';
 import {
   StatusLabel,
   IconTooltip,
@@ -17,24 +9,37 @@ import {
   Box,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import DraftCampaignDetails from './DraftCampaignDetails';
-import SentCampaignDetails from './SentCampaignDetails';
+import { useParams } from 'react-router-dom';
+import GetGroup from 'resources/GetGroup';
+import styled from 'styled-components';
+
 import T from 'components/T';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
-import Stamp from './Stamp';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import { isNilOrError } from 'utils/helperUtils';
+import { isDraft } from 'api/campaigns/util';
 
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import useAuthUser from 'api/me/useAuthUser';
+
+import useLocalize from 'hooks/useLocalize';
+import messages from '../../messages';
+
+import DraftCampaignDetails from './DraftCampaignDetails';
+import SentCampaignDetails from './SentCampaignDetails';
+
+import Stamp from './Stamp';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCampaign from 'api/campaigns/useCampaign';
-import useLocalize from 'hooks/useLocalize';
 import useSendCampaign from 'api/campaigns/useSendCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
+
 import { getFullName } from 'utils/textUtils';
-import Error from 'components/UI/Error';
 
 const PageHeader = styled.div`
   display: flex;

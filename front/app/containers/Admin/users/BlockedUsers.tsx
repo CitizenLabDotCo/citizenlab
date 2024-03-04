@@ -1,12 +1,12 @@
 import React from 'react';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from './messages';
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';
 
-import messages from './messages';
-
 // Hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export default () => {
   const isUserBlockingEnabled = useFeatureFlag({

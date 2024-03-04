@@ -2,8 +2,6 @@ import React, { useState, useCallback, useMemo, lazy } from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-// tracks
-
 import {
   Spinner,
   useWindowSize,
@@ -23,7 +21,6 @@ const InitiativeMap = lazy(() => import('components/InitiativeMap'));
 import { MessageDescriptor } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 
-// style
 import styled from 'styled-components';
 
 import BottomBar from 'components/FiltersModal/BottomBar';

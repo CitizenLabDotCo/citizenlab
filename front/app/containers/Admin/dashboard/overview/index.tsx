@@ -16,26 +16,23 @@ import Outlet from 'components/Outlet';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import useAuthUser from 'api/me/useAuthUser';
+import { isNilOrError } from 'utils/helperUtils';
 
+import { activeUsersByTimeXlsxEndpoint } from 'api/active_users_by_time/util';
+import useAuthUser from 'api/me/useAuthUser';
 import { PublicationStatus } from 'api/projects/types';
 
 import messages from '../messages';
-
 import tracks from '../tracks';
+
 import ChartFilters from './ChartFilters';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
-
 import { getSensibleResolution } from './getSensibleResolution';
 import overviewMessages from './messages';
 
 // tracks
-
-import { isNilOrError } from 'utils/helperUtils';
-
-import { activeUsersByTimeXlsxEndpoint } from 'api/active_users_by_time/util';
 
 interface DataProps {
   projects: GetProjectsChildProps;
