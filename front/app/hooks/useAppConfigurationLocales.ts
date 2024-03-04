@@ -1,6 +1,8 @@
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { Locale } from 'typings';
+
 import { isNilOrError } from 'utils/helperUtils';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 export default function useAppConfigurationLocales() {
   const { data: appConfiguration } = useAppConfiguration();

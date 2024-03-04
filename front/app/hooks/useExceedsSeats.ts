@@ -1,5 +1,7 @@
-import useSeats from 'api/seats/useSeats';
 import { isNil } from 'utils/helperUtils';
+
+import useSeats from 'api/seats/useSeats';
+
 import useTotalSeats from './useTotalSeats';
 
 interface NewlyAddedSeats {
