@@ -21,7 +21,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
-// resources
 import { IAreaData } from 'api/areas/types';
 import useAreas from 'api/areas/useAreas';
 import useDeleteArea from 'api/areas/useDeleteArea';

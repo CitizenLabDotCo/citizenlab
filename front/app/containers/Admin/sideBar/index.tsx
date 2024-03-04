@@ -33,8 +33,6 @@ import NotificationsPopup from './NotificationsPopup';
 import { SupportMenu } from './SupportMenu';
 import { UserMenu } from './UserMenu';
 
-// resources
-
 const Menu = styled.div`
   z-index: 10;
   flex: 0 0 auto;

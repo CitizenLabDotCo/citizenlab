@@ -18,9 +18,6 @@ import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { reverseGeocode } from 'utils/locationTools';
-
-// resources
-
 import { isAdmin } from 'utils/permissions/roles';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';

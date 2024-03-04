@@ -2,7 +2,6 @@ import React from 'react';
 
 import TerminologyConfig from 'components/admin/TerminologyConfig';
 
-// resources
 import { isNilOrError } from 'utils/helperUtils';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

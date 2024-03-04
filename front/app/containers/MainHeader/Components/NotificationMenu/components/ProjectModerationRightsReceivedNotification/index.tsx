@@ -8,7 +8,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { stopPropagation } from 'utils/helperUtils';
 
-// resources
 import { IProjectModerationRightsReceivedNotificationData } from 'api/notifications/types';
 
 import messages from '../../messages';

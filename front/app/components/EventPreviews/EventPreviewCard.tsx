@@ -14,7 +14,6 @@ import DayAndMonth from 'components/EventCard/DateBlocks/DayAndMonth';
 
 import clHistory from 'utils/cl-router/history';
 
-// typing
 import { IEventData } from 'api/events/types';
 
 import useLocalize from 'hooks/useLocalize';

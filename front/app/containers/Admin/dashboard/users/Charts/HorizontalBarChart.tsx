@@ -19,9 +19,6 @@ import {
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 import { injectIntl } from 'utils/cl-intl';
-
-// resources
-
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';

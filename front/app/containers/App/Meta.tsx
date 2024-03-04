@@ -1,7 +1,5 @@
 import React from 'react';
 
-// resources
-
 import { API_PATH } from 'containers/App/constants';
 import { Helmet } from 'react-helmet';
 

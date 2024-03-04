@@ -33,8 +33,6 @@ import {
 
 import messages from './messages';
 
-// typing
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;

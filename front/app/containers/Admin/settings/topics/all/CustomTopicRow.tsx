@@ -1,9 +1,6 @@
 import React from 'react';
 
 import { IconTooltip, colors } from '@citizenlab/cl2-component-library';
-
-// resources
-
 import styled from 'styled-components';
 
 import { Row } from 'components/admin/ResourceList';

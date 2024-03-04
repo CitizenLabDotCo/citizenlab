@@ -12,12 +12,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { IIdeaAssignedToYouNotificationData } from 'api/notifications/types';
 
 import messages from '../../messages';
-
-// permissions
-
 import NotificationWrapper from '../NotificationWrapper';
-
-// resources
 
 interface Props {
   notification: IIdeaAssignedToYouNotificationData;

@@ -7,8 +7,6 @@ import { parse } from 'qs';
 import { adopt } from 'react-adopt';
 import { Helmet } from 'react-helmet';
 import { WrappedComponentProps } from 'react-intl';
-
-// resources
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';

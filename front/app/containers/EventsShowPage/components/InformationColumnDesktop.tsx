@@ -16,8 +16,6 @@ import Location from './MetadataInformation/Location';
 import OnlineLink from './MetadataInformation/OnlineLink';
 import ParticipantsCount from './MetadataInformation/ParticipantsCount';
 
-// typing
-
 interface Props {
   event: IEventData;
   className?: string;

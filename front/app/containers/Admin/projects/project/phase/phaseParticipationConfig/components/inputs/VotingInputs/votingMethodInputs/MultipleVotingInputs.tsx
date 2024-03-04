@@ -13,7 +13,6 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// typing
 import { ApiErrors } from '../../../..';
 import { VotingAmountInputError } from '../../../shared/styling';
 import messages from '../messages';

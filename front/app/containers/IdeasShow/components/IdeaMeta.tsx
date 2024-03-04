@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Helmet } from 'react-helmet';
 
-// resources
-
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import { imageSizes } from 'utils/fileUtils';

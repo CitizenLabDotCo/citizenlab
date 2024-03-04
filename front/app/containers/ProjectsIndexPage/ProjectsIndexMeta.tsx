@@ -6,7 +6,6 @@ import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
-// resources
 import useAuthUser from 'api/me/useAuthUser';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';

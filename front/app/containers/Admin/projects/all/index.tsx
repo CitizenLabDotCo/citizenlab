@@ -11,8 +11,6 @@ import Outlet from 'components/Outlet';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// resources
-
 // localisation
 
 import { isAdmin } from 'utils/permissions/roles';

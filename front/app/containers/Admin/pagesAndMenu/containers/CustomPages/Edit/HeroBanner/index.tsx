@@ -6,8 +6,6 @@ import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPage
 import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
 import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
 import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
-
-// resources
 import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';

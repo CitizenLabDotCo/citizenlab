@@ -5,7 +5,6 @@ import { Box, Title, colors, Spinner } from '@citizenlab/cl2-component-library';
 import InputManager from 'components/admin/PostManager/InputManager';
 import { SectionDescription } from 'components/admin/Section';
 
-// resources
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { PublicationStatus } from 'api/projects/types';

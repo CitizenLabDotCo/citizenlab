@@ -13,8 +13,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import DashboardTabs from './components/DashboardTabs';
 
-// permissions
-
 import messages from './messages';
 import { getAdminTabs } from './tabs';
 

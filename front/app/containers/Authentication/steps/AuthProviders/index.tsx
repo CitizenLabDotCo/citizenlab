@@ -1,9 +1,6 @@
 import React, { memo, useCallback } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
-
-// resources
-
 import { ErrorCode } from 'containers/Authentication/typings';
 import styled from 'styled-components';
 

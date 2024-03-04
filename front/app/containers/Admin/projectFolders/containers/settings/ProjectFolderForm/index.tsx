@@ -43,8 +43,6 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import messages from '../../messages';
 
-// typing
-
 import FolderCardImageTooltip from './FolderCardImageTooltip';
 import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';
 import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';

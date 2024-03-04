@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useState } from 'react';
 
 import { Box, Badge } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
 import styled from 'styled-components';
 
 import ErrorToast from 'components/ErrorToast';
@@ -11,42 +12,35 @@ import LoadingComments from 'components/PostShowComponents/Comments/LoadingComme
 import Image from 'components/PostShowComponents/Image';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
 
+import { IIdeaImages } from 'api/idea_images/types';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import { IIdea } from 'api/ideas/types';
+import useIdeaById from 'api/ideas/useIdeaById';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
+import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
 
 import Container from './components/Container';
 import DesktopTopBar from './components/DesktopTopBar';
 import IdeaMeta from './components/IdeaMeta';
 import IdeaTitle from './components/IdeaTitle';
+import MetaInformation from './components/MetaInformation';
 import ProposedBudget from './components/ProposedBudget';
+import RightColumnDesktop from './components/RightColumnDesktop';
 import TranslateButton from './components/TranslateButton';
+import messages from './messages';
+import { columnsGapDesktop } from './styleConstants';
 
 const LazyCommentsSection = lazy(
   () => import('components/PostShowComponents/Comments/CommentsSection')
 );
-
-import MetaInformation from './components/MetaInformation';
-import RightColumnDesktop from './components/RightColumnDesktop';
-
-import useLocalize from 'hooks/useLocalize';
-
-import { FormattedMessage } from 'utils/cl-intl';
-
-import messages from './messages';
-import { columnsGapDesktop } from './styleConstants';
-
-import usePhases from 'api/phases/usePhases';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useIdeaImages from 'api/idea_images/useIdeaImages';
-import { IIdea } from 'api/ideas/types';
-import { IProjectData } from 'api/projects/types';
-import { IIdeaImages } from 'api/idea_images/types';
-import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
-
-import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
-
-import { usePermission } from 'utils/permissions';
 
 const StyledRightColumnDesktop = styled(RightColumnDesktop)`
   margin-left: ${columnsGapDesktop}px;

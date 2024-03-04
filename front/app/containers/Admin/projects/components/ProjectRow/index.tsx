@@ -30,9 +30,6 @@ import {
 import AdminTag from './AdminTag';
 import GroupsTag from './GroupsTag';
 import ManageButton from './ManageButton';
-
-// resources
-
 import ProjectMoreActionsMenu, { ActionType } from './ProjectMoreActionsMenu';
 
 export const StyledStatusLabel = styled(StatusLabel)`

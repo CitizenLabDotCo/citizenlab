@@ -2,8 +2,6 @@ import React, { useState, useCallback, useMemo } from 'react';
 
 import { Title } from '@citizenlab/cl2-component-library';
 import moment, { Moment } from 'moment';
-
-// resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';

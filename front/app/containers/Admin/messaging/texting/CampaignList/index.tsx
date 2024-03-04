@@ -20,8 +20,6 @@ import messages from '../../messages';
 
 import TextCampaignListRow from './TextCampaignListRow';
 
-// resources
-
 const NoCampaignsWrapper = styled.div`
   display: flex;
   flex-direction: column;

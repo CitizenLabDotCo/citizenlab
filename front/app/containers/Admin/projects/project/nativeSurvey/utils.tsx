@@ -1,7 +1,5 @@
 import React from 'react';
 
-// typing
-
 import { Box } from '@citizenlab/cl2-component-library';
 import { API_PATH } from 'containers/App/constants';
 import { Multiloc } from 'typings';
