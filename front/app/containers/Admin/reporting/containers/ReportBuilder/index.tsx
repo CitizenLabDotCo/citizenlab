@@ -30,11 +30,7 @@ import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTem
 import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
 
 // typings
-import {
-  CraftJson,
-  ContentBuilderErrors,
-} from 'components/admin/ContentBuilder/typings';
-import { SerializedNode } from '@craftjs/core';
+import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { Locale } from 'typings';
 import { ReportLayout } from 'api/report_layout/types';
 import { isEmpty } from 'lodash-es';
@@ -46,24 +42,6 @@ interface Props {
   reportLayout: ReportLayout;
 }
 
-const ROOT_NODE: SerializedNode = {
-  type: 'div',
-  isCanvas: true,
-  props: {
-    id: 'e2e-content-builder-frame',
-  },
-  displayName: 'div',
-  custom: {},
-  hidden: false,
-  nodes: [],
-  linkedNodes: {},
-  parent: undefined as unknown as string, // Bug in CraftJS types
-};
-
-const INITIAL_NODES: CraftJson = {
-  ROOT: ROOT_NODE,
-};
-
 const ReportBuilder = ({ report, reportLayout }: Props) => {
   const reportId = report.data.id;
   const phaseId = report.data.relationships.phase?.data?.id;
@@ -74,20 +52,17 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
   const templatePhaseId = search.get('templatePhaseId');
   const [view, setView] = useState<View>('pdf');
 
-  const { craftjs_json } = reportLayout.attributes;
-  const isEmptyReport = isEmpty(craftjs_json);
-
   const [initialData] = useState(() => {
-    if (isEmptyReport) {
-      if (templateProjectId || templatePhaseId) {
-        return undefined;
-      } else {
-        return INITIAL_NODES;
-      }
+    const { craftjs_json } = reportLayout.attributes;
+
+    if (isEmpty(craftjs_json)) {
+      return undefined;
     }
 
     return craftjs_json;
   });
+
+  const emptyReportOnInit = initialData === undefined;
 
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale>(platformLocale);
@@ -142,12 +117,12 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
                 {!!phaseId && <ViewPicker view={view} setView={setView} />}
                 <ViewContainer view={view}>
                   <Frame editorData={initialData}>
-                    {isEmptyReport && templateProjectId ? (
+                    {emptyReportOnInit && templateProjectId ? (
                       <ProjectTemplate
                         reportId={reportId}
                         projectId={templateProjectId}
                       />
-                    ) : isEmptyReport && templatePhaseId ? (
+                    ) : emptyReportOnInit && templatePhaseId ? (
                       <PhaseTemplate phaseId={templatePhaseId} />
                     ) : null}
                   </Frame>
