@@ -1,5 +1,8 @@
 import React, { Suspense, memo, useState, lazy } from 'react';
 
+import { Box, Label } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import Button from 'components/UI/Button';
 import UserSelect from 'components/UI/UserSelect';
 
@@ -17,8 +20,6 @@ import messages from './messages';
 const AddModeratorsModal = lazy(
   () => import('components/admin/SeatBasedBilling/AddModeratorsModal')
 );
-import { Box, Label } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 const AddButton = styled(Button)`
   flex-grow: 0;

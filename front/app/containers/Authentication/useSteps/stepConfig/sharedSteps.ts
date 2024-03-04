@@ -6,8 +6,6 @@ import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
-// cache
-
 import tracks from '../../tracks';
 import {
   GetRequirements,

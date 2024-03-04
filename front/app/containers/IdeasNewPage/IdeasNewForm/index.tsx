@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { parse } from 'qs';
 import { useSearchParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
@@ -13,41 +14,31 @@ import PageContainer from 'components/UI/PageContainer';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { isNilOrError } from 'utils/helperUtils';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { geocode, reverseGeocode } from 'utils/locationTools';
 import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import useAddIdea from 'api/ideas/useAddIdea';
 import useAuthUser from 'api/me/useAuthUser';
+import { IPhases, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import { IProject } from 'api/projects/types';
 
 import useInputSchema from 'hooks/useInputSchema';
+import useLocale from 'hooks/useLocale';
 
 import IdeasNewMeta from '../IdeasNewMeta';
 import messages from '../messages';
+import { getLocationGeojson } from '../utils';
 
 import { Heading } from './Heading';
 
 const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));
-
-import { geocode, reverseGeocode } from 'utils/locationTools';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-
-import { getLocationGeojson } from '../utils';
-
-import { isNilOrError } from 'utils/helperUtils';
-
-import { getCurrentPhase } from 'api/phases/utils';
-
-import { parse } from 'qs';
-
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-
-import { IPhases, IPhaseData } from 'api/phases/types';
-
-import useLocale from 'hooks/useLocale';
-
-import { IProject } from 'api/projects/types';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,

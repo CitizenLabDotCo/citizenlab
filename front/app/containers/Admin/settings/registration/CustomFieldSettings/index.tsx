@@ -29,9 +29,6 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
 
 import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
-
-// cache
-
 import userCustomFieldsKeys from 'api/user_custom_fields/keys';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useDeleteUserCustomField from 'api/user_custom_fields/useDeleteUserCustomField';

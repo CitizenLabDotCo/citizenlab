@@ -1,4 +1,3 @@
-// routes
 import createRoutes from 'routes';
 
 import { tenantInfo, IEvent } from 'utils/analytics';

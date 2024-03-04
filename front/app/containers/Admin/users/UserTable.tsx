@@ -2,11 +2,6 @@ import React from 'react';
 
 import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
 import { includes, isArray } from 'lodash-es';
-
-// Events --- For error handling
-
-// tracking
-
 import styled from 'styled-components';
 
 import Pagination from 'components/Pagination';

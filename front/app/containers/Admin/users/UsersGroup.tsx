@@ -31,8 +31,6 @@ import UsersGroupHeader from './UsersGroupHeader';
 
 // Events
 
-// tracking
-
 const UsersGroup = () => {
   const queryClient = useQueryClient();
   const isVerificationEnabled = useFeatureFlag({ name: 'verification' });

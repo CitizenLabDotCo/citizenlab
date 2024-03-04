@@ -1,8 +1,6 @@
 import React, { lazy } from 'react';
 
 import moduleConfiguration from 'modules';
-
-// routes
 import { Navigate, useLocation } from 'react-router-dom';
 
 import PageLoading from 'components/UI/PageLoading';
@@ -14,9 +12,11 @@ import { usePermission } from 'utils/permissions';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
 
 import createDashboardRoutes from './dashboard/routes';
 import ideasRoutes from './ideas/routes';
+import createAdminInitiativesRoutes from './initiatives/routes';
 import invitationsRoutes from './invitations/routes';
 import createAdminMessagingRoutes from './messaging/routes';
 import pagesAndMenuRoutes from './pagesAndMenu/routes';
@@ -25,14 +25,10 @@ import createAdminProjectsRoutes from './projects/routes';
 import reportingRoutes from './reporting/routes';
 import settingsRoutes from './settings/routes';
 import toolsRoutes from './tools/routes';
+import createAdminUsersRoutes from './users/routes';
 
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
-
-import useAuthUser from 'api/me/useAuthUser';
-
-import createAdminInitiativesRoutes from './initiatives/routes';
-import createAdminUsersRoutes from './users/routes';
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments.length === 4 &&

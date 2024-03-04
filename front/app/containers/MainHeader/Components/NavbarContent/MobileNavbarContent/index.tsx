@@ -22,8 +22,6 @@ import UserMenu from '../../UserMenu';
 import FullMobileNavMenu from './FullMobileNavMenu';
 import ShowFullMenuButton from './ShowFullMenuButton';
 
-// tracking
-
 const RightContainer = styled(Box)`
   display: flex;
   align-items: center;
