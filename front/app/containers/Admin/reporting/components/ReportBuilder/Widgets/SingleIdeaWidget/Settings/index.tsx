@@ -7,7 +7,7 @@ import usePhases from 'api/phases/usePhases';
 // components
 import { Box, Toggle, colors } from '@citizenlab/cl2-component-library';
 import ProjectFilter from '../../_shared/ProjectFilter';
-import PhaseFilter from '../../_shared/PhaseFilter';
+import PhaseFilter from 'components/UI/PhaseFilter';
 import CollapseLongTextToggle from './CollapseLongTextToggle';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 

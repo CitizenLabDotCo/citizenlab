@@ -9,9 +9,6 @@ import Buttons from './Buttons';
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-// utils
-import clHistory from 'utils/cl-router/history';
-
 import useDeleteReport from 'api/reports/useDeleteReport';
 import { Report } from 'api/reports/types';
 
@@ -38,12 +35,6 @@ const ReportRow = ({ report }: Props) => {
     }
   };
 
-  const reportPath = `/admin/reporting/report-builder/${report.id}`;
-
-  const handleEditReport = () => {
-    clHistory.push(`${reportPath}/editor`);
-  };
-
   return (
     <ListItem>
       <Box
@@ -63,12 +54,13 @@ const ReportRow = ({ report }: Props) => {
             userId={report.relationships.owner.data.id}
           />
         </Box>
-        <Buttons
-          reportId={report.id}
-          isLoading={isLoading}
-          onDelete={handleDeleteReport}
-          onEdit={handleEditReport}
-        />
+        <Box display="flex">
+          <Buttons
+            reportId={report.id}
+            isLoading={isLoading}
+            onDelete={handleDeleteReport}
+          />
+        </Box>
       </Box>
     </ListItem>
   );
