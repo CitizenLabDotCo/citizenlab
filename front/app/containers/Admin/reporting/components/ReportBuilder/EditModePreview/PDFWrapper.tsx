@@ -4,12 +4,18 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // constants
-import { A4_WIDTH } from 'containers/Admin/reporting/constants';
+import { A4_WIDTH, A4_HEIGHT } from 'containers/Admin/reporting/constants';
 
 const PDFWrapper = ({ children }) => {
   return (
     <Box width={A4_WIDTH}>
-      <Box background="white" px="30px" py="30px" width="100%" height="100%">
+      <Box
+        background="white"
+        px="30px"
+        py="30px"
+        width="100%"
+        minHeight={A4_HEIGHT}
+      >
         {children}
       </Box>
     </Box>
