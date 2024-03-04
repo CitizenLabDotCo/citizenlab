@@ -1,5 +1,7 @@
-import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import { ActionPermission } from 'utils/actionTakingRules';
+
+import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
+
 import useInitiativesPermissions, {
   InitiativePermissionsDisabledReason,
 } from 'hooks/useInitiativesPermissions';

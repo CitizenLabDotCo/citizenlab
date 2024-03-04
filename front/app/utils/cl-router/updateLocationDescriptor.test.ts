@@ -1,5 +1,4 @@
 import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
-
 import * as serviceLocale from 'utils/locale';
 
 const serviceSpy = jest.spyOn(serviceLocale, 'getUrlLocale');

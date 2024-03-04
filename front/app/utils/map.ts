@@ -1,9 +1,12 @@
+import formatcoords from 'formatcoords';
+import { isNil } from 'lodash-es';
+
+import { DEFAULT_TILE_PROVIDER } from 'components/EsriMap/constants';
+
 import { isNilOrError } from 'utils/helperUtils';
+
 import { IAppConfigurationData } from 'api/app_configuration/types';
 
-import { isNil } from 'lodash-es';
-import formatcoords from 'formatcoords';
-import { DEFAULT_TILE_PROVIDER } from 'components/EsriMap/constants';
 import { LatLngTuple } from './mapUtils/map';
 
 export const getCenter = (

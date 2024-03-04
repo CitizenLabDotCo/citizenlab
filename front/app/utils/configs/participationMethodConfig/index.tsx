@@ -5,9 +5,9 @@ import EmbeddedSurveyCTABar from 'components/ParticipationCTABars/EmbeddedSurvey
 import EventsCTABar from 'components/ParticipationCTABars/EventsCTABar';
 import IdeationCTABar from 'components/ParticipationCTABars/IdeationCTABar';
 import NativeSurveyCTABar from 'components/ParticipationCTABars/NativeSurveyCTABar';
-import VolunteeringCTABar from 'components/ParticipationCTABars/VolunteeringCTABar';
 import PollCTABar from 'components/ParticipationCTABars/PollCTABar';
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
+import VolunteeringCTABar from 'components/ParticipationCTABars/VolunteeringCTABar';
 import VotingCTABar from 'components/ParticipationCTABars/VotingCTABar';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 

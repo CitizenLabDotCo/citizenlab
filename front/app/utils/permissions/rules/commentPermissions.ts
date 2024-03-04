@@ -1,7 +1,9 @@
 import { definePermissionRule } from 'utils/permissions/permissions';
-import { isAdmin, isProjectModerator } from '../roles';
+
 import { ICommentData } from 'api/comments/types';
 import { IUser } from 'api/users/types';
+
+import { isAdmin, isProjectModerator } from '../roles';
 
 const isAuthor = (comment: ICommentData, user?: IUser) => {
   return (

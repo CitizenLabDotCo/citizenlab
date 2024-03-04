@@ -1,5 +1,6 @@
-import { ITopicData, ITopicsQueryParams } from 'api/topics/types';
 import { NilOrError } from 'utils/helperUtils';
+
+import { ITopicData, ITopicsQueryParams } from 'api/topics/types';
 import useTopics from 'api/topics/useTopics';
 
 type children = (renderProps: GetTopicsChildProps) => JSX.Element | null;

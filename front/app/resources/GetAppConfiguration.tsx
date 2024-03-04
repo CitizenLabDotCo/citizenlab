@@ -1,7 +1,7 @@
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { NilOrError } from 'utils/helperUtils';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
-import { NilOrError } from 'utils/helperUtils';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 export type GetAppConfigurationChildProps = IAppConfigurationData | NilOrError;
 

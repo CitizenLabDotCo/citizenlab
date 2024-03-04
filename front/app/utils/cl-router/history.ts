@@ -1,10 +1,10 @@
 import { first } from 'rxjs/operators';
-import { localeStream } from 'utils/locale';
-import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
-import { scrollToTop as scrollTop } from 'utils/scroll';
-// tslint:disable-next-line:no-vanilla-routing
 
 import history from 'utils/browserHistory';
+import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
+import { localeStream } from 'utils/locale';
+import { scrollToTop as scrollTop } from 'utils/scroll';
+// tslint:disable-next-line:no-vanilla-routing
 
 type Options = {
   scrollToTop?: boolean;

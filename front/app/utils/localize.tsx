@@ -3,14 +3,16 @@ import React from 'react';
 
 // Services
 
-import { Localize } from 'hooks/useLocalize';
+import { Locale } from 'typings';
 
 import { getLocalizedWithFallback } from 'utils/i18n';
 
 // Typing
-import { Locale } from 'typings';
-import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useLocale from 'hooks/useLocale';
+import { Localize } from 'hooks/useLocalize';
+
 import { isNilOrError } from './helperUtils';
 
 export interface InjectedLocalized {

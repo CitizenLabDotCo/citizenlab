@@ -1,10 +1,11 @@
 import { useState, useMemo } from 'react';
+
 import { debounce } from 'lodash-es';
 
-import useIdeasCount from 'api/idea_count/useIdeasCount';
-import { IQueryParameters } from 'api/idea_count/types';
-
 import { NilOrError } from 'utils/helperUtils';
+
+import { IQueryParameters } from 'api/idea_count/types';
+import useIdeasCount from 'api/idea_count/useIdeasCount';
 
 type children = (renderProps: GetIdeasCountChildProps) => JSX.Element | null;
 

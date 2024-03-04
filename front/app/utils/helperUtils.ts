@@ -1,7 +1,8 @@
-import { Locale, Multiloc, GraphqlLocale } from 'typings';
-import { trim, isUndefined } from 'lodash-es';
-import { removeUrlLocale } from 'utils/locale';
 import { locales } from 'containers/App/constants';
+import { trim, isUndefined } from 'lodash-es';
+import { Locale, Multiloc, GraphqlLocale } from 'typings';
+
+import { removeUrlLocale } from 'utils/locale';
 
 type Nil = undefined | null;
 export type NilOrError = Nil | Error;

@@ -1,7 +1,9 @@
-import moment, { unitOfTime } from 'moment';
 import { isString } from 'lodash-es';
+import moment, { unitOfTime } from 'moment';
 import { Locale } from 'typings';
+
 import { IResolution } from 'components/admin/ResolutionControl';
+
 import { IEventData } from 'api/events/types';
 
 export function getIsoDateForToday(): string {

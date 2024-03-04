@@ -1,8 +1,9 @@
+import { MessageDescriptor } from 'react-intl';
+
 import FormattedMessage from './FormattedMessage';
 import injectIntl from './injectIntl';
-import useIntl from './useIntl';
 import useFormatMessageWithLocale from './useFormatMessageWithLocale';
-import { MessageDescriptor } from 'react-intl';
+import useIntl from './useIntl';
 
 export { FormattedMessage, injectIntl, useIntl, useFormatMessageWithLocale };
 export type { MessageDescriptor };

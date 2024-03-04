@@ -1,15 +1,19 @@
 import React from 'react';
+
+// eslint-disable-next-line no-restricted-imports
+import { Path } from 'history';
 import {
   // eslint-disable-next-line no-restricted-imports
   NavLink as RouterLink,
   NavLinkProps,
 } from 'react-router-dom';
-// eslint-disable-next-line no-restricted-imports
-import { Path } from 'history';
-import updateLocationDescriptor from './updateLocationDescriptor';
+
 import { isNilOrError } from 'utils/helperUtils';
-import useLocale from 'hooks/useLocale';
 import { scrollToTop as scrollTop } from 'utils/scroll';
+
+import useLocale from 'hooks/useLocale';
+
+import updateLocationDescriptor from './updateLocationDescriptor';
 
 export type Props = {
   to: Path | string | { pathname: string };
