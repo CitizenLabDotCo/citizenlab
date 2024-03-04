@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 // components
@@ -36,7 +36,6 @@ const RenderNode = ({ render }) => {
   const {
     id,
     name,
-    isHover,
     hasError,
     title,
     noPointerEvents,
@@ -52,13 +51,14 @@ const RenderNode = ({ render }) => {
 
     return {
       props: node.data.props,
-      isHover: node.events.hovered,
       name,
       hasError: node.data.props?.hasError,
       title: WIDGET_TITLES[name],
       noPointerEvents: hasNoPointerEvents(name),
     };
   });
+
+  const [isHover, setIsHover] = useState(false);
 
   const {
     isActive,
@@ -120,6 +120,7 @@ const RenderNode = ({ render }) => {
     isActive && isSelectable && id !== ROOT_NODE && isDeletable && !isContainer;
 
   const nodeIsHovered = isHover && id !== ROOT_NODE && !isContainer;
+
   const solidBorderIsVisible =
     isSelectable && (nodeLabelIsVisible || nodeIsHovered || hasError);
 
@@ -142,8 +143,13 @@ const RenderNode = ({ render }) => {
           ? 'transparent'
           : 'transparent'
       }
-      // my={invisible ? undefined : '2px'}
       isRoot={id === ROOT_NODE}
+      onMouseOver={() => {
+        setIsHover(true);
+      }}
+      onMouseOut={() => {
+        setIsHover(false);
+      }}
     >
       {nodeLabelIsVisible && (
         <Box
