@@ -12,7 +12,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import DashboardTabs from './components/DashboardTabs';
-
 import messages from './messages';
 import { getAdminTabs } from './tabs';
 

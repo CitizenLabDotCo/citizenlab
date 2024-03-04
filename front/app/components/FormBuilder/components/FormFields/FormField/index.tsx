@@ -34,7 +34,6 @@ import { getFieldBackgroundColor } from '../utils';
 import FieldTitle from './FieldTitle';
 import IconsAndBadges from './IconsAndBadges';
 import Logic from './Logic';
-
 import messages from './messages';
 
 const FormFieldsContainer = styled(Box)`

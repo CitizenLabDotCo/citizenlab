@@ -1,7 +1,5 @@
 import React from 'react';
 
-// messages
-
 import { StatusLabel, colors } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';

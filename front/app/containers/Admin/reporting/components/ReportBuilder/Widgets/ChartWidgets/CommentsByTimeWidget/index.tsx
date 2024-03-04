@@ -3,8 +3,6 @@ import React from 'react';
 import messages from 'containers/Admin/dashboard/messages';
 import moment from 'moment';
 
-// settings
-
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import Card from '../../_shared/Card';

@@ -1,13 +1,15 @@
-import PageLoading from 'components/UI/PageLoading';
-import createAdminRoutes from 'containers/Admin/routes';
-import moduleConfiguration from 'modules';
 import React, { lazy } from 'react';
-import userProfileRoutes from 'containers/UsersShowPage/routes';
+
 import {
   REPORTING,
   REPORT_BUILDER,
   PRINT,
 } from 'containers/Admin/reporting/routes';
+import createAdminRoutes from 'containers/Admin/routes';
+import userProfileRoutes from 'containers/UsersShowPage/routes';
+import moduleConfiguration from 'modules';
+
+import PageLoading from 'components/UI/PageLoading';
 
 const HomePage = lazy(() => import('containers/HomePage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));

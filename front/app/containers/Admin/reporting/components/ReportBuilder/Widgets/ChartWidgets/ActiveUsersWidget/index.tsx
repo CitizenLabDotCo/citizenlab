@@ -11,8 +11,6 @@ import { ChartWidgetProps } from '../typings';
 import ActiveUsers from './ActiveUsersCard';
 import ChartWidgetSettings from './ChartWidgetSettings';
 
-// settings
-
 const ActiveUsersWidget = ({
   title,
   projectId,

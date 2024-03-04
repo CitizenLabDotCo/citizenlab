@@ -9,7 +9,6 @@ import useFormResults from 'api/survey_results/useSurveyResults';
 
 import useLocalize from 'hooks/useLocalize';
 
-// messages
 import messages from './messages';
 
 interface Props {

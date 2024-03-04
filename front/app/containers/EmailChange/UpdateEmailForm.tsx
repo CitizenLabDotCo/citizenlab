@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { Box, Success } from '@citizenlab/cl2-component-library';
 
-// hook form
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import Input from 'components/HookForm/Input';

@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-
-// hook form
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   FieldType,

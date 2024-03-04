@@ -12,7 +12,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import ProjectFilter from '../../_shared/ProjectFilter';
 
-// messages
 import messages from '../messages';
 import { ChartWidgetProps } from '../typings';
 

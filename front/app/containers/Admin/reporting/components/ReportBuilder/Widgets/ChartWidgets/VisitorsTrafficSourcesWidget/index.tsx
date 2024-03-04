@@ -2,10 +2,6 @@ import React from 'react';
 
 import moment from 'moment';
 
-// messages
-
-// settings
-
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import Card from '../../_shared/Card';

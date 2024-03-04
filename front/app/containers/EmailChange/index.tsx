@@ -25,8 +25,6 @@ import CancelUpdate from './CancelUpdate';
 import messages from './messages';
 import UpdateEmailForm from './UpdateEmailForm';
 
-// hook form
-
 export type FormValues = {
   email: string;
 };

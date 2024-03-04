@@ -3,13 +3,8 @@ import React from 'react';
 import moment from 'moment';
 
 import Card from '../../_shared/Card';
-
-// messages
 import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 import messages from '../messages';
-
-// settings
-
 import { ChartWidgetProps } from '../typings';
 
 import AgeCard from './AgeCard';
