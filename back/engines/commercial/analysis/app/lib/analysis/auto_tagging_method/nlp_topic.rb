@@ -98,7 +98,7 @@ module Analysis
       find_or_create_tagging!(input_id: input_id, tag_id: tag.id)
     end
 
-    def do_while_pool_is_running(pool, &block)
+    def do_while_pool_is_running(pool)
       while pool.running?
         pool.wait_for_termination(0.1)
         yield
