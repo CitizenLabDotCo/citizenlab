@@ -1,4 +1,4 @@
-import React, { MouseEvent, forwardRef } from 'react';
+import React, { MouseEvent } from 'react';
 
 import {
   TooltipContentWrapper,
@@ -19,12 +19,12 @@ import {
 
 type ContainerProps = {
   active: boolean;
-  disableTab?: boolean;
+  disable?: boolean;
 };
 
 // very similar to front/app/components/admin/TabbedResource/Tab.tsx
 const Container = styled.div`
-  ${({ active, disableTab }: ContainerProps) => css`
+  ${({ active, disable }: ContainerProps) => css`
     list-style: none;
     display: flex;
     align-items: center;
@@ -39,8 +39,10 @@ const Container = styled.div`
       margin-right: 40px;
     }
 
+    ${disable ? 'cursor: not-allowed;' : 'cursor: pointer;'}
+
     a {
-      ${disableTab ? `cursor: not-allowed;` : `cursor: pointer;`}
+      ${disable ? 'pointer-events: none;' : ''}
       color: ${colors.textSecondary};
       font-size: ${fontSizes.base}px;
       font-weight: 400;
@@ -103,7 +105,7 @@ const Tab = ({
       </TooltipContentWrapper>
     }
   >
-    <Container disableTab={disabled} {...props}>
+    <Container disable={disabled} {...props}>
       <Link to={url} onClick={handleClick}>
         {label}
         {badge && <>{badge}</>}
