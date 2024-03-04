@@ -58,6 +58,7 @@ const getBoxProps = (view: View) => {
   const innerBox: BoxProps = {
     maxWidth: MAX_REPORT_WIDTH,
     w: '100%',
+    px: view === 'phone' ? '20px' : '0px',
   };
 
   return { outerBox, innerBox };

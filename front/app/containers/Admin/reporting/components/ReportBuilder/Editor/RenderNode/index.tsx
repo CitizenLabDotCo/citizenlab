@@ -20,8 +20,8 @@ const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
     isRoot
       ? `cursor: auto;
-padding-top: 4px;
-padding-bottom: 4px;
+// padding-top: 4px;
+// padding-bottom: 4px;
 width: 100%;
 max-width: 1000px;
 background-color: #fff;
@@ -141,7 +141,7 @@ const RenderNode = ({ render }) => {
           ? colors.divider
           : 'transparent'
       }
-      my={invisible ? undefined : '2px'}
+      // my={invisible ? undefined : '2px'}
       isRoot={id === ROOT_NODE}
     >
       {nodeLabelIsVisible && (
