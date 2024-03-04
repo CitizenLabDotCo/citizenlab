@@ -3,14 +3,13 @@ import React, { memo } from 'react';
 import { Tr, Td, Icon, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import moment from 'moment';
-
-// analytics
-
-import styled from 'styled-components';
 import { rgba } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+
 import Outlet from 'components/Outlet';
 import Checkbox from 'components/UI/Checkbox';
+
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';

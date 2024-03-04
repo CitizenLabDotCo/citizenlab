@@ -1,17 +1,17 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
 import { isNilOrError } from 'utils/helperUtils';
-
-// api
-import useDeleteProjectFolder from 'api/project_folders/useDeleteProjectFolder';
 import { isAdmin } from 'utils/permissions/roles';
+
 import useAuthUser from 'api/me/useAuthUser';
+import useDeleteProjectFolder from 'api/project_folders/useDeleteProjectFolder';
+
+import messages from './messages';
 
 export interface Props {
   folderId: string;

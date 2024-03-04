@@ -1,9 +1,6 @@
 // libraries
 import React, { useState } from 'react';
 
-import InternalParentCommentForm from './InternalParentCommentForm';
-import InternalComments from './InternalComments';
-import InternalCommentSorting from './InternalCommentSorting';
 import {
   Box,
   Title,
@@ -12,22 +9,29 @@ import {
   media,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import commentsMessages from 'components/PostShowComponents/Comments/messages';
-
-// style
+import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
 
-// analytics
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
+
 import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import useIdeaById from 'api/ideas/useIdeaById';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+import useInternalComments from 'api/internal_comments/useInternalComments';
+import InternalComments from './InternalComments';
+import InternalParentCommentForm from './InternalParentCommentForm';
+import InternalCommentSorting from './InternalCommentSorting';
+
+// style
+
+// analytics
+
 import tracks from './tracks';
 
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useInternalComments from 'api/internal_comments/useInternalComments';
 import { InternalCommentSort } from 'api/internal_comments/types';
-import { useInView } from 'react-intersection-observer';
 
 const Header = styled(Box)`
   ${isRtl`

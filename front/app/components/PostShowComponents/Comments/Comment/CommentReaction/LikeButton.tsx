@@ -6,12 +6,12 @@ import {
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { ScreenReaderOnly } from 'utils/a11y';
-
-import { useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-
 import styled from 'styled-components';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../../messages';
 
 const Container = styled.li`
   display: flex;

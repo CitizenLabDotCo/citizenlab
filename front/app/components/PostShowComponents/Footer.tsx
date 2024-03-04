@@ -1,9 +1,12 @@
 import React, { memo } from 'react';
 
+import { media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
 
-import styled from 'styled-components';
-import { media } from '@citizenlab/cl2-component-library';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import {
   columnsGapDesktop,
   rightColumnWidthDesktop,
@@ -11,7 +14,6 @@ import {
   rightColumnWidthTablet,
   postPageContentMaxWidth,
 } from './styleConstants';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const Container = styled.div`
   flex: 1 1 auto;

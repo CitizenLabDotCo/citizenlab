@@ -6,8 +6,6 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { trackEventByName } from 'utils/analytics';
-import { isNilOrError } from 'utils/helperUtils';
 
 import {
   Icon,
@@ -15,17 +13,19 @@ import {
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
-
-import styled from 'styled-components';
 import { darken } from 'polished';
+import styled from 'styled-components';
 
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import useLocale from 'hooks/useLocale';
+
 import messages from './messages';
 
 // tracks
 import tracks from './tracks';
-
-import useLocale from 'hooks/useLocale';
 
 const Container = styled.div`
   display: flex;

@@ -1,6 +1,7 @@
+// Libraries
 import React, { PureComponent } from 'react';
 
-s;
+// Stylings
 import { colors } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 

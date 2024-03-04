@@ -9,15 +9,18 @@ import { SectionField } from 'components/admin/Section';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import LocationInput from 'components/HookForm/LocationInput';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import TopicsPicker from 'components/HookForm/TopicsPicker';
-
 import {
   FormSection,
   FormSectionTitle,
   FormLabel,
 } from 'components/UI/FormComponents';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
 
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
@@ -25,12 +28,9 @@ import useLocale from 'hooks/useLocale';
 
 import messages from './messages';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
+// Components
 import SubmitButtonBar from './SubmitButtonBar';
 
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 const ProfileVisibilityFormSection = lazy(
   () => import('./ProfileVisibilityFormSection')
 );
@@ -38,7 +38,6 @@ const CosponsorsFormSection = lazy(() => import('./CosponsorsFormSection'));
 const AnonymousParticipationConfirmationModal = lazy(
   () => import('components/AnonymousParticipationConfirmationModal')
 );
-import LocationInput from 'components/HookForm/LocationInput';
 
 import { Box } from '@citizenlab/cl2-component-library';
 

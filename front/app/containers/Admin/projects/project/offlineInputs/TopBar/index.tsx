@@ -1,12 +1,6 @@
 import React from 'react';
 
 // routing
-import { useParams } from 'react-router-dom';
-
-// api
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
-
 import {
   Box,
   Title,
@@ -16,10 +10,17 @@ import {
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+
 import GoBackButton from 'components/UI/GoBackButton';
 
-import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
+
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
 import messages from '../messages';
 
 interface Props {

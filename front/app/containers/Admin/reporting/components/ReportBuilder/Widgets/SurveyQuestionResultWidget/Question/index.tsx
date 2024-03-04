@@ -1,21 +1,22 @@
 import React from 'react';
 
-// api
-import { useSurveyQuestionResult } from 'api/graph_data_units';
-
 import { Title, Text, Box } from '@citizenlab/cl2-component-library';
-import GroupedBars from './GroupedBars';
-import UngroupedBars from './UngroupedBars';
-import Source from './Source';
+
+import Legend from 'components/admin/Graphs/Legend';
 
 import { useIntl } from 'utils/cl-intl';
+
+import { useSurveyQuestionResult } from 'api/graph_data_units';
+import { GroupMode } from 'api/graph_data_units/requestTypes';
+
 import useLocalize from 'hooks/useLocalize';
+
 import messages from '../messages';
 
+import GroupedBars from './GroupedBars';
+import Source from './Source';
+import UngroupedBars from './UngroupedBars';
 import { getColorScheme, getLegendLabels } from './utils';
-
-import { GroupMode } from 'api/graph_data_units/requestTypes';
-import Legend from 'components/admin/Graphs/Legend';
 
 interface Props {
   projectId: string;

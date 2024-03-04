@@ -15,6 +15,7 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
@@ -22,10 +23,7 @@ import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import usePageFiles from 'api/page_files/usePageFiles';
 
 import messages from './messages';
-
 import NavbarTitleField from './NavbarTitleField';
-
-import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;

@@ -1,8 +1,9 @@
-import { getEmptyRow } from './useCommentsByTime/parse';
-import { emptyDateRange } from 'components/admin/GraphCards/_utils/timeSeries';
-
 import { Moment } from 'moment';
+
+import { emptyDateRange } from 'components/admin/GraphCards/_utils/timeSeries';
 import { IResolution } from 'components/admin/ResolutionControl';
+
+import { getEmptyRow } from './useCommentsByTime/parse';
 
 export const generateEmptyData = (
   startAtMoment: Moment | null | undefined,

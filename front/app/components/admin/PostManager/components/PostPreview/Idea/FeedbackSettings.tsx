@@ -1,30 +1,30 @@
 import React from 'react';
 
-import { isNilOrError } from 'utils/helperUtils';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
+import { Select, Label } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { IOption } from 'typings';
 
 // styles
-import styled from 'styled-components';
-
-import { Select, Label } from '@citizenlab/cl2-component-library';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
-import useLocalize from 'hooks/useLocalize';
-import useAuthUser from 'api/me/useAuthUser';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getFullName } from 'utils/textUtils';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import { IIdeaStatuses } from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { IIdea } from 'api/ideas/types';
-import { IIdeaStatuses } from 'api/idea_statuses/types';
-import { getFullName } from 'utils/textUtils';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useAuthUser from 'api/me/useAuthUser';
 import useUsers from 'api/users/useUsers';
+
+import useLocalize from 'hooks/useLocalize';
+
+import tracks from '../../../tracks';
+import messages from '../messages';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;

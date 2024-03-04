@@ -7,8 +7,6 @@ import { List, Row } from 'components/admin/ResourceList';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// api
-
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAuthUser from 'api/me/useAuthUser';
 import { PublicationStatus } from 'api/projects/types';

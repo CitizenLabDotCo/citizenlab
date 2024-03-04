@@ -8,19 +8,11 @@ import React, {
   useState,
 } from 'react';
 
-import EsriMap from 'components/EsriMap';
-import MapView from '@arcgis/core/views/MapView';
-import LayerHoverLabel from 'components/IdeationConfigurationMap/components/LayerHoverLabel';
-import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
-import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Renderer from '@arcgis/core/renderers/SimpleRenderer';
-import InstructionMessage from './InstructionMessage';
-import StartIdeaButton from './StartIdeaButton';
-import IdeaMapCard from './IdeaMapCard';
-import IdeasAtLocationPopup from './IdeasAtLocationPopup';
-
+import MapView from '@arcgis/core/views/MapView';
 import {
   Box,
   media,
@@ -28,20 +20,8 @@ import {
   useWindowSize,
   viewportWidths,
 } from '@citizenlab/cl2-component-library';
-
-import useLocalize from 'hooks/useLocalize';
 import { useSearchParams } from 'react-router-dom';
-import useAuthUser from 'api/me/useAuthUser';
 
-import {
-  createEsriGeoJsonLayers,
-  getMapPinSymbol,
-  getClusterConfiguration,
-  showAddInputPopup,
-  goToMapLocation,
-  esriPointToGeoJson,
-  changeCursorOnHover,
-} from 'components/EsriMap/utils';
 import {
   InnerContainer,
   getInnerContainerLeftMargin,
@@ -52,16 +32,38 @@ import {
 } from './utils';
 import styled, { useTheme } from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import EsriMap from 'components/EsriMap';
+import {
+  createEsriGeoJsonLayers,
+  getMapPinSymbol,
+  getClusterConfiguration,
+  showAddInputPopup,
+  goToMapLocation,
+  esriPointToGeoJson,
+  changeCursorOnHover,
+} from 'components/EsriMap/utils';
+import LayerHoverLabel from 'components/IdeationConfigurationMap/components/LayerHoverLabel';
 
-import { IIdeaData } from 'api/ideas/types';
 import { IMapConfig } from 'api/map_config/types';
 
 import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import messages from './messages';
-import usePhase from 'api/phases/usePhase';
+
 import { isAdmin } from 'utils/permissions/roles';
+
+import { IIdeaData } from 'api/ideas/types';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhase from 'api/phases/usePhase';
+
+import useLocalize from 'hooks/useLocalize';
+
+import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
+import IdeaMapCard from './IdeaMapCard';
+import IdeasAtLocationPopup from './IdeasAtLocationPopup';
+import InstructionMessage from './InstructionMessage';
+import StartIdeaButton from './StartIdeaButton';
 
 // Note: Existing custom styling
 const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`

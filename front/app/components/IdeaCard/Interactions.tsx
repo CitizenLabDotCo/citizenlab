@@ -1,13 +1,12 @@
 import React from 'react';
 
 // api
-import useBasket from 'api/baskets/useBasket';
 
 // config
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
+import useBasket from 'api/baskets/useBasket';
 import { IIdea } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 

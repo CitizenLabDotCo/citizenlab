@@ -2,17 +2,16 @@ import React from 'react';
 
 import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
+
 import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
-
 import { colors } from 'components/admin/Graphs/styling';
+import { IResolution } from 'components/admin/ResolutionControl';
 
-import messages from '../messages';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-
 import { toFullMonth } from 'utils/dateUtils';
 
+import messages from '../messages';
 import { TimeSeriesRow } from '../useVisitors/typings';
-import { IResolution } from 'components/admin/ResolutionControl';
 
 type DataKey = 'visitors' | 'visits';
 

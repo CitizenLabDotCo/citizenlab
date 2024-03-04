@@ -1,13 +1,15 @@
 import React from 'react';
 
-import Modal from 'components/UI/Modal';
 import { Title, Box } from '@citizenlab/cl2-component-library';
-import Table from './Table';
 
-import messages from './messages';
+import Modal from 'components/UI/Modal';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { ProjectId, Dates } from '../typings';
+
+import messages from './messages';
+import Table from './Table';
 
 type Props = ProjectId &
   Dates & {

@@ -1,23 +1,25 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
-import Container from './Container';
-
-// cookies
 import {
   getConsent,
   IConsentCookie,
   ISavedDestinations,
   setConsent,
 } from './consent';
+import Container from './Container';
+
+// cookies
 import { allCategories, TCategory } from './destinations';
 
 // events
-import eventEmitter from 'utils/eventEmitter';
 
-import { isNilOrError } from 'utils/helperUtils';
+import { IPreferences } from './typings';
 import {
   getCurrentPreferences,
   getActiveDestinations,
@@ -25,8 +27,6 @@ import {
   categorizeDestinations,
   getConsentRequired,
 } from './utils';
-
-import { IPreferences } from './typings';
 
 const ConsentManager = () => {
   const [preferences, setPreferences] = useState<IPreferences>({

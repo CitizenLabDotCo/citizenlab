@@ -1,13 +1,17 @@
 import React from 'react';
-import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
+
 import { get } from 'lodash-es';
-import styled from 'styled-components';
-import { Menu } from 'semantic-ui-react';
 import { useDrop } from 'react-dnd';
+import { Menu } from 'semantic-ui-react';
+import styled from 'styled-components';
+
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
+import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
+
 import messages from '../../messages';
 
 const ItemWrapper = styled.div`

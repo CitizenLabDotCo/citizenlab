@@ -1,13 +1,15 @@
 import React, { PureComponent } from 'react';
+
 import { Subscription } from 'rxjs';
 
+import Modal from 'components/UI/Modal';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+
+import events, { StatusChangeModalOpen } from '../../events';
 import messages from '../../messages';
 
-import eventEmitter from 'utils/eventEmitter';
-import events, { StatusChangeModalOpen } from '../../events';
-
-import Modal from 'components/UI/Modal';
 import StatusChangeFormWrapper from './StatusChangeFormWrapper';
 
 export interface Props {}

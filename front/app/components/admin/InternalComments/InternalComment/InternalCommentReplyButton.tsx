@@ -1,21 +1,23 @@
 import React from 'react';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+
 // events
+import { IInternalCommentData } from 'api/internal_comments/types';
+import useUserById from 'api/users/useUserById';
+
 import { commentReplyButtonClicked } from '../events';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 // style
-import styled from 'styled-components';
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
-
-import { IInternalCommentData } from 'api/internal_comments/types';
-import useUserById from 'api/users/useUserById';
 
 const Container = styled.li`
   display: flex;

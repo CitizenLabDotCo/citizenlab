@@ -1,14 +1,16 @@
 import React from 'react';
 
-import Modal from 'components/UI/Modal';
 import { Title, Button } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import Modal from 'components/UI/Modal';
 
-import { IUserData } from 'api/users/types';
-import useUnblockUser from 'api/blocked_users/useUnblockUser';
+import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
+
+import useUnblockUser from 'api/blocked_users/useUnblockUser';
+import { IUserData } from 'api/users/types';
+
+import messages from './messages';
 
 type Props = {
   open: boolean;

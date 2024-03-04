@@ -1,14 +1,16 @@
 import React from 'react';
 
-import { FormLabel, FormSection } from 'components/UI/FormComponents';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import { Text, IconTooltip } from '@citizenlab/cl2-component-library';
+import profileVisibilityMessages from 'containers/IdeasNewPage/IdeasNewForm/messages';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+import { useParams } from 'react-router-dom';
+
+import Checkbox from 'components/HookForm/Checkbox';
+import { FormLabel, FormSection } from 'components/UI/FormComponents';
 
 import { useIntl } from 'utils/cl-intl';
-import profileVisibilityMessages from 'containers/IdeasNewPage/IdeasNewForm/messages';
-import { useParams } from 'react-router-dom';
-import Checkbox from 'components/HookForm/Checkbox';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 interface Props {
   triggerModal: () => void;

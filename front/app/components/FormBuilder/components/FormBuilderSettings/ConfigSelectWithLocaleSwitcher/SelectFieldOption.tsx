@@ -7,15 +7,18 @@ import {
   Input,
   Spinner,
 } from '@citizenlab/cl2-component-library';
+import { Locale, UploadFile } from 'typings';
+
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 import { useIntl } from 'utils/cl-intl';
+
+import useAddCustomFieldOptionImage from 'api/content_field_option_images/useAddCustomFieldOptionImage';
+import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
+
 import messages from './messages';
 
-import { Locale, UploadFile } from 'typings';
-
-import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
-import useAddCustomFieldOptionImage from 'api/content_field_option_images/useAddCustomFieldOptionImage';
+// Typings
 
 export interface OptionImageType {
   [key: string]: UploadFile;

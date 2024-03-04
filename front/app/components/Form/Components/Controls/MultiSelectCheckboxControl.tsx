@@ -1,27 +1,29 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import React, { useState } from 'react';
+
+import { Box, Checkbox, colors, Text } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isPrimitiveArrayControl,
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import React, { useState } from 'react';
-
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { getOptions, getSubtextElement } from './controlUtils';
-
-import VerificationIcon from '../VerificationIcon';
-import { Box, Checkbox, colors, Text } from '@citizenlab/cl2-component-library';
-import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from '../ErrorDisplay';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 
 // style
 import { darken } from 'polished';
 import styled from 'styled-components';
+
+import { FormLabel } from 'components/UI/FormComponents';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
+import VerificationIcon from '../VerificationIcon';
+
+import { getOptions, getSubtextElement } from './controlUtils';
+import messages from './messages';
 
 const StyledBox = styled(Box)`
   background-color: ${colors.grey100};

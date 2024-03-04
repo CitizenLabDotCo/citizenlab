@@ -1,7 +1,6 @@
 import React from 'react';
 
 // style
-import styled from 'styled-components';
 import {
   Box,
   Text,
@@ -9,10 +8,11 @@ import {
   colors,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-
+import styled from 'styled-components';
 import { ITab } from 'typings';
 
 import FeatureFlag from 'components/FeatureFlag';
+
 import Tab from './Tab';
 
 const TabbedNav = styled.nav`

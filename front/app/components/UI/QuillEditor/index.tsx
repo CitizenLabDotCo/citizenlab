@@ -1,10 +1,17 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
-import usePrevious from 'hooks/usePrevious';
-import { debounce } from 'lodash-es';
 
-// quill
+import { debounce } from 'lodash-es';
 import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
+import styled from 'styled-components';
+import { Locale } from 'typings';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+
+import usePrevious from 'hooks/usePrevious';
+
+// quill
 import 'quill/dist/quill.snow.css';
 
 import {
@@ -18,23 +25,18 @@ import {
   isRtl,
 } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-import styled from 'styled-components';
-
 import {
   ImageBlot,
   AltTextToImagesModule,
   KeepHTML,
   attributes,
 } from './altTextToImagesModule';
+import messages from './messages';
 
-import { Locale } from 'typings';
+// analytics
+
+import tracks from './tracks';
+
 import Tippy from '@tippyjs/react';
 
 const DropdownList = styled.div`

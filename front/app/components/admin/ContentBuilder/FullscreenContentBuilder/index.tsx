@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { FocusOn } from 'react-focus-on';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-
+import { createPortal } from 'react-dom';
+import { FocusOn } from 'react-focus-on';
 import { Locale } from 'typings';
+
 import eventEmitter from 'utils/eventEmitter';
+
 import {
   CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
   CONTENT_BUILDER_ERROR_EVENT,

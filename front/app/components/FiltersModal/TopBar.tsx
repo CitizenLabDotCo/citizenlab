@@ -1,13 +1,14 @@
 import React, { MouseEvent } from 'react';
 
+import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import { lighten } from 'polished';
+import styled from 'styled-components';
+
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
-import styled from 'styled-components';
-import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
-import { lighten } from 'polished';
+import messages from './messages';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;

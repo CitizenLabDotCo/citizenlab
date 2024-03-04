@@ -1,8 +1,11 @@
 import React from 'react';
-import { IProjectData } from 'api/projects/types';
-import T from 'components/T';
-import { Menu } from 'semantic-ui-react';
+
 import { useDrop } from 'react-dnd';
+import { Menu } from 'semantic-ui-react';
+
+import T from 'components/T';
+
+import { IProjectData } from 'api/projects/types';
 
 interface Props {
   project: IProjectData;

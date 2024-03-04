@@ -7,15 +7,16 @@ import {
   Checkbox,
   colors,
 } from '@citizenlab/cl2-component-library';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
-
 import { roundPercentage } from 'utils/math';
+import { SortDirection } from 'utils/paginationUtils';
 
 import { Sort as InitiativesSortAttribute } from 'api/initiatives/types';
-import { SortDirection } from 'utils/paginationUtils';
-import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+
+import messages from '../../../messages';
+
 import SortableHeaderCell from './SortableHeaderCell';
 
 interface Props {

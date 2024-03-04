@@ -7,17 +7,18 @@ import {
   Checkbox,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { CellConfiguration, Override } from 'typings';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
-
 import { roundPercentage } from 'utils/math';
-
-import { CellConfiguration, Override } from 'typings';
-import { Sort as IdeasSort } from 'api/ideas/types';
 import { SortDirection } from 'utils/paginationUtils';
 
+import { Sort as IdeasSort } from 'api/ideas/types';
+
 import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
+
+import messages from '../../../messages';
+
 import SortableHeaderCell from './SortableHeaderCell';
 
 type IdeaHeaderCellComponentProps = {

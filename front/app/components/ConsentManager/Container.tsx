@@ -1,11 +1,11 @@
 import React, { FormEvent, useState, useCallback } from 'react';
 
-import PreferencesModal from './PreferencesModal';
-import Banner from './Banner';
-
-import { CategorizedDestinations, IPreferences } from './typings';
-import { TCategory } from './destinations';
 import useObserveEvent from 'hooks/useObserveEvent';
+
+import Banner from './Banner';
+import { TCategory } from './destinations';
+import PreferencesModal from './PreferencesModal';
+import { CategorizedDestinations, IPreferences } from './typings';
 
 interface Props {
   preferences: IPreferences;

@@ -10,6 +10,7 @@ import {
 
 // Intl
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from '../../../messages';
 
 interface Props {

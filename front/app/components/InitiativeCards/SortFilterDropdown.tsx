@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import FilterSelector from 'components/FilterSelector';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
 
 export type Sort = 'random' | 'likes_count' | 'new' | '-new';

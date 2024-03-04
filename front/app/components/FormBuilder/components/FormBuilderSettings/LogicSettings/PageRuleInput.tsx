@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
 
 import {
   Box,
@@ -9,15 +8,17 @@ import {
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
-import Button from 'components/UI/Button';
+import { Controller, useFormContext } from 'react-hook-form';
 
-import messages from '../../messages';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { isPageRuleValid } from 'utils/yup/validateLogic';
 
 import { IFlatCustomField, LogicType } from 'api/custom_fields/types';
 
-import { isPageRuleValid } from 'utils/yup/validateLogic';
+import messages from '../../messages';
 
 type RuleInputProps = {
   name: string;

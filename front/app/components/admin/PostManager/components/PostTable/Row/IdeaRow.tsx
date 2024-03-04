@@ -1,20 +1,10 @@
 import React, { ChangeEvent, useState, MouseEvent } from 'react';
+
+import { Box, colors, Td, Badge } from '@citizenlab/cl2-component-library';
 import { uniq, isEmpty } from 'lodash-es';
 import { useDrag } from 'react-dnd';
-
-import { IPhaseData } from 'api/phases/types';
-import { IIdeaData } from 'api/ideas/types';
-import { IIdeaStatusData } from 'api/idea_statuses/types';
-
-import { TitleLink } from '.';
-import { Box, colors, Td, Badge } from '@citizenlab/cl2-component-library';
-import StyledRow from './StyledRow';
-import SubRow from './SubRow';
 import { Icon } from 'semantic-ui-react';
-import T from 'components/T';
-import Checkbox from 'components/UI/Checkbox';
-import FeatureFlag from 'components/FeatureFlag';
-import PhaseDeselectModal from './PhaseDeselectModal';
+
 import AssigneeSelect from 'components/admin/PostManager/components/PostTable/AssigneeSelect';
 
 import { timeAgo } from 'utils/dateUtils';
@@ -29,11 +19,25 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
 import { TFilterMenu, ManagerType } from '../../..';
 import { CellConfiguration, Locale, Override } from 'typings';
+import FeatureFlag from 'components/FeatureFlag';
+import T from 'components/T';
+import Checkbox from 'components/UI/Checkbox';
 
+import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IIdeaData } from 'api/ideas/types';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
-import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
-import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
 import useIdeasPhases from 'api/ideas_phases/useIdeasPhases';
+import { IPhaseData } from 'api/phases/types';
+
+import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
+
+import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
+import PhaseDeselectModal from './PhaseDeselectModal';
+
+import StyledRow from './StyledRow';
+import SubRow from './SubRow';
+
+import { TitleLink } from '.';
 
 type Props = {
   type: ManagerType;

@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { TCategory } from '../destinations';
+import { CategorizedDestinations, IPreferences } from '../typings';
+
 import CategoryCard from './CategoryCard';
 import ContentContainer from './ContentContainer';
-
-import { CategorizedDestinations, IPreferences } from '../typings';
-import { TCategory } from '../destinations';
 
 interface Props {
   onChange: (category: TCategory, value: boolean) => void;

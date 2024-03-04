@@ -1,27 +1,30 @@
 import React from 'react';
 
-import Card from 'components/UI/Card';
 import {
   Box,
   Icon,
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
-import Author from 'components/Author';
-import ReactionIndicator from './ReactionIndicator';
-import FollowUnfollow from 'components/FollowUnfollow';
-
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // styles
 import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/a11y';
 
-import useUserById from 'api/users/useUserById';
+import Author from 'components/Author';
+import FollowUnfollow from 'components/FollowUnfollow';
+import Card from 'components/UI/Card';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+
 import useInitiativeImage from 'api/initiative_images/useInitiativeImage';
-import useLocalize from 'hooks/useLocalize';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useUserById from 'api/users/useUserById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from './messages';
+import ReactionIndicator from './ReactionIndicator';
 
 const FooterInner = styled.div`
   width: 100%;

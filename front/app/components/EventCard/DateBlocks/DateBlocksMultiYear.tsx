@@ -1,12 +1,13 @@
 import React, { memo } from 'react';
 
-import { EventDateBlockWrapper, EventDateBlockLabel } from './styling';
-import DateBlockSingleYear from './DateBlockSingleYear';
+import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from '../messages';
 
-import styled from 'styled-components';
+import DateBlockSingleYear from './DateBlockSingleYear';
+import { EventDateBlockWrapper, EventDateBlockLabel } from './styling';
 
 const FirstDateBlockWrapper = styled.div`
   margin-bottom: 17px;

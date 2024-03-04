@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
 
-import { Multiloc } from 'typings';
-import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
-import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
-
-import OfficialFeedbackForm from './OfficialFeedbackForm';
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import T from 'components/T';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
 // styles
 import {
   colors,
@@ -16,18 +7,30 @@ import {
   media,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { ScreenReaderOnly } from 'utils/a11y';
-import styled from 'styled-components';
 import { transparentize } from 'polished';
 
-import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { FormattedDate } from 'react-intl';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+
+import T from 'components/T';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+
+import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 
 // resources
 import useDeleteIdeaOfficialFeedback from 'api/idea_official_feedback/useDeleteIdeaOfficialFeedback';
+import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
 import useDeleteInitiativeOfficialFeedback from 'api/initiative_official_feedback/useDeleteInitiativeOfficialFeedback';
+
 import useLocalize from 'hooks/useLocalize';
+
+import messages from './messages';
+import OfficialFeedbackForm from './OfficialFeedbackForm';
 
 const Container = styled.div`
   display: flex;

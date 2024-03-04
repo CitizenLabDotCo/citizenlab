@@ -1,26 +1,27 @@
 import React, { useRef } from 'react';
-import { isString, isEmpty, capitalize } from 'lodash-es';
 
-// libraries
-import { MentionsInput, Mention, MentionItem } from 'react-mentions';
-
-import Error from 'components/UI/Error';
-
-// style
-import styled, { useTheme } from 'styled-components';
 import {
   colors,
   fontSizes,
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
+import { isString, isEmpty, capitalize } from 'lodash-es';
+
+// libraries
 import { transparentize } from 'polished';
-
-import { extractIdsFromValue } from './utils';
-
+import { MentionsInput, Mention, MentionItem } from 'react-mentions';
+import styled, { useTheme } from 'styled-components';
 import { Locale } from 'typings';
+
+import Error from 'components/UI/Error';
+
+// style
+
+// Utils
+import getMentions from 'api/mentions/getMentions';
 import { MentionRoles } from 'api/mentions/types';
 
-import getMentions from 'api/mentions/getMentions';
+import { extractIdsFromValue } from './utils';
 
 const Container = styled.div`
   position: relative;

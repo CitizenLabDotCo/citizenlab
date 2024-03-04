@@ -2,17 +2,14 @@ import React from 'react';
 
 // router
 import { useParams } from 'react-router-dom';
-
-// api
-import usePhases from 'api/phases/usePhases';
-
-import useLocalize from 'hooks/useLocalize';
+import { IOption } from 'typings';
 
 import Select from 'components/HookForm/Select';
 
+import usePhases from 'api/phases/usePhases';
 import { canContainIdeas } from 'api/phases/utils';
 
-import { IOption } from 'typings';
+import useLocalize from 'hooks/useLocalize';
 
 interface Props {
   label?: string | JSX.Element;

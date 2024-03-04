@@ -1,37 +1,43 @@
 // libraries
 import React, { useEffect, useRef, useState } from 'react';
+
+import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
+import { hideVisually } from 'polished';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
+import styled from 'styled-components';
+
+import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
+import Avatar from 'components/Avatar';
+import Actions from 'components/PostShowComponents/Comments/CommentForm/Actions';
+import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/ErrorMessage';
+import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextArea';
+
+import { trackEventByName } from 'utils/analytics';
+import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextArea';
-import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/ErrorMessage';
-import Actions from 'components/PostShowComponents/Comments/CommentForm/Actions';
-import Avatar from 'components/Avatar';
-import clickOutside from 'utils/containers/clickOutside';
-import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
-
 // tracking
-import { trackEventByName } from 'utils/analytics';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocale from 'hooks/useLocale';
+
+import { commentReplyButtonClicked$, commentAdded } from '../../../events';
+import messages from '../../../messages';
 import tracks from '../../../tracks';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
 
 // events
-import { commentReplyButtonClicked$, commentAdded } from '../../../events';
 
 // style
-import styled from 'styled-components';
-import { hideVisually } from 'polished';
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
-import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
+
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
-import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
 
 const StyledAvatar = styled(Avatar)`
   margin-left: -4px;

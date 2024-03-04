@@ -1,6 +1,5 @@
-import moment, { Moment } from 'moment';
-
 import { orderBy } from 'lodash-es';
+import moment, { Moment } from 'moment';
 
 import { IResolution } from 'components/admin/ResolutionControl';
 

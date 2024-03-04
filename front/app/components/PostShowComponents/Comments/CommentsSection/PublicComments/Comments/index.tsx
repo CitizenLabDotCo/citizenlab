@@ -1,8 +1,12 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
 
-import ParentComment from './ParentComment';
 import { Spinner } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import Centerer from 'components/UI/Centerer';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
 
 import { ICommentData } from 'api/comments/types';
 
@@ -10,13 +14,12 @@ import { ICommentData } from 'api/comments/types';
 import { commentAdded$, commentDeleted$ } from '../../../events';
 
 // style
-import styled from 'styled-components';
 
-import { useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
 
 // a11y
-import { ScreenReaderOnly } from 'utils/a11y';
+
+import ParentComment from './ParentComment';
 
 const Container = styled.div`
   position: relative;

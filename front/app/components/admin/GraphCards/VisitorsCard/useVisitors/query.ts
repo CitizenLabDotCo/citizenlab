@@ -1,3 +1,5 @@
+import { Query, QuerySchema, AggregationsConfig } from 'api/analytics/types';
+
 import {
   getProjectFilter,
   getDateFilter,
@@ -6,7 +8,6 @@ import {
 } from '../../_utils/query';
 
 import { QueryParameters } from './typings';
-import { Query, QuerySchema, AggregationsConfig } from 'api/analytics/types';
 
 const getAggregations = (): AggregationsConfig => ({
   all: 'count',

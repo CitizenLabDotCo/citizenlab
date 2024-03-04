@@ -1,14 +1,18 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { QuestionRuleDisplay } from './QuestionRuleDisplay';
-import { PageRuleDisplay } from './PageRuleDisplay';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
+import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
+
+import { IFlatCustomField } from 'api/custom_fields/types';
+
 import useLocale from 'hooks/useLocale';
 
-import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
+import messages from '../../../messages';
+
+import { PageRuleDisplay } from './PageRuleDisplay';
+import { QuestionRuleDisplay } from './QuestionRuleDisplay';
 import {
   getOptionRule,
   getLinearScaleRule,
@@ -16,8 +20,6 @@ import {
   getTitleFromAnswerId,
   getTitleFromPageId,
 } from './utils';
-
-import { IFlatCustomField } from 'api/custom_fields/types';
 
 interface Props {
   field: IFlatCustomField;

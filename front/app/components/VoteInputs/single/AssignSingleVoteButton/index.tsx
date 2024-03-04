@@ -4,25 +4,27 @@ import { Button, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // api
-import useIdeaById from 'api/ideas/useIdeaById';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { useSearchParams } from 'react-router-dom';
+
+import { VOTES_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 // events
-import eventEmitter from 'utils/eventEmitter';
-import { VOTES_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-import { useIntl } from 'utils/cl-intl';
+import { IPhaseData } from 'api/phases/types';
+
 import messages from './messages';
 
 // routing
-import { useSearchParams } from 'react-router-dom';
-
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-
-import { IPhaseData } from 'api/phases/types';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 interface Props {
   phase: IPhaseData;

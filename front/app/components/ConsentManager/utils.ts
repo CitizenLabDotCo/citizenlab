@@ -1,17 +1,17 @@
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // cookies
+import { IAppConfigurationData } from 'api/app_configuration/types';
+import { IUserData } from 'api/users/types';
+
+import { IConsentCookie } from './consent';
 import {
   allCategories,
   getDestinationConfigs,
   isDestinationActive,
   IDestinationConfig,
 } from './destinations';
-import { IConsentCookie } from './consent';
-
-import { IAppConfigurationData } from 'api/app_configuration/types';
 import { CategorizedDestinations, IPreferences } from './typings';
-import { IUserData } from 'api/users/types';
 
 export const getCategory = (
   tenant: IAppConfigurationData,

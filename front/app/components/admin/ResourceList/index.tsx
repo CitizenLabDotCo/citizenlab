@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 
 // Style
-import styled from 'styled-components';
+import { remCalc, fontSizes, colors } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { remCalc, fontSizes, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 export { default as SortableList } from './SortableList';
 export { default as SortableRow } from './SortableRow';

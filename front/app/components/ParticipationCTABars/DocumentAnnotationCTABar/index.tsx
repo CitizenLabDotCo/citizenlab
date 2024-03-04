@@ -1,29 +1,28 @@
 import React, { useEffect, useState } from 'react';
 
+// Components
 import { Button } from '@citizenlab/cl2-component-library';
-import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
+import { useLocation } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
-import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
-
+import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
 
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
+
+import { IPhaseData } from 'api/phases/types';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+
 import messages from '../messages';
 
 // router
-import { useLocation } from 'react-router-dom';
-
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-
-import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();

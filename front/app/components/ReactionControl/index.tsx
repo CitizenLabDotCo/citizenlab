@@ -1,30 +1,30 @@
 import React, { MouseEvent, KeyboardEvent, useState, useCallback } from 'react';
 
-import ScreenReaderContent from './ScreenReaderContent';
-import ReactionButton from './ReactionButton';
+// events
+import { isRtl } from '@citizenlab/cl2-component-library';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { includes } from 'lodash-es';
+import styled from 'styled-components';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { isNilOrError } from 'utils/helperUtils';
+
+// style
+
+import { TReactionMode } from 'api/idea_reactions/types';
+import useAddIdeaReaction from 'api/idea_reactions/useAddIdeaReaction';
+import useDeleteIdeaReaction from 'api/idea_reactions/useDeleteIdeaReaction';
+import useIdeaReaction from 'api/idea_reactions/useIdeaReaction';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
 
 import { IdeaReactingDisabledReason } from 'api/ideas/types';
 import { getLatestRelevantPhase } from 'api/phases/utils';
 
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-import { isNilOrError } from 'utils/helperUtils';
-import { includes } from 'lodash-es';
-
-// style
-import styled from 'styled-components';
-import { isRtl } from '@citizenlab/cl2-component-library';
-
-import useIdeaById from 'api/ideas/useIdeaById';
-import useAuthUser from 'api/me/useAuthUser';
-import useIdeaReaction from 'api/idea_reactions/useIdeaReaction';
-import usePhases from 'api/phases/usePhases';
-import useAddIdeaReaction from 'api/idea_reactions/useAddIdeaReaction';
-import { TReactionMode } from 'api/idea_reactions/types';
-import useDeleteIdeaReaction from 'api/idea_reactions/useDeleteIdeaReaction';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import ReactionButton from './ReactionButton';
+import ScreenReaderContent from './ScreenReaderContent';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';

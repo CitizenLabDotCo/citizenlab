@@ -1,39 +1,44 @@
 import React, { MouseEvent, ChangeEvent, ReactNode } from 'react';
+
+import { Td, colors } from '@citizenlab/cl2-component-library';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import { uniq } from 'lodash-es';
 import { useDrag } from 'react-dnd';
-
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-
-import { TitleLink } from '.';
-import StyledRow from './StyledRow';
 import { Icon } from 'semantic-ui-react';
-import T from 'components/T';
-import Checkbox from 'components/UI/Checkbox';
-import { Td, colors } from '@citizenlab/cl2-component-library';
-import SubRow from './SubRow';
-import AssigneeSelect from '../AssigneeSelect';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
 
+import tracks from '../../../tracks';
 import { TFilterMenu, ManagerType } from '../../..';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
+
 import events, {
   StatusChangeModalOpen,
 } from 'components/admin/PostManager/events';
+import T from 'components/T';
+import Checkbox from 'components/UI/Checkbox';
+import { trackEventByName } from 'utils/analytics';
 
+import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
+
+import { timeAgo } from 'utils/dateUtils';
+
+import useLocale from 'hooks/useLocale';
+
+import { isNilOrError } from 'utils/helperUtils';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
+import { IInitiativeData } from 'api/initiatives/types';
 import useInitiatives from 'api/initiatives/useInitiatives';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 
-import { IInitiativeData } from 'api/initiatives/types';
-import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
-import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
-import { timeAgo } from 'utils/dateUtils';
-import useLocale from 'hooks/useLocale';
-import { isNilOrError } from 'utils/helperUtils';
+import AssigneeSelect from '../AssigneeSelect';
+
+import StyledRow from './StyledRow';
+import SubRow from './SubRow';
+
+import { TitleLink } from '.';
 
 interface Props {
   type: ManagerType;

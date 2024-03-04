@@ -1,18 +1,18 @@
 import React, { memo } from 'react';
 
-import EventInformation from './EventInformation';
-
-import { IEventData } from 'api/events/types';
-
 // style
-import styled from 'styled-components';
 import {
   defaultCardHoverStyle,
   defaultCardStyle,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { IEventData } from 'api/events/types';
+
+import EventInformation from './EventInformation';
 
 const Container = styled.div<{ clickable?: boolean }>`
   ${defaultCardStyle};

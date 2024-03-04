@@ -1,32 +1,31 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { findIndex } from 'lodash-es';
-import Tippy from '@tippyjs/react';
 
 // tracking
-import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
 
 // router
-import { useParams } from 'react-router-dom';
-import setPhaseURL from './setPhaseURL';
 
 import { Button, colors, isRtl } from '@citizenlab/cl2-component-library';
-
-// api
-import usePhases from 'api/phases/usePhases';
-import useProjectById from 'api/projects/useProjectById';
-
+import Tippy from '@tippyjs/react';
 import messages from 'containers/ProjectsShowPage/messages';
-import { injectIntl } from 'utils/cl-intl';
+import { findIndex } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
+import { useParams } from 'react-router-dom';
 
 // style
 import styled from 'styled-components';
 
-import { getCurrentPhase, getLatestRelevantPhase } from 'api/phases/utils';
-import { isValidPhase } from '../phaseParam';
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
 
 import { IPhaseData } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase, getLatestRelevantPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import { isValidPhase } from '../phaseParam';
+
+import setPhaseURL from './setPhaseURL';
+import tracks from './tracks';
 
 const Container = styled.div`
   display: flex;

@@ -6,10 +6,12 @@ import {
   Title,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
+
 import { GraphCardInnerClean } from 'components/admin/GraphWrappers';
 import ReportExportMenu, {
   ReportExportMenuProps,
 } from 'components/admin/ReportExportMenu';
+
 import ViewToggle, { Props as ViewToggleProps } from './ViewToggle';
 
 interface Props {

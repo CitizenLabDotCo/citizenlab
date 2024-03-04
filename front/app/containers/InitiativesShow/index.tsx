@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 
-// analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 

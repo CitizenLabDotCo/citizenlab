@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { getBorderRadius } from './utils';
+
 import { BarProps } from './typings';
+import { getBorderRadius } from './utils';
 
 const BORDER = `1px solid ${colors.divider}`;
 

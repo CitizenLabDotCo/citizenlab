@@ -1,13 +1,5 @@
 import React from 'react';
 
-// api
-import usePhase from 'api/phases/usePhase';
-import useIdeaImage from 'api/idea_images/useIdeaImage';
-
-import useLocalize from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
 import {
   useBreakpoint,
   Box,
@@ -16,21 +8,30 @@ import {
   media,
   Text,
 } from '@citizenlab/cl2-component-library';
-import Image from 'components/UI/Image';
-import ImagePlaceholder from './ImagePlaceholder';
-import Rank from './Rank';
-import Footer from 'components/IdeaCard/Footer';
-import FormattedBudget from 'utils/currency/FormattedBudget';
+
 import ProgressBar from './ProgressBar';
 
 import styled from 'styled-components';
+import Footer from 'components/IdeaCard/Footer';
+import Image from 'components/UI/Image';
+
+import { useIntl } from 'utils/cl-intl';
 
 // router
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
+import useIdeaImage from 'api/idea_images/useIdeaImage';
 import { IIdeaData } from 'api/ideas/types';
+import usePhase from 'api/phases/usePhase';
+
+import useLocalize from 'hooks/useLocalize';
+
+import ImagePlaceholder from './ImagePlaceholder';
+import messages from './messages';
+import Rank from './Rank';
 
 const cardPadding = '17px';
 const cardInnerHeight = '162px';

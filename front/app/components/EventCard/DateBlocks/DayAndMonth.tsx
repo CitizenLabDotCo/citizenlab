@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { EventDay, EventMonth } from './styling';
+import { showDotAfterDay } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import useLocale from 'hooks/useLocale';
 
-import { showDotAfterDay } from 'utils/dateUtils';
-import { isNilOrError } from 'utils/helperUtils';
+import { EventDay, EventMonth } from './styling';
 
 interface Props {
   day?: string;

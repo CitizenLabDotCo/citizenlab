@@ -8,34 +8,36 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { useSearchParams } from 'react-router-dom';
+import { useTheme } from 'styled-components';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { useIntl } from 'utils/cl-intl';
+import { isNil } from 'utils/helperUtils';
+
+import useBasket from 'api/baskets/useBasket';
+import useIdeaById from 'api/ideas/useIdeaById';
+
+import useLocalize from 'hooks/useLocalize';
 import NumberInput from './NumberInput';
 
 // api
-import useBasket from 'api/baskets/useBasket';
-import useIdeaById from 'api/ideas/useIdeaById';
 import useVoting from 'api/baskets_ideas/useVoting';
 
 // events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-import { useTheme } from 'styled-components';
-
-import { useIntl } from 'utils/cl-intl';
-import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
 
 // routing
-import { useSearchParams } from 'react-router-dom';
 
-import { isNil } from 'utils/helperUtils';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import {
   getMinusButtonDisabledMessage,
   getPlusButtonDisabledMessage,
 } from './utils';
 
 import { IPhaseData } from 'api/phases/types';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 interface Props {
   ideaId: string;

@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import Bar from './Bar';
-
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
-import { getRoundedPercentages, getType, filterZeroes } from './utils';
-import { sum } from 'utils/math';
 import { round } from 'lodash-es';
+
+import { useIntl } from 'utils/cl-intl';
+import { sum } from 'utils/math';
+
+import Bar from './Bar';
+import messages from './messages';
+import { getRoundedPercentages, getType, filterZeroes } from './utils';
 
 interface Props {
   values: number[];

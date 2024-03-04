@@ -11,7 +11,6 @@ import {
   Top,
 } from 'components/admin/PostManager/components/PostPreview';
 import Form from 'components/Form';
-
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,14 +19,12 @@ import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
-
 import useProjectById from 'api/projects/useProjectById';
 
 import useInputSchema from 'hooks/useInputSchema';
-
-import useIdeaImages from 'api/idea_images/useIdeaImages';
 
 import messages from '../messages';
 

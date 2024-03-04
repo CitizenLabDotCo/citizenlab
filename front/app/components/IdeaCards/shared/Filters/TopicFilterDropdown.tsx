@@ -3,13 +3,14 @@ import React, { useMemo } from 'react';
 import FilterSelector from 'components/FilterSelector';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
-import useLocalize from 'hooks/useLocalize';
 
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
+import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 import useTopics from 'api/topics/useTopics';
 
-import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
+import useLocalize from 'hooks/useLocalize';
+
+import messages from '../../messages';
 
 interface Props {
   selectedTopicIds: string[];

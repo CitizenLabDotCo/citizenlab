@@ -21,7 +21,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'api/me/useAuthUser';
 import useMarkAllAsRead from 'api/notifications/useMarkAllAsRead';
 
-// analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'containers/MainHeader/Components/NotificationMenu/tracks';
 

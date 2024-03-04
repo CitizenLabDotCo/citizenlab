@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 
 import { Box, Text, Button, Error } from '@citizenlab/cl2-component-library';
 
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
 // util
-import { requestBlob } from 'utils/requestBlob';
 import { API_PATH } from 'containers/App/constants';
 import saveAs from 'file-saver';
 import { useTheme } from 'styled-components';
+
+import { useIntl } from 'utils/cl-intl';
+import { requestBlob } from 'utils/requestBlob';
+
+import messages from './messages';
 
 export const AddEventToCalendarButton = ({ eventId }: { eventId: string }) => {
   const { formatMessage } = useIntl();

@@ -1,16 +1,5 @@
 // libraries
 import React, { Component, MouseEvent } from 'react';
-import Link from 'utils/cl-router/Link';
-import styled from 'styled-components';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { isEqual, clone } from 'lodash-es';
-
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import customfieldMessages from 'containers/Admin/settings/registration/CustomFieldRoutes/messages';
-import T from 'components/T';
 
 import Button from 'components/UI/Button';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
@@ -21,6 +10,12 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
+import customfieldMessages from 'containers/Admin/settings/registration/CustomFieldRoutes/messages';
+import { isEqual, clone } from 'lodash-es';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 
 import {
   Section,
@@ -28,22 +23,27 @@ import {
   SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
+import T from 'components/T';
 
-// api
-import { IUserCustomFieldData } from 'api/user_custom_fields/types';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import Link from 'utils/cl-router/Link';
+
 import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
 
 // cache
 
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
+import userCustomFieldsKeys from 'api/user_custom_fields/keys';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useDeleteUserCustomField from 'api/user_custom_fields/useDeleteUserCustomField';
 import useReorderUserCustomField from 'api/user_custom_fields/useReorderUserCustomField';
 import useUpdateUserCustomField, {
   UpdateField,
 } from 'api/user_custom_fields/useUpdateUserCustomField';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import { isBuiltInField, isHiddenField } from 'api/user_custom_fields/util';
-import userCustomFieldsKeys from 'api/user_custom_fields/keys';
+
+import messages from './messages';
 
 const Buttons = styled.div`
   display: flex;

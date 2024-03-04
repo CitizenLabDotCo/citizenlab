@@ -1,12 +1,15 @@
-import messages from './messages';
+import { FormatMessage } from 'typings';
+
 import voteInputMessages from 'components/VoteInputs/_shared/messages';
 
 import { isNil } from 'utils/helperUtils';
 
-import { IPhaseData } from 'api/phases/types';
 import { TCurrency } from 'api/app_configuration/types';
-import { FormatMessage } from 'typings';
+import { IPhaseData } from 'api/phases/types';
+
 import { Localize } from 'hooks/useLocalize';
+
+import messages from './messages';
 
 export const getNumberOfVotesDisabledExplanation = (
   formatMessage: FormatMessage,

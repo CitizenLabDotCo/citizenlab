@@ -1,9 +1,10 @@
 import React from 'react';
 
-import ProjectsTabPanel from './ProjectsTabPanel';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 
 import { TLayout, PublicationTab } from '..';
-import { IAdminPublicationData } from 'api/admin_publications/types';
+
+import ProjectsTabPanel from './ProjectsTabPanel';
 
 export type TCardSize = 'small' | 'medium' | 'large';
 

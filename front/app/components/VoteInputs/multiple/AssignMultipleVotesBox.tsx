@@ -1,22 +1,25 @@
 import React, { memo } from 'react';
 
 // api
-import useIdeaById from 'api/ideas/useIdeaById';
-import useVoting from 'api/baskets_ideas/useVoting';
 
-import WhiteBox from '../_shared/WhiteBox';
-import AssignMultipleVotesControl from './AssignMultipleVotesInput';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import messages from '../_shared/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import useLocalize from 'hooks/useLocalize';
 
 // styles
 
 import { isNil } from 'utils/helperUtils';
 
+import useVoting from 'api/baskets_ideas/useVoting';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from '../_shared/messages';
+import WhiteBox from '../_shared/WhiteBox';
+
+import AssignMultipleVotesControl from './AssignMultipleVotesInput';
 
 interface Props {
   ideaId: string;

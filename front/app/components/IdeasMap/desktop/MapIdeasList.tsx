@@ -6,31 +6,35 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import TopicFilterDropdown from 'components/IdeaCards/shared/Filters/TopicFilterDropdown';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+
 import SelectSort, {
   Sort,
 } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
-import SearchInput from 'components/UI/SearchInput';
-import IdeaMapCard from '../IdeaMapCard';
+import TopicFilterDropdown from 'components/IdeaCards/shared/Filters/TopicFilterDropdown';
 import Centerer from 'components/UI/Centerer';
+import SearchInput from 'components/UI/SearchInput';
 
-import useLocale from 'hooks/useLocale';
+import { FormattedMessage } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
+
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+
 import usePhase from 'api/phases/usePhase';
+import useLocale from 'hooks/useLocale';
+import IdeaMapCard from '../IdeaMapCard';
 
 // router
-import { useSearchParams } from 'react-router-dom';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // style
-import styled from 'styled-components';
 
-import { isFieldEnabled } from 'utils/projectUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 import useIdeas from 'api/ideas/useIdeas';
 

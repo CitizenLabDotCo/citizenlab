@@ -9,14 +9,16 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
-
-import { getTranslatedFieldBadgeLabel } from '../../utils';
-import { getFieldIcon } from './utils';
 import { builtInFieldKeys } from 'components/FormBuilder/utils';
 
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+
 import { IFlatCustomField } from 'api/custom_fields/types';
+
+import messages from '../../../messages';
+import { getTranslatedFieldBadgeLabel } from '../../utils';
+
+import { getFieldIcon } from './utils';
 
 interface Props {
   field: IFlatCustomField;

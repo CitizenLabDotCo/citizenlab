@@ -2,36 +2,33 @@ import React, { memo, ReactElement, useEffect, useState } from 'react';
 
 // jsonforms
 import {
-  createAjv,
-  JsonSchema7,
-  isCategorization,
-  Layout,
-} from '@jsonforms/core';
-
-import styled from 'styled-components';
-
-import {
   Box,
   fontSizes,
   media,
   Button,
 } from '@citizenlab/cl2-component-library';
-import Wrapper from './Components/Wrapper';
-import Fields from './Components/Fields';
-import ButtonBar from './Components/ButtonBar';
+import {
+  createAjv,
+  JsonSchema7,
+  isCategorization,
+  Layout,
+} from '@jsonforms/core';
+import styled from 'styled-components';
+import { CLErrors, Locale } from 'typings';
 
+import { useIntl, MessageDescriptor } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import useLocale from 'hooks/useLocale';
 import useObserveEvent from 'hooks/useObserveEvent';
 
+import ButtonBar from './Components/ButtonBar';
+import Fields from './Components/Fields';
+import Wrapper from './Components/Wrapper';
 import messages from './messages';
-import useLocale from 'hooks/useLocale';
-import { useIntl, MessageDescriptor } from 'utils/cl-intl';
-
-import { isNilOrError } from 'utils/helperUtils';
-import { sanitizeFormData, isValidData } from './utils';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
-
-import { CLErrors, Locale } from 'typings';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
+import { sanitizeFormData, isValidData } from './utils';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`

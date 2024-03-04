@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
+
 import { mapValues, reduce } from 'lodash-es';
-import { Multiloc } from 'typings';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
+import { Multiloc } from 'typings';
+
 import { isNilOrError } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 

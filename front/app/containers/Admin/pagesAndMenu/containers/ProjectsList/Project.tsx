@@ -1,12 +1,11 @@
 import React from 'react';
 
-// api
-import useProjectById from 'api/projects/useProjectById';
+import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
 
 import { Row } from 'components/admin/ResourceList';
 
-import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
 import { IAdminPublicationData } from 'api/admin_publications/types';
+import useProjectById from 'api/projects/useProjectById';
 
 interface Props {
   adminPublication: IAdminPublicationData;

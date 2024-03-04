@@ -1,19 +1,20 @@
 import React from 'react';
 
-import useAuthUser from 'api/me/useAuthUser';
-
 // events
+import { Box, Title, Text, Spinner } from '@citizenlab/cl2-component-library';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
 import { useTheme } from 'styled-components';
 
-import { Box, Title, Text, Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Centerer from 'components/UI/Centerer';
 
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+
+import useAuthUser from 'api/me/useAuthUser';
+
 import pageNotFoundMessages from '../PageNotFound/messages';
+
+import messages from './messages';
 
 type UnauthorizedProps = {
   fixableByAuthentication?: boolean;

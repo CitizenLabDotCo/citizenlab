@@ -12,16 +12,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
-// api
-
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import FormattedMessageComponent from 'utils/cl-intl/FormattedMessage';
 import { isNilOrError } from 'utils/helperUtils';
-
 import { isAdmin } from 'utils/permissions/roles';
 
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPermissionData } from 'api/permissions/types';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
@@ -30,8 +25,10 @@ import useDeletePermissionsCustomField from 'api/permissions_custom_fields/useDe
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 import useUpdatePermissionsCustomField from 'api/permissions_custom_fields/useUpdatePermissionsCustomField';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 
 import messages from '../../containers/Granular/messages';
 import { HandlePermissionChangeProps } from '../../containers/Granular/utils';

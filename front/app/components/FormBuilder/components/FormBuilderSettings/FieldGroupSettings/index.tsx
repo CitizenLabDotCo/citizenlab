@@ -1,15 +1,17 @@
 import React from 'react';
 
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import get from 'lodash-es/get';
+import { Locale } from 'typings';
+
 import { SectionField } from 'components/admin/Section';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { Locale } from 'typings';
-import get from 'lodash-es/get';
 
 type Props = {
   field: IFlatCustomFieldWithIndex;

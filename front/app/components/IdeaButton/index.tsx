@@ -1,32 +1,33 @@
 import React, { memo } from 'react';
-import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
 
-import { getIdeaPostingRules } from 'utils/actionTakingRules';
-
-import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
-
-import { FormattedMessage } from 'utils/cl-intl';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { stringify } from 'qs';
 import styled from 'styled-components';
 
-import { IPhaseData, ParticipationMethod } from 'api/phases/types';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import useAuthUser from 'api/me/useAuthUser';
-import TippyContent from './TippyContent';
-import { getInputTerm } from 'api/phases/utils';
+import Button, { Props as ButtonProps } from 'components/UI/Button';
+
+import { getIdeaPostingRules } from 'utils/actionTakingRules';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { getInputTermMessage } from 'utils/i18n';
+
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import { getInputTerm } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
 import messages from './messages';
+import TippyContent from './TippyContent';
+import tracks from './tracks';
 
 const Container = styled.div``;
 

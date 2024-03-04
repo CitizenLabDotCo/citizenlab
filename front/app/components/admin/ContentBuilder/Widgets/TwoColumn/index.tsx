@@ -10,16 +10,17 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // styles
-import styled from 'styled-components';
 
 import { useNode, Element } from '@craftjs/core';
-import Container from '../Container';
+import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 import { ColumnLayout } from '../../typings';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
+import Container from '../Container';
+
+import messages from './messages';
 
 type TwoColumnProps = {
   columnLayout: ColumnLayout;

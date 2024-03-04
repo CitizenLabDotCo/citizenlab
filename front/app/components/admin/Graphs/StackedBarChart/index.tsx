@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 
 import {
-  legacyColors,
-  sizes,
-  animation,
-} from 'components/admin/Graphs/styling';
-
-import {
   BarChart as RechartsBarChart,
   Bar,
   XAxis,
@@ -15,20 +9,26 @@ import {
   LabelList,
   Tooltip,
 } from 'recharts';
+
+import {
+  legacyColors,
+  sizes,
+  animation,
+} from 'components/admin/Graphs/styling';
+
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
-
-import { getBarConfigs } from './utils';
-import { getRechartsLayout, getLabelConfig } from '../MultiBarChart/utils';
-import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
-import { DEFAULT_LEGEND_OFFSET } from '../MultiBarChart';
-
-import { Props } from './typings';
 import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
+import { DEFAULT_LEGEND_OFFSET } from '../MultiBarChart';
+import { getRechartsLayout, getLabelConfig } from '../MultiBarChart/utils';
+import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
+
+import { Props } from './typings';
+import { getBarConfigs } from './utils';
 
 const StackedBarChart = <Row,>({
   width,

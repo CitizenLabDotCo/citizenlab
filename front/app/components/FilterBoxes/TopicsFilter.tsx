@@ -1,26 +1,25 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
-import { isError, includes } from 'lodash-es';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-import { ScreenReaderOnly } from 'utils/a11y';
 import {
   fontSizes,
   colors,
   defaultCardStyle,
 } from '@citizenlab/cl2-component-library';
+import { isError, includes } from 'lodash-es';
+import { darken } from 'polished';
+import styled from 'styled-components';
 
 import T from 'components/T';
 
-import styled from 'styled-components';
-import { darken } from 'polished';
-import { Header, Title } from './styles';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 import { ITopicData } from 'api/topics/types';
 
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import messages from './messages';
+import { Header, Title } from './styles';
 
 const Container = styled.div`
   width: 100%;

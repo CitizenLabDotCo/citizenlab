@@ -1,35 +1,38 @@
 import React, { FormEvent } from 'react';
 
 // api
+import { Button, Icon, colors } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { useSearchParams } from 'react-router-dom';
+
+import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import eventEmitter from 'utils/eventEmitter';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 
-import { Button, Icon, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { IPhaseData } from 'api/phases/types';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // tracks
 import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
 
 // routing
-import { useSearchParams } from 'react-router-dom';
 
 // events
-import eventEmitter from 'utils/eventEmitter';
-import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import { isButtonEnabled } from './utils';
-import { isNil } from 'utils/helperUtils';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import { IPhaseData } from 'api/phases/types';
+import { isNil } from 'utils/helperUtils';
 
 interface Props {
   ideaId: string;

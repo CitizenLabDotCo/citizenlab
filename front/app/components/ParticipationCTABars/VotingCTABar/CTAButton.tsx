@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 
-import useBasket from 'api/baskets/useBasket';
-import useUpdateBasket from 'api/baskets/useUpdateBasket';
-import useVoting from 'api/baskets_ideas/useVoting';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-
+import JSConfetti from 'js-confetti';
 import styled, { useTheme } from 'styled-components';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import useLocalize from 'hooks/useLocalize';
-
-import JSConfetti from 'js-confetti';
-import { scrollToElement } from 'utils/scroll';
-import { getNumberOfVotesDisabledExplanation } from './utils';
 import clHistory from 'utils/cl-router/history';
+import { scrollToElement } from 'utils/scroll';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useBasket from 'api/baskets/useBasket';
+import useUpdateBasket from 'api/baskets/useUpdateBasket';
+import useVoting from 'api/baskets_ideas/useVoting';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from '../messages';
+
+import { getNumberOfVotesDisabledExplanation } from './utils';
 
 const confetti = new JSConfetti();
 

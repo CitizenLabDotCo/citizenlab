@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 import {
   Icon,
@@ -9,22 +8,22 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import DateBlocks from '../DateBlocks';
-import Image from 'components/UI/Image';
-
-import { IEventData } from 'api/events/types';
-
-import T from 'components/T';
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
+import moment from 'moment';
 import styled, { useTheme } from 'styled-components';
 
-import clHistory from 'utils/cl-router/history';
 import EventAttendanceButton from 'components/EventAttendanceButton';
+import T from 'components/T';
+import Image from 'components/UI/Image';
+
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { getEventDateString } from 'utils/dateUtils';
 
 import useEventImage from 'api/event_images/useEventImage';
+import { IEventData } from 'api/events/types';
+
+import DateBlocks from '../DateBlocks';
+import messages from '../messages';
 
 const EventInformationContainer = styled.div`
   flex: 1;

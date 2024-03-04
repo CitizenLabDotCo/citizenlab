@@ -1,4 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
+
+import {
+  Box,
+  Label,
+  Button,
+  LocaleSwitcher,
+  Toggle,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -9,33 +19,27 @@ import {
   useFormContext,
   useWatch,
 } from 'react-hook-form';
+import { Locale, CLError, RHFErrors } from 'typings';
 
-import {
-  Box,
-  Label,
-  Button,
-  LocaleSwitcher,
-  Toggle,
-  IconTooltip,
-} from '@citizenlab/cl2-component-library';
-import { SectionField } from 'components/admin/Section';
 import { List, Row, SortableRow } from 'components/admin/ResourceList';
+import { SectionField } from 'components/admin/Section';
+import { generateTempId } from 'components/FormBuilder/utils';
 import Error, { TFieldName } from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-import { Locale, CLError, RHFErrors } from 'typings';
-
-import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
-import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
-import SelectFieldOption, { OptionImageType } from './SelectFieldOption';
-import { generateTempId } from 'components/FormBuilder/utils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { useCustomFieldOptionImages } from 'api/content_field_option_images/useCustomFieldOptionImage';
+import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
+
 import usePrevious from 'hooks/usePrevious';
+
+import messages from './messages';
+
+// Typings
+
+import SelectFieldOption, { OptionImageType } from './SelectFieldOption';
 
 interface Props {
   name: string;

@@ -1,19 +1,20 @@
 import React from 'react';
 
-import StatusFilterBox from '../shared/Filters/StatusFilterBox';
-import TopicFilterBox from '../shared/Filters/TopicFilterBox';
-import { ScreenReaderOnly } from 'utils/a11y';
+import { colors, fontSizes, media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import SearchInput from 'components/UI/SearchInput';
 
-import styled from 'styled-components';
-import { colors, fontSizes, media } from '@citizenlab/cl2-component-library';
-
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import { IQueryParameters } from 'api/ideas/types';
-
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+
+import { IQueryParameters } from 'api/ideas/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
+
+import messages from '../messages';
+import StatusFilterBox from '../shared/Filters/StatusFilterBox';
+import TopicFilterBox from '../shared/Filters/TopicFilterBox';
 
 const FiltersSidebarContainer = styled.div`
   position: relative;

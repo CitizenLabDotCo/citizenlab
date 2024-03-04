@@ -1,14 +1,16 @@
 import React from 'react';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-import ToolboxItem from './ToolboxItem';
 import { Box, Title } from '@citizenlab/cl2-component-library';
+
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { ICustomFieldInputType } from 'api/custom_fields/types';
 
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import messages from '../messages';
+
+import ToolboxItem from './ToolboxItem';
 import { DraggableElement } from './utils';
 
 interface BuiltInFieldsProps {

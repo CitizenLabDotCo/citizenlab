@@ -13,7 +13,6 @@ import Tabs, { ITabItem } from 'components/UI/Tabs';
 
 import eventEmitter from 'utils/eventEmitter';
 
-// analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 

@@ -1,11 +1,5 @@
 import React from 'react';
-import { get } from 'lodash-es';
-import { useFormContext } from 'react-hook-form';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-import ToolboxItem from './ToolboxItem';
 import {
   Box,
   IconTooltip,
@@ -13,8 +7,16 @@ import {
   Title,
   colors,
 } from '@citizenlab/cl2-component-library';
-import BuiltInFields from './BuiltInFields';
-import LayoutFields from './LayoutFields';
+import { get } from 'lodash-es';
+import { useFormContext } from 'react-hook-form';
+
+import {
+  generateTempId,
+  FormBuilderConfig,
+} from 'components/FormBuilder/utils';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import {
   ICustomFieldInputType,
@@ -22,14 +24,14 @@ import {
   IFlatCustomField,
 } from 'api/custom_fields/types';
 
-import useLocale from 'hooks/useLocale';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 
-import { isNilOrError } from 'utils/helperUtils';
-import {
-  generateTempId,
-  FormBuilderConfig,
-} from 'components/FormBuilder/utils';
+import messages from '../messages';
+
+import BuiltInFields from './BuiltInFields';
+import LayoutFields from './LayoutFields';
+import ToolboxItem from './ToolboxItem';
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField, index: number) => void;

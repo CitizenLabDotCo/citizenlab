@@ -7,12 +7,17 @@ import {
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
-import CloseIconButton from 'components/UI/CloseIconButton';
-import { LogicSettings } from './LogicSettings';
-import { ContentSettings } from './ContentSettings';
+import { useFormContext } from 'react-hook-form';
 
-import messages from '../messages';
+import {
+  formEndOption,
+  getTranslatedStringKey,
+  FormBuilderConfig,
+} from 'components/FormBuilder/utils';
+import CloseIconButton from 'components/UI/CloseIconButton';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import {
   IFlatCustomField,
@@ -20,15 +25,12 @@ import {
 } from 'api/custom_fields/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { useFormContext } from 'react-hook-form';
 
-import { isNilOrError } from 'utils/helperUtils';
+import messages from '../messages';
 import { getFieldNumbers } from '../utils';
-import {
-  formEndOption,
-  getTranslatedStringKey,
-  FormBuilderConfig,
-} from 'components/FormBuilder/utils';
+
+import { ContentSettings } from './ContentSettings';
+import { LogicSettings } from './LogicSettings';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;

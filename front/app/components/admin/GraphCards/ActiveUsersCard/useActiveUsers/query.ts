@@ -6,6 +6,7 @@ import {
 } from 'components/admin/GraphCards/_utils/query';
 
 import { Query, QuerySchema } from 'api/analytics/types';
+
 import { QueryParameters } from './typings';
 
 export const query = ({

@@ -7,19 +7,21 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import DayAndMonth from 'components/EventCard/DateBlocks/DayAndMonth';
 
 // api
-import useLocalize from 'hooks/useLocalize';
 
 // style
-import styled, { useTheme } from 'styled-components';
 import moment from 'moment';
+import styled, { useTheme } from 'styled-components';
+
+import DayAndMonth from 'components/EventCard/DateBlocks/DayAndMonth';
 
 import clHistory from 'utils/cl-router/history';
 
 // typing
 import { IEventData } from 'api/events/types';
+
+import useLocalize from 'hooks/useLocalize';
 
 const EventCard = styled(Box)`
   ${defaultCardStyle};

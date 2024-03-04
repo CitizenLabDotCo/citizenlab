@@ -6,8 +6,6 @@ import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-// api
 import { isAdmin } from 'utils/permissions/roles';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';

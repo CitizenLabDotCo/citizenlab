@@ -23,7 +23,6 @@ const TranslateButton = ({ idea, translateButtonClicked, onClick }: Props) => {
   if (isNilOrError(locale)) return null;
 
   const onTranslateIdea = () => {
-    // analytics
     if (translateButtonClicked) {
       trackEventByName(tracks.clickGoBackToOriginalIdeaCopyButton.name);
     } else {

@@ -1,23 +1,29 @@
+// Libraries
 import React, { FormEvent, useState } from 'react';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
+import { isRtl } from '@citizenlab/cl2-component-library';
 import SpamReportForm from 'containers/SpamReport';
+import styled from 'styled-components';
+
 import Button from 'components/UI/Button';
-import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
+import Modal from 'components/UI/Modal';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
-// events
-import { deleteCommentModalClosed } from '../events';
-
-import styled from 'styled-components';
-import { isRtl } from '@citizenlab/cl2-component-library';
-
-import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
 import { DeleteReason, ICommentData } from 'api/comments/types';
+import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
+import { deleteCommentModalClosed } from '../events';
+import messages from '../messages';
+
+// Components
+
+import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
+
+// events
+
+// Styling
 
 const Container = styled.div`
   display: flex;

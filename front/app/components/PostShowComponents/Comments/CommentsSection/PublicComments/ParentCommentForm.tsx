@@ -1,40 +1,46 @@
 import React, { useState, useRef } from 'react';
+
+import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
+import { hideVisually } from 'polished';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+
+import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
+import Avatar from 'components/Avatar';
+import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/ErrorMessage';
+import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextArea';
+
+import { trackEventByName } from 'utils/analytics';
+import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 
-import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextArea';
-import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/ErrorMessage';
-import Avatar from 'components/Avatar';
-import clickOutside from 'utils/containers/clickOutside';
-import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
 import Actions from '../../CommentForm/Actions';
-import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
+
+import { commentAdded } from '../../events';
+import messages from '../../messages';
 import tracks from '../../tracks';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 // resources
 
 // events
-import { commentAdded } from '../../events';
 
 // style
-import styled from 'styled-components';
-import { hideVisually } from 'polished';
 
-import useIdeaById from 'api/ideas/useIdeaById';
-import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
+
 import useLocale from 'hooks/useLocale';
+
 import useAuthUser from 'api/me/useAuthUser';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { useLocation } from 'react-router-dom';
 
 const StyledAvatar = styled(Avatar)`
   margin-left: -4px;

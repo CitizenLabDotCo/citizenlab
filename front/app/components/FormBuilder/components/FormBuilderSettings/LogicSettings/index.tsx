@@ -1,21 +1,23 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-import { QuestionRuleInput } from './QuestionRuleInput';
-import { PageRuleInput } from './PageRuleInput';
-
-import messages from '../../messages';
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-
-import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
-import useLocale from 'hooks/useLocale';
-import { isNilOrError } from 'utils/helperUtils';
+import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import Warning from 'components/UI/Warning';
 
-import { get } from 'lodash-es';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
+
+import useLocale from 'hooks/useLocale';
+
+import messages from '../../messages';
+
+import { PageRuleInput } from './PageRuleInput';
+import { QuestionRuleInput } from './QuestionRuleInput';
 
 type LogicSettingsProps = {
   pageOptions: { value: string; label: string }[];

@@ -4,12 +4,14 @@ import {
   timeSeriesParser,
   calculateCumulativeSerie,
 } from 'components/admin/GraphCards/_utils/timeSeries';
+import { IResolution } from 'components/admin/ResolutionControl';
+
 import { get } from 'utils/helperUtils';
 
-import { TimeSeriesResponseRow, TimeSeries, TimeSeriesRow } from './typings';
-import { Translations } from './translations';
-import { IResolution } from 'components/admin/ResolutionControl';
 import { PostsByTimeResponse } from 'api/graph_data_units/responseTypes';
+
+import { Translations } from './translations';
+import { TimeSeriesResponseRow, TimeSeries, TimeSeriesRow } from './typings';
 
 export const getEmptyRow = (date: Moment) => ({
   date: date.format('YYYY-MM-DD'),

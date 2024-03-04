@@ -3,7 +3,6 @@ import React, { useState, useCallback, useMemo, lazy } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // tracks
-import { trackEventByName } from 'utils/analytics';
 
 import {
   Spinner,
@@ -17,24 +16,16 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
 
-import { ScreenReaderOnly } from 'utils/a11y';
-import EmptyProposals from './EmptyProposals';
-import ProposalsList from './ProposalsList';
 const InitiativeMap = lazy(() => import('components/InitiativeMap'));
 
 // router
-import { useSearchParams } from 'react-router-dom';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
-import useInfitineInitiatives from 'api/initiatives/useInfiniteInitiatives';
-import useInitiativesFilterCounts from 'api/initiatives_filter_counts/useInitiativesFilterCounts';
-
-import messages from './messages';
 import { MessageDescriptor } from 'react-intl';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useSearchParams } from 'react-router-dom';
 
 // style
 import styled from 'styled-components';
+
 import BottomBar from 'components/FiltersModal/BottomBar';
 import TopBar from 'components/FiltersModal/TopBar';
 import { Sort } from 'components/InitiativeCards/SortFilterDropdown';
@@ -43,6 +34,17 @@ import Button from 'components/UI/Button';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import SearchInput from 'components/UI/SearchInput';
 
+import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import useInfitineInitiatives from 'api/initiatives/useInfiniteInitiatives';
+import useInitiativesFilterCounts from 'api/initiatives_filter_counts/useInitiativesFilterCounts';
+
+import EmptyProposals from './EmptyProposals';
+import messages from './messages';
+import ProposalsList from './ProposalsList';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
 import TopicFilterBox from './TopicFilterBox';

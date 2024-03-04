@@ -1,13 +1,16 @@
 import React from 'react';
+
 import { AUTH_PATH } from 'containers/App/constants';
-import { removeUrlLocale } from 'utils/locale';
+import styled from 'styled-components';
+
 import { getJwt } from 'utils/auth/jwt';
+import { removeUrlLocale } from 'utils/locale';
 
 // style
-import styled from 'styled-components';
-import icon from './clave-unica-icon.svg';
 
 import { TVerificationMethod } from 'api/verification_methods/types';
+
+import icon from './clave-unica-icon.svg';
 
 // CSS extracted from the official Clave Unica button
 // https://drive.google.com/file/d/1-aBGu5XEjHD1LYcqOZP_mUg4ekFLDv6v/view

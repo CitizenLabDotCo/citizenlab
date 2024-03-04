@@ -4,15 +4,14 @@ const IdeasWithFiltersSidebar = lazy(() => import('./IdeasWithFiltersSidebar'));
 const IdeasWithoutFiltersSidebar = lazy(
   () => import('./IdeasWithoutFiltersSidebar')
 );
-import { Props as WithSidebarProps } from './IdeasWithFiltersSidebar';
-import { Props as WithoutSidebarProps } from './IdeasWithoutFiltersSidebar';
-
+import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/a11y';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { MessageDescriptor } from 'react-intl';
+import { Props as WithSidebarProps } from './IdeasWithFiltersSidebar';
+import { Props as WithoutSidebarProps } from './IdeasWithoutFiltersSidebar';
 
 const Container = styled.div`
   width: 100%;

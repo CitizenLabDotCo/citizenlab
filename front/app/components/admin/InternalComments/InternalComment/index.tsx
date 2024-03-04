@@ -1,27 +1,29 @@
 // libraries
 import React, { useState, useEffect } from 'react';
 
-import InternalCommentHeader from './InternalCommentHeader';
-import InternalCommentBody from './InternalCommentBody';
-import InternalCommentFooter from './InternalCommentFooter';
 import {
   Icon,
   Box,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
+import styled, { keyframes, css } from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
-// style
-import styled, { keyframes, css } from 'styled-components';
+import { FormattedMessage } from 'utils/cl-intl';
+import { scrollToElement } from 'utils/scroll';
+
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useUserById from 'api/users/useUserById';
 
-import { scrollToElement } from 'utils/scroll';
+import InternalCommentBody from './InternalCommentBody';
+import InternalCommentFooter from './InternalCommentFooter';
 
-import { useLocation } from 'react-router-dom';
+// style
+
+import InternalCommentHeader from './InternalCommentHeader';
 
 const highlightAnimation = keyframes`
   0% {

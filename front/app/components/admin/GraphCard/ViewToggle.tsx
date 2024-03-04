@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Tabs, { ITabItem } from 'components/UI/Tabs';
-
 import styled from 'styled-components';
+
+import Tabs, { ITabItem } from 'components/UI/Tabs';
 
 const TAB_ITEMS: ITabItem[] = [
   { icon: 'chart-bar', name: 'chart', label: '' },

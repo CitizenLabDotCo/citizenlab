@@ -1,13 +1,15 @@
 import React from 'react';
 
 import { Box, IconTooltip, Label } from '@citizenlab/cl2-component-library';
+import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
-import Toggle from 'components/HookForm/Toggle';
+
 import Input from 'components/HookForm/Input';
+import Toggle from 'components/HookForm/Toggle';
 
 import { useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
-import { useFormContext } from 'react-hook-form';
 
 const StyledLabel = styled(Label)`
   height: 100%;

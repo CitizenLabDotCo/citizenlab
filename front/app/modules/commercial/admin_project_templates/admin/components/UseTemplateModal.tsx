@@ -11,11 +11,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { get, isEmpty, transform } from 'lodash-es';
 import moment from 'moment';
-
 import { darken } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
-
 import { Locale, Multiloc, IOption } from 'typings';
 
 import T from 'components/T';

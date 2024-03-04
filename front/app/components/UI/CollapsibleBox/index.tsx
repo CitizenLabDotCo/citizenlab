@@ -9,10 +9,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // animations
-import CSSTransition from 'react-transition-group/CSSTransition';
-
-import styled from 'styled-components';
 import { darken } from 'polished';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import styled from 'styled-components';
 
 const timeout = 300;
 

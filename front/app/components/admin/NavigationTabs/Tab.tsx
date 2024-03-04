@@ -1,10 +1,11 @@
 import React, { MouseEvent } from 'react';
 
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import styled, { css } from 'styled-components';
+
 import Link from 'utils/cl-router/Link';
 
 // style
-import styled, { css } from 'styled-components';
 import {
   tabLineHeight,
   tabPadding,

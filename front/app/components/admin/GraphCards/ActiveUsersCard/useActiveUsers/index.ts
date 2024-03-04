@@ -1,15 +1,17 @@
+import { useMemo, useState } from 'react';
+
 import { useIntl } from 'utils/cl-intl';
+
+import useAnalytics from 'api/analytics/useAnalytics';
+
+import { parseTimeSeries, parseStats, parseExcelData } from './parse';
+import { query } from './query';
 import { getTranslations } from './translations';
 
 // query
-import { query } from './query';
 
 // parse
-import { parseTimeSeries, parseStats, parseExcelData } from './parse';
-
 import { QueryParameters, Response } from './typings';
-import useAnalytics from 'api/analytics/useAnalytics';
-import { useMemo, useState } from 'react';
 
 export default function useActiveUsers({
   projectId,

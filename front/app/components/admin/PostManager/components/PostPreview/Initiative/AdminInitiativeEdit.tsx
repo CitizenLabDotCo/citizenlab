@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
 
-import { isNilOrError } from 'utils/helperUtils';
-
-import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
-import Button from 'components/UI/Button';
 import { Box, LocaleSwitcher, colors } from '@citizenlab/cl2-component-library';
-import { Top } from 'components/admin/PostManager/components/PostPreview';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
+import InitiativesEditFormWrapper from 'containers/InitiativesEditPage/InitiativesEditFormWrapper';
+import { useTheme } from 'styled-components';
 import { Locale } from 'typings';
 
+import { Top } from 'components/admin/PostManager/components/PostPreview';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
-import useLocale from 'hooks/useLocale';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { useTheme } from 'styled-components';
+import useLocale from 'hooks/useLocale';
+
+import messages from '../messages';
 
 export interface Props {
   initiativeId: string;

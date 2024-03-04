@@ -1,15 +1,15 @@
 import React from 'react';
 
-import Settings from './Settings';
-
 import { useEditor, ROOT_NODE } from '@craftjs/core';
+
+import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from 'components/admin/ContentBuilder/constants';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from 'components/admin/ContentBuilder/constants';
 
+import Settings from './Settings';
 import { SelectedNode } from './typings';
 
 const ContentBuilderSettings = () => {

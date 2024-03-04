@@ -1,13 +1,14 @@
 import React, { FormEvent } from 'react';
 
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
 import Button from 'components/UI/Button';
-import { Box, colors } from '@citizenlab/cl2-component-library';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 const ButtonContainer = ({ children }: { children: React.ReactNode }) => (
   <Box

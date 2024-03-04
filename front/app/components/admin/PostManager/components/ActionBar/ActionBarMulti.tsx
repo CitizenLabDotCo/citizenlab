@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 
 // api
-import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 import { Button, Icon } from 'semantic-ui-react';
+
 import WarningModal from 'components/WarningModal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
+
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
 import { ManagerType } from '../..';
+
+import messages from './messages';
 
 interface Props {
   type: ManagerType;

@@ -1,44 +1,43 @@
 import React, { FormEvent, useState } from 'react';
-import { isArray, isNil, omitBy, includes } from 'lodash-es';
-import { saveAs } from 'file-saver';
 
-import Checkbox from 'components/UI/Checkbox';
 import {
   Dropdown,
   Box,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import { useQueryClient } from '@tanstack/react-query';
+import { API_PATH } from 'containers/App/constants';
+import { saveAs } from 'file-saver';
+import { isArray, isNil, omitBy, includes } from 'lodash-es';
+import { rgba } from 'polished';
+import styled from 'styled-components';
+import { CLErrorsWrapper } from 'typings';
+
 import T from 'components/T';
 import Button from 'components/UI/Button';
+import Checkbox from 'components/UI/Checkbox';
 import SearchInput from 'components/UI/SearchInput';
 
-// api
-import { MembershipType } from 'api/groups/types';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+import { requestBlob } from 'utils/requestBlob';
 import { IGroupMemberships } from 'api/group_memberships/types';
+import { MembershipType } from 'api/groups/types';
 import useAddMembership from 'api/group_memberships/useAddMembership';
 import useGroups from 'api/groups/useGroups';
 
-import { requestBlob } from 'utils/requestBlob';
-import { API_PATH } from 'containers/App/constants';
-
 // Events
-import eventEmitter from 'utils/eventEmitter';
+
+import usersKeys from 'api/users/keys';
+
 import events, { MembershipAdd } from './events';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-import styled from 'styled-components';
-import { rgba } from 'polished';
-
-import { CLErrorsWrapper } from 'typings';
-import usersKeys from 'api/users/keys';
-import { useQueryClient } from '@tanstack/react-query';
+import tracks from './tracks';
 
 const StyledBox = styled(Box)`
   user-select: none;

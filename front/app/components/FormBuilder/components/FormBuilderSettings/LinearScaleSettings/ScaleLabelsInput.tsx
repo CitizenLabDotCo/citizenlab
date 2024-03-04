@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 // react hook form
-import { Controller, useFormContext } from 'react-hook-form';
 
 import {
   Box,
@@ -10,13 +9,15 @@ import {
   Input,
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
+import { Controller, useFormContext } from 'react-hook-form';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+import { Locale } from 'typings';
+
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import { Locale } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 
 const StyledLabel = styled(Label)`
   margin-top: auto;

@@ -1,17 +1,17 @@
 import React from 'react';
 
-import FileInput from './FileInput';
-import FileDisplay, { FileType } from './FileDisplay';
-import Error from 'components/UI/Error';
-
+import styled from 'styled-components';
 import { CLErrors, UploadFile } from 'typings';
 
 // style
-import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/a11y';
+import Error from 'components/UI/Error';
 
-import messages from './messages';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
+
+import FileDisplay, { FileType } from './FileDisplay';
+import FileInput from './FileInput';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

@@ -1,24 +1,26 @@
 import React from 'react';
 
-import { useNode } from '@craftjs/core';
-
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 import {
   Box,
   Accordion as AccordionComponent,
   Title,
   Toggle,
 } from '@citizenlab/cl2-component-library';
+import { useNode } from '@craftjs/core';
+import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
+
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
-import { useTheme } from 'styled-components';
+import { useIntl } from 'utils/cl-intl';
+
+import useLocalize from 'hooks/useLocalize';
+
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-import { Multiloc } from 'typings';
-import useLocalize from 'hooks/useLocalize';
 
 interface AccordionProps {
   text: Multiloc;

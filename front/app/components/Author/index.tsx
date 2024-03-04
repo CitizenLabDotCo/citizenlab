@@ -1,26 +1,29 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-import Avatar from 'components/Avatar';
-import UserName from 'components/UI/UserName';
-
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
-import useUserById from 'api/users/useUserById';
-import useLocale from 'hooks/useLocale';
-
-// style
-import styled from 'styled-components';
 import {
   media,
   colors,
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import styled from 'styled-components';
+
+import Avatar from 'components/Avatar';
+import UserName from 'components/UI/UserName';
+
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import useUserById from 'api/users/useUserById';
+
+import useLocale from 'hooks/useLocale';
+
+// style
+
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

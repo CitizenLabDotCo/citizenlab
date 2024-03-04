@@ -6,16 +6,18 @@
 import React, { memo } from 'react';
 
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
+import BoringAvatar from 'boring-avatars';
+import { lighten } from 'polished';
+import styled, { useTheme } from 'styled-components';
+
 import FeatureFlag from 'components/FeatureFlag';
+
 import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
 
 import useUserById from 'api/users/useUserById';
 
 // styles
-import styled, { useTheme } from 'styled-components';
-import { lighten } from 'polished';
-import BoringAvatar from 'boring-avatars';
-import { isNilOrError } from 'utils/helperUtils';
 
 export const Container = styled.div<{ size: number }>`
   flex: 0 0 ${({ size }) => size}px;

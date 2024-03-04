@@ -1,37 +1,7 @@
 // renderers
-import CLCategoryLayout, {
-  clCategoryTester,
-} from 'components/Form/Components/Layouts/CLCategoryLayout';
-import CLPageLayout, {
-  clPageTester,
-} from 'components/Form/Components/Layouts/CLPageLayout';
-import OrderedLayout, {
-  orderedLayoutTester,
-} from 'components/Form/Components/Layouts/OrderedLayout';
-import InputControl, {
-  inputControlTester,
-} from 'components/Form/Components/Controls/InputControl';
-import TextAreaControl, {
-  textAreaControlTester,
-} from 'components/Form/Components/Controls/TextAreaControl';
-import WYSIWYGControl, {
-  WYSIWYGControlTester,
-} from 'components/Form/Components/Controls/WYSIWYGControl';
-import TopicsControl, {
-  topicsControlTester,
-} from 'components/Form/Components/Controls/TopicsControl';
-import ImageControl, {
-  imageControlTester,
-} from 'components/Form/Components/Controls/ImageControl';
 import AttachmentsControl, {
   attachmentsControlTester,
 } from 'components/Form/Components/Controls/AttachmentsControl';
-import DescriptionControl, {
-  descriptionControlTester,
-} from 'components/Form/Components/Controls/DescriptionControl';
-import TitleControl, {
-  titleControlTester,
-} from 'components/Form/Components/Controls/TitleControl';
 import SingleSelectControl, {
   singleSelectControlTester,
 } from 'components/Form/Components/Controls/SingleSelectControl';
@@ -50,30 +20,61 @@ import LocationControl, {
 import DateControl, {
   dateControlTester,
 } from 'components/Form/Components/Controls/DateControl';
+import DescriptionControl, {
+  descriptionControlTester,
+} from 'components/Form/Components/Controls/DescriptionControl';
+import ImageControl, {
+  imageControlTester,
+} from 'components/Form/Components/Controls/ImageControl';
+import InputControl, {
+  inputControlTester,
+} from 'components/Form/Components/Controls/InputControl';
 import MultilocInputLayout, {
   multilocInputTester,
 } from 'components/Form/Components/Controls/MultilocInputLayout';
-import MultiSelectCheckboxControl, {
-  multiSelectCheckboxControlTester,
-} from './MultiSelectCheckboxControl';
+import TextAreaControl, {
+  textAreaControlTester,
+} from 'components/Form/Components/Controls/TextAreaControl';
+import TitleControl, {
+  titleControlTester,
+} from 'components/Form/Components/Controls/TitleControl';
+import TopicsControl, {
+  topicsControlTester,
+} from 'components/Form/Components/Controls/TopicsControl';
+import WYSIWYGControl, {
+  WYSIWYGControlTester,
+} from 'components/Form/Components/Controls/WYSIWYGControl';
+import CLCategoryLayout, {
+  clCategoryTester,
+} from 'components/Form/Components/Layouts/CLCategoryLayout';
+import CLPageLayout, {
+  clPageTester,
+} from 'components/Form/Components/Layouts/CLPageLayout';
+import OrderedLayout, {
+  orderedLayoutTester,
+} from 'components/Form/Components/Layouts/OrderedLayout';
+
 import ImageMultichoiceControl, {
   imageMultichoiceControlTester,
 } from './ImageMultichoiceControl';
-import SingleSelectRadioControl, {
-  singleSelectRadioControlTester,
-} from './SingleSelectRadioControl';
-import SingleSelectRadioEnumControl, {
-  singleSelectRadioEnumControlTester,
-} from './SingleSelectRadioEnumControl';
 import LinearScaleControl, {
   linearScaleControlTester,
 } from './LinearScaleControl';
+import MultiSelectCheckboxControl, {
+  multiSelectCheckboxControlTester,
+} from './MultiSelectCheckboxControl';
 import SingleAttachmentControl, {
   singleAttachmentControlTester,
 } from './SingleAttachmentControl';
 import SingleSelectEnumControl, {
   SingleSelectEnumControlTester,
 } from './SingleSelectEnumControl';
+import SingleSelectRadioControl, {
+  singleSelectRadioControlTester,
+} from './SingleSelectRadioControl';
+import SingleSelectRadioEnumControl, {
+  singleSelectRadioEnumControlTester,
+} from './SingleSelectRadioEnumControl';
 
 export {
   CLCategoryLayout,

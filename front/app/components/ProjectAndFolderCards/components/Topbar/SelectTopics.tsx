@@ -1,19 +1,20 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+
+import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
 import { capitalize } from 'lodash-es';
 
 import FilterSelector from 'components/FilterSelector';
 
-import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
-
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import { isNilOrError } from 'utils/helperUtils';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { coreSettings } from 'api/app_configuration/utils';
+import useTopics from 'api/topics/useTopics';
 
 import useLocalize from 'hooks/useLocalize';
-import useTopics from 'api/topics/useTopics';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-import { coreSettings } from 'api/app_configuration/utils';
+import messages from './messages';
 
 interface SelectTopicsProps {
   className?: string;

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
 import { Button, Box, fontSizes } from '@citizenlab/cl2-component-library';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 // style
 interface Props {

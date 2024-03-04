@@ -1,15 +1,16 @@
 import React from 'react';
 
-// api
+import { Text } from '@citizenlab/cl2-component-library';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-import { Text } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
+import useLocalize from 'hooks/useLocalize';
 
 import messages from '../messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import useLocalize from 'hooks/useLocalize';
 
 import { generateDateRange, getPhaseIndex } from './utils';
 

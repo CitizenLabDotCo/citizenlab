@@ -1,14 +1,15 @@
 import React from 'react';
 
-import CommentCount from './CommentCount';
 import { Box } from '@citizenlab/cl2-component-library';
+
+import clHistory from 'utils/cl-router/history';
 
 import { IIdeaData } from 'api/ideas/types';
 
+import CommentCount from './CommentCount';
+
 // styles
 import ReadMoreButton from './ReadMoreButton';
-
-import clHistory from 'utils/cl-router/history';
 
 interface Props {
   idea: IIdeaData;

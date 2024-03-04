@@ -1,17 +1,18 @@
 import React, { memo } from 'react';
 
-import TipsContent from './TipsContent';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // style
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 import { darken } from 'polished';
+import styled from 'styled-components';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import useLocalize from 'hooks/useLocalize';
+
+import messages from './messages';
+import TipsContent from './TipsContent';
 
 interface Props {
   className?: string;

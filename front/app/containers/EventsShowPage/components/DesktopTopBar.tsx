@@ -1,23 +1,21 @@
 import React from 'react';
 
 import { Box, Button, isRtl } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 // router
-import clHistory from 'utils/cl-router/history';
-
-import styled from 'styled-components';
-
-import { IProjectData } from 'api/projects/types';
-import { useLocation } from 'react-router-dom';
-
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// api
+import clHistory from 'utils/cl-router/history';
 import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
-import useAuthUser from 'api/me/useAuthUser';
+
 import { IEventData } from 'api/events/types';
+import useAuthUser from 'api/me/useAuthUser';
+import { IProjectData } from 'api/projects/types';
+
+import messages from '../messages';
 
 const Bar = styled.div`
   display: flex;

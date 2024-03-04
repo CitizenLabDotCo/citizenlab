@@ -1,8 +1,9 @@
-import { getEmptyRow } from './usePostsByTime/parse';
-import { emptyDateRange } from 'components/admin/GraphCards/_utils/timeSeries';
-
 import { Moment } from 'moment';
+
+import { emptyDateRange } from 'components/admin/GraphCards/_utils/timeSeries';
 import { IResolution } from 'components/admin/ResolutionControl';
+
+import { getEmptyRow } from './usePostsByTime/parse';
 
 export const generateEmptyData = (
   startAtMoment: Moment | null | undefined,

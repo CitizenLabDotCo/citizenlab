@@ -1,22 +1,22 @@
 import React, { useRef } from 'react';
 
-import usePostsByTime from './usePostsByTime';
+import { Box } from '@citizenlab/cl2-component-library';
+import messages from 'containers/Admin/dashboard/messages';
 
 import GraphCard from 'components/admin/GraphCard';
-import { Box } from '@citizenlab/cl2-component-library';
-import Title from '../_components/Title';
-import Chart from './Chart';
-
-import messages from 'containers/Admin/dashboard/messages';
-import { useIntl } from 'utils/cl-intl';
-
-import { isNilOrError } from 'utils/helperUtils';
-
 import {
   ProjectId,
   Dates,
   Resolution,
 } from 'components/admin/GraphCards/typings';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import Title from '../_components/Title';
+
+import Chart from './Chart';
+import usePostsByTime from './usePostsByTime';
 
 type Props = ProjectId & Dates & Resolution;
 

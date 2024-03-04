@@ -1,17 +1,20 @@
 import React from 'react';
-import Button from 'components/UI/Button';
+
 import { fontSizes } from '@citizenlab/cl2-component-library';
+import { API_PATH } from 'containers/App/constants';
+import { saveAs } from 'file-saver';
+import { isString } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+
+import Button from 'components/UI/Button';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { requestBlob } from 'utils/requestBlob';
 
 import messages from '../../messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { isString } from 'lodash-es';
-import { trackEventByName } from 'utils/analytics';
-import { requestBlob } from 'utils/requestBlob';
-import { API_PATH } from 'containers/App/constants';
 import tracks from '../../tracks';
 import { exportType } from '../ExportMenu';
-import { saveAs } from 'file-saver';
-import { WrappedComponentProps } from 'react-intl';
 
 interface Props {
   exportQueryParameter: 'all' | string | string[];

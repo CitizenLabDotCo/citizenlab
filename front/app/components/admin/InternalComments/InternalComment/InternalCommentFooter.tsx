@@ -1,13 +1,14 @@
 import React from 'react';
 
+import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useInternalComment from 'api/internal_comments/useInternalComment';
+
 import InternalCommentReplyButton from './InternalCommentReplyButton';
 import InternalCommentsMoreActions from './InternalCommentsMoreActions';
 
 // style
-import styled from 'styled-components';
-import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
-
-import useInternalComment from 'api/internal_comments/useInternalComment';
 
 const footerHeight = '30px';
 const footerTopMargin = '6px';

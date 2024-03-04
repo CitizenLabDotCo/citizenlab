@@ -1,11 +1,10 @@
 // libraries
 import React, { useRef } from 'react';
+
 import { isEmpty } from 'lodash-es';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from '../../../containers/Admin/dashboard/messages';
-
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+import BarChart from 'components/admin/Graphs/BarChart';
+import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
 import {
   IGraphUnit,
   GraphCardHeader,
@@ -13,8 +12,9 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import BarChart from 'components/admin/Graphs/BarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
+
+import { useIntl } from 'utils/cl-intl';
 
 // resources
 
@@ -22,7 +22,10 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
+
 import useLocalize from 'hooks/useLocalize';
+
+import messages from '../../../containers/Admin/dashboard/messages';
 
 interface Props {
   startAt: string | null | undefined;

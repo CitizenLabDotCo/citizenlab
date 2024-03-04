@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Button from 'components/UI/Button';
 import {
   Icon,
   Text,
@@ -8,19 +7,22 @@ import {
   Title,
   Box,
 } from '@citizenlab/cl2-component-library';
-import Body from 'components/PostShowComponents/Body';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 
 // style
 import styled from 'styled-components';
 
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useLocalize from 'hooks/useLocalize';
+import Body from 'components/PostShowComponents/Body';
+import Button from 'components/UI/Button';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from '../messages';
 
 const Container = styled.div`
   flex: 1;

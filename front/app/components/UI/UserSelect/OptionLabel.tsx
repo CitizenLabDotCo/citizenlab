@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+
 import Button from 'components/UI/Button';
 
-import { optionIsUser } from './utils';
-
 import { Option } from './typings';
+import { optionIsUser } from './utils';
 
 interface OptionLabelProps {
   option: Option;

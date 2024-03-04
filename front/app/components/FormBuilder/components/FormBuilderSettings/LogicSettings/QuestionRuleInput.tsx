@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
 
 import {
   Box,
@@ -9,10 +8,11 @@ import {
   Select,
   Text,
 } from '@citizenlab/cl2-component-library';
+import { Controller, useFormContext } from 'react-hook-form';
+
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isRuleValid } from 'utils/yup/validateLogic';
 
@@ -22,6 +22,8 @@ import {
   LogicType,
   QuestionRuleType,
 } from 'api/custom_fields/types';
+
+import messages from '../../messages';
 
 type QuestionRuleInputProps = {
   fieldId: string;

@@ -1,11 +1,15 @@
 import React, { useContext } from 'react';
+
 import { Layout, LayoutProps, rankWith, optionIs } from '@jsonforms/core';
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
-import useLocale from 'hooks/useLocale';
+
+import { FormContext } from 'components/Form/contexts';
+
 import { isNilOrError } from 'utils/helperUtils';
 
+import useLocale from 'hooks/useLocale';
+
 // Context
-import { FormContext } from 'components/Form/contexts';
 
 const MultilocInputLayout = ({
   schema,

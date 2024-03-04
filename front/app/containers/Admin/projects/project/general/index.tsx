@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Multiloc, UploadFile, CLErrors } from 'typings';
-import { isEmpty, isString } from 'lodash-es';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
 
-import ProjectStatusPicker from './components/ProjectStatusPicker';
-import ProjectNameInput from './components/ProjectNameInput';
-import SlugInput from 'components/admin/SlugInput';
-import TopicInputs from './components/TopicInputs';
-import GeographicAreaInputs from './components/GeographicAreaInputs';
-import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -34,15 +24,15 @@ import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
 import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
+import { isEmpty, isString } from 'lodash-es';
 
-import useProjectById from 'api/projects/useProjectById';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectFiles from 'api/project_files/useProjectFiles';
 import { useParams, useLocation } from 'react-router-dom';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAddProject from 'api/projects/useAddProject';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import { Multiloc, UploadFile, CLErrors } from 'typings';
+import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
+import SlugInput from 'components/admin/SlugInput';
 
 import {
   IUpdatedProjectProperties,
@@ -53,7 +43,6 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import useAddProjectFile from 'api/project_files/useAddProjectFile';
 import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
 
-// api
 import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
@@ -73,6 +62,18 @@ import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import useUpdateProject from 'api/projects/useUpdateProject';
 import projectsKeys from 'api/projects/keys';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAddProject from 'api/projects/useAddProject';
+import useProjectById from 'api/projects/useProjectById';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import GeographicAreaInputs from './components/GeographicAreaInputs';
+import ProjectNameInput from './components/ProjectNameInput';
+import ProjectStatusPicker from './components/ProjectStatusPicker';
+import TopicInputs from './components/TopicInputs';
 
 export type TOnProjectAttributesDiffChangeFunction = (
   projectAttributesDiff: IUpdatedProjectProperties,

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { isEmpty } from 'lodash-es';
 import {
   BarChart,
   Bar,
@@ -8,16 +9,16 @@ import {
   LabelList,
   ResponsiveContainer,
 } from 'recharts';
+
 import { NoDataContainer } from 'components/admin/GraphWrappers';
 
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
-import { parseData } from './utils';
+
+import messages from '../messages';
 
 import { ProgressBarsProps } from './typings';
+import { parseData } from './utils';
 
 const renderCustomizedLabel = (props) => {
   const { x, y, value } = props;

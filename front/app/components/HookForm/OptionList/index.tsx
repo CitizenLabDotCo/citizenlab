@@ -1,10 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { cloneDeep, get } from 'lodash-es';
-
-// react hook form
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import {
   Box,
@@ -14,15 +8,24 @@ import {
   Icon,
   Input,
 } from '@citizenlab/cl2-component-library';
-import { SectionField } from 'components/admin/Section';
+import { cloneDeep, get } from 'lodash-es';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
+// react hook form
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { Locale, CLError, RHFErrors, Multiloc } from 'typings';
+
 import { List, SortableRow } from 'components/admin/ResourceList';
+import { SectionField } from 'components/admin/Section';
+import { generateTempId } from 'components/FormBuilder/utils';
 import Error, { TFieldName } from 'components/UI/Error';
 
-import { Locale, CLError, RHFErrors, Multiloc } from 'typings';
-import { IOptionsType } from 'api/custom_fields/types';
+// Typings
 
 import { isNilOrError } from 'utils/helperUtils';
-import { generateTempId } from 'components/FormBuilder/utils';
+
+import { IOptionsType } from 'api/custom_fields/types';
 
 export type Option = {
   id?: string;

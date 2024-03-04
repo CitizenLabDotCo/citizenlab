@@ -1,23 +1,26 @@
 import React from 'react';
 
 import { Title } from '@citizenlab/cl2-component-library';
-import EventPreviewCard from './EventPreviewCard';
+import moment from 'moment';
+import { useParams } from 'react-router-dom';
+
 import HorizontalScroll from 'components/HorizontalScroll';
 
-// api
+import { useIntl } from 'utils/cl-intl';
+
 import useEvents from 'api/events/useEvents';
+
+// api
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
-import { useIntl } from 'utils/cl-intl';
+import EventPreviewCard from './EventPreviewCard';
 import messages from './messages';
 
 // router
-import { useParams } from 'react-router-dom';
 
 // util
-import moment from 'moment';
 
 type EventPreviewsProps = {
   projectId?: string;

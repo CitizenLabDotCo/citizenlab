@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { useFormContext, useFieldArray } from 'react-hook-form';
-import { get } from 'lodash-es';
 
 import {
   Box,
@@ -9,32 +7,37 @@ import {
   colors,
   Button,
 } from '@citizenlab/cl2-component-library';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
-import FieldTitle from './FieldTitle';
-import Logic from './Logic';
-import IconsAndBadges from './IconsAndBadges';
-import { FlexibleRow } from '../../FlexibleRow';
-
-import styled from 'styled-components';
+import { get } from 'lodash-es';
 import { rgba } from 'polished';
+import { useFormContext, useFieldArray } from 'react-hook-form';
+import styled from 'styled-components';
 
-import { getFieldBackgroundColor } from '../utils';
 import {
   FormBuilderConfig,
   builtInFieldKeys,
   generateTempId,
 } from 'components/FormBuilder/utils';
+import Modal from 'components/UI/Modal';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
-// Translation
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   IOptionsType,
 } from 'api/custom_fields/types';
+
+import { FlexibleRow } from '../../FlexibleRow';
+import { getFieldBackgroundColor } from '../utils';
+
+import FieldTitle from './FieldTitle';
+import IconsAndBadges from './IconsAndBadges';
+import Logic from './Logic';
+
+// Translation
+
+import messages from './messages';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {

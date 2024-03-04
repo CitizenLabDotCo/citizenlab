@@ -1,23 +1,24 @@
 import React, { useEffect, useState, FormEvent } from 'react';
 
+// Components
 import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
+
 import IdeaButton from 'components/IdeaButton';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-
-import { useTheme } from 'styled-components';
-import useAuthUser from 'api/me/useAuthUser';
-
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
-import { IPhaseData } from 'api/phases/types';
-import { getIdeaPostingRules } from 'utils/actionTakingRules';
-
-import { scrollToElement } from 'utils/scroll';
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
 
+import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { FormattedMessage } from 'utils/cl-intl';
+import { scrollToElement } from 'utils/scroll';
+
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhaseData } from 'api/phases/types';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+
 import messages from '../messages';
 
 const IdeationCTABar = ({ phases, project }: CTABarProps) => {

@@ -1,17 +1,18 @@
 import React, { useRef } from 'react';
 
-import useVisitors from './useVisitors';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import GraphCard from 'components/admin/GraphCard';
-import { Box } from '@citizenlab/cl2-component-library';
-import VisitorStats from './VisitorStats';
-import Chart from './Chart';
 
-import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { ProjectId, Dates, Resolution } from '../typings';
-import { isNilOrError } from 'utils/helperUtils';
+
+import Chart from './Chart';
+import messages from './messages';
+import useVisitors from './useVisitors';
+import VisitorStats from './VisitorStats';
 
 type Props = ProjectId & Dates & Resolution;
 

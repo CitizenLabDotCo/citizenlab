@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
-import SideModal from 'components/UI/SideModal';
-import IdeaPostPreview from './Idea/IdeaPostPreview';
-import InitiativePostPreview from './Initiative/InitiativePostPreview';
-
-import styled from 'styled-components';
 import { colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import SideModal from 'components/UI/SideModal';
 
 import { ManagerType, PreviewMode } from '../..';
+
+import IdeaPostPreview from './Idea/IdeaPostPreview';
+import InitiativePostPreview from './Initiative/InitiativePostPreview';
 
 export const Container = styled.div`
   min-height: 100%;

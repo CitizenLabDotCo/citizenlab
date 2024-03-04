@@ -1,10 +1,5 @@
 import React, { Fragment } from 'react';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-import styled from 'styled-components';
-import { transparentize } from 'polished';
-
 import {
   Radio,
   Title,
@@ -12,14 +7,17 @@ import {
   fontSizes,
   media,
 } from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
+import styled from 'styled-components';
 
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { getDestinationConfig, IDestination, TCategory } from '../destinations';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import { getDestinationConfig, IDestination, TCategory } from '../destinations';
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;

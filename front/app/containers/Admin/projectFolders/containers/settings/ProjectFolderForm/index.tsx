@@ -1,6 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-// api
+import { IconTooltip, Radio, Box } from '@citizenlab/cl2-component-library';
+import { isEmpty, isEqual } from 'lodash-es';
+import { CLErrors, Multiloc, UploadFile } from 'typings';
+
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
+import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
+
+import SlugInput from 'components/admin/SlugInput';
+import { FormattedMessage } from 'utils/cl-intl';
+import useAdminPublication from 'api/admin_publications/useAdminPublication';
+import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
+import useDeleteProjectFolderFile from 'api/project_folder_files/useDeleteProjectFolderFile';
 import {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
@@ -8,33 +19,26 @@ import {
 import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useDeleteProjectFolderFile from 'api/project_folder_files/useDeleteProjectFolderFile';
-import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
 import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
-import useAdminPublication from 'api/admin_publications/useAdminPublication';
 import useDeleteProjectFolderImage from 'api/project_folder_images/useDeleteProjectFolderImage';
 import useAddProjectFolderImage from 'api/project_folder_images/useAddProjectFolderImage';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // typing
-import { CLErrors, Multiloc, UploadFile } from 'typings';
 
 import { validateSlug } from 'utils/textUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { isEmpty, isEqual } from 'lodash-es';
+
 import clHistory from 'utils/cl-router/history';
 
-import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
-import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
 import FolderCardImageTooltip from './FolderCardImageTooltip';
 import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';
-import SlugInput from 'components/admin/SlugInput';
+import ProjectFolderCardImageDropzone from './ProjectFolderCardImageDropzone';
+
 import FileUploader from 'components/UI/FileUploader';
 import {
   SectionField,
@@ -45,7 +49,6 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { IconTooltip, Radio, Box } from '@citizenlab/cl2-component-library';
 
 type IProjectFolderSubmitState =
   | 'disabled'

@@ -1,12 +1,13 @@
 import React, { memo, ReactElement } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
+
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
-import { Box } from '@citizenlab/cl2-component-library';
 import messages from '../messages';
 
 interface Props {

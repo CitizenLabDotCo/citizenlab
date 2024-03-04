@@ -7,7 +7,6 @@ import { isEmpty } from 'lodash-es';
 
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
-
 import { Multiloc, MultilocFormValues } from 'typings';
 
 import T from 'components/T';

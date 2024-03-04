@@ -1,11 +1,5 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { Mode } from './StatusChangeFormWrapper';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-
-import OfficialFeedbackPost from 'components/PostShowComponents/OfficialFeedback/OfficialFeedbackPost';
 import {
   Radio,
   Input,
@@ -13,18 +7,27 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { Section } from 'components/admin/Section';
-import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Error from 'components/UI/Error';
-import Button from 'components/UI/Button';
-
 import styled from 'styled-components';
-
 import { Multiloc, Locale, MultilocFormValues } from 'typings';
+
+import { Section } from 'components/admin/Section';
+import OfficialFeedbackPost from 'components/PostShowComponents/OfficialFeedback/OfficialFeedbackPost';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
+
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
+
+import messages from '../../messages';
+
+import { Mode } from './StatusChangeFormWrapper';
 
 const StyledSection = styled(Section)``;
 

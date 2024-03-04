@@ -1,13 +1,13 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// api
-import useEventFiles from 'api/event_files/useEventFiles';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
-import { Box } from '@citizenlab/cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
 
+import { isNilOrError } from 'utils/helperUtils';
+
+import useEventFiles from 'api/event_files/useEventFiles';
 import { IEventData } from 'api/events/types';
 
 interface Props {

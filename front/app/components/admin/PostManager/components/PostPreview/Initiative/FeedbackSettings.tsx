@@ -7,8 +7,6 @@ import { memoize } from 'lodash-es';
 import styled from 'styled-components';
 import { IOption } from 'typings';
 
-// analytics
-
 // events
 import events, {
   StatusChangeModalOpen,

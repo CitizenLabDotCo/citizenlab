@@ -1,6 +1,17 @@
 import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 
-// api
+import { Box } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
+import { Multiloc } from 'typings';
+
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
+import Form from 'components/Form';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
+import PageContainer from 'components/UI/PageContainer';
+
+import Warning from 'components/UI/Warning';
+import { useIntl } from 'utils/cl-intl';
 import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
@@ -8,35 +19,34 @@ import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
-import { useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
 
-import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
-
-import Form from 'components/Form';
 import IdeasNewMeta from '../IdeasNewMeta';
-import PageContainer from 'components/UI/PageContainer';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
+import messages from '../messages';
+
 import { Heading } from './Heading';
-import { Box } from '@citizenlab/cl2-component-library';
+
 const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
-import Warning from 'components/UI/Warning';
-import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 
 import { geocode, reverseGeocode } from 'utils/locationTools';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+
 import { getLocationGeojson } from '../utils';
+
 import { isNilOrError } from 'utils/helperUtils';
+
 import { getCurrentPhase } from 'api/phases/utils';
+
 import { parse } from 'qs';
+
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
-import { Multiloc } from 'typings';
 import { IPhases, IPhaseData } from 'api/phases/types';
+
 import useLocale from 'hooks/useLocale';
+
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+
 import { IProject } from 'api/projects/types';
 
 const getConfig = (

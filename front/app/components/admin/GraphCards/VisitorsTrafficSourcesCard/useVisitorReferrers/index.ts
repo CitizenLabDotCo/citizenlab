@@ -1,18 +1,20 @@
 import { useIntl } from 'utils/cl-intl';
+
+import useAnalytics from 'api/analytics/useAnalytics';
+
+import { getPageNumberFromUrl } from '../../_utils/pagination';
+
+import { parseTableData } from './parse';
+import { referrersListQuery, referrersTotalQuery } from './query';
 import { getTranslations } from './translations';
 
 // parse
-import { parseTableData } from './parse';
-
-import { referrersListQuery, referrersTotalQuery } from './query';
-import { getPageNumberFromUrl } from '../../_utils/pagination';
 
 import {
   QueryParameters,
   ReferrerListResponse,
   ReferrerTotalsResponse,
 } from './typings';
-import useAnalytics from 'api/analytics/useAnalytics';
 
 export default function useVisitorReferrers({
   projectId,

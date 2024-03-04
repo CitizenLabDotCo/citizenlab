@@ -1,33 +1,42 @@
+// Libraries
 import React, { FormEvent, useEffect, useState, useRef } from 'react';
+
+import { Button } from '@citizenlab/cl2-component-library';
+import { filter } from 'rxjs/operators';
+import styled, { useTheme } from 'styled-components';
+import { CLErrors } from 'typings';
+
+import Outlet from 'components/Outlet';
+import {
+  getCommentContent,
+  getEditableCommentContent,
+} from 'components/PostShowComponents/Comments/utils';
+import Error from 'components/UI/Error';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services
 import useUpdateComment from 'api/comments/useUpdateComment';
 import { IUpdatedComment } from 'api/comments/types';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Error from 'components/UI/Error';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
+// Components
 
-import styled, { useTheme } from 'styled-components';
+// Styling
 
-import { CLErrors } from 'typings';
+// Typings
 
-import Outlet from 'components/Outlet';
 import useComment from 'api/comments/useComment';
-import useLocale from 'hooks/useLocale';
-import { filter } from 'rxjs/operators';
-import { Button } from '@citizenlab/cl2-component-library';
-import { commentTranslateButtonClicked$ } from '../events';
-import useLocalize from 'hooks/useLocalize';
 
-import {
-  getCommentContent,
-  getEditableCommentContent,
-} from 'components/PostShowComponents/Comments/utils';
+import useLocale from 'hooks/useLocale';
+
+import { commentTranslateButtonClicked$ } from '../events';
+
+import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div``;
 

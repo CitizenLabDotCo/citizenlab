@@ -1,15 +1,13 @@
 // libraries
 import React, { useRef } from 'react';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from 'containers/Admin/dashboard/messages';
-
 import renderTooltip from 'containers/Admin/dashboard/users/Charts/renderPieChartByCategoryTooltip';
-import { roundPercentages } from 'utils/math';
+import { IGraphFormat } from 'typings';
 
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import PieChart from 'components/admin/Graphs/PieChart';
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
-
-import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   IGraphUnit,
   NoDataContainer,
@@ -19,12 +17,13 @@ import {
   GraphCardInner,
   PieChartStyleFixesDiv,
 } from 'components/admin/GraphWrappers';
-import PieChart from 'components/admin/Graphs/PieChart';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // resources
 
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-import { IGraphFormat } from 'typings';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { roundPercentages } from 'utils/math';
+
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
 

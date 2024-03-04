@@ -8,25 +8,29 @@ import {
   defaultCardHoverStyle,
   media,
 } from '@citizenlab/cl2-component-library';
-import CardImage from './CardImage';
-import Body from './Body';
-import Footer from './Footer';
-import Interactions from './Interactions';
-import FollowUnfollow from 'components/FollowUnfollow';
-
-// router
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import clHistory from 'utils/cl-router/history';
 import { useSearchParams } from 'react-router-dom';
-import Link from 'utils/cl-router/Link';
-
-import { IIdea } from 'api/ideas/types';
-
 import styled from 'styled-components';
 
+import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
+import FollowUnfollow from 'components/FollowUnfollow';
+
+import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import { IIdea } from 'api/ideas/types';
+import Body from './Body';
+import CardImage from './CardImage';
+import Footer from './Footer';
+import Interactions from './Interactions';
+
+// router
+
 import useIdeaById from 'api/ideas/useIdeaById';
+
 import useLocalize from 'hooks/useLocalize';
+
 import usePhase from 'api/phases/usePhase';
 import useIdeaImage from 'api/idea_images/useIdeaImage';
 
@@ -35,7 +39,6 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 
 export interface Props {
   ideaId: string;

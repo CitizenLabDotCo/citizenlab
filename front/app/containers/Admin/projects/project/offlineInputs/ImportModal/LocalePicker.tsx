@@ -1,12 +1,13 @@
 import React from 'react';
 
-// api
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
 import { Box } from '@citizenlab/cl2-component-library';
+
 import Select from 'components/HookForm/Select';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import messages from './messages';
 
 const LocalePicker = () => {

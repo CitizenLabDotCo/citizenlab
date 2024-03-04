@@ -1,13 +1,14 @@
-import {
-  ICustomFieldInputType,
-  IFlatCustomField,
-} from 'api/custom_fields/types';
-
 import { colors } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 
 import { builtInFieldKeys } from 'components/FormBuilder/utils';
+
 import { MessageDescriptor } from 'utils/cl-intl';
+
+import {
+  ICustomFieldInputType,
+  IFlatCustomField,
+} from 'api/custom_fields/types';
 
 import messages from '../messages';
 

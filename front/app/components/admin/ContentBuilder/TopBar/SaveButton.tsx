@@ -1,11 +1,12 @@
 import React from 'react';
 
-import Button, { Props as ButtonProps } from 'components/UI/Button';
-
 import { colors } from '@citizenlab/cl2-component-library';
 
-import messages from './messages';
+import Button, { Props as ButtonProps } from 'components/UI/Button';
+
 import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface Props {
   disabled: boolean;

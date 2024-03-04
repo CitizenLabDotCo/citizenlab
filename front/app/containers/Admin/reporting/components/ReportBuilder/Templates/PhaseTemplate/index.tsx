@@ -1,30 +1,30 @@
 import React from 'react';
 
-// api
-import usePhase from 'api/phases/usePhase';
+import { Box } from '@citizenlab/cl2-component-library';
+import { Element } from '@craftjs/core';
+import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
+import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
+
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+
+import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
+import { withoutSpacing } from 'utils/textUtils';
+
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
+import usePhase from 'api/phases/usePhase';
+
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-import { Element } from '@craftjs/core';
-
 // shared widgets
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // report builder widgets
-import TextMultiloc from '../../Widgets/TextMultiloc';
-import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
+import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
+import { SUPPORTED_INPUT_TYPES } from '../../Widgets/SurveyQuestionResultWidget/constants';
+import TextMultiloc from '../../Widgets/TextMultiloc';
 
 import messages from './messages';
-import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
-import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
-
-import { Box } from '@citizenlab/cl2-component-library';
-
-import { SUPPORTED_INPUT_TYPES } from '../../Widgets/SurveyQuestionResultWidget/constants';
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
-import { withoutSpacing } from 'utils/textUtils';
 
 interface Props {
   phaseId: string;

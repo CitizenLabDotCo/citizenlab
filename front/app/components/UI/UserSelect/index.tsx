@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 
 // api
-import useUserById from 'api/users/useUserById';
+import { IUserData } from 'api/users/types';
 import useInfiniteUsers from 'api/users/useInfiniteUsers';
+import useUserById from 'api/users/useUserById';
 
 import BaseUserSelect from './BaseUserSelect';
 import OptionLabel from './OptionLabel';
-
-import { IUserData } from 'api/users/types';
 import { Option } from './typings';
 import { optionIsUser } from './utils';
 

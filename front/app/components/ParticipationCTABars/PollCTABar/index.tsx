@@ -1,20 +1,21 @@
 import React, { useEffect, useState, FormEvent } from 'react';
 
+// Components
 import { Button } from '@citizenlab/cl2-component-library';
-import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-
 import { useTheme } from 'styled-components';
 
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
-import { IPhaseData } from 'api/phases/types';
+import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { scrollToElement } from 'utils/scroll';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { IPhaseData } from 'api/phases/types';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+
 import messages from '../messages';
 
 const PollCTABar = ({ phases, project }: CTABarProps) => {

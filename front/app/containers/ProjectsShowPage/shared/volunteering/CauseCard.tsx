@@ -1,14 +1,5 @@
 import React, { useCallback } from 'react';
 
-// api
-import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
-
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-import Image from 'components/UI/Image';
 import {
   Icon,
   useWindowSize,
@@ -19,23 +10,29 @@ import {
   defaultCardStyle,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import styled, { useTheme } from 'styled-components';
+
+import T from 'components/T';
 import Button from 'components/UI/Button';
+import Image from 'components/UI/Image';
+
+// events
+
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { isEmptyMultiloc } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import T from 'components/T';
-import messages from './messages';
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
 
-import styled, { useTheme } from 'styled-components';
-
+import { ICauseData } from 'api/causes/types';
 import useAddVolunteer from 'api/causes/useAddVolunteer';
 import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
 
-import { ICauseData } from 'api/causes/types';
-import Tippy from '@tippyjs/react';
+import messages from './messages';
 
 const Container = styled.div`
   padding: 20px;

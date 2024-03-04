@@ -1,16 +1,6 @@
 // libraries
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
-import ParentCommentForm from './ParentCommentForm';
-import Comments from './Comments';
-import CommentSorting from './CommentSorting';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
-
-// style
-import styled from 'styled-components';
 import {
   colors,
   fontSizes,
@@ -19,23 +9,35 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { useInView } from 'react-intersection-observer';
+import { useLocation } from 'react-router-dom';
 
-import { CommentsSort } from 'api/comments/types';
-import CommentingProposalDisabled from './CommentingProposalDisabled';
+// style
+import styled from 'styled-components';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../tracks';
+import { FormattedMessage } from 'utils/cl-intl';
 
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useComments from 'api/comments/useComments';
+
 import CommentingIdeaDisabled from './CommentingIdeaDisabled';
 
 import { isPage } from 'utils/helperUtils';
+import { CommentsSort } from 'api/comments/types';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import { useInView } from 'react-intersection-observer';
+
+import messages from '../../messages';
+import tracks from '../../tracks';
+
+import CommentingProposalDisabled from './CommentingProposalDisabled';
+import Comments from './Comments';
+import CommentSorting from './CommentSorting';
+import ParentCommentForm from './ParentCommentForm';
 
 const Header = styled(Box)`
   ${isRtl`

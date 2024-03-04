@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { FocusOn } from 'react-focus-on';
 
 import { Box } from '@citizenlab/cl2-component-library';
-
 import { SerializedNodes } from '@craftjs/core';
-import { Locale } from 'typings';
+import { createPortal } from 'react-dom';
+import { FocusOn } from 'react-focus-on';
 import styled from 'styled-components';
+import { Locale } from 'typings';
+
 import { DEFAULT_PADDING } from '../constants';
 
 interface Props {

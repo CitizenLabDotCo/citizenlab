@@ -1,13 +1,15 @@
 import React from 'react';
-import { Select } from 'semantic-ui-react';
+
 import { memoize } from 'lodash-es';
+import { Select } from 'semantic-ui-react';
 
 import { useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
 
-import useUsers from 'api/users/useUsers';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUser, IUsers } from 'api/users/types';
+import useUsers from 'api/users/useUsers';
+
+import messages from '../../messages';
 
 interface Props {
   projectId?: string;

@@ -16,8 +16,6 @@ import UseTemplateModal from '../components/UseTemplateModal';
 
 import messages from './messages';
 
-// analytics
-
 const Container = styled.div`
   width: 100%;
   max-width: 1050px;

@@ -11,7 +11,6 @@ import SingleFileInput from 'components/UI/SingleFileUploader/FileInput';
 
 // style
 import { ScreenReaderOnly } from 'utils/a11y';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
 export interface Props {

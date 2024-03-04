@@ -1,5 +1,4 @@
 import React from 'react';
-import { rgba } from 'polished';
 
 import {
   Box,
@@ -8,19 +7,21 @@ import {
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
 
 // Hooks
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNil } from 'utils/helperUtils';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
 
 // Types
+import messages from './messages';
+
 import { SeatInfoProps, SeatNumbersType, SeatTypeMessageDescriptor } from '.';
 
 // Intl
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-import { isNil } from 'utils/helperUtils';
 
 const TrackerInfo = ({ seatType }: SeatInfoProps) => {
   const { formatMessage } = useIntl();

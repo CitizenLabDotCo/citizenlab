@@ -1,13 +1,14 @@
 import React from 'react';
 
 // styles
-import styled, { useTheme } from 'styled-components';
 import { fontSizes } from '@citizenlab/cl2-component-library';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useLocalize from 'hooks/useLocalize';
+import styled, { useTheme } from 'styled-components';
 
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};

@@ -1,8 +1,9 @@
 import React, { memo, useState } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
-import MobileButton from './ViewButtons/MobileButton';
+
 import DesktopButton from './ViewButtons/DesktopButton';
+import MobileButton from './ViewButtons/MobileButton';
 
 type Props = {
   iframeSrc: string;

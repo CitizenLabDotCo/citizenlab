@@ -1,6 +1,5 @@
 import React from 'react';
 
-import styled from 'styled-components';
 import {
   media,
   fontSizes,
@@ -8,13 +7,15 @@ import {
   isRtl,
 } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
+import styled from 'styled-components';
 
 import ContentContainer from 'components/ContentContainer';
-import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+
 import messages from './messages';
 
 const Container = styled.div`

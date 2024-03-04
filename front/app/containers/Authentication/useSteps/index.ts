@@ -2,8 +2,6 @@ import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
 import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
 import { parse } from 'qs';
-
-// api
 import { useLocation } from 'react-router-dom';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';

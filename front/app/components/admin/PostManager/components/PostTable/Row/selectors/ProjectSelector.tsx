@@ -1,7 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import { Label } from 'semantic-ui-react';
+import styled from 'styled-components';
+
 import T from 'components/T';
+
 import useProjectById from 'api/projects/useProjectById';
 
 const LabelText = styled.span`

@@ -1,18 +1,16 @@
 import React from 'react';
 
-import Icon from './Icon';
-
 import { colors } from '../../styling';
+import { Margin } from '../../typings';
 
-import { itemsMatch, getLegendTranslate } from './utils';
-
+import Icon from './Icon';
 import {
   LegendItem,
   GraphDimensions,
   LegendDimensions,
   Position,
 } from './typings';
-import { Margin } from '../../typings';
+import { itemsMatch, getLegendTranslate } from './utils';
 
 interface Props {
   items: LegendItem[];

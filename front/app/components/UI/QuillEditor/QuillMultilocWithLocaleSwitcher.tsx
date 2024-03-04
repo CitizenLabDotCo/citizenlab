@@ -1,22 +1,23 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-import QuillEditor, {
-  Props as QuillEditorProps,
-} from 'components/UI/QuillEditor';
 import {
   IconTooltip,
   LocaleSwitcher,
   Label,
 } from '@citizenlab/cl2-component-library';
 
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
 // style
 import styled from 'styled-components';
-
 import { Locale, Multiloc } from 'typings';
+
+import QuillEditor, {
+  Props as QuillEditorProps,
+} from 'components/UI/QuillEditor';
+
+import { isNilOrError } from 'utils/helperUtils';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
 
 const Container = styled.div``;
 

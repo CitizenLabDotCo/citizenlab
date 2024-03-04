@@ -1,35 +1,35 @@
 import React, { useState, useRef } from 'react';
-import { isString, trim } from 'lodash-es';
 
-import Button from 'components/UI/Button';
-import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Avatar from 'components/Avatar';
-import clickOutside from 'utils/containers/clickOutside';
 import {
   useBreakpoint,
   colors,
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
+import { isString, trim } from 'lodash-es';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 // events
-import { commentAdded } from './events';
 
 // style
-import styled from 'styled-components';
 import { hideVisually } from 'polished';
+import styled from 'styled-components';
+import Avatar from 'components/Avatar';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
+import Button from 'components/UI/Button';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clickOutside from 'utils/containers/clickOutside';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
 import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
 import useAuthUser from 'api/me/useAuthUser';
 
+import { commentAdded } from './events';
+import tracks from './tracks';
 import { getMentionRoles } from './utils';
 
 const Container = styled.div`

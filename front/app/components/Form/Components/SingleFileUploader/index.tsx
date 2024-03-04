@@ -1,18 +1,19 @@
 import React from 'react';
 
-import SingleFileInput from 'components/UI/SingleFileUploader/FileInput';
-import FileDisplay from 'components/UI/SingleFileUploader/FileDisplay';
-import Error from 'components/UI/Error';
-
+import { Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { CLErrors, UploadFile } from 'typings';
 
+import Error from 'components/UI/Error';
+import FileDisplay from 'components/UI/SingleFileUploader/FileDisplay';
+import SingleFileInput from 'components/UI/SingleFileUploader/FileInput';
+
 // style
-import styled from 'styled-components';
+
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../UI/FileUploader/messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { Box } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   width: 100%;

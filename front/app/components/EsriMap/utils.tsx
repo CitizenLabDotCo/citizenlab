@@ -1,23 +1,23 @@
-import { colors } from '@citizenlab/cl2-component-library';
-
 // ArcGIS
+import Point from '@arcgis/core/geometry/Point';
+import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
+import Layer from '@arcgis/core/layers/Layer';
+import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
 import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
 import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
-import Layer from '@arcgis/core/layers/Layer';
-import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
-import Popup from '@arcgis/core/widgets/Popup';
-import Point from '@arcgis/core/geometry/Point';
-import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
-import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
-import MapView from '@arcgis/core/views/MapView';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
+import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
+import MapView from '@arcgis/core/views/MapView';
+import Popup from '@arcgis/core/widgets/Popup';
+import { colors } from '@citizenlab/cl2-component-library';
 
 import { hexToRGBA } from 'utils/helperUtils';
 
-import { Localize } from 'hooks/useLocalize';
 import { IMapLayerAttributes } from 'api/map_layers/types';
+
+import { Localize } from 'hooks/useLocalize';
 
 import {
   BASEMAP_AT_ATTRIBUTION,

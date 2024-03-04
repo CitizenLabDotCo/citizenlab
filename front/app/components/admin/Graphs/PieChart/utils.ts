@@ -1,6 +1,6 @@
-import { Mapping, Pie, PieConfig } from './typings';
-
 import { categoricalColorScheme } from '../styling';
+
+import { Mapping, Pie, PieConfig } from './typings';
 
 const DEFAULT_START_ANGLE = 90;
 const DEFAULT_END_ANGLE = -270;

@@ -1,6 +1,7 @@
+import { pastPresentOrFuture } from 'utils/dateUtils';
+
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 
 export type CTABarProps = {
   project: IProjectData;

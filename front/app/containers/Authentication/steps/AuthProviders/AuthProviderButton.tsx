@@ -8,7 +8,6 @@ import Consent from './Consent';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// analytics
 import { trackEventByName } from 'utils/analytics';
 
 import styled, { useTheme } from 'styled-components';

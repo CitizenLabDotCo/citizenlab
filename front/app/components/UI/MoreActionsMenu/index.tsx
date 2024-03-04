@@ -1,6 +1,7 @@
+// Libraries
 import React, { useState } from 'react';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
+// Components
 import {
   Box,
   Icon,
@@ -12,10 +13,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
+// Styling
 import styled from 'styled-components';
-import messages from './messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const Container = styled.div`
   position: relative;

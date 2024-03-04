@@ -1,17 +1,20 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-import CommentReplyButton from './CommentReplyButton';
-import CommentsMoreActions from './CommentsMoreActions';
-import CommentReaction from './CommentReaction';
-
-// style
-import styled from 'styled-components';
 import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import Outlet from 'components/Outlet';
 
-import useIdeaById from 'api/ideas/useIdeaById';
+import { isNilOrError } from 'utils/helperUtils';
+
 import useComment from 'api/comments/useComment';
+import useIdeaById from 'api/ideas/useIdeaById';
+
+import CommentReaction from './CommentReaction';
+import CommentReplyButton from './CommentReplyButton';
+import CommentsMoreActions from './CommentsMoreActions';
+
+// style
 
 const footerHeight = '30px';
 const footerTopMargin = '6px';

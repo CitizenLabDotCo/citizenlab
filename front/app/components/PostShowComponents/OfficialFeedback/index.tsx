@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
-import OfficialFeedbackForm from './OfficialFeedbackForm';
 import OfficialFeedbackFeed from './OfficialFeedbackFeed';
+import OfficialFeedbackForm from './OfficialFeedbackForm';
 
 s;
 import styled from 'styled-components';

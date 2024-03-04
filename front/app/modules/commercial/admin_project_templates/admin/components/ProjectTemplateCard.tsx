@@ -10,7 +10,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 
-// analytics
 import tracks from '../../tracks';
 
 import messages from './messages';

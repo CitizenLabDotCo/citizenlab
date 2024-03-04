@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { useNode, useEditor } from '@craftjs/core';
-
 import {
   Radio,
   Box,
@@ -9,21 +7,25 @@ import {
   Label,
   colors,
 } from '@citizenlab/cl2-component-library';
-import ButtonComponent from 'components/UI/Button';
+import { useNode, useEditor } from '@craftjs/core';
 
 // styles
 
 import { darken } from 'polished';
-
 import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
+
+import ButtonComponent from 'components/UI/Button';
+import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
+
+import { injectIntl } from 'utils/cl-intl';
+
+import useLocalize from 'hooks/useLocalize';
+
+import sharedMessages from '../../messages';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 import messages from './messages';
-import sharedMessages from '../../messages';
-import { injectIntl } from 'utils/cl-intl';
-import { Multiloc } from 'typings';
-import useLocalize from 'hooks/useLocalize';
-import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 type ButtonProps = {
   text: Multiloc;

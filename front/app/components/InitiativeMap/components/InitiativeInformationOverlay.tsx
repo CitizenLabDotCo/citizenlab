@@ -1,9 +1,11 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import InitiativePreview from './InitiativePreview';
-import CloseIconButton from 'components/UI/CloseIconButton';
 import styled from 'styled-components';
+
+import CloseIconButton from 'components/UI/CloseIconButton';
+
+import InitiativePreview from './InitiativePreview';
 
 type Props = {
   selectedInitiative?: string | null;

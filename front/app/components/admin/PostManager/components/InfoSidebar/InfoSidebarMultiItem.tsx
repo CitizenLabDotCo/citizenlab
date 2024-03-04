@@ -1,7 +1,11 @@
 import React from 'react';
-import T from 'components/T';
+
 import { List } from 'semantic-ui-react';
+
+import T from 'components/T';
+
 import useIdeaById from 'api/ideas/useIdeaById';
+
 import { handlePreviewCLick, StyledLink } from './';
 
 interface Props {

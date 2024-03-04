@@ -6,10 +6,12 @@ const TipsContent = React.lazy(() => import('./TipsContent'));
 import { colors } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import useLocalize from 'hooks/useLocalize';
+
+import messages from './messages';
 
 interface Props {
   className?: string;

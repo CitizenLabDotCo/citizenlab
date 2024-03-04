@@ -3,10 +3,12 @@ import React from 'react';
 import FilterSelector from 'components/FilterSelector';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
-import { IPhaseData } from 'api/phases/types';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
+
+import { IPhaseData } from 'api/phases/types';
+
+import messages from '../../messages';
 
 export type Sort = 'trending' | 'random' | 'popular' | 'new' | '-new';
 

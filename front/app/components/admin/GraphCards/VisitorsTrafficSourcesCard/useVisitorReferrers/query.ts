@@ -1,8 +1,9 @@
+import { Query, QuerySchema } from 'api/analytics/types';
+
 import { getProjectFilter, getDateFilter } from '../../_utils/query';
 
 // import { QueryParameters, QueryParametersWithoutPagination } from './typings';
 import { ProjectId, Dates, Pagination } from '../../typings';
-import { Query, QuerySchema } from 'api/analytics/types';
 
 export const referrersListQuery = ({
   projectId,

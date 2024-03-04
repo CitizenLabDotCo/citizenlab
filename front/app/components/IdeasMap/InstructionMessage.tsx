@@ -1,13 +1,15 @@
 import React from 'react';
 
 import { Box, useBreakpoint, Text } from '@citizenlab/cl2-component-library';
+
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
+
 import useAuthUser from 'api/me/useAuthUser';
 
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
+import messages from './messages';
 
 type Props = {
   projectId: string;

@@ -1,19 +1,4 @@
 import React, { useState } from 'react';
-import Tippy from '@tippyjs/react';
-
-// routing
-import { useParams } from 'react-router-dom';
-
-// api
-import useInputSchema from 'hooks/useInputSchema';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useUserById from 'api/users/useUserById';
-import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
-import usePhase from 'api/phases/usePhase';
-import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
-import useUpdateUser from 'api/users/useUpdateUser';
-import useCreateOfflineUser from 'api/import_ideas/useCreateOfflineUser';
 
 import {
   Box,
@@ -21,18 +6,39 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import MetaBox from './MetaBox';
-import IdeaForm from './IdeaForm';
-import UserForm from './UserForm';
+import Tippy from '@tippyjs/react';
+
+// routing
+import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
+import { useParams } from 'react-router-dom';
+import { CLErrors } from 'typings';
+
+import { customAjv } from 'components/Form';
+import { FormData } from 'components/Form/typings';
+import { isValidData } from 'components/Form/utils';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { geocode } from 'utils/locationTools';
+
+import useIdeaById from 'api/ideas/useIdeaById';
+
+import useUserById from 'api/users/useUserById';
+import useInputSchema from 'hooks/useInputSchema';
+import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
+import usePhase from 'api/phases/usePhase';
+import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useUpdateUser from 'api/users/useUpdateUser';
+import useCreateOfflineUser from 'api/import_ideas/useCreateOfflineUser';
+
 import useLocalize from 'hooks/useLocalize';
+import IdeaForm from './IdeaForm';
+import MetaBox from './MetaBox';
+import { UserFormData } from './typings';
+import UserForm from './UserForm';
+
 import messages from '../messages';
 
-import { isValidData } from 'components/Form/utils';
-import { customAjv } from 'components/Form';
-import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
-import { geocode } from 'utils/locationTools';
 import {
   getNextIdeaId,
   getUserFormValues,
@@ -41,9 +47,6 @@ import {
   getUserChanges,
 } from './utils';
 
-import { FormData } from 'components/Form/typings';
-import { CLErrors } from 'typings';
-import { UserFormData } from './typings';
 import { IUser } from 'api/users/types';
 
 interface Props {

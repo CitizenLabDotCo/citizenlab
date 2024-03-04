@@ -1,20 +1,19 @@
 import React, { useMemo } from 'react';
 
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import LineChart from 'components/admin/Graphs/LineChart';
 import { colors } from 'components/admin/Graphs/styling';
 
-import LineChart from 'components/admin/Graphs/LineChart';
-import renderTooltip from './renderTooltip';
-
-import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
-
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
-import { generateEmptyData } from './generateEmptyData';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import { Dates, Resolution } from '../../typings';
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import messages from '../messages';
 import { TimeSeries } from '../useVisitors/typings';
+
+import { generateEmptyData } from './generateEmptyData';
+import renderTooltip from './renderTooltip';
 
 type Props = Dates &
   Resolution & {

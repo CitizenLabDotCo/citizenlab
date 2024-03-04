@@ -1,27 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
-import PageForm, { FormValues } from 'components/PageForm';
-
-// api
-import { handleAddPageFiles, handleRemovePageFiles } from 'api/page_files/util';
-import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
-import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
-
-import { isNilOrError } from 'utils/helperUtils';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
-
 import styled from 'styled-components';
+
+import { UploadFile } from 'typings';
+import PageForm, { FormValues } from 'components/PageForm';
+import { FormattedMessage } from 'utils/cl-intl';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 import useAddPagesFile from 'api/page_files/useAddPageFile';
 import useDeletePageFile from 'api/page_files/useDeletePageFile';
 import usePageFiles from 'api/page_files/usePageFiles';
-import { UploadFile } from 'typings';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { handleAddPageFiles, handleRemovePageFiles } from 'api/page_files/util';
+
+import messages from './messages';
 
 const timeout = 350;
 

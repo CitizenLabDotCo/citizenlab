@@ -1,16 +1,17 @@
 // libraries
 import React from 'react';
-import { Helmet } from 'react-helmet';
-import { isError } from 'lodash-es';
 
-import { injectIntl } from 'utils/cl-intl';
+import { isError } from 'lodash-es';
+import { Helmet } from 'react-helmet';
 import { WrappedComponentProps, MessageDescriptor } from 'react-intl';
 
-import useAuthUser from 'api/me/useAuthUser';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
+import { injectIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+
+import useAuthUser from 'api/me/useAuthUser';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 interface Props {
   titleMessage: MessageDescriptor;

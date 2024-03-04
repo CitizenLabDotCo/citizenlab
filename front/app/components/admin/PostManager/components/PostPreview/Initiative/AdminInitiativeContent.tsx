@@ -1,15 +1,5 @@
 import React from 'react';
-import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
-import Title from 'components/PostShowComponents/Title';
-import Body from 'components/PostShowComponents/Body';
-import DropdownMap from 'components/PostShowComponents/DropdownMap';
-import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import PostedBy from 'containers/InitiativesShow/PostedBy';
-import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
-import FileAttachments from 'components/UI/FileAttachments';
-import FeedbackSettings from './FeedbackSettings';
-import Button from 'components/UI/Button';
 import {
   Top,
   Content,
@@ -17,19 +7,33 @@ import {
 } from 'components/admin/PostManager/components/PostPreview';
 import ReactionIndicator from 'components/InitiativeCard/ReactionIndicator';
 import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import PostedBy from 'containers/InitiativesShow/PostedBy';
 
-import messages from '../messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
+import Body from 'components/PostShowComponents/Body';
+import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
+import DropdownMap from 'components/PostShowComponents/DropdownMap';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
+import Title from 'components/PostShowComponents/Title';
+import Button from 'components/UI/Button';
+import FileAttachments from 'components/UI/FileAttachments';
 
-import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
+import { getPeriodRemainingUntil } from 'utils/dateUtils';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useLocalize from 'hooks/useLocalize';
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from '../messages';
+
+import FeedbackSettings from './FeedbackSettings';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 30px;

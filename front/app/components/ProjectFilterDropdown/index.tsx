@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 
+import { useSearchParams } from 'react-router-dom';
+
 import FilterSelector from 'components/FilterSelector';
 
-import useLocalize from 'hooks/useLocalize';
-import { useSearchParams } from 'react-router-dom';
 import useProjects from 'api/projects/useProjects';
+
+import useLocalize from 'hooks/useLocalize';
 
 type Props = {
   title: string | JSX.Element;

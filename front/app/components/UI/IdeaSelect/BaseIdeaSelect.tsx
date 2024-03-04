@@ -1,15 +1,15 @@
 import React, { useMemo, FC, useEffect } from 'react';
-import ReactSelect from 'react-select';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { debounce } from 'lodash-es';
+import ReactSelect from 'react-select';
 
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
-import { debounce } from 'lodash-es';
-import { getOptionId } from './utils';
+import { IIdeaData } from 'api/ideas/types';
 
 import { Option } from './typings';
-import { IIdeaData } from 'api/ideas/types';
+import { getOptionId } from './utils';
 
 interface Props {
   id?: string;

@@ -1,16 +1,17 @@
 import React from 'react';
+
+import { colors } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
+import styled from 'styled-components';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
 
 import { IAvatarData } from 'api/avatars/types';
+import useAvatarsWithIds from 'api/avatars/useAvatarsWithIds';
+import useRandomAvatars from 'api/avatars/useRandomAvatars';
 
 import messages from './messages';
-
-import styled from 'styled-components';
-import { colors } from '@citizenlab/cl2-component-library';
-import { ScreenReaderOnly } from 'utils/a11y';
-import useRandomAvatars from 'api/avatars/useRandomAvatars';
-import useAvatarsWithIds from 'api/avatars/useAvatarsWithIds';
-import { useIntl } from 'utils/cl-intl';
 
 const getFontSize = (size: number, digits: number) => {
   if (size >= 34) {

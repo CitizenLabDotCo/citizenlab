@@ -7,9 +7,11 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import CloseIconButton from 'components/UI/CloseIconButton';
 
-import styled from 'styled-components';
+import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 
 // events
@@ -17,8 +19,6 @@ import {
   BUDGET_EXCEEDED_ERROR_EVENT,
   VOTES_EXCEEDED_ERROR_EVENT,
 } from './events';
-
-import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 const StyledBox = styled(Box)`

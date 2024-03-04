@@ -1,9 +1,11 @@
 import React from 'react';
 
 import { Text, Box, Button } from '@citizenlab/cl2-component-library';
+
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
 const ContentUploadDisclaimer = ({

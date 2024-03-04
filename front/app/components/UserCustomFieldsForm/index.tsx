@@ -1,19 +1,20 @@
 import React from 'react';
 
-import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
-import useLocale from 'hooks/useLocale';
-
-import Form from 'components/Form';
-
-import messages from './messages';
-
+import { ErrorObject } from 'ajv';
 import { forOwn } from 'lodash-es';
 
-import { ErrorObject } from 'ajv';
-import { IUserData } from 'api/users/types';
-import { isNilOrError } from 'utils/helperUtils';
-import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
+import Form from 'components/Form';
 import { FormData } from 'components/Form/typings';
+
+import { isNilOrError } from 'utils/helperUtils';
+
+import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
+import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
+import { IUserData } from 'api/users/types';
+
+import useLocale from 'hooks/useLocale';
+
+import messages from './messages';
 
 // Todo :
 /*

@@ -26,7 +26,6 @@ import { appLocalesMomentPairs, locales } from 'containers/App/constants';
 // context
 import { PreviousPathnameContext } from 'context';
 
-// analytics
 const ConsentManager = lazy(() => import('components/ConsentManager'));
 
 import {

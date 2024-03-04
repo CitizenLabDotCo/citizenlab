@@ -1,13 +1,17 @@
-import EsriMap from 'components/EsriMap';
 import React, { memo } from 'react';
-import Graphic from '@arcgis/core/Graphic';
+
 import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
+import { useTheme } from 'styled-components';
+
+import EsriMap from 'components/EsriMap';
 import {
   createEsriGeoJsonLayers,
   getMapPinSymbol,
 } from 'components/EsriMap/utils';
-import { useTheme } from 'styled-components';
+
 import useMapConfig from 'api/map_config/useMapConfig';
+
 import useLocalize from 'hooks/useLocalize';
 
 export interface Props {

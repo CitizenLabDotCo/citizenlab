@@ -28,8 +28,6 @@ import { client } from '../utils/apolloUtils';
 
 import messages from './messages';
 
-// analytics
-
 // style
 
 const Arrow = (props: React.SVGProps<SVGSVGElement>) => {

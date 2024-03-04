@@ -3,6 +3,7 @@ import React from 'react';
 import WarningModal from 'components/WarningModal';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
 
 interface Props {

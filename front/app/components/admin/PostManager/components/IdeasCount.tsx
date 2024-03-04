@@ -1,13 +1,15 @@
 import React from 'react';
 
-import useIdeasCount from 'api/idea_count/useIdeasCount';
-import { IQueryParameters } from 'api/idea_count/types';
+import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
+import { IQueryParameters } from 'api/idea_count/types';
+import useIdeasCount from 'api/idea_count/useIdeasCount';
+
 import messages from '../messages';
 
 // styles
-import styled from 'styled-components';
 
 const Container = styled.div`
   height: 100%;

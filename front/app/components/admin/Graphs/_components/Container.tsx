@@ -1,18 +1,18 @@
 import React, { useMemo } from 'react';
-import { useResizeDetector } from 'react-resize-detector';
 
-import { ResponsiveContainer } from 'recharts';
-import FakeLegend from './Legend/FakeLegend';
 import { Box } from '@citizenlab/cl2-component-library';
-
 import { debounce, isEqual } from 'lodash-es';
-
+import { useResizeDetector } from 'react-resize-detector';
+import { ResponsiveContainer } from 'recharts';
 import { Percentage } from 'typings';
+
 import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
 import { Legend } from '../typings';
+
+import FakeLegend from './Legend/FakeLegend';
 
 interface Props {
   width?: number | Percentage;

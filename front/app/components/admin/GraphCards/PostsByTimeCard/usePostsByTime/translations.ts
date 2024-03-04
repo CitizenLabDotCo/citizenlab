@@ -1,12 +1,13 @@
-import messages from './messages';
-import moduleMessages from 'components/admin/GraphCards/messages';
 import dashboardMessages from 'containers/Admin/dashboard/messages';
+import { FormatMessage } from 'typings';
+
 import {
   getTimePeriodTranslations,
   TimePeriodTranslations,
 } from 'components/admin/GraphCards/_utils/resolution';
+import moduleMessages from 'components/admin/GraphCards/messages';
 
-import { FormatMessage } from 'typings';
+import messages from './messages';
 
 export interface Translations extends TimePeriodTranslations {
   date: string;

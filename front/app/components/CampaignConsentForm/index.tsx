@@ -6,34 +6,36 @@ import {
   Button,
   Checkbox,
 } from '@citizenlab/cl2-component-library';
-import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
+
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
-import Feedback from './feedback';
+import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
+
 import { ScreenReaderOnly } from 'utils/a11y';
-
-import messages from './messages';
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import useLocalize from 'hooks/useLocalize';
-
 import { isNilOrError } from 'utils/helperUtils';
-import { groupCampaignsConsent, sortGroupedCampaignConsents } from './utils';
 
+import {
+  ICampaignConsentData,
+  IConsentChanges,
+} from 'api/campaign_consents/types';
 import useCampaignConsents from 'api/campaign_consents/useCampaignConsents';
 import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignConsents';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
+import Feedback from './feedback';
+
+import messages from './messages';
 
 import {
   CampaignConsent,
   CampaignConsentChild,
   GroupedCampaignConsent,
 } from './typings';
-import {
-  ICampaignConsentData,
-  IConsentChanges,
-} from 'api/campaign_consents/types';
+import { groupCampaignsConsent, sortGroupedCampaignConsents } from './utils';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
 
 // routing
 import { internalCommentNotificationTypes } from 'api/campaigns/types';

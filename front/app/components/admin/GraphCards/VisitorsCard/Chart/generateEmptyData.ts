@@ -1,8 +1,9 @@
-import { getEmptyRow } from '../useVisitors/parse';
-import { emptyDateRange } from '../../_utils/timeSeries';
-
 import { Moment } from 'moment';
+
 import { IResolution } from 'components/admin/ResolutionControl';
+
+import { emptyDateRange } from '../../_utils/timeSeries';
+import { getEmptyRow } from '../useVisitors/parse';
 
 export const generateEmptyData = (
   startAtMoment: Moment | null | undefined,

@@ -13,8 +13,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // events
 
-// analytics
-
 // style
 
 import useComment from 'api/comments/useComment';

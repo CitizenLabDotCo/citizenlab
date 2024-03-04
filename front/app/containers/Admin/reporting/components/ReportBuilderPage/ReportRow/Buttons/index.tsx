@@ -1,16 +1,17 @@
 import React from 'react';
-import Tippy from '@tippyjs/react';
-
-// api
-import useReport from 'api/reports/useReport';
-
-import Button from 'components/UI/Button';
-import PrintReportButton from './PrintReportButton';
 
 import { colors } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
+
+import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
+
+import useReport from 'api/reports/useReport';
+
 import messages from '../messages';
+
+import PrintReportButton from './PrintReportButton';
 
 interface Props {
   reportId: string;

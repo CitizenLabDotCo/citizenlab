@@ -1,14 +1,17 @@
 import React from 'react';
-import { clickSocialSharingLink, Medium } from '../utils';
 
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
 import { Button, colors } from '@citizenlab/cl2-component-library';
+import { WrappedComponentProps } from 'react-intl';
+
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
+
 import tracks from '../tracks';
+import { clickSocialSharingLink, Medium } from '../utils';
 
 interface Props {
   whatsAppMessage: string;

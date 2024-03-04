@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 
 import {
-  legacyColors,
-  sizes,
-  animation,
-} from 'components/admin/Graphs/styling';
-
-import {
   BarChart as RechartsBarChart,
   Bar,
   XAxis,
@@ -15,19 +9,26 @@ import {
   LabelList,
   Tooltip,
 } from 'recharts';
+
+import {
+  legacyColors,
+  sizes,
+  animation,
+} from 'components/admin/Graphs/styling';
+
+import { truncate } from 'utils/textUtils';
+
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
-
-import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
-import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
-import { truncate } from 'utils/textUtils';
-
-import { Props } from './typings';
 import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
+import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
+
+import { Props } from './typings';
+import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
 
 export const DEFAULT_LEGEND_OFFSET = 10;
 

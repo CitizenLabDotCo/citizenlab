@@ -1,8 +1,12 @@
 import React from 'react';
-import T from 'components/T';
+
 import { Segment, Header } from 'semantic-ui-react';
-import { handlePreviewCLick, StyledLink } from './';
+
+import T from 'components/T';
+
 import useIdeaById from 'api/ideas/useIdeaById';
+
+import { handlePreviewCLick, StyledLink } from './';
 
 interface Props {
   postId: string;

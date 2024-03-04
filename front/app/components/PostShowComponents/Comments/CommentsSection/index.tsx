@@ -1,25 +1,29 @@
 import React, { useState, MouseEvent } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { Tab } from 'components/admin/NavigationTabs';
-import PublicComments from './PublicComments';
-import InternalComments from 'components/admin/InternalComments';
-import Warning from 'components/UI/Warning';
-
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
 
 // style
 import styled, { css } from 'styled-components';
-import { tabBorderSize } from 'components/admin/NavigationTabs/tabsStyleConstants';
 
 // Types
 import { ITab } from 'typings';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
+import InternalComments from 'components/admin/InternalComments';
+import { Tab } from 'components/admin/NavigationTabs';
+import { tabBorderSize } from 'components/admin/NavigationTabs/tabsStyleConstants';
+import Warning from 'components/UI/Warning';
+
+import { useIntl } from 'utils/cl-intl';
+
 import useIdeaById from 'api/ideas/useIdeaById';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
+import messages from '../messages';
+
+import PublicComments from './PublicComments';
 
 const NavigationTabs = styled.nav`
   ${({ theme }) => css`

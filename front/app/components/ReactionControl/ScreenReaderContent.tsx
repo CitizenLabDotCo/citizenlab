@@ -1,8 +1,9 @@
 import React from 'react';
+
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
   likesCount: number;

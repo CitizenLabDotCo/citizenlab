@@ -5,12 +5,12 @@ import {
   BoxProps,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-
 import { Element } from '@craftjs/core';
+
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 import Container from '../Container';
 
 import messages from './messages';
-import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 export const ThreeColumnWrapper = ({
   children,

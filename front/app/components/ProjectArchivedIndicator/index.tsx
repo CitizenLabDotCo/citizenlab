@@ -1,14 +1,16 @@
 import React, { memo } from 'react';
 
-import useProjectById from 'api/projects/useProjectById';
+import styled from 'styled-components';
 
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
+import useProjectById from 'api/projects/useProjectById';
+
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
 
 const Container = styled.div`
   width: 100%;

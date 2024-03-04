@@ -1,9 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import Cropper, { Point } from 'react-easy-crop';
+
 import { Box } from '@citizenlab/cl2-component-library';
+import Cropper, { Point } from 'react-easy-crop';
 import { UploadFile } from 'typings';
-import getCroppedImage from './getCroppedImage';
+
 import RemoveImageButton from 'components/UI/RemoveImageButton';
+
+import getCroppedImage from './getCroppedImage';
 
 type ImageCropperProps = {
   image: UploadFile | null;

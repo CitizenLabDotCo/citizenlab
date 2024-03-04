@@ -1,7 +1,4 @@
 import React from 'react';
-import { rgba } from 'polished';
-import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
 
 import {
   Box,
@@ -10,19 +7,23 @@ import {
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 
 // Hooks
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNil } from 'utils/helperUtils';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
+
+import messages from './messages';
 
 import { SeatInfoProps, SeatNumbersType, SeatTypeMessageDescriptor } from '.';
 
 // Intl
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-import { isNil } from 'utils/helperUtils';
-import Link from 'utils/cl-router/Link';
 
 const StyledLink = styled(Link)`
   text-decoration: underline;

@@ -1,17 +1,20 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import TopBar from 'components/FiltersModal/TopBar';
+import { isNumber } from 'lodash-es';
+
 import BottomBar from 'components/FiltersModal/BottomBar';
+import TopBar from 'components/FiltersModal/TopBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
-import FiltersSideBar, { Props as FiltersSideBarProps } from './FiltersSideBar';
-import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
+
 import messages from '../messages';
 
-import { isNilOrError } from 'utils/helperUtils';
-import { isNumber } from 'lodash-es';
+import FiltersSideBar, { Props as FiltersSideBarProps } from './FiltersSideBar';
 
 interface Props extends FiltersSideBarProps {
   opened: boolean;

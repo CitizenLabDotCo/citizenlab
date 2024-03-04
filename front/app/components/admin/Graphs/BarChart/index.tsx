@@ -2,9 +2,8 @@ import React from 'react';
 
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 
-import { convertMapping, convertBars } from './utils';
-
 import { Props } from './typings';
+import { convertMapping, convertBars } from './utils';
 
 const BarChart = <Row,>({
   mapping,

@@ -1,24 +1,17 @@
+import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 import { parse } from 'qs';
 
-// api
+import { trackEventByName } from 'utils/analytics';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
+
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
 // cache
-import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 // tracks
 import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
 
 // events
-import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
-
-import {
-  requiredCustomFields,
-  requiredBuiltInFields,
-  askCustomFields,
-  showOnboarding,
-} from './utils';
 
 import {
   GetRequirements,
@@ -28,7 +21,14 @@ import {
   SignUpInError,
   VerificationError,
 } from '../../typings';
+
 import { Step } from './typings';
+import {
+  requiredCustomFields,
+  requiredBuiltInFields,
+  askCustomFields,
+  showOnboarding,
+} from './utils';
 
 export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,

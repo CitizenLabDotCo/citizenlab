@@ -1,24 +1,29 @@
 import React from 'react';
+
 import {
   Button,
   ButtonStyles,
   BoxWidthProps,
   BoxPaddingProps,
 } from '@citizenlab/cl2-component-library';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { useLocation } from 'react-router-dom';
+
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+
+import useABTest from 'api/experiments/useABTest';
 import { FollowableType } from 'api/follow_unfollow/types';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useAuthUser from 'api/me/useAuthUser';
-import useABTest from 'api/experiments/useABTest';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
+
+import messages from './messages';
 import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
-import { useLocation } from 'react-router-dom';
 
 interface Props extends BoxWidthProps, BoxPaddingProps {
   followableType: FollowableType;

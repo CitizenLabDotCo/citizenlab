@@ -1,17 +1,17 @@
 import React from 'react';
-import { fireEvent, render, act } from 'utils/testUtils/rtl';
-import ConsentManager from '.';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-
-import { registerDestination } from './destinations';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
+import { fireEvent, render, act } from 'utils/testUtils/rtl';
 
 import { IUserData } from 'api/users/types';
 
 // mocked functions
 import { setConsent, IConsentCookie } from './consent';
+import { registerDestination } from './destinations';
+
+import ConsentManager from '.';
 
 // mocks
 

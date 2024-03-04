@@ -1,14 +1,14 @@
 import React from 'react';
 
-// api
-import useReport from 'api/reports/useReport';
+import { colors } from '@citizenlab/cl2-component-library';
 
 import Button from 'components/UI/Button';
 
-import { colors } from '@citizenlab/cl2-component-library';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import useReport from 'api/reports/useReport';
 
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
   reportId: string;

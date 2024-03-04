@@ -1,10 +1,14 @@
 import React from 'react';
-import IdeasList from './IdeasList';
-import IdeasMap from 'components/IdeasMap';
-import { IIdeaData } from 'api/ideas/types';
-import { IdeaDefaultSortMethod } from 'api/phases/types';
+
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
+
+import IdeasMap from 'components/IdeasMap';
+
+import { IIdeaData } from 'api/ideas/types';
 import useMapConfig from 'api/map_config/useMapConfig';
+import { IdeaDefaultSortMethod } from 'api/phases/types';
+
+import IdeasList from './IdeasList';
 
 interface Props {
   view: 'card' | 'map';

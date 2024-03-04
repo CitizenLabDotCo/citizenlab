@@ -1,17 +1,6 @@
 import React, { useState } from 'react';
 
 // routing
-import { useParams } from 'react-router-dom';
-
-// api
-import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
-import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 import {
   Box,
   Title,
@@ -19,9 +8,19 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
+import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
+
 import EmptyState from './EmptyState';
-import IdeaList from './IdeaList';
 import IdeaEditor from './IdeaEditor';
+import IdeaList from './IdeaList';
+import messages from './messages';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
 

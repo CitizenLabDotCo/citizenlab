@@ -1,5 +1,4 @@
 import React from 'react';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   Title,
@@ -9,12 +8,16 @@ import {
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
+
 import {
   SeatTypeMessageDescriptor,
   TSeatType,
 } from 'components/admin/SeatBasedBilling/SeatInfo';
 
 import { useIntl } from 'utils/cl-intl';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import messages from './messages';
 
 type SeatChangeSuccessModalProps = {
