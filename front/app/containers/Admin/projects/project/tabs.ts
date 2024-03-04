@@ -6,7 +6,7 @@ import { ITab, FormatMessage } from 'typings';
 export type IPhaseTab = ITab & {
   hidden?: boolean;
   disabled?: boolean;
-  disabledTooltip?: string;
+  disabledTooltipText?: string;
 };
 
 export type FeatureFlags = {
@@ -79,7 +79,7 @@ export const getTabs = (
       url: 'report',
       name: 'report',
       disabled: !phase_reports_enabled,
-      disabledTooltip: formatMessage(messages.lockedTooltip),
+      disabledTooltipText: formatMessage(messages.lockedTooltip),
     },
     granular_permissions_enabled && {
       label: formatMessage(messages.phaseAccessRights),

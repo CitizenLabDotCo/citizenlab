@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent, forwardRef } from 'react';
 
 import {
   TooltipContentWrapper,
@@ -19,13 +19,13 @@ import {
 
 type ContainerProps = {
   active: boolean;
+  disableTab?: boolean;
 };
 
 // very similar to front/app/components/admin/TabbedResource/Tab.tsx
 const Container = styled.div`
-  ${({ active }: ContainerProps) => css`
+  ${({ active, disableTab }: ContainerProps) => css`
     list-style: none;
-    cursor: pointer;
     display: flex;
     align-items: center;
     margin-bottom: calc(${tabBorderSize}px * -1);
@@ -40,6 +40,7 @@ const Container = styled.div`
     }
 
     a {
+      ${disableTab ? `cursor: not-allowed;` : `cursor: pointer;`}
       color: ${colors.textSecondary};
       font-size: ${fontSizes.base}px;
       font-weight: 400;
@@ -69,68 +70,45 @@ const Container = styled.div`
   `}
 `;
 
-type TabContentProps = {
-  label: string;
-  url: string;
-  badge?: React.ReactNode;
-  handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
-};
-
-const TabContent = ({ label, url, badge, handleClick }: TabContentProps) => (
-  <Link to={url} onClick={handleClick}>
-    {label}
-    {badge && <>{badge}</>}
-  </Link>
-);
-
-type TabProps = TabContentProps & {
+type TabProps = {
   className?: string;
   'data-cy'?: string;
+  label: string;
+  url: string;
   active: boolean;
+  badge?: React.ReactNode;
+  handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
   disabled?: boolean;
-  disabledTooltip?: string;
+  disabledTooltipText?: string;
 };
 
 const Tab = ({
-  active,
-  disabled,
-  disabledTooltip,
   label,
   url,
   badge,
   handleClick,
+  disabled,
+  disabledTooltipText,
   ...props
-}: TabProps) =>
-  disabled ? (
-    <Tippy
-      interactive={false}
-      placement="bottom"
-      theme={''}
-      maxWidth={350}
-      content={
-        <TooltipContentWrapper tippytheme="light">
-          {disabledTooltip}
-        </TooltipContentWrapper>
-      }
-    >
-      <Container active={active} {...props}>
-        <TabContent
-          label={label}
-          url={url}
-          badge={badge}
-          handleClick={handleClick}
-        />
-      </Container>
-    </Tippy>
-  ) : (
-    <Container active={active} {...props}>
-      <TabContent
-        label={label}
-        url={url}
-        badge={badge}
-        handleClick={handleClick}
-      />
+}: TabProps) => (
+  <Tippy
+    interactive={false}
+    placement="bottom"
+    theme={''}
+    disabled={!disabled}
+    maxWidth={350}
+    content={
+      <TooltipContentWrapper tippytheme="light">
+        {disabledTooltipText}
+      </TooltipContentWrapper>
+    }
+  >
+    <Container disableTab={disabled} {...props}>
+      <Link to={url} onClick={handleClick}>
+        {label}
+        {badge && <>{badge}</>}
+      </Link>
     </Container>
-  );
-
+  </Tippy>
+);
 export default Tab;

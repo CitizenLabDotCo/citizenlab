@@ -219,7 +219,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
           boxShadow="0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
           background="#FBFBFB"
         >
-          {tabs.map(({ url, label, name, disabled, disabledTooltip }) => (
+          {tabs.map(({ url, label, name, disabled, disabledTooltipText }) => (
             <Tab
               label={label}
               url={url}
@@ -237,7 +237,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
                 ) : null
               }
               disabled={!!disabled}
-              disabledTooltip={disabledTooltip}
+              disabledTooltipText={disabledTooltipText}
             />
           ))}
         </Box>
