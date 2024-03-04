@@ -316,6 +316,8 @@ const ChildCommentForm = ({
   };
 
   if (focused) {
+    // Ideally this is managed outside of this component.
+    // If projectId is provided, we assume this component is used in a project context
     const isModerator = projectId
       ? canModerateProject(projectId, authUser)
       : canModerateInitiative(authUser);
