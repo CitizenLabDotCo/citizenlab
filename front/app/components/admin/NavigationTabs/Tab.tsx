@@ -71,6 +71,8 @@ type TabProps = {
   url: string;
   active: boolean;
   badge?: React.ReactNode;
+  disabled?: boolean;
+  disabledTooltip?: string;
   handleClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 };
 
@@ -80,6 +82,8 @@ const Tab = ({
   active,
   badge,
   handleClick,
+  disabled,
+  disabledTooltip,
   ...props
 }: TabProps) => (
   <Container active={active} {...props}>

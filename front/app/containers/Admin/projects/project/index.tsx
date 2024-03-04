@@ -15,7 +15,6 @@ import ProjectHeader from './projectHeader';
 import { useIntl } from 'utils/cl-intl';
 
 // typings
-import { ITab } from 'typings';
 import { IProjectData } from 'api/projects/types';
 
 // utils
@@ -25,7 +24,7 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 // hooks
 import { IPhaseData } from 'api/phases/types';
 import { getCurrentPhase } from 'api/phases/utils';
-import { getIntialTabs, getTabHideConditions } from './tabs';
+import { FeatureFlags, getTabs, IPhaseTab } from './tabs';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
@@ -44,51 +43,31 @@ const AdminProjectsProjectIndex = ({
 }: DataProps) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const typeform_enabled = useFeatureFlag({
-    name: 'typeform_surveys',
-  });
-  const surveys_enabled = useFeatureFlag({
-    name: 'surveys',
-  });
-  const granular_permissions_enabled = useFeatureFlag({
-    name: 'granular_permissions',
-  });
-  const phase_reports_enabled = useFeatureFlag({
-    name: 'phase_reports',
-  });
+  const featureFlags: FeatureFlags = {
+    typeform_enabled: useFeatureFlag({
+      name: 'typeform_surveys',
+    }),
+    surveys_enabled: useFeatureFlag({
+      name: 'surveys',
+    }),
+    granular_permissions_enabled: useFeatureFlag({
+      name: 'granular_permissions',
+    }),
+    phase_reports_enabled: useFeatureFlag({
+      name: 'phase_reports',
+    }),
+  };
 
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
   );
-  const [tabs] = useState<ITab[]>(getIntialTabs(formatMessage));
-
-  const getTabs = () => {
-    if (!selectedPhase) {
-      return [];
-    }
-    const tabHideConditions = getTabHideConditions(selectedPhase, {
-      typeform_enabled,
-      surveys_enabled,
-      granular_permissions_enabled,
-      phase_reports_enabled,
-    });
-
-    const baseTabsUrl = `/admin/projects/${project.id}`;
-    const cleanedTabs = tabs.filter((tab) => {
-      if (tabHideConditions[tab.name]) {
-        return !tabHideConditions[tab.name]();
-      }
-      return true;
-    });
-
-    return cleanedTabs.map((tab) => ({
-      ...tab,
-      url:
-        tab.url === ''
-          ? `${baseTabsUrl}`
-          : `${baseTabsUrl}/phases/${selectedPhase.id}/${tab.url}`,
-    }));
-  };
+  const baseTabsUrl = `/admin/projects/${project.id}`;
+  const tabs: IPhaseTab[] = selectedPhase
+    ? getTabs(selectedPhase, featureFlags, formatMessage).map((tab) => ({
+        ...tab,
+        url: `${baseTabsUrl}/phases/${selectedPhase.id}/${tab.url}`,
+      }))
+    : [];
 
   return (
     <>
@@ -103,7 +82,7 @@ const AdminProjectsProjectIndex = ({
       </Box>
       <Box p="8px 24px 24px 24px">
         {!isNewPhaseLink && selectedPhase && (
-          <PhaseHeader phase={selectedPhase} tabs={getTabs()} />
+          <PhaseHeader phase={selectedPhase} tabs={tabs} />
         )}
 
         <Box p={`${defaultAdminCardPadding}px`} background={colors.white}>
