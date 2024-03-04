@@ -87,6 +87,9 @@ export interface ICustomFieldResponse {
     options: {
       data: IRelationship[];
     };
+    map_config?: {
+      data: IRelationship;
+    };
   };
 }
 

@@ -3,9 +3,7 @@ import { isEmpty, inRange } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import useUpdateProjectMapConfig from 'api/map_config/useUpdateProjectMapConfig';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useMapConfig from 'api/map_config/useMapConfig';
 
 // components
 import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
@@ -25,6 +23,8 @@ import messages from '../messages';
 // styling
 import styled from 'styled-components';
 import { goToMapLocation } from 'components/EsriMap/utils';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
+import { IMapConfig } from 'api/map_config/types';
 
 const Container = styled.div`
   display: flex;
@@ -78,6 +78,7 @@ interface Props {
   projectId: string;
   className?: string;
   mapView?: MapView | null;
+  mapConfig: IMapConfig;
 }
 
 interface IFormValues {
@@ -87,10 +88,11 @@ interface IFormValues {
 }
 
 const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
-  ({ projectId, className, mapView, intl: { formatMessage } }) => {
+  ({ className, mapConfig, mapView, intl: { formatMessage } }) => {
     const { data: appConfig } = useAppConfiguration();
-    const { mutateAsync: updateProjectMapConfig } = useUpdateProjectMapConfig();
-    const { data: mapConfig } = useMapConfig(projectId);
+    const { mutateAsync: updateMapConfig } = useUpdateMapConfig(
+      mapConfig.data.id
+    );
 
     const defaultLatLng = getCenter(
       undefined,
@@ -225,9 +227,8 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
           const defaultLng = parseFloat(formValues.defaultLng as any);
           const defaultZoom = formValues.defaultZoom?.toString() as string;
 
-          await updateProjectMapConfig({
-            projectId,
-            id: mapConfig.data.id,
+          await updateMapConfig({
+            mapConfigId: mapConfig.data.id,
             center_geojson: {
               type: 'Point',
               coordinates: [defaultLng, defaultLat],

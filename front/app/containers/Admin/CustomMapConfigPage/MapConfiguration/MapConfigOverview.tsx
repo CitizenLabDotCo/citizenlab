@@ -16,6 +16,7 @@ import messages from '../messages';
 // styling
 import styled from 'styled-components';
 import { ViewOptions } from '..';
+import { IMapConfig } from 'api/map_config/types';
 
 const Container = styled.div``;
 
@@ -47,12 +48,13 @@ const StyledMapCenterAndZoomConfig = styled(MapCenterAndZoomConfig)``;
 interface Props {
   projectId: string;
   mapView?: MapView | null;
+  mapConfig: IMapConfig;
   className?: string;
   setView: (view: ViewOptions) => void;
 }
 
 const MapConfigOverview = memo<Props>(
-  ({ projectId, className, setView, mapView }) => {
+  ({ projectId, className, mapConfig, setView, mapView }) => {
     const [editedMapLayerId, setEditedMapLayerId] = useState<string | null>(
       null
     );
@@ -91,6 +93,7 @@ const MapConfigOverview = memo<Props>(
             <StyledMapCenterAndZoomConfig
               projectId={projectId}
               mapView={mapView}
+              mapConfig={mapConfig}
             />
           </>
         ) : (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 // components
 import {
@@ -17,6 +17,13 @@ import { useFormContext } from 'react-hook-form';
 import useAddMapConfig from 'api/map_config/useAddMapConfig';
 import useMapConfig from 'api/map_config/useMapConfig';
 import { useParams } from 'react-router-dom';
+import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
+import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
+import {
+  parseLayers,
+  showLayerVisibilityControls,
+} from 'components/EsriMap/utils';
+import useLocalize from 'hooks/useLocalize';
 // import { IMapConfig } from 'api/map_config/types';
 
 const StyledLabel = styled(Label)`
@@ -27,26 +34,51 @@ const StyledLabel = styled(Label)`
 
 type Props = {
   mapConfigIdName: string;
+  field: IFlatCustomFieldWithIndex;
 };
 
-const PointSettings = ({ mapConfigIdName }: Props) => {
-  const { projectId } = useParams() as {
+const PointSettings = ({ mapConfigIdName, field }: Props) => {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId?: string;
   };
+
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const { setValue, watch } = useFormContext();
   const { data: projectMapConfig } = useMapConfig(projectId);
+  const { data: rawCustomFields } = useRawCustomFields({ phaseId });
   const { mutateAsync: createProjectMapConfig } = useAddMapConfig();
 
-  console.log('Map Config ID: ', watch(mapConfigIdName));
+  // Get current map config ID for this field
+  const mapConfigId =
+    watch(mapConfigIdName) ||
+    rawCustomFields?.data.find((rawField) => rawField.id === field.id)
+      ?.relationships?.map_config?.data?.id;
+
+  // Load map config
+  const { data: fieldMapConfig } = useMapConfig(mapConfigId);
+  const mapConfig = fieldMapConfig || projectMapConfig;
+
+  // Load map state from mapConfig
+  const mapLayers = useMemo(() => {
+    return parseLayers(mapConfig, localize);
+  }, [localize, mapConfig]);
 
   const onConfigureMapClick = () => {
-    if (!watch(mapConfigIdName)) {
-      // Create a map config if one doesn't already exist
+    // Create a new map config if we don't have one for this field
+    if (!mapConfigId) {
+      // Initial data is from existing project map config
+      const initialData = projectMapConfig?.data?.attributes
+        ? projectMapConfig.data.attributes
+        : {};
+
       createProjectMapConfig(
-        {},
+        {
+          ...initialData,
+        },
         {
           onSuccess: (data) => {
-            console.log({ data });
             // Set the form value to the map config ID
             setValue(mapConfigIdName, data.data.id);
             // Open the modal
@@ -54,13 +86,13 @@ const PointSettings = ({ mapConfigIdName }: Props) => {
           },
         }
       );
+    } else {
+      // Otherwise we aready have a map config, so we open the modal
+      setShowModal(true);
     }
   };
 
-  const { formatMessage } = useIntl();
-
   const [showModal, setShowModal] = useState(false);
-  // const [mapConfig, setMapConfig] = useState<IMapConfig | null>(null);
 
   return (
     <>
@@ -76,7 +108,13 @@ const PointSettings = ({ mapConfigIdName }: Props) => {
             </>
           }
         />
-        <EsriMap height="300px" />
+        <EsriMap
+          height="360px"
+          layers={mapLayers}
+          initialData={{
+            showLegend: true,
+          }}
+        />
         <Button
           mt="16px"
           iconPos="left"
@@ -96,7 +134,7 @@ const PointSettings = ({ mapConfigIdName }: Props) => {
         header={formatMessage(messages.mapConfiguration)}
       >
         <Box p="20px">
-          <CustomMapConfigPage />
+          <CustomMapConfigPage passedMapConfig={mapConfig} />
         </Box>
       </Modal>
     </>

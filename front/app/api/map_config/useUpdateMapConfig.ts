@@ -15,7 +15,7 @@ const updateMapConfig = ({ mapConfigId, ...map_config }: IMapConfigUpdate) =>
     body: { map_config },
   });
 
-const useUpdateMapConfig = () => {
+const useUpdateMapConfig = (mapConfigId: string) => {
   const queryClient = useQueryClient();
   return useMutation<IMapConfig, CLErrors, IMapConfigUpdate>({
     mutationFn: updateMapConfig,

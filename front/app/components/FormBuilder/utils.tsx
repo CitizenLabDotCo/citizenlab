@@ -146,6 +146,7 @@ export function getAdditionalSettings(
       return (
         <PointSettings
           mapConfigIdName={`customFields.${field.index}.map_config_id`}
+          field={field}
         />
       );
     default:
