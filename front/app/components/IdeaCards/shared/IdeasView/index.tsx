@@ -34,9 +34,9 @@ const IdeasView = ({
   loadingMore,
   onLoadMore,
 }: Props) => {
-  const { data: mapConfig, isLoading } = useMapConfig(projectId);
+  const { data: mapConfig, isLoading } = useMapConfig(projectId || undefined);
 
-  if (isLoading) {
+  if (projectId && isLoading) {
     return <Spinner />;
   }
 

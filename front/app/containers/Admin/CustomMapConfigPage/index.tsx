@@ -4,14 +4,13 @@ import { useParams } from 'react-router-dom';
 // components
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
-import MapConfigOverview from './MapConfigOverview';
+import MapConfigOverview from './MapConfiguration/MapConfigOverview';
 import MapView from '@arcgis/core/views/MapView';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useMapConfig from 'api/map_config/useMapConfig';
-
-import useAddMapConfig from 'api/map_config/useAddMapConfig';
+import useAddProjectMapConfig from 'api/map_config/useAddProjectMapConfig';
 
 // utils
 import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
@@ -19,8 +18,8 @@ import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
 // styling
 import styled from 'styled-components';
 import IdeationConfigurationMap from '../../../components/IdeationConfigurationMap/IdeationConfigurationMap';
-import FeatureLayerUpload from './FeatureLayerUpload';
-import WebMapUpload from './WebMapUpload';
+import FeatureLayerUpload from './DataImportOptions/FeatureLayerUpload';
+import WebMapUpload from './DataImportOptions/WebMapUpload';
 
 const Container = styled.div`
   display: flex;
@@ -44,12 +43,12 @@ interface Props {
   className?: string;
 }
 
-const CustomMapConfigPage = memo<Props>(({ className }) => {
+const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
   const { data: appConfig } = useAppConfiguration();
-  const { mutate: createProjectMapConfig } = useAddMapConfig();
+  const { mutate: createProjectMapConfig } = useAddProjectMapConfig();
   const { data: mapConfig, isFetching } = useMapConfig(projectId);
   const [view, setView] = useState<ViewOptions>('main');
   const [mapView, setMapView] = useState<MapView | null>(null);
@@ -137,4 +136,4 @@ const CustomMapConfigPage = memo<Props>(({ className }) => {
   );
 });
 
-export default CustomMapConfigPage;
+export default ProjectCustomMapConfigPage;

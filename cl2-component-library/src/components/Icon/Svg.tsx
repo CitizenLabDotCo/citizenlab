@@ -29,8 +29,9 @@ export type SvgProps = {
   BoxDisplayProps &
   BoxZIndexProps;
 
-const StyledBox = styled(Box)<{ fill?: string }>`
+const StyledBox = styled(Box)<{ fill?: string; transform?: string }>`
   fill: ${({ fill }) => fill};
+  ${({ transform }) => transform && `transform: ${transform};`}
 `;
 
 const Svg = ({
@@ -42,6 +43,7 @@ const Svg = ({
   ariaHidden = true,
   height = '24px',
   width = '24px',
+  transform,
   ...rest
 }: SvgProps) => {
   return (
@@ -55,6 +57,7 @@ const Svg = ({
       height={height}
       width={width}
       fill={fill}
+      transform={transform}
       {...rest}
     >
       {title && <title>{title}</title>}

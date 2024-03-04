@@ -1,8 +1,8 @@
 import React, { memo, useState } from 'react';
 
 // components
-import MapLayersList from './MapLayersList';
-import MapLayerConfig from './MapLayerConfig';
+import MapLayersList from '../LayerConfiguration/MapLayersList';
+import MapLayerConfig from '../LayerConfiguration/MapLayerConfig';
 import MapCenterAndZoomConfig from './MapCenterAndZoomConfig';
 import { SectionTitle } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
@@ -11,11 +11,11 @@ import MapView from '@arcgis/core/views/MapView';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { ViewOptions } from '.';
+import { ViewOptions } from '..';
 
 const Container = styled.div``;
 

@@ -12,31 +12,31 @@ import {
 import Tippy from '@tippyjs/react';
 import { SubSectionTitle } from 'components/admin/Section';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import GeoJsonImportButton from './GeoJsonImportButton';
-import EsriImportOptions from './EsriImportOptions';
+import GeoJsonImportButton from '../DataImportOptions/GeoJsonImportButton';
+import EsriImportOptions from '../DataImportOptions/EsriImportOptions';
 
 // hooks
 import useDeleteMapLayer from 'api/map_layers/useDeleteMapLayer';
 import useReorderMapLayer from 'api/map_layers/useReorderMapLayer';
 
 // utils
-import { getLayerColor, getLayerIcon } from '../../../utils/mapUtils/map';
+import { getLayerColor, getLayerIcon } from '../../../../utils/mapUtils/map';
 import addOrderingToLayers, {
   IMapLayerAttributesWithOrdering,
 } from './addOrderingToLayers';
-import { ViewOptions } from '.';
+import { ViewOptions } from '..';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
 import useMapConfig from 'api/map_config/useMapConfig';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
+import useUpdateProjectMapConfig from 'api/map_config/useUpdateProjectMapConfig';
 
 const Container = styled.div``;
 
@@ -103,7 +103,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     const { data: mapConfig } = useMapConfig(projectId);
     const { mutate: deleteProjectMapLayer } = useDeleteMapLayer();
     const { mutate: reorderProjectMapLayer } = useReorderMapLayer();
-    const { mutateAsync: updateProjectMapConfig } = useUpdateMapConfig();
+    const { mutateAsync: updateProjectMapConfig } = useUpdateProjectMapConfig();
     const isEsriIntegrationEnabled = useFeatureFlag({
       name: 'esri_integration',
     });

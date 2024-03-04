@@ -2,11 +2,7 @@ import EsriMap from 'components/EsriMap';
 import React, { memo, useMemo } from 'react';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
-import {
-  createEsriFeatureLayers,
-  createEsriGeoJsonLayers,
-  getMapPinSymbol,
-} from 'components/EsriMap/utils';
+import { getMapPinSymbol, parseLayers } from 'components/EsriMap/utils';
 import { useTheme } from 'styled-components';
 import useMapConfig from 'api/map_config/useMapConfig';
 import useLocalize from 'hooks/useLocalize';
@@ -25,26 +21,7 @@ const MapComponent = memo<Props>(({ position, projectId }) => {
   // Load layers from project
   // Create Esri layers to add to map
   const layers = useMemo(() => {
-    const mapConfigLayers = mapConfig?.data.attributes.layers;
-    // All layers are either of type Esri or GeoJSON, so we can check just the first layer
-    if (
-      mapConfigLayers &&
-      mapConfigLayers[0]?.type === 'CustomMaps::GeojsonLayer'
-    ) {
-      return createEsriGeoJsonLayers(
-        mapConfig?.data.attributes.layers,
-        localize
-      );
-    } else if (
-      mapConfigLayers &&
-      mapConfigLayers[0]?.type === 'CustomMaps::EsriFeatureLayer'
-    ) {
-      return createEsriFeatureLayers(
-        mapConfig.data.attributes.layers,
-        localize
-      );
-    }
-    return [];
+    return parseLayers(mapConfig, localize);
   }, [mapConfig, localize]);
 
   // Create point graphic for idea location

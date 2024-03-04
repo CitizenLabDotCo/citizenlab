@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useAddMapConfig from './useAddMapConfig';
+import useAddProjectMapConfig from './useAddProjectMapConfig';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
@@ -16,12 +16,12 @@ const server = setupServer(
   })
 );
 
-describe('useAddMapConfig', () => {
+describe('useAddProjectMapConfig', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddMapConfig(), {
+    const { result, waitFor } = renderHook(() => useAddProjectMapConfig(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -42,7 +42,7 @@ describe('useAddMapConfig', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddMapConfig(), {
+    const { result, waitFor } = renderHook(() => useAddProjectMapConfig(), {
       wrapper: createQueryClientWrapper(),
     });
 

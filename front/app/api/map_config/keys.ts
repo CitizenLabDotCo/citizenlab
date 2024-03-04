@@ -5,11 +5,11 @@ const baseKey = { type: 'map_config' };
 const mapConfigKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ projectId }: { projectId?: string }) => [
+  item: ({ id }: { id?: string }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { projectId },
+      parameters: { id },
     },
   ],
 } satisfies QueryKeys;

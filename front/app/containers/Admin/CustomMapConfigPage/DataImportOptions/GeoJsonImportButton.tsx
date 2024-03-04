@@ -11,10 +11,10 @@ import Error from 'components/UI/Error';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
-import { getUnnamedLayerTitleMultiloc } from '../../../utils/mapUtils/map';
+import { getUnnamedLayerTitleMultiloc } from '../../../../utils/mapUtils/map';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // styling
@@ -23,7 +23,7 @@ import styled from 'styled-components';
 // components
 import Button from 'components/UI/Button';
 import { IMapConfig } from 'api/map_config/types';
-import { getLayerType } from './utils';
+import { getLayerType } from '../utils';
 import Tippy from '@tippyjs/react';
 
 const Container = styled.div``;
@@ -78,7 +78,7 @@ const GeoJsonImportButton = memo<Props>(
     const [importError, setImportError] = useState(false);
 
     const layerType = getLayerType(mapConfig);
-    const hasExistingWebMap = !!mapConfig?.data?.attributes?.esri_web_map_id;
+    const hasExistingWebMap = !!mapConfig.data.attributes.esri_web_map_id;
 
     const geoJsonImportDisabled =
       layerType === 'CustomMaps::EsriFeatureLayer' || hasExistingWebMap;

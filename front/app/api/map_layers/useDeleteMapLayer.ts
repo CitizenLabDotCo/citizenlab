@@ -15,7 +15,7 @@ const useDeleteMapLayer = () => {
     mutationFn: deleteMapLayer,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: mapConfigKeys.item({ projectId: variables.projectId }),
+        queryKey: mapConfigKeys.item({ id: variables.projectId }),
       });
     },
   });

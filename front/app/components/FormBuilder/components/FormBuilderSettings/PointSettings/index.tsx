@@ -12,8 +12,12 @@ import styled from 'styled-components';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import Modal from 'components/UI/Modal';
-import { IMapConfig } from 'api/map_config/types';
 import CustomMapConfigPage from 'containers/Admin/CustomMapConfigPage';
+import { useFormContext } from 'react-hook-form';
+import useAddMapConfig from 'api/map_config/useAddMapConfig';
+import useMapConfig from 'api/map_config/useMapConfig';
+import { useParams } from 'react-router-dom';
+// import { IMapConfig } from 'api/map_config/types';
 
 const StyledLabel = styled(Label)`
   height: 100%;
@@ -26,10 +30,37 @@ type Props = {
 };
 
 const PointSettings = ({ mapConfigIdName }: Props) => {
+  const { projectId } = useParams() as {
+    projectId: string;
+  };
+  const { setValue, watch } = useFormContext();
+  const { data: projectMapConfig } = useMapConfig(projectId);
+  const { mutateAsync: createProjectMapConfig } = useAddMapConfig();
+
+  console.log('Map Config ID: ', watch(mapConfigIdName));
+
+  const onConfigureMapClick = () => {
+    if (!watch(mapConfigIdName)) {
+      // Create a map config if one doesn't already exist
+      createProjectMapConfig(
+        {},
+        {
+          onSuccess: (data) => {
+            console.log({ data });
+            // Set the form value to the map config ID
+            setValue(mapConfigIdName, data.data.id);
+            // Open the modal
+            setShowModal(true);
+          },
+        }
+      );
+    }
+  };
+
   const { formatMessage } = useIntl();
 
   const [showModal, setShowModal] = useState(false);
-  const [mapConfig, setMapConfig] = useState<IMapConfig | null>(null);
+  // const [mapConfig, setMapConfig] = useState<IMapConfig | null>(null);
 
   return (
     <>
@@ -51,9 +82,7 @@ const PointSettings = ({ mapConfigIdName }: Props) => {
           iconPos="left"
           icon="edit"
           buttonStyle="secondary"
-          onClick={() => {
-            setShowModal(true);
-          }}
+          onClick={onConfigureMapClick}
         >
           {formatMessage(messages.configureMap)}
         </Button>

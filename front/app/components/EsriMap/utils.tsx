@@ -14,9 +14,15 @@ import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductio
 import MapView from '@arcgis/core/views/MapView';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
+import Basemap from '@arcgis/core/Basemap';
+import Collection from '@arcgis/core/core/Collection';
+import WebMap from '@arcgis/core/WebMap';
+import Expand from '@arcgis/core/widgets/Expand';
+import LayerList from '@arcgis/core/widgets/LayerList';
+import Legend from '@arcgis/core/widgets/Legend';
 
 // utils
-import { hexToRGBA } from 'utils/helperUtils';
+import { hexToRGBA, isNil } from 'utils/helperUtils';
 
 // types
 import { Localize } from 'hooks/useLocalize';
@@ -28,6 +34,9 @@ import {
   DEFAULT_TILE_PROVIDER,
   MAPTILER_ATTRIBUTION,
 } from './constants';
+import { IMapConfig } from 'api/map_config/types';
+import { InitialData } from '.';
+import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 
 // getDefaultBasemap
 // Description: Gets the correct basemap given a certain tileProvider URL.
@@ -270,7 +279,6 @@ export const goToMapLocation = async (
       },
       {
         duration: 1000,
-        easing: 'ease-in-out',
       }
     )
     .catch(() => {
@@ -380,7 +388,7 @@ export const createEsriFeatureLayers = (
 ) => {
   // create new Feature Layers from the Map Config layers
   const esriLayers: Layer[] = [];
-  layers.map((layer) => {
+  layers.forEach((layer) => {
     if (localize(layer.title_multiloc)) {
       const title = localize(layer.title_multiloc);
 
@@ -411,6 +419,28 @@ export const createEsriFeatureLayers = (
     }
   });
   return esriLayers;
+};
+
+// parseLayers
+// Description: Parse the layers from the map config and create Esri layers
+export const parseLayers = (
+  mapConfig: IMapConfig | null | undefined,
+  localize: Localize
+) => {
+  const mapConfigLayers = mapConfig?.data.attributes.layers;
+  // All layers are either of type Esri or GeoJSON, so we can check just the first layer
+  if (
+    mapConfigLayers &&
+    mapConfigLayers[0]?.type === 'CustomMaps::GeojsonLayer'
+  ) {
+    return createEsriGeoJsonLayers(mapConfig?.data.attributes.layers, localize);
+  } else if (
+    mapConfigLayers &&
+    mapConfigLayers[0]?.type === 'CustomMaps::EsriFeatureLayer'
+  ) {
+    return createEsriFeatureLayers(mapConfig?.data.attributes.layers, localize);
+  }
+  return [];
 };
 
 // createEsriGeoJsonLayers
@@ -493,4 +523,73 @@ export const createEsriGeoJsonLayers = (
 
     return geoJsonLayer;
   });
+};
+
+// handleWebMapReferenceLayers
+// Description: Re-order any reference layers which are part of the WebMap's basemap
+// These need to be re-ordered so they appear underneath any additional layers we create (E.g. Idea pins)
+// API doc: https://developers.arcgis.com/javascript/latest/api-reference/esri-Basemap.html#referenceLayers
+export const handleWebMapReferenceLayers = (
+  webMap: WebMap,
+  referenceLayers: Collection<Layer>
+) => {
+  // Add current basemap layers to new variable
+  const newBasemapLayers = webMap.basemap?.baseLayers;
+  // Append the reference layers to the new basemap layers list
+  webMap.addMany(referenceLayers.toArray());
+  // Set the WebMap basemap to this new list of layers
+  webMap.basemap = new Basemap({
+    baseLayers: newBasemapLayers,
+  });
+};
+
+// showLayerVisibilityControls
+// Description: Shows the layer visibility controls on the map
+export const showLayerVisibilityControls = (mapView: MapView) => {
+  const layerList = new Expand({
+    content: new LayerList({
+      view: mapView,
+    }),
+    view: mapView,
+    expanded: false,
+    mode: 'floating',
+  });
+  mapView.ui.add(layerList, {
+    position: 'bottom-right',
+  });
+};
+
+// addMapLegend
+// Description: Adds a legend to the map
+export const addMapLegend = (mapView: MapView, isMobileOrSmaller: boolean) => {
+  const legend = new Expand({
+    content: new Legend({
+      view: mapView,
+      hideLayersNotInCurrentView: false,
+      style: { type: 'classic', layout: 'stack' },
+    }),
+    view: mapView,
+    expanded: isMobileOrSmaller ? false : true,
+    mode: 'floating',
+  });
+
+  mapView.ui.add(legend, 'bottom-right');
+};
+
+// setMapCenter
+// Description: Set the center of the map
+export const setMapCenter = (
+  mapView: MapView,
+  initialData: InitialData | undefined,
+  globalMapSettings: AppConfigurationMapSettings
+) => {
+  mapView.center = !isNil(initialData?.center)
+    ? new Point({
+        latitude: initialData?.center.coordinates[1],
+        longitude: initialData?.center.coordinates[0],
+      })
+    : new Point({
+        latitude: Number(globalMapSettings.map_center?.lat) || 0,
+        longitude: Number(globalMapSettings.map_center?.long) || 0,
+      });
 };

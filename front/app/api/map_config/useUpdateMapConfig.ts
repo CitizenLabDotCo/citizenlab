@@ -5,13 +5,12 @@ import { IMapConfig, IMapConfigAttributes } from './types';
 import mapConfigKeys from './keys';
 
 type IMapConfigUpdate = {
-  projectId: string;
-  id: string;
+  mapConfigId: string;
 } & IMapConfigAttributes;
 
-const updateMapConfig = ({ projectId, ...map_config }: IMapConfigUpdate) =>
+const updateMapConfig = ({ mapConfigId, ...map_config }: IMapConfigUpdate) =>
   fetcher<IMapConfig>({
-    path: `/projects/${projectId}/map_config`,
+    path: `/map_configs/${mapConfigId}`,
     action: 'patch',
     body: { map_config },
   });
@@ -22,7 +21,7 @@ const useUpdateMapConfig = () => {
     mutationFn: updateMapConfig,
     onSuccess: async (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: mapConfigKeys.item({ projectId: variables.projectId }),
+        queryKey: mapConfigKeys.item({ id: variables.mapConfigId }),
       });
     },
   });

@@ -11,7 +11,7 @@ import messages from 'containers/Admin/CustomMapConfigPage/messages';
 
 // hooks
 import { useIntl } from 'utils/cl-intl';
-import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
+import useUpdateProjectMapConfig from 'api/map_config/useUpdateProjectMapConfig';
 
 // types
 import { IMapConfig } from 'api/map_config/types';
@@ -43,7 +43,7 @@ type Props = {
 
 const MapHelperOptions = ({ mapView, mapConfig, projectId }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: updateProjectMapConfig } = useUpdateMapConfig();
+  const { mutateAsync: updateProjectMapConfig } = useUpdateProjectMapConfig();
 
   const goToDefaultMapView = () => {
     const centerPoint = mapConfig?.data.attributes.center_geojson;

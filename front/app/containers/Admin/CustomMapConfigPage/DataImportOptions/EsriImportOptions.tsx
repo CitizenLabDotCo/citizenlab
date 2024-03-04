@@ -6,18 +6,17 @@ import Tippy from '@tippyjs/react';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // types
-import { ViewOptions } from '.';
 import { IMapConfig } from 'api/map_config/types';
+import { ViewOptions } from '..';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
-import { getLayerType } from './utils';
-import { isNilOrError } from 'utils/helperUtils';
+import { getLayerType } from '../utils';
 
 interface Props {
   projectId: string;
@@ -30,9 +29,7 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
   const isEsriIntegrationEnabled = useFeatureFlag({ name: 'esri_integration' });
 
   const layerType = getLayerType(mapConfig);
-  const hasExistingWebMap = !isNilOrError(
-    mapConfig?.data?.attributes?.esri_web_map_id
-  );
+  const hasExistingWebMap = !!mapConfig.data.attributes.esri_web_map_id;
 
   const webMapUploadDisabled =
     hasExistingWebMap ||

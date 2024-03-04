@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // components
 import Error from 'components/UI/Error';
@@ -15,20 +15,17 @@ import {
   Button,
   Success,
 } from '@citizenlab/cl2-component-library';
-import tooltipImage from './images/esri_feature_url_example.png';
+import tooltipImage from '../TooltipImages/esri_portal_id_example.png';
 
 // types
-import { ViewOptions } from '.';
+import { ViewOptions } from '..';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { request, ErrorTypes, ApiKeyManager } from '@esri/arcgis-rest-request';
 
 // hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useAddMapLayer from 'api/map_layers/useAddMapLayer';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { getFeatureLayerInitialTitleMultiloc } from './utils';
+import useUpdateProjectMapConfig from 'api/map_config/useUpdateProjectMapConfig';
 
 type Props = {
   projectId: string;
@@ -36,61 +33,47 @@ type Props = {
   mapConfigId: string;
 };
 
-const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
+const WebMapUpload = ({ projectId, mapConfigId, setView }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
+  const { mutateAsync: updateProjectMapConfig, isLoading: apiCallLoading } =
+    useUpdateProjectMapConfig();
 
-  const [url, setUrl] = useState('');
+  const [portalId, setPortalId] = useState('');
   const [loading, setLoading] = useState(false);
   const [importError, setImportError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const tenantLocales = useAppConfigurationLocales();
-  const { mutate: createProjectMapLayer, isLoading: apiCallLoading } =
-    useAddMapLayer();
-
-  const addEsriFeatureLayer = () => {
+  const addEsriWebMap = () => {
     setLoading(true);
-
-    // First test if we have access to the Feature Layer URL
+    // First test if we have access to the Web Map portal item
     const apiKey =
       appConfig?.data.attributes.settings.esri_integration?.api_key;
     const esriAuthManager = apiKey ? ApiKeyManager.fromKey(apiKey) : undefined;
 
-    request(url, {
+    request(`https://www.arcgis.com/sharing/rest/content/items/${portalId}`, {
       authentication: esriAuthManager,
     })
-      .then((response) => {
+      .then(() => {
         setImportError(false);
-
-        const { serviceDescription, serviceItemId } = response;
-        const subLayerCount = response.layers.length;
-
-        // Add the new map layer
-        if (mapConfigId && !isNilOrError(tenantLocales)) {
-          createProjectMapLayer(
+        if (mapConfigId) {
+          // Save the web map ID to the map config
+          updateProjectMapConfig(
             {
-              type: 'CustomMaps::EsriFeatureLayer',
               projectId,
-              layer_url: url,
               id: mapConfigId,
-              title_multiloc: getFeatureLayerInitialTitleMultiloc(
-                serviceDescription || serviceItemId,
-                tenantLocales,
-                subLayerCount
-              ),
-              default_enabled: true,
+              esri_web_map_id: portalId,
             },
             {
+              onSuccess: () => {
+                setSuccess(true);
+                setLoading(false);
+                setView('main');
+              },
               onError: () => {
                 setImportError(true);
-                setLoading(false);
-              },
-              onSuccess: () => {
-                setLoading(false);
-                setSuccess(true);
-                setView('main');
+                setErrorMessage(formatMessage(messages.defaultEsriError));
               },
             }
           );
@@ -127,7 +110,7 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
     <>
       <Box mt="12px" display="flex" gap="8px" alignContent="center">
         <Title my="4px" variant="h5" color={'coolGrey600'} fontWeight="bold">
-          {formatMessage(messages.addFeatureLayer)}
+          {formatMessage(messages.addWebMap)}
         </Title>
         <IconTooltip
           mb="4px"
@@ -136,23 +119,21 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
               <Box mb="8px">
                 <img src={tooltipImage} alt="" width="100%" />
               </Box>
-              {formatMessage(messages.featureLayerTooltop)}
+              {formatMessage(messages.webMapTooltip)}
             </>
           }
         />
       </Box>
       <Text my="8px" color={'grey800'}>
-        {formatMessage(messages.addFeatureLayerInstruction)}
+        {formatMessage(messages.addWebMapInstruction)}
       </Text>
       <Input
         type="text"
-        value={url}
+        value={portalId}
         onChange={(value) => {
-          setUrl(value);
+          setPortalId(value);
         }}
-        placeholder={
-          'https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/Congressional_Districts/FeatureServer/0'
-        }
+        placeholder={'e1cc90bf48e74243883516c2f4f6f72d'}
       />
 
       <Box display="flex" flexWrap="wrap" gap="12px" mt="16px">
@@ -165,8 +146,8 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
           {formatMessage(messages.cancel2)}
         </Button>
         <Button
-          disabled={!url || url === ''}
-          onClick={addEsriFeatureLayer}
+          disabled={!portalId || portalId === ''}
+          onClick={addEsriWebMap}
           processing={apiCallLoading || loading}
         >
           {formatMessage(messages.import2)}
@@ -182,4 +163,4 @@ const FeatureLayerUpload = ({ projectId, mapConfigId, setView }: Props) => {
   );
 };
 
-export default FeatureLayerUpload;
+export default WebMapUpload;

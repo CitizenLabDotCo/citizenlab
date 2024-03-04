@@ -3,7 +3,7 @@ import { isEmpty, inRange } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
+import useUpdateProjectMapConfig from 'api/map_config/useUpdateProjectMapConfig';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useMapConfig from 'api/map_config/useMapConfig';
 
@@ -15,12 +15,12 @@ import { SubSectionTitle } from 'components/admin/Section';
 import MapView from '@arcgis/core/views/MapView';
 
 // utils
-import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
+import { getCenter, getZoomLevel } from '../../../../utils/mapUtils/map';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
@@ -89,7 +89,7 @@ interface IFormValues {
 const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
   ({ projectId, className, mapView, intl: { formatMessage } }) => {
     const { data: appConfig } = useAppConfiguration();
-    const { mutateAsync: updateProjectMapConfig } = useUpdateMapConfig();
+    const { mutateAsync: updateProjectMapConfig } = useUpdateProjectMapConfig();
     const { data: mapConfig } = useMapConfig(projectId);
 
     const defaultLatLng = getCenter(

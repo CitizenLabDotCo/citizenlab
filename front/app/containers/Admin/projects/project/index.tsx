@@ -19,33 +19,26 @@ import { ITab } from 'typings';
 import { IProjectData } from 'api/projects/types';
 
 // utils
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 // hooks
 import { IPhaseData } from 'api/phases/types';
 import { getCurrentPhase } from 'api/phases/utils';
-import { getIntialTabs } from './tabs';
+import { getIntialTabs, getTabHideConditions } from './tabs';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import { getTimelineTab } from './timeline/utils';
 
 interface DataProps {
-  phases: IPhaseData[];
   project: IProjectData;
   selectedPhase?: IPhaseData;
   setSelectedPhase: (phase: IPhaseData) => void;
 }
 
-type TabHideConditions = {
-  [tabName: string]: (project: IProjectData, phases: IPhaseData[]) => boolean;
-};
-
 const AdminProjectsProjectIndex = ({
   project,
-  phases,
   selectedPhase,
   setSelectedPhase,
 }: DataProps) => {
@@ -57,62 +50,33 @@ const AdminProjectsProjectIndex = ({
   const surveys_enabled = useFeatureFlag({
     name: 'surveys',
   });
-  const isGranularPermissionsEnabled = useFeatureFlag({
+  const granular_permissions_enabled = useFeatureFlag({
     name: 'granular_permissions',
   });
+  const phase_reports_enabled = useFeatureFlag({
+    name: 'phase_reports',
+  });
+
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
   );
-  const initialTabs: ITab[] = getIntialTabs(formatMessage);
+  const [tabs] = useState<ITab[]>(getIntialTabs(formatMessage));
 
-  const getTabHideConditions = (phase: IPhaseData): TabHideConditions => ({
-    ideas: function isIdeaTabHidden() {
-      return !getMethodConfig(phase.attributes.participation_method)
-        .showInputManager;
-    },
-    ideaform: function isIdeaFormTabHidden() {
-      return (
-        getMethodConfig(phase.attributes.participation_method).formEditor !==
-        'simpleFormEditor'
-      );
-    },
-    map: function isMapHidden() {
-      return !(
-        phase.attributes.participation_method === 'ideation' ||
-        phase.attributes.participation_method === 'voting'
-      );
-    },
-    poll: function isPollTabHidden() {
-      return phase.attributes.participation_method !== 'poll';
-    },
-    survey: function isSurveyTabHidden() {
-      return phase.attributes.participation_method !== 'native_survey';
-    },
-    'survey-results': function surveyResultsTabHidden() {
-      return (
-        phase.attributes.participation_method !== 'survey' ||
-        !surveys_enabled ||
-        !typeform_enabled ||
-        (surveys_enabled && phase.attributes.survey_service !== 'typeform')
-      );
-    },
-    volunteering: function isVolunteeringTabHidden() {
-      return phase?.attributes.participation_method !== 'volunteering';
-    },
-    'access-rights': function isAccessRightsTabHidden() {
-      return !isGranularPermissionsEnabled;
-    },
-  });
-
-  const getTabs = (projectId: string) => {
+  const getTabs = () => {
     if (!selectedPhase) {
       return [];
     }
-    const tabHideConditions = getTabHideConditions(selectedPhase);
-    const baseTabsUrl = `/admin/projects/${projectId}`;
-    const cleanedTabs = initialTabs.filter((tab) => {
+    const tabHideConditions = getTabHideConditions(selectedPhase, {
+      typeform_enabled,
+      surveys_enabled,
+      granular_permissions_enabled,
+      phase_reports_enabled,
+    });
+
+    const baseTabsUrl = `/admin/projects/${project.id}`;
+    const cleanedTabs = tabs.filter((tab) => {
       if (tabHideConditions[tab.name]) {
-        return !tabHideConditions[tab.name](project, phases);
+        return !tabHideConditions[tab.name]();
       }
       return true;
     });
@@ -139,7 +103,7 @@ const AdminProjectsProjectIndex = ({
       </Box>
       <Box p="8px 24px 24px 24px">
         {!isNewPhaseLink && selectedPhase && (
-          <PhaseHeader phase={selectedPhase} tabs={getTabs(project.id)} />
+          <PhaseHeader phase={selectedPhase} tabs={getTabs()} />
         )}
 
         <Box p={`${defaultAdminCardPadding}px`} background={colors.white}>
@@ -216,7 +180,6 @@ export default () => {
   return (
     <AdminProjectsProjectIndex
       project={project.data}
-      phases={phases.data}
       selectedPhase={selectedPhase}
       setSelectedPhase={setSelectedPhase}
     />

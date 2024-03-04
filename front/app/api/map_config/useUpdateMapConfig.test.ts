@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import useUpdateMapConfig from './useUpdateMapConfig';
+import useUpdateProjectMapConfig from './useUpdateProjectMapConfig';
 import { mapConfigData } from './__mocks__/useMapConfig';
 
 import { setupServer } from 'msw/node';
@@ -16,12 +16,12 @@ const server = setupServer(
   })
 );
 
-describe('useUpdateMapConfig', () => {
+describe('useUpdateProjectMapConfig', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUpdateMapConfig(), {
+    const { result, waitFor } = renderHook(() => useUpdateProjectMapConfig(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -43,7 +43,7 @@ describe('useUpdateMapConfig', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUpdateMapConfig(), {
+    const { result, waitFor } = renderHook(() => useUpdateProjectMapConfig(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {
