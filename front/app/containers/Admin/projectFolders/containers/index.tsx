@@ -1,11 +1,9 @@
-// Libraries
 import React from 'react';
 import clHistory from 'utils/cl-router/history';
 
 // Services
 import { isAdmin } from 'utils/permissions/roles';
 
-// Components
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
 import Button from 'components/UI/Button';

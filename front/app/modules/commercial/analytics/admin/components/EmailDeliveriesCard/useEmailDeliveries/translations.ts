@@ -1,8 +1,10 @@
-import messages from './messages';
+import { FormatMessage } from 'typings';
+
 import moduleMessages from 'components/admin/GraphCards/messages';
+
 import cardMessages from '../messages';
 
-import { FormatMessage } from 'typings';
+import messages from './messages';
 
 export interface Translations {
   stats: string;

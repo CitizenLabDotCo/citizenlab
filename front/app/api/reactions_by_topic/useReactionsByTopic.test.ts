@@ -1,10 +1,11 @@
-import useReactionsByTopic from './useReactionsByTopic';
-
 import { renderHook } from '@testing-library/react-hooks';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IReactionsByTopic } from './types';
+import useReactionsByTopic from './useReactionsByTopic';
 
 const apiPath = `*stats/reactions_by_topic`;
 

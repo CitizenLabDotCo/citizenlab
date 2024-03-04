@@ -1,4 +1,3 @@
-// Libraries
 import React, { FormEvent, useEffect, useState, useRef } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -9,15 +8,12 @@ import { IUpdatedInternalComment } from 'api/internal_comments/types';
 import { FormattedMessage } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
-// Components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-// Styling
 import styled, { useTheme } from 'styled-components';
 
-// Typings
 import { CLErrors } from 'typings';
 
 import useInternalComment from 'api/internal_comments/useInternalComment';

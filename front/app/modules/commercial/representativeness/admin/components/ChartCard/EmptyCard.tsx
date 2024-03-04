@@ -1,10 +1,6 @@
 import React from 'react';
 
 // images
-import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
-
-import useLocalize from 'hooks/useLocalize';
-
 import {
   Box,
   Title,
@@ -12,15 +8,19 @@ import {
   StatusLabel,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { StyledBackgroundImage } from '../../containers/Dashboard/EmptyState';
+import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+
 import Button from 'components/UI/Button';
 
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import styled from 'styled-components';
+import useLocalize from 'hooks/useLocalize';
 
-import { Multiloc } from 'typings';
+import { StyledBackgroundImage } from '../../containers/Dashboard/EmptyState';
+
+import messages from './messages';
 
 const StyledStatusLabel = styled(StatusLabel)`
   margin-left: 8px;

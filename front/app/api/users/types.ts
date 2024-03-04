@@ -1,8 +1,10 @@
-import { TRole } from 'utils/permissions/roles';
-import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import { ImageSizes, Locale, Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
+import { TRole } from 'utils/permissions/roles';
+
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
+
 import usersKeys from './keys';
 
 export type UsersKeys = Keys<typeof usersKeys>;

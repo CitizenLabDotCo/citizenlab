@@ -1,9 +1,7 @@
-// Libraries
 import React, { FormEvent, useState } from 'react';
 import { isArray, isNil, omitBy, includes } from 'lodash-es';
 import { saveAs } from 'file-saver';
 
-// Components
 import Checkbox from 'components/UI/Checkbox';
 import {
   Dropdown,
@@ -21,7 +19,6 @@ import { IGroupMemberships } from 'api/group_memberships/types';
 import useAddMembership from 'api/group_memberships/useAddMembership';
 import useGroups from 'api/groups/useGroups';
 
-// Utils
 import { requestBlob } from 'utils/requestBlob';
 import { API_PATH } from 'containers/App/constants';
 
@@ -33,15 +30,12 @@ import events, { MembershipAdd } from './events';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// I18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// Styling
 import styled from 'styled-components';
 import { rgba } from 'polished';
 
-// Typings
 import { CLErrorsWrapper } from 'typings';
 import usersKeys from 'api/users/keys';
 import { useQueryClient } from '@tanstack/react-query';

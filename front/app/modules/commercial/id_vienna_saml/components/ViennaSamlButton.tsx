@@ -1,16 +1,15 @@
 import React from 'react';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-import { TOnContinueFunction } from 'containers/Authentication/steps/AuthProviders/AuthProviderButton';
-import { StyledAuthProviderButton } from 'containers/Authentication/steps/AuthProviders';
-import ViennaIcon from './ViennaIcon';
-
-import { SignUpInFlow } from 'containers/Authentication/typings';
-
-import styled from 'styled-components';
 import { fontSizes, Box, Text } from '@citizenlab/cl2-component-library';
+import { StyledAuthProviderButton } from 'containers/Authentication/steps/AuthProviders';
+import { TOnContinueFunction } from 'containers/Authentication/steps/AuthProviders/AuthProviderButton';
+import { SignUpInFlow } from 'containers/Authentication/typings';
+import styled from 'styled-components';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
+import ViennaIcon from './ViennaIcon';
 
 const Container = styled(Box)`
   display: flex;

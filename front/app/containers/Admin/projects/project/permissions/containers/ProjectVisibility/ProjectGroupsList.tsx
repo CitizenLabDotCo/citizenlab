@@ -1,11 +1,9 @@
-// Libraries
 import React, { useState } from 'react';
 import { find } from 'lodash-es';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// Components
 import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import GroupAvatar from './GroupAvatar';
@@ -14,7 +12,6 @@ import { List, Row } from 'components/admin/ResourceList';
 // Style
 import styled from 'styled-components';
 
-// Typings
 import { IOption } from 'typings';
 
 // Api

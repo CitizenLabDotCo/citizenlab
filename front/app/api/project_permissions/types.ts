@@ -1,7 +1,10 @@
-import { Keys } from 'utils/cl-react-query/types';
-import projectPermissionKeys from './keys';
 import { IRelationship } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
 import { IPhasePermissionAction } from 'api/permissions/types';
+
+import projectPermissionKeys from './keys';
 
 export type ProjectPermissionKeys = Keys<typeof projectPermissionKeys>;
 

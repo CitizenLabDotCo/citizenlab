@@ -1,19 +1,18 @@
 import React from 'react';
-import styled from 'styled-components';
-
-import { IOption } from 'typings';
-
-import { isNilOrError } from 'utils/helperUtils';
 
 import { Select } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+import { IOption } from 'typings';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getFullName } from 'utils/textUtils';
+
+import useProjectById from 'api/projects/useProjectById';
+import useUpdateProject from 'api/projects/useUpdateProject';
+import useUsers from 'api/users/useUsers';
 
 import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
-import useUpdateProject from 'api/projects/useUpdateProject';
-import useProjectById from 'api/projects/useProjectById';
-import { getFullName } from 'utils/textUtils';
-import useUsers from 'api/users/useUsers';
 
 const StyledSelect = styled(Select)`
   width: 300px;

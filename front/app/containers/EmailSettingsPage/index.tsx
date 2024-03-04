@@ -1,7 +1,5 @@
-// Libraries
 import React, { useEffect, useState } from 'react';
 
-// Components
 import { colors } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';

@@ -1,8 +1,10 @@
 import { FC, useEffect } from 'react';
+
+import { WrappedComponentProps } from 'react-intl';
 import { InsertConfigurationOptions, ITab } from 'typings';
 
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+
 import messages from './messages';
 
 interface Props {

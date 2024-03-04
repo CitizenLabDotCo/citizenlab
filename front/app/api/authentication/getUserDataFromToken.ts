@@ -1,4 +1,5 @@
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import { IUser } from 'api/users/types';
 
 export default function getUserDataFromToken(token: string) {

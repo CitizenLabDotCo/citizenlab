@@ -1,19 +1,22 @@
-import authUserStream from 'api/me/authUserStream';
+import { combineLatest } from 'rxjs';
+
+import {
+  registerDestination,
+  IDestinationConfig,
+} from 'components/ConsentManager/destinations';
+
 import {
   bufferUntilInitialized,
   events$,
   initializeFor,
 } from 'utils/analytics';
-import { combineLatest } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
-import {
-  registerDestination,
-  IDestinationConfig,
-} from 'components/ConsentManager/destinations';
-import { isAdmin, isRegularUser, isSuperAdmin } from 'utils/permissions/roles';
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { ModuleConfiguration } from 'utils/moduleUtils';
+import { isAdmin, isRegularUser, isSuperAdmin } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
+
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import authUserStream from 'api/me/authUserStream';
 
 declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {

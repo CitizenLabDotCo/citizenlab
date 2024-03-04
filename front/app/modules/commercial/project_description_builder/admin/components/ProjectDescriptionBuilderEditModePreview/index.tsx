@@ -1,9 +1,10 @@
 import React, { memo } from 'react';
 
+import { Locale } from 'typings';
+
 import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
 
 import useLocale from 'hooks/useLocale';
-import { Locale } from 'typings';
 
 type ProjectDescriptionBuilderPreviewProps = {
   projectId: string;

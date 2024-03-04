@@ -5,7 +5,6 @@ import { withJsonFormsControlProps } from '@jsonforms/react';
 import { ControlProps } from '@jsonforms/core';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
-// Components
 import {
   Box,
   Text,

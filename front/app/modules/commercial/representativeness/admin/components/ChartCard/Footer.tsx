@@ -1,15 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import Legend from 'components/admin/Graphs/Legend';
-import Warning from 'components/UI/Warning';
-import FieldInfo, { Props as FieldInfoProps } from './FieldInfo';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import styled from 'styled-components';
 
 import { View } from 'components/admin/GraphCard/ViewToggle';
+import Legend from 'components/admin/Graphs/Legend';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import FieldInfo, { Props as FieldInfoProps } from './FieldInfo';
+import messages from './messages';
 
 interface Props extends FieldInfoProps {
   hideTicks: boolean;

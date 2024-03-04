@@ -14,7 +14,6 @@ import {
   IAppConfigurationSettingsCore,
 } from 'api/app_configuration/types';
 
-// Utils
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 

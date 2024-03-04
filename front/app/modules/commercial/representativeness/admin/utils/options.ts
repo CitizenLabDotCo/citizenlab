@@ -1,10 +1,13 @@
 import { roundPercentages } from 'utils/math';
-import { FormValues } from './form';
-import { forEachBin } from './bins';
 
 import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
+
 import { Localize } from 'hooks/useLocalize';
+
 import { Bins } from '../api/reference_distribution/types';
+
+import { forEachBin } from './bins';
+import { FormValues } from './form';
 
 /*
  * Takes a thousand-formatted locale string in the US format (e.g. 1,000,000)

@@ -1,11 +1,9 @@
-// api
-import getProjectbySlug from 'api/projects/getProjectBySlug';
-
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import { slugRegEx } from 'utils/textUtils';
 
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import ideasKeys from 'api/ideas/keys';
 import { fetchIdea } from 'api/ideas/useIdeaBySlug';
+import getProjectbySlug from 'api/projects/getProjectBySlug';
 
 export const getProjectId = async (path: string) => {
   if (isProjectPage(path)) {

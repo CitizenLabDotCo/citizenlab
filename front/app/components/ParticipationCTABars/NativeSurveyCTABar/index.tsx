@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-// Components
 import IdeaButton from 'components/IdeaButton';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';

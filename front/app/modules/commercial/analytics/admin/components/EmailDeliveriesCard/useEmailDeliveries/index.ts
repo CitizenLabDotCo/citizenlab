@@ -1,20 +1,22 @@
+import { useState } from 'react';
+
 import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
 
-// query
-import { query } from './query';
+import useAnalytics from 'api/analytics/useAnalytics';
 
-// parse
 import {
   parseStats,
   parseTimeSeries,
   mergeTimeSeries,
   parseExcelData,
 } from './parse';
+import { query } from './query';
+import { getTranslations } from './translations';
 
+// query
+
+// parse
 import { QueryParameters, Response } from './typings';
-import useAnalytics from 'api/analytics/useAnalytics';
-import { useState } from 'react';
 
 export default function useEmailDeliveriesData({
   startAtMoment,

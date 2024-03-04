@@ -1,4 +1,3 @@
-// Libraries
 import React, { FormEvent, useEffect, useState } from 'react';
 import moment, { Moment } from 'moment';
 import { isEmpty } from 'lodash-es';
@@ -16,7 +15,6 @@ import useAddPhase from 'api/phases/useAddPhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-// Components
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Error from 'components/UI/Error';
@@ -44,11 +42,9 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// Typings
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 
-// Resources
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
 import { useParams } from 'react-router-dom';
 

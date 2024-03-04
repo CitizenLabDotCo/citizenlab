@@ -9,10 +9,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 // import RepresentativenessArticleLink from '../../components/RepresentativenessArticleLink';
 
-import messages from './messages';
+import styled from 'styled-components';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
-import styled from 'styled-components';
+import messages from './messages';
 
 const StyledStatusLabel = styled(StatusLabel)`
   margin-left: 8px;

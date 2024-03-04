@@ -1,4 +1,3 @@
-// Libraries
 import React, { useState, Fragment } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -9,7 +8,6 @@ import styled from 'styled-components';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-// Components
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import QuestionRow from './PollQuestions/QuestionRow';
@@ -19,7 +17,6 @@ import OptionForm from './PollAnswerOptions/OptionForm';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// Typings
 import { Multiloc } from 'typings';
 import useAddPollQuestion from 'api/poll_questions/useAddPollQuestion';
 import useDeletePollQuestion from 'api/poll_questions/useDeletePollQuestion';

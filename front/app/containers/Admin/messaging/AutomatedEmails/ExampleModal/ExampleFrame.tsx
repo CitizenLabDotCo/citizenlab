@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// Components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Frame from 'react-frame-component';
 

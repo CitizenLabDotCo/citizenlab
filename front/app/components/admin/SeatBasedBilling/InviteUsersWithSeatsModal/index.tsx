@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// Components
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import SeatInfo, {
@@ -14,7 +13,6 @@ import messages from './messages';
 
 import useExceedsSeats from 'hooks/useExceedsSeats';
 
-// Utils
 import { TSeatNumber } from 'api/app_configuration/types';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
 

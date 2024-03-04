@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 import { isLastVerificationMethod } from 'api/verification_methods/util';

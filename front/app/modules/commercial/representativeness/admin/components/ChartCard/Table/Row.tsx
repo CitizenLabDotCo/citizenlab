@@ -1,12 +1,10 @@
 import React from 'react';
 
 import { Tr, Td, colors } from '@citizenlab/cl2-component-library';
-
 import styled from 'styled-components';
 
-import { formatPercentage } from '../utils';
-
 import { RepresentativenessRow } from '../../../hooks/parseReferenceData';
+import { formatPercentage } from '../utils';
 
 const AbsoluteValue = styled.span`
   color: ${colors.textSecondary};

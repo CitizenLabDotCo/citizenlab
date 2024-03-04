@@ -6,12 +6,14 @@ import {
   Text,
   // IconTooltip,
 } from '@citizenlab/cl2-component-library';
+
 // import RepresentativenessArticleLink from '../RepresentativenessArticleLink';
-import ReportExportMenu from 'components/admin/ReportExportMenu';
 import ViewToggle, { View } from 'components/admin/GraphCard/ViewToggle';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
   title: string;

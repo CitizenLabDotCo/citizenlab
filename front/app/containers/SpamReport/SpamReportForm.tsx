@@ -4,10 +4,8 @@ import React, { FormEvent } from 'react';
 // Services
 import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';
 
-// Utils
 import getSubmitState from 'utils/getSubmitState';
 
-// Components
 import { SectionField } from 'components/admin/Section';
 import { Label, Radio, fontSizes } from '@citizenlab/cl2-component-library';
 import TextArea from 'components/UI/TextArea';
@@ -63,7 +61,6 @@ const ReportReason = styled.div`
   }
 `;
 
-// Typings
 import { CRUDParams } from 'typings';
 
 interface Props extends CRUDParams {

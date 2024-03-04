@@ -11,7 +11,6 @@ import {
 import { darken } from 'polished';
 import styled from 'styled-components';
 
-// Components
 import CommentBody from 'components/PostShowComponents/Comments/Comment/CommentBody';
 import CommentHeader from 'components/PostShowComponents/Comments/Comment/CommentHeader';
 import T from 'components/T';

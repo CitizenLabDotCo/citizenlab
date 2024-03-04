@@ -1,9 +1,8 @@
-// Libraries
 import React from 'react';
 import { TRole } from 'utils/permissions/roles';
 import { includes, isArray } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-// Components
+
 import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
 import Pagination from 'components/Pagination';
 import UserTableRow from './UserTableRow';
@@ -16,7 +15,6 @@ import events from './events';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// I18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 

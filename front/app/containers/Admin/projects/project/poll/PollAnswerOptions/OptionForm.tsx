@@ -1,4 +1,3 @@
-// Libraries
 import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -6,7 +5,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IPollQuestionData } from 'api/poll_questions/types';
 import { IPollOptionData } from 'api/poll_options/types';
 
-// Components
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { Icon } from 'semantic-ui-react';

@@ -19,7 +19,6 @@ import styled, { keyframes, css } from 'styled-components';
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useUserById from 'api/users/useUserById';
 
-// Utils
 import { scrollToElement } from 'utils/scroll';
 
 import { useLocation } from 'react-router-dom';

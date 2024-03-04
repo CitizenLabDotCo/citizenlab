@@ -1,21 +1,22 @@
 import React, { memo, useCallback, useState } from 'react';
 
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+import Button from 'components/UI/Button';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 
-import Button from 'components/UI/Button';
+import messages from './messages';
 import UseTemplateModal from './UseTemplateModal';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 // style
-import styled from 'styled-components';
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
 
 const duration = 300;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';

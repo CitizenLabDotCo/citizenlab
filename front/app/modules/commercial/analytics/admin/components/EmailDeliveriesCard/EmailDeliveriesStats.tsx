@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+
 import Statistic from 'components/admin/Graphs/Statistic';
 
-import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
-
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
+import messages from './messages';
 import { Stats } from './useEmailDeliveries/typings';
 
 interface Props {

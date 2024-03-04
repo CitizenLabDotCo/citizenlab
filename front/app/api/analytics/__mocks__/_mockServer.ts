@@ -1,7 +1,9 @@
-import { rest } from 'msw';
 import { API_PATH } from 'containers/App/constants';
-import responses from './responses';
+import { rest } from 'msw';
+
 import { findResponseByQuery } from 'utils/storybook/findResponseByQuery';
+
+import responses from './responses';
 
 const apiPath = `${API_PATH}/analytics`;
 

@@ -1,9 +1,10 @@
 import React from 'react';
 
-import useProjectById from 'api/projects/useProjectById';
-import useLocalize from 'hooks/useLocalize';
+import { Box, Spinner, Text, Title } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import useAddProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout';
+import { useParams } from 'react-router-dom';
+import { Locale } from 'typings';
 
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
@@ -11,16 +12,17 @@ import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitche
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
-import { Box, Spinner, Text, Title } from '@citizenlab/cl2-component-library';
 
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // routing
 import clHistory from 'utils/cl-router/history';
-import { useParams } from 'react-router-dom';
 
-import { Locale } from 'typings';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from './messages';
 
 type ProjectDescriptionBuilderTopBarProps = {
   hasPendingState?: boolean;

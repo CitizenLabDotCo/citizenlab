@@ -1,7 +1,6 @@
 import React from 'react';
 import { rgba } from 'polished';
 
-// Components
 import {
   Box,
   Icon,
@@ -21,7 +20,6 @@ import { SeatInfoProps, SeatNumbersType, SeatTypeMessageDescriptor } from '.';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// Utils
 import { isNil } from 'utils/helperUtils';
 
 const TrackerInfo = ({ seatType }: SeatInfoProps) => {

@@ -26,7 +26,6 @@ import MultipleSelect from 'components/HookForm/MultipleSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// Utils
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 

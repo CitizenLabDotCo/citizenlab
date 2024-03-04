@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import useAuthUser from 'api/me/useAuthUser';
-
-import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-
 import { Box } from '@citizenlab/cl2-component-library';
-import Header from './Header';
-import ChartFilters from '../../components/ChartFilters';
-import EmptyState from './EmptyState';
-import ChartCards from './ChartCards';
 
-import { hasReferenceData } from './utils';
+import { trackEventByName } from 'utils/analytics';
 import { isAdmin } from 'utils/permissions/roles';
 
-// tracks
-import { trackEventByName } from 'utils/analytics';
+import useAuthUser from 'api/me/useAuthUser';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import ChartFilters from '../../components/ChartFilters';
+
+import ChartCards from './ChartCards';
+import EmptyState from './EmptyState';
+import Header from './Header';
 import tracks from './tracks';
+import { hasReferenceData } from './utils';
+
+// tracks
 
 const hasAnyReferenceData = (userCustomFields: IUserCustomFieldData[]) =>
   userCustomFields.some(hasReferenceData);

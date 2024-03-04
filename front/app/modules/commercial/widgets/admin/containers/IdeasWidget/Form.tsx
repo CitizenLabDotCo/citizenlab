@@ -1,20 +1,11 @@
 import React, { useState } from 'react';
 
-// Components
 import { Label } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-
-// I18n
-
-// Resources
-import GetTopics from 'resources/GetTopics';
 import GetProjects from 'resources/GetProjects';
-
-// Utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// Styling
+import GetTopics from 'resources/GetTopics';
 import styled from 'styled-components';
+
 import { Section, SectionField } from 'components/admin/Section';
 import ColorPicker from 'components/HookForm/ColorPicker';
 import Feedback from 'components/HookForm/Feedback';
@@ -23,11 +14,14 @@ import MultipleSelect from 'components/HookForm/MultipleSelect';
 import Select from 'components/HookForm/Select';
 import Toggle from 'components/HookForm/Toggle';
 import Collapse from 'components/UI/Collapse';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
+
 import messages from '../../messages';
 
 const StyledCollapse = styled(Collapse)`

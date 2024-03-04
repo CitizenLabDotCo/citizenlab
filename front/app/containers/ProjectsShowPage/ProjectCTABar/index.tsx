@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-// Components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import MainHeader from 'containers/MainHeader';
 

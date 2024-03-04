@@ -1,20 +1,19 @@
 import React, { memo, useState, useCallback, MouseEvent } from 'react';
-import { truncate } from 'lodash-es';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import {
   LocaleSwitcher,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import { truncate } from 'lodash-es';
+import { darken } from 'polished';
+import styled from 'styled-components';
+import { Multiloc, Locale } from 'typings';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+
 import messages from './messages';
-
-import styled from 'styled-components';
-import { darken } from 'polished';
-
-import { Multiloc, Locale } from 'typings';
 
 const Container = styled.div`
   overflow-wrap: break-word;

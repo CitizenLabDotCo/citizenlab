@@ -1,7 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import commentKeys from 'api/comments/keys';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import commentKeys from 'api/comments/keys';
+
 import { ICommentReaction, INewReactionProperties } from './types';
 
 export const addCommentReaction = async ({

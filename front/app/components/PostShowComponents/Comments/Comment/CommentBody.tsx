@@ -1,4 +1,3 @@
-// Libraries
 import React, { FormEvent, useEffect, useState, useRef } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -9,15 +8,12 @@ import { IUpdatedComment } from 'api/comments/types';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// Components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-// Styling
 import styled, { useTheme } from 'styled-components';
 
-// Typings
 import { CLErrors } from 'typings';
 
 import Outlet from 'components/Outlet';

@@ -18,7 +18,6 @@ import { SectionField } from 'components/admin/Section';
 import { List, SortableRow } from 'components/admin/ResourceList';
 import Error, { TFieldName } from 'components/UI/Error';
 
-// Typings
 import { Locale, CLError, RHFErrors, Multiloc } from 'typings';
 import { IOptionsType } from 'api/custom_fields/types';
 

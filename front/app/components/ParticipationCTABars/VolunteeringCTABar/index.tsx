@@ -1,6 +1,5 @@
 import React, { useEffect, useState, FormEvent } from 'react';
 
-// Components
 import { Button } from '@citizenlab/cl2-component-library';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 

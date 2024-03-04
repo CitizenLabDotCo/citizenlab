@@ -1,5 +1,6 @@
-import { rest } from 'msw';
 import { API_PATH } from 'containers/App/constants';
+import { rest } from 'msw';
+
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';
 
 export const apiPath = `${API_PATH}/stats/users_by_gender`;

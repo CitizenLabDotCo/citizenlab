@@ -1,4 +1,3 @@
-// Libraries
 import React, { useState } from 'react';
 
 import Button from 'components/UI/Button';

@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
+
 import { ModuleConfiguration } from 'utils/moduleUtils';
+
 const CreateProjectFromTemplate = React.lazy(
   () => import('./admin/containers/CreateProjectFromTemplate')
 );

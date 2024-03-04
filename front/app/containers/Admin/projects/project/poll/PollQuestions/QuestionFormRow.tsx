@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// Components
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import { TextCell, Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
@@ -9,7 +8,6 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// Typings
 import { Multiloc, Locale } from 'typings';
 
 // Hooks

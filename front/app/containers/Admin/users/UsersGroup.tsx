@@ -1,10 +1,8 @@
-// Libraries
 import React, { useState } from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
-// Components
 import UsersGroupHeader from './UsersGroupHeader';
 import Modal from 'components/UI/Modal';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';

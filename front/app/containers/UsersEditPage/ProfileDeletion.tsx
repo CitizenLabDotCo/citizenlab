@@ -1,4 +1,3 @@
-// Libraries
 import React, { PureComponent } from 'react';
 
 // Styles

@@ -1,9 +1,7 @@
-// Libraries
 import React from 'react';
 import styled from 'styled-components';
 import useProjectById from 'api/projects/useProjectById';
 
-// Components
 import ExportVolunteersButton from './ExportVolunteersButton';
 import AllCauses from './AllCauses';
 import { SectionDescription } from 'components/admin/Section';

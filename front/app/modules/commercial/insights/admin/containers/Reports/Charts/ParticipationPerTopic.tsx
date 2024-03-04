@@ -1,14 +1,11 @@
 import React from 'react';
+
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import { map, sortBy } from 'lodash-es';
 import styled from 'styled-components';
 
 // resources
 
-import { fontSizes, colors } from '@citizenlab/cl2-component-library';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import useLocalize from 'hooks/useLocalize';
 import {
   GraphCard,
   GraphCardInner,
@@ -16,13 +13,20 @@ import {
   GraphCardHeader,
   NoDataContainer,
 } from 'components/admin/GraphWrappers';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import useIdeasByTopic from 'api/ideas_by_topic/useIdeasByTopic';
-import useCommentsByTopic from 'api/comments_by_topic/useCommentsByTopic';
-import useReactionsByTopic from 'api/reactions_by_topic/useReactionsByTopic';
-import { IIdeasByTopic } from 'api/ideas_by_topic/types';
-import { IReactionsByTopic } from 'api/reactions_by_topic/types';
+
 import { ICommentsByTopic } from 'api/comments_by_topic/types';
+import useCommentsByTopic from 'api/comments_by_topic/useCommentsByTopic';
+import { IIdeasByTopic } from 'api/ideas_by_topic/types';
+import useIdeasByTopic from 'api/ideas_by_topic/useIdeasByTopic';
+import { IReactionsByTopic } from 'api/reactions_by_topic/types';
+import useReactionsByTopic from 'api/reactions_by_topic/useReactionsByTopic';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from '../messages';
 
 interface Props {
   projectId: string | null;

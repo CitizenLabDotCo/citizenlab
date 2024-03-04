@@ -1,27 +1,16 @@
-// Libraries
 import React from 'react';
 
-// Components
-import { SectionField } from 'components/admin/Section';
-
 import { Button, Label } from '@citizenlab/cl2-component-library';
-
-// Styling
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import adminUsersMessages from 'containers/Admin/users/messages';
 import { FooterContainer, Fill } from 'containers/Admin/users/NormalGroupForm';
 import { useForm, FormProvider } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
-
-const SSectionField = styled(SectionField)`
-  max-width: 570px;
-`;
-
-// Typings
 import { Multiloc } from 'typings';
 import { string, object, array, number } from 'yup';
+
+import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 
@@ -33,6 +22,10 @@ import { HookFormUserFilterConditions } from '../../components/UserFilterConditi
 import { TRule } from '../../components/UserFilterConditions/rules';
 
 import messages from './messages';
+
+const SSectionField = styled(SectionField)`
+  max-width: 570px;
+`;
 
 export interface RulesFormValues {
   rules: TRule[];

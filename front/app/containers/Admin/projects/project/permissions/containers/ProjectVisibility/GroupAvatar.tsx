@@ -1,7 +1,5 @@
-// Libraries
 import React from 'react';
 
-// Components
 import Avatar from 'components/Avatar';
 
 // Style
@@ -49,7 +47,6 @@ const GroupAvatarWrapper = styled.div<{ count: number }>`
       : css``};
 `;
 
-// Typings
 interface Props {
   groupId: string;
   className?: string;

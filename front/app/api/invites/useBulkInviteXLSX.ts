@@ -1,8 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
+
 import invitesKeys from './keys';
 import { IInvites, INewBulkXLSXInviteXLSX, IInviteError } from './types';
-import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 
 const bulkInviteXLSX = async (requestBody: INewBulkXLSXInviteXLSX) =>
   fetcher<IInvites>({

@@ -6,13 +6,14 @@ import React, {
   useCallback,
 } from 'react';
 
-import useProjectById from 'api/projects/useProjectById';
+import { isNil } from 'utils/helperUtils';
+
 import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
 import useBasketsIdeas from './useBasketsIdeas';
 import useVoteForIdea from './useVoteForIdea';
-
-import { getCurrentPhase } from 'api/phases/utils';
-import { isNil } from 'utils/helperUtils';
 
 interface Props {
   projectId?: string;

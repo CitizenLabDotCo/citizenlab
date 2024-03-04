@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { Tooltip } from 'recharts';
 import { Box } from '@citizenlab/cl2-component-library';
+import { Tooltip } from 'recharts';
+
 import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import messages from '../messages';
 import { StackedBarsRow } from '../usePostsFeedback/typings';
 
 export const stackedBarTooltip =

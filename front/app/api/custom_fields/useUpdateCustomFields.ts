@@ -1,7 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import customFieldOptionKeys from 'api/custom_field_options/keys';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import customFieldOptionKeys from 'api/custom_field_options/keys';
+
 import customFieldsKeys from './keys';
 import { ICustomField, ICustomFieldResponse } from './types';
 

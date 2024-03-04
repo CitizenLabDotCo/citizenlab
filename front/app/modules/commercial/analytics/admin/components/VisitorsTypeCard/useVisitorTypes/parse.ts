@@ -1,10 +1,10 @@
-import { Response, PieRow } from './typings';
-import { XlsxData } from 'components/admin/ReportExportMenu';
-import { Translations } from './translations';
-
 import { categoricalColorScheme } from 'components/admin/Graphs/styling';
+import { XlsxData } from 'components/admin/ReportExportMenu';
 
 import { roundPercentages } from 'utils/math';
+
+import { Translations } from './translations';
+import { Response, PieRow } from './typings';
 
 export const parsePieData = (
   data: Response['data']['attributes'],

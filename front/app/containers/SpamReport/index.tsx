@@ -5,7 +5,6 @@ import React, { useState, FormEvent } from 'react';
 import useAddSpamReport from 'api/spam_reports/useAddSpamReport';
 import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';
 
-// Components
 import ReportForm from './SpamReportForm';
 import { ModalContentContainer } from 'components/UI/Modal';
 

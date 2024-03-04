@@ -1,10 +1,8 @@
-// Libraries
 import React from 'react';
 
 // Services & Resources
 import { IPollQuestionData } from 'api/poll_questions/types';
 
-// Components
 import Button from 'components/UI/Button';
 import { SortableRow, TextCell } from 'components/admin/ResourceList';
 

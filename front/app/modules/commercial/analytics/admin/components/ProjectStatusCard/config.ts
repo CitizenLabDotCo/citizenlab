@@ -1,20 +1,20 @@
-import messages from './messages';
-
-// Utils
 import { formatCountValue } from 'components/admin/GraphCards/_utils/parse';
 import {
   getDateFilter,
   getProjectFilter,
 } from 'components/admin/GraphCards/_utils/query';
+
+import { Query, QuerySchema } from 'api/analytics/types';
+
 import { underscoreCase } from '../StatCard/useStatCard/parse';
 
-// Typings
 import {
   StatCardData,
   StatCardProps,
   StatCardConfig,
 } from '../StatCard/useStatCard/typings';
-import { Query, QuerySchema } from 'api/analytics/types';
+
+import messages from './messages';
 
 // Type helps to keep this file and tests type safe although useStatCard returns a more generic object
 export interface ProjectStatusCardLabels {

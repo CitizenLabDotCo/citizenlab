@@ -1,14 +1,16 @@
 import React from 'react';
-import { AUTH_PATH } from 'containers/App/constants';
-import { removeUrlLocale } from 'utils/locale';
-import { getJwt } from 'utils/auth/jwt';
 
-import { TVerificationMethod } from 'api/verification_methods/types';
+import { AUTH_PATH } from 'containers/App/constants';
+import { WrappedComponentProps } from 'react-intl';
 
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 
+import { getJwt } from 'utils/auth/jwt';
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { removeUrlLocale } from 'utils/locale';
+
+import { TVerificationMethod } from 'api/verification_methods/types';
+
 import messages from '../messages';
 
 interface Props {

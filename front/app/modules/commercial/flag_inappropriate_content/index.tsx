@@ -1,10 +1,13 @@
 import React, { ReactNode } from 'react';
+
 import { ModuleConfiguration } from 'utils/moduleUtils';
+
 import {
   TNotificationData,
   TNotificationType,
   INLPFlagNotificationData,
 } from 'api/notifications/types';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Setting = React.lazy(() => import('./admin/containers/Setting'));

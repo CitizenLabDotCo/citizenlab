@@ -1,11 +1,14 @@
+import { first, last, sortBy } from 'lodash-es';
+import { Locale } from 'typings';
+
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { first, last, sortBy } from 'lodash-es';
-import { IPhaseData } from './types';
-import { IProjectData } from 'api/projects/types';
-import { IIdea } from 'api/ideas/types';
-import { Locale } from 'typings';
 import { hasTextInSpecifiedLocale } from 'utils/locale';
+
+import { IIdea } from 'api/ideas/types';
+import { IProjectData } from 'api/projects/types';
+
+import { IPhaseData } from './types';
 
 export function canContainIdeas(phase: IPhaseData) {
   const pm = phase.attributes.participation_method;

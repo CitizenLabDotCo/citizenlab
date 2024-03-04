@@ -32,7 +32,6 @@ import useInputSchema from 'hooks/useInputSchema';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
 
-// Utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getFormActionsConfig } from './utils';
 import clHistory from 'utils/cl-router/history';

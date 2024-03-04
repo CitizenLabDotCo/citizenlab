@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import { IUser } from 'api/users/types';
+
 import meKeys from './keys';
 import { MeKeys } from './types';
-import { IUser } from 'api/users/types';
 
 export const fetchMe = () =>
   fetcher<IUser>({

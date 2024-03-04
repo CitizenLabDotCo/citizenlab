@@ -1,12 +1,9 @@
-// Libraries
 import React, { useState, lazy, Suspense } from 'react';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import moment from 'moment';
 
-// Utils
 import clHistory from 'utils/cl-router/history';
 
-// Components
 import { Tr, Td, Box, colors } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
@@ -28,7 +25,6 @@ import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import eventEmitter from 'utils/eventEmitter';
 import events from './events';
 
-// Styling
 import styled from 'styled-components';
 
 // Hooks

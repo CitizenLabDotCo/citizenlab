@@ -2,10 +2,11 @@ import React from 'react';
 
 import { Box, Text, Input } from '@citizenlab/cl2-component-library';
 
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { parsePopulationValue } from '../../../utils/options';
+
+import messages from './messages';
 
 interface Props {
   value: number | null;

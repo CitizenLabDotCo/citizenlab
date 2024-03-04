@@ -1,16 +1,15 @@
 import React from 'react';
 
 import PieChart from 'components/admin/Graphs/PieChart';
-import CenterLabel from './CenterLabel';
-
 import { colors } from 'components/admin/Graphs/styling';
 
-import messages from '../usePostsFeedback/messages';
 import { useIntl } from 'utils/cl-intl';
-
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
+import messages from '../usePostsFeedback/messages';
 import { PostFeedback } from '../usePostsFeedback/typings';
+
+import CenterLabel from './CenterLabel';
 
 interface Props {
   data: PostFeedback | NilOrError;

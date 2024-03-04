@@ -15,7 +15,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
 
-// Utils
 import { extractIdsFromValue } from './utils';
 
 import { Locale } from 'typings';

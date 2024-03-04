@@ -1,10 +1,8 @@
 import React from 'react';
 
-// Components
 import Button from 'components/UI/Button';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-// Utils
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // Hooks

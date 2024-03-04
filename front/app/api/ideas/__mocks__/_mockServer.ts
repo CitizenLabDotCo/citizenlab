@@ -1,5 +1,6 @@
-import { rest } from 'msw';
 import { API_PATH } from 'containers/App/constants';
+import { rest } from 'msw';
+
 import { IIdeaData } from '../types';
 
 export const ideaData: IIdeaData[] = [

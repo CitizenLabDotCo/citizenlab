@@ -4,7 +4,6 @@ import clHistory from 'utils/cl-router/history';
 // Services
 import useCause from 'api/causes/useCause';
 
-// Components
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import CauseForm, { SubmitValues } from './CauseForm';
 

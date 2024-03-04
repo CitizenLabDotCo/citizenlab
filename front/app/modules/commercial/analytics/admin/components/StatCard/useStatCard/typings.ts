@@ -1,9 +1,11 @@
+import { MessageDescriptor } from 'react-intl';
+
 import {
   Dates,
   ProjectId,
   Resolution,
 } from 'components/admin/GraphCards/typings';
-import { MessageDescriptor } from 'react-intl';
+
 import { Query } from 'api/analytics/types';
 
 export interface StatCardStat {

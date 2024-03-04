@@ -10,7 +10,6 @@ import useAddProjectModerator from 'api/project_moderators/useAddProjectModerato
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// Components
 import Button from 'components/UI/Button';
 const AddModeratorsModal = lazy(
   () => import('components/admin/SeatBasedBilling/AddModeratorsModal')

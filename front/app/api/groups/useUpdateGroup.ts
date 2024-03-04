@@ -1,9 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import usersKeys from 'api/users/keys';
+
 import groupKeys from './keys';
 import { IGroup, IGroupUpdate } from './types';
-import usersKeys from 'api/users/keys';
 
 const updateGroup = ({ id, ...requestBody }: IGroupUpdate) =>
   fetcher<IGroup>({

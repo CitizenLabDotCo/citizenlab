@@ -1,18 +1,18 @@
-import { Query, QuerySchema } from 'api/analytics/types';
-
-import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
-
-// parse
-import { parsePieData, parseExcelData } from './parse';
-
-import { Response, QueryParameters } from './typings';
-
 import {
   getProjectFilter,
   getDateFilter,
 } from 'components/admin/GraphCards/_utils/query';
+
+import { useIntl } from 'utils/cl-intl';
+
+import { Query, QuerySchema } from 'api/analytics/types';
 import useAnalytics from 'api/analytics/useAnalytics';
+
+import { parsePieData, parseExcelData } from './parse';
+import { getTranslations } from './translations';
+
+// parse
+import { Response, QueryParameters } from './typings';
 
 const query = ({
   projectId,

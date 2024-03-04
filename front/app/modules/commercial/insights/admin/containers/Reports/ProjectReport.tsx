@@ -7,20 +7,12 @@ import { isEqual } from 'lodash-es';
 import moment from 'moment';
 import { MessageDescriptor } from 'react-intl';
 
-import HorizontalBarChartWithoutStream from './Charts/HorizontalBarChartWithoutStream';
-import IdeasByStatusChart from './Charts/IdeasByStatusChart';
-import ParticipationPerTopic from './Charts/ParticipationPerTopic';
-import BarChartActiveUsersByTime from './Charts/BarChartActiveUsersByTime';
-import PollReport from './PollReport';
-import UserCharts from './Charts/UserCharts';
-import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
-import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
-import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
-
-import { activeUsersByTimeCumulativeXlsxEndpoint } from 'api/active_users_by_time/util';
 import usePhases from 'api/phases/usePhases';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
+import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
+import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 import ResolutionControl, {
   IResolution,
@@ -31,6 +23,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { activeUsersByTimeCumulativeXlsxEndpoint } from 'api/active_users_by_time/util';
 
 import useIdeas from 'api/ideas/useIdeas';
 import { ParticipationMethod } from 'api/phases/types';
@@ -38,7 +31,13 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import BarChartActiveUsersByTime from './Charts/BarChartActiveUsersByTime';
+import HorizontalBarChartWithoutStream from './Charts/HorizontalBarChartWithoutStream';
+import IdeasByStatusChart from './Charts/IdeasByStatusChart';
+import ParticipationPerTopic from './Charts/ParticipationPerTopic';
+import UserCharts from './Charts/UserCharts';
 import messages from './messages';
+import PollReport from './PollReport';
 
 const Section = styled.div`
   margin-bottom: 20px;

@@ -1,4 +1,3 @@
-// Libraries
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -8,7 +7,6 @@ import clHistory from 'utils/cl-router/history';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// Components
 import ProfileForm from './ProfileForm';
 import CampaignsConsentForm from 'components/CampaignConsentForm';
 

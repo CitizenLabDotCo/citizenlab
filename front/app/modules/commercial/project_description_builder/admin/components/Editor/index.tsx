@@ -1,23 +1,24 @@
 import React from 'react';
-import { SerializedNodes } from '@craftjs/core';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { SerializedNodes } from '@craftjs/core';
 
 import BaseEditor from 'components/admin/ContentBuilder/Editor';
+import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
+import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // widgets
-import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
-import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
-import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
-import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
+import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
-import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
+import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+
+import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
 type EditorProps = {
   children?: React.ReactNode;

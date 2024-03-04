@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { TVerificationMethod } from 'api/verification_methods/types';
-
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
+
+import { TVerificationMethod } from 'api/verification_methods/types';
 
 interface Props {
   method: TVerificationMethod;

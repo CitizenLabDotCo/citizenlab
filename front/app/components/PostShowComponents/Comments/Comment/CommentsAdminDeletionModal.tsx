@@ -1,9 +1,7 @@
-// Libraries
 import React from 'react';
 
 // Services
 
-// Components
 import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -16,7 +14,6 @@ import messages from '../messages';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 
-// Styling
 import styled from 'styled-components';
 import { string, object } from 'yup';
 import { SectionField } from 'components/admin/Section';

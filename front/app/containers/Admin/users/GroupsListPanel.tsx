@@ -1,35 +1,35 @@
-// Libraries
 import React, { useState, useEffect } from 'react';
-import Link from 'utils/cl-router/Link';
-import { isNilOrError } from 'utils/helperUtils';
-import { Subscription } from 'rxjs';
 
-// Resources
-import { IGroupData } from 'api/groups/types';
+import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
+import { Subscription } from 'rxjs';
+import styled from 'styled-components';
+
+import Outlet from 'components/Outlet';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+
+import { trackEventByName } from 'utils/analytics';
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import Link from 'utils/cl-router/Link';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
 
 import useBlockedUsercount from 'api/blocked_users/useBlockedUsersCount';
+import { IGroupData } from 'api/groups/types';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Events
-import eventEmitter from 'utils/eventEmitter';
+
 import events, { MembershipAdd } from './events';
 
-// Components
-import Button from 'components/UI/Button';
-import T from 'components/T';
-import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
-
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import messages from './messages';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
+
 import tracks from './tracks';
 
-// Styling
-import styled from 'styled-components';
-import { rgba } from 'polished';
-import Outlet from 'components/Outlet';
 import useGroups from 'api/groups/useGroups';
 import useUsersCount from 'api/users_count/useUsersCount';
 
@@ -148,7 +148,6 @@ const MembersCount = styled.span`
   margin-left: 12px;
 `;
 
-// Typings
 export interface Props {
   className?: string;
   onCreateGroup: () => void;

@@ -1,32 +1,32 @@
 import React, { memo } from 'react';
-import moment from 'moment';
 
 import { Tr, Td, Icon, colors } from '@citizenlab/cl2-component-library';
-import ModerationContentCell from './ModerationContentCell';
-import Checkbox from 'components/UI/Checkbox';
-import Outlet from 'components/Outlet';
 import Tippy from '@tippyjs/react';
-import Link from 'utils/cl-router/Link';
-
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import useLocalize from 'hooks/useLocalize';
+import moment from 'moment';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 
 import styled from 'styled-components';
 import { rgba } from 'polished';
+import { WrappedComponentProps } from 'react-intl';
+import Outlet from 'components/Outlet';
+import Checkbox from 'components/UI/Checkbox';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 
+import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
 import {
   IModerationData,
   TBelongsTo,
   TModeratableType,
 } from 'api/moderations/types';
 
-import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
+import useLocalize from 'hooks/useLocalize';
+
+import messages from './messages';
+import ModerationContentCell from './ModerationContentCell';
+import tracks from './tracks';
 
 const Container = styled(Tr)<{ bgColor: string; flagged: boolean }>`
   background: ${({ bgColor, flagged }) =>

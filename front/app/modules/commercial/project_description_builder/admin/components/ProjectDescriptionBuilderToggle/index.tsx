@@ -1,34 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
-// Typings
-import { Locale, Multiloc } from 'typings';
-
-// Style
-import styled from 'styled-components';
-
-// Hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
-import useAddProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout';
-
-// Utils
-import Link from 'utils/cl-router/Link';
-
-// Components
 import {
   Toggle,
   IconTooltip,
   Box,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
+import useAddProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+import { Locale, Multiloc } from 'typings';
+
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
+
+import { injectIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+
+// Style
+
+// Hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Messages
 import messages from '../../messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 
 type ProjectDescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;

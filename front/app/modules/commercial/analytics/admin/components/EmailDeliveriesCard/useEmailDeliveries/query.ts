@@ -3,8 +3,9 @@ import {
   getInterval,
 } from 'components/admin/GraphCards/_utils/query';
 
-import { QueryParameters } from './typings';
 import { Query, QuerySchema } from 'api/analytics/types';
+
+import { QueryParameters } from './typings';
 
 export const query = ({
   startAtMoment,

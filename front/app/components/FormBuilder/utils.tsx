@@ -10,7 +10,6 @@ import { Locale } from 'typings';
 import messages from './components/messages';
 import { MessageDescriptor } from 'react-intl';
 
-// Components
 import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/ConfigSelectWithLocaleSwitcher';
 import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';

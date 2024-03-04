@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// Components
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import SeatSetSuccess from '../SeatSetSuccess';
@@ -13,7 +12,6 @@ import messages from './messages';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useExceedsSeats from 'hooks/useExceedsSeats';
 
-// Utils
 import { isRegularUser, isAdmin } from 'utils/permissions/roles';
 
 import { IUserData } from 'api/users/types';

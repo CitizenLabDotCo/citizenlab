@@ -1,4 +1,3 @@
-// Libraries
 import React, { memo, useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
@@ -11,14 +10,12 @@ import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
-// Components
 import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 // Style
 import styled from 'styled-components';
 
-// Typings
 import { IOption } from 'typings';
 
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';

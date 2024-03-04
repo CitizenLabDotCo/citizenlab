@@ -6,7 +6,6 @@ import { SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
 
-// Typings
 import { Locale } from 'typings';
 
 import messages from '../../messages';

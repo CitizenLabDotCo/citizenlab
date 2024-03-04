@@ -1,7 +1,10 @@
-import { Keys } from 'utils/cl-react-query/types';
-import mapConfigKeys from './keys';
-import { IMapLayerAttributes } from '../map_layers/types';
 import { Multiloc } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import { IMapLayerAttributes } from '../map_layers/types';
+
+import mapConfigKeys from './keys';
 
 export type MapConfigKeys = Keys<typeof mapConfigKeys>;
 

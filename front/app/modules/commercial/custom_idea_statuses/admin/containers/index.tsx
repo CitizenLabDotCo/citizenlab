@@ -1,36 +1,38 @@
 // libraries
 import React, { useMemo } from 'react';
-import styled from 'styled-components';
-import Tippy from '@tippyjs/react';
-import { isNilOrError } from 'utils/helperUtils';
+
 import {
   colors,
   IconTooltip,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-
-import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
-import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
-import useDeleteIdeaStatus from 'api/idea_statuses/useDeleteIdeaStatus';
-import { IIdeaStatusData } from 'api/idea_statuses/types';
+import Tippy from '@tippyjs/react';
+import styled from 'styled-components';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import {
-  Section,
-  SectionTitle,
-  SectionDescription,
-} from 'components/admin/Section';
 import {
   Row,
   SortableList,
   SortableRow,
   TextCell,
 } from 'components/admin/ResourceList';
+import {
+  Section,
+  SectionTitle,
+  SectionDescription,
+} from 'components/admin/Section';
+import T from 'components/T';
 import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { IIdeaStatusData } from 'api/idea_statuses/types';
+import useDeleteIdeaStatus from 'api/idea_statuses/useDeleteIdeaStatus';
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
+import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
+
+import messages from './messages';
 
 const Buttons = styled.div`
   display: flex;

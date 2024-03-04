@@ -1,33 +1,34 @@
 // libraries
 import React, { useRef } from 'react';
+
 import { isEmpty, map, orderBy } from 'lodash-es';
+import { IGraphFormat } from 'typings';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
+import BarChart from 'components/admin/Graphs/BarChart';
 import {
   legacyColors,
   sizes,
   DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
-
-import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   GraphCardHeader,
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import BarChart from 'components/admin/Graphs/BarChart';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // resources
 
-import { IGraphFormat } from 'typings';
-
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import { ideasByStatusXlsxEndpoint } from 'api/ideas_by_status/util';
+
 import useIdeasByStatus from 'api/ideas_by_status/useIdeasByStatus';
+import { ideasByStatusXlsxEndpoint } from 'api/ideas_by_status/util';
+
 import useLocalize from 'hooks/useLocalize';
+
+import messages from '../messages';
 
 interface Props {
   startAt: string | null | undefined;

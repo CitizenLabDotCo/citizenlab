@@ -1,7 +1,6 @@
 import React from 'react';
 import clHistory from 'utils/cl-router/history';
 
-// Components
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import CauseForm, { SubmitValues } from './CauseForm';
 

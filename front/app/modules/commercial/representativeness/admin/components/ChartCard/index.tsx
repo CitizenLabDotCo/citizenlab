@@ -1,36 +1,42 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import useLocalize from 'hooks/useLocalize';
-import useReferenceData from '../../hooks/useReferenceData';
-import useRScore from '../../api/r_score/useRScore';
-
 import { Box } from '@citizenlab/cl2-component-library';
-import EmptyCard from './EmptyCard';
-import Header from './Header';
-import Chart from './Chart';
-import Table from './Table';
-import Footer from './Footer';
+import { WrappedComponentProps } from 'react-intl';
+
+import { View } from 'components/admin/GraphCard/ViewToggle';
 
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import fieldMessages from '../Field/messages';
-
-import { getLegendLabels } from './utils';
 import { isNilOrError } from 'utils/helperUtils';
 
 import {
   IUserCustomFieldData,
   TCustomFieldCode,
 } from 'api/user_custom_fields/types';
+import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';
+import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
+import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
+
+import useLocalize from 'hooks/useLocalize';
+
+import useRScore from '../../api/r_score/useRScore';
+import useReferenceData from '../../hooks/useReferenceData';
+
+import Chart from './Chart';
+import EmptyCard from './EmptyCard';
+import Footer from './Footer';
+import Header from './Header';
+import Table from './Table';
+import messages from './messages';
+
+import fieldMessages from '../Field/messages';
+
+import { getLegendLabels } from './utils';
+
 import {
   RepresentativenessRow,
   RepresentativenessRowMultiloc,
 } from '../../hooks/parseReferenceData';
-import { View } from 'components/admin/GraphCard/ViewToggle';
-import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';
-import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
-import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
+
 import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
 interface Props {

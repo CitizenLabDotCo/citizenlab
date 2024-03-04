@@ -1,16 +1,15 @@
 import React from 'react';
 
+import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 import {
   colors,
   DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
 
-import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
-import renderTooltip from './renderTooltip';
-
-import { formatPercentage, emptyString } from './utils';
-
 import { RepresentativenessData } from '../../hooks/parseReferenceData';
+
+import renderTooltip from './renderTooltip';
+import { formatPercentage, emptyString } from './utils';
 
 interface Props {
   currentChartRef: React.RefObject<SVGElement | undefined>;

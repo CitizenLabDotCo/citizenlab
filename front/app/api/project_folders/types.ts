@@ -1,7 +1,10 @@
-import { PublicationStatus } from 'api/projects/types';
 import { Multiloc, ImageSizes, IRelationship } from 'typings';
-import projectFoldersKeys from './keys';
+
 import { Keys } from 'utils/cl-react-query/types';
+
+import { PublicationStatus } from 'api/projects/types';
+
+import projectFoldersKeys from './keys';
 
 export type ProjectFoldersKeys = Keys<typeof projectFoldersKeys>;
 export interface IQueryParameters {

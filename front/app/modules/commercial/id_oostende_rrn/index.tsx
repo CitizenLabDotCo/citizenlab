@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { ModuleConfiguration } from 'utils/moduleUtils';
+
 const OostendeRrnButton = React.lazy(
   () => import('./components/OostendeRrnButton')
 );

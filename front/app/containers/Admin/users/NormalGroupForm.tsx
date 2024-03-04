@@ -18,10 +18,6 @@ import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
 
-// Components
-
-// Typings
-
 type Props = {
   onSubmit: (formValues: NormalFormValues) => void | Promise<void>;
   defaultValues?: Partial<NormalFormValues>;

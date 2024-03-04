@@ -25,7 +25,6 @@ import Error, { TFieldName } from 'components/UI/Error';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// Typings
 import { Locale, CLError, RHFErrors } from 'typings';
 
 import { isNilOrError } from 'utils/helperUtils';

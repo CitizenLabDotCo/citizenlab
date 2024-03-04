@@ -1,4 +1,3 @@
-// Libraries
 import React from 'react';
 
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';

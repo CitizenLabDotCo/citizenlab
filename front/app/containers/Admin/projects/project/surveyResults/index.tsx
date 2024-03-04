@@ -1,9 +1,7 @@
-// Libraries
 import React, { Fragment } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
-// Components
 import ExportSurveyButton from './ExportSurveyButton';
 import T from 'components/T';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';

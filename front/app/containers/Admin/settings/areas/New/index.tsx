@@ -4,7 +4,6 @@ import clHistory from 'utils/cl-router/history';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// Components
 import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
 import AreaForm, { FormValues } from '../AreaForm';

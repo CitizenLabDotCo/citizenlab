@@ -1,5 +1,6 @@
-import { SchemaResponse } from './types';
 import { Locale } from 'typings';
+
+import { SchemaResponse } from './types';
 
 export const hasRequiredFields = (
   schemaResponse: SchemaResponse,

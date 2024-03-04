@@ -1,9 +1,11 @@
 import { FC, useEffect } from 'react';
+
+import { WrappedComponentProps } from 'react-intl';
 import { InsertConfigurationOptions, ITab } from 'typings';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+
 import messages from './messages';
 
 interface Props {

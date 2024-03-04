@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useInitiativeFiles from './useInitiativeFiles';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { initiativeFilesData } from './__mocks__/initiativeFiles';
+import useInitiativeFiles from './useInitiativeFiles';
 
 const apiPath = '*initiatives/:initiativeId/files';
 

@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
-// Resources
-
 import HelmetIntl from 'components/HelmetIntl';
 import Modal from 'components/UI/Modal';
 import GroupsListPanel from './GroupsListPanel';
 import GroupCreationStep1 from './GroupCreationStep1';
 import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 
-// Styling
 import styled from 'styled-components';
 import { media } from '@citizenlab/cl2-component-library';
 

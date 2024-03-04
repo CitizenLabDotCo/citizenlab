@@ -1,17 +1,16 @@
 import React, { memo, useCallback } from 'react';
 
-// api
-import useProjects from 'api/projects/useProjects';
-
 import FilterSelector from 'components/FilterSelector';
-import useLocalize from 'hooks/useLocalize';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 import { isNilOrError } from 'utils/helperUtils';
 
 import { PublicationStatus } from 'api/projects/types';
+import useProjects from 'api/projects/useProjects';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from './messages';
 
 interface Props {
   onChange: (projectIds: string[]) => void;

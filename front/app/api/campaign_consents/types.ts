@@ -1,6 +1,9 @@
-import { CampaignName } from 'api/campaigns/types';
 import { ILinks, Multiloc } from 'typings';
+
 import { Keys } from 'utils/cl-react-query/types';
+
+import { CampaignName } from 'api/campaigns/types';
+
 import campaignConsentKeys from './keys';
 
 export type CampaignConsentKeys = Keys<typeof campaignConsentKeys>;

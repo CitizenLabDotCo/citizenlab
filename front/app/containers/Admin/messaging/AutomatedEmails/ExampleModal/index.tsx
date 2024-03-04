@@ -4,7 +4,6 @@ import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
-// Components
 import Modal from 'components/UI/Modal';
 import EmptyState from './EmptyState';
 import ExampleFrame from './ExampleFrame';

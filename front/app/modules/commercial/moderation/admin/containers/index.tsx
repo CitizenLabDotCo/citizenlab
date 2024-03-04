@@ -13,40 +13,43 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import ModerationRow from './ModerationRow';
-import Pagination from 'components/Pagination';
-import Checkbox from 'components/UI/Checkbox';
-import Button from 'components/UI/Button';
-import Tabs, { ITabItem } from 'components/UI/Tabs';
+import styled from 'styled-components';
+import { IOption, InsertConfigurationOptions } from 'typings';
+
 import { PageTitle } from 'components/admin/Section';
-import SelectType from './SelectType';
-import SelectProject from './SelectProject';
+
 import SearchInput from 'components/UI/SearchInput';
 import Outlet from 'components/Outlet';
+import Pagination from 'components/Pagination';
+import Button from 'components/UI/Button';
+import Checkbox from 'components/UI/Checkbox';
+import Tabs, { ITabItem } from 'components/UI/Tabs';
 
-import useModerations from 'api/moderations/useModerations';
-import useModerationsCount from 'api/moderation_count/useModerationsCount';
-import useRemoveInappropriateContentFlag from 'api/inappropriate_content_flags/useRemoveInappropriateContentFlag';
-import useUpdateModerationStatus from 'api/moderations/useUpdateModerationStatus';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 
-import styled from 'styled-components';
+import tracks from './tracks';
 
 import { isAdmin } from 'utils/permissions/roles';
 import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 
-import { IOption, InsertConfigurationOptions } from 'typings';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-
+import useRemoveInappropriateContentFlag from 'api/inappropriate_content_flags/useRemoveInappropriateContentFlag';
+import useModerationsCount from 'api/moderation_count/useModerationsCount';
 import { IModerationData, TModeratableType } from 'api/moderations/types';
+import useModerations from 'api/moderations/useModerations';
+import useUpdateModerationStatus from 'api/moderations/useUpdateModerationStatus';
+
+import ModerationRow from './ModerationRow';
+import SelectProject from './SelectProject';
+import SelectType from './SelectType';
 
 const Container = styled.div`
   display: flex;

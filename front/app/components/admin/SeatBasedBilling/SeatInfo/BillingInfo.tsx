@@ -3,7 +3,6 @@ import { rgba } from 'polished';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 
-// Components
 import {
   Box,
   Icon,
@@ -22,7 +21,6 @@ import { SeatInfoProps, SeatNumbersType, SeatTypeMessageDescriptor } from '.';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// Utils
 import { isNil } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
 

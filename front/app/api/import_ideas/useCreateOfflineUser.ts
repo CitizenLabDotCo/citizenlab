@@ -1,11 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CLErrorsWrapper } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import usersKeys from 'api/users/keys';
 import groupsKeys from 'api/groups/keys';
-
+import usersKeys from 'api/users/keys';
 import { IUser } from 'api/users/types';
-import { CLErrorsWrapper } from 'typings';
+
 import { CreateOfflineIdeasParams } from './types';
 
 export const createOfflineUser = async ({

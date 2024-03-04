@@ -1,12 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import useProjectById from 'api/projects/useProjectById';
+
 import projectDescriptionBuilderKeys from './keys';
 import {
   IProjectDescriptionBuilderLayout,
   ProjectDescriptionBuilderKeys,
 } from './types';
-import useProjectById from 'api/projects/useProjectById';
 
 const fetchProjectDescriptionBuilderLayout = (projectId: string) => {
   return fetcher<IProjectDescriptionBuilderLayout>({

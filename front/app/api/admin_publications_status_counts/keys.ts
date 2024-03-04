@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { IQueryParameters } from 'api/admin_publications/types';
 
 const baseKey = {

@@ -18,8 +18,6 @@ import messages from '../messages';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
-// Typings
-
 export interface FormValues {
   title_multiloc: Multiloc;
 }

@@ -1,25 +1,24 @@
 import React, { useRef } from 'react';
 
-import useRegistrations from './useRegistrations';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import GraphCard from 'components/admin/GraphCard';
-import { Box } from '@citizenlab/cl2-component-library';
-import Statistic from 'components/admin/Graphs/Statistic';
-import Chart from './Chart';
-
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
 import { getTimePeriodTranslationByResolution } from 'components/admin/GraphCards/_utils/resolution';
-
-import { isNilOrError } from 'utils/helperUtils';
-import { emptyStatsData } from './generateEmptyData';
-
 import {
   ProjectId,
   Dates,
   Resolution,
   Layout,
 } from 'components/admin/GraphCards/typings';
+import Statistic from 'components/admin/Graphs/Statistic';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import Chart from './Chart';
+import { emptyStatsData } from './generateEmptyData';
+import messages from './messages';
+import useRegistrations from './useRegistrations';
 
 type Props = ProjectId &
   Dates &

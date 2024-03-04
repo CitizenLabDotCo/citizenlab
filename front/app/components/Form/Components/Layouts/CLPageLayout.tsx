@@ -7,7 +7,6 @@ import {
 } from '@jsonforms/react';
 import styled, { useTheme } from 'styled-components';
 
-// Components
 import {
   Box,
   Button,
@@ -25,7 +24,6 @@ import { FormContext } from 'components/Form/contexts';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
-// Utils
 import {
   getSanitizedFormData,
   getPageSchema,

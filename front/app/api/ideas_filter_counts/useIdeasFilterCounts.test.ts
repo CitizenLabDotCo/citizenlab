@@ -4,8 +4,8 @@ import { renderHook } from '@testing-library/react-hooks';
 
 import useIdeasFilterCounts from './useIdeasFilterCounts';
 
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 export const data: IIdeasFilterCounts = {
   data: {

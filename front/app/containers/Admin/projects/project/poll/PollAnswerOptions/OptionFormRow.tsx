@@ -1,15 +1,10 @@
-// Libraries
 import React, { useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// Components
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import { TextCell, Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 
-// Resources
-
-// Typings
 import { Multiloc, Locale } from 'typings';
 
 import { FormattedMessage } from 'utils/cl-intl';

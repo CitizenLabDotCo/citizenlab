@@ -1,13 +1,15 @@
+import { capitalize } from 'lodash-es';
+
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { colors } from 'components/admin/Graphs/styling';
 
-import { sum, roundPercentage, roundPercentages } from 'utils/math';
-import { capitalize } from 'lodash-es';
 import { get } from 'utils/helperUtils';
+import { sum, roundPercentage, roundPercentages } from 'utils/math';
 
-import { FeedbackRow, StatusRow, StackedBarsRow } from './typings';
-import { Translations } from './translations';
 import { Localize } from 'hooks/useLocalize';
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+
+import { Translations } from './translations';
+import { FeedbackRow, StatusRow, StackedBarsRow } from './typings';
 
 export const parsePieData = (feedbackRow: FeedbackRow) => {
   const {

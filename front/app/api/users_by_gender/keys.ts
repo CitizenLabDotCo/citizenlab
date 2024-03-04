@@ -1,5 +1,6 @@
-import { ICustomFieldParams } from 'api/users_by_custom_field/types';
 import { QueryKeys } from 'utils/cl-react-query/types';
+
+import { ICustomFieldParams } from 'api/users_by_custom_field/types';
 
 const baseKey = { type: 'users_by_gender' };
 

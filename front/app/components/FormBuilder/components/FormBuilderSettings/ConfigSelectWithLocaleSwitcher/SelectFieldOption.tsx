@@ -12,7 +12,6 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// Typings
 import { Locale, UploadFile } from 'typings';
 
 import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';

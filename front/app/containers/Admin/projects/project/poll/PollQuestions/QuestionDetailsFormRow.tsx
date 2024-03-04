@@ -1,13 +1,10 @@
-// Libraries
 import React, { useState } from 'react';
 
-// Components
 import Button from 'components/UI/Button';
 import { Row } from 'components/admin/ResourceList';
 import { Select, Input, Box } from '@citizenlab/cl2-component-library';
 import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 
-// Typings
 import { IOption } from 'typings';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

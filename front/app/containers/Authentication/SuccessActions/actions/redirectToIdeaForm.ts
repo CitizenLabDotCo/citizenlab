@@ -1,18 +1,17 @@
 // tracks
-import { trackEventByName } from 'utils/analytics';
+import { stringify } from 'qs';
+
 import tracks from 'components/IdeaButton/tracks';
+
+import { getIdeaPostingRules } from 'utils/actionTakingRules';
+import { trackEventByName } from 'utils/analytics';
 
 // history
 import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
 
-import { IUser, IUserData } from 'api/users/types';
-
-// api
-import { fetchProjectBySlug } from 'api/projects/useProjectBySlug';
-
-import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { fetchPhase } from 'api/phases/usePhase';
+import { fetchProjectBySlug } from 'api/projects/useProjectBySlug';
+import { IUser, IUserData } from 'api/users/types';
 
 export interface RedirectToIdeaFormParams {
   projectSlug: string;

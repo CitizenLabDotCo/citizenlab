@@ -6,10 +6,11 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import HeaderRow from './HeaderRow';
-import Row from './Row';
 
 import { RepresentativenessData } from '../../../hooks/parseReferenceData';
+
+import HeaderRow from './HeaderRow';
+import Row from './Row';
 
 interface Props {
   columns: string[];

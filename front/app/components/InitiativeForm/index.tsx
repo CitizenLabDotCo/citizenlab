@@ -28,7 +28,6 @@ import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
-// Components
 import SubmitButtonBar from './SubmitButtonBar';
 
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';

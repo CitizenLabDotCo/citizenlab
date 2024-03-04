@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { TVerificationMethod } from 'api/verification_methods/types';
-
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
+import { TVerificationMethod } from 'api/verification_methods/types';
+
 import messages from '../messages';
 
 interface Props {

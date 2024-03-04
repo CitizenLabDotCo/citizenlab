@@ -1,24 +1,24 @@
 import React, { useRef, useState } from 'react';
 
-import useVisitorLanguages from './useVisitorLanguages';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import GraphCard from 'components/admin/GraphCard';
-import PieChart from 'components/admin/Graphs/PieChart';
-import { Box } from '@citizenlab/cl2-component-library';
 import EmptyPieChart from 'components/admin/GraphCards/EmptyPieChart';
-import renderTooltip from '../VisitorsTypeCard/renderTooltip';
-
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
-import { isNilOrError } from 'utils/helperUtils';
-
 import {
   ProjectId,
   Dates,
   Resolution,
 } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import PieChart from 'components/admin/Graphs/PieChart';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import renderTooltip from '../VisitorsTypeCard/renderTooltip';
+
+import messages from './messages';
+import useVisitorLanguages from './useVisitorLanguages';
 
 type Props = ProjectId & Dates & Resolution;
 

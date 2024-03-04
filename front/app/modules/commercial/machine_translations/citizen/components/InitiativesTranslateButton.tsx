@@ -1,11 +1,16 @@
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
-import { IInitiativeData } from 'api/initiatives/types';
-import TranslateButton from 'components/UI/TranslateButton';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import React from 'react';
+
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import styled from 'styled-components';
+
+import TranslateButton from 'components/UI/TranslateButton';
+
 import { isNilOrError } from 'utils/helperUtils';
+
+import { IInitiativeData } from 'api/initiatives/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const StyledTranslateButtonMobile = styled(TranslateButton)`
   width: fit-content;

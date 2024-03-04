@@ -1,10 +1,8 @@
-// Libraries
 import React, { FormEvent, useState } from 'react';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
-// Components
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
@@ -12,7 +10,6 @@ import Button from 'components/UI/Button';
 // events
 import { deleteCommentModalClosed } from '../events';
 
-// Styling
 import styled from 'styled-components';
 import { isRtl } from '@citizenlab/cl2-component-library';
 

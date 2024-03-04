@@ -1,4 +1,3 @@
-// Libraries
 import React from 'react';
 import styled from 'styled-components';
 import { isError } from 'lodash-es';
@@ -9,7 +8,6 @@ import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
 
-// Components
 import ExportPollButton from './ExportPollButton';
 import PollAdminForm from './PollAdminForm';
 import { SectionDescription } from 'components/admin/Section';

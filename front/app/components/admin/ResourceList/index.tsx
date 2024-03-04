@@ -1,4 +1,3 @@
-// Libraries
 import React, { ReactNode } from 'react';
 
 // Style
@@ -7,7 +6,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { remCalc, fontSizes, colors } from '@citizenlab/cl2-component-library';
 
-// Components
 export { default as SortableList } from './SortableList';
 export { default as SortableRow } from './SortableRow';
 export { default as LockedRow } from './LockedRow';

@@ -1,24 +1,23 @@
 import React, { memo } from 'react';
 
-// api
-import useProjects from 'api/projects/useProjects';
-
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-import { List, Row } from 'components/admin/ResourceList';
 import {
   RowButton,
   RowContent,
   RowTitle,
 } from 'containers/Admin/projects/components/StyledComponents';
+
 import PageWrapper from 'components/admin/PageWrapper';
+import { List, Row } from 'components/admin/ResourceList';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
 import { isNilOrError } from 'utils/helperUtils';
 
 import { PublicationStatus } from 'api/projects/types';
+import useProjects from 'api/projects/useProjects';
+
+import messages from './messages';
 
 const publicationStatuses: PublicationStatus[] = ['published', 'archived'];
 

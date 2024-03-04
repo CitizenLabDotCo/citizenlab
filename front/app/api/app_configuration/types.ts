@@ -1,10 +1,12 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import appConfigurationKeys from './keys';
 
 export type AppConfigurationKeys = Keys<typeof appConfigurationKeys>;
 
 import { API_PATH } from 'containers/App/constants';
 import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
+
 import { TCategory } from 'components/ConsentManager/destinations';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
 

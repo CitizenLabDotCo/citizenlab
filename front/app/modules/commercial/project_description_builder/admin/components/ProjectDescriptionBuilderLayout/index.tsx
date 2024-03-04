@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type ProjectDescriptionBuilderLayoutProps = {
   children?: React.ReactNode;

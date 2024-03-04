@@ -1,10 +1,8 @@
-// Libraries
 import React, { FormEvent, useState } from 'react';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-// Components
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
@@ -15,7 +13,6 @@ import { usePermission } from 'utils/permissions';
 // events
 import { deleteCommentModalClosed } from '../events';
 
-// Styling
 import styled from 'styled-components';
 import { isRtl } from '@citizenlab/cl2-component-library';
 

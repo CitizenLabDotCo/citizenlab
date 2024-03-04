@@ -1,7 +1,5 @@
-// Libraries
 import React from 'react';
 
-// Components
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';
 

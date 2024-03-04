@@ -1,13 +1,6 @@
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import React, { FC } from 'react';
-import styled from 'styled-components';
+
 import { Icon, colors } from '@citizenlab/cl2-component-library';
-import { transparentize } from 'polished';
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-
-import messages from './messages';
-import adminUsersMessages from 'containers/Admin/users/messages';
-
 import {
   MoreInfoLink,
   DescriptionText,
@@ -17,8 +10,17 @@ import {
   Step2Button,
   GroupName,
 } from 'containers/Admin/users/GroupCreationStep1';
+import adminUsersMessages from 'containers/Admin/users/messages';
+import { transparentize } from 'polished';
+import styled from 'styled-components';
+
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
 import { MembershipType } from 'api/groups/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from './messages';
 
 const GroupType = styled(BaseGroupType)`
   background: ${colors.background};
