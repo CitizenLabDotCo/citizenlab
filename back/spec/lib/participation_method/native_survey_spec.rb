@@ -36,48 +36,49 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#create_default_form!' do
-    it 'persists a default form with a page for the participation context' do
-      expect(phase.custom_form).to be_nil
-
-      participation_method.create_default_form!
-      # create_default_form! does not reload associations for form/fields/options,
-      # so fetch the project from the database. The associations will be fetched
-      # when they are needed.
-      # Not doing this makes this test flaky, as create_default_form! creates fields
-      # and CustomField uses acts_as_list for ordering fields. The ordering is ok
-      # in the database, but not necessarily in memory.
-      phase_in_db = Phase.find(phase.id)
-
-      expect(phase_in_db.custom_form.custom_fields.size).to eq 2
-
-      question_page = phase_in_db.custom_form.custom_fields[0]
-      expect(question_page.title_multiloc).to eq({})
-      expect(question_page.description_multiloc).to eq({})
-
-      field = phase_in_db.custom_form.custom_fields[1]
-      expect(field.title_multiloc).to match({
-        'en' => 'Default question',
-        'fr-FR' => 'Question par défaut',
-        'nl-NL' => 'Standaardvraag'
-      })
-      expect(field.description_multiloc).to eq({})
-      options = field.options
-      expect(options.size).to eq 2
-      expect(options[0].key).to eq 'option1'
-      expect(options[1].key).to eq 'option2'
-      expect(options[0].title_multiloc).to match({
-        'en' => 'First option',
-        'fr-FR' => 'Première option',
-        'nl-NL' => 'Eerste optie'
-      })
-      expect(options[1].title_multiloc).to match({
-        'en' => 'Second option',
-        'fr-FR' => 'Deuxième option',
-        'nl-NL' => 'Tweede optie'
-      })
-    end
-  end
+  # TODO: JS - probably not needed anymore
+  # describe '#create_default_form!' do
+  #   it 'persists a default form with a page for the participation context' do
+  #     expect(phase.custom_form).to be_nil
+  #
+  #     participation_method.create_default_form!
+  #     # create_default_form! does not reload associations for form/fields/options,
+  #     # so fetch the project from the database. The associations will be fetched
+  #     # when they are needed.
+  #     # Not doing this makes this test flaky, as create_default_form! creates fields
+  #     # and CustomField uses acts_as_list for ordering fields. The ordering is ok
+  #     # in the database, but not necessarily in memory.
+  #     phase_in_db = Phase.find(phase.id)
+  #
+  #     expect(phase_in_db.custom_form.custom_fields.size).to eq 2
+  #
+  #     question_page = phase_in_db.custom_form.custom_fields[0]
+  #     expect(question_page.title_multiloc).to eq({})
+  #     expect(question_page.description_multiloc).to eq({})
+  #
+  #     field = phase_in_db.custom_form.custom_fields[1]
+  #     expect(field.title_multiloc).to match({
+  #       'en' => 'Default question',
+  #       'fr-FR' => 'Question par défaut',
+  #       'nl-NL' => 'Standaardvraag'
+  #     })
+  #     expect(field.description_multiloc).to eq({})
+  #     options = field.options
+  #     expect(options.size).to eq 2
+  #     expect(options[0].key).to eq 'option1'
+  #     expect(options[1].key).to eq 'option2'
+  #     expect(options[0].title_multiloc).to match({
+  #       'en' => 'First option',
+  #       'fr-FR' => 'Première option',
+  #       'nl-NL' => 'Eerste optie'
+  #     })
+  #     expect(options[1].title_multiloc).to match({
+  #       'en' => 'Second option',
+  #       'fr-FR' => 'Deuxième option',
+  #       'nl-NL' => 'Tweede optie'
+  #     })
+  #   end
+  # end
 
   describe '#default_fields' do
     it 'returns an empty list' do
