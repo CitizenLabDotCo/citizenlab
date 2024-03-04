@@ -18,9 +18,6 @@ interface Props {
   children: React.ReactNode;
 }
 
-// We solve it like this because the boxes and the children have to
-// stay the same and not remount. If the children (i.e. the frame)
-// remount everything breaks.
 const getBoxProps = (view: View) => {
   if (view === 'pdf') {
     const outerBox: BoxProps = {
@@ -67,6 +64,12 @@ const getBoxProps = (view: View) => {
 const ViewContainer = ({ view, children }: Props) => {
   const { outerBox, innerBox } = useMemo(() => getBoxProps(view), [view]);
 
+  // This is set up like this because this function can only have one return statement
+  // because of the setup with craftjs.
+  // If we have multiple return statements based on the view,
+  // when the view changes, the children are unmounted and remounted-
+  // and this crashes everything for some reason. Seems to be a weird
+  // craftjs bug. So don't touch this unless you know what you're doing.
   return (
     <Box {...outerBox}>
       <Box {...innerBox}>{children}</Box>

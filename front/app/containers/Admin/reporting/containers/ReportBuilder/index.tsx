@@ -67,7 +67,7 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale>(platformLocale);
 
-  const [saved, setSaved] = useState(!templateProjectId);
+  const [saved, setSaved] = useState(false);
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
 
