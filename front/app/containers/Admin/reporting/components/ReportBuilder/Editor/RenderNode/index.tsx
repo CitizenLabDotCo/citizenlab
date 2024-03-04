@@ -139,7 +139,7 @@ const RenderNode = ({ render }) => {
           : solidBorderIsVisible
           ? colors.primary
           : isSelectable
-          ? 'white'
+          ? 'transparent'
           : 'transparent'
       }
       // my={invisible ? undefined : '2px'}
