@@ -7,16 +7,8 @@ import React, {
   ChangeEvent,
 } from 'react';
 
-import { getBase64FromFile } from 'utils/fileUtils';
-
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { isString, isEmpty } from 'lodash-es';
-
-const InviteUsersWithSeatsModal = lazy(
-  () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
-);
-const InvitationOptions = lazy(() => import('./InvitationOptions'));
-
 import styled from 'styled-components';
 import { Locale, IOption } from 'typings';
 
@@ -28,6 +20,7 @@ import Tabs from 'components/UI/Tabs';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getBase64FromFile } from 'utils/fileUtils';
 
 import {
   IInviteError,
@@ -47,6 +40,11 @@ import messages from '../messages';
 
 import ManualTab from './ManualTab';
 import TemplateTab from './TemplateTab';
+
+const InviteUsersWithSeatsModal = lazy(
+  () => import('components/admin/SeatBasedBilling/InviteUsersWithSeatsModal')
+);
+const InvitationOptions = lazy(() => import('./InvitationOptions'));
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 35px;

@@ -13,8 +13,6 @@ import moment from 'moment';
 
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
-
-// shared widgets
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 

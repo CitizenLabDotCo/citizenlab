@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 
-// react-pdf
+import { Box } from '@citizenlab/cl2-component-library';
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/Page/TextLayer.css';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
-
-import { Box } from '@citizenlab/cl2-component-library';
 
 import { getJwt } from 'utils/auth/jwt';
 

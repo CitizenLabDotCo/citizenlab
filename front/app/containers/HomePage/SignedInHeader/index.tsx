@@ -1,13 +1,14 @@
 import React, { lazy, Suspense } from 'react';
 
+import { media, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import styled from 'styled-components';
+
+import Avatar from 'components/Avatar';
+
+import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
-const CompleteProfileStep = lazy(() => import('./CompleteProfileStep'));
-const VerificationOnboardingStep = lazy(
-  () => import('./VerificationOnboardingStep')
-);
-const CustomCTAStep = lazy(() => import('./CustomCTAStep'));
-const FallbackStep = lazy(() => import('./FallbackStep'));
 import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';
 import useDismissOnboardingCampaign from 'api/onboarding_campaigns/useDismissOnboardingCampaign';
@@ -16,13 +17,12 @@ import tracks from '../tracks';
 
 import HeaderImage from './HeaderImage';
 
-import Avatar from 'components/Avatar';
-
-import { trackEventByName } from 'utils/analytics';
-
-import styled from 'styled-components';
-import { media, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+const CompleteProfileStep = lazy(() => import('./CompleteProfileStep'));
+const VerificationOnboardingStep = lazy(
+  () => import('./VerificationOnboardingStep')
+);
+const CustomCTAStep = lazy(() => import('./CustomCTAStep'));
+const FallbackStep = lazy(() => import('./FallbackStep'));
 
 const Header = styled.div`
   width: 100%;

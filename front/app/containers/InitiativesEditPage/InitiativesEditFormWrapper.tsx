@@ -7,8 +7,6 @@ import InitiativeForm, {
 } from 'components/InitiativeForm';
 
 import clHistory from 'utils/cl-router/history';
-
-// geoJson
 import { parsePosition } from 'utils/locationTools';
 
 import { IInitiativeFiles } from 'api/initiative_files/types';

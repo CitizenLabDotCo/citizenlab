@@ -10,7 +10,6 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// Api
 import { IGroups, IGroupData } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
 import { IProjectGroupData } from 'api/project_groups/types';

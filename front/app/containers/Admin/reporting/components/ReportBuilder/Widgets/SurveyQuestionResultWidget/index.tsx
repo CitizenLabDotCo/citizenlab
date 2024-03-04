@@ -10,8 +10,6 @@ import { getEmptyMessage } from '../utils';
 import messages from './messages';
 import Question from './Question';
 import Settings from './Settings';
-
-//  typings
 import { Props } from './typings';
 
 const SurveyQuestionResultWidget = ({

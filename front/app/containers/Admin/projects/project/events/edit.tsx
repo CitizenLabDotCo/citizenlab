@@ -20,14 +20,13 @@ import { Multiloc, CLError, UploadFile } from 'typings';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import Button from 'components/UI/Button';
 import ErrorComponent from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import LocationInput, { Option } from 'components/UI/LocationInput';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-const EventMap = lazy(() => import('./components/EventMap'));
-import Button from 'components/UI/Button';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -55,6 +54,8 @@ import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';
 
 import messages from './messages';
+
+const EventMap = lazy(() => import('./components/EventMap'));
 
 export type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =

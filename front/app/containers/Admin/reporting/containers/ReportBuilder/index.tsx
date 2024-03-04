@@ -30,8 +30,6 @@ import EditModePreview from '../../components/ReportBuilder/EditModePreview';
 import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrapper';
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
-
-// templates
 import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
