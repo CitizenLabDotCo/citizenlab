@@ -94,7 +94,7 @@ const configuration: ModuleConfiguration = {
                 locale: user.data.attributes.locale,
                 isSuperAdmin: isSuperAdmin(user),
                 isAdmin: isAdmin(user),
-                isModerator: isModerator(user),
+                isProjectModerator: isModerator(user),
                 highestRole: user.data.attributes.highest_role,
               },
               {
