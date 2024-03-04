@@ -108,7 +108,7 @@ const ProjectAndFolderCards = ({
     setSearch(search);
     // pass search term to useAdminPublicationsStatusCount hook
 
-    // analytics event for the updated search term
+    // event for the updated search term
     trackEventByName(tracks.searchTermChanged, { searchTerm: search });
   }, []);
 

@@ -30,8 +30,6 @@ import useAnySSOEnabled from '../useAnySSOEnabled';
 
 import { getStepConfig } from './stepConfig';
 
-// events
-
 let initialized = false;
 
 export default function useSteps() {

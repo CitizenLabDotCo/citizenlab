@@ -32,8 +32,6 @@ import messages from './messages';
 
 // animations
 
-// analytics
-
 import tracks from './tracks';
 
 // style

@@ -26,8 +26,6 @@ import NumberInput from './NumberInput';
 // api
 import useVoting from 'api/baskets_ideas/useVoting';
 
-// events
-
 import messages from './messages';
 
 // routing

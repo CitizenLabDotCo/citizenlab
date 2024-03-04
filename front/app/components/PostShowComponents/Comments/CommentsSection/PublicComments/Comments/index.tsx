@@ -10,7 +10,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import { ICommentData } from 'api/comments/types';
 
-// events
 import { commentAdded$, commentDeleted$ } from '../../../events';
 
 // style

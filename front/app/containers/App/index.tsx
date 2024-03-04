@@ -58,7 +58,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// events
 import eventEmitter from 'utils/eventEmitter';
 
 // style

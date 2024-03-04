@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-// events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import styled, { useTheme } from 'styled-components';

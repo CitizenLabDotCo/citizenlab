@@ -32,8 +32,6 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 // resources
 
-// events
-
 // style
 
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';

@@ -5,7 +5,6 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
-// events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import styled from 'styled-components';

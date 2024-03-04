@@ -3,7 +3,6 @@ import React from 'react';
 import { Button, colors } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
-// analytics
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

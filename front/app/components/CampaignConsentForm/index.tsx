@@ -21,13 +21,13 @@ import {
 } from 'api/campaign_consents/types';
 import useCampaignConsents from 'api/campaign_consents/useCampaignConsents';
 import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignConsents';
+import { internalCommentNotificationTypes } from 'api/campaigns/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
+
 import Feedback from './feedback';
-
 import messages from './messages';
-
 import {
   CampaignConsent,
   CampaignConsentChild,
@@ -35,10 +35,7 @@ import {
 } from './typings';
 import { groupCampaignsConsent, sortGroupedCampaignConsents } from './utils';
 
-// analytics
-
 // routing
-import { internalCommentNotificationTypes } from 'api/campaigns/types';
 
 type Props = {
   trackEventName?: string;
@@ -150,7 +147,6 @@ const CampaignConsentForm = ({
         })
       );
 
-    // analytics
     trackEventByName(trackEventName, {
       extra: {
         consentChanges: Object.fromEntries(

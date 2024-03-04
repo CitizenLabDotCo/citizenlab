@@ -33,8 +33,6 @@ import PageBreakBox from '../PageBreakBox';
 
 import messages from './messages';
 
-// events
-
 interface Props {
   image?: {
     dataCode?: string;

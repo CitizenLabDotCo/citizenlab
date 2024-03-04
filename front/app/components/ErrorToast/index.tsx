@@ -14,7 +14,6 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 
-// events
 import {
   BUDGET_EXCEEDED_ERROR_EVENT,
   VOTES_EXCEEDED_ERROR_EVENT,

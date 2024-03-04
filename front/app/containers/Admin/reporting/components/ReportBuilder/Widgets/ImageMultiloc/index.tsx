@@ -16,7 +16,6 @@ import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportD
 
 import messages from 'components/admin/ContentBuilder/Widgets/ImageMultiloc/messages';
 
-// events
 import eventEmitter from 'utils/eventEmitter';
 import { IMAGE_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 

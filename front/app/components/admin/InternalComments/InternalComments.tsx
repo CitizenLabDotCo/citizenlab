@@ -11,7 +11,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import { IInternalCommentData } from 'api/internal_comments/types';
 
-// events
 import { commentAdded$, commentDeleted$ } from './events';
 
 // style

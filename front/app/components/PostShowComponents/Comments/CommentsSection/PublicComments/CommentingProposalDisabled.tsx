@@ -14,8 +14,6 @@ import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import messages from '../../messages';
 
-// events
-
 const CommentingProposalDisabled = () => {
   const { data: authUser } = useAuthUser();
   const commentingPermissions = useInitiativesPermissions(

@@ -1,6 +1,5 @@
 import React from 'react';
 
-// events
 import eventEmitter from 'utils/eventEmitter';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { fireEvent, render, act } from 'utils/testUtils/rtl';

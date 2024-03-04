@@ -29,8 +29,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import { commentReplyButtonClicked$, commentAdded } from './events';
 import tracks from './tracks';
 
-// events
-
 // style
 
 import { getMentionRoles } from './utils';

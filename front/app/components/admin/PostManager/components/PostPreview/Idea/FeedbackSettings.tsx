@@ -6,7 +6,6 @@ import { IOption } from 'typings';
 
 // styles
 
-// analytics
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

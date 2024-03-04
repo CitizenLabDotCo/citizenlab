@@ -14,7 +14,6 @@ import messages from './messages';
 import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
 
-// events
 import eventEmitter from 'utils/eventEmitter';
 
 import { isNilOrError } from 'utils/helperUtils';

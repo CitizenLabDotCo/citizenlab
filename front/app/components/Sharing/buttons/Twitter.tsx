@@ -8,7 +8,6 @@ import { WrappedComponentProps } from 'react-intl';
 import { TwitterShareButton } from 'react-share';
 import styled from 'styled-components';
 
-// analytics
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
 

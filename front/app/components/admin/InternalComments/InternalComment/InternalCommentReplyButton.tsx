@@ -8,13 +8,10 @@ import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// events
 import { IInternalCommentData } from 'api/internal_comments/types';
 import useUserById from 'api/users/useUserById';
 
 import { commentReplyButtonClicked } from '../events';
-
-// analytics
 import tracks from '../tracks';
 
 // style

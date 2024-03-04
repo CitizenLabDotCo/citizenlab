@@ -13,8 +13,6 @@ import clHistory from 'utils/cl-router/history';
 
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
-// events
-
 import messages from './messages';
 
 interface Props {

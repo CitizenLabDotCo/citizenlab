@@ -19,19 +19,16 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-
+import { InternalCommentSort } from 'api/internal_comments/types';
 import useInternalComments from 'api/internal_comments/useInternalComments';
+
 import InternalComments from './InternalComments';
-import InternalParentCommentForm from './InternalParentCommentForm';
 import InternalCommentSorting from './InternalCommentSorting';
+import InternalParentCommentForm from './InternalParentCommentForm';
 
 // style
 
-// analytics
-
 import tracks from './tracks';
-
-import { InternalCommentSort } from 'api/internal_comments/types';
 
 const Header = styled(Box)`
   ${isRtl`

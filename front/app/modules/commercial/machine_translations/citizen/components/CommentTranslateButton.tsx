@@ -11,8 +11,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// events
-
 // style
 
 import useComment from 'api/comments/useComment';

@@ -33,8 +33,6 @@ import tracks from '../../../tracks';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-// events
-
 // style
 
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';

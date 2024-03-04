@@ -15,25 +15,22 @@ import { useLocation } from 'react-router-dom';
 // style
 import styled from 'styled-components';
 
-// analytics
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useProjectById from 'api/projects/useProjectById';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useComments from 'api/comments/useComments';
-
-import CommentingIdeaDisabled from './CommentingIdeaDisabled';
-
 import { isPage } from 'utils/helperUtils';
+
 import { CommentsSort } from 'api/comments/types';
+import useComments from 'api/comments/useComments';
+import useIdeaById from 'api/ideas/useIdeaById';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useProjectById from 'api/projects/useProjectById';
 
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import messages from '../../messages';
 import tracks from '../../tracks';
 
+import CommentingIdeaDisabled from './CommentingIdeaDisabled';
 import CommentingProposalDisabled from './CommentingProposalDisabled';
 import Comments from './Comments';
 import CommentSorting from './CommentSorting';

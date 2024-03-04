@@ -1,6 +1,5 @@
 import React, { MouseEvent, KeyboardEvent, useState, useCallback } from 'react';
 
-// events
 import { isRtl } from '@citizenlab/cl2-component-library';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';

@@ -16,8 +16,6 @@ import useAuthenticationRequirements from 'api/authentication/authentication_req
 import signOut from 'api/authentication/sign_in_out/signOut';
 import useAuthUser from 'api/me/useAuthUser';
 
-// events
-
 // style
 
 import messages from './messages';

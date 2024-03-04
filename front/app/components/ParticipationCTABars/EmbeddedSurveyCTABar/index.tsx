@@ -9,8 +9,6 @@ import { useTheme } from 'styled-components';
 
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 
-// events
-
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,

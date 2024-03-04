@@ -4,24 +4,17 @@ import { Box, colors, Td, Badge } from '@citizenlab/cl2-component-library';
 import { uniq, isEmpty } from 'lodash-es';
 import { useDrag } from 'react-dnd';
 import { Icon } from 'semantic-ui-react';
+import { CellConfiguration, Locale, Override } from 'typings';
 
 import AssigneeSelect from 'components/admin/PostManager/components/PostTable/AssigneeSelect';
-
-import { timeAgo } from 'utils/dateUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { getRemovedPhase, ideaHasVotesInPhase } from './utils';
-
-import { useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
-import { TFilterMenu, ManagerType } from '../../..';
-import { CellConfiguration, Locale, Override } from 'typings';
 import FeatureFlag from 'components/FeatureFlag';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import { timeAgo } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';
@@ -31,11 +24,15 @@ import { IPhaseData } from 'api/phases/types';
 
 import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
 
+import { TFilterMenu, ManagerType } from '../../..';
 import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
-import PhaseDeselectModal from './PhaseDeselectModal';
+import messages from '../../../messages';
+import tracks from '../../../tracks';
 
+import PhaseDeselectModal from './PhaseDeselectModal';
 import StyledRow from './StyledRow';
 import SubRow from './SubRow';
+import { getRemovedPhase, ideaHasVotesInPhase } from './utils';
 
 import { TitleLink } from '.';
 

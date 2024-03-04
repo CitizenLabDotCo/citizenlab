@@ -21,8 +21,6 @@ import messages from '../messages';
 
 import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
 
-// events
-
 // Styling
 
 const Container = styled.div`

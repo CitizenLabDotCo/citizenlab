@@ -37,7 +37,6 @@ import useIdeaImage from 'api/idea_images/useIdeaImage';
 import { scrollToElement } from 'utils/scroll';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
-// events
 import eventEmitter from 'utils/eventEmitter';
 
 export interface Props {

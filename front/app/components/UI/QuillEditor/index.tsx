@@ -32,9 +32,6 @@ import {
   attributes,
 } from './altTextToImagesModule';
 import messages from './messages';
-
-// analytics
-
 import tracks from './tracks';
 
 import Tippy from '@tippyjs/react';

@@ -13,7 +13,6 @@ import styled from 'styled-components';
 import messages from './messages';
 import globalMessages from 'utils/messages';
 
-// events
 import { PollDisabledReason } from 'api/projects/types';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';

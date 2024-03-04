@@ -6,7 +6,6 @@ import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from 'components/admin/ContentBu
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-// events
 import eventEmitter from 'utils/eventEmitter';
 
 import Settings from './Settings';

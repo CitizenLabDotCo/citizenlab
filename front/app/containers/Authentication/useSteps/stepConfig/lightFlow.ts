@@ -12,7 +12,6 @@ import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
 
-// events
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
 import {

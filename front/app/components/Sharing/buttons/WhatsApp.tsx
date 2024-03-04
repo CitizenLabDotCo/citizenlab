@@ -7,9 +7,6 @@ import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
-
-// analytics
-
 import tracks from '../tracks';
 import { clickSocialSharingLink, Medium } from '../utils';
 

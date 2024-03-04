@@ -18,8 +18,6 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 import Image from 'components/UI/Image';
 
-// events
-
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { isEmptyMultiloc } from 'utils/helperUtils';

@@ -5,7 +5,6 @@ import { Helmet } from 'react-helmet';
 import { FormattedMessage, injectIntl, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// events
 import eventEmitter from 'utils/eventEmitter';
 
 import Fragment from 'components/Fragment';

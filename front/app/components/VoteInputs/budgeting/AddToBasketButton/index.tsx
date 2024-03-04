@@ -28,8 +28,6 @@ import tracks from './tracks';
 
 // routing
 
-// events
-
 import { isButtonEnabled } from './utils';
 
 import { isNil } from 'utils/helperUtils';

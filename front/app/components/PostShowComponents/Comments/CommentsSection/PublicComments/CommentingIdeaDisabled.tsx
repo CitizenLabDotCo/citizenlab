@@ -14,8 +14,6 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import messages from '../../messages';
 
-// events
-
 interface Props {
   phaseId: string | undefined;
   idea: IIdea;

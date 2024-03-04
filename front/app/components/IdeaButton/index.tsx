@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 
 import Tippy from '@tippyjs/react';
 
-// events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // tracks

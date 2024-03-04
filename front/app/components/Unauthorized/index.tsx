@@ -1,6 +1,5 @@
 import React from 'react';
 
-// events
 import { Box, Title, Text, Spinner } from '@citizenlab/cl2-component-library';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { useTheme } from 'styled-components';

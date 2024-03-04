@@ -12,8 +12,6 @@ import useDeleteCommentReaction from 'api/comment_reactions/useDeleteCommentReac
 import { ICommentData } from 'api/comments/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 
-// events
-
 import useAuthUser from 'api/me/useAuthUser';
 
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';

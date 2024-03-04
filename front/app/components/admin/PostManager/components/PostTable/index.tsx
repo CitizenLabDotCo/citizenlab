@@ -20,7 +20,6 @@ import { SortDirection } from 'utils/paginationUtils';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { Sort as IdeasSort, IIdeaData } from 'api/ideas/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-
 import {
   IInitiativeData,
   Sort as InitiativesSort,

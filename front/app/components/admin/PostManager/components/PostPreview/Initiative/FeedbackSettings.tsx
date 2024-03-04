@@ -7,7 +7,6 @@ import { memoize } from 'lodash-es';
 import styled from 'styled-components';
 import { IOption } from 'typings';
 
-// events
 import events, {
   StatusChangeModalOpen,
 } from 'components/admin/PostManager/events';

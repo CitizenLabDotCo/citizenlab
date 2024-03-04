@@ -9,8 +9,6 @@ import { isString, trim } from 'lodash-es';
 
 // tracking
 
-// events
-
 // style
 import { hideVisually } from 'polished';
 import styled from 'styled-components';

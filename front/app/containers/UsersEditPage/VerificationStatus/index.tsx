@@ -14,7 +14,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Avatar from 'components/Avatar';
 
-// events
 import { triggerVerificationOnly } from 'containers/Authentication/events';
 
 import { FormattedMessage } from 'utils/cl-intl';

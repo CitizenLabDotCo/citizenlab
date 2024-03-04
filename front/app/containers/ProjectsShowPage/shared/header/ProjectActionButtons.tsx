@@ -18,8 +18,6 @@ import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 import useEvents from 'api/events/useEvents';
 
-// events
-
 import { getCurrentPhase, getInputTerm, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
 

@@ -6,33 +6,27 @@ import { uniq } from 'lodash-es';
 import { useDrag } from 'react-dnd';
 import { Icon } from 'semantic-ui-react';
 
-// analytics
-
-import tracks from '../../../tracks';
-import { TFilterMenu, ManagerType } from '../../..';
-
-// events
-import eventEmitter from 'utils/eventEmitter';
-
 import events, {
   StatusChangeModalOpen,
 } from 'components/admin/PostManager/events';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
+
 import { trackEventByName } from 'utils/analytics';
+import { timeAgo } from 'utils/dateUtils';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
 
 import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
-
-import { timeAgo } from 'utils/dateUtils';
-
-import useLocale from 'hooks/useLocale';
-
-import { isNilOrError } from 'utils/helperUtils';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IInitiativeData } from 'api/initiatives/types';
 import useInitiatives from 'api/initiatives/useInitiatives';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 
+import useLocale from 'hooks/useLocale';
+
+import { TFilterMenu, ManagerType } from '../../..';
+import tracks from '../../../tracks';
 import AssigneeSelect from '../AssigneeSelect';
 
 import StyledRow from './StyledRow';

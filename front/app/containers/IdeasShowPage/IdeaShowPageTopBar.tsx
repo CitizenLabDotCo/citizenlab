@@ -14,7 +14,6 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // routing

@@ -11,8 +11,6 @@ import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 // tracks
 import tracks from '../../tracks';
 
-// events
-
 import {
   GetRequirements,
   SetError,

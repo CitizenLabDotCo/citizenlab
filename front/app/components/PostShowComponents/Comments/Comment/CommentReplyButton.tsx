@@ -1,9 +1,5 @@
 import React from 'react';
 
-// events
-
-// analytics
-
 // style
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
