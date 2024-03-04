@@ -1,6 +1,5 @@
 import React from 'react';
 
-// api
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
 import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';

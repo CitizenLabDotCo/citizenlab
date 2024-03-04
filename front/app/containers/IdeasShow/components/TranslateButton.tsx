@@ -1,6 +1,5 @@
 import React from 'react';
 
-// tracks
 import Outlet from 'components/Outlet';
 
 import { trackEventByName } from 'utils/analytics';

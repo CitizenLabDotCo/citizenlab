@@ -12,7 +12,6 @@ import { FocusOn } from 'react-focus-on';
 // routing
 import { useParams } from 'react-router-dom';
 
-// api
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 

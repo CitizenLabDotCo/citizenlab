@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 
-// api
 import BaseUserSelect from 'components/UI/UserSelect/BaseUserSelect';
 import OptionLabel from 'components/UI/UserSelect/OptionLabel';
 import { Option } from 'components/UI/UserSelect/typings';

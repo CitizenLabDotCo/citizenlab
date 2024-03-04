@@ -1,7 +1,5 @@
 import React from 'react';
 
-// api
-
 import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
 
 import { Row } from 'components/admin/ResourceList';

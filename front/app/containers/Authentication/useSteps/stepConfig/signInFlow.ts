@@ -8,7 +8,6 @@ import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 
 // events
 
-// tracks
 import tracks from '../../tracks';
 import {
   AuthenticationData,

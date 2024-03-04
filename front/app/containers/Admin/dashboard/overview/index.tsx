@@ -32,8 +32,6 @@ import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicCh
 import { getSensibleResolution } from './getSensibleResolution';
 import overviewMessages from './messages';
 
-// tracks
-
 interface DataProps {
   projects: GetProjectsChildProps;
 }

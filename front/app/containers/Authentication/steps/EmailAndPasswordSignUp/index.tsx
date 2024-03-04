@@ -36,8 +36,6 @@ import messages from './messages';
 
 // errors
 
-// tracks
-
 interface Props {
   state: State;
   loading: boolean;

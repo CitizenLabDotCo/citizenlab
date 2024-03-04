@@ -13,7 +13,6 @@ import checkUser from 'api/users/checkUser';
 
 // cache
 
-// tracks
 import tracks from '../../tracks';
 
 // events

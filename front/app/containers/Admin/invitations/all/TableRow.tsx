@@ -1,6 +1,5 @@
 import React from 'react';
 
-// api
 import { Tr, Td, Badge, colors } from '@citizenlab/cl2-component-library';
 import { FormattedDate } from 'react-intl';
 import { Button as SemanticButton, Popup } from 'semantic-ui-react';

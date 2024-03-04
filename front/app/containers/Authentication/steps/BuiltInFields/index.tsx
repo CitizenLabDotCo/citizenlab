@@ -5,8 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 // errors
 
-// tracks
-
 import {
   AuthenticationData,
   SetError,

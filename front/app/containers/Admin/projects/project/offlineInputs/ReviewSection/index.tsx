@@ -10,7 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-// api
 import { FormattedMessage } from 'utils/cl-intl';
 
 import useDeleteIdea from 'api/ideas/useDeleteIdea';

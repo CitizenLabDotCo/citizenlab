@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-// api
-
 import {
   Box,
   Title,

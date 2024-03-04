@@ -1,6 +1,5 @@
 import React from 'react';
 
-// api
 import { colors } from '@citizenlab/cl2-component-library';
 
 import Button from 'components/UI/Button';

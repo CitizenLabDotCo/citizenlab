@@ -15,7 +15,6 @@ import {
   invalidateCacheAfterUpdateUser,
 } from 'api/users/useUpdateUser';
 
-// tracks
 import tracks from '../../tracks';
 import {
   AuthenticationData,

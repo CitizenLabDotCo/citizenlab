@@ -1,7 +1,5 @@
 import React from 'react';
 
-// api
-
 // typing
 
 import { Box } from '@citizenlab/cl2-component-library';

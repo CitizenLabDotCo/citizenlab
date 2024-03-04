@@ -2,8 +2,6 @@ import React, { useEffect, FormEvent } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-// tracks
-
 // events
 
 import { hasRequiredFields } from 'api/custom_fields_json_form_schema/utils';

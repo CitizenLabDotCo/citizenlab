@@ -11,8 +11,6 @@ import Tippy from '@tippyjs/react';
 // routing
 import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
 import { useParams } from 'react-router-dom';
-
-// api
 import { CLErrors } from 'typings';
 
 import { customAjv } from 'components/Form';
@@ -23,24 +21,24 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { geocode } from 'utils/locationTools';
 
 import useIdeaById from 'api/ideas/useIdeaById';
-
-import useUserById from 'api/users/useUserById';
-import useInputSchema from 'hooks/useInputSchema';
-import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
-import usePhase from 'api/phases/usePhase';
-import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
-import useUpdateUser from 'api/users/useUpdateUser';
 import useCreateOfflineUser from 'api/import_ideas/useCreateOfflineUser';
+import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
+import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
+import usePhase from 'api/phases/usePhase';
+import { IUser } from 'api/users/types';
+import useUpdateUser from 'api/users/useUpdateUser';
+import useUserById from 'api/users/useUserById';
 
+import useInputSchema from 'hooks/useInputSchema';
 import useLocalize from 'hooks/useLocalize';
+
+import messages from '../messages';
+
 import IdeaForm from './IdeaForm';
 import MetaBox from './MetaBox';
 import { UserFormData } from './typings';
 import UserForm from './UserForm';
-
-import messages from '../messages';
-
 import {
   getNextIdeaId,
   getUserFormValues,
@@ -48,8 +46,6 @@ import {
   getUserFormDataAction,
   getUserChanges,
 } from './utils';
-
-import { IUser } from 'api/users/types';
 
 interface Props {
   ideaId: string | null;

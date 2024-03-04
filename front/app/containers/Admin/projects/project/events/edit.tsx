@@ -37,27 +37,25 @@ import {
   calculateRoundedEndDate,
 } from 'utils/dateUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-
 import { isNilOrError } from 'utils/helperUtils';
-import useAddEventFile from 'api/event_files/useAddEventFile';
-import useEventFiles from 'api/event_files/useEventFiles';
-import useAddEvent from 'api/events/useAddEvent';
-import messages from './messages';
-
-import useUpdateEvent from 'api/events/useUpdateEvent';
-import useEvent from 'api/events/useEvent';
-import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
-import useEventImage from 'api/event_images/useEventImage';
-import useAddEventImage from 'api/event_images/useAddEventImage';
-import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
-
-import useLocale from 'hooks/useLocale';
-import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
-
-import { IEvent, IEventProperties } from 'api/events/types';
-
 import { geocode } from 'utils/locationTools';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
+
+import useAddEventFile from 'api/event_files/useAddEventFile';
+import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
+import useEventFiles from 'api/event_files/useEventFiles';
+import useAddEventImage from 'api/event_images/useAddEventImage';
+import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
+import useEventImage from 'api/event_images/useEventImage';
+import { IEvent, IEventProperties } from 'api/events/types';
+import useAddEvent from 'api/events/useAddEvent';
+import useEvent from 'api/events/useEvent';
+import useUpdateEvent from 'api/events/useUpdateEvent';
+
+import useLocale from 'hooks/useLocale';
+import messages from './messages';
+
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 export type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
@@ -83,7 +81,6 @@ const AdminProjectEventEdit = () => {
   const theme = useTheme();
   const locale = useLocale();
 
-  // api
   const { mutate: addEvent } = useAddEvent();
   const { data: event, isInitialLoading } = useEvent(id);
   const { mutate: updateEvent } = useUpdateEvent();
