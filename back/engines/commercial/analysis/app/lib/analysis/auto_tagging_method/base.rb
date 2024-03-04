@@ -2,6 +2,8 @@
 
 module Analysis
   class AutoTaggingMethod::Base
+    POOL_SIZE = 8
+
     attr_reader :analysis, :task, :input_to_text
 
     class AutoTaggingFailedError < StandardError; end
@@ -44,7 +46,45 @@ module Analysis
       end
     end
 
+    def classify(input, topics)
+      inputs_text = input_to_text.format_all([input])
+      prompt = LLM::Prompt.new.fetch('fully_automated_classifier', inputs_text: inputs_text, topics: topics)
+      gpt3.chat(prompt)
+    end
+
     protected
+
+    def gpt4
+      @gpt4 ||= LLM::GPT4Turbo.new
+    end
+
+    def gpt3
+      @gpt3 ||= LLM::GPT35Turbo.new
+    end
+
+    def classify_all!(topics, tag_type)
+      pool = Concurrent::FixedThreadPool.new(POOL_SIZE)
+      results = Concurrent::Hash.new
+
+      filtered_inputs.each do |input|
+        pool.post do
+          Rails.application.executor.wrap do
+            ErrorReporter.handle do
+              results[input.id] = classify(input, topics)
+            end
+          end
+        end
+      end
+      processed_inputs = []
+      do_while_pool_is_running(pool) do
+        (results.keys - processed_inputs).each do |input_id|
+          topic = results[input_id]
+          assign_topic!(input_id, topic, tag_type)
+          processed_inputs << input_id
+          yield(input_id)
+        end
+      end
+    end
 
     def filtered_inputs
       @filtered_inputs ||= InputsFinder.new(analysis, task.filters.symbolize_keys).execute
@@ -53,6 +93,13 @@ module Analysis
     def find_or_create_tagging!(input_id:, tag_id:)
       Tagging.find_by(input_id: input_id, tag_id: tag_id) ||
         Tagging.create!(input_id: input_id, tag_id: tag_id, background_task: task)
+    end
+
+    def assign_topic!(input_id, topic, tag_type)
+      return if topic == 'other'
+
+      tag = Tag.find_or_create_by!(name: topic, tag_type: tag_type, analysis: analysis)
+      find_or_create_tagging!(input_id: input_id, tag_id: tag.id)
     end
 
     def update_progress(progress)
@@ -64,6 +111,16 @@ module Analysis
         input.title_multiloc&.keys&.first ||
         input.body_multiloc&.keys&.first ||
         AppConfiguration.instance.settings('core', 'locales').first
+    end
+
+    def do_while_pool_is_running(pool, wait_interval: 0.1)
+      while pool.running?
+        pool.wait_for_termination(wait_interval)
+        yield
+        pool.shutdown if pool.running? && pool.queue_length.zero?
+      end
+      pool.wait_for_termination
+      yield
     end
   end
 end
