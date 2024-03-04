@@ -8,12 +8,12 @@ import messages from './messages';
 import { Text, Box, Button } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
+import PhaseFilter from 'components/UI/PhaseFilter';
+import ProjectFilter from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/ProjectFilter';
 
 // routing
 import clHistory from 'utils/cl-router/history';
 import { IOption } from 'typings';
-import PhaseFilter from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/PhaseFilter';
-import ProjectFilter from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/ProjectFilter';
 
 type Props = {
   showCopySurveyModal: boolean;
