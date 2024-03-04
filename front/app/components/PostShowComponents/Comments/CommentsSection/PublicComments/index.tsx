@@ -10,7 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useInView } from 'react-intersection-observer';
 import { useLocation } from 'react-router-dom';
-
 import styled from 'styled-components';
 
 import { trackEventByName } from 'utils/analytics';

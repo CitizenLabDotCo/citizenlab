@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// router
 import { Box, Title, Image } from '@citizenlab/cl2-component-library';
 import rocket from 'assets/img/rocket.png';
 import { useSearchParams } from 'react-router-dom';

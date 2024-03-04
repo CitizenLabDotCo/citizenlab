@@ -1,7 +1,5 @@
 import React, { FormEvent } from 'react';
 
-// router
-
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { PasswordResetSuccess } from 'containers/PasswordReset/PasswordResetSuccess';
 import { isString } from 'lodash-es';

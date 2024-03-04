@@ -11,12 +11,11 @@ import useCommentReaction from 'api/comment_reactions/useCommentReaction';
 import useDeleteCommentReaction from 'api/comment_reactions/useDeleteCommentReaction';
 import { ICommentData } from 'api/comments/types';
 import useIdeaById from 'api/ideas/useIdeaById';
-
 import useAuthUser from 'api/me/useAuthUser';
 
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import LikeButton from './LikeButton';
 
+import LikeButton from './LikeButton';
 import { trackLike, trackCancelLike } from './trackReaction';
 
 interface Props {

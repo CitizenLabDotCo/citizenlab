@@ -4,7 +4,6 @@ import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet';
 import { useForm, FormProvider } from 'react-hook-form';
-
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';

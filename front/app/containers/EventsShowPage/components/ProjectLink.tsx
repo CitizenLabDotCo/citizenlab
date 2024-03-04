@@ -9,8 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
-
-// router
 import Link from 'utils/cl-router/Link';
 
 import { IProjectData } from 'api/projects/types';

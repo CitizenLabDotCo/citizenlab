@@ -3,8 +3,6 @@ import React, { useState, lazy } from 'react';
 import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
-
-// router
 import { API_PATH } from 'containers/App/constants';
 import { useParams } from 'react-router-dom';
 

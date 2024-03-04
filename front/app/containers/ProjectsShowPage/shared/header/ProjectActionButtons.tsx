@@ -27,8 +27,6 @@ import useProjectById from 'api/projects/useProjectById';
 
 // style
 
-// router
-
 const Container = styled.div``;
 
 const SeeIdeasButton = styled(Button)`

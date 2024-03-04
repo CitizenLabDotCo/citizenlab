@@ -8,7 +8,6 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-
 import { darken } from 'polished';
 import styled from 'styled-components';
 

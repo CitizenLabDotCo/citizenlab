@@ -25,8 +25,6 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
-// router
-
 import LocalePicker from './LocalePicker';
 import messages from './messages';
 import PhaseSelector from './PhaseSelector';

@@ -7,8 +7,6 @@ import {
   StatusLabel,
   colors,
 } from '@citizenlab/cl2-component-library';
-// import RepresentativenessArticleLink from '../../components/RepresentativenessArticleLink';
-
 import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';

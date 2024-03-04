@@ -1,16 +1,11 @@
 import React, { memo, useCallback, useMemo } from 'react';
 
-// tracking
-
-// router
-
 import { Button, colors, isRtl } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import messages from 'containers/ProjectsShowPage/messages';
 import { findIndex } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
-
 import styled from 'styled-components';
 
 import { trackEventByName } from 'utils/analytics';

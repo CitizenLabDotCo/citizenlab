@@ -4,9 +4,9 @@ import { Text } from '@citizenlab/cl2-component-library';
 
 // resources
 
-import { SSOProvider } from 'api/authentication/singleSignOn';
 import { ErrorCode } from 'containers/Authentication/typings';
 import styled from 'styled-components';
+
 import Outlet from 'components/Outlet';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Or from 'components/UI/Or';
@@ -14,6 +14,7 @@ import Or from 'components/UI/Or';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { SSOProvider } from 'api/authentication/singleSignOn';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 

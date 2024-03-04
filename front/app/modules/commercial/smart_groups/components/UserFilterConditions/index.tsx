@@ -14,9 +14,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 import Rule from './Rule';
-
-// tracking
-
 import { TRule } from './rules';
 
 const Container = styled.div`

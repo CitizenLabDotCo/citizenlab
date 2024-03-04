@@ -8,9 +8,6 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import { forOwn, isEmpty } from 'lodash-es';
-
-// tracking
-
 import { Multiloc, Locale } from 'typings';
 
 s;

@@ -13,15 +13,15 @@ import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-
 import { isNilOrError } from 'utils/helperUtils';
+
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
+
 import SurveySubmittedNotice from './components/SurveySubmittedNotice';
 import IdeasNewForm from './IdeasNewForm';
-
-import { getCurrentPhase } from 'api/phases/utils';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();

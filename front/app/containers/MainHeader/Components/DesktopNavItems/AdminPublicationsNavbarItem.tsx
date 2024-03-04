@@ -16,9 +16,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import useLocalize from 'hooks/useLocalize';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
 
 import messages from '../../messages';
 

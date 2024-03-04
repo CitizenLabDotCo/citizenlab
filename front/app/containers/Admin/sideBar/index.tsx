@@ -19,12 +19,16 @@ import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isPage } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
+import { isAdmin } from 'utils/permissions/roles';
 
 import useIdeasCount from 'api/idea_count/useIdeasCount';
+import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
 import useAuthUser from 'api/me/useAuthUser';
-import MenuItem from './MenuItem';
+import { IUser } from 'api/users/types';
 
+import MenuItem from './MenuItem';
 import messages from './messages';
+import defaultNavItems, { NavItem } from './navItems';
 import NotificationsPopup from './NotificationsPopup';
 import { SupportMenu } from './SupportMenu';
 import { UserMenu } from './UserMenu';
@@ -33,15 +37,7 @@ import { UserMenu } from './UserMenu';
 
 // resources
 
-import defaultNavItems, { NavItem } from './navItems';
-
 // Hooks
-
-import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
-
-import { isAdmin } from 'utils/permissions/roles';
-
-import { IUser } from 'api/users/types';
 
 const Menu = styled.div`
   z-index: 10;

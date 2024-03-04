@@ -6,7 +6,6 @@ import styled from 'styled-components';
 
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
-// router
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isAdmin, isProjectModerator } from 'utils/permissions/roles';

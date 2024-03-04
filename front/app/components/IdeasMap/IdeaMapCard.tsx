@@ -22,8 +22,6 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
-// router
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IIdeaData } from 'api/ideas/types';
 import usePhase from 'api/phases/usePhase';

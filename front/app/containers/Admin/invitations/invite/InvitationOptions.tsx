@@ -18,10 +18,9 @@ import { SectionField } from 'components/admin/Section';
 import Collapse from 'components/UI/Collapse';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import QuillEditor from 'components/UI/QuillEditor';
-
 import Warning from 'components/UI/Warning';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IGroups } from 'api/groups/types';
@@ -30,11 +29,10 @@ import { IProjectData } from 'api/projects/types';
 import useProjects from 'api/projects/useProjects';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import messages from '../messages';
-
 import useLocalize from 'hooks/useLocalize';
+
+import messages from '../messages';
 
 import { TInviteTabName } from '.';
 

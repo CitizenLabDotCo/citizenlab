@@ -30,7 +30,6 @@ import { ToggleRow } from '../../shared/styling';
 
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
 import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
-
 import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
 import VotingMethodSelector from './VotingMethodSelector';
 

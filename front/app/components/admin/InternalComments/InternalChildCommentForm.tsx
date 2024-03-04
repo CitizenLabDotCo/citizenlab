@@ -27,7 +27,6 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { commentReplyButtonClicked$, commentAdded } from './events';
 import tracks from './tracks';
-
 import { getMentionRoles } from './utils';
 
 const Container = styled.div`

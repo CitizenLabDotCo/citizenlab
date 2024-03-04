@@ -18,7 +18,6 @@ import HeaderImage from './HeaderImage';
 
 import Avatar from 'components/Avatar';
 
-// tracking
 import { trackEventByName } from 'utils/analytics';
 
 // style

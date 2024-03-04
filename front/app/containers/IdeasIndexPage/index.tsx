@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 
-// router
 import {
   media,
   fontSizes,

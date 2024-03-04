@@ -4,10 +4,6 @@ import '@arcgis/core/assets/esri/themes/light/main.css';
 import Basemap from '@arcgis/core/Basemap';
 import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
-
-import { isNil } from 'utils/helperUtils';
-import { debounce } from 'lodash-es';
-import styled from 'styled-components';
 import * as intl from '@arcgis/core/intl.js';
 import Layer from '@arcgis/core/layers/Layer';
 import Map from '@arcgis/core/Map';
@@ -17,6 +13,10 @@ import Fullscreen from '@arcgis/core/widgets/Fullscreen';
 import LayerList from '@arcgis/core/widgets/LayerList';
 import Legend from '@arcgis/core/widgets/Legend';
 import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { debounce } from 'lodash-es';
+import styled from 'styled-components';
+
+import { isNil } from 'utils/helperUtils';
 
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

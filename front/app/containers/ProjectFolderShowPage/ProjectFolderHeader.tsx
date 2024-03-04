@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 
 import { useWindowSize, Box, media } from '@citizenlab/cl2-component-library';
-
 import styled from 'styled-components';
 
 import {

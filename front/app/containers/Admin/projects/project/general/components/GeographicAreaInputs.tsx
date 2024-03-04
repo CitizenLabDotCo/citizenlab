@@ -6,19 +6,21 @@ import styled from 'styled-components';
 import { IOption, isIOption } from 'typings';
 
 import { SubSectionTitle } from 'components/admin/Section';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isString } from 'utils/helperUtils';
+
 import { IAreaData } from 'api/areas/types';
 import useAreas from 'api/areas/useAreas';
 import useProjectById from 'api/projects/useProjectById';
+
 import useLocalize from 'hooks/useLocalize';
 
 import { TOnProjectAttributesDiffChangeFunction } from '..';
 import { LabelHeaderDescription } from '../../phase/phaseParticipationConfig/components/shared/labels';
 
 // styles
-
-import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { isString } from 'utils/helperUtils';
 
 import messages from '../messages';
 

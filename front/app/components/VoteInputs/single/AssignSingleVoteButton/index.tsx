@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Button, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { useSearchParams } from 'react-router-dom';

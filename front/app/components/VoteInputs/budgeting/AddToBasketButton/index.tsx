@@ -21,7 +21,6 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
 import messages from './messages';
-
 import tracks from './tracks';
 import { isButtonEnabled } from './utils';
 

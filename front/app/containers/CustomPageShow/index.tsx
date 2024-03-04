@@ -20,16 +20,15 @@ import FileAttachments from 'components/UI/FileAttachments';
 import { isNilOrError } from 'utils/helperUtils';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-import usePageFiles from 'api/page_files/usePageFiles';
-import CustomPageHeader from './CustomPageHeader';
-import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
-import CustomPageProjectsAndEvents from './CustomPageProjectsAndEvents';
-
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
+import usePageFiles from 'api/page_files/usePageFiles';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
+
+import CustomPageHeader from './CustomPageHeader';
+import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
+import CustomPageProjectsAndEvents from './CustomPageProjectsAndEvents';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};

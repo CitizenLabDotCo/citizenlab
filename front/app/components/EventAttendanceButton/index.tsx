@@ -18,7 +18,6 @@ import { useIntl } from 'utils/cl-intl';
 import { getEventDateString } from 'utils/dateUtils';
 
 import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
-
 import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
 import { IEventData } from 'api/events/types';
 import useEventsByUserId from 'api/events/useEventsByUserId';

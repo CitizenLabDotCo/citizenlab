@@ -20,23 +20,19 @@ import { ITab } from 'typings';
 import { Tab } from 'components/admin/NavigationTabs';
 import Modal from 'components/UI/Modal';
 import NewBadge from 'components/UI/NewBadge';
-
 import { isExpired } from 'components/UI/NewBadge/utils';
+
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isTopBarNavActive } from 'utils/helperUtils';
+
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import useDeletePhase from 'api/phases/useDeletePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { isTopBarNavActive } from 'utils/helperUtils';
-
-import { IPhaseData, ParticipationMethod } from 'api/phases/types';
-
 import messages from './messages';
-
-import clHistory from 'utils/cl-router/history';
-
-import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
-
 import PermissionTooltipMessage from './PermissionTooltipMessage';
 import { getParticipantMessage } from './utils';
 

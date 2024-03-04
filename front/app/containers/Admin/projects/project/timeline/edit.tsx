@@ -16,13 +16,29 @@ import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
 import DateRangePicker from 'components/admin/DateRangePicker';
+import {
+  Section,
+  SectionField,
+  SubSectionTitle,
+} from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Error from 'components/UI/Error';
+import FileUploader from 'components/UI/FileUploader';
+import { FileType } from 'components/UI/FileUploader/FileDisplay';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 // Api
 import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useCampaigns from 'api/campaigns/useCampaigns';
 import { IPhaseFiles } from 'api/phase_files/types';
 import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
 import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
@@ -31,14 +47,6 @@ import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useAddPhase from 'api/phases/useAddPhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import {
-  Section,
-  SectionField,
-  SubSectionTitle,
-} from 'components/admin/Section';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocalize from 'hooks/useLocalize';
@@ -47,26 +55,14 @@ import PhaseParticipationConfig, {
   IPhaseParticipationConfig,
 } from '../phase/phaseParticipationConfig';
 
-import FileUploader from 'components/UI/FileUploader';
-import Warning from 'components/UI/Warning';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
 import CampaignRow from './CampaignRow';
 import messages from './messages';
 
 import { IPhase, IPhaseData, IUpdatedPhaseProperties } from 'api/phases/types';
 
-import { FileType } from 'components/UI/FileUploader/FileDisplay';
-
-import { isNilOrError } from 'utils/helperUtils';
-
-import useCampaigns from 'api/campaigns/useCampaigns';
 import { CampaignName } from 'api/campaigns/types';
 
 import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
-
-import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 

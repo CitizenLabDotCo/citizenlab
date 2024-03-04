@@ -7,8 +7,6 @@ import React, {
   useEffect,
 } from 'react';
 
-// tracking
-
 import {
   Box,
   Icon,

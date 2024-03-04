@@ -9,15 +9,12 @@ import HorizontalScroll from 'components/HorizontalScroll';
 import { useIntl } from 'utils/cl-intl';
 
 import useEvents from 'api/events/useEvents';
-
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import EventPreviewCard from './EventPreviewCard';
 import messages from './messages';
-
-// router
 
 // util
 

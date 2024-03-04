@@ -6,7 +6,6 @@ import {
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
 import { isString, isEmpty, capitalize } from 'lodash-es';
-
 import { transparentize } from 'polished';
 import { MentionsInput, Mention, MentionItem } from 'react-mentions';
 import styled, { useTheme } from 'styled-components';

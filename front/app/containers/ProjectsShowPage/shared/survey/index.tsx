@@ -1,26 +1,27 @@
 import React from 'react';
 
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+import styled from 'styled-components';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import messages from './messages';
+import { isNilOrError } from 'utils/helperUtils';
 import globalMessages from 'utils/messages';
 
-import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'api/me/useAuthUser';
-import SurveyXact from './SurveyXact';
-
 import { TSurveyService } from 'api/phases/types';
 import { IProjectData, SurveyDisabledReason } from 'api/projects/types';
+
 import ParticipationPermission from '../ParticipationPermission';
+
 import EnalyzerSurvey from './EnalyzerSurvey';
 import GoogleFormsSurvey from './GoogleFormsSurvey';
+import messages from './messages';
 import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
 import QualtricsSurvey from './QualtricsSurvey';
 import SmartSurvey from './SmartSurvey';
 import SnapSurvey from './SnapSurvey';
 import SurveymonkeySurvey from './SurveymonkeySurvey';
+import SurveyXact from './SurveyXact';
 import TypeformSurvey from './TypeformSurvey';
 
 const Container = styled.div`

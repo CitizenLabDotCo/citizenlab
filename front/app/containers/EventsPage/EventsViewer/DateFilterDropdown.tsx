@@ -9,8 +9,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-// router
-
 type Props = {
   onChange: (dateFilterValue: string[]) => void;
   textColor?: string;

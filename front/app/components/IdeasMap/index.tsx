@@ -21,17 +21,9 @@ import {
   viewportWidths,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
-
-import {
-  InnerContainer,
-  getInnerContainerLeftMargin,
-  initialContainerWidth,
-  initialInnerContainerLeftMargin,
-  mapHeightDesktop,
-  mapHeightMobile,
-} from './utils';
-import styled, { useTheme } from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
+import styled, { useTheme } from 'styled-components';
+
 import EsriMap from 'components/EsriMap';
 import {
   createEsriGeoJsonLayers,
@@ -44,16 +36,13 @@ import {
 } from 'components/EsriMap/utils';
 import LayerHoverLabel from 'components/IdeationConfigurationMap/components/LayerHoverLabel';
 
-import { IMapConfig } from 'api/map_config/types';
-
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import messages from './messages';
-
 import { isAdmin } from 'utils/permissions/roles';
 
 import { IIdeaData } from 'api/ideas/types';
+import { IMapConfig } from 'api/map_config/types';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 
@@ -63,7 +52,16 @@ import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
 import IdeaMapCard from './IdeaMapCard';
 import IdeasAtLocationPopup from './IdeasAtLocationPopup';
 import InstructionMessage from './InstructionMessage';
+import messages from './messages';
 import StartIdeaButton from './StartIdeaButton';
+import {
+  InnerContainer,
+  getInnerContainerLeftMargin,
+  initialContainerWidth,
+  initialInnerContainerLeftMargin,
+  mapHeightDesktop,
+  mapHeightMobile,
+} from './utils';
 
 // Note: Existing custom styling
 const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`

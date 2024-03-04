@@ -9,16 +9,18 @@ import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
-
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
+import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
 
 // context
-
-import Modal from 'components/UI/Modal';
-import Button from 'components/UI/Button';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -26,10 +28,7 @@ import PrintReportButton from '../../ReportBuilderPage/ReportRow/Buttons/PrintRe
 
 import messages from './messages';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 // routing
-import clHistory from 'utils/cl-router/history';
 
 type ContentBuilderTopBarProps = {
   hasError: boolean;

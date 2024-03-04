@@ -2,26 +2,27 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
-
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-import { getFullName, withoutSpacing } from 'utils/textUtils';
-import { getPeriod } from './utils';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 import TenantLogo from 'containers/MainHeader/Components/TenantLogo';
+
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import { useFormatMessageWithLocale } from 'utils/cl-intl';
+import { getFullName, withoutSpacing } from 'utils/textUtils';
+
 import useProjectById from 'api/projects/useProjectById';
 import useReport from 'api/reports/useReport';
 import useUserById from 'api/users/useUserById';
 
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import TextMultiloc from '../TextMultiloc';
 
 import messages from './messages';
+import { getPeriod } from './utils';
 
 export type Props = {
   startAt?: string;

@@ -13,6 +13,7 @@ import {
 } from 'components/admin/Section';
 import Outlet from 'components/Outlet';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 
@@ -22,12 +23,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // Hooks
 import { defaultAdminCardPadding } from 'utils/styleConstants';
+
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
+
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 // Components
-import Error from 'components/UI/Error';
 
 import messages from './messages';
 

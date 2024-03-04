@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import TextareaAutosize from 'react-textarea-autosize';
-
 import styled from 'styled-components';
 import { Locale } from 'typings';
 

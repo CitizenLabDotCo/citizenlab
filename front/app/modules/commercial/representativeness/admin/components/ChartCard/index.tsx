@@ -13,31 +13,27 @@ import {
   TCustomFieldCode,
 } from 'api/user_custom_fields/types';
 import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';
+import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
 import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
 
 import useLocalize from 'hooks/useLocalize';
 
 import useRScore from '../../api/r_score/useRScore';
+import {
+  RepresentativenessRow,
+  RepresentativenessRowMultiloc,
+} from '../../hooks/parseReferenceData';
 import useReferenceData from '../../hooks/useReferenceData';
+import fieldMessages from '../Field/messages';
 
 import Chart from './Chart';
 import EmptyCard from './EmptyCard';
 import Footer from './Footer';
 import Header from './Header';
-import Table from './Table';
 import messages from './messages';
-
-import fieldMessages from '../Field/messages';
-
+import Table from './Table';
 import { getLegendLabels } from './utils';
-
-import {
-  RepresentativenessRow,
-  RepresentativenessRowMultiloc,
-} from '../../hooks/parseReferenceData';
-
-import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
 interface Props {
   userCustomField: IUserCustomFieldData;

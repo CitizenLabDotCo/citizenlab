@@ -11,7 +11,6 @@ import { useIntl } from 'utils/cl-intl';
 import { ICommentData } from 'api/comments/types';
 
 import { commentAdded$, commentDeleted$ } from '../../../events';
-
 import messages from '../../../messages';
 
 // a11y

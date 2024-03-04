@@ -22,8 +22,6 @@ import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 
 import messages from '../messages';
 
-// router
-
 const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();

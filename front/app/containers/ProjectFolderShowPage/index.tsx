@@ -17,21 +17,18 @@ import Button from 'components/UI/Button';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
+import { FormattedMessage } from 'utils/cl-intl';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
+
 import useAuthUser from 'api/me/useAuthUser';
+import { IProjectFolderData } from 'api/project_folders/types';
 import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
 
 import messages from './messages';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 // style
-
-import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
-
-import { IProjectFolderData } from 'api/project_folders/types';
-
-import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 import ProjectFolderDescription from './ProjectFolderDescription';
 import ProjectFolderHeader from './ProjectFolderHeader';

@@ -14,7 +14,6 @@ import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
 import clHistory from 'utils/cl-router/history';
 
 import useProjectById from 'api/projects/useProjectById';

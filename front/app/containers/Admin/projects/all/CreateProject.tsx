@@ -10,23 +10,21 @@ import styled from 'styled-components';
 import { InsertConfigurationOptions } from 'typings';
 
 import Outlet from 'components/Outlet';
-
 import Tabs, { ITabItem } from 'components/UI/Tabs';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 
 import messages from './messages';
 import { HeaderTitle } from './StyledComponents';
 
-import eventEmitter from 'utils/eventEmitter';
-
 // analytics
-import { trackEventByName } from 'utils/analytics';
 
 import tracks from './tracks';
-
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
 

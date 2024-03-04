@@ -2,21 +2,9 @@
 import AttachmentsControl, {
   attachmentsControlTester,
 } from 'components/Form/Components/Controls/AttachmentsControl';
-import SingleSelectControl, {
-  singleSelectControlTester,
-} from 'components/Form/Components/Controls/SingleSelectControl';
-import MultiSelectControl, {
-  multiSelectControlTester,
-} from 'components/Form/Components/Controls/MultiSelectControl';
-import UserPickerControl, {
-  userPickerControlTester,
-} from 'components/Form/Components/Controls/UserPickerControl';
 import CheckboxControl, {
   checkboxControlTester,
 } from 'components/Form/Components/Controls/CheckboxControl';
-import LocationControl, {
-  locationControlTester,
-} from 'components/Form/Components/Controls/LocationControl';
 import DateControl, {
   dateControlTester,
 } from 'components/Form/Components/Controls/DateControl';
@@ -29,9 +17,18 @@ import ImageControl, {
 import InputControl, {
   inputControlTester,
 } from 'components/Form/Components/Controls/InputControl';
+import LocationControl, {
+  locationControlTester,
+} from 'components/Form/Components/Controls/LocationControl';
 import MultilocInputLayout, {
   multilocInputTester,
 } from 'components/Form/Components/Controls/MultilocInputLayout';
+import MultiSelectControl, {
+  multiSelectControlTester,
+} from 'components/Form/Components/Controls/MultiSelectControl';
+import SingleSelectControl, {
+  singleSelectControlTester,
+} from 'components/Form/Components/Controls/SingleSelectControl';
 import TextAreaControl, {
   textAreaControlTester,
 } from 'components/Form/Components/Controls/TextAreaControl';
@@ -41,6 +38,9 @@ import TitleControl, {
 import TopicsControl, {
   topicsControlTester,
 } from 'components/Form/Components/Controls/TopicsControl';
+import UserPickerControl, {
+  userPickerControlTester,
+} from 'components/Form/Components/Controls/UserPickerControl';
 import WYSIWYGControl, {
   WYSIWYGControlTester,
 } from 'components/Form/Components/Controls/WYSIWYGControl';

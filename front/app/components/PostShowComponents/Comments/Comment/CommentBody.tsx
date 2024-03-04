@@ -13,16 +13,13 @@ import {
 } from 'components/PostShowComponents/Comments/utils';
 import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services
-import useUpdateComment from 'api/comments/useUpdateComment';
 import { IUpdatedComment } from 'api/comments/types';
-
-import messages from '../messages';
 
 // Components
 
@@ -31,12 +28,13 @@ import messages from '../messages';
 // Typings
 
 import useComment from 'api/comments/useComment';
+import useUpdateComment from 'api/comments/useUpdateComment';
 
 import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 
 import { commentTranslateButtonClicked$ } from '../events';
-
-import useLocalize from 'hooks/useLocalize';
+import messages from '../messages';
 
 const Container = styled.div``;
 

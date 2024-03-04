@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom';
 
 import Button from 'components/UI/Button';
 
-// tracking
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { getInputTermMessage } from 'utils/i18n';

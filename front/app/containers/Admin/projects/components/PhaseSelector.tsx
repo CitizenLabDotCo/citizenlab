@@ -1,6 +1,5 @@
 import React from 'react';
 
-// router
 import { useParams } from 'react-router-dom';
 import { IOption } from 'typings';
 

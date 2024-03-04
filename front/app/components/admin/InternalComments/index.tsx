@@ -24,7 +24,6 @@ import useInternalComments from 'api/internal_comments/useInternalComments';
 import InternalComments from './InternalComments';
 import InternalCommentSorting from './InternalCommentSorting';
 import InternalParentCommentForm from './InternalParentCommentForm';
-
 import tracks from './tracks';
 
 const Header = styled(Box)`

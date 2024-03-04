@@ -14,15 +14,16 @@ import { usePermission } from 'utils/permissions';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import createDashboardRoutes from './dashboard/routes';
-import invitationsRoutes from './invitations/routes';
-import createAdminProjectsRoutes from './projects/routes';
-import settingsRoutes from './settings/routes';
-import createAdminMessagingRoutes from './messaging/routes';
 import ideasRoutes from './ideas/routes';
+import invitationsRoutes from './invitations/routes';
+import createAdminMessagingRoutes from './messaging/routes';
 import pagesAndMenuRoutes from './pagesAndMenu/routes';
 import projectFoldersRoutes from './projectFolders/routes';
+import createAdminProjectsRoutes from './projects/routes';
 import reportingRoutes from './reporting/routes';
+import settingsRoutes from './settings/routes';
 import toolsRoutes from './tools/routes';
 
 const AdminContainer = lazy(() => import('containers/Admin'));

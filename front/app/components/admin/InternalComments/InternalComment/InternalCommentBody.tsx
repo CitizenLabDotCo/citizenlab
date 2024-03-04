@@ -18,7 +18,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // Services
 import { IUpdatedInternalComment } from 'api/internal_comments/types';
-
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useUpdateInternalComment from 'api/internal_comments/useUpdateInternalComment';
 

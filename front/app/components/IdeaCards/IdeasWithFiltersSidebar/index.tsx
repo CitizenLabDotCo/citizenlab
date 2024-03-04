@@ -22,7 +22,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
-// tracking
 import messages from '../messages';
 import SortFilterDropdown, { Sort } from '../shared/Filters/SortFilterDropdown';
 import IdeasView from '../shared/IdeasView';

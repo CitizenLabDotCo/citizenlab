@@ -7,8 +7,6 @@ import LoadingComments from 'components/PostShowComponents/Comments/LoadingComme
 import Footer from 'components/PostShowComponents/Footer';
 
 import { trackEventByName } from 'utils/analytics';
-
-// router
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import InitiativeMeta from './InitiativeMeta';

@@ -3,8 +3,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 import { trackPageChange } from './actions';
 import { mockRoutes } from './mockRoutes.mock';
-
-// mocked inputs
 import { setupMatomo } from './setup';
 
 import config from '.';

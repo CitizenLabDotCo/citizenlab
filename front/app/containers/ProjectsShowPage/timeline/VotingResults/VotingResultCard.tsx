@@ -14,8 +14,6 @@ import Footer from 'components/IdeaCard/Footer';
 import Image from 'components/UI/Image';
 
 import { useIntl } from 'utils/cl-intl';
-
-// router
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';

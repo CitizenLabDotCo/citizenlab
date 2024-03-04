@@ -8,7 +8,6 @@ import { useLocation } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
@@ -21,8 +20,6 @@ import { IPhaseData } from 'api/phases/types';
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 
 import messages from '../messages';
-
-// router
 
 const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();

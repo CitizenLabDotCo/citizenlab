@@ -12,7 +12,9 @@ import FileAttachments from 'components/UI/FileAttachments';
 
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
+
 import useProjectFiles from 'api/project_files/useProjectFiles';
+
 import useLocalize from 'hooks/useLocalize';
 
 import Editor from '../../Editor';

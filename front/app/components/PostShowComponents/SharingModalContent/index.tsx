@@ -21,18 +21,17 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
+import { getInputTerm } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
+
 import messages from './messages';
 
 // tracking
 
 import tracks from './tracks';
-
-import { getInputTerm } from 'api/phases/utils';
-
-import useLocalize from 'hooks/useLocalize';
 
 interface Props {
   postType: 'idea' | 'initiative';

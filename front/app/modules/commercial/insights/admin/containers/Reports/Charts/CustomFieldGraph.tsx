@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 
-import BarChart from 'components/admin/Graphs/BarChart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import messages from 'containers/Admin/dashboard/messages';
 import { isEmpty } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import { Tooltip } from 'recharts';
 
+import BarChart from 'components/admin/Graphs/BarChart';
 import BarChartByCategory from 'components/admin/Graphs/BarChartByCategory';
 import PieChartByCategory from 'components/admin/Graphs/PieChartByCategory';
 import {

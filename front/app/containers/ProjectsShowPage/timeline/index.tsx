@@ -1,45 +1,42 @@
 import React, { useMemo } from 'react';
 
-import StatusModule from 'components/StatusModule';
-import VotingResults from './VotingResults';
-import PhaseReport from './PhaseReport';
 import { Box, colors, isRtl } from '@citizenlab/cl2-component-library';
-
-// router
-import setPhaseURL from './setPhaseURL';
-import { useParams } from 'react-router-dom';
-
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import useLocale from 'hooks/useLocale';
-
 import messages from 'containers/ProjectsShowPage/messages';
 import {
   ProjectPageSectionTitle,
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
-import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'react-router-dom';
 
 // style
 import styled from 'styled-components';
 
 import ContentContainer from 'components/ContentContainer';
 import SectionContainer from 'components/SectionContainer';
+import StatusModule from 'components/StatusModule';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import { IPhaseData } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
 import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocale from 'hooks/useLocale';
 
 import { isValidPhase } from '../phaseParam';
 
 import PhaseIdeas from './Ideas';
 import PhaseDocumentAnnotation from './PhaseDocumentAnnotation';
 import PhaseNavigation from './PhaseNavigation';
+import PhaseReport from './PhaseReport';
 import PhasePoll from './Poll';
+import setPhaseURL from './setPhaseURL';
 import PhaseSurvey from './Survey';
 import Timeline from './Timeline';
 import PhaseVolunteering from './Volunteering';
+import VotingResults from './VotingResults';
 
 const StyledSectionContainer = styled(SectionContainer)`
   display: flex;

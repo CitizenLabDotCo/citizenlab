@@ -19,12 +19,11 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IInitiativesFilterCounts } from 'api/initiatives_filter_counts/types';
 
 import messages from './messages';
 import { Header, Title } from './styles';
-
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 
 const Container = styled.div`
   width: 100%;

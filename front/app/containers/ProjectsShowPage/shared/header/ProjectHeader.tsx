@@ -9,25 +9,24 @@ import styled from 'styled-components';
 import ContentContainer from 'components/ContentContainer';
 import FollowUnfollow from 'components/FollowUnfollow';
 import Outlet from 'components/Outlet';
-import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
-
-import Button from 'components/UI/Button';
-import { isNilOrError } from 'utils/helperUtils';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
-import useProjectById from 'api/projects/useProjectById';
-import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
-import ProjectInfo from './ProjectInfo';
 import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
+import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { useIntl } from 'utils/cl-intl';
+import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
+import ProjectInfo from './ProjectInfo';
 
 // style
 

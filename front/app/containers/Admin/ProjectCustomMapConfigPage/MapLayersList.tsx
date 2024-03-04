@@ -7,14 +7,13 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-
 import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-
 import styled from 'styled-components';
+
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import { SubSectionTitle } from 'components/admin/Section';
 import Button from 'components/UI/Button';
+
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
@@ -28,6 +27,7 @@ import addOrderingToLayers, {
   IMapLayerAttributesWithOrdering,
 } from './addOrderingToLayers';
 import GeoJsonImportButton from './GeoJsonImportButton';
+import messages from './messages';
 
 const Container = styled.div``;
 

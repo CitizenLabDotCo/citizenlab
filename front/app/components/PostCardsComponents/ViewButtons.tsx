@@ -23,7 +23,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
 
 import messages from './messages';
-
 import tracks from './tracks';
 
 const Container = styled.div`

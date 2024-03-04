@@ -29,7 +29,6 @@ const EventMap = lazy(() => import('./components/EventMap'));
 import Button from 'components/UI/Button';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 
-// router
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import {
@@ -52,10 +51,10 @@ import useAddEvent from 'api/events/useAddEvent';
 import useEvent from 'api/events/useEvent';
 import useUpdateEvent from 'api/events/useUpdateEvent';
 
-import useLocale from 'hooks/useLocale';
-import messages from './messages';
-
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useLocale from 'hooks/useLocale';
+
+import messages from './messages';
 
 export type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =

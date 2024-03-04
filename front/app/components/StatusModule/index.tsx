@@ -10,7 +10,6 @@ import {
   defaultStyles,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-
 import { useTheme } from 'styled-components';
 
 import Warning from 'components/UI/Warning';

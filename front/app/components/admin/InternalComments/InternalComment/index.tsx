@@ -19,7 +19,6 @@ import useUserById from 'api/users/useUserById';
 
 import InternalCommentBody from './InternalCommentBody';
 import InternalCommentFooter from './InternalCommentFooter';
-
 import InternalCommentHeader from './InternalCommentHeader';
 
 const highlightAnimation = keyframes`

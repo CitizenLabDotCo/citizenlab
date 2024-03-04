@@ -16,11 +16,8 @@ import { isNumber } from 'lodash-es';
 
 const InitiativeMap = lazy(() => import('components/InitiativeMap'));
 
-// router
-
 import { MessageDescriptor } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
-
 import styled from 'styled-components';
 
 import BottomBar from 'components/FiltersModal/BottomBar';

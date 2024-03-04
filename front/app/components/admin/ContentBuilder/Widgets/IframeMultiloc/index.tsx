@@ -8,7 +8,6 @@ import {
   Label,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-
 import { Locale, Multiloc } from 'typings';
 
 import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';

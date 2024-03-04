@@ -19,6 +19,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import useMapConfig from 'api/map_config/useMapConfig';
+import { IMapLayerAttributes } from 'api/map_layers/types';
 import useUpdateMapLayer from 'api/map_layers/useUpdateMapLayer';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -33,8 +34,6 @@ import {
 import messages from './messages';
 
 // typing
-
-import { IMapLayerAttributes } from 'api/map_layers/types';
 
 const Container = styled.div`
   display: flex;

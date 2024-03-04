@@ -21,21 +21,21 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
 import ClickOutside from 'utils/containers/clickOutside';
+
 import useAnalysis from 'api/analyses/useAnalysis';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
+
 import useLocalize from 'hooks/useLocalize';
 
 import FilterItems from '../FilterItems';
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import LaunchModal from '../LaunchModal';
 import Tasks from '../Tasks';
+
 import Filters from './Filters';
 import messages from './messages';
-
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
-
-import useAuthUser from 'api/me/useAuthUser';
 
 const TruncatedTitle = styled(Title)`
   white-space: nowrap;

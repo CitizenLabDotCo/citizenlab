@@ -1,7 +1,5 @@
 import React from 'react';
 
-// router
-
 import { Box } from '@citizenlab/cl2-component-library';
 
 import Chart from 'components/admin/GraphCards/ReactionsByTimeCard/Chart';

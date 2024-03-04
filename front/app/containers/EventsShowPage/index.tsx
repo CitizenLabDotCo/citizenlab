@@ -19,20 +19,17 @@ import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 import useEventImage from 'api/event_images/useEventImage';
 import useEvent from 'api/events/useEvent';
-
 import useProjectById from 'api/projects/useProjectById';
-import Container from './components/Container';
-import InformationColumnDesktop from './components/InformationColumnDesktop';
-import DesktopTopBar from './components/DesktopTopBar';
-
-import InformationSectionMobile from './components/InformationSectionMobile';
-import MobileTopBar from './components/MobileTopBar';
-import EventDescription from './components/EventDescription';
-import ProjectLink from './components/ProjectLink';
-
-// router
 
 import useLocalize from 'hooks/useLocalize';
+
+import Container from './components/Container';
+import DesktopTopBar from './components/DesktopTopBar';
+import EventDescription from './components/EventDescription';
+import InformationColumnDesktop from './components/InformationColumnDesktop';
+import InformationSectionMobile from './components/InformationSectionMobile';
+import MobileTopBar from './components/MobileTopBar';
+import ProjectLink from './components/ProjectLink';
 
 const InnerContainer = styled(Box)`
   min-height: calc(

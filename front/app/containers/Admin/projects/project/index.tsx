@@ -17,15 +17,13 @@ import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { PhaseHeader } from './phase/PhaseHeader';
-import ProjectHeader from './projectHeader';
-
-import { getIntialTabs, getTabHideConditions } from './tabs';
-
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { PhaseHeader } from './phase/PhaseHeader';
+import ProjectHeader from './projectHeader';
+import { getIntialTabs, getTabHideConditions } from './tabs';
 import { getTimelineTab } from './timeline/utils';
 
 interface DataProps {

@@ -18,26 +18,21 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import eventEmitter from 'utils/eventEmitter';
+import { scrollToElement } from 'utils/scroll';
 
+import useIdeaImage from 'api/idea_images/useIdeaImage';
 import { IIdea } from 'api/ideas/types';
+import useIdeaById from 'api/ideas/useIdeaById';
+import usePhase from 'api/phases/usePhase';
+
+import useLocalize from 'hooks/useLocalize';
+
 import Body from './Body';
 import CardImage from './CardImage';
 import Footer from './Footer';
 import Interactions from './Interactions';
-
-// router
-
-import useIdeaById from 'api/ideas/useIdeaById';
-
-import useLocalize from 'hooks/useLocalize';
-
-import usePhase from 'api/phases/usePhase';
-import useIdeaImage from 'api/idea_images/useIdeaImage';
-
-import { scrollToElement } from 'utils/scroll';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-
-import eventEmitter from 'utils/eventEmitter';
 
 export interface Props {
   ideaId: string;

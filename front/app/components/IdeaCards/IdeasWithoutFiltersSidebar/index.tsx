@@ -6,10 +6,7 @@ import {
   media,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-
-// router
 import { useSearchParams } from 'react-router-dom';
-
 import styled from 'styled-components';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';

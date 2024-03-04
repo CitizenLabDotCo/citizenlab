@@ -25,30 +25,30 @@ import {
   useFormatMessageWithLocale,
   MessageDescriptor,
 } from 'utils/cl-intl';
+import { isModerator } from 'utils/permissions/roles';
 
 import useAuthUser from 'api/me/useAuthUser';
+import useProjects from 'api/projects/useProjects';
+
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import reportBuilderMessages from '../../../messages';
+import { WIDGET_TITLES } from '../Widgets';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
+import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
+import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
+import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
+import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
+import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
+import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
+import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
 import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
-import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
-import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
-import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
-import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
-import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
 import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
-import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
-import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
 import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
-import { WIDGET_TITLES } from '../Widgets';
-
-import useProjects from 'api/projects/useProjects';
-
-import { isModerator } from 'utils/permissions/roles';
 
 type ReportBuilderToolboxProps = {
   reportId: string;

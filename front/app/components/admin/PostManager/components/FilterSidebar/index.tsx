@@ -16,15 +16,14 @@ import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-
 import { ITopicData } from 'api/topics/types';
 
 import messages from '../../messages';
 
 import PhasesMenu from './FilterSidebarPhases';
 import ProjectsMenu from './FilterSidebarProjects';
-import TopicsMenu from './FilterSidebarTopics';
 import StatusesMenu from './FilterSidebarStatuses';
+import TopicsMenu from './FilterSidebarTopics';
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.teal700};

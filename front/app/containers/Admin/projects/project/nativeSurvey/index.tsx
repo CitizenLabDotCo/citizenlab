@@ -23,20 +23,21 @@ import Modal from 'components/UI/Modal';
 import { useIntl } from 'utils/cl-intl';
 
 // Utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getFormActionsConfig } from './utils';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
+
 import usePhase from 'api/phases/usePhase';
 
 // Styles
 
 // Services
-import { downloadSurveyResults } from 'api/survey_results/utils';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
+import { downloadSurveyResults } from 'api/survey_results/utils';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 import useLocale from 'hooks/useLocale';
@@ -45,6 +46,7 @@ import EditWarningModal from './EditWarningModal';
 import FormResults from './FormResults';
 import messages from './messages';
 import { saveSurveyAsPDF } from './saveSurveyAsPDF';
+import { getFormActionsConfig } from './utils';
 
 const Forms = () => {
   const { projectId, phaseId } = useParams() as {

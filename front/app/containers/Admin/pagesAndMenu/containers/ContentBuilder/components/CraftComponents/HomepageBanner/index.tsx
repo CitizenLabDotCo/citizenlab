@@ -21,10 +21,7 @@ import {
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
 } from 'components/admin/ContentBuilder/constants';
-
-import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import useAuthUser from 'api/me/useAuthUser';
 import Fragment from 'components/Fragment';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
@@ -34,6 +31,9 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isValidUrl } from 'utils/validate';
+
+import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
+import useAuthUser from 'api/me/useAuthUser';
 
 import useLocale from 'hooks/useLocale';
 

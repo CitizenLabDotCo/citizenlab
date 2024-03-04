@@ -25,8 +25,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
-// router
-
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
 import {
   getCardImageUrl,
@@ -36,9 +34,6 @@ import useProjectFolderImages from 'api/project_folder_images/useProjectFolderIm
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import messages from './messages';
-
-// tracking
-
 import tracks from './tracks';
 
 const Container = styled(Link)`

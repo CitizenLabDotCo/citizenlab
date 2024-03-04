@@ -12,10 +12,9 @@ const ChangeSeatModal = lazy(
 // Translation
 
 // Events --- For error handling
-import eventEmitter from 'utils/eventEmitter';
-import events from './events';
 
 import styled from 'styled-components';
+
 import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
@@ -26,6 +25,7 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+import eventEmitter from 'utils/eventEmitter';
 
 // Hooks
 import { getFullName } from 'utils/textUtils';
@@ -36,6 +36,7 @@ import useDeleteUser from 'api/users/useDeleteUser';
 import useExceedsSeats from 'hooks/useExceedsSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import events from './events';
 import messages from './messages';
 
 const RegisteredAt = styled(Td)`

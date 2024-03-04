@@ -18,8 +18,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // resource
 
-// tracking
-
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 

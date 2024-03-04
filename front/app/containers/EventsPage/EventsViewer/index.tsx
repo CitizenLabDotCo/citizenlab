@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, media } from '@citizenlab/cl2-component-library';
-
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import moment from 'moment';
 import { MessageDescriptor } from 'react-intl';
-
-// router
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+
 import EventCard from 'components/EventCard';
 import Pagination from 'components/Pagination';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import useEvents from 'api/events/useEvents';
 import { PublicationStatus } from 'api/projects/types';

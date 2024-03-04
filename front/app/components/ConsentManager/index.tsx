@@ -16,7 +16,6 @@ import Container from './Container';
 
 // cookies
 import { allCategories, TCategory } from './destinations';
-
 import { IPreferences } from './typings';
 import {
   getCurrentPreferences,

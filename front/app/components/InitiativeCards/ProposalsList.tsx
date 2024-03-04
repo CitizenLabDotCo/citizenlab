@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Spinner, Button, media } from '@citizenlab/cl2-component-library';
-
 import { rgba } from 'polished';
 import styled, { useTheme } from 'styled-components';
 

@@ -18,23 +18,19 @@ import SearchInput from 'components/UI/SearchInput';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 import { isFieldEnabled } from 'utils/projectUtils';
 
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-
-import usePhase from 'api/phases/usePhase';
-import useLocale from 'hooks/useLocale';
-import IdeaMapCard from '../IdeaMapCard';
-
-// router
-
-import messages from '../messages';
-
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-
-import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 import useIdeas from 'api/ideas/useIdeas';
+import usePhase from 'api/phases/usePhase';
+import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+
+import useLocale from 'hooks/useLocale';
+
+import IdeaMapCard from '../IdeaMapCard';
+import messages from '../messages';
 
 const Container = styled.div`
   width: 100%;

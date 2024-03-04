@@ -11,9 +11,12 @@ import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
+import { withoutSpacing } from 'utils/textUtils';
+
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
+
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // shared widgets
@@ -24,17 +27,14 @@ import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
 import AgeWidget from '../../Widgets/ChartWidgets/AgeWidget';
 import GenderWidget from '../../Widgets/ChartWidgets/GenderWidget';
 import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
+import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
+import { SUPPORTED_INPUT_TYPES } from '../../Widgets/SurveyQuestionResultWidget/constants';
 import TextMultiloc from '../../Widgets/TextMultiloc';
 import TwoColumn from '../../Widgets/TwoColumn';
-import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
 
 import { getTemplateData } from './getTemplateData';
 import messages from './messages';
-
-import { withoutSpacing } from 'utils/textUtils';
-
-import { SUPPORTED_INPUT_TYPES } from '../../Widgets/SurveyQuestionResultWidget/constants';
 
 export interface Props {
   reportId: string;

@@ -10,13 +10,10 @@ import {
 } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import useLocale from 'hooks/useLocale';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
 s;
-import messages from '../../../containers/Granular/messages';
 import { Multiloc } from 'typings';
 import { object, string } from 'yup';
+
 import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
@@ -34,6 +31,10 @@ import { IOptionsType } from 'api/custom_fields/types';
 import useAddUserCustomField from 'api/user_custom_fields/useAddUserCustomField';
 import useAddUserCustomFieldOption from 'api/user_custom_fields_options/useAddUserCustomFieldOption';
 
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+
+import messages from '../../../containers/Granular/messages';
 import { getLabelForInputType } from '../../../containers/Granular/utils';
 
 type AddFieldScreenProps = {

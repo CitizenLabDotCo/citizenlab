@@ -14,7 +14,6 @@ import { Subscription } from 'rxjs';
 import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
 import clickOutside from 'utils/containers/clickOutside';
 import eventEmitter from 'utils/eventEmitter';
 

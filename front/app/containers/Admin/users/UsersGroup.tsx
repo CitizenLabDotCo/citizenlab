@@ -13,28 +13,25 @@ import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
-import events from './events';
-import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
-import UsersGroupHeader from './UsersGroupHeader';
-import UserManager from './UserManager';
-
-// Events
-
-import messages from './messages';
-
-// tracking
-
-import tracks from './tracks';
-
+import useDeleteMembership from 'api/group_memberships/useDeleteMembership';
+import { MembershipType } from 'api/groups/types';
+import useDeleteGroup from 'api/groups/useDeleteGroup';
 import useGroup from 'api/groups/useGroup';
+import useUpdateGroup from 'api/groups/useUpdateGroup';
+import usersKeys from 'api/users/keys';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { MembershipType } from 'api/groups/types';
-import useUpdateGroup from 'api/groups/useUpdateGroup';
-import useDeleteGroup from 'api/groups/useDeleteGroup';
-import useDeleteMembership from 'api/group_memberships/useDeleteMembership';
-import usersKeys from 'api/users/keys';
+import events from './events';
+import messages from './messages';
+import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
+import tracks from './tracks';
+import UserManager from './UserManager';
+import UsersGroupHeader from './UsersGroupHeader';
+
+// Events
+
+// tracking
 
 const UsersGroup = () => {
   const queryClient = useQueryClient();

@@ -15,16 +15,15 @@ import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 
 import useLocalize from 'hooks/useLocalize';
-import tracks from '../../../tracks';
 
+import messages from '../../../messages';
+import tracks from '../../../tracks';
 import getNavbarItemPropsArray from '../../DesktopNavItems/getNavbarItemPropsArray';
 import TenantLogo from '../../TenantLogo';
 
 import FullMobileNavMenuItem from './FullMobileNavMenuItem';
 
 // styles
-
-import messages from '../../../messages';
 
 const Container = styled.div`
   height: 100%;

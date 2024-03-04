@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
-
 import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';

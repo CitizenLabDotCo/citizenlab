@@ -16,25 +16,23 @@ import SearchInput from 'components/UI/SearchInput';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useTopics from 'api/topics/useTopics';
 import useAreas from 'api/areas/useAreas';
+import useTopics from 'api/topics/useTopics';
+
 import useLocalize from 'hooks/useLocalize';
 
-import Tabs from './Tabs';
-import SelectTopics from './SelectTopics';
-import SelectAreas from './SelectAreas';
+import { PublicationTab } from '../..';
 
 import messages from './messages';
-
+import SelectAreas from './SelectAreas';
+import SelectTopics from './SelectTopics';
 import { getShowFilters, getShowFiltersLabel } from './show';
-
-import clHistory from 'utils/cl-router/history';
-
-import { PublicationTab } from '../..';
+import Tabs from './Tabs';
 
 const Title = styled.h2<{ hasPublications: boolean }>`
   color: ${({ theme }) => theme.colors.tenantText};

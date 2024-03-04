@@ -15,9 +15,6 @@ import Footer from './components/Footer';
 import LoadingBox from './components/LoadingBox';
 import PublicationStatusTabs from './components/PublicationStatusTabs';
 import Topbar from './components/Topbar';
-
-// tracking
-
 import messages from './messages';
 import tracks from './tracks';
 import { getAvailableTabs, getCurrentTab } from './utils';

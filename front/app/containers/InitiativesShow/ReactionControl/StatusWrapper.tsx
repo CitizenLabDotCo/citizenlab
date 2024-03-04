@@ -9,26 +9,25 @@ import { trackEventByName } from 'utils/analytics';
 import { ProposalsSettings } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddInitiativeReaction from 'api/initiative_reactions/useAddInitiativeReaction';
+import useDeleteInitiativeReaction from 'api/initiative_reactions/useDeleteInitiativeReaction';
 import {
   InitiativeStatusCode,
   IInitiativeStatusData,
 } from 'api/initiative_statuses/types';
+import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
 import { IInitiative, IInitiativeData } from 'api/initiatives/types';
-import Answered from './Status/Answered';
-import Expired from './Status/Expired';
-import Proposed from './Status/Proposed';
-import ThresholdReached from './Status/ThresholdReached';
-import Ineligible from './Status/Ineligible';
-import ReviewPending from './Status/ReviewPending';
-import ChangesRequested from './Status/ChangesRequested';
 
 import useInitiativesPermissions, {
   InitiativePermissionsDisabledReason,
 } from 'hooks/useInitiativesPermissions';
 
-import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
-
-import useDeleteInitiativeReaction from 'api/initiative_reactions/useDeleteInitiativeReaction';
+import Answered from './Status/Answered';
+import ChangesRequested from './Status/ChangesRequested';
+import Expired from './Status/Expired';
+import Ineligible from './Status/Ineligible';
+import Proposed from './Status/Proposed';
+import ReviewPending from './Status/ReviewPending';
+import ThresholdReached from './Status/ThresholdReached';
 
 export interface StatusComponentProps {
   initiative: IInitiativeData;

@@ -22,8 +22,6 @@ import {
   parseExcelData,
 } from './parse';
 import { getTranslations } from './translations';
-
-// parsing
 import { QueryParameters, Response } from './typings';
 import { isEmptyResponse } from './utils';
 

@@ -21,6 +21,7 @@ import {
   formatBinOptions,
 } from '../../../utils/options';
 import binMessages from '../BinModal/messages';
+
 import messages from './messages';
 import OptionInput from './OptionInput';
 

@@ -19,17 +19,17 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
 import { isNilOrError } from 'utils/helperUtils';
+
 import useAnalyses from 'api/analyses/useAnalyses';
+import useDeleteAnalysis from 'api/analyses/useDeleteAnalysis';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
+
 import messages from '../../../messages';
 
 import AnalysisInsights from './AnalysisInsights';
 import ConsentModal from './ConsentModal';
 import CreateAnalysisModal from './CreateAnalysisModal';
-
-import useDeleteAnalysis from 'api/analyses/useDeleteAnalysis';
-import useFormCustomFields from 'api/custom_fields/useCustomFields';
 
 const Analysis = ({ customFieldId }: { customFieldId: string }) => {
   const [dropdownIsOpened, setDropdownIsOpened] = useState(false);

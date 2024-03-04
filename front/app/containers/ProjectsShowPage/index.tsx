@@ -8,22 +8,9 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
-
 import JSConfetti from 'js-confetti';
 
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
-import usePhases from 'api/phases/usePhases';
-import useEvents from 'api/events/useEvents';
-import useAuthUser from 'api/me/useAuthUser';
-import { useIntl } from 'utils/cl-intl';
-
 // context
-import { VotingContext } from 'api/baskets_ideas/useVoting';
-
-import messages from 'utils/messages';
 
 // style
 import styled from 'styled-components';
@@ -35,13 +22,25 @@ import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { scrollToElement } from 'utils/scroll';
 import { isError } from 'lodash-es';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import ErrorBoundary from 'components/ErrorBoundary';
 import PageNotFound from 'components/PageNotFound';
 import Centerer from 'components/UI/Centerer';
 import Unauthorized from 'components/Unauthorized';
+import { useIntl } from 'utils/cl-intl';
 
 import Navigate from 'utils/cl-router/Navigate';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import messages from 'utils/messages';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { VotingContext } from 'api/baskets_ideas/useVoting';
+import useEvents from 'api/events/useEvents';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
+
+import useLocale from 'hooks/useLocale';
 
 import ProjectCTABar from './ProjectCTABar';
 import ProjectHeader from './shared/header/ProjectHeader';

@@ -13,15 +13,16 @@ import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/Err
 import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextArea';
 
 import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError } from 'utils/helperUtils';
-
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 // tracking
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
+import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useLocale from 'hooks/useLocale';
@@ -29,10 +30,6 @@ import useLocale from 'hooks/useLocale';
 import { commentReplyButtonClicked$, commentAdded } from '../../../events';
 import messages from '../../../messages';
 import tracks from '../../../tracks';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 
 const StyledAvatar = styled(Avatar)`
   margin-left: -4px;

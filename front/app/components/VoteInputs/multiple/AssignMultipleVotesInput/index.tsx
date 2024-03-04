@@ -26,7 +26,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 import NumberInput from './NumberInput';
-
 import {
   getMinusButtonDisabledMessage,
   getPlusButtonDisabledMessage,

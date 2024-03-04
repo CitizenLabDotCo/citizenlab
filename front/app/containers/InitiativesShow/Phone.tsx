@@ -8,32 +8,34 @@ import Outlet from 'components/Outlet';
 import Body from 'components/PostShowComponents/Body';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import Image from 'components/PostShowComponents/Image';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Title from 'components/PostShowComponents/Title';
 import Topics from 'components/PostShowComponents/Topics';
 import FileAttachments from 'components/UI/FileAttachments';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-
 import { getAddressOrFallbackDMS } from 'utils/map';
 import { usePermission } from 'utils/permissions';
 
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
+
 import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
+import Cosponsors from './Cosponsors';
+import CosponsorShipReminder from './CosponsorShipReminder';
+import InitiativeBanner from './InitiativeBanner';
+import messages from './messages';
 import PostedByMobile from './PostedByMobile';
 import ReactionControl from './ReactionControl';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
-import messages from './messages';
-
 // style
-
-import { ScreenReaderOnly } from 'utils/a11y';
 
 import RequestToCosponsor from './RequestToCosponsor';
 import {
@@ -42,14 +44,6 @@ import {
   contentFadeInDuration,
   contentFadeInEasing,
 } from './styleConstants';
-
-import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
-import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
-
-import Cosponsors from './Cosponsors';
-import InitiativeBanner from './InitiativeBanner';
-
-import CosponsorShipReminder from './CosponsorShipReminder';
 
 const padding = '32px';
 

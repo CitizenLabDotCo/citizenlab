@@ -26,8 +26,8 @@ import {
   TAppConfigurationSettingCore,
 } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import CustomFieldSettings from './CustomFieldSettings';

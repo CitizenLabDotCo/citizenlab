@@ -11,8 +11,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
-// router
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -21,10 +19,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import FragmentForm from './FragmentForm';
 import LoginCredentials from './LoginCredentials';
 import messages from './messages';
-
-import ProfileForm from './ProfileForm';
-
 import ProfileDeletion from './ProfileDeletion';
+import ProfileForm from './ProfileForm';
 import UsersEditPageMeta from './UsersEditPageMeta';
 
 // Styles

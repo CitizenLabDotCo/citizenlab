@@ -13,8 +13,6 @@ import useIdeaById from 'api/ideas/useIdeaById';
 
 import IdeasEditForm from './IdeasEditForm';
 
-// router
-
 const IdeasEditPage = () => {
   const { ideaId } = useParams() as { ideaId: string };
   const { status, error } = useIdeaById(ideaId);

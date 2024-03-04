@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-// router
-
 import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';

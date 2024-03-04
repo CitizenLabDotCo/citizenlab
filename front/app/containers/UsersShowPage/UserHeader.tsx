@@ -17,14 +17,12 @@ import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
 import Button from 'components/UI/Button';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
-
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-
 import { getFullName } from 'utils/textUtils';
 
 import useAuthUser from 'api/me/useAuthUser';

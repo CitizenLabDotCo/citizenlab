@@ -26,9 +26,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import events, { MembershipAdd } from './events';
 import messages from './messages';
-
-// tracking
-
 import tracks from './tracks';
 
 const Container = styled.div`

@@ -1,28 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
-import AttachmentsDropzone from './components/AttachmentsDropzone';
-import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-import {
-  Section,
-  SectionTitle,
-  SectionDescription,
-  SubSectionTitle,
-  SectionField,
-} from 'components/admin/Section';
-import PhaseParticipationConfig, {
-  IPhaseParticipationConfig,
-} from '../phase/phaseParticipationConfig';
-import {
-  StyledForm,
-  StyledSectionField,
-  ParticipationContextWrapper,
-  TIMEOUT,
-} from './components/styling';
-import ProjectFolderSelect from './components/ProjectFolderSelect';
-import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
-import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
 import { isEmpty, isString } from 'lodash-es';
@@ -31,16 +8,18 @@ import useProjectFiles from 'api/project_files/useProjectFiles';
 import { useParams, useLocation } from 'react-router-dom';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
-import SlugInput from 'components/admin/SlugInput';
-
 import {
-  IUpdatedProjectProperties,
-  IProjectData,
-  PublicationStatus,
-} from 'api/projects/types';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import useAddProjectFile from 'api/project_files/useAddProjectFile';
+  Section,
+  SectionTitle,
+  SectionDescription,
+  SubSectionTitle,
+  SectionField,
+} from 'components/admin/Section';
+import SlugInput from 'components/admin/SlugInput';
+import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+
 import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
 
 import useProjectImages, {
@@ -52,9 +31,9 @@ import useAddProjectImage from 'api/project_images/useAddProjectImage';
 import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import messages from './messages';
 
-import { validateSlug } from 'utils/textUtils';
 import validateTitle from './utils/validateTitle';
 import { isNilOrError } from 'utils/helperUtils';
 import eventEmitter from 'utils/eventEmitter';
@@ -62,7 +41,14 @@ import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import useUpdateProject from 'api/projects/useUpdateProject';
 import projectsKeys from 'api/projects/keys';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
+import { validateSlug } from 'utils/textUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAddProjectFile from 'api/project_files/useAddProjectFile';
+import {
+  IUpdatedProjectProperties,
+  IProjectData,
+  PublicationStatus,
+} from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -70,9 +56,24 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import PhaseParticipationConfig, {
+  IPhaseParticipationConfig,
+} from '../phase/phaseParticipationConfig';
+
+import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
+import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
+import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
+import ProjectFolderSelect from './components/ProjectFolderSelect';
+import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 import ProjectNameInput from './components/ProjectNameInput';
 import ProjectStatusPicker from './components/ProjectStatusPicker';
+import {
+  StyledForm,
+  StyledSectionField,
+  ParticipationContextWrapper,
+  TIMEOUT,
+} from './components/styling';
 import TopicInputs from './components/TopicInputs';
 
 export type TOnProjectAttributesDiffChangeFunction = (

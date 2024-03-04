@@ -4,6 +4,7 @@ import React from 'react';
 import { defaultCardStyle, media } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import styled from 'styled-components';
+
 import EventPreviews from 'components/EventPreviews';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
 import FileAttachments from 'components/UI/FileAttachments';

@@ -10,8 +10,6 @@ import WarningModal from 'components/WarningModal';
 import warningMessages from 'components/WarningModal/messages';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-// router
 import clHistory from 'utils/cl-router/history';
 
 import { IInitiativeData } from 'api/initiatives/types';

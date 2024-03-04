@@ -34,9 +34,6 @@ import useGroups from 'api/groups/useGroups';
 import usersKeys from 'api/users/keys';
 
 import events, { MembershipAdd } from './events';
-
-// tracking
-
 import messages from './messages';
 import tracks from './tracks';
 

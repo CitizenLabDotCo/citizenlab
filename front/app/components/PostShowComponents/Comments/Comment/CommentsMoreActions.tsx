@@ -14,6 +14,7 @@ import { usePermission } from 'utils/permissions';
 
 import { DeleteReason, ICommentData } from 'api/comments/types';
 import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
+
 import { deleteCommentModalClosed } from '../events';
 import messages from '../messages';
 

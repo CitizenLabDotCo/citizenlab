@@ -17,7 +17,6 @@ import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import InitiativesHeader from './InitiativesHeader';
 import InitiativesIndexMeta from './InitiativesIndexMeta';
-
 import messages from './messages';
 
 // style

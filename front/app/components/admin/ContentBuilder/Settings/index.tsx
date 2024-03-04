@@ -5,7 +5,6 @@ import { useEditor, ROOT_NODE } from '@craftjs/core';
 import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from 'components/admin/ContentBuilder/constants';
 
 import { MessageDescriptor } from 'utils/cl-intl';
-
 import eventEmitter from 'utils/eventEmitter';
 
 import Settings from './Settings';

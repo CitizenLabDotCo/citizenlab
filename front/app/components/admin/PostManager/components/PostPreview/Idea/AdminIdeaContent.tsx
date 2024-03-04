@@ -1,6 +1,5 @@
 import React from 'react';
 
-import ReactionPreview from './ReactionPreview';
 import {
   IconTooltip,
   Box,
@@ -9,18 +8,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import PostedBy from 'containers/IdeasShow/components/MetaInformation/PostedBy';
 import IdeaProposedBudget from 'containers/IdeasShow/components/ProposedBudget/IdeaProposedBudget';
-import Button from 'components/UI/Button';
-import T from 'components/T';
-
-import useIdeaImages from 'api/idea_images/useIdeaImages';
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
-
-import { getAddressOrFallbackDMS } from 'utils/map';
-
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import FormattedBudget from 'utils/currency/FormattedBudget';
-import useLocalize from 'hooks/useLocalize';
 
 import styled from 'styled-components';
 import { darken } from 'polished';
@@ -34,17 +21,29 @@ import CommentsSection from 'components/PostShowComponents/Comments/CommentsSect
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Title from 'components/PostShowComponents/Title';
+import T from 'components/T';
+import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 import Link from 'utils/cl-router/Link';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 import { isNilOrError } from 'utils/helperUtils';
+import { getAddressOrFallbackDMS } from 'utils/map';
 
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
+import useLocalize from 'hooks/useLocalize';
+
+import messages from '../messages';
+
 import FeedbackSettings from './FeedbackSettings';
+import ReactionPreview from './ReactionPreview';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 20px;

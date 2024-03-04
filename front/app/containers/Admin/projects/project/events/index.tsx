@@ -7,9 +7,9 @@ import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
 
 import { injectIntl, FormattedMessage, useIntl } from 'utils/cl-intl';

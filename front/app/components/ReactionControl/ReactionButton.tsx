@@ -14,11 +14,11 @@ import { FormattedDate } from 'react-intl';
 import styled, { keyframes } from 'styled-components';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import globalMessages from 'utils/messages';
+
 import { TReactionMode } from 'api/idea_reactions/types';
 import { IdeaReactingDisabledReason } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';

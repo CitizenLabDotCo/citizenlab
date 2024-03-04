@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
-
 import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 

@@ -5,7 +5,6 @@ import moment, { Moment } from 'moment';
 
 import { GraphsContainer } from 'components/admin/GraphWrappers';
 
-// tracking
 import { trackEventByName } from 'utils/analytics';
 
 import tracks from '../tracks';

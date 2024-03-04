@@ -39,8 +39,8 @@ import {
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
 import { isNewCustomFieldObject } from 'api/custom_fields/util';
-
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
+
 import messages from '../messages';
 import { FormBuilderConfig } from '../utils';
 

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
-
 import { darken } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
 import { TwitterShareButton } from 'react-share';

@@ -14,15 +14,15 @@ import useAuthUser from 'api/me/useAuthUser';
 import useLocale from 'hooks/useLocale';
 
 import messages from '../../../messages';
+import tracks from '../../../tracks';
 import LanguageSelector from '../../LanguageSelector';
 import NotificationMenu from '../../NotificationMenu';
-import ShowFullMenuButton from './ShowFullMenuButton';
-import FullMobileNavMenu from './FullMobileNavMenu';
-
 import UserMenu from '../../UserMenu';
 
+import FullMobileNavMenu from './FullMobileNavMenu';
+import ShowFullMenuButton from './ShowFullMenuButton';
+
 // tracking
-import tracks from '../../../tracks';
 
 // style
 

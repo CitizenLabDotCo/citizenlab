@@ -10,37 +10,36 @@ import Modal from 'components/UI/Modal';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { MessageDescriptor, useIntl, FormattedMessage } from 'utils/cl-intl';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
+import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
+import { IPhasePermissionAction } from 'api/permissions/types';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 import AuthProviders from './steps/AuthProviders';
+import BuiltInFields from './steps/BuiltInFields';
 import ChangeEmail from './steps/ChangeEmail';
+import ClaveUnicaEmail from './steps/ClaveUnicaEmail';
 import CustomFields from './steps/CustomFields';
 import EmailAndPassword from './steps/EmailAndPassword';
 import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
 import EmailConfirmation from './steps/EmailConfirmation';
-import Onboarding from './steps/Onboarding';
-import Verification from './steps/Verification';
 import Invitation from './steps/Invitation';
 import LightFlowStart from './steps/LightFlowStart';
-import EmailPolicies from './steps/Policies/EmailPolicies';
-import GooglePolicies from './steps/Policies/GooglePolicies';
-import FacebookPolicies from './steps/Policies/FacebookPolicies';
-import AzureAdPolicies from './steps/Policies/AzureAdPolicies';
-import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
-import BuiltInFields from './steps/BuiltInFields';
+import Onboarding from './steps/Onboarding';
 import Password from './steps/Password';
+import AzureAdPolicies from './steps/Policies/AzureAdPolicies';
+import EmailPolicies from './steps/Policies/EmailPolicies';
+import FacebookPolicies from './steps/Policies/FacebookPolicies';
+import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
+import GooglePolicies from './steps/Policies/GooglePolicies';
 import Success from './steps/Success';
-import ClaveUnicaEmail from './steps/ClaveUnicaEmail';
-
+import Verification from './steps/Verification';
 import VerificationSuccess from './steps/VerificationSuccess';
 import { ModalProps, ErrorCode } from './typings';
-
-import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { IPhasePermissionAction } from 'api/permissions/types';
-import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
-
 import useSteps from './useSteps';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];

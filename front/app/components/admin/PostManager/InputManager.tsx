@@ -20,8 +20,11 @@ import useTopics from 'api/topics/useTopics';
 
 import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
-
+import IdeasCount from './components/IdeasCount';
+import InfoSidebar from './components/InfoSidebar';
 import PostTable from './components/PostTable';
+import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+
 import {
   LeftColumn,
   MiddleColumn,
@@ -33,9 +36,6 @@ import {
   ThreeColumns,
   TopActionBar,
 } from '.';
-import InfoSidebar from './components/InfoSidebar';
-import IdeasCount from './components/IdeasCount';
-import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 const LazyPostPreview = lazy(
   () => import('components/admin/PostManager/components/PostPreview')
 );

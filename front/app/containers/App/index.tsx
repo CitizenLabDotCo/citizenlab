@@ -59,7 +59,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import eventEmitter from 'utils/eventEmitter';
-
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 import useAuthUser from 'api/me/useAuthUser';

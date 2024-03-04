@@ -27,11 +27,12 @@ import {
 import { requestBlob } from 'utils/requestBlob';
 
 import { Sort, SortAttribute } from 'api/invites/types';
+import useInvites from 'api/invites/useInvites';
+
 import messages from '../messages';
+
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
-
-import useInvites from 'api/invites/useInvites';
 
 const Container = styled.div`
   th::after {

@@ -1,34 +1,35 @@
 // report builder widgets
-import GenderWidget, { genderTitle } from './ChartWidgets/GenderWidget';
-import ActiveUsersWidget, {
-  activeUsersTitle,
-} from './ChartWidgets/ActiveUsersWidget';
-import MostReactedIdeasWidget, {
-  mostReactedIdeasTitle,
-} from './MostReactedIdeasWidget';
-import SingleIdeaWidget, { singleIdeaTitle } from './SingleIdeaWidget';
-import PostsByTimeWidget, {
-  postsByTimeTitle,
-} from './ChartWidgets/PostsByTimeWidget';
-import CommentsByTimeWidget, {
-  commentsByTimeTitle,
-} from './ChartWidgets/CommentsByTimeWidget';
-import ReactionsByTimeWidget, {
-  reactionsByTimeTitle,
-} from './ChartWidgets/ReactionsByTimeWidget';
 
 // shared widgets
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpace/messages';
 
 import { MessageDescriptor } from 'utils/cl-intl';
+
 import AboutReportWidget, { aboutReportTitle } from './AboutReportWidget';
+import ActiveUsersWidget, {
+  activeUsersTitle,
+} from './ChartWidgets/ActiveUsersWidget';
 import AgeWidget, { ageTitle } from './ChartWidgets/AgeWidget';
+import CommentsByTimeWidget, {
+  commentsByTimeTitle,
+} from './ChartWidgets/CommentsByTimeWidget';
+import GenderWidget, { genderTitle } from './ChartWidgets/GenderWidget';
+import PostsByTimeWidget, {
+  postsByTimeTitle,
+} from './ChartWidgets/PostsByTimeWidget';
+import ReactionsByTimeWidget, {
+  reactionsByTimeTitle,
+} from './ChartWidgets/ReactionsByTimeWidget';
 import VisitorsTrafficSourcesWidget, {
   visitorsTrafficSourcesTitle,
 } from './ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget, { visitorsTitle } from './ChartWidgets/VisitorsWidget';
 import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
+import MostReactedIdeasWidget, {
+  mostReactedIdeasTitle,
+} from './MostReactedIdeasWidget';
+import SingleIdeaWidget, { singleIdeaTitle } from './SingleIdeaWidget';
 import SurveyQuestionResultWidget, {
   surveyQuestionResultTitle,
 } from './SurveyQuestionResultWidget';

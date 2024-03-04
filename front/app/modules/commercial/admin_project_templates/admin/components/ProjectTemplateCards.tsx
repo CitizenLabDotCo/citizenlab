@@ -18,7 +18,6 @@ import DepartmentFilter from '../components/DepartmentFilter';
 import messages from './messages';
 import ParticipationLevelFilter from './ParticipationLevelFilter';
 import ProjectTemplateCard from './ProjectTemplateCard';
-
 import PurposeFilter from './PurposeFilter';
 
 const Container = styled.div`

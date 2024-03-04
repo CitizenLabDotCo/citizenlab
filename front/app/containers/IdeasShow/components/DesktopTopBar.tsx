@@ -1,8 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
 import { Box, isRtl } from '@citizenlab/cl2-component-library';
-
-// router
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 

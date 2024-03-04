@@ -9,7 +9,6 @@ import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 // cache
 
 import tracks from '../../tracks';
-
 import {
   GetRequirements,
   SetError,

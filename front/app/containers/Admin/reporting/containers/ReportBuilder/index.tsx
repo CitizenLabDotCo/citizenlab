@@ -4,43 +4,40 @@ import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-
 import { Locale } from 'typings';
+
 import Frame from 'components/admin/ContentBuilder/Frame';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-import useReportLayout from 'api/report_layout/useReportLayout';
-import useReport from 'api/reports/useReport';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import useLocale from 'hooks/useLocale';
-
-// context
-import EditModePreview from '../../components/ReportBuilder/EditModePreview';
-import Editor from '../../components/ReportBuilder/Editor';
-import { ReportContextProvider } from '../../context/ReportContext';
-
-import TopBar from '../../components/ReportBuilder/TopBar';
-import Toolbox from '../../components/ReportBuilder/Toolbox';
-
-import Settings from '../../components/ReportBuilder/Settings';
-import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrapper';
-
-// templates
-import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
-import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
-
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-
 import {
   CraftJson,
   ContentBuilderErrors,
 } from 'components/admin/ContentBuilder/typings';
 
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
 import { ReportLayout } from 'api/report_layout/types';
+import useReportLayout from 'api/report_layout/useReportLayout';
 import { ReportResponse } from 'api/reports/types';
+import useReport from 'api/reports/useReport';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+
+// context
+import EditModePreview from '../../components/ReportBuilder/EditModePreview';
+import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrapper';
+import Editor from '../../components/ReportBuilder/Editor';
+import Settings from '../../components/ReportBuilder/Settings';
+
+// templates
+import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
+import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
+import Toolbox from '../../components/ReportBuilder/Toolbox';
+import TopBar from '../../components/ReportBuilder/TopBar';
+import { ReportContextProvider } from '../../context/ReportContext';
 
 interface Props {
   report: ReportResponse;

@@ -5,7 +5,6 @@ import {
   LocaleSwitcher,
   Label,
 } from '@citizenlab/cl2-component-library';
-
 import styled from 'styled-components';
 import { Locale, Multiloc } from 'typings';
 

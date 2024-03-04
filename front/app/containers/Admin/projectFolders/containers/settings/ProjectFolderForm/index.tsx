@@ -19,6 +19,7 @@ import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMulti
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
 import { validateSlug } from 'utils/textUtils';
@@ -31,19 +32,18 @@ import {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_folder_images/types';
-import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
-import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
-import useDeleteProjectFolderImage from 'api/project_folder_images/useDeleteProjectFolderImage';
 import useAddProjectFolderImage from 'api/project_folder_images/useAddProjectFolderImage';
+import useDeleteProjectFolderImage from 'api/project_folder_images/useDeleteProjectFolderImage';
+import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
+import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import messages from '../../messages';
 
 // typing
-
-import clHistory from 'utils/cl-router/history';
 
 import FolderCardImageTooltip from './FolderCardImageTooltip';
 import FolderHeaderImageTooltip from './FolderHeaderImageTooltip';

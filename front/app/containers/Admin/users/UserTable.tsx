@@ -9,16 +9,17 @@ import { includes, isArray } from 'lodash-es';
 
 // Styles
 import styled from 'styled-components';
-import Pagination from 'components/Pagination';
-import useAuthUser from 'api/me/useAuthUser';
 
+import Pagination from 'components/Pagination';
 import Warning from 'components/UI/Warning';
+
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 import { TRole } from 'utils/permissions/roles';
 
+import useAuthUser from 'api/me/useAuthUser';
 import { IQueryParameters, IUserData } from 'api/users/types';
 import useUpdateUser from 'api/users/useUpdateUser';
 

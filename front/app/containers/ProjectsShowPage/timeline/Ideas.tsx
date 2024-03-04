@@ -6,9 +6,6 @@ import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
-
-// router
-
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 import { FormattedMessage } from 'utils/cl-intl';
