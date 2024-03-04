@@ -6,20 +6,21 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
+
 import Button from 'components/UI/Button';
-import Modal from 'components/UI/Modal';
 import GoBackButton from 'components/UI/GoBackButton';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
+import Modal from 'components/UI/Modal';
 
-// routing
-import { useSearchParams } from 'react-router-dom';
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import useLocalize from 'hooks/useLocalize';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
 import { IProjectData } from 'api/projects/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from '../messages';
 
 type Props = {
   project: IProjectData;

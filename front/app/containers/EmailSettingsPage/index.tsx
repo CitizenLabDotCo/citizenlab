@@ -13,8 +13,6 @@ import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 
 // Styles
 
-// routing
-
 const Container = styled.div`
   width: 100%;
   height: calc(100vh - 78px - 78px);

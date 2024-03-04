@@ -1,7 +1,5 @@
 import { useNode } from '@craftjs/core';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
-
-// routing
 import { REPORT_BUILDER, EDITOR } from 'containers/Admin/reporting/routes';
 import { useLocation, useSearchParams } from 'react-router-dom';
 
@@ -12,8 +10,6 @@ import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPu
 
 import { ParametersLive, Options } from './requestTypes';
 import useGraphDataUnitsLive from './useGraphDataUnitsLive';
-
-// typins
 
 type Params = {
   isPhaseContext: boolean;

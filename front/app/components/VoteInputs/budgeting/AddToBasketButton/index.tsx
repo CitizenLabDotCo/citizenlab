@@ -12,25 +12,20 @@ import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
 import eventEmitter from 'utils/eventEmitter';
+import { isNil } from 'utils/helperUtils';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useIdeaById from 'api/ideas/useIdeaById';
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
-
+import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
 import messages from './messages';
 
 // tracks
 import tracks from './tracks';
-
-// routing
-
 import { isButtonEnabled } from './utils';
-
-import { isNil } from 'utils/helperUtils';
 
 interface Props {
   ideaId: string;

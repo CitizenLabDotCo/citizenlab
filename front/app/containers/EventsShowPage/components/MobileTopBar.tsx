@@ -14,7 +14,6 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// routing
 import clHistory from 'utils/cl-router/history';
 
 import styled from 'styled-components';

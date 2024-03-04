@@ -15,7 +15,6 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-// routing
 import clHistory from 'utils/cl-router/history';
 
 import useProjectById from 'api/projects/useProjectById';

@@ -1,31 +1,33 @@
 import React, { useState, useEffect } from 'react';
 
+import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
-import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
-
-// context
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+import { Locale } from 'typings';
 
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
-import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
+import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
+
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
-import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
+
+// context
+
 import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
+
+import useLocalize from 'hooks/useLocalize';
+
 import PrintReportButton from '../../ReportBuilderPage/ReportRow/Buttons/PrintReportButton';
 
 import messages from './messages';
+
 import { FormattedMessage } from 'utils/cl-intl';
-import useLocalize from 'hooks/useLocalize';
-
-// routing
 import clHistory from 'utils/cl-router/history';
-
-import { Locale } from 'typings';
 
 type ContentBuilderTopBarProps = {
   hasError: boolean;

@@ -1,35 +1,31 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-import useProjectById from 'api/projects/useProjectById';
-import useAuthUser from 'api/me/useAuthUser';
-import useIdeaById from 'api/ideas/useIdeaById';
-
-import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
-import ReactionControl from 'components/ReactionControl';
 import {
   Box,
   useBreakpoint,
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// routing
-import clHistory from 'utils/cl-router/history';
-import { useSearchParams } from 'react-router-dom';
-
-import styled from 'styled-components';
 import { lighten } from 'polished';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import ReactionControl from 'components/ReactionControl';
+import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-import { isIdeaInParticipationContext } from 'api/phases/utils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { IdeaReactingDisabledReason } from 'api/ideas/types';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
+import { isIdeaInParticipationContext } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;

@@ -1,23 +1,24 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import TabbedResource from 'components/admin/TabbedResource';
-import Breadcrumbs from 'components/UI/Breadcrumbs';
 import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
-import ViewCustomPageButton from './ViewCustomPageButton';
-
-import messages from '../messages';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import HelmetIntl from 'components/HelmetIntl';
-import useLocalize from 'hooks/useLocalize';
+import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 
+import TabbedResource from 'components/admin/TabbedResource';
+import HelmetIntl from 'components/HelmetIntl';
+import Breadcrumbs from 'components/UI/Breadcrumbs';
+
+import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 
-// routing
-import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
+import useLocalize from 'hooks/useLocalize';
+
+import messages from '../messages';
+
+import ViewCustomPageButton from './ViewCustomPageButton';
 
 const CustomPagesEditSettings = ({
   intl: { formatMessage },

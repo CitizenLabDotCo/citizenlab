@@ -18,24 +18,21 @@ import { useIntl } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
 
 import useBasket from 'api/baskets/useBasket';
+import useVoting from 'api/baskets_ideas/useVoting';
 import useIdeaById from 'api/ideas/useIdeaById';
+import { IPhaseData } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import messages from './messages';
 import NumberInput from './NumberInput';
 
 // api
-import useVoting from 'api/baskets_ideas/useVoting';
-
-import messages from './messages';
-
-// routing
 
 import {
   getMinusButtonDisabledMessage,
   getPlusButtonDisabledMessage,
 } from './utils';
-
-import { IPhaseData } from 'api/phases/types';
 
 interface Props {
   ideaId: string;

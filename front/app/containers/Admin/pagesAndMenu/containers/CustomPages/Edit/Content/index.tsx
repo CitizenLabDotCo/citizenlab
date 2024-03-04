@@ -1,27 +1,26 @@
 import React from 'react';
 
-import PageWrapper from 'components/admin/PageWrapper';
+import { Box } from '@citizenlab/cl2-component-library';
 import SectionToggle, {
   ISectionToggleData,
 } from 'containers/Admin/pagesAndMenu/components/SectionToggle';
-import { Box } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-
-import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
-
-import { TCustomPageEnabledSetting } from 'api/custom_pages/types';
-
-import useCustomPageById from 'api/custom_pages/useCustomPageById';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
-
-// routing
 import { useParams } from 'react-router-dom';
 
+import PageWrapper from 'components/admin/PageWrapper';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+
+import { TCustomPageEnabledSetting } from 'api/custom_pages/types';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from './messages';
 
 export interface ICustomPageSectionToggleData extends ISectionToggleData {
   name: TCustomPageEnabledSetting;

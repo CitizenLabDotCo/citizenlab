@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
 import {
   Text,
   Box,
@@ -10,10 +7,13 @@ import {
   colors,
   Icon,
 } from '@citizenlab/cl2-component-library';
+
 import Modal from 'components/UI/Modal';
 
-// routing
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+
+import messages from './messages';
 
 type Props = {
   showEditWarningModal: boolean;

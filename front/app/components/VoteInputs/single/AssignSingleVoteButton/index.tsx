@@ -17,12 +17,9 @@ import eventEmitter from 'utils/eventEmitter';
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useIdeaById from 'api/ideas/useIdeaById';
-
 import { IPhaseData } from 'api/phases/types';
 
 import messages from './messages';
-
-// routing
 
 interface Props {
   phase: IPhaseData;

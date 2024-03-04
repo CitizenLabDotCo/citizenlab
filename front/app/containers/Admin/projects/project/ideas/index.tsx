@@ -1,24 +1,26 @@
 import React from 'react';
 
-// routing
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import messages from '../messages';
-import ownMessages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
 import InputManager, {
   TFilterMenu,
 } from 'components/admin/PostManager/InputManager';
-import AnalysisBanner from './AnalysisBanner';
-import NewIdeaButton from './NewIdeaButton';
+import Button from 'components/UI/Button';
 
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
+import { FormattedMessage } from 'utils/cl-intl';
+
 import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+import useProjectById from 'api/projects/useProjectById';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from '../messages';
+
+import AnalysisBanner from './AnalysisBanner';
+import ownMessages from './messages';
+import NewIdeaButton from './NewIdeaButton';
 
 const defaultTimelineProjectVisibleFilterMenu = 'phases';
 const timelineProjectVisibleFilterMenus: TFilterMenu[] = [

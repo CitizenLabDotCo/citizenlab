@@ -35,8 +35,6 @@ import {
 } from './typings';
 import { groupCampaignsConsent, sortGroupedCampaignConsents } from './utils';
 
-// routing
-
 type Props = {
   trackEventName?: string;
   runOnSave?: () => void;

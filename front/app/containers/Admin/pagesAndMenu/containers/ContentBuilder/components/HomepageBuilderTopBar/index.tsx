@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import useAddHomepageBuilderLayout from 'api/home_page_layout/useAddHomepageLayout';
+import { Locale } from 'typings';
 
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
@@ -9,13 +10,12 @@ import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitche
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
-// routing
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import { Locale } from 'typings';
-import { useIntl } from 'utils/cl-intl';
+import useAddHomepageBuilderLayout from 'api/home_page_layout/useAddHomepageLayout';
+
 import messages from './messages';
 
 type BuilderTopBarProps = {

@@ -21,17 +21,17 @@ import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
-import useLocalize from 'hooks/useLocalize';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
 
 import messages from '../messages';
 
 import ownMessages from './messages';
-
-// routing
-import clHistory from 'utils/cl-router/history';
 
 const StyledStatusLabel = styled(StatusLabel)`
   height: 20px;

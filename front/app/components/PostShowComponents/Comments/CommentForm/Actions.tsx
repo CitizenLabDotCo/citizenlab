@@ -1,6 +1,5 @@
 import React from 'react';
 
-// routing
 import {
   Checkbox,
   useBreakpoint,
