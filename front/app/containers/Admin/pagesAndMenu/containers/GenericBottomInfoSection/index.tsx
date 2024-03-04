@@ -14,6 +14,10 @@ import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import Button from 'components/UI/Button';
 
 import { injectIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+
+import { ICustomPageData } from 'api/custom_pages/types';
 
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
@@ -21,11 +25,6 @@ import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 
 import messages from './messages';
-
-import { ICustomPageData } from 'api/custom_pages/types';
-
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 interface Props {
   pageData: ICustomPageData;
