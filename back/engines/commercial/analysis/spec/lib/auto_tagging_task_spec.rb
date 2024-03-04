@@ -152,14 +152,15 @@ RSpec.describe Analysis::AutoTaggingTask do
         - planets
         - bananas
       RESPONSE
-      classification_response = <<-RESPONSE
-        bananas
-        other
-      RESPONSE
+      classification_response1 = 'bananas'
+      classification_response2 = 'other'
 
       expect_any_instance_of(Analysis::LLM::GPT4Turbo)
         .to receive(:chat)
-        .and_return(topics_response, classification_response)
+        .and_return(topics_response)
+      expect_any_instance_of(Analysis::LLM::GPT35Turbo)
+        .to receive(:chat)
+        .and_return(classification_response1, classification_response2)
 
       expect { att.execute }
         .to change(Analysis::Tag, :count).from(0).to(1)

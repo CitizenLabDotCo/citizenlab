@@ -32,8 +32,10 @@ module Analysis
 
       filtered_inputs.each do |input|
         pool.post do
-          ErrorReporter.handle do
-            results[input.id] = classify(input, topics)
+          Rails.application.executor.wrap do
+            ErrorReporter.handle do
+              results[input.id] = classify(input, topics)
+            end
           end
         end
       end
@@ -44,7 +46,6 @@ module Analysis
           assign_topic!(input_id, topic)
           processed_inputs << input_id
           update_progress([(processed_inputs.size + 10) / (filtered_inputs.size + 10).to_f, 0.99].min)
-          puts "#{processed_inputs.size} / #{filtered_inputs.size}" ### DEBUG
         end
       end
     rescue StandardError => e
@@ -100,10 +101,11 @@ module Analysis
     def do_while_pool_is_running(pool, &block)
       while pool.running?
         pool.wait_for_termination(0.1)
-        block.call
+        yield
         pool.shutdown if pool.running? && pool.queue_length.zero?
       end
-      block.call
+      pool.wait_for_termination
+      yield
     end
   end
 end
