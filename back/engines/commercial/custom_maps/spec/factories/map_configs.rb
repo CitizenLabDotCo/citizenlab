@@ -6,7 +6,10 @@ FactoryBot.define do
   end
 
   factory :map_config, class: 'CustomMaps::MapConfig' do
-    project
+    transient do
+      project { create(:project) }
+    end
+    mappable { project }
 
     trait :with_positioning do
       center { RGeo::Cartesian.factory.point(Faker::Address.longitude, Faker::Address.latitude) }

@@ -176,6 +176,32 @@ resource 'Ideas' do
         end
       end
 
+      context 'with a point field' do
+        let(:project) { create(:single_phase_native_survey_project) }
+        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+        let!(:point_field) do
+          create(
+            :custom_field_point,
+            resource: custom_form,
+            key: 'custom_field_name1',
+            enabled: true
+          )
+        end
+        let(:custom_field_name1) do
+          {
+            type: 'Point',
+            coordinates: [42.42, 24.24]
+          }
+        end
+
+        example_request 'Create an input with a point field' do
+          assert_status 201
+          idea = project.reload.ideas.first
+          expect(idea.custom_field_values)
+            .to eq({ 'custom_field_name1' => { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } })
+        end
+      end
+
       context 'with an active participation context' do
         let!(:custom_field) do
           create(

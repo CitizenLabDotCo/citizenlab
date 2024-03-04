@@ -37,7 +37,7 @@ module IdeaCustomFields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         fields,
         params: serializer_params(@custom_form),
-        include: %i[options options.image]
+        include: include_in_index_response
       ).serializable_hash
     end
 
@@ -71,6 +71,11 @@ module IdeaCustomFields
 
     private
 
+    # Overriden from CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
+    def include_in_index_response
+      %i[options options.image]
+    end
+
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
       idea_custom_fields_service = IdeaCustomFieldsService.new(@custom_form)
       fields = idea_custom_fields_service.all_fields
@@ -97,6 +102,7 @@ module IdeaCustomFields
             option_temp_ids_to_ids_mapping_in_field_logic = update_options! field, options_params, errors, index
             option_temp_ids_to_ids_mapping.merge! option_temp_ids_to_ids_mapping_in_field_logic
           end
+          relate_map_config_to_field(field, field_params, errors, index)
           field.set_list_position(index)
         end
         raise UpdateAllFailedError, errors if errors.present?
@@ -149,6 +155,9 @@ module IdeaCustomFields
         false
       end
     end
+
+    # Overriden from CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
+    def relate_map_config_to_field(_field, _field_params, _errors, _index); end
 
     def delete_field!(field)
       SideFxCustomFieldService.new.before_destroy field, current_user
@@ -255,6 +264,7 @@ module IdeaCustomFields
         :maximum_select_count,
         :minimum_select_count,
         :random_option_ordering,
+        :map_config_id,
         { title_multiloc: CL2_SUPPORTED_LOCALES,
           description_multiloc: CL2_SUPPORTED_LOCALES,
           minimum_label_multiloc: CL2_SUPPORTED_LOCALES,
@@ -303,3 +313,5 @@ module IdeaCustomFields
     end
   end
 end
+
+IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController.prepend(CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController)

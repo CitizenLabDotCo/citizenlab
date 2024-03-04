@@ -5,22 +5,24 @@ module CustomMaps
     module V1
       class LayersController < ApplicationController
         before_action :set_layer, except: %i[create]
+        before_action :set_map_config, except: %i[show]
 
         def create
-          authorize @project, :update?
-          @map_config = @project.map_config
+          authorize @map_config, :create?, policy_class: MapConfigPolicy
           @layer = @map_config.layers.build(create_params)
 
           if @layer.save
-            render json: serialized_layer, status: :ok
+            side_fx_service.after_create(@layer, current_user)
+            render json: serialized_layer, status: :created
           else
             render json: layer_errors, status: :unprocessable_entity
           end
         end
 
         def update
-          authorize @project, :update?
+          authorize @layer, :update?, policy_class: MapConfigPolicy
           if @layer.update(update_params)
+            side_fx_service.after_update(@layer, current_user)
             render json: serialized_layer, status: :ok
           else
             render json: layer_errors, status: :unprocessable_entity
@@ -28,8 +30,11 @@ module CustomMaps
         end
 
         def destroy
-          authorize @project, :update?
-          if @layer.destroy
+          authorize @layer, :destroy?, policy_class: MapConfigPolicy
+
+          layer = @layer.destroy
+          if layer.destroyed?
+            side_fx_service.after_destroy(layer, current_user)
             head :no_content
           else
             render json: layer_errors, status: :unprocessable_entity
@@ -37,12 +42,13 @@ module CustomMaps
         end
 
         def show
-          authorize @project
+          authorize @layer, :show?, policy_class: MapConfigPolicy
           render json: serialized_layer
         end
 
         def reorder
-          authorize @project, :update?
+          authorize @layer, :create?, policy_class: MapConfigPolicy
+
           if @layer.insert_at(params.dig(:layer, :ordering))
             render json: serialized_layer, status: :ok
           else
@@ -93,6 +99,14 @@ module CustomMaps
 
         def set_layer
           @layer = CustomMaps::Layer.find(params[:id])
+        end
+
+        def set_map_config
+          @map_config = MapConfig.find(params[:map_config_id])
+        end
+
+        def side_fx_service
+          @side_fx_service ||= SideFxLayerService.new
         end
       end
     end
