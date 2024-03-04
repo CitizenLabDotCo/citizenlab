@@ -226,6 +226,7 @@ export interface IAppConfigurationSettings {
   permissions_custom_fields?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
+  report_data_grouping?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
   user_blocking?: AppConfigurationFeature & {
     duration: boolean;
