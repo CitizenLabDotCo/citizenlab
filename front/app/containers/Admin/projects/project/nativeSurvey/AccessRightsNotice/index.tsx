@@ -71,46 +71,48 @@ const AccessRightsNotice = ({
     <Box id="e2e-warning-notice" mb="20px">
       <Warning>
         <Box display="flex">
-          {permittedBySetting === 'everyone' ? (
-            <>
-              <p>{formatMessage(messages.anyoneIntro)}</p>
-              <ul>
-                <li>{formatMessage(messages.anyoneBullet1)}</li>
-                <li>{formatMessage(messages.anyoneBullet2)}</li>
-              </ul>
-              <p>
-                <FormattedMessage
-                  {...messages.anyoneOutro}
-                  values={{
-                    accessRightsSettingsLink,
-                  }}
-                />
-              </p>
-            </>
-          ) : (
-            <>
-              {surveyUserFields && (
-                <>
-                  {surveyUserFields?.length > 0 && (
-                    <>
-                      <p>{formatMessage(messages.userFieldsIntro)}</p>
-                      <ul>
-                        <li>{surveyUserFields.join(', ')}</li>
-                      </ul>
-                    </>
-                  )}
-                  <p>
-                    <FormattedMessage
-                      {...messages.userFieldsOutro}
-                      values={{
-                        accessRightsSettingsLink: accessRightsSettingsLink,
-                      }}
-                    />
-                  </p>
-                </>
-              )}
-            </>
-          )}
+          <Box>
+            {permittedBySetting === 'everyone' ? (
+              <>
+                <p>{formatMessage(messages.anyoneIntro)}</p>
+                <ul>
+                  <li>{formatMessage(messages.anyoneBullet1)}</li>
+                  <li>{formatMessage(messages.anyoneBullet2)}</li>
+                </ul>
+                <p>
+                  <FormattedMessage
+                    {...messages.anyoneOutro}
+                    values={{
+                      accessRightsSettingsLink,
+                    }}
+                  />
+                </p>
+              </>
+            ) : (
+              <>
+                {surveyUserFields && (
+                  <>
+                    {surveyUserFields?.length > 0 && (
+                      <>
+                        <p>{formatMessage(messages.userFieldsIntro)}</p>
+                        <ul>
+                          <li>{surveyUserFields.join(', ')}</li>
+                        </ul>
+                      </>
+                    )}
+                    <p>
+                      <FormattedMessage
+                        {...messages.userFieldsOutro}
+                        values={{
+                          accessRightsSettingsLink: accessRightsSettingsLink,
+                        }}
+                      />
+                    </p>
+                  </>
+                )}
+              </>
+            )}
+          </Box>
           <CloseIconButton onClick={handleClose} />
         </Box>
       </Warning>
