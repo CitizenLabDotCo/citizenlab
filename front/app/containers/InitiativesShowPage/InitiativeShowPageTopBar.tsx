@@ -13,7 +13,6 @@ import styled from 'styled-components';
 
 import ReactionIndicator from 'components/InitiativeCard/ReactionIndicator';
 
-// router
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';

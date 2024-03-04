@@ -1,15 +1,12 @@
 import React, { useContext } from 'react';
 
-// router
-
 import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
-import UserHeader from './UserHeader';
-import UserNavbar from './UserNavbar';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { PreviousPathnameContext } from 'context';
 import { Helmet } from 'react-helmet';
 import { useParams, Outlet as RouterOutlet } from 'react-router-dom';
 import styled from 'styled-components';
+
 import ContentContainer from 'components/ContentContainer';
 import Button from 'components/UI/Button';
 import Unauthorized from 'components/Unauthorized';
@@ -21,6 +18,8 @@ import { IUserData } from 'api/users/types';
 import useUserBySlug from 'api/users/useUserBySlug';
 
 import messages from './messages';
+import UserHeader from './UserHeader';
+import UserNavbar from './UserNavbar';
 import UsersShowPageMeta from './UsersShowPageMeta';
 
 const NotFoundContainer = styled.main`
