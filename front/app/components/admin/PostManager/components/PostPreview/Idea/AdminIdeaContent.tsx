@@ -213,6 +213,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
         </Button>
         <Button
           linkTo={`/ideas/${idea.data.attributes.slug}`}
+          // We open in a new tab not lose state of the input manager
           openLinkInNewTab
           icon="eye"
           buttonStyle="secondary"

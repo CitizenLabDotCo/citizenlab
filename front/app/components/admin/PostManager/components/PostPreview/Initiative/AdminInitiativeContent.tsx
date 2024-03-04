@@ -155,6 +155,7 @@ const AdminInitiativeContent = ({
           </Button>
           <Button
             linkTo={`/initiatives/${initiative.data.attributes.slug}`}
+            // We open in a new tab not lose state of the proposals manager
             openLinkInNewTab
             icon="eye"
             buttonStyle="secondary"
