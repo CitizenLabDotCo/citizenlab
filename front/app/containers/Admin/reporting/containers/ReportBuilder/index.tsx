@@ -27,6 +27,7 @@ import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrappe
 
 // templates
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
+import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
 
 // utils
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -55,6 +56,7 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
   const platformLocale = useLocale();
   const [search] = useSearchParams();
   const templateProjectId = search.get('templateProjectId');
+  const templatePhaseId = search.get('templatePhaseId');
   const previewEnabled = search.get('preview') === 'true';
 
   const [imageUploading, setImageUploading] = useState(false);
@@ -142,7 +144,7 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
             previewEnabled={previewEnabled}
             selectedLocale={selectedLocale}
             reportId={reportId}
-            templateProjectId={templateProjectId ?? undefined}
+            isTemplate={!!templateProjectId || !!templatePhaseId}
             saved={saved}
             setSaved={setSaved}
             setPreviewEnabled={handlePreview}
@@ -158,12 +160,14 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
                 <StyledRightColumn>
                   <PDFWrapper>
                     <Frame editorData={initialData}>
-                      {templateProjectId && (
+                      {templateProjectId ? (
                         <ProjectTemplate
                           reportId={reportId}
                           projectId={templateProjectId}
                         />
-                      )}
+                      ) : templatePhaseId ? (
+                        <PhaseTemplate phaseId={templatePhaseId} />
+                      ) : null}
                     </Frame>
                   </PDFWrapper>
                 </StyledRightColumn>
