@@ -22,7 +22,7 @@ module Analysis
 
       # Classification
       processed_inputs = 0
-      classify_all!(topics, TAG_TYPE) do |_input_id|
+      classify_many!(filtered_inputs, topics, TAG_TYPE) do |_input_id|
         processed_inputs += 1
         update_progress([(processed_inputs + 10) / (filtered_inputs.size + 10).to_f, 0.99].min)
       end

@@ -229,7 +229,7 @@ RSpec.describe Analysis::AutoTaggingTask do
 
       mock_llm = instance_double(Analysis::LLM::GPT4Turbo)
 
-      expect_any_instance_of(Analysis::AutoTaggingMethod::FewShotClassification).to receive(:llm).and_return(mock_llm)
+      expect_any_instance_of(Analysis::AutoTaggingMethod::FewShotClassification).to receive(:gpt4).and_return(mock_llm)
       expect(mock_llm).to receive(:chat) do |prompt|
         expect(prompt).to include(tags[0].name, tags[1].name, 'other')
         expect(prompt).to include('other')

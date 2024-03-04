@@ -3,6 +3,39 @@
 module Analysis
   class AutoTaggingMethod::Base
     POOL_SIZE = 8
+    OTHER_TERMS = %w[
+      other
+      otro
+      autre
+      andere
+      altro
+      outro
+      ander
+      другой
+      其他
+      他の
+      다른
+      آخر
+      diğer
+      अन्य
+      інший
+      inny
+      alt
+      άλλος
+      másik
+      jiný
+      อื่น
+      annan
+      anden
+      annen
+      toinen
+      אחר
+      lain
+      khác
+      lain
+      iba
+      altul
+    ]
 
     attr_reader :analysis, :task, :input_to_text
 
@@ -62,11 +95,11 @@ module Analysis
       @gpt3 ||= LLM::GPT35Turbo.new
     end
 
-    def classify_all!(topics, tag_type)
+    def classify_many!(inputs, topics, tag_type)
       pool = Concurrent::FixedThreadPool.new(POOL_SIZE)
       results = Concurrent::Hash.new
 
-      filtered_inputs.each do |input|
+     inputs.each do |input|
         pool.post do
           Rails.application.executor.wrap do
             ErrorReporter.handle do
@@ -96,7 +129,7 @@ module Analysis
     end
 
     def assign_topic!(input_id, topic, tag_type)
-      return if topic == 'other'
+      return if OTHER_TERMS.include?(topic)
 
       tag = Tag.find_or_create_by!(name: topic, tag_type: tag_type, analysis: analysis)
       find_or_create_tagging!(input_id: input_id, tag_id: tag.id)
