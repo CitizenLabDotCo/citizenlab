@@ -245,7 +245,9 @@ export const FormEdit = ({
 
   const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
   const showSuccessMessage =
-    successMessageIsVisible && Object.keys(errors).length === 0;
+    successMessageIsVisible &&
+    !editedAndCorrect &&
+    Object.keys(errors).length === 0;
 
   const handleAccessRightsClose = () => setAccessRightsMessageIsVisible(false);
 
@@ -260,6 +262,7 @@ export const FormEdit = ({
       return builderConfig.getWarningNotice();
     } else if (
       !hasErrors &&
+      !successMessageIsVisible &&
       builderConfig.getAccessRightsNotice &&
       accessRightsMessageIsVisible
     ) {
