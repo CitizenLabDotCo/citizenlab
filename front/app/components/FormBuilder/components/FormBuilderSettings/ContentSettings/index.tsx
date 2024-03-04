@@ -11,8 +11,6 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
 
-// Typings
-
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 

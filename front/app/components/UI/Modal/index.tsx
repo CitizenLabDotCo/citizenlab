@@ -27,9 +27,6 @@ import clickOutside from 'utils/containers/clickOutside';
 import eventEmitter from 'utils/eventEmitter';
 
 import messages from './messages';
-
-s;
-
 import tracks from './tracks';
 
 const desktopOpacityTimeout = 500;

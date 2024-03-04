@@ -6,8 +6,6 @@ import {
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
-
-s;
 import styled from 'styled-components';
 
 import Author from 'components/Author';

@@ -3,9 +3,6 @@ import React, { memo } from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-s;
-
 import { isNil } from 'utils/helperUtils';
 
 import useVoting from 'api/baskets_ideas/useVoting';

@@ -12,8 +12,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
-s;
-
 const Container = styled.div`
   height: 100%;
   display: flex;

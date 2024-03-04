@@ -7,8 +7,6 @@ import {
   fontSizes,
   media,
 } from '@citizenlab/cl2-component-library';
-
-s;
 import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';

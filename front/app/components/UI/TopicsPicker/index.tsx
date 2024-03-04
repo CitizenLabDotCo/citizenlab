@@ -1,6 +1,5 @@
 import React, { memo, MouseEvent } from 'react';
 
-s;
 import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 import { darken, lighten } from 'polished';
 import styled from 'styled-components';

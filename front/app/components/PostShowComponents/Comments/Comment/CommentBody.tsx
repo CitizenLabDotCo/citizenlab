@@ -18,9 +18,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IUpdatedComment } from 'api/comments/types';
-
-// Typings
-
 import useComment from 'api/comments/useComment';
 import useUpdateComment from 'api/comments/useUpdateComment';
 

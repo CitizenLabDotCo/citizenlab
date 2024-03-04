@@ -8,9 +8,6 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor } from '@craftjs/core';
-
-s;
-
 import { darken } from 'polished';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';

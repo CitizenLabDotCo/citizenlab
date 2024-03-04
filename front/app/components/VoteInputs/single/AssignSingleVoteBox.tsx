@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 
-s;
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';

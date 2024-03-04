@@ -1,7 +1,11 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import { Multiloc, UploadFile } from 'typings';
 import { object, array, mixed, string, boolean } from 'yup';
 
@@ -17,12 +21,20 @@ import {
   FormSectionTitle,
   FormLabel,
 } from 'components/UI/FormComponents';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
+import { reverseGeocode } from 'utils/locationTools';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IInitiativeFileData } from 'api/initiative_files/types';
+import { IInitiativeImageData } from 'api/initiative_images/types';
+import { IInitiativeData } from 'api/initiatives/types';
+import useTopics from 'api/topics/useTopics';
 
 import useLocale from 'hooks/useLocale';
 
@@ -36,28 +48,9 @@ const CosponsorsFormSection = lazy(() => import('./CosponsorsFormSection'));
 const AnonymousParticipationConfirmationModal = lazy(
   () => import('components/AnonymousParticipationConfirmationModal')
 );
-
-import { Box } from '@citizenlab/cl2-component-library';
-
 const ImageAndAttachmentsSection = lazy(
   () => import('./ImagesAndAttachmentsSection')
 );
-import Warning from 'components/UI/Warning';
-
-import useTopics from 'api/topics/useTopics';
-import { IInitiativeData } from 'api/initiatives/types';
-import { IInitiativeImageData } from 'api/initiative_images/types';
-import { IInitiativeFileData } from 'api/initiative_files/types';
-
-import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
-import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-import { useSearchParams } from 'react-router-dom';
-
-import { reverseGeocode } from 'utils/locationTools';
-
 declare module 'components/UI/Error' {
   interface TFieldNameMap {
     position: 'position';

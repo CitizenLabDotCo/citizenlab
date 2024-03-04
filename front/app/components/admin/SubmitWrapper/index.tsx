@@ -3,8 +3,6 @@ import React, { PureComponent, FormEvent } from 'react';
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
-
-s;
 import styled, { css } from 'styled-components';
 import { Omit } from 'typings';
 

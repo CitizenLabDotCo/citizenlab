@@ -8,8 +8,6 @@ import {
   defaultCardStyle,
   media,
 } from '@citizenlab/cl2-component-library';
-
-s;
 import styled from 'styled-components';
 
 import { ScreenReaderOnly } from 'utils/a11y';

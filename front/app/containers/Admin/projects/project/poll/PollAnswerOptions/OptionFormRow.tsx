@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
-
-// Typings
 import { Multiloc, Locale } from 'typings';
 
 import { TextCell, Row } from 'components/admin/ResourceList';

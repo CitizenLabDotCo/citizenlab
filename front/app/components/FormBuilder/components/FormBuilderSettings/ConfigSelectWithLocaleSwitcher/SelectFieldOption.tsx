@@ -18,8 +18,6 @@ import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
 
 import messages from './messages';
 
-// Typings
-
 export interface OptionImageType {
   [key: string]: UploadFile;
 }

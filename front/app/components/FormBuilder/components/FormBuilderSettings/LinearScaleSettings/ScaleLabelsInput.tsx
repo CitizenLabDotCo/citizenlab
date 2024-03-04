@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-// react hook form
-
 import {
   Box,
   Label,

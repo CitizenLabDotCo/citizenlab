@@ -12,8 +12,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-// Typings
-
 const StyledButton = styled(Button)`
   display: inline-block;
 `;

@@ -15,8 +15,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
 
-s;
-
 import messages from './messages';
 
 const Container = styled.div<{ error: boolean }>`

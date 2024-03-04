@@ -11,8 +11,6 @@ import {
 import { get } from 'lodash-es';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-
-// react hook form
 import {
   Controller,
   useFieldArray,
@@ -36,9 +34,6 @@ import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
 import usePrevious from 'hooks/usePrevious';
 
 import messages from './messages';
-
-// Typings
-
 import SelectFieldOption, { OptionImageType } from './SelectFieldOption';
 
 interface Props {

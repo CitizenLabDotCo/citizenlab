@@ -7,8 +7,6 @@ import { TextCell, Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-// Typings
 import { isNilOrError } from 'utils/helperUtils';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';

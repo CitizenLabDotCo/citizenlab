@@ -8,9 +8,6 @@ import {
   colors,
   media,
 } from '@citizenlab/cl2-component-library';
-
-s;
-
 import { useNode, Element } from '@craftjs/core';
 import styled from 'styled-components';
 

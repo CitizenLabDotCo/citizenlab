@@ -48,7 +48,6 @@ const GroupAvatarWrapper = styled.div<{ count: number }>`
       : css``};
 `;
 
-// Typings
 interface Props {
   groupId: string;
   className?: string;

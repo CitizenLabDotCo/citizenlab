@@ -1,6 +1,5 @@
 import React from 'react';
 
-s;
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';

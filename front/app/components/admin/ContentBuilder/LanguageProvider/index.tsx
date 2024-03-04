@@ -7,8 +7,6 @@ import { Locale } from 'typings';
 
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-// Typings
-
 type Props = {
   contentBuilderLocale: Locale | NilOrError;
   platformLocale: Locale | NilOrError;

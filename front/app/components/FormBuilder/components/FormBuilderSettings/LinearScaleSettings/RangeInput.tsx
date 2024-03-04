@@ -1,6 +1,5 @@
 import React from 'react';
 
-// react hook form
 import {
   Box,
   Label,

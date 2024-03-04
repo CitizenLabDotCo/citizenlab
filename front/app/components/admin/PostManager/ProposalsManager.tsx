@@ -14,6 +14,10 @@ import useTopics from 'api/topics/useTopics';
 
 import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
+import InitiativesCount from './components/InitiativesCount';
+import PostTable from './components/PostTable';
+import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
+import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 
 import {
   LeftColumn,
@@ -27,14 +31,9 @@ import {
   TopActionBar,
 } from '.';
 
-import InitiativesCount from './components/InitiativesCount';
-import PostTable from './components/PostTable';
-import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 const LazyPostPreview = lazy(
   () => import('components/admin/PostManager/components/PostPreview')
 );
-import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
-
 type TFilterMenu = 'topics' | 'statuses';
 
 interface Props {

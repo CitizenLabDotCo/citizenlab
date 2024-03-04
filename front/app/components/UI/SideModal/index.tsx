@@ -4,8 +4,6 @@ import { Icon, media, colors } from '@citizenlab/cl2-component-library';
 import { hideVisually } from 'polished';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
-
-s;
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { Subscription } from 'rxjs';
 
