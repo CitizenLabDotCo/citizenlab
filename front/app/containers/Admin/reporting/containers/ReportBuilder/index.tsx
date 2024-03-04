@@ -21,17 +21,13 @@ import TopBar from '../../components/ReportBuilder/TopBar';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
-import EditModePreview from '../../components/ReportBuilder/EditModePreview';
 import Settings from '../../components/ReportBuilder/Settings';
-import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrapper';
+import ViewPicker from '../../components/ReportBuilder/ViewContainer/ViewPicker';
+import ViewContainer from '../../components/ReportBuilder/ViewContainer';
 
 // templates
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
 import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
-
-// utils
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // typings
 import {
@@ -43,6 +39,7 @@ import { Locale } from 'typings';
 import { ReportLayout } from 'api/report_layout/types';
 import { isEmpty } from 'lodash-es';
 import { ReportResponse } from 'api/reports/types';
+import { View } from '../../components/ReportBuilder/ViewContainer/typings';
 
 interface Props {
   report: ReportResponse;
@@ -75,7 +72,7 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
   const [search] = useSearchParams();
   const templateProjectId = search.get('templateProjectId');
   const templatePhaseId = search.get('templatePhaseId');
-  const previewEnabled = search.get('preview') === 'true';
+  const [view, setView] = useState<View>('pdf');
 
   const { craftjs_json } = reportLayout.attributes;
   const isEmptyReport = isEmpty(craftjs_json);
@@ -113,14 +110,6 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
     });
   };
 
-  const handlePreview = () => {
-    const nextState = !previewEnabled;
-
-    nextState
-      ? updateSearchParams({ preview: 'true' })
-      : removeSearchParams(['preview']);
-  };
-
   const hasError =
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
     0;
@@ -132,55 +121,41 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
         onDeleteElement={handleDeleteElement}
         onUploadImage={setImageUploading}
       >
-        <Editor
-          isPreview={previewEnabled}
-          onNodesChange={() => setSaved(false)}
-        >
+        <Editor isPreview={false} onNodesChange={() => setSaved(false)}>
           <TopBar
             hasError={hasError}
             hasPendingState={imageUploading}
-            previewEnabled={previewEnabled}
             selectedLocale={selectedLocale}
             reportId={reportId}
             isTemplate={!!templateProjectId || !!templatePhaseId}
             saved={saved}
             setSaved={setSaved}
-            setPreviewEnabled={handlePreview}
             setSelectedLocale={setSelectedLocale}
           />
-          {!previewEnabled && (
-            <Box mt={`${stylingConsts.menuHeight}px`}>
-              <Toolbox reportId={reportId} />
-              <LanguageProvider
-                contentBuilderLocale={selectedLocale}
-                platformLocale={platformLocale}
-              >
-                <StyledRightColumn>
-                  <PDFWrapper>
-                    <Frame editorData={initialData}>
-                      {isEmptyReport && templateProjectId ? (
-                        <ProjectTemplate
-                          reportId={reportId}
-                          projectId={templateProjectId}
-                        />
-                      ) : isEmptyReport && templatePhaseId ? (
-                        <PhaseTemplate phaseId={templatePhaseId} />
-                      ) : null}
-                    </Frame>
-                  </PDFWrapper>
-                </StyledRightColumn>
-              </LanguageProvider>
-              <Settings />
-            </Box>
-          )}
-          {previewEnabled && (
-            <Box justifyContent="center">
-              <EditModePreview
-                previewData={initialData}
-                selectedLocale={selectedLocale}
-              />
-            </Box>
-          )}
+          <Box mt={`${stylingConsts.menuHeight}px`}>
+            <Toolbox reportId={reportId} />
+            <LanguageProvider
+              contentBuilderLocale={selectedLocale}
+              platformLocale={platformLocale}
+            >
+              <StyledRightColumn>
+                {!!phaseId && <ViewPicker view={view} setView={setView} />}
+                <ViewContainer view={view}>
+                  <Frame editorData={initialData}>
+                    {isEmptyReport && templateProjectId ? (
+                      <ProjectTemplate
+                        reportId={reportId}
+                        projectId={templateProjectId}
+                      />
+                    ) : isEmptyReport && templatePhaseId ? (
+                      <PhaseTemplate phaseId={templatePhaseId} />
+                    ) : null}
+                  </Frame>
+                </ViewContainer>
+              </StyledRightColumn>
+            </LanguageProvider>
+            <Settings />
+          </Box>
         </Editor>
       </FullscreenContentBuilder>
     </ReportContextProvider>
