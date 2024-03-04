@@ -8,8 +8,6 @@ import {
   Label,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-
-// image upload
 import { useEditor, useNode } from '@craftjs/core';
 import { Multiloc, UploadFile } from 'typings';
 

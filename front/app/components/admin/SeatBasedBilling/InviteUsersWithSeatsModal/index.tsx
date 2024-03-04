@@ -9,7 +9,6 @@ import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWa
 import SeatSetSuccess from 'components/admin/SeatBasedBilling/SeatSetSuccess';
 import Modal from 'components/UI/Modal';
 
-// Translation
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { TSeatNumber } from 'api/app_configuration/types';

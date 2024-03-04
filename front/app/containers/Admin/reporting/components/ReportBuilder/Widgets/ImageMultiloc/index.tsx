@@ -14,8 +14,6 @@ import { ImageSettings } from 'components/admin/ContentBuilder/Widgets/ImageMult
 import messages from 'components/admin/ContentBuilder/Widgets/ImageMultiloc/messages';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
-// image upload
-
 // events
 import eventEmitter from 'utils/eventEmitter';
 

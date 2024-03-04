@@ -6,9 +6,6 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { Subscription } from 'rxjs';
-
-// Translation
-
 import styled from 'styled-components';
 
 import { FormattedMessage } from 'utils/cl-intl';

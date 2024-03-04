@@ -35,8 +35,6 @@ import FieldTitle from './FieldTitle';
 import IconsAndBadges from './IconsAndBadges';
 import Logic from './Logic';
 
-// Translation
-
 import messages from './messages';
 
 const FormFieldsContainer = styled(Box)`

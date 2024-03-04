@@ -9,8 +9,6 @@ const ChangeSeatModal = lazy(
   () => import('components/admin/SeatBasedBilling/ChangeSeatModal')
 );
 
-// Translation
-
 // Events --- For error handling
 
 import styled from 'styled-components';

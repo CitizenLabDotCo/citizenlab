@@ -6,7 +6,6 @@ import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
 import Modal from 'components/UI/Modal';
 
-// Translation
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isRegularUser, isAdmin } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
