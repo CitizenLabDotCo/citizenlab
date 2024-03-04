@@ -28,9 +28,6 @@ import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
-
-// tracking
-
 import tracks from './tracks';
 
 interface Props {

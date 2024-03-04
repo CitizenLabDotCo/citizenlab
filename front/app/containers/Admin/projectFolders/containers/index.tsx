@@ -10,11 +10,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-// Services
 import { isAdmin } from 'utils/permissions/roles';
-
-// Components
 
 // Localisation
 

@@ -5,8 +5,6 @@ import { useVisitorsTrafficSourcesLive } from 'api/graph_data_units';
 import { parsePieData, parseExcelData } from './parse';
 import { getTranslations } from './translations';
 
-// parse
-
 import { QueryParameters } from './typings';
 
 export default function useVisitorsReferrerTypes({

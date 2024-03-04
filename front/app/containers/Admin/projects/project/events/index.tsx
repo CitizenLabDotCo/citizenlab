@@ -1,4 +1,3 @@
-// libraries
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';

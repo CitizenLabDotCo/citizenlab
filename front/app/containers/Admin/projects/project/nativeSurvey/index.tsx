@@ -29,9 +29,6 @@ import { requestBlob } from 'utils/requestBlob';
 
 import usePhase from 'api/phases/usePhase';
 
-// Styles
-
-// Services
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';

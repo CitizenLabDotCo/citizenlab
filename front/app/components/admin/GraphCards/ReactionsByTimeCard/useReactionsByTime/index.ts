@@ -9,8 +9,6 @@ import { useReactionsByTimeLive } from 'api/graph_data_units';
 import { parseTimeSeries, parseExcelData } from './parse';
 import { getTranslations } from './translations';
 
-// parse
-
 import { QueryParameters } from './typings';
 
 export default function useReactionsByTime({

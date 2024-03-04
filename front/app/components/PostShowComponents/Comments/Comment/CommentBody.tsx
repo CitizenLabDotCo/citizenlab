@@ -18,10 +18,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// Services
 import { IUpdatedComment } from 'api/comments/types';
-
-// Components
 
 // Styling
 

@@ -1,4 +1,3 @@
-// libraries
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';

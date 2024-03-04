@@ -13,7 +13,6 @@ import useCampaign from 'api/campaigns/useCampaign';
 
 import messages from '../../messages';
 
-// Components
 import EmptyState from './EmptyState';
 import ExampleFrame from './ExampleFrame';
 

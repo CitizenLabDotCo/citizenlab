@@ -1,7 +1,5 @@
 import React from 'react';
 
-// libraries
-
 // resources
 
 import { API_PATH } from 'containers/App/constants';

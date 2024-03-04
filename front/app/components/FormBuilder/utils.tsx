@@ -13,7 +13,6 @@ import {
 } from 'api/custom_fields/types';
 import { IPhaseData } from 'api/phases/types';
 
-// Components
 import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/ConfigSelectWithLocaleSwitcher';
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
 import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';

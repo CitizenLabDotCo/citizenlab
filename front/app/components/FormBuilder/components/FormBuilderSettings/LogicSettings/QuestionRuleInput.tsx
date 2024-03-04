@@ -16,7 +16,6 @@ import Error from 'components/UI/Error';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isRuleValid } from 'utils/yup/validateLogic';
 
-// Services
 import {
   IFlatCustomField,
   LogicType,

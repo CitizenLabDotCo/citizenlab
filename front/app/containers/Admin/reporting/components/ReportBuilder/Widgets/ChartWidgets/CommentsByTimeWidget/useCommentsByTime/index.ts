@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 
-// parse
 import { parseTimeSeries } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/parse';
 import { QueryParameters } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/typings';
 

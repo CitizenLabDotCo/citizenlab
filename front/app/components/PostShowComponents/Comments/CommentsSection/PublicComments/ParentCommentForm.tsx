@@ -26,9 +26,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import useLocale from 'hooks/useLocale';
 
 import Actions from '../../CommentForm/Actions';
-
-// tracking
-
 import { commentAdded } from '../../events';
 import messages from '../../messages';
 import tracks from '../../tracks';

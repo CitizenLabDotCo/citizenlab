@@ -21,7 +21,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from '../messages';
 
-// animations
+s;
 
 import {
   pageContentMaxWidth,

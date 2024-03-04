@@ -33,7 +33,7 @@ export interface IAttributesDiff {
   style?: IAppConfigurationStyle;
 }
 
-// Styles and custom components
+ and custom components
 export const StyledSection = styled(Section)`
   margin-bottom 20px;
 `;

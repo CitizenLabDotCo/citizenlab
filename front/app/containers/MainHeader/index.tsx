@@ -1,4 +1,3 @@
-// libraries
 import React, { useRef, useEffect, useState } from 'react';
 
 import { media, isRtl, useBreakpoint } from '@citizenlab/cl2-component-library';

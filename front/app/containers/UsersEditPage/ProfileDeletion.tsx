@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 
-// Styles
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 

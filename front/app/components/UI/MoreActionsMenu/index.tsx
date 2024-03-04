@@ -1,7 +1,6 @@
 // Libraries
 import React, { useState } from 'react';
 
-// Components
 import {
   Box,
   Icon,

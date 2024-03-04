@@ -8,8 +8,6 @@ import { parseTableData } from './parse';
 import { referrersListQuery, referrersTotalQuery } from './query';
 import { getTranslations } from './translations';
 
-// parse
-
 import {
   QueryParameters,
   ReferrerListResponse,

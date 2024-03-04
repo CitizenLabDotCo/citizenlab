@@ -1,5 +1,3 @@
-// parse
-
 import { useMemo, useState } from 'react';
 
 import { IResolution } from 'components/admin/ResolutionControl';

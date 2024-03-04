@@ -18,8 +18,6 @@ import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
 import { deleteCommentModalClosed } from '../events';
 import messages from '../messages';
 
-// Components
-
 import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
 
 // Styling

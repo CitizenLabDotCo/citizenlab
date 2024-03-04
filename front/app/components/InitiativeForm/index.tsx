@@ -27,8 +27,6 @@ import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import useLocale from 'hooks/useLocale';
 
 import messages from './messages';
-
-// Components
 import SubmitButtonBar from './SubmitButtonBar';
 
 const ProfileVisibilityFormSection = lazy(

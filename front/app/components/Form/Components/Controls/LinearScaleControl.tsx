@@ -17,8 +17,6 @@ import { FormLabel } from 'components/UI/FormComponents';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
-// Components
-
 import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
 

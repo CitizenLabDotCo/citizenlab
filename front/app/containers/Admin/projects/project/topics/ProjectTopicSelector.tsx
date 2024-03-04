@@ -9,8 +9,6 @@ import { IOption } from 'typings';
 import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
-// Style
-
 import { injectIntl } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';

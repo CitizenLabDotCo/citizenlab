@@ -16,7 +16,6 @@ import {
 } from '@jsonforms/react';
 import styled, { useTheme } from 'styled-components';
 
-// Components
 import { customAjv } from 'components/Form';
 import {
   getSanitizedFormData,

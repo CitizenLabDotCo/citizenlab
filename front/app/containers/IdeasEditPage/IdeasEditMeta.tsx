@@ -1,4 +1,3 @@
-// libraries
 import React, { memo } from 'react';
 
 import { Helmet } from 'react-helmet';

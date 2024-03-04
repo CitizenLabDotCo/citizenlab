@@ -1,4 +1,3 @@
-// parse
 import { useMemo, useState } from 'react';
 
 import { useActiveUsers as useActiveUsersData } from 'api/graph_data_units';

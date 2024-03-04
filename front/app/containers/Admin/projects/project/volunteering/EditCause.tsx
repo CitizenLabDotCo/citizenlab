@@ -7,7 +7,6 @@ import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-// Services
 import useCause from 'api/causes/useCause';
 import useUpdateCause from 'api/causes/useUpdateCause';
 

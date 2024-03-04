@@ -29,8 +29,6 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
-// Components
-
 import messages from './messages';
 
 // Styling

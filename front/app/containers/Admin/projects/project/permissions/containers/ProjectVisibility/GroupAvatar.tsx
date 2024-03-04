@@ -1,12 +1,10 @@
 // Libraries
 import React from 'react';
 
-// Components
 import styled, { css } from 'styled-components';
 
 import Avatar from 'components/Avatar';
 
-// Style
 import { isNilOrError } from 'utils/helperUtils';
 
 import useMemberships from 'api/group_memberships/useMemberships';

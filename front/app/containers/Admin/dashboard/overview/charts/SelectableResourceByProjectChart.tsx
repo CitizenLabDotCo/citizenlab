@@ -1,4 +1,3 @@
-// libraries
 import React from 'react';
 
 import { map, orderBy } from 'lodash-es';

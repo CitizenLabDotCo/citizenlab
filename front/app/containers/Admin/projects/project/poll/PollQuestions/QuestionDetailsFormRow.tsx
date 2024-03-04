@@ -4,7 +4,6 @@ import { Select, Input, Box } from '@citizenlab/cl2-component-library';
 
 // Typings
 
-// Style
 import styled from 'styled-components';
 import { IOption } from 'typings';
 

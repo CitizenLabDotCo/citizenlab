@@ -1,7 +1,5 @@
-// libraries
 import React, { useState, FormEvent } from 'react';
 
-// Services
 import { ModalContentContainer } from 'components/UI/Modal';
 
 import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';

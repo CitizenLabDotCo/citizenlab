@@ -12,21 +12,16 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// Services / Data loading
 import { IPollOptionData } from 'api/poll_options/types';
 import useDeletePollOption from 'api/poll_options/useDeletePollOption';
 import usePollOptions from 'api/poll_options/usePollOptions';
 import { IPollQuestionData } from 'api/poll_questions/types';
-
-// Components
 
 import messages from '../messages';
 import QuestionDetailsFormRow from '../PollQuestions/QuestionDetailsFormRow';
 
 import OptionFormRow from './OptionFormRow';
 import OptionRow from './OptionRow';
-
-// Style
 
 const Container = styled.div``;
 

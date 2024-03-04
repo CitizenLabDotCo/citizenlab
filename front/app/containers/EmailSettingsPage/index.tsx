@@ -11,8 +11,6 @@ import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignCo
 
 import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 
-// Styles
-
 const Container = styled.div`
   width: 100%;
   height: calc(100vh - 78px - 78px);

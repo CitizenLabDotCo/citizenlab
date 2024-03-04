@@ -1,6 +1,5 @@
 import React, { Suspense, memo, useState, lazy } from 'react';
 
-// Services
 import Button from 'components/UI/Button';
 import UserSelect from 'components/UI/UserSelect';
 
@@ -15,14 +14,10 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 
-// Components
-
 const AddModeratorsModal = lazy(
   () => import('components/admin/SeatBasedBilling/AddModeratorsModal')
 );
 import { Box, Label } from '@citizenlab/cl2-component-library';
-
-// Style
 import styled from 'styled-components';
 
 const AddButton = styled(Button)`

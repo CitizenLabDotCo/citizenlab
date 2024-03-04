@@ -1,6 +1,5 @@
 import React from 'react';
 
-// Components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { useTheme } from 'styled-components';

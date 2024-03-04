@@ -5,7 +5,7 @@ import { hideVisually } from 'polished';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 
-// animations
+s;
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { Subscription } from 'rxjs';
 

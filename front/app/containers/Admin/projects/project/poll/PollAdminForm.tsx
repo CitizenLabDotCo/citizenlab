@@ -5,14 +5,9 @@ import { clone } from 'lodash-es';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import styled from 'styled-components';
-
-// Services / Data loading
-
 import { Multiloc } from 'typings';
 
 import { List } from 'components/admin/ResourceList';
-
-// Components
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';

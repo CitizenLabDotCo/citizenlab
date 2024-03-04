@@ -19,8 +19,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 
-// tracking
-
 import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
 import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
 import useAuthUser from 'api/me/useAuthUser';

@@ -1,4 +1,3 @@
-// libraries
 import React, { PureComponent } from 'react';
 
 import moment, { Moment } from 'moment';

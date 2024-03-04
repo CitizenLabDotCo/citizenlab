@@ -3,7 +3,6 @@ import React from 'react';
 import { PreviousPathnameContext } from 'context';
 import { isNumber } from 'lodash-es';
 
-// libraries
 import { parse } from 'qs';
 import { adopt } from 'react-adopt';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';

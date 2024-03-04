@@ -1,4 +1,3 @@
-// libraries
 import React from 'react';
 
 import { isEmpty } from 'lodash-es';

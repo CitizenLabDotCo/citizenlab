@@ -2,10 +2,6 @@
 import React, { useState } from 'react';
 
 import { find } from 'lodash-es';
-
-// Components
-
-// Style
 import styled from 'styled-components';
 
 // Typings

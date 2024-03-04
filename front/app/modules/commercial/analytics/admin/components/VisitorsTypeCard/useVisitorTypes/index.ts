@@ -10,8 +10,6 @@ import useAnalytics from 'api/analytics/useAnalytics';
 
 import { parsePieData, parseExcelData } from './parse';
 import { getTranslations } from './translations';
-
-// parse
 import { Response, QueryParameters } from './typings';
 
 const query = ({

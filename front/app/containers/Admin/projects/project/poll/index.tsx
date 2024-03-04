@@ -1,7 +1,5 @@
 import React from 'react';
 
-// Services / Data loading
-
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import { isError } from 'lodash-es';
 import { useParams } from 'react-router-dom';

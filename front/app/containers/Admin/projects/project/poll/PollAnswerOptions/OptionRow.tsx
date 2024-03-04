@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-
-// Components
 import { Multiloc } from 'typings';
 
 import { Row, TextCell } from 'components/admin/ResourceList';

@@ -19,8 +19,6 @@ import { injectIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
-// Style
-
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 

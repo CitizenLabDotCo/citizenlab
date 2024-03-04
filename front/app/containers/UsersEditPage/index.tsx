@@ -23,8 +23,6 @@ import ProfileDeletion from './ProfileDeletion';
 import ProfileForm from './ProfileForm';
 import UsersEditPageMeta from './UsersEditPageMeta';
 
-// Styles
-
 // Hooks
 
 import VerificationStatus from './VerificationStatus';

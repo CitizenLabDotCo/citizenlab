@@ -17,8 +17,6 @@ import useUsers from 'api/users/useUsers';
 
 import events from './events';
 
-// Services
-
 import NoUsers from './NoUsers';
 import UserTable from './UserTable';
 import UserTableActions from './UserTableActions';

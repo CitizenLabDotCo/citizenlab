@@ -1,17 +1,11 @@
-// libraries
 import React, { FormEvent } from 'react';
 
-// Services
 import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';
 
 import { Label, Radio, fontSizes } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
-
-// animation
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-
-// Style
 import styled from 'styled-components';
 
 const timeout = 300;

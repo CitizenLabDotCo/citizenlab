@@ -1,26 +1,24 @@
 import React from 'react';
 
-// Services & Resources
+import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { SortableRow, TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 
-import { IPollQuestionData } from 'api/poll_questions/types';
-
-// Inline block so the button acts as a character and is stuck to the end of the title to make it clear it will edit the title text
-const EditTitleButton = styled(Button)`
-  display: inline-block;
-`;
-
 import { FormattedMessage } from 'utils/cl-intl';
+
+import { IPollQuestionData } from 'api/poll_questions/types';
 
 import messages from '../messages';
 
 import WrongOptionsIndicator from './WrongOptionsIndicator';
 
-import { Box } from '@citizenlab/cl2-component-library';
+// Inline block so the button acts as a character and is stuck to the end of the title to make it clear it will edit the title text
+const EditTitleButton = styled(Button)`
+  display: inline-block;
+`;
 
 interface Props {
   question: IPollQuestionData;

@@ -1,7 +1,5 @@
 import React from 'react';
 
-// Services
-
 import { Locale } from 'typings';
 
 import { getLocalizedWithFallback } from 'utils/i18n';

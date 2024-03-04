@@ -28,8 +28,6 @@ export interface NormalFormValues {
   membership_type: MembershipType;
 }
 
-// Style
-
 import { MembershipType } from 'api/groups/types';
 
 export const Fill = styled.div`

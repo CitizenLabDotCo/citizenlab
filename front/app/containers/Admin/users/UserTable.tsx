@@ -7,7 +7,6 @@ import { includes, isArray } from 'lodash-es';
 
 // tracking
 
-// Styles
 import styled from 'styled-components';
 
 import Pagination from 'components/Pagination';

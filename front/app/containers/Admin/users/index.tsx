@@ -41,7 +41,6 @@ const ChildWrapper = styled.div`
 
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
-// Services
 import { IGroupData, MembershipType } from 'api/groups/types';
 import useAddGroup from 'api/groups/useAddGroup';
 
