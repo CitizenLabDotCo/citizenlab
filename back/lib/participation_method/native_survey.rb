@@ -60,8 +60,8 @@ module ParticipationMethod
       true
     end
 
-    def never_update?
-      true
+    def update_if_published?
+      false
     end
 
     def creation_phase?

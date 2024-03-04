@@ -29,6 +29,7 @@ type Props = {
   titleText: string | React.ReactNode;
   isSurvey: boolean;
   canUserEditProject: boolean;
+  loggedIn?: boolean;
 };
 
 export const Heading = ({
@@ -36,6 +37,7 @@ export const Heading = ({
   titleText,
   canUserEditProject,
   isSurvey,
+  loggedIn,
 }: Props) => {
   const localize = useLocalize();
   const [searchParams] = useSearchParams();
@@ -150,7 +152,7 @@ export const Heading = ({
                 />
               </Title>
               <Text color="primary" fontSize="l">
-                <FormattedMessage {...messages.leaveSurveyText} />
+                <FormattedMessage {...(loggedIn ? messages.leaveSurveyTextLoggedIn : messages.leaveSurveyText)} />
               </Text>
             </Box>
             <Box
@@ -160,9 +162,9 @@ export const Heading = ({
               alignItems="center"
             >
               <Button
-                icon="delete"
+                icon={loggedIn ? "arrow-left-circle" : "delete"}
                 data-cy="e2e-confirm-delete-survey-results"
-                buttonStyle="delete"
+                buttonStyle={loggedIn ? "primary" : "delete"}
                 width="100%"
                 mb={isSmallerThanPhone ? '16px' : undefined}
                 mr={!isSmallerThanPhone ? '20px' : undefined}

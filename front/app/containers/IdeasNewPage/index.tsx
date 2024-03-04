@@ -7,7 +7,8 @@ import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
 import VerticalCenterer from 'components/VerticalCenterer';
 import SurveySubmittedNotice from './components/SurveySubmittedNotice';
-import IdeasNewForm from './IdeasNewForm';
+import IdeasNewSurveyForm from "./IdeasNewSurveyForm";
+import IdeasNewIdeationForm from "./IdeasNewIdeationForm";
 
 // hooks
 import useProjectBySlug from 'api/projects/useProjectBySlug';
@@ -91,7 +92,11 @@ const NewIdeaPage = () => {
     );
   }
 
-  return <IdeasNewForm project={project} />;
+  if (isSurvey) {
+    return <IdeasNewSurveyForm project={project} />;
+  } else {
+    return <IdeasNewIdeationForm project={project} />;
+  }
 };
 
 export default NewIdeaPage;
