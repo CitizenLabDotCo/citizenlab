@@ -239,7 +239,17 @@ const ContentBuilderTopBar = ({
           onSelectLocale={setSelectedLocale}
         />
         <Box mx="20px">
-          <PrintReportButton reportId={reportId} />
+          {/* <PrintReportButton reportId={reportId} /> */}
+          <Button
+            icon="print"
+            onClick={goBack}
+            buttonStyle="secondary"
+            iconColor={colors.textSecondary}
+            iconSize="20px"
+            ml="8px"
+            px="12px"
+            py="12px"
+          />
         </Box>
         <SaveButton
           disabled={disableSave}

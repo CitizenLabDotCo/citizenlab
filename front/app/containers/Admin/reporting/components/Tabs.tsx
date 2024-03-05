@@ -82,7 +82,7 @@ const DashboardTabs = ({
             badge={
               name === 'project_reports' ? (
                 <Box display="inline" ml="12px">
-                  <Badge color={colors.background}>
+                  <Badge color={colors.textSecondary} className="inverse">
                     {formatMessage(messages.deprecated)}
                   </Badge>
                 </Box>
