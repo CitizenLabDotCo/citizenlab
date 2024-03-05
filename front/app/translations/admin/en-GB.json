@@ -1970,7 +1970,6 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Auto-tag",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Auto-tags are automatically derived by the computer. You can change or remove them at all times.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Auto-tag",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Select maximum 9 tags you would like the inputs to be distributed between. Inputs already associated with these tags will not be classified again.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "The classification is solely based on the name of the tag. Pick relevant keywords for the best results.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Tags: By label",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "You create the tags and manually assign a few inputs as an example, the computer assigns the rest",

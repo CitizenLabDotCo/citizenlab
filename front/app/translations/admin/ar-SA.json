@@ -1970,7 +1970,6 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "علامة تلقائية",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "يتم اشتقاق العلامات التلقائية تلقائيًا بواسطة الكمبيوتر. ويمكنك تغييرها أو إزالتها في جميع الأوقات.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "علامة تلقائية",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "حدد 9 علامات كحد أقصى ترغب في توزيع المدخلات بينها. لن يتم تصنيف المدخلات المرتبطة بالفعل بهذه العلامات مرة أخرى.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "يعتمد التصنيف فقط على اسم العلامة. اختر الكلمات الرئيسية ذات الصلة للحصول على أفضل النتائج.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "العلامات: حسب التسمية",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "يمكنك إنشاء العلامات وتعيين بعض المدخلات يدويًا كمثال، ويقوم الكمبيوتر بتعيين الباقي",
