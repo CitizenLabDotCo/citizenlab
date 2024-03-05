@@ -25,7 +25,7 @@ interface IResourceData {
 interface IPermissionRule {
   (
     resource: TPermissionItem | null,
-    user: IUser,
+    user: IUser | undefined,
     tenant: IAppConfigurationData,
     context?: any
   ): boolean;
