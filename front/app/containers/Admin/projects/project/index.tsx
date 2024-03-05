@@ -23,7 +23,7 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import { PhaseHeader } from './phase/PhaseHeader';
 import ProjectHeader from './projectHeader';
-import { FeatureFlags, getTabs } from './tabs';
+import { FeatureFlags, getTabs, IPhaseTab } from './tabs';
 import { getTimelineTab } from './timeline/utils';
 
 interface DataProps {
