@@ -1,21 +1,33 @@
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import Tippy from '@tippyjs/react';
 import React from 'react';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 const QuestionHeader = ({ question }: { question: string }) => {
-  const largeSummariesEnabled = useFeatureFlag({
-    name: 'large_summaries',
-    onlyCheckAllowed: true,
-  });
+  const { formatMessage } = useIntl();
 
   return (
-    <Box display="flex" gap="4px" alignItems="center">
-      {!largeSummariesEnabled && (
+    <Tippy
+      content={<Box p="4px">{formatMessage(messages.aiSummaryTooltip)}</Box>}
+      placement="top"
+      zIndex={99999}
+    >
+      <Box
+        display="flex"
+        gap="4px"
+        alignItems="center"
+        p="8px"
+        mb="12px"
+        w="fit-content"
+      >
         <Icon name="alert-circle" fill={colors.orange} />
-      )}
-      <Text fontWeight="bold">{question}</Text>
-      <Icon name="question-bubble" width="20px" height="20px" />
-    </Box>
+        <Text fontWeight="bold" m="0px">
+          {question}
+        </Text>
+        <Icon name="question-bubble" width="18px" height="18px" />
+      </Box>
+    </Tippy>
   );
 };
 

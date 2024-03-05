@@ -4,7 +4,6 @@ import {
   stylingConsts,
   colors,
   Title,
-  Badge,
   Text,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
@@ -130,9 +129,6 @@ const TopBar = () => {
             <Text m="0px" color="textSecondary">
               {formatMessage(messages.AIAnalysis)}
             </Text>
-            <Badge color={colors.textSecondary} className="inverse">
-              BETA
-            </Badge>
           </Box>
 
           <TruncatedTitle variant="h4" m="0px">

@@ -33,7 +33,7 @@ type FilterItemsProps = {
 
 const translationKeys: Record<
   string,
-  { translationKey: MessageDescriptor; predicate: '>' | '<' | '=' }
+  { translationKey: MessageDescriptor; predicate?: '>' | '<' | '=' }
 > = {
   search: {
     translationKey: messages.search,
@@ -73,7 +73,6 @@ const translationKeys: Record<
   },
   input_custom_field_no_empty_values: {
     translationKey: messages.emptyCustomFields,
-    predicate: '=',
   },
   limit: {
     translationKey: messages.limit,
@@ -155,8 +154,12 @@ const FilterItems = ({ filters, isEditable, analysisId }: FilterItemsProps) => {
               display="flex"
             >
               <Box>{formatMessage(translationKeys[key].translationKey)}</Box>
-              <Box mx="3px">{translationKeys[key].predicate}</Box>
-              <EllipsisFilterValue>{value?.toString()}</EllipsisFilterValue>
+              {translationKeys[key].predicate && (
+                <>
+                  <Box mx="3px">{translationKeys[key].predicate}</Box>
+                  <EllipsisFilterValue>{value?.toString()}</EllipsisFilterValue>
+                </>
+              )}
               {isEditable && (
                 <IconButton
                   iconName="close"
