@@ -1216,7 +1216,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Lagen",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Standaard lengtegraad",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Middelpunt en zoom-niveau van de kaart",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Het standaard middelpunt en zoom-niveau van de kaart. Pas de waarden hieronder handmatig aan, of klik op de {button} knop in de linkerbovenhoek van de kaart om het huidige middelpunt en zoom-niveau van de kaart op te slaan als de standaardwaarden.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Pas de kaartweergave aan door kaartlagen te uploaden en te stylen en door het middelpunt en zoom-niveau in te stellen.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Kaart configuratie",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "De kaartconfiguratie is momenteel hetzelfde voora alle fases, je kunt niet verschillende kaartconfiguraties per fase maken.",

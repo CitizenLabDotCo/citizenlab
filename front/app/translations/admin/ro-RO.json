@@ -758,7 +758,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Straturi",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Longitudine implicită",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Centrul și zoomul implicit al hărții",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Punctul central implicit și nivelul de zoom al hărții. Reglați manual valorile de mai jos sau faceți click pe butonul {button} din colțul din dreapta sus al hărții pentru a salva punctul central și nivelul de zoom al hărții ca valori implicite.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Personalizați vizualizarea hărții, inclusiv încărcarea și stilizarea straturilor hărții, setarea centrului hărții și a nivelului de zoom.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Configurarea hărții",
   "app.containers.AdminPage.ProjectEdit.MapTab.remove": "Eliminați stratul",

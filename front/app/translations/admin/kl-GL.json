@@ -800,7 +800,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Nunap assingani quleriiaat",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Allorniusaq tukimukartoq nalinginnaasoq",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Nunap assingata qeqqa qanillisaallu (zoom)",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Nunap assingata qeqqata inissisimaffia qanillisaatillu qanissusaa. Ataani kisitsisit nammineq aaqqissukkit imaluunniit nunap assingata qeqqa qanillisaatillu qanissusaa nalinginnaasumik atuuttussatut toqqorniarukkit toortaat {button} nunap assingata qulaani teqeqqumi talerperlermiittoq tooruk.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Nunap assingata nuisinneqarnera naleqqussaruk, nunap assingani quleriiaanik ikkussineq ilusilersuinerlu aamma nunap assingata qeqqanik inissiineq qanillisaatillu qanissusaa ilanngullugit.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Nunap assinganik aaqqissuussineq",
   "app.containers.AdminPage.ProjectEdit.MapTab.remove": "Quleriiaaq peeruk",

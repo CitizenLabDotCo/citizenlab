@@ -1216,7 +1216,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Warstwy",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Domyślna długość geograficzna środka",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Domyślny środek mapy",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Domyślny punkt centralny i poziom powiększenia mapy. Ręcznie dostosuj poniższe wartości lub kliknij na przycisk {button} w prawym górnym rogu mapy, aby zapisać bieżący punkt centralny i poziom powiększenia mapy jako wartości domyślne.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Dostosuj widok mapy, załaduj i stylizuj warstwy mapy oraz ustaw środek mapy i poziom powiększenia.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Konfiguracja mapy",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "Konfiguracja mapy jest obecnie współdzielona między fazami, nie możesz tworzyć różnych konfiguracji mapy na fazę.",

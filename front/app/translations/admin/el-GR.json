@@ -1001,7 +1001,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Επίπεδα χάρτη",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Προεπιλεγμένο γεωγραφικό μήκος",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Προεπιλεγμένο κέντρο και ζουμ χάρτη",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Το προεπιλεγμένο κεντρικό σημείο και το επίπεδο ζουμ του χάρτη. Προσαρμόστε χειροκίνητα τις παρακάτω τιμές ή κάντε κλικ στο κουμπί {button} στην επάνω δεξιά γωνία του χάρτη για να αποθηκεύσετε το τρέχον κεντρικό σημείο και το επίπεδο ζουμ του χάρτη ως προεπιλεγμένες τιμές.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Προσαρμόστε την προβολή του χάρτη, συμπεριλαμβανομένης της μεταφόρτωσης και της διαμόρφωσης των επιπέδων του χάρτη και της ρύθμισης του κέντρου και του επιπέδου ζουμ του χάρτη.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Διαμόρφωση χάρτη",
   "app.containers.AdminPage.ProjectEdit.MapTab.remove": "Κατάργηση επιπέδου",

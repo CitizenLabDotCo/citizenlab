@@ -1216,7 +1216,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Kartes slāņi",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Noklusējuma garums",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Kartes noklusējuma viduspunkts un tālummaiņa",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Kartes noklusējuma viduspunkta un tālummaiņas līmenis. Manuāli pielāgojiet tālāk norādītās vērtības vai noklikšķiniet uz pogas {poga} kartes augšējā labajā stūrī, lai saglabātu pašreizējo kartes viduspunktu un tālummaiņas līmeni kā noklusējuma vērtības.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Pielāgojiet kartes skatu, tostarp augšupielādējiet un stilizējiet kartes slāņus un iestatiet kartes viduspunktu un tālummaiņas līmeni.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Kartes konfigurācija",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "Kartes konfigurācija pašlaik ir kopīga visiem posmiem, nevarat izveidot dažādas kartes konfigurācijas katram posmam.",

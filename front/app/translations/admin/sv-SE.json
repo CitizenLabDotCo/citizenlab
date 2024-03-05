@@ -1216,7 +1216,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Kartlager",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Standardlongitud",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Kartans standardmittpunkt och -zoomnivå",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Kartans standardmittpunkt och -zoomnivå. Justera värdena nedan manuellt eller klicka på knappen {button} i kartans övre högra hörn om du vill spara kartans aktuella mittpunkt och zoomnivå som standardvärden.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Anpassa kartvyn, inklusive uppladdning och formatering av kartlager och inställning av kartans mittpunkt och zoomnivå.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Kartkonfiguration",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "Kartkonfigurationen delas för närvarande mellan faser, du kan inte skapa olika kartkonfigurationer per fas.",
