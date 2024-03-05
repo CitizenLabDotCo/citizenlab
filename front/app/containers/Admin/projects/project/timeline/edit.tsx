@@ -42,7 +42,11 @@ import {
 import Warning from 'components/UI/Warning';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import {
+  FormattedMessage,
+  useIntl,
+  useFormatMessageWithLocale,
+} from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
@@ -64,6 +68,7 @@ import { CampaignName } from 'api/campaigns/types';
 import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
@@ -116,9 +121,11 @@ const AdminPhaseEdit = () => {
   );
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const formatMessageWithLocale = useFormatMessageWithLocale();
   const [hasEndDate, setHasEndDate] = useState<boolean>(false);
   const [disableNoEndDate, setDisableNoEndDate] = useState<boolean>(false);
   const { width, containerRef } = useContainerWidthAndHeight();
+  const tenantLocales = useAppConfigurationLocales();
 
   useEffect(() => {
     setHasEndDate(phase?.data.attributes.end_at ? true : false);
@@ -151,6 +158,22 @@ const AdminPhaseEdit = () => {
     setAttributeDiff({
       ...attributeDiff,
       title_multiloc,
+    });
+  };
+
+  const handleSurveyTitleChange = (surveyTitle: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      native_survey_title_multiloc: surveyTitle,
+    });
+  };
+
+  const handleSurveyCTAChange = (CTATitle: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      native_survey_button_multiloc: CTATitle,
     });
   };
 
@@ -241,8 +264,32 @@ const AdminPhaseEdit = () => {
   const handlePhaseParticipationConfigChange = (
     participationContextConfig: IPhaseParticipationConfig
   ) => {
+    const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
+      acc[locale] = formatMessageWithLocale(
+        locale,
+        messages.defaultSurveyCTALabel
+      );
+      return acc;
+    }, {});
+
+    const surveyTitle = tenantLocales?.reduce((acc, locale) => {
+      acc[locale] = formatMessageWithLocale(
+        locale,
+        messages.defaultSurveyTitleLabel
+      );
+      return acc;
+    }, {});
+
     setSubmitState('enabled');
-    setAttributeDiff(getAttributeDiff(participationContextConfig));
+    setAttributeDiff({
+      ...getAttributeDiff(participationContextConfig),
+      // ...(participationContextConfig.participation_method === 'native_survey' && !attributeDiff.native_survey_button_multiloc && {
+      //   native_survey_button_multiloc: surveyCTALabel,
+      // }),
+      // ...(participationContextConfig.participation_method === 'native_survey' && !attributeDiff.native_survey_title_multiloc && {
+      //   native_survey_title_multiloc: surveyTitle,
+      // })
+    });
   };
 
   const handlePhaseParticipationConfigSubmit = (
@@ -436,6 +483,9 @@ const AdminPhaseEdit = () => {
   };
 
   const maxEndDate = getMaxEndDate(phasesWithOutCurrentPhase, startDate, phase);
+  console.log('phaseAttrs', phaseAttrs);
+  console.log('phase', phase);
+  console.log('attributeDiff', attributeDiff);
 
   return (
     <Box ref={containerRef}>
@@ -511,6 +561,39 @@ const AdminPhaseEdit = () => {
             apiErrors={errors}
             appConfig={appConfig}
           />
+          {attributeDiff.participation_method === 'native_survey' && (
+            <>
+              <SectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.surveyTitleLabel} />
+                </SubSectionTitle>
+                <InputMultilocWithLocaleSwitcher
+                  id="title"
+                  type="text"
+                  valueMultiloc={phaseAttrs.native_survey_title_multiloc}
+                  onChange={handleSurveyTitleChange}
+                />
+                <Error
+                  apiErrors={errors && errors.native_survey_title_multiloc}
+                />
+              </SectionField>
+
+              <SectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.surveyCTALabel} />
+                </SubSectionTitle>
+                <InputMultilocWithLocaleSwitcher
+                  id="title"
+                  type="text"
+                  valueMultiloc={phaseAttrs.native_survey_button_multiloc}
+                  onChange={handleSurveyCTAChange}
+                />
+                <Error
+                  apiErrors={errors && errors.native_survey_button_multiloc}
+                />
+              </SectionField>
+            </>
+          )}
           <SectionField className="fullWidth">
             <Box display="flex">
               <SubSectionTitle>
