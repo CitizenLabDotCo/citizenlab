@@ -1607,7 +1607,7 @@
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatisierte E-Mails",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Sie können E-Mails konfigurieren, die auf Phasenebene ausgelöst werden",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Daten",
-  "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "An Umfrage teilnehmen",
+  "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Umfrage ausfüllen",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Umfrage",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Sind Sie sicher, dass Sie diese Phase löschen wollen?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Phasenbeschreibung",
