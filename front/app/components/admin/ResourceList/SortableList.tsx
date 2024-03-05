@@ -64,9 +64,7 @@ const SortableList = ({
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
     const listItems = getListItems();
-    if (!listItems) return;
-
-    const itemsWhileDragging = clone(listItems);
+    const itemsWhileDragging = [...listItems];
     itemsWhileDragging.splice(fromIndex, 1);
     itemsWhileDragging.splice(toIndex, 0, listItems[fromIndex]);
     setItemsWhileDragging(itemsWhileDragging);
@@ -74,10 +72,7 @@ const SortableList = ({
 
   const handleDropRow = (itemId: string, toIndex: number) => {
     const listItems = getListItems();
-
-    if (!listItems) return;
-
-    const item = find(listItems, { id: itemId });
+    const item = listItems.find((item) => item.id === itemId);
 
     if (item && getLocalIndex(item.attributes.ordering) !== toIndex) {
       onReorder(itemId, getExternalIndex(toIndex));
@@ -97,18 +92,15 @@ const SortableList = ({
     }
 
     return (
-      itemsWhileDragging || clone(items).splice(lockFirstNItems, items.length)
+      itemsWhileDragging || [...items].splice(lockFirstNItems, items.length)
     );
   };
-
-  const lockedItemsList = lockedItems();
-  const itemsList = getListItems() || [];
 
   return (
     <List id={id} className={className}>
       {children({
-        lockedItemsList,
-        itemsList,
+        lockedItemsList: lockedItems(),
+        itemsList: getListItems(),
         handleDragRow,
         handleDropRow,
       })}
