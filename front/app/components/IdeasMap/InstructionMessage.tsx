@@ -23,10 +23,8 @@ const InstructionMessage = ({ projectId }: Props) => {
   const isTabletOrSmaller = useBreakpoint('tablet');
   const { data: project } = useProjectById(projectId);
 
-  if (!authUser) return null;
-
   const getInstructionMessage = () => {
-    if (project && canModerateProject(project.data, authUser)) {
+    if (project && authUser && canModerateProject(project.data, authUser)) {
       return isTabletOrSmaller
         ? formatMessage(messages.tapOnMapToAddAdmin)
         : formatMessage(messages.clickOnMapToAddAdmin);
@@ -37,24 +35,28 @@ const InstructionMessage = ({ projectId }: Props) => {
       : formatMessage(messages.clickOnMapToAdd);
   };
 
-  return (
-    <Box
-      position="absolute"
-      top="0"
-      right="0"
-      mr="60px"
-      mt="16px"
-      display="flex"
-      justifyContent="flex-end"
-      maxWidth={isTabletOrSmaller ? '260px' : '340px'}
-    >
-      <Warning>
-        <Text m="0px" fontSize="xs" color={'teal700'}>
-          {getInstructionMessage()}
-        </Text>
-      </Warning>
-    </Box>
-  );
+  if (authUser) {
+    return (
+      <Box
+        position="absolute"
+        top="0"
+        right="0"
+        mr="60px"
+        mt="16px"
+        display="flex"
+        justifyContent="flex-end"
+        maxWidth={isTabletOrSmaller ? '260px' : '340px'}
+      >
+        <Warning>
+          <Text m="0px" fontSize="xs" color={'teal700'}>
+            {getInstructionMessage()}
+          </Text>
+        </Warning>
+      </Box>
+    );
+  }
+
+  return null;
 };
 
 export default InstructionMessage;
