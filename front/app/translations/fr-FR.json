@@ -1901,7 +1901,7 @@
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": "Vous disposez de <b>{totalVotes} votes</b> que vous pouvez attribuer aux différentes options.",
   "app.utils.votingMethodUtils.singleVotingOnceYouAreDone": "Une fois terminé, cliquez sur « Soumettre » pour voter.",
   "app.utils.votingMethodUtils.singleVotingOneVoteEnded": "Le vote a été clôturé le <b>{endDate}.</b> Les participants pouvaient <b>voter pour une seule option</b>.",
-  "app.utils.votingMethodUtils.singleVotingOneVotePreferredOption": "Sélectionnez votre option préférée en cliquant sur \"Vote\".",
+  "app.utils.votingMethodUtils.singleVotingOneVotePreferredOption": "Choisissez votre option préférée en cliquant sur « Sélectionner ».",
   "app.utils.votingMethodUtils.singleVotingOneVoteYouCanVote2": "Vous disposez d'<b>un vote</b> que vous pouvez attribuer à l'une des options.",
   "app.utils.votingMethodUtils.singleVotingUnlimitedEnded": "Le vote a été clôturé le <b>{endDate}.</b> Les participants pouvaient <b>voter pour autant d'options qu'ils le souhaitaient</b>.",
   "app.utils.votingMethodUtils.singleVotingUnlimitedVotesYouCanVote": "Vous pouvez voter pour autant d'options que vous le souhaitez.",
