@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { List } from 'components/admin/ResourceList';
+import usePrevious from 'hooks/usePrevious';
+import { itemOrderWasUpdated } from './utils';
 
 export interface Item {
   id: string;
@@ -39,10 +41,13 @@ const SortableList = ({
   const [itemsWhileDragging, setItemsWhileDragging] = useState<Item[] | null>(
     null
   );
+  const prevItems = usePrevious(items);
 
   useEffect(() => {
-    setItemsWhileDragging(null);
-  }, [items]);
+    if (prevItems && itemOrderWasUpdated(prevItems, items)) {
+      setItemsWhileDragging(null);
+    }
+  }, [items, prevItems]);
 
   const getLocalIndex = (externalIndex: number) => {
     return externalIndex - lockFirstNItems;
