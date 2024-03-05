@@ -22,6 +22,10 @@ module CustomMaps
       create?
     end
 
+    def duplicate_map_config_and_layers?
+      create?
+    end
+
     private
 
     def admin_or_moderator?

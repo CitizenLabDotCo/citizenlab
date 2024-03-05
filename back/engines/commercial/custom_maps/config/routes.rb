@@ -4,6 +4,7 @@ CustomMaps::Engine.routes.draw do
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
       resources :map_configs, except: %i[index] do
+        post 'duplicate_map_config_and_layers', on: :member
         resources :layers, except: %i[index] do
           member do
             patch :reorder
