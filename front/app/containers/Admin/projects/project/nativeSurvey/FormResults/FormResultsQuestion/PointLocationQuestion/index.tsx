@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { getMapPinSymbol } from 'components/EsriMap/utils';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
@@ -54,7 +54,7 @@ const PointLocationQuestion = ({ pointResponses }: Props) => {
         // Set the symbol used to render the graphics
         renderer: new Renderer({
           symbol: getMapPinSymbol({
-            color: 'black',
+            color: colors.primary,
             sizeInPx: 38,
           }),
         }),

@@ -185,25 +185,7 @@ const PointControl = ({
         </Label>
       </Box>
       <Box display="flex" flexDirection="column">
-        {isLoadingMapConfig && uischema.options?.map_config_id && <Spinner />}
-        {mapConfig && (
-          <EsriMap
-            height="400px"
-            layers={mapLayers}
-            initialData={{
-              zoom: Number(mapConfig?.data.attributes.zoom_level),
-              center: data || mapConfig?.data.attributes.center_geojson,
-              showLegend: true,
-              showLayerVisibilityControl: true,
-              onInit: onMapInit,
-            }}
-            webMapId={mapConfig?.data.attributes.esri_web_map_id}
-            onClick={
-              isMobileOrSmaller ? onMobileClickShowOverlay : onDesktopMapClick
-            }
-          />
-        )}
-        <Box mt="12px">
+        <Box mb="12px">
           <LocationInput
             value={
               address.value && address.label
@@ -229,6 +211,24 @@ const PointControl = ({
             className="e2e-idea-form-location-input-field"
           />
         </Box>
+        {isLoadingMapConfig && uischema.options?.map_config_id && <Spinner />}
+        {mapConfig && (
+          <EsriMap
+            height="400px"
+            layers={mapLayers}
+            initialData={{
+              zoom: Number(mapConfig?.data.attributes.zoom_level),
+              center: data || mapConfig?.data.attributes.center_geojson,
+              showLegend: true,
+              showLayerVisibilityControl: true,
+              onInit: onMapInit,
+            }}
+            webMapId={mapConfig?.data.attributes.esri_web_map_id}
+            onClick={
+              isMobileOrSmaller ? onMobileClickShowOverlay : onDesktopMapClick
+            }
+          />
+        )}
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
       {showMapOverlay && isMobileOrSmaller && (

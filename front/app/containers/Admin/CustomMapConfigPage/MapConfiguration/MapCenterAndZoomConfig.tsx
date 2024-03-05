@@ -25,6 +25,7 @@ import styled from 'styled-components';
 import { goToMapLocation } from 'components/EsriMap/utils';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 import { IMapConfig } from 'api/map_config/types';
+import { useParams } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -88,8 +89,12 @@ interface IFormValues {
 
 const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
   ({ className, mapConfig, mapView, intl: { formatMessage } }) => {
+    const { projectId } = useParams() as {
+      projectId: string;
+    };
+
     const { data: appConfig } = useAppConfiguration();
-    const { mutateAsync: updateMapConfig } = useUpdateMapConfig();
+    const { mutateAsync: updateMapConfig } = useUpdateMapConfig(projectId);
 
     const defaultLatLng = getCenter(
       undefined,
