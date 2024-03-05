@@ -8,6 +8,10 @@ jest.mock('utils/permissions', () => {
   return { usePermission: () => mockPermission };
 });
 
+beforeEach(() => {
+  mockPermission = false;
+});
+
 const projectFolders = {
   data: [
     { id: 'folder1', attributes: { title_multiloc: { en: 'Folder 1' } } },
@@ -19,7 +23,13 @@ jest.mock('api/project_folders/useProjectFolders', () => () => {
   return { data: projectFolders };
 });
 
-jest.mock('api/me/useAuthUser');
+const mockUser = {
+  data: {
+    id: 'userId',
+  },
+};
+
+jest.mock('api/me/useAuthUser', () => () => ({ data: mockUser }));
 
 describe('ProjectFolderSelect', () => {
   it('should render', () => {
@@ -69,6 +79,28 @@ describe('ProjectFolderSelect', () => {
     expect(
       container.querySelector('label[for="folderSelect-no"]')
     ).not.toHaveClass('disabled');
+  });
+  it('should render as disabled with "no" option selected when isNewProject is false', () => {
+    const { container } = render(
+      <ProjectFolderSelect
+        projectAttrs={{}}
+        onProjectAttributesDiffChange={jest.fn()}
+        isNewProject={false}
+      />
+    );
+    expect(container.querySelector('#folderSelect-no')).toHaveAttribute(
+      'aria-checked',
+      'true'
+    );
+
+    expect(container.querySelector('#folderSelect-yes')).toHaveAttribute(
+      'aria-checked',
+      'false'
+    );
+
+    expect(container.querySelector('label[for="folderSelect-no"]')).toHaveClass(
+      'disabled'
+    );
   });
   it('should set folder_id to null when "no" option is selected', () => {
     mockPermission = true;
