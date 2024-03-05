@@ -83,13 +83,12 @@ const hasPermission = ({
 }) => {
   return authUserStream.pipe(
     map((user) => {
-      if (!item || !user) {
+      if (!item) {
         return false;
       }
 
       const resourceType = isResource(item) ? item.type : item;
       const rule = getPermissionRule(resourceType, action);
-
       if (rule && appConfiguration) {
         return rule(item, user, appConfiguration.data, context);
       } else {
