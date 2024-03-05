@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { clone, find } from 'lodash-es';
-
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { List } from 'components/admin/ResourceList';
-// import { itemOrderWasUpdated, orderingIsValid } from './utils';
 import { itemOrderWasUpdated } from './utils';
 import usePrevious from 'hooks/usePrevious';
 
@@ -88,6 +85,8 @@ const SortableList = ({
 
   const getListItems = () => {
     if (!lockFirstNItems || lockFirstNItems <= 0) {
+      console.log(itemsWhileDragging);
+
       return itemsWhileDragging || items;
     }
 
