@@ -232,6 +232,14 @@ const Container = styled.div<{
     box-shadow: inset ${defaultStyles.boxShadowError};
   }
 
+  // This fixes a wierd scroll to the top after pasting. See https://github.com/quilljs/quill/issues/1374
+  .ql-clipboard {
+    position: fixed;
+    display: none;
+    left: 50%;
+    top: 50%;
+  }
+
   .ql-toolbar.ql-snow + .ql-container.ql-snow {
     width: 100%;
     height: 100%;
