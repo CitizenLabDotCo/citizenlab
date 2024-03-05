@@ -25,23 +25,23 @@ const getBoxProps = (view: View) => {
     };
 
     const innerBox: BoxProps = {
+      width: '100%',
+      minHeight: A4_HEIGHT,
       background: 'white',
       px: '30px',
       py: '30px',
-      width: '100%',
-      minHeight: A4_HEIGHT,
     };
 
     return { outerBox, innerBox };
   }
 
   const outerBox: BoxProps = {
+    width: view === 'phone' ? '360px' : '1140px',
     height: '620px',
     border: 'solid black',
     borderWidth: '40px 20px 20px 20px',
     zIndex: '1',
     mb: '12px',
-    width: view === 'phone' ? '360px' : '1140px',
     py: view === 'phone' ? '20px' : '40px',
     borderRadius: '20px',
     overflowX: 'hidden',
