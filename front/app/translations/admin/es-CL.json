@@ -204,7 +204,6 @@
   "app.components.admin.PostManager.title": "Título",
   "app.components.admin.PostManager.topicsTab": "Temas",
   "app.components.admin.PostManager.topicsTabTooltipText": "Agrega temas/etiquetas a un aporte usando arrastrar y soltar.",
-  "app.components.admin.PostManager.view": "Ver",
   "app.components.admin.PostManager.votes": "Votos",
   "app.components.admin.PostManager.xDaysLeft": "{x, plural,=0 {Queda menos de un día} one {Queda un día} other {Quedan # días}}",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "de",
