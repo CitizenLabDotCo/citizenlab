@@ -70,7 +70,7 @@
     "boring-avatars": "1.7.0",
     "canvas-to-blob": "^1.0.0",
     "canvg": "^4.0.1",
-    "clipboard-polyfill": "4.0.1",
+    "clipboard-polyfill": "4.0.2",
     "compression": "1.7.4",
     "cross-env": "7.0.3",
     "date-fns": "^2.30.0",
