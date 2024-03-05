@@ -35,16 +35,9 @@ export function canModerateProject(project: IProjectData, user: IUser) {
   return (
     isAdmin(user) ||
     (typeof projectFolderId === 'string' &&
-      canModerateFolderOfProject(user, projectFolderId)) ||
+      userModeratesFolder(user.data, projectFolderId)) ||
     isProjectModerator(user, projectId)
   );
-}
-
-export function canModerateFolderOfProject(
-  user: IUser,
-  projectFolderId: string
-) {
-  return userModeratesFolder(user.data, projectFolderId);
 }
 
 definePermissionRule(

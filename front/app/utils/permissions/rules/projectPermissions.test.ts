@@ -1,7 +1,4 @@
-import {
-  canModerateProject,
-  canModerateFolderOfProject,
-} from './projectPermissions';
+import { canModerateProject } from './projectPermissions';
 import { makeUser } from 'api/users/__mocks__/useUsers';
 import { project1 } from 'api/projects/__mocks__/_mockServer';
 
@@ -73,56 +70,6 @@ describe('canModerateProject', () => {
     it('returns false', () => {
       const user = makeUser();
       expect(canModerateProject(project1, user)).toBe(false);
-    });
-  });
-});
-
-describe('canModerateFolderOfProject', () => {
-  project1.attributes.folder_id = folderId;
-
-  describe('when a user is an admin', () => {
-    it('returns true', () => {
-      const user = makeUser({ roles: [{ type: 'admin' }] });
-      expect(canModerateFolderOfProject(user, folderId)).toBe(true);
-    });
-  });
-
-  describe('when a user is a project folder moderator', () => {
-    it('returns true when the user moderates the folder', () => {
-      const user = makeUser({
-        roles: [
-          { type: 'project_folder_moderator', project_folder_id: folderId },
-        ],
-      });
-      expect(canModerateFolderOfProject(user, folderId)).toBe(true);
-    });
-    it('returns false when a user moderates a different project folder', () => {
-      const user = makeUser({
-        roles: [
-          {
-            type: 'project_folder_moderator',
-            project_folder_id: 'differentFolderId',
-          },
-        ],
-      });
-      expect(canModerateFolderOfProject(user, folderId)).toBe(false);
-    });
-  });
-
-  describe('when a user is a project moderator', () => {
-    it('returns false', () => {
-      const user = makeUser({
-        roles: [{ type: 'project_moderator', project_id: project1.id }],
-      });
-
-      expect(canModerateFolderOfProject(user, folderId)).toBe(false);
-    });
-  });
-
-  describe('when a user is not an admin, project folder moderator, or project moderator', () => {
-    it('returns false', () => {
-      const user = makeUser();
-      expect(canModerateFolderOfProject(user, folderId)).toBe(false);
     });
   });
 });
