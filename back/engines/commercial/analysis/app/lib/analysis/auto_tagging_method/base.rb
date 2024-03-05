@@ -95,6 +95,10 @@ module Analysis
       @gpt3 ||= LLM::GPT35Turbo.new
     end
 
+    def other_term?(tag_name)
+      OTHER_TERMS.include?(tag_name.downcase)
+    end
+
     def classify_many!(inputs, topics, tag_type)
       pool = Concurrent::FixedThreadPool.new(POOL_SIZE)
       results = Concurrent::Hash.new
@@ -129,7 +133,7 @@ module Analysis
     end
 
     def assign_topic!(input_id, topic, tag_type)
-      return if OTHER_TERMS.include?(topic)
+      return if other_term?(topic)
 
       tag = Tag.find_or_create_by!(name: topic, tag_type: tag_type, analysis: analysis)
       find_or_create_tagging!(input_id: input_id, tag_id: tag.id)

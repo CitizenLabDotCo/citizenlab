@@ -22,6 +22,7 @@ module Analysis
         update_progress(processed_inputs / total_inputs.to_f)
       end
     rescue StandardError => e
+      byebug
       raise AutoTaggingFailedError, e
     end
 
@@ -29,12 +30,11 @@ module Analysis
       labels = tags.pluck(:name)
       # When using an LLM (e.g. gpt-j or llama2) the classifier has a tendency
       # to always want to assign inputs. We include an 'other' label to give it
-      # a way out, in case 'other' is not yet one of the provided labels Despite
-      # the NLPCloud claiming there is a max of 10 labels, we seem to get
-      # consistent errors when we go with 10 instead of 9 as the maximum
-      if (labels & OTHER_TERMS).empty? && labels.size < 9
-        labels << 'other'
+      # a way out, in case 'other' is not yet one of the provided labels.
+      if labels.none? { |label| other_term?(label) }
+        labels << 'Other'
       end
+      labels
     end
   end
 end
