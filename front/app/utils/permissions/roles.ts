@@ -1,7 +1,7 @@
 import { IUser } from 'api/users/types';
 import { isNilOrError } from 'utils/helperUtils';
 
-interface IProjectModeratorRole {
+export interface IProjectModeratorRole {
   type: 'project_moderator';
   project_id: string;
 }
@@ -15,7 +15,7 @@ interface IAdminRole {
   type: 'admin';
 }
 
-interface IRoleRegisty {
+export interface IRoleRegisty {
   IAdminRole: IAdminRole;
   IProjectModeratorRole: IProjectModeratorRole;
   IProjectFolderModeratorRole: IProjectFolderModeratorRole;
@@ -24,9 +24,10 @@ interface IRoleRegisty {
 export type TRole = IRoleRegisty[keyof IRoleRegisty];
 
 export const userHasRole = (user: IUser, role: TRole['type']) => {
-  const result = user.data.attributes.roles?.find((r) => r.type === role);
-
-  return result !== undefined;
+  return !!(
+    user.data.attributes?.roles &&
+    user.data.attributes.roles?.find((r) => r.type === role)
+  );
 };
 
 export const isAdmin = (user?: IUser | null | undefined | Error) => {
@@ -70,7 +71,7 @@ export const isRegularUser = (user?: IUser | null) => {
   return false;
 };
 
-export const isProjectModerator = (user: IUser, projectId?: string) => {
+export const isProjectModerator = (user?: IUser | null, projectId?: string) => {
   return (
     isModerator(user) &&
     (!projectId ||

@@ -385,8 +385,7 @@ export default defineMessages({
   },
   leaveSurveyTextLoggedIn: {
     id: 'app.containers.IdeasNewPage.leaveSurveyTextLoggedIn',
-    defaultMessage:
-      'Your draft answers have been saved privately and you can return to complete this survey later.',
+    defaultMessage: "Your draft answers have been saved privately and you can return to complete this survey later.",
   },
   confirmLeaveSurveyButtonText: {
     id: 'app.containers.IdeasNewPage.confirmLeaveSurveyButtonText',
