@@ -162,7 +162,12 @@ const AdminInitiativeContent = ({
           >
             <FormattedMessage {...messages.view} />
           </Button>
-          <Button icon="delete" buttonStyle="text" onClick={handleClickDelete}>
+          <Button
+            id="e2e-initiative-manager-side-modal-delete-button"
+            icon="delete"
+            buttonStyle="text"
+            onClick={handleClickDelete}
+          >
             <FormattedMessage {...messages.delete} />
           </Button>
         </Top>
