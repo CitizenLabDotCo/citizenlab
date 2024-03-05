@@ -34,6 +34,7 @@ import {
 import useLocalize from 'hooks/useLocalize';
 import { useSearchParams } from 'react-router-dom';
 import useAuthUser from 'api/me/useAuthUser';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 // utils
 import {
@@ -59,8 +60,8 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // types
-import { IIdeaData } from 'api/ideas/types';
 import { IMapConfig } from 'api/map_config/types';
+import { IIdeaMarkers } from 'api/idea_markers/types';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
@@ -122,12 +123,12 @@ const StyledMapContainer = styled(Box)`
 export interface Props {
   projectId: string;
   phaseId?: string;
-  ideasList: IIdeaData[];
   mapConfig?: IMapConfig | null;
+  ideaMarkers?: IIdeaMarkers;
 }
 
 const IdeasMap = memo<Props>(
-  ({ projectId, phaseId, ideasList, mapConfig }: Props) => {
+  ({ projectId, phaseId, mapConfig, ideaMarkers }: Props) => {
     const theme = useTheme();
     const localize = useLocalize();
     const { formatMessage } = useIntl();
@@ -153,6 +154,8 @@ const IdeasMap = memo<Props>(
       useState<GeoJSON.Point | null>(null);
 
     const selectedIdea = searchParams.get('idea_map_id');
+
+    const { data: ideaData } = useIdeaById(selectedIdea || undefined);
 
     const setSelectedIdea = useCallback((ideaId: string | null) => {
       if (ideaId) {
@@ -205,7 +208,7 @@ const IdeasMap = memo<Props>(
 
     // Create a point graphics layer for idea pins
     const graphics = useMemo(() => {
-      const ideasWithLocations = ideasList?.filter(
+      const ideasWithLocations = ideaMarkers?.data?.filter(
         (idea) => idea?.attributes?.location_point_geojson
       );
       return ideasWithLocations?.map((idea) => {
@@ -221,7 +224,7 @@ const IdeasMap = memo<Props>(
           },
         });
       });
-    }, [ideasList]);
+    }, [ideaMarkers]);
 
     // Create an Esri feature layer from the idea pin graphics so we can add a cluster display
     const ideasLayer = useMemo(() => {
@@ -280,8 +283,9 @@ const IdeasMap = memo<Props>(
 
           // If an idea was selected in the URL params, move map to that idea
           if (selectedIdea) {
-            const point = ideasList.find((idea) => idea.id === selectedIdea)
-              ?.attributes.location_point_geojson;
+            const point = ideaMarkers?.data?.find(
+              (idea) => idea.id === selectedIdea
+            )?.attributes.location_point_geojson;
 
             if (!point) return;
 
@@ -291,7 +295,7 @@ const IdeasMap = memo<Props>(
           }
         }
       },
-      [esriMapView, selectedIdea, ideasList]
+      [esriMapView, selectedIdea, ideaMarkers]
     );
 
     const onMapClick = useCallback(
@@ -452,8 +456,9 @@ const IdeasMap = memo<Props>(
 
     const onSelectIdeaFromList = useCallback(
       (selectedIdeaId: string | null) => {
-        const ideaPoint = ideasList.find((idea) => idea.id === selectedIdeaId)
-          ?.attributes?.location_point_geojson;
+        const ideaPoint = ideaMarkers?.data?.find(
+          (idea) => idea.id === selectedIdeaId
+        )?.attributes?.location_point_geojson;
 
         if (selectedIdeaId && ideaPoint && esriMapView) {
           goToMapLocation(ideaPoint, esriMapView).then(() => {
@@ -481,10 +486,8 @@ const IdeasMap = memo<Props>(
         }
         setSelectedIdea(selectedIdeaId);
       },
-      [ideasList, esriMapView, theme.colors.tenantSecondary, setSelectedIdea]
+      [ideaMarkers, esriMapView, theme.colors.tenantSecondary, setSelectedIdea]
     );
-
-    const selectedIdeaData = ideasList?.find(({ id }) => id === selectedIdea);
 
     return (
       <>
@@ -524,7 +527,7 @@ const IdeasMap = memo<Props>(
             <IdeasAtLocationPopup
               setSelectedIdea={setSelectedIdea}
               portalElement={ideasAtLocationNode}
-              ideas={ideasList.filter((idea) =>
+              ideas={ideaMarkers?.data?.filter((idea) =>
                 ideasSharingLocation?.includes(idea.id)
               )}
               mapView={esriMapView}
@@ -536,9 +539,9 @@ const IdeasMap = memo<Props>(
                 timeout={300}
               >
                 <Box>
-                  {selectedIdeaData && (
+                  {ideaData?.data && (
                     <StyledIdeaMapCard
-                      idea={selectedIdeaData}
+                      idea={ideaData.data}
                       onClose={() => {
                         setSelectedIdea(null);
                       }}
