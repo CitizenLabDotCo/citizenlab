@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   singleIdea: {
-    id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.singleIdea',
-    defaultMessage: 'Idea',
+    id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.singleIdea1',
+    defaultMessage: 'Input',
   },
   title: {
     id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.title',
@@ -34,7 +34,7 @@ export default defineMessages({
     defaultMessage: 'Select phase',
   },
   noIdeaAvailable: {
-    id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.noIdeaAvailable',
-    defaultMessage: 'There are no ideas available for this project or phase.',
+    id: 'app.containers.admin.ReportBuilder.SingleIdeaWidget.noIdeaAvailable1',
+    defaultMessage: 'There are no inputs available for this project or phase.',
   },
 });

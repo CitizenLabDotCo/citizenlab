@@ -15,13 +15,13 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
-import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import PrintReportButton from '../../ReportBuilderPage/ReportRow/Buttons/PrintReportButton';
 
@@ -34,9 +34,7 @@ type ContentBuilderTopBarProps = {
   reportId: string;
   isTemplate: boolean;
   saved: boolean;
-  previewEnabled: boolean;
   setSaved: React.Dispatch<React.SetStateAction<boolean>>;
-  setPreviewEnabled: () => void;
   setSelectedLocale: React.Dispatch<React.SetStateAction<Locale>>;
 };
 
@@ -47,9 +45,7 @@ const ContentBuilderTopBar = ({
   reportId,
   isTemplate,
   saved,
-  previewEnabled,
   setSaved,
-  setPreviewEnabled,
   setSelectedLocale,
 }: ContentBuilderTopBarProps) => {
   const [initialized, setInitialized] = useState(false);
@@ -95,6 +91,8 @@ const ContentBuilderTopBar = ({
       {
         onSuccess: () => {
           setSaved(true);
+
+          removeSearchParams(['templateProjectId', 'templatePhaseId']);
         },
       }
     );
@@ -142,6 +140,8 @@ const ContentBuilderTopBar = ({
           {
             onSuccess: () => {
               setSaved(true);
+
+              removeSearchParams(['templateProjectId', 'templatePhaseId']);
             },
           }
         );
@@ -160,7 +160,7 @@ const ContentBuilderTopBar = ({
   ]);
 
   return (
-    <Container>
+    <Container id="e2e-report-builder-topbar">
       <Modal opened={showQuitModal} close={closeModal}>
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
@@ -178,17 +178,21 @@ const ContentBuilderTopBar = ({
             alignItems="center"
           >
             <Button
+              buttonStyle="secondary"
+              width="auto"
+              mr="16px"
+              onClick={closeModal}
+            >
+              <FormattedMessage {...messages.cancelQuitButtonText} />
+            </Button>
+            <Button
               icon="delete"
               data-cy="e2e-confirm-delete-survey-results"
               buttonStyle="delete"
               width="auto"
-              mr="20px"
               onClick={doGoBack}
             >
               <FormattedMessage {...messages.confirmQuitButtonText} />
-            </Button>
-            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
-              <FormattedMessage {...messages.cancelQuitButtonText} />
             </Button>
           </Box>
         </Box>
@@ -212,13 +216,7 @@ const ContentBuilderTopBar = ({
           selectedLocale={selectedLocale}
           onSelectLocale={setSelectedLocale}
         />
-        <Box mx="24px">
-          <PreviewToggle
-            checked={previewEnabled}
-            onChange={setPreviewEnabled}
-          />
-        </Box>
-        <Box mr="20px">
+        <Box mx="20px">
           <PrintReportButton reportId={reportId} />
         </Box>
         <SaveButton

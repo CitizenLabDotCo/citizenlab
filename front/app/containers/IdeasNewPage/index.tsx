@@ -27,14 +27,18 @@ import IdeasNewSurveyForm from './IdeasNewSurveyForm';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();
-  const { data: project, status, error } = useProjectBySlug(slug);
+  const {
+    data: project,
+    status: projectStatus,
+    error,
+  } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
-  const { data: phases } = usePhases(project?.data.id);
+  const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
   const { phase_id } = parse(location.search, {
     ignoreQueryPrefix: true,
   }) as { [key: string]: string };
 
-  if (status === 'loading') {
+  if (projectStatus === 'loading' || phasesStatus === 'loading') {
     return (
       <VerticalCenterer>
         <Spinner />
@@ -48,6 +52,10 @@ const NewIdeaPage = () => {
     }
 
     return <PageNotFound />;
+  }
+
+  if (!phases || !project) {
+    return null;
   }
 
   const participationMethod = getParticipationMethod(

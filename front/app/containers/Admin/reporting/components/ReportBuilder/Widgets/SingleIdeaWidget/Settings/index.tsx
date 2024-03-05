@@ -2,13 +2,12 @@ import React, { useCallback } from 'react';
 
 import { Box, Toggle, colors } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { IOption, Multiloc } from 'typings';
+import { IOption } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';
 import usePhases from 'api/phases/usePhases';
 
 import IdeaSelect from 'components/UI/IdeaSelect';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';
@@ -25,7 +24,6 @@ const Settings = () => {
 
   const {
     actions: { setProp },
-    title,
     showAuthor,
     showContent,
     showReactions,
@@ -35,7 +33,6 @@ const Settings = () => {
     phaseId,
     ideaId,
   } = useNode<Props>((node) => ({
-    title: node.data.props.title,
     showAuthor: node.data.props.showAuthor,
     showContent: node.data.props.showContent,
     showReactions: node.data.props.showReactions,
@@ -47,15 +44,6 @@ const Settings = () => {
   }));
 
   const { data: phases } = usePhases(projectId);
-
-  const setTitle = useCallback(
-    (value: Multiloc) => {
-      setProp((props: Props) => {
-        props.title = value;
-      });
-    },
-    [setProp]
-  );
 
   const handleChangeShowAuthor = useCallback(
     (showAuthor: boolean) => {
@@ -147,15 +135,6 @@ const Settings = () => {
 
   return (
     <Box>
-      <Box mb="20px">
-        <InputMultilocWithLocaleSwitcher
-          label={formatMessage(messages.title)}
-          type="text"
-          valueMultiloc={title}
-          onChange={setTitle}
-        />
-      </Box>
-
       <ProjectFilter
         projectId={projectId}
         emptyOptionMessage={widgetMessages.noProject}

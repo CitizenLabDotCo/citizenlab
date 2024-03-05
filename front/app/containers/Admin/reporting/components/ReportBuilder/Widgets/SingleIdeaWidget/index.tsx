@@ -15,7 +15,6 @@ import Settings from './Settings';
 import { Props } from './typings';
 
 const SingleIdeaWidget = ({
-  title,
   projectId,
   phaseId,
   ideaId,
@@ -43,7 +42,7 @@ const SingleIdeaWidget = ({
   const ideaImages = response?.data.attributes.idea_images;
 
   return (
-    <Card title={title}>
+    <Card>
       {emptyMessage ? (
         <NoData message={emptyMessage} />
       ) : isNil(ideaId) || isNil(idea) || isNil(ideaImages) || isNil(phase) ? (
@@ -66,7 +65,6 @@ const SingleIdeaWidget = ({
 
 SingleIdeaWidget.craft = {
   props: {
-    title: {},
     projectId: undefined,
     phaseId: undefined,
     collapseLongText: false,
