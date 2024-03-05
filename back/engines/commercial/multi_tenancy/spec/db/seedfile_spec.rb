@@ -46,7 +46,6 @@ describe 'db/seeds.rb' do
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
       expect(CustomMaps::MapConfig.count).to be 2
       expect(CustomMaps::Layer.count).to be 2
-      expect(CustomMaps::LegendItem.count).to be 7
       expect(Volunteering::Cause.count).to be 5
       expect(Volunteering::Volunteer.count).to be > 10
       expect(Analytics::DimensionDate.count).to be > 0

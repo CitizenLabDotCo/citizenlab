@@ -24,7 +24,7 @@ import { Margin } from 'components/admin/Graphs/typings';
 const MARGINS: Record<Layout, Margin | undefined> = {
   wide: {
     left: -20,
-    right: 20,
+    right: 0,
   },
   narrow: {
     right: -20,

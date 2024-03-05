@@ -119,10 +119,10 @@ describe LocalProjectCopyService do
         .to match_array(open_ended_project.allowed_input_topics.map(&:as_json))
     end
 
-    it 'copies associated maps configs, layers and legend items' do
+    it 'copies associated maps configs and layers' do
       map_config = create(:map_config, mappable: open_ended_project, tile_provider: 'https://groovy_map_tiles')
+
       create_list(:layer, 2, map_config_id: map_config.id)
-      create_list(:legend_item, 2, map_config_id: map_config.id)
       copied_project = service.copy(open_ended_project)
 
       expect(copied_project.map_config.center).to eq open_ended_project.map_config.center
@@ -132,13 +132,6 @@ describe LocalProjectCopyService do
       end)
         .to match_array(open_ended_project.map_config.layers.map do |record|
           record.as_json(except: %i[id map_config_id updated_at created_at])
-        end)
-
-      expect(copied_project.map_config.legend_items.map do |record|
-        record.as_json(only: %i[title_multiloc color ordering])
-      end)
-        .to match_array(open_ended_project.map_config.legend_items.map do |record|
-          record.as_json(only: %i[title_multiloc color ordering])
         end)
     end
 
