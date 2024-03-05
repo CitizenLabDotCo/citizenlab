@@ -2,7 +2,6 @@
 import React, { Component, MouseEvent } from 'react';
 import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
-import { clone } from 'lodash-es';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -129,27 +128,11 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
           enabled: !field.attributes.enabled,
         })
         .then(() => {
-          const listItems = this.listItems();
-
-          if (!listItems) return;
-          const newListItems = clone(listItems);
-          newListItems.splice(field.attributes.ordering, 1, {
-            ...field,
-            attributes: {
-              ...field.attributes,
-              enabled: !field.attributes.enabled,
-            },
-          });
           this.setState({
             isProcessing: false,
           });
         });
     }
-  };
-
-  listItems = () => {
-    const { userCustomFields } = this.props;
-    return userCustomFields;
   };
 
   handleReorderCustomFieldOption = (
@@ -167,7 +150,6 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
       intl: { formatMessage },
     } = this.props;
     const listItems = this.props.userCustomFields || [];
-    const listItemsLength = listItems.length;
 
     return (
       <Section>
@@ -200,7 +182,7 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
                       id={field.id}
                       className="e2e-custom-registration-field-row"
                       index={index}
-                      isLastItem={index === listItemsLength - 1}
+                      isLastItem={index === listItems.length - 1}
                       moveRow={handleDragRow}
                       dropRow={handleDropRow}
                     >
