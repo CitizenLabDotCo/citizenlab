@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { List } from 'components/admin/ResourceList';
@@ -36,11 +36,13 @@ const SortableList = ({
   id,
   className,
 }: InputProps) => {
-  console.log(items);
-
   const [itemsWhileDragging, setItemsWhileDragging] = useState<Item[] | null>(
     null
   );
+
+  useEffect(() => {
+    setItemsWhileDragging(null);
+  }, [items]);
 
   const getLocalIndex = (externalIndex: number) => {
     return externalIndex - lockFirstNItems;
