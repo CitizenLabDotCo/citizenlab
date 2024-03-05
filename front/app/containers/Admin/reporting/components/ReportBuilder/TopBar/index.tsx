@@ -22,7 +22,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
-import PrintReportButton from '../../ReportBuilderPage/ReportRow/Buttons/PrintReportButton';
 
 // i18n
 import messages from './messages';
@@ -239,14 +238,12 @@ const ContentBuilderTopBar = ({
           onSelectLocale={setSelectedLocale}
         />
         <Box mx="20px">
-          {/* <PrintReportButton reportId={reportId} /> */}
           <Button
             icon="print"
             onClick={goBack}
             buttonStyle="secondary"
             iconColor={colors.textSecondary}
             iconSize="20px"
-            ml="8px"
             px="12px"
             py="12px"
           />
