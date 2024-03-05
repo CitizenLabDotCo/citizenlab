@@ -54,12 +54,19 @@ module CustomMaps
           new_map_config = original_map_config.dup
           new_map_config.mappable = nil
 
-          if new_map_config.save
-            @map_config = new_map_config
-            side_fx_service.after_create(@map_config, current_user)
-            render json: serialized_map_config, status: :created
-          else
-            render json: { errors: @map_config.errors.details }, status: :unprocessable_entity
+          ActiveRecord::Base.transaction do
+            if new_map_config.save
+              new_map_config_layers = original_map_config.layers.map(&:dup)
+              new_map_config_layers.each do |layer|
+                layer.map_config = new_map_config
+                layer.save!
+              end
+              @map_config = new_map_config
+              side_fx_service.after_create(@map_config, current_user)
+              render json: serialized_map_config, status: :created
+            else
+              render json: { errors: @map_config.errors.details }, status: :unprocessable_entity
+            end
           end
         end
 
