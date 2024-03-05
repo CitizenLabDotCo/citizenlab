@@ -83,7 +83,7 @@ const PostPreview = ({
       return {
         idea: (
           <IdeaPostPreview
-            onClose={handleOnClose}
+            onClose={onClose}
             ideaId={postId}
             onSwitchPreviewMode={onSwitchPreviewMode}
             mode={mode}
@@ -91,7 +91,7 @@ const PostPreview = ({
         ),
         initiative: (
           <InitiativePostPreview
-            onClose={handleOnClose}
+            onClose={onClose}
             initiativeId={postId}
             onSwitchPreviewMode={onSwitchPreviewMode}
             mode={mode}

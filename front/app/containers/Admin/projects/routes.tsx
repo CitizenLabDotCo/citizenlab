@@ -172,6 +172,15 @@ const createAdminProjectsRoutes = () => {
               </PageLoading>
             ),
           },
+          // TODO: Hook up input manager on phase
+          // {
+          //   path: 'timeline/:id/ideas',
+          //   element: (
+          //     <PageLoading>
+          //       <AdminProjectIdeas />
+          //     </PageLoading>
+          //   ),
+          // },
           {
             path: 'phases/:phaseId',
             element: (

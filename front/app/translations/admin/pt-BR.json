@@ -204,7 +204,6 @@
   "app.components.admin.PostManager.title": "Assunto",
   "app.components.admin.PostManager.topicsTab": "Tópicos",
   "app.components.admin.PostManager.topicsTabTooltipText": "Adicione tópicos a uma entrada usando arrastar e soltar.",
-  "app.components.admin.PostManager.view": "Ver",
   "app.components.admin.PostManager.votes": "Votos",
   "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Menos de um dia} one {Um dia} other {# dias}} restantes",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "De",
