@@ -2462,7 +2462,6 @@
   "app.modules.navbar.admin.containers.pageHeader": "Strony i menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Twój pasek nawigacyjny może wyświetlać do pięciu stron oprócz strony głównej i stron projektów. Możesz zmieniać nazwy pozycji menu, zmieniać kolejność i dodawać nowe strony z własną zawartością.",
   "app.modules.project_management.admin.components.permissionsTab": "Uprawnienia",
-  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.featureLockedReason": "Nie jest to uwzględnione w Twoim obecnym planie. Porozmawiaj ze swoim menedżerem ds. sukcesów w rządzie lub administratorem, aby ją odblokować.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupBySurveyQuestion": "Grupuj według pytań ankiety",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupByUserField": "Grupuj według pola użytkownika",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupMode": "Tryb grupowy",

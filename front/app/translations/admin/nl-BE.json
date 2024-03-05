@@ -2462,7 +2462,6 @@
   "app.modules.navbar.admin.containers.pageHeader": "Pagina's en menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Je navigatiebalk kan maximaal vijf pagina's weergeven naast de startpagina en de projectenpagina's. Je kunt menu-items hernoemen, opnieuw ordenen en nieuwe pagina's toevoegen met uw eigen inhoud.",
   "app.modules.project_management.admin.components.permissionsTab": "Toegangsrechten",
-  "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.featureLockedReason": "Dit is niet in je huidige abonnement inbegrepen. Neem contact op met je Government Success Manager of platformbeheerder om deze functionaliteit te ontgrendelen.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupBySurveyQuestion": "Groepeer per enquêtevraag",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupByUserField": "Groepeer per gebruikersveld",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupMode": "Groepeer modus",
