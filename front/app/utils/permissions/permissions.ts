@@ -22,18 +22,16 @@ interface IResourceData {
   [key: string]: any;
 }
 
-interface IPermissionRule {
-  (
-    resource: TPermissionItem | null,
-    user: IUser | undefined,
-    tenant: IAppConfigurationData,
-    context?: any
-  ): boolean;
-}
+type PermissionRule = (
+  resource: TPermissionItem | null,
+  user: IUser | undefined,
+  tenant: IAppConfigurationData,
+  context?: any
+) => boolean;
 
 interface IPermissionRules {
   [key: string]: {
-    [key: string]: IPermissionRule;
+    [key: string]: PermissionRule;
   };
 }
 
@@ -49,7 +47,7 @@ const isResource = (object: any): object is IResourceData => {
 const definePermissionRule = (
   resourceType: TResourceType,
   action: TAction,
-  rule: IPermissionRule
+  rule: PermissionRule
 ) => {
   permissionRules[resourceType] = {
     ...(permissionRules[resourceType] || {}),
