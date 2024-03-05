@@ -22,7 +22,6 @@ import Toolbox from '../../components/ReportBuilder/Toolbox';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from '../../components/ReportBuilder/Settings';
-import ViewPicker from '../../components/ReportBuilder/ViewContainer/ViewPicker';
 import ViewContainer from '../../components/ReportBuilder/ViewContainer';
 
 // templates
@@ -104,7 +103,9 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
             reportId={reportId}
             isTemplate={!!templateProjectId || !!templatePhaseId}
             saved={saved}
+            view={view}
             setSaved={setSaved}
+            setView={setView}
             setSelectedLocale={setSelectedLocale}
           />
           <Box mt={`${stylingConsts.menuHeight}px`}>
@@ -114,7 +115,6 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
               platformLocale={platformLocale}
             >
               <StyledRightColumn>
-                {!!phaseId && <ViewPicker view={view} setView={setView} />}
                 <ViewContainer view={view}>
                   <Frame editorData={initialData}>
                     {emptyReportOnInit && templateProjectId ? (
