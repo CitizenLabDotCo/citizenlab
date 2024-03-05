@@ -36,6 +36,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 import useLocale from 'hooks/useLocale';
 
+import CopySurveyModal from './CopySurveyModal';
 import EditWarningModal from './EditWarningModal';
 import FormResults from './FormResults';
 import messages from './messages';
@@ -53,6 +54,7 @@ const Forms = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditWarningModal, setShowEditWarningModal] = useState(false);
+  const [showCopySurveyModal, setShowCopySurveyModal] = useState(false);
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const locale = useLocale();
@@ -139,6 +141,9 @@ const Forms = () => {
   const haveSubmissionsComeIn =
     submissionCount.data.attributes.totalSubmissions > 0;
 
+  const surveyFormPersisted =
+    phase.data.attributes.custom_form_persisted || false;
+
   if (isDownloading) {
     return (
       <Box width="100%" height="100%" display="flex" alignItems="center">
@@ -195,6 +200,7 @@ const Forms = () => {
             >
               {formatMessage(messages.editSurvey)}
             </Button>
+
             <Box>
               <Button
                 icon="dots-horizontal"
@@ -216,36 +222,73 @@ const Forms = () => {
                 right="70px"
                 content={
                   <>
-                    {uiSchema && importPrintedFormsEnabled && (
+                    {uiSchema && (
                       <>
                         <DropdownListItem
                           onClick={() => {
-                            clHistory.push(offlineInputsLink);
+                            setShowCopySurveyModal(true);
                           }}
+                          disabled={haveSubmissionsComeIn}
                         >
                           <Box display="flex" gap="4px" alignItems="center">
-                            <Icon name="plus" fill={colors.coolGrey600} />
-                            <Text my="0px">
-                              {formatMessage(messages.addOfflineInputs)}
+                            <Icon
+                              name="copy"
+                              fill={
+                                haveSubmissionsComeIn
+                                  ? colors.grey400
+                                  : colors.coolGrey600
+                              }
+                            />
+                            <Text
+                              my="0px"
+                              color={
+                                haveSubmissionsComeIn ? 'grey400' : 'black'
+                              }
+                            >
+                              {formatMessage(messages.duplicateAnotherSurvey)}
                             </Text>
                           </Box>
                         </DropdownListItem>
-                        <DropdownListItem onClick={handleDownloadPDF}>
-                          <Box display="flex" gap="4px" alignItems="center">
-                            <Icon name="download" fill={colors.coolGrey600} />
-                            <Text my="0px">
-                              {formatMessage(messages.downloadSurvey)}
-                            </Text>
-                          </Box>
-                        </DropdownListItem>
-                        <DropdownListItem onClick={downloadExampleFile}>
-                          <Box display="flex" gap="4px" alignItems="center">
-                            <Icon name="download" fill={colors.coolGrey600} />
-                            <Text my="0px">
-                              {formatMessage(messages.downloadExcelTemplate)}
-                            </Text>
-                          </Box>
-                        </DropdownListItem>
+                        {importPrintedFormsEnabled && (
+                          <>
+                            <DropdownListItem
+                              onClick={() => {
+                                clHistory.push(offlineInputsLink);
+                              }}
+                            >
+                              <Box display="flex" gap="4px" alignItems="center">
+                                <Icon name="plus" fill={colors.coolGrey600} />
+                                <Text my="0px">
+                                  {formatMessage(messages.addOfflineInputs)}
+                                </Text>
+                              </Box>
+                            </DropdownListItem>
+                            <DropdownListItem onClick={handleDownloadPDF}>
+                              <Box display="flex" gap="4px" alignItems="center">
+                                <Icon
+                                  name="download"
+                                  fill={colors.coolGrey600}
+                                />
+                                <Text my="0px">
+                                  {formatMessage(messages.downloadSurvey)}
+                                </Text>
+                              </Box>
+                            </DropdownListItem>
+                            <DropdownListItem onClick={downloadExampleFile}>
+                              <Box display="flex" gap="4px" alignItems="center">
+                                <Icon
+                                  name="download"
+                                  fill={colors.coolGrey600}
+                                />
+                                <Text my="0px">
+                                  {formatMessage(
+                                    messages.downloadExcelTemplate
+                                  )}
+                                </Text>
+                              </Box>
+                            </DropdownListItem>
+                          </>
+                        )}
                       </>
                     )}
                     <DropdownListItem onClick={handleDownloadResults}>
@@ -289,6 +332,12 @@ const Forms = () => {
           showEditWarningModal={showEditWarningModal}
           setShowEditWarningModal={setShowEditWarningModal}
           handleDownloadResults={handleDownloadResults}
+        />
+        <CopySurveyModal
+          editFormLink={editFormLink}
+          showCopySurveyModal={showCopySurveyModal}
+          setShowCopySurveyModal={setShowCopySurveyModal}
+          surveyFormPersisted={surveyFormPersisted}
         />
       </Box>
       <PDFExportModal

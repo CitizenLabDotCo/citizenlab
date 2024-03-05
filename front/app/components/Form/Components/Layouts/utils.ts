@@ -46,6 +46,9 @@ export const keyPresentInPageRoute = (
   key: string,
   userPageRoute: PageType[]
 ) => {
+  if (key === 'publication_status') {
+    return true;
+  }
   let isFound = false;
   userPageRoute.forEach((page) => {
     const currentPageElementNames = page.elements.map((uiSchemaElement) =>

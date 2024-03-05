@@ -45,7 +45,7 @@ export type LogicType = {
 };
 
 export interface IAttributes {
-  temp_id: string;
+  temp_id?: string;
   logic: LogicType;
   key: string;
   code?: string;
@@ -68,9 +68,9 @@ export interface IAttributes {
   ordering: number;
   created_at: string;
   updated_at: string;
-  minimum_label_multiloc: Multiloc;
-  maximum_label_multiloc: Multiloc;
-  maximum: number;
+  minimum_label_multiloc?: Multiloc;
+  maximum_label_multiloc?: Multiloc;
+  maximum?: number;
   minimum_select_count?: number;
   maximum_select_count?: number;
   select_count_enabled?: boolean;

@@ -65,6 +65,7 @@ const CLPageLayout = memo(
     const topAnchorRef = useRef<HTMLInputElement>(null);
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
+
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization)
       .elements as PageType[];
@@ -119,6 +120,7 @@ const CLPageLayout = memo(
     const handleNextAndSubmit = async () => {
       if (showSubmit && onSubmit) {
         setIsLoading(true);
+        data.publication_status = 'published';
         await onSubmit(getFilteredDataForUserPath(userPagePath, data));
         return;
       }
@@ -138,7 +140,11 @@ const CLPageLayout = memo(
       ) {
         setShowAllErrors?.(false);
         scrollToTop();
+        data.publication_status = 'draft';
+        data.latest_complete_page = currentStep;
+        onSubmit?.(data);
         setCurrentStep(currentStep + 1);
+
         setIsLoading(false);
       } else {
         setShowAllErrors?.(true);

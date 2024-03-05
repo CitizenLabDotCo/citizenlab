@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Text, IconTooltip } from '@citizenlab/cl2-component-library';
-import profileVisibilityMessages from 'containers/IdeasNewPage/IdeasNewForm/messages';
+import profileVisibilityMessages from 'containers/IdeasNewPage/IdeasNewIdeationForm/messages';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import { useParams } from 'react-router-dom';
 

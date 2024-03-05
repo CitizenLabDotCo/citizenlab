@@ -21,7 +21,8 @@ import { getCurrentPhase } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import SurveySubmittedNotice from './components/SurveySubmittedNotice';
-import IdeasNewForm from './IdeasNewForm';
+import IdeasNewSurveyForm from './IdeasNewSurveyForm';
+import IdeasNewIdeationForm from './IdeasNewIdeationForm';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();
@@ -90,7 +91,11 @@ const NewIdeaPage = () => {
     );
   }
 
-  return <IdeasNewForm project={project} />;
+  if (isSurvey) {
+    return <IdeasNewSurveyForm project={project} />;
+  } else {
+    return <IdeasNewIdeationForm project={project} />;
+  }
 };
 
 export default NewIdeaPage;

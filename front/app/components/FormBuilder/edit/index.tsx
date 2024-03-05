@@ -76,6 +76,8 @@ export const FormEdit = ({
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
+  const [accessRightsMessageIsVisible, setAccessRightsMessageIsVisible] =
+    useState(true);
   const { formSavedSuccessMessage, isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const showWarningNotice = totalSubmissions > 0;
@@ -198,7 +200,7 @@ export const FormEdit = ({
         ...(field.input_type === 'linear_scale' && {
           minimum_label_multiloc: field.minimum_label_multiloc || {},
           maximum_label_multiloc: field.maximum_label_multiloc || {},
-          maximum: field.maximum.toString(),
+          maximum: field.maximum?.toString() || '5',
         }),
       }));
       await updateFormCustomFields(
@@ -241,7 +243,35 @@ export const FormEdit = ({
 
   const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
   const showSuccessMessage =
-    successMessageIsVisible && Object.keys(errors).length === 0;
+    successMessageIsVisible &&
+    !editedAndCorrect &&
+    Object.keys(errors).length === 0;
+
+  const handleAccessRightsClose = () => setAccessRightsMessageIsVisible(false);
+
+  const showWarnings = () => {
+    if (editedAndCorrect) {
+      return (
+        <Box mb="8px">
+          <Warning>{formatMessage(messages.unsavedChanges)}</Warning>
+        </Box>
+      );
+    } else if (showWarningNotice && builderConfig.getWarningNotice) {
+      return builderConfig.getWarningNotice();
+    } else if (
+      !hasErrors &&
+      !successMessageIsVisible &&
+      builderConfig.getAccessRightsNotice &&
+      accessRightsMessageIsVisible
+    ) {
+      return builderConfig.getAccessRightsNotice(
+        projectId,
+        phaseId,
+        handleAccessRightsClose
+      );
+    }
+    return null;
+  };
 
   if (!isNilOrError(builderConfig)) {
     return (
@@ -291,13 +321,7 @@ export const FormEdit = ({
                         />
                       </Box>
                     )}
-                    {editedAndCorrect && (
-                      <Box mb="8px">
-                        <Warning>
-                          {formatMessage(messages.unsavedChanges)}
-                        </Warning>
-                      </Box>
-                    )}
+
                     <Feedback
                       successMessage={formatMessage(formSavedSuccessMessage)}
                       onlyShowErrors
@@ -308,9 +332,7 @@ export const FormEdit = ({
                         closeSuccessMessage={closeSuccessMessage}
                       />
                     )}
-                    {showWarningNotice &&
-                      builderConfig.getWarningNotice &&
-                      builderConfig.getWarningNotice()}
+                    {showWarnings()}
                     <Box
                       borderRadius="3px"
                       boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"

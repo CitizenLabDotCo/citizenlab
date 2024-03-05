@@ -18,7 +18,11 @@ import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 
-const IdeasNewMeta = () => {
+interface Props {
+  isSurvey?: boolean;
+}
+
+const IdeasNewMeta = ({ isSurvey }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { slug } = useParams();
@@ -33,14 +37,16 @@ const IdeasNewMeta = () => {
 
     const inputTerm = getInputTerm(phases?.data);
     const ideasIndexTitle = formatMessage(
-      getInputTermMessage(inputTerm, {
-        idea: messages.ideaNewMetaTitle,
-        option: messages.optionMetaTitle,
-        project: messages.projectMetaTitle,
-        question: messages.questionMetaTitle,
-        issue: messages.issueMetaTitle,
-        contribution: messages.contributionMetaTitle,
-      }),
+      isSurvey
+        ? messages.surveyNewMetaTitle
+        : getInputTermMessage(inputTerm, {
+            idea: messages.ideaNewMetaTitle,
+            option: messages.optionMetaTitle,
+            project: messages.projectMetaTitle,
+            question: messages.questionMetaTitle,
+            issue: messages.issueMetaTitle,
+            contribution: messages.contributionMetaTitle,
+          }),
       { projectName }
     );
     const ideasIndexDescription = formatMessage(

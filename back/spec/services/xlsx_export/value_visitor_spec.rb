@@ -455,16 +455,14 @@ describe XlsxExport::ValueVisitor do
 
       context 'when there is a value' do
         let(:model) { create(:native_survey_response) }
-        let!(:file1) { create(:idea_file, name: 'File1.pdf', idea: model) }
-        let!(:file2) { create(:idea_file, name: 'File2.pdf', idea: model) }
-        let(:value) { file1.id }
+        let!(:file) { create(:idea_file, name: 'File1.pdf', idea: model) }
 
         before do
-          model.update!(custom_field_values: { field_key => value })
+          model.update!(custom_field_values: { field_key => { 'id' => file.id, 'name' => file.name } })
         end
 
         it 'returns the value for the report' do
-          expect(visitor.visit_file_upload(field)).to eq file1.file.url
+          expect(visitor.visit_file_upload(field)).to eq file.file.url
         end
       end
     end
