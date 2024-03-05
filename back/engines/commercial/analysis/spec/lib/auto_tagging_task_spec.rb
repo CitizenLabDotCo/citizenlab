@@ -190,17 +190,9 @@ RSpec.describe Analysis::AutoTaggingTask do
       create(:tagging, input: idea2, tag: tags[0])
       _idea3 = create(:idea, project: project, title_multiloc: { en: 'This does not contain w o r l d, so it should not be auto-tagged' })
 
-      mock_nlp_client = instance_double(NLPCloud::Client)
-
-      expect(mock_nlp_client).to receive(:classification).once.and_return({
-        'labels' => [tags[0].name, tags[1].name],
-        'scores' => [0.9258800745010376, 0.1938474327325821]
-      })
-      expect_any_instance_of(Analysis::AutoTaggingMethod::LabelClassification)
-        .to receive(:nlp_cloud_client_for)
-        .and_return(
-          mock_nlp_client
-        )
+      expect_any_instance_of(Analysis::LLM::GPT35Turbo)
+        .to receive(:chat)
+        .and_return(tags[0].name)
 
       expect { att.execute }
         .to change(Analysis::Tagging, :count).from(1).to(2)

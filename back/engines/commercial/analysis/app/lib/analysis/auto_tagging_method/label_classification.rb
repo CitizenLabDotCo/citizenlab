@@ -19,7 +19,7 @@ module Analysis
       processed_inputs = 0
       classify_many!(inputs, labels, TAG_TYPE) do |_input_id|
         processed_inputs += 1
-        update_progress(i / total_inputs.to_f)
+        update_progress(processed_inputs / total_inputs.to_f)
       end
     rescue StandardError => e
       raise AutoTaggingFailedError, e
