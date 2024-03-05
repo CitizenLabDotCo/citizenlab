@@ -3,6 +3,8 @@ import moment = require('moment');
 
 describe('Report builder Reactions By Time widget', () => {
   let projectId: string;
+  let projectSlug: string;
+  let phaseId: string;
   let reportId: string;
   let userId: string;
 
@@ -18,6 +20,8 @@ describe('Report builder Reactions By Time widget', () => {
     })
       .then((project) => {
         projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+
         return cy.apiCreatePhase({
           projectId,
           title: phaseTitle,
@@ -45,13 +49,24 @@ describe('Report builder Reactions By Time widget', () => {
             }
           );
         });
+      })
+      .then(() => {
+        return cy.apiCreatePhase({
+          projectId,
+          title: randomString(),
+          startAt: moment().subtract(29, 'day').format('DD/MM/YYYY'),
+          participationMethod: 'information',
+        });
+      })
+      .then((phase) => {
+        phaseId = phase.body.data.id;
       });
   });
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
 
-    cy.apiCreateReportBuilder().then((report) => {
+    cy.apiCreateReportBuilder(phaseId).then((report) => {
       reportId = report.body.data.id;
       cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
         'saveReportLayout'
@@ -92,7 +107,7 @@ describe('Report builder Reactions By Time widget', () => {
     // Confirms that button displays and functions correctly on live page
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
-    cy.visit(`/admin/reporting/report-builder/${reportId}/editor?preview=true`);
+    cy.visit(`projects/${projectSlug}`);
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
@@ -118,7 +133,7 @@ describe('Report builder Reactions By Time widget', () => {
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
 
-    cy.visit(`/admin/reporting/report-builder/${reportId}/editor?preview=true`);
+    cy.visit(`projects/${projectSlug}`);
     cy.get('#e2e-reactions-by-time-widget').should('not.exist');
   });
 });
