@@ -1607,7 +1607,7 @@
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Geautomatiseerde e-mails",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Je kunt e-mails configureren die op faseniveau worden getriggerd",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Data",
-  "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Neem deel aan de vragenlijst",
+  "app.containers.AdminPage.ProjectTimeline.defaultSurveyCTALabel": "Vul de vragenlijst in",
   "app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel": "Vragenlijst",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseConfirmation": "Weet u zeker dat u deze fase wilt verwijderen?",
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Fasebeschrijving",
