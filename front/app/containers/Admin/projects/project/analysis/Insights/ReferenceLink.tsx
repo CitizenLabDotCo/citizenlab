@@ -1,0 +1,90 @@
+import React from 'react';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
+import Link from 'utils/cl-router/Link';
+import styled from 'styled-components';
+import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
+import useAnalysis from 'api/analyses/useAnalysis';
+import Tippy from '@tippyjs/react';
+import useLocalize from 'hooks/useLocalize';
+import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
+import { useLocation } from 'react-router-dom';
+
+const StyledLink = styled(Link)<{ isActive: boolean }>`
+  color: ${colors.textPrimary};
+  svg {
+    transform: scaleX(-1);
+    margin-bottom: 4px;
+    fill: ${colors.textPrimary};
+  }
+  :hover {
+    svg {
+      fill: ${colors.teal500};
+    }
+  }
+  ${({ isActive }) =>
+    isActive &&
+    `svg {
+      fill: ${colors.teal500};
+    }`}
+`;
+
+const ReferenceLink = ({
+  match,
+  analysisId,
+  projectId,
+  phaseId,
+  selectedInputId,
+}: {
+  match: string;
+  analysisId: string;
+  projectId: string;
+  phaseId: string;
+  selectedInputId: string;
+}) => {
+  const { pathname } = useLocation();
+
+  const localize = useLocalize();
+  const { data: analysis } = useAnalysis(analysisId);
+  const { data: input } = useAnalysisInput(analysisId, match);
+  const mainQuestion = analysis?.data.relationships.main_custom_field?.data?.id;
+  const { data: customField } = useIdeaCustomField({
+    projectId: phaseId ? undefined : projectId,
+    phaseId,
+    customFieldId: mainQuestion,
+  });
+
+  const titleMultiloc = input?.data.attributes.title_multiloc;
+  const customFieldKey = customField?.data.attributes.key;
+  const mainQuestionResponse =
+    customFieldKey &&
+    input?.data.attributes.custom_field_values?.[customFieldKey];
+
+  const isAnalysisScreen = pathname.includes('/analysis/');
+  return (
+    <Tippy
+      content={
+        <>
+          <p>{localize(titleMultiloc)}</p>
+          {mainQuestionResponse}
+        </>
+      }
+      zIndex={9999}
+      placement="top"
+      interactive={true}
+      theme="light"
+      disabled={!titleMultiloc && !mainQuestionResponse}
+    >
+      <Box display="inline">
+        <StyledLink
+          to={`/admin/projects/${projectId}/analysis/${analysisId}?phase_id=${phaseId}&selected_input_id=${match}`}
+          isActive={selectedInputId === match}
+          target={isAnalysisScreen ? '_self' : '_blank'}
+        >
+          <Icon name="comment" width="12px" height="12px" />
+        </StyledLink>
+      </Box>
+    </Tippy>
+  );
+};
+
+export default ReferenceLink;

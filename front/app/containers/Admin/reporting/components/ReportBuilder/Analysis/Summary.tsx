@@ -37,6 +37,7 @@ const Summary = ({
       flexDirection="column"
       justifyContent="space-between"
       gap="16px"
+      style={{ cursor: 'move' }}
     >
       <DraggableInsight
         id="e2e-draggable-insight"

@@ -38,6 +38,7 @@ const Question = ({
       flexDirection="column"
       justifyContent="space-between"
       gap="16px"
+      style={{ cursor: 'drag' }}
     >
       <DraggableInsight
         id="e2e-draggable-insight"
