@@ -7,7 +7,7 @@ import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // permissions
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 
 // components
 import NotificationWrapper from '../NotificationWrapper';
@@ -29,6 +29,8 @@ const IdeaAssignedToYouNotification = ({ notification }: Props) => {
   };
   const { data: authUser } = useAuthUser();
   const projectId = idea ? idea.data.relationships.project.data.id : null;
+
+  if (!authUser) return null;
 
   const getNotificationMessage = (): JSX.Element => {
     const sharedValues = {
@@ -65,33 +67,23 @@ const IdeaAssignedToYouNotification = ({ notification }: Props) => {
   };
 
   const getLinkTo = () => {
-    if (!isNilOrError(authUser)) {
-      if (isAdmin(authUser)) {
-        return '/admin/ideas';
-      } else if (projectId && isProjectModerator(authUser, projectId)) {
-        return `/admin/projects/${projectId}/ideas`;
-      }
+    if (isAdmin(authUser)) {
+      return '/admin/ideas';
+    } else {
+      return `/admin/projects/${projectId}/ideas`;
     }
-
-    return null;
   };
 
-  const linkTo = getLinkTo();
-
-  if (linkTo) {
-    return (
-      <NotificationWrapper
-        linkTo={linkTo}
-        timing={notification.attributes.created_at}
-        icon="idea"
-        isRead={!!notification.attributes.read_at}
-      >
-        {getNotificationMessage()}
-      </NotificationWrapper>
-    );
-  }
-
-  return null;
+  return (
+    <NotificationWrapper
+      linkTo={getLinkTo()}
+      timing={notification.attributes.created_at}
+      icon="idea"
+      isRead={!!notification.attributes.read_at}
+    >
+      {getNotificationMessage()}
+    </NotificationWrapper>
+  );
 };
 
 export default IdeaAssignedToYouNotification;

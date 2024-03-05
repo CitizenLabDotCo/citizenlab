@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 
 // api
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
@@ -163,9 +162,8 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
     // If the user is an admin or project moderator, we allow them to post to a specific phase
     const phase_ids =
       phaseId &&
-      !isNilOrError(authUser) &&
-      (isAdmin({ data: authUser.data }) ||
-        isProjectModerator({ data: authUser.data }, project.data.id))
+      authUser &&
+      canModerateProject(project.data.id, { data: authUser.data })
         ? [phaseId]
         : null;
 
