@@ -63,10 +63,10 @@ const ReferenceLink = ({
   return (
     <Tippy
       content={
-        <>
+        <Box>
           <p>{localize(titleMultiloc)}</p>
-          {mainQuestionResponse}
-        </>
+          <p>{mainQuestionResponse}</p>
+        </Box>
       }
       zIndex={9999}
       placement="top"

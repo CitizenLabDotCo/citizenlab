@@ -1,4 +1,4 @@
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import InsightBody from 'containers/Admin/projects/project/analysis/Insights/InsightBody';
 import InsightFooter from 'containers/Admin/projects/project/analysis/Insights/InsightFooter';
@@ -38,7 +38,6 @@ const Question = ({
       flexDirection="column"
       justifyContent="space-between"
       gap="16px"
-      style={{ cursor: 'drag' }}
     >
       <DraggableInsight
         id="e2e-draggable-insight"
@@ -46,25 +45,26 @@ const Question = ({
           <TextMultiloc text={{ [selectedLocale]: removeRefs(answer) }} />
         }
       >
-        <QuestionHeader question={question} />
-        <InsightBody
-          text={answer}
-          filters={filters}
-          analysisId={analysisId}
-          projectId={projectId}
-          phaseId={phaseId}
-          generatedAt={generatedAt}
-          backgroundTaskId={data?.data.relationships.background_task.data.id}
-        />
-        <InsightFooter
-          filters={filters}
-          generatedAt={generatedAt}
-          analysisId={analysisId}
-          projectId={projectId}
-          phaseId={phaseId}
-          customFieldIds={data?.data.attributes.custom_field_ids}
-        />
+        <Icon name="menu" />
       </DraggableInsight>
+      <QuestionHeader question={question} />
+      <InsightBody
+        text={answer}
+        filters={filters}
+        analysisId={analysisId}
+        projectId={projectId}
+        phaseId={phaseId}
+        generatedAt={generatedAt}
+        backgroundTaskId={data?.data.relationships.background_task.data.id}
+      />
+      <InsightFooter
+        filters={filters}
+        generatedAt={generatedAt}
+        analysisId={analysisId}
+        projectId={projectId}
+        phaseId={phaseId}
+        customFieldIds={data?.data.attributes.custom_field_ids}
+      />
     </Box>
   );
 };
