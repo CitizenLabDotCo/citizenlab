@@ -10,7 +10,7 @@ import SingleFileUploader, {
 } from 'components/Form/Components/SingleFileUploader';
 import { getSubtextElement } from './controlUtils';
 
-const SingleAttachementControl = ({
+const SingleAttachmentControl = ({
   uischema,
   data,
   handleChange,
@@ -59,7 +59,7 @@ const SingleAttachementControl = ({
   );
 };
 
-export default withJsonFormsControlProps(SingleAttachementControl);
+export default withJsonFormsControlProps(SingleAttachmentControl);
 
 export const singleAttachmentControlTester = (uischema) => {
   if (uischema?.options?.input_type === 'file_upload') {

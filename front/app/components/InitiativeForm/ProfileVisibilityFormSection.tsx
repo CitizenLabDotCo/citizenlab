@@ -7,7 +7,7 @@ import { Text, IconTooltip } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import profileVisibilityMessages from 'containers/IdeasNewPage/IdeasNewForm/messages';
+import profileVisibilityMessages from 'containers/IdeasNewPage/IdeasNewIdeationForm/messages';
 import { useParams } from 'react-router-dom';
 import Checkbox from 'components/HookForm/Checkbox';
 

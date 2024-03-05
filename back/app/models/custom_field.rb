@@ -213,7 +213,7 @@ class CustomField < ApplicationRecord
   # Special behaviour for ideation section 1
   def title_multiloc
     if code == 'ideation_section1'
-      project = resource.participation_context
+      project = resource.participation_context.project
       phase = TimelineService.new.current_or_last_can_contain_ideas_phase project
       input_term = phase&.input_term || Phase::DEFAULT_INPUT_TERM
 
