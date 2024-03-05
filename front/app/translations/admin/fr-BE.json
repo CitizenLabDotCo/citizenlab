@@ -1970,7 +1970,6 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Auto-étiqueter",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "L'auto-étiquetage ajoutera automatiquement des étiquettes à vos contributions. Vous pourrez modifier (ou supprimer) celles-ci à tout moment.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Étiquetage automatique",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Sélectionnez jusqu'à 9 étiquettes parmi lesquelles vous souhaitez répartir les contributions. Les contributions déjà associées à ces étiquettes ne seront pas classées à nouveau.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "La classification repose uniquement sur le nom de l'étiquette. Choisissez des mots-clés pertinents pour obtenir les meilleurs résultats.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Thèmes — par intitulé",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Vous créez les étiquettes que vous ajoutez à quelques contributions à titre d'exemple, l'IA étiquette le reste",

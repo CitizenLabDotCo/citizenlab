@@ -1970,7 +1970,6 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Otomatik etiketleme",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Otomatik etiketler bilgisayar tarafından otomatik olarak türetilir. Bunları her zaman değiştirebilir veya kaldırabilirsiniz.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Otomatik etiketleme",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Girişlerin aralarında dağıtılmasını istediğiniz en fazla 9 etiket seçin. Bu etiketlerle zaten ilişkilendirilmiş olan girişler tekrar sınıflandırılmayacaktır.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "Sınıflandırma yalnızca etiketin adına göre yapılır. En iyi sonuçlar için ilgili anahtar kelimeleri seçin.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Etiketler Etikete göre",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Etiketleri oluşturursunuz ve örnek olarak birkaç girişi manuel olarak atarsınız, geri kalanını bilgisayar atar",

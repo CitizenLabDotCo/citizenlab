@@ -1970,7 +1970,6 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Automatisch taggen",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Automatische tags worden automatisch afgeleid door de computer. Je kunt ze altijd wijzigen of verwijderen.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Automatisch taggen",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Selecteer maximaal 9 tags waarover je de bijdragen wilt verdelen. Bijdragen die al aan deze tags zijn gekoppeld, worden niet opnieuw geclassificeerd.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "De classificatie is alleen gebaseerd op de naam van de tag. Kies relevante trefwoorden voor de beste resultaten.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Tags: Per label",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Je maakt de tags aan en wijst handmatig een paar bijdragen toe als voorbeeld, de computer wijst de rest toe",
