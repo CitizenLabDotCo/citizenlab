@@ -13,7 +13,7 @@ import QuestionSelect from '../Widgets/_shared/QuestionSelect';
 import usePhase from 'api/phases/usePhase';
 import Analyses from './Analyses';
 
-const Analysis = () => {
+const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
   const [projectId, setProjectId] = useState<string | undefined>(undefined);
   const [phaseId, setPhaseId] = useState<string | undefined>(undefined);
   const [questionId, setQuestionId] = useState<string | undefined>(undefined);
@@ -74,6 +74,7 @@ const Analysis = () => {
               : undefined
           }
           questionId={questionId}
+          selectedLocale={selectedLocale}
         />
       )}
     </Box>

@@ -4,17 +4,22 @@ import InsightBody from 'containers/Admin/projects/project/analysis/Insights/Ins
 import InsightFooter from 'containers/Admin/projects/project/analysis/Insights/InsightFooter';
 import QuestionHeader from 'containers/Admin/projects/project/analysis/Insights/QuestionHeader';
 import React from 'react';
+import DraggableInsight from './DraggableInsights';
+import TextMultiloc from '../Widgets/TextMultiloc';
+import { removeRefs } from 'containers/Admin/projects/project/analysis/Insights/util';
 
 const Question = ({
   questionId,
   analysisId,
   projectId,
   phaseId,
+  selectedLocale,
 }: {
   questionId: string;
   analysisId: string;
   projectId: string;
   phaseId?: string;
+  selectedLocale: string;
 }) => {
   const { data } = useAnalysisQuestion({ analysisId, id: questionId });
 
@@ -34,24 +39,31 @@ const Question = ({
       justifyContent="space-between"
       gap="16px"
     >
-      <QuestionHeader question={question} />
-      <InsightBody
-        text={answer}
-        filters={filters}
-        analysisId={analysisId}
-        projectId={projectId}
-        phaseId={phaseId}
-        generatedAt={generatedAt}
-        backgroundTaskId={data?.data.relationships.background_task.data.id}
-      />
-      <InsightFooter
-        filters={filters}
-        generatedAt={generatedAt}
-        analysisId={analysisId}
-        projectId={projectId}
-        phaseId={phaseId}
-        customFieldIds={data?.data.attributes.custom_field_ids}
-      />
+      <DraggableInsight
+        id="e2e-draggable-insight"
+        component={
+          <TextMultiloc text={{ [selectedLocale]: removeRefs(answer) }} />
+        }
+      >
+        <QuestionHeader question={question} />
+        <InsightBody
+          text={answer}
+          filters={filters}
+          analysisId={analysisId}
+          projectId={projectId}
+          phaseId={phaseId}
+          generatedAt={generatedAt}
+          backgroundTaskId={data?.data.relationships.background_task.data.id}
+        />
+        <InsightFooter
+          filters={filters}
+          generatedAt={generatedAt}
+          analysisId={analysisId}
+          projectId={projectId}
+          phaseId={phaseId}
+          customFieldIds={data?.data.attributes.custom_field_ids}
+        />
+      </DraggableInsight>
     </Box>
   );
 };

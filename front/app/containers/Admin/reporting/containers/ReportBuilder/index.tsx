@@ -12,7 +12,7 @@ import { ReportContextProvider } from '../../context/ReportContext';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 // components
-import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 
 // craft
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
@@ -43,6 +43,7 @@ import { Locale } from 'typings';
 import { ReportLayout } from 'api/report_layout/types';
 import { isEmpty } from 'lodash-es';
 import { ReportResponse } from 'api/reports/types';
+import Analysis from '../../components/ReportBuilder/Analysis';
 
 interface Props {
   report: ReportResponse;
@@ -152,6 +153,9 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
           />
           {!previewEnabled && (
             <Box mt={`${stylingConsts.menuHeight}px`}>
+              <Box w="330px" bg={colors.white} h="300px" overflowY="auto">
+                <Analysis selectedLocale={selectedLocale} />
+              </Box>
               <Toolbox reportId={reportId} />
               <LanguageProvider
                 contentBuilderLocale={selectedLocale}

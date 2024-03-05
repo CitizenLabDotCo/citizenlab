@@ -8,10 +8,12 @@ const Insights = ({
   analysisId,
   projectId,
   phaseId,
+  selectedLocale,
 }: {
   analysisId: string;
   projectId: string;
   phaseId?: string;
+  selectedLocale: string;
 }) => {
   const { data: insights } = useAnalysisInsights({
     analysisId,
@@ -29,6 +31,7 @@ const Insights = ({
               analysisId={analysisId}
               projectId={projectId}
               phaseId={phaseId}
+              selectedLocale={selectedLocale}
             />
           ) : (
             <Summary
@@ -37,6 +40,7 @@ const Insights = ({
               analysisId={analysisId}
               projectId={projectId}
               phaseId={phaseId}
+              selectedLocale={selectedLocale}
             />
           )}
         </Box>

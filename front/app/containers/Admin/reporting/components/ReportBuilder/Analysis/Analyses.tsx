@@ -6,10 +6,12 @@ const Analyses = ({
   projectId,
   phaseId,
   questionId,
+  selectedLocale,
 }: {
   projectId: string;
   phaseId?: string;
   questionId?: string;
+  selectedLocale: string;
 }) => {
   const { data: analyses } = useAnalyses({
     projectId: phaseId ? undefined : projectId,
@@ -31,6 +33,7 @@ const Analyses = ({
           key={analysis.id}
           projectId={projectId}
           phaseId={phaseId}
+          selectedLocale={selectedLocale}
         />
       ))}
     </div>

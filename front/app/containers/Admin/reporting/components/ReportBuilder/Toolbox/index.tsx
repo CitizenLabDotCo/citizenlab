@@ -52,7 +52,6 @@ import useProjects from 'api/projects/useProjects';
 // utils
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 import { isModerator } from 'utils/permissions/roles';
-import Analysis from '../Analysis';
 
 type ReportBuilderToolboxProps = {
   reportId: string;
@@ -123,7 +122,6 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
 
   return (
     <Container>
-      <Analysis />
       <Box>
         <Accordion
           isOpenByDefault={true}
