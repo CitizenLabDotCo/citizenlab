@@ -22,7 +22,6 @@ module Analysis
         update_progress(processed_inputs / total_inputs.to_f)
       end
     rescue StandardError => e
-      byebug
       raise AutoTaggingFailedError, e
     end
 

@@ -103,7 +103,7 @@ module Analysis
       pool = Concurrent::FixedThreadPool.new(POOL_SIZE)
       results = Concurrent::Hash.new
 
-     inputs.each do |input|
+      inputs.each do |input|
         pool.post do
           Rails.application.executor.wrap do
             ErrorReporter.handle do

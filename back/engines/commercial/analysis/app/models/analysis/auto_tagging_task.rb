@@ -59,7 +59,6 @@ module Analysis
     def validate_tags_ids
       unless tags_ids.is_a?(Array)
         errors.add(:tags_ids, :not_an_array, "tags_ids must be an array for autotagging_method #{auto_tagging_method}")
-        return
       end
     end
   end

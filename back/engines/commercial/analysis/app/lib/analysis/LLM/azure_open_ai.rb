@@ -51,7 +51,7 @@ module Analysis
       end
 
       def default_prompt_params(prompt)
-        { 
+        {
           parameters: {
             model: gpt_model,
             messages: [{ role: 'user', content: prompt }],
