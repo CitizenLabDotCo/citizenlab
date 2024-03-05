@@ -1,7 +1,7 @@
 import { randomString } from '../../../support/commands';
 import moment = require('moment');
 
-describe.skip('Form builder image multiple choice choose multiple component', () => {
+describe('Form builder image multiple choice choose multiple component', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
