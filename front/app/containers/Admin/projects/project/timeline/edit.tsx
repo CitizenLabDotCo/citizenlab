@@ -283,12 +283,16 @@ const AdminPhaseEdit = () => {
     setSubmitState('enabled');
     setAttributeDiff({
       ...getAttributeDiff(participationContextConfig),
-      // ...(participationContextConfig.participation_method === 'native_survey' && !attributeDiff.native_survey_button_multiloc && {
-      //   native_survey_button_multiloc: surveyCTALabel,
-      // }),
-      // ...(participationContextConfig.participation_method === 'native_survey' && !attributeDiff.native_survey_title_multiloc && {
-      //   native_survey_title_multiloc: surveyTitle,
-      // })
+      ...(participationContextConfig.participation_method === 'native_survey' &&
+        !attributeDiff.native_survey_button_multiloc &&
+        !phase?.data.attributes.native_survey_button_multiloc && {
+          native_survey_button_multiloc: surveyCTALabel,
+        }),
+      ...(participationContextConfig.participation_method === 'native_survey' &&
+        !attributeDiff.native_survey_title_multiloc &&
+        !phase?.data.attributes.native_survey_button_multiloc && {
+          native_survey_title_multiloc: surveyTitle,
+        }),
     });
   };
 
@@ -561,7 +565,7 @@ const AdminPhaseEdit = () => {
             apiErrors={errors}
             appConfig={appConfig}
           />
-          {attributeDiff.participation_method === 'native_survey' && (
+          {phaseAttrs.participation_method === 'native_survey' && (
             <>
               <SectionField>
                 <SubSectionTitle>
