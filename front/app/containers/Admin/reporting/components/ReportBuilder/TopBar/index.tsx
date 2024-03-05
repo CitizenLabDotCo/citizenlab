@@ -210,7 +210,6 @@ const ContentBuilderTopBar = ({
           </Box>
         </Box>
       </Modal>
-      {/* <GoBackButton onClick={goBack} /> */}
       <IconButton
         iconName="arrow-left"
         onClick={goBack}
@@ -218,7 +217,7 @@ const ContentBuilderTopBar = ({
         iconColor={colors.textSecondary}
         iconColorOnHover={colors.primary}
         iconWidth="20px"
-        a11y_buttonActionMessage={formatMessage}
+        a11y_buttonActionMessage={formatMessage(messages.goBackButtonMessage)}
         ml="8px"
       />
       <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
