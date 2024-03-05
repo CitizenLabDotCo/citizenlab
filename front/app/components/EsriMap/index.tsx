@@ -40,7 +40,7 @@ const MapContainer = styled(Box)`
   }
 
   .esri-legend {
-    max-height: 200px !important;
+    max-height: 120px !important;
   }
 
   .esri-layer-list {

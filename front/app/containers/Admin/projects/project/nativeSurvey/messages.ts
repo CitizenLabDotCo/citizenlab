@@ -155,6 +155,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.multiselect_image',
     defaultMessage: 'Image choice - choose many',
   },
+  point: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.point',
+    defaultMessage: 'Location',
+  },
   file_upload: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.file_upload',
     defaultMessage: 'File upload',

@@ -555,7 +555,7 @@ export const showLayerVisibilityControls = (mapView: MapView) => {
     mode: 'floating',
   });
   mapView.ui.add(layerList, {
-    position: 'bottom-right',
+    position: 'top-right',
   });
 };
 

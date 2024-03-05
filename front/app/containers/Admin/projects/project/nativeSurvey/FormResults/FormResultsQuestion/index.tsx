@@ -6,6 +6,7 @@ import InputType from './InputType';
 import MultipleChoice from './MultipleChoice';
 import TextQuestion from './TextQuestion';
 import Files from '../Files';
+import PointLocationQuestion from './PointLocationQuestion';
 
 // i18n
 import T from 'components/T';
@@ -29,6 +30,7 @@ const FormResultsQuestion = ({
   answers,
   totalResponses,
   totalSubmissions,
+  pointResponses = [],
   required,
   customFieldId,
   textResponses = [],
@@ -36,6 +38,8 @@ const FormResultsQuestion = ({
 }: FormResultsQuestionProps) => {
   const isMultipleChoiceAndHasAnswers = !!answers;
   const hasTextResponses = textResponses && textResponses.length > 0;
+  const isPointAndHasAnswers =
+    inputType === 'point' && pointResponses?.length > 0;
 
   return (
     <>
@@ -61,6 +65,9 @@ const FormResultsQuestion = ({
             customFieldId={customFieldId}
             hasOtherResponses={isMultipleChoiceAndHasAnswers}
           />
+        )}
+        {isPointAndHasAnswers && (
+          <PointLocationQuestion pointResponses={pointResponses} />
         )}
         {files && files.length > 0 && (
           <Box display="flex" gap="24px" mt={answers ? '20px' : '0'} w="50%">

@@ -13,11 +13,11 @@ import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import useAddProjectMapConfig from 'api/map_config/useAddProjectMapConfig';
 
 // utils
-import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
+import { getCenter, getZoomLevel } from 'utils/mapUtils/map';
 
 // styling
 import styled from 'styled-components';
-import IdeationConfigurationMap from '../../../components/IdeationConfigurationMap/IdeationConfigurationMap';
+import ConfigurationMap from 'components/ConfigurationMap/ConfigurationMap';
 import FeatureLayerUpload from './DataImportOptions/FeatureLayerUpload';
 import WebMapUpload from './DataImportOptions/WebMapUpload';
 import { IMapConfig } from 'api/map_config/types';
@@ -130,7 +130,7 @@ const ProjectCustomMapConfigPage = memo<Props>(
           )}
 
           <MapWrapper>
-            <IdeationConfigurationMap
+            <ConfigurationMap
               mapConfig={mapConfig}
               setParentMapView={setMapView}
             />

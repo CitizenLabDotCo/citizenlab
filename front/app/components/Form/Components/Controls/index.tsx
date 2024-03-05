@@ -74,6 +74,7 @@ import SingleAttachmentControl, {
 import SingleSelectEnumControl, {
   SingleSelectEnumControlTester,
 } from './SingleSelectEnumControl';
+import PointControl, { pointControlTester } from './PointControl/PointControl';
 
 export {
   CLCategoryLayout,
@@ -84,6 +85,8 @@ export {
   orderedLayoutTester,
   InputControl,
   inputControlTester,
+  PointControl,
+  pointControlTester,
   TextAreaControl,
   textAreaControlTester,
   WYSIWYGControl,

@@ -22,6 +22,10 @@ export default defineMessages({
     defaultMessage:
       'This text is displayed as a tooltip when hovering over the layer features on the map',
   },
+  saveZoom: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.saveZoom',
+    defaultMessage: 'Save zoom',
+  },
   save: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.save',
     defaultMessage: 'Save',
@@ -132,9 +136,9 @@ export default defineMessages({
     defaultMessage: 'Map default center and zoom',
   },
   mapCenterAndZoomTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip2',
     defaultMessage:
-      'The default center point and zoom level of the map. Manually adjust the values below, or click on the {button} button in the top right corner of the map to save the current center point and zoom level of the map as the default values.',
+      'The default center point and zoom level of the map. Manually adjust the values below, or click on the {button} button in the bottom left corner of the map to save the current center point and zoom level of the map as the default values.',
   },
   deleteConfirmation: {
     id: 'app.components.admin.PostManager.deleteConfirmation',

@@ -24,6 +24,7 @@ export interface Result {
   customFieldId: string;
   textResponses?: { answer: string }[];
   files?: { name: string; url: string }[];
+  pointResponses?: { answer: GeoJSON.Point }[];
 }
 
 export interface SurveyResultAttributes {

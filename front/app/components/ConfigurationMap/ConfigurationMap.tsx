@@ -20,7 +20,7 @@ export interface Props {
   setParentMapView: (mapView: MapView) => void;
 }
 
-const IdeationConfigurationMap = memo<Props>(
+const ConfigurationMap = memo<Props>(
   ({ mapConfig, setParentMapView }: Props) => {
     const localize = useLocalize();
     const [mapView, setMapView] = React.useState<MapView | null>(null);
@@ -86,4 +86,4 @@ const IdeationConfigurationMap = memo<Props>(
   }
 );
 
-export default IdeationConfigurationMap;
+export default ConfigurationMap;

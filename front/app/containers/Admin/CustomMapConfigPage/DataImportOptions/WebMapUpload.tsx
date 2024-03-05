@@ -26,6 +26,7 @@ import { request, ErrorTypes, ApiKeyManager } from '@esri/arcgis-rest-request';
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
+import { useParams } from 'react-router-dom';
 
 type Props = {
   setView: (view: ViewOptions) => void;
@@ -33,10 +34,14 @@ type Props = {
 };
 
 const WebMapUpload = ({ mapConfigId, setView }: Props) => {
+  const { projectId } = useParams() as {
+    projectId: string;
+  };
+
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
   const { mutateAsync: updateMapConfig, isLoading: apiCallLoading } =
-    useUpdateMapConfig();
+    useUpdateMapConfig(projectId);
 
   const [portalId, setPortalId] = useState('');
   const [loading, setLoading] = useState(false);

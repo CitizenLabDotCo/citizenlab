@@ -53,7 +53,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   const { data: projectMapConfig } = useProjectMapConfig(projectId);
   const { data: rawCustomFields } = useRawCustomFields({ phaseId });
   const { mutateAsync: createProjectMapConfig } = useAddMapConfig();
-  const [esriMapView, setEsriMapview] = useState<MapView | null>(null);
+  const [mapView, setMapView] = useState<MapView | null>(null);
 
   // Get current map config ID for this field
   const mapConfigId =
@@ -110,26 +110,20 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
     const zoom = Number(mapConfig?.data?.attributes?.zoom_level);
 
     // Go to current map extent
-    if (centerPoint && esriMapView && zoom) {
-      goToMapLocation(centerPoint, esriMapView, zoom).then(() => {
-        setShowModal(false);
-      });
+    if (centerPoint && mapView) {
+      goToMapLocation(centerPoint, mapView, zoom);
     }
+    setShowModal(false);
   }, [
-    esriMapView,
+    mapView,
     mapConfig?.data?.attributes?.center_geojson,
     mapConfig?.data?.attributes?.zoom_level,
   ]);
 
-  const onMapInit = useCallback(
-    (mapView: MapView) => {
-      // Save the esriMapView in state
-      if (!esriMapView) {
-        setEsriMapview(mapView);
-      }
-    },
-    [esriMapView]
-  );
+  const onMapInit = useCallback((mapView: MapView) => {
+    // Save the esriMapView in state
+    setMapView(mapView);
+  }, []);
 
   if (isLoadingFieldConfig && mapConfigId) {
     return null;
@@ -142,17 +136,20 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
           htmlFor="maximumInput"
           value={<>{formatMessage(messages.mapConfiguration)}</>}
         />
-        <EsriMap
-          height="360px"
-          layers={mapLayers}
-          initialData={{
-            zoom: Number(mapConfig?.data?.attributes?.zoom_level),
-            center: mapConfig?.data?.attributes?.center_geojson,
-            showLayerVisibilityControl: false,
-            showLegend: true,
-            onInit: onMapInit,
-          }}
-        />
+        {!showModal && (
+          <EsriMap
+            height="400px"
+            layers={mapLayers}
+            initialData={{
+              zoom: Number(mapConfig?.data?.attributes?.zoom_level),
+              center: mapConfig?.data?.attributes?.center_geojson,
+              showLayerVisibilityControl: false,
+              showLegend: true,
+              onInit: onMapInit,
+            }}
+            webMapId={mapConfig?.data.attributes.esri_web_map_id}
+          />
+        )}
         <Button
           mt="16px"
           iconPos="left"
