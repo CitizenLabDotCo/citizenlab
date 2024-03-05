@@ -238,6 +238,32 @@ resource 'Map Configs' do
     end
   end
 
+  shared_examples 'authorized POST duplicate_map_config_and_layers' do
+    post 'web_api/v1/map_configs/:id/duplicate_map_config_and_layers' do
+      let(:custom_field_point) { create(:custom_field_point) }
+      let!(:map_config) do
+        create(
+          :map_config,
+          :with_positioning,
+          :with_tile_provider,
+          :with_esri_web_map_id,
+          :with_esri_base_map_id,
+          mappable: custom_field_point
+        )
+      end
+      let(:id) { map_config.id }
+
+      example_request 'Duplicates a map config successfully' do
+        expect(status).to eq 201
+        expect(attributes['center_geojson']).to eq map_config.center_geojson
+        expect(attributes['tile_provider']).to eq map_config.tile_provider
+        expect(attributes['esri_web_map_id']).to eq map_config.esri_web_map_id
+        expect(attributes['esri_base_map_id']).to eq map_config.esri_base_map_id
+        expect(json_response['data']['relationships']['mappable']['data']).to be_nil
+      end
+    end
+  end
+
   context 'when not logged in' do
     include_examples 'GET map_config'
     include_examples 'unauthorized POST, PATCH and DELETE map config'
@@ -259,6 +285,7 @@ resource 'Map Configs' do
     include_examples 'authorized POST map config'
     include_examples 'authorized PATCH map config'
     include_examples 'authorized DELETE map config'
+    include_examples 'authorized POST duplicate_map_config_and_layers'
   end
 
   context 'when logged in as a project moderator' do
@@ -271,5 +298,6 @@ resource 'Map Configs' do
     include_examples 'authorized POST map config'
     include_examples 'authorized PATCH map config'
     include_examples 'authorized DELETE map config'
+    include_examples 'authorized POST duplicate_map_config_and_layers'
   end
 end
