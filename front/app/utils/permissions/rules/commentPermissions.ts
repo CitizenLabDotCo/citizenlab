@@ -14,7 +14,7 @@ const isAuthor = (comment: ICommentData, user?: IUser) => {
 definePermissionRule(
   'comment',
   'create',
-  (_comment: ICommentData, user: IUser) => {
+  (_comment: ICommentData, user: IUser | undefined) => {
     return !!user;
   }
 );
@@ -22,7 +22,7 @@ definePermissionRule(
 definePermissionRule(
   'comment',
   'edit',
-  (comment: ICommentData, user: IUser) => {
+  (comment: ICommentData, user: IUser | undefined) => {
     return !!isAuthor(comment, user);
   }
 );
@@ -30,11 +30,11 @@ definePermissionRule(
 definePermissionRule(
   'comment',
   'delete',
-  (comment: ICommentData, user: IUser, _tenant, { projectId }) => {
+  (comment: ICommentData, user: IUser | undefined, _tenant, { projectId }) => {
     return !!(
       isAuthor(comment, user) ||
       isAdmin(user) ||
-      isProjectModerator(user, projectId)
+      (user ? isProjectModerator(user, projectId) : false)
     );
   }
 );
@@ -42,10 +42,10 @@ definePermissionRule(
 definePermissionRule(
   'comment',
   'justifyDeletion',
-  (comment: ICommentData, user: IUser, _tenant, { projectId }) => {
+  (comment: ICommentData, user: IUser | undefined, _tenant, { projectId }) => {
     return (
       !isAuthor(comment, user) &&
-      (isAdmin(user) || isProjectModerator(user, projectId))
+      (isAdmin(user) || (user ? isProjectModerator(user, projectId) : false))
     );
   }
 );
@@ -53,14 +53,11 @@ definePermissionRule(
 definePermissionRule(
   'comment',
   'markAsSpam',
-  (comment: ICommentData, user: IUser, _tenant, { projectId }) => {
-    return (
-      user &&
-      !(
-        isAuthor(comment, user) ||
-        isAdmin(user) ||
-        isProjectModerator(user, projectId)
-      )
+  (comment: ICommentData, user: IUser | undefined, _tenant, { projectId }) => {
+    return !(
+      isAuthor(comment, user) ||
+      isAdmin(user) ||
+      (user ? isProjectModerator(user, projectId) : false)
     );
   }
 );

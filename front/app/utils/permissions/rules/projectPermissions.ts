@@ -6,7 +6,7 @@ import { IProjectData } from 'api/projects/types';
 definePermissionRule(
   'project',
   'create',
-  (_project: IProjectData, user: IUser) => {
+  (_project: IProjectData, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
@@ -14,7 +14,7 @@ definePermissionRule(
 definePermissionRule(
   'project',
   'delete',
-  (_project: IProjectData, user: IUser) => {
+  (_project: IProjectData, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
@@ -22,7 +22,7 @@ definePermissionRule(
 definePermissionRule(
   'project',
   'reorder',
-  (_project: IProjectData, user: IUser) => {
+  (_project: IProjectData, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
@@ -41,7 +41,7 @@ export function canModerateProject(
 definePermissionRule(
   'project',
   'moderate',
-  (project: IProjectData, user: IUser) => {
-    return canModerateProject(project.id, user);
+  (project: IProjectData, user: IUser | undefined) => {
+    return user ? canModerateProject(project.id, user) : false;
   }
 );

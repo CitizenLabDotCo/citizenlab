@@ -5,7 +5,7 @@ import { IUser } from 'api/users/types';
 definePermissionRule(
   'automatedCampaign',
   'manage',
-  (_campaign: string, user: IUser) => {
+  (_campaign: string, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
@@ -13,7 +13,7 @@ definePermissionRule(
 definePermissionRule(
   'manualCampaign',
   'manage',
-  (_campaign: string, user: IUser) => {
-    return isAdmin(user) || isProjectModerator(user);
+  (_campaign: string, user: IUser | undefined) => {
+    return isAdmin(user) || (user ? isProjectModerator(user) : false);
   }
 );

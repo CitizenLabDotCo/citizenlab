@@ -40,7 +40,7 @@ export function isProjectFolderModerator(user: IUserData) {
 // rules
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,
-  user: IUser,
+  user: IUser | undefined,
   tenant: IAppConfigurationData
 ) => {
   const hasAdminFolderRouteAccess =
@@ -59,7 +59,7 @@ definePermissionRule('route', 'access', canUserAccessAdminFolderRoute);
 definePermissionRule(
   'project_folder',
   'create',
-  (_folder: IProjectFolderData, user: IUser) => {
+  (_folder: IProjectFolderData, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
@@ -67,7 +67,7 @@ definePermissionRule(
 definePermissionRule(
   'project_folder',
   'delete',
-  (_folder: IProjectFolderData, user: IUser) => {
+  (_folder: IProjectFolderData, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
@@ -75,7 +75,7 @@ definePermissionRule(
 definePermissionRule(
   'project_folder',
   'reorder',
-  (_folder: IProjectFolderData, user: IUser) => {
+  (_folder: IProjectFolderData, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
@@ -83,15 +83,15 @@ definePermissionRule(
 definePermissionRule(
   'project_folder',
   'moderate',
-  (folder: IProjectFolderData, user: IUser) => {
-    return userModeratesFolder(user.data, folder.id);
+  (folder: IProjectFolderData, user: IUser | undefined) => {
+    return user ? userModeratesFolder(user.data, folder.id) : false;
   }
 );
 
 definePermissionRule(
   'project_folder',
   'create_project_in_folder_only',
-  (_folder, user: IUser) => {
-    return !isAdmin(user) && isProjectFolderModerator(user.data);
+  (_folder, user: IUser | undefined) => {
+    return !isAdmin(user) && user ? isProjectFolderModerator(user.data) : false;
   }
 );
