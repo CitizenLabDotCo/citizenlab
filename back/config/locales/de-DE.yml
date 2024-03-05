@@ -98,6 +98,8 @@ de:
       Die Ideen hier sind nicht mit einem Projekt verknüpft.
   phases:
     open_idea_phase_title: Aktuelle Phase
+    native_survey_title: Umfrage
+    native_survey_button: An Umfrage teilnehmen
   events:
     council_meeting_title: Ratssitzung
     council_meeting_description: >
