@@ -1,7 +1,7 @@
 import React, { useState, MouseEvent } from 'react';
 
 // components
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Tab } from 'components/admin/NavigationTabs';
 import PublicComments from './PublicComments';
 import InternalComments from 'components/admin/InternalComments';
@@ -107,9 +107,7 @@ const CommentsSection = ({
                 event.preventDefault();
                 setSelectedTab(name);
               }}
-            >
-              <Text>{label}</Text>
-            </Tab>
+            />
           ))}
         </NavigationTabs>
         <Box>

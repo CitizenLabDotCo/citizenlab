@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 // styling
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import {
   colors,
   stylingConsts,
@@ -63,7 +63,6 @@ const IdeaCard = ({
 }: Props) => {
   const textContainerRef = useRef<HTMLDivElement | null>(null);
   const [textOverflow, setTextOverflow] = useState(false);
-  const theme = useTheme();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -154,10 +153,7 @@ const IdeaCard = ({
                 <Image src={GradientSrc} alt="" width="100%" height="100%" />
               </Box>
               <Box mt="12px">
-                <QuillEditedContent
-                  textColor={theme.colors.tenantText}
-                  fontSize="m"
-                >
+                <QuillEditedContent textColor={colors.textPrimary} fontSize="m">
                   <IdeaText
                     dangerouslySetInnerHTML={{ __html: body }}
                     ref={textContainerRef}
