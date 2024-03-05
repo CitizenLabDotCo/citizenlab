@@ -182,17 +182,21 @@ const ContentBuilderTopBar = ({
             alignItems="center"
           >
             <Button
+              buttonStyle="secondary"
+              width="auto"
+              mr="16px"
+              onClick={closeModal}
+            >
+              <FormattedMessage {...messages.cancelQuitButtonText} />
+            </Button>
+            <Button
               icon="delete"
               data-cy="e2e-confirm-delete-survey-results"
               buttonStyle="delete"
               width="auto"
-              mr="20px"
               onClick={doGoBack}
             >
               <FormattedMessage {...messages.confirmQuitButtonText} />
-            </Button>
-            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
-              <FormattedMessage {...messages.cancelQuitButtonText} />
             </Button>
           </Box>
         </Box>
