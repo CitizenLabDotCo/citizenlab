@@ -82,11 +82,11 @@ const CommentHeader = ({
 
   const isModerator =
     author &&
+    // Ideally this is managed outside of this component.
+    // If projectId is provided, we assume this component is used in a project context
     (project
       ? canModerateProject(project.data, { data: author.data })
       : canModerateInitiative({ data: author.data }));
-  // Ideally this is managed outside of this component.
-  // If projectId is provided, we assume this component is used in a project context
 
   // With the current implementation, this needs to always render,
   // even if author is null/undefined.
