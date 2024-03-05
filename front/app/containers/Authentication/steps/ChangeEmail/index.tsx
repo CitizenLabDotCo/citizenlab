@@ -2,9 +2,10 @@ import React, { useMemo } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SetError } from 'containers/Authentication/typings';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
+
+import { SetError } from 'containers/Authentication/typings';
 
 import Input from 'components/HookForm/Input';
 import Button from 'components/UI/Button';

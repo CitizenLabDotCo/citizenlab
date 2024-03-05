@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 import { BehaviorSubject } from 'rxjs';
 
-import FullPageSpinner from 'components/UI/FullPageSpinner';
-
 import authUserStream from 'api/me/authUserStream';
 import { IUserData } from 'api/users/types';
+
+import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 import { getAction, SuccessAction } from './actions';
 

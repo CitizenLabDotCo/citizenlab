@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { screen, render, waitFor, userEvent } from 'utils/testUtils/rtl';
-
 import { ICustomPageData } from 'api/custom_pages/types';
+
+import { screen, render, waitFor, userEvent } from 'utils/testUtils/rtl';
 
 import EditCustomPageSettings from './';
 

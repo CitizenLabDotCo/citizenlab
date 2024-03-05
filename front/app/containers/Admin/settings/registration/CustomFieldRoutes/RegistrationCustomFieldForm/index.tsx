@@ -7,6 +7,8 @@ import { WrappedComponentProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import { object, boolean, string } from 'yup';
 
+import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
+
 import { Section, SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
@@ -17,8 +19,6 @@ import Toggle from 'components/HookForm/Toggle';
 import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-
-import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
 
 import messages from '../messages';
 

@@ -2,14 +2,14 @@ import React, { memo } from 'react';
 
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
+import useAuthUser from 'api/me/useAuthUser';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
-
-import useAuthUser from 'api/me/useAuthUser';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import DashboardTabs from './components/DashboardTabs';
 import messages from './messages';

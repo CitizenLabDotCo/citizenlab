@@ -1,14 +1,15 @@
 import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import InputType from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/InputType';
-import MultipleChoice from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MultipleChoice';
 import { snakeCase } from 'lodash-es';
 import { Locale } from 'typings';
 
-import T from 'components/T';
-
 import { Result } from 'api/survey_results/types';
+
+import InputType from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/InputType';
+import MultipleChoice from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MultipleChoice';
+
+import T from 'components/T';
 
 type FormResultsQuestionProps = Result & {
   locale: Locale;

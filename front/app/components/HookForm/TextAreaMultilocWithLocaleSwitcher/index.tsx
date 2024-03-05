@@ -4,14 +4,14 @@ import { get } from 'lodash-es';
 import { Controller, FieldError, useFormContext } from 'react-hook-form';
 import { CLError, Locale, RHFErrors } from 'typings';
 
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import Error, { TFieldName } from 'components/UI/Error';
 import TextAreaMultilocWithLocaleSwitcherComponent, {
   Props as TextAreaMultilocWithLocaleSwitcherProps,
 } from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 type TextAreaProps = Props & {
   name: string;

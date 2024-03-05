@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { pollQuestionsData } from 'api/poll_questions/__mocks__/usePollQuestions';
+
 import dragAndDrop from 'utils/testUtils/dragAndDrop';
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
-
-import { pollQuestionsData } from 'api/poll_questions/__mocks__/usePollQuestions';
 
 import PollAdminForm from './PollAdminForm';
 

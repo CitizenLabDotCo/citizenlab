@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import dashboardMessages from 'containers/Admin/dashboard/messages';
 import {
   ComposedChart,
   CartesianGrid,
@@ -11,6 +10,8 @@ import {
   Tooltip,
   Bar,
 } from 'recharts';
+
+import dashboardMessages from 'containers/Admin/dashboard/messages';
 
 import { legacyColors, sizes, colors } from 'components/admin/Graphs/styling';
 import { Legend as ILegend } from 'components/admin/Graphs/typings';

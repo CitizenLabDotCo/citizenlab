@@ -2,13 +2,6 @@ import React from 'react';
 
 import { Helmet } from 'react-helmet';
 
-import { useIntl } from 'utils/cl-intl';
-import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
-import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import { imageSizes } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { getFullName, stripHtml } from 'utils/textUtils';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
@@ -17,6 +10,13 @@ import useUserById from 'api/users/useUserById';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { imageSizes } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getFullName, stripHtml } from 'utils/textUtils';
 
 import messages from './messages';
 

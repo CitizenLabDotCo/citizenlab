@@ -3,14 +3,14 @@ import React from 'react';
 import { colors, fontSizes, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { IQueryParameters } from 'api/ideas/types';
+import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
+
 import SearchInput from 'components/UI/SearchInput';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
-import { IQueryParameters } from 'api/ideas/types';
-import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 
 import messages from '../messages';
 import StatusFilterBox from '../shared/Filters/StatusFilterBox';

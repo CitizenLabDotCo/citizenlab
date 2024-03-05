@@ -9,9 +9,19 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { appLocalePairs } from 'containers/App/constants';
 import styled from 'styled-components';
 import { IOption, Locale } from 'typings';
+
+import { IGroups } from 'api/groups/types';
+import useGroups from 'api/groups/useGroups';
+import { IProjectData } from 'api/projects/types';
+import useProjects from 'api/projects/useProjects';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
+
+import { appLocalePairs } from 'containers/App/constants';
 
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import { SectionField } from 'components/admin/Section';
@@ -22,15 +32,6 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IGroups } from 'api/groups/types';
-import useGroups from 'api/groups/useGroups';
-import { IProjectData } from 'api/projects/types';
-import useProjects from 'api/projects/useProjects';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocalize from 'hooks/useLocalize';
 
 import messages from '../messages';
 

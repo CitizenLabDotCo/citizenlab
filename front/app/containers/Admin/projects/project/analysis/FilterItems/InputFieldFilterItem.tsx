@@ -8,11 +8,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import { useIntl } from 'utils/cl-intl';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-
 import useAnalysis from 'api/analyses/useAnalysis';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
+
+import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import ShortFieldValue from '../components/ShortInputFieldValue';
 

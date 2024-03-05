@@ -2,10 +2,10 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import { IQueryParameters } from 'api/idea_count/types';
 import useIdeasCount from 'api/idea_count/useIdeasCount';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 

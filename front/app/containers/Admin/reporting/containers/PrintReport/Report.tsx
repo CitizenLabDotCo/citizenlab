@@ -3,11 +3,11 @@ import React from 'react';
 import { Spinner, Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
-
 import useReportLayout from 'api/report_layout/useReportLayout';
 import useReport from 'api/reports/useReport';
+
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 
 import Editor from '../../components/ReportBuilder/Editor';
 import { A4_WIDTH } from '../../constants';

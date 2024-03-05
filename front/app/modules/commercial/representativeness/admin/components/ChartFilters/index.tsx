@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
 import { IOption } from 'typings';
+
+import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
 
 import Button from 'components/UI/Button';
 

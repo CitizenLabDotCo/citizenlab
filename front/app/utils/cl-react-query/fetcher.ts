@@ -1,7 +1,8 @@
-import { API_PATH } from 'containers/App/constants';
 import { isArray, isNil, omitBy } from 'lodash-es';
 import { stringify } from 'qs';
 import { CLErrors } from 'typings';
+
+import { API_PATH } from 'containers/App/constants';
 
 import { getJwt } from 'utils/auth/jwt';
 import { queryClient } from 'utils/cl-react-query/queryClient';

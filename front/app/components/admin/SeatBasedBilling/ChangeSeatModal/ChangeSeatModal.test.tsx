@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { render, screen } from 'utils/testUtils/rtl';
-
 import { makeAdmin, makeUser } from 'api/users/__mocks__/useUsers';
+
+import { render, screen } from 'utils/testUtils/rtl';
 
 import ChangeSeatModal from '.';
 

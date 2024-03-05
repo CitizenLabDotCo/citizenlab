@@ -2,10 +2,10 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { IIdeaData } from 'api/ideas/types';
+
 import ReactionControl from 'components/ReactionControl';
 import StatusBadge from 'components/StatusBadge';
-
-import { IIdeaData } from 'api/ideas/types';
 
 import CommentCount from './CommentCount';
 

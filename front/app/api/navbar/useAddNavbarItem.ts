@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import customPagesKeys from 'api/custom_pages/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 import { IItemNotInNavbar } from 'utils/navbar';
-
-import customPagesKeys from 'api/custom_pages/keys';
 
 import navbarKeys from './keys';
 import { INavbarItemResponse, INavbarItemAdd } from './types';

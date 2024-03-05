@@ -1,11 +1,11 @@
 import moment from 'moment';
 
+import { Query, QuerySchema } from 'api/analytics/types';
+
 import {
   getDateFilter,
   getInterval,
 } from 'components/admin/GraphCards/_utils/query';
-
-import { Query, QuerySchema } from 'api/analytics/types';
 
 import { QueryParameters } from './typings';
 

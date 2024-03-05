@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
 import { Button } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
+import { useTheme } from 'styled-components';
+
+import { IPhaseData } from 'api/phases/types';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
-import { useLocation } from 'react-router-dom';
-import { useTheme } from 'styled-components';
 
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import {
@@ -15,9 +19,6 @@ import {
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 
 import messages from '../messages';
 

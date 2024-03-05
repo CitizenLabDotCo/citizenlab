@@ -4,9 +4,9 @@ import { fontSizes } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
 import styled from 'styled-components';
 
-import T from 'components/T';
-
 import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
+
+import T from 'components/T';
 
 const Container = styled.div<{ color: string }>`
   color: ${({ color }) => color};

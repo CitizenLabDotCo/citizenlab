@@ -3,9 +3,9 @@ import React from 'react';
 import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Image from 'components/UI/Image';
-
 import { IPhaseData } from 'api/phases/types';
+
+import Image from 'components/UI/Image';
 
 import ImagePlaceholder from './ImagePlaceholder';
 

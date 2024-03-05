@@ -9,12 +9,12 @@ import {
 import { FormattedDate } from 'react-intl';
 import styled from 'styled-components';
 
+import useIdeaOfficialFeedback from 'api/idea_official_feedback/useIdeaOfficialFeedback';
+import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
+
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useIdeaOfficialFeedback from 'api/idea_official_feedback/useIdeaOfficialFeedback';
-import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 
 import messages from './messages';
 import OfficialFeedbackPost from './OfficialFeedbackPost';

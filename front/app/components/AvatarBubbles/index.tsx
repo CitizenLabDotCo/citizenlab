@@ -4,12 +4,12 @@ import { colors } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
 import styled from 'styled-components';
 
-import { ScreenReaderOnly } from 'utils/a11y';
-import { useIntl } from 'utils/cl-intl';
-
 import { IAvatarData } from 'api/avatars/types';
 import useAvatarsWithIds from 'api/avatars/useAvatarsWithIds';
 import useRandomAvatars from 'api/avatars/useRandomAvatars';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 

@@ -7,14 +7,14 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import styled from 'styled-components';
 import { CRUDParams } from 'typings';
 
+import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';
+
 import { SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import TextArea from 'components/UI/TextArea';
 
 import { injectIntl } from 'utils/cl-intl';
 import getSubmitState from 'utils/getSubmitState';
-
-import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';
 
 import messages from './messages';
 

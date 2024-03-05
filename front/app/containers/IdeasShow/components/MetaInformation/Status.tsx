@@ -1,5 +1,7 @@
 import React from 'react';
 
+import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
+
 import {
   Header,
   Item,
@@ -8,8 +10,6 @@ import {
 import StatusBadge from 'components/StatusBadge';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 
 import messages from './messages';
 

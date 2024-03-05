@@ -11,9 +11,6 @@ import { wrapUseRoutes } from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import App from 'containers/App';
-import LanguageProvider from 'containers/LanguageProvider';
-import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
 import { render } from 'react-dom';
 import {
@@ -24,6 +21,10 @@ import {
   useRoutes,
   unstable_HistoryRouter as HistoryRouter,
 } from 'react-router-dom';
+
+import App from 'containers/App';
+import LanguageProvider from 'containers/LanguageProvider';
+import OutletsProvider from 'containers/OutletsProvider';
 
 import history from 'utils/browserHistory';
 import { queryClient } from 'utils/cl-react-query/queryClient';

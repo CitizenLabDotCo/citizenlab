@@ -5,14 +5,14 @@ import GetGlobalPermissions, {
   GetGlobalPermissionsChildProps,
 } from 'resources/GetGlobalPermissions';
 
+import useUpdatePermission from 'api/permissions/useUpdatePermission';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { Section, SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useUpdatePermission from 'api/permissions/useUpdatePermission';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ActionsForm from '../Granular/ActionsForm';
 import { HandlePermissionChangeProps } from '../Granular/utils';

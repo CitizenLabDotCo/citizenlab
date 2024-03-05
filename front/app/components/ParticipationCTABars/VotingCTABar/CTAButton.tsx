@@ -5,10 +5,6 @@ import Tippy from '@tippyjs/react';
 import JSConfetti from 'js-confetti';
 import styled, { useTheme } from 'styled-components';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
-import { scrollToElement } from 'utils/scroll';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
@@ -17,6 +13,10 @@ import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { scrollToElement } from 'utils/scroll';
 
 import messages from '../messages';
 

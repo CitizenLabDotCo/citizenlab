@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { ModuleConfiguration } from 'utils/moduleUtils';
-
 import {
   IDCriiptoMethod,
   TVerificationMethodName,
 } from 'api/verification_methods/types';
 import { isLastVerificationMethod } from 'api/verification_methods/util';
+
+import { ModuleConfiguration } from 'utils/moduleUtils';
 
 import CriiptoButton from './components/CriiptoButton';
 

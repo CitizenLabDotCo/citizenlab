@@ -9,14 +9,14 @@ import {
 import { lighten } from 'polished';
 import styled from 'styled-components';
 
-import { returnFileSize } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
-
 import { IEventFileData } from 'api/event_files/types';
 import { IIdeaFileData } from 'api/idea_files/types';
 import { IPageFileData } from 'api/page_files/types';
 import { IPhaseFileData } from 'api/phase_files/types';
 import { IProjectFileData } from 'api/project_files/types';
+
+import { returnFileSize } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   display: flex;

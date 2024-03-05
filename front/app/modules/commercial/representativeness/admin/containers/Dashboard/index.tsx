@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { trackEventByName } from 'utils/analytics';
-import { isAdmin } from 'utils/permissions/roles';
-
 import useAuthUser from 'api/me/useAuthUser';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { trackEventByName } from 'utils/analytics';
+import { isAdmin } from 'utils/permissions/roles';
 
 import ChartFilters from '../../components/ChartFilters';
 

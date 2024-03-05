@@ -10,9 +10,6 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { configureScope } from '@sentry/react';
-import { appLocalesMomentPairs, locales } from 'containers/App/constants';
-import Authentication from 'containers/Authentication';
-import MainHeader from 'containers/MainHeader';
 import { PreviousPathnameContext } from 'context';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
@@ -23,6 +20,16 @@ import { useLocation } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { Locale } from 'typings';
 
+import { IAppConfigurationStyle } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+import useDeleteSelf from 'api/users/useDeleteSelf';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { appLocalesMomentPairs, locales } from 'containers/App/constants';
+
+import Authentication from 'containers/Authentication';
 import ErrorBoundary from 'components/ErrorBoundary';
 import HasPermission from 'components/HasPermission';
 
@@ -38,12 +45,7 @@ import {
 } from 'utils/helperUtils';
 import { localeStream } from 'utils/locale';
 
-import { IAppConfigurationStyle } from 'api/app_configuration/types';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
-import useDeleteSelf from 'api/users/useDeleteSelf';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import MainHeader from 'containers/MainHeader';
 
 import Meta from './Meta';
 import UserSessionRecordingModal from './UserSessionRecordingModal';

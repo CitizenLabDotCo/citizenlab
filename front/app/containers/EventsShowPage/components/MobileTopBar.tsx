@@ -9,12 +9,12 @@ import {
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useProjectById from 'api/projects/useProjectById';
+
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import useProjectById from 'api/projects/useProjectById';
 
 import messages from '../messages';
 

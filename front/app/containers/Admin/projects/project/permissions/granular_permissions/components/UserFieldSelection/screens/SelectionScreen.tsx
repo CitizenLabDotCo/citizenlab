@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import { isBuiltInField } from 'api/user_custom_fields/util';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../containers/Granular/messages';
 

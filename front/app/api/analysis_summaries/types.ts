@@ -1,6 +1,6 @@
-import { Keys } from 'utils/cl-react-query/types';
-
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
+
+import { Keys } from 'utils/cl-react-query/types';
 
 import summariesKeys from './keys';
 

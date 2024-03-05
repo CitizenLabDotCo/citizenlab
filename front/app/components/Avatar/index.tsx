@@ -10,12 +10,12 @@ import BoringAvatar from 'boring-avatars';
 import { lighten } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
+import useUserById from 'api/users/useUserById';
+
 import FeatureFlag from 'components/FeatureFlag';
 
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useUserById from 'api/users/useUserById';
 
 export const Container = styled.div<{ size: number }>`
   flex: 0 0 ${({ size }) => size}px;

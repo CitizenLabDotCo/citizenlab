@@ -4,8 +4,9 @@ import React, { useCallback, useState } from 'react';
 
 // components
 import { Text, Box, Button } from '@citizenlab/cl2-component-library';
-import ProjectFilter from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/ProjectFilter';
 import { IOption } from 'typings';
+
+import ProjectFilter from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_shared/ProjectFilter';
 
 import Modal from 'components/UI/Modal';
 import PhaseFilter from 'components/UI/PhaseFilter';

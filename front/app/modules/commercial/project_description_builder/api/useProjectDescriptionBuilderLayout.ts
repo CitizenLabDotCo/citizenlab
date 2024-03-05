@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import useProjectById from 'api/projects/useProjectById';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import projectDescriptionBuilderKeys from './keys';
 import {

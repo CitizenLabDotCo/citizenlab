@@ -11,11 +11,11 @@ import Tippy from '@tippyjs/react';
 import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 import styled from 'styled-components';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import sharedMessages from '../../messages';
 

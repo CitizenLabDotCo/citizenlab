@@ -2,16 +2,16 @@ import React, { memo } from 'react';
 
 // data
 
-import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
-import { getInputTermMessage } from 'utils/i18n';
-
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import { ICommentOnIdeaYouFollowNotificationData } from 'api/notifications/types';
 import usePhases from 'api/phases/usePhases';
 import { getInputTerm } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
 
 import messages from '../../messages';
 import { DeletedUser } from '../Notification';

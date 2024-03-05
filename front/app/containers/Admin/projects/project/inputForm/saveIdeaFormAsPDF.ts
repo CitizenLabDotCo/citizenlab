@@ -1,6 +1,7 @@
-import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
 import { Locale } from 'typings';
+
+import { API_PATH } from 'containers/App/constants';
 
 import { reportError } from 'utils/loggingUtils';
 import { requestBlob } from 'utils/requestBlob';

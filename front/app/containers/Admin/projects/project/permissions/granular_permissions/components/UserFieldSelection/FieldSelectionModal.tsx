@@ -2,13 +2,13 @@ import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
+import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
+
 import { generateTempId } from 'components/FormBuilder/utils';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
-import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 
 import messages from '../../containers/Granular/messages';
 

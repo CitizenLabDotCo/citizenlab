@@ -11,15 +11,6 @@ import { forOwn, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 import { Multiloc, Locale } from 'typings';
 
-import { Section } from 'components/admin/Section';
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-import MentionsTextArea from 'components/UI/MentionsTextArea';
-
-import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isPage, isNilOrError } from 'utils/helperUtils';
-
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
 import useUpdateIdeaOfficialFeedback from 'api/idea_official_feedback/useUpdateIdeaOfficialFeedback';
@@ -29,6 +20,15 @@ import useUpdateInitiativeOfficialFeedback from 'api/initiative_official_feedbac
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
+
+import { Section } from 'components/admin/Section';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isPage, isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 import tracks from './tracks';

@@ -1,9 +1,9 @@
+import signIn from 'api/authentication/sign_in_out/signIn';
+import { handleOnSSOClick } from 'api/authentication/singleSignOn';
+
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
 import { trackEventByName } from 'utils/analytics';
-
-import signIn from 'api/authentication/sign_in_out/signIn';
-import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 
 import tracks from '../../tracks';
 import {

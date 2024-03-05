@@ -17,6 +17,17 @@ import { useParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { Multiloc, CLError, UploadFile } from 'typings';
 
+import useAddEventFile from 'api/event_files/useAddEventFile';
+import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
+import useEventFiles from 'api/event_files/useEventFiles';
+import useAddEventImage from 'api/event_images/useAddEventImage';
+import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
+import useEventImage from 'api/event_images/useEventImage';
+import { IEvent, IEventProperties } from 'api/events/types';
+import useAddEvent from 'api/events/useAddEvent';
+import useEvent from 'api/events/useEvent';
+
+import useUpdateEvent from 'api/events/useUpdateEvent';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -38,17 +49,6 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { geocode } from 'utils/locationTools';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
-
-import useAddEventFile from 'api/event_files/useAddEventFile';
-import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
-import useEventFiles from 'api/event_files/useEventFiles';
-import useAddEventImage from 'api/event_images/useAddEventImage';
-import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
-import useEventImage from 'api/event_images/useEventImage';
-import { IEvent, IEventProperties } from 'api/events/types';
-import useAddEvent from 'api/events/useAddEvent';
-import useEvent from 'api/events/useEvent';
-import useUpdateEvent from 'api/events/useUpdateEvent';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';

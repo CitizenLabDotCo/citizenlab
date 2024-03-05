@@ -2,16 +2,16 @@ import React from 'react';
 
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 
-import { SubSectionTitle } from 'components/admin/Section';
-import TopicsPicker from 'components/UI/TopicsPicker';
-
-import { useIntl } from 'utils/cl-intl';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';
 import useTopics from 'api/topics/useTopics';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { SubSectionTitle } from 'components/admin/Section';
+import TopicsPicker from 'components/UI/TopicsPicker';
+
+import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 

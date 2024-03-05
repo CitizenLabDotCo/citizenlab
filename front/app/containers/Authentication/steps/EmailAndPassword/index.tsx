@@ -2,10 +2,15 @@ import React, { useEffect } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SetError } from 'containers/Authentication/typings';
-import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object, boolean } from 'yup';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { SetError } from 'containers/Authentication/typings';
+import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
 
 import Checkbox from 'components/HookForm/Checkbox';
 import Input from 'components/HookForm/Input';
@@ -19,10 +24,6 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import containerMessages from '../../messages';
 import tracks from '../../tracks';

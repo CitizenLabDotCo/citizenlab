@@ -1,16 +1,16 @@
 import { isNumber } from 'lodash-es';
 import { Locale } from 'typings';
 
+import { IAppConfigurationData } from 'api/app_configuration/types';
+import { IMapConfigData } from 'api/map_config/types';
+import { IMapLayerAttributes } from 'api/map_layers/types';
+
 import { isNilOrError } from 'utils/helperUtils';
 import {
   getCenter as baseGetCenter,
   getZoomLevel as baseGetZoomLevel,
   getTileProvider as baseGetTileProvider,
 } from 'utils/map';
-
-import { IAppConfigurationData } from 'api/app_configuration/types';
-import { IMapConfigData } from 'api/map_config/types';
-import { IMapLayerAttributes } from 'api/map_layers/types';
 
 export type LatLngTuple = [number, number, number?];
 

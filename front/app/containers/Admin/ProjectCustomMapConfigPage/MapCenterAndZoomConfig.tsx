@@ -6,6 +6,10 @@ import { isEmpty, inRange } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useMapConfig from 'api/map_config/useMapConfig';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
+
 import { SubSectionTitle } from 'components/admin/Section';
 import { goToMapLocation } from 'components/EsriMap/utils';
 import Button from 'components/UI/Button';
@@ -13,10 +17,6 @@ import Error from 'components/UI/Error';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useMapConfig from 'api/map_config/useMapConfig';
-import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
 import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
 

@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
+import useLaunchAnalysisAutotagging from 'api/analysis_background_tasks/useLaunchAnalysisAutotagging';
+
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { trackEventByName } from 'utils/analytics';
-
-import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
-import useLaunchAnalysisAutotagging from 'api/analysis_background_tasks/useLaunchAnalysisAutotagging';
 
 import useAnalysisFilterParams from '../../hooks/useAnalysisFilterParams';
 import tracks from '../../tracks';

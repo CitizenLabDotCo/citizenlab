@@ -3,6 +3,10 @@ import React, { memo, Suspense, useState } from 'react';
 import { Spinner, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import PageWrapper from 'components/admin/PageWrapper';
 import { SectionDescription } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
@@ -12,10 +16,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
-
-import useAuthUser from 'api/me/useAuthUser';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import CreateProject from './CreateProject';
 import messages from './messages';

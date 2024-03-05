@@ -1,13 +1,7 @@
 import React from 'react';
 
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import styled from 'styled-components';
-
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
 
 import { ICommentData } from 'api/comments/types';
 import { IIdeaData } from 'api/ideas/types';
@@ -15,6 +9,13 @@ import useAuthUser from 'api/me/useAuthUser';
 import useUserById from 'api/users/useUserById';
 
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import { commentReplyButtonClicked } from '../events';
 import messages from '../messages';

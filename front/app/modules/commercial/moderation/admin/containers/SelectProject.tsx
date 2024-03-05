@@ -1,14 +1,14 @@
 import React, { memo, useCallback } from 'react';
 
-import FilterSelector from 'components/FilterSelector';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
 import { PublicationStatus } from 'api/projects/types';
 import useProjects from 'api/projects/useProjects';
 
 import useLocalize from 'hooks/useLocalize';
+
+import FilterSelector from 'components/FilterSelector';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 

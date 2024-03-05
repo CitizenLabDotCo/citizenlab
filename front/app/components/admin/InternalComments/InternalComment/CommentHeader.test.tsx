@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { screen, render } from 'utils/testUtils/rtl';
-
 import { mockCommentDataAttributes1 } from 'api/internal_comments/__mocks__/useInternalComments';
+
+import { screen, render } from 'utils/testUtils/rtl';
 
 import InternalCommentHeader from './InternalCommentHeader';
 

@@ -3,18 +3,18 @@ import React, { useState } from 'react';
 import { Success, Error, Toggle } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { Section, SubSectionTitle } from 'components/admin/Section';
-import Outlet from 'components/Outlet';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
 import {
   TAppConfigurationSetting,
   IAppConfigurationSettingsCore,
 } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+
+import { Section, SubSectionTitle } from 'components/admin/Section';
+import Outlet from 'components/Outlet';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 

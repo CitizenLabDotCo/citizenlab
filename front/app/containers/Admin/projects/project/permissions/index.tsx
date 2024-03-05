@@ -4,15 +4,15 @@ import { Title, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Section, SectionTitle } from 'components/admin/Section';
-import Outlet from 'components/Outlet';
-
-import { FormattedMessage } from 'utils/cl-intl';
-
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { Section, SectionTitle } from 'components/admin/Section';
+import Outlet from 'components/Outlet';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import ProjectManagement from './containers/ProjectManagement';
 import ProjectVisibility from './containers/ProjectVisibility';

@@ -4,14 +4,14 @@ import { Button } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import { useTheme } from 'styled-components';
 
+import useEvents from 'api/events/useEvents';
+import { getCurrentPhase } from 'api/phases/utils';
+
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { scrollToElement } from 'utils/scroll';
-
-import useEvents from 'api/events/useEvents';
-import { getCurrentPhase } from 'api/phases/utils';
 
 import messages from '../messages';
 

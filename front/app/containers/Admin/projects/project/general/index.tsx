@@ -1,28 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
 import { isEmpty, isString } from 'lodash-es';
 import { useParams, useLocation } from 'react-router-dom';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
-import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
-import {
-  Section,
-  SectionTitle,
-  SectionDescription,
-  SubSectionTitle,
-  SectionField,
-} from 'components/admin/Section';
-import SlugInput from 'components/admin/SlugInput';
-import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import eventEmitter from 'utils/eventEmitter';
-import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
@@ -51,6 +34,22 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
+import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
+import {
+  Section,
+  SectionTitle,
+  SectionDescription,
+  SubSectionTitle,
+  SectionField,
+} from 'components/admin/Section';
+import SlugInput from 'components/admin/SlugInput';
+import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import eventEmitter from 'utils/eventEmitter';
+import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 
 import PhaseParticipationConfig, {
   IPhaseParticipationConfig,

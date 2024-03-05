@@ -8,11 +8,19 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Tippy from '@tippyjs/react';
-import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { array, object, string } from 'yup';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IAreaData } from 'api/areas/types';
+import useAreas from 'api/areas/useAreas';
+import { ProjectsFilterTypes } from 'api/custom_pages/types';
+import { ITopicData } from 'api/topics/types';
+
+import useTopics from 'api/topics/useTopics';
+import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 
 import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
@@ -28,13 +36,6 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { slugRegEx } from 'utils/textUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IAreaData } from 'api/areas/types';
-import useAreas from 'api/areas/useAreas';
-import { ProjectsFilterTypes } from 'api/custom_pages/types';
-import { ITopicData } from 'api/topics/types';
-import useTopics from 'api/topics/useTopics';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';

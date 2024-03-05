@@ -8,11 +8,11 @@ import { get } from 'lodash-es';
 import { Controller, useFormContext, FieldError } from 'react-hook-form';
 import { CLError, Locale, RHFErrors } from 'typings';
 
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import Error, { TFieldName } from 'components/UI/Error';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 interface Props
   extends Omit<

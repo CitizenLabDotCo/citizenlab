@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors, Multiloc } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import navbarKeys from 'api/navbar/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import customPagesKeys from './keys';
 import { ICustomPage } from './types';

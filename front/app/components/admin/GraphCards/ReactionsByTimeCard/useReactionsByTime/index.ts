@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 
+import { useReactionsByTimeLive } from 'api/graph_data_units';
+
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
 import { useIntl } from 'utils/cl-intl';
-
-import { useReactionsByTimeLive } from 'api/graph_data_units';
 
 import { parseTimeSeries, parseExcelData } from './parse';
 import { getTranslations } from './translations';

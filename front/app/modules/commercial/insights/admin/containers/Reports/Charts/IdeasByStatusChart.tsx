@@ -3,6 +3,11 @@ import React, { useRef } from 'react';
 import { isEmpty, map, orderBy } from 'lodash-es';
 import { IGraphFormat } from 'typings';
 
+import useIdeasByStatus from 'api/ideas_by_status/useIdeasByStatus';
+import { ideasByStatusXlsxEndpoint } from 'api/ideas_by_status/util';
+
+import useLocalize from 'hooks/useLocalize';
+
 import BarChart from 'components/admin/Graphs/BarChart';
 import {
   legacyColors,
@@ -19,11 +24,6 @@ import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useIdeasByStatus from 'api/ideas_by_status/useIdeasByStatus';
-import { ideasByStatusXlsxEndpoint } from 'api/ideas_by_status/util';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from '../messages';
 

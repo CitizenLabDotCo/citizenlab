@@ -5,15 +5,15 @@ import { darken } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useLocale from 'hooks/useLocale';
+
 import Error from 'components/UI/Error';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-import useLocale from 'hooks/useLocale';
 
 import messages from './messages';
 

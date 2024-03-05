@@ -5,12 +5,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { object, string } from 'yup';
 
+import useUpdateAnalysisTag from 'api/analysis_tags/useUpdateAnalysisTag';
+
 import Input from 'components/HookForm/Input';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-import useUpdateAnalysisTag from 'api/analysis_tags/useUpdateAnalysisTag';
 
 import messages from './messages';
 

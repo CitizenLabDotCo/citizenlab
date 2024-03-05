@@ -9,16 +9,6 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import ViewButtons from 'components/PostCardsComponents/ViewButtons';
-import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
-import SearchInput from 'components/UI/SearchInput';
-
-import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { isNilOrError } from 'utils/helperUtils';
-import { isFieldEnabled } from 'utils/projectUtils';
-
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import { IQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
@@ -28,6 +18,16 @@ import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
+
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
+import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
+import SearchInput from 'components/UI/SearchInput';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../messages';
 import SelectSort, { Sort } from '../shared/Filters/SortFilterDropdown';

@@ -6,6 +6,12 @@ import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { Multiloc, IOption } from 'typings';
 
+import useMapConfig from 'api/map_config/useMapConfig';
+import { IMapLayerAttributes } from 'api/map_layers/types';
+import useUpdateMapLayer from 'api/map_layers/useUpdateMapLayer';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import {
   Section,
   SectionField,
@@ -17,12 +23,6 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useMapConfig from 'api/map_config/useMapConfig';
-import { IMapLayerAttributes } from 'api/map_layers/types';
-import useUpdateMapLayer from 'api/map_layers/useUpdateMapLayer';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import {
   getLayerColor,

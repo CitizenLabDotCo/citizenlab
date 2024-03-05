@@ -4,6 +4,8 @@ import { Success, Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet';
 import { WrappedComponentProps } from 'react-intl';
 
+import sendPasswordResetMail from 'api/authentication/reset_password/sendPasswordResetEmail';
+
 import {
   StyledContentContainer,
   Title,
@@ -16,8 +18,6 @@ import { FormLabel } from 'components/UI/FormComponents';
 
 import { injectIntl } from 'utils/cl-intl';
 import { isValidEmail } from 'utils/validate';
-
-import sendPasswordResetMail from 'api/authentication/reset_password/sendPasswordResetEmail';
 
 import messages from './messages';
 

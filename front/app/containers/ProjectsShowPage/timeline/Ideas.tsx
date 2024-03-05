@@ -1,9 +1,14 @@
 import React, { useMemo } from 'react';
 
-import messages from 'containers/ProjectsShowPage/messages';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { IPhaseData } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
+import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+
+import messages from 'containers/ProjectsShowPage/messages';
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
@@ -12,10 +17,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getInputTermMessage } from 'utils/i18n';
-
-import { IPhaseData } from 'api/phases/types';
-import usePhase from 'api/phases/usePhase';
-import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
 const Container = styled.div``;
 

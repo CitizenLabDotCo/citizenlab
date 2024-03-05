@@ -11,16 +11,16 @@ import { capitalize, get } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
+import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
+import { IInitiativesFilterCounts } from 'api/initiatives_filter_counts/types';
+
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-
-import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IInitiativesFilterCounts } from 'api/initiatives_filter_counts/types';
 
 import messages from './messages';
 import { Header, Title } from './styles';

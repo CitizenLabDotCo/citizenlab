@@ -1,16 +1,17 @@
 import React from 'react';
 
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+
 import {
   Header,
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
-import { WrappedComponentProps } from 'react-intl';
-import styled from 'styled-components';
 
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 
 import Attachment from './Attachment';
 import messages from './messages';

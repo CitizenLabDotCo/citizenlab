@@ -10,17 +10,17 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import { isRuleValid } from 'utils/yup/validateLogic';
-
 import {
   IFlatCustomField,
   LogicType,
   QuestionRuleType,
 } from 'api/custom_fields/types';
+
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
 

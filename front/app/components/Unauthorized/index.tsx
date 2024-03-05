@@ -1,15 +1,16 @@
 import React from 'react';
 
 import { Box, Title, Text, Spinner } from '@citizenlab/cl2-component-library';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { useTheme } from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Button from 'components/UI/Button';
 import Centerer from 'components/UI/Centerer';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useAuthUser from 'api/me/useAuthUser';
 
 import pageNotFoundMessages from '../PageNotFound/messages';
 

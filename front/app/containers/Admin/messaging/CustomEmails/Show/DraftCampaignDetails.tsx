@@ -3,14 +3,14 @@ import React from 'react';
 import GetCampaign from 'resources/GetCampaign';
 import styled from 'styled-components';
 
+import { ICampaignData } from 'api/campaigns/types';
+import useDeleteCampaign from 'api/campaigns/useDeleteCampaign';
+
 import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { ICampaignData } from 'api/campaigns/types';
-import useDeleteCampaign from 'api/campaigns/useDeleteCampaign';
 
 import messages from '../../messages';
 

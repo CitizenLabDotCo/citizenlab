@@ -4,14 +4,14 @@ import { Title } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
 
-import HorizontalScroll from 'components/HorizontalScroll';
-
-import { useIntl } from 'utils/cl-intl';
-
 import useEvents from 'api/events/useEvents';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
+
+import HorizontalScroll from 'components/HorizontalScroll';
+
+import { useIntl } from 'utils/cl-intl';
 
 import EventPreviewCard from './EventPreviewCard';
 import messages from './messages';

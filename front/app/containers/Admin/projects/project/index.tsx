@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
-import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 import {
   Outlet as RouterOutlet,
   useParams,
   useLocation,
 } from 'react-router-dom';
 import { ITab } from 'typings';
-
-import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
-import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -20,6 +15,12 @@ import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
+
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import { PhaseHeader } from './phase/PhaseHeader';
 import ProjectHeader from './projectHeader';

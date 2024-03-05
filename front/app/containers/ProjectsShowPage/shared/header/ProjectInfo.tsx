@@ -9,14 +9,14 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useProjectFiles from 'api/project_files/useProjectFiles';
+import useProjectById from 'api/projects/useProjectById';
+
 import Fragment from 'components/Fragment';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
 import T from 'components/T';
 import FileAttachments from 'components/UI/FileAttachments';
-
-import useProjectFiles from 'api/project_files/useProjectFiles';
-import useProjectById from 'api/projects/useProjectById';
 
 import ProjectInfoSideBar from './ProjectInfoSideBar';
 

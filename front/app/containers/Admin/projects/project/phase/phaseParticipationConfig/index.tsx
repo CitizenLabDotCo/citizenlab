@@ -12,13 +12,6 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CLErrors, Multiloc } from 'typings';
 
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import Error from 'components/UI/Error';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import eventEmitter from 'utils/eventEmitter';
-import { anyIsDefined } from 'utils/helperUtils';
-
 import { IAppConfiguration } from 'api/app_configuration/types';
 import {
   IdeaDefaultSortMethod,
@@ -32,6 +25,13 @@ import { getDefaultSortMethodFallback } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import Error from 'components/UI/Error';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+import { anyIsDefined } from 'utils/helperUtils';
 
 import messages from '../../messages';
 

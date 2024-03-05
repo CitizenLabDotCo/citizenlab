@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 
 import { Icon, Button } from 'semantic-ui-react';
 
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
+
 import WarningModal from 'components/WarningModal';
 import modalMessages from 'components/WarningModal/messages';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
-import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
 import { ManagerType } from '../..';
 

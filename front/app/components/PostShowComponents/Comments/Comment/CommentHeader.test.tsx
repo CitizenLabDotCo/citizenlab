@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { screen, render } from 'utils/testUtils/rtl';
-
 import { mockCommentDataAttributes1 } from 'api/comments/__mocks__/useComments';
+
+import { screen, render } from 'utils/testUtils/rtl';
 
 import CommentHeader from './CommentHeader';
 

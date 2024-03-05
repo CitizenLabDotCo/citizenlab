@@ -2,12 +2,12 @@ import React from 'react';
 
 import { MessageDescriptor } from 'react-intl';
 
-import globalMessages from 'utils/messages';
-
 import {
   DocumentAnnotationDisabledReason,
   IProjectData,
 } from 'api/projects/types';
+
+import globalMessages from 'utils/messages';
 
 import ParticipationPermission from '../ParticipationPermission';
 

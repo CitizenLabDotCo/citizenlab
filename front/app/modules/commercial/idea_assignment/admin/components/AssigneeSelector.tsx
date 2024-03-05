@@ -4,13 +4,13 @@ import { Select } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { IOption } from 'typings';
 
-import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { getFullName } from 'utils/textUtils';
-
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 import useUsers from 'api/users/useUsers';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
 

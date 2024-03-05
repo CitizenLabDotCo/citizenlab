@@ -2,6 +2,15 @@ import React, { memo, useCallback, useState } from 'react';
 
 import { Input, IconTooltip } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
+import { isEmpty, get } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+
+import meKeys from 'api/me/keys';
+import useAuthUser from 'api/me/useAuthUser';
+import userLockedAttributesKeys from 'api/user_locked_attributes/keys';
+import usersKeys from 'api/users/keys';
+import { TVerificationMethod } from 'api/verification_methods/types';
+
 import {
   FormContainer,
   Form,
@@ -12,8 +21,6 @@ import {
   SubmitButton,
   CancelButton,
 } from 'containers/Authentication/steps/AuthProviders/styles';
-import { isEmpty, get } from 'lodash-es';
-import { WrappedComponentProps } from 'react-intl';
 
 import Collapse from 'components/UI/Collapse';
 import Error from 'components/UI/Error';
@@ -21,12 +28,6 @@ import Error from 'components/UI/Error';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
-
-import meKeys from 'api/me/keys';
-import useAuthUser from 'api/me/useAuthUser';
-import userLockedAttributesKeys from 'api/user_locked_attributes/keys';
-import usersKeys from 'api/users/keys';
-import { TVerificationMethod } from 'api/verification_methods/types';
 
 import { verifyOostendeRrn } from '../api/verification_methods/verify';
 import messages from '../messages';

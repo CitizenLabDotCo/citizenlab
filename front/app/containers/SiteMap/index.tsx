@@ -8,13 +8,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import ContentContainer from 'components/ContentContainer';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-
 import { TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
 import useAuthUser from 'api/me/useAuthUser';
@@ -24,6 +17,13 @@ import useProjects from 'api/projects/useProjects';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
+
+import ContentContainer from 'components/ContentContainer';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import messages from './messages';
 import ProjectsAndFoldersSection from './ProjectsAndFoldersSection';

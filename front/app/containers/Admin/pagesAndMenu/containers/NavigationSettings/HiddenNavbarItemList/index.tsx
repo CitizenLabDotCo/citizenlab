@@ -1,15 +1,6 @@
 import React, { useMemo } from 'react';
 
-import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
-import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 import { WrappedComponentProps } from 'react-intl';
-
-import { List, Row } from 'components/admin/ResourceList';
-
-import { injectIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
-import getItemsNotInNavbar, { IItemNotInNavbar } from 'utils/navbar';
 
 import { ICustomPageData, TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
@@ -18,6 +9,16 @@ import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
 import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import { getNavbarItemSlug } from 'api/navbar/util';
+
+import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+
+import { List, Row } from 'components/admin/ResourceList';
+
+import { injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import getItemsNotInNavbar, { IItemNotInNavbar } from 'utils/navbar';
 
 import Header from './Header';
 import messages from './messages';

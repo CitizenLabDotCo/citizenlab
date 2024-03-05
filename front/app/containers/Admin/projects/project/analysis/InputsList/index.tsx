@@ -11,11 +11,11 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useIntl } from 'utils/cl-intl';
-
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 
 import useKeyPress from 'hooks/useKeyPress';
+
+import { useIntl } from 'utils/cl-intl';
 
 import Demographics from '../Demographics';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';

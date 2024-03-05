@@ -2,9 +2,16 @@ import React, { FormEvent } from 'react';
 
 import { Button, Icon, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import { useSearchParams } from 'react-router-dom';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useBasket from 'api/baskets/useBasket';
+import useVoting from 'api/baskets_ideas/useVoting';
+import useIdeaById from 'api/ideas/useIdeaById';
+import { IPhaseData } from 'api/phases/types';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import { useSearchParams } from 'react-router-dom';
 
 import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
 
@@ -13,12 +20,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { isNil } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useBasket from 'api/baskets/useBasket';
-import useVoting from 'api/baskets_ideas/useVoting';
-import useIdeaById from 'api/ideas/useIdeaById';
-import { IPhaseData } from 'api/phases/types';
 
 import messages from './messages';
 import tracks from './tracks';

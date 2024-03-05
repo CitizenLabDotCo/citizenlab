@@ -1,6 +1,7 @@
-import { locales } from 'containers/App/constants';
 import { trim, isUndefined } from 'lodash-es';
 import { Locale, Multiloc, GraphqlLocale } from 'typings';
+
+import { locales } from 'containers/App/constants';
 
 import { removeUrlLocale } from 'utils/locale';
 

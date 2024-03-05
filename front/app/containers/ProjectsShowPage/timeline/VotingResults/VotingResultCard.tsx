@@ -10,6 +10,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useIdeaImage from 'api/idea_images/useIdeaImage';
+import { IIdeaData } from 'api/ideas/types';
+import usePhase from 'api/phases/usePhase';
+
+import useLocalize from 'hooks/useLocalize';
+
 import Footer from 'components/IdeaCard/Footer';
 import Image from 'components/UI/Image';
 
@@ -18,12 +24,6 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import FormattedBudget from 'utils/currency/FormattedBudget';
-
-import useIdeaImage from 'api/idea_images/useIdeaImage';
-import { IIdeaData } from 'api/ideas/types';
-import usePhase from 'api/phases/usePhase';
-
-import useLocalize from 'hooks/useLocalize';
 
 import ImagePlaceholder from './ImagePlaceholder';
 import messages from './messages';

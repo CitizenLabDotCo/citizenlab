@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import { Toggle, Box, ListItem } from '@citizenlab/cl2-component-library';
 import { isUndefined } from 'lodash-es';
 
+import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
+
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
 import messages from '../messages';
 

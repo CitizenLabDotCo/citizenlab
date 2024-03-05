@@ -13,6 +13,12 @@ import { useFormContext, useFieldArray } from 'react-hook-form';
 import styled from 'styled-components';
 
 import {
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+  IOptionsType,
+} from 'api/custom_fields/types';
+
+import {
   FormBuilderConfig,
   builtInFieldKeys,
   generateTempId,
@@ -21,12 +27,6 @@ import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
 import { useIntl } from 'utils/cl-intl';
-
-import {
-  IFlatCustomField,
-  IFlatCustomFieldWithIndex,
-  IOptionsType,
-} from 'api/custom_fields/types';
 
 import { FlexibleRow } from '../../FlexibleRow';
 import { getFieldBackgroundColor } from '../utils';

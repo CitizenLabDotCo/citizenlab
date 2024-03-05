@@ -4,6 +4,9 @@ import { Label } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { UploadFile } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+
 import { Section, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
@@ -12,9 +15,6 @@ import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import getSubmitState from 'utils/getSubmitState';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
 import messages from './messages';
 

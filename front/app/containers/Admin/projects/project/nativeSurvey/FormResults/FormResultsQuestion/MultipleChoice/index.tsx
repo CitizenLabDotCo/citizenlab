@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Box, colors, Image } from '@citizenlab/cl2-component-library';
 
-import ProgressBars2 from 'components/admin/Graphs/ProgressBars2';
-
 import { Answer } from 'api/survey_results/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import ProgressBars2 from 'components/admin/Graphs/ProgressBars2';
 
 interface Props {
   multipleChoiceAnswers: Answer[];

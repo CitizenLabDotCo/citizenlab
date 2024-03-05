@@ -2,12 +2,6 @@ import React from 'react';
 
 import { Helmet } from 'react-helmet';
 
-import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
-import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import { imageSizes } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import { getFullName, stripHtml } from 'utils/textUtils';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -17,6 +11,12 @@ import useUserById from 'api/users/useUserById';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
+
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { imageSizes } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getFullName, stripHtml } from 'utils/textUtils';
 
 interface Props {
   ideaId: string;

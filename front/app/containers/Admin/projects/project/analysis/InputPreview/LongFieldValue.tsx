@@ -11,15 +11,15 @@ import {
 import { xor } from 'lodash-es';
 import { FormattedDate } from 'react-intl';
 
+import { IInputsData } from 'api/analysis_inputs/types';
+import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
+import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+
 import T from 'components/T';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-import { IInputsData } from 'api/analysis_inputs/types';
-import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import messages from '../messages';

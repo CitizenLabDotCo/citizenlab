@@ -1,13 +1,13 @@
 import React from 'react';
 
-import T from 'components/T';
-
-import { isNilOrError } from 'utils/helperUtils';
-
 import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';
 
 import useLocalize from 'hooks/useLocalize';
+
+import T from 'components/T';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 import AcceptButton from './AcceptButton';
 import OnboardingStep from './OnboardingStep';

@@ -6,15 +6,15 @@ import { MessageDescriptor } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useEvents from 'api/events/useEvents';
+import { PublicationStatus } from 'api/projects/types';
+
 import EventCard from 'components/EventCard';
 import Pagination from 'components/Pagination';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-
-import useEvents from 'api/events/useEvents';
-import { PublicationStatus } from 'api/projects/types';
 
 import messages from '../messages';
 

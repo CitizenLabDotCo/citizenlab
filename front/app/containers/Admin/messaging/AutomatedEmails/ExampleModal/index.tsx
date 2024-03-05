@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 
 import { Button, Box, Text } from '@citizenlab/cl2-component-library';
 
+import useCampaignExamples from 'api/campaign_examples/useCampaignExamples';
+import useCampaign from 'api/campaigns/useCampaign';
+
 import T from 'components/T';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useCampaignExamples from 'api/campaign_examples/useCampaignExamples';
-import useCampaign from 'api/campaigns/useCampaign';
 
 import messages from '../../messages';
 

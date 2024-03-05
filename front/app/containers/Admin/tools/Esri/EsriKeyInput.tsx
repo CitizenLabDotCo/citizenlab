@@ -9,15 +9,15 @@ import {
   Button,
 } from '@citizenlab/cl2-component-library';
 
-import GoBackButton from 'components/UI/GoBackButton';
-
-import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import GoBackButton from 'components/UI/GoBackButton';
+
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
 

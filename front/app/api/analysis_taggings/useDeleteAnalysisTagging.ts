@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import tagsKeys from 'api/analysis_tags/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import taggingKeys from './keys';
 

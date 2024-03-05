@@ -3,6 +3,13 @@ import React, { memo, FormEvent, useState, useMemo } from 'react';
 import { Spinner, Box, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { IProjectAllowedInputTopicData } from 'api/project_allowed_input_topics/types';
+import useDeleteAllowedProjectInputTopic from 'api/project_allowed_input_topics/useDeleteProjectAllowedInputTopic';
+import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
+import useReorderProjectAllowedInputTopics from 'api/project_allowed_input_topics/useReorderProjectAllowedInputTopics';
+import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
+import useTopics from 'api/topics/useTopics';
+
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import { StyledLink } from 'components/admin/Section';
 import T from 'components/T';
@@ -18,13 +25,6 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import { FormattedMessage } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError, byId } from 'utils/helperUtils';
-
-import { IProjectAllowedInputTopicData } from 'api/project_allowed_input_topics/types';
-import useDeleteAllowedProjectInputTopic from 'api/project_allowed_input_topics/useDeleteProjectAllowedInputTopic';
-import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
-import useReorderProjectAllowedInputTopics from 'api/project_allowed_input_topics/useReorderProjectAllowedInputTopics';
-import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
-import useTopics from 'api/topics/useTopics';
 
 import messages from './messages';
 

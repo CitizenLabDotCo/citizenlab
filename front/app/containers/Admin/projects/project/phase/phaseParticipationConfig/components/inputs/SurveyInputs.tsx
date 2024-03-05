@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Input, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 
+import { TSurveyService } from 'api/phases/types';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import { TSurveyService } from 'api/phases/types';
 
 import { ApiErrors } from '../..';
 import messages from '../../../../messages';

@@ -9,16 +9,17 @@ import {
   Icon,
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import styled, { useTheme } from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { scrollToTop } from 'utils/scroll';
-
-import useAuthUser from 'api/me/useAuthUser';
 
 import messages from './messages';
 

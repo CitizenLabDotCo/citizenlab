@@ -8,14 +8,14 @@ import {
 import styled from 'styled-components';
 import { Locale, Multiloc } from 'typings';
 
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+
 import QuillEditor, {
   Props as QuillEditorProps,
 } from 'components/UI/QuillEditor';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useLocale from 'hooks/useLocale';
 
 const Container = styled.div``;
 

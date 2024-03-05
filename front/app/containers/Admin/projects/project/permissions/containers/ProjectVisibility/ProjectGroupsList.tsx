@@ -4,12 +4,6 @@ import { find } from 'lodash-es';
 import styled from 'styled-components';
 import { IOption } from 'typings';
 
-import { List, Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
-import MultipleSelect from 'components/UI/MultipleSelect';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
 import { IGroups, IGroupData } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
 import { IProjectGroupData } from 'api/project_groups/types';
@@ -18,6 +12,12 @@ import useDeleteProjectGroup from 'api/project_groups/useDeleteProjectGroup';
 import useProjectGroups from 'api/project_groups/useProjectGroups';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { List, Row } from 'components/admin/ResourceList';
+import Button from 'components/UI/Button';
+import MultipleSelect from 'components/UI/MultipleSelect';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import GroupAvatar from './GroupAvatar';
 import messages from './messages';

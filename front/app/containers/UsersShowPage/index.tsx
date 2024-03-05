@@ -1,11 +1,15 @@
 import React, { useContext } from 'react';
 
 import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { PreviousPathnameContext } from 'context';
 import { Helmet } from 'react-helmet';
 import { useParams, Outlet as RouterOutlet } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { IUserData } from 'api/users/types';
+import useUserBySlug from 'api/users/useUserBySlug';
+
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import ContentContainer from 'components/ContentContainer';
 import Button from 'components/UI/Button';
@@ -13,9 +17,6 @@ import Unauthorized from 'components/Unauthorized';
 
 import { useIntl } from 'utils/cl-intl';
 import { isError } from 'utils/helperUtils';
-
-import { IUserData } from 'api/users/types';
-import useUserBySlug from 'api/users/useUserBySlug';
 
 import messages from './messages';
 import UserHeader from './UserHeader';

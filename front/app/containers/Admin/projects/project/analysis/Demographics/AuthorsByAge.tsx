@@ -18,10 +18,10 @@ import {
   LabelList,
 } from 'recharts';
 
+import useAuthorsByAge from 'api/analysis_stats/useAuthorsByAge';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-import useAuthorsByAge from 'api/analysis_stats/useAuthorsByAge';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 

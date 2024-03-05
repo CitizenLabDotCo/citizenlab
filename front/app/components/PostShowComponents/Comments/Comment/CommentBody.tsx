@@ -5,6 +5,13 @@ import { filter } from 'rxjs/operators';
 import styled, { useTheme } from 'styled-components';
 import { CLErrors } from 'typings';
 
+import { IUpdatedComment } from 'api/comments/types';
+import useComment from 'api/comments/useComment';
+import useUpdateComment from 'api/comments/useUpdateComment';
+
+import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
+
 import Outlet from 'components/Outlet';
 import {
   getCommentContent,
@@ -16,13 +23,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IUpdatedComment } from 'api/comments/types';
-import useComment from 'api/comments/useComment';
-import useUpdateComment from 'api/comments/useUpdateComment';
-
-import useLocale from 'hooks/useLocale';
-import useLocalize from 'hooks/useLocalize';
 
 import { commentTranslateButtonClicked$ } from '../events';
 import messages from '../messages';

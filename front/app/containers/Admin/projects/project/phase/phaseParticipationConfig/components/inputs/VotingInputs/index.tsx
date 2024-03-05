@@ -7,9 +7,12 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
 import { useLocation } from 'react-router-dom';
 import { Multiloc } from 'typings';
+
+import { VotingMethod } from 'api/phases/types';
+
+import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
 
 import {
   SectionField,
@@ -20,8 +23,6 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-
-import { VotingMethod } from 'api/phases/types';
 
 import { ApiErrors } from '../../..';
 import messages from '../../../../../messages';

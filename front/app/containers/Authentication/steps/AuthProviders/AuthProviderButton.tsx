@@ -1,10 +1,11 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 
 import { IconNames, colors } from '@citizenlab/cl2-component-library';
-import { SignUpInFlow } from 'containers/Authentication/typings';
 import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { useTheme } from 'styled-components';
+
+import { SignUpInFlow } from 'containers/Authentication/typings';
 
 import Button from 'components/UI/Button';
 

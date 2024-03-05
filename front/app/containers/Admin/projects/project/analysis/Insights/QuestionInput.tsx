@@ -7,13 +7,14 @@ import {
   stylingConsts,
   Button,
 } from '@citizenlab/cl2-component-library';
-import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { useParams } from 'react-router-dom';
+
+import useAddAnalysisQuestion from 'api/analysis_questions/useAddAnalysisQuestion';
+
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-
-import useAddAnalysisQuestion from 'api/analysis_questions/useAddAnalysisQuestion';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 

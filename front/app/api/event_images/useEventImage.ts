@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import { IEventData } from 'api/events/types';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import eventImagesKeys from './keys';
 import { EventImagesKeys, IEventImage } from './types';

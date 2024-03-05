@@ -2,14 +2,14 @@ import React from 'react';
 
 import { Box, Toggle, Text, Input } from '@citizenlab/cl2-component-library';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNil } from 'utils/helperUtils';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from '../messages';
 

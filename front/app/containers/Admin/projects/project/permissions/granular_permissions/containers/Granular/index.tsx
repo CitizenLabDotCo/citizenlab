@@ -2,9 +2,9 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Section } from 'components/admin/Section';
-
 import { IProjectData } from 'api/projects/types';
+
+import { Section } from 'components/admin/Section';
 
 import Timeline from './Timeline';
 

@@ -2,12 +2,12 @@ import React from 'react';
 
 // analytics
 
+import { exportSurveyResults } from 'api/survey_results/utils';
+
 import Button from 'components/UI/Button';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { exportSurveyResults } from 'api/survey_results/utils';
 
 import messages from '../messages';
 

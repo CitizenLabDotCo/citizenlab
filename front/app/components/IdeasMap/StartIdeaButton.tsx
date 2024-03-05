@@ -2,9 +2,9 @@ import React from 'react';
 
 import { createPortal } from 'react-dom';
 
-import IdeaButton from 'components/IdeaButton';
-
 import usePhases from 'api/phases/usePhases';
+
+import IdeaButton from 'components/IdeaButton';
 
 type Props = {
   modalPortalElement: HTMLDivElement;

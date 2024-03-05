@@ -9,11 +9,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNil } from 'utils/helperUtils';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useSeats from 'api/seats/useSeats';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
 

@@ -1,8 +1,8 @@
 import { ITab, FormatMessage } from 'typings';
 
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-
 import { IPhaseData } from 'api/phases/types';
+
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import messages from './messages';
 

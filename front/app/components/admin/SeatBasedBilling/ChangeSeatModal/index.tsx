@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
+import { IUserData } from 'api/users/types';
+
+import useExceedsSeats from 'hooks/useExceedsSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
 import Modal from 'components/UI/Modal';
@@ -9,11 +14,6 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isRegularUser, isAdmin } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
-
-import { IUserData } from 'api/users/types';
-
-import useExceedsSeats from 'hooks/useExceedsSeats';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import SeatSetSuccess from '../SeatSetSuccess';
 

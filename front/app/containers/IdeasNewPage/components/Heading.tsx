@@ -8,6 +8,10 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
+import { IProjectData } from 'api/projects/types';
+
+import useLocalize from 'hooks/useLocalize';
+
 import Button from 'components/UI/Button';
 import GoBackButton from 'components/UI/GoBackButton';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
@@ -15,10 +19,6 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import { IProjectData } from 'api/projects/types';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from '../messages';
 

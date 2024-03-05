@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { fontSizes } from '@citizenlab/cl2-component-library';
-import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
 import { isString } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
+
+import { API_PATH } from 'containers/App/constants';
 
 import Button from 'components/UI/Button';
 

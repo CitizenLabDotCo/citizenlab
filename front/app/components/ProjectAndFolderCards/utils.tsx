@@ -1,6 +1,6 @@
-import { keys } from 'utils/helperUtils';
-
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
+
+import { keys } from 'utils/helperUtils';
 
 import { PublicationTab } from './';
 

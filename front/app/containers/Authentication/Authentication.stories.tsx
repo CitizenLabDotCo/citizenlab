@@ -1,9 +1,9 @@
 import React from 'react';
 
 // mocking
-import mockEndpoints from 'utils/storybook/mockEndpoints';
-
 import { loggedOutHandler } from 'api/me/__mocks__/_mockServer';
+
+import mockEndpoints from 'utils/storybook/mockEndpoints';
 
 // component
 import { triggerAuthenticationFlow } from './events';

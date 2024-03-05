@@ -5,6 +5,9 @@ import { map, isEmpty } from 'lodash-es';
 import { Popup } from 'semantic-ui-react';
 import styled from 'styled-components';
 
+import { IActiveUsersByTime } from 'api/active_users_by_time/types';
+import useActiveUsersByTime from 'api/active_users_by_time/useActiveUsersByTime';
+
 import BarChart from 'components/admin/Graphs/BarChart';
 import {
   IGraphUnit,
@@ -18,9 +21,6 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IActiveUsersByTime } from 'api/active_users_by_time/types';
-import useActiveUsersByTime from 'api/active_users_by_time/useActiveUsersByTime';
 
 const InfoIcon = styled(Icon)`
   display: flex;

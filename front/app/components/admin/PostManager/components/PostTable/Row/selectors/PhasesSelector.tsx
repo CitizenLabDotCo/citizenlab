@@ -3,10 +3,10 @@ import React, { MouseEvent } from 'react';
 import { xor } from 'lodash-es';
 import { Label, Popup } from 'semantic-ui-react';
 
-import T from 'components/T';
-
 import { IPhaseData } from 'api/phases/types';
 import { canContainIdeas } from 'api/phases/utils';
+
+import T from 'components/T';
 
 type Props = {
   selectedPhases: string[];

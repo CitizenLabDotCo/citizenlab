@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 
 import AsyncSelect from 'react-select/async';
 
+import useLocale from 'hooks/useLocale';
+
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
 import { useIntl } from 'utils/cl-intl';
 import fetcher from 'utils/cl-react-query/fetcher';
-
-import useLocale from 'hooks/useLocale';
 
 import messages from './messages';
 import { isValidCoordinate } from './utils';

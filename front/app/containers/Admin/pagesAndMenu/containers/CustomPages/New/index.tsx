@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import { WrappedComponentProps } from 'react-intl';
+
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 import TabbedResource from 'components/admin/TabbedResource';
 import HelmetIntl from 'components/HelmetIntl';

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
 import { Box, Text, Button, Error } from '@citizenlab/cl2-component-library';
-import { API_PATH } from 'containers/App/constants';
 import saveAs from 'file-saver';
 import { useTheme } from 'styled-components';
+
+import { API_PATH } from 'containers/App/constants';
 
 import { useIntl } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';

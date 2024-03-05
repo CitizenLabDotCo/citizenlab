@@ -7,12 +7,12 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
+import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
+
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-
-import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 
 import ShortUserFieldValue from '../components/ShortUserFieldValue';
 

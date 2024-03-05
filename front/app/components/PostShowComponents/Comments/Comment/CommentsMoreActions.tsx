@@ -1,8 +1,12 @@
 import React, { FormEvent, useState } from 'react';
 
 import { isRtl } from '@citizenlab/cl2-component-library';
-import SpamReportForm from 'containers/SpamReport';
 import styled from 'styled-components';
+
+import { DeleteReason, ICommentData } from 'api/comments/types';
+import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
+
+import SpamReportForm from 'containers/SpamReport';
 
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
@@ -10,9 +14,6 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
-
-import { DeleteReason, ICommentData } from 'api/comments/types';
-import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
 
 import { deleteCommentModalClosed } from '../events';
 import messages from '../messages';

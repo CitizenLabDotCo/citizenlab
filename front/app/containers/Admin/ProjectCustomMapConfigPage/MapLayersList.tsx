@@ -10,16 +10,16 @@ import Tippy from '@tippyjs/react';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
+import useMapConfig from 'api/map_config/useMapConfig';
+import useDeleteMapLayer from 'api/map_layers/useDeleteMapLayer';
+import useReorderMapLayer from 'api/map_layers/useReorderMapLayer';
+
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import { SubSectionTitle } from 'components/admin/Section';
 import Button from 'components/UI/Button';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-
-import useMapConfig from 'api/map_config/useMapConfig';
-import useDeleteMapLayer from 'api/map_layers/useDeleteMapLayer';
-import useReorderMapLayer from 'api/map_layers/useReorderMapLayer';
 
 import { getLayerColor, getLayerIcon } from '../../../utils/mapUtils/map';
 

@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { useTheme } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
+
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import TimeIndicator from './TimeIndicator';
 

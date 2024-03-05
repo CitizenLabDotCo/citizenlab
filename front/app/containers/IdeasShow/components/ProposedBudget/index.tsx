@@ -3,13 +3,13 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import { isFieldEnabled } from 'utils/projectUtils';
-
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useIdeaById from 'api/ideas/useIdeaById';
 
 import useLocale from 'hooks/useLocale';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../../messages';
 

@@ -8,18 +8,19 @@ import {
   isRtl,
   Button,
 } from '@citizenlab/cl2-component-library';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
-import { isNilOrError, isPage } from 'utils/helperUtils';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useLocale from 'hooks/useLocale';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError, isPage } from 'utils/helperUtils';
 
 import messages from '../../../messages';
 import LanguageSelector from '../../LanguageSelector';

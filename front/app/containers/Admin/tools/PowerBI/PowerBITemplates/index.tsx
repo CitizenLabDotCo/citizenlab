@@ -8,14 +8,14 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 import { saveTemplateFile } from './saveTemplateFile';

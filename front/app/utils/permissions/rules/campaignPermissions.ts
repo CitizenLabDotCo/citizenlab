@@ -1,6 +1,6 @@
-import { definePermissionRule } from 'utils/permissions/permissions';
-
 import { IUser } from 'api/users/types';
+
+import { definePermissionRule } from 'utils/permissions/permissions';
 
 import { isAdmin, isProjectModerator } from '../roles';
 

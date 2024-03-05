@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { List } from 'components/admin/ResourceList';
-
 import { ITopicData } from 'api/topics/types';
+
+import { List } from 'components/admin/ResourceList';
 
 import CustomTopicRow from './CustomTopicRow';
 import DefaultTopicRow from './DefaultTopicRow';

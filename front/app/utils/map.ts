@@ -1,11 +1,11 @@
 import formatcoords from 'formatcoords';
 import { isNil } from 'lodash-es';
 
+import { IAppConfigurationData } from 'api/app_configuration/types';
+
 import { DEFAULT_TILE_PROVIDER } from 'components/EsriMap/constants';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IAppConfigurationData } from 'api/app_configuration/types';
 
 import { LatLngTuple } from './mapUtils/map';
 

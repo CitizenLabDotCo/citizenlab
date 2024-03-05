@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import eventsKeys from 'api/events/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import eventImagesKeys from './keys';
 import { IEventImage, AddEventImageObject } from './types';

@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 
+import { IStatusChangeOnIdeaYouFollowNotificationData } from 'api/notifications/types';
+
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { IStatusChangeOnIdeaYouFollowNotificationData } from 'api/notifications/types';
 
 import messages from '../../messages';
 import NotificationWrapper from '../NotificationWrapper';

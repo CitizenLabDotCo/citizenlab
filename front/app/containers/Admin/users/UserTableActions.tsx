@@ -7,12 +7,19 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
-import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
 import { isArray, isNil, omitBy, includes } from 'lodash-es';
 import { rgba } from 'polished';
 import styled from 'styled-components';
 import { CLErrorsWrapper } from 'typings';
+
+import { IGroupMemberships } from 'api/group_memberships/types';
+import useAddMembership from 'api/group_memberships/useAddMembership';
+import { MembershipType } from 'api/groups/types';
+import useGroups from 'api/groups/useGroups';
+import usersKeys from 'api/users/keys';
+
+import { API_PATH } from 'containers/App/constants';
 
 import T from 'components/T';
 import Button from 'components/UI/Button';
@@ -23,12 +30,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { requestBlob } from 'utils/requestBlob';
-
-import { IGroupMemberships } from 'api/group_memberships/types';
-import useAddMembership from 'api/group_memberships/useAddMembership';
-import { MembershipType } from 'api/groups/types';
-import useGroups from 'api/groups/useGroups';
-import usersKeys from 'api/users/keys';
 
 import events, { MembershipAdd } from './events';
 import messages from './messages';

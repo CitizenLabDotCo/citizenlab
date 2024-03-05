@@ -3,16 +3,16 @@ import React, { lazy } from 'react';
 import moduleConfiguration from 'modules';
 import { Navigate, useLocation } from 'react-router-dom';
 
+import { IAppConfigurationData } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+
 import PageLoading from 'components/UI/PageLoading';
 import Unauthorized from 'components/Unauthorized';
 
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isNilOrError, isUUID } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
-
-import { IAppConfigurationData } from 'api/app_configuration/types';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
 
 import createDashboardRoutes from './dashboard/routes';
 import ideasRoutes from './ideas/routes';

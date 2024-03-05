@@ -3,12 +3,12 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { IOption } from 'typings';
 
-import Select from 'components/HookForm/Select';
-
 import usePhases from 'api/phases/usePhases';
 import { canContainIdeas } from 'api/phases/utils';
 
 import useLocalize from 'hooks/useLocalize';
+
+import Select from 'components/HookForm/Select';
 
 interface Props {
   label?: string | JSX.Element;

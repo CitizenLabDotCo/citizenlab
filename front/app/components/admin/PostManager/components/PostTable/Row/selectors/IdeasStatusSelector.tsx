@@ -3,9 +3,9 @@ import React, { MouseEvent } from 'react';
 import { Popup } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import T from 'components/T';
-
 import { IIdeaStatusData } from 'api/idea_statuses/types';
+
+import T from 'components/T';
 
 const Container = styled.div`
   display: flex;

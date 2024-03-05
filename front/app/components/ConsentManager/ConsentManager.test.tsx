@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { IUserData } from 'api/users/types';
+
 import eventEmitter from 'utils/eventEmitter';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { fireEvent, render, act } from 'utils/testUtils/rtl';
-
-import { IUserData } from 'api/users/types';
 
 // mocked functions
 import { setConsent, IConsentCookie } from './consent';

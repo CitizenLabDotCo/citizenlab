@@ -2,8 +2,11 @@ import React, { useCallback } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { JsonSchema7, Layout } from '@jsonforms/core';
-import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import { CLErrors } from 'typings';
+
+import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
+
+import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
 import { customAjv } from 'components/Form';
 import Fields from 'components/Form/Components/Fields';
@@ -14,8 +17,6 @@ import {
 } from 'components/Form/typings';
 
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-
-import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
 
 interface Props {
   schema: JsonSchema7;

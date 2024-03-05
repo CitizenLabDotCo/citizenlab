@@ -6,18 +6,19 @@ import {
   defaultCardStyle,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import styled from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+import { IPollQuestionData } from 'api/poll_questions/types';
+import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
-
-import useAuthUser from 'api/me/useAuthUser';
-import { IPollQuestionData } from 'api/poll_questions/types';
-import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
 
 import messages from './messages';
 import PollMultipleChoice from './PollMultipleChoice';

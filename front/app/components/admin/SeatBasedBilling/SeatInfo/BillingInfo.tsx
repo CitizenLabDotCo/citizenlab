@@ -11,12 +11,12 @@ import { rgba } from 'polished';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useSeats from 'api/seats/useSeats';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNil } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useSeats from 'api/seats/useSeats';
 
 import messages from './messages';
 

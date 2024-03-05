@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
 
+import { ICommentOnYourCommentNotificationData } from 'api/notifications/types';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // data
-import { ICommentOnYourCommentNotificationData } from 'api/notifications/types';
 
 import messages from '../../messages';
 import { DeletedUser } from '../Notification';

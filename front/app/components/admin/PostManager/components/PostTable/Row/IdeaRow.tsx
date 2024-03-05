@@ -6,6 +6,14 @@ import { useDrag } from 'react-dnd';
 import { Icon } from 'semantic-ui-react';
 import { CellConfiguration, Locale, Override } from 'typings';
 
+import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IIdeaData } from 'api/ideas/types';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useIdeasPhases from 'api/ideas_phases/useIdeasPhases';
+import { IPhaseData } from 'api/phases/types';
+
+import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
+
 import AssigneeSelect from 'components/admin/PostManager/components/PostTable/AssigneeSelect';
 import FeatureFlag from 'components/FeatureFlag';
 import T from 'components/T';
@@ -15,14 +23,6 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IIdeaData } from 'api/ideas/types';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
-import useIdeasPhases from 'api/ideas_phases/useIdeasPhases';
-import { IPhaseData } from 'api/phases/types';
-
-import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
 
 import { TFilterMenu, ManagerType } from '../../..';
 import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';

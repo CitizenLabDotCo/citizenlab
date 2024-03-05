@@ -6,10 +6,10 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { IEventData } from 'api/events/types';
+
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IEventData } from 'api/events/types';
 
 import EventInformation from './EventInformation';
 

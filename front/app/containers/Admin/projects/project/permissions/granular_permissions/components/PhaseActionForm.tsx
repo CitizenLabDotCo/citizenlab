@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { isNilOrError } from 'utils/helperUtils';
-
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import { IPhaseData } from 'api/phases/types';
+
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { isNilOrError } from 'utils/helperUtils';
 
 import ActionsForm from '../containers/Granular/ActionsForm';
 import { HandlePermissionChangeProps } from '../containers/Granular/utils';

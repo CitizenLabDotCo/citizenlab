@@ -3,16 +3,16 @@ import React from 'react';
 import { Text, Input } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useLocale from 'hooks/useLocale';
+
 import slugInputMessages from 'components/HookForm/SlugInput/messages';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-import useLocale from 'hooks/useLocale';
 
 import messages from './messages';
 

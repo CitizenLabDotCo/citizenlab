@@ -1,13 +1,13 @@
 import React from 'react';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import useInitiativeReviewRequired from '../hooks/useInitiativeReviewRequired';
 import messages from '../messages';

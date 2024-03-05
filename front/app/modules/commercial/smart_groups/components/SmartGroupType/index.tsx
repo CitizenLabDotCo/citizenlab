@@ -1,6 +1,13 @@
 import React, { FC } from 'react';
 
 import { Icon, colors } from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
+import styled from 'styled-components';
+
+import { MembershipType } from 'api/groups/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import {
   MoreInfoLink,
   DescriptionText,
@@ -11,14 +18,8 @@ import {
   GroupName,
 } from 'containers/Admin/users/GroupCreationStep1';
 import adminUsersMessages from 'containers/Admin/users/messages';
-import { transparentize } from 'polished';
-import styled from 'styled-components';
 
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-
-import { MembershipType } from 'api/groups/types';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 

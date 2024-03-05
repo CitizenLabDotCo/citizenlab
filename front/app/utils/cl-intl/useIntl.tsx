@@ -8,12 +8,12 @@ import {
 } from 'react-intl';
 import { Locale } from 'typings';
 
+import { IAppConfiguration } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import { isNilOrError } from 'utils/helperUtils';
 import { getLocalizedWithFallback } from 'utils/i18n';
 import { localeStream } from 'utils/locale';
-
-import { IAppConfiguration } from 'api/app_configuration/types';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 export type FormatMessageValues =
   | { [key: string]: string | number | boolean | Date }

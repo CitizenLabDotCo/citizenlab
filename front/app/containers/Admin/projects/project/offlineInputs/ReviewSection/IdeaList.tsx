@@ -4,11 +4,11 @@ import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled from 'styled-components';
 
-import { useIntl } from 'utils/cl-intl';
-import { truncate } from 'utils/textUtils';
-
 import { IIdeaData, IIdeas } from 'api/ideas/types';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
+
+import { useIntl } from 'utils/cl-intl';
+import { truncate } from 'utils/textUtils';
 
 import messages from './messages';
 

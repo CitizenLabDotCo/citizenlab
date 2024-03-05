@@ -1,19 +1,20 @@
 import React, { memo, useCallback } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
-import { ErrorCode } from 'containers/Authentication/typings';
 import styled from 'styled-components';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { SSOProvider } from 'api/authentication/singleSignOn';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { ErrorCode } from 'containers/Authentication/typings';
 
 import Outlet from 'components/Outlet';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Or from 'components/UI/Or';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { SSOProvider } from 'api/authentication/singleSignOn';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import TextButton from '../_components/TextButton';
 

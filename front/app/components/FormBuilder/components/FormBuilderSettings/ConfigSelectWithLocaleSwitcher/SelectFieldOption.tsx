@@ -9,12 +9,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Locale, UploadFile } from 'typings';
 
+import useAddCustomFieldOptionImage from 'api/content_field_option_images/useAddCustomFieldOptionImage';
+import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
+
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useAddCustomFieldOptionImage from 'api/content_field_option_images/useAddCustomFieldOptionImage';
-import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
 
 import messages from './messages';
 

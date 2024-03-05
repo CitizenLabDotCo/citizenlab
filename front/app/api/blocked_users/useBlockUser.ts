@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrorsWrapper } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import usersKeys from 'api/users/keys';
 import { IUser } from 'api/users/types';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import blockedUsersCountKeys from './keys';
 import { IBlockUser } from './types';

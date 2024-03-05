@@ -1,6 +1,10 @@
 import React, { memo } from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
+
+import { PublicationStatus } from 'api/projects/types';
+import useProjects from 'api/projects/useProjects';
+
 import {
   RowButton,
   RowContent,
@@ -13,9 +17,6 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { PublicationStatus } from 'api/projects/types';
-import useProjects from 'api/projects/useProjects';
 
 import messages from './messages';
 

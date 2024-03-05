@@ -1,16 +1,17 @@
 import React from 'react';
 
 import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import CurrentAndUpcomingEvents from 'containers/EventsPage/CurrentAndUpcomingEvents';
-import PastEvents from 'containers/EventsPage/PastEvents';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
-
 import useEventsByUserId from 'api/events/useEventsByUserId';
 import useUserBySlug from 'api/users/useUserBySlug';
+
+import CurrentAndUpcomingEvents from 'containers/EventsPage/CurrentAndUpcomingEvents';
+import PastEvents from 'containers/EventsPage/PastEvents';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 

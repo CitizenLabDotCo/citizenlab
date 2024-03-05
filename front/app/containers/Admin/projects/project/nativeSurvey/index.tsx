@@ -11,19 +11,8 @@ import {
   Spinner,
   colors,
 } from '@citizenlab/cl2-component-library';
-import PDFExportModal, {
-  FormValues,
-} from 'containers/Admin/projects/components/PDFExportModal';
 import { saveAs } from 'file-saver';
 import { useParams } from 'react-router-dom';
-
-import Button from 'components/UI/Button';
-import Modal from 'components/UI/Modal';
-
-import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
-import { requestBlob } from 'utils/requestBlob';
 
 import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
@@ -35,6 +24,18 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 import useLocale from 'hooks/useLocale';
+
+import PDFExportModal, {
+  FormValues,
+} from 'containers/Admin/projects/components/PDFExportModal';
+
+import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
+
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import { requestBlob } from 'utils/requestBlob';
 
 import CopySurveyModal from './CopySurveyModal';
 import EditWarningModal from './EditWarningModal';

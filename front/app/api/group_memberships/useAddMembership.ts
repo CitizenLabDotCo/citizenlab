@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import groupsKeys from 'api/groups/keys';
 import meKeys from 'api/me/keys';
 import usersKeys from 'api/users/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import membershipsKeys from './keys';
 import { IGroupMemberships, MembershipAdd } from './types';

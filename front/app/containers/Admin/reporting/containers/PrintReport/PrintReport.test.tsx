@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { render } from 'utils/testUtils/rtl';
-
 import { reportLayout } from 'api/report_layout/__mocks__/_mockServer';
+
+import { render } from 'utils/testUtils/rtl';
 
 import PrintReport from './';
 

@@ -3,6 +3,9 @@ import React, { useRef } from 'react';
 import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 
+import { IActiveUsersByTime } from 'api/active_users_by_time/types';
+import useActiveUsersByTime from 'api/active_users_by_time/useActiveUsersByTime';
+
 import BarChart from 'components/admin/Graphs/BarChart';
 import {
   IGraphUnit,
@@ -16,9 +19,6 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IActiveUsersByTime } from 'api/active_users_by_time/types';
-import useActiveUsersByTime from 'api/active_users_by_time/useActiveUsersByTime';
 
 type Props = {
   className?: string;

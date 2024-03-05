@@ -4,17 +4,17 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { FormattedTime, FormattedDate } from 'react-intl';
 import styled from 'styled-components';
 
-import HelmetIntl from 'components/HelmetIntl';
-
-import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { isNilOrError } from 'utils/helperUtils';
-
 import {
   ITextingCampaignData,
   TTextingCampaignStatus,
 } from 'api/texting_campaigns/types';
 import useTextingCampaign from 'api/texting_campaigns/useTextingCampaign';
+
+import HelmetIntl from 'components/HelmetIntl';
+
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
 
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
 import SMSCampaignForm from '../components/SMSCampaignForm';

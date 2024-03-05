@@ -1,8 +1,8 @@
 import { Multiloc, ImageSizes, IRelationship } from 'typings';
 
-import { Keys } from 'utils/cl-react-query/types';
-
 import { PublicationStatus } from 'api/projects/types';
+
+import { Keys } from 'utils/cl-react-query/types';
 
 import projectFoldersKeys from './keys';
 

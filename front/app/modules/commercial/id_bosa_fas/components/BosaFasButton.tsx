@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { TVerificationMethod } from 'api/verification_methods/types';
+
 import { AUTH_PATH } from 'containers/App/constants';
 
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
@@ -7,8 +9,6 @@ import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 import { getJwt } from 'utils/auth/jwt';
 import { FormattedMessage } from 'utils/cl-intl';
 import { removeUrlLocale } from 'utils/locale';
-
-import { TVerificationMethod } from 'api/verification_methods/types';
 
 import messages from '../messages';
 

@@ -1,13 +1,13 @@
 import React from 'react';
 
+import { IIdea } from 'api/ideas/types';
+
+import useLocale from 'hooks/useLocale';
+
 import Outlet from 'components/Outlet';
 
 import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IIdea } from 'api/ideas/types';
-
-import useLocale from 'hooks/useLocale';
 
 import tracks from '../tracks';
 

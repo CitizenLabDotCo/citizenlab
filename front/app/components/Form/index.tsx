@@ -16,11 +16,11 @@ import {
 import styled from 'styled-components';
 import { CLErrors, Locale } from 'typings';
 
-import { useIntl, MessageDescriptor } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
 import useLocale from 'hooks/useLocale';
 import useObserveEvent from 'hooks/useObserveEvent';
+
+import { useIntl, MessageDescriptor } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import ButtonBar from './Components/ButtonBar';
 import Fields from './Components/Fields';

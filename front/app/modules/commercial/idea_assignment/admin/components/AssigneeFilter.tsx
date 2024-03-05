@@ -3,6 +3,10 @@ import React, { SyntheticEvent } from 'react';
 // import { Select } from '@citizenlab/cl2-component-library';
 import { Dropdown } from 'semantic-ui-react';
 
+import useAuthUser from 'api/me/useAuthUser';
+import { IUsers } from 'api/users/types';
+import useUsers from 'api/users/useUsers';
+
 import { ManagerType } from 'components/admin/PostManager';
 import postManagerMessages from 'components/admin/PostManager/messages';
 
@@ -10,10 +14,6 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
-
-import useAuthUser from 'api/me/useAuthUser';
-import { IUsers } from 'api/users/types';
-import useUsers from 'api/users/useUsers';
 
 import messages from './messages';
 import tracks from './tracks';

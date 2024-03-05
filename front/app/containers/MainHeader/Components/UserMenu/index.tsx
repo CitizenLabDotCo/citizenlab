@@ -3,9 +3,9 @@ import React, { useState, lazy, Suspense } from 'react';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-
 import useAuthUser from 'api/me/useAuthUser';
+
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import User from './User';
 

@@ -2,13 +2,13 @@ import React from 'react';
 
 import { Locale } from 'typings';
 
-import { getLocalizedWithFallback } from 'utils/i18n';
-
 // Typing
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
 import { Localize } from 'hooks/useLocalize';
+
+import { getLocalizedWithFallback } from 'utils/i18n';
 
 import { isNilOrError } from './helperUtils';
 

@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import projectsKeys from 'api/projects/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import phasesKeys from './keys';
 import { IPhase, AddPhaseObject } from './types';

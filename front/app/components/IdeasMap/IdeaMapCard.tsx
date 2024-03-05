@@ -12,6 +12,11 @@ import {
 import { darken } from 'polished';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IIdeaData } from 'api/ideas/types';
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+
 import T from 'components/T';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
@@ -21,11 +26,6 @@ import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IIdeaData } from 'api/ideas/types';
-import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
 
 import messages from './messages';
 

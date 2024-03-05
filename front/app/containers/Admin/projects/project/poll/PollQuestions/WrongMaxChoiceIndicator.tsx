@@ -3,11 +3,11 @@ import React from 'react';
 import { colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import usePollOptions from 'api/poll_options/usePollOptions';
+
 import { TextCell } from 'components/admin/ResourceList';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import usePollOptions from 'api/poll_options/usePollOptions';
 
 import messages from '../messages';
 

@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from 'react';
 
 import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
-import messages from 'containers/Admin/settings/messages';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
+
+import {
+  IAppConfigurationSettings,
+  IUpdatedAppConfigurationProperties,
+  TAppConfigurationSettingCore,
+} from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from 'containers/Admin/settings/messages';
 
 import {
   SectionTitle,
@@ -19,16 +30,6 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { FormattedMessage } from 'utils/cl-intl';
 import getSubmitState from 'utils/getSubmitState';
 import { isNilOrError } from 'utils/helperUtils';
-
-import {
-  IAppConfigurationSettings,
-  IUpdatedAppConfigurationProperties,
-  TAppConfigurationSettingCore,
-} from 'api/app_configuration/types';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import CustomFieldSettings from './CustomFieldSettings';
 import CustomFieldsSignupText from './CustomFieldsSignupText';

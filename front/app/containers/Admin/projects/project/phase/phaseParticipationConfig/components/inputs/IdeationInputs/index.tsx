@@ -7,14 +7,14 @@ import {
   IOption,
 } from '@citizenlab/cl2-component-library';
 
+import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
+
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-
-import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
 
 import { ApiErrors } from '../../..';
 import messages from '../../../../../messages';

@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 
+import { IInitiativeMarkedAsSpamNotificationData } from 'api/notifications/types';
+
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
-
-import { IInitiativeMarkedAsSpamNotificationData } from 'api/notifications/types';
 
 import messages from '../../messages';
 import { DeletedUser } from '../Notification';

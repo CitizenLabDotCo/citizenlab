@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useUsersByAge from 'api/users_by_age/useUsersByAge';
 import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
 import useUsersByGender from 'api/users_by_gender/useUsersByGender';
 
 import useLocale from 'hooks/useLocale';
+
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import {
   RepresentativenessRowMultiloc,

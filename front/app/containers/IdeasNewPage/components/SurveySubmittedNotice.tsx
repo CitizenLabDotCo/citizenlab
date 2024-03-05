@@ -8,12 +8,12 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
+import { IProjectData } from 'api/projects/types';
+
 import PageContainer from 'components/UI/PageContainer';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import { IProjectData } from 'api/projects/types';
 
 import messages from './messages';
 

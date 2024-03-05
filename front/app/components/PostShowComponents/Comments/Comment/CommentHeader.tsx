@@ -9,13 +9,13 @@ import {
 import { lighten } from 'polished';
 import styled from 'styled-components';
 
+import { IPresentComment } from 'api/comments/types';
+import useUserById from 'api/users/useUserById';
+
 import Author from 'components/Author';
 
 import { useIntl } from 'utils/cl-intl';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
-import { IPresentComment } from 'api/comments/types';
-import useUserById from 'api/users/useUserById';
 
 import messages from '../messages';
 

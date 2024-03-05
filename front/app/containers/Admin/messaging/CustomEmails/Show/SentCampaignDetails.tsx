@@ -3,12 +3,12 @@ import { useState } from 'react';
 
 import styled from 'styled-components';
 
+import useCampaignDeliveries from 'api/campaign_deliveries/useCampaignDeliveries';
+
 import PageWrapper from 'components/admin/PageWrapper';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-
-import useCampaignDeliveries from 'api/campaign_deliveries/useCampaignDeliveries';
 
 import messages from '../../messages';
 

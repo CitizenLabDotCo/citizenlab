@@ -2,13 +2,6 @@ import React from 'react';
 
 import { Locale } from 'typings';
 
-import InitiativeForm, {
-  FormValues as FormValues2,
-} from 'components/InitiativeForm';
-
-import clHistory from 'utils/cl-router/history';
-import { parsePosition } from 'utils/locationTools';
-
 import { IInitiativeFiles } from 'api/initiative_files/types';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
@@ -18,6 +11,13 @@ import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
 import { IInitiativeData } from 'api/initiatives/types';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
+
+import InitiativeForm, {
+  FormValues as FormValues2,
+} from 'components/InitiativeForm';
+
+import clHistory from 'utils/cl-router/history';
+import { parsePosition } from 'utils/locationTools';
 
 interface Props {
   locale: Locale;

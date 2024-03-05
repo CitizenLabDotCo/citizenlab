@@ -1,6 +1,6 @@
-import { queryClient } from 'utils/cl-react-query/queryClient';
-
 import phasesKeys from 'api/phases/keys';
+
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import questionKeys from '../keys';
 import { IPollQuestionParameters } from '../types';

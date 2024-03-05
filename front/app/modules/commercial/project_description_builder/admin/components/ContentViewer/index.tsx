@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 import Viewer from './Viewer';
 

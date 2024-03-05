@@ -9,6 +9,10 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 import { string, object } from 'yup';
 
+import meKeys from 'api/me/keys';
+import useAuthUser from 'api/me/useAuthUser';
+import useChangePassword from 'api/users/useChangePassword';
+
 import PasswordInput from 'components/HookForm/PasswordInput';
 import {
   StyledContentContainer,
@@ -26,10 +30,6 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-import meKeys from 'api/me/keys';
-import useAuthUser from 'api/me/useAuthUser';
-import useChangePassword from 'api/users/useChangePassword';
 
 import ChangePasswordSuccess from './ChangePasswordSuccess';
 import messages from './messages';

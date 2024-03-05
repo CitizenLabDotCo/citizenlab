@@ -1,5 +1,10 @@
 import React, { ReactNode } from 'react';
 
+import { IIdea } from 'api/ideas/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
+import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
+import { IProjectData } from 'api/projects/types';
+
 import DocumentAnnotationCTABar from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
 import EmbeddedSurveyCTABar from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
 import EventsCTABar from 'components/ParticipationCTABars/EventsCTABar';
@@ -12,11 +17,6 @@ import VotingCTABar from 'components/ParticipationCTABars/VotingCTABar';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
 import clHistory from 'utils/cl-router/history';
-
-import { IIdea } from 'api/ideas/types';
-import { IPhaseData, ParticipationMethod } from 'api/phases/types';
-import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
-import { IProjectData } from 'api/projects/types';
 
 import { FormattedMessage } from '../../cl-intl';
 import { isNilOrError, NilOrError } from '../../helperUtils';

@@ -3,12 +3,12 @@ import React, { useMemo } from 'react';
 import { Box, Select, Spinner, Text } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 

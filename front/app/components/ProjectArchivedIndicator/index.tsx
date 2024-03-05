@@ -2,11 +2,11 @@ import React, { memo } from 'react';
 
 import styled from 'styled-components';
 
+import useProjectById from 'api/projects/useProjectById';
+
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useProjectById from 'api/projects/useProjectById';
 
 import messages from './messages';
 

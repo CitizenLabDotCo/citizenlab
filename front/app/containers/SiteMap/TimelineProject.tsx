@@ -1,12 +1,12 @@
 import React from 'react';
 
+import usePhases from 'api/phases/usePhases';
+import { IProjectData } from 'api/projects/types';
+
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-
-import usePhases from 'api/phases/usePhases';
-import { IProjectData } from 'api/projects/types';
 
 import messages from './messages';
 

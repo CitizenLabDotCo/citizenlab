@@ -8,19 +8,20 @@ import {
   isRtl,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useIdeaById from 'api/ideas/useIdeaById';
+
 import {
   Header,
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
-import styled from 'styled-components';
 
 import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { getAddressOrFallbackDMS } from 'utils/map';
-
-import useIdeaById from 'api/ideas/useIdeaById';
 
 import IdeaLocationMap from './IdeaLocationMap';
 import messages from './messages';

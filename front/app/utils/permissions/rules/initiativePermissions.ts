@@ -1,7 +1,7 @@
-import { definePermissionRule } from 'utils/permissions/permissions';
-
 import { IInitiativeData } from 'api/initiatives/types';
 import { IUser } from 'api/users/types';
+
+import { definePermissionRule } from 'utils/permissions/permissions';
 
 import { isAdmin } from '../roles';
 

@@ -12,10 +12,6 @@ import { useInView } from 'react-intersection-observer';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
-import { isPage } from 'utils/helperUtils';
-
 import { CommentsSort } from 'api/comments/types';
 import useComments from 'api/comments/useComments';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -23,6 +19,10 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useProjectById from 'api/projects/useProjectById';
 
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isPage } from 'utils/helperUtils';
 
 import messages from '../../messages';
 import tracks from '../../tracks';

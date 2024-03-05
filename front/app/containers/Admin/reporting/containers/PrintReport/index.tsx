@@ -4,9 +4,9 @@ import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
 

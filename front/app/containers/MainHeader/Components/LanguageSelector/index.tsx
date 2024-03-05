@@ -8,16 +8,17 @@ import {
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { shortenedAppLocalePairs } from 'containers/App/constants';
 import styled, { useTheme } from 'styled-components';
 import { Locale } from 'typings';
-
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-import { updateLocale } from 'utils/locale';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
+
+import { shortenedAppLocalePairs } from 'containers/App/constants';
+
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { updateLocale } from 'utils/locale';
 
 import { getSelectedLocale } from './utils';
 

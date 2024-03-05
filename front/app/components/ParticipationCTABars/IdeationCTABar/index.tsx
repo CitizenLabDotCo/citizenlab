@@ -3,6 +3,10 @@ import React, { useEffect, useState, FormEvent } from 'react';
 import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhaseData } from 'api/phases/types';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+
 import IdeaButton from 'components/IdeaButton';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import {
@@ -13,10 +17,6 @@ import {
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { FormattedMessage } from 'utils/cl-intl';
 import { scrollToElement } from 'utils/scroll';
-
-import useAuthUser from 'api/me/useAuthUser';
-import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 
 import messages from '../messages';
 

@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import { CommentsSort } from 'api/comments/types';
+
 import FilterSelector from 'components/FilterSelector';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-
-import { CommentsSort } from 'api/comments/types';
 
 import messages from '../../messages';
 

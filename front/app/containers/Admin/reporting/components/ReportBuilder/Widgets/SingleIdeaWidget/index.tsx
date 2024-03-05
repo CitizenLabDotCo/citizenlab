@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { isNil } from 'utils/helperUtils';
-
 import { useSingleIdea } from 'api/graph_data_units';
 import usePhase from 'api/phases/usePhase';
+
+import { isNil } from 'utils/helperUtils';
 
 import Card from '../_shared/Card';
 import NoData from '../_shared/NoData';

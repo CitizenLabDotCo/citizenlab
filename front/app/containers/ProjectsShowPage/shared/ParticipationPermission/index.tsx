@@ -1,13 +1,14 @@
 import React, { ReactNode } from 'react';
 
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import styled from 'styled-components';
+
+import { IPhasePermissionAction } from 'api/permissions/types';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-
-import { IPhasePermissionAction } from 'api/permissions/types';
 
 import messages from './messages';
 

@@ -3,6 +3,12 @@ import React, { useState } from 'react';
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import { FollowableObject } from 'api/follow_unfollow/types';
+import useAuthUser from 'api/me/useAuthUser';
+import useUserBySlug from 'api/users/useUserBySlug';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Areas from 'components/Areas';
 import tracks from 'components/FollowUnfollow/tracks';
 import Topics from 'components/Topics';
@@ -10,12 +16,6 @@ import FilterTabs, { TabData } from 'components/UI/FilterTabs';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { FollowableObject } from 'api/follow_unfollow/types';
-import useAuthUser from 'api/me/useAuthUser';
-import useUserBySlug from 'api/users/useUserBySlug';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from '../messages';
 

@@ -4,6 +4,18 @@ import { parse } from 'qs';
 import { useSearchParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
+import { IdeaPublicationStatus } from 'api/ideas/types';
+import useAddIdea from 'api/ideas/useAddIdea';
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhases, IPhaseData } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import { IProject } from 'api/projects/types';
+
+import useInputSchema from 'hooks/useInputSchema';
+
+import useLocale from 'hooks/useLocale';
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
@@ -17,18 +29,6 @@ import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
-import { IdeaPublicationStatus } from 'api/ideas/types';
-import useAddIdea from 'api/ideas/useAddIdea';
-import useAuthUser from 'api/me/useAuthUser';
-import { IPhases, IPhaseData } from 'api/phases/types';
-import usePhase from 'api/phases/usePhase';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
-import { IProject } from 'api/projects/types';
-
-import useInputSchema from 'hooks/useInputSchema';
-import useLocale from 'hooks/useLocale';
 
 import { Heading } from '../components/Heading';
 import IdeasNewMeta from '../IdeasNewMeta';

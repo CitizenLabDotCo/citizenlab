@@ -1,13 +1,13 @@
 import React from 'react';
 
+import useEvents from 'api/events/useEvents';
+import useProjectById from 'api/projects/useProjectById';
+
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useEvents from 'api/events/useEvents';
-import useProjectById from 'api/projects/useProjectById';
 
 import messages from './messages';
 import TimelineProject from './TimelineProject';

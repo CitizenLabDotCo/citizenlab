@@ -2,13 +2,13 @@ import React from 'react';
 
 import { useLocation } from 'react-router-dom';
 
+import { InputTerm } from 'api/phases/types';
+
 import Button from 'components/UI/Button';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { getInputTermMessage } from 'utils/i18n';
-
-import { InputTerm } from 'api/phases/types';
 
 import tracks from '../tracks';
 

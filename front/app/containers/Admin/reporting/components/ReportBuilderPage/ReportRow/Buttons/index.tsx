@@ -3,11 +3,11 @@ import React from 'react';
 import { colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
+import useReport from 'api/reports/useReport';
+
 import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useReport from 'api/reports/useReport';
 
 import messages from '../messages';
 

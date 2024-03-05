@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import { colors, Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
-import Button from 'components/UI/Button';
-
-import { FormattedMessage } from 'utils/cl-intl';
-
 import useReports from 'api/reports/useReports';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import CreateReportModal from '../../components/ReportBuilderPage/CreateReportModal';
 import EmptyState from '../../components/ReportBuilderPage/EmptyState';

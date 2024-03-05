@@ -8,14 +8,14 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
 } from 'api/custom_pages/types';
+
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 

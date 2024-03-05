@@ -9,8 +9,12 @@ import {
   Spinner,
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
-import { QueryParameters } from 'containers/IdeasIndexPage';
 import styled from 'styled-components';
+
+import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
+import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
+
+import { QueryParameters } from 'containers/IdeasIndexPage';
 
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
@@ -18,9 +22,6 @@ import SearchInput from 'components/UI/SearchInput';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
-import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
 import messages from '../messages';
 import SortFilterDropdown, { Sort } from '../shared/Filters/SortFilterDropdown';

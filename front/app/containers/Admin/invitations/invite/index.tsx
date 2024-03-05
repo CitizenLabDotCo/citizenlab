@@ -12,16 +12,6 @@ import { isString, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 import { Locale, IOption } from 'typings';
 
-import { Section, SectionField } from 'components/admin/Section';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import HelmetIntl from 'components/HelmetIntl';
-import Error from 'components/UI/Error';
-import Tabs from 'components/UI/Tabs';
-import Warning from 'components/UI/Warning';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { getBase64FromFile } from 'utils/fileUtils';
-
 import {
   IInviteError,
   INewBulkInvite,
@@ -35,6 +25,16 @@ import useBulkInviteXLSX from 'api/invites/useBulkInviteXLSX';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useExceedsSeats from 'hooks/useExceedsSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { Section, SectionField } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import HelmetIntl from 'components/HelmetIntl';
+import Error from 'components/UI/Error';
+import Tabs from 'components/UI/Tabs';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getBase64FromFile } from 'utils/fileUtils';
 
 import messages from '../messages';
 

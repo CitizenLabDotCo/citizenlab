@@ -3,6 +3,13 @@ import React, { useEffect } from 'react';
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
+import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
+import { IPhasePermissionAction } from 'api/permissions/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import T from 'components/T';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
@@ -10,13 +17,6 @@ import Modal from 'components/UI/Modal';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { MessageDescriptor, useIntl, FormattedMessage } from 'utils/cl-intl';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
-import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { IPhasePermissionAction } from 'api/permissions/types';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 import AuthProviders from './steps/AuthProviders';

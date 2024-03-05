@@ -1,6 +1,7 @@
-import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
 import { FormatMessage } from 'typings';
 import { string, object, boolean } from 'yup';
+
+import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
 
 import passwordInputMessages from 'components/UI/PasswordInput/messages';
 

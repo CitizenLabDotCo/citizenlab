@@ -1,10 +1,10 @@
 import { Locale } from 'typings';
 
+import { IFlatCustomField, IOptionsType } from 'api/custom_fields/types';
+
 import { formEndOption } from 'components/FormBuilder/utils';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IFlatCustomField, IOptionsType } from 'api/custom_fields/types';
 
 export const getOptionRule = (
   option: IOptionsType,

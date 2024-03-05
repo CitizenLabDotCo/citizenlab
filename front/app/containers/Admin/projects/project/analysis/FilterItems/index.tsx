@@ -8,11 +8,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import Tag from '../Tags/Tag';
 

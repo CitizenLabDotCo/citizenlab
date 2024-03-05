@@ -4,9 +4,9 @@ import { Box, colors, Title } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import { IPermissionData } from 'api/permissions/types';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import UserFieldSelection from '../../components/UserFieldSelection/UserFieldSelection';
 

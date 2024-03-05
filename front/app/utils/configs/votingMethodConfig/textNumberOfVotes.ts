@@ -1,8 +1,8 @@
-import { useIntl } from 'utils/cl-intl';
-
 import { IPhaseData } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 

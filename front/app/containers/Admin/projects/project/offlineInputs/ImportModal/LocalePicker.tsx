@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import Select from 'components/HookForm/Select';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import messages from './messages';
 

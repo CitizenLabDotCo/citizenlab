@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
 
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import {
   Bins,

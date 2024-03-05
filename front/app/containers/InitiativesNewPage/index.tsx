@@ -11,6 +11,8 @@ import GetInitiativesPermissions, {
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { ILocationInfo } from 'typings';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import PageLayout from 'components/InitiativeForm/PageLayout';
 import PageNotFound from 'components/PageNotFound';
 
@@ -19,8 +21,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { reverseGeocode } from 'utils/locationTools';
 import { isAdmin } from 'utils/permissions/roles';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
 import InitiativesNewMeta from './InitiativesNewMeta';

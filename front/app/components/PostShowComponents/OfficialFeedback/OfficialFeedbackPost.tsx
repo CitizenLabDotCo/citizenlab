@@ -11,19 +11,19 @@ import { FormattedDate } from 'react-intl';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
-import T from 'components/T';
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import useDeleteIdeaOfficialFeedback from 'api/idea_official_feedback/useDeleteIdeaOfficialFeedback';
 import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
 import useDeleteInitiativeOfficialFeedback from 'api/initiative_official_feedback/useDeleteInitiativeOfficialFeedback';
 
 import useLocalize from 'hooks/useLocalize';
+
+import T from 'components/T';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import OfficialFeedbackForm from './OfficialFeedbackForm';

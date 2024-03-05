@@ -8,14 +8,15 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 import { IOption } from 'typings';
+
+import { GroupMode } from 'api/graph_data_units/requestTypes';
+
+import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
 import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';
-
-import { GroupMode } from 'api/graph_data_units/requestTypes';
 
 import ProjectFilter from '../../_shared/ProjectFilter';
 import widgetMessages from '../../messages';

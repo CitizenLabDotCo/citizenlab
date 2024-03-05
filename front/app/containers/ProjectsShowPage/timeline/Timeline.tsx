@@ -16,15 +16,8 @@ import {
   isRtl,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-import messages from 'containers/ProjectsShowPage/messages';
 import { darken, rgba } from 'polished';
 import styled, { css } from 'styled-components';
-
-import { ScreenReaderOnly } from 'utils/a11y';
-import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -32,6 +25,14 @@ import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
+
+import messages from 'containers/ProjectsShowPage/messages';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import PhaseDescription from './PhaseDescription';
 import setPhaseURL from './setPhaseURL';

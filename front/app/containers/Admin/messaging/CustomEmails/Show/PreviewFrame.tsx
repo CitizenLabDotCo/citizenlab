@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { API_PATH } from 'containers/App/constants';
 import Frame from 'react-frame-component';
 import styled from 'styled-components';
+
+import { API_PATH } from 'containers/App/constants';
 
 import { getJwt } from 'utils/auth/jwt';
 

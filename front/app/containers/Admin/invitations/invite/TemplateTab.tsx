@@ -7,10 +7,11 @@ import {
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
 import { darken } from 'polished';
 import styled from 'styled-components';
+
+import { API_PATH } from 'containers/App/constants';
 
 import { SectionField, SectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';

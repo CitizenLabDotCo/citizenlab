@@ -2,13 +2,13 @@ import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
+import useUpdateUserCustomFieldsOption from 'api/user_custom_fields_options/useUpdateUserCustomFieldsOption';
+import useUserCustomFieldsOption from 'api/user_custom_fields_options/useUserCustomFieldsOption';
+
 import { Section, SectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import useUpdateUserCustomFieldsOption from 'api/user_custom_fields_options/useUpdateUserCustomFieldsOption';
-import useUserCustomFieldsOption from 'api/user_custom_fields_options/useUserCustomFieldsOption';
 
 import messages from '../messages';
 

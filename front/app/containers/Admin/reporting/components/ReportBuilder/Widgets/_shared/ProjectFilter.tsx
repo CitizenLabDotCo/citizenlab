@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import dashboardFilterMessages from 'containers/Admin/dashboard/components/filters/messages';
 
 import BaseProjectFilter from 'components/UI/ProjectFilter';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
-
-import useAuthUser from 'api/me/useAuthUser';
 
 interface Option {
   value: string | undefined;

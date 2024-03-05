@@ -2,6 +2,12 @@ import React, { memo, useCallback, useState } from 'react';
 
 import { Input } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
+import { get } from 'lodash-es';
+
+import meKeys from 'api/me/keys';
+import useAuthUser from 'api/me/useAuthUser';
+import usersKeys from 'api/users/keys';
+
 import {
   FormContainer,
   Form,
@@ -12,15 +18,10 @@ import {
   SubmitButton,
   CancelButton,
 } from 'containers/Authentication/steps/AuthProviders/styles';
-import { get } from 'lodash-es';
 
 import Error from 'components/UI/Error';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import meKeys from 'api/me/keys';
-import useAuthUser from 'api/me/useAuthUser';
-import usersKeys from 'api/users/keys';
 
 import { verifyBogus } from '../api/verification_methods/verify';
 

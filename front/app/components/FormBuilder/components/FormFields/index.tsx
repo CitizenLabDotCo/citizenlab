@@ -4,18 +4,18 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 
 import {
-  builtInFieldKeys,
-  FormBuilderConfig,
-} from 'components/FormBuilder/utils';
-
-import { isNilOrError } from 'utils/helperUtils';
-
-import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
 import useLocale from 'hooks/useLocale';
+
+import {
+  builtInFieldKeys,
+  FormBuilderConfig,
+} from 'components/FormBuilder/utils';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';

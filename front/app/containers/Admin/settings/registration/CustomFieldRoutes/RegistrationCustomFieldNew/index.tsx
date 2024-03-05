@@ -2,14 +2,14 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
+import useAddUserCustomField from 'api/user_custom_fields/useAddUserCustomField';
+
 import PageWrapper from 'components/admin/PageWrapper';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
-import useAddUserCustomField from 'api/user_custom_fields/useAddUserCustomField';
 
 import messages from '../messages';
 import RegistrationCustomFieldForm, {

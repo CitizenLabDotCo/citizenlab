@@ -1,8 +1,12 @@
 import React, { memo, useCallback } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import messages from 'containers/ProjectsShowPage/messages';
 import { WrappedComponentProps } from 'react-intl';
+
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
+
+import messages from 'containers/ProjectsShowPage/messages';
 
 import SharingButtons from 'components/Sharing/SharingButtons';
 import T from 'components/T';
@@ -10,9 +14,6 @@ import Modal from 'components/UI/Modal';
 
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
 
 interface Props {
   projectId: string;

@@ -1,10 +1,19 @@
 import React, { MouseEvent, ChangeEvent, ReactNode } from 'react';
 
 import { Td, colors } from '@citizenlab/cl2-component-library';
-import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import { uniq } from 'lodash-es';
 import { useDrag } from 'react-dnd';
 import { Icon } from 'semantic-ui-react';
+
+import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
+import { IInitiativeData } from 'api/initiatives/types';
+import useInitiatives from 'api/initiatives/useInitiatives';
+import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
+
+import useLocale from 'hooks/useLocale';
+
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 
 import events, {
   StatusChangeModalOpen,
@@ -16,14 +25,6 @@ import { trackEventByName } from 'utils/analytics';
 import { timeAgo } from 'utils/dateUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IInitiativeData } from 'api/initiatives/types';
-import useInitiatives from 'api/initiatives/useInitiatives';
-import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
-
-import useLocale from 'hooks/useLocale';
 
 import { TFilterMenu, ManagerType } from '../../..';
 import tracks from '../../../tracks';

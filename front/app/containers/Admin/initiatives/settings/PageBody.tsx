@@ -3,6 +3,8 @@ import React from 'react';
 import { pick } from 'lodash-es';
 import { Multiloc, Locale } from 'typings';
 
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import {
   SectionFieldPageContent,
   SubSectionTitleWithDescription,
@@ -12,8 +14,6 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import messages from '../messages';
 

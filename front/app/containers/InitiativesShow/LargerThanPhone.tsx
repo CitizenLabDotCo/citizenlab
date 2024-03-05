@@ -1,8 +1,18 @@
 import React, { useRef } from 'react';
 
 import { Box, media } from '@citizenlab/cl2-component-library';
-import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
 import styled from 'styled-components';
+
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
+
+import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
 
 import Outlet from 'components/Outlet';
 import Body from 'components/PostShowComponents/Body';
@@ -19,15 +29,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { getAddressOrFallbackDMS } from 'utils/map';
 import { usePermission } from 'utils/permissions';
-
-import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
-import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
-import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useAuthUser from 'api/me/useAuthUser';
-
-import useLocale from 'hooks/useLocale';
-import useLocalize from 'hooks/useLocalize';
 
 import ActionBar from './ActionBar';
 import CosponsorShipReminder from './CosponsorShipReminder';

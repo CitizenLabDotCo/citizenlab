@@ -1,5 +1,7 @@
 import React from 'react';
 
+import useLocalize from 'hooks/useLocalize';
+
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 
 import BannerButton, {
@@ -7,8 +9,6 @@ import BannerButton, {
 } from 'components/LandingPages/citizen/BannerButton';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import useLocalize from 'hooks/useLocalize';
 
 interface Props {
   buttonStyle: BannerButtonStyle;

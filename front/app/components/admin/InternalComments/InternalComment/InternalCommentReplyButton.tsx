@@ -3,13 +3,13 @@ import React from 'react';
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { IInternalCommentData } from 'api/internal_comments/types';
+import useUserById from 'api/users/useUserById';
+
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { IInternalCommentData } from 'api/internal_comments/types';
-import useUserById from 'api/users/useUserById';
 
 import { commentReplyButtonClicked } from '../events';
 import tracks from '../tracks';

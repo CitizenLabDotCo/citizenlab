@@ -12,6 +12,12 @@ import { get, set } from 'js-cookie';
 import { useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useAnalysis from 'api/analyses/useAnalysis';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
 import Button from 'components/UI/Button';
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
@@ -22,12 +28,6 @@ import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import ClickOutside from 'utils/containers/clickOutside';
-
-import useAnalysis from 'api/analyses/useAnalysis';
-import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
-
-import useLocalize from 'hooks/useLocalize';
 
 import FilterItems from '../FilterItems';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';

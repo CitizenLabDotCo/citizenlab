@@ -1,12 +1,12 @@
 import { object } from 'yup';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import {
   IFlatCustomField,
   LogicType,
   QuestionRuleType,
 } from 'api/custom_fields/types';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 export const isRuleValid = (
   rule: QuestionRuleType | undefined,

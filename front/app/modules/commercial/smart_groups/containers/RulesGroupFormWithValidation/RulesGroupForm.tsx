@@ -2,13 +2,14 @@ import React from 'react';
 
 import { Button, Label } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import adminUsersMessages from 'containers/Admin/users/messages';
-import { FooterContainer, Fill } from 'containers/Admin/users/NormalGroupForm';
 import { useForm, FormProvider } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { string, object, array, number } from 'yup';
+
+import adminUsersMessages from 'containers/Admin/users/messages';
+import { FooterContainer, Fill } from 'containers/Admin/users/NormalGroupForm';
 
 import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';

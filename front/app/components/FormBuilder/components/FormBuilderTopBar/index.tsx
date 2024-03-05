@@ -12,6 +12,12 @@ import { useFormContext } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
+
 import {
   FormBuilderConfig,
   getIsPostingEnabled,
@@ -22,12 +28,6 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocalize from 'hooks/useLocalize';
 
 import messages from '../messages';
 

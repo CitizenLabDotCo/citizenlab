@@ -4,12 +4,12 @@ import { media } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import { PublicationStatus } from 'api/projects/types';
+
 import ProjectCard from 'components/ProjectCard';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import { PublicationStatus } from 'api/projects/types';
 
 const Container = styled.div`
   display: flex;

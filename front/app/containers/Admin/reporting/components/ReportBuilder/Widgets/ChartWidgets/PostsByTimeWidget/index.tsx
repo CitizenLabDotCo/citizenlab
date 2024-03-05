@@ -1,7 +1,8 @@
 import React from 'react';
 
-import messages from 'containers/Admin/dashboard/messages';
 import moment from 'moment';
+
+import messages from 'containers/Admin/dashboard/messages';
 
 import { IResolution } from 'components/admin/ResolutionControl';
 

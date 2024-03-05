@@ -2,17 +2,17 @@ import React, { useMemo } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
-import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-
-import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
 import { useSurveyResults } from 'api/graph_data_units';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
+
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import NoData from '../_shared/NoData';
 import { BORDER } from '../constants';

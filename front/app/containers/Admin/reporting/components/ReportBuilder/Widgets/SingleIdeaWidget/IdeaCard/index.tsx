@@ -11,17 +11,17 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { getTextNumberOfVotes } from 'utils/configs/votingMethodConfig/textNumberOfVotes';
-
 import { IIdeaImageData } from 'api/idea_images/types';
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { getTextNumberOfVotes } from 'utils/configs/votingMethodConfig/textNumberOfVotes';
 
 import messages from '../../MostReactedIdeasWidget/messages';
 

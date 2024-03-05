@@ -3,13 +3,13 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
+import { MembershipType } from 'api/groups/types';
+
 import Outlet from 'components/Outlet';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { MembershipType } from 'api/groups/types';
 
 import messages from './messages';
 import { FirstRow, TextAndButtons } from './UsersHeader';

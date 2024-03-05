@@ -11,11 +11,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
-import { useIntl } from 'utils/cl-intl';
-
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 

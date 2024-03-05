@@ -2,14 +2,14 @@ import React, { memo } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNil } from 'utils/helperUtils';
-
 import useVoting from 'api/baskets_ideas/useVoting';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNil } from 'utils/helperUtils';
 
 import messages from '../_shared/messages';
 import WhiteBox from '../_shared/WhiteBox';

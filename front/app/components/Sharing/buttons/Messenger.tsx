@@ -3,11 +3,11 @@ import React from 'react';
 import { Button, colors } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import messages from '../messages';
 import tracks from '../tracks';

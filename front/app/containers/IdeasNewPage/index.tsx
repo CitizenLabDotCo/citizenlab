@@ -1,9 +1,15 @@
 import React from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { parse } from 'qs';
 import { useParams } from 'react-router-dom';
+
+import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
@@ -14,11 +20,6 @@ import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAuthUser from 'api/me/useAuthUser';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import SurveySubmittedNotice from './components/SurveySubmittedNotice';
 import IdeasNewIdeationForm from './IdeasNewIdeationForm';

@@ -11,6 +11,13 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useIdeaImage from 'api/idea_images/useIdeaImage';
+import { IIdea } from 'api/ideas/types';
+import useIdeaById from 'api/ideas/useIdeaById';
+import usePhase from 'api/phases/usePhase';
+
+import useLocalize from 'hooks/useLocalize';
+
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import FollowUnfollow from 'components/FollowUnfollow';
 
@@ -21,13 +28,6 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';
 import { scrollToElement } from 'utils/scroll';
-
-import useIdeaImage from 'api/idea_images/useIdeaImage';
-import { IIdea } from 'api/ideas/types';
-import useIdeaById from 'api/ideas/useIdeaById';
-import usePhase from 'api/phases/usePhase';
-
-import useLocalize from 'hooks/useLocalize';
 
 import Body from './Body';
 import CardImage from './CardImage';

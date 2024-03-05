@@ -1,11 +1,11 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import insightsKeys from 'api/analysis_insights/keys';
 import taggingKeys from 'api/analysis_taggings/keys';
 import tagsKeys from 'api/analysis_tags/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import backgroundTasksKeys from './keys';
 import { IBackgroundTasks, BackgroundTasksKeys } from './types';

@@ -1,17 +1,18 @@
 import React, { Suspense, useRef, useState } from 'react';
 
 import { Box, Button, media, isRtl } from '@citizenlab/cl2-component-library';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import styled from 'styled-components';
-
-import { trackEventByName } from 'utils/analytics';
-import { useIntl } from 'utils/cl-intl';
-import { isNilOrError, isPage } from 'utils/helperUtils';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useLocale from 'hooks/useLocale';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError, isPage } from 'utils/helperUtils';
 
 import messages from '../../../messages';
 import tracks from '../../../tracks';

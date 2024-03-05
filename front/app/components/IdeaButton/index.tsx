@@ -1,10 +1,17 @@
 import React, { memo } from 'react';
 
 import Tippy from '@tippyjs/react';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { stringify } from 'qs';
 import styled from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import { getInputTerm } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 import Button, { Props as ButtonProps } from 'components/UI/Button';
 
@@ -13,12 +20,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getInputTermMessage } from 'utils/i18n';
-
-import useAuthUser from 'api/me/useAuthUser';
-import { IPhaseData, ParticipationMethod } from 'api/phases/types';
-import usePhases from 'api/phases/usePhases';
-import { getInputTerm } from 'api/phases/utils';
-import useProjectById from 'api/projects/useProjectById';
 
 import messages from './messages';
 import TippyContent from './TippyContent';

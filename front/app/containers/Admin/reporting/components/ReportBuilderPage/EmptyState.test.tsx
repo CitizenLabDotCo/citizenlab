@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { render, screen } from 'utils/testUtils/rtl';
-
 import * as FeatureFlag from 'hooks/useFeatureFlag';
+
+import { render, screen } from 'utils/testUtils/rtl';
 
 import EmptyState from './EmptyState';
 

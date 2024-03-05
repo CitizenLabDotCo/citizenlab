@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 
+import useAnalytics from 'api/analytics/useAnalytics';
+
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useAnalytics from 'api/analytics/useAnalytics';
 
 import { parseStats, parseTimeSeries, parseExcelData } from './parse';
 import { query } from './query';

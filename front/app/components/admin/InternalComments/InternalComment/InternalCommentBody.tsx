@@ -4,6 +4,12 @@ import { Button } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 import { CLErrors } from 'typings';
 
+import { IUpdatedInternalComment } from 'api/internal_comments/types';
+import useInternalComment from 'api/internal_comments/useInternalComment';
+import useUpdateInternalComment from 'api/internal_comments/useUpdateInternalComment';
+
+import useLocale from 'hooks/useLocale';
+
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import {
   getCommentContent,
@@ -15,12 +21,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IUpdatedInternalComment } from 'api/internal_comments/types';
-import useInternalComment from 'api/internal_comments/useInternalComment';
-import useUpdateInternalComment from 'api/internal_comments/useUpdateInternalComment';
-
-import useLocale from 'hooks/useLocale';
 
 import { getMentionRoles } from '../utils';
 

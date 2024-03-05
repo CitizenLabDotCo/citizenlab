@@ -13,6 +13,14 @@ import {
 import { isEmpty } from 'lodash-es';
 import styled, { useTheme } from 'styled-components';
 
+import useAdminPublication from 'api/admin_publications/useAdminPublication';
+import {
+  getCardImageUrl,
+  CARD_IMAGE_ASPECT_RATIO,
+} from 'api/project_folder_images/types';
+import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+
 import AvatarBubbles from 'components/AvatarBubbles';
 import FollowUnfollow from 'components/FollowUnfollow';
 import { TLayout } from 'components/ProjectAndFolderCards';
@@ -24,14 +32,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAdminPublication from 'api/admin_publications/useAdminPublication';
-import {
-  getCardImageUrl,
-  CARD_IMAGE_ASPECT_RATIO,
-} from 'api/project_folder_images/types';
-import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import messages from './messages';
 import tracks from './tracks';

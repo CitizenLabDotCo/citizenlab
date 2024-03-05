@@ -6,10 +6,20 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import PostedBy from 'containers/IdeasShow/components/MetaInformation/PostedBy';
-import IdeaProposedBudget from 'containers/IdeasShow/components/ProposedBudget/IdeaProposedBudget';
 import { darken } from 'polished';
 import styled from 'styled-components';
+
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useIdeaById from 'api/ideas/useIdeaById';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+import PostedBy from 'containers/IdeasShow/components/MetaInformation/PostedBy';
+import IdeaProposedBudget from 'containers/IdeasShow/components/ProposedBudget/IdeaProposedBudget';
 
 import {
   Top,
@@ -30,16 +40,6 @@ import Link from 'utils/cl-router/Link';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import { isNilOrError } from 'utils/helperUtils';
 import { getAddressOrFallbackDMS } from 'utils/map';
-
-import useIdeaFiles from 'api/idea_files/useIdeaFiles';
-import useIdeaImages from 'api/idea_images/useIdeaImages';
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
-import useIdeaById from 'api/ideas/useIdeaById';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
-import useProjectById from 'api/projects/useProjectById';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from '../messages';
 

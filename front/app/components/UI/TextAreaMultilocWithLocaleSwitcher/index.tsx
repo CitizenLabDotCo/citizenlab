@@ -9,12 +9,12 @@ import {
 import styled from 'styled-components';
 import { Locale, Multiloc } from 'typings';
 
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+
 import TextArea, { Props as TextAreaProps } from 'components/UI/TextArea';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useLocale from 'hooks/useLocale';
 
 const Container = styled.div``;
 

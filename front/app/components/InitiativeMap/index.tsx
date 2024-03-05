@@ -6,11 +6,16 @@ import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Renderer from '@arcgis/core/renderers/SimpleRenderer';
 import MapView from '@arcgis/core/views/MapView';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { stringify } from 'qs';
 import { useSearchParams } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
+
+import { IInitiativeData } from 'api/initiatives/types';
+
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 import EsriMap from 'components/EsriMap';
 import {
@@ -26,10 +31,6 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-import { IInitiativeData } from 'api/initiatives/types';
-
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import InitiativeInformationOverlay from './components/InitiativeInformationOverlay';
 import StartInitiativeButton from './components/StartInitiativeButton';

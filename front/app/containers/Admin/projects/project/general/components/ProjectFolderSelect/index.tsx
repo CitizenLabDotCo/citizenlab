@@ -6,10 +6,17 @@ import {
   IconTooltip,
   Error,
 } from '@citizenlab/cl2-component-library';
-import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { IOption } from 'typings';
+
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
+import { IUpdatedProjectProperties } from 'api/projects/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
@@ -17,12 +24,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { isNilOrError, isNil } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
-
-import useAuthUser from 'api/me/useAuthUser';
-import useProjectFolders from 'api/project_folders/useProjectFolders';
-import { IUpdatedProjectProperties } from 'api/projects/types';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 

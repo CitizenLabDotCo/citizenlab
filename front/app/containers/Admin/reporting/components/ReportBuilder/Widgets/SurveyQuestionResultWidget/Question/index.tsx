@@ -2,14 +2,14 @@ import React from 'react';
 
 import { Title, Text, Box } from '@citizenlab/cl2-component-library';
 
-import Legend from 'components/admin/Graphs/Legend';
-
-import { useIntl } from 'utils/cl-intl';
-
 import { useSurveyQuestionResult } from 'api/graph_data_units';
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 
 import useLocalize from 'hooks/useLocalize';
+
+import Legend from 'components/admin/Graphs/Legend';
+
+import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 

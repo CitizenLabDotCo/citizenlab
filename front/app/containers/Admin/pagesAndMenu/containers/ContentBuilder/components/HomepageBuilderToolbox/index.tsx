@@ -2,6 +2,9 @@ import React from 'react';
 
 import { Locale } from 'typings';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -17,9 +20,6 @@ import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import messages from '../../messages';
 import Events from '../CraftComponents/Events';

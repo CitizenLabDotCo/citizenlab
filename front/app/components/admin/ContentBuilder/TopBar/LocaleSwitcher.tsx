@@ -7,9 +7,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Locale } from 'typings';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   selectedLocale: Locale | undefined;

@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import backgroundTasksKeys from './keys';
 import { AutoTaggingMethod, IBackgroundTask } from './types';

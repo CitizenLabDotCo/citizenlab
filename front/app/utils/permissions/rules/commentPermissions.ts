@@ -1,7 +1,7 @@
-import { definePermissionRule } from 'utils/permissions/permissions';
-
 import { ICommentData } from 'api/comments/types';
 import { IUser } from 'api/users/types';
+
+import { definePermissionRule } from 'utils/permissions/permissions';
 
 import { isAdmin, isProjectModerator } from '../roles';
 

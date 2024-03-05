@@ -8,10 +8,10 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-
 import { IQuestionPreCheck } from 'api/analysis_question_pre_check/types';
 import useAddAnalysisQuestionPreCheck from 'api/analysis_question_pre_check/useAddAnalysisQuestionPreCheck';
+
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 

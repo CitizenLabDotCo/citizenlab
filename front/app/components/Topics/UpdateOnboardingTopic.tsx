@@ -2,13 +2,13 @@ import React from 'react';
 
 import { Badge, colors, Button } from '@citizenlab/cl2-component-library';
 
+import { ITopicData } from 'api/topics/types';
+import useUpdateTopic from 'api/topics/useUpdateTopic';
+
 import T from 'components/T';
 import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
-
-import { ITopicData } from 'api/topics/types';
-import useUpdateTopic from 'api/topics/useUpdateTopic';
 
 import messages from './messages';
 

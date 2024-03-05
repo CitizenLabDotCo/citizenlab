@@ -1,9 +1,10 @@
-import messages from 'containers/Admin/dashboard/messages';
 import { FormatMessage } from 'typings';
 
-import { binBirthyear } from 'utils/dataUtils';
-
 import { UsersByBirthyearResponse } from 'api/graph_data_units/responseTypes';
+
+import messages from 'containers/Admin/dashboard/messages';
+
+import { binBirthyear } from 'utils/dataUtils';
 
 const convertToGraphFormat = (
   data: UsersByBirthyearResponse | undefined,

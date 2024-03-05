@@ -4,13 +4,13 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import Frame from 'react-frame-component';
 import styled from 'styled-components';
 
-import T from 'components/T';
-
-import { FormattedMessage } from 'utils/cl-intl';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { ICampaignExampleData } from 'api/campaign_examples/types';
 import { ICampaign } from 'api/campaigns/types';
+
+import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
 

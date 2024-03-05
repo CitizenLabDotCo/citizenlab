@@ -5,6 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
+import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
+
 import Input from 'components/HookForm/Input';
 import Button from 'components/UI/Button';
 
@@ -13,8 +15,6 @@ import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
-
-import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 
 import { State, SetError } from '../../typings';
 

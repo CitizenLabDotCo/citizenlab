@@ -3,9 +3,9 @@ import React, { memo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Locale } from 'typings';
 
-import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
-
 import useLocale from 'hooks/useLocale';
+
+import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
 
 const HomapageBuilderEditModePreview = React.forwardRef<
   HTMLIFrameElement,

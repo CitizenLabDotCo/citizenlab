@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
+
+import useProjectGroups from 'api/project_groups/useProjectGroups';
+
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-
-import useProjectGroups from 'api/project_groups/useProjectGroups';
 
 import messages from '../messages';
 

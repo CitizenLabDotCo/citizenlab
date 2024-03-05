@@ -14,6 +14,16 @@ import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { object, boolean, array, string, number } from 'yup';
 
+import {
+  IFlatCreateCustomField,
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+} from 'api/custom_fields/types';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
+import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
+import { isNewCustomFieldObject } from 'api/custom_fields/util';
+import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
+
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
 import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
 import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
@@ -30,16 +40,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import validateElementTitle from 'utils/yup/validateElementTitle';
 import validateLogic from 'utils/yup/validateLogic';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
-
-import {
-  IFlatCreateCustomField,
-  IFlatCustomField,
-  IFlatCustomFieldWithIndex,
-} from 'api/custom_fields/types';
-import useFormCustomFields from 'api/custom_fields/useCustomFields';
-import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
-import { isNewCustomFieldObject } from 'api/custom_fields/util';
-import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 import messages from '../messages';
 import { FormBuilderConfig } from '../utils';

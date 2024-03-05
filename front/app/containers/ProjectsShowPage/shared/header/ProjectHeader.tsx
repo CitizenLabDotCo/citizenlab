@@ -1,10 +1,16 @@
 import React, { memo } from 'react';
 
 import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 import messages from 'containers/ProjectsShowPage/messages';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
-import styled from 'styled-components';
 
 import ContentContainer from 'components/ContentContainer';
 import FollowUnfollow from 'components/FollowUnfollow';
@@ -19,11 +25,6 @@ import Button from 'components/UI/Button';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
-import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
 import ProjectInfo from './ProjectInfo';

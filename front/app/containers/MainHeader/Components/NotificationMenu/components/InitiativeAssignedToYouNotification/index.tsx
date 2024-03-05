@@ -1,12 +1,12 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 
+import { IInitiativeAssignedToYouNotificationData } from 'api/notifications/types';
+
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IInitiativeAssignedToYouNotificationData } from 'api/notifications/types';
 
 import messages from '../../messages';
 import NotificationWrapper from '../NotificationWrapper';

@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 
-import { useIntl } from 'utils/cl-intl';
-
 import useAnalytics from 'api/analytics/useAnalytics';
+
+import { useIntl } from 'utils/cl-intl';
 
 import { parseTimeSeries, parseStats, parseExcelData } from './parse';
 import { query } from './query';

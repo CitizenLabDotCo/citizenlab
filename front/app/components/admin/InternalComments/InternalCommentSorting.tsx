@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import { InternalCommentSort } from 'api/internal_comments/types';
+
 import FilterSelector from 'components/FilterSelector';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-
-import { InternalCommentSort } from 'api/internal_comments/types';
 
 interface Props {
   onChange: (value: InternalCommentSort) => void;

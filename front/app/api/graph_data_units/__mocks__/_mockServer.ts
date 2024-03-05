@@ -1,5 +1,6 @@
-import { API_PATH } from 'containers/App/constants';
 import { rest } from 'msw';
+
+import { API_PATH } from 'containers/App/constants';
 
 import { findResponseByQuery } from 'utils/storybook/findResponseByQuery';
 

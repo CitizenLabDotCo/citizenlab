@@ -11,14 +11,14 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import GoBackButton from 'components/UI/GoBackButton';
-
-import { FormattedMessage } from 'utils/cl-intl';
-
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
+
+import GoBackButton from 'components/UI/GoBackButton';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 

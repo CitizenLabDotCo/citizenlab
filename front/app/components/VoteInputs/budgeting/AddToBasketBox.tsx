@@ -10,15 +10,15 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
-import FormattedBudget from 'utils/currency/FormattedBudget';
-import { isNil } from 'utils/helperUtils';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import FormattedBudget from 'utils/currency/FormattedBudget';
+import { isNil } from 'utils/helperUtils';
 
 import AddToBasketButton from './AddToBasketButton';
 import messages from './messages';

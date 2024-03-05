@@ -10,6 +10,8 @@ import {
 import { useNode } from '@craftjs/core';
 import { Locale, Multiloc } from 'typings';
 
+import useLocalize from 'hooks/useLocalize';
+
 import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -17,8 +19,6 @@ import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocW
 import { injectIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { isValidUrl } from 'utils/validate';
-
-import useLocalize from 'hooks/useLocalize';
 
 import sharedMessages from '../../messages';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';

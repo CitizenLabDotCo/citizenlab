@@ -1,8 +1,9 @@
 import React from 'react';
 
-import TimeControl from 'containers/Admin/dashboard/components/TimeControl';
 import moment from 'moment';
 import { useSearchParams } from 'react-router-dom';
+
+import TimeControl from 'containers/Admin/dashboard/components/TimeControl';
 
 import { trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';

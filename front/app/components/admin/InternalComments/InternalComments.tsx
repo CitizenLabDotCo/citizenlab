@@ -3,13 +3,13 @@ import React, { memo, useEffect, useMemo, useState } from 'react';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { IInternalCommentData } from 'api/internal_comments/types';
+
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import Centerer from 'components/UI/Centerer';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
-
-import { IInternalCommentData } from 'api/internal_comments/types';
 
 import { commentAdded$, commentDeleted$ } from './events';
 import InternalParentComment from './InternalParentComment';

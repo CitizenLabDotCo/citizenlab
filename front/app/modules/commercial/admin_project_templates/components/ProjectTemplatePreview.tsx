@@ -12,6 +12,9 @@ import * as clipboard from 'clipboard-polyfill';
 import { lighten } from 'polished';
 import styled from 'styled-components';
 
+import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
+import useLocalize from 'hooks/useLocalize';
+
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Centerer from 'components/UI/Centerer';
@@ -19,9 +22,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
-import useLocalize from 'hooks/useLocalize';
 
 import tracks from '../tracks';
 import { client } from '../utils/apolloUtils';

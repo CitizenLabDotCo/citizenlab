@@ -5,9 +5,9 @@ import {
   InputMultilocWithLocaleSwitcherProps,
 } from '@citizenlab/cl2-component-library';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 export interface Props
   extends Omit<InputMultilocWithLocaleSwitcherProps, 'locales'> {}

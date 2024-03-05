@@ -1,6 +1,13 @@
 import React, { useEffect, FormEvent } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+
+import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
+import { hasRequiredFields } from 'api/custom_fields_json_form_schema/utils';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocale from 'hooks/useLocale';
+
 import {
   AuthenticationData,
   SetError,
@@ -13,12 +20,6 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
-import { hasRequiredFields } from 'api/custom_fields_json_form_schema/utils';
-import useAuthUser from 'api/me/useAuthUser';
-
-import useLocale from 'hooks/useLocale';
 
 import tracks from '../../tracks';
 

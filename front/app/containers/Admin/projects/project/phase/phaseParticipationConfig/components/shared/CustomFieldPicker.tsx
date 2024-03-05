@@ -3,12 +3,12 @@ import React, { useMemo } from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { FormatMessage, IOption } from 'typings';
 
+import { InputTerm } from 'api/phases/types';
+import { INPUT_TERMS } from 'api/phases/utils';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-
-import { InputTerm } from 'api/phases/types';
-import { INPUT_TERMS } from 'api/phases/utils';
 
 import messages from '../../../../messages';
 

@@ -3,15 +3,15 @@ import React, { useState } from 'react';
 import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
-import Button from 'components/UI/Button';
-
-import { injectIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import useLocalize from 'hooks/useLocalize';
+
+import Button from 'components/UI/Button';
+
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { Bins } from '../../../api/reference_distribution/types';
 import { FormValues } from '../../../utils/form';

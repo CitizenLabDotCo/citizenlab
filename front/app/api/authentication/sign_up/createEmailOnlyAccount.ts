@@ -1,9 +1,9 @@
 import { Locale } from 'typings';
 
+import { IUser } from 'api/users/types';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-
-import { IUser } from 'api/users/types';
 
 import { getAndSetToken } from '../sign_in_out/signIn';
 

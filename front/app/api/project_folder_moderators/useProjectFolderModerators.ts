@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import { IUsers } from 'api/users/types';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import projectFolderModeratorsKeys from './keys';
 import { ProjectFolderModeratorsKeys, ProjectForderParams } from './types';

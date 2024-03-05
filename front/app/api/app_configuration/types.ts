@@ -1,5 +1,6 @@
-import { API_PATH } from 'containers/App/constants';
 import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
+
+import { API_PATH } from 'containers/App/constants';
 
 import { TCategory } from 'components/ConsentManager/destinations';
 

@@ -16,6 +16,16 @@ import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { Locale, Multiloc, IOption } from 'typings';
 
+import adminPublicationsKeys from 'api/admin_publications/keys';
+import meKeys from 'api/me/keys';
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectFolders from 'api/project_folders/useProjectFolders';
+import projectsKeys from 'api/projects/keys';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
+import useLocalize from 'hooks/useLocalize';
+
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -34,16 +44,6 @@ import {
   userModeratesFolder,
   isProjectFolderModerator,
 } from 'utils/permissions/rules/projectFolderPermissions';
-
-import adminPublicationsKeys from 'api/admin_publications/keys';
-import meKeys from 'api/me/keys';
-import useAuthUser from 'api/me/useAuthUser';
-import useProjectFolders from 'api/project_folders/useProjectFolders';
-import projectsKeys from 'api/projects/keys';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
-import useLocalize from 'hooks/useLocalize';
 
 import tracks from '../../tracks';
 import { client } from '../../utils/apolloUtils';

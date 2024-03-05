@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
+import useCauses from 'api/causes/useCauses';
+import { exportVolunteers } from 'api/causes/util';
+
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useCauses from 'api/causes/useCauses';
-import { exportVolunteers } from 'api/causes/util';
 
 import messages from './messages';
 

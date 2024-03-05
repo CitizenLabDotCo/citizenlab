@@ -1,7 +1,7 @@
-import { queryClient } from 'utils/cl-react-query/queryClient';
-
 import { addInitiativeReaction } from 'api/initiative_reactions/useAddInitiativeReaction';
 import initiativesKeys from 'api/initiatives/keys';
+
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 export interface ReactionOnInitiativeParams {
   initiativeId: string;

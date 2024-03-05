@@ -6,6 +6,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc, UploadFile } from 'typings';
 import { mixed, object } from 'yup';
 
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+
 import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import ImagesDropzone from 'components/HookForm/ImagesDropzone';
@@ -18,8 +20,6 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
-
-import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 import messages from './messages';
 

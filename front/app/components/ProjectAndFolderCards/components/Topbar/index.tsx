@@ -12,19 +12,19 @@ import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
-import SearchInput from 'components/UI/SearchInput';
-
-import { ScreenReaderOnly } from 'utils/a11y';
-import { injectIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
-
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAreas from 'api/areas/useAreas';
 import useTopics from 'api/topics/useTopics';
 
 import useLocalize from 'hooks/useLocalize';
+
+import SearchInput from 'components/UI/SearchInput';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { PublicationTab } from '../..';
 

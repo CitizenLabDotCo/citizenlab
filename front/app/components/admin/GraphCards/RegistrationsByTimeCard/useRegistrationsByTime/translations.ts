@@ -1,5 +1,6 @@
-import dashboardMessages from 'containers/Admin/dashboard/messages';
 import { FormatMessage } from 'typings';
+
+import dashboardMessages from 'containers/Admin/dashboard/messages';
 
 import {
   getTimePeriodTranslations,

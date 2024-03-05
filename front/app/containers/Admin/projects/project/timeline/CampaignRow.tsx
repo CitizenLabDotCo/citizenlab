@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Toggle, Box, ListItem } from '@citizenlab/cl2-component-library';
+
 import CampaignDescription from 'containers/Admin/messaging/AutomatedEmails/CampaignDescription';
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 

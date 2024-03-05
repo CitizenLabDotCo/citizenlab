@@ -17,10 +17,10 @@ import BlotFormatter from 'quill-blot-formatter';
 import styled from 'styled-components';
 import { Locale } from 'typings';
 
+import usePrevious from 'hooks/usePrevious';
+
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-
-import usePrevious from 'hooks/usePrevious';
 
 import 'quill/dist/quill.snow.css';
 

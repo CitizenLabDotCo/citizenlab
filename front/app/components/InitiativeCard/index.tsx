@@ -8,18 +8,18 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useInitiativeImage from 'api/initiative_images/useInitiativeImage';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useUserById from 'api/users/useUserById';
+
+import useLocalize from 'hooks/useLocalize';
+
 import Author from 'components/Author';
 import FollowUnfollow from 'components/FollowUnfollow';
 import Card from 'components/UI/Card';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useInitiativeImage from 'api/initiative_images/useInitiativeImage';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useUserById from 'api/users/useUserById';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 import ReactionIndicator from './ReactionIndicator';

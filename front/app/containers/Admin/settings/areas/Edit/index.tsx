@@ -2,15 +2,15 @@ import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
+import useArea from 'api/areas/useArea';
+import useUpdateArea from 'api/areas/useUpdateArea';
+
 import { Section, SectionTitle } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useArea from 'api/areas/useArea';
-import useUpdateArea from 'api/areas/useUpdateArea';
 
 import AreaForm, { FormValues } from '../AreaForm';
 import messages from '../messages';

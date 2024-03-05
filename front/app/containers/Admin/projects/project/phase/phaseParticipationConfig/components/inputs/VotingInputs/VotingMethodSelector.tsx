@@ -7,11 +7,11 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
+import { VotingMethod } from 'api/phases/types';
+
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { useIntl } from 'utils/cl-intl';
-
-import { VotingMethod } from 'api/phases/types';
 
 import BudgetingIcon from './CardIcons/BudgetingIcon';
 import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';

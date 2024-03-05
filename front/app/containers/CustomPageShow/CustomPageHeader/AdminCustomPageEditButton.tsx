@@ -1,15 +1,16 @@
 import React from 'react';
 
-import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 import { WrappedComponentProps } from 'react-intl';
+
+import useAuthUser from 'api/me/useAuthUser';
+
+import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 
 import Button from 'components/UI/Button';
 
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
-
-import useAuthUser from 'api/me/useAuthUser';
 
 import messages from '../messages';
 

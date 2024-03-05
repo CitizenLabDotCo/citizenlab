@@ -1,21 +1,22 @@
 import React, { memo } from 'react';
 
 import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
+import { FormattedDate } from 'react-intl';
+import styled from 'styled-components';
+
+import useIdeaById from 'api/ideas/useIdeaById';
+import useUserById from 'api/users/useUserById';
+
 import {
   Header,
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
-import { FormattedDate } from 'react-intl';
-import styled from 'styled-components';
 
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useIdeaById from 'api/ideas/useIdeaById';
-import useUserById from 'api/users/useUserById';
 
 import messages from './messages';
 

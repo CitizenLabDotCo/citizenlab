@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { render, screen } from 'utils/testUtils/rtl';
-
 import { IUserData } from 'api/users/types';
+
+import { render, screen } from 'utils/testUtils/rtl';
 
 import Konveio from './Konveio';
 

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { ModuleConfiguration } from 'utils/moduleUtils';
-
 import { TVerificationMethodName } from 'api/verification_methods/types';
 import { isLastVerificationMethod } from 'api/verification_methods/util';
+
+import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const NemlogInButton = React.lazy(() => import('./components/NemlogInButton'));
 

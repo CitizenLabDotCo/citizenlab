@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import initiativesKeys from 'api/initiatives/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import { IInitiativeReaction } from './types';
 

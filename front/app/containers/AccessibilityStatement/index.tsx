@@ -1,14 +1,15 @@
 import React, { memo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { Helmet } from 'react-helmet';
+import { WrappedComponentProps } from 'react-intl';
+
 import {
   Container,
   StyledContentContainer,
   PageContent,
   PageTitle,
 } from 'containers/PagesShowPage';
-import { Helmet } from 'react-helmet';
-import { WrappedComponentProps } from 'react-intl';
 
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';

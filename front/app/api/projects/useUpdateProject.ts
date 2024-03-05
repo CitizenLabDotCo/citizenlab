@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrorsWrapper } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
 import areasKeys from 'api/areas/keys';
 import meKeys from 'api/me/keys';
 import topicsKeys from 'api/topics/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import projectsKeys from './keys';
 import { IProject, IUpdatedProjectProperties } from './types';

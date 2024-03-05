@@ -1,9 +1,10 @@
-import messages from 'containers/Admin/dashboard/messages';
 import { FormatMessage } from 'typings';
 
-import { roundPercentages } from 'utils/math';
-
 import { genderOptions } from 'api/users_by_gender/types';
+
+import messages from 'containers/Admin/dashboard/messages';
+
+import { roundPercentages } from 'utils/math';
 
 import { GenderSerie } from './typings';
 

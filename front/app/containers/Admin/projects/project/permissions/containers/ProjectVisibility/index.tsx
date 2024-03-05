@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 import { fontSizes, Radio } from '@citizenlab/cl2-component-library';
-import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
+
+import useProjectById from 'api/projects/useProjectById';
+import useUpdateProject from 'api/projects/useUpdateProject';
+
+import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 
 import {
   Section,
@@ -12,9 +16,6 @@ import {
 } from 'components/admin/Section';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-
-import useProjectById from 'api/projects/useProjectById';
-import useUpdateProject from 'api/projects/useUpdateProject';
 
 import messages from './messages';
 import ProjectGroupsList from './ProjectGroupsList';

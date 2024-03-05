@@ -1,10 +1,10 @@
 import { isEqual } from 'lodash-es';
 
-import { isValidEmail } from 'utils/validate';
-
 import { IIdeas } from 'api/ideas/types';
 import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
 import { IUser } from 'api/users/types';
+
+import { isValidEmail } from 'utils/validate';
 
 import { UserFormData } from './typings';
 

@@ -1,14 +1,14 @@
 import React from 'react';
 
-import assignMultipleVotesInputMessages from 'components/VoteInputs/multiple/AssignMultipleVotesInput/messages';
-
-import { useIntl } from 'utils/cl-intl';
-import { roundPercentage } from 'utils/math';
-
 import { IIdeaData } from 'api/ideas/types';
 import { IPhase } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import assignMultipleVotesInputMessages from 'components/VoteInputs/multiple/AssignMultipleVotesInput/messages';
+
+import { useIntl } from 'utils/cl-intl';
+import { roundPercentage } from 'utils/math';
 
 import messages from './messages';
 import ProgressBarWrapper from './ProgressBarWrapper';

@@ -13,10 +13,10 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { CLError } from 'typings';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IInviteError } from 'api/invites/types';
+
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
 

@@ -6,14 +6,15 @@ import {
   useBreakpoint,
   Text,
 } from '@citizenlab/cl2-component-library';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
 import InitiativesCTABox from 'containers/HomePage/InitiativesCTABox';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import messages from './messages';
 

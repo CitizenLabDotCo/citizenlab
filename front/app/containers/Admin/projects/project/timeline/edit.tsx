@@ -8,25 +8,11 @@ import {
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
-import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
 import { isEmpty } from 'lodash-es';
 import moment, { Moment } from 'moment';
 import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
-import DateRangePicker from 'components/admin/DateRangePicker';
-import {
-  Section,
-  SectionField,
-  SubSectionTitle,
-} from 'components/admin/Section';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import Error from 'components/UI/Error';
-import FileUploader from 'components/UI/FileUploader';
-import { FileType } from 'components/UI/FileUploader/FileDisplay';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -50,6 +36,20 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocalize from 'hooks/useLocalize';
+import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
+import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
+import DateRangePicker from 'components/admin/DateRangePicker';
+import {
+  Section,
+  SectionField,
+  SubSectionTitle,
+} from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import Error from 'components/UI/Error';
+import FileUploader from 'components/UI/FileUploader';
+import { FileType } from 'components/UI/FileUploader/FileDisplay';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 import PhaseParticipationConfig, {
   IPhaseParticipationConfig,

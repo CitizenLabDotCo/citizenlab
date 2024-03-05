@@ -2,14 +2,14 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import { isNilOrError } from 'utils/helperUtils';
-import globalMessages from 'utils/messages';
-
 import usePhase from 'api/phases/usePhase';
 import usePollQuestions from 'api/poll_questions/usePollQuestions';
 import { PollDisabledReason } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { isNilOrError } from 'utils/helperUtils';
+import globalMessages from 'utils/messages';
 
 import FormCompleted from './FormCompleted';
 import messages from './messages';

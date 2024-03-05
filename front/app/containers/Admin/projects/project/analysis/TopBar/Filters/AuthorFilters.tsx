@@ -9,14 +9,14 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
-import { trackEventByName } from 'utils/analytics';
-import { useIntl } from 'utils/cl-intl';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import tracks from '../../tracks';
 import { handleArraySearchParam } from '../../util';

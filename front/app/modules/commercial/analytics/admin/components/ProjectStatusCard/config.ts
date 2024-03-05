@@ -1,10 +1,10 @@
+import { Query, QuerySchema } from 'api/analytics/types';
+
 import { formatCountValue } from 'components/admin/GraphCards/_utils/parse';
 import {
   getDateFilter,
   getProjectFilter,
 } from 'components/admin/GraphCards/_utils/query';
-
-import { Query, QuerySchema } from 'api/analytics/types';
 
 import { underscoreCase } from '../StatCard/useStatCard/parse';
 import {

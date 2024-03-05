@@ -4,12 +4,12 @@ import { media } from '@citizenlab/cl2-component-library';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import styled from 'styled-components';
 
+import { IInitiativeData } from 'api/initiatives/types';
+
 import FeatureFlag from 'components/FeatureFlag';
 import TranslateButton from 'components/UI/TranslateButton';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IInitiativeData } from 'api/initiatives/types';
 
 const StyledTranslateButton = styled(TranslateButton)`
   ${media.phone`

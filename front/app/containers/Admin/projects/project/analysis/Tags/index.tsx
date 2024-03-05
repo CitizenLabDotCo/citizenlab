@@ -16,15 +16,15 @@ import { isEqual, omit, uniq } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import inputsKeys from 'api/analysis_inputs/keys';
+import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+
 import Modal from 'components/UI/Modal';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-import inputsKeys from 'api/analysis_inputs/keys';
-import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import tracks from '../tracks';

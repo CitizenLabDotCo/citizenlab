@@ -1,10 +1,15 @@
 import React from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
-import ProjectInfo from 'containers/ProjectsShowPage/shared/header/ProjectInfo';
 import { isEmpty } from 'lodash-es';
 import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import { Multiloc } from 'typings';
+
+import useProjectFiles from 'api/project_files/useProjectFiles';
+
+import useLocalize from 'hooks/useLocalize';
+
+import ProjectInfo from 'containers/ProjectsShowPage/shared/header/ProjectInfo';
 
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
@@ -12,10 +17,6 @@ import FileAttachments from 'components/UI/FileAttachments';
 
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useProjectFiles from 'api/project_files/useProjectFiles';
-
-import useLocalize from 'hooks/useLocalize';
 
 import Editor from '../../Editor';
 

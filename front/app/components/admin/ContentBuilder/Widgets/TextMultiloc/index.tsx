@@ -5,10 +5,10 @@ import { useNode } from '@craftjs/core';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
+import useLocalize from 'hooks/useLocalize';
+
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-
-import useLocalize from 'hooks/useLocalize';
 
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 import PageBreakBox from '../PageBreakBox';

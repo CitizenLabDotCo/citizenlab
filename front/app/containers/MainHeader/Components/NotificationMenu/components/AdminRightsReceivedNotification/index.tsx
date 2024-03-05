@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import { IAdminRightsReceivedNotificationData } from 'api/notifications/types';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
 import NotificationWrapper from '../NotificationWrapper';

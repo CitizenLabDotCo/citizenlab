@@ -3,12 +3,12 @@ import React, { memo } from 'react';
 import { useWindowSize, Box, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { IProjectFolderData } from 'api/project_folders/types';
+
 import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
-
-import { IProjectFolderData } from 'api/project_folders/types';
 
 import ProjectFolderShareButton from '../../components/ProjectFolders/ProjectFolderShareButton';
 

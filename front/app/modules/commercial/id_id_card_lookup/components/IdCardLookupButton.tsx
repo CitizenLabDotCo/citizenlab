@@ -1,12 +1,12 @@
 import React from 'react';
 
-import T from 'components/T';
-import VerificationMethodButton from 'components/UI/VerificationMethodButton';
-
 import {
   IDLookupMethod,
   TVerificationMethod,
 } from 'api/verification_methods/types';
+
+import T from 'components/T';
+import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
 interface Props {
   method: IDLookupMethod;

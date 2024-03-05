@@ -7,11 +7,19 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-import EventsViewer from 'containers/EventsPage/EventsViewer';
 import JSConfetti from 'js-confetti';
 import { isError } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { VotingContext } from 'api/baskets_ideas/useVoting';
+import useEvents from 'api/events/useEvents';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
+
+import { IProjectData } from 'api/projects/types';
+import EventsViewer from 'containers/EventsPage/EventsViewer';
 
 import ErrorBoundary from 'components/ErrorBoundary';
 import PageNotFound from 'components/PageNotFound';
@@ -26,12 +34,6 @@ import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
 import messages from 'utils/messages';
 import { scrollToElement } from 'utils/scroll';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { VotingContext } from 'api/baskets_ideas/useVoting';
-import useEvents from 'api/events/useEvents';
-import useAuthUser from 'api/me/useAuthUser';
-import usePhases from 'api/phases/usePhases';
-import { IProjectData } from 'api/projects/types';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocale from 'hooks/useLocale';

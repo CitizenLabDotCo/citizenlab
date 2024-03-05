@@ -8,19 +8,20 @@ import {
   Title,
   CardButton,
 } from '@citizenlab/cl2-component-library';
-import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 import styled from 'styled-components';
-
-import MultipleSelect from 'components/UI/MultipleSelect';
-import Warning from 'components/UI/Warning';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import useGroups from 'api/groups/useGroups';
 import { IPermissionData } from 'api/permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
+
+import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
+
+import MultipleSelect from 'components/UI/MultipleSelect';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 

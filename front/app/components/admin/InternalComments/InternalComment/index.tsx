@@ -9,13 +9,13 @@ import {
 import { useLocation } from 'react-router-dom';
 import styled, { keyframes, css } from 'styled-components';
 
+import useInternalComment from 'api/internal_comments/useInternalComment';
+import useUserById from 'api/users/useUserById';
+
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { scrollToElement } from 'utils/scroll';
-
-import useInternalComment from 'api/internal_comments/useInternalComment';
-import useUserById from 'api/users/useUserById';
 
 import InternalCommentBody from './InternalCommentBody';
 import InternalCommentFooter from './InternalCommentFooter';

@@ -13,6 +13,11 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { InsertConfigurationOptions } from 'typings';
 
+import useIdeasCount from 'api/idea_count/useIdeasCount';
+import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
+import useAuthUser from 'api/me/useAuthUser';
+import { IUser } from 'api/users/types';
+
 import Outlet from 'components/Outlet';
 
 import { useIntl } from 'utils/cl-intl';
@@ -20,11 +25,6 @@ import Link from 'utils/cl-router/Link';
 import { isPage } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { isAdmin } from 'utils/permissions/roles';
-
-import useIdeasCount from 'api/idea_count/useIdeasCount';
-import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
-import useAuthUser from 'api/me/useAuthUser';
-import { IUser } from 'api/users/types';
 
 import MenuItem from './MenuItem';
 import messages from './messages';

@@ -1,9 +1,10 @@
 import React from 'react';
 
 import { Icon, colors } from '@citizenlab/cl2-component-library';
-import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import reactStringReplace from 'react-string-replace';
 import styled from 'styled-components';
+
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
 
 import { trackEventByName } from 'utils/analytics';
 import Link from 'utils/cl-router/Link';

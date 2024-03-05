@@ -4,6 +4,11 @@ import { fontSizes } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
+
 import FormattedAnchor from 'components/FormattedAnchor';
 import Button from 'components/UI/Button';
 
@@ -12,11 +17,6 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 

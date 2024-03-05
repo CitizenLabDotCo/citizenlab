@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
+import { ICustomFieldInputType } from 'api/custom_fields/types';
+
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import { ICustomFieldInputType } from 'api/custom_fields/types';
 
 import messages from '../messages';
 

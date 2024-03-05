@@ -4,13 +4,13 @@ import { Spinner, Button, media } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
+import { IInitiativeData } from 'api/initiatives/types';
+
 import InitiativeCard from 'components/InitiativeCard';
 import Centerer from 'components/UI/Centerer';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { IInitiativeData } from 'api/initiatives/types';
 
 import messages from './messages';
 import tracks from './tracks';

@@ -15,11 +15,20 @@ import {
   isRtl,
   media,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
+import styled from 'styled-components';
+
+import useEvents from 'api/events/useEvents';
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhaseData } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
+
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 import messages from 'containers/ProjectsShowPage/messages';
 import setPhaseUrl from 'containers/ProjectsShowPage/timeline/setPhaseURL';
-import moment from 'moment';
-import styled from 'styled-components';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -29,14 +38,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
 import { isAdmin } from 'utils/permissions/roles';
 import { scrollToElement } from 'utils/scroll';
-
-import useEvents from 'api/events/useEvents';
-import useAuthUser from 'api/me/useAuthUser';
-import { IPhaseData } from 'api/phases/types';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
-import useProjectById from 'api/projects/useProjectById';
-import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 import ProjectActionButtons from '../ProjectActionButtons';
 import ProjectSharingModal from '../ProjectSharingModal';

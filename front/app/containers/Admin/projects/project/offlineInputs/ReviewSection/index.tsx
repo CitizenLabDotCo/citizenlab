@@ -9,12 +9,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import EmptyState from './EmptyState';
 import IdeaEditor from './IdeaEditor';

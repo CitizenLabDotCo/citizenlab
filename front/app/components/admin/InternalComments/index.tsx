@@ -11,15 +11,15 @@ import {
 import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
 
-import commentsMessages from 'components/PostShowComponents/Comments/messages';
-
-import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
-
 import useIdeaById from 'api/ideas/useIdeaById';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import { InternalCommentSort } from 'api/internal_comments/types';
 import useInternalComments from 'api/internal_comments/useInternalComments';
+
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import InternalComments from './InternalComments';
 import InternalCommentSorting from './InternalCommentSorting';

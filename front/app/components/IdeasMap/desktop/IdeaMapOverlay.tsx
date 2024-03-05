@@ -4,12 +4,13 @@ import {
   useWindowSize,
   defaultCardStyle,
 } from '@citizenlab/cl2-component-library';
-import IdeasShow from 'containers/IdeasShow';
-import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 
 import useProjectById from 'api/projects/useProjectById';
+
+import IdeasShow from 'containers/IdeasShow';
+import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 
 import MapIdeasList from './MapIdeasList';
 

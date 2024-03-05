@@ -1,13 +1,13 @@
-import { GetRequirements } from 'containers/Authentication/typings';
-
-import { queryClient } from 'utils/cl-react-query/queryClient';
-
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import {
   updateUser,
   invalidateCacheAfterUpdateUser,
 } from 'api/users/useUpdateUser';
+
+import { GetRequirements } from 'containers/Authentication/typings';
+
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import { Step } from './typings';
 import { askCustomFields, showOnboarding } from './utils';

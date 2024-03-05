@@ -2,10 +2,10 @@ import React from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import messages from './messages';
 

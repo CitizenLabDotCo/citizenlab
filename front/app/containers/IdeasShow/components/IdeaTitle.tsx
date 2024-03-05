@@ -3,14 +3,14 @@ import React from 'react';
 import { Box, isRtl, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Title from 'components/PostShowComponents/Title';
-
-import { isNilOrError } from 'utils/helperUtils';
-
 import { IIdea } from 'api/ideas/types';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
+
+import Title from 'components/PostShowComponents/Title';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 import IdeaMoreActions from './IdeaMoreActions';
 

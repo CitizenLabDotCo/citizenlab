@@ -4,14 +4,14 @@ import { Box, isRtl } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { IIdeaData } from 'api/ideas/types';
+import { IProjectData } from 'api/projects/types';
+
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-
-import { IIdeaData } from 'api/ideas/types';
-import { IProjectData } from 'api/projects/types';
 
 import messages from '../messages';
 

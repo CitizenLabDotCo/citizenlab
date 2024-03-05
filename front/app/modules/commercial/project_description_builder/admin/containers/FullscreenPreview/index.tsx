@@ -6,16 +6,16 @@ import useProjectDescriptionBuilderLayout from 'modules/commercial/project_descr
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Locale } from 'typings';
 
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
+
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import useProjectById from 'api/projects/useProjectById';
-
-import useLocale from 'hooks/useLocale';
-import useLocalize from 'hooks/useLocalize';
 
 import Editor from '../../components/Editor';
 

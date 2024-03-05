@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 
 import { Button, Icon } from 'semantic-ui-react';
 
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
+
 import WarningModal from 'components/WarningModal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
-import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
 import { ManagerType } from '../..';
 

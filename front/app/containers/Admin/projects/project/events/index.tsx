@@ -5,6 +5,9 @@ import moment from 'moment';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
+import useDeleteEvent from 'api/events/useDeleteEvent';
+import useEvents from 'api/events/useEvents';
+
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import T from 'components/T';
@@ -14,9 +17,6 @@ import Warning from 'components/UI/Warning';
 import { injectIntl, FormattedMessage, useIntl } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useDeleteEvent from 'api/events/useDeleteEvent';
-import useEvents from 'api/events/useEvents';
 
 import messages from './messages';
 

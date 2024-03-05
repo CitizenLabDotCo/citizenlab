@@ -3,17 +3,17 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
+import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import { Section, SectionTitle } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
-import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';
 

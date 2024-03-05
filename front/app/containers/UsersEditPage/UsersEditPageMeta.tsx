@@ -2,15 +2,15 @@ import React from 'react';
 
 import { Helmet } from 'react-helmet';
 
-import { useIntl } from 'utils/cl-intl';
-import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
-import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IUser } from 'api/users/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocalize from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 import messages from './messages';
 

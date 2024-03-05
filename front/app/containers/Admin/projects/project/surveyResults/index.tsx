@@ -3,15 +3,15 @@ import React, { Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import usePhases from 'api/phases/usePhases';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import usePhases from 'api/phases/usePhases';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from '../messages';
 

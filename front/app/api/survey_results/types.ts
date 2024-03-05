@@ -1,8 +1,8 @@
 import { ImageSizes, Multiloc } from 'typings';
 
-import { Keys } from 'utils/cl-react-query/types';
-
 import { ICustomFieldInputType } from 'api/custom_fields/types';
+
+import { Keys } from 'utils/cl-react-query/types';
 
 import surveyResultsKeys from './keys';
 

@@ -8,22 +8,23 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-import IdeasShow from 'containers/IdeasShow';
-import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-
-import PageNotFound from 'components/PageNotFound';
-import Unauthorized from 'components/Unauthorized';
-import VerticalCenterer from 'components/VerticalCenterer';
-
-import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
+
+import IdeasShow from 'containers/IdeasShow';
+import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
+
+import PageNotFound from 'components/PageNotFound';
+import Unauthorized from 'components/Unauthorized';
+import VerticalCenterer from 'components/VerticalCenterer';
+
+import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 

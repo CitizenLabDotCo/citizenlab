@@ -4,15 +4,15 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { isArray, includes, isString, isEmpty } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
+import { MembershipType } from 'api/groups/types';
+import { IQueryParameters } from 'api/users/types';
+import useUsers from 'api/users/useUsers';
+
 import Error from 'components/UI/Error';
 
 import eventEmitter from 'utils/eventEmitter';
 import { isNil } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-
-import { MembershipType } from 'api/groups/types';
-import { IQueryParameters } from 'api/users/types';
-import useUsers from 'api/users/useUsers';
 
 import events from './events';
 import NoUsers from './NoUsers';

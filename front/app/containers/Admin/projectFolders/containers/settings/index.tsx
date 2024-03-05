@@ -3,6 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -10,8 +12,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import messages from '../messages';
 

@@ -2,19 +2,20 @@ import React, { memo, useCallback, useMemo } from 'react';
 
 import { Button, colors, isRtl } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-import messages from 'containers/ProjectsShowPage/messages';
 import { findIndex } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { trackEventByName } from 'utils/analytics';
-import { injectIntl } from 'utils/cl-intl';
-
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase, getLatestRelevantPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
+
+import messages from 'containers/ProjectsShowPage/messages';
+
+import { trackEventByName } from 'utils/analytics';
+import { injectIntl } from 'utils/cl-intl';
 
 import { isValidPhase } from '../phaseParam';
 

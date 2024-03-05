@@ -1,5 +1,7 @@
 import React from 'react';
 
+import usePollQuestions from 'api/poll_questions/usePollQuestions';
+
 import {
   GraphCard,
   GraphCardInner,
@@ -10,8 +12,6 @@ import { SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import usePollQuestions from 'api/poll_questions/usePollQuestions';
 
 import messages from './messages';
 import QuestionReport from './QuestionReport';

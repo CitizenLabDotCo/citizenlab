@@ -11,11 +11,11 @@ import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
+import useLocalize from 'hooks/useLocalize';
+
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useLocalize from 'hooks/useLocalize';
 
 import { StyledBackgroundImage } from '../../containers/Dashboard/EmptyState';
 

@@ -4,11 +4,11 @@ import MapView from '@arcgis/core/views/MapView';
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 
-import { Spacer } from 'components/UI/FormComponents';
-
 import { IIdeaData } from 'api/ideas/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { Spacer } from 'components/UI/FormComponents';
 
 type Props = {
   portalElement: HTMLDivElement;

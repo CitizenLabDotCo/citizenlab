@@ -2,14 +2,14 @@ import React from 'react';
 
 import moment from 'moment';
 
-import { isAdmin } from 'utils/permissions/roles';
-
 import { Query } from 'api/analytics/types';
 import useAnalytics from 'api/analytics/useAnalytics';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { isAdmin } from 'utils/permissions/roles';
 
 import { Response } from '../../components/VisitorsLanguageCard/useVisitorLanguages/typings';
 

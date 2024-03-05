@@ -1,11 +1,20 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
-import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import { PreviousPathnameContext } from 'context';
 import { omit } from 'lodash-es';
 import { Multiloc } from 'typings';
+
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import { IIdeaUpdate } from 'api/ideas/types';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+
+import useAuthUser from 'api/me/useAuthUser';
+import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
+import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
@@ -19,13 +28,6 @@ import { isError, isNilOrError } from 'utils/helperUtils';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { usePermission } from 'utils/permissions';
 
-import useIdeaFiles from 'api/idea_files/useIdeaFiles';
-import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
-import useIdeaImages from 'api/idea_images/useIdeaImages';
-import { IIdeaUpdate } from 'api/ideas/types';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
-import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
 import useInputSchema from 'hooks/useInputSchema';

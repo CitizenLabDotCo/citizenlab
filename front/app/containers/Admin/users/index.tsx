@@ -4,6 +4,11 @@ import { media } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { IGroupData, MembershipType } from 'api/groups/types';
+import useAddGroup from 'api/groups/useAddGroup';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import HelmetIntl from 'components/HelmetIntl';
 import Outlet from 'components/Outlet';
 import Modal from 'components/UI/Modal';
@@ -40,11 +45,6 @@ const ChildWrapper = styled.div`
 `;
 
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-
-import { IGroupData, MembershipType } from 'api/groups/types';
-import useAddGroup from 'api/groups/useAddGroup';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import GroupCreationStep1 from './GroupCreationStep1';
 import GroupsListPanel from './GroupsListPanel';

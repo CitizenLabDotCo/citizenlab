@@ -1,17 +1,18 @@
 import React from 'react';
 
 import { ButtonStyles } from '@citizenlab/cl2-component-library';
+import { stringify } from 'qs';
+
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import { stringify } from 'qs';
 
 import Button from 'components/UI/Button';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import messages from './messages';
 

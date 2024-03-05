@@ -10,13 +10,6 @@ import {
 import rocket from 'assets/img/rocket.png';
 import { MessageDescriptor } from 'react-intl';
 
-import SharingButtons from 'components/Sharing/SharingButtons';
-import Centerer from 'components/UI/Centerer';
-
-import { trackEventByName } from 'utils/analytics';
-import { useIntl } from 'utils/cl-intl';
-import { getInputTermMessage } from 'utils/i18n';
-
 import useIdeaById from 'api/ideas/useIdeaById';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAuthUser from 'api/me/useAuthUser';
@@ -26,6 +19,13 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
+
+import SharingButtons from 'components/Sharing/SharingButtons';
+import Centerer from 'components/UI/Centerer';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import { getInputTermMessage } from 'utils/i18n';
 
 import messages from './messages';
 import tracks from './tracks';

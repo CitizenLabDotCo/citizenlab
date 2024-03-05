@@ -4,9 +4,9 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import { snakeCase } from 'lodash-es';
 import { Locale } from 'typings';
 
-import T from 'components/T';
-
 import { Result } from 'api/survey_results/types';
+
+import T from 'components/T';
 
 import Files from '../Files';
 

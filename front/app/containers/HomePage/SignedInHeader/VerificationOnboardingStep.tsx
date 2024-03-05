@@ -1,14 +1,15 @@
 import React from 'react';
 
 import { Icon, colors } from '@citizenlab/cl2-component-library';
-import { triggerVerificationOnly } from 'containers/Authentication/events';
 import styled from 'styled-components';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
+
+import { triggerVerificationOnly } from 'containers/Authentication/events';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 

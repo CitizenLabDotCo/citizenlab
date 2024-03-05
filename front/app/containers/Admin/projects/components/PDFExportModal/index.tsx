@@ -5,14 +5,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object, boolean, string } from 'yup';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Checkbox from 'components/HookForm/Checkbox';
 import Feedback from 'components/HookForm/Feedback';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import PhaseSelector from '../PhaseSelector';
 

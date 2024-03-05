@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import useLocale from 'hooks/useLocale';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 import { SetError, State } from '../../typings';
 

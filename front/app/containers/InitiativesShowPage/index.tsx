@@ -1,19 +1,20 @@
 import React from 'react';
 
 import { Spinner, media } from '@citizenlab/cl2-component-library';
-import InitiativesShow from 'containers/InitiativesShow';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+
+import useInitiativeBySlug from 'api/initiatives/useInitiativeBySlug';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import InitiativesShow from 'containers/InitiativesShow';
 
 import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-
-import useInitiativeBySlug from 'api/initiatives/useInitiativeBySlug';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 

@@ -7,13 +7,6 @@ import { rgba } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
-import Outlet from 'components/Outlet';
-import Checkbox from 'components/UI/Checkbox';
-
-import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-
 import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
 import {
   IModerationData,
@@ -22,6 +15,13 @@ import {
 } from 'api/moderations/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import Outlet from 'components/Outlet';
+import Checkbox from 'components/UI/Checkbox';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
 import ModerationContentCell from './ModerationContentCell';

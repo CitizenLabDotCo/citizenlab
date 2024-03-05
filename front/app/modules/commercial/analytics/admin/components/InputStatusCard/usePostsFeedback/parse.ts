@@ -1,12 +1,12 @@
 import { capitalize } from 'lodash-es';
 
+import { Localize } from 'hooks/useLocalize';
+
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { colors } from 'components/admin/Graphs/styling';
 
 import { get } from 'utils/helperUtils';
 import { sum, roundPercentage, roundPercentages } from 'utils/math';
-
-import { Localize } from 'hooks/useLocalize';
 
 import { Translations } from './translations';
 import { FeedbackRow, StatusRow, StackedBarsRow } from './typings';

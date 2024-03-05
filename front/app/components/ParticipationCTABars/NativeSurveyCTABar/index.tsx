@@ -3,6 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhaseData } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+
 import IdeaButton from 'components/IdeaButton';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import {
@@ -11,11 +16,6 @@ import {
 } from 'components/ParticipationCTABars/utils';
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
-
-import useAuthUser from 'api/me/useAuthUser';
-import { IPhaseData } from 'api/phases/types';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 
 const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   const theme = useTheme();

@@ -4,12 +4,12 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+
 import { SectionDescription } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
 
 import AllCauses from './AllCauses';
 import ExportVolunteersButton from './ExportVolunteersButton';

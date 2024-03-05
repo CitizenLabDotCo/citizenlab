@@ -3,13 +3,13 @@ import React from 'react';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import useIdeaById from 'api/ideas/useIdeaById';
+
 import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-
-import useIdeaById from 'api/ideas/useIdeaById';
 
 import IdeasEditForm from './IdeasEditForm';
 

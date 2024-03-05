@@ -3,9 +3,9 @@ import React, { memo } from 'react';
 import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
 
 import {
   columnsGapDesktop,

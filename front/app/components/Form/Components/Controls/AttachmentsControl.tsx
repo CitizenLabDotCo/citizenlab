@@ -10,6 +10,10 @@ import {
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { UploadFile } from 'typings';
 
+import useAddIdeaFile from 'api/idea_files/useAddIdeaFile';
+import useDeleteIdeaFile from 'api/idea_files/useDeleteIdeaFile';
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
+
 import { FormContext } from 'components/Form/contexts';
 import FileUploader from 'components/UI/FileUploader';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -17,10 +21,6 @@ import { FormLabel } from 'components/UI/FormComponents';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-
-import useAddIdeaFile from 'api/idea_files/useAddIdeaFile';
-import useDeleteIdeaFile from 'api/idea_files/useDeleteIdeaFile';
-import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 
 import ErrorDisplay from '../ErrorDisplay';
 

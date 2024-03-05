@@ -2,9 +2,9 @@ import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
 
-import { ModuleConfiguration } from 'utils/moduleUtils';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const AssigneeFilter = React.lazy(
   () => import('./admin/components/AssigneeFilter')

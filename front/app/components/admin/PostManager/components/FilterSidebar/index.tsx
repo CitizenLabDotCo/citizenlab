@@ -6,17 +6,17 @@ import { useParams } from 'react-router-dom';
 import { Segment, Menu, Popup } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import { ManagerType } from 'components/admin/PostManager';
-
-import { useIntl } from 'utils/cl-intl';
-import { isAdmin } from 'utils/permissions/roles';
-
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { ITopicData } from 'api/topics/types';
+
+import { ManagerType } from 'components/admin/PostManager';
+
+import { useIntl } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../../messages';
 

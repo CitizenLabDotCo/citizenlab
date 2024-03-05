@@ -3,11 +3,11 @@ import React from 'react';
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Button from 'components/UI/Button';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from '../messages';
 

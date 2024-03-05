@@ -2,14 +2,14 @@ import React from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
 
+import { TCustomPageCTAType } from 'api/custom_pages/types';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import CTARadioButtons, {
   Props as CTARadioButtonProps,
 } from 'components/LandingPages/admin/CTARadioButtons';
 
 import { injectIntl } from 'utils/cl-intl';
-
-import { TCustomPageCTAType } from 'api/custom_pages/types';
 
 import messages from './messages';
 

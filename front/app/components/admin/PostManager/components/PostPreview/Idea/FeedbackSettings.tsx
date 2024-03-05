@@ -4,11 +4,6 @@ import { Select, Label } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { IOption } from 'typings';
 
-import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { getFullName } from 'utils/textUtils';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IIdeaStatuses } from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
@@ -19,6 +14,11 @@ import useAuthUser from 'api/me/useAuthUser';
 import useUsers from 'api/users/useUsers';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getFullName } from 'utils/textUtils';
 
 import tracks from '../../../tracks';
 import messages from '../messages';

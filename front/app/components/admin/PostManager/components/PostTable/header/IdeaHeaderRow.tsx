@@ -9,13 +9,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { CellConfiguration, Override } from 'typings';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import { roundPercentage } from 'utils/math';
-import { SortDirection } from 'utils/paginationUtils';
-
 import { Sort as IdeasSort } from 'api/ideas/types';
 
 import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { roundPercentage } from 'utils/math';
+import { SortDirection } from 'utils/paginationUtils';
 
 import messages from '../../../messages';
 

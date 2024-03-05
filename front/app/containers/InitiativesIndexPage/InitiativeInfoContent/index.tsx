@@ -3,13 +3,13 @@ import React, { memo } from 'react';
 import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { isNilOrError } from 'utils/helperUtils';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 

@@ -3,17 +3,17 @@ import React, { Suspense, memo, useState, lazy } from 'react';
 import { Box, Label } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Button from 'components/UI/Button';
-import UserSelect from 'components/UI/UserSelect';
-
-import { useIntl } from 'utils/cl-intl';
-import { isRegularUser } from 'utils/permissions/roles';
-
 import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 import { IUserData } from 'api/users/types';
 
 import useExceedsSeats from 'hooks/useExceedsSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Button from 'components/UI/Button';
+import UserSelect from 'components/UI/UserSelect';
+
+import { useIntl } from 'utils/cl-intl';
+import { isRegularUser } from 'utils/permissions/roles';
 
 import messages from './messages';
 

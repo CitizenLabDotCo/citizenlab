@@ -1,6 +1,6 @@
-import { isNilOrError } from 'utils/helperUtils';
-
 import { IUser } from 'api/users/types';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 export interface IProjectModeratorRole {
   type: 'project_moderator';

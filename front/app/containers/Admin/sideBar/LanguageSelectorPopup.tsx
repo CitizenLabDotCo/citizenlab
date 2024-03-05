@@ -1,18 +1,19 @@
 import React from 'react';
 
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
-import { shortenedAppLocalePairs } from 'containers/App/constants';
-import { getSelectedLocale } from 'containers/MainHeader/Components/LanguageSelector/utils';
 import { rgba } from 'polished';
 import { Popup } from 'semantic-ui-react';
-
-import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { updateLocale } from 'utils/locale';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
+
+import { shortenedAppLocalePairs } from 'containers/App/constants';
+import { getSelectedLocale } from 'containers/MainHeader/Components/LanguageSelector/utils';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { updateLocale } from 'utils/locale';
 
 import messages from './messages';
 import { ItemMenu } from './styles';

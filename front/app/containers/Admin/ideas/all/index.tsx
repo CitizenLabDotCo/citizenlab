@@ -2,13 +2,13 @@ import React from 'react';
 
 import { Box, Title, colors, Spinner } from '@citizenlab/cl2-component-library';
 
+import { PublicationStatus } from 'api/projects/types';
+import useProjects from 'api/projects/useProjects';
+
 import InputManager from 'components/admin/PostManager/InputManager';
 import { SectionDescription } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { PublicationStatus } from 'api/projects/types';
-import useProjects from 'api/projects/useProjects';
 
 import messages from '../messages';
 

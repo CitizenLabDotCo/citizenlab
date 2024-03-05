@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import MainHeader from 'containers/MainHeader';
 import { createPortal } from 'react-dom';
+
+import usePhases from 'api/phases/usePhases';
+import useProjectById from 'api/projects/useProjectById';
+
+import MainHeader from 'containers/MainHeader';
 
 import {
   getMethodConfig,
   getParticipationMethod,
 } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
-
-import usePhases from 'api/phases/usePhases';
-import useProjectById from 'api/projects/useProjectById';
 
 type ProjectCTABarProps = {
   projectId: string;

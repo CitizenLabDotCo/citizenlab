@@ -3,9 +3,9 @@ import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
-import EventAttendanceButton from 'components/EventAttendanceButton';
-
 import { IEventData } from 'api/events/types';
+
+import EventAttendanceButton from 'components/EventAttendanceButton';
 
 import { rightColumnWidthDesktop } from '../styleConstants';
 

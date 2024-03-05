@@ -1,10 +1,6 @@
 import React from 'react';
 
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import moment from 'moment';
-
-import { trackEventByName } from 'utils/analytics';
 
 import { ProposalsSettings } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -20,6 +16,11 @@ import { IInitiative, IInitiativeData } from 'api/initiatives/types';
 import useInitiativesPermissions, {
   InitiativePermissionsDisabledReason,
 } from 'hooks/useInitiativesPermissions';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import { trackEventByName } from 'utils/analytics';
 
 import Answered from './Status/Answered';
 import ChangesRequested from './Status/ChangesRequested';

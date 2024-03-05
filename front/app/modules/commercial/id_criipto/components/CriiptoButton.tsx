@@ -1,5 +1,10 @@
 import React from 'react';
 
+import {
+  TVerificationMethod,
+  IDCriiptoMethod,
+} from 'api/verification_methods/types';
+
 import { AUTH_PATH } from 'containers/App/constants';
 
 import T from 'components/T';
@@ -7,11 +12,6 @@ import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
 import { getJwt } from 'utils/auth/jwt';
 import { removeUrlLocale } from 'utils/locale';
-
-import {
-  TVerificationMethod,
-  IDCriiptoMethod,
-} from 'api/verification_methods/types';
 
 interface Props {
   onClick: (method: TVerificationMethod) => void;

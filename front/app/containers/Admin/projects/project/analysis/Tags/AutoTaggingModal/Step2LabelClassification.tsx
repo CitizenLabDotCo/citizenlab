@@ -10,9 +10,9 @@ import {
 import { xor } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 
-import { useIntl } from 'utils/cl-intl';
-
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+
+import { useIntl } from 'utils/cl-intl';
 
 import AddTag from '../AddTag';
 import messages from '../messages';

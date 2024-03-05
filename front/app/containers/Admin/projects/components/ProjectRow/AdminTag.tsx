@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
+
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import { FormattedMessage } from 'utils/cl-intl';

@@ -4,14 +4,14 @@ import { Box, Toggle, colors } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption, Multiloc } from 'typings';
 
+import { IIdeaData } from 'api/ideas/types';
+import usePhases from 'api/phases/usePhases';
+
 import IdeaSelect from 'components/UI/IdeaSelect';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';
-
-import { IIdeaData } from 'api/ideas/types';
-import usePhases from 'api/phases/usePhases';
 
 import ProjectFilter from '../../_shared/ProjectFilter';
 import widgetMessages from '../../messages';

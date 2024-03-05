@@ -4,13 +4,6 @@ import { get, has, isEmpty, omitBy } from 'lodash-es';
 import styled from 'styled-components';
 import { UploadFile, Multiloc } from 'typings';
 
-import { Section, SectionTitle } from 'components/admin/Section';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-
-import { useIntl } from 'utils/cl-intl';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
-
 import {
   IAppConfigurationStyle,
   IAppConfiguration,
@@ -20,6 +13,13 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
+
+import { Section, SectionTitle } from 'components/admin/Section';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+
+import { useIntl } from 'utils/cl-intl';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import sharedSettingsMessages from '../messages';
 

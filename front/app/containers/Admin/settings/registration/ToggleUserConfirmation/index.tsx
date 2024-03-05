@@ -9,11 +9,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 

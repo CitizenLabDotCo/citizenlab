@@ -3,15 +3,15 @@ import React from 'react';
 import { Image } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Fragment from 'components/Fragment';
-
-import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
+
+import Fragment from 'components/Fragment';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 

@@ -2,14 +2,14 @@ import React, { memo } from 'react';
 
 import styled from 'styled-components';
 
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+import useLocale from 'hooks/useLocale';
+
 import ActionBarLayout from 'components/PostShowComponents/ActionBar';
 import BreadCrumbs from 'components/PostShowComponents/Breadcrumbs';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-
-import useLocale from 'hooks/useLocale';
 
 import messages from '../messages';
 

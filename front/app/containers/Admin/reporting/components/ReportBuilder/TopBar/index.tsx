@@ -2,8 +2,15 @@ import React, { useState, useEffect } from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
-import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import { Locale } from 'typings';
+
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
@@ -15,12 +22,6 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
-import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
-
-import useLocalize from 'hooks/useLocalize';
 
 import PrintReportButton from '../../ReportBuilderPage/ReportRow/Buttons/PrintReportButton';
 

@@ -15,17 +15,17 @@ import {
   Subscription,
 } from 'rxjs';
 
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import { IAppConfiguration } from 'api/app_configuration/types';
+import authUserStream from 'api/me/authUserStream';
+import { IUser } from 'api/users/types';
+
 import { events$, pageChanges$ } from 'utils/analytics';
 import eventEmitter, { IEventEmitterEvent } from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
-
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
-import { IAppConfiguration } from 'api/app_configuration/types';
-import authUserStream from 'api/me/authUserStream';
-import { IUser } from 'api/users/types';
 
 const POSTHOG_API_KEY = process.env.POSTHOG_API_KEY;
 

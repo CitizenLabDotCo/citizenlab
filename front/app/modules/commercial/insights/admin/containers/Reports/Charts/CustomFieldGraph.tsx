@@ -1,10 +1,19 @@
 import React, { useRef } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import messages from 'containers/Admin/dashboard/messages';
 import { isEmpty } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import { Tooltip } from 'recharts';
+
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
+import useUsersByBirthyear from 'api/users_by_birthyear/useUsersByBirthyear';
+import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
+import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
+import useUsersByDomicile from 'api/users_by_domicile/useUsersByDomicile';
+import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
+
+import useUsersByGender from 'api/users_by_gender/useUsersByGender';
+import messages from 'containers/Admin/dashboard/messages';
 
 import BarChart from 'components/admin/Graphs/BarChart';
 import BarChartByCategory from 'components/admin/Graphs/BarChartByCategory';
@@ -26,13 +35,6 @@ import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
-import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-import useUsersByBirthyear from 'api/users_by_birthyear/useUsersByBirthyear';
-import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
-import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
-import useUsersByDomicile from 'api/users_by_domicile/useUsersByDomicile';
-import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
-import useUsersByGender from 'api/users_by_gender/useUsersByGender';
 import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
 
 import createConvertAndMergeSeries, {

@@ -9,14 +9,14 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import {
   SeatTypeMessageDescriptor,
   TSeatType,
 } from 'components/admin/SeatBasedBilling/SeatInfo';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 

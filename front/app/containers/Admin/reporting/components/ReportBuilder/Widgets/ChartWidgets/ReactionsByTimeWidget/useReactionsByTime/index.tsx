@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 
+import { useReactionsByTime } from 'api/graph_data_units';
+
 import { parseTimeSeries } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/parse';
 import { QueryParameters } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
-
-import { useReactionsByTime } from 'api/graph_data_units';
 
 export default function useReactionsByTime123({
   projectId,

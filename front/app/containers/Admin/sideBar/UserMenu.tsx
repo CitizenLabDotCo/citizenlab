@@ -9,18 +9,18 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
 
-import Avatar from 'components/Avatar';
-
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { getFullName } from 'utils/textUtils';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import signOut from 'api/authentication/sign_in_out/signOut';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
 
 import useLocale from 'hooks/useLocale';
+
+import Avatar from 'components/Avatar';
+
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getFullName } from 'utils/textUtils';
 
 import LanguageSelectorPopup from './LanguageSelectorPopup';
 import messages from './messages';

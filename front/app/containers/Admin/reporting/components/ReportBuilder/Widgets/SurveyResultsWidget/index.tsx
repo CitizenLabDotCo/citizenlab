@@ -8,8 +8,9 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 import { IOption, Multiloc } from 'typings';
+
+import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import PhaseFilter from 'components/UI/PhaseFilter';

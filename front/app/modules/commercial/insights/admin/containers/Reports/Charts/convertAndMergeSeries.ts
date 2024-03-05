@@ -1,8 +1,14 @@
-import messages from 'containers/Admin/dashboard/messages';
-import { fallbackMessages } from 'containers/Admin/dashboard/users/Charts/AreaChart';
 import { map, orderBy } from 'lodash-es';
 import { MessageDescriptor } from 'react-intl';
 import { FormatMessage } from 'typings';
+
+import { TCustomFieldCode } from 'api/user_custom_fields/types';
+import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
+import { IUsersByDomicile } from 'api/users_by_domicile/types';
+
+import messages from 'containers/Admin/dashboard/messages';
+import { fallbackMessages } from 'containers/Admin/dashboard/users/Charts/AreaChart';
 
 import {
   rename,
@@ -12,11 +18,6 @@ import {
   convertDomicileData,
 } from 'utils/dataUtils';
 import { InjectedLocalized } from 'utils/localize';
-
-import { TCustomFieldCode } from 'api/user_custom_fields/types';
-import { IUsersByBirthyear } from 'api/users_by_birthyear/types';
-import { IUsersByCustomField } from 'api/users_by_custom_field/types';
-import { IUsersByDomicile } from 'api/users_by_domicile/types';
 
 export type ISupportedDataType =
   | IUsersByCustomField

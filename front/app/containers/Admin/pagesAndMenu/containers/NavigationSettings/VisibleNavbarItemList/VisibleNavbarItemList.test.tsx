@@ -1,12 +1,12 @@
 import React from 'react';
 
+import { navbarItemsData as navbarItems } from 'api/navbar/__mocks__/useNavbarItems';
+
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
 import clHistory from 'utils/cl-router/history';
 import dragAndDrop from 'utils/testUtils/dragAndDrop';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
-
-import { navbarItemsData as navbarItems } from 'api/navbar/__mocks__/useNavbarItems';
 
 import VisibleNavbarItemList from '.';
 

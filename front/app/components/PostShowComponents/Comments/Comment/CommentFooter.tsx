@@ -3,12 +3,12 @@ import React from 'react';
 import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useComment from 'api/comments/useComment';
+import useIdeaById from 'api/ideas/useIdeaById';
+
 import Outlet from 'components/Outlet';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import useComment from 'api/comments/useComment';
-import useIdeaById from 'api/ideas/useIdeaById';
 
 import CommentReaction from './CommentReaction';
 import CommentReplyButton from './CommentReplyButton';

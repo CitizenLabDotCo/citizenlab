@@ -1,6 +1,6 @@
-import { useIntl } from 'utils/cl-intl';
-
 import { useVisitorsTrafficSourcesLive } from 'api/graph_data_units';
+
+import { useIntl } from 'utils/cl-intl';
 
 import { parsePieData, parseExcelData } from './parse';
 import { getTranslations } from './translations';

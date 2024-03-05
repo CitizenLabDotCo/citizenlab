@@ -1,13 +1,6 @@
 import React from 'react';
 
-import { API_PATH } from 'containers/App/constants';
 import { Helmet } from 'react-helmet';
-
-import { useIntl } from 'utils/cl-intl';
-import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
-import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import { imageSizes } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
@@ -15,6 +8,14 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
+
+import { API_PATH } from 'containers/App/constants';
+
+import { useIntl } from 'utils/cl-intl';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { imageSizes } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 

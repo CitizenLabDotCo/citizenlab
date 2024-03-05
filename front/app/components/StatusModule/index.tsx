@@ -12,12 +12,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
-import Warning from 'components/UI/Warning';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
@@ -25,6 +19,12 @@ import { IPhaseData, VotingMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 import ConfettiSvg from './ConfettiSvg';
 import messages from './messages';

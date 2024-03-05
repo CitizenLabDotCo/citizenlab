@@ -1,16 +1,17 @@
 import React, { memo, useCallback } from 'react';
 
 import { fontSizes, colors } from '@citizenlab/cl2-component-library';
-import { Title } from 'containers/Authentication/steps/AuthProviders/styles';
 import styled from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+
+import { Title } from 'containers/Authentication/steps/AuthProviders/styles';
 
 import Avatar from 'components/Avatar';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAuthUser from 'api/me/useAuthUser';
 
 // svg
 import illustration from './illustration.svg';

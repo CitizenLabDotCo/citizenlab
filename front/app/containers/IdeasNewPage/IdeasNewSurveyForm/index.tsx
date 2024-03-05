@@ -3,18 +3,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
-import Form from 'components/Form';
-import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
-import PageContainer from 'components/UI/PageContainer';
-import Warning from 'components/UI/Warning';
-
-import { useIntl } from 'utils/cl-intl';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { isNilOrError } from 'utils/helperUtils';
-import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
 import { IdeaPublicationStatus } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
 import useDraftIdeaByPhaseId, {
@@ -29,6 +17,18 @@ import { getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 
 import useInputSchema from 'hooks/useInputSchema';
+
+import Form from 'components/Form';
+import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
+import PageContainer from 'components/UI/PageContainer';
+import Warning from 'components/UI/Warning';
+
+import { useIntl } from 'utils/cl-intl';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { isNilOrError } from 'utils/helperUtils';
+import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { getFormValues } from '../../IdeasEditPage/utils';
 import { Heading } from '../components/Heading';

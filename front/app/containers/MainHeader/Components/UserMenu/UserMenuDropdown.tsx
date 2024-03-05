@@ -1,20 +1,21 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 
 import { Dropdown, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
+import signOut from 'api/authentication/sign_in_out/signOut';
+import useAuthUser from 'api/me/useAuthUser';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { showOnboarding } from 'containers/Authentication/useSteps/stepConfig/utils';
-import styled from 'styled-components';
 
 import HasPermission from 'components/HasPermission';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
-import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
-import signOut from 'api/authentication/sign_in_out/signOut';
-import useAuthUser from 'api/me/useAuthUser';
 
 import messages from './messages';
 

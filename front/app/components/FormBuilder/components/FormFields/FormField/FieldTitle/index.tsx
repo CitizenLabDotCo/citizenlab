@@ -8,11 +8,11 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
+
 import T from 'components/T';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-
-import { IFlatCustomField } from 'api/custom_fields/types';
 
 import messages from '../../../messages';
 

@@ -5,13 +5,6 @@ import { PreviousPathnameContext } from 'context';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import HasPermission from 'components/HasPermission';
-import PageLayout from 'components/InitiativeForm/PageLayout';
-import PageNotFound from 'components/PageNotFound';
-
-import clHistory from 'utils/cl-router/history';
-import { isAdmin, isSuperAdmin, isRegularUser } from 'utils/permissions/roles';
-
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
@@ -19,6 +12,13 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
+
+import HasPermission from 'components/HasPermission';
+import PageLayout from 'components/InitiativeForm/PageLayout';
+import PageNotFound from 'components/PageNotFound';
+
+import clHistory from 'utils/cl-router/history';
+import { isAdmin, isSuperAdmin, isRegularUser } from 'utils/permissions/roles';
 
 import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
 import InitiativesEditMeta from './InitiativesEditMeta';

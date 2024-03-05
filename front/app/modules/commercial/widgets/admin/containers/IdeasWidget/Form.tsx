@@ -6,6 +6,10 @@ import GetProjects from 'resources/GetProjects';
 import GetTopics from 'resources/GetTopics';
 import styled from 'styled-components';
 
+import { IProjectData } from 'api/projects/types';
+
+import useLocalize from 'hooks/useLocalize';
+
 import { Section, SectionField } from 'components/admin/Section';
 import ColorPicker from 'components/HookForm/ColorPicker';
 import Feedback from 'components/HookForm/Feedback';
@@ -17,10 +21,6 @@ import Collapse from 'components/UI/Collapse';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IProjectData } from 'api/projects/types';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from '../../messages';
 

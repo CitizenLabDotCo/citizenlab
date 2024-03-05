@@ -3,6 +3,11 @@ import React from 'react';
 import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import CampaignsConsentForm from 'components/CampaignConsentForm';
 import Unauthorized from 'components/Unauthorized';
 
@@ -10,11 +15,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import FragmentForm from './FragmentForm';
 import LoginCredentials from './LoginCredentials';

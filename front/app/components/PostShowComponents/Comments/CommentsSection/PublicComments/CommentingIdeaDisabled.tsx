@@ -1,6 +1,10 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+
+import { IIdea, IdeaCommentingDisabledReason } from 'api/ideas/types';
+import useAuthUser from 'api/me/useAuthUser';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Warning from 'components/UI/Warning';
@@ -8,9 +12,6 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import globalMessages from 'utils/messages';
-
-import { IIdea, IdeaCommentingDisabledReason } from 'api/ideas/types';
-import useAuthUser from 'api/me/useAuthUser';
 
 import messages from '../../messages';
 

@@ -2,6 +2,8 @@ import React from 'react';
 
 import { combineLatest } from 'rxjs';
 
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+
 import {
   IDestinationConfig,
   registerDestination,
@@ -11,8 +13,6 @@ import { initializeFor } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 
 import messages from './messages';
 declare module 'components/ConsentManager/destinations' {

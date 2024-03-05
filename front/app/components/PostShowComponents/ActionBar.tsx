@@ -4,9 +4,9 @@ import { colors, media } from '@citizenlab/cl2-component-library';
 import { GetLocaleChildProps } from 'resources/GetLocale';
 import styled from 'styled-components';
 
-import Outlet from 'components/Outlet';
-
 import { IInitiativeData } from 'api/initiatives/types';
+
+import Outlet from 'components/Outlet';
 
 import { postPageContentMaxWidth } from './styleConstants';
 

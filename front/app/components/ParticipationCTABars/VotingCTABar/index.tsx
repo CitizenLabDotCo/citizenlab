@@ -2,6 +2,13 @@ import React, { useMemo } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useBasket from 'api/baskets/useBasket';
+import useVoting from 'api/baskets_ideas/useVoting';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+
+import useLocalize from 'hooks/useLocalize';
+
 import ErrorToast from 'components/ErrorToast';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import {
@@ -10,13 +17,6 @@ import {
 } from 'components/ParticipationCTABars/utils';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useBasket from 'api/baskets/useBasket';
-import useVoting from 'api/baskets_ideas/useVoting';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
-
-import useLocalize from 'hooks/useLocalize';
 
 import CTAButton from './CTAButton';
 import { getVotesCounter } from './utils';

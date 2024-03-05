@@ -5,12 +5,12 @@ import { darken } from 'polished';
 import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import globalMessages from 'utils/messages';
-
 import { InitiativeDisabledReason } from 'api/initiative_action_descriptors/types';
 
 import { InitiativePermissionsDisabledReason } from 'hooks/useInitiativesPermissions';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import globalMessages from 'utils/messages';
 
 import messages from '../../messages';
 

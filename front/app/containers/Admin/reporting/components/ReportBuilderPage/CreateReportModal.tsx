@@ -11,6 +11,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
+import useAddReport from 'api/reports/useAddReport';
+
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
@@ -18,8 +20,6 @@ import ProjectFilter from 'components/UI/ProjectFilter';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import useAddReport from 'api/reports/useAddReport';
 
 import messages from './messages';
 

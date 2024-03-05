@@ -9,10 +9,14 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
 import { isEmpty } from 'lodash-es';
 import styled from 'styled-components';
+
+import { Sort, SortAttribute } from 'api/invites/types';
+import useInvites from 'api/invites/useInvites';
+
+import { API_PATH } from 'containers/App/constants';
 
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
@@ -25,9 +29,6 @@ import {
   getSortDirection,
 } from 'utils/paginationUtils';
 import { requestBlob } from 'utils/requestBlob';
-
-import { Sort, SortAttribute } from 'api/invites/types';
-import useInvites from 'api/invites/useInvites';
 
 import messages from '../messages';
 

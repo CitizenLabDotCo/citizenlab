@@ -2,9 +2,10 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
+import styled from 'styled-components';
+
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
-import styled from 'styled-components';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import ChartFilters from 'containers/Admin/dashboard/overview/ChartFilters';
-import { getSensibleResolution } from 'containers/Admin/dashboard/overview/getSensibleResolution';
 import moment, { Moment } from 'moment';
 import { IOption } from 'typings';
+
+import ChartFilters from 'containers/Admin/dashboard/overview/ChartFilters';
+import { getSensibleResolution } from 'containers/Admin/dashboard/overview/getSensibleResolution';
 
 import { IResolution } from 'components/admin/ResolutionControl';
 import Warning from 'components/UI/Warning';

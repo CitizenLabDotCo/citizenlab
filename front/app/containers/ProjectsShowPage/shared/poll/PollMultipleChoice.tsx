@@ -2,14 +2,14 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import usePollOptions from 'api/poll_options/usePollOptions';
+import { IPollQuestionData } from 'api/poll_questions/types';
+
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import usePollOptions from 'api/poll_options/usePollOptions';
-import { IPollQuestionData } from 'api/poll_questions/types';
 
 import messages from './messages';
 import {

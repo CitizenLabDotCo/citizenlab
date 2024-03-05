@@ -11,15 +11,15 @@ import { isEmpty } from 'lodash-es';
 import { MessageDescriptor } from 'react-intl';
 import styled, { css } from 'styled-components';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import eventEmitter from 'utils/eventEmitter';
-import { isNilOrError } from 'utils/helperUtils';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { TPolicyPage } from 'api/custom_pages/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 

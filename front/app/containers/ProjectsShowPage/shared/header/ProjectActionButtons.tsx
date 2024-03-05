@@ -1,13 +1,20 @@
 import React, { memo, useEffect, useState } from 'react';
 
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { isNumber } from 'lodash-es';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+
+import useEvents from 'api/events/useEvents';
+import { IPhaseData } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase, getInputTerm, getLastPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
 import messages from 'containers/ProjectsShowPage/messages';
-import { isNumber } from 'lodash-es';
-import { useLocation } from 'react-router-dom';
-import styled from 'styled-components';
 
 import IdeaButton from 'components/IdeaButton';
 import Button from 'components/UI/Button';
@@ -18,12 +25,6 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
 import { scrollToElement } from 'utils/scroll';
-
-import useEvents from 'api/events/useEvents';
-import { IPhaseData } from 'api/phases/types';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase, getInputTerm, getLastPhase } from 'api/phases/utils';
-import useProjectById from 'api/projects/useProjectById';
 
 const Container = styled.div``;
 

@@ -4,10 +4,10 @@ import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
+import { MembershipType } from 'api/groups/types';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-
-import { MembershipType } from 'api/groups/types';
 
 import messages from './messages';
 

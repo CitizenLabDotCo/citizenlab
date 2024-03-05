@@ -8,6 +8,8 @@ import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
 
+import { ICustomPageData } from 'api/custom_pages/types';
+
 import Feedback from 'components/HookForm/Feedback';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
@@ -16,8 +18,6 @@ import Button from 'components/UI/Button';
 import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
-
-import { ICustomPageData } from 'api/custom_pages/types';
 
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';

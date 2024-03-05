@@ -2,12 +2,19 @@ import React, { useState, useEffect } from 'react';
 
 import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { appLocalePairs } from 'containers/App/constants';
 import { isEmpty } from 'lodash-es';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 import { IOption, UploadFile, Multiloc } from 'typings';
 import { string, object, mixed } from 'yup';
+
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+import useAuthUser from 'api/me/useAuthUser';
+import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
+import useUserLockedAttributes from 'api/user_locked_attributes/useUserLockedAttributes';
+
+import useUpdateUser from 'api/users/useUpdateUser';
+import { appLocalePairs } from 'containers/App/constants';
 
 import { SectionField } from 'components/admin/Section';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
@@ -24,12 +31,6 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
-import useAuthUser from 'api/me/useAuthUser';
-import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
-import useUserLockedAttributes from 'api/user_locked_attributes/useUserLockedAttributes';
-import useUpdateUser from 'api/users/useUpdateUser';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';

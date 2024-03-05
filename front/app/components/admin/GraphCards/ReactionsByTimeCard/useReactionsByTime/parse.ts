@@ -1,5 +1,7 @@
 import moment, { Moment } from 'moment';
 
+import { ReactionsByTimeResponse } from 'api/graph_data_units/responseTypes';
+
 import {
   timeSeriesParser,
   calculateCumulativeSerie,
@@ -7,8 +9,6 @@ import {
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import { get } from 'utils/helperUtils';
-
-import { ReactionsByTimeResponse } from 'api/graph_data_units/responseTypes';
 
 import { Translations } from './translations';
 import { TimeSeriesResponseRow, TimeSeries, TimeSeriesRow } from './typings';

@@ -16,14 +16,14 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 
+import useApiClients from 'api/api_clients/useApiClients';
+import useDeleteApiClient from 'api/api_clients/useDeleteApiClient';
+
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import useApiClients from 'api/api_clients/useApiClients';
-import useDeleteApiClient from 'api/api_clients/useDeleteApiClient';
 
 import CreateTokenModal from './CreateTokenModal';
 import messages from './messages';

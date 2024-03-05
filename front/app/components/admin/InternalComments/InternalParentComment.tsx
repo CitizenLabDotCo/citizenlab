@@ -5,14 +5,14 @@ import { darken } from 'polished';
 import { useLocation } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 
+import useIdeaById from 'api/ideas/useIdeaById';
+import useInternalComment from 'api/internal_comments/useInternalComment';
+import useInternalComments from 'api/internal_comments/useInternalComments';
+
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useIdeaById from 'api/ideas/useIdeaById';
-import useInternalComment from 'api/internal_comments/useInternalComment';
-import useInternalComments from 'api/internal_comments/useInternalComments';
 
 import InternalChildCommentForm from './InternalChildCommentForm';
 import InternalComment from './InternalComment';

@@ -2,17 +2,17 @@ import React, { useEffect } from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
 
-import CityLogoSection from 'components/CityLogoSection';
-
-import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
-import { canAccessRoute } from 'utils/permissions/rules/routePermissions';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useKeyPress from 'hooks/useKeyPress';
+
+import CityLogoSection from 'components/CityLogoSection';
+
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import { canAccessRoute } from 'utils/permissions/rules/routePermissions';
 
 import Viewer from './Viewer';
 

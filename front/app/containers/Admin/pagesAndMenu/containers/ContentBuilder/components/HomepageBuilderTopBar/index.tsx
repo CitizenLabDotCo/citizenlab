@@ -4,6 +4,8 @@ import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 
+import useAddHomepageBuilderLayout from 'api/home_page_layout/useAddHomepageLayout';
+
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
@@ -13,8 +15,6 @@ import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import useAddHomepageBuilderLayout from 'api/home_page_layout/useAddHomepageLayout';
 
 import messages from './messages';
 

@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import clHistory from 'utils/cl-router/history';
-
 import { IIdeaData } from 'api/ideas/types';
+
+import clHistory from 'utils/cl-router/history';
 
 import CommentCount from './CommentCount';
 import ReadMoreButton from './ReadMoreButton';

@@ -10,12 +10,12 @@ import {
 import { darken } from 'polished';
 import styled from 'styled-components';
 
+import useLocale from 'hooks/useLocale';
+
 import { trackEventByName } from 'utils/analytics';
 import Link from 'utils/cl-router/Link';
 import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useLocale from 'hooks/useLocale';
 
 import tracks from '../../tracks';
 

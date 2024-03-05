@@ -4,17 +4,17 @@ import { Box, media, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
+import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
+import useNavbarItems from 'api/navbar/useNavbarItems';
+
+import useLocalize from 'hooks/useLocalize';
+
 import CloseIconButton from 'components/UI/CloseIconButton';
 import FullscreenModal from 'components/UI/FullscreenModal';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
-import useNavbarItems from 'api/navbar/useNavbarItems';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from '../../../messages';
 import tracks from '../../../tracks';

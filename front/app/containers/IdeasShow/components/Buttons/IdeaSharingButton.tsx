@@ -1,11 +1,5 @@
 import React from 'react';
 
-import SharingButtons from 'components/Sharing/SharingButtons';
-
-import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { getInputTermMessage } from 'utils/i18n';
-
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -13,6 +7,12 @@ import { getInputTerm } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
+
+import SharingButtons from 'components/Sharing/SharingButtons';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
 
 import messages from '../../messages';
 

@@ -7,12 +7,24 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
-import customfieldMessages from 'containers/Admin/settings/registration/CustomFieldRoutes/messages';
 import { isEqual, clone } from 'lodash-es';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
+
+import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
+import userCustomFieldsKeys from 'api/user_custom_fields/keys';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
+import useDeleteUserCustomField from 'api/user_custom_fields/useDeleteUserCustomField';
+import useReorderUserCustomField from 'api/user_custom_fields/useReorderUserCustomField';
+import useUpdateUserCustomField, {
+  UpdateField,
+} from 'api/user_custom_fields/useUpdateUserCustomField';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
+import { isBuiltInField, isHiddenField } from 'api/user_custom_fields/util';
+
+import customfieldMessages from 'containers/Admin/settings/registration/CustomFieldRoutes/messages';
 
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import {
@@ -27,17 +39,6 @@ import Button from 'components/UI/Button';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
-
-import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
-import userCustomFieldsKeys from 'api/user_custom_fields/keys';
-import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-import useDeleteUserCustomField from 'api/user_custom_fields/useDeleteUserCustomField';
-import useReorderUserCustomField from 'api/user_custom_fields/useReorderUserCustomField';
-import useUpdateUserCustomField, {
-  UpdateField,
-} from 'api/user_custom_fields/useUpdateUserCustomField';
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import { isBuiltInField, isHiddenField } from 'api/user_custom_fields/util';
 
 import messages from './messages';
 

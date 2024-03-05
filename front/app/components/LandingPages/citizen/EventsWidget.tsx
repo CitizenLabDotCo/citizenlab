@@ -7,11 +7,14 @@ import {
   isRtl,
   Box,
 } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import styled from 'styled-components';
+
+import useEvents from 'api/events/useEvents';
+
 import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
 import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
 import eventsPageMessages from 'containers/EventsPage/messages';
-import { darken } from 'polished';
-import styled from 'styled-components';
 
 import EventCard from 'components/EventCard';
 import VerticalCenterer from 'components/VerticalCenterer';
@@ -19,8 +22,6 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError, isNil, isError } from 'utils/helperUtils';
-
-import useEvents from 'api/events/useEvents';
 
 import messages from './messages';
 

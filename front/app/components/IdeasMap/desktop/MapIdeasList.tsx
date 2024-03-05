@@ -9,6 +9,13 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useIdeas from 'api/ideas/useIdeas';
+import usePhase from 'api/phases/usePhase';
+import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+
+import useLocale from 'hooks/useLocale';
+
 import SelectSort, {
   Sort,
 } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
@@ -21,13 +28,6 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 import { isFieldEnabled } from 'utils/projectUtils';
-
-import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-import useIdeas from 'api/ideas/useIdeas';
-import usePhase from 'api/phases/usePhase';
-import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
-
-import useLocale from 'hooks/useLocale';
 
 import IdeaMapCard from '../IdeaMapCard';
 import messages from '../messages';

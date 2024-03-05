@@ -2,12 +2,6 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import FollowUnfollow from 'components/FollowUnfollow';
-import ReactionControl from 'components/ReactionControl';
-
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';
 import {
@@ -16,6 +10,12 @@ import {
 } from 'api/phases/utils';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import FollowUnfollow from 'components/FollowUnfollow';
+import ReactionControl from 'components/ReactionControl';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
 import { rightColumnWidthDesktop } from '../../styleConstants';
 import GoToCommentsButton from '../Buttons/GoToCommentsButton';

@@ -8,6 +8,9 @@ import {
 } from 'react-router-dom';
 import { InsertConfigurationOptions, ITab } from 'typings';
 
+import usePhases from 'api/phases/usePhases';
+import useProjectById from 'api/projects/useProjectById';
+
 import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
 import Outlet from 'components/Outlet';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -16,9 +19,6 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isTopBarNavActive } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
-
-import usePhases from 'api/phases/usePhases';
-import useProjectById from 'api/projects/useProjectById';
 
 import messages from './messages';
 

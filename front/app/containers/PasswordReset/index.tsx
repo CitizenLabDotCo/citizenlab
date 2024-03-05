@@ -1,7 +1,6 @@
 import React, { FormEvent } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
-import { PasswordResetSuccess } from 'containers/PasswordReset/PasswordResetSuccess';
 import { isString } from 'lodash-es';
 import { parse } from 'qs';
 import { adopt } from 'react-adopt';
@@ -11,6 +10,10 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import { CLError } from 'typings';
+
+import resetPassword from 'api/authentication/reset_password/resetPassword';
+
+import { PasswordResetSuccess } from 'containers/PasswordReset/PasswordResetSuccess';
 
 import {
   StyledContentContainer,
@@ -30,8 +33,6 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-
-import resetPassword from 'api/authentication/reset_password/resetPassword';
 
 import messages from './messages';
 

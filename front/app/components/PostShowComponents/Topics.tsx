@@ -9,11 +9,11 @@ import {
 import { transparentize } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
-import { useIntl } from 'utils/cl-intl';
-
 import useTopic from 'api/topics/useTopic';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 

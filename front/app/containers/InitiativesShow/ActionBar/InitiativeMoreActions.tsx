@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 
-import SpamReportForm from 'containers/SpamReport';
 import styled from 'styled-components';
+
+import { IInitiativeData } from 'api/initiatives/types';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
+
+import SpamReportForm from 'containers/SpamReport';
 
 import HasPermission from 'components/HasPermission';
 import Modal from 'components/UI/Modal';
@@ -11,9 +15,6 @@ import warningMessages from 'components/WarningModal/messages';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import { IInitiativeData } from 'api/initiatives/types';
-import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
 import messages from '../messages';
 

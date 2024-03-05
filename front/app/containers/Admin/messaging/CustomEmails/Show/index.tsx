@@ -13,6 +13,15 @@ import { useParams } from 'react-router-dom';
 import GetGroup from 'resources/GetGroup';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useCampaign from 'api/campaigns/useCampaign';
+import useSendCampaign from 'api/campaigns/useSendCampaign';
+import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
+import { isDraft } from 'api/campaigns/util';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocalize from 'hooks/useLocalize';
+
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -22,15 +31,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useCampaign from 'api/campaigns/useCampaign';
-import useSendCampaign from 'api/campaigns/useSendCampaign';
-import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
-import { isDraft } from 'api/campaigns/util';
-import useAuthUser from 'api/me/useAuthUser';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from '../../messages';
 

@@ -1,9 +1,9 @@
 import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Image from 'components/UI/Image';
-
 import { PROJECTABLE_HEADER_BG_ASPECT_RATIO } from 'api/projects/constants';
+
+import Image from 'components/UI/Image';
 
 export const HeaderImageContainer = styled.div`
   width: 100%;

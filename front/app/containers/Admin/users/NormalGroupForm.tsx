@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { object } from 'yup';
 
+import { MembershipType } from 'api/groups/types';
+
 import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
@@ -15,8 +17,6 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
-
-import { MembershipType } from 'api/groups/types';
 
 import messages from './messages';
 

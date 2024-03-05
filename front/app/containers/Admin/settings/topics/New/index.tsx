@@ -1,13 +1,13 @@
 import React from 'react';
 
+import { ITopicAdd } from 'api/topics/types';
+import useAddTopic from 'api/topics/useAddTopic';
+
 import { Section, SectionTitle } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import { ITopicAdd } from 'api/topics/types';
-import useAddTopic from 'api/topics/useAddTopic';
 
 import messages from '../messages';
 import TopicForm from '../TopicForm';

@@ -2,14 +2,14 @@ import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+
+import useLocalize from 'hooks/useLocalize';
+
 import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useCustomPageById from 'api/custom_pages/useCustomPageById';
-
-import useLocalize from 'hooks/useLocalize';
 
 import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';

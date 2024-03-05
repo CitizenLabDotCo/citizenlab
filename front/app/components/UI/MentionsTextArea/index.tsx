@@ -11,10 +11,10 @@ import { MentionsInput, Mention, MentionItem } from 'react-mentions';
 import styled, { useTheme } from 'styled-components';
 import { Locale } from 'typings';
 
-import Error from 'components/UI/Error';
-
 import getMentions from 'api/mentions/getMentions';
 import { MentionRoles } from 'api/mentions/types';
+
+import Error from 'components/UI/Error';
 
 import { extractIdsFromValue } from './utils';
 

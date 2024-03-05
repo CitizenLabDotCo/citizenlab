@@ -2,14 +2,14 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
+import useDeleteProjectFolder from 'api/project_folders/useDeleteProjectFolder';
+
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
-
-import useAuthUser from 'api/me/useAuthUser';
-import useDeleteProjectFolder from 'api/project_folders/useDeleteProjectFolder';
 
 import messages from './messages';
 

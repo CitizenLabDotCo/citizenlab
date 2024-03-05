@@ -7,14 +7,15 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
-
-import { useIntl } from 'utils/cl-intl';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAcceptInitiativeCosponsorshipInvite from 'api/cosponsors_initiatives/useAcceptInitiativeCosponsorshipInvite';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAuthUser from 'api/me/useAuthUser';
+
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+
+import { useIntl } from 'utils/cl-intl';
 
 import BorderContainer from './BorderContainer';
 import messages from './messages';

@@ -12,16 +12,16 @@ import { darken, rgba } from 'polished';
 import { useParams } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 
+import useComments from 'api/comments/useComments';
+import useAuthUser from 'api/me/useAuthUser';
+import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
+import useUserBySlug from 'api/users/useUserBySlug';
+
 import Button from 'components/UI/Button';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useComments from 'api/comments/useComments';
-import useAuthUser from 'api/me/useAuthUser';
-import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
-import useUserBySlug from 'api/users/useUserBySlug';
 
 import messages from './messages';
 import PostCommentGroup from './PostCommentGroup';

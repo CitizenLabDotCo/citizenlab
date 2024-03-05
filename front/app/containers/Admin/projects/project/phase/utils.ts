@@ -1,12 +1,12 @@
 import { FormatMessage } from 'typings';
 
-import { MessageDescriptor } from 'utils/cl-intl';
-
 import { IGroupData } from 'api/groups/types';
 import { IPhasePermissionAction } from 'api/permissions/types';
 import { IPCPermissionData, permittedBy } from 'api/phase_permissions/types';
 
 import { Localize } from 'hooks/useLocalize';
+
+import { MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
 

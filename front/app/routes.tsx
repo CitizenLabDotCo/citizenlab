@@ -1,5 +1,7 @@
 import React, { lazy } from 'react';
 
+import moduleConfiguration from 'modules';
+
 import {
   REPORTING,
   REPORT_BUILDER,
@@ -7,7 +9,6 @@ import {
 } from 'containers/Admin/reporting/routes';
 import createAdminRoutes from 'containers/Admin/routes';
 import userProfileRoutes from 'containers/UsersShowPage/routes';
-import moduleConfiguration from 'modules';
 
 import PageLoading from 'components/UI/PageLoading';
 

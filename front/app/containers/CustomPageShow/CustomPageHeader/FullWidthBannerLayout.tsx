@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { ICustomPageData } from 'api/custom_pages/types';
+
 import {
   Container,
   Header,
@@ -7,8 +9,6 @@ import {
   HeaderImageBackground,
   HeaderImageOverlay,
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
-
-import { ICustomPageData } from 'api/custom_pages/types';
 
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';

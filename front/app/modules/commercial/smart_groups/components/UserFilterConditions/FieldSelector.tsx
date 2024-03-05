@@ -5,8 +5,6 @@ import { keys } from 'lodash-es';
 import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import { IOption } from 'typings';
 
-import { injectIntl } from 'utils/cl-intl';
-
 import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,
@@ -14,6 +12,8 @@ import {
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { injectIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import {

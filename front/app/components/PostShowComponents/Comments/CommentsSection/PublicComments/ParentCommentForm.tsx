@@ -6,6 +6,14 @@ import { hideVisually } from 'polished';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
+import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocale from 'hooks/useLocale';
+
 import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
 import Avatar from 'components/Avatar';
 import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/ErrorMessage';
@@ -16,14 +24,6 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
-import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useAuthUser from 'api/me/useAuthUser';
-
-import useLocale from 'hooks/useLocale';
 
 import Actions from '../../CommentForm/Actions';
 import { commentAdded } from '../../events';

@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import initiativesAllowedTransitionsKeys from 'api/initiative_allowed_transitions/keys';
 import initiativeOfficialFeedbackKeys from 'api/initiative_official_feedback/keys';
 import initiativesKeys from 'api/initiatives/keys';
 import { IInitiative } from 'api/initiatives/types';
 import initiativeFilterCountsKeys from 'api/initiatives_filter_counts/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import { InitiativeStatusUpdate } from './types';
 

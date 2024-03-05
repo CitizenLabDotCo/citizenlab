@@ -2,15 +2,15 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { isNilOrError } from 'utils/helperUtils';
-import { isFieldEnabled } from 'utils/projectUtils';
-
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 
 import useLocale from 'hooks/useLocale';
+
+import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
 
 import Attachments from './Attachments';
 import IdeaTopics from './IdeaTopics';

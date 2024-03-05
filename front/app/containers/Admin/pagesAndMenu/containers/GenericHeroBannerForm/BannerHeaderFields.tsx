@@ -5,12 +5,12 @@ import { forOwn, size, trim } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import { Multiloc } from 'typings';
 
+import { ICustomPageAttributes } from 'api/custom_pages/types';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { injectIntl } from 'utils/cl-intl';
-
-import { ICustomPageAttributes } from 'api/custom_pages/types';
 
 import messages from './messages';
 

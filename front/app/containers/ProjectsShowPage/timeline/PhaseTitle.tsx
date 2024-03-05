@@ -8,15 +8,16 @@ import {
   viewportWidths,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import messages from 'containers/ProjectsShowPage/messages';
 import styled from 'styled-components';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
+
+import messages from 'containers/ProjectsShowPage/messages';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 const Container = styled.div<{ descriptionHasContent: boolean }>`
   display: flex;

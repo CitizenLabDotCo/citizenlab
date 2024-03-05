@@ -2,6 +2,9 @@ import React from 'react';
 
 import { StatusLabel, colors } from '@citizenlab/cl2-component-library';
 
+import { IDeliveryData } from 'api/campaign_deliveries/types';
+import useUserById from 'api/users/useUserById';
+
 import Pagination from 'components/admin/Pagination';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
@@ -9,9 +12,6 @@ import Avatar from 'components/Avatar';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
-
-import { IDeliveryData } from 'api/campaign_deliveries/types';
-import useUserById from 'api/users/useUserById';
 
 import messages from '../../messages';
 

@@ -2,9 +2,9 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
-import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-
 import { IInitiativeReactionData } from 'api/initiative_reactions/types';
+
+import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import useAddInitiativesReaction from './useAddInitiativeReaction';
 

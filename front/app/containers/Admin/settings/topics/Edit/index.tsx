@@ -2,16 +2,16 @@ import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
+import { ITopicUpdate } from 'api/topics/types';
+import useTopic from 'api/topics/useTopic';
+import useUpdateTopic from 'api/topics/useUpdateTopic';
+
 import { Section, SectionTitle } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { ITopicUpdate } from 'api/topics/types';
-import useTopic from 'api/topics/useTopic';
-import useUpdateTopic from 'api/topics/useUpdateTopic';
 
 import messages from '../messages';
 import TopicForm from '../TopicForm';

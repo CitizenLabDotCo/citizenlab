@@ -1,8 +1,12 @@
 import React, { useRef } from 'react';
 
+import { IGraphFormat } from 'typings';
+
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
+import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
+
 import messages from 'containers/Admin/dashboard/messages';
 import renderTooltip from 'containers/Admin/dashboard/users/Charts/renderPieChartByCategoryTooltip';
-import { IGraphFormat } from 'typings';
 
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import PieChart from 'components/admin/Graphs/PieChart';
@@ -20,9 +24,6 @@ import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { roundPercentages } from 'utils/math';
-
-import { IUsersByCustomField } from 'api/users_by_custom_field/types';
-import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
 
 interface Serie extends IGraphFormat {
   percentage: number;

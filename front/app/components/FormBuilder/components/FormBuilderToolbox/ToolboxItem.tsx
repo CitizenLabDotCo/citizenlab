@@ -10,9 +10,9 @@ import {
 import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-
 import { ICustomFieldInputType } from 'api/custom_fields/types';
+
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 interface Props {
   label: string;

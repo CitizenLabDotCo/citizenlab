@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import { Box, Button, Input } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import useAddAnalysisTag from 'api/analysis_tags/useAddAnalysisTag';
+
 import Error from 'components/UI/Error';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-
-import useAddAnalysisTag from 'api/analysis_tags/useAddAnalysisTag';
 
 import tracks from '../tracks';
 

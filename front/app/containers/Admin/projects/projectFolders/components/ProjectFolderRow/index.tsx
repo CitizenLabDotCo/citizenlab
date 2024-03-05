@@ -1,6 +1,11 @@
 import React, { memo, useState } from 'react';
 
 import { Icon, Box, Spinner, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import { IAdminPublicationData } from 'api/admin_publications/types';
+import useAuthUser from 'api/me/useAuthUser';
+
 import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
 import {
   RowContent,
@@ -8,16 +13,12 @@ import {
   RowTitle,
   RowButton,
 } from 'containers/Admin/projects/components/StyledComponents';
-import styled from 'styled-components';
 
 import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
-
-import { IAdminPublicationData } from 'api/admin_publications/types';
-import useAuthUser from 'api/me/useAuthUser';
 
 import FolderMoreActionsMenu from './FolderMoreActionsMenu';
 import messages from './messages';

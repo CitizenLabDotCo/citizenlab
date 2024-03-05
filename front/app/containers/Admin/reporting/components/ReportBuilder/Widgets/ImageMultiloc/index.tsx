@@ -6,8 +6,11 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 import { Multiloc } from 'typings';
+
+import useLocalize from 'hooks/useLocalize';
+
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
 import { IMAGE_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import { ImageSettings } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
@@ -15,8 +18,6 @@ import messages from 'components/admin/ContentBuilder/Widgets/ImageMultiloc/mess
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import eventEmitter from 'utils/eventEmitter';
-
-import useLocalize from 'hooks/useLocalize';
 
 export interface Props {
   image?: {

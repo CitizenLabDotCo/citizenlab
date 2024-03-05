@@ -1,12 +1,12 @@
 import React from 'react';
 
+import { IPhaseData } from 'api/phases/types';
+
 import FilterSelector from 'components/FilterSelector';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IPhaseData } from 'api/phases/types';
 
 import messages from '../../messages';
 

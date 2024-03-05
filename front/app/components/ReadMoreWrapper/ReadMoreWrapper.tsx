@@ -9,11 +9,12 @@ import {
   viewportWidths,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import messages from 'containers/ProjectsShowPage/messages';
 import { isEmpty } from 'lodash-es';
 import ReactResizeDetector from 'react-resize-detector';
 import styled, { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
+
+import messages from 'containers/ProjectsShowPage/messages';
 
 import T from 'components/T';
 import Button from 'components/UI/Button';

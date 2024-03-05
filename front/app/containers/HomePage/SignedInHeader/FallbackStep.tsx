@@ -1,16 +1,17 @@
 import React from 'react';
 
 import { media, isRtl, fontSizes } from '@citizenlab/cl2-component-library';
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 import styled from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
-
-import useAuthUser from 'api/me/useAuthUser';
-import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 
 import messages from '../messages';
 

@@ -1,5 +1,9 @@
 import React from 'react';
 
+import { ICustomPageAttributes } from 'api/custom_pages/types';
+
+import useLocalize from 'hooks/useLocalize';
+
 import BannerButton from 'components/LandingPages/citizen/BannerButton';
 import {
   Container,
@@ -8,10 +12,6 @@ import {
   HeaderTitle,
   TAlign,
 } from 'components/LandingPages/citizen/HeaderContent';
-
-import { ICustomPageAttributes } from 'api/custom_pages/types';
-
-import useLocalize from 'hooks/useLocalize';
 
 interface Props {
   fontColors: 'light' | 'dark';

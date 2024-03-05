@@ -7,13 +7,13 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 
-import T from 'components/T';
-
-import { FormattedMessage } from 'utils/cl-intl';
-
 import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
+
+import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import { PhaseActionForm } from '../../components/PhaseActionForm';
 

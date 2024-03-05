@@ -2,14 +2,14 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import BarChartByCategory from 'components/admin/Graphs/BarChartByCategory';
-import PieChartByCategory from 'components/admin/Graphs/PieChartByCategory';
-
 import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
 import useLocalize from 'hooks/useLocalize';
+
+import BarChartByCategory from 'components/admin/Graphs/BarChartByCategory';
+import PieChartByCategory from 'components/admin/Graphs/PieChartByCategory';
 
 import AgeChart from './AgeChart';
 import AreaChart from './AreaChart';

@@ -3,13 +3,13 @@ import React, { ReactElement, memo, useState, useCallback } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { get, isEmpty } from 'lodash-es';
 
-import { trackEventByName } from 'utils/analytics';
-import { isNilOrError } from 'utils/helperUtils';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
+
+import { trackEventByName } from 'utils/analytics';
+import { isNilOrError } from 'utils/helperUtils';
 
 import tracks from '../../tracks';
 import { client } from '../../utils/apolloUtils';

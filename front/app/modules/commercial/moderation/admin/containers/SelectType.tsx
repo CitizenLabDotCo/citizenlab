@@ -1,10 +1,10 @@
 import React, { memo, useCallback } from 'react';
 
+import { TModeratableType } from 'api/moderations/types';
+
 import FilterSelector from 'components/FilterSelector';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { TModeratableType } from 'api/moderations/types';
 
 import messages from './messages';
 

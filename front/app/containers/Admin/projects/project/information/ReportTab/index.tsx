@@ -1,10 +1,7 @@
 import React from 'react';
 
 import { Box, Title, Toggle } from '@citizenlab/cl2-component-library';
-import Buttons from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/Buttons';
 import { useParams } from 'react-router-dom';
-
-import { useIntl } from 'utils/cl-intl';
 
 import usePhase from 'api/phases/usePhase';
 import useDeleteReport from 'api/reports/useDeleteReport';
@@ -12,6 +9,10 @@ import useReport from 'api/reports/useReport';
 import useUpdateReport from 'api/reports/useUpdateReport';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Buttons from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/Buttons';
+
+import { useIntl } from 'utils/cl-intl';
 
 import EmptyState from './EmptyState';
 import messages from './messages';

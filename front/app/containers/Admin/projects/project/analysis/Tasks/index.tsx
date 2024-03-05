@@ -12,13 +12,6 @@ import {
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Divider from 'components/admin/Divider';
-import ProgressBar from 'components/UI/ProgressBar';
-
-import { useIntl } from 'utils/cl-intl';
-import { timeAgo } from 'utils/dateUtils';
-import { isNilOrError } from 'utils/helperUtils';
-
 import {
   AutoTaggingMethod,
   IBackgroundTaskData,
@@ -26,6 +19,13 @@ import {
 import useAnalysisBackgroundTasks from 'api/analysis_background_tasks/useAnalysisBackgroundTasks';
 
 import useLocale from 'hooks/useLocale';
+
+import Divider from 'components/admin/Divider';
+import ProgressBar from 'components/UI/ProgressBar';
+
+import { useIntl } from 'utils/cl-intl';
+import { timeAgo } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { TagTypeColorMap } from '../Tags/Tag';
 

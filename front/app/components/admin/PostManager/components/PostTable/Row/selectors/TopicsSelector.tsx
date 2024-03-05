@@ -4,11 +4,11 @@ import { pull } from 'lodash-es';
 import { Label, Icon } from 'semantic-ui-react';
 import styled from 'styled-components';
 
+import useTopics from 'api/topics/useTopics';
+
 import T from 'components/T';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import useTopics from 'api/topics/useTopics';
 
 const StyledLabel = styled(Label)`
   white-space: nowrap;

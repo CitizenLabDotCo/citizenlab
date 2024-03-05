@@ -3,6 +3,10 @@ import React from 'react';
 import { Text, Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
+import { IUserData } from 'api/users/types';
+
 import { Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import Button from 'components/UI/Button';
@@ -10,10 +14,6 @@ import Button from 'components/UI/Button';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
-
-import useAuthUser from 'api/me/useAuthUser';
-import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
-import { IUserData } from 'api/users/types';
 
 import messages from './messages';
 

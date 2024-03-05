@@ -3,6 +3,12 @@ import React, { useState } from 'react';
 import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
+import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
+import { IUserData } from 'api/users/types';
+import useUpdateUser from 'api/users/useUpdateUser';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Input from 'components/HookForm/Input';
 import {
   Title,
@@ -16,12 +22,6 @@ import { FormLabel } from 'components/UI/FormComponents';
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-import { IUserData } from 'api/users/types';
-import useUpdateUser from 'api/users/useUpdateUser';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 

@@ -7,6 +7,7 @@ import {
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import { FormattedMessage } from 'utils/cl-intl';

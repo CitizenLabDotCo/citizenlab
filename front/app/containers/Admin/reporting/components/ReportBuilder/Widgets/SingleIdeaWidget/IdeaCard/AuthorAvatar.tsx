@@ -9,10 +9,10 @@ import {
 import { transparentize } from 'polished';
 import styled from 'styled-components';
 
+import { IIdeaData } from 'api/ideas/types';
+
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
-
-import { IIdeaData } from 'api/ideas/types';
 
 const StyledAvatar = styled(Avatar)`
   margin-right: 6px;

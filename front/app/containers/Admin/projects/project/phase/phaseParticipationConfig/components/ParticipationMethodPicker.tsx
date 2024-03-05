@@ -8,6 +8,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
+import { IPhase, ParticipationMethod } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import NewBadge from 'components/UI/NewBadge';
@@ -17,11 +22,6 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IPhase, ParticipationMethod } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { ApiErrors } from '..';
 import messages from '../../../messages';

@@ -3,11 +3,11 @@ import React from 'react';
 import { media, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
 import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useNavbarItems from 'api/navbar/useNavbarItems';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
 

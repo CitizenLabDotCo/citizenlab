@@ -3,15 +3,15 @@ import React, { useMemo } from 'react';
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
 
+import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
+import useUserBySlug from 'api/users/useUserBySlug';
+
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
-import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
-import useUserBySlug from 'api/users/useUserBySlug';
 
 import messages from '../messages';
 

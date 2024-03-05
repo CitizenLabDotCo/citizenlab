@@ -4,16 +4,16 @@ import { Spinner } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
-import Button from 'components/UI/Button';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import { isNil, isNilOrError } from 'utils/helperUtils';
-
 import useComment from 'api/comments/useComment';
 import useComments from 'api/comments/useComments';
 import useIdeaById from 'api/ideas/useIdeaById';
 
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 
 import Comment from '../../../Comment';
 import messages from '../../../messages';

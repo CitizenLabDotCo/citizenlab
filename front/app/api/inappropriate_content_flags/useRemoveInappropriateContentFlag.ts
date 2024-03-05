@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import moderationsCountKeys from 'api/moderation_count/keys';
 import moderationsKeys from 'api/moderations/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 const removeFlag = (id: string) =>
   fetcher({

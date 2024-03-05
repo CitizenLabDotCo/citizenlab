@@ -1,11 +1,11 @@
+import { Query, QuerySchema } from 'api/analytics/types';
+
 import {
   getProjectFilter,
   getDateFilter,
   getDateFilterLastPeriod,
   getInterval,
 } from 'components/admin/GraphCards/_utils/query';
-
-import { Query, QuerySchema } from 'api/analytics/types';
 
 import { QueryParameters } from './typings';
 

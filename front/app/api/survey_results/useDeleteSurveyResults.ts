@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import submissionsCountKeys from 'api/submission_count/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import surveyResultsKeys from './keys';
 

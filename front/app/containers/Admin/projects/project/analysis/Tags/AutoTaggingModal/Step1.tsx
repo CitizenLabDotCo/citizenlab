@@ -15,12 +15,12 @@ import { isEmpty } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useIntl } from 'utils/cl-intl';
-
 import useAnalysis from 'api/analyses/useAnalysis';
 import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import { TagType } from 'api/analysis_tags/types';
+
+import { useIntl } from 'utils/cl-intl';
 
 import FilterItems from '../../FilterItems';
 import messages from '../messages';

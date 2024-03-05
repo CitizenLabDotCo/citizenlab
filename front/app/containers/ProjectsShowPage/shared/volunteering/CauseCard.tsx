@@ -11,8 +11,15 @@ import {
   isRtl,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import styled, { useTheme } from 'styled-components';
+
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
+import { ICauseData } from 'api/causes/types';
+import useAddVolunteer from 'api/causes/useAddVolunteer';
+import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import T from 'components/T';
 import Button from 'components/UI/Button';
@@ -22,12 +29,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isEmptyMultiloc } from 'utils/helperUtils';
-
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
-import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
-import { ICauseData } from 'api/causes/types';
-import useAddVolunteer from 'api/causes/useAddVolunteer';
-import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
 
 import messages from './messages';
 

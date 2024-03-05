@@ -1,13 +1,14 @@
 import React, { memo } from 'react';
 
-import messages from 'containers/ProjectsShowPage/messages';
 import styled from 'styled-components';
-
-import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
 
 import usePhase from 'api/phases/usePhase';
 import { IProjectData } from 'api/projects/types';
+
+import messages from 'containers/ProjectsShowPage/messages';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import Survey from '../shared/survey';
 

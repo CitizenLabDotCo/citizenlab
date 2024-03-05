@@ -3,10 +3,10 @@ import React, { MouseEvent } from 'react';
 import { Popup } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import T from 'components/T';
-
 import { IInitiativeAllowedTransitions } from 'api/initiative_allowed_transitions/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
+
+import T from 'components/T';
 
 const Container = styled.div`
   display: flex;

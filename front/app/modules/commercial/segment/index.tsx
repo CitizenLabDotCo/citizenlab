@@ -1,6 +1,10 @@
 import { get, isFunction, isNil } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import authUserStream from 'api/me/authUserStream';
+import { IUser } from 'api/users/types';
+
 import { events$, pageChanges$, tenantInfo } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
@@ -10,10 +14,6 @@ import {
   isAdmin,
   isSuperAdmin,
 } from 'utils/permissions/roles';
-
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
-import authUserStream from 'api/me/authUserStream';
-import { IUser } from 'api/users/types';
 
 const CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY;
 

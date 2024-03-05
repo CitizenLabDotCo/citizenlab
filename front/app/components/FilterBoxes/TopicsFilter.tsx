@@ -9,14 +9,14 @@ import { isError, includes } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
+import { ITopicData } from 'api/topics/types';
+
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-
-import { ITopicData } from 'api/topics/types';
 
 import messages from './messages';
 import { Header, Title } from './styles';

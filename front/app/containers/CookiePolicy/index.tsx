@@ -1,15 +1,16 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import { darken } from 'polished';
+import { Helmet } from 'react-helmet';
+import styled from 'styled-components';
+
 import {
   Container,
   StyledContentContainer,
   PageContent,
   PageTitle,
 } from 'containers/PagesShowPage';
-import { darken } from 'polished';
-import { Helmet } from 'react-helmet';
-import styled from 'styled-components';
 
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';

@@ -1,6 +1,6 @@
-import eventEmitter from 'utils/eventEmitter';
-
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+
+import eventEmitter from 'utils/eventEmitter';
 
 import { AuthenticationData } from './typings';
 

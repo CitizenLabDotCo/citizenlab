@@ -3,11 +3,12 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import {
   homepageBannerLayoutHeights,
   FIXED_RATIO_LAYOUT_ASPECT_RATIO,
 } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
-import styled from 'styled-components';
 
 export const Container = styled.div`
   width: 100%;

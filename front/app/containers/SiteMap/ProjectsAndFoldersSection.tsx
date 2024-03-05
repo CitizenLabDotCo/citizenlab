@@ -2,11 +2,11 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
 import messages from './messages';
 import Project from './Project';

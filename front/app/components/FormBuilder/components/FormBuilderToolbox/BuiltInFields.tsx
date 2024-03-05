@@ -3,11 +3,11 @@ import React from 'react';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
+
 import { builtInFieldKeys, BuiltInKeyType } from 'components/FormBuilder/utils';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import { IFlatCustomField } from 'api/custom_fields/types';
 
 import messages from '../messages';
 

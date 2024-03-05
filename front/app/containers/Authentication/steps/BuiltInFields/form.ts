@@ -1,9 +1,9 @@
 import { FormatMessage } from 'typings';
 import { string, object } from 'yup';
 
-import passwordInputMessages from 'components/UI/PasswordInput/messages';
-
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
+
+import passwordInputMessages from 'components/UI/PasswordInput/messages';
 
 import sharedMessages from '../messages';
 

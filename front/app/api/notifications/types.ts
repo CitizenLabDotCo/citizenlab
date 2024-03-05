@@ -1,8 +1,8 @@
 import { Multiloc } from 'typings';
 
-import { Keys } from 'utils/cl-react-query/types';
-
 import { InternalCommentType } from 'api/campaigns/types';
+
+import { Keys } from 'utils/cl-react-query/types';
 
 import notificationsKeys from './keys';
 

@@ -2,9 +2,9 @@ import React from 'react';
 
 import { List } from 'semantic-ui-react';
 
-import T from 'components/T';
-
 import useIdeaById from 'api/ideas/useIdeaById';
+
+import T from 'components/T';
 
 import { handlePreviewCLick, StyledLink } from './';
 

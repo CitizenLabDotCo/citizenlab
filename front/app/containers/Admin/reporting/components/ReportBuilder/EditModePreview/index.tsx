@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import { Locale } from 'typings';
+
+import useLocale from 'hooks/useLocale';
+
 import {
   A4_WIDTH,
   MAX_REPORT_WIDTH,
@@ -9,15 +13,12 @@ import {
   ReportContextProvider,
   useReportContext,
 } from 'containers/Admin/reporting/context/ReportContext';
-import { Locale } from 'typings';
 
 import DesktopButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/DesktopButton';
 import MobileButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/MobileButton';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { CraftJson } from 'components/admin/ContentBuilder/typings';
-
-import useLocale from 'hooks/useLocale';
 
 import PDFButton from './PDFButton';
 import PDFWrapper from './PDFWrapper';

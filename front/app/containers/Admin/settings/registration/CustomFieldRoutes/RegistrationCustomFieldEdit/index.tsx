@@ -4,13 +4,6 @@ import { WrappedComponentProps } from 'react-intl';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 import styled from 'styled-components';
 
-import TabbedResource from 'components/admin/TabbedResource';
-import GoBackButton from 'components/UI/GoBackButton';
-
-import { injectIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
 import {
   IUserCustomFieldData,
   IUserCustomFieldInputType,
@@ -19,6 +12,13 @@ import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import { isBuiltInField } from 'api/user_custom_fields/util';
 
 import useLocalize from 'hooks/useLocalize';
+
+import TabbedResource from 'components/admin/TabbedResource';
+import GoBackButton from 'components/UI/GoBackButton';
+
+import { injectIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 import messages from '../messages';
 

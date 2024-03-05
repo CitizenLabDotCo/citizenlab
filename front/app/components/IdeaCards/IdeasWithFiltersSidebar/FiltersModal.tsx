@@ -3,14 +3,14 @@ import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
 
+import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
+
 import BottomBar from 'components/FiltersModal/BottomBar';
 import TopBar from 'components/FiltersModal/TopBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
 import messages from '../messages';
 

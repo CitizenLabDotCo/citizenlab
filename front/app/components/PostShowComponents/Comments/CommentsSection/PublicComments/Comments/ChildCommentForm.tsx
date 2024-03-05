@@ -6,6 +6,13 @@ import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
+import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocale from 'hooks/useLocale';
+
 import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
 import Avatar from 'components/Avatar';
 import Actions from 'components/PostShowComponents/Comments/CommentForm/Actions';
@@ -17,13 +24,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
-import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
-import useAuthUser from 'api/me/useAuthUser';
-
-import useLocale from 'hooks/useLocale';
 
 import { commentReplyButtonClicked$, commentAdded } from '../../../events';
 import messages from '../../../messages';

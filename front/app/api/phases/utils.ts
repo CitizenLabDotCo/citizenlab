@@ -1,12 +1,12 @@
 import { first, last, sortBy } from 'lodash-es';
 import { Locale } from 'typings';
 
+import { IIdea } from 'api/ideas/types';
+import { IProjectData } from 'api/projects/types';
+
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { hasTextInSpecifiedLocale } from 'utils/locale';
-
-import { IIdea } from 'api/ideas/types';
-import { IProjectData } from 'api/projects/types';
 
 import { IPhaseData } from './types';
 

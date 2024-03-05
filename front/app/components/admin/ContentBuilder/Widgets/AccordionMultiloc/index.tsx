@@ -10,13 +10,13 @@ import { useNode } from '@craftjs/core';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
+import useLocalize from 'hooks/useLocalize';
+
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useLocalize from 'hooks/useLocalize';
 
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 

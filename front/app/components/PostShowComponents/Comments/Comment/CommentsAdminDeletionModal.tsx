@@ -9,6 +9,8 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import styled from 'styled-components';
 import { string, object } from 'yup';
 
+import { DeleteReason, DeleteReasonCode } from 'api/comments/types';
+
 import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import RadioGroup from 'components/HookForm/RadioGroup';
@@ -19,8 +21,6 @@ import Button from 'components/UI/Button';
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { keys } from 'utils/helperUtils';
-
-import { DeleteReason, DeleteReasonCode } from 'api/comments/types';
 
 import messages from '../messages';
 

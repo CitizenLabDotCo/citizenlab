@@ -1,14 +1,14 @@
+import { Query, QuerySchema } from 'api/analytics/types';
+import useAnalytics from 'api/analytics/useAnalytics';
+
+import useLocalize from 'hooks/useLocalize';
+
 import {
   getProjectFilter,
   getDateFilter,
 } from 'components/admin/GraphCards/_utils/query';
 
 import { useIntl } from 'utils/cl-intl';
-
-import { Query, QuerySchema } from 'api/analytics/types';
-import useAnalytics from 'api/analytics/useAnalytics';
-
-import useLocalize from 'hooks/useLocalize';
 
 import {
   parsePieData,

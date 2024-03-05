@@ -11,6 +11,10 @@ import {
 import { useEditor, useNode } from '@craftjs/core';
 import { Multiloc, UploadFile } from 'typings';
 
+import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
+
+import useLocalize from 'hooks/useLocalize';
+
 import {
   IMAGE_UPLOADING_EVENT,
   IMAGE_LOADED_EVENT,
@@ -21,10 +25,6 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { injectIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-
-import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
-
-import useLocalize from 'hooks/useLocalize';
 
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 import PageBreakBox from '../PageBreakBox';

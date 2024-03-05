@@ -2,16 +2,16 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import useAddIdeaStatus from 'api/idea_statuses/useAddIdeaStatus';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import { Section, SectionTitle } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAddIdeaStatus from 'api/idea_statuses/useAddIdeaStatus';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import IdeaStatusForm, { FormValues } from '../components/IdeaStatusForm';
 

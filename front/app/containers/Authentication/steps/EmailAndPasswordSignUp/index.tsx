@@ -2,9 +2,15 @@ import React, { useEffect } from 'react';
 
 import { Box, Text, Label } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { Parameters as CreateAccountParameters } from 'api/authentication/sign_up/createAccountWithPassword';
+
+import useLocale from 'hooks/useLocale';
+
 import { SetError, State } from 'containers/Authentication/typings';
 import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
-import { useForm, FormProvider } from 'react-hook-form';
 
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
@@ -19,11 +25,6 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { Parameters as CreateAccountParameters } from 'api/authentication/sign_up/createAccountWithPassword';
-
-import useLocale from 'hooks/useLocale';
 
 import containerMessages from '../../messages';
 import tracks from '../../tracks';

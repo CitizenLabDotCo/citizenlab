@@ -8,6 +8,11 @@ import {
   Radio,
   colors,
 } from '@citizenlab/cl2-component-library';
+
+import { IPhaseData } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import useAddReport from 'api/reports/useAddReport';
+
 import otherModalMessages from 'containers/Admin/reporting/components/ReportBuilderPage/messages';
 
 import Button from 'components/UI/Button';
@@ -17,10 +22,6 @@ import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import { IPhaseData } from 'api/phases/types';
-import usePhases from 'api/phases/usePhases';
-import useAddReport from 'api/reports/useAddReport';
 
 import messages from '../messages';
 

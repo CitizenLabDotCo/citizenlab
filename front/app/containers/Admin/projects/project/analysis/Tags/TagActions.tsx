@@ -10,18 +10,19 @@ import {
   Box,
   IconButton,
 } from '@citizenlab/cl2-component-library';
-import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+
+import useAddAnalysisBulkTagging from 'api/analysis_taggings/useAnalysisBulkTaggings';
+import { ITagData } from 'api/analysis_tags/types';
+import useDeleteAnalysisTag from 'api/analysis_tags/useDeleteAnalysisTag';
+
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
 
 import Modal from 'components/UI/Modal';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-
-import useAddAnalysisBulkTagging from 'api/analysis_taggings/useAnalysisBulkTaggings';
-import { ITagData } from 'api/analysis_tags/types';
-import useDeleteAnalysisTag from 'api/analysis_tags/useDeleteAnalysisTag';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 

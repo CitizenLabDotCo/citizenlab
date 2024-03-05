@@ -1,9 +1,9 @@
 import React from 'react';
 
+import useLocale from 'hooks/useLocale';
+
 import { showDotAfterDay } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useLocale from 'hooks/useLocale';
 
 import { EventDay, EventMonth } from './styling';
 

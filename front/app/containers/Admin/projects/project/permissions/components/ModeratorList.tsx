@@ -2,11 +2,11 @@ import React, { memo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import useProjectModerators from 'api/project_moderators/useProjectModerators';
+
 import { List } from 'components/admin/ResourceList';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useProjectModerators from 'api/project_moderators/useProjectModerators';
 
 import messages from './messages';
 import ModeratorListRow from './ModeratorListRow';

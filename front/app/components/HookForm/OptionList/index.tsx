@@ -14,14 +14,14 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { Locale, CLError, RHFErrors, Multiloc } from 'typings';
 
+import { IOptionsType } from 'api/custom_fields/types';
+
 import { List, SortableRow } from 'components/admin/ResourceList';
 import { SectionField } from 'components/admin/Section';
 import { generateTempId } from 'components/FormBuilder/utils';
 import Error, { TFieldName } from 'components/UI/Error';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IOptionsType } from 'api/custom_fields/types';
 
 export type Option = {
   id?: string;

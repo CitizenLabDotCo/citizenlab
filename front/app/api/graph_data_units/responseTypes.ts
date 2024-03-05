@@ -1,3 +1,13 @@
+import { Multiloc } from 'typings';
+
+import { ICustomFieldInputType } from 'api/custom_fields/types';
+import { IIdeaImageData } from 'api/idea_images/types';
+import { IIdeaData } from 'api/ideas/types';
+import { IPhaseData } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
+import { SurveyResultAttributes } from 'api/survey_results/types';
+import { GenderOption } from 'api/users_by_gender/types';
+
 import {
   ActiveUsersRow,
   TimeSeriesResponseRow as UsersTimeSeriesResponseRow,
@@ -6,7 +16,6 @@ import {
   TotalsRow as VisitorsTotalsRow,
   TimeSeriesResponseRow as VisitorsTimeSeriesResponseRow,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/VisitorsWidget/useVisitors/typings';
-import { Multiloc } from 'typings';
 
 import {
   CommentsCountRow,
@@ -21,14 +30,6 @@ import {
   TimeSeriesResponseRow as ReactionsTimeSeriesResponseRow,
 } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
 import { TrafficSourcesRow } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
-
-import { ICustomFieldInputType } from 'api/custom_fields/types';
-import { IIdeaImageData } from 'api/idea_images/types';
-import { IIdeaData } from 'api/ideas/types';
-import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
-import { SurveyResultAttributes } from 'api/survey_results/types';
-import { GenderOption } from 'api/users_by_gender/types';
 
 // Survey results (whole survey, deprecated)
 export type SurveyResultsResponse = {

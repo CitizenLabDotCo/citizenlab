@@ -7,15 +7,7 @@ import {
   colors,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import EventSharingButtons from 'containers/EventsShowPage/components/EventSharingButtons';
 import { useTheme } from 'styled-components';
-
-import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
-import Modal from 'components/UI/Modal';
-
-import { useIntl } from 'utils/cl-intl';
-import { getEventDateString } from 'utils/dateUtils';
 
 import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
 import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
@@ -25,6 +17,15 @@ import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import EventSharingButtons from 'containers/EventsShowPage/components/EventSharingButtons';
+
+import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
+import Modal from 'components/UI/Modal';
+
+import { useIntl } from 'utils/cl-intl';
+import { getEventDateString } from 'utils/dateUtils';
 
 import { EventModalConfetti } from './EventModalConfetti';
 import messages from './messages';

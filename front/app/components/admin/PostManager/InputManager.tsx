@@ -4,12 +4,6 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useSearchParams } from 'react-router-dom';
 
-import Outlet from 'components/Outlet';
-
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { isNilOrError } from 'utils/helperUtils';
-import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
-
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { IQueryParameters, Sort } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
@@ -18,6 +12,12 @@ import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/usePr
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 import { IProjectData } from 'api/projects/types';
 import useTopics from 'api/topics/useTopics';
+
+import Outlet from 'components/Outlet';
+
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { isNilOrError } from 'utils/helperUtils';
+import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
 
 import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';

@@ -5,18 +5,18 @@ import { isEmpty, isEqual } from 'lodash-es';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
-import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
 import { ProposalsSettings } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 import useNavbarItems from 'api/navbar/useNavbarItems';
+
+import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 

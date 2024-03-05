@@ -2,19 +2,7 @@ import React, { lazy, Suspense, useState } from 'react';
 
 import { Box, Badge } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
 import styled from 'styled-components';
-
-import ErrorToast from 'components/ErrorToast';
-import FollowUnfollow from 'components/FollowUnfollow';
-import Body from 'components/PostShowComponents/Body';
-import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
-import Image from 'components/PostShowComponents/Image';
-import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { usePermission } from 'utils/permissions';
 
 import { IIdeaImages } from 'api/idea_images/types';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -26,6 +14,18 @@ import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
+import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
+
+import ErrorToast from 'components/ErrorToast';
+import FollowUnfollow from 'components/FollowUnfollow';
+import Body from 'components/PostShowComponents/Body';
+import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
+import Image from 'components/PostShowComponents/Image';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
 
 import Container from './components/Container';
 import DesktopTopBar from './components/DesktopTopBar';

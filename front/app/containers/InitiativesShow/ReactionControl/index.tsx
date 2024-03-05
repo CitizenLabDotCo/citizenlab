@@ -1,11 +1,11 @@
 import React from 'react';
 
+import { IInitiative } from 'api/initiatives/types';
+
 import FollowUnfollow from 'components/FollowUnfollow';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { IInitiative } from 'api/initiatives/types';
 
 import BorderContainer from '../BorderContainer';
 

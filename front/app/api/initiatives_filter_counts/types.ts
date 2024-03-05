@@ -1,6 +1,6 @@
-import { Keys } from 'utils/cl-react-query/types';
-
 import { Sort, IQueryParameters } from 'api/initiatives/types';
+
+import { Keys } from 'utils/cl-react-query/types';
 
 import initiativeFilterCountsKeys from './keys';
 

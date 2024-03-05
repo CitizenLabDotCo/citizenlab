@@ -3,11 +3,11 @@ import React from 'react';
 import { fontSizes } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocalize from 'hooks/useLocalize';
+
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};

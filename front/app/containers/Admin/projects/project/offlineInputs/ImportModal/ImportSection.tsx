@@ -7,15 +7,6 @@ import { useParams } from 'react-router-dom';
 import { UploadFile, Locale } from 'typings';
 import { object, string, mixed, boolean } from 'yup';
 
-import Checkbox from 'components/HookForm/Checkbox';
-import Feedback from 'components/HookForm/Feedback';
-import SingleFileUploader from 'components/HookForm/SingleFileUploader';
-
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
-
 import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
 import { IPhases } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -24,6 +15,15 @@ import { IProject } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
+
+import Checkbox from 'components/HookForm/Checkbox';
+import Feedback from 'components/HookForm/Feedback';
+import SingleFileUploader from 'components/HookForm/SingleFileUploader';
+
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import LocalePicker from './LocalePicker';
 import messages from './messages';

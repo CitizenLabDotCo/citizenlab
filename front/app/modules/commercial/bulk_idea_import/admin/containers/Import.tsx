@@ -7,9 +7,10 @@ import {
   colors,
   Error,
 } from '@citizenlab/cl2-component-library';
-import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
 import { CLErrorsWrapper, UploadFile } from 'typings';
+
+import { API_PATH } from 'containers/App/constants';
 
 import { SectionField } from 'components/admin/Section';
 import Button from 'components/UI/Button';

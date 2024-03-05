@@ -8,10 +8,10 @@ import {
   NavLinkProps,
 } from 'react-router-dom';
 
+import useLocale from 'hooks/useLocale';
+
 import { isNilOrError } from 'utils/helperUtils';
 import { scrollToTop as scrollTop } from 'utils/scroll';
-
-import useLocale from 'hooks/useLocale';
 
 import updateLocationDescriptor from './updateLocationDescriptor';
 

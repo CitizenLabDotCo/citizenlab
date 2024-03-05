@@ -1,20 +1,8 @@
 import React, { useMemo } from 'react';
 
 import { Box, colors, isRtl } from '@citizenlab/cl2-component-library';
-import messages from 'containers/ProjectsShowPage/messages';
-import {
-  ProjectPageSectionTitle,
-  maxPageWidth,
-} from 'containers/ProjectsShowPage/styles';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-
-import ContentContainer from 'components/ContentContainer';
-import SectionContainer from 'components/SectionContainer';
-import StatusModule from 'components/StatusModule';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -22,6 +10,19 @@ import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
+
+import messages from 'containers/ProjectsShowPage/messages';
+import {
+  ProjectPageSectionTitle,
+  maxPageWidth,
+} from 'containers/ProjectsShowPage/styles';
+
+import ContentContainer from 'components/ContentContainer';
+import SectionContainer from 'components/SectionContainer';
+import StatusModule from 'components/StatusModule';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import { isValidPhase } from '../phaseParam';
 

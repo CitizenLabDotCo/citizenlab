@@ -2,13 +2,13 @@ import React, { useState, useMemo } from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import { internalCommentNotificationTypes } from 'api/campaigns/types';
 import useCampaigns from 'api/campaigns/useCampaigns';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 

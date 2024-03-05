@@ -1,14 +1,14 @@
 import { stringify } from 'qs';
 
+import { fetchPhase } from 'api/phases/usePhase';
+import { fetchProjectBySlug } from 'api/projects/useProjectBySlug';
+import { IUser, IUserData } from 'api/users/types';
+
 import tracks from 'components/IdeaButton/tracks';
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { trackEventByName } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
-
-import { fetchPhase } from 'api/phases/usePhase';
-import { fetchProjectBySlug } from 'api/projects/useProjectBySlug';
-import { IUser, IUserData } from 'api/users/types';
 
 export interface RedirectToIdeaFormParams {
   projectSlug: string;

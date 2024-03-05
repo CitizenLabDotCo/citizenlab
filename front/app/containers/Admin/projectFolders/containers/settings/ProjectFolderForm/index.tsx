@@ -4,6 +4,20 @@ import { IconTooltip, Radio, Box } from '@citizenlab/cl2-component-library';
 import { isEmpty, isEqual } from 'lodash-es';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
+import useAdminPublication from 'api/admin_publications/useAdminPublication';
+import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
+import useDeleteProjectFolderFile from 'api/project_folder_files/useDeleteProjectFolderFile';
+import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
+import {
+  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
+  CARD_IMAGE_ASPECT_RATIO_WIDTH,
+} from 'api/project_folder_images/types';
+import useAddProjectFolderImage from 'api/project_folder_images/useAddProjectFolderImage';
+import useDeleteProjectFolderImage from 'api/project_folder_images/useDeleteProjectFolderImage';
+import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
+import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
+
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import {
@@ -24,19 +38,6 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
 import { validateSlug } from 'utils/textUtils';
 
-import useAdminPublication from 'api/admin_publications/useAdminPublication';
-import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
-import useDeleteProjectFolderFile from 'api/project_folder_files/useDeleteProjectFolderFile';
-import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
-import {
-  CARD_IMAGE_ASPECT_RATIO_HEIGHT,
-  CARD_IMAGE_ASPECT_RATIO_WIDTH,
-} from 'api/project_folder_images/types';
-import useAddProjectFolderImage from 'api/project_folder_images/useAddProjectFolderImage';
-import useDeleteProjectFolderImage from 'api/project_folder_images/useDeleteProjectFolderImage';
-import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
-import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';

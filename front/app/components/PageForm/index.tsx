@@ -6,6 +6,9 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { Multiloc, UploadFile } from 'typings';
 import { object, mixed } from 'yup';
 
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import usePageFiles from 'api/page_files/usePageFiles';
+
 import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import FileUploader from 'components/HookForm/FileUploader';
@@ -18,9 +21,6 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
-
-import useCustomPageById from 'api/custom_pages/useCustomPageById';
-import usePageFiles from 'api/page_files/usePageFiles';
 
 import messages from './messages';
 import NavbarTitleField from './NavbarTitleField';

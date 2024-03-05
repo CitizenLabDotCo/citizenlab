@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
+
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import Field from '../../components/Field';
 import { isShown, isSupported } from '../Dashboard/utils';

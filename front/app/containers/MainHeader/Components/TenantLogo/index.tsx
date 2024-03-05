@@ -3,11 +3,11 @@ import React from 'react';
 import { Image } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import messages from '../../messages';
 

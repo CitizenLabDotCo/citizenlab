@@ -1,5 +1,9 @@
 import React from 'react';
 
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+import { PublicationStatus } from 'api/projects/types';
+
 import { H3, H4 } from 'containers/SiteMap';
 import messages from 'containers/SiteMap/messages';
 import Project from 'containers/SiteMap/Project';
@@ -9,10 +13,6 @@ import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
-import { PublicationStatus } from 'api/projects/types';
 
 interface Props {
   hightestTitle: 'h3' | 'h4';

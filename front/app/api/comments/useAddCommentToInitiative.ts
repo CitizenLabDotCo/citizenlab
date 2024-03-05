@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrorsWrapper } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import commentKeys from 'api/comments/keys';
 import initiativesKeys from 'api/initiatives/keys';
 import userCommentsCount from 'api/user_comments_count/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import { INewComment, IComment } from './types';
 

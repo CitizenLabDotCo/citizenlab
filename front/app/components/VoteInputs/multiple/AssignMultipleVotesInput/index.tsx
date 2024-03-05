@@ -8,14 +8,8 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
-
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import { useIntl } from 'utils/cl-intl';
-import { isNil } from 'utils/helperUtils';
 
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
@@ -23,6 +17,13 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { useIntl } from 'utils/cl-intl';
+import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
 import NumberInput from './NumberInput';

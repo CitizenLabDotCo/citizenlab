@@ -2,11 +2,11 @@ import React, { memo } from 'react';
 
 import styled from 'styled-components';
 
-import { pastPresentOrFuture } from 'utils/dateUtils';
-
 import useCauses from 'api/causes/useCauses';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
+
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import CauseCard from './CauseCard';
 

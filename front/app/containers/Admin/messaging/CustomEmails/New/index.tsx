@@ -2,14 +2,14 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
+import useAddCampaign from 'api/campaigns/useAddCampaign';
+import useAuthUser from 'api/me/useAuthUser';
+
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAddCampaign from 'api/campaigns/useAddCampaign';
-import useAuthUser from 'api/me/useAuthUser';
 
 import messages from '../../messages';
 import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';

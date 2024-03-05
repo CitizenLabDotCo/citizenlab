@@ -7,9 +7,15 @@ import {
   Spinner,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
+
+import useAuthUser from 'api/me/useAuthUser';
+import useProjects from 'api/projects/useProjects';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
-import moment from 'moment';
 
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
@@ -23,11 +29,6 @@ import {
   MessageDescriptor,
 } from 'utils/cl-intl';
 import { isModerator } from 'utils/permissions/roles';
-
-import useAuthUser from 'api/me/useAuthUser';
-import useProjects from 'api/projects/useProjects';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import reportBuilderMessages from '../../../messages';
 import { WIDGET_TITLES } from '../Widgets';

@@ -1,10 +1,10 @@
+import { IAppConfigurationData } from 'api/app_configuration/types';
+import { IUser } from 'api/users/types';
+
 import {
   definePermissionRule,
   IRouteItem,
 } from 'utils/permissions/permissions';
-
-import { IAppConfigurationData } from 'api/app_configuration/types';
-import { IUser } from 'api/users/types';
 
 import {
   isAdmin,

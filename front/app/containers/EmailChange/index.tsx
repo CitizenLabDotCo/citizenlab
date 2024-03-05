@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ERROR_CODE_MESSAGES } from 'containers/Authentication/Modal';
-import EmailConfirmation from 'containers/Authentication/steps/EmailConfirmation';
-import { ErrorCode } from 'containers/Authentication/typings';
 import { Helmet } from 'react-helmet';
 import { useForm } from 'react-hook-form';
 import { object, string } from 'yup';
+
+import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
+import useAuthUser from 'api/me/useAuthUser';
+
+import { ERROR_CODE_MESSAGES } from 'containers/Authentication/Modal';
+import EmailConfirmation from 'containers/Authentication/steps/EmailConfirmation';
+import { ErrorCode } from 'containers/Authentication/typings';
 
 import { StyledContentContainer } from 'components/smallForm';
 import Error from 'components/UI/Error';
@@ -17,9 +21,6 @@ import Modal from 'components/UI/Modal';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-
-import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
-import useAuthUser from 'api/me/useAuthUser';
 
 import CancelUpdate from './CancelUpdate';
 import messages from './messages';

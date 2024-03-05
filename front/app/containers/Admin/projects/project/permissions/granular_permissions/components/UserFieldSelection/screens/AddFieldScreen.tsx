@@ -2,13 +2,21 @@ import React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { Multiloc } from 'typings';
+import { object, string } from 'yup';
+
+import { IOptionsType } from 'api/custom_fields/types';
+import useAddUserCustomField from 'api/user_custom_fields/useAddUserCustomField';
+import useAddUserCustomFieldOption from 'api/user_custom_fields_options/useAddUserCustomFieldOption';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+
 import {
   FieldType,
   fieldTypes,
 } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
-import { FormProvider, useForm } from 'react-hook-form';
-import { Multiloc } from 'typings';
-import { object, string } from 'yup';
 
 import { SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
@@ -22,13 +30,6 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import validateMultiloc from 'utils/yup/validateMultilocForEveryLocale';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
-
-import { IOptionsType } from 'api/custom_fields/types';
-import useAddUserCustomField from 'api/user_custom_fields/useAddUserCustomField';
-import useAddUserCustomFieldOption from 'api/user_custom_fields_options/useAddUserCustomFieldOption';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useLocale from 'hooks/useLocale';
 
 import messages from '../../../containers/Granular/messages';
 import { getLabelForInputType } from '../../../containers/Granular/utils';

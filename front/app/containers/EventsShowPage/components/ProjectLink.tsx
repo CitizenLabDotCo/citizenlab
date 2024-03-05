@@ -8,12 +8,12 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-
 import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 
 import messages from '../messages';
 

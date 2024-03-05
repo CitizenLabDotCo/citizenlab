@@ -8,6 +8,11 @@ import {
 import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
+import { IIdeaStatusData } from 'api/idea_statuses/types';
+import useDeleteIdeaStatus from 'api/idea_statuses/useDeleteIdeaStatus';
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
+import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
+
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
   Row,
@@ -25,11 +30,6 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IIdeaStatusData } from 'api/idea_statuses/types';
-import useDeleteIdeaStatus from 'api/idea_statuses/useDeleteIdeaStatus';
-import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
-import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
 
 import messages from './messages';
 

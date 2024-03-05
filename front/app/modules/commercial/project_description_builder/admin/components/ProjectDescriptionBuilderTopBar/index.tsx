@@ -6,6 +6,10 @@ import useAddProjectDescriptionBuilderLayout from 'modules/commercial/project_de
 import { useParams } from 'react-router-dom';
 import { Locale } from 'typings';
 
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
@@ -15,10 +19,6 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import useProjectById from 'api/projects/useProjectById';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 

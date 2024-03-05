@@ -3,17 +3,17 @@ import React from 'react';
 import { IconTooltip, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useCustomPages from 'api/custom_pages/useCustomPages';
+import { ITopicData } from 'api/topics/types';
+
+import useLocalize from 'hooks/useLocalize';
+
 import { Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useCustomPages from 'api/custom_pages/useCustomPages';
-import { ITopicData } from 'api/topics/types';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 import { RowContent, RowContentInner, RowTitle } from './RowStyles';

@@ -1,16 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { API_PATH } from 'containers/App/constants';
 import { Multiloc } from 'typings';
-
-import {
-  FormBuilderConfig,
-  generateTempId,
-} from 'components/FormBuilder/utils';
-import Warning from 'components/UI/Warning';
-
-import { FormattedMessage } from 'utils/cl-intl';
 
 import {
   IFlatCustomField,
@@ -19,6 +10,16 @@ import {
 } from 'api/custom_fields/types';
 import { IPhaseData, UpdatePhaseObject } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
+
+import { API_PATH } from 'containers/App/constants';
+
+import {
+  FormBuilderConfig,
+  generateTempId,
+} from 'components/FormBuilder/utils';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import AccessRightsNotice from './AccessRightsNotice';
 import messages from './messages';

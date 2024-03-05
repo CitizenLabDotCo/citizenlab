@@ -5,13 +5,13 @@ import { darken, transparentize } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
+import { IGroupData, MembershipType } from 'api/groups/types';
+
 import Outlet from 'components/Outlet';
 import Button from 'components/UI/Button';
 
 import { injectIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-
-import { IGroupData, MembershipType } from 'api/groups/types';
 
 import messages from './messages';
 

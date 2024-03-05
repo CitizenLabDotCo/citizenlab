@@ -5,6 +5,11 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import styled from 'styled-components';
 
+import { ICauseData } from 'api/causes/types';
+import useCauses from 'api/causes/useCauses';
+import useDeleteCause from 'api/causes/useDeleteCause';
+import useReorderCause from 'api/causes/useReorderCause';
+
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
@@ -12,11 +17,6 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { ICauseData } from 'api/causes/types';
-import useCauses from 'api/causes/useCauses';
-import useDeleteCause from 'api/causes/useDeleteCause';
-import useReorderCause from 'api/causes/useReorderCause';
 
 import messages from './messages';
 

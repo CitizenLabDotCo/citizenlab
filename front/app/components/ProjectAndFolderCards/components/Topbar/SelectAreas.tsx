@@ -4,16 +4,16 @@ import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
 import { capitalize } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 
-import FilterSelector from 'components/FilterSelector';
-
-import { injectIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';
 import useAreas from 'api/areas/useAreas';
 
 import useLocalize from 'hooks/useLocalize';
+
+import FilterSelector from 'components/FilterSelector';
+
+import { injectIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 

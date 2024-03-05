@@ -1,15 +1,16 @@
 import React from 'react';
 
 import { Image, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import oldMessages from 'containers/Authentication/steps/AuthProviders/messages';
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
-import styled from 'styled-components';
 
 import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import FranceConnectImage from './franceconnect.png';
 import messages from './messages';

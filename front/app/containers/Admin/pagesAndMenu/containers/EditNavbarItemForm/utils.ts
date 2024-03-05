@@ -1,7 +1,7 @@
-import { truncateMultiloc } from 'utils/textUtils';
-
 import { INavbarItem, INavbarItemUpdate } from 'api/navbar/types';
 import { MAX_TITLE_LENGTH } from 'api/navbar/util';
+
+import { truncateMultiloc } from 'utils/textUtils';
 
 import { FormValues } from '../../components/NavbarItemForm';
 

@@ -10,6 +10,10 @@ import {
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+import { IProjectFolderData } from 'api/project_folders/types';
+import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
+
 import ContentContainer from 'components/ContentContainer';
 import FollowUnfollow from 'components/FollowUnfollow';
 import PageNotFound from 'components/PageNotFound';
@@ -21,10 +25,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
-
-import useAuthUser from 'api/me/useAuthUser';
-import { IProjectFolderData } from 'api/project_folders/types';
-import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
 
 import messages from './messages';
 import ProjectFolderDescription from './ProjectFolderDescription';

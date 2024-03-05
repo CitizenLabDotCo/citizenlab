@@ -1,8 +1,9 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 
-import tracks from 'containers/Admin/projects/all/tracks';
 import { get } from 'lodash-es';
 import styled from 'styled-components';
+
+import tracks from 'containers/Admin/projects/all/tracks';
 
 import Button from 'components/UI/Button';
 

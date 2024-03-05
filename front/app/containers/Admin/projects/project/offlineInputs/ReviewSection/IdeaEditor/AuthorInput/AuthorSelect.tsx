@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from 'react';
 
+import useInfiniteUsers from 'api/users/useInfiniteUsers';
+import useUserById from 'api/users/useUserById';
+
 import BaseUserSelect from 'components/UI/UserSelect/BaseUserSelect';
 import OptionLabel from 'components/UI/UserSelect/OptionLabel';
 import { Option } from 'components/UI/UserSelect/typings';
 import { optionIsUser } from 'components/UI/UserSelect/utils';
-
-import useInfiniteUsers from 'api/users/useInfiniteUsers';
-import useUserById from 'api/users/useUserById';
 
 import CustomOption from './CustomOption';
 import { SelectedAuthor } from './typings';

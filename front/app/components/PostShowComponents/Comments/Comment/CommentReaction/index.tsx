@@ -1,11 +1,5 @@
 import React, { MouseEvent, useState, useEffect } from 'react';
 
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import { isNilOrError } from 'utils/helperUtils';
-
 import useAddCommentReaction from 'api/comment_reactions/useAddCommentReaction';
 import useCommentReaction from 'api/comment_reactions/useCommentReaction';
 import useDeleteCommentReaction from 'api/comment_reactions/useDeleteCommentReaction';
@@ -14,6 +8,12 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { isNilOrError } from 'utils/helperUtils';
 
 import LikeButton from './LikeButton';
 import { trackLike, trackCancelLike } from './trackReaction';

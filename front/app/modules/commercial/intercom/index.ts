@@ -1,5 +1,8 @@
 import { combineLatest } from 'rxjs';
 
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import authUserStream from 'api/me/authUserStream';
+
 import {
   IDestinationConfig,
   registerDestination,
@@ -17,9 +20,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
-
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
-import authUserStream from 'api/me/authUserStream';
 
 export const INTERCOM_APP_ID = process.env.INTERCOM_APP_ID;
 

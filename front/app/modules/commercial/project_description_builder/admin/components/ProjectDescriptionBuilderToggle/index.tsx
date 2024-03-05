@@ -12,14 +12,14 @@ import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { Locale, Multiloc } from 'typings';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
 import { injectIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Messages
 import messages from '../../messages';

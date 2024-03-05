@@ -4,9 +4,9 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import ReactSelect from 'react-select';
 
-import selectStyles from 'components/UI/MultipleSelect/styles';
-
 import { IUserData } from 'api/users/types';
+
+import selectStyles from 'components/UI/MultipleSelect/styles';
 
 import { Option } from './typings';
 import { getOptionId } from './utils';

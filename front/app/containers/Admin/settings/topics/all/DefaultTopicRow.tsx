@@ -2,12 +2,12 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { ITopicData } from 'api/topics/types';
+
 import { Row } from 'components/admin/ResourceList';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { ITopicData } from 'api/topics/types';
 
 import messages from './messages';
 import { RowContent, RowContentInner, RowTitle } from './RowStyles';

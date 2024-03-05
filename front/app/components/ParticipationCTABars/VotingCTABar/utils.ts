@@ -1,13 +1,13 @@
 import { FormatMessage } from 'typings';
 
-import voteInputMessages from 'components/VoteInputs/_shared/messages';
-
-import { isNil } from 'utils/helperUtils';
-
 import { TCurrency } from 'api/app_configuration/types';
 import { IPhaseData } from 'api/phases/types';
 
 import { Localize } from 'hooks/useLocalize';
+
+import voteInputMessages from 'components/VoteInputs/_shared/messages';
+
+import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
 

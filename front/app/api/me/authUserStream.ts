@@ -2,9 +2,9 @@ import { QueryObserver } from '@tanstack/react-query';
 import { BehaviorSubject } from 'rxjs';
 import { CLErrors } from 'typings';
 
-import { queryClient } from 'utils/cl-react-query/queryClient';
-
 import { IUser } from 'api/users/types';
+
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import meKeys from './keys';
 import { MeKeys } from './types';

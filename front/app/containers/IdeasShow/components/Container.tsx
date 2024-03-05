@@ -5,6 +5,12 @@ import { useSearchParams } from 'react-router-dom';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 
+import usePhases from 'api/phases/usePhases';
+import { getInputTerm } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import Modal from 'components/UI/Modal';
 
@@ -12,12 +18,6 @@ import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isString } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
-
-import usePhases from 'api/phases/usePhases';
-import { getInputTerm } from 'api/phases/utils';
-import useProjectById from 'api/projects/useProjectById';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from '../messages';
 import {

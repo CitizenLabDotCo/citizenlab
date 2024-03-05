@@ -1,6 +1,6 @@
-import { isNilOrError } from 'utils/helperUtils';
-
 import { TPhases } from 'api/phases/types';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 export const hasEmbeddedSurvey = (phases: TPhases | null) => {
   let hasSurveyPhase = false;

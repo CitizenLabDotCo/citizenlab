@@ -4,6 +4,15 @@ import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import { map, sortBy } from 'lodash-es';
 import styled from 'styled-components';
 
+import { ICommentsByTopic } from 'api/comments_by_topic/types';
+import useCommentsByTopic from 'api/comments_by_topic/useCommentsByTopic';
+import { IIdeasByTopic } from 'api/ideas_by_topic/types';
+import useIdeasByTopic from 'api/ideas_by_topic/useIdeasByTopic';
+import { IReactionsByTopic } from 'api/reactions_by_topic/types';
+import useReactionsByTopic from 'api/reactions_by_topic/useReactionsByTopic';
+
+import useLocalize from 'hooks/useLocalize';
+
 import {
   GraphCard,
   GraphCardInner,
@@ -14,15 +23,6 @@ import {
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { ICommentsByTopic } from 'api/comments_by_topic/types';
-import useCommentsByTopic from 'api/comments_by_topic/useCommentsByTopic';
-import { IIdeasByTopic } from 'api/ideas_by_topic/types';
-import useIdeasByTopic from 'api/ideas_by_topic/useIdeasByTopic';
-import { IReactionsByTopic } from 'api/reactions_by_topic/types';
-import useReactionsByTopic from 'api/reactions_by_topic/useReactionsByTopic';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from '../messages';
 

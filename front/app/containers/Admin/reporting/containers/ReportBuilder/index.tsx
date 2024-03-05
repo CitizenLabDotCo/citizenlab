@@ -6,6 +6,14 @@ import { isEmpty } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { Locale } from 'typings';
 
+import { ReportLayout } from 'api/report_layout/types';
+import useReportLayout from 'api/report_layout/useReportLayout';
+import { ReportResponse } from 'api/reports/types';
+import useReport from 'api/reports/useReport';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+
 import Frame from 'components/admin/ContentBuilder/Frame';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
@@ -17,14 +25,6 @@ import {
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-import { ReportLayout } from 'api/report_layout/types';
-import useReportLayout from 'api/report_layout/useReportLayout';
-import { ReportResponse } from 'api/reports/types';
-import useReport from 'api/reports/useReport';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from 'hooks/useLocale';
 
 import EditModePreview from '../../components/ReportBuilder/EditModePreview';
 import PDFWrapper from '../../components/ReportBuilder/EditModePreview/PDFWrapper';

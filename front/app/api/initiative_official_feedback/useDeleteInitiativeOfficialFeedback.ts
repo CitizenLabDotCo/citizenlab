@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import initiativesCountKeys from 'api/initiative_counts/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import initiativeOfficialFeedbackKeys from './keys';
 

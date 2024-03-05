@@ -1,15 +1,16 @@
 import React from 'react';
 
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 import styled from 'styled-components';
-
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import globalMessages from 'utils/messages';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { TSurveyService } from 'api/phases/types';
 import { IProjectData, SurveyDisabledReason } from 'api/projects/types';
+
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import globalMessages from 'utils/messages';
 
 import ParticipationPermission from '../ParticipationPermission';
 

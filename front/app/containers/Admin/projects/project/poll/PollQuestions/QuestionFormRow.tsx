@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import { Multiloc, Locale } from 'typings';
 
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
+
 import { TextCell, Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useLocale from 'hooks/useLocale';
 
 import messages from '../messages';
 

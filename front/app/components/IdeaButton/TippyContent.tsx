@@ -1,18 +1,19 @@
 import React from 'react';
 
 import { fontSizes, colors, Icon } from '@citizenlab/cl2-component-library';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
+
+import { IPhaseData } from 'api/phases/types';
+import useProjectById from 'api/projects/useProjectById';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 import { IIdeaPostingDisabledReason } from 'utils/actionTakingRules';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import globalMessages from 'utils/messages';
-
-import { IPhaseData } from 'api/phases/types';
-import useProjectById from 'api/projects/useProjectById';
 
 import messages from './messages';
 import tracks from './tracks';

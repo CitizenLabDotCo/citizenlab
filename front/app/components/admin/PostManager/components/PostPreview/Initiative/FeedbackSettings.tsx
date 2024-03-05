@@ -5,15 +5,6 @@ import { memoize } from 'lodash-es';
 import styled from 'styled-components';
 import { IOption } from 'typings';
 
-import events, {
-  StatusChangeModalOpen,
-} from 'components/admin/PostManager/events';
-
-import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import eventEmitter from 'utils/eventEmitter';
-import { getFullName } from 'utils/textUtils';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IInitiativeAllowedTransitions } from 'api/initiative_allowed_transitions/types';
 import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
@@ -30,6 +21,15 @@ import { IUsers } from 'api/users/types';
 import useUsers from 'api/users/useUsers';
 
 import useLocalize from 'hooks/useLocalize';
+
+import events, {
+  StatusChangeModalOpen,
+} from 'components/admin/PostManager/events';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+import { getFullName } from 'utils/textUtils';
 
 import tracks from '../../../tracks';
 import messages from '../messages';

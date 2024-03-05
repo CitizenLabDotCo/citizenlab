@@ -1,13 +1,13 @@
 import React, { memo, Fragment } from 'react';
 
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { List, Row } from 'components/admin/ResourceList';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ProjectRow from '../../components/ProjectRow';
 import messages from '../messages';

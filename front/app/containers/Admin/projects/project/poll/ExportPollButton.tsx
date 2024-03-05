@@ -4,12 +4,12 @@ import React from 'react';
 import { snakeCase } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 
+import exportPollResponses from 'api/poll_responses/exportPollResponses';
+
 import Button from 'components/UI/Button';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-
-import exportPollResponses from 'api/poll_responses/exportPollResponses';
 
 import messages from './messages';
 import tracks from './tracks';

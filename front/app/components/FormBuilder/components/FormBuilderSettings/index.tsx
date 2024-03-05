@@ -10,6 +10,13 @@ import {
 import { useFormContext } from 'react-hook-form';
 
 import {
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+} from 'api/custom_fields/types';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import {
   formEndOption,
   getTranslatedStringKey,
   FormBuilderConfig,
@@ -18,13 +25,6 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import {
-  IFlatCustomField,
-  IFlatCustomFieldWithIndex,
-} from 'api/custom_fields/types';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import messages from '../messages';
 import { getFieldNumbers } from '../utils';

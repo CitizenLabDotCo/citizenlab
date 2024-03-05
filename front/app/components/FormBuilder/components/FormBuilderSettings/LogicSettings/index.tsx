@@ -4,15 +4,15 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 
+import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
+
+import useLocale from 'hooks/useLocale';
+
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 import Warning from 'components/UI/Warning';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
-
-import useLocale from 'hooks/useLocale';
 
 import messages from '../../messages';
 

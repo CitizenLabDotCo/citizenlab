@@ -2,13 +2,13 @@ import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
+import useCause from 'api/causes/useCause';
+import useUpdateCause from 'api/causes/useUpdateCause';
+
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import useCause from 'api/causes/useCause';
-import useUpdateCause from 'api/causes/useUpdateCause';
 
 import CauseForm, { SubmitValues } from './CauseForm';
 import messages from './messages';

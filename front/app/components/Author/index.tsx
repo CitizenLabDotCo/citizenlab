@@ -8,6 +8,10 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useUserById from 'api/users/useUserById';
+
+import useLocale from 'hooks/useLocale';
+
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 
@@ -16,10 +20,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
-import useUserById from 'api/users/useUserById';
-
-import useLocale from 'hooks/useLocale';
 
 import messages from './messages';
 

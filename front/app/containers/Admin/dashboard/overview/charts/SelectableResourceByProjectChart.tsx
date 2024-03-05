@@ -3,8 +3,6 @@ import React from 'react';
 import { map, orderBy } from 'lodash-es';
 import { IOption } from 'typings';
 
-import { IResolution } from 'components/admin/ResolutionControl';
-
 import { ICommentsByProject } from 'api/comments_by_project/types';
 import useCommentsByProject from 'api/comments_by_project/useCommentsByProject';
 import { IIdeasByProject } from 'api/ideas_by_project/types';
@@ -13,6 +11,8 @@ import { IReactionsByProject } from 'api/reactions_by_project/types';
 import useReactionsByProject from 'api/reactions_by_project/useReactionsByProject';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { IResolution } from 'components/admin/ResolutionControl';
 
 import { IResource } from '..';
 

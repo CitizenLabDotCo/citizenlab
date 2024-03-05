@@ -4,14 +4,14 @@ import { uuid4 } from '@sentry/utils';
 import { MessageDescriptor } from 'react-intl';
 import { Locale } from 'typings';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import {
   ICustomFieldInputType,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 import { IPhaseData } from 'api/phases/types';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/ConfigSelectWithLocaleSwitcher';
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';

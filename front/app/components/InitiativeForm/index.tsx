@@ -2,12 +2,20 @@ import React, { Suspense, lazy, useEffect, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
-import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
 import { Multiloc, UploadFile } from 'typings';
 import { object, array, mixed, string, boolean } from 'yup';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IInitiativeFileData } from 'api/initiative_files/types';
+import { IInitiativeImageData } from 'api/initiative_images/types';
+import { IInitiativeData } from 'api/initiatives/types';
+import useTopics from 'api/topics/useTopics';
+
+import useLocale from 'hooks/useLocale';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
 
 import { SectionField } from 'components/admin/Section';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
@@ -29,14 +37,6 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
 import { reverseGeocode } from 'utils/locationTools';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IInitiativeFileData } from 'api/initiative_files/types';
-import { IInitiativeImageData } from 'api/initiative_images/types';
-import { IInitiativeData } from 'api/initiatives/types';
-import useTopics from 'api/topics/useTopics';
-
-import useLocale from 'hooks/useLocale';
 
 import messages from './messages';
 import SubmitButtonBar from './SubmitButtonBar';

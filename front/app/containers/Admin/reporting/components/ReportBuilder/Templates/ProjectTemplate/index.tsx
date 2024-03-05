@@ -2,22 +2,23 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
-import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
-import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 import moment from 'moment';
-
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-
-import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
-import { withoutSpacing } from 'utils/textUtils';
 
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
+import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
+import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
+
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+
+import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
+import { withoutSpacing } from 'utils/textUtils';
 
 // shared widgets
 

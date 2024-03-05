@@ -3,11 +3,11 @@ import React from 'react';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import MultipleSelect from 'components/UI/MultipleSelect';
-
 import useEvents from 'api/events/useEvents';
 
 import useLocalize from 'hooks/useLocalize';
+
+import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { TRule } from '../rules';
 

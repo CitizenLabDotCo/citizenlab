@@ -1,10 +1,11 @@
-import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 import { parse } from 'qs';
+
+import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
+
+import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
 import { trackEventByName } from 'utils/analytics';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-
-import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
 import tracks from '../../tracks';
 import {

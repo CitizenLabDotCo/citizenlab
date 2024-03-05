@@ -10,9 +10,9 @@ import moment, { Moment } from 'moment';
 import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import useLocale from 'hooks/useLocale';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 const StylingWrapper = styled.div`
   display: flex;

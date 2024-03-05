@@ -2,14 +2,14 @@ import React from 'react';
 
 import { ILocationInfo } from 'typings';
 
+import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
+import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
+import useAddInitiative from 'api/initiatives/useAddInitiative';
+
 import InitiativeForm, { FormValues } from 'components/InitiativeForm';
 
 import clHistory from 'utils/cl-router/history';
 import { parsePosition } from 'utils/locationTools';
-
-import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
-import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
-import useAddInitiative from 'api/initiatives/useAddInitiative';
 
 interface Props {
   locationInfo: ILocationInfo | null;

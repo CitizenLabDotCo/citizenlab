@@ -2,15 +2,15 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import { ICustomPageData } from 'api/custom_pages/types';
+
 import { List } from 'components/admin/ResourceList';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import { ICustomPageData } from 'api/custom_pages/types';
 
 import { adminCustomPageSettingsPath } from '../../routes';
 

@@ -4,6 +4,14 @@ import { IconTooltip, Box, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
+import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
+import useProjectFolderModerators from 'api/project_folder_moderators/useProjectFolderModerators';
+import { IUserData } from 'api/users/types';
+
+import useExceedsSeats from 'hooks/useExceedsSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { List, Row } from 'components/admin/ResourceList';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import { SubSectionTitle } from 'components/admin/Section';
@@ -14,14 +22,6 @@ import UserSelect from 'components/UI/UserSelect';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
-
-import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
-import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
-import useProjectFolderModerators from 'api/project_folder_moderators/useProjectFolderModerators';
-import { IUserData } from 'api/users/types';
-
-import useExceedsSeats from 'hooks/useExceedsSeats';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 

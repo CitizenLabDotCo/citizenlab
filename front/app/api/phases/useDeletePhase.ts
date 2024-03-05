@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import projectsKeys from 'api/projects/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import phasesKeys from './keys';
 

@@ -6,10 +6,13 @@ import {
   colors,
   media,
 } from '@citizenlab/cl2-component-library';
-import { triggerVerificationOnly } from 'containers/Authentication/events';
-import messages from 'containers/UsersEditPage/messages';
 import { darken } from 'polished';
 import styled from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+
+import { triggerVerificationOnly } from 'containers/Authentication/events';
+import messages from 'containers/UsersEditPage/messages';
 
 import Avatar from 'components/Avatar';
 import FeatureFlag from 'components/FeatureFlag';
@@ -18,8 +21,6 @@ import { FormSection } from 'components/UI/FormComponents';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAuthUser from 'api/me/useAuthUser';
 
 const Container = styled(FormSection)`
   display: flex;

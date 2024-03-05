@@ -3,6 +3,9 @@ import React from 'react';
 import { media, fontSizes, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
 import CityLogoSection from 'components/CityLogoSection';
 import ContentContainer from 'components/ContentContainer';
 import InitiativeButton from 'components/InitiativeButton';
@@ -11,9 +14,6 @@ import PageNotFound from 'components/PageNotFound';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import InitiativesHeader from './InitiativesHeader';
 import InitiativesIndexMeta from './InitiativesIndexMeta';

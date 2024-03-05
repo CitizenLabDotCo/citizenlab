@@ -4,18 +4,18 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 import { ITab } from 'typings';
 
+import useIdeaById from 'api/ideas/useIdeaById';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
 import InternalComments from 'components/admin/InternalComments';
 import { Tab } from 'components/admin/NavigationTabs';
 import { tabBorderSize } from 'components/admin/NavigationTabs/tabsStyleConstants';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useIdeaById from 'api/ideas/useIdeaById';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import messages from '../messages';
 

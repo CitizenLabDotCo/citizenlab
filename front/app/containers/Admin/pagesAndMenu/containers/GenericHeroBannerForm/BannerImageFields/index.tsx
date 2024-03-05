@@ -3,6 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { Box, IOption } from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
 
+import {
+  ICustomPageAttributes,
+  TCustomPageBannerLayout,
+} from 'api/custom_pages/types';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import SelectPreviewDevice, {
   TDevice,
@@ -11,11 +16,6 @@ import SelectPreviewDevice, {
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-import {
-  ICustomPageAttributes,
-  TCustomPageBannerLayout,
-} from 'api/custom_pages/types';
 
 import messages from '../messages';
 

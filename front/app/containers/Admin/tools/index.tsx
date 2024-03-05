@@ -2,13 +2,13 @@ import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'utils/permissions/roles';
-
 import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { isAdmin } from 'utils/permissions/roles';
 
 import Esri from './Esri';
 import messages from './messages';

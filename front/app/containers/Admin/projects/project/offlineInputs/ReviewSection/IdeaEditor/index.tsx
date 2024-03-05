@@ -7,16 +7,8 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
 import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
-
-import { customAjv } from 'components/Form';
-import { FormData } from 'components/Form/typings';
-import { isValidData } from 'components/Form/utils';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import { geocode } from 'utils/locationTools';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -30,6 +22,15 @@ import useUserById from 'api/users/useUserById';
 
 import useInputSchema from 'hooks/useInputSchema';
 import useLocalize from 'hooks/useLocalize';
+
+import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
+
+import { customAjv } from 'components/Form';
+import { FormData } from 'components/Form/typings';
+import { isValidData } from 'components/Form/utils';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { geocode } from 'utils/locationTools';
 
 import messages from '../messages';
 

@@ -4,9 +4,9 @@ import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { isEqual } from 'lodash-es';
 import styled from 'styled-components';
 
-import ProjectCard from 'components/ProjectCard';
-
 import { IAdminPublicationData } from 'api/admin_publications/types';
+
+import ProjectCard from 'components/ProjectCard';
 
 import { PublicationTab } from '../';
 

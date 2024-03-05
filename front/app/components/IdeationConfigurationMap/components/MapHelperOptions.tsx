@@ -5,12 +5,12 @@ import { Box, Button } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
+import { IMapConfig } from 'api/map_config/types';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
+
 import { goToMapLocation } from 'components/EsriMap/utils';
 
 import { useIntl } from 'utils/cl-intl';
-
-import { IMapConfig } from 'api/map_config/types';
-import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
 import messages from '../../../containers/Admin/ProjectCustomMapConfigPage/messages';
 

@@ -5,6 +5,10 @@ import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 import { Locale } from 'typings';
 
+import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
+
+import useLocale from 'hooks/useLocale';
+
 import { SectionField } from 'components/admin/Section';
 import { getAdditionalSettings } from 'components/FormBuilder/utils';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
@@ -13,10 +17,6 @@ import Toggle from 'components/HookForm/Toggle';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
-
-import useLocale from 'hooks/useLocale';
 
 import messages from '../../messages';
 

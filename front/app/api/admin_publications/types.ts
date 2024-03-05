@@ -1,8 +1,8 @@
 import { ILinks, IRelationship, Multiloc } from 'typings';
 
-import { Keys } from 'utils/cl-react-query/types';
-
 import { PublicationStatus } from 'api/projects/types';
+
+import { Keys } from 'utils/cl-react-query/types';
 
 import adminPublicationsKeys from './keys';
 

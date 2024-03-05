@@ -3,13 +3,13 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { IPollQuestionData } from 'api/poll_questions/types';
+
 import { SortableRow, TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { IPollQuestionData } from 'api/poll_questions/types';
 
 import messages from '../messages';
 

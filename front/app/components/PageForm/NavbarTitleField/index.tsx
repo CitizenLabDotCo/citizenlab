@@ -2,15 +2,15 @@ import React from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
 
+import { POLICY_PAGE, TPolicyPage } from 'api/custom_pages/types';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import useNavbarItems from 'api/navbar/useNavbarItems';
+
 import { SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { POLICY_PAGE, TPolicyPage } from 'api/custom_pages/types';
-import useCustomPageById from 'api/custom_pages/useCustomPageById';
-import useNavbarItems from 'api/navbar/useNavbarItems';
 
 import messages from '../messages';
 

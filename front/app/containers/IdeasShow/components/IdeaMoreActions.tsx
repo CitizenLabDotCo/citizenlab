@@ -1,7 +1,15 @@
 import React, { memo, useState } from 'react';
 
-import SpamReportForm from 'containers/SpamReport';
 import styled from 'styled-components';
+
+import { IIdeaData } from 'api/ideas/types';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import SpamReportForm from 'containers/SpamReport';
 
 import HasPermission from 'components/HasPermission';
 import Modal from 'components/UI/Modal';
@@ -12,13 +20,6 @@ import warningMessages from 'components/WarningModal/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IIdeaData } from 'api/ideas/types';
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
-import useAuthUser from 'api/me/useAuthUser';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
-import useProjectById from 'api/projects/useProjectById';
 
 import messages from '../messages';
 

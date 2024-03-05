@@ -16,6 +16,16 @@ import { rgba, darken } from 'polished';
 import { useInView } from 'react-intersection-observer';
 import styled, { useTheme } from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+import { getInputTerm } from 'api/phases/utils';
+import useProjectImages, {
+  CARD_IMAGE_ASPECT_RATIO,
+} from 'api/project_images/useProjectImages';
+import useProjectById from 'api/projects/useProjectById';
+import { getProjectUrl } from 'api/projects/utils';
+
 import AvatarBubbles from 'components/AvatarBubbles';
 import FollowUnfollow from 'components/FollowUnfollow';
 import { TLayout } from 'components/ProjectAndFolderCards';
@@ -29,16 +39,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getInputTermMessage } from 'utils/i18n';
-
-import useAuthUser from 'api/me/useAuthUser';
-import usePhase from 'api/phases/usePhase';
-import usePhases from 'api/phases/usePhases';
-import { getInputTerm } from 'api/phases/utils';
-import useProjectImages, {
-  CARD_IMAGE_ASPECT_RATIO,
-} from 'api/project_images/useProjectImages';
-import useProjectById from 'api/projects/useProjectById';
-import { getProjectUrl } from 'api/projects/utils';
 
 import messages from './messages';
 import tracks from './tracks';

@@ -9,12 +9,12 @@ import {
 import { lighten } from 'polished';
 import styled from 'styled-components';
 
+import { IPresentInternalComment } from 'api/internal_comments/types';
+
 import Author from 'components/Author';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 
 import { useIntl } from 'utils/cl-intl';
-
-import { IPresentInternalComment } from 'api/internal_comments/types';
 
 const Container = styled.div`
   display: flex;

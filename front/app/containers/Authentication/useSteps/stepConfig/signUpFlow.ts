@@ -1,6 +1,3 @@
-import { trackEventByName } from 'utils/analytics';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-
 import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
@@ -13,6 +10,9 @@ import {
   updateUser,
   invalidateCacheAfterUpdateUser,
 } from 'api/users/useUpdateUser';
+
+import { trackEventByName } from 'utils/analytics';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import tracks from '../../tracks';
 import {

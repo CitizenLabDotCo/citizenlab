@@ -10,11 +10,11 @@ import {
 import { rgba } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
+import { IIdeaData } from 'api/ideas/types';
+
 import IdeaCard from 'components/IdeaCard';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { IIdeaData } from 'api/ideas/types';
 
 import messages from '../../messages';
 

@@ -3,6 +3,11 @@ import React from 'react';
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+
+import useLocalize from 'hooks/useLocalize';
+
 import TabbedResource from 'components/admin/TabbedResource';
 import Button from 'components/UI/Button';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -12,11 +17,6 @@ import clHistory from 'utils/cl-router/history';
 import { isAdmin } from 'utils/permissions/roles';
 
 // Localisation
-
-import useAuthUser from 'api/me/useAuthUser';
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 

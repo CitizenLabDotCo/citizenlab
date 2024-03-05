@@ -1,5 +1,8 @@
 import { combineLatest } from 'rxjs';
 
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import authUserStream from 'api/me/authUserStream';
+
 import {
   IDestinationConfig,
   registerDestination,
@@ -13,9 +16,6 @@ import {
   shutdownFor,
 } from 'utils/analytics';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
-import authUserStream from 'api/me/authUserStream';
 
 import { trackEvent, trackPageChange } from './actions';
 import { setupMatomo } from './setup';

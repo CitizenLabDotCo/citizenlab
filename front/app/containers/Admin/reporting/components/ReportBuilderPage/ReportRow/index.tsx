@@ -2,10 +2,10 @@ import React from 'react';
 
 import { ListItem, Box, Title } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
-
 import { Report } from 'api/reports/types';
 import useDeleteReport from 'api/reports/useDeleteReport';
+
+import { useIntl } from 'utils/cl-intl';
 
 import Buttons from './Buttons';
 import EditedText from './EditedText';

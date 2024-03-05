@@ -11,10 +11,10 @@ import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
+import useLocalize from 'hooks/useLocalize';
+
 import { injectIntl, FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 

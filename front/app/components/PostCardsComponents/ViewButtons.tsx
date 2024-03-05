@@ -16,11 +16,11 @@ import {
 import { darken } from 'polished';
 import styled from 'styled-components';
 
+import useLocale from 'hooks/useLocale';
+
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useLocale from 'hooks/useLocale';
 
 import messages from './messages';
 import tracks from './tracks';

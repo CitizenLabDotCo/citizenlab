@@ -10,6 +10,10 @@ import {
   map,
 } from 'rxjs/operators';
 
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import { IAppConfigurationData } from 'api/app_configuration/types';
+import authUserStream from 'api/me/authUserStream';
+
 import { ISavedDestinations } from 'components/ConsentManager/consent';
 import {
   getDestinationConfig,
@@ -18,10 +22,6 @@ import {
 } from 'components/ConsentManager/destinations';
 
 import eventEmitter from 'utils/eventEmitter';
-
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
-import { IAppConfigurationData } from 'api/app_configuration/types';
-import authUserStream from 'api/me/authUserStream';
 
 export interface IEvent {
   name: string;

@@ -30,21 +30,22 @@
 
 // -----------------------------------------------------------------------------
 // imports and definitions
-import { locales } from 'containers/App/constants';
 import { includes, get } from 'lodash-es';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { first, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { Locale, Multiloc } from 'typings';
-
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import clHistory from 'utils/cl-router/history';
-import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
 
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { IAppConfiguration } from 'api/app_configuration/types';
 import authUserStream from 'api/me/authUserStream';
 import meKeys from 'api/me/keys';
 import { updateUser } from 'api/users/useUpdateUser';
+
+import { locales } from 'containers/App/constants';
+
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import clHistory from 'utils/cl-router/history';
+import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
 
 export const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(
   null as any

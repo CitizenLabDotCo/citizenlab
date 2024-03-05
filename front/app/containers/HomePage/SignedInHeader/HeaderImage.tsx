@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { Image, Box, media, isRtl } from '@citizenlab/cl2-component-library';
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 import styled, { useTheme } from 'styled-components';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 
 const HeaderImageContainer = styled.div`
   position: absolute;

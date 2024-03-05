@@ -10,13 +10,13 @@ import { get } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
-
-import useAuthUser from 'api/me/useAuthUser';
 
 import messages from '../../admin/containers/messages';
 import ProjectTemplatePreview from '../../components/ProjectTemplatePreview';

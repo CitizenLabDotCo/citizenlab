@@ -1,11 +1,18 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+
+import { TCustomPageEnabledSetting } from 'api/custom_pages/types';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import SectionToggle, {
   ISectionToggleData,
 } from 'containers/Admin/pagesAndMenu/components/SectionToggle';
 import sectionToggleMessages from 'containers/Admin/pagesAndMenu/components/SectionToggle/messages';
-import { useParams } from 'react-router-dom';
 
 import PageWrapper from 'components/admin/PageWrapper';
 import Warning from 'components/UI/Warning';
@@ -13,12 +20,6 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { TCustomPageEnabledSetting } from 'api/custom_pages/types';
-import useCustomPageById from 'api/custom_pages/useCustomPageById';
-import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 

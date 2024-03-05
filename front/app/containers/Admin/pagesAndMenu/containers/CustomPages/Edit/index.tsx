@@ -1,9 +1,14 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import { WrappedComponentProps } from 'react-intl';
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
+
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { pagesAndMenuBreadcrumb } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 import TabbedResource from 'components/admin/TabbedResource';
 import HelmetIntl from 'components/HelmetIntl';
@@ -11,10 +16,6 @@ import Breadcrumbs from 'components/UI/Breadcrumbs';
 
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useCustomPageById from 'api/custom_pages/useCustomPageById';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from '../messages';
 

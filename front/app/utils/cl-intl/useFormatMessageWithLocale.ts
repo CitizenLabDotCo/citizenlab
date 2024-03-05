@@ -1,10 +1,11 @@
 import { useContext, useCallback } from 'react';
 
-import CustomIntlContext from 'containers/LanguageProvider/CustomIntlContext';
 import { MessageDescriptor } from 'react-intl';
 import { Locale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import CustomIntlContext from 'containers/LanguageProvider/CustomIntlContext';
 
 import { handleFormatMessage, FormatMessageValues } from './useIntl';
 

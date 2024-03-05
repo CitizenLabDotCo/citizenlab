@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import useComment from 'api/comments/useComment';
 import useUserById from 'api/users/useUserById';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 

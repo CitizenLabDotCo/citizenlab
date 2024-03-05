@@ -1,15 +1,15 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 
+import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
+import useAuthUser from 'api/me/useAuthUser';
+import { IIdeaAssignedToYouNotificationData } from 'api/notifications/types';
+
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
-
-import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
-import useAuthUser from 'api/me/useAuthUser';
-import { IIdeaAssignedToYouNotificationData } from 'api/notifications/types';
 
 import messages from '../../messages';
 import NotificationWrapper from '../NotificationWrapper';

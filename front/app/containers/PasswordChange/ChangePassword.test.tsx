@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { IUserData } from 'api/users/types';
+
 import {
   screen,
   render,
@@ -7,8 +9,6 @@ import {
   waitFor,
   userEvent,
 } from 'utils/testUtils/rtl';
-
-import { IUserData } from 'api/users/types';
 
 import ChangePassword from '.';
 

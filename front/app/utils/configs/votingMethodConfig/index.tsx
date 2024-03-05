@@ -3,6 +3,12 @@ import React from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { FormatMessage } from 'typings';
 
+import { IAppConfiguration } from 'api/app_configuration/types';
+import { IPhaseData, VotingMethod } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
+
+import { Localize } from 'hooks/useLocalize';
+
 import AddToBasketBox from 'components/VoteInputs/budgeting/AddToBasketBox';
 import AddToBasketButton from 'components/VoteInputs/budgeting/AddToBasketButton';
 import AssignMultipleVotesBox from 'components/VoteInputs/multiple/AssignMultipleVotesBox';
@@ -12,12 +18,6 @@ import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVot
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getLocalisedDateString } from 'utils/dateUtils';
-
-import { IAppConfiguration } from 'api/app_configuration/types';
-import { IPhaseData, VotingMethod } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
-
-import { Localize } from 'hooks/useLocalize';
 
 import messages from './messages';
 

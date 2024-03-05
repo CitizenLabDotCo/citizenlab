@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 
-import { IResolution } from 'components/admin/ResolutionControl';
-
 import { useVisitors as useVisitorsData } from 'api/graph_data_units';
+
+import { IResolution } from 'components/admin/ResolutionControl';
 
 import { parseStats, parseTimeSeries } from './parse';
 import { QueryParameters } from './typings';

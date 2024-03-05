@@ -1,8 +1,8 @@
-import { roundPercentages } from 'utils/math';
-
 import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
 
 import { Localize } from 'hooks/useLocalize';
+
+import { roundPercentages } from 'utils/math';
 
 import { Bins } from '../api/reference_distribution/types';
 

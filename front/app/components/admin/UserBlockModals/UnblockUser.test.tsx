@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { render, fireEvent, waitFor, screen } from 'utils/testUtils/rtl';
-
 import { makeUser } from 'api/users/__mocks__/useUsers';
 import { IUser } from 'api/users/types';
+
+import { render, fireEvent, waitFor, screen } from 'utils/testUtils/rtl';
 
 import UnblockUserModal from './UnblockUser';
 

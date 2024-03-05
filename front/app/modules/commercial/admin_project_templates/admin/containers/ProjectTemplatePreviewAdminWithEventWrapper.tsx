@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
+import useLocale from 'hooks/useLocale';
+
 import { trackPage } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useLocale from 'hooks/useLocale';
 
 import ProjectTemplatePreviewAdmin from './ProjectTemplatePreviewAdmin';
 

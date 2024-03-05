@@ -3,12 +3,12 @@ import React from 'react';
 import { isNil } from 'lodash-es';
 import { FormattedDate } from 'react-intl';
 
+import { IUserCustomField } from 'api/user_custom_fields/types';
+import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
-
-import { IUserCustomField } from 'api/user_custom_fields/types';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import messages from '../messages';
 

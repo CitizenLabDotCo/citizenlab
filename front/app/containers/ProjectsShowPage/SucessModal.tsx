@@ -4,6 +4,10 @@ import { Box, Title, Image } from '@citizenlab/cl2-component-library';
 import rocket from 'assets/img/rocket.png';
 import { useSearchParams } from 'react-router-dom';
 
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
 import Modal from 'components/UI/Modal';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -11,10 +15,6 @@ import {
   getMethodConfig,
   getPhase,
 } from 'utils/configs/participationMethodConfig';
-
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
-import useProjectById from 'api/projects/useProjectById';
 
 import { isReady } from './utils';
 

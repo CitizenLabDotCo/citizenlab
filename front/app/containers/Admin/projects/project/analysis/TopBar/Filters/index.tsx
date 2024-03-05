@@ -9,11 +9,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import useAnalysis from 'api/analyses/useAnalysis';
+
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useAnalysis from 'api/analyses/useAnalysis';
 
 import messages from '../messages';
 

@@ -13,10 +13,6 @@ import { every, isEmpty, isFunction } from 'lodash-es';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
-import Pagination from 'components/admin/Pagination';
-
-import { SortDirection } from 'utils/paginationUtils';
-
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { Sort as IdeasSort, IIdeaData } from 'api/ideas/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
@@ -25,6 +21,10 @@ import {
   Sort as InitiativesSort,
 } from 'api/initiatives/types';
 import { IPhaseData } from 'api/phases/types';
+
+import Pagination from 'components/admin/Pagination';
+
+import { SortDirection } from 'utils/paginationUtils';
 
 import { ManagerType, TFilterMenu } from '../..';
 

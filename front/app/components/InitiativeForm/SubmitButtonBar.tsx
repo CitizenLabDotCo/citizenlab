@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { media } from '@citizenlab/cl2-component-library';
-import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
 import styled, { useTheme } from 'styled-components';
+
+import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
 
 import ContentContainer from 'components/ContentContainer';
 import Button from 'components/UI/Button';

@@ -5,6 +5,11 @@ import { isEmpty } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import { Multiloc, Locale } from 'typings';
 
+import useProjectById from 'api/projects/useProjectById';
+import useUpdateProject from 'api/projects/useUpdateProject';
+
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+
 import {
   Section,
   SectionField,
@@ -21,11 +26,6 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
-
-import useProjectById from 'api/projects/useProjectById';
-import useUpdateProject from 'api/projects/useUpdateProject';
-
-import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 import messages from './messages';
 

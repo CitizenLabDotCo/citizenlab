@@ -1,4 +1,3 @@
-import { FieldType } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
 import { MessageDescriptor } from 'react-intl';
 
 import {
@@ -6,6 +5,8 @@ import {
   IPermissionData,
   IPhasePermissionAction,
 } from 'api/permissions/types';
+
+import { FieldType } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
 
 import messages from './messages';
 

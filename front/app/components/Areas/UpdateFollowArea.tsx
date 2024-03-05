@@ -3,14 +3,14 @@ import React from 'react';
 import { Badge, colors, Button } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
 
+import { IAreaData } from 'api/areas/types';
+import useAddFollower from 'api/follow_unfollow/useAddFollower';
+import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
+
 import tracks from 'components/FollowUnfollow/tracks';
 import T from 'components/T';
 
 import { trackEventByName } from 'utils/analytics';
-
-import { IAreaData } from 'api/areas/types';
-import useAddFollower from 'api/follow_unfollow/useAddFollower';
-import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
 
 interface Props {
   area: IAreaData;

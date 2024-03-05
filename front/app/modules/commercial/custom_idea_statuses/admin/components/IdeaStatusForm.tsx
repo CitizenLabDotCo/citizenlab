@@ -14,6 +14,8 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { string, object } from 'yup';
 
+import { ideaStatusCodes, TIdeaStatusCode } from 'api/idea_statuses/types';
+
 import { Section, SectionField } from 'components/admin/Section';
 import ColorPicker from 'components/HookForm/ColorPicker';
 import Feedback from 'components/HookForm/Feedback';
@@ -25,8 +27,6 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMult
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-
-import { ideaStatusCodes, TIdeaStatusCode } from 'api/idea_statuses/types';
 
 import messages from './messages';
 

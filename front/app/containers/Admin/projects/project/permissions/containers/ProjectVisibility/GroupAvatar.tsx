@@ -2,12 +2,12 @@ import React from 'react';
 
 import styled, { css } from 'styled-components';
 
+import useMemberships from 'api/group_memberships/useMemberships';
+import useUserById from 'api/users/useUserById';
+
 import Avatar from 'components/Avatar';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import useMemberships from 'api/group_memberships/useMemberships';
-import useUserById from 'api/users/useUserById';
 
 const AvatarWrapper = styled.div`
   padding: 2px;

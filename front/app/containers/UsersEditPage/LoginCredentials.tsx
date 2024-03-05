@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import { IUserData } from 'api/users/types';
+
 import Button from 'components/UI/Button';
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { IUserData } from 'api/users/types';
 
 import messages from './messages';
 

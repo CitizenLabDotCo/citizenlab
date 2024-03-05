@@ -1,17 +1,18 @@
 import React from 'react';
 
-import messages from 'containers/Admin/dashboard/messages';
 import { orderBy } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
+
+import { IUsersByDomicile } from 'api/users_by_domicile/types';
+import useUsersByDomicile from 'api/users_by_domicile/useUsersByDomicile';
+import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
+
+import messages from 'containers/Admin/dashboard/messages';
 
 import { injectIntl } from 'utils/cl-intl';
 import { convertDomicileData } from 'utils/dataUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import localize, { InjectedLocalized } from 'utils/localize';
-
-import { IUsersByDomicile } from 'api/users_by_domicile/types';
-import useUsersByDomicile from 'api/users_by_domicile/useUsersByDomicile';
-import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
 
 import HorizontalBarChart from './HorizontalBarChart';
 

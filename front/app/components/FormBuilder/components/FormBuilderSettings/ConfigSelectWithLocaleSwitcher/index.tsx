@@ -19,6 +19,11 @@ import {
 } from 'react-hook-form';
 import { Locale, CLError, RHFErrors } from 'typings';
 
+import { useCustomFieldOptionImages } from 'api/content_field_option_images/useCustomFieldOptionImage';
+import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
+
+import usePrevious from 'hooks/usePrevious';
+
 import { List, Row, SortableRow } from 'components/admin/ResourceList';
 import { SectionField } from 'components/admin/Section';
 import { generateTempId } from 'components/FormBuilder/utils';
@@ -27,11 +32,6 @@ import Error, { TFieldName } from 'components/UI/Error';
 import { useIntl } from 'utils/cl-intl';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { useCustomFieldOptionImages } from 'api/content_field_option_images/useCustomFieldOptionImage';
-import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
-
-import usePrevious from 'hooks/usePrevious';
 
 import messages from './messages';
 import SelectFieldOption, { OptionImageType } from './SelectFieldOption';

@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
-import fetcher from 'utils/cl-react-query/fetcher';
-import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-import clHistory from 'utils/cl-router/history';
-
 import logoutUrl from 'api/authentication/sign_in_out/logoutUrl';
 import groupsKeys from 'api/groups/keys';
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import userCountKeys from 'api/users_count/keys';
+
+import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
+import fetcher from 'utils/cl-react-query/fetcher';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import clHistory from 'utils/cl-router/history';
 
 import usersKeys from './keys';
 

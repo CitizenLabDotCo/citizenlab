@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
 import { omit } from 'lodash-es';
 
-import clHistory from 'utils/cl-router/history';
-
 import useAddCustomPage from 'api/custom_pages/useAddCustomPage';
+
+import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
+
+import clHistory from 'utils/cl-router/history';
 
 import CustomPageSettingsForm from '../CustomPageSettingsForm';
 

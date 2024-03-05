@@ -2,8 +2,6 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import Outlet from 'components/Outlet';
-
 import {
   TNotificationData,
   IAdminRightsReceivedNotificationData,
@@ -41,6 +39,8 @@ import {
 } from 'api/notifications/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Outlet from 'components/Outlet';
 
 import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';

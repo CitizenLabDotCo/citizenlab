@@ -4,9 +4,9 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import { useTheme } from 'styled-components';
 
-import { toThreeLetterMonth } from 'utils/dateUtils';
-
 import { IEventData } from 'api/events/types';
+
+import { toThreeLetterMonth } from 'utils/dateUtils';
 
 import SingleDateStylized from './SingleDateStylized';
 

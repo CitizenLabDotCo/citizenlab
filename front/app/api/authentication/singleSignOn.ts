@@ -1,11 +1,12 @@
+import { omitBy, isNil } from 'lodash-es';
+import { stringify } from 'qs';
+
 import { AUTH_PATH } from 'containers/App/constants';
 import { isProjectContext } from 'containers/Authentication/steps/Verification/utils';
 import {
   AuthenticationData,
   SignUpInError,
 } from 'containers/Authentication/typings';
-import { omitBy, isNil } from 'lodash-es';
-import { stringify } from 'qs';
 
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';

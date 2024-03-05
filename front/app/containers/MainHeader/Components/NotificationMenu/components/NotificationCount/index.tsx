@@ -9,10 +9,10 @@ import {
 import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAuthUser from 'api/me/useAuthUser';
 
 import messages from '../../messages';
 

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { render, screen } from 'utils/testUtils/rtl';
-
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import { IUserData } from 'api/users/types';
+
+import { render, screen } from 'utils/testUtils/rtl';
 
 import ProjectRow, { Props } from '.';
 

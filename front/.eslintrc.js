@@ -76,22 +76,27 @@ module.exports = {
         pathGroups: [
           { group: 'builtin', pattern: 'react', position: 'before' },
           {
-            pattern: 'components/**',
-            group: 'internal',
-            position: 'before',
-          },
-          {
-            pattern: 'utils/**',
-            group: 'internal',
-            position: 'before',
-          },
-          {
             pattern: 'api/**',
             group: 'internal',
             position: 'before',
           },
           {
             pattern: 'hooks/**',
+            group: 'internal',
+            position: 'before',
+          },
+          {
+            pattern: 'containers/**',
+            group: 'internal',
+            position: 'before',
+          },
+          {
+            pattern: 'components/**',
+            group: 'internal',
+            position: 'before',
+          },
+          {
+            pattern: 'utils/**',
             group: 'internal',
             position: 'before',
           },

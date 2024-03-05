@@ -10,13 +10,13 @@ import {
 import moment from 'moment';
 import styled, { useTheme } from 'styled-components';
 
-import DayAndMonth from 'components/EventCard/DateBlocks/DayAndMonth';
-
-import clHistory from 'utils/cl-router/history';
-
 import { IEventData } from 'api/events/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import DayAndMonth from 'components/EventCard/DateBlocks/DayAndMonth';
+
+import clHistory from 'utils/cl-router/history';
 
 const EventCard = styled(Box)`
   ${defaultCardStyle};

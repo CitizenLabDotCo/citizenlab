@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { ProjectsFilterTypes } from 'api/custom_pages/types';
+
 import {
   screen,
   render,
@@ -7,8 +9,6 @@ import {
   waitFor,
   userEvent,
 } from 'utils/testUtils/rtl';
-
-import { ProjectsFilterTypes } from 'api/custom_pages/types';
 
 import CustomPageSettingsForm from './';
 

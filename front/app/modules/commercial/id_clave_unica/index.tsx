@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import { ModuleConfiguration } from 'utils/moduleUtils';
-
 import { TVerificationMethodName } from 'api/verification_methods/types';
 import { isLastVerificationMethod } from 'api/verification_methods/util';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { ModuleConfiguration } from 'utils/moduleUtils';
 
 import messages from './messages';
 

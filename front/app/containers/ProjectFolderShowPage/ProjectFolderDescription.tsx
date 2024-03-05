@@ -12,6 +12,9 @@ import { WrappedComponentProps } from 'react-intl';
 import ReactResizeDetector from 'react-resize-detector';
 import styled, { useTheme } from 'styled-components';
 
+import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
+import { IProjectFolderData } from 'api/project_folders/types';
+
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
@@ -20,9 +23,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
-import { IProjectFolderData } from 'api/project_folders/types';
 
 import messages from './messages';
 

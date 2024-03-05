@@ -3,6 +3,9 @@ import React, { useEffect, useState, FormEvent } from 'react';
 import { Button } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
+import { IPhaseData } from 'api/phases/types';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import {
   CTABarProps,
@@ -11,9 +14,6 @@ import {
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { scrollToElement } from 'utils/scroll';
-
-import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 
 import messages from '../messages';
 

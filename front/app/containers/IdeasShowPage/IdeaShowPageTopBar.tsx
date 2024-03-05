@@ -6,10 +6,18 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { lighten } from 'polished';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { IdeaReactingDisabledReason } from 'api/ideas/types';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhaseData } from 'api/phases/types';
+import { isIdeaInParticipationContext } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import ReactionControl from 'components/ReactionControl';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
@@ -19,13 +27,6 @@ import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { IdeaReactingDisabledReason } from 'api/ideas/types';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useAuthUser from 'api/me/useAuthUser';
-import { IPhaseData } from 'api/phases/types';
-import { isIdeaInParticipationContext } from 'api/phases/utils';
-import useProjectById from 'api/projects/useProjectById';
 
 const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;

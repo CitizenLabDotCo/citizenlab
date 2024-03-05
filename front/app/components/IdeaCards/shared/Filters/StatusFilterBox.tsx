@@ -1,10 +1,10 @@
 import React from 'react';
 
-import StatusFilter from 'components/FilterBoxes/StatusFilter';
-
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { IIdeasFilterCountsQueryParameters } from 'api/ideas_filter_counts/types';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
+
+import StatusFilter from 'components/FilterBoxes/StatusFilter';
 
 interface Props {
   selectedStatusId: string | null | undefined;

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+import useDeleteTopic from 'api/topics/useDeleteTopic';
+import useTopics from 'api/topics/useTopics';
+
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
   Section,
@@ -16,9 +19,6 @@ import Modal, {
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useDeleteTopic from 'api/topics/useDeleteTopic';
-import useTopics from 'api/topics/useTopics';
 
 import messages from '../messages';
 

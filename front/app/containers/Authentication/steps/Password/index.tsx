@@ -5,6 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object, boolean } from 'yup';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import Checkbox from 'components/HookForm/Checkbox';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import Button from 'components/UI/Button';
@@ -15,8 +17,6 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import containerMessages from '../../messages';
 import { SetError, State } from '../../typings';

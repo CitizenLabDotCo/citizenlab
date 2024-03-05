@@ -3,10 +3,10 @@ import React from 'react';
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useIdeaById from 'api/ideas/useIdeaById';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useIdeaById from 'api/ideas/useIdeaById';
 
 import messages from '../messages';
 

@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Menu, Divider } from 'semantic-ui-react';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import { IPhaseData } from 'api/phases/types';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
 

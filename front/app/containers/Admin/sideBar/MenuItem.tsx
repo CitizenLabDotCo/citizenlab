@@ -9,13 +9,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useFeatureFlags from 'hooks/useFeatureFlags';
+
 import CountBadge from 'components/UI/CountBadge';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { usePermission } from 'utils/permissions';
-
-import useFeatureFlags from 'hooks/useFeatureFlags';
 
 import messages from './messages';
 import { NavItem } from './navItems';

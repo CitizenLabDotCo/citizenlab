@@ -11,6 +11,13 @@ import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
 import { IGraphFormat, IOption } from 'typings';
 
+import { commentsByProjectXlsxEndpoint } from 'api/comments_by_project/util';
+import { commentsByTopicXlsxEndpoint } from 'api/comments_by_topic/util';
+import { ideasByProjectXlsxEndpoint } from 'api/ideas_by_project/util';
+import { ideasByTopicXlsxEndpoint } from 'api/ideas_by_topic/util';
+import { reactionsByProjectXlsxEndpoint } from 'api/reactions_by_project/util';
+import { reactionsByTopicXlsxEndpoint } from 'api/reactions_by_topic/util';
+
 import BarChart from 'components/admin/Graphs/BarChart';
 import {
   sizes,
@@ -27,13 +34,6 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { HiddenLabel } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { commentsByProjectXlsxEndpoint } from 'api/comments_by_project/util';
-import { commentsByTopicXlsxEndpoint } from 'api/comments_by_topic/util';
-import { ideasByProjectXlsxEndpoint } from 'api/ideas_by_project/util';
-import { ideasByTopicXlsxEndpoint } from 'api/ideas_by_topic/util';
-import { reactionsByProjectXlsxEndpoint } from 'api/reactions_by_project/util';
-import { reactionsByTopicXlsxEndpoint } from 'api/reactions_by_topic/util';
 
 import { IResource } from '..';
 import messages from '../../messages';

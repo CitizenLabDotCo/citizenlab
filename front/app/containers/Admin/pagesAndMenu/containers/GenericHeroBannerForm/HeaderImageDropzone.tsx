@@ -4,13 +4,13 @@ import { viewportWidths } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { UploadFile } from 'typings';
 
-import { TDevice } from 'components/admin/SelectPreviewDevice';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
 } from 'api/custom_pages/types';
+
+import { TDevice } from 'components/admin/SelectPreviewDevice';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 import { TBannerError } from './BannerImageFields';
 

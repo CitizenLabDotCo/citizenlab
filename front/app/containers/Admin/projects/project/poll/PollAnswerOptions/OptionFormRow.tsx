@@ -3,18 +3,18 @@ import React, { useEffect, useState } from 'react';
 import { Input, LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import { Multiloc, Locale } from 'typings';
 
-import { TextCell, Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
 import useAddPollOption from 'api/poll_options/useAddPollOption';
 import useUpdatePollOption from 'api/poll_options/useUpdatePollOption';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 import usePrevious from 'hooks/usePrevious';
+
+import { TextCell, Row } from 'components/admin/ResourceList';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 

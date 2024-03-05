@@ -2,13 +2,13 @@ import React from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 
-import CollapsibleBox from 'components/UI/CollapsibleBox';
-
-import { FormattedMessage } from 'utils/cl-intl';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocalize from 'hooks/useLocalize';
+
+import CollapsibleBox from 'components/UI/CollapsibleBox';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 const TipsContent = React.lazy(() => import('./TipsContent'));

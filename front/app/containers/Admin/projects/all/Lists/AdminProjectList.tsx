@@ -2,17 +2,17 @@ import React, { Fragment, memo } from 'react';
 
 import styled from 'styled-components';
 
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
-
-import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPublication';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import ProjectRow from '../../components/ProjectRow';
 import messages from '../messages';

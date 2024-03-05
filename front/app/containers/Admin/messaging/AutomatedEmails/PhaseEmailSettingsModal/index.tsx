@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Title, Button, Text, Box } from '@citizenlab/cl2-component-library';
 
+import useLocalize from 'hooks/useLocalize';
+
 import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import useLocalize from 'hooks/useLocalize';
 
 import { CampaignData } from '../types';
 

@@ -2,13 +2,13 @@ import React from 'react';
 
 import { Title, Button } from '@citizenlab/cl2-component-library';
 
+import useUnblockUser from 'api/blocked_users/useUnblockUser';
+import { IUserData } from 'api/users/types';
+
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
-
-import useUnblockUser from 'api/blocked_users/useUnblockUser';
-import { IUserData } from 'api/users/types';
 
 import messages from './messages';
 

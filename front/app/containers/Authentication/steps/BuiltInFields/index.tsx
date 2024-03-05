@@ -2,11 +2,19 @@ import React, { useEffect } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
+import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocale from 'hooks/useLocale';
+
 import {
   AuthenticationData,
   SetError,
 } from 'containers/Authentication/typings';
-import { useForm, FormProvider } from 'react-hook-form';
 
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
@@ -20,13 +28,6 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
-import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
-import useAuthUser from 'api/me/useAuthUser';
-
-import useLocale from 'hooks/useLocale';
 
 import tracks from '../../tracks';
 import { BuiltInFieldsUpdate } from '../../useSteps/stepConfig/typings';

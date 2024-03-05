@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Box, BoxMarginProps } from '@citizenlab/cl2-component-library';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 

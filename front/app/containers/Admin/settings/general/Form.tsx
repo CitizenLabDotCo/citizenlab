@@ -7,10 +7,13 @@ import {
   Box,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { appLocalePairs } from 'containers/App/constants';
 import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { object, array, string } from 'yup';
+
+import { IAppConfigurationSettingsCore } from 'api/app_configuration/types';
+
+import { appLocalePairs } from 'containers/App/constants';
 
 import {
   Section,
@@ -27,8 +30,6 @@ import MultipleSelect from 'components/HookForm/MultipleSelect';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-
-import { IAppConfigurationSettingsCore } from 'api/app_configuration/types';
 
 import messages from '../messages';
 

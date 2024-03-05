@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { AUTH_PATH } from 'containers/App/constants';
 import styled from 'styled-components';
+
+import { TVerificationMethod } from 'api/verification_methods/types';
+
+import { AUTH_PATH } from 'containers/App/constants';
 
 import { getJwt } from 'utils/auth/jwt';
 import { removeUrlLocale } from 'utils/locale';
-
-import { TVerificationMethod } from 'api/verification_methods/types';
 
 import icon from './clave-unica-icon.svg';
 

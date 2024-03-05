@@ -9,9 +9,9 @@ import {
 import InfiniteScroll from 'react-infinite-scroller';
 import styled from 'styled-components';
 
-import { useIntl } from 'utils/cl-intl';
-
 import useNotifications from 'api/notifications/useNotifications';
+
+import { useIntl } from 'utils/cl-intl';
 
 import EmptyStateImg from '../assets/no_notification_image.svg';
 import messages from '../messages';

@@ -1,7 +1,3 @@
-import { GetRequirements } from 'containers/Authentication/typings';
-
-import { queryClient } from 'utils/cl-react-query/queryClient';
-
 import getAuthUser from 'api/authentication/auth_user/getAuthUser';
 import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
@@ -11,6 +7,10 @@ import {
   updateUser,
   invalidateCacheAfterUpdateUser,
 } from 'api/users/useUpdateUser';
+
+import { GetRequirements } from 'containers/Authentication/typings';
+
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import { Step, BuiltInFieldsUpdate } from './typings';
 import {

@@ -4,6 +4,12 @@ import { Tr, Td, Box, colors } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled from 'styled-components';
 
+import { IUserData } from 'api/users/types';
+import useDeleteUser from 'api/users/useDeleteUser';
+
+import useExceedsSeats from 'hooks/useExceedsSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
@@ -17,12 +23,6 @@ import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
-
-import { IUserData } from 'api/users/types';
-import useDeleteUser from 'api/users/useDeleteUser';
-
-import useExceedsSeats from 'hooks/useExceedsSeats';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import events from './events';
 import messages from './messages';

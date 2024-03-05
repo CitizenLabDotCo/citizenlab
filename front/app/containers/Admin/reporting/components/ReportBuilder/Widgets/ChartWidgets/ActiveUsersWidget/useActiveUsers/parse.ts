@@ -1,11 +1,11 @@
 import moment, { Moment } from 'moment';
 
+import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes';
+
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import { get } from 'utils/helperUtils';
-
-import { ActiveUsersResponse } from 'api/graph_data_units/responseTypes';
 
 import { TimeSeriesResponseRow, TimeSeriesRow, TimeSeries } from './typings';
 

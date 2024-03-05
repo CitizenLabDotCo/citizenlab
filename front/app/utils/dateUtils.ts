@@ -2,9 +2,9 @@ import { isString } from 'lodash-es';
 import moment, { unitOfTime } from 'moment';
 import { Locale } from 'typings';
 
-import { IResolution } from 'components/admin/ResolutionControl';
-
 import { IEventData } from 'api/events/types';
+
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export function getIsoDateForToday(): string {
   // this is based on the user's timezone in moment, so

@@ -1,8 +1,17 @@
 import React from 'react';
 
 import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
-import PostedBy from 'containers/InitiativesShow/PostedBy';
 import styled from 'styled-components';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import PostedBy from 'containers/InitiativesShow/PostedBy';
 
 import {
   Top,
@@ -20,14 +29,6 @@ import FileAttachments from 'components/UI/FileAttachments';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
-import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
-import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from '../messages';
 

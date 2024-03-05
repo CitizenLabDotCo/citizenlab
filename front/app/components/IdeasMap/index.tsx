@@ -24,6 +24,13 @@ import { useSearchParams } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import styled, { useTheme } from 'styled-components';
 
+import { IIdeaData } from 'api/ideas/types';
+import { IMapConfig } from 'api/map_config/types';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhase from 'api/phases/usePhase';
+
+import useLocalize from 'hooks/useLocalize';
+
 import EsriMap from 'components/EsriMap';
 import {
   createEsriGeoJsonLayers,
@@ -40,13 +47,6 @@ import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isAdmin } from 'utils/permissions/roles';
-
-import { IIdeaData } from 'api/ideas/types';
-import { IMapConfig } from 'api/map_config/types';
-import useAuthUser from 'api/me/useAuthUser';
-import usePhase from 'api/phases/usePhase';
-
-import useLocalize from 'hooks/useLocalize';
 
 import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
 import IdeaMapCard from './IdeaMapCard';

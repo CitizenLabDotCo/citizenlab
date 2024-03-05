@@ -1,5 +1,7 @@
 import React from 'react';
 
+import useIdeaById from 'api/ideas/useIdeaById';
+
 import {
   Header,
   Item,
@@ -9,8 +11,6 @@ import Topics from 'components/PostShowComponents/Topics';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useIdeaById from 'api/ideas/useIdeaById';
 
 import messages from './messages';
 

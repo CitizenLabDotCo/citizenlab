@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
+import { TSeatNumber } from 'api/app_configuration/types';
+import { IInvitesNewSeats } from 'api/invites/types';
+
+import useExceedsSeats from 'hooks/useExceedsSeats';
+
 import SeatInfo, {
   TSeatType,
 } from 'components/admin/SeatBasedBilling/SeatInfo';
@@ -10,11 +15,6 @@ import SeatSetSuccess from 'components/admin/SeatBasedBilling/SeatSetSuccess';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import { TSeatNumber } from 'api/app_configuration/types';
-import { IInvitesNewSeats } from 'api/invites/types';
-
-import useExceedsSeats from 'hooks/useExceedsSeats';
 
 import messages from './messages';
 

@@ -1,6 +1,9 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+
+import { useUsersByAge } from 'api/graph_data_units';
+
 import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/AgeChart/convertToGraphFormat';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
@@ -9,8 +12,6 @@ import BarChart from 'components/admin/Graphs/BarChart';
 import { Margin } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
-
-import { useUsersByAge } from 'api/graph_data_units';
 
 import NoData from '../../_shared/NoData';
 import messages from '../messages';

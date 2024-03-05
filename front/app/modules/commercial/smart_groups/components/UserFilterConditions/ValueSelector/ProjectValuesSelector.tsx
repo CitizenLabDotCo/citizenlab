@@ -3,11 +3,11 @@ import React, { memo } from 'react';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { IOption } from 'typings';
 
+import useLocalize from 'hooks/useLocalize';
+
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { isNilOrError } from 'utils/helperUtils';
-
-import useLocalize from 'hooks/useLocalize';
 
 import { TRule } from '../rules';
 

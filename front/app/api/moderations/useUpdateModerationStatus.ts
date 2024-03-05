@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import moderationsCountKeys from 'api/moderation_count/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import moderationKeys from './keys';
 import { IModeration, TModeratableType, TModerationStatus } from './types';

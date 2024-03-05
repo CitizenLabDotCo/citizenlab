@@ -13,6 +13,11 @@ import { isEmpty, forOwn } from 'lodash-es';
 import moment from 'moment';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+import useUserBySlug from 'api/users/useUserBySlug';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
@@ -24,11 +29,6 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
-
-import useAuthUser from 'api/me/useAuthUser';
-import useUserBySlug from 'api/users/useUserBySlug';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 

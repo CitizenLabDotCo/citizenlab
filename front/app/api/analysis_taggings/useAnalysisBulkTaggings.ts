@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import tagsKeys from 'api/analysis_tags/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import taggingsKeys from './keys';
 import { ITagging } from './types';

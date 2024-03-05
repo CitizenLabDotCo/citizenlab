@@ -1,15 +1,16 @@
 import React from 'react';
 
-import { AUTH_PATH } from 'containers/App/constants';
 import { WrappedComponentProps } from 'react-intl';
+
+import { TVerificationMethod } from 'api/verification_methods/types';
+
+import { AUTH_PATH } from 'containers/App/constants';
 
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 
 import { getJwt } from 'utils/auth/jwt';
 import { injectIntl } from 'utils/cl-intl';
 import { removeUrlLocale } from 'utils/locale';
-
-import { TVerificationMethod } from 'api/verification_methods/types';
 
 import messages from '../messages';
 

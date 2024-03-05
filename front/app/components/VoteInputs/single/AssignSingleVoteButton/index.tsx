@@ -2,20 +2,21 @@ import React from 'react';
 
 import { Button, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import { useSearchParams } from 'react-router-dom';
+
+import useBasket from 'api/baskets/useBasket';
+import useVoting from 'api/baskets_ideas/useVoting';
+import useIdeaById from 'api/ideas/useIdeaById';
+import { IPhaseData } from 'api/phases/types';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import { useSearchParams } from 'react-router-dom';
 
 import { VOTES_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
-
-import useBasket from 'api/baskets/useBasket';
-import useVoting from 'api/baskets_ideas/useVoting';
-import useIdeaById from 'api/ideas/useIdeaById';
-import { IPhaseData } from 'api/phases/types';
 
 import messages from './messages';
 

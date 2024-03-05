@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 import { Multiloc } from 'typings';
 
-import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-
 import useLocalize from 'hooks/useLocalize';
+
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
+
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 interface SharedProps {
   pagebreak?: boolean;

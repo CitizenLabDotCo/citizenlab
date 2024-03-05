@@ -11,14 +11,6 @@ import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 
 import {
-  generateTempId,
-  FormBuilderConfig,
-} from 'components/FormBuilder/utils';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
-import {
   ICustomFieldInputType,
   IFlatCreateCustomField,
   IFlatCustomField,
@@ -26,6 +18,14 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
+
+import {
+  generateTempId,
+  FormBuilderConfig,
+} from 'components/FormBuilder/utils';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 

@@ -19,13 +19,13 @@ import {
   LabelList,
 } from 'recharts';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
 import useAuthorsByDomicile from 'api/analysis_stats/useAuthorsByDomicile';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 

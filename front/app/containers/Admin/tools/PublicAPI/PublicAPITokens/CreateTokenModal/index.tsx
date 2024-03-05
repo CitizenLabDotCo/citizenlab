@@ -12,14 +12,14 @@ import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { object, string } from 'yup';
 
+import useAddApiClient from 'api/api_clients/useAddApiClient';
+
 import Feedback from 'components/HookForm/Feedback';
 import Input from 'components/HookForm/Input';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-
-import useAddApiClient from 'api/api_clients/useAddApiClient';
 
 import messages from '../messages';
 

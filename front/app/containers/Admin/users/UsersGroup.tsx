@@ -3,6 +3,15 @@ import React, { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
+import useDeleteMembership from 'api/group_memberships/useDeleteMembership';
+import { MembershipType } from 'api/groups/types';
+import useDeleteGroup from 'api/groups/useDeleteGroup';
+import useGroup from 'api/groups/useGroup';
+import useUpdateGroup from 'api/groups/useUpdateGroup';
+import usersKeys from 'api/users/keys';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Outlet from 'components/Outlet';
 import Modal from 'components/UI/Modal';
 
@@ -12,15 +21,6 @@ import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useDeleteMembership from 'api/group_memberships/useDeleteMembership';
-import { MembershipType } from 'api/groups/types';
-import useDeleteGroup from 'api/groups/useDeleteGroup';
-import useGroup from 'api/groups/useGroup';
-import useUpdateGroup from 'api/groups/useUpdateGroup';
-import usersKeys from 'api/users/keys';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import events from './events';
 import messages from './messages';

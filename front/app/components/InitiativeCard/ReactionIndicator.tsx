@@ -1,18 +1,19 @@
 import React from 'react';
 
 import { Icon, fontSizes, colors } from '@citizenlab/cl2-component-library';
-import ProposalProgressBar from 'containers/InitiativesShow/ReactionControl/Status/components/ProposalProgressBar';
 import styled, { useTheme } from 'styled-components';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+import ProposalProgressBar from 'containers/InitiativesShow/ReactionControl/Status/components/ProposalProgressBar';
 
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 import messages from './messages';
 

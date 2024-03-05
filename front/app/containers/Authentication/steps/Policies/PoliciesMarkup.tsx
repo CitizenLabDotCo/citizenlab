@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { Box, Text, fontSizes } from '@citizenlab/cl2-component-library';
-import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
 import styled from 'styled-components';
+
+import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
 
 import Checkbox from 'components/HookForm/Checkbox';
 

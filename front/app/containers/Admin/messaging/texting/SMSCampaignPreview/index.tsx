@@ -9,6 +9,10 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useDeleteTextingCampaign from 'api/texting_campaigns/useDeleteTextingCampaign';
+import useSendTextingCampaign from 'api/texting_campaigns/useSendTextingCampaign';
+import useTextingCampaign from 'api/texting_campaigns/useTextingCampaign';
+
 import HelmetIntl from 'components/HelmetIntl';
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
@@ -16,10 +20,6 @@ import Modal from 'components/UI/Modal';
 import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useDeleteTextingCampaign from 'api/texting_campaigns/useDeleteTextingCampaign';
-import useSendTextingCampaign from 'api/texting_campaigns/useSendTextingCampaign';
-import useTextingCampaign from 'api/texting_campaigns/useTextingCampaign';
 
 import TextingHeader from '../components/TextingHeader';
 

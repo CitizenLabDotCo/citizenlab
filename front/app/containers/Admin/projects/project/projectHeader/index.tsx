@@ -8,19 +8,20 @@ import {
   colors,
   IconNames,
 } from '@citizenlab/cl2-component-library';
-import otherProjectMessages from 'containers/Admin/projects/all/messages';
 import moment from 'moment';
 import styled from 'styled-components';
-
-import NavigationTabs from 'components/admin/NavigationTabs';
-import Button from 'components/UI/Button';
-
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
+
+import otherProjectMessages from 'containers/Admin/projects/all/messages';
+
+import NavigationTabs from 'components/admin/NavigationTabs';
+import Button from 'components/UI/Button';
+
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 

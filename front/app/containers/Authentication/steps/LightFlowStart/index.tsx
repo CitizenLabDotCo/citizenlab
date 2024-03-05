@@ -2,10 +2,16 @@ import React, { useMemo } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SetError } from 'containers/Authentication/typings';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Locale } from 'typings';
 import { string, object } from 'yup';
+
+import { SSOProvider } from 'api/authentication/singleSignOn';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+
+import { SetError } from 'containers/Authentication/typings';
 
 import Input from 'components/HookForm/Input';
 import Button from 'components/UI/Button';
@@ -17,11 +23,6 @@ import {
 } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { isValidEmail } from 'utils/validate';
-
-import { SSOProvider } from 'api/authentication/singleSignOn';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from 'hooks/useLocale';
 
 import sharedMessages from '../messages';
 

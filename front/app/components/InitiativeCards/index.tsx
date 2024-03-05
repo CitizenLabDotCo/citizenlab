@@ -15,6 +15,9 @@ import { MessageDescriptor } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useInfitineInitiatives from 'api/initiatives/useInfiniteInitiatives';
+import useInitiativesFilterCounts from 'api/initiatives_filter_counts/useInitiativesFilterCounts';
+
 import BottomBar from 'components/FiltersModal/BottomBar';
 import TopBar from 'components/FiltersModal/TopBar';
 import { Sort } from 'components/InitiativeCards/SortFilterDropdown';
@@ -28,9 +31,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useInfitineInitiatives from 'api/initiatives/useInfiniteInitiatives';
-import useInitiativesFilterCounts from 'api/initiatives_filter_counts/useInitiativesFilterCounts';
 
 import EmptyProposals from './EmptyProposals';
 import messages from './messages';

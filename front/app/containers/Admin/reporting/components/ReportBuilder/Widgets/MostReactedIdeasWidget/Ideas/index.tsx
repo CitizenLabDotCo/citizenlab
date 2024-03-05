@@ -2,13 +2,13 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-
-import { isNilOrError } from 'utils/helperUtils';
-
 import { IIdeaImageData } from 'api/idea_images/types';
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
+
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 import NoData from '../../_shared/NoData';
 import { BORDER } from '../../constants';

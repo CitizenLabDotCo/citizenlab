@@ -10,11 +10,11 @@ import {
 import { transparentize } from 'polished';
 import styled from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { getDestinationConfig, IDestination, TCategory } from '../destinations';
 import messages from '../messages';

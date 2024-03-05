@@ -2,9 +2,9 @@ import React from 'react';
 
 import { StatusLabel, colors } from '@citizenlab/cl2-component-library';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import { TTextingCampaignStatus } from 'api/texting_campaigns/types';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
 

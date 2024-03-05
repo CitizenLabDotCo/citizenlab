@@ -4,15 +4,15 @@ import { Box, Button, isRtl } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { IEventData } from 'api/events/types';
+import useAuthUser from 'api/me/useAuthUser';
+import { IProjectData } from 'api/projects/types';
+
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
-
-import { IEventData } from 'api/events/types';
-import useAuthUser from 'api/me/useAuthUser';
-import { IProjectData } from 'api/projects/types';
 
 import messages from '../messages';
 

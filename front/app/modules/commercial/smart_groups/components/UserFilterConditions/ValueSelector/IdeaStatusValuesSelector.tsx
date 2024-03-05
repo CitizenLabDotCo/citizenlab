@@ -2,11 +2,11 @@ import React, { memo } from 'react';
 
 import { IOption } from 'typings';
 
-import MultipleSelect from 'components/UI/MultipleSelect';
-
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 
 import useLocalize from 'hooks/useLocalize';
+
+import MultipleSelect from 'components/UI/MultipleSelect';
 
 export interface Props {
   value: string;

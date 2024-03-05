@@ -5,9 +5,9 @@ import { omitBy, isNil } from 'lodash-es';
 import { stringify } from 'qs';
 import styled from 'styled-components';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import useAuthUser from 'api/me/useAuthUser';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 const surveyHeightDesktop = '600px';
 const surveyHeightMobile = '500px';

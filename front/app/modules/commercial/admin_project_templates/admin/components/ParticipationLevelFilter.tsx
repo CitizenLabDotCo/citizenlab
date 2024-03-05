@@ -3,14 +3,14 @@ import React, { memo, useCallback, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { WrappedComponentProps } from 'react-intl';
 
+import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
+import useLocalize from 'hooks/useLocalize';
+
 import FilterSelector, {
   IFilterSelectorValue,
 } from 'components/FilterSelector';
 
 import { injectIntl } from 'utils/cl-intl';
-
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
-import useLocalize from 'hooks/useLocalize';
 
 import { client } from '../../utils/apolloUtils';
 

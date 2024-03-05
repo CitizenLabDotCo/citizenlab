@@ -5,13 +5,13 @@ import { get } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
+import useLocalize from 'hooks/useLocalize';
+
 import Button from 'components/UI/Button';
 import Centerer from 'components/UI/Centerer';
 import SearchInput from 'components/UI/SearchInput';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-
-import useLocalize from 'hooks/useLocalize';
 
 import DepartmentFilter from '../components/DepartmentFilter';
 

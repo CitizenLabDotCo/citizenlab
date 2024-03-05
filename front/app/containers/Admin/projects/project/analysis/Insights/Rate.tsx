@@ -9,9 +9,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import { useIntl } from 'utils/cl-intl';
-
 import useRateAnalysisInsight from 'api/analysis_insights/useRateAnalysisInsight';
+
+import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 

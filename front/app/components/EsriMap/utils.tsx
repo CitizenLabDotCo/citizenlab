@@ -13,11 +13,11 @@ import MapView from '@arcgis/core/views/MapView';
 import Popup from '@arcgis/core/widgets/Popup';
 import { colors } from '@citizenlab/cl2-component-library';
 
-import { hexToRGBA } from 'utils/helperUtils';
-
 import { IMapLayerAttributes } from 'api/map_layers/types';
 
 import { Localize } from 'hooks/useLocalize';
+
+import { hexToRGBA } from 'utils/helperUtils';
 
 import {
   BASEMAP_AT_ATTRIBUTION,

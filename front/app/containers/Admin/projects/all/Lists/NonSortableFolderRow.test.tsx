@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { render, screen } from 'utils/testUtils/rtl';
-
 import { mockFolderChildAdminPublicationsList } from 'api/admin_publications/__mocks__/useAdminPublications';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import { mockAuthUserData } from 'api/me/__mocks__/_mockServer';
+
+import { render, screen } from 'utils/testUtils/rtl';
 
 import NonSortableFolderRow, { Props } from './NonSortableFolderRow';
 const folderId = 'folderId';

@@ -1,3 +1,7 @@
+import { IAppConfigurationData } from 'api/app_configuration/types';
+import { IProjectFolderData } from 'api/project_folders/types';
+import { IUserData, IUser } from 'api/users/types';
+
 import { isNilOrError } from 'utils/helperUtils';
 import {
   definePermissionRule,
@@ -8,10 +12,6 @@ import {
   canAccessRoute,
   isModeratorRoute,
 } from 'utils/permissions/rules/routePermissions';
-
-import { IAppConfigurationData } from 'api/app_configuration/types';
-import { IProjectFolderData } from 'api/project_folders/types';
-import { IUserData, IUser } from 'api/users/types';
 
 export function userModeratesFolder(
   user: IUserData | null,

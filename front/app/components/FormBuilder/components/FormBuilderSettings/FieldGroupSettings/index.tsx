@@ -3,13 +3,13 @@ import React from 'react';
 import get from 'lodash-es/get';
 import { Locale } from 'typings';
 
+import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
+
 import { SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
 import messages from './messages';
 

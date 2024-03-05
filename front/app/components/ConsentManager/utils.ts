@@ -1,7 +1,7 @@
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
-
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import { IUserData } from 'api/users/types';
+
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import { IConsentCookie } from './consent';
 import {

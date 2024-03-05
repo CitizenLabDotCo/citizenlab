@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { MessageDescriptor } from 'utils/cl-intl';
-
 import { TSeatNumber } from 'api/app_configuration/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { MessageDescriptor } from 'utils/cl-intl';
 
 import BillingInfo from './BillingInfo';
 import TrackerInfo from './TrackerInfo';

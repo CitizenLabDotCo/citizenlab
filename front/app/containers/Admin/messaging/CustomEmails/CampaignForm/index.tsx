@@ -12,6 +12,13 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { string, object, array } from 'yup';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IGroupData } from 'api/groups/types';
+import useGroups from 'api/groups/useGroups';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocalize from 'hooks/useLocalize';
+
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
 import Input from 'components/HookForm/Input';
@@ -24,13 +31,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { getFullName } from 'utils/textUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IGroupData } from 'api/groups/types';
-import useGroups from 'api/groups/useGroups';
-import useAuthUser from 'api/me/useAuthUser';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from '../../messages';
 

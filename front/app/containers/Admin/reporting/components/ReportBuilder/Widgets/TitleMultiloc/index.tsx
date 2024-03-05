@@ -2,17 +2,18 @@ import React from 'react';
 
 import { colors, Box } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import messages from 'containers/Admin/reporting/components/ReportBuilder/Widgets/TitleMultiloc/messages';
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
+
+import useLocalize from 'hooks/useLocalize';
+
+import messages from 'containers/Admin/reporting/components/ReportBuilder/Widgets/TitleMultiloc/messages';
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useLocalize from 'hooks/useLocalize';
 
 const H3 = styled.h3<{ color: string }>`
   color: ${({ color }) => color};

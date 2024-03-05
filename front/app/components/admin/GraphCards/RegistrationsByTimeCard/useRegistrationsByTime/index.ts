@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 
+import useAnalytics from 'api/analytics/useAnalytics';
+
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useAnalytics from 'api/analytics/useAnalytics';
 
 import { parseTimeSeries, parseExcelData } from './parse';
 import { query } from './query';

@@ -11,9 +11,9 @@ import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import useLocalize from 'hooks/useLocalize';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import { Status } from '../../utils/form';
 

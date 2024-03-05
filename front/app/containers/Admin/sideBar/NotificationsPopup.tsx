@@ -7,16 +7,17 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { Popup } from 'semantic-ui-react';
+
+import useAuthUser from 'api/me/useAuthUser';
+import useMarkAllAsRead from 'api/notifications/useMarkAllAsRead';
+
 import Notifications from 'containers/MainHeader/Components/NotificationMenu/components/Notifications';
 import tracks from 'containers/MainHeader/Components/NotificationMenu/tracks';
-import { Popup } from 'semantic-ui-react';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAuthUser from 'api/me/useAuthUser';
-import useMarkAllAsRead from 'api/notifications/useMarkAllAsRead';
 
 import messages from './messages';
 import { StyledBox } from './styles';

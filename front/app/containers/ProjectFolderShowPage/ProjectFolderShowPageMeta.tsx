@@ -2,17 +2,17 @@ import React from 'react';
 
 import { Helmet } from 'react-helmet';
 
-import { useIntl } from 'utils/cl-intl';
-import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
-import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import { imageSizes } from 'utils/fileUtils';
-import { stripHtml } from 'utils/textUtils';
-
 import useAuthUser from 'api/me/useAuthUser';
 import { IProjectFolderData } from 'api/project_folders/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocalize from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import { imageSizes } from 'utils/fileUtils';
+import { stripHtml } from 'utils/textUtils';
 
 import messages from './messages';
 

@@ -1,14 +1,15 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
 
 import Error from 'components/UI/Error';
 import Or from 'components/UI/Or';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 import SSOButton from './SSOButton';

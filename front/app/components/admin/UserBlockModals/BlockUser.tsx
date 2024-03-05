@@ -11,6 +11,10 @@ import moment from 'moment';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useBlockUser from 'api/blocked_users/useBlockUser';
+import { IUserData } from 'api/users/types';
+
 import TextArea from 'components/HookForm/TextArea';
 import { FormLabel } from 'components/UI/FormComponents';
 import Modal from 'components/UI/Modal';
@@ -19,10 +23,6 @@ import Warning from 'components/UI/Warning';
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { getFullName } from 'utils/textUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useBlockUser from 'api/blocked_users/useBlockUser';
-import { IUserData } from 'api/users/types';
 
 import messages from './messages';
 import SuccessfulUserBlock from './SuccessfulUserBlock';

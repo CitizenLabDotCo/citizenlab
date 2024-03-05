@@ -5,9 +5,9 @@ import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
-import CampaignConsentForm from 'components/CampaignConsentForm';
-
 import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignConsents';
+
+import CampaignConsentForm from 'components/CampaignConsentForm';
 
 import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 

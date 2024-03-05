@@ -2,11 +2,11 @@ import React from 'react';
 
 import { IOption } from 'typings';
 
-import MultipleSelect from 'components/UI/MultipleSelect';
-
 import useInitiatives from 'api/initiatives/useInitiatives';
 
 import useLocalize from 'hooks/useLocalize';
+
+import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { TRule } from '../rules';
 

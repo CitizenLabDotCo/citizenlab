@@ -4,16 +4,16 @@ import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 import { darken, lighten } from 'polished';
 import styled from 'styled-components';
 
+import { ITopicData } from 'api/topics/types';
+import useTopics from 'api/topics/useTopics';
+
+import useLocalize from 'hooks/useLocalize';
+
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-
-import { ITopicData } from 'api/topics/types';
-import useTopics from 'api/topics/useTopics';
-
-import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 

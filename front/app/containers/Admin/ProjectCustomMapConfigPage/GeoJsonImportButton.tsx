@@ -2,15 +2,15 @@ import React, { memo, useState } from 'react';
 
 import styled from 'styled-components';
 
+import useAddMapLayer from 'api/map_layers/useAddMapLayer';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAddMapLayer from 'api/map_layers/useAddMapLayer';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import { getUnnamedLayerTitleMultiloc } from '../../../utils/mapUtils/map';
 

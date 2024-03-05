@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
+
 import FilterTabs, { TabData } from 'components/UI/FilterTabs';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 
 import { PublicationTab } from '../..';
 

@@ -2,15 +2,16 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 import { Multiloc } from 'typings';
+
+import useLocalize from 'hooks/useLocalize';
+
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import messages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-
-import useLocalize from 'hooks/useLocalize';
 
 export interface Props {
   text?: Multiloc;

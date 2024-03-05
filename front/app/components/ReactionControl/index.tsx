@@ -1,13 +1,8 @@
 import React, { MouseEvent, KeyboardEvent, useState, useCallback } from 'react';
 
 import { isRtl } from '@citizenlab/cl2-component-library';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { includes } from 'lodash-es';
 import styled from 'styled-components';
-
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import { isNilOrError } from 'utils/helperUtils';
 
 import { TReactionMode } from 'api/idea_reactions/types';
 import useAddIdeaReaction from 'api/idea_reactions/useAddIdeaReaction';
@@ -18,6 +13,12 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import { getLatestRelevantPhase } from 'api/phases/utils';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { isNilOrError } from 'utils/helperUtils';
 
 import ReactionButton from './ReactionButton';
 import ScreenReaderContent from './ScreenReaderContent';

@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 import PhasePermissions from './PhasePermissions';

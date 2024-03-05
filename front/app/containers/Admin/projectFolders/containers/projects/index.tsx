@@ -1,14 +1,15 @@
 import React from 'react';
 
-import { HeaderTitle } from 'containers/Admin/projects/all/StyledComponents';
 import styled from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+
+import { HeaderTitle } from 'containers/Admin/projects/all/StyledComponents';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
-
-import useAuthUser from 'api/me/useAuthUser';
 
 // localisation
 

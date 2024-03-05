@@ -8,9 +8,9 @@ import {
 import { FormattedNumber } from 'react-intl';
 import styled from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import useCampaignStats from 'api/campaign_stats/useCampaignStats';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
 

@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import { ICustomPageData } from 'api/custom_pages/types';
+
 import {
   Container,
   HeaderImage,
 } from 'components/LandingPages/citizen/TwoColumnLayout';
-
-import { ICustomPageData } from 'api/custom_pages/types';
 
 import AdminCustomPageEditButton from './AdminCustomPageEditButton';
 import HeaderContent from './HeaderContent';

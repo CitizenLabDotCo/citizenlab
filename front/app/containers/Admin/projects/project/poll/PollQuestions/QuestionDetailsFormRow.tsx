@@ -4,13 +4,13 @@ import { Select, Input, Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { IOption } from 'typings';
 
+import { IPollQuestionData } from 'api/poll_questions/types';
+import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
+
 import { Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import { IPollQuestionData } from 'api/poll_questions/types';
-import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
 
 import messages from '../messages';
 

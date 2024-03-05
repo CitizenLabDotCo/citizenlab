@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
-import IdeasMap from 'components/IdeasMap';
-
 import { IIdeaData } from 'api/ideas/types';
 import useMapConfig from 'api/map_config/useMapConfig';
 import { IdeaDefaultSortMethod } from 'api/phases/types';
+
+import IdeasMap from 'components/IdeasMap';
 
 import IdeasList from './IdeasList';
 

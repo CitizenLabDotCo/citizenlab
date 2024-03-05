@@ -1,12 +1,13 @@
 import React from 'react';
 
 // config
-import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import useBasket from 'api/baskets/useBasket';
 import { IIdea } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
+
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 type Props = {
   idea: IIdea;

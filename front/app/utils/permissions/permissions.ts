@@ -1,8 +1,6 @@
 import { isObject } from 'lodash-es';
 import { map } from 'rxjs/operators';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import {
   IAppConfiguration,
@@ -12,6 +10,8 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import authUserStream from 'api/me/authUserStream';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUser } from 'api/users/types';
+
+import { isNilOrError } from 'utils/helperUtils';
 export interface IRouteItem {
   type: 'route';
   path: string;

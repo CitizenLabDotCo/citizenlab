@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IInitiativeCosponsorship } from 'api/initiatives/types';
+
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 
 import { SectionField } from 'components/admin/Section';
@@ -13,9 +17,6 @@ import {
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IInitiativeCosponsorship } from 'api/initiatives/types';
 
 import messages from './messages';
 

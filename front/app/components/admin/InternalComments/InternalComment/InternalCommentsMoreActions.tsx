@@ -3,16 +3,16 @@ import React, { FormEvent, useState } from 'react';
 import { isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { IInternalCommentData } from 'api/internal_comments/types';
+import useMarkInternalCommentForDeletion from 'api/internal_comments/useMarkInternalCommentForDeletion';
+import useAuthUser from 'api/me/useAuthUser';
+
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { IInternalCommentData } from 'api/internal_comments/types';
-import useMarkInternalCommentForDeletion from 'api/internal_comments/useMarkInternalCommentForDeletion';
-import useAuthUser from 'api/me/useAuthUser';
 
 import { deleteCommentModalClosed } from '../events';
 

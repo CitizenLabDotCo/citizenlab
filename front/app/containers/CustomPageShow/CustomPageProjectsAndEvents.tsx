@@ -3,10 +3,6 @@ import React from 'react';
 import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import ContentContainer from 'components/ContentContainer';
-import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
-import ProjectAndFolderCardsInner from 'components/ProjectAndFolderCards/ProjectAndFolderCardsInner';
-
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
@@ -14,6 +10,10 @@ import { ICustomPageData } from 'api/custom_pages/types';
 import { PublicationStatus } from 'api/projects/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import ContentContainer from 'components/ContentContainer';
+import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
+import ProjectAndFolderCardsInner from 'components/ProjectAndFolderCards/ProjectAndFolderCardsInner';
 
 const ProjectCardsContentContainer = styled(ContentContainer)`
   padding-top: 50px;

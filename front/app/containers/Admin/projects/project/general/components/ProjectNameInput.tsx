@@ -3,12 +3,12 @@ import React from 'react';
 import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { Multiloc, CLErrors } from 'typings';
 
+import { IUpdatedProjectProperties } from 'api/projects/types';
+
 import { SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { IUpdatedProjectProperties } from 'api/projects/types';
 
 import messages from '../messages';
 

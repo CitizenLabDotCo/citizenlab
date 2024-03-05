@@ -3,9 +3,9 @@ import React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
-import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
-
 import { IUserData } from 'api/users/types';
+
+import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
 
 import ProjectMoreActionsMenu, { Props } from './ProjectMoreActionsMenu';
 

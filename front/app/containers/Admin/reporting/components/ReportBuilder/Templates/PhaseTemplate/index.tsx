@@ -2,6 +2,12 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
+
+import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
+import usePhase from 'api/phases/usePhase';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
@@ -10,11 +16,6 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import { withoutSpacing } from 'utils/textUtils';
-
-import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
-import usePhase from 'api/phases/usePhase';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // shared widgets
 

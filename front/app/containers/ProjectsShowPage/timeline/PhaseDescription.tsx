@@ -4,19 +4,19 @@ import { defaultCardStyle, media } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 
-import EventPreviews from 'components/EventPreviews';
-import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
-import FileAttachments from 'components/UI/FileAttachments';
-
-import { pastPresentOrFuture } from 'utils/dateUtils';
-import { isNilOrError } from 'utils/helperUtils';
-
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 import { IPhases } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 
 import useLocalize from 'hooks/useLocalize';
+
+import EventPreviews from 'components/EventPreviews';
+import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
+import FileAttachments from 'components/UI/FileAttachments';
+
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import PhaseTitle from './PhaseTitle';
 

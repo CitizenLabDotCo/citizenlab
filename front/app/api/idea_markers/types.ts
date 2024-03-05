@@ -1,8 +1,8 @@
 import { Multiloc } from 'typings';
 
-import { Keys } from 'utils/cl-react-query/types';
-
 import { Sort } from 'api/ideas/types';
+
+import { Keys } from 'utils/cl-react-query/types';
 
 import ideaMarkersKeys from './keys';
 

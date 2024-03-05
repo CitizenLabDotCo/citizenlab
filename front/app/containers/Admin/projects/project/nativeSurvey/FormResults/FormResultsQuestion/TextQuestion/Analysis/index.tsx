@@ -8,8 +8,13 @@ import {
   IconButton,
   colors,
 } from '@citizenlab/cl2-component-library';
-import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { useParams } from 'react-router-dom';
+
+import useAnalyses from 'api/analyses/useAnalyses';
+import useDeleteAnalysis from 'api/analyses/useDeleteAnalysis';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
+
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
 
 import Divider from 'components/admin/Divider';
 import Button from 'components/UI/Button';
@@ -20,10 +25,6 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAnalyses from 'api/analyses/useAnalyses';
-import useDeleteAnalysis from 'api/analyses/useDeleteAnalysis';
-import useFormCustomFields from 'api/custom_fields/useCustomFields';
 
 import messages from '../../../messages';
 

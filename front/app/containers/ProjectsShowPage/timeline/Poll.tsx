@@ -1,12 +1,13 @@
 import React, { memo } from 'react';
 
-import messages from 'containers/ProjectsShowPage/messages';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 import styled from 'styled-components';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
 import usePhase from 'api/phases/usePhase';
+
+import messages from 'containers/ProjectsShowPage/messages';
+import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import Poll from '../shared/poll';
 

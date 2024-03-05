@@ -10,6 +10,11 @@ import {
 import { darken } from 'polished';
 import styled from 'styled-components';
 
+import { ICommentData } from 'api/comments/types';
+import useIdeaById from 'api/ideas/useIdeaById';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useUserById from 'api/users/useUserById';
+
 import CommentBody from 'components/PostShowComponents/Comments/Comment/CommentBody';
 import CommentHeader from 'components/PostShowComponents/Comments/Comment/CommentHeader';
 import T from 'components/T';
@@ -18,11 +23,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { ICommentData } from 'api/comments/types';
-import useIdeaById from 'api/ideas/useIdeaById';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useUserById from 'api/users/useUserById';
 
 import messages from './messages';
 

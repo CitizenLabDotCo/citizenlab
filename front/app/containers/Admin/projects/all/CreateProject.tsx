@@ -1,13 +1,14 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 
 import { Icon, colors } from '@citizenlab/cl2-component-library';
-import AdminProjectsProjectGeneral from 'containers/Admin/projects/project/general';
-import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 import { transparentize } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { InsertConfigurationOptions } from 'typings';
+
+import AdminProjectsProjectGeneral from 'containers/Admin/projects/project/general';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import Outlet from 'components/Outlet';
 import Tabs, { ITabItem } from 'components/UI/Tabs';

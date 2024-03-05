@@ -10,18 +10,18 @@ import {
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useEventImage from 'api/event_images/useEventImage';
+import useEvent from 'api/events/useEvent';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
+
 import PageNotFound from 'components/PageNotFound';
 import Image from 'components/UI/Image';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-
-import useEventImage from 'api/event_images/useEventImage';
-import useEvent from 'api/events/useEvent';
-import useProjectById from 'api/projects/useProjectById';
-
-import useLocalize from 'hooks/useLocalize';
 
 import Container from './components/Container';
 import DesktopTopBar from './components/DesktopTopBar';

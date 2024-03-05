@@ -3,6 +3,10 @@ import React from 'react';
 import { media, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
 import AvatarBubbles from 'components/AvatarBubbles';
 import InitiativeButton from 'components/InitiativeButton';
 import T from 'components/T';
@@ -11,10 +15,6 @@ import Warning from 'components/UI/Warning';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import InitiativeInfoContent from './InitiativeInfoContent';
 import messages from './messages';

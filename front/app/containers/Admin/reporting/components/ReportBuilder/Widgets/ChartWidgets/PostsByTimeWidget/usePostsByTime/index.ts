@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 
+import { usePostsByTime as usePostsByTimeData } from 'api/graph_data_units';
+
 import { parseTimeSeries } from 'components/admin/GraphCards/PostsByTimeCard/usePostsByTime/parse';
 import { QueryParameters } from 'components/admin/GraphCards/PostsByTimeCard/usePostsByTime/typings';
-
-import { usePostsByTime as usePostsByTimeData } from 'api/graph_data_units';
 
 export default function usePostsByTime({
   projectId,

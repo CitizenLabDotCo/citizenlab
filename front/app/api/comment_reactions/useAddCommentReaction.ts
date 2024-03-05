@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import fetcher from 'utils/cl-react-query/fetcher';
-
 import commentKeys from 'api/comments/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
 
 import { ICommentReaction, INewReactionProperties } from './types';
 

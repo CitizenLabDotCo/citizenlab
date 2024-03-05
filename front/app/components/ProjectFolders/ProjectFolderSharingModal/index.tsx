@@ -2,15 +2,15 @@ import React, { memo, useCallback } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
+import useProjectFolderbById from 'api/project_folders/useProjectFolderById';
+
 import SharingButtons from 'components/Sharing/SharingButtons';
 import T from 'components/T';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import useAuthUser from 'api/me/useAuthUser';
-import useProjectFolderbById from 'api/project_folders/useProjectFolderById';
 
 import messages from './messages';
 

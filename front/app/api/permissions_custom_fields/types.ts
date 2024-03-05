@@ -1,9 +1,9 @@
-import { Keys } from 'utils/cl-react-query/types';
-
 import {
   IGlobalPermissionAction,
   IPhasePermissionAction,
 } from 'api/permissions/types';
+
+import { Keys } from 'utils/cl-react-query/types';
 
 import eventsKeys from './keys';
 

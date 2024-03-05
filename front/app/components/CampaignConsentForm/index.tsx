@@ -7,14 +7,6 @@ import {
   Checkbox,
 } from '@citizenlab/cl2-component-library';
 
-import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
-import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
-
-import { ScreenReaderOnly } from 'utils/a11y';
-import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
 import {
   ICampaignConsentData,
   IConsentChanges,
@@ -25,6 +17,14 @@ import { internalCommentNotificationTypes } from 'api/campaigns/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
+
+import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
+import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import Feedback from './feedback';
 import messages from './messages';
