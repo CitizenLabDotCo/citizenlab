@@ -49,7 +49,7 @@ resource 'Map Configs' do
     end
   end
 
-  shared_examples 'unauthorized POST, PATCH and DELETE map config' do
+  shared_examples 'unauthorized POST, PATCH, DELETE map config, and POST duplicate_map_config_and_layers' do
     post 'web_api/v1/map_configs', document: false do
       example_request 'Cannot create a map config for a project' do
         expect(status).to eq 401
@@ -68,6 +68,14 @@ resource 'Map Configs' do
       let(:id) { create(:map_config, mappable: nil).id }
 
       example_request 'Cannot delete the map config for a project' do
+        expect(status).to eq 401
+      end
+    end
+
+    post 'web_api/v1/map_configs/:id/duplicate_map_config_and_layers', document: false do
+      let(:id) { create(:map_config, mappable: nil).id }
+
+      example_request 'Cannot duplicate a map config for a project' do
         expect(status).to eq 401
       end
     end
@@ -307,14 +315,14 @@ resource 'Map Configs' do
 
   context 'when not logged in' do
     include_examples 'GET map_config'
-    include_examples 'unauthorized POST, PATCH and DELETE map config'
+    include_examples 'unauthorized POST, PATCH, DELETE map config, and POST duplicate_map_config_and_layers'
   end
 
   context 'when resident' do
     before { resident_header_token }
 
     include_examples 'GET map_config'
-    include_examples 'unauthorized POST, PATCH and DELETE map config'
+    include_examples 'unauthorized POST, PATCH, DELETE map config, and POST duplicate_map_config_and_layers'
   end
 
   context 'when logged in as an admin' do
