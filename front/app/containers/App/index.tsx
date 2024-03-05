@@ -44,7 +44,7 @@ import {
   isInitiativeShowPage,
   isPage,
 } from 'utils/helperUtils';
-import { localeStream } from 'utils/locale';
+import { localeStream } from 'utils/localeStream';
 
 import Meta from './Meta';
 import UserSessionRecordingModal from './UserSessionRecordingModal';

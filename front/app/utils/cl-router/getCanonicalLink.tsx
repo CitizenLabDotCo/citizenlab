@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { isPage } from 'utils/helperUtils';
-import { removeUrlLocale } from 'utils/locale';
+import { removeUrlLocale } from 'utils/removeUrlLocale';
 
 /**
  * Make url without locale the canonical of a certain page.

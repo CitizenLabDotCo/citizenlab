@@ -3,8 +3,8 @@ import createRoutes from 'routes';
 import { IAppConfiguration } from 'api/app_configuration/types';
 
 import { tenantInfo, IEvent } from 'utils/analytics';
+import { getUrlLocale } from 'utils/getUrlLocale';
 import { isNilOrError } from 'utils/helperUtils';
-import { getUrlLocale } from 'utils/locale';
 
 import { getProjectId } from './getProjectId';
 import matchPath, { getAllPathsFromRoutes } from './matchPath';

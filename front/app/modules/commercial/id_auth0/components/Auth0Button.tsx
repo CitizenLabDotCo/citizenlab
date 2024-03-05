@@ -11,7 +11,7 @@ import T from 'components/T';
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
 import { getJwt } from 'utils/auth/jwt';
-import { removeUrlLocale } from 'utils/locale';
+import { removeUrlLocale } from 'utils/removeUrlLocale';
 
 interface Props {
   onClick: (method: TVerificationMethod) => void;

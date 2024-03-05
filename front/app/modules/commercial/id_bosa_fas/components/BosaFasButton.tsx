@@ -8,7 +8,7 @@ import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
 import { getJwt } from 'utils/auth/jwt';
 import { FormattedMessage } from 'utils/cl-intl';
-import { removeUrlLocale } from 'utils/locale';
+import { removeUrlLocale } from 'utils/removeUrlLocale';
 
 import messages from '../messages';
 

@@ -10,7 +10,7 @@ import FranceConnectButton from 'components/UI/FranceConnectButton';
 
 import { getJwt } from 'utils/auth/jwt';
 import { injectIntl } from 'utils/cl-intl';
-import { removeUrlLocale } from 'utils/locale';
+import { removeUrlLocale } from 'utils/removeUrlLocale';
 
 import messages from '../messages';
 

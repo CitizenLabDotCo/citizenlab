@@ -7,7 +7,7 @@ import { TVerificationMethod } from 'api/verification_methods/types';
 import { AUTH_PATH } from 'containers/App/constants';
 
 import { getJwt } from 'utils/auth/jwt';
-import { removeUrlLocale } from 'utils/locale';
+import { removeUrlLocale } from 'utils/removeUrlLocale';
 
 import icon from './clave-unica-icon.svg';
 

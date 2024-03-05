@@ -3,7 +3,7 @@ import { Locale, Multiloc, GraphqlLocale } from 'typings';
 
 import { locales } from 'containers/App/constants';
 
-import { removeUrlLocale } from 'utils/locale';
+import { removeUrlLocale } from './removeUrlLocale';
 
 type Nil = undefined | null;
 export type NilOrError = Nil | Error;

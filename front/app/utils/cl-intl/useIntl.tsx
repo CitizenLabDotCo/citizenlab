@@ -13,7 +13,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import { isNilOrError } from 'utils/helperUtils';
 import { getLocalizedWithFallback } from 'utils/i18n';
-import { localeStream } from 'utils/locale';
+import { localeStream } from 'utils/localeStream';
 
 export type FormatMessageValues =
   | { [key: string]: string | number | boolean | Date }

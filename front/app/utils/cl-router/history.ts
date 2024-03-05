@@ -2,7 +2,7 @@ import { first } from 'rxjs/operators';
 
 import history from 'utils/browserHistory';
 import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
-import { localeStream } from 'utils/locale';
+import { localeStream } from 'utils/localeStream';
 import { scrollToTop as scrollTop } from 'utils/scroll';
 // tslint:disable-next-line:no-vanilla-routing
 

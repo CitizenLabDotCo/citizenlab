@@ -3,11 +3,9 @@ import { Location } from 'history';
 import { isString } from 'lodash-es';
 import { Locale } from 'typings';
 
-import {
-  getUrlLocale,
-  replacePathnameLocale,
-  setPathnameLocale,
-} from 'utils/locale';
+import { getUrlLocale } from 'utils/getUrlLocale';
+import { replacePathnameLocale } from 'utils/replacePathnameLocale';
+import { setPathnameLocale } from 'utils/setPathnameLocale';
 
 type LocationDescriptorObject = Partial<Location> | string;
 
