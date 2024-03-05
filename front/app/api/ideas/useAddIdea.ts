@@ -24,7 +24,7 @@ const useAddIdea = () => {
     mutationFn: addIdea,
     onSuccess: (idea) => {
       queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.all() });
       queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
       queryClient.invalidateQueries({ queryKey: ideasCountKeys.items() });
       queryClient.invalidateQueries({ queryKey: userIdeaCountKeys.items() });
