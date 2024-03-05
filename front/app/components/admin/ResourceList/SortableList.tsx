@@ -36,6 +36,8 @@ const SortableList = ({
   id,
   className,
 }: InputProps) => {
+  console.log(items);
+
   const [itemsWhileDragging, setItemsWhileDragging] = useState<Item[] | null>(
     null
   );
@@ -74,10 +76,6 @@ const SortableList = ({
   };
 
   const getListItems = () => {
-    if (!lockFirstNItems || lockFirstNItems <= 0) {
-      return itemsWhileDragging || items;
-    }
-
     return (
       itemsWhileDragging || [...items].splice(lockFirstNItems, items.length)
     );
