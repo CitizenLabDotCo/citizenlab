@@ -12,11 +12,11 @@ import {
   TooltipContentWrapper,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
 
 // i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 
 interface Props {
   reportId: string;

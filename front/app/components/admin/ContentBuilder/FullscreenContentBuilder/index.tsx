@@ -12,12 +12,8 @@ import {
   CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
+  CONTENT_BUILDER_Z_INDEX,
 } from '../constants';
-
-export const CONTENT_BUILDER_Z_INDEX = {
-  main: 10000,
-  tooltip: 10010,
-};
 
 type ContentBuilderErrors = Record<
   string,
