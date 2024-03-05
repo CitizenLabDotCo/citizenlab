@@ -37,7 +37,7 @@ const PrintReportButton = ({ reportId, disabledTooltipText }: Props) => {
       interactive={false}
       placement="bottom"
       disabled={!disabledTooltipText}
-      zIndex={CONTENT_BUILDER_Z_INDEX + 1}
+      zIndex={CONTENT_BUILDER_Z_INDEX.tooltip}
       content={
         <TooltipContentWrapper tippytheme="light">
           {disabledTooltipText}

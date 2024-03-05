@@ -14,7 +14,10 @@ import {
   IMAGE_UPLOADING_EVENT,
 } from '../constants';
 
-export const CONTENT_BUILDER_Z_INDEX = 10000;
+export const CONTENT_BUILDER_Z_INDEX = {
+  main: 10000,
+  tooltip: 10010,
+};
 
 type ContentBuilderErrors = Record<
   string,
@@ -74,7 +77,7 @@ export const ContentBuilder = ({
       display="flex"
       flexDirection="column"
       w="100%"
-      zIndex={String(CONTENT_BUILDER_Z_INDEX)}
+      zIndex={String(CONTENT_BUILDER_Z_INDEX.main)}
       position="fixed"
       bgColor={colors.background}
       h="100vh"
