@@ -294,10 +294,10 @@ const Notification = ({ notification }: Props) => {
     case 'native_survey_not_submitted':
       return (
         <NativeSurveyNotSubmittedNotification
-          notification={
+            notification={
             notification as INativeSurveyNotSubmittedNotificationData
           }
-        />
+            />
       );
     case 'voting_basket_not_submitted':
       return (

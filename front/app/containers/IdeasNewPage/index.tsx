@@ -7,8 +7,8 @@ import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
 import VerticalCenterer from 'components/VerticalCenterer';
 import SurveySubmittedNotice from './components/SurveySubmittedNotice';
-import IdeasNewSurveyForm from './IdeasNewSurveyForm';
-import IdeasNewIdeationForm from './IdeasNewIdeationForm';
+import IdeasNewSurveyForm from "./IdeasNewSurveyForm";
+import IdeasNewIdeationForm from "./IdeasNewIdeationForm";
 
 // hooks
 import useProjectBySlug from 'api/projects/useProjectBySlug';
