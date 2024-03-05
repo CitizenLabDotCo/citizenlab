@@ -150,9 +150,11 @@ const ContentBuilderTopBar = ({
           }
         );
       }, 5000);
-    }
 
-    setInitialized(true);
+      setInitialized(true);
+    } else {
+      setInitialized(true);
+    }
   }, [
     isTemplate,
     query,
