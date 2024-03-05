@@ -52,7 +52,7 @@
     "@storybook/react": "^7.6.7",
     "@storybook/react-webpack5": "^7.6.17",
     "@storybook/theming": "^7.6.3",
-    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^12.1.5",
     "@testing-library/react-hooks": "^8.0.1",
     "@types/css-mediaquery": "^0.1.4",
