@@ -83,9 +83,13 @@ const SortableList = ({
   };
 
   const getListItems = () => {
-    return itemsWhileDragging || lockFirstNItems <= 0
-      ? items
-      : [...items].splice(lockFirstNItems, items.length);
+    if (!lockFirstNItems || lockFirstNItems <= 0) {
+      return itemsWhileDragging || items;
+    }
+
+    return (
+      itemsWhileDragging || [...items].splice(lockFirstNItems, items.length)
+    );
   };
 
   return (
