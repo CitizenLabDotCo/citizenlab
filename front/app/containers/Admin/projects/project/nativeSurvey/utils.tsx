@@ -4,8 +4,10 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { API_PATH } from 'containers/App/constants';
 import { Multiloc } from 'typings';
 
-import { generateTempId } from 'components/FormBuilder/utils';
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import {
+  FormBuilderConfig,
+  generateTempId,
+} from 'components/FormBuilder/utils';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';

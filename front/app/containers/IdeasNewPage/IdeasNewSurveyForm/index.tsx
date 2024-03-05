@@ -1,43 +1,39 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-// api
-import useAuthUser from 'api/me/useAuthUser';
-import usePhases from 'api/phases/usePhases';
-import usePhase from 'api/phases/usePhase';
-import useInputSchema from 'hooks/useInputSchema';
+import { Box } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
+
+import Form from 'components/Form';
+import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
+import PageContainer from 'components/UI/PageContainer';
+import Warning from 'components/UI/Warning';
+
+import { useIntl } from 'utils/cl-intl';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { isNilOrError } from 'utils/helperUtils';
+import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import { IdeaPublicationStatus } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useDraftIdeaByPhaseId, {
   clearDraftIdea,
 } from 'api/ideas/useDraftIdeaByPhaseId';
-
-// i18n
-import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
-
-// components
-import Form from 'components/Form';
-import IdeasNewMeta from '../IdeasNewMeta';
-import PageContainer from 'components/UI/PageContainer';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
-import { Heading } from '../components/Heading';
-import { Box } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-
-// utils
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { isNilOrError } from 'utils/helperUtils';
-import { getCurrentPhase } from 'api/phases/utils';
-import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { getFormValues } from '../../IdeasEditPage/utils';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-
-// types
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useAuthUser from 'api/me/useAuthUser';
 import { IPhases, IPhaseData } from 'api/phases/types';
-import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
-import { IdeaPublicationStatus } from 'api/ideas/types';
+
+import useInputSchema from 'hooks/useInputSchema';
+
+import { getFormValues } from '../../IdeasEditPage/utils';
+import { Heading } from '../components/Heading';
+import IdeasNewMeta from '../IdeasNewMeta';
+import messages from '../messages';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,

@@ -21,8 +21,8 @@ import { getCurrentPhase } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import SurveySubmittedNotice from './components/SurveySubmittedNotice';
-import IdeasNewSurveyForm from './IdeasNewSurveyForm';
 import IdeasNewIdeationForm from './IdeasNewIdeationForm';
+import IdeasNewSurveyForm from './IdeasNewSurveyForm';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();
