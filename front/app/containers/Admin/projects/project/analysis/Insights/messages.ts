@@ -107,8 +107,8 @@ export default defineMessages({
     defaultMessage: 'AI summary',
   },
   aiSummaryTooltip: {
-    id: 'app.containers.Admin.projects.project.analysis.aiSummaryTooltip',
+    id: 'app.containers.Admin.projects.project.analysis.aiSummaryTooltipText',
     defaultMessage:
-      'This is AI-generated content. It is based on the data you have selected and may not be 100% accurate. Please review and cross-reference with the actual inputs for accuracy. Be aware that the accuracy is likely to improve if the number of selected inputs is reduced.',
+      'This is AI-generated content. It may not be 100% accurate. Please review and cross-reference with the actual inputs for accuracy. Be aware that the accuracy is likely to improve if the number of selected inputs is reduced.',
   },
 });
