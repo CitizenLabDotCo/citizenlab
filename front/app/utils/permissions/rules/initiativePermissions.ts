@@ -22,7 +22,7 @@ export const canModerateInitiative = (user: IUser) => {
 definePermissionRule(
   'initiative',
   'edit',
-  (initiative: IInitiativeData, user: IUser) => {
+  (initiative: IInitiativeData, user: IUser | undefined) => {
     return !!(isAuthor(initiative, user) || isAdmin(user));
   }
 );
@@ -34,7 +34,7 @@ definePermissionRule('initiative', 'markAsSpam', () => {
 definePermissionRule(
   'initiative',
   'moderate',
-  (_initiative: IInitiativeData, user: IUser) => {
+  (_initiative: IInitiativeData, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
