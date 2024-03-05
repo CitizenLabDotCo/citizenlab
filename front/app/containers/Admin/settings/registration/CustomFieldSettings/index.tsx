@@ -131,8 +131,6 @@ const CustomFieldSettings = () => {
     });
   };
 
-  const listItems = userCustomFields.data || [];
-
   return (
     <Section>
       <SectionTitle>
@@ -152,7 +150,7 @@ const CustomFieldSettings = () => {
       </SubSectionTitle>
       <Box mb="20px">
         <SortableList
-          items={listItems}
+          items={userCustomFields.data}
           onReorder={handleReorderCustomFieldOption}
         >
           {({ itemsList, handleDragRow, handleDropRow }) => (
@@ -164,7 +162,7 @@ const CustomFieldSettings = () => {
                     id={field.id}
                     className="e2e-custom-registration-field-row"
                     index={index}
-                    isLastItem={index === listItems.length - 1}
+                    isLastItem={index === userCustomFields.data.length - 1}
                     moveRow={handleDragRow}
                     dropRow={handleDropRow}
                   >
