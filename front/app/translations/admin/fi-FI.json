@@ -204,7 +204,6 @@
   "app.components.admin.PostManager.title": "Otsikko",
   "app.components.admin.PostManager.topicsTab": "Tunnisteet",
   "app.components.admin.PostManager.topicsTabTooltipText": "Lisää tunnisteita syötteeseen vetämällä ja pudottamalla.",
-  "app.components.admin.PostManager.view": "Näytä",
   "app.components.admin.PostManager.votes": "Äänet",
   "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Alle päivä} one {Yksi päivä} other {# päivää}} jäljellä",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "alkaen",

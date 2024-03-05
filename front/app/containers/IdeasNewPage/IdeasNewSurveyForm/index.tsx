@@ -160,7 +160,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     const requestBody = {
       ...data,
       project_id: project.data.id,
-      phase_ids: [phaseId],
+      // phase_ids: [phaseId], // TODO: JS - should only be added if moderator
       publication_status: data.publication_status || 'published',
     };
 
