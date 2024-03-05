@@ -24,6 +24,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO,
 } from 'api/project_images/useProjectImages';
+import useLocalize from 'hooks/useLocalize';
 
 // i18n
 import T from 'components/T';
@@ -434,6 +435,7 @@ const ProjectCard = memo<InputProps>(
     const currentPhaseId =
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
+    const localize = useLocalize();
 
     // We only need the phases for the input term, and only
     // in case there is no current phase in a timeline project.
@@ -559,11 +561,12 @@ const ProjectCard = memo<InputProps>(
         ctaMessage = <FormattedMessage {...messages.vote} />;
       } else if (participationMethod === 'information') {
         ctaMessage = <FormattedMessage {...messages.learnMore} />;
-      } else if (
-        participationMethod === 'survey' ||
-        participationMethod === 'native_survey'
-      ) {
+      } else if (participationMethod === 'survey') {
         ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
+      } else if (participationMethod === 'native_survey') {
+        ctaMessage = (
+          <>{localize(phase?.data.attributes.native_survey_button_multiloc)}</>
+        );
       } else if (participationMethod === 'document_annotation') {
         ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
       } else if (participationMethod === 'poll') {
