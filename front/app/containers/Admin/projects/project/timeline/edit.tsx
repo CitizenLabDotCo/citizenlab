@@ -13,14 +13,6 @@ import moment, { Moment } from 'moment';
 import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
-import Warning from 'components/UI/Warning';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
-import eventEmitter from 'utils/eventEmitter';
-import { isNilOrError } from 'utils/helperUtils';
-import { defaultAdminCardPadding } from 'utils/styleConstants';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { CampaignName } from 'api/campaigns/types';
 import useCampaigns from 'api/campaigns/useCampaigns';
@@ -36,8 +28,10 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocalize from 'hooks/useLocalize';
+
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
+
 import DateRangePicker from 'components/admin/DateRangePicker';
 import {
   Section,
@@ -50,6 +44,13 @@ import FileUploader from 'components/UI/FileUploader';
 import { FileType } from 'components/UI/FileUploader/FileDisplay';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import PhaseParticipationConfig, {
   IPhaseParticipationConfig,

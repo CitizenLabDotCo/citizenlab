@@ -11,8 +11,9 @@ import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
 import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 import useUsersByDomicile from 'api/users_by_domicile/useUsersByDomicile';
 import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
-
 import useUsersByGender from 'api/users_by_gender/useUsersByGender';
+import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
+
 import messages from 'containers/Admin/dashboard/messages';
 
 import BarChart from 'components/admin/Graphs/BarChart';
@@ -34,8 +35,6 @@ import T from 'components/T';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-
-import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
 
 import createConvertAndMergeSeries, {
   ISupportedDataType,

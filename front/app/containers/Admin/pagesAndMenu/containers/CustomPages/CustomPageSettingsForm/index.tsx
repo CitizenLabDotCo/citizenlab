@@ -18,8 +18,13 @@ import { IAreaData } from 'api/areas/types';
 import useAreas from 'api/areas/useAreas';
 import { ProjectsFilterTypes } from 'api/custom_pages/types';
 import { ITopicData } from 'api/topics/types';
-
 import useTopics from 'api/topics/useTopics';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
+
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 
 import { SectionField } from 'components/admin/Section';
@@ -36,11 +41,6 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { slugRegEx } from 'utils/textUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from 'hooks/useLocale';
-import useLocalize from 'hooks/useLocalize';
 
 import messages from '../messages';
 

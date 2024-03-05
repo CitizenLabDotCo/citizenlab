@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { TVerificationMethodName } from 'api/verification_methods/types';
+import { isLastVerificationMethod } from 'api/verification_methods/util';
+
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const OostendeRrnButton = React.lazy(
@@ -8,8 +11,6 @@ const OostendeRrnButton = React.lazy(
 const VerificationFormOostendeRrn = React.lazy(
   () => import('./components/VerificationFormOostendeRrn')
 );
-import { TVerificationMethodName } from 'api/verification_methods/types';
-import { isLastVerificationMethod } from 'api/verification_methods/util';
 
 const verificationMethodName: TVerificationMethodName = 'oostende_rrn';
 const configuration: ModuleConfiguration = {

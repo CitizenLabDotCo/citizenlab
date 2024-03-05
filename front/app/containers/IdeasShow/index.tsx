@@ -14,6 +14,7 @@ import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
+
 import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
 
 import ErrorToast from 'components/ErrorToast';

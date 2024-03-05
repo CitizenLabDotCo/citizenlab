@@ -26,8 +26,11 @@ import useEventImage from 'api/event_images/useEventImage';
 import { IEvent, IEventProperties } from 'api/events/types';
 import useAddEvent from 'api/events/useAddEvent';
 import useEvent from 'api/events/useEvent';
-
 import useUpdateEvent from 'api/events/useUpdateEvent';
+
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useLocale from 'hooks/useLocale';
+
 import DateTimePicker from 'components/admin/DateTimePicker';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -49,9 +52,6 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { geocode } from 'utils/locationTools';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
-
-import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
-import useLocale from 'hooks/useLocale';
 
 import messages from './messages';
 

@@ -18,6 +18,7 @@ import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
+
 import PostedBy from 'containers/IdeasShow/components/MetaInformation/PostedBy';
 import IdeaProposedBudget from 'containers/IdeasShow/components/ProposedBudget/IdeaProposedBudget';
 

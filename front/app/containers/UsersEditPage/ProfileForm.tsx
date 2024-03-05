@@ -12,8 +12,11 @@ import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/c
 import useAuthUser from 'api/me/useAuthUser';
 import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
 import useUserLockedAttributes from 'api/user_locked_attributes/useUserLockedAttributes';
-
 import useUpdateUser from 'api/users/useUpdateUser';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { appLocalePairs } from 'containers/App/constants';
 
 import { SectionField } from 'components/admin/Section';
@@ -31,9 +34,6 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from './messages';
 

@@ -6,10 +6,6 @@ import { useParams, useLocation } from 'react-router-dom';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
-import { isNilOrError } from 'utils/helperUtils';
-import { defaultAdminCardPadding } from 'utils/styleConstants';
-import { validateSlug } from 'utils/textUtils';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddProjectFile from 'api/project_files/useAddProjectFile';
 import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
@@ -34,7 +30,9 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreateProject';
+
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import {
@@ -46,10 +44,14 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
+import { validateSlug } from 'utils/textUtils';
 
 import PhaseParticipationConfig, {
   IPhaseParticipationConfig,

@@ -14,8 +14,8 @@ import { getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 
 import useInputSchema from 'hooks/useInputSchema';
-
 import useLocale from 'hooks/useLocale';
+
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';

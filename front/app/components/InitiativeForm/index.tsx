@@ -14,6 +14,7 @@ import { IInitiativeData } from 'api/initiatives/types';
 import useTopics from 'api/topics/useTopics';
 
 import useLocale from 'hooks/useLocale';
+
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
 

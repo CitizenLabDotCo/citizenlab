@@ -28,8 +28,9 @@ import useDeleteSelf from 'api/users/useDeleteSelf';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { appLocalesMomentPairs, locales } from 'containers/App/constants';
-
 import Authentication from 'containers/Authentication';
+import MainHeader from 'containers/MainHeader';
+
 import ErrorBoundary from 'components/ErrorBoundary';
 import HasPermission from 'components/HasPermission';
 
@@ -44,8 +45,6 @@ import {
   isPage,
 } from 'utils/helperUtils';
 import { localeStream } from 'utils/locale';
-
-import MainHeader from 'containers/MainHeader';
 
 import Meta from './Meta';
 import UserSessionRecordingModal from './UserSessionRecordingModal';

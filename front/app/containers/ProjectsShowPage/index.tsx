@@ -17,8 +17,11 @@ import { VotingContext } from 'api/baskets_ideas/useVoting';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
-
 import { IProjectData } from 'api/projects/types';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
+
+import useLocale from 'hooks/useLocale';
+
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 
 import ErrorBoundary from 'components/ErrorBoundary';
@@ -33,10 +36,6 @@ import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { anyIsUndefined, isNilOrError } from 'utils/helperUtils';
 import messages from 'utils/messages';
 import { scrollToElement } from 'utils/scroll';
-
-import useProjectBySlug from 'api/projects/useProjectBySlug';
-
-import useLocale from 'hooks/useLocale';
 
 import { isValidPhase } from './phaseParam';
 import ProjectCTABar from './ProjectCTABar';

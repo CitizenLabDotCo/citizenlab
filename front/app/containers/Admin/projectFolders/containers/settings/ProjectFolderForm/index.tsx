@@ -16,8 +16,11 @@ import useAddProjectFolderImage from 'api/project_folder_images/useAddProjectFol
 import useDeleteProjectFolderImage from 'api/project_folder_images/useDeleteProjectFolderImage';
 import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
 import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
-
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import {
@@ -37,10 +40,6 @@ import clHistory from 'utils/cl-router/history';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
 import { validateSlug } from 'utils/textUtils';
-
-import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
-
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import messages from '../../messages';
 
