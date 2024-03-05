@@ -201,7 +201,7 @@ export default defineMessages({
     defaultMessage: 'Tags: By label',
   },
   byLabelSubtitle: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitleOne',
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle',
     defaultMessage:
       'Inputs already associated with these tags will not be classified again.',
   },
