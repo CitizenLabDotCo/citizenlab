@@ -86,6 +86,7 @@ module ReportBuilder
             .permit(
               :name,
               :phase_id,
+              :visible,
               layout: [craftjs_json: {}]
             )
 

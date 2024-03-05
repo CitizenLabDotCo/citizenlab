@@ -24,7 +24,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { timeAgo } from 'utils/dateUtils';
-import { isAdmin } from 'utils/permissions/roles';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 
 const Container = styled.div`
   display: flex;
@@ -144,10 +144,11 @@ const Author = memo(
     const showModeratorStyles =
       showModeration &&
       author &&
+      // Ideally this is managed outside of this component.
+      // If projectId is provided, we assume this component is used in a project context
       (projectId
         ? canModerateProject(projectId, { data: author.data })
-        : // When component is used for proposals
-          isAdmin({ data: author.data }));
+        : canModerateInitiative({ data: author.data }));
 
     if (!isNilOrError(locale)) {
       return (
