@@ -14,6 +14,8 @@ import {
   IMAGE_UPLOADING_EVENT,
 } from '../constants';
 
+export const CONTENT_BUILDER_Z_INDEX = 10000;
+
 type ContentBuilderErrors = Record<
   string,
   { hasError: boolean; selectedLocale?: Locale }
@@ -72,7 +74,7 @@ export const ContentBuilder = ({
       display="flex"
       flexDirection="column"
       w="100%"
-      zIndex="10000"
+      zIndex={String(CONTENT_BUILDER_Z_INDEX)}
       position="fixed"
       bgColor={colors.background}
       h="100vh"

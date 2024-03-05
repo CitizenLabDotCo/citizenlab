@@ -21,7 +21,7 @@ import PrintReportButton from '../../ReportBuilderPage/ReportRow/Buttons/PrintRe
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 
 // routing
@@ -60,8 +60,10 @@ const ContentBuilderTopBar = ({
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   const disableSave = !!hasError || !!hasPendingState || saved;
+  const disablePrint = !!hasError || !!hasPendingState || !saved;
 
   const closeModal = () => {
     setShowQuitModal(false);
@@ -221,7 +223,12 @@ const ContentBuilderTopBar = ({
           onSelectLocale={setSelectedLocale}
         />
         <Box mx="20px">
-          <PrintReportButton reportId={reportId} />
+          <PrintReportButton
+            reportId={reportId}
+            disabledTooltipText={
+              disablePrint ? formatMessage(messages.cannotPrint) : undefined
+            }
+          />
         </Box>
         <SaveButton
           disabled={disableSave}
