@@ -204,6 +204,7 @@
   "app.components.admin.PostManager.title": "العنوان",
   "app.components.admin.PostManager.topicsTab": "الموضوعات",
   "app.components.admin.PostManager.topicsTabTooltipText": "قُم بإضافة مواضيع إلى مُدخل باستخدام السحب والإسقاط. ",
+  "app.components.admin.PostManager.view": "منظر",
   "app.components.admin.PostManager.votes": "الأصوات",
   "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {اقل من يوم} one {يوم واحد} other {# أيام}} غادر",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "من",

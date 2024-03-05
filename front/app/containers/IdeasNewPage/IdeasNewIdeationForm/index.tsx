@@ -38,7 +38,7 @@ import { Multiloc } from 'typings';
 import { IPhases, IPhaseData } from 'api/phases/types';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import { IProject } from 'api/projects/types';
-import { IdeaPublicationStatus } from "api/ideas/types";
+import { IdeaPublicationStatus } from 'api/ideas/types';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -179,7 +179,11 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
     });
 
     const ideaId = idea.data.id;
-    participationMethodConfig?.onFormSubmission({project: project.data, ideaId, idea});
+    participationMethodConfig?.onFormSubmission({
+      project: project.data,
+      ideaId,
+      idea,
+    });
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
@@ -201,7 +205,7 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
             getFieldNameFromPath(error.instancePath) ||
             error?.params?.missingProperty
           }_${error.keyword}`
-          ] ||
+        ] ||
         messages[
           `ajv_error_${
             getFieldNameFromPath(error.instancePath) ||
@@ -235,7 +239,10 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
-      {!processingLocation && schema && uiSchema && participationMethodConfig ? (
+      {!processingLocation &&
+      schema &&
+      uiSchema &&
+      participationMethodConfig ? (
         <>
           <IdeasNewMeta />
           <Form
@@ -298,4 +305,3 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
 };
 
 export default IdeasNewIdeationForm;
-

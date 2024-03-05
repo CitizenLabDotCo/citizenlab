@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import ideasKeys from './keys';
 import { IIdea, IdeasKeys } from './types';
-import {queryClient} from "../../utils/cl-react-query/queryClient";
+import { queryClient } from '../../utils/cl-react-query/queryClient';
 
 export const fetchIdea = ({ phaseId }: { phaseId?: string }) =>
   fetcher<IIdea>({ path: `/ideas/draft/${phaseId}`, action: 'get' });
@@ -19,6 +19,6 @@ const useDraftIdeaByPhaseId = (phaseId?: string) => {
 
 export const clearDraftIdea = (phaseId?: string) => {
   queryClient.removeQueries(ideasKeys.item({ id: phaseId }));
-}
+};
 
 export default useDraftIdeaByPhaseId;
