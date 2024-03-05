@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.cancelQuitButtonText',
     defaultMessage: 'Cancel',
   },
+  goBackButtonMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage',
+    defaultMessage: 'Go back',
+  },
 });

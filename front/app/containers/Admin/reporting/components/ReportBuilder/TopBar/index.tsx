@@ -11,17 +11,22 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
-import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
-import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconButton,
+  Text,
+  Title,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
 import PrintReportButton from '../../ReportBuilderPage/ReportRow/Buttons/PrintReportButton';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 
 // routing
@@ -52,6 +57,8 @@ const ContentBuilderTopBar = ({
   setSaved,
   setSelectedLocale,
 }: ContentBuilderTopBarProps) => {
+  const { formatMessage } = useIntl();
+
   const [initialized, setInitialized] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
   const { query } = useEditor();
@@ -203,8 +210,18 @@ const ContentBuilderTopBar = ({
           </Box>
         </Box>
       </Modal>
-      <GoBackButton onClick={goBack} />
-      <Box display="flex" p="15px" flexGrow={1} alignItems="center">
+      {/* <GoBackButton onClick={goBack} /> */}
+      <IconButton
+        iconName="arrow-left"
+        onClick={goBack}
+        buttonType="button"
+        iconColor={colors.textSecondary}
+        iconColorOnHover={colors.primary}
+        iconWidth="20px"
+        a11y_buttonActionMessage={formatMessage}
+        ml="8px"
+      />
+      <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
           <Title variant="h3" as="h1" mb="0px" mt="0px">
             <FormattedMessage {...messages.reportBuilder} />
