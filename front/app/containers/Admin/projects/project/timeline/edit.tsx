@@ -487,9 +487,6 @@ const AdminPhaseEdit = () => {
   };
 
   const maxEndDate = getMaxEndDate(phasesWithOutCurrentPhase, startDate, phase);
-  console.log('phaseAttrs', phaseAttrs);
-  console.log('phase', phase);
-  console.log('attributeDiff', attributeDiff);
 
   return (
     <Box ref={containerRef}>
