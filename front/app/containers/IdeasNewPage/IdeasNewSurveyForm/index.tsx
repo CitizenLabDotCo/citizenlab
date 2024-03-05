@@ -160,6 +160,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     const requestBody = {
       ...data,
       project_id: project.data.id,
+      phase_ids: [phaseId],
       publication_status: data.publication_status || 'published',
     };
 

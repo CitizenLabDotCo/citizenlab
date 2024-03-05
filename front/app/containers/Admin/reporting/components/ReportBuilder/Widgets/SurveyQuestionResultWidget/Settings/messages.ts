@@ -19,9 +19,9 @@ export default defineMessages({
       'Group survey responses by any user field (gender, location, age, etc) or other survey questions.',
   },
   featureLockedReason: {
-    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.featureLockedReason',
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.featureLockedReason1',
     defaultMessage:
-      'This is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+      'This is not included in your current plan. Reach out to your Government Success Manager or admin to unlock it.',
   },
   none: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.none',
