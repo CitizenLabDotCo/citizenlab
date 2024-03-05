@@ -23,16 +23,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
     }
   end
 
-  def generate_question_result(field_id)
-    field = fields.find { |f| f.id == field_id }
-    return unless field
-
-    result = visit field
-    {
-      result: result
-    }
-  end
-
   def visit_select(field)
     values = inputs
       .select("custom_field_values->'#{field.key}' as value")
@@ -108,9 +98,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
     collect_answers(field, distribution, option_titles)
   end
 
+  # Trigger back workflow
   def visit_file_upload(field)
     file_ids = inputs
-      .select("custom_field_values->'#{field.key}' as value")
+      .select("custom_field_values->'#{field.key}'->'id' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
       .map(&:value)
     files = IdeaFile.where(id: file_ids).map do |file|
@@ -132,7 +123,15 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   def visit_select_base(field, values)
     option_keys = field.options.pluck(:key)
-    distribution = Idea.select(:value).from(values).group(:value).order(Arel.sql('COUNT(value) DESC')).count.to_a
+    distribution = Idea
+      .select(:value)
+      .from(values)
+      .group(:value)
+      .order(Arel.sql('COUNT(value) DESC'))
+      .count.to_a
+    (option_keys - distribution.pluck(0)).each do |key|
+      distribution << [key, 0] # add missing options with 0 responses
+    end
     sorted_distribution = distribution.sort_by { |k, _v| k == 'other' ? 1 : 0 } # other should always be last
     filtered_distribution = sorted_distribution.select { |(value, _count)| option_keys.include? value }
     option_titles = field.options.each_with_object({}) do |option, accu|

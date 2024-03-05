@@ -327,7 +327,7 @@ describe Analysis::InputsFinder do
   describe 'input_custom_field_no_empty_values' do
     let_it_be(:custom_form) { create(:custom_form) }
     let_it_be(:custom_field_text) { create(:custom_field_text, resource: custom_form) }
-    let_it_be(:analysis) { create(:analysis, main_custom_field: nil, additional_custom_fields: [custom_field_text]) }
+    let_it_be(:analysis) { create(:analysis, main_custom_field: custom_field_text, additional_custom_fields: []) }
 
     let_it_be(:input0) { create(:idea, project: analysis.source_project) }
     let_it_be(:input1) do

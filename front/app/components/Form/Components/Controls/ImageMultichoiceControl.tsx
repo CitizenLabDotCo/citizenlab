@@ -20,6 +20,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from '../ErrorDisplay';
+import FullscreenImage from 'components/FullscreenImage';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -31,6 +32,8 @@ import styled from 'styled-components';
 
 const StyledBox = styled(Box)`
   background-color: ${colors.grey100};
+  position: relative;
+  flex: 1 1 auto;
   &:hover {
     background-color: ${darken(0.05, colors.grey100)};
   }
@@ -100,16 +103,16 @@ const ImageMultichoiceControl = ({
           </Text>
         )}
         <Box
-          display="flex"
-          flexWrap="wrap"
-          gap="16px"
-          w="100%"
-          justifyContent={isSmallerThanPhone ? 'center' : 'flex-start'}
-          alignItems="center"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: isSmallerThanPhone ? '1fr' : 'repeat(2, 50%)',
+            gap: '16px',
+            width: '100%',
+            justifyContent: 'center',
+          }}
         >
           {options?.map((option, index: number) => (
             <StyledBox
-              style={{ cursor: 'pointer' }}
               mb="12px"
               key={option.value}
               borderRadius="3px"
@@ -120,33 +123,54 @@ const ImageMultichoiceControl = ({
               }}
               display="flex"
               flexDirection="column"
-              alignItems="stretch"
+              alignItems="center"
+              p="8px"
+              border={
+                dataArray.includes(option.value)
+                  ? `2px solid ${colors.primary}`
+                  : undefined
+              }
             >
-              <Image
-                width="188px"
-                src={option.image?.medium || imageFile}
-                alt={option.label}
-              />
-              <Checkbox
-                size="20px"
-                padding="18px 20px 18px 20px"
-                checkedColor={'tenantSecondary'}
-                id={`${path}-checkbox-${index}`}
-                label={option.label}
-                checked={dataArray.includes(option.value)}
-                onChange={() => {
-                  if (dataArray.includes(option.value)) {
-                    dataArray.length === 1
-                      ? handleChange(path, undefined)
-                      : handleChange(
-                          path,
-                          dataArray.filter((value) => value !== option.value)
-                        );
-                  } else {
-                    handleChange(path, [...dataArray, option.value]);
-                  }
-                }}
-              />
+              {option.value === 'other' ? (
+                <Image
+                  width="100%"
+                  src={option.image?.medium || imageFile}
+                  alt={option.label}
+                  style={{ borderRadius: '3px 3px 0 0' }}
+                />
+              ) : (
+                <FullscreenImage
+                  src={option.image?.large || imageFile}
+                  altText={option.label}
+                />
+              )}
+
+              <Box position="absolute" top="18px" right="12px">
+                <Checkbox
+                  size="20px"
+                  checkedColor="tenantSecondary"
+                  id={`${path}-checkbox-${index}`}
+                  label=""
+                  checked={dataArray.includes(option.value)}
+                  onChange={() => {
+                    if (dataArray.includes(option.value)) {
+                      dataArray.length === 1
+                        ? handleChange(path, undefined)
+                        : handleChange(
+                            path,
+                            dataArray.filter((value) => value !== option.value)
+                          );
+                    } else {
+                      handleChange(path, [...dataArray, option.value]);
+                    }
+                  }}
+                />
+              </Box>
+              <Box display="flex" w="100%" alignSelf="flex-start">
+                <Text my="12px" mx="4px">
+                  {option.label}
+                </Text>
+              </Box>
             </StyledBox>
           ))}
         </Box>

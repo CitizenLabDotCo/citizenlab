@@ -48,12 +48,13 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
       SettingsService.new.activate_feature! 'abbreviated_user_names'
 
       expect(moderator.admin?).to be false
-      command = campaign.generate_commands(recipient: moderator).first
 
-      expected_author_name = "#{top_new_idea.author.first_name} #{top_new_idea.author.last_name[0]}."
-      expect(
-        command.dig(:event_payload, :top_ideas, 0, :author_name)
-      ).to eq(expected_author_name)
+      command = campaign.generate_commands(recipient: moderator).first
+      payload_first_top_idea = command.dig(:event_payload, :top_ideas, 0)
+      first_top_idea = Idea.find_by(id: payload_first_top_idea.fetch(:id))
+      expected_author_name = "#{first_top_idea.author.first_name} #{first_top_idea.author.last_name[0]}."
+
+      expect(payload_first_top_idea[:author_name]).to eq(expected_author_name)
     end
 
     # added to reproduce the bug and test the fix

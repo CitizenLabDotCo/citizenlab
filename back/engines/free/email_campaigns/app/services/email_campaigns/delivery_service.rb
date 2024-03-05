@@ -34,6 +34,7 @@ module EmailCampaigns
       Campaigns::MentionInInternalComment,
       Campaigns::MentionInOfficialFeedback,
       Campaigns::ModeratorDigest,
+      Campaigns::NativeSurveyNotSubmitted,
       Campaigns::NewCommentForAdmin,
       Campaigns::NewIdeaForAdmin,
       Campaigns::NewInitiativeForAdmin,

@@ -125,9 +125,8 @@ const InputListItem = () => {
             : customFieldsInAnalysisIds.includes(customField.id)
         )
         .map((customField) => (
-          <>
+          <Box key={customField.id}>
             <Box
-              key={customField.id}
               bg={
                 customFieldsInAnalysisIds.includes(customField.id) &&
                 isSurveyAnalysis
@@ -189,7 +188,7 @@ const InputListItem = () => {
               />
             </Box>
             {isSurveyAnalysis && <Divider m="0px" />}
-          </>
+          </Box>
         ))}
 
       <Box id="tags-control" my="12px">

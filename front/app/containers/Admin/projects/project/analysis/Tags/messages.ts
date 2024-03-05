@@ -192,6 +192,10 @@ export default defineMessages({
     defaultMessage:
       'The classification is based on the inputs currently assigned to the tags. The computer will try to follow your example.',
   },
+  fewShotsEmpty: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.fewShotsEmpty',
+    defaultMessage: 'You do not have any custom tags yet.',
+  },
   byLabelTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle',
     defaultMessage: 'Tags: By label',
@@ -245,5 +249,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.advancedAutotaggingUpsellMessage',
     defaultMessage:
       'This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
+  recommended: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.recommended',
+    defaultMessage: 'Recommended',
   },
 });

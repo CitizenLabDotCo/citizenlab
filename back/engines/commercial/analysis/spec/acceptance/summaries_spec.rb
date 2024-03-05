@@ -30,7 +30,7 @@ resource 'Summaries' do
         attributes: {
           summary: kind_of(String),
           filters: {},
-          inputs_ids: ideas.map(&:id),
+          inputs_count: 2,
           custom_field_ids: {},
           accuracy: nil,
           created_at: kind_of(String),
@@ -91,7 +91,7 @@ resource 'Summaries' do
             reactions_from: 7,
             tag_ids: [tag.id]
           },
-          inputs_ids: nil,
+          inputs_count: 0,
           custom_field_ids: { main_custom_field_id: main_field.id, additional_custom_field_ids: [additional_field.id] },
           accuracy: 0.8,
           missing_inputs_count: 0,
@@ -148,7 +148,7 @@ resource 'Summaries' do
         attributes: {
           summary: nil,
           filters: { reactions_from: 5 },
-          inputs_ids: nil,
+          inputs_count: 0,
           custom_field_ids: {},
           accuracy: 0.8,
           missing_inputs_count: 0,

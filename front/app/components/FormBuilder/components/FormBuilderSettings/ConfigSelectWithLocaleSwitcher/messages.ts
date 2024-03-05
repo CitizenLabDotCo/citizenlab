@@ -22,4 +22,8 @@ export default defineMessages({
     defaultMessage:
       'Allow participants to enter a custom response if the provided answers do not match their preference',
   },
+  other: {
+    id: 'app.components.formBuilder.other',
+    defaultMessage: 'Other',
+  },
 });

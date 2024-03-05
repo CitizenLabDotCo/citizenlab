@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // components
 import { Text } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
-import TooltipOutline from 'components/admin/Graphs/utilities/TooltipOutline';
+import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 
 interface CustomTooltipProps {
   payload?: [

@@ -88,7 +88,7 @@ export const QuestionRuleInput = ({
       // Update rule variable
       const required =
         logic.rules && logic.rules.length > 0 ? true : field.required;
-      setValue(name, { ...field, logic, required });
+      setValue(name, { ...field, logic, required }, { shouldDirty: true });
       trigger();
     }
   };
@@ -101,7 +101,7 @@ export const QuestionRuleInput = ({
     // Update rule variable
     const required =
       logic.rules && logic.rules.length > 0 ? true : field.required;
-    setValue(name, { ...field, logic, required });
+    setValue(name, { ...field, logic, required }, { shouldDirty: true });
     trigger();
   };
 

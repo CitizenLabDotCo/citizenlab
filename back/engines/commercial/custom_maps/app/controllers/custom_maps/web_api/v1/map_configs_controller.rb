@@ -34,7 +34,7 @@ module CustomMaps
         end
 
         def show
-          @project = Project.includes(map_config: %i[layers legend_items]).find(params[:project_id])
+          @project = Project.includes(map_config: %i[layers]).find(params[:project_id])
           authorize @project
           @map_config = @project.map_config
           render json: serialized_map_config, status: :ok
@@ -53,7 +53,14 @@ module CustomMaps
         end
 
         def map_config_params
-          params.require(:map_config).permit(:zoom_level, :tile_provider, :esri_web_map_id, center_geojson: {})
+          params.require(:map_config)
+            .permit(
+              :zoom_level,
+              :tile_provider,
+              :esri_web_map_id,
+              :esri_base_map_id,
+              center_geojson: {}
+            )
         end
       end
     end

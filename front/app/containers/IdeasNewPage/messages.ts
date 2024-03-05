@@ -67,6 +67,10 @@ export default defineMessages({
     defaultMessage:
       'A file failed to upload. Please check the file size and format and try again.',
   },
+  surveyNewMetaTitle: {
+    id: 'app.containers.IdeasNewPage.surveyNewMetaTitle',
+    defaultMessage: 'Add survey response | {projectName}',
+  },
   ideaNewMetaTitle: {
     id: 'app.containers.IdeasNewPage.ideaNewMetaTitle',
     defaultMessage: 'Add new idea | {projectName}',
@@ -367,6 +371,10 @@ export default defineMessages({
     defaultMessage:
       'The issue description must be more than {limit} characters long',
   },
+  ajv_error_number_required: {
+    id: 'app.containers.IdeasNewPage.ajv_error_number_required',
+    defaultMessage: 'This field is required, please enter a valid number',
+  },
   leaveSurveyConfirmationQuestion: {
     id: 'app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion',
     defaultMessage: 'Are you sure you want to leave this survey?',
@@ -374,6 +382,11 @@ export default defineMessages({
   leaveSurveyText: {
     id: 'app.containers.IdeasNewPage.leaveSurveyText',
     defaultMessage: "Your answers won't be saved.",
+  },
+  leaveSurveyTextLoggedIn: {
+    id: 'app.containers.IdeasNewPage.leaveSurveyTextLoggedIn',
+    defaultMessage:
+      'Your draft answers have been saved privately and you can return to complete this survey later.',
   },
   confirmLeaveSurveyButtonText: {
     id: 'app.containers.IdeasNewPage.confirmLeaveSurveyButtonText',

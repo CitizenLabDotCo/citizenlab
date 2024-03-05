@@ -6,9 +6,9 @@ import { useNode } from '@craftjs/core';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import ProjectFilter from '../../_shared/ProjectFilter';
-import PhaseFilter from '../../_shared/PhaseFilter';
+import PhaseFilter from 'components/UI/PhaseFilter';
 import NumberOfIdeasDropdown from './NumberOfIdeasDropdown';
-import CollapseLongTextToggle from './CollapseLongTextToggle';
+import CollapseLongTextToggle from '../../SingleIdeaWidget/Settings/CollapseLongTextToggle';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 // i18n
@@ -106,7 +106,7 @@ const Settings = () => {
           label={formatMessage(messages.ideationPhase)}
           projectId={projectId}
           phaseId={phaseId}
-          participationMethod="ideation"
+          participationMethods={['ideation']}
           onPhaseFilter={handlePhaseFilter}
         />
       )}

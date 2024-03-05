@@ -114,6 +114,11 @@ class WebApi::V1::IdeasController < ApplicationController
     render_show Idea.find_by!(slug: params[:slug])
   end
 
+  # Return a single draft idea for a phase - for native survey autosave
+  def draft_by_phase
+    render_show Idea.find_by!(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')
+  end
+
   #   Normal users always post in an active phase. They should never provide a phase id.
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
@@ -139,7 +144,6 @@ class WebApi::V1::IdeasController < ApplicationController
 
     extract_custom_field_values_from_params! participation_method.custom_form
     params_for_create = idea_params participation_method.custom_form, is_moderator
-    params_for_file_upload_fields = extract_params_for_file_upload_fields participation_method.custom_form, params_for_create
     input = Idea.new params_for_create
     input.creation_phase = (phase if participation_method.creation_phase?)
     input.phase_ids = [phase.id] if phase_ids.empty?
@@ -162,17 +166,7 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save save_options
-        params_for_file_upload_fields.each do |key, params_for_files_field|
-          idea_file = FileUpload.create!(
-            idea: input,
-            file_by_content: {
-              name: params_for_files_field['name'],
-              content: params_for_files_field['content']
-            }
-          )
-          input.custom_field_values[key] = idea_file.id
-        end
-        input.save!
+        update_file_upload_fields input, participation_method.custom_form, params_for_create
         service.after_create(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
@@ -183,13 +177,6 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: { errors: input.errors.details }, status: :unprocessable_entity
       end
     end
-  end
-
-  def extract_params_for_file_upload_fields(custom_form, params_for_create)
-    return {} if params_for_create['custom_field_values'].blank?
-
-    file_upload_field_keys = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:file_upload?).map(&:key)
-    params_for_create['custom_field_values'].extract!(*file_upload_field_keys)
   end
 
   def update
@@ -227,6 +214,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do
       if input.save save_options
         service.after_update(input, current_user)
+        update_file_upload_fields input, input.custom_form, update_params
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
@@ -277,6 +265,38 @@ class WebApi::V1::IdeasController < ApplicationController
 
     extra_field_values = reject_other_text_values(extra_field_values)
     params[:idea][:custom_field_values] = extra_field_values
+  end
+
+  def extract_params_for_file_upload_fields(custom_form, params)
+    return {} if params['custom_field_values'].blank?
+
+    file_upload_field_keys = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:file_upload?).map(&:key)
+    params['custom_field_values'].extract!(*file_upload_field_keys)
+  end
+
+  def update_file_upload_fields(input, custom_form, params)
+    file_uploads_exist = false
+    params_for_file_upload_fields = extract_params_for_file_upload_fields custom_form, params
+    params_for_file_upload_fields.each do |key, params_for_files_field|
+      if params_for_files_field['id']
+        idea_file = FileUpload.find(params_for_files_field['id'])
+        if idea_file
+          input.custom_field_values[key] = { id: idea_file.id, name: idea_file.name }
+          file_uploads_exist = true
+        end
+      elsif params_for_files_field['content']
+        idea_file = FileUpload.create!(
+          idea: input,
+          file_by_content: {
+            name: params_for_files_field['name'],
+            content: params_for_files_field['content']
+          }
+        )
+        input.custom_field_values[key] = { id: idea_file.id, name: idea_file.name }
+        file_uploads_exist = true
+      end
+    end
+    input.save! if file_uploads_exist
   end
 
   # Do not save any 'other' text values if the select field does not include 'other' as an option

@@ -43,6 +43,7 @@ const PhaseReport = ({ reportId, phaseId }: Props) => {
       pt={smallerThanPhone ? '20px' : '0px'}
       display="flex"
       justifyContent="center"
+      id="e2e-phase-report"
     >
       <Box
         w="100%"

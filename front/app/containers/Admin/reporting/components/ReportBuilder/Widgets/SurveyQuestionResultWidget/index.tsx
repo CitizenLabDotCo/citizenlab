@@ -6,7 +6,7 @@ import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportD
 // components
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import NoData from '../_shared/NoData';
-import SurveyQuestionResult from './Question';
+import Question from './Question';
 import Settings from './Settings';
 
 // i18n
@@ -22,20 +22,22 @@ const SurveyQuestionResultWidget = ({
   projectId,
   phaseId,
   questionId,
+  groupMode,
+  groupFieldId,
 }: Props) => {
   const px = useReportDefaultPadding();
-
   const hasEverything = projectId && phaseId && questionId;
-
   const projectOrPhaseEmptyMessage = getEmptyMessage({ projectId, phaseId });
 
   return (
     <PageBreakBox px={px}>
       {hasEverything ? (
-        <SurveyQuestionResult
+        <Question
           projectId={projectId}
           phaseId={phaseId}
           questionId={questionId}
+          groupMode={groupFieldId ? groupMode : undefined}
+          groupFieldId={groupFieldId}
         />
       ) : (
         <NoData message={projectOrPhaseEmptyMessage ?? messages.emptyField} />
@@ -49,6 +51,8 @@ SurveyQuestionResultWidget.craft = {
     projectId: undefined,
     phaseId: undefined,
     questionId: undefined,
+    groupMode: undefined,
+    groupFieldId: undefined,
   },
   related: {
     settings: Settings,

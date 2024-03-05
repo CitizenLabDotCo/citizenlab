@@ -123,7 +123,7 @@ class Idea < ApplicationRecord
   after_update :fix_comments_count_on_projects
 
   pg_search_scope :search_by_all,
-    against: %i[title_multiloc body_multiloc custom_field_values],
+    against: %i[title_multiloc body_multiloc custom_field_values slug],
     using: { tsearch: { prefix: true } }
 
   scope :with_some_topics, (proc do |topics|
@@ -159,6 +159,10 @@ class Idea < ApplicationRecord
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
+  scope :draft_surveys, lambda {
+    where(publication_status: 'draft')
+      .where.not(creation_phase_id: nil)
+  }
   def just_published?
     publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']
   end

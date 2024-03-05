@@ -3,18 +3,18 @@
 class PublicApi::V2::ProjectSerializer < PublicApi::V2::BaseSerializer
   attributes :id,
     :title,
-    :description_html, # 'description' in spec
+    :description_html,
     :description_preview,
     :slug,
     :folder_id,
-    :href, # Not in spec
+    :href,
     :visible_to,
-    :images, # Not in spec
+    :images,
     :created_at,
     :updated_at,
     :ideas_count,
     :comments_count,
-    :map_center_geojson # Not in spec
+    :map_center_geojson
 
   attribute :publication_status do
     object.admin_publication.publication_status

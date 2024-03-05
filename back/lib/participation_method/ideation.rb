@@ -269,10 +269,7 @@ module ParticipationMethod
       'section'
     end
 
-    def auto_create_default_form?
-      false
-    end
-
+    # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
     def create_default_form!
       form = CustomForm.create(participation_context: phase.project)
 
@@ -280,8 +277,6 @@ module ParticipationMethod
         field.save!
         field.move_to_top
       end
-
-      phase.reload
 
       form
     end

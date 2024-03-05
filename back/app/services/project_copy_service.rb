@@ -50,7 +50,6 @@ class ProjectCopyService < TemplateService
     @template['models']['volunteering/cause']         = yml_volunteering_causes shift_timestamps: shift_timestamps
     @template['models']['custom_maps/map_config']     = yml_maps_map_configs shift_timestamps: shift_timestamps
     @template['models']['custom_maps/layer']          = yml_maps_layers shift_timestamps: shift_timestamps
-    @template['models']['custom_maps/legend_item']    = yml_maps_legend_items shift_timestamps: shift_timestamps
 
     @template['models']['content_builder/layout'], layout_images_mapping = yml_content_builder_layouts shift_timestamps: shift_timestamps
     @template['models']['content_builder/layout_image'] = yml_content_builder_layout_images layout_images_mapping, shift_timestamps: shift_timestamps
@@ -390,6 +389,7 @@ class ProjectCopyService < TemplateService
         'zoom_level' => map_config.zoom_level&.to_f,
         'tile_provider' => map_config.tile_provider,
         'esri_web_map_id' => map_config.esri_web_map_id,
+        'esri_base_map_id' => map_config.esri_base_map_id,
         'created_at' => shift_timestamp(map_config.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(map_config.updated_at, shift_timestamps)&.iso8601
       }
@@ -412,19 +412,6 @@ class ProjectCopyService < TemplateService
         'updated_at' => shift_timestamp(layer.updated_at, shift_timestamps)&.iso8601
       }
       yml_layer
-    end
-  end
-
-  def yml_maps_legend_items(shift_timestamps: 0)
-    (@project.map_config&.legend_items || []).map do |legend_item|
-      {
-        'map_config_ref' => lookup_ref(legend_item.map_config_id, :maps_map_config),
-        'title_multiloc' => legend_item.title_multiloc,
-        'color' => legend_item.color,
-        'ordering' => legend_item.ordering,
-        'created_at' => shift_timestamp(legend_item.created_at, shift_timestamps)&.iso8601,
-        'updated_at' => shift_timestamp(legend_item.updated_at, shift_timestamps)&.iso8601
-      }
     end
   end
 
@@ -502,7 +489,7 @@ class ProjectCopyService < TemplateService
         'title_multiloc' => event.title_multiloc,
         'description_multiloc' => event.description_multiloc,
         'location_multiloc' => event.location_multiloc,
-        'location_point' => event.location_point_geojson,
+        'location_point_geojson' => event.location_point_geojson,
         'online_link' => event.online_link,
         'start_at' => shift_timestamp(event.start_at, shift_timestamps)&.iso8601,
         'end_at' => shift_timestamp(event.end_at, shift_timestamps)&.iso8601,

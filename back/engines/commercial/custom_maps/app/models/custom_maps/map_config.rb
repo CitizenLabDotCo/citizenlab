@@ -4,14 +4,15 @@
 #
 # Table name: maps_map_configs
 #
-#  id              :uuid             not null, primary key
-#  project_id      :uuid             not null
-#  center          :geography        point, 4326
-#  zoom_level      :decimal(4, 2)
-#  tile_provider   :string
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  esri_web_map_id :string
+#  id               :uuid             not null, primary key
+#  project_id       :uuid             not null
+#  center           :geography        point, 4326
+#  zoom_level       :decimal(4, 2)
+#  tile_provider    :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  esri_web_map_id  :string
+#  esri_base_map_id :string
 #
 # Indexes
 #
@@ -23,7 +24,6 @@ module CustomMaps
 
     belongs_to :project
     has_many :layers, -> { order(:ordering) }, class_name: 'CustomMaps::Layer', dependent: :destroy
-    has_many :legend_items, -> { order(:ordering) }, class_name: 'CustomMaps::LegendItem', dependent: :destroy
 
     validates :zoom_level, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 20 }, allow_nil: true
     validates :tile_provider, format: { with: %r{\Ahttps://.+\z} }, allow_nil: true

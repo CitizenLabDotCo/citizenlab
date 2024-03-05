@@ -27,11 +27,12 @@ module BulkImportIdeas
     end
 
     def draft_ideas
-      ideas = if import_scope == :phase
-        Idea.draft.where(creation_phase_id: params[:id])
-      else
-        Idea.draft.where(project_id: params[:id], creation_phase_id: nil)
+      creation_phase_id = nil
+      if import_scope == :phase
+        phase = Phase.find(params[:id])
+        creation_phase_id = phase&.native_survey? ? phase.id : nil
       end
+      ideas = Idea.draft.where(project_id: @project.id, creation_phase_id: creation_phase_id)
 
       render json: linked_json(
         paginate(ideas),

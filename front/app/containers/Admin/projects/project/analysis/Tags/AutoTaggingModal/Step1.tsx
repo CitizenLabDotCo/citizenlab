@@ -13,6 +13,7 @@ import {
   Icon,
   Label,
   Radio,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import Tag from '../Tag';
 import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
@@ -73,6 +74,7 @@ const AutoTagOption = ({
   isDisabled,
   isLoading,
   tooltip,
+  isRecommended,
 }: {
   children: ReactNode;
   tagType: TagType;
@@ -81,6 +83,7 @@ const AutoTagOption = ({
   isDisabled: boolean;
   isLoading: boolean;
   tooltip?: string;
+  isRecommended?: boolean;
 }) => {
   const { formatMessage } = useIntl();
   return (
@@ -104,6 +107,27 @@ const AutoTagOption = ({
           <Box w="32px">
             <Tag tagType={tagType} name="&nbsp;" />
           </Box>
+          {isRecommended && (
+            <Box
+              bgColor={colors.success}
+              py="4px"
+              px="8px"
+              borderRadius={stylingConsts.borderRadius}
+              display="flex"
+              gap="4px"
+              alignItems="center"
+            >
+              <Icon
+                name="flash"
+                fill={colors.white}
+                width="16px"
+                height="16px"
+              />
+              <Text color="white" m="0px" fontSize="s">
+                {formatMessage(messages.recommended)}
+              </Text>
+            </Box>
+          )}
           {isDisabled && <Icon name="lock" />}
         </Box>
         <Box
@@ -238,6 +262,7 @@ const Step1 = ({
           isDisabled={advancedAutotaggingOptionDisabled}
           isLoading={isLoading && loadingMethod === 'nlp_topic'}
           tooltip={formatMessage(messages.fullyAutomatedTooltip)}
+          isRecommended
         >
           {formatMessage(messages.fullyAutomatedDescription)}
         </AutoTagOption>

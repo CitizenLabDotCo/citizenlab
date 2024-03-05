@@ -44,7 +44,7 @@ export const colors = {
   gridHoverColor: mainColors.grey500,
 };
 
-const DEFAULT_CATEGORICAL_COLORS = [
+export const DEFAULT_CATEGORICAL_COLORS = [
   colors.categorical01,
   colors.categorical02,
   colors.categorical03,

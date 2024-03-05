@@ -90,6 +90,14 @@ RSpec.describe SurveyResultsGeneratorService do
       title_multiloc: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }
     )
   end
+  let!(:no_response_option) do
+    create(
+      :custom_field_option,
+      custom_field: multiselect_field,
+      key: 'no_response',
+      title_multiloc: { 'en' => 'Nothing', 'fr-FR' => 'Rien', 'nl-NL' => 'Niets' }
+    )
+  end
   let(:minimum_label_multiloc) do
     {
       'en' => 'Strongly disagree',
@@ -247,7 +255,8 @@ RSpec.describe SurveyResultsGeneratorService do
             { answer: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' }, responses: 4 },
             { answer: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' }, responses: 3 },
             { answer: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' }, responses: 2 },
-            { answer: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }, responses: 1 }
+            { answer: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }, responses: 1 },
+            { answer: { 'en' => 'Nothing', 'fr-FR' => 'Rien', 'nl-NL' => 'Niets' }, responses: 0 }
           ],
           customFieldId: multiselect_field.id
         },
@@ -376,12 +385,6 @@ RSpec.describe SurveyResultsGeneratorService do
     end
   end
 
-  let(:expected_question_result) do
-    {
-      result: expected_result[:results][0]
-    }
-  end
-
   before do
     create(:idea_status_proposed)
     idea_file = create(:idea_file)
@@ -393,7 +396,7 @@ RSpec.describe SurveyResultsGeneratorService do
         text_field.key => 'Red',
         multiselect_field.key => %w[cat dog],
         select_field.key => 'ny',
-        file_upload_field.key => idea_file.id
+        file_upload_field.key => { 'id' => idea_file.id, 'name' => idea_file.name }
       },
       idea_files: [idea_file]
     )
@@ -533,12 +536,6 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'returns the results for file upload field' do
         expect(generated_results[:results][7]).to match expected_result_file_upload
-      end
-    end
-
-    describe '#generate_question_result' do
-      it 'returns the result' do
-        expect(generator.generate_question_result(text_field.id)).to match expected_question_result
       end
     end
   end

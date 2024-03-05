@@ -20,6 +20,7 @@ import ActiveUsersWidget, {
 import MostReactedIdeasWidget, {
   mostReactedIdeasTitle,
 } from './MostReactedIdeasWidget';
+import SingleIdeaWidget, { singleIdeaTitle } from './SingleIdeaWidget';
 import PostsByTimeWidget, {
   postsByTimeTitle,
 } from './ChartWidgets/PostsByTimeWidget';
@@ -52,6 +53,7 @@ export const WIDGETS = {
   GenderWidget,
   ActiveUsersWidget,
   MostReactedIdeasWidget,
+  SingleIdeaWidget,
   PostsByTimeWidget,
   CommentsByTimeWidget,
   ReactionsByTimeWidget,
@@ -69,6 +71,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   SurveyResultsWidget: surveyResultsTitle,
   SurveyQuestionResultWidget: surveyQuestionResultTitle,
   MostReactedIdeasWidget: mostReactedIdeasTitle,
+  SingleIdeaWidget: singleIdeaTitle,
   VisitorsWidget: visitorsTitle,
   VisitorsTrafficSourcesWidget: visitorsTrafficSourcesTitle,
   AgeWidget: ageTitle,

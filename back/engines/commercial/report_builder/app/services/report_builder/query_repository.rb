@@ -14,7 +14,8 @@ module ReportBuilder
       'VisitorsTrafficSourcesWidget' => Queries::Analytics::TrafficSources,
       'SurveyResultsWidget' => Queries::SurveyResults,
       'SurveyQuestionResultWidget' => Queries::SurveyQuestionResult,
-      'MostReactedIdeasWidget' => Queries::MostReactedIdeas
+      'MostReactedIdeasWidget' => Queries::MostReactedIdeas,
+      'SingleIdeaWidget' => Queries::SingleIdea
     }.freeze
 
     def initialize(current_user)
