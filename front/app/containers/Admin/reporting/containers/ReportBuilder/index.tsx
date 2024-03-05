@@ -68,6 +68,7 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
   const [selectedLocale, setSelectedLocale] = useState<Locale>(platformLocale);
 
   const [saved, setSaved] = useState(true);
+  const [initialDataLoadedCounter, setInitialDataLoadedCounter] = useState(0);
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
 
@@ -96,7 +97,16 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
         onDeleteElement={handleDeleteElement}
         onUploadImage={setImageUploading}
       >
-        <Editor isPreview={false} onNodesChange={() => setSaved(false)}>
+        <Editor
+          isPreview={false}
+          onNodesChange={() => {
+            // onNodesChange is called twice on initial load
+            if (initialDataLoadedCounter >= 2) {
+              setSaved(false);
+            }
+            setInitialDataLoadedCounter((counter) => counter + 1);
+          }}
+        >
           <TopBar
             hasError={hasError}
             hasPendingState={imageUploading}
