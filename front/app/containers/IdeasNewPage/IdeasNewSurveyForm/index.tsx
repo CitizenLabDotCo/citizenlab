@@ -27,7 +27,6 @@ import Warning from 'components/UI/Warning';
 
 // utils
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { isNilOrError } from 'utils/helperUtils';
 import { getCurrentPhase } from 'api/phases/utils';
 import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { getFormValues } from '../../IdeasEditPage/utils';
@@ -124,12 +123,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   // Try and load in a draft idea if one exists
   useEffect(() => {
-    if (
-      draftIdeaStatus === 'success' &&
-      !isNilOrError(draftIdea) &&
-      !ideaId &&
-      schema
-    ) {
+    if (draftIdeaStatus === 'success' && !ideaId && schema) {
       const formValues = getFormValues(draftIdea, schema);
       setInitialFormData(formValues);
       setIdeaId(draftIdea.data.id);
@@ -145,7 +139,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   const handleDraftIdeas = async (data: FormValues) => {
     if (data.publication_status === 'draft') {
-      if (allowAnonymousPosting || isNilOrError(authUser)) {
+      if (allowAnonymousPosting || authUser === undefined) {
         // Anonymous or not logged in surveys should not save drafts
         return;
       }
@@ -211,9 +205,9 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   };
 
-  const canUserEditProject =
-    !isNilOrError(authUser) &&
-    canModerateProject(project.data.id, { data: authUser.data });
+  const canUserEditProject = authUser
+    ? canModerateProject(project.data, { data: authUser.data })
+    : false;
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
@@ -245,7 +239,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
                   }
                   isSurvey={true}
                   canUserEditProject={canUserEditProject}
-                  loggedIn={!isNilOrError(authUser)}
+                  loggedIn={authUser !== undefined}
                 />
                 {allowAnonymousPosting && (
                   <Box mx="auto" p="20px" maxWidth="700px">
