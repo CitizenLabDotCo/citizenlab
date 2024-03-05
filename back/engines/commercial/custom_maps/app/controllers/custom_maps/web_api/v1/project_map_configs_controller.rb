@@ -39,7 +39,7 @@ module CustomMaps
         end
 
         def show
-          @project = Project.includes(map_config: %i[layers legend_items]).find(params[:project_id])
+          @project = Project.includes(map_config: %i[layers]).find(params[:project_id])
           authorize @project
           @map_config = @project.map_config
           render json: serialized_map_config, status: :ok
