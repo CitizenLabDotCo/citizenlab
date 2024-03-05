@@ -1,0 +1,83 @@
+import React, { useCallback, useState } from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
+import PhaseFilter from 'components/UI/PhaseFilter';
+
+import { useIntl } from 'utils/cl-intl';
+import widgetMessages from '../Widgets/messages';
+
+import { IOption } from 'typings';
+import messages from './messages';
+import ProjectFilter from '../Widgets/_shared/ProjectFilter';
+import QuestionSelect from '../Widgets/_shared/QuestionSelect';
+import usePhase from 'api/phases/usePhase';
+import Analyses from './Analyses';
+
+const Analysis = () => {
+  const [projectId, setProjectId] = useState<string | undefined>(undefined);
+  const [phaseId, setPhaseId] = useState<string | undefined>(undefined);
+  const [questionId, setQuestionId] = useState<string | undefined>(undefined);
+
+  const { data: phase } = usePhase(phaseId);
+
+  const { formatMessage } = useIntl();
+
+  const handleProjectFilter = useCallback(({ value }: IOption) => {
+    setProjectId(value);
+    setPhaseId(undefined);
+    setQuestionId(undefined);
+  }, []);
+
+  const handlePhaseFilter = useCallback(({ value }: IOption) => {
+    setPhaseId(value);
+    setQuestionId(undefined);
+  }, []);
+
+  const handleQuestion = useCallback((questionId: string) => {
+    setQuestionId(questionId);
+  }, []);
+
+  return (
+    <Box>
+      <ProjectFilter
+        projectId={projectId}
+        emptyOptionMessage={widgetMessages.noProject}
+        onProjectFilter={handleProjectFilter}
+      />
+
+      {projectId !== undefined && (
+        <PhaseFilter
+          label={formatMessage(messages.surveyPhase)}
+          projectId={projectId}
+          phaseId={phaseId}
+          participationMethods={['native_survey', 'ideation']}
+          onPhaseFilter={handlePhaseFilter}
+        />
+      )}
+
+      {phaseId &&
+        phase?.data.attributes.participation_method === 'native_survey' && (
+          <QuestionSelect
+            phaseId={phaseId}
+            questionId={questionId}
+            inputTypes={['text', 'multiline_text']}
+            label={formatMessage(messages.question)}
+            onChange={handleQuestion}
+          />
+        )}
+      {projectId && (
+        <Analyses
+          projectId={projectId}
+          phaseId={
+            phase?.data.attributes.participation_method === 'native_survey'
+              ? phaseId
+              : undefined
+          }
+          questionId={questionId}
+        />
+      )}
+    </Box>
+  );
+};
+
+export default Analysis;

@@ -107,7 +107,7 @@ const InsightFooter = ({
         </Box>
       </Tippy>
 
-      {additionalCustomFieldIds?.length > 0 && (
+      {mainCustomFieldId && additionalCustomFieldIds?.length > 0 && (
         <Tippy
           zIndex={99999}
           content={
