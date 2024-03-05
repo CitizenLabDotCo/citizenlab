@@ -220,7 +220,6 @@ DROP INDEX IF EXISTS public.index_memberships_on_group_id_and_user_id;
 DROP INDEX IF EXISTS public.index_memberships_on_group_id;
 DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable_id;
 DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable;
-DROP INDEX IF EXISTS public.index_maps_legend_items_on_map_config_id;
 DROP INDEX IF EXISTS public.index_maps_layers_on_map_config_id;
 DROP INDEX IF EXISTS public.index_invites_on_token;
 DROP INDEX IF EXISTS public.index_invites_on_inviter_id;
@@ -5386,13 +5385,6 @@ CREATE INDEX index_invites_on_token ON public.invites USING btree (token);
 --
 
 CREATE INDEX index_maps_layers_on_map_config_id ON public.maps_layers USING btree (map_config_id);
-
-
---
--- Name: index_maps_legend_items_on_map_config_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_maps_legend_items_on_map_config_id ON public.maps_legend_items USING btree (map_config_id);
 
 
 --
