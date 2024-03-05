@@ -81,7 +81,6 @@ module MultiTenancy
 
           # Custom maps
           CustomMaps::Layer => serialize_records(CustomMaps::Layer),
-          CustomMaps::LegendItem => serialize_records(CustomMaps::LegendItem),
           CustomMaps::MapConfig => serialize_records(CustomMaps::MapConfig),
 
           # Polls

@@ -39,8 +39,8 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { useLocation } from 'react-router-dom';
-import { isAdmin } from 'utils/permissions/roles';
 import useProjectById from 'api/projects/useProjectById';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 
 const StyledAvatar = styled(Avatar)`
   margin-left: -4px;
@@ -290,10 +290,11 @@ const ParentCommentForm = ({
     textareaElement.current = element;
   };
 
+  // Ideally this is managed outside of this component.
+  // If projectId is provided, we assume this component is used in a project context
   const isModerator = project
     ? canModerateProject(project.data, authUser)
-    : // When component is used for proposals
-      isAdmin({ data: authUser.data });
+    : canModerateInitiative(authUser);
 
   const placeholderMessage: MessageDescriptor = isAdminPage
     ? messages.visibleToUsersPlaceholder

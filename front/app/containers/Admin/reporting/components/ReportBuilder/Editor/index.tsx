@@ -4,7 +4,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
-import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
+import { Editor as CraftEditor } from '@craftjs/core';
 import RenderNode from './RenderNode';
 
 // widgets
@@ -13,11 +13,12 @@ import { WIDGETS } from '../Widgets';
 
 // templates
 import ProjectTemplate from '../Templates/ProjectTemplate';
+import PhaseTemplate from '../Templates/PhaseTemplate';
 
 type EditorProps = {
-  children?: React.ReactNode;
+  children: React.ReactNode;
   isPreview: boolean;
-  onNodesChange?: (nodes: SerializedNodes) => void;
+  onNodesChange?: () => void;
 };
 
 const resolver = {
@@ -25,6 +26,7 @@ const resolver = {
   Container,
   ...WIDGETS,
   ProjectTemplate,
+  PhaseTemplate,
 };
 
 // Without this, craftjs sometimes crashes.
@@ -48,8 +50,8 @@ const Editor: React.FC<EditorProps> = ({
       }}
       onRender={isPreview ? PlainDiv : RenderNode}
       enabled={isPreview ? false : true}
-      onNodesChange={(data) => {
-        onNodesChange && onNodesChange(data.getSerializedNodes());
+      onNodesChange={() => {
+        onNodesChange?.();
       }}
     >
       {children}

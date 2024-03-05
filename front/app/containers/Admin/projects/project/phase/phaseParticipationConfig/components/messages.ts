@@ -24,8 +24,4 @@ export default defineMessages({
     defaultMessage:
       'Provide information to users, or use the report builder to share results on past phases.',
   },
-  new: {
-    id: 'app.containers.AdminPage.ProjectEdit.information.new',
-    defaultMessage: 'NEW',
-  },
 });

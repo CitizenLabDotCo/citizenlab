@@ -40,6 +40,7 @@ const AdminCustomMapConfigComponent = React.lazy(
 );
 
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
+const ReportTab = lazy(() => import('./project/information/ReportTab'));
 
 export function adminProjectsProjectPath(projectId: string) {
   return `/admin/projects/${projectId}`;
@@ -171,15 +172,6 @@ const createAdminProjectsRoutes = () => {
               </PageLoading>
             ),
           },
-          // TODO: Hook up input manager on phase
-          // {
-          //   path: 'timeline/:id/ideas',
-          //   element: (
-          //     <PageLoading>
-          //       <AdminProjectIdeas />
-          //     </PageLoading>
-          //   ),
-          // },
           {
             path: 'phases/:phaseId',
             element: (
@@ -305,6 +297,14 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <OfflineInputImporter />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'phases/:phaseId/report',
+            element: (
+              <PageLoading>
+                <ReportTab />
               </PageLoading>
             ),
           },

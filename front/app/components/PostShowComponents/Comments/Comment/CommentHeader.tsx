@@ -13,8 +13,8 @@ import messages from '../messages';
 import { IPresentComment } from 'api/comments/types';
 import useUserById from 'api/users/useUserById';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import { isAdmin } from 'utils/permissions/roles';
 import useProjectById from 'api/projects/useProjectById';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 
 const Container = styled.div`
   display: flex;
@@ -84,13 +84,13 @@ const CommentHeader = ({
     author &&
     (project
       ? canModerateProject(project.data, { data: author.data })
-      : // When component is used for proposals
-        isAdmin({ data: author.data }));
+      : canModerateInitiative({ data: author.data }));
+  // Ideally this is managed outside of this component.
+  // If projectId is provided, we assume this component is used in a project context
 
   // With the current implementation, this needs to always render,
   // even if author is null/undefined.
   // Otherwise we won't render CommentHeader in comments of deleted users.
-
   return (
     <Container className={className || ''}>
       <Left>
@@ -100,7 +100,7 @@ const CommentHeader = ({
           isLinkToProfile={typeof authorId === 'string'}
           size={30}
           projectId={projectId}
-          showModeration
+          showModeration={isModerator}
           createdAt={commentAttributes.created_at}
           avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
           horizontalLayout={true}
