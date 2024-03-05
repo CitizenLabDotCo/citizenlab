@@ -12,7 +12,6 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
-import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
@@ -30,17 +29,16 @@ import clHistory from 'utils/cl-router/history';
 
 // types
 import { Locale } from 'typings';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 type ContentBuilderTopBarProps = {
   hasError: boolean;
   hasPendingState: boolean;
   selectedLocale: Locale;
   reportId: string;
-  templateProjectId?: string;
+  isTemplate: boolean;
   saved: boolean;
-  previewEnabled: boolean;
   setSaved: React.Dispatch<React.SetStateAction<boolean>>;
-  setPreviewEnabled: () => void;
   setSelectedLocale: React.Dispatch<React.SetStateAction<Locale>>;
 };
 
@@ -49,11 +47,9 @@ const ContentBuilderTopBar = ({
   selectedLocale,
   hasPendingState,
   reportId,
-  templateProjectId,
+  isTemplate,
   saved,
-  previewEnabled,
   setSaved,
-  setPreviewEnabled,
   setSelectedLocale,
 }: ContentBuilderTopBarProps) => {
   const [initialized, setInitialized] = useState(false);
@@ -83,7 +79,7 @@ const ContentBuilderTopBar = ({
   const doGoBack = () => {
     const goBackUrl =
       projectId && phaseId
-        ? `/admin/projects/${projectId}/phases/${phaseId}/setup`
+        ? `/admin/projects/${projectId}/phases/${phaseId}/report`
         : '/admin/reporting/report-builder';
 
     clHistory.push(goBackUrl);
@@ -99,6 +95,8 @@ const ContentBuilderTopBar = ({
       {
         onSuccess: () => {
           setSaved(true);
+
+          removeSearchParams(['templateProjectId', 'templatePhaseId']);
         },
       }
     );
@@ -115,21 +113,27 @@ const ContentBuilderTopBar = ({
     };
   }, [saved]);
 
+  // This useEffect handles autosave for templates
   useEffect(() => {
     if (initialized) return;
 
-    if (!templateProjectId) {
+    if (!isTemplate) {
       setInitialized(true);
       return;
     }
 
     const nodes = query.getSerializedNodes();
     const firstNode = nodes.ROOT?.nodes[0];
-    const numberOfNodes = Object.keys(nodes).length;
 
-    if (!firstNode || numberOfNodes < 5) return;
+    if (!firstNode) return;
 
-    if (nodes?.[firstNode].displayName === 'ProjectTemplate') {
+    const displayName = nodes?.[firstNode].displayName;
+
+    if (['ProjectTemplate', 'PhaseTemplate'].includes(displayName)) {
+      const numberOfNodes = Object.keys(nodes).length;
+
+      if (displayName === 'ProjectTemplate' && numberOfNodes < 5) return;
+
       setTimeout(() => {
         updateReportLayout(
           {
@@ -140,6 +144,8 @@ const ContentBuilderTopBar = ({
           {
             onSuccess: () => {
               setSaved(true);
+
+              removeSearchParams(['templateProjectId', 'templatePhaseId']);
             },
           }
         );
@@ -148,7 +154,7 @@ const ContentBuilderTopBar = ({
 
     setInitialized(true);
   }, [
-    templateProjectId,
+    isTemplate,
     query,
     initialized,
     reportId,
@@ -158,7 +164,7 @@ const ContentBuilderTopBar = ({
   ]);
 
   return (
-    <Container>
+    <Container id="e2e-report-builder-topbar">
       <Modal opened={showQuitModal} close={closeModal}>
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
@@ -176,17 +182,21 @@ const ContentBuilderTopBar = ({
             alignItems="center"
           >
             <Button
+              buttonStyle="secondary"
+              width="auto"
+              mr="16px"
+              onClick={closeModal}
+            >
+              <FormattedMessage {...messages.cancelQuitButtonText} />
+            </Button>
+            <Button
               icon="delete"
               data-cy="e2e-confirm-delete-survey-results"
               buttonStyle="delete"
               width="auto"
-              mr="20px"
               onClick={doGoBack}
             >
               <FormattedMessage {...messages.confirmQuitButtonText} />
-            </Button>
-            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
-              <FormattedMessage {...messages.cancelQuitButtonText} />
             </Button>
           </Box>
         </Box>
@@ -210,13 +220,7 @@ const ContentBuilderTopBar = ({
           selectedLocale={selectedLocale}
           onSelectLocale={setSelectedLocale}
         />
-        <Box mx="24px">
-          <PreviewToggle
-            checked={previewEnabled}
-            onChange={setPreviewEnabled}
-          />
-        </Box>
-        <Box mr="20px">
+        <Box mx="20px">
           <PrintReportButton reportId={reportId} />
         </Box>
         <SaveButton

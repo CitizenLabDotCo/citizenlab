@@ -125,6 +125,7 @@ const BarChartByCategory = ({
               currentGroupFilter={currentGroupFilter}
               startAt={startAt}
               endAt={endAt}
+              currentProjectFilter={project}
             />
           )}
         </GraphCardHeader>

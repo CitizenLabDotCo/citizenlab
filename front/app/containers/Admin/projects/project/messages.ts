@@ -579,4 +579,13 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2',
     defaultMessage: 'Input Manager tab',
   },
+  reportTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.report',
+    defaultMessage: 'Report',
+  },
+  lockedTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.lockedTooltip',
+    defaultMessage:
+      'This is not included in your current plan. Reach out to your Government Success Manager or admin to unlock it.',
+  },
 });
