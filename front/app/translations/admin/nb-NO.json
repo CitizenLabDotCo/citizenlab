@@ -1216,7 +1216,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Kartlag",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Standard lengdegrad",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Standardsenter og zoomnivå for kart",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Standard senterpunkt og zoomnivå for kartet. Du kan manuelt justere verdiene nedenfor, eller klikke på knappen {button} øverst til høyre i kartet for å lagre det gjeldende senterpunktet og zoomnivået i kartet som standardverdier.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Tilpass kartvisningen, inkludert opplasting og stilsetting av kartlag og innstilling av kartsenter og zoomnivå.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Kartkonfigurasjon",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "Kartkonfigurasjonen er for øyeblikket delt på tvers av faser, du kan ikke opprette forskjellige kartkonfigurasjoner per fase.",

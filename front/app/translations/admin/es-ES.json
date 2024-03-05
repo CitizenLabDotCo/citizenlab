@@ -1216,7 +1216,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Capas",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Default longitude",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Centro y zoom del mapa por defecto",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Punto central y nivel de zoom por defecto del mapa. Ajuste manualmente los valores que aparecen a continuación, o haga clic en el botón {button} de la esquina superior derecha del mapa para guardar el punto central y el nivel de zoom actuales como valores predeterminados.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Personalice la vista del mapa, incluyendo la carga y el estilo de las capas del mapa y la configuración del centro del mapa y el nivel de zoom.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Configuración del mapa",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "Actualmente, la configuración del mapa se comparte en todas las fases, no puedes crear configuraciones de mapa diferentes por fase.",

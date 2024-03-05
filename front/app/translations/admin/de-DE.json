@@ -1216,7 +1216,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Kartenebenen",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Standard-Längengrad",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Standard-Kartenmittelpunkt und -Zoom",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Der Standard-Mittelpunkt und die Standard-Zoomstufe der Karte. Passen Sie die Werte unten manuell an, oder klicken Sie auf den Button {button} in der oberen rechten Ecke der Karte, um den aktuellen Mittelpunkt und die Zoomstufe der Karte als Standardwerte zu speichern.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Passen Sie die Kartenansicht an, einschließlich des Hochladens und Gestaltens von Kartenebenen und des Festlegens des Kartenmittelpunkts und der Zoomstufe.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Konfiguration der Karte",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "Die Kartenkonfiguration wird derzeit von allen Phasen gemeinsam genutzt. Sie können keine unterschiedlichen Kartenkonfigurationen pro Phase erstellen.",

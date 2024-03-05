@@ -1216,7 +1216,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Slojevi mape",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Podrazumevana geografska dužina",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Podrazumevani centar mape i zumiranje",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Podrazumevana centralna tačka i nivo zumiranja mape. Podesite donje vrednosti ili kliknite na dugme {button} u gornjem desnom uglu mape da biste sačuvali trenutnu centralnu tačku i nivo zumiranja mape kao podrazumevane vrednosti.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Prilagodite prikaz mape, uključujući otpremanje i oblikovanje slojeva mape i postavljanje centra mape i nivoa zumiranja.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Konfiguracija mape",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "The map configuration is currently shared across phases, you can't create different map configurations per phase.",

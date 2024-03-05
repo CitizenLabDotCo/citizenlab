@@ -1216,7 +1216,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Couches",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Longitude par défaut",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Centralisation et niveau de zoom par défaut de la carte",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "La centralisation et le niveau de zoom par défaut de la carte. Ajustez manuellement les valeurs ci-dessous, ou cliquez sur le bouton {button} dans le coin supérieur gauche de la carte pour enregistrer la centralisation et le niveau de zoom actuels de la carte comme valeurs par défaut.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Personnalisez la visualisation de la carte, notamment en téléchargeant et en paramétrant des couches cartographiques ainsi qu'en définissant la centralisation et le niveau de zoom.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Configuration de la carte",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "La configuration de la carte est partagée par toutes les phases du projet. Il n'est donc actuellement pas possible de créer des configurations spécifiques par phase.",

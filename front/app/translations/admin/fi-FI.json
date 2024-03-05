@@ -1216,7 +1216,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Karttatasot",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Oletuspituusaste",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Kartan oletuskeskus ja zoomaus",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Kartan oletuskeskipiste ja zoomaustaso. Säädä alla olevia arvoja manuaalisesti tai napsauta kartan oikeassa yläkulmassa olevaa {button} -painiketta tallentaaksesi kartan nykyisen keskipisteen ja zoomaustason oletusarvoiksi.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Mukauta karttanäkymää, mukaan lukien karttatasojen lataaminen ja muotoilu sekä kartan keskipisteen ja zoomaustason asettaminen.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Kartan määritys",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "Karttakokoonpano on tällä hetkellä jaettu eri vaiheiden kesken, et voi luoda erilaisia karttakonfiguraatioita vaiheittain.",

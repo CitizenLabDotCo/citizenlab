@@ -1216,7 +1216,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Слојеви карте",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Подразумевана дужина",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Подразумевани центар мапе и зумирање",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Подразумевана централна тачка и ниво зумирања мапе. Ручно подесите вредности испод или кликните на дугме {button} у горњем десном углу карте да бисте сачували тренутну централну тачку и ниво зумирања мапе као подразумеване вредности.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Прилагодите приказ мапе, укључујући отпремање и стилизовање слојева карте и подешавање центра мапе и нивоа зумирања.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Конфигурација карте",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "Конфигурација мапе се тренутно дели између фаза, не можете креирати различите конфигурације мапе по фази.",

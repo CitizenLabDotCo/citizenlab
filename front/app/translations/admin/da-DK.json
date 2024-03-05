@@ -1216,7 +1216,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Kortlag",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Standardlængde",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Kortets standardcenter og -zoom",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Kortets standardcenterpunkt og zoomniveau. Juster værdierne nedenfor manuelt, eller klik på knappen {button} toppen til højre på kortet for at gemme kortets aktuelle centerpunkt og zoomniveau som standardværdier.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Tilpas kortvisningen, herunder upload og styling af kortlag og indstilling af kortets centrum og zoomniveau.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Konfiguration af kortet",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "Kortkonfigurationen deles i øjeblikket på tværs af faser, og du kan ikke oprette forskellige kortkonfigurationer pr. fase.",

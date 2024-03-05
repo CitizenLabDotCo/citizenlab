@@ -1216,7 +1216,6 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "طبقات الخريطة",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "خط الطول الافتراضي",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "المركز ومستوى التكبير/التصغير الافتراضيان للخريطة",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "المركز ومستوى التكبير/التصغير الافتراضيان للخريطة. اضبط القيم أدناه يدويًا أو انقر على الزر {button} في الركن العلوي الأيمن من الخريطة لحفظ نقطة المركز ومستوى التكبير/التصغير الحاليين للخريطة باعتبارهما قيمتين افتراضيتين.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "خصص طريقة عرض الخريطة، بما في ذلك تحميل طبقات وتصميمها وتعيين مركز الخريطة ومستوى تكبيرها/تصغيرها.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "تهيئة الخريطة",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "تتم مشاركة تكوين الخريطة حاليًا عبر المراحل، ولا يمكنك إنشاء تكوينات خريطة مختلفة لكل مرحلة.",
