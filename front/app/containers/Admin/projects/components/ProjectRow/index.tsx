@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
 // components
@@ -26,11 +25,11 @@ import ManageButton from './ManageButton';
 // resources
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import useAuthUser from 'api/me/useAuthUser';
-import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 // types
 import ProjectMoreActionsMenu, { ActionType } from './ProjectMoreActionsMenu';
 import { IAdminPublicationData } from 'api/admin_publications/types';
+import useProjectById from 'api/projects/useProjectById';
 
 export const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
@@ -75,17 +74,15 @@ const ProjectRow = ({
   const { data: authUser } = useAuthUser();
   const projectId = publication.relationships.publication.data.id;
   const publicationStatus = publication.attributes.publication_status;
+  const { data: project } = useProjectById(projectId);
 
-  if (isNilOrError(authUser)) {
+  if (!authUser || !project) {
     return null;
   }
-  const userCanModerateProject =
-    // This means project is in a folder
-    (typeof folderId === 'string' &&
-      userModeratesFolder(authUser.data, folderId)) ||
-    canModerateProject(projectId, {
-      data: authUser.data,
-    });
+
+  const userCanModerateProject = canModerateProject(project.data, {
+    data: authUser.data,
+  });
 
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {

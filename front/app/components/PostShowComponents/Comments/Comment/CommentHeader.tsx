@@ -13,6 +13,7 @@ import messages from '../messages';
 import { IPresentComment } from 'api/comments/types';
 import useUserById from 'api/users/useUserById';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import useProjectById from 'api/projects/useProjectById';
 import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 
 const Container = styled.div`
@@ -77,13 +78,14 @@ const CommentHeader = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: author } = useUserById(authorId);
+  const { data: project } = useProjectById(projectId);
 
   const isModerator =
     author &&
     // Ideally this is managed outside of this component.
     // If projectId is provided, we assume this component is used in a project context
-    (projectId
-      ? canModerateProject(projectId, { data: author.data })
+    (project
+      ? canModerateProject(project.data, { data: author.data })
       : canModerateInitiative({ data: author.data }));
 
   // With the current implementation, this needs to always render,

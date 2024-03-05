@@ -39,6 +39,7 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { useLocation } from 'react-router-dom';
+import useProjectById from 'api/projects/useProjectById';
 import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 
 const StyledAvatar = styled(Avatar)`
@@ -121,6 +122,7 @@ const ParentCommentForm = ({
     useState(false);
   const { data: idea } = useIdeaById(ideaId);
   const projectId = idea ? idea.data.relationships.project.data.id : null;
+  const { data: project } = useProjectById(projectId);
 
   const processing =
     addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
@@ -290,8 +292,8 @@ const ParentCommentForm = ({
 
   // Ideally this is managed outside of this component.
   // If projectId is provided, we assume this component is used in a project context
-  const isModerator = projectId
-    ? canModerateProject(projectId, authUser)
+  const isModerator = project
+    ? canModerateProject(project.data, authUser)
     : canModerateInitiative(authUser);
 
   const placeholderMessage: MessageDescriptor = isAdminPage

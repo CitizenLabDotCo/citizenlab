@@ -163,7 +163,7 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
     const phase_ids =
       phaseId &&
       authUser &&
-      canModerateProject(project.data.id, { data: authUser.data })
+      canModerateProject(project.data, { data: authUser.data })
         ? [phaseId]
         : null;
 
@@ -233,7 +233,7 @@ const IdeasNewIdeationForm = ({ project }: Props) => {
 
   const canUserEditProject =
     !isNilOrError(authUser) &&
-    canModerateProject(project.data.id, { data: authUser.data });
+    canModerateProject(project.data, { data: authUser.data });
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
