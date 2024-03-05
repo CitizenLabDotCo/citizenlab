@@ -4,12 +4,14 @@ import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
+// hooks
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import usePhase from 'api/phases/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
 import { useSearchParams } from 'react-router-dom';
 import useAddIdea from 'api/ideas/useAddIdea';
+import useLocalize from 'hooks/useLocalize';
 
 // i18n
 import messages from '../messages';
@@ -87,6 +89,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     projectId: project.data.id,
     phaseId,
   });
+  const localize = useLocalize();
 
   const search = location.search;
 
@@ -241,8 +244,24 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     !isNilOrError(authUser) &&
     canModerateProject(project.data.id, { data: authUser.data });
 
-  const isSurvey = config.postType === 'nativeSurvey';
-  const isAnonymousSurvey = isSurvey && allowAnonymousPosting;
+  const isNativeSurvey = config.postType === 'nativeSurvey';
+  const isAnonymousSurvey = isNativeSurvey && allowAnonymousPosting;
+
+  function getTitleText() {
+    if (isNativeSurvey) {
+      return localize(
+        participationContext?.attributes.native_survey_title_multiloc
+      );
+    } else if (config?.getFormTitle) {
+      return config.getFormTitle({
+        project: project.data,
+        phases: phases?.data,
+        phaseFromUrl: phaseFromUrl?.data,
+      });
+    } else {
+      return null;
+    }
+  }
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
@@ -252,7 +271,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
           <Form
             schema={schema}
             uiSchema={uiSchema}
-            onSubmit={isSurvey ? onSubmit : handleDisclaimer}
+            onSubmit={isNativeSurvey ? onSubmit : handleDisclaimer}
             initialFormData={initialFormData}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
@@ -261,18 +280,8 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
               <>
                 <Heading
                   project={project.data}
-                  titleText={
-                    config.getFormTitle ? (
-                      config.getFormTitle({
-                        project: project.data,
-                        phases: phases?.data,
-                        phaseFromUrl: phaseFromUrl?.data,
-                      })
-                    ) : (
-                      <></>
-                    )
-                  }
-                  isSurvey={isSurvey}
+                  titleText={getTitleText()}
+                  isSurvey={isNativeSurvey}
                   canUserEditProject={canUserEditProject}
                 />
                 {isAnonymousSurvey && (
@@ -284,10 +293,10 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
                 )}
               </>
             }
-            config={isSurvey ? 'survey' : 'input'}
-            formSubmitText={isSurvey ? messages.submitSurvey : undefined}
+            config={isNativeSurvey ? 'survey' : 'input'}
+            formSubmitText={isNativeSurvey ? messages.submitSurvey : undefined}
             footer={
-              !isSurvey && allowAnonymousPosting ? (
+              !isNativeSurvey && allowAnonymousPosting ? (
                 <Suspense fallback={null}>
                   <ProfileVisiblity
                     postAnonymously={postAnonymously}
