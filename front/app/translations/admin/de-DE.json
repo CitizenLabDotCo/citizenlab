@@ -204,6 +204,7 @@
   "app.components.admin.PostManager.title": "Titel",
   "app.components.admin.PostManager.topicsTab": "Themen",
   "app.components.admin.PostManager.topicsTabTooltipText": "Fügen Sie Themen per Drag & Drop zu einem Eintrag hinzu.",
+  "app.components.admin.PostManager.view": "Vorschau",
   "app.components.admin.PostManager.votes": "Stimmen",
   "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Weniger als ein Tag} one {Ein Tag} other {# Tage}} verbleibend",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "von",
