@@ -21,6 +21,7 @@ interface Props {
   phaseId?: string;
   participationMethods: ParticipationMethod[];
   onPhaseFilter: (filter: IOption) => void;
+  hideIfNoAppropriatePhases?: boolean;
 }
 
 const isCorrectPhase =
@@ -34,6 +35,7 @@ const PhaseFilter = ({
   phaseId,
   participationMethods,
   onPhaseFilter,
+  hideIfNoAppropriatePhases,
 }: Props) => {
   const { data: phases } = usePhases(projectId);
   const localize = useLocalize();
@@ -63,11 +65,15 @@ const PhaseFilter = ({
 
   if (phaseOptions.length === 0) {
     return (
-      <Box mb="20px">
-        <Text color="red600">
-          <FormattedMessage {...messages.noAppropriatePhases} />
-        </Text>
-      </Box>
+      <>
+        {!hideIfNoAppropriatePhases && (
+          <Box mb="20px">
+            <Text color="red600">
+              <FormattedMessage {...messages.noAppropriatePhases} />
+            </Text>
+          </Box>
+        )}
+      </>
     );
   }
 

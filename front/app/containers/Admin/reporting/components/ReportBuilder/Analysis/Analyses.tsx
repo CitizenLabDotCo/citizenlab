@@ -8,7 +8,7 @@ const Analyses = ({
   questionId,
   selectedLocale,
 }: {
-  projectId: string;
+  projectId?: string;
   phaseId?: string;
   questionId?: string;
   selectedLocale: string;
@@ -27,15 +27,16 @@ const Analyses = ({
 
   return (
     <div>
-      {relevantAnalyses?.map((analysis) => (
-        <Insights
-          analysisId={analysis.id}
-          key={analysis.id}
-          projectId={projectId}
-          phaseId={phaseId}
-          selectedLocale={selectedLocale}
-        />
-      ))}
+      {projectId &&
+        relevantAnalyses?.map((analysis) => (
+          <Insights
+            analysisId={analysis.id}
+            key={analysis.id}
+            projectId={projectId}
+            phaseId={phaseId}
+            selectedLocale={selectedLocale}
+          />
+        ))}
     </div>
   );
 };

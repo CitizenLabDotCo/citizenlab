@@ -37,6 +37,13 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
     setQuestionId(questionId);
   }, []);
 
+  const isNativeSurveyPhase =
+    phase?.data.attributes.participation_method === 'native_survey';
+
+  const showAnalyses = isNativeSurveyPhase
+    ? projectId && phaseId && questionId
+    : projectId;
+
   return (
     <Box>
       <ProjectFilter
@@ -47,32 +54,28 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
 
       {projectId !== undefined && (
         <PhaseFilter
+          hideIfNoAppropriatePhases
           label={formatMessage(messages.surveyPhase)}
           projectId={projectId}
           phaseId={phaseId}
-          participationMethods={['native_survey', 'ideation']}
+          participationMethods={['native_survey']}
           onPhaseFilter={handlePhaseFilter}
         />
       )}
 
-      {phaseId &&
-        phase?.data.attributes.participation_method === 'native_survey' && (
-          <QuestionSelect
-            phaseId={phaseId}
-            questionId={questionId}
-            inputTypes={['text', 'multiline_text']}
-            label={formatMessage(messages.question)}
-            onChange={handleQuestion}
-          />
-        )}
-      {projectId && (
+      {phaseId && (
+        <QuestionSelect
+          phaseId={phaseId}
+          questionId={questionId}
+          inputTypes={['text', 'multiline_text']}
+          label={formatMessage(messages.question)}
+          onChange={handleQuestion}
+        />
+      )}
+      {showAnalyses && (
         <Analyses
           projectId={projectId}
-          phaseId={
-            phase?.data.attributes.participation_method === 'native_survey'
-              ? phaseId
-              : undefined
-          }
+          phaseId={isNativeSurveyPhase ? phaseId : undefined}
           questionId={questionId}
           selectedLocale={selectedLocale}
         />
