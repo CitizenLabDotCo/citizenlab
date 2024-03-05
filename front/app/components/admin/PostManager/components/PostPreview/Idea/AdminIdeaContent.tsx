@@ -174,7 +174,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
 
   if (!idea || !project) return null;
 
-  const handleClickDelete = () => () => {
+  const handleClickDelete = () => {
     const deleteConfirmationMessage =
       messages.deleteInputInTimelineConfirmation;
 
@@ -205,16 +205,26 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
       <Top>
         <Button
           mr="8px"
-          buttonStyle="secondary"
+          buttonStyle="primary"
           icon="edit"
           onClick={handleClickEdit}
         >
           <FormattedMessage {...messages.edit} />
         </Button>
         <Button
+          linkTo={`/ideas/${idea.data.attributes.slug}`}
+          // We open in a new tab not lose state of the input manager
+          openLinkInNewTab
+          icon="eye"
+          buttonStyle="secondary"
+        >
+          <FormattedMessage {...messages.view} />
+        </Button>
+        <Button
+          id="e2e-input-manager-side-modal-delete-button"
+          buttonStyle="text"
           icon="delete"
-          buttonStyle="delete"
-          onClick={handleClickDelete()}
+          onClick={handleClickDelete}
         >
           <FormattedMessage {...messages.delete} />
         </Button>

@@ -152,7 +152,11 @@ export const Heading = ({
                 />
               </Title>
               <Text color="primary" fontSize="l">
-                <FormattedMessage {...(loggedIn ? messages.leaveSurveyTextLoggedIn : messages.leaveSurveyText)} />
+                <FormattedMessage
+                  {...(loggedIn
+                    ? messages.leaveSurveyTextLoggedIn
+                    : messages.leaveSurveyText)}
+                />
               </Text>
             </Box>
             <Box
@@ -162,9 +166,9 @@ export const Heading = ({
               alignItems="center"
             >
               <Button
-                icon={loggedIn ? "arrow-left-circle" : "delete"}
+                icon={loggedIn ? 'arrow-left-circle' : 'delete'}
                 data-cy="e2e-confirm-delete-survey-results"
-                buttonStyle={loggedIn ? "primary" : "delete"}
+                buttonStyle={loggedIn ? 'primary' : 'delete'}
                 width="100%"
                 mb={isSmallerThanPhone ? '16px' : undefined}
                 mr={!isSmallerThanPhone ? '20px' : undefined}

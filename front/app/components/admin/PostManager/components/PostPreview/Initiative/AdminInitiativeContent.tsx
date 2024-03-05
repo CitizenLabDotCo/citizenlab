@@ -36,6 +36,7 @@ import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 30px;
+  margin-right: 8px;
 `;
 
 const Row = styled.div`
@@ -147,14 +148,24 @@ const AdminInitiativeContent = ({
           <Button
             mr="8px"
             icon="edit"
-            buttonStyle="secondary"
+            buttonStyle="primary"
             onClick={handleClickEdit}
           >
             <FormattedMessage {...messages.edit} />
           </Button>
           <Button
+            linkTo={`/initiatives/${initiative.data.attributes.slug}`}
+            // We open in a new tab not lose state of the proposals manager
+            openLinkInNewTab
+            icon="eye"
+            buttonStyle="secondary"
+          >
+            <FormattedMessage {...messages.view} />
+          </Button>
+          <Button
+            id="e2e-initiative-manager-side-modal-delete-button"
             icon="delete"
-            buttonStyle="delete"
+            buttonStyle="text"
             onClick={handleClickDelete}
           >
             <FormattedMessage {...messages.delete} />
