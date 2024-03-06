@@ -1,6 +1,8 @@
 import React from 'react';
-import VisitorsCard from '.';
+
 import { render, screen } from 'utils/testUtils/rtl';
+
+import VisitorsCard from '.';
 
 const mockStats = {
   visitors: {

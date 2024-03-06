@@ -1,49 +1,45 @@
 import React, { useRef } from 'react';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-
-// intl
-import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from 'containers/Admin/dashboard/messages';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import T from 'components/T';
+import { Tooltip } from 'recharts';
 
-// styling
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
+import useUsersByBirthyear from 'api/users_by_birthyear/useUsersByBirthyear';
+import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
+import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
+import useUsersByDomicile from 'api/users_by_domicile/useUsersByDomicile';
+import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
+import useUsersByGender from 'api/users_by_gender/useUsersByGender';
+import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
+
+import messages from 'containers/Admin/dashboard/messages';
+
+import BarChart from 'components/admin/Graphs/BarChart';
+import BarChartByCategory from 'components/admin/Graphs/BarChartByCategory';
+import PieChartByCategory from 'components/admin/Graphs/PieChartByCategory';
 import {
   sizes,
   DEFAULT_BAR_CHART_MARGIN,
 } from 'components/admin/Graphs/styling';
-
-// components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
   GraphCardHeader,
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import { Tooltip } from 'recharts';
-import BarChart from 'components/admin/Graphs/BarChart';
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import BarChartByCategory from 'components/admin/Graphs/BarChartByCategory';
-import PieChartByCategory from 'components/admin/Graphs/PieChartByCategory';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
+import T from 'components/T';
 
-// typings
-import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-
-// utils
+import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+
 import createConvertAndMergeSeries, {
   ISupportedDataType,
   TOutput,
 } from './convertAndMergeSeries';
-import useUsersByGender from 'api/users_by_gender/useUsersByGender';
-import useUsersByBirthyear from 'api/users_by_birthyear/useUsersByBirthyear';
-import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
-import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
-import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
-import useUsersByDomicile from 'api/users_by_domicile/useUsersByDomicile';
-import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
 
 interface ICustomFieldEndpoint {
   xlsxEndpoint: string;

@@ -1,16 +1,20 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+
+import usePollQuestions from 'api/poll_questions/usePollQuestions';
+
 import {
   GraphCard,
   GraphCardInner,
   GraphsContainer,
   NoDataContainer,
 } from 'components/admin/GraphWrappers';
-import QuestionReport from './QuestionReport';
 import { SubSectionTitle } from 'components/admin/Section';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
 import messages from './messages';
-import usePollQuestions from 'api/poll_questions/usePollQuestions';
+import QuestionReport from './QuestionReport';
 
 interface Props {
   phaseId: string;

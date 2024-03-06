@@ -1,25 +1,20 @@
-// Libraries
 import React, { FormEvent, useState } from 'react';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import commentsMessages from 'components/PostShowComponents/Comments/messages';
-
-// Components
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
-import Button from 'components/UI/Button';
-
-// events
-import { deleteCommentModalClosed } from '../events';
-
-// Styling
-import styled from 'styled-components';
 import { isRtl } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-import useMarkInternalCommentForDeletion from 'api/internal_comments/useMarkInternalCommentForDeletion';
 import { IInternalCommentData } from 'api/internal_comments/types';
+import useMarkInternalCommentForDeletion from 'api/internal_comments/useMarkInternalCommentForDeletion';
 import useAuthUser from 'api/me/useAuthUser';
+
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
+import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import { deleteCommentModalClosed } from '../events';
 
 const Container = styled.div`
   display: flex;

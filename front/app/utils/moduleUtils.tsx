@@ -1,10 +1,5 @@
-import { Moment } from 'moment';
 import React, { FunctionComponent, ReactElement } from 'react';
-import PageLoading from 'components/UI/PageLoading';
-import { OutletRenderProps } from 'components/Outlet';
-import { ITabItem } from 'components/UI/Tabs';
-import { GroupCreationModal } from 'containers/Admin/users';
-import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
+
 import {
   castArray,
   clamp,
@@ -13,28 +8,37 @@ import {
   omitBy,
   cloneDeep,
 } from 'lodash-es';
-import { IProjectData } from 'api/projects/types';
-import { ManagerType } from 'components/admin/PostManager';
-import { IResolution } from 'components/admin/ResolutionControl';
-import { AuthProvider } from 'containers/Authentication/steps/AuthProviders';
-import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
-import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-import { NavItem } from 'containers/Admin/sideBar/navItems';
+import { Moment } from 'moment';
+import { IntlFormatters } from 'react-intl';
 import { GetLocaleChildProps } from 'resources/GetLocale';
+import { InsertConfigurationOptions, ITab, Locale, Multiloc } from 'typings';
+
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
+import { IIdeaData } from 'api/ideas/types';
+import { IInitiativeData } from 'api/initiatives/types';
 import { TNotificationData } from 'api/notifications/types';
 import { IPhaseData } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
 import { TVerificationMethod } from 'api/verification_methods/types';
+
+import { TTabName } from 'containers/Admin/projects/all/CreateProject';
+import { NavItem } from 'containers/Admin/sideBar/navItems';
+import { GroupCreationModal } from 'containers/Admin/users';
+import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
+import { AuthProvider } from 'containers/Authentication/steps/AuthProviders';
+import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { SignUpInFlow } from 'containers/Authentication/typings';
-import { InsertConfigurationOptions, ITab, Locale, Multiloc } from 'typings';
-import { IntlFormatters } from 'react-intl';
-import { IInitiativeData } from 'api/initiatives/types';
+
 import {
   Dates,
   ProjectId,
   Resolution,
 } from 'components/admin/GraphCards/typings';
-import { IIdeaData } from 'api/ideas/types';
+import { ManagerType } from 'components/admin/PostManager';
+import { IResolution } from 'components/admin/ResolutionControl';
+import { OutletRenderProps } from 'components/Outlet';
+import PageLoading from 'components/UI/PageLoading';
+import { ITabItem } from 'components/UI/Tabs';
 
 export type StatCardProps = ProjectId & Dates & Resolution;
 

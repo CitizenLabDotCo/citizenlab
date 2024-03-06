@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useReorderAdminPublication from './useReorderAdminPublication';
-import { mockFolderChildAdminPublicationsList } from './__mocks__/useAdminPublications';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { mockFolderChildAdminPublicationsList } from './__mocks__/useAdminPublications';
+import useReorderAdminPublication from './useReorderAdminPublication';
 
 const apiPath = '*admin_publications/:id/reorder';
 const server = setupServer(

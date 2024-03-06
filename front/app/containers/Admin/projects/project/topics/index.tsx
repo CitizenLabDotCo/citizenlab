@@ -1,18 +1,19 @@
 import React, { memo } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
+
 import {
   SectionTitle,
   SectionDescription,
   StyledLink,
 } from 'components/admin/Section';
+import HasPermission from 'components/HasPermission';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 import ProjectTopicSelector from './ProjectTopicSelector';
 import SortableProjectTopicList from './SortableProjectTopicList';
-import HasPermission from 'components/HasPermission';
-import { Box } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 const ProjectAllowedInputTopics = memo(() => {
   return (

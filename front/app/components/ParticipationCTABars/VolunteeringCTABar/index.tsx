@@ -1,25 +1,20 @@
 import React, { useEffect, useState, FormEvent } from 'react';
 
-// Components
 import { Button } from '@citizenlab/cl2-component-library';
-import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-
-// hooks
 import { useTheme } from 'styled-components';
 
-// services
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+
+import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
 
-// utils
+import { FormattedMessage } from 'utils/cl-intl';
 import { scrollToElement } from 'utils/scroll';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {

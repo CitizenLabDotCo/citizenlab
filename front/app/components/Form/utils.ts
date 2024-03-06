@@ -1,9 +1,11 @@
 import { Layout, JsonSchema7 } from '@jsonforms/core';
 import Ajv from 'ajv';
 import { isEmpty, forOwn } from 'lodash-es';
+
+import { FormData } from 'components/Form/typings';
+
 import { isVisible } from './Components/Controls/visibilityUtils';
 import { PageCategorization, PageType } from './Components/Layouts/utils';
-import { FormData } from 'components/Form/typings';
 
 const iterateSchema = (
   uischema,

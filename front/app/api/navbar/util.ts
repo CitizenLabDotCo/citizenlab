@@ -1,4 +1,5 @@
 import { TPageSlugById } from 'api/custom_pages/useCustomPageSlugById';
+
 import { TDefaultNavbarItemCode, TNavbarItemCode } from './types';
 
 export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, string> = {

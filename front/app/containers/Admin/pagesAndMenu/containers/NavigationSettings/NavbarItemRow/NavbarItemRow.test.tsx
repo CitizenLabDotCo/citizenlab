@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+
 import NavbarItemRow from '.';
 
 jest.mock('utils/cl-router/withRouter');

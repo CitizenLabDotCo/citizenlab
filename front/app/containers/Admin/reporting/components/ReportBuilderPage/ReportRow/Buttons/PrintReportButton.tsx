@@ -1,22 +1,19 @@
 import React from 'react';
 
-// api
-import useReport from 'api/reports/useReport';
-
-// components
-import Button from 'components/UI/Button';
-import Tippy from '@tippyjs/react';
-
-// styling
 import {
   TooltipContentWrapper,
   colors,
 } from '@citizenlab/cl2-component-library';
 import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
 
-// i18n
-import messages from '../messages';
+import useReport from 'api/reports/useReport';
+
+import Button from 'components/UI/Button';
+import Tippy from '@tippyjs/react';
+
 import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 interface Props {
   reportId: string;

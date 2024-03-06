@@ -1,14 +1,13 @@
-// styling
 import { colors } from '@citizenlab/cl2-component-library';
+import { FormatMessage } from 'typings';
+
+import { AttributesGrouped } from 'api/graph_data_units/responseTypes';
+
+import { Localize } from 'hooks/useLocalize';
+
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 
-// i18n
 import messages from '../messages';
-
-// typings
-import { FormatMessage } from 'typings';
-import { AttributesGrouped } from 'api/graph_data_units/responseTypes';
-import { Localize } from 'hooks/useLocalize';
 
 const EMPTY_COLOR = colors.coolGrey300;
 

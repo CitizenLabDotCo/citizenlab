@@ -1,9 +1,12 @@
+import { useEffect } from 'react';
+
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher, { BaseResponseData } from 'utils/cl-react-query/fetcher';
+
 import analyticsKeys from './keys';
 import { Query } from './types';
-import { useEffect } from 'react';
 
 const fetchAnalytics = <Response extends BaseResponseData>(query: Query) =>
   fetcher<Response>({

@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Button,
@@ -11,25 +10,24 @@ import {
   defaultStyles,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import ConfettiSvg from './ConfettiSvg';
-import Warning from 'components/UI/Warning';
-
-// api
 import { useTheme } from 'styled-components';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { IPhaseData, VotingMethod } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IPhaseData, VotingMethod } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
 
-// utils
+import useLocalize from 'hooks/useLocalize';
+
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
-// intl
+import ConfettiSvg from './ConfettiSvg';
 import messages from './messages';
-import useLocalize from 'hooks/useLocalize';
 
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
@@ -50,11 +48,9 @@ const unsubmitBasket = async (
 const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const { data: appConfig } = useAppConfiguration();
 
-  // style
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
 
-  // intl
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 

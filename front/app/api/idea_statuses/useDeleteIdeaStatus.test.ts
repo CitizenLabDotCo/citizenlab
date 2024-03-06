@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteIdeaStatus from './useDeleteIdeaStatus';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteIdeaStatus from './useDeleteIdeaStatus';
 const apiPath = '*idea_statuses/:id';
 
 const server = setupServer(

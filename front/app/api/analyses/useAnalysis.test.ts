@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAnalysis from './useAnalysis';
-import { analysesData } from './__mocks__/useAnalyses';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { analysesData } from './__mocks__/useAnalyses';
+import useAnalysis from './useAnalysis';
 
 const apiPath = '*analyses/:id';
 

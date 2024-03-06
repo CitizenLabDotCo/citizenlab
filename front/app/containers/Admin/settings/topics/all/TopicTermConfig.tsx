@@ -1,19 +1,13 @@
 import React from 'react';
 
-// components
-import TerminologyConfig from 'components/admin/TerminologyConfig';
-
-// resources
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import TerminologyConfig from 'components/admin/TerminologyConfig';
 
-// i18n
-import messages from './messages';
-
-// utils
 import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 interface Props {
   className?: string;

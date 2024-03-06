@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import { importedIdeasKeys, importedIdeaMetadataKeys } from './keys';
 import { Locale } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import { importedIdeasKeys, importedIdeaMetadataKeys } from './keys';
 
 export type ImportedIdeasKeys = Keys<typeof importedIdeasKeys>;
 export type ImportedIdeaMetadataKeys = Keys<typeof importedIdeaMetadataKeys>;

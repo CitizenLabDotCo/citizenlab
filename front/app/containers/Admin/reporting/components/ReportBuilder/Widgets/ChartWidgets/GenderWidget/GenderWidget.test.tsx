@@ -1,6 +1,8 @@
 import React from 'react';
-import GenderWidget from '.';
+
 import { render } from 'utils/testUtils/rtl';
+
+import GenderWidget from '.';
 
 jest.mock('containers/Admin/reporting/hooks/useLayout', () => () => 'narrow');
 

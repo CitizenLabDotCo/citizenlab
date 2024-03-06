@@ -1,6 +1,8 @@
 import { IRelationship } from 'typings';
-import permissionsKeys from './keys';
+
 import { Keys } from 'utils/cl-react-query/types';
+
+import permissionsKeys from './keys';
 
 export type PermissionsKeys = Keys<typeof permissionsKeys>;
 

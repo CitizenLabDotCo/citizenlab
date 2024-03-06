@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+
 import { IAppConfigurationData } from '../types';
 
 export const getAppConfigurationData = (

@@ -1,6 +1,7 @@
 import { UseQueryOptions, useQueries } from '@tanstack/react-query';
-import { IInsights } from './types';
+
 import insightsKeys from './keys';
+import { IInsights } from './types';
 import { fetchInsights } from './useAnalysisInsights';
 
 type AnalysisInsightsWithIdsReturnType = UseQueryOptions<IInsights>[];

@@ -1,22 +1,16 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
+
 import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
-
-// styling
 import { colors } from 'components/admin/Graphs/styling';
+import { IResolution } from 'components/admin/ResolutionControl';
 
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// utils
 import { toFullMonth } from 'utils/dateUtils';
 
-// typings
-import { IResolution } from 'components/admin/ResolutionControl';
+import messages from './messages';
 
 type CustomTooltipProps = {
   label?: string;

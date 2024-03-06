@@ -1,48 +1,46 @@
 import React, { useEffect } from 'react';
 
-// hooks
-import useSteps from './useSteps';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
-// components
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import AuthProviders from './steps/AuthProviders';
-import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
-import EmailAndPassword from './steps/EmailAndPassword';
-import EmailConfirmation from './steps/EmailConfirmation';
-import Verification from './steps/Verification';
-import CustomFields from './steps/CustomFields';
-import Onboarding from './steps/Onboarding';
-import Invitation from './steps/Invitation';
-import ChangeEmail from './steps/ChangeEmail';
-import LightFlowStart from './steps/LightFlowStart';
-import EmailPolicies from './steps/Policies/EmailPolicies';
-import GooglePolicies from './steps/Policies/GooglePolicies';
-import FacebookPolicies from './steps/Policies/FacebookPolicies';
-import AzureAdPolicies from './steps/Policies/AzureAdPolicies';
-import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
-import BuiltInFields from './steps/BuiltInFields';
-import Password from './steps/Password';
-import Success from './steps/Success';
-import ClaveUnicaEmail from './steps/ClaveUnicaEmail';
-import Error from 'components/UI/Error';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-// i18n
-import { MessageDescriptor, useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import errorMessages from 'components/UI/Error/messages';
-
-// typings
-import { ModalProps, ErrorCode } from './typings';
-import VerificationSuccess from './steps/VerificationSuccess';
-import T from 'components/T';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import { IPhasePermissionAction } from 'api/permissions/types';
-import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import T from 'components/T';
+import Error from 'components/UI/Error';
+import errorMessages from 'components/UI/Error/messages';
+import Modal from 'components/UI/Modal';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { MessageDescriptor, useIntl, FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
+import AuthProviders from './steps/AuthProviders';
+import BuiltInFields from './steps/BuiltInFields';
+import ChangeEmail from './steps/ChangeEmail';
+import ClaveUnicaEmail from './steps/ClaveUnicaEmail';
+import CustomFields from './steps/CustomFields';
+import EmailAndPassword from './steps/EmailAndPassword';
+import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
+import EmailConfirmation from './steps/EmailConfirmation';
+import Invitation from './steps/Invitation';
+import LightFlowStart from './steps/LightFlowStart';
+import Onboarding from './steps/Onboarding';
+import Password from './steps/Password';
+import AzureAdPolicies from './steps/Policies/AzureAdPolicies';
+import EmailPolicies from './steps/Policies/EmailPolicies';
+import FacebookPolicies from './steps/Policies/FacebookPolicies';
+import FranceConnectLogin from './steps/Policies/FranceConnectLogin';
+import GooglePolicies from './steps/Policies/GooglePolicies';
+import Success from './steps/Success';
+import Verification from './steps/Verification';
+import VerificationSuccess from './steps/VerificationSuccess';
+import { ModalProps, ErrorCode } from './typings';
+import useSteps from './useSteps';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];
 

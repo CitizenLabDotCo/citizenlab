@@ -1,10 +1,11 @@
-import useProjects from './useProjects';
-
 import { renderHook } from '@testing-library/react-hooks';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import endpoints, { projects, apiPathAll } from './__mocks__/_mockServer';
+import useProjects from './useProjects';
 
 const server = setupServer(endpoints['GET projects']);
 

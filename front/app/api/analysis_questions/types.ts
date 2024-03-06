@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import questionsKeys from './keys';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import questionsKeys from './keys';
 
 export type QuestionsKeys = Keys<typeof questionsKeys>;
 

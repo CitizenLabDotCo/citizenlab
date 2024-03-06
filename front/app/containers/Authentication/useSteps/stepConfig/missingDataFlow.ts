@@ -1,25 +1,23 @@
-// api
+import getAuthUser from 'api/authentication/auth_user/getAuthUser';
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-import getAuthUser from 'api/authentication/auth_user/getAuthUser';
 import signOut from 'api/authentication/sign_in_out/signOut';
 import {
   updateUser,
   invalidateCacheAfterUpdateUser,
 } from 'api/users/useUpdateUser';
+
+import { GetRequirements } from 'containers/Authentication/typings';
+
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
-// utils
+import { Step, BuiltInFieldsUpdate } from './typings';
 import {
   requiredCustomFields,
   requiredBuiltInFields,
   showOnboarding,
 } from './utils';
-
-// typings
-import { GetRequirements } from 'containers/Authentication/typings';
-import { Step, BuiltInFieldsUpdate } from './typings';
-import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 
 export const missingDataFlow = (
   getRequirements: GetRequirements,

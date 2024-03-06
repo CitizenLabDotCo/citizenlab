@@ -1,5 +1,7 @@
-import { Keys } from 'utils/cl-react-query/types';
 import { IRelationship, Locale } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
 import machineTranslationKeys from './keys';
 
 export type MachineTranslationKeys = Keys<typeof machineTranslationKeys>;

@@ -1,17 +1,21 @@
 import React, { useMemo } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
+
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
-import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
-import messages from '../messages';
-import useUserBySlug from 'api/users/useUserBySlug';
-import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
+import { useParams, useSearchParams } from 'react-router-dom';
+
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
+import useUserBySlug from 'api/users/useUserBySlug';
+
+import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
+import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import messages from '../messages';
 
 interface QueryParameters {
-  // constants
   'page[number]': number;
   'page[size]': number;
   author: string;
