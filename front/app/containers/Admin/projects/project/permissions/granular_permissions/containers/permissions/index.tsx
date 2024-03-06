@@ -1,17 +1,23 @@
 import React from 'react';
-import { Section, SectionTitle } from 'components/admin/Section';
-import ActionsForm from '../Granular/ActionsForm';
+
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import GetGlobalPermissions, {
   GetGlobalPermissionsChildProps,
 } from 'resources/GetGlobalPermissions';
+
+import useUpdatePermission from 'api/permissions/useUpdatePermission';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { Section, SectionTitle } from 'components/admin/Section';
+
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { Box, Title, colors } from '@citizenlab/cl2-component-library';
+import ActionsForm from '../Granular/ActionsForm';
 import { HandlePermissionChangeProps } from '../Granular/utils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useUpdatePermission from 'api/permissions/useUpdatePermission';
+
+import messages from './messages';
 
 interface DataProps {
   permissions: GetGlobalPermissionsChildProps;

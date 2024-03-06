@@ -1,11 +1,17 @@
 import React from 'react';
+
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import apiImage from './api.png';
 import Tippy from '@tippyjs/react';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Button from 'components/UI/Button';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
+import apiImage from './api.png';
 
 export const PublicAPI = () => {
   const isPublicAPIEnabled = useFeatureFlag({ name: 'public_api_tokens' });

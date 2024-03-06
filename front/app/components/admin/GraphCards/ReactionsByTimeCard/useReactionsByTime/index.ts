@@ -1,19 +1,13 @@
 import { useMemo, useState } from 'react';
 
-// hooks
 import { useReactionsByTimeLive } from 'api/graph_data_units';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
-
-// parse
-import { parseTimeSeries, parseExcelData } from './parse';
-
-// utils
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
-// typings
+import { useIntl } from 'utils/cl-intl';
+
+import { parseTimeSeries, parseExcelData } from './parse';
+import { getTranslations } from './translations';
 import { QueryParameters } from './typings';
 
 export default function useReactionsByTime({

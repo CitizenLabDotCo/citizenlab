@@ -1,11 +1,13 @@
 import React from 'react';
+
+import { Controller, useFormContext } from 'react-hook-form';
+import { MentionItem } from 'react-mentions';
+import { CLError, RHFErrors } from 'typings';
+
+import Error, { TFieldName } from 'components/UI/Error';
 import MentionsTextAreaComponent, {
   Props as MentionsTextAreaComponentProps,
 } from 'components/UI/MentionsTextArea';
-import Error, { TFieldName } from 'components/UI/Error';
-import { Controller, useFormContext } from 'react-hook-form';
-import { CLError, RHFErrors } from 'typings';
-import { MentionItem } from 'react-mentions';
 
 interface Props
   extends Omit<MentionsTextAreaComponentProps, 'onChange' | 'value'> {

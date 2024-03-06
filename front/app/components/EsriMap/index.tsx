@@ -1,33 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '@arcgis/core/assets/esri/themes/light/main.css';
 
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-// components
+import Basemap from '@arcgis/core/Basemap';
+import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
+import * as intl from '@arcgis/core/intl.js';
+import Layer from '@arcgis/core/layers/Layer';
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
-import Basemap from '@arcgis/core/Basemap';
-import Layer from '@arcgis/core/layers/Layer';
-import Graphic from '@arcgis/core/Graphic';
-import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Fullscreen from '@arcgis/core/widgets/Fullscreen';
-import Point from '@arcgis/core/geometry/Point';
 import Expand from '@arcgis/core/widgets/Expand';
-import Legend from '@arcgis/core/widgets/Legend';
+import Fullscreen from '@arcgis/core/widgets/Fullscreen';
 import LayerList from '@arcgis/core/widgets/LayerList';
-
-// utils
-import { getDefaultBasemap } from './utils';
-import { isNil } from 'utils/helperUtils';
+import Legend from '@arcgis/core/widgets/Legend';
+import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
-import * as intl from '@arcgis/core/intl.js';
 
-// typings
-import { EsriUiElement } from './types';
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import useLocale from 'hooks/useLocale';
+
+import { isNil } from 'utils/helperUtils';
+
+import { EsriUiElement } from './types';
+import { getDefaultBasemap } from './utils';
 
 // Custom Esri styles
 const MapContainer = styled(Box)`

@@ -8,26 +8,29 @@ import {
   IconButton,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
-
-import Modal from 'components/UI/Modal';
-
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import ConsentModal from './ConsentModal';
-import CreateAnalysisModal from './CreateAnalysisModal';
-import useAnalyses from 'api/analyses/useAnalyses';
-import useDeleteAnalysis from 'api/analyses/useDeleteAnalysis';
 import { useParams } from 'react-router-dom';
 
-import Button from 'components/UI/Button';
+import useAnalyses from 'api/analyses/useAnalyses';
+import useDeleteAnalysis from 'api/analyses/useDeleteAnalysis';
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
-import { isNilOrError } from 'utils/helperUtils';
+
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
-import { trackEventByName } from 'utils/analytics';
-import clHistory from 'utils/cl-router/history';
+
 import Divider from 'components/admin/Divider';
+import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../../../messages';
+
 import AnalysisInsights from './AnalysisInsights';
+import ConsentModal from './ConsentModal';
+import CreateAnalysisModal from './CreateAnalysisModal';
 
 const Analysis = ({ customFieldId }: { customFieldId: string }) => {
   const [dropdownIsOpened, setDropdownIsOpened] = useState(false);

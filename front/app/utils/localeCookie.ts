@@ -1,5 +1,6 @@
 import { get, set } from 'js-cookie';
 import { Locale } from 'typings';
+
 import { SECURE_COOKIE } from './cookie';
 
 const COOKIE_NAME = 'cl2_locale';

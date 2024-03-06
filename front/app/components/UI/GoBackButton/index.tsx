@@ -1,7 +1,11 @@
 import React, { FormEvent } from 'react';
+
 import styled from 'styled-components';
+
 import Button from 'components/UI/Button';
+
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+
 import messages from './messages';
 
 const Container = styled.div`

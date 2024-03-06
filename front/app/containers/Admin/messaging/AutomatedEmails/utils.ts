@@ -1,5 +1,7 @@
 import { ICampaignData } from 'api/campaigns/types';
+
 import { Localize } from 'hooks/useLocalize';
+
 import {
   CampaignData,
   GroupedCampaignsEntry,

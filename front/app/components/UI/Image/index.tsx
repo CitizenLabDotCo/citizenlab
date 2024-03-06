@@ -1,9 +1,7 @@
-// Libraries
 import React, { PureComponent } from 'react';
 
-// Stylings
-import styled, { css } from 'styled-components';
 import { colors } from '@citizenlab/cl2-component-library';
+import styled, { css } from 'styled-components';
 
 const Fallback = styled.div<{ src: string | undefined }>`
   background-repeat: no-repeat;

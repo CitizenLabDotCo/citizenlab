@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteInitiative from './useDeleteInitiative';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteInitiative from './useDeleteInitiative';
 const apiPath = '*initiatives/:initiativeId';
 
 const server = setupServer(

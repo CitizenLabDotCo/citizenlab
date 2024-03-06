@@ -1,23 +1,22 @@
 import React from 'react';
 
-// intl
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
-// components
 import {
   Box,
   CardButton,
   IconTooltip,
   Text,
 } from '@citizenlab/cl2-component-library';
-import BudgetingIcon from './CardIcons/BudgetingIcon';
+
+import { VotingMethod } from 'api/phases/types';
+
 import { SubSectionTitle } from 'components/admin/Section';
+
+import { useIntl } from 'utils/cl-intl';
+
+import BudgetingIcon from './CardIcons/BudgetingIcon';
 import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';
 import SingleVotingIcon from './CardIcons/SingleVotingIcon';
-
-// types
-import { VotingMethod } from 'api/phases/types';
+import messages from './messages';
 
 type VotingMethodSelectorProps = {
   voting_method?: VotingMethod | null;

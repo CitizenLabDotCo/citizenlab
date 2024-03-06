@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
+
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { List } from 'components/admin/ResourceList';
+
 import usePrevious from 'hooks/usePrevious';
+
+import { List } from 'components/admin/ResourceList';
+
 import { itemOrderWasUpdated } from './utils';
 
 export interface Item {

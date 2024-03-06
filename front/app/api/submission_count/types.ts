@@ -1,5 +1,6 @@
-import submissionsCountKeys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
+
+import submissionsCountKeys from './keys';
 
 export type SubmissionsCountKeys = Keys<typeof submissionsCountKeys>;
 

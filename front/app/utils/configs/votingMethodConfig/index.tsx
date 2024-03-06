@@ -1,27 +1,26 @@
 import React from 'react';
 
-// components
-import AddToBasketButton from 'components/VoteInputs/budgeting/AddToBasketButton';
-import AddToBasketBox from 'components/VoteInputs/budgeting/AddToBasketBox';
-import AssignMultipleVotesInput from 'components/VoteInputs/multiple/AssignMultipleVotesInput';
-import AssignMultipleVotesBox from 'components/VoteInputs/multiple/AssignMultipleVotesBox';
-import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
-import AssignSingleVoteBox from 'components/VoteInputs/single/AssignSingleVoteBox';
-
-// i18n
-import messages from './messages';
-import { Localize } from 'hooks/useLocalize';
 import { MessageDescriptor } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormatMessage } from 'typings';
 
-// utils
-import { getLocalisedDateString } from 'utils/dateUtils';
-
-// types
+import { IAppConfiguration } from 'api/app_configuration/types';
 import { IPhaseData, VotingMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-import { IAppConfiguration } from 'api/app_configuration/types';
-import { FormatMessage } from 'typings';
+
+import { Localize } from 'hooks/useLocalize';
+
+import AddToBasketBox from 'components/VoteInputs/budgeting/AddToBasketBox';
+import AddToBasketButton from 'components/VoteInputs/budgeting/AddToBasketButton';
+import AssignMultipleVotesBox from 'components/VoteInputs/multiple/AssignMultipleVotesBox';
+import AssignMultipleVotesInput from 'components/VoteInputs/multiple/AssignMultipleVotesInput';
+import AssignSingleVoteBox from 'components/VoteInputs/single/AssignSingleVoteBox';
+import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { getLocalisedDateString } from 'utils/dateUtils';
+
+import messages from './messages';
+
 /*
   Configuration Specifications
 

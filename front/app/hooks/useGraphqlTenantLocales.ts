@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
-import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
-import { GraphqlLocale } from 'typings';
+
 import { includes } from 'lodash-es';
+import { GraphqlLocale } from 'typings';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import { isNilOrError, convertToGraphqlLocale } from 'utils/helperUtils';
 
 export default function useGraphqlTenantLocales() {
   const [graphqlTenantLocales, setGraphqlTenantLocales] = useState<

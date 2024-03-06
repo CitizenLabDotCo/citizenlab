@@ -1,13 +1,11 @@
-import { invitesData } from './__mocks__/useInvites';
-
 import { renderHook } from '@testing-library/react-hooks';
-
-import useInvites from './useInvites';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { invitesData } from './__mocks__/useInvites';
+import useInvites from './useInvites';
 
 const apiPath = '*invites';
 const server = setupServer(

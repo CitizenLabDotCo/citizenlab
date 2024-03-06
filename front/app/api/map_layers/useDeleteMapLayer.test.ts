@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteMapLayer from './useDeleteMapLayer';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteMapLayer from './useDeleteMapLayer';
 const apiPath = '*/projects/:projectId/map_config/layers/:id';
 
 const server = setupServer(

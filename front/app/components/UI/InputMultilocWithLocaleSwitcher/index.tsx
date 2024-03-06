@@ -1,10 +1,13 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
 import {
   InputMultilocWithLocaleSwitcher,
   InputMultilocWithLocaleSwitcherProps,
 } from '@citizenlab/cl2-component-library';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 export interface Props
   extends Omit<InputMultilocWithLocaleSwitcherProps, 'locales'> {}

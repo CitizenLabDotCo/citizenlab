@@ -1,10 +1,14 @@
 import React from 'react';
+
 import { Navigate } from 'react-router-dom';
+
 import PageLoading from 'components/UI/PageLoading';
-import UserComments from './UserComments';
+
 import Following from './Following';
-import UserEvents from './UserEvents';
 import Submissions from './Submissions';
+import UserComments from './UserComments';
+import UserEvents from './UserEvents';
+
 import UsersShowPage from './';
 
 export default () => ({

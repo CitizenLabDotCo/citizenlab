@@ -1,6 +1,7 @@
 import { Locale } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
+
 import campaignExamplesKeys from './keys';
 
 export type CampaignExamplesKeys = Keys<typeof campaignExamplesKeys>;

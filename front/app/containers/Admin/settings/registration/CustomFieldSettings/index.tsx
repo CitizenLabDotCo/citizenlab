@@ -1,21 +1,5 @@
-// libraries
-import React, { MouseEvent, useState } from 'react';
-import Link from 'utils/cl-router/Link';
-import styled from 'styled-components';
+import React, { Component, MouseEvent, useState } from 'react';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import customfieldMessages from 'containers/Admin/settings/registration/CustomFieldRoutes/messages';
-import T from 'components/T';
-
-// components
-import Button from 'components/UI/Button';
-import {
-  SortableList,
-  SortableRow,
-  TextCell,
-} from 'components/admin/ResourceList';
 import {
   Toggle,
   Badge,
@@ -23,28 +7,45 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { isEqual, clone } from 'lodash-es';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 
+import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
+import userCustomFieldsKeys from 'api/user_custom_fields/keys';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
+import useDeleteUserCustomField from 'api/user_custom_fields/useDeleteUserCustomField';
+import useReorderUserCustomField from 'api/user_custom_fields/useReorderUserCustomField';
+import useUpdateUserCustomField, {
+  UpdateField,
+} from 'api/user_custom_fields/useUpdateUserCustomField';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
+import { isBuiltInField, isHiddenField } from 'api/user_custom_fields/util';
+
+import customfieldMessages from 'containers/Admin/settings/registration/CustomFieldRoutes/messages';
+
+import {
+  List,
+  SortableList,
+  SortableRow,
+  TextCell,
+} from 'components/admin/ResourceList';
 import {
   Section,
   SectionTitle,
   SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
+import T from 'components/T';
+import Button from 'components/UI/Button';
 
-// api
-import { IUserCustomFieldData } from 'api/user_custom_fields/types';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import permissionsCustomFieldsKeys from 'api/permissions_custom_fields/keys';
+import Link from 'utils/cl-router/Link';
 
-// cache
-
-// styling
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import useDeleteUserCustomField from 'api/user_custom_fields/useDeleteUserCustomField';
-import useReorderUserCustomField from 'api/user_custom_fields/useReorderUserCustomField';
-import useUpdateUserCustomField from 'api/user_custom_fields/useUpdateUserCustomField';
-import { isBuiltInField, isHiddenField } from 'api/user_custom_fields/util';
-import userCustomFieldsKeys from 'api/user_custom_fields/keys';
+import messages from './messages';
 
 const Buttons = styled.div`
   display: flex;

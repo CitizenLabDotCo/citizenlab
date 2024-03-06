@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+
 import { IPhaseData } from '../types';
 
 export const phasesData: IPhaseData[] = [

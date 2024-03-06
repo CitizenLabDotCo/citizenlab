@@ -1,7 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import onboardingCampaignKeys from './keys';
-
 import { Multiloc } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import onboardingCampaignKeys from './keys';
 
 export type OnboardingCampaignKeys = Keys<typeof onboardingCampaignKeys>;
 

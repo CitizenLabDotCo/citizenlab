@@ -1,8 +1,11 @@
+import { API_PATH } from 'containers/App/constants';
+
 import { getJwt, setJwt } from 'utils/auth/jwt';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-import signOut from './signOut';
+
 import getAuthUser from '../auth_user/getAuthUser';
-import { API_PATH } from 'containers/App/constants';
+
+import signOut from './signOut';
 
 interface Parameters {
   email: string;
