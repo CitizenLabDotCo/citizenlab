@@ -50,6 +50,7 @@ ach:
       "assignee_digest": crwdns1875902:0crwdne1875902:0
       "user_digest": crwdns1875904:0crwdne1875904:0
       "voting_basket_submitted": crwdns1875906:0crwdne1875906:0
+      "native_survey_not_submitted": crwdns1908876:0crwdne1908876:0
       "voting_basket_not_submitted": crwdns1875908:0crwdne1875908:0
       "voting_last_chance": crwdns1875910:0crwdne1875910:0
       "voting_phase_started": crwdns1875912:0crwdne1875912:0
@@ -505,6 +506,13 @@ ach:
       event_description: 'crwdns1876706:0%{organizationName}crwdne1876706:0'
       cta_see_votes_submitted: 'crwdns1876708:0crwdne1876708:0'
       cta_message: 'crwdns1876710:0crwdne1876710:0'
+    native_survey_not_submitted:
+      subject: 'crwdns1908878:0%{organizationName}crwdne1908878:0'
+      preheader: 'crwdns1908880:0%{organizationName}crwdne1908880:0'
+      title_native_survey_not_submitted: 'crwdns1908882:0crwdne1908882:0'
+      body_native_survey_not_submitted: 'crwdns1908884:0%{phaseTitle}crwdnd1908884:0%{phaseEndDate}crwdne1908884:0'
+      body_native_survey_not_submitted_no_date: 'crwdns1908886:0%{phaseTitle}crwdne1908886:0'
+      cta_complete_your_survey_response: 'crwdns1908888:0crwdne1908888:0'
     voting_basket_not_submitted:
       subject: 'crwdns1876712:0%{organizationName}crwdne1876712:0'
       preheader: 'crwdns1876714:0%{organizationName}crwdne1876714:0'
@@ -580,6 +588,7 @@ ach:
         user_who_voted: 'crwdns1876836:0crwdne1876836:0'
         user_with_unsubmitted_votes: 'crwdns1876838:0crwdne1876838:0'
         users_who_engaged_but_not_voted: 'crwdns1876840:0crwdne1876840:0'
+        user_with_unsubmitted_survey: 'crwdns1908890:0crwdne1908890:0'
       content_type:
         comments: 'crwdns1876842:0crwdne1876842:0'
         content_moderation: 'crwdns1876844:0crwdne1876844:0'
@@ -592,6 +601,7 @@ ach:
         proposals: 'crwdns1876858:0crwdne1876858:0'
         reactions: 'crwdns1876860:0crwdne1876860:0'
         voting: 'crwdns1876862:0crwdne1876862:0'
+        surveys: 'crwdns1908892:0crwdne1908892:0'
       trigger:
         comment_is_deleted: 'crwdns1876864:0crwdne1876864:0'
         comment_is_flagged_as_spam: 'crwdns1876866:0crwdne1876866:0'
@@ -640,3 +650,4 @@ ach:
         7_days_after_invite_is_sent: 'crwdns1876952:0crwdne1876952:0'
         7_days_before_the_project_changes_phase: 'crwdns1876954:0crwdne1876954:0'
         registration_to_event: 'crwdns1876956:0crwdne1876956:0'
+        survey_1_day_after_draft_saved: 'crwdns1908894:0crwdne1908894:0'
