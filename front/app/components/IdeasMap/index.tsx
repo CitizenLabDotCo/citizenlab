@@ -223,6 +223,7 @@ const IdeasMap = memo<Props>(
           source: graphics, // Array of idea graphics
           title: formatMessage(messages.userInputs),
           id: 'ideasLayer',
+          outFields: ['*'],
           objectIdField: 'ID',
           fields: [
             {
@@ -319,10 +320,7 @@ const IdeasMap = memo<Props>(
                 );
               } else if (graphicId) {
                 // User clicked an idea pin or layer.
-                const ideaId =
-                  topElement.layer.id === 'ideasLayer'
-                    ? graphics?.at(graphicId - 1)?.attributes.ideaId
-                    : undefined;
+                const ideaId = topElement?.graphic?.attributes?.ideaId;
 
                 const ideasAtClickCount = elements.filter(
                   (element) =>
@@ -339,10 +337,8 @@ const IdeasMap = memo<Props>(
                     const ideaIds = elements.map((element) => {
                       // Get list of idea ids at this location
                       if (element.type === 'graphic') {
-                        const graphicId = element?.graphic?.attributes?.ID;
                         const layerId = element?.graphic?.layer?.id;
-                        const ideaId = graphics?.at(graphicId - 1)?.attributes
-                          .ideaId;
+                        const ideaId = element?.graphic?.attributes?.ideaId;
                         if (ideaId && layerId === 'ideasLayer') {
                           return ideaId;
                         }
