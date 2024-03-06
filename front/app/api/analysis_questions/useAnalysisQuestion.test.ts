@@ -1,13 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAnalysisQuestion from './useAnalysisQuestion';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { questionData } from './__mocks__/useAnalysisQuestion';
 import { IQuestionParams } from './types';
+import useAnalysisQuestion from './useAnalysisQuestion';
 
 const apiPath = '*/analyses/:analysisId/questions/:id';
 

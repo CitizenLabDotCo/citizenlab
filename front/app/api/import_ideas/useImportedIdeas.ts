@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
-import { QueryParams, ImportedIdeasKeys } from './types';
-import { importedIdeasKeys } from './keys';
+
 import { IIdeas } from 'api/ideas/types';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import { importedIdeasKeys } from './keys';
+import { QueryParams, ImportedIdeasKeys } from './types';
 
 const fetchImportedIdeas = ({ projectId, phaseId }: QueryParams) =>
   fetcher<IIdeas>({

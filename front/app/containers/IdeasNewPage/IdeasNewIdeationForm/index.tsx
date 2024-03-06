@@ -1,44 +1,41 @@
 import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 
-// api
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
-import useAuthUser from 'api/me/useAuthUser';
-import usePhases from 'api/phases/usePhases';
-import usePhase from 'api/phases/usePhase';
-import useInputSchema from 'hooks/useInputSchema';
+import { parse } from 'qs';
 import { useSearchParams } from 'react-router-dom';
+import { Multiloc } from 'typings';
+
+import { IdeaPublicationStatus } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhases, IPhaseData } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import { IProject } from 'api/projects/types';
+
+import useInputSchema from 'hooks/useInputSchema';
 import useLocale from 'hooks/useLocale';
 
-// i18n
-import messages from '../messages';
-
-// components
-import Form from 'components/Form';
-import IdeasNewMeta from '../IdeasNewMeta';
-import PageContainer from 'components/UI/PageContainer';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
-import { Heading } from '../components/Heading';
-const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
+import Form from 'components/Form';
+import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
+import PageContainer from 'components/UI/PageContainer';
 
-// utils
-import { geocode, reverseGeocode } from 'utils/locationTools';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { getLocationGeojson } from '../utils';
 import { isNilOrError } from 'utils/helperUtils';
-import { getCurrentPhase } from 'api/phases/utils';
-import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { geocode, reverseGeocode } from 'utils/locationTools';
+import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-// types
-import { Multiloc } from 'typings';
-import { IPhases, IPhaseData } from 'api/phases/types';
-import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
-import { IProject } from 'api/projects/types';
-import { IdeaPublicationStatus } from 'api/ideas/types';
+import { Heading } from '../components/Heading';
+import IdeasNewMeta from '../IdeasNewMeta';
+import messages from '../messages';
+import { getLocationGeojson } from '../utils';
+
+const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,

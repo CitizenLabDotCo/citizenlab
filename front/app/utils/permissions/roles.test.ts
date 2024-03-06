@@ -1,3 +1,5 @@
+import { makeUser } from 'api/users/__mocks__/useUsers';
+
 import {
   isAdmin,
   isRegularUser,
@@ -5,7 +7,6 @@ import {
   isSuperAdmin,
   userHasRole,
 } from './roles';
-import { makeUser } from 'api/users/__mocks__/useUsers';
 
 describe('userHasRole', () => {
   it('returns true when a user has a role', () => {

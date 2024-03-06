@@ -1,4 +1,3 @@
-// typings
 import { Layout } from 'components/admin/GraphCards/typings';
 import { Margin } from 'components/admin/Graphs/typings';
 

@@ -1,6 +1,9 @@
-import PageLoading from 'components/UI/PageLoading';
 import React, { lazy } from 'react';
+
 import { Navigate } from 'react-router-dom';
+
+import PageLoading from 'components/UI/PageLoading';
+
 import FullScreenPreview from './containers/ContentBuilder/containers/FullscreenPreview';
 
 const CustomPagesIndex = lazy(() => import('./containers/CustomPages'));

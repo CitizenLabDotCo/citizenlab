@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useExperiments from './useExperiments';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { experimentsData } from './__mocks__/useExperiments';
+import useExperiments from './useExperiments';
 
 const apiPath = '*/experiments';
 

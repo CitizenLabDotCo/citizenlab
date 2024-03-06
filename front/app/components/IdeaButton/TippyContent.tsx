@@ -1,17 +1,22 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import { fontSizes, colors, Icon } from '@citizenlab/cl2-component-library';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { IIdeaPostingDisabledReason } from 'utils/actionTakingRules';
 import { MessageDescriptor } from 'react-intl';
-import messages from './messages';
-import globalMessages from 'utils/messages';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import useProjectById from 'api/projects/useProjectById';
+import styled from 'styled-components';
+
 import { IPhaseData } from 'api/phases/types';
+import useProjectById from 'api/projects/useProjectById';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import { IIdeaPostingDisabledReason } from 'utils/actionTakingRules';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import globalMessages from 'utils/messages';
+
+import messages from './messages';
+import tracks from './tracks';
 
 const TooltipContent = styled.div<{ inMap?: boolean }>`
   display: flex;

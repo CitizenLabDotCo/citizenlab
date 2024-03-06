@@ -1,19 +1,5 @@
 import React, { useState } from 'react';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import useLocalize from 'hooks/useLocalize';
-import usePhase from 'api/phases/usePhase';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { useFormContext } from 'react-hook-form';
-
-// components
-import GoBackButton from 'components/UI/GoBackButton';
-import Button from 'components/UI/Button';
-import Modal from 'components/UI/Modal';
-
-// styling
-import styled from 'styled-components';
 import {
   Box,
   stylingConsts,
@@ -22,21 +8,30 @@ import {
   StatusLabel,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useFormContext } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
-// utils
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
+
 import {
   FormBuilderConfig,
   getIsPostingEnabled,
 } from 'components/FormBuilder/utils';
+import Button from 'components/UI/Button';
+import GoBackButton from 'components/UI/GoBackButton';
+import Modal from 'components/UI/Modal';
 
-// i18n
-import messages from '../messages';
-import ownMessages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// routing
 import clHistory from 'utils/cl-router/history';
-import { useParams } from 'react-router-dom';
+
+import messages from '../messages';
+
+import ownMessages from './messages';
 
 const StyledStatusLabel = styled(StatusLabel)`
   height: 20px;

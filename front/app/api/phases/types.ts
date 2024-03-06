@@ -1,7 +1,10 @@
 import { IRelationship, Multiloc } from 'typings';
-import { Keys } from 'utils/cl-react-query/types';
-import phasesKeys from './keys';
+
 import { CampaignName } from 'api/campaigns/types';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import phasesKeys from './keys';
 
 export type PhasesKeys = Keys<typeof phasesKeys>;
 

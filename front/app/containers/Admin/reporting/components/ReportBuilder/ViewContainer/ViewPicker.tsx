@@ -1,12 +1,11 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import MobileButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/MobileButton';
-import PDFButton from './PDFButton';
-import DesktopButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/DesktopButton';
 
-// typings
+import DesktopButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/DesktopButton';
+import MobileButton from 'components/admin/ContentBuilder/EditModePreview/ViewButtons/MobileButton';
+
+import PDFButton from './PDFButton';
 import { View } from './typings';
 
 interface Props {

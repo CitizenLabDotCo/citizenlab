@@ -1,10 +1,5 @@
 import React, { forwardRef } from 'react';
-import styled from 'styled-components';
 
-// craft
-import { useEditor } from '@craftjs/core';
-
-// components
 import {
   Box,
   Icon,
@@ -12,8 +7,9 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-
+import { useEditor } from '@craftjs/core';
 import Tippy from '@tippyjs/react';
+import styled from 'styled-components';
 
 const StyledBox = styled(Box)`
   &:hover {

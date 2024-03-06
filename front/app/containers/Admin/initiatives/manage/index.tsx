@@ -1,13 +1,17 @@
 import React from 'react';
+
+import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
 
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import Button from 'components/UI/Button';
-import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 import ProposalsManager from 'components/admin/PostManager/ProposalsManager';
+import Button from 'components/UI/Button';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
+
+import tracks from './tracks';
 
 const InitiativesManagePage = () => {
   const { pathname } = useLocation();

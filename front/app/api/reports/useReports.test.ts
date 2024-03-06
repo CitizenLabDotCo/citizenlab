@@ -1,15 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useReports from './useReports';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import endpoints, {
   reportsData,
   apiPathReports,
 } from './__mocks__/_mockServer';
+import useReports from './useReports';
 
 const server = setupServer(endpoints['GET reports']);
 

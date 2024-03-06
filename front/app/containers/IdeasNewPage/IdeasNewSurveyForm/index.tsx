@@ -1,43 +1,39 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-// api
-import useAuthUser from 'api/me/useAuthUser';
-import usePhases from 'api/phases/usePhases';
-import usePhase from 'api/phases/usePhase';
-import useInputSchema from 'hooks/useInputSchema';
+import { Box } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
+
+import { IdeaPublicationStatus } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useDraftIdeaByPhaseId, {
   clearDraftIdea,
 } from 'api/ideas/useDraftIdeaByPhaseId';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhases, IPhaseData } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import { IProject } from 'api/projects/types';
 
-// i18n
-import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
+import useInputSchema from 'hooks/useInputSchema';
 
-// components
 import Form from 'components/Form';
-import IdeasNewMeta from '../IdeasNewMeta';
-import PageContainer from 'components/UI/PageContainer';
+import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
-import { Heading } from '../components/Heading';
-import { Box } from '@citizenlab/cl2-component-library';
+import PageContainer from 'components/UI/PageContainer';
 import Warning from 'components/UI/Warning';
 
-// utils
+import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
-import { getCurrentPhase } from 'api/phases/utils';
 import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { getFormValues } from '../../IdeasEditPage/utils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-// types
-import { IPhases, IPhaseData } from 'api/phases/types';
-import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
-import { IProject } from 'api/projects/types';
-import { IdeaPublicationStatus } from 'api/ideas/types';
+import { getFormValues } from '../../IdeasEditPage/utils';
+import { Heading } from '../components/Heading';
+import IdeasNewMeta from '../IdeasNewMeta';
+import messages from '../messages';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -160,7 +156,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     const requestBody = {
       ...data,
       project_id: project.data.id,
-      phase_ids: [phaseId],
+      // phase_ids: [phaseId], // TODO: JS - should only be added if moderator
       publication_status: data.publication_status || 'published',
     };
 

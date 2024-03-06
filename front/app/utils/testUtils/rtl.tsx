@@ -1,16 +1,17 @@
 import React, { ReactNode } from 'react';
+
+import { getTheme } from '@citizenlab/cl2-component-library';
+import { QueryClientProvider } from '@tanstack/react-query';
 // eslint-disable-next-line no-restricted-imports
 import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ThemeProvider } from 'styled-components';
-import { getTheme } from '@citizenlab/cl2-component-library';
 import GlobalStyle from 'global-styles';
-import { IntlProvider } from 'react-intl';
 import messages from 'i18n/en';
+import { IntlProvider } from 'react-intl';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
-import history from 'utils/browserHistory';
+import { ThemeProvider } from 'styled-components';
 
-import { QueryClientProvider } from '@tanstack/react-query';
+import history from 'utils/browserHistory';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
 window.confirm = jest.fn(() => true);

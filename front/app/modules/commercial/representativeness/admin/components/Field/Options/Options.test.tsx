@@ -1,7 +1,9 @@
 import React from 'react';
-import Options from '.';
-import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
+
 import { indices } from 'utils/helperUtils';
+import { fireEvent, render, screen, waitFor } from 'utils/testUtils/rtl';
+
+import Options from '.';
 
 const generateOptions = (n: number) =>
   indices(n).map((i) => ({

@@ -1,20 +1,18 @@
 import React, { memo, useState, useEffect } from 'react';
-import CSSTransition from 'react-transition-group/CSSTransition';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
 import {
   useWindowSize,
   defaultCardStyle,
 } from '@citizenlab/cl2-component-library';
-
-// components
-import MapIdeasList from './MapIdeasList';
-import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
-import IdeasShow from 'containers/IdeasShow';
-
-// styling
+import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
+
+import useProjectById from 'api/projects/useProjectById';
+
+import IdeasShow from 'containers/IdeasShow';
+import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
+
+import MapIdeasList from './MapIdeasList';
 
 const timeout = 200;
 

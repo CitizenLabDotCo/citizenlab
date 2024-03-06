@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddCampaign from './useAddCampaign';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { campaignsData } from './__mocks__/useCampaigns';
+import useAddCampaign from './useAddCampaign';
 
 const apiPath = '*campaigns';
 

@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateTopic from './useUpdateTopic';
-import { topicsData } from './__mocks__/useTopics';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { topicsData } from './__mocks__/useTopics';
+import useUpdateTopic from './useUpdateTopic';
 
 const apiPath = '*topics/:id';
 const server = setupServer(

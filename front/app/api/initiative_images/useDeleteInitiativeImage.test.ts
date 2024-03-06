@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteInitiativeImage from './useDeleteInitiativeImage';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteInitiativeImage from './useDeleteInitiativeImage';
 const apiPath = '*initiatives/:initiativeId/images/:imageId';
 
 const server = setupServer(

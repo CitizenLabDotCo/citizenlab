@@ -1,16 +1,17 @@
-import { IUserData, IUser } from 'api/users/types';
-import { isAdmin, TRole } from 'utils/permissions/roles';
+import { IAppConfigurationData } from 'api/app_configuration/types';
 import { IProjectFolderData } from 'api/project_folders/types';
+import { IUserData, IUser } from 'api/users/types';
+
+import { isNilOrError } from 'utils/helperUtils';
 import {
   definePermissionRule,
   IRouteItem,
 } from 'utils/permissions/permissions';
+import { isAdmin, TRole } from 'utils/permissions/roles';
 import {
   canAccessRoute,
   isModeratorRoute,
 } from 'utils/permissions/rules/routePermissions';
-import { IAppConfigurationData } from 'api/app_configuration/types';
-import { isNilOrError } from 'utils/helperUtils';
 
 export function userModeratesFolder(
   user: IUserData | null,
