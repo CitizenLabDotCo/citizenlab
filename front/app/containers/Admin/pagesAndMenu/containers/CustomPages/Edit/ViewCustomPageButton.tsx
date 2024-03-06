@@ -1,7 +1,11 @@
-import Button from 'components/UI/Button';
 import React from 'react';
+
 import { WrappedComponentProps } from 'react-intl';
+
+import Button from 'components/UI/Button';
+
 import { injectIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
 
 interface Props {

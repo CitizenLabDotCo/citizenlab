@@ -1,12 +1,12 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddInitiativesReaction from './useAddInitiativeReaction';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
+import { IInitiativeReactionData } from 'api/initiative_reactions/types';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { IInitiativeReactionData } from 'api/initiative_reactions/types';
+
+import useAddInitiativesReaction from './useAddInitiativeReaction';
 
 const apiPath = '*initiatives/:initiativeId/reactions';
 

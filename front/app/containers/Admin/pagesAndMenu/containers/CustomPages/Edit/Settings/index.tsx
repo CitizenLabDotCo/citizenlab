@@ -1,13 +1,17 @@
 import React from 'react';
-import CustomPageSettingsForm from '../../CustomPageSettingsForm';
-import useCustomPageById from 'api/custom_pages/useCustomPageById';
-import { useParams } from 'react-router-dom';
-import { isNilOrError } from 'utils/helperUtils';
-import { TCustomPageCode } from 'api/custom_pages/types';
-import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
-import { omit } from 'lodash-es';
 
+import { omit } from 'lodash-es';
+import { useParams } from 'react-router-dom';
+
+import { TCustomPageCode } from 'api/custom_pages/types';
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
+
+import { FormValues } from 'containers/Admin/pagesAndMenu/containers/CustomPages/CustomPageSettingsForm';
+
+import { isNilOrError } from 'utils/helperUtils';
+
+import CustomPageSettingsForm from '../../CustomPageSettingsForm';
 // Pages which are not allowed to have their slug edited are linked to internally.
 // Changing them would break these links.
 // E.g. 'faq'. Search for '/pages/faq' in the front codebase to find out.

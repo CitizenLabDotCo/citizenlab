@@ -1,20 +1,19 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Warning from 'components/UI/Warning';
+import { Box } from '@citizenlab/cl2-component-library';
 
-// hooks
 import useAuthUser from 'api/me/useAuthUser';
+
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
-// i18n
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { Box } from '@citizenlab/cl2-component-library';
+
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../../messages';
 
 const CommentingProposalDisabled = () => {
   const { data: authUser } = useAuthUser();

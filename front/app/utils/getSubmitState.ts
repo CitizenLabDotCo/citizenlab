@@ -1,5 +1,5 @@
-import { CLErrors } from 'typings';
 import { isEmpty, isError } from 'lodash-es';
+import { CLErrors } from 'typings';
 
 export type Errors = CLErrors | null | Record<string, never> | Error;
 

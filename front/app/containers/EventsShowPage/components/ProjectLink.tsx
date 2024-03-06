@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Text,
@@ -9,14 +8,14 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// router
-import Link from 'utils/cl-router/Link';
-import useLocalize from 'hooks/useLocalize';
 import { IProjectData } from 'api/projects/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+
+import messages from '../messages';
 
 type ProjectLinkProps = {
   project: IProjectData;

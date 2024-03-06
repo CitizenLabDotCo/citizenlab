@@ -54,6 +54,10 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     phase.report&.public?
   end
 
+  attribute :custom_form_persisted do |object|
+    object.custom_form_persisted?
+  end
+
   belongs_to :project
 
   has_one :user_basket, if: proc { |object, params|

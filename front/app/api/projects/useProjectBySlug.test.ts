@@ -1,10 +1,11 @@
-import useProjectBySlug from './useProjectBySlug';
-
 import { renderHook } from '@testing-library/react-hooks';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import endpoints, { apiPathBySlug, project2 } from './__mocks__/_mockServer';
+import useProjectBySlug from './useProjectBySlug';
 
 const projectSlug = 'permissions-test';
 

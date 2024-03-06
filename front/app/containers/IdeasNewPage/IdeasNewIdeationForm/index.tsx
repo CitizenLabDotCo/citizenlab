@@ -1,49 +1,41 @@
 import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 
-// api
+import { parse } from 'qs';
+import { useSearchParams } from 'react-router-dom';
+import { Multiloc } from 'typings';
+
+import { IdeaPublicationStatus } from 'api/ideas/types';
+import useAddIdea from 'api/ideas/useAddIdea';
+import useAuthUser from 'api/me/useAuthUser';
+import { IPhases, IPhaseData } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import { IProject } from 'api/projects/types';
+
+import useInputSchema from 'hooks/useInputSchema';
+import useLocale from 'hooks/useLocale';
+
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
+import Form from 'components/Form';
+import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
+import PageContainer from 'components/UI/PageContainer';
+
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { isNilOrError } from 'utils/helperUtils';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { geocode, reverseGeocode } from 'utils/locationTools';
 import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
-import usePhases from 'api/phases/usePhases';
-import usePhase from 'api/phases/usePhase';
-import useInputSchema from 'hooks/useInputSchema';
-import { useSearchParams } from 'react-router-dom';
-import useAddIdea from 'api/ideas/useAddIdea';
-import useLocalize from 'hooks/useLocalize';
-
-// i18n
-import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
-
-// components
-import Form from 'components/Form';
+import { Heading } from '../components/Heading';
 import IdeasNewMeta from '../IdeasNewMeta';
-import PageContainer from 'components/UI/PageContainer';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
-import { Heading } from './Heading';
-import { Box } from '@citizenlab/cl2-component-library';
-const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
-import Warning from 'components/UI/Warning';
-import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
-
-// utils
-import { geocode, reverseGeocode } from 'utils/locationTools';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import messages from '../messages';
 import { getLocationGeojson } from '../utils';
-import { isNilOrError } from 'utils/helperUtils';
-import { getCurrentPhase } from 'api/phases/utils';
-import { parse } from 'qs';
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
-// types
-import { Multiloc } from 'typings';
-import { IPhases, IPhaseData } from 'api/phases/types';
-import useLocale from 'hooks/useLocale';
-import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
-import { IProject } from 'api/projects/types';
+const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -69,28 +61,27 @@ interface FormValues {
   location_description?: string;
   location_point_geojson?: GeoJSON.Point;
   topic_ids?: string[];
+  publication_status?: IdeaPublicationStatus;
 }
 
 interface Props {
   project: IProject;
 }
 
-const IdeasNewPageWithJSONForm = ({ project }: Props) => {
+const IdeasNewIdeationForm = ({ project }: Props) => {
   const locale = useLocale();
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
   const { mutateAsync: addIdea } = useAddIdea();
-  const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
   const [queryParams] = useSearchParams();
-  const phaseId = queryParams.get('phase_id');
+  const phaseId = queryParams.get('phase_id') || undefined;
   const { data: phases } = usePhases(project.data.id);
+  const { data: phaseFromUrl } = usePhase(phaseId);
   const { schema, uiSchema, inputSchemaError } = useInputSchema({
     projectId: project.data.id,
     phaseId,
   });
-  const localize = useLocalize();
-
   const search = location.search;
 
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
@@ -99,14 +90,12 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
   const [initialFormData, setInitialFormData] = useState({});
   const [postAnonymously, setPostAnonymously] = useState(false);
   const participationContext = getCurrentPhase(phases?.data);
+  const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
   const allowAnonymousPosting =
     participationContext?.attributes.allow_anonymous_participation;
 
+  // Click on map flow : Reverse geocode the location if it's in the url params
   useEffect(() => {
-    // Click on map flow :
-    // clicked location is passed in url params
-    // reverse goecode them and use them as initial data
-
     const { lat, lng } = parse(search, {
       ignoreQueryPrefix: true,
       decoder: (str, _defaultEncoder, _charset, type) => {
@@ -134,18 +123,15 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     }
   }, [search, locale]);
 
-  // get participation method config
-  const { data: phaseFromUrl } = usePhase(phaseId);
-  const config = getConfig(phaseFromUrl?.data, phases);
-
+  // Handle image disclaimer
   const handleDisclaimer = (data: FormValues) => {
-    const disclamerNeeded =
+    const disclaimerNeeded =
       data.idea_files_attributes ||
       data.idea_images_attributes ||
       Object.values(data.body_multiloc).some((value) => value.includes('<img'));
 
     setFormData(data);
-    if (disclamerNeeded) {
+    if (disclaimerNeeded) {
       return setIsDisclaimerOpened(true);
     } else {
       return onSubmit(data);
@@ -190,7 +176,11 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     });
 
     const ideaId = idea.data.id;
-    config?.onFormSubmission({ project: project.data, ideaId, idea });
+    participationMethodConfig?.onFormSubmission({
+      project: project.data,
+      ideaId,
+      idea,
+    });
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
@@ -236,7 +226,7 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     setPostAnonymously((postAnonymously) => !postAnonymously);
   };
 
-  if (!config) {
+  if (!participationMethodConfig) {
     return null;
   }
 
@@ -244,59 +234,44 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
     !isNilOrError(authUser) &&
     canModerateProject(project.data.id, { data: authUser.data });
 
-  const isNativeSurvey = config.postType === 'nativeSurvey';
-  const isAnonymousSurvey = isNativeSurvey && allowAnonymousPosting;
-
-  function getTitleText() {
-    if (isNativeSurvey) {
-      return localize(
-        participationContext?.attributes.native_survey_title_multiloc
-      );
-    } else if (config?.getFormTitle) {
-      return config.getFormTitle({
-        project: project.data,
-        phases: phases?.data,
-        phaseFromUrl: phaseFromUrl?.data,
-      });
-    } else {
-      return null;
-    }
-  }
-
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
-      {!processingLocation && schema && uiSchema && config ? (
+      {!processingLocation &&
+      schema &&
+      uiSchema &&
+      participationMethodConfig ? (
         <>
           <IdeasNewMeta />
           <Form
             schema={schema}
             uiSchema={uiSchema}
-            onSubmit={isNativeSurvey ? onSubmit : handleDisclaimer}
+            onSubmit={handleDisclaimer}
             initialFormData={initialFormData}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
-            inputId={undefined}
             title={
               <>
                 <Heading
                   project={project.data}
-                  titleText={getTitleText()}
-                  isSurvey={isNativeSurvey}
+                  titleText={
+                    participationMethodConfig.getFormTitle ? (
+                      participationMethodConfig.getFormTitle({
+                        project: project.data,
+                        phases: phases?.data,
+                        phaseFromUrl: phaseFromUrl?.data,
+                      })
+                    ) : (
+                      <></>
+                    )
+                  }
+                  isSurvey={false}
                   canUserEditProject={canUserEditProject}
                 />
-                {isAnonymousSurvey && (
-                  <Box mx="auto" p="20px" maxWidth="700px">
-                    <Warning icon="shield-checkered">
-                      {formatMessage(messages.anonymousSurveyMessage)}
-                    </Warning>
-                  </Box>
-                )}
               </>
             }
-            config={isNativeSurvey ? 'survey' : 'input'}
-            formSubmitText={isNativeSurvey ? messages.submitSurvey : undefined}
+            config={'input'}
             footer={
-              !isNativeSurvey && allowAnonymousPosting ? (
+              allowAnonymousPosting ? (
                 <Suspense fallback={null}>
                   <ProfileVisiblity
                     postAnonymously={postAnonymously}
@@ -326,4 +301,4 @@ const IdeasNewPageWithJSONForm = ({ project }: Props) => {
   );
 };
 
-export default IdeasNewPageWithJSONForm;
+export default IdeasNewIdeationForm;

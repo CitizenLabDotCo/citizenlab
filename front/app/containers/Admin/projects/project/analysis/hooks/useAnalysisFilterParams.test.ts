@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
+
 import useAnalysisFilterParams from './useAnalysisFilterParams';
 
 const mockSearchParams = new URLSearchParams({

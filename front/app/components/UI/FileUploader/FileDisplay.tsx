@@ -1,9 +1,5 @@
 import React from 'react';
-import { returnFileSize } from 'utils/fileUtils';
-import { lighten } from 'polished';
 
-// styles
-import styled from 'styled-components';
 import {
   colors,
   fontSizes,
@@ -11,12 +7,15 @@ import {
   Icon,
   IconButton,
 } from '@citizenlab/cl2-component-library';
-import { ScreenReaderOnly } from 'utils/a11y';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import { lighten } from 'polished';
 import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { returnFileSize } from 'utils/fileUtils';
+
+import messages from './messages';
 
 const Container = styled.div<{ error: boolean }>`
   display: flex;

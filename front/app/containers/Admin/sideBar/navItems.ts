@@ -1,5 +1,7 @@
-import { TAppConfigurationSetting } from 'api/app_configuration/types';
 import { IconNames } from '@citizenlab/cl2-component-library';
+
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
+
 import messages from './messages';
 
 export type NavItem = {

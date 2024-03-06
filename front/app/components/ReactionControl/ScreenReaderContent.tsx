@@ -1,9 +1,9 @@
 import React from 'react';
-import { ScreenReaderOnly } from 'utils/a11y';
 
-// i18n
-import messages from './messages';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface Props {
   likesCount: number;

@@ -1,8 +1,17 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+
+import { Box, IconTooltip, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-// components
+import { IAreaData } from 'api/areas/types';
+import useAreas from 'api/areas/useAreas';
+import useDeleteArea from 'api/areas/useDeleteArea';
+import useUpdateArea from 'api/areas/useUpdateArea';
+import useCustomPages from 'api/custom_pages/useCustomPages';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
   SortableList,
   SortableRow,
@@ -13,25 +22,16 @@ import {
   SectionDescription,
   SectionTitle,
 } from 'components/admin/Section';
-import Button from 'components/UI/Button';
-import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { Box, IconTooltip, colors } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
-
-// resources
-import useAreas from 'api/areas/useAreas';
-import useDeleteArea from 'api/areas/useDeleteArea';
-import useCustomPages from 'api/custom_pages/useCustomPages';
-import useUpdateArea from 'api/areas/useUpdateArea';
-import AreaTermConfig from './AreaTermConfig';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import T from 'components/T';
-import useLocalize from 'hooks/useLocalize';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
+
 import messages from '../messages';
 
-import { IAreaData } from 'api/areas/types';
+import AreaTermConfig from './AreaTermConfig';
 
 export const StyledLink = styled(Link)`
   color: ${colors.white} !important;

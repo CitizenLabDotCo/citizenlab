@@ -1,7 +1,7 @@
 import { randomString } from '../../../support/commands';
 import moment = require('moment');
 
-describe.skip('Form builder image multiple choice choose multiple component', () => {
+describe('Form builder image multiple choice choose multiple component', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
@@ -73,7 +73,7 @@ describe.skip('Form builder image multiple choice choose multiple component', ()
     cy.contains('Save').click();
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
     cy.contains(questionTitle).should('exist');
-    cy.contains(otherText).click({ force: true });
+    cy.get('[data-cy="e2e-image-multichoice-control-checkbox"]').eq(1).click();
     cy.contains('Survey').should('exist');
     cy.get('#e2e-single-select-control').should('exist');
 

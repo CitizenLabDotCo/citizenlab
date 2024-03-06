@@ -1,41 +1,30 @@
 import React, { memo, useEffect, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
-
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import useEvents from 'api/events/useEvents';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-
-// services
-import { getCurrentPhase, getInputTerm, getLastPhase } from 'api/phases/utils';
-import { IPhaseData } from 'api/phases/types';
-
-// components
-import Button from 'components/UI/Button';
-import IdeaButton from 'components/IdeaButton';
-
-// utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
-import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
-import { scrollToElement } from 'utils/scroll';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
-import { getInputTermMessage } from 'utils/i18n';
-
-// style
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-// router
-import { useLocation } from 'react-router-dom';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import useEvents from 'api/events/useEvents';
+import { IPhaseData } from 'api/phases/types';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase, getInputTerm, getLastPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
+import messages from 'containers/ProjectsShowPage/messages';
+
+import IdeaButton from 'components/IdeaButton';
+import Button from 'components/UI/Button';
+
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { FormattedMessage } from 'utils/cl-intl';
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
+import { scrollToElement } from 'utils/scroll';
 
 const Container = styled.div``;
 

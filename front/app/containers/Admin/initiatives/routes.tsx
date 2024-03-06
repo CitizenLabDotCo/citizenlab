@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
-import PageLoading from 'components/UI/PageLoading';
+
 import InitiativePreviewIndex from 'components/admin/PostManager/components/InitiativePreviewIndex';
+import PageLoading from 'components/UI/PageLoading';
 const AdminInitiativesIndex = lazy(() => import('.'));
 const AdminInitiativesSettings = lazy(() => import('./settings'));
 const AdminGranularPermissionsComponent = lazy(

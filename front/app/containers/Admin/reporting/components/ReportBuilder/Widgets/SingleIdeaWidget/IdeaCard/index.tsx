@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-// styling
-import styled, { useTheme } from 'styled-components';
 import {
   colors,
   stylingConsts,
@@ -11,28 +9,25 @@ import {
   Image,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// components
-import Link from 'utils/cl-router/Link';
-import GradientSrc from './gradient.svg';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import AuthorAvatar from './AuthorAvatar';
-
-// i18n
-import messages from '../../MostReactedIdeasWidget/messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-// utils
-import checkTextOverflow, { MEDIUM_LINE_HEIGHT } from './checkTextOverflow';
-
-// types
 import { IIdeaImageData } from 'api/idea_images/types';
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 
-// i18n
 import useLocalize from 'hooks/useLocalize';
+
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { getTextNumberOfVotes } from 'utils/configs/votingMethodConfig/textNumberOfVotes';
+
+import messages from '../../MostReactedIdeasWidget/messages';
+
+import AuthorAvatar from './AuthorAvatar';
+import checkTextOverflow, { MEDIUM_LINE_HEIGHT } from './checkTextOverflow';
+import GradientSrc from './gradient.svg';
 
 interface Props {
   rank?: number;
@@ -63,7 +58,6 @@ const IdeaCard = ({
 }: Props) => {
   const textContainerRef = useRef<HTMLDivElement | null>(null);
   const [textOverflow, setTextOverflow] = useState(false);
-  const theme = useTheme();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -154,10 +148,7 @@ const IdeaCard = ({
                 <Image src={GradientSrc} alt="" width="100%" height="100%" />
               </Box>
               <Box mt="12px">
-                <QuillEditedContent
-                  textColor={theme.colors.tenantText}
-                  fontSize="m"
-                >
+                <QuillEditedContent textColor={colors.textPrimary} fontSize="m">
                   <IdeaText
                     dangerouslySetInnerHTML={{ __html: body }}
                     ref={textContainerRef}

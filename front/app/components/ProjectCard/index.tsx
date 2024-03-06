@@ -1,42 +1,5 @@
 import React, { memo, useState } from 'react';
-import { isEmpty, round } from 'lodash-es';
-import moment from 'moment';
-import { useInView } from 'react-intersection-observer';
-import { TLayout } from 'components/ProjectAndFolderCards';
 
-// router
-import Link from 'utils/cl-router/Link';
-
-// components
-import Image from 'components/UI/Image';
-import AvatarBubbles from 'components/AvatarBubbles';
-import FollowUnfollow from 'components/FollowUnfollow';
-
-// services
-import { getProjectUrl } from 'api/projects/utils';
-import { getIdeaPostingRules } from 'utils/actionTakingRules';
-
-// resources
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
-import usePhases from 'api/phases/usePhases';
-import useAuthUser from 'api/me/useAuthUser';
-import useProjectImages, {
-  CARD_IMAGE_ASPECT_RATIO,
-} from 'api/project_images/useProjectImages';
-import useLocalize from 'hooks/useLocalize';
-
-// i18n
-import T from 'components/T';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
-import styled, { useTheme } from 'styled-components';
 import {
   Icon,
   Box,
@@ -47,13 +10,40 @@ import {
   defaultCardHoverStyle,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import { isEmpty, round } from 'lodash-es';
+import moment from 'moment';
 import { rgba, darken } from 'polished';
+import { useInView } from 'react-intersection-observer';
+import styled, { useTheme } from 'styled-components';
 
-// utils
-import { getInputTermMessage } from 'utils/i18n';
-import { ScreenReaderOnly } from 'utils/a11y';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
 import { getInputTerm } from 'api/phases/utils';
+import useProjectImages, {
+  CARD_IMAGE_ASPECT_RATIO,
+} from 'api/project_images/useProjectImages';
+import useProjectById from 'api/projects/useProjectById';
+import { getProjectUrl } from 'api/projects/utils';
+
+import useLocalize from 'hooks/useLocalize';
+
+import AvatarBubbles from 'components/AvatarBubbles';
+import FollowUnfollow from 'components/FollowUnfollow';
+import { TLayout } from 'components/ProjectAndFolderCards';
+import T from 'components/T';
+import Image from 'components/UI/Image';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { getIdeaPostingRules } from 'utils/actionTakingRules';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { getInputTermMessage } from 'utils/i18n';
+
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);

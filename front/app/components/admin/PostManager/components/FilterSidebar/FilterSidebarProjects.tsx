@@ -1,11 +1,17 @@
 import React from 'react';
-import { IProjectData } from 'api/projects/types';
-import { Menu, Divider } from 'semantic-ui-react';
-import FilterSidebarProjectsItem from './FilterSidebarProjectsItem';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+
 import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Menu, Divider } from 'semantic-ui-react';
+
+import { IProjectData } from 'api/projects/types';
+
 import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../messages';
+
+import FilterSidebarProjectsItem from './FilterSidebarProjectsItem';
 
 interface Props {
   projects?: IProjectData[] | null;

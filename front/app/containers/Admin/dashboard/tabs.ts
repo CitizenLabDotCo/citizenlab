@@ -1,6 +1,7 @@
 import { MessageDescriptor } from 'react-intl';
-import messages from './messages';
 import { FormatMessage } from 'typings';
+
+import messages from './messages';
 
 const BASE_ADMIN_TABS = [
   {

@@ -1,22 +1,19 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// router
-import { useSearchParams } from 'react-router-dom';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-
-// components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
+
+import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
+import Footer from 'components/PostShowComponents/Footer';
+
+import { trackEventByName } from 'utils/analytics';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import InitiativeMeta from './InitiativeMeta';
 const Modals = lazy(() => import('./modals'));
-import Phone from './Phone';
 import LargerThanPhone from './LargerThanPhone';
-import Footer from 'components/PostShowComponents/Footer';
-import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
+import Phone from './Phone';
+import tracks from './tracks';
 
 interface Props {
   initiativeId: string;

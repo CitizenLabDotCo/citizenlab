@@ -1,10 +1,10 @@
-// i18n
-import messages from './messages';
+import { FormatMessage } from 'typings';
+
 import moduleMessages from 'components/admin/GraphCards/messages';
+
 import cardMessages from '../messages';
 
-// typings
-import { FormatMessage } from 'typings';
+import messages from './messages';
 
 export interface Translations {
   stats: string;

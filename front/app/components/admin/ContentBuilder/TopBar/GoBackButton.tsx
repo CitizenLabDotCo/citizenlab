@@ -1,7 +1,7 @@
 import React from 'react';
 
-// components
 import { Box, colors } from '@citizenlab/cl2-component-library';
+
 import GoBackButton from 'components/UI/GoBackButton';
 
 interface Props {

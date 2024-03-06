@@ -1,7 +1,10 @@
 import { IRelationship, Multiloc } from 'typings';
-import { Keys } from 'utils/cl-react-query/types';
-import phasesKeys from './keys';
+
 import { CampaignName } from 'api/campaigns/types';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import phasesKeys from './keys';
 
 export type PhasesKeys = Keys<typeof phasesKeys>;
 
@@ -52,6 +55,7 @@ export interface IPhaseAttributes {
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
   document_annotation_embed_url?: string | null;
+  custom_form_persisted?: boolean;
   voting_method?: VotingMethod | null;
   voting_term_singular_multiloc?: Multiloc | null;
   voting_term_plural_multiloc?: Multiloc | null;
