@@ -23,7 +23,6 @@ import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import PageContainer from 'components/UI/PageContainer';
 import Warning from 'components/UI/Warning';
-import SurveyNotActiveNotice from '../components/SurveyNotActiveNotice';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -82,7 +81,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const [ideaId, setIdeaId] = useState<string | undefined>();
 
   const [initialFormData, setInitialFormData] = useState({});
-  const currentPhase = getCurrentPhase(phases?.data);
   const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
   const allowAnonymousPosting =
     phaseFromUrl?.data.attributes.allow_anonymous_participation;
@@ -90,8 +88,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const userIsModerator =
     !isNilOrError(authUser) &&
     canModerateProject(project.data.id, { data: authUser.data });
-
-  const canUserViewForm = userIsModerator || phaseId === currentPhase?.id;
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
@@ -213,8 +209,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
       });
     }
   };
-
-  if (!canUserViewForm) return <SurveyNotActiveNotice project={project.data} />;
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">

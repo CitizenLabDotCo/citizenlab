@@ -22,8 +22,10 @@ import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 import SurveySubmittedNotice from './components/SurveySubmittedNotice';
+import SurveyNotActiveNotice from './components/SurveyNotActiveNotice';
 import IdeasNewIdeationForm from './IdeasNewIdeationForm';
 import IdeasNewSurveyForm from './IdeasNewSurveyForm';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();
@@ -58,6 +60,7 @@ const NewIdeaPage = () => {
     return null;
   }
 
+  const currentPhase = getCurrentPhase(phases?.data);
   const participationMethod = getParticipationMethod(
     project.data,
     phases?.data,
@@ -68,12 +71,23 @@ const NewIdeaPage = () => {
   const { enabled, disabledReason, authenticationRequirements } =
     getIdeaPostingRules({
       project: project.data,
-      phase: getCurrentPhase(phases?.data),
+      phase: currentPhase,
       authUser: authUser?.data,
     });
 
-  if (isSurvey && disabledReason === 'postingLimitedMaxReached') {
-    return <SurveySubmittedNotice project={project.data} />;
+  const userIsModerator =
+    !isNilOrError(authUser) &&
+    canModerateProject(project.data.id, { data: authUser.data });
+
+  const userCannotViewSurvey =
+    !userIsModerator && phase_id !== currentPhase?.id;
+
+  if (isSurvey) {
+    if (disabledReason === 'postingLimitedMaxReached') {
+      return <SurveySubmittedNotice project={project.data} />;
+    } else if (userCannotViewSurvey) {
+      return <SurveyNotActiveNotice project={project.data} />;
+    }
   }
 
   if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
