@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 // components
@@ -19,14 +19,15 @@ import {
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
     isRoot
-      ? `cursor: auto;
-padding-top: 4px;
-padding-bottom: 4px;
-width: 100%;
-max-width: 1000px;
-background-color: #fff;
-min-height: 160px;`
-      : `cursor:move;`}
+      ? `
+        cursor: auto;
+        width: 100%;
+        max-width: 1000px;
+        background-color: #fff;
+        min-height: 160px;
+        box-sizing: content-box;
+      `
+      : 'cursor: move;'}
 `;
 
 const CONTAINER = 'Container';
@@ -35,7 +36,6 @@ const RenderNode = ({ render }) => {
   const {
     id,
     name,
-    isHover,
     hasError,
     title,
     noPointerEvents,
@@ -51,13 +51,14 @@ const RenderNode = ({ render }) => {
 
     return {
       props: node.data.props,
-      isHover: node.events.hovered,
       name,
       hasError: node.data.props?.hasError,
       title: WIDGET_TITLES[name],
       noPointerEvents: hasNoPointerEvents(name),
     };
   });
+
+  const [isHover, setIsHover] = useState(false);
 
   const {
     isActive,
@@ -119,6 +120,7 @@ const RenderNode = ({ render }) => {
     isActive && isSelectable && id !== ROOT_NODE && isDeletable && !isContainer;
 
   const nodeIsHovered = isHover && id !== ROOT_NODE && !isContainer;
+
   const solidBorderIsVisible =
     isSelectable && (nodeLabelIsVisible || nodeIsHovered || hasError);
 
@@ -128,7 +130,7 @@ const RenderNode = ({ render }) => {
       ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
-      borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
+      borderStyle="solid"
       minHeight={id === ROOT_NODE ? '160px' : '0px'}
       background="#fff"
       borderWidth={invisible ? '0px' : '1px'}
@@ -138,11 +140,16 @@ const RenderNode = ({ render }) => {
           : solidBorderIsVisible
           ? colors.primary
           : isSelectable
-          ? colors.divider
+          ? 'transparent'
           : 'transparent'
       }
-      my={invisible ? undefined : '2px'}
       isRoot={id === ROOT_NODE}
+      onMouseOver={() => {
+        setIsHover(true);
+      }}
+      onMouseOut={() => {
+        setIsHover(false);
+      }}
     >
       {nodeLabelIsVisible && (
         <Box
