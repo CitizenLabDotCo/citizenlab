@@ -50,6 +50,7 @@ fi:
       "assignee_digest": Viikoittainen yhteenveto osoitetuista ideoista
       "user_digest": Viikkokatsaus
       "voting_basket_submitted": Äänestyksen vahvistus
+      "native_survey_not_submitted": Kyselyä ei lähetetty
       "voting_basket_not_submitted": Ääniä ei toimitettu
       "voting_last_chance": Viimeinen mahdollisuus äänestää
       "voting_phase_started": Uusi projektivaihe äänestyksellä
@@ -505,6 +506,13 @@ fi:
       event_description: 'Kiitos osallistumisesta. Äänesi on tallennettu. Vieraile %{organizationName} -alustalla nähdäksesi ja hallitaksesi ääniäsi.'
       cta_see_votes_submitted: 'Katso lähetetyt äänet'
       cta_message: 'Napsauta alla olevaa painiketta osallistuaksesi'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: Melkein perillä! Lähetä vastauksesi'
+      preheader: 'Et vastannut kyselyyn osallistumisalustalla %{organizationName}'
+      title_native_survey_not_submitted: 'Melkein siellä! Lähetä vastauksesi'
+      body_native_survey_not_submitted: 'Aloit jakaa vastauksiasi %{phaseTitle} , mutta et lähettänyt niitä. Lähetys päättyy %{phaseEndDate}. Napsauta alla olevaa painiketta jatkaaksesi siitä, mihin jäit.'
+      body_native_survey_not_submitted_no_date: 'Aloit jakaa vastauksiasi %{phaseTitle} , mutta et lähettänyt niitä. Napsauta alla olevaa painiketta jatkaaksesi siitä, mihin jäit.'
+      cta_complete_your_survey_response: 'Jatka kyselyyn vastaamista'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Et antanut ääniäsi'
       preheader: 'Et lähettänyt ääntäsi osallistumisalustalla %{organizationName}'
@@ -580,6 +588,7 @@ fi:
         user_who_voted: 'Äänestänyt käyttäjä'
         user_with_unsubmitted_votes: 'Käyttäjä, joka ei ole antanut ääniään'
         users_who_engaged_but_not_voted: 'Käyttäjät, jotka osallistuivat projektiin, mutta eivät ole äänestäneet'
+        user_with_unsubmitted_survey: 'Käyttäjä, joka on aloittanut kyselynsä, mutta ei lähettänyt'
       content_type:
         comments: 'Kommentit'
         content_moderation: 'Sisällön moderointi'
@@ -592,6 +601,7 @@ fi:
         proposals: 'ehdotuksia'
         reactions: 'Reaktiot'
         voting: 'Äänestäminen'
+        surveys: 'Kyselyt'
       trigger:
         comment_is_deleted: 'Kommentti on poistettu'
         comment_is_flagged_as_spam: 'Kommentti on merkitty roskapostiksi'
@@ -640,3 +650,4 @@ fi:
         7_days_after_invite_is_sent: '7 päivää kutsun lähettämisen jälkeen'
         7_days_before_the_project_changes_phase: '7 päivää ennen projektin muutosvaihetta'
         registration_to_event: 'Ilmoittautuminen tapahtumaan'
+        survey_1_day_after_draft_saved: '1 päivä sen jälkeen, kun käyttäjä viimeksi tallensi kyselyn luonnokseksi'
