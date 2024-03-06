@@ -222,11 +222,13 @@ RSpec.describe SurveyResultsGeneratorService do
       :custom_field_point,
       resource: form,
       title_multiloc: {
-        'en' => 'Where should the transmogrification unit be located?'
+        'en' => 'Where should the new nursery be located?'
       },
       description_multiloc: {}
     )
   end
+
+  let!(:map_config) { create(:map_config, mappable: point_field) }
 
   let(:expected_result) do
     {
@@ -368,10 +370,11 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'point',
-          question: { 'en' => 'Where should the transmogrification unit be located?' },
+          question: { 'en' => 'Where should the new nursery be located?' },
           required: false,
           totalResponses: 2,
           customFieldId: point_field.id,
+          mapConfigId: map_config.id,
           pointResponses: a_collection_containing_exactly(
             { answer: { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } },
             { answer: { 'coordinates' => [11.22, 33.44], 'type' => 'Point' } }
