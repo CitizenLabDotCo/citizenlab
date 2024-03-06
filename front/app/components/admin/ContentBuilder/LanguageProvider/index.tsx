@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-// Utils
-import { IntlProvider } from 'react-intl';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import moment from 'moment';
-
-// Typings
+import { IntlProvider } from 'react-intl';
 import { Locale } from 'typings';
+
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 type Props = {
   contentBuilderLocale: Locale | NilOrError;

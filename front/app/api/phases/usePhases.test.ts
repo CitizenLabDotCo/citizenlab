@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import usePhases from './usePhases';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import endpoints, { apiPathPhases, phasesData } from './__mocks__/_mockServer';
+import usePhases from './usePhases';
 
 const server = setupServer(endpoints['GET projects/:projectId/phases']);
 

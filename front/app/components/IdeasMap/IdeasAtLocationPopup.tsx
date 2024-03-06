@@ -1,18 +1,14 @@
 import React from 'react';
 
-// components
-import { Box, Button } from '@citizenlab/cl2-component-library';
 import MapView from '@arcgis/core/views/MapView';
-import { Spacer } from 'components/UI/FormComponents';
+import { Box, Button } from '@citizenlab/cl2-component-library';
+import { createPortal } from 'react-dom';
 
-// hooks
-import useLocalize from 'hooks/useLocalize';
-
-// types
 import { IIdeaMarkerData } from 'api/idea_markers/types';
 
-// utils
-import { createPortal } from 'react-dom';
+import useLocalize from 'hooks/useLocalize';
+
+import { Spacer } from 'components/UI/FormComponents';
 
 type Props = {
   portalElement: HTMLDivElement;

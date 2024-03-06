@@ -1,17 +1,22 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import React, { useState } from 'react';
+
+import { Box, IOption, Select } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   isEnumControl,
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import React, { useState } from 'react';
-import ErrorDisplay from '../ErrorDisplay';
-import { Box, IOption, Select } from '@citizenlab/cl2-component-library';
-import { FormLabel } from 'components/UI/FormComponents';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import styled from 'styled-components';
+
+import { FormLabel } from 'components/UI/FormComponents';
+
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
+
 import { getOptions, getSubtextElement } from './controlUtils';
 
 const StyledSelect = styled(Select)`

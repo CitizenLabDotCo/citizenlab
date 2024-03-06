@@ -1,13 +1,16 @@
 import React from 'react';
+
 import { adopt } from 'react-adopt';
 import { IntlProvider, createIntlCache, createIntl } from 'react-intl';
-import CustomIntlContext from './CustomIntlContext';
 import GetAppConfigurationLocales, {
   GetAppConfigurationLocalesChildProps,
 } from 'resources/GetAppConfigurationLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import { isNilOrError } from 'utils/helperUtils';
 import { Locale } from 'typings';
+
+import { isNilOrError } from 'utils/helperUtils';
+
+import CustomIntlContext from './CustomIntlContext';
 import { AllMessages, IntlShapes } from './types';
 
 interface InputProps {}

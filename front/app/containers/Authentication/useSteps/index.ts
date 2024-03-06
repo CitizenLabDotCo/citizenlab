@@ -1,32 +1,25 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
+
 import { parse } from 'qs';
-
-// api
-import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
-import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
-import requirementsKeys from 'api/authentication/authentication_requirements/keys';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-
-// hooks
-import useAnySSOEnabled from '../useAnySSOEnabled';
 import { useLocation } from 'react-router-dom';
+
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
+import requirementsKeys from 'api/authentication/authentication_requirements/keys';
+import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
+import { SSOParams } from 'api/authentication/singleSignOn';
 import useAuthUser from 'api/me/useAuthUser';
 
-// utils
-import { getStepConfig } from './stepConfig';
-import clHistory from 'utils/cl-router/history';
+import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
 
-// events
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import clHistory from 'utils/cl-router/history';
+import { isNil, isNilOrError } from 'utils/helperUtils';
+
 import {
   triggerAuthenticationFlow$,
   triggerVerificationOnly$,
 } from '../events';
-
-// constants
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
-
-// typings
-import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 import {
   ErrorCode,
   State,
@@ -34,8 +27,9 @@ import {
   Step,
   AuthenticationData,
 } from '../typings';
-import { SSOParams } from 'api/authentication/singleSignOn';
-import { isNil, isNilOrError } from 'utils/helperUtils';
+import useAnySSOEnabled from '../useAnySSOEnabled';
+
+import { getStepConfig } from './stepConfig';
 
 let initialized = false;
 

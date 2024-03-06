@@ -1,44 +1,38 @@
 import React, { memo, useCallback } from 'react';
 
-// components
 import {
   Icon,
   Spinner,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import TopicFilterDropdown from 'components/IdeaCards/shared/Filters/TopicFilterDropdown';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import usePhase from 'api/phases/usePhase';
+import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+
+import useLocale from 'hooks/useLocale';
+
 import SelectSort, {
   Sort,
 } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
-import SearchInput from 'components/UI/SearchInput';
-import IdeaMapCard from '../IdeaMapCard';
+import TopicFilterDropdown from 'components/IdeaCards/shared/Filters/TopicFilterDropdown';
 import Centerer from 'components/UI/Centerer';
+import SearchInput from 'components/UI/SearchInput';
 
-// hooks
-import useLocale from 'hooks/useLocale';
-import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-import usePhase from 'api/phases/usePhase';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 
-// router
-import { useSearchParams } from 'react-router-dom';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-// services
-
-// i18n
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
-
-// utils
-import { isFieldEnabled } from 'utils/projectUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+
+import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
+
+import IdeaMapCard from '../IdeaMapCard';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import messages from '../messages';
 
 const Container = styled.div`
   width: 100%;

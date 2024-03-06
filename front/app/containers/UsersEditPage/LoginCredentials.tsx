@@ -1,15 +1,15 @@
-// Libraries
 import React from 'react';
 
-// components
-import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
-import Button from 'components/UI/Button';
 import { Box } from '@citizenlab/cl2-component-library';
 
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { IUserData } from 'api/users/types';
+
+import Button from 'components/UI/Button';
+import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 type PasswordChangeProps = {
   user: IUserData;

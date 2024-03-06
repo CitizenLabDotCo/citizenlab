@@ -1,18 +1,17 @@
 // flows
-import { lightFlow } from './lightFlow';
-import { missingDataFlow } from './missingDataFlow';
-import { sharedSteps } from './sharedSteps';
-import { signInFlow } from './signInFlow';
-import { signUpFlow } from './signUpFlow';
-import { claveUnicaFlow } from './claveUnicaFlow';
-
-// typings
 import {
   GetRequirements,
   UpdateState,
   AuthenticationData,
   SetError,
 } from '../../typings';
+
+import { claveUnicaFlow } from './claveUnicaFlow';
+import { lightFlow } from './lightFlow';
+import { missingDataFlow } from './missingDataFlow';
+import { sharedSteps } from './sharedSteps';
+import { signInFlow } from './signInFlow';
+import { signUpFlow } from './signUpFlow';
 import { Step } from './typings';
 
 export const getStepConfig = (

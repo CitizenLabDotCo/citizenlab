@@ -1,44 +1,41 @@
 import React from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
+import { Element } from '@craftjs/core';
 import moment from 'moment';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
+import usePhases from 'api/phases/usePhases';
+import useProjectById from 'api/projects/useProjectById';
 
-// craft
-import { Element } from '@craftjs/core';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
+import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
+import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
+import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
+
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+
+import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
+import { withoutSpacing } from 'utils/textUtils';
 
 // shared widgets
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // report builder widgets
-import TextMultiloc from '../../Widgets/TextMultiloc';
 import AboutReportWidget from '../../Widgets/AboutReportWidget';
-import TwoColumn from '../../Widgets/TwoColumn';
-import GenderWidget from '../../Widgets/ChartWidgets/GenderWidget';
-import AgeWidget from '../../Widgets/ChartWidgets/AgeWidget';
-import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
 import ActiveUsersWidget from '../../Widgets/ChartWidgets/ActiveUsersWidget';
-import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
+import AgeWidget from '../../Widgets/ChartWidgets/AgeWidget';
+import GenderWidget from '../../Widgets/ChartWidgets/GenderWidget';
+import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
-
-// i18n
-import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
-import messages from './messages';
-import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
-
-// utils
-import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
-import { getTemplateData } from './getTemplateData';
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
-import { withoutSpacing } from 'utils/textUtils';
+import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
 import { SUPPORTED_INPUT_TYPES } from '../../Widgets/SurveyQuestionResultWidget/constants';
+import TextMultiloc from '../../Widgets/TextMultiloc';
+import TwoColumn from '../../Widgets/TwoColumn';
+
+import { getTemplateData } from './getTemplateData';
+import messages from './messages';
 
 export interface Props {
   reportId: string;

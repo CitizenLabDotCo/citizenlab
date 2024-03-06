@@ -1,8 +1,11 @@
 import React from 'react';
+
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+
 import useLocale from 'hooks/useLocale';
+
 import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`

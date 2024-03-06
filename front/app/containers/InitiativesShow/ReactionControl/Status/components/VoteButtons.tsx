@@ -1,9 +1,14 @@
 import React from 'react';
-import Button from 'components/UI/Button';
-import messages from '../../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { StatusComponentProps } from '../../StatusWrapper';
+
 import Tippy from '@tippyjs/react';
+
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../messages';
+import { StatusComponentProps } from '../../StatusWrapper';
+
 import DisabledReasonTooltip from './DisabledReasonTooltip';
 
 interface Props {

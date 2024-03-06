@@ -8,20 +8,11 @@ import React, {
   useState,
 } from 'react';
 
-// components
-import EsriMap from 'components/EsriMap';
-import MapView from '@arcgis/core/views/MapView';
-import LayerHoverLabel from 'components/IdeationConfigurationMap/components/LayerHoverLabel';
-import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
-import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Renderer from '@arcgis/core/renderers/SimpleRenderer';
-import InstructionMessage from './InstructionMessage';
-import StartIdeaButton from './StartIdeaButton';
-import IdeaMapCard from './IdeaMapCard';
-import IdeasAtLocationPopup from './IdeasAtLocationPopup';
-
+import MapView from '@arcgis/core/views/MapView';
 import {
   Box,
   media,
@@ -29,13 +20,18 @@ import {
   useWindowSize,
   viewportWidths,
 } from '@citizenlab/cl2-component-library';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
 import { useSearchParams } from 'react-router-dom';
 import useAuthUser from 'api/me/useAuthUser';
+import { CSSTransition } from 'react-transition-group';
+import styled, { useTheme } from 'styled-components';
 
-// utils
+import { IIdeaMarkers } from 'api/idea_markers/types';
+import { IMapConfig } from 'api/map_config/types';
+import usePhase from 'api/phases/usePhase';
+
+import useLocalize from 'hooks/useLocalize';
+
+import EsriMap from 'components/EsriMap';
 import {
   createEsriGeoJsonLayers,
   getMapPinSymbol,
@@ -45,6 +41,19 @@ import {
   esriPointToGeoJson,
   changeCursorOnHover,
 } from 'components/EsriMap/utils';
+import LayerHoverLabel from 'components/IdeationConfigurationMap/components/LayerHoverLabel';
+
+import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { isAdmin } from 'utils/permissions/roles';
+
+import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
+import IdeaMapCard from './IdeaMapCard';
+import IdeasAtLocationPopup from './IdeasAtLocationPopup';
+import InstructionMessage from './InstructionMessage';
+import messages from './messages';
+import StartIdeaButton from './StartIdeaButton';
 import {
   InnerContainer,
   getInnerContainerLeftMargin,
@@ -53,20 +62,6 @@ import {
   mapHeightDesktop,
   mapHeightMobile,
 } from './utils';
-import styled, { useTheme } from 'styled-components';
-import { CSSTransition } from 'react-transition-group';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-
-// types
-import { IMapConfig } from 'api/map_config/types';
-import { IIdeaMarkers } from 'api/idea_markers/types';
-
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import usePhase from 'api/phases/usePhase';
-import { isAdmin } from 'utils/permissions/roles';
 
 // Note: Existing custom styling
 const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`

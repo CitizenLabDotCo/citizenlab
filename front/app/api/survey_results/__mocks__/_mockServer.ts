@@ -1,5 +1,7 @@
-import { API_PATH } from 'containers/App/constants';
 import { rest } from 'msw';
+
+import { API_PATH } from 'containers/App/constants';
+
 import { SurveyResultsType } from '../types';
 
 export const projectApiPath = `${API_PATH}/projects/:projectId/survey_results`;

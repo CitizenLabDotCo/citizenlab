@@ -1,9 +1,11 @@
 import React, { useRef } from 'react';
-import styled from 'styled-components';
-import { useDrag, useDrop } from 'react-dnd';
-import { Row } from 'components/admin/ResourceList';
+
 import { Icon } from '@citizenlab/cl2-component-library';
 import { Identifier, XYCoord } from 'dnd-core';
+import { useDrag, useDrop } from 'react-dnd';
+import styled from 'styled-components';
+
+import { Row } from 'components/admin/ResourceList';
 
 const DragHandle = styled.div`
   cursor: move;

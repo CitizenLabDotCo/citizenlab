@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useComments from './useComments';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { commentsData, links } from './__mocks__/useComments';
+import useComments from './useComments';
 
 const ideaPath = '*ideas/:ideaId/comments';
 const initiativePath = '*initiatives/:initiativeId/comments';

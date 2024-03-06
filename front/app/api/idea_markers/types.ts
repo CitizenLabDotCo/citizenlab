@@ -1,6 +1,9 @@
-import { Sort } from 'api/ideas/types';
 import { Multiloc } from 'typings';
+
+import { Sort } from 'api/ideas/types';
+
 import { Keys } from 'utils/cl-react-query/types';
+
 import ideaMarkersKeys from './keys';
 
 export type IdeaMarkersKeys = Keys<typeof ideaMarkersKeys>;

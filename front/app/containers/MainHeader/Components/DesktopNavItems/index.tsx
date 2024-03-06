@@ -1,24 +1,19 @@
 import React from 'react';
 
-// hooks
-import useNavbarItems from 'api/navbar/useNavbarItems';
-import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
-
-// components
-import DesktopNavbarItem from './DesktopNavbarItem';
-import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
-
-// style
-import styled from 'styled-components';
 import { media, isRtl } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import getNavbarItemPropsArray from './getNavbarItemPropsArray';
+import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
+import useNavbarItems from 'api/navbar/useNavbarItems';
 
-// i18n
-import messages from '../../messages';
 import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../../messages';
+
+import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
+import DesktopNavbarItem from './DesktopNavbarItem';
+import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 
 const Container = styled.nav`
   height: 100%;

@@ -1,30 +1,26 @@
 import React, { memo, useCallback } from 'react';
 
-// components
-import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
-import Or from 'components/UI/Or';
-import FranceConnectButton from 'components/UI/FranceConnectButton';
-import Outlet from 'components/Outlet';
 import { Text } from '@citizenlab/cl2-component-library';
-import TextButton from '../_components/TextButton';
-
-// resources
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// styling
 import styled from 'styled-components';
 
-// typings
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { SSOProvider } from 'api/authentication/singleSignOn';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { ErrorCode } from 'containers/Authentication/typings';
 
-// utils
+import Outlet from 'components/Outlet';
+import FranceConnectButton from 'components/UI/FranceConnectButton';
+import Or from 'components/UI/Or';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import TextButton from '../_components/TextButton';
+
+import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import ClaveUnicaExpandedAuthProviderButton from './ClaveUnicaExpandedAuthProviderButton';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

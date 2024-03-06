@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 
-// components
 import CollapsibleBox from 'components/UI/CollapsibleBox';
 const Map = React.lazy(() => import('./Map'));
 

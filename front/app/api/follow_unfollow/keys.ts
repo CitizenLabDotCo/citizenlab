@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { IParameters } from './types';
 
 const baseKey = { type: 'follower' };

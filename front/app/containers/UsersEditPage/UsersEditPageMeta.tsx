@@ -1,22 +1,18 @@
-// libraries
 import React from 'react';
+
 import { Helmet } from 'react-helmet';
 
-// i18n
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
-// hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-// services
 import { IUser } from 'api/users/types';
 
-// utils
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocalize from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import useLocalize from 'hooks/useLocalize';
+
+import messages from './messages';
 
 interface Props {
   authUser: IUser;

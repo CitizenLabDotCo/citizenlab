@@ -1,18 +1,16 @@
 import React from 'react';
 
-// components
+import { media, fontSizes, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import CityLogoSection from 'components/CityLogoSection';
 import ContentContainer from 'components/ContentContainer';
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
-import CityLogoSection from 'components/CityLogoSection';
-import ProjectsIndexMeta from './ProjectsIndexMeta';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
-// style
-import styled from 'styled-components';
-import { media, fontSizes, colors } from '@citizenlab/cl2-component-library';
+import messages from './messages';
+import ProjectsIndexMeta from './ProjectsIndexMeta';
 
 const Container = styled.main`
   min-height: calc(

@@ -1,8 +1,5 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import CloseIconButton from 'components/UI/CloseIconButton';
 import {
   Icon,
   useWindowSize,
@@ -12,33 +9,25 @@ import {
   colors,
   viewportWidths,
 } from '@citizenlab/cl2-component-library';
-
-// router
-import clHistory from 'utils/cl-router/history';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
-
-// i18n
-import T from 'components/T';
-import FormattedBudget from 'utils/currency/FormattedBudget';
-import messages from './messages';
-
-// config
-import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-
-// styling
+import { darken } from 'polished';
 import styled from 'styled-components';
 
-import { darken } from 'polished';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
 
-// utils
+import T from 'components/T';
+import CloseIconButton from 'components/UI/CloseIconButton';
+
+import clHistory from 'utils/cl-router/history';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
-// typings
+import messages from './messages';
+
 import { IIdeaMarkerData } from 'api/idea_markers/types';
 
 const Container = styled.div`
