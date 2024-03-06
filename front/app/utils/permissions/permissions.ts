@@ -26,7 +26,7 @@ interface IResourceData {
 interface IPermissionRule {
   (
     resource: TPermissionItem | null,
-    user: IUser,
+    user: IUser | null,
     tenant: IAppConfigurationData,
     context?: any
   ): boolean;
@@ -84,7 +84,7 @@ const hasPermission = ({
 }) => {
   return authUserStream.pipe(
     map((user) => {
-      if (!item || !user) {
+      if (!item) {
         return false;
       }
 
@@ -92,7 +92,7 @@ const hasPermission = ({
       const rule = getPermissionRule(resourceType, action);
 
       if (rule && appConfiguration) {
-        return rule(item, user, appConfiguration.data, context);
+        return rule(item, user || null, appConfiguration.data, context);
       } else {
         throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;
       }

@@ -41,7 +41,7 @@ export function isProjectFolderModerator(user: IUserData) {
 // rules
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,
-  user: IUser,
+  user: IUser | null,
   tenant: IAppConfigurationData
 ) => {
   const hasAdminFolderRouteAccess =
