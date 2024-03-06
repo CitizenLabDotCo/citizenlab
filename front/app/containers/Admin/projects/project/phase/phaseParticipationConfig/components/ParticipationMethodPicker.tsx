@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// components
 import {
   IconTooltip,
   Text,
@@ -14,33 +10,33 @@ import {
   Title,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import Error from 'components/UI/Error';
 import Tippy from '@tippyjs/react';
-import ParticipationMethodChoice from './ParticipationMethodChoice';
-import Modal from 'components/UI/Modal';
+import styled from 'styled-components';
+
+import { IPhase, ParticipationMethod } from 'api/phases/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import Modal from 'components/UI/Modal';
 
-// i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
-import messages2 from './messages';
-
-// utils
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
 import { ApiErrors } from '..';
-import { IPhase, ParticipationMethod } from 'api/phases/types';
+import messages from '../../../messages';
 
-// assets
-import ideationImage from './assets/ideation.png';
-import surveyImage from './assets/survey.png';
-import votingImage from './assets/voting.png';
-import informationImage from './assets/information.png';
-import volunteeringImage from './assets/volunteering.png';
 import documentImage from './assets/document.png';
+import ideationImage from './assets/ideation.png';
+import informationImage from './assets/information.png';
+import surveyImage from './assets/survey.png';
+import volunteeringImage from './assets/volunteering.png';
+import votingImage from './assets/voting.png';
+import messages2 from './messages';
+import ParticipationMethodChoice from './ParticipationMethodChoice';
 
 const LeftAlignedList = styled.ul`
   text-align: left;

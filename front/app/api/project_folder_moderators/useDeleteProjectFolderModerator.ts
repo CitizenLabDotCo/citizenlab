@@ -1,8 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import fetcher from 'utils/cl-react-query/fetcher';
-import projectFolderModeratorsKeys from './keys';
+
 import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
 import usersKeys from 'api/users/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import projectFolderModeratorsKeys from './keys';
 
 const deleteModerator = ({
   projectFolderId,

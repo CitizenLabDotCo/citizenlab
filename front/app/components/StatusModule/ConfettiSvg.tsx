@@ -1,7 +1,7 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
+
 import Confetti from './confetti.svg';
 
 const ConfettiSvg = () => {

@@ -1,50 +1,39 @@
-// Libraries
 import React, { FormEvent, useState } from 'react';
-import { isArray, isNil, omitBy, includes } from 'lodash-es';
-import { saveAs } from 'file-saver';
 
-// Components
-import Checkbox from 'components/UI/Checkbox';
 import {
   Dropdown,
   Box,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import T from 'components/T';
-import Button from 'components/UI/Button';
-import SearchInput from 'components/UI/SearchInput';
+import { useQueryClient } from '@tanstack/react-query';
+import { saveAs } from 'file-saver';
+import { isArray, isNil, omitBy, includes } from 'lodash-es';
+import { rgba } from 'polished';
+import styled from 'styled-components';
+import { CLErrorsWrapper } from 'typings';
 
-// api
-import { MembershipType } from 'api/groups/types';
 import { IGroupMemberships } from 'api/group_memberships/types';
 import useAddMembership from 'api/group_memberships/useAddMembership';
+import { MembershipType } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
+import usersKeys from 'api/users/keys';
 
-// Utils
-import { requestBlob } from 'utils/requestBlob';
 import { API_PATH } from 'containers/App/constants';
 
-// Events
-import eventEmitter from 'utils/eventEmitter';
-import events, { MembershipAdd } from './events';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import Checkbox from 'components/UI/Checkbox';
+import SearchInput from 'components/UI/SearchInput';
 
-// tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// I18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+import { requestBlob } from 'utils/requestBlob';
+
+import events, { MembershipAdd } from './events';
 import messages from './messages';
-
-// Styling
-import styled from 'styled-components';
-import { rgba } from 'polished';
-
-// Typings
-import { CLErrorsWrapper } from 'typings';
-import usersKeys from 'api/users/keys';
-import { useQueryClient } from '@tanstack/react-query';
+import tracks from './tracks';
 
 const StyledBox = styled(Box)`
   user-select: none;

@@ -1,5 +1,6 @@
-import { IResolution } from 'components/admin/ResolutionControl';
 import { Moment } from 'moment';
+
+import { IResolution } from 'components/admin/ResolutionControl';
 
 // live
 export type ResolvedName =

@@ -74,9 +74,9 @@ class SideFxIdeaService
   def before_publish(idea, _user); end
 
   def after_publish(idea, user)
-    add_autoreaction idea
-    create_followers idea, user
-    log_activity_jobs_after_published idea, user
+    add_autoreaction(idea)
+    create_followers(idea, user) unless idea.anonymous?
+    log_activity_jobs_after_published(idea, user)
   end
 
   def add_autoreaction(idea)

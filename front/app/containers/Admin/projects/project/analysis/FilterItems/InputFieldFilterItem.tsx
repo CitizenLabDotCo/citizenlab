@@ -1,18 +1,23 @@
+import React from 'react';
+
 import {
   Box,
   IconButton,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+
 import useAnalysis from 'api/analyses/useAnalysis';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
-import React from 'react';
-import { useParams } from 'react-router-dom';
+
+import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+
 import ShortFieldValue from '../components/ShortInputFieldValue';
+
 import EllipsisFilterValue from './EllipsisFilterValue';
 import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
 
 type Props = {
   customFieldId: string;

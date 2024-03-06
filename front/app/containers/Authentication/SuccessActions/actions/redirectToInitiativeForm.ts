@@ -1,6 +1,7 @@
+import { stringify } from 'qs';
+
 import { trackEventByName } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
 
 export interface RedirectToInitiativeFormParams {
   lat?: number | null;

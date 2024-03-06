@@ -1,10 +1,8 @@
 import React from 'react';
 
-// routing
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {

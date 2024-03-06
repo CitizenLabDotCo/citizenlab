@@ -1,14 +1,11 @@
 import React from 'react';
 
-// components
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// i18n
-import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-// styling
-import styled from 'styled-components';
+import messages from './messages';
 
 const PageNavigationButton = styled.button<{ disabled: boolean }>`
   padding-left: 8px;

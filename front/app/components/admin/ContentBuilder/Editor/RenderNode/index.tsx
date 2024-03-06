@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import styled from 'styled-components';
 
-// components
-import { Box, colors } from '@citizenlab/cl2-component-library';
-
-// craft
-import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
-
-// intl
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+
 import messages from './messages';
 
 const StyledBox = styled(Box)`

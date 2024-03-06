@@ -1,18 +1,16 @@
 import React from 'react';
 
-// components
 import { Select } from '@citizenlab/cl2-component-library';
-
-// i18n
-import messages from './messages';
-import useLocalize, { Localize } from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
-
-// typings
 import { FormatMessage, IOption } from 'typings';
 
-import useGroups from 'api/groups/useGroups';
 import { IGroupData } from 'api/groups/types';
+import useGroups from 'api/groups/useGroups';
+
+import useLocalize, { Localize } from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface Props {
   currentGroupFilter?: string | null;

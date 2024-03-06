@@ -1,21 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
-import { object, array, string } from 'yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { appLocalePairs } from 'containers/App/constants';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// components
 import {
   IconTooltip,
   Label,
   Button,
   Box,
 } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import styled from 'styled-components';
+import { object, array, string } from 'yup';
+
+import { IAppConfigurationSettingsCore } from 'api/app_configuration/types';
+
+import { appLocalePairs } from 'containers/App/constants';
+
 import {
   Section,
   SectionTitle,
@@ -23,17 +22,16 @@ import {
   SectionField,
   SectionDescription,
 } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Input from 'components/HookForm/Input';
-import MultipleSelect from 'components/HookForm/MultipleSelect';
 import Feedback from 'components/HookForm/Feedback';
+import Input from 'components/HookForm/Input';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import MultipleSelect from 'components/HookForm/MultipleSelect';
 
-// services
-import { IAppConfigurationSettingsCore } from 'api/app_configuration/types';
-
-// Utils
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+
+import messages from '../messages';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;

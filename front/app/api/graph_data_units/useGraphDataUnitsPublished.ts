@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
+import { CLErrors } from 'typings';
+
 import fetcher, { BaseResponseData } from 'utils/cl-react-query/fetcher';
+
 import graphDataUnitKeys from './keys';
 import { ParametersPublished } from './requestTypes';
-import { CLErrors } from 'typings';
 
 // TODO: Response should extend not BaseResponseData, but sth more specific to data units
 const fetchGraphDataUnitsPublished = <Response extends BaseResponseData>({

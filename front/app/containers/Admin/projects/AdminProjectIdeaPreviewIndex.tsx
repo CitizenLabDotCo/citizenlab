@@ -1,6 +1,8 @@
-import IdeaPreviewIndex from 'components/admin/PostManager/components/IdeaPreviewIndex';
 import React from 'react';
+
 import { useParams } from 'react-router-dom';
+
+import IdeaPreviewIndex from 'components/admin/PostManager/components/IdeaPreviewIndex';
 
 const AdminProjectIdeaPreviewIndex = () => {
   const { projectId, phaseId } = useParams() as {

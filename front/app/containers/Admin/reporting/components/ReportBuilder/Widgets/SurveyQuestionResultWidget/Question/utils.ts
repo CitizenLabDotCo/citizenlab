@@ -1,17 +1,15 @@
-import moment from 'moment';
-
-// styling
 import { colors } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
+import { FormatMessage } from 'typings';
+
+import { AttributesGrouped } from 'api/graph_data_units/responseTypes';
+import { IPhaseData } from 'api/phases/types';
+
+import { Localize } from 'hooks/useLocalize';
+
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 
-// i18n
 import messages from '../messages';
-
-// typings
-import { FormatMessage } from 'typings';
-import { IPhaseData } from 'api/phases/types';
-import { AttributesGrouped } from 'api/graph_data_units/responseTypes';
-import { Localize } from 'hooks/useLocalize';
 
 export const generateDateRange = (
   formatMessage: FormatMessage,

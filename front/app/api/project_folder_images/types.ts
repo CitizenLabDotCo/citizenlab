@@ -1,6 +1,8 @@
 import { TProjectFolderCardSize } from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
-import projectFolderImagesKeys from './keys';
+
 import { Keys } from 'utils/cl-react-query/types';
+
+import projectFolderImagesKeys from './keys';
 
 export type ProjectFolderImagesKeys = Keys<typeof projectFolderImagesKeys>;
 

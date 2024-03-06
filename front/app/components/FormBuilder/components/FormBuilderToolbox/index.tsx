@@ -1,13 +1,5 @@
 import React from 'react';
-import { get } from 'lodash-es';
-import { useFormContext } from 'react-hook-form';
 
-// intl
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// components
-import ToolboxItem from './ToolboxItem';
 import {
   Box,
   IconTooltip,
@@ -15,26 +7,31 @@ import {
   Title,
   colors,
 } from '@citizenlab/cl2-component-library';
-import BuiltInFields from './BuiltInFields';
-import LayoutFields from './LayoutFields';
+import { get } from 'lodash-es';
+import { useFormContext } from 'react-hook-form';
 
-// types
 import {
   ICustomFieldInputType,
   IFlatCreateCustomField,
   IFlatCustomField,
 } from 'api/custom_fields/types';
 
-// hooks
-import useLocale from 'hooks/useLocale';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 import {
   generateTempId,
   FormBuilderConfig,
 } from 'components/FormBuilder/utils';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+
+import BuiltInFields from './BuiltInFields';
+import LayoutFields from './LayoutFields';
+import ToolboxItem from './ToolboxItem';
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField, index: number) => void;
@@ -185,8 +182,7 @@ const FormBuilderToolbox = ({
           inputType="multiselect"
           disabled={isCustomFieldsDisabled}
         />
-        {/* Hiding for now until we release the image choice */}
-        {/* <ToolboxItem
+        <ToolboxItem
           icon="image"
           label={formatMessage(messages.multipleChoiceImage)}
           onClick={() => addField('multiselect_image')}
@@ -194,7 +190,7 @@ const FormBuilderToolbox = ({
           fieldsToExclude={builderConfig.toolboxFieldsToExclude}
           inputType="multiselect_image"
           disabled={isCustomFieldsDisabled}
-        /> */}
+        />
         <ToolboxItem
           icon="survey-linear-scale"
           label={formatMessage(messages.linearScale)}

@@ -1,6 +1,9 @@
 import { rest } from 'msw';
+
 import { API_PATH } from 'containers/App/constants';
+
 import { findResponseByQuery } from 'utils/storybook/findResponseByQuery';
+
 import { liveResponses } from './responses';
 
 const apiPath = `${API_PATH}/reports/graph_data_units/live`;

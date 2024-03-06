@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
-import { useParams } from 'react-router-dom';
+
 import {
   Box,
   Button,
@@ -9,10 +8,15 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
-import Tag from '../Tag';
+import { useParams } from 'react-router-dom';
+
 import { ITagData } from 'api/analysis_tags/types';
+import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
+import Tag from '../Tag';
 
 type Props = {
   onLaunch: (tagsIds: string[]) => void;
