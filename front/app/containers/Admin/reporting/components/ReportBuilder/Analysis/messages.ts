@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question',
     defaultMessage: 'Question',
   },
+  noInsights: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noInsights',
+    defaultMessage: 'No insights available',
+  },
 });

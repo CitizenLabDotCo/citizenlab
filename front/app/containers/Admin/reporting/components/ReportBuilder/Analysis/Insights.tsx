@@ -1,9 +1,12 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 import Question from './Question';
 import Summary from './Summary';
 
@@ -18,9 +21,14 @@ const Insights = ({
   phaseId?: string;
   selectedLocale: string;
 }) => {
+  const { formatMessage } = useIntl();
   const { data: insights } = useAnalysisInsights({
     analysisId,
   });
+
+  if (!insights?.data.length) {
+    return <Text>{formatMessage(messages.noInsights)}</Text>;
+  }
 
   return (
     <div>

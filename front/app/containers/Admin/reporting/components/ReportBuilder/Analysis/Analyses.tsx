@@ -1,8 +1,13 @@
 import React from 'react';
 
+import { Text } from '@citizenlab/cl2-component-library';
+
 import useAnalyses from 'api/analyses/useAnalyses';
 
+import { useIntl } from 'utils/cl-intl';
+
 import Insights from './Insights';
+import messages from './messages';
 
 const Analyses = ({
   projectId,
@@ -15,6 +20,7 @@ const Analyses = ({
   questionId?: string;
   selectedLocale: string;
 }) => {
+  const { formatMessage } = useIntl();
   const { data: analyses } = useAnalyses({
     projectId: phaseId ? undefined : projectId,
     phaseId,
@@ -26,6 +32,10 @@ const Analyses = ({
           analysis.relationships.main_custom_field?.data.id === questionId
       )
     : analyses?.data;
+
+  if (relevantAnalyses?.length === 0) {
+    return <Text>{formatMessage(messages.noInsights)}</Text>;
+  }
 
   return (
     <div>
