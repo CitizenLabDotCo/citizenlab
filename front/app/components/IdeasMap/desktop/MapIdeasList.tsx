@@ -10,6 +10,7 @@ import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import usePhase from 'api/phases/usePhase';
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
@@ -22,16 +23,13 @@ import TopicFilterDropdown from 'components/IdeaCards/shared/Filters/TopicFilter
 import Centerer from 'components/UI/Centerer';
 import SearchInput from 'components/UI/SearchInput';
 
-import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
-
 import { FormattedMessage } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-
 import { isNilOrError } from 'utils/helperUtils';
 import { isFieldEnabled } from 'utils/projectUtils';
 
 import IdeaMapCard from '../IdeaMapCard';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import messages from '../messages';
 
 const Container = styled.div`
