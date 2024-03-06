@@ -166,13 +166,12 @@ const EsriMap = ({
     // Add any map layers which were passed in
     if (!layers || !mapView) return;
 
-    const isRegularMap = map instanceof Map;
     const isWebMap = map instanceof WebMap;
+    const isRegularMap = map instanceof Map && !isWebMap;
 
     // If we're not using a Web Map, add the layers to the default Map object
     if (isRegularMap) {
       map.removeAll();
-
       layers.forEach((layer) => {
         map.add(layer);
       });
@@ -186,8 +185,16 @@ const EsriMap = ({
           handleWebMapReferenceLayers(map, referenceLayers);
         }
 
+        // Remove any internal layers that were passed in as props to the Web Map
+        map.layers?.forEach((layer) => {
+          if (layer.id?.includes('_internal')) {
+            map.remove(layer);
+          }
+        });
+
         // Now, add any additional layers that passed in as props to the Web Map
         layers.forEach((layer) => {
+          layer.id = `${layer.id}_internal`;
           map.add(layer);
         });
 
