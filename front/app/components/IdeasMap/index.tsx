@@ -25,7 +25,6 @@ import { CSSTransition } from 'react-transition-group';
 import styled, { useTheme } from 'styled-components';
 
 import { IIdeaMarkers } from 'api/idea_markers/types';
-import useIdeaById from 'api/ideas/useIdeaById';
 import { IMapConfig } from 'api/map_config/types';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
@@ -150,7 +149,7 @@ const IdeasMap = memo<Props>(
 
     const selectedIdea = searchParams.get('idea_map_id');
 
-    const { data: ideaData } = useIdeaById(selectedIdea || undefined);
+    const ideaData = ideaMarkers?.data.find((idea) => idea.id === selectedIdea);
 
     const setSelectedIdea = useCallback((ideaId: string | null) => {
       if (ideaId) {
@@ -531,9 +530,9 @@ const IdeasMap = memo<Props>(
                 timeout={300}
               >
                 <Box>
-                  {ideaData?.data && (
+                  {ideaData && (
                     <StyledIdeaMapCard
-                      idea={ideaData.data}
+                      idea={ideaData}
                       onClose={() => {
                         setSelectedIdea(null);
                       }}
