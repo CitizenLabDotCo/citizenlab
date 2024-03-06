@@ -5,6 +5,8 @@ import { IOption } from 'typings';
 
 import usePhase from 'api/phases/usePhase';
 
+import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+
 import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';
@@ -17,8 +19,13 @@ import Analyses from './Analyses';
 import messages from './messages';
 
 const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
-  const [projectId, setProjectId] = useState<string | undefined>(undefined);
-  const [phaseId, setPhaseId] = useState<string | undefined>(undefined);
+  const { projectId: contextProjectId, phaseId: contextPhaseId } =
+    useReportContext();
+
+  const [projectId, setProjectId] = useState<string | undefined>(
+    contextProjectId
+  );
+  const [phaseId, setPhaseId] = useState<string | undefined>(contextPhaseId);
   const [questionId, setQuestionId] = useState<string | undefined>(undefined);
 
   const { data: phase } = usePhase(phaseId);
