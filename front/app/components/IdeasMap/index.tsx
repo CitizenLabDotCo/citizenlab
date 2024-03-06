@@ -496,7 +496,7 @@ const IdeasMap = memo<Props>(
                 zoomWidgetLocation: 'right',
                 onInit: onMapInit,
               }}
-              webMapId={mapConfig?.data.attributes.esri_web_map_id}
+              webMapId={mapConfig?.data?.attributes?.esri_web_map_id}
               height={isMobileOrSmaller ? '68vh' : '80vh'}
               layers={layers}
               onHover={onMapHover}
