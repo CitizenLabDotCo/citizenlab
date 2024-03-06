@@ -786,7 +786,6 @@
   "app.containers.Admin.projects.project.information.ReportTab.report": "Rapportere",
   "app.containers.Admin.projects.project.information.ReportTab.reportVisible": "Rapporten er synlig for publikum",
   "app.containers.Admin.projects.project.information.ReportTab.shareResults": "Del resultater fra en tidligere undersøkelse eller idéfase",
-  "app.containers.Admin.projects.project.information.ReportTab.thisWillBe": "Dette vil være offentlig tilgjengelig for brukere så snart denne fasen starter.",
   "app.containers.Admin.projects.project.information.areYouSureYouWantToDelete": "Er du sikker på at du vil slette denne rapporten? Denne handlingen kan ikke angres.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Legg til fase",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "Du må samtykke til dette før du kan fortsette",

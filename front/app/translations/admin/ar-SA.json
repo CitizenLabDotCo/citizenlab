@@ -786,7 +786,6 @@
   "app.containers.Admin.projects.project.information.ReportTab.report": "تقرير",
   "app.containers.Admin.projects.project.information.ReportTab.reportVisible": "التقرير مرئي للعامة",
   "app.containers.Admin.projects.project.information.ReportTab.shareResults": "مشاركة نتائج الاستطلاع أو مرحلة التفكير السابقة",
-  "app.containers.Admin.projects.project.information.ReportTab.thisWillBe": "سيكون هذا متاحًا للجمهور بمجرد بدء هذه المرحلة.",
   "app.containers.Admin.projects.project.information.areYouSureYouWantToDelete": "هل أنت متأكد أنك تريد حذف هذا التقرير؟ لا يمكن التراجع عن هذا الإجراء.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "أضف إلى المرحلة",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "تحتاج إلى الموافقة على هذا قبل أن تتمكن من المتابعة",

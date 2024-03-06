@@ -786,7 +786,6 @@
   "app.containers.Admin.projects.project.information.ReportTab.report": "Rapport",
   "app.containers.Admin.projects.project.information.ReportTab.reportVisible": "Rapport zichtbaar voor publiek",
   "app.containers.Admin.projects.project.information.ReportTab.shareResults": "De resultaten van een eerdere vragenlijst of fase waarin ideeën zijn verzameld te delen",
-  "app.containers.Admin.projects.project.information.ReportTab.thisWillBe": "Dit zal publiekelijk zichtbaar zijn voor gebruikers zodra deze fase van start gaat.",
   "app.containers.Admin.projects.project.information.areYouSureYouWantToDelete": "Weet je zeker dat je dit rapport wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Toevoegen aan fase",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "Je moet hiermee instemmen voordat je verder kunt gaan",

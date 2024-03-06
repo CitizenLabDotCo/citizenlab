@@ -786,7 +786,6 @@
   "app.containers.Admin.projects.project.information.ReportTab.report": "Raportoi",
   "app.containers.Admin.projects.project.information.ReportTab.reportVisible": "Raportti näkyy julkisesti",
   "app.containers.Admin.projects.project.information.ReportTab.shareResults": "Jaa aiemman kyselyn tai ideointivaiheen tulokset",
-  "app.containers.Admin.projects.project.information.ReportTab.thisWillBe": "Tämä on julkisesti käyttäjien saatavilla heti tämän vaiheen alkaessa.",
   "app.containers.Admin.projects.project.information.areYouSureYouWantToDelete": "Haluatko varmasti poistaa tämän raportin? Tätä toimintoa ei voi kumota.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Lisää vaiheeseen",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "Sinun on hyväksyttävä tämä ennen kuin voit jatkaa",
