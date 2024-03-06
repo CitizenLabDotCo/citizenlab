@@ -1,6 +1,7 @@
 import { ImageSizes, Locale } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
+
 import analysisUsersKeys from './keys';
 
 export type AnalysisUsersKeys = Keys<typeof analysisUsersKeys>;

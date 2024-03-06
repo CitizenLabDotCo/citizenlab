@@ -228,6 +228,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.votingBasketSubmitted',
     defaultMessage: 'You voted successfully',
   },
+  nativeSurveyNotSubmitted: {
+    id: 'app.containers.NotificationMenu.nativeSurveyNotSubmitted',
+    defaultMessage: "You didn't submit your survey",
+  },
   votingBasketNotSubmitted: {
     id: 'app.containers.NotificationMenu.votingBasketNotSubmitted',
     defaultMessage: "You didn't submit your votes",

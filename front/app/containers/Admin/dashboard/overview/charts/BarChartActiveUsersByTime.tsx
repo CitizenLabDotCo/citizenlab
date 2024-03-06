@@ -1,14 +1,12 @@
 import React, { useRef } from 'react';
+
+import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 
-// intl
-
-// typings
 import { IActiveUsersByTime } from 'api/active_users_by_time/types';
+import useActiveUsersByTime from 'api/active_users_by_time/useActiveUsersByTime';
 
-// components
-import { IconTooltip, Text } from '@citizenlab/cl2-component-library';
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+import BarChart from 'components/admin/Graphs/BarChart';
 import {
   IGraphUnit,
   GraphCard,
@@ -16,13 +14,11 @@ import {
   GraphCardHeader,
   GraphCardTitle,
 } from 'components/admin/GraphWrappers';
-import BarChart from 'components/admin/Graphs/BarChart';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { IResolution } from 'components/admin/ResolutionControl';
 
-// utils
 import { toThreeLetterMonth, toFullMonth } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import useActiveUsersByTime from 'api/active_users_by_time/useActiveUsersByTime';
 
 type Props = {
   className?: string;

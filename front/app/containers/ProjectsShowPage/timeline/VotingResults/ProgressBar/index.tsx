@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { IIdeaData } from 'api/ideas/types';
 import { IPhase } from 'api/phases/types';
+
 import BudgetingProgressBar from './BudgetingProgressBar';
 import VotingProgressBar from './VotingProgressBar';
 

@@ -1,6 +1,9 @@
 import React, { PureComponent, SFC } from 'react';
+
 import { Subscription } from 'rxjs';
+
 import { IUser } from 'api/users/types';
+
 import { TPermissionItem, hasPermission } from 'utils/permissions';
 
 type Props = {

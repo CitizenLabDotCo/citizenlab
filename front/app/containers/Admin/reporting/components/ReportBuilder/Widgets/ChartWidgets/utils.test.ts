@@ -1,4 +1,5 @@
 import { GenderSerie } from 'containers/Admin/dashboard/users/Charts/GenderChart/typings';
+
 import { serieHasValues } from './utils';
 
 describe('serieHasValues', () => {

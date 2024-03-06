@@ -1,36 +1,34 @@
 import React from 'react';
 
-// components
-import ContentContainer from 'components/ContentContainer';
-import Fragment from 'components/Fragment';
-import FileAttachments from 'components/UI/FileAttachments';
-import { Container, Content } from 'components/LandingPages/citizen';
-import { Helmet } from 'react-helmet';
-import CustomPageHeader from './CustomPageHeader';
-import CustomPageProjectsAndEvents from './CustomPageProjectsAndEvents';
-import InfoSection from 'components/LandingPages/citizen/InfoSection';
-import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
-import PageNotFound from 'components/PageNotFound';
 import {
   Box,
   fontSizes,
   isRtl,
   media,
 } from '@citizenlab/cl2-component-library';
-
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import usePageFiles from 'api/page_files/usePageFiles';
-import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
+import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
+import usePageFiles from 'api/page_files/usePageFiles';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
-// utils
+import ContentContainer from 'components/ContentContainer';
+import Fragment from 'components/Fragment';
+import { Container, Content } from 'components/LandingPages/citizen';
+import InfoSection from 'components/LandingPages/citizen/InfoSection';
+import PageNotFound from 'components/PageNotFound';
+import FileAttachments from 'components/UI/FileAttachments';
+
 import { isNilOrError } from 'utils/helperUtils';
 
-// styling
-import styled from 'styled-components';
+import CustomPageHeader from './CustomPageHeader';
+import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
+import CustomPageProjectsAndEvents from './CustomPageProjectsAndEvents';
 
 const PageTitle = styled.h1`
   color: ${({ theme }) => theme.colors.tenantText};

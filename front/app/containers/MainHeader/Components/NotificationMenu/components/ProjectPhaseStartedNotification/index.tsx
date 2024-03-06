@@ -1,13 +1,13 @@
 import React, { memo } from 'react';
+
 import { IProjectPhaseStartedNotificationData } from 'api/notifications/types';
 
-// i18n
-import messages from '../../messages';
+import T from 'components/T';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
-// components
+import messages from '../../messages';
 import NotificationWrapper from '../NotificationWrapper';
-import T from 'components/T';
 
 type Props = {
   notification: IProjectPhaseStartedNotificationData;

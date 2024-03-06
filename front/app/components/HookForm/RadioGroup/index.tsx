@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Error, { TFieldName } from 'components/UI/Error';
+import { Box } from '@citizenlab/cl2-component-library';
+import { get } from 'lodash-es';
 import { useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
-import { Box } from '@citizenlab/cl2-component-library';
-import { get } from 'lodash-es';
+import Error, { TFieldName } from 'components/UI/Error';
 
 interface Props {
   name: string;

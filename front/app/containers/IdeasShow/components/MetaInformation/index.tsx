@@ -1,23 +1,22 @@
 import React from 'react';
-import styled from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Status from './Status';
-import Location from './Location';
+import styled from 'styled-components';
+
+import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useIdeaById from 'api/ideas/useIdeaById';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+
+import useLocale from 'hooks/useLocale';
+
+import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
+
 import Attachments from './Attachments';
 import IdeaTopics from './IdeaTopics';
+import Location from './Location';
 import PostedBy from './PostedBy';
-
-// hooks & services
-import useLocale from 'hooks/useLocale';
-import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-import usePhases from 'api/phases/usePhases';
-import useIdeaById from 'api/ideas/useIdeaById';
-
-// utils
-import { isFieldEnabled } from 'utils/projectUtils';
-import { getCurrentPhase } from 'api/phases/utils';
+import Status from './Status';
 
 const Container = styled.div`
   width: 100%;

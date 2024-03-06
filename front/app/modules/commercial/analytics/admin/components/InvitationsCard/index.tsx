@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { StatCardProps } from '../StatCard/useStatCard/typings';
 import StatCard from '../StatCard';
+import { StatCardProps } from '../StatCard/useStatCard/typings';
+
 import { invitationsConfig } from './config';
 
 const InvitationsCard = ({

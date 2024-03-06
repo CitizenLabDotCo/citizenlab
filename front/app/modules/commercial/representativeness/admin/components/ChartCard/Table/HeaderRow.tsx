@@ -1,11 +1,7 @@
 import React from 'react';
 
-// components
 import { Thead, Tr, Th, Box, colors } from '@citizenlab/cl2-component-library';
 
-// styling
-
-// utils
 import { roundPercentage } from 'utils/math';
 
 interface Props {

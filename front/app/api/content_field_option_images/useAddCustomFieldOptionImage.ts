@@ -1,6 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import { ICustomFieldOptionImage } from './types';
 
 const addCustomFieldOptionImage = async (base64: string) =>

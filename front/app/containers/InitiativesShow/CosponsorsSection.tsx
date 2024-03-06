@@ -1,6 +1,7 @@
 import React from 'react';
-import RequestToCosponsor from './RequestToCosponsor';
+
 import Cosponsors from './Cosponsors';
+import RequestToCosponsor from './RequestToCosponsor';
 
 interface Props {
   initiativeId: string;

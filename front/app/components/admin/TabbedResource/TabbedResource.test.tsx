@@ -1,7 +1,9 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
-import TabbedResource from '.';
+
 import { WithRouterProps } from 'utils/cl-router/withRouter';
+import { render, screen } from 'utils/testUtils/rtl';
+
+import TabbedResource from '.';
 
 const getRouterProps = (tabId, tabName?: string) =>
   ({

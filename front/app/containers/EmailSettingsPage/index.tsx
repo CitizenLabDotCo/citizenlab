@@ -1,24 +1,15 @@
-// Libraries
 import React, { useEffect, useState } from 'react';
 
-// Components
-import CampaignConsentForm from 'components/CampaignConsentForm';
-import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
-
-// Styles
-import styled from 'styled-components';
 import { colors } from '@citizenlab/cl2-component-library';
-
-// typings
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
-// hooks
 import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignConsents';
 
-// utils
+import CampaignConsentForm from 'components/CampaignConsentForm';
 
-// routing
-import { useSearchParams } from 'react-router-dom';
+import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 
 const Container = styled.div`
   width: 100%;

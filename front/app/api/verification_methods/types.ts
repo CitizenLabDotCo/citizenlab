@@ -1,4 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import verificationMethodsKeys from './keys';
 
 export type VerificationMethodsKeys = Keys<typeof verificationMethodsKeys>;

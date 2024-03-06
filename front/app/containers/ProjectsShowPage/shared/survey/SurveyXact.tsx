@@ -1,14 +1,11 @@
 import React, { memo, useState } from 'react';
 
-// styling
 import {
   defaultCardStyle,
   Spinner,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-
-// components
 
 const surveyHeightDesktop = '600px';
 const surveyHeightMobile = '500px';

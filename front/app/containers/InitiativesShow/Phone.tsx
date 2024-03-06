@@ -1,52 +1,47 @@
 import React, { useRef } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import FileAttachments from 'components/UI/FileAttachments';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Topics from 'components/PostShowComponents/Topics';
-import Title from 'components/PostShowComponents/Title';
-import DropdownMap from 'components/PostShowComponents/DropdownMap';
-import Body from 'components/PostShowComponents/Body';
-import Image from 'components/PostShowComponents/Image';
-import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import PostedByMobile from './PostedByMobile';
-import ReactionControl from './ReactionControl';
-import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
-import Outlet from 'components/Outlet';
+import styled from 'styled-components';
 
-// utils
-import { getAddressOrFallbackDMS } from 'utils/map';
+import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
+import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
-// style
-import styled from 'styled-components';
+import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
+
+import Outlet from 'components/Outlet';
+import Body from 'components/PostShowComponents/Body';
+import DropdownMap from 'components/PostShowComponents/DropdownMap';
+import Image from 'components/PostShowComponents/Image';
+import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
+import Title from 'components/PostShowComponents/Title';
+import Topics from 'components/PostShowComponents/Topics';
+import FileAttachments from 'components/UI/FileAttachments';
+
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getAddressOrFallbackDMS } from 'utils/map';
+import { usePermission } from 'utils/permissions';
+
+import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
+import Cosponsors from './Cosponsors';
+import CosponsorShipReminder from './CosponsorShipReminder';
+import InitiativeBanner from './InitiativeBanner';
+import messages from './messages';
+import PostedByMobile from './PostedByMobile';
+import ReactionControl from './ReactionControl';
+import RequestToCosponsor from './RequestToCosponsor';
 import {
   pageContentMaxWidth,
   contentFadeInDelay,
   contentFadeInDuration,
   contentFadeInEasing,
 } from './styleConstants';
-
-// hooks
-import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-
-// types
-import useLocale from 'hooks/useLocale';
-import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
-import { usePermission } from 'utils/permissions';
-import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
-import RequestToCosponsor from './RequestToCosponsor';
-import Cosponsors from './Cosponsors';
-import InitiativeBanner from './InitiativeBanner';
-import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
-import CosponsorShipReminder from './CosponsorShipReminder';
 
 const padding = '32px';
 
