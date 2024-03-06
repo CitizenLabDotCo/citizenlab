@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+
 import { IInitiativeData } from '../types';
 
 export const initiativeData: IInitiativeData = {

@@ -1,15 +1,14 @@
 import React, { memo } from 'react';
 
-// styles
-import styled from 'styled-components';
 import { colors, media } from '@citizenlab/cl2-component-library';
-import { postPageContentMaxWidth } from './styleConstants';
 import { GetLocaleChildProps } from 'resources/GetLocale';
+import styled from 'styled-components';
+
+import { IInitiativeData } from 'api/initiatives/types';
 
 import Outlet from 'components/Outlet';
 
-// types
-import { IInitiativeData } from 'api/initiatives/types';
+import { postPageContentMaxWidth } from './styleConstants';
 
 const Container = styled.div`
   width: 100%;

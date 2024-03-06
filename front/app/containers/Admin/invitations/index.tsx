@@ -1,17 +1,16 @@
 import React from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
 import { useLocation, Outlet as RouterOutlet } from 'react-router-dom';
 
-// components
-import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
+import HelmetIntl from 'components/HelmetIntl';
 import GoBackButton from 'components/UI/GoBackButton';
-import { Box } from '@citizenlab/cl2-component-library';
 
-// i18n
-import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
-
 import clHistory from 'utils/cl-router/history';
+
+import messages from './messages';
 
 const InvitationsPage = () => {
   const { formatMessage } = useIntl();

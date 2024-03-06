@@ -6,6 +6,7 @@
  * data for visitors or regular users
  */
 
+import { PostHog } from 'posthog-js';
 import {
   BehaviorSubject,
   combineLatest,
@@ -13,18 +14,18 @@ import {
   startWith,
   Subscription,
 } from 'rxjs';
-import authUserStream from 'api/me/authUserStream';
-import { events$, pageChanges$ } from 'utils/analytics';
-import { isNilOrError } from 'utils/helperUtils';
 
-import { isAdmin, isRegularUser } from 'utils/permissions/roles';
-import { ModuleConfiguration } from 'utils/moduleUtils';
-import { IUser } from 'api/users/types';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { IAppConfiguration } from 'api/app_configuration/types';
-import { getFullName } from 'utils/textUtils';
+import authUserStream from 'api/me/authUserStream';
+import { IUser } from 'api/users/types';
+
+import { events$, pageChanges$ } from 'utils/analytics';
 import eventEmitter, { IEventEmitterEvent } from 'utils/eventEmitter';
-import { PostHog } from 'posthog-js';
+import { isNilOrError } from 'utils/helperUtils';
+import { ModuleConfiguration } from 'utils/moduleUtils';
+import { isAdmin, isRegularUser } from 'utils/permissions/roles';
+import { getFullName } from 'utils/textUtils';
 
 const POSTHOG_API_KEY = process.env.POSTHOG_API_KEY;
 

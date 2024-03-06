@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import { Box, stylingConsts, colors } from '@citizenlab/cl2-component-library';
 
 interface Props {

@@ -5,11 +5,11 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
 import Tippy from '@tippyjs/react';
-
-// style
 import styled, { css } from 'styled-components';
+
+import Link from 'utils/cl-router/Link';
+
 import {
   tabLineHeight,
   tabPadding,

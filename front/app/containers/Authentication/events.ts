@@ -1,6 +1,8 @@
-import eventEmitter from 'utils/eventEmitter';
-import { AuthenticationData } from './typings';
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+
+import eventEmitter from 'utils/eventEmitter';
+
+import { AuthenticationData } from './typings';
 
 const TRIGGER_AUTHENTICATION_FLOW = 'triggerAuthenticationFlow';
 

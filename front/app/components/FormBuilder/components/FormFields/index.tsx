@@ -1,29 +1,27 @@
 import React from 'react';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 
-// components
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import {
-  builtInFieldKeys,
-  FormBuilderConfig,
-} from 'components/FormBuilder/utils';
-import { FormField } from './FormField';
-
-// i18n
-import useLocale from 'hooks/useLocale';
-
-// utils
-import { getFieldNumbers } from '../utils';
-import { isNilOrError } from 'utils/helperUtils';
-import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
-
-// typings
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
+import useLocale from 'hooks/useLocale';
+
+import {
+  builtInFieldKeys,
+  FormBuilderConfig,
+} from 'components/FormBuilder/utils';
+
+import { isNilOrError } from 'utils/helperUtils';
+
+import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
+import { getFieldNumbers } from '../utils';
+
+import { FormField } from './FormField';
 
 export const pageDNDType = 'droppable-page';
 export const questionDNDType = 'droppable-question';

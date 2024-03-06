@@ -1,16 +1,5 @@
 import React, { useCallback } from 'react';
 
-// api
-import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
-
-// constants
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// components
-import Image from 'components/UI/Image';
 import {
   Icon,
   useWindowSize,
@@ -21,27 +10,27 @@ import {
   defaultCardStyle,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-// utils
-import { isEmptyMultiloc } from 'utils/helperUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import T from 'components/T';
-import messages from './messages';
-
-// styling
+import Tippy from '@tippyjs/react';
 import styled, { useTheme } from 'styled-components';
 
+import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
+import { ICauseData } from 'api/causes/types';
 import useAddVolunteer from 'api/causes/useAddVolunteer';
 import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
 
-// typings
-import { ICauseData } from 'api/causes/types';
-import Tippy from '@tippyjs/react';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import Image from 'components/UI/Image';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isEmptyMultiloc } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const Container = styled.div`
   padding: 20px;

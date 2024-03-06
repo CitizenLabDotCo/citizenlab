@@ -1,7 +1,10 @@
 import React from 'react';
-import FormattedMessage from './';
-import { screen, render } from 'utils/testUtils/rtl';
+
 import { defineMessages } from 'react-intl';
+
+import { screen, render } from 'utils/testUtils/rtl';
+
+import FormattedMessage from './';
 
 const messages = defineMessages({
   regular: {

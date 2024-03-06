@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useBasket from './useBasket';
-import endpoints, { apiPath, basketData } from './__mocks__/_mockServer';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import endpoints, { apiPath, basketData } from './__mocks__/_mockServer';
+import useBasket from './useBasket';
 
 const server = setupServer(endpoints['GET baskets/:id']);
 

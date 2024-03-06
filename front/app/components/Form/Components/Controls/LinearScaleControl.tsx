@@ -1,11 +1,6 @@
 import React from 'react';
 
 // JSON forms
-import { withJsonFormsControlProps } from '@jsonforms/react';
-import { ControlProps } from '@jsonforms/core';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-
-// Components
 import {
   Box,
   Text,
@@ -13,15 +8,20 @@ import {
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { FormLabel } from 'components/UI/FormComponents';
-import VerificationIcon from '../VerificationIcon';
-import ErrorDisplay from '../ErrorDisplay';
-import { getSubtextElement } from './controlUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// style
+import { ControlProps } from '@jsonforms/core';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { useTheme } from 'styled-components';
+
+import { FormLabel } from 'components/UI/FormComponents';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
+import VerificationIcon from '../VerificationIcon';
+
+import { getSubtextElement } from './controlUtils';
+import messages from './messages';
 
 const LinearScaleControl = ({
   data,

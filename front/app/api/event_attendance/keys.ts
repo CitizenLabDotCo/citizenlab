@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { InputParameters } from './types';
 
 const baseKey = { type: 'attendance' };

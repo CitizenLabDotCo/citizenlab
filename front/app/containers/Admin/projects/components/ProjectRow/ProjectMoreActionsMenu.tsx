@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
+
 import { Box } from '@citizenlab/cl2-component-library';
-import messages from '../messages';
+
+import useAuthUser from 'api/me/useAuthUser';
 import useCopyProject from 'api/projects/useCopyProject';
 import useDeleteProject from 'api/projects/useDeleteProject';
+
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+
 import { useIntl } from 'utils/cl-intl';
-import { isAdmin } from 'utils/permissions/roles';
-import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
+import { isAdmin } from 'utils/permissions/roles';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
+
+import messages from '../messages';
 
 export type ActionType = 'deleting' | 'copying';
 

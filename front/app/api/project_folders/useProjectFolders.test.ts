@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useProjectFolders from './useProjectFolders';
-import { projectFolderData } from './__mocks__/useProjectFolder';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { projectFolderData } from './__mocks__/useProjectFolder';
+import useProjectFolders from './useProjectFolders';
 
 const apiPath = '*project_folders';
 

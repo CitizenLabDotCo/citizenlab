@@ -1,20 +1,15 @@
 import React from 'react';
 
-// hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// components
 import {
   Box,
   LocaleSwitcher as LocaleSwitcherComponent,
   colors,
 } from '@citizenlab/cl2-component-library';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// typings
 import { Locale } from 'typings';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   selectedLocale: Locale | undefined;

@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteUserCustomFields from './useDeleteUserCustomField';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteUserCustomFields from './useDeleteUserCustomField';
 
 const apiPath = '*/users/custom_fields/:customFieldId';
 

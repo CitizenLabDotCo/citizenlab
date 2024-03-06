@@ -1,20 +1,18 @@
 import React from 'react';
+
 import { useLocation } from 'react-router-dom';
 
-// services
+import { InputTerm } from 'api/phases/types';
 
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from './../messages';
-
-// components
 import Button from 'components/UI/Button';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
 import { getInputTermMessage } from 'utils/i18n';
 
-// tracking
 import tracks from '../tracks';
-import { trackEventByName } from 'utils/analytics';
-import { InputTerm } from 'api/phases/types';
+
+import messages from './../messages';
 
 interface Props {
   linkTo: string;

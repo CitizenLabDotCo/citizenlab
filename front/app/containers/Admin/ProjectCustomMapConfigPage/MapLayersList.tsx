@@ -1,7 +1,5 @@
 import React, { memo } from 'react';
 
-// components
-import Button from 'components/UI/Button';
 import {
   Icon,
   IconTooltip,
@@ -9,29 +7,27 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-import { SubSectionTitle } from 'components/admin/Section';
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import GeoJsonImportButton from './GeoJsonImportButton';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 
-// hooks
+import useMapConfig from 'api/map_config/useMapConfig';
 import useDeleteMapLayer from 'api/map_layers/useDeleteMapLayer';
 import useReorderMapLayer from 'api/map_layers/useReorderMapLayer';
 
-// utils
+import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import { SubSectionTitle } from 'components/admin/Section';
+import Button from 'components/UI/Button';
+
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+
 import { getLayerColor, getLayerIcon } from '../../../utils/mapUtils/map';
+
 import addOrderingToLayers, {
   IMapLayerAttributesWithOrdering,
 } from './addOrderingToLayers';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { WrappedComponentProps } from 'react-intl';
+import GeoJsonImportButton from './GeoJsonImportButton';
 import messages from './messages';
-
-// styling
-import styled from 'styled-components';
-import useMapConfig from 'api/map_config/useMapConfig';
 
 const Container = styled.div``;
 

@@ -1,9 +1,12 @@
-import { API_PATH } from 'containers/App/constants';
-import { requestBlob } from 'utils/requestBlob';
 import { saveAs } from 'file-saver';
 import { snakeCase } from 'lodash-es';
 import moment from 'moment';
+
 import { IPhaseData } from 'api/phases/types';
+
+import { API_PATH } from 'containers/App/constants';
+
+import { requestBlob } from 'utils/requestBlob';
 
 // External surveys
 export const exportSurveyResults = async (queryParameter: {

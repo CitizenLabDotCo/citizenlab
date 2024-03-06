@@ -1,20 +1,18 @@
 import React from 'react';
 
-// components
 import { IconTooltip } from '@citizenlab/cl2-component-library';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import { ApiErrors } from '../../../..';
+import messages from '../../../../../../messages';
 import { LabelBudgetingInput } from '../../../shared/labels';
 import {
   BudgetingAmountInput,
   VotingAmountInputError,
 } from '../../../shared/styling';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../../../messages';
-
-// typings
-import { ApiErrors } from '../../../..';
 
 interface Props {
   voting_min_total?: number | null;

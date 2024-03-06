@@ -1,5 +1,5 @@
-import { IProjectData } from '../types';
 import { ParticipationMethod, TSurveyService } from '../../phases/types';
+import { IProjectData } from '../types';
 
 export function getProject(
   id: string,

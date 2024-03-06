@@ -1,21 +1,18 @@
 import React from 'react';
 
-// components
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-
-// utils
 import styled from 'styled-components';
-import messages from '../../../containers/Admin/ProjectCustomMapConfigPage/messages';
 
-// hooks
-import { useIntl } from 'utils/cl-intl';
+import { IMapConfig } from 'api/map_config/types';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
-// types
-import { IMapConfig } from 'api/map_config/types';
 import { goToMapLocation } from 'components/EsriMap/utils';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../../../containers/Admin/ProjectCustomMapConfigPage/messages';
 
 const GoToDefaultViewportButtonWrapper = styled.div`
   position: absolute;

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Props as MultiBarChartProps,
   Bars as MultiBarChartBars,
