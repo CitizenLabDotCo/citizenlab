@@ -119,15 +119,19 @@ class WebApi::V1::IdeasController < ApplicationController
     render_show Idea.find_by!(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')
   end
 
-  #   Normal users always post in an active phase. Provided phase id should be ignored.
+  #   Normal users always post in an active phase. They should never provide a phase id.
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
   def create
     project = Project.find(params.dig(:idea, :project_id))
+    phase_ids = params.dig(:idea, :phase_ids) || []
     is_moderator = current_user && UserRoleService.new.can_moderate_project?(project, current_user)
-    phase_ids = is_moderator ? params.dig(:idea, :phase_ids) || [] : []
 
-    send_error and return if phase_ids.any? && phase_ids.size != 1
+    if phase_ids.any?
+      send_error and return unless is_moderator
+
+      send_error and return if phase_ids.size != 1
+    end
 
     phase = if is_moderator && phase_ids.any?
       Phase.find(phase_ids.first)

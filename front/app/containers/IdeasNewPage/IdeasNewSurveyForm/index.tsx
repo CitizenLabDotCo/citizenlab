@@ -87,11 +87,11 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const allowAnonymousPosting =
     phaseFromUrl?.data.attributes.allow_anonymous_participation;
 
-  const canUserEditProject =
+  const userIsModerator =
     !isNilOrError(authUser) &&
     canModerateProject(project.data.id, { data: authUser.data });
 
-  const canUserViewForm = canUserEditProject || phaseId === currentPhase?.id;
+  const canUserViewForm = userIsModerator || phaseId === currentPhase?.id;
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
@@ -163,7 +163,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     const requestBody = {
       ...data,
       project_id: project.data.id,
-      phase_ids: [phaseId], // Note: Backend only uses if moderator
+      phase_ids: userIsModerator ? [phaseId] : [],
       publication_status: data.publication_status || 'published',
     };
 
@@ -245,7 +245,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
                     )
                   }
                   isSurvey={true}
-                  canUserEditProject={canUserEditProject}
+                  canUserEditProject={userIsModerator}
                   loggedIn={!isNilOrError(authUser)}
                 />
                 {allowAnonymousPosting && (
