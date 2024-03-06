@@ -131,6 +131,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       required: field.required,
       totalResponses: answer_count,
       customFieldId: field.id,
+      mapConfigId: field&.map_config&.id,
       pointResponses: answers
     }
   end
