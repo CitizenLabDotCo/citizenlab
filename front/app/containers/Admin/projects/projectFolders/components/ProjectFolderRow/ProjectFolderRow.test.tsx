@@ -1,8 +1,11 @@
 import React from 'react';
-import ProjectFolderRow, { Props } from '.';
-import { render, screen } from 'utils/testUtils/rtl';
-import { IUserData } from 'api/users/types';
+
 import { IAdminPublicationData } from 'api/admin_publications/types';
+import { IUserData } from 'api/users/types';
+
+import { render, screen } from 'utils/testUtils/rtl';
+
+import ProjectFolderRow, { Props } from '.';
 
 const folderId = 'folderId';
 

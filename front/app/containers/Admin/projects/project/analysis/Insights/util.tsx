@@ -1,11 +1,14 @@
 import React from 'react';
-import reactStringReplace from 'react-string-replace';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { trackEventByName } from 'utils/analytics';
-import tracks from 'containers/Admin/projects/project/analysis/tracks';
+
 import { Icon, colors } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
+import reactStringReplace from 'react-string-replace';
 import styled from 'styled-components';
+
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+
+import { trackEventByName } from 'utils/analytics';
+import Link from 'utils/cl-router/Link';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 export const refRegex =
   /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g;

@@ -1,13 +1,9 @@
 import React from 'react';
 
-// components
 import { Icon, colors } from '@citizenlab/cl2-component-library';
-
-// styling
-import styled from 'styled-components';
 import { transparentize } from 'polished';
+import styled from 'styled-components';
 
-// typings
 import { ParticipationMethod, VotingMethod } from 'api/phases/types';
 
 const ImagePlaceholderContainer = styled.div`

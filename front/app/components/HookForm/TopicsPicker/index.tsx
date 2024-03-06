@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, get, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
+import Error, { TFieldName } from 'components/UI/Error';
 import TopicsPickerComponent, {
   Props as TopicsPickerComponentProps,
 } from 'components/UI/TopicsPicker';

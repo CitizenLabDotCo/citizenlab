@@ -1,15 +1,17 @@
+import { IAppConfigurationData } from 'api/app_configuration/types';
+import { IUser } from 'api/users/types';
+
 import {
   definePermissionRule,
   IRouteItem,
 } from 'utils/permissions/permissions';
+
 import {
   isAdmin,
   isRegularUser,
   isProjectModerator,
   isSuperAdmin,
 } from '../roles';
-import { IUser } from 'api/users/types';
-import { IAppConfigurationData } from 'api/app_configuration/types';
 
 const MODERATOR_ROUTES = [
   '/admin/projects',

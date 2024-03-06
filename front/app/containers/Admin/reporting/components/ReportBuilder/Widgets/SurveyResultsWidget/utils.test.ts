@@ -1,5 +1,6 @@
-import { createResultRows } from './utils';
 import { Result } from 'api/survey_results/types';
+
+import { createResultRows } from './utils';
 
 const results: Result[] = [
   {

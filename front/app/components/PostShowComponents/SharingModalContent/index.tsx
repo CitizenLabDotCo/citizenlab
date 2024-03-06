@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 
-// components
-import SharingButtons from 'components/Sharing/SharingButtons';
 import {
   Spinner,
   Box,
@@ -9,31 +7,28 @@ import {
   Title,
   Image,
 } from '@citizenlab/cl2-component-library';
-import Centerer from 'components/UI/Centerer';
-
-// i18n
+import rocket from 'assets/img/rocket.png';
 import { MessageDescriptor } from 'react-intl';
 
-import messages from './messages';
-import { getInputTermMessage } from 'utils/i18n';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// style
-import rocket from 'assets/img/rocket.png';
-
-// hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useProjectById from 'api/projects/useProjectById';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import { getInputTerm } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
 import useLocale from 'hooks/useLocale';
-import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
-import useAuthUser from 'api/me/useAuthUser';
+
+import SharingButtons from 'components/Sharing/SharingButtons';
+import Centerer from 'components/UI/Centerer';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import { getInputTermMessage } from 'utils/i18n';
+
+import messages from './messages';
+import tracks from './tracks';
 
 interface Props {
   postType: 'idea' | 'initiative';

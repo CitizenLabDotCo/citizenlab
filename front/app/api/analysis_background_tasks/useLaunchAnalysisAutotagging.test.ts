@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useLaunchAnalysisAutotagging from './useLaunchAnalysisAutotagging';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useLaunchAnalysisAutotagging from './useLaunchAnalysisAutotagging';
 
 const apiPath = '*analyses/:analysisId/auto_taggings';
 

@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateCampaignConsents from './useUpdateCampaignConsents';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useUpdateCampaignConsents from './useUpdateCampaignConsents';
 
 const campaignConsentData = {
   data: {

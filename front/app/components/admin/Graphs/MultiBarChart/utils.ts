@@ -1,7 +1,5 @@
-// styling
 import { legacyColors, sizes } from '../styling';
 
-// typings
 import {
   Props,
   Mapping,

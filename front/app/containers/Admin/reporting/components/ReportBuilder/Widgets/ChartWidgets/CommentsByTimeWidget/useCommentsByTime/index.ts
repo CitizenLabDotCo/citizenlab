@@ -1,11 +1,8 @@
-// hooks
 import { useMemo, useState } from 'react';
+
 import { useCommentsByTime as useCommentsByTimeData } from 'api/graph_data_units';
 
-// parse
 import { parseTimeSeries } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/parse';
-
-// typings
 import { QueryParameters } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/typings';
 
 export default function useCommentsByTime({

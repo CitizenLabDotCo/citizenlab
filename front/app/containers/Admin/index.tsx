@@ -1,20 +1,19 @@
 import React, { memo, useEffect } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Outlet as RouterOutlet } from 'react-router-dom';
 
-// permissions
+import { colors, media } from '@citizenlab/cl2-component-library';
+import { Outlet as RouterOutlet } from 'react-router-dom';
+import styled from 'styled-components';
+
 import useAuthUser from 'api/me/useAuthUser';
-import { usePermission } from 'utils/permissions';
+
 import HasPermission from 'components/HasPermission';
 
-// components
-import Sidebar from './sideBar/';
-import styled from 'styled-components';
-import { colors, media } from '@citizenlab/cl2-component-library';
-
-// utils
 import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
+
+import Sidebar from './sideBar/';
 
 // stlying
 import 'assets/semantic/semantic.min.css';

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import {
   Box,
   IconButton,
@@ -6,29 +7,32 @@ import {
   Text,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { IAnalysisData } from 'api/analyses/types';
-import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
-import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
-import useRegenerateAnalysisSummary from 'api/analysis_summaries/useRegenerateAnalysisSummary';
-import useRegenerateAnalysisQuestion from 'api/analysis_questions/useRegenerateAnalysisQuestion';
-
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
-
+import { stringify } from 'qs';
 import { useParams } from 'react-router-dom';
 
-import Button from 'components/UI/Button';
-import { stringify } from 'qs';
+import { IAnalysisData } from 'api/analyses/types';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
-import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
-import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
+import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
+import useRegenerateAnalysisQuestion from 'api/analysis_questions/useRegenerateAnalysisQuestion';
+import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
+import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
+import useRegenerateAnalysisSummary from 'api/analysis_summaries/useRegenerateAnalysisSummary';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import InsightBody from 'containers/Admin/projects/project/analysis/Insights/InsightBody';
 import InsightFooter from 'containers/Admin/projects/project/analysis/Insights/InsightFooter';
-import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/SummaryHeader';
 import QuestionHeader from 'containers/Admin/projects/project/analysis/Insights/QuestionHeader';
+import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/SummaryHeader';
+
+import Button from 'components/UI/Button';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from '../../../messages';
 
 // Convert all values in the filters object to strings
 // This is necessary because the filters are passed as query params

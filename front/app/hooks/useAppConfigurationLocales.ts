@@ -1,5 +1,7 @@
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { Locale } from 'typings';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import { isNilOrError } from 'utils/helperUtils';
 
 export default function useAppConfigurationLocales() {

@@ -1,9 +1,13 @@
 import React from 'react';
-import ProjectMoreActionsMenu, { Props } from './ProjectMoreActionsMenu';
-import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
-import { IUserData } from 'api/users/types';
-import { setupServer } from 'msw/node';
+
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
+import { IUserData } from 'api/users/types';
+
+import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
+
+import ProjectMoreActionsMenu, { Props } from './ProjectMoreActionsMenu';
 
 const defaultProps: Props = {
   projectId: 'projectId',

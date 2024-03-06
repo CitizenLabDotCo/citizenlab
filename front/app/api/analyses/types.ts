@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import analysesKeys from './keys';
 import { ILinks, IRelationship } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import analysesKeys from './keys';
 
 export type AnalysesKeys = Keys<typeof analysesKeys>;
 

@@ -1,10 +1,5 @@
 import React from 'react';
 
-// images
-import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
-import EmptyStateImage from '../../assets/empty_status.svg';
-
-// components
 import {
   Box,
   Image,
@@ -12,14 +7,16 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
+import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
+import styled from 'styled-components';
+
 import Button from 'components/UI/Button';
 
-// i18n
-import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styling
-import styled from 'styled-components';
+import EmptyStateImage from '../../assets/empty_status.svg';
+
+import messages from './messages';
 
 export const StyledBackgroundImage = styled(Image)`
   opacity: 0.5;

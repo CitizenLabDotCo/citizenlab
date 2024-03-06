@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
-
-import { IInsightData } from 'api/analysis_insights/types';
 
 import {
   Box,
@@ -9,22 +6,26 @@ import {
   colors,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
+import { useParams, useSearchParams } from 'react-router-dom';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
+import { IInsightData } from 'api/analysis_insights/types';
 import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import Rate from './Rate';
+import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
-import { trackEventByName } from 'utils/analytics';
 
-import { removeRefs } from './util';
+import Divider from 'components/admin/Divider';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
 import InsightBody from './InsightBody';
 import InsightFooter from './InsightFooter';
-import Divider from 'components/admin/Divider';
+import messages from './messages';
+import Rate from './Rate';
 import SummaryHeader from './SummaryHeader';
+import { removeRefs } from './util';
 
 type Props = {
   insight: IInsightData;

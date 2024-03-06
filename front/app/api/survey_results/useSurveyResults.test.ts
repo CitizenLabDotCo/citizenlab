@@ -1,14 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useSurveyResults from './useSurveyResults';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import endpoints, {
   phaseApiPath,
   surveyResultsResponse,
 } from './__mocks__/_mockServer';
+import useSurveyResults from './useSurveyResults';
 
 const server = setupServer(
   endpoints['GET projects/:id/survey_results'],

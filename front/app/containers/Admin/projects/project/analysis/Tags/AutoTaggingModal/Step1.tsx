@@ -1,7 +1,4 @@
 import React, { ReactNode } from 'react';
-import styled from 'styled-components';
-
-import { TagType } from 'api/analysis_tags/types';
 
 import {
   Box,
@@ -15,17 +12,23 @@ import {
   Radio,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import Tag from '../Tag';
+import Tippy from '@tippyjs/react';
+import { isEmpty } from 'lodash-es';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import useAnalysis from 'api/analyses/useAnalysis';
 import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
-import { isEmpty } from 'lodash-es';
-import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
-import { useParams } from 'react-router-dom';
-import useAnalysis from 'api/analyses/useAnalysis';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
+import { TagType } from 'api/analysis_tags/types';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import Tippy from '@tippyjs/react';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+import Tag from '../Tag';
 
 const AutoTagMethodContainer = styled.div<{ isDisabled: boolean }>`
   background-color: ${colors.grey100};

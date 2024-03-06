@@ -1,31 +1,26 @@
-// Libraries
 import React from 'react';
-import { TRole } from 'utils/permissions/roles';
-import { includes, isArray } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-// Components
+
 import { Table, Thead, Th, Tbody, Tr } from '@citizenlab/cl2-component-library';
-import Pagination from 'components/Pagination';
-import UserTableRow from './UserTableRow';
-
-// Events --- For error handling
-import eventEmitter from 'utils/eventEmitter';
-import events from './events';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// I18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// Styles
+import { includes, isArray } from 'lodash-es';
 import styled from 'styled-components';
+
 import useAuthUser from 'api/me/useAuthUser';
-import Warning from 'components/UI/Warning';
 import { IQueryParameters, IUserData } from 'api/users/types';
 import useUpdateUser from 'api/users/useUpdateUser';
+
+import Pagination from 'components/Pagination';
+import Warning from 'components/UI/Warning';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+import { TRole } from 'utils/permissions/roles';
+
+import events from './events';
+import messages from './messages';
+import tracks from './tracks';
+import UserTableRow from './UserTableRow';
 
 const Container = styled.div`
   flex: 1;

@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddUserCustomFieldOption from './useAddUserCustomFieldOption';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { userCustomFieldsOptionsData } from './__mocks__/useUserCustomFieldsOptions';
+import useAddUserCustomFieldOption from './useAddUserCustomFieldOption';
 
 const apiPath = '*/users/custom_fields/:customFieldId/custom_field_options';
 

@@ -1,30 +1,24 @@
-// Libraries
 import React, { useEffect, useState } from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
 import { isArray, includes, isString, isEmpty } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
-// Components
-import UserTable from './UserTable';
-import UserTableActions from './UserTableActions';
-import Error from 'components/UI/Error';
-import NoUsers from './NoUsers';
-import { Box } from '@citizenlab/cl2-component-library';
-// Events
-import eventEmitter from 'utils/eventEmitter';
-import events from './events';
-
-// Resources
-import { IQueryParameters } from 'api/users/types';
-
-// Services
 import { MembershipType } from 'api/groups/types';
+import { IQueryParameters } from 'api/users/types';
 import useUsers from 'api/users/useUsers';
+
+import Error from 'components/UI/Error';
+
+import eventEmitter from 'utils/eventEmitter';
+import { isNil } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-// utils
-import { isNil } from 'utils/helperUtils';
+import events from './events';
+import NoUsers from './NoUsers';
+import UserTable from './UserTable';
+import UserTableActions from './UserTableActions';
 
-// Typings
 interface Props {
   groupId?: IQueryParameters['group'];
   groupType?: MembershipType;

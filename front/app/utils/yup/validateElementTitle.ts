@@ -1,4 +1,5 @@
 import { object } from 'yup';
+
 import validateAtLeastOneLocale from './validateAtLeastOneLocale';
 
 const validateElementTitle = (message: string) => {

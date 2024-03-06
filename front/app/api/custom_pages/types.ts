@@ -1,5 +1,7 @@
 import { ImageSizes, IRelationship, Multiloc } from 'typings';
+
 import { Keys } from 'utils/cl-react-query/types';
+
 import customPagesKeys from './keys';
 
 export type CustomPagesKeys = Keys<typeof customPagesKeys>;

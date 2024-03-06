@@ -1,25 +1,24 @@
 import React from 'react';
-import { isNil, isNilOrError } from 'utils/helperUtils';
 
-// components
-import Comment from '../../../Comment';
-import ChildCommentForm from './ChildCommentForm';
 import { Spinner } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
-
-// style
-import styled, { useTheme } from 'styled-components';
 import { darken } from 'polished';
+import styled, { useTheme } from 'styled-components';
 
-// hooks
-import useIdeaById from 'api/ideas/useIdeaById';
 import useComment from 'api/comments/useComment';
 import useComments from 'api/comments/useComments';
+import useIdeaById from 'api/ideas/useIdeaById';
+
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNil, isNilOrError } from 'utils/helperUtils';
+
+import Comment from '../../../Comment';
+import messages from '../../../messages';
+
+import ChildCommentForm from './ChildCommentForm';
 
 const Container = styled.div`
   position: relative;

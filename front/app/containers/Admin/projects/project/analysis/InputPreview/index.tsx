@@ -1,25 +1,29 @@
 import React, { useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+
 import {
   Box,
   Text,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import useAnalysis from 'api/analyses/useAnalysis';
-import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
+import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
+import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
 
 import Divider from 'components/admin/Divider';
-import Taggings from '../Taggings';
-import LongFieldValue from './LongFieldValue';
 import Avatar from 'components/Avatar';
-import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
-import { getFullName } from 'utils/textUtils';
-import { useSelectedInputContext } from '../SelectedInputContext';
+import Button from 'components/UI/Button';
+
 import { useIntl } from 'utils/cl-intl';
+import { getFullName } from 'utils/textUtils';
+
+import { useSelectedInputContext } from '../SelectedInputContext';
+import Taggings from '../Taggings';
+
+import LongFieldValue from './LongFieldValue';
 import messages from './messages';
 
 const InputListItem = () => {

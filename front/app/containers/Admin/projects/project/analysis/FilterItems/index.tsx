@@ -1,19 +1,24 @@
 import React from 'react';
+
 import {
   Box,
   stylingConsts,
   colors,
   IconButton,
 } from '@citizenlab/cl2-component-library';
+
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
+import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import InputFieldFilterItem from './InputFieldFilterItem';
+
+import Tag from '../Tags/Tag';
+
 import AuthorFieldFilterItem from './AuthorFieldFilterItem';
 import EllipsisFilterValue from './EllipsisFilterValue';
-import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
-import Tag from '../Tags/Tag';
+import InputFieldFilterItem from './InputFieldFilterItem';
 import messages from './messages';
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 const clauseToPredicate = (clause?: string): '>' | '<' | '=' => {
   if (clause === 'from') {

@@ -6,29 +6,24 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { trackEventByName } from 'utils/analytics';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
 import {
   Icon,
   defaultStyles,
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
-
-// styling
-import styled from 'styled-components';
 import { darken } from 'polished';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// tracks
-import tracks from './tracks';
+import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div`
   display: flex;

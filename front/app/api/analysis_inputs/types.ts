@@ -1,5 +1,7 @@
 import { ILinks, IRelationship, Multiloc } from 'typings';
+
 import { Keys } from 'utils/cl-react-query/types';
+
 import inputsKeys from './keys';
 
 export type InputsKeys = Keys<typeof inputsKeys>;
