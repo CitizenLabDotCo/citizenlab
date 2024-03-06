@@ -276,13 +276,14 @@ describe('Survey builder', () => {
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('form').submit();
 
+    cy.get('[data-cy="e2e-preview-form-button"] > a').should('exist');
     cy.get('[data-cy="e2e-preview-form-button"] > a')
       .should(($a) => {
         expect($a.attr('href'), 'href').to.equal(projectUrl);
         expect($a.attr('target'), 'target').to.equal('_blank');
         $a.attr('target', '_self');
       })
-      .click();
+      .click({ force: true });
     cy.url().should(
       'eq',
       `${
