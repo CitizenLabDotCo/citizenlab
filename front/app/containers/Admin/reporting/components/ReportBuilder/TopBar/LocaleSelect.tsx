@@ -23,6 +23,7 @@ const LocaleSelect = ({ locale, setLocale }: Props) => {
   return (
     <Box bgColor={colors.background} p="4px 8px 4px 8px" borderRadius="3px">
       <StyledSelect
+        id="e2e-locale-select"
         value={locale}
         onChange={(e) => {
           setLocale(e.target.value as Locale);

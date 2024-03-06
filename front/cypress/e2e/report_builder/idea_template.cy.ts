@@ -133,7 +133,7 @@ describe('Idea template', () => {
         cy.wait(1000);
 
         // Switch locale
-        cy.get('#e2e-report-builder-topbar .e2e-localeswitcher.nl-BE').click();
+        cy.get('#e2e-locale-select').select('nl-BE');
 
         // Validate that text for other locale is present
         cy.get('.e2e-text-box')
@@ -141,7 +141,7 @@ describe('Idea template', () => {
           .should('contain.text', 'Samenvatting van het verslag');
 
         // Switch back
-        cy.get('#e2e-report-builder-topbar .e2e-localeswitcher.en').click();
+        cy.get('#e2e-locale-select').select('en');
 
         // Previous edited text should still be there
         cy.get('.e2e-text-box').eq(2).should('contain.text', text);

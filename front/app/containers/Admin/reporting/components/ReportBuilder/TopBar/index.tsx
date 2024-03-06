@@ -211,9 +211,11 @@ const ContentBuilderTopBar = ({
         <Box>
           <LocaleSelect locale={selectedLocale} setLocale={setSelectedLocale} />
         </Box>
-        <Box ml="32px">
-          {!!phaseId && <ViewPicker view={view} setView={setView} />}
-        </Box>
+        {!!phaseId && (
+          <Box ml="32px">
+            <ViewPicker view={view} setView={setView} />
+          </Box>
+        )}
         <Box ml="32px">
           <Button
             icon="print"
