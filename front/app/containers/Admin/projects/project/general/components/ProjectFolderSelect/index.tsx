@@ -19,7 +19,7 @@ import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/project
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError, isNil } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
