@@ -1,26 +1,20 @@
 import React, { useMemo } from 'react';
 
-// components
 import {
   Box,
   Icon,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-
-// i18n
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
-// styling
 import styled from 'styled-components';
 
-// utils
+import { Option } from 'components/UI/UserSelect/typings';
 import { optionIsUser } from 'components/UI/UserSelect/utils';
+
+import { useIntl } from 'utils/cl-intl';
 import { isValidEmail } from 'utils/validate';
 
-// typings
-import { Option } from 'components/UI/UserSelect/typings';
+import messages from './messages';
 
 const NewUserButton = styled.button<{ disabled: boolean }>`
   background-color: ${colors.successLight};

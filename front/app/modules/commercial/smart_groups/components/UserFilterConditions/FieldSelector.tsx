@@ -1,28 +1,27 @@
 import React, { memo } from 'react';
-import { keys } from 'lodash-es';
-import { Select } from '@citizenlab/cl2-component-library';
 
+import { Select } from '@citizenlab/cl2-component-library';
+import { keys } from 'lodash-es';
+import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 import { IOption } from 'typings';
 
+import {
+  IUserCustomFieldData,
+  IUserCustomFieldInputType,
+} from 'api/user_custom_fields/types';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { injectIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 import {
   TRule,
   TStaticRuleType,
   TCustomRuleType,
   ruleTypeConstraints,
 } from './rules';
-
-import {
-  IUserCustomFieldData,
-  IUserCustomFieldInputType,
-} from 'api/user_custom_fields/types';
-
-import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 export interface FieldDescriptor {
   ruleType?: TRule['ruleType'];

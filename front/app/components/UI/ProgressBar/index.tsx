@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import warningPattern from './warning_pattern.svg';
+
 import { useInView } from 'react-intersection-observer';
+import styled from 'styled-components';
+
+import warningPattern from './warning_pattern.svg';
 
 const Container = styled.div``;
 

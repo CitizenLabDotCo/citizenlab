@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Box,
   colors,
@@ -6,15 +7,20 @@ import {
   Text,
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+
+import useAnalysis from 'api/analyses/useAnalysis';
+
+import CloseIconButton from 'components/UI/CloseIconButton';
+
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
+
+import AuthorFilters from './AuthorFilters';
+import EmptyCustomFieldsFilter from './EmptyCustomFieldsFilter';
 import EngagementFilter from './EngagementFilter';
 import TimeFilter from './TimeFilter';
-import AuthorFilters from './AuthorFilters';
-import { useParams } from 'react-router-dom';
-import useAnalysis from 'api/analyses/useAnalysis';
-import CloseIconButton from 'components/UI/CloseIconButton';
-import EmptyCustomFieldsFilter from './EmptyCustomFieldsFilter';
 
 interface FilterProps {
   onClose: () => void;

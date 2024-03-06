@@ -1,13 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useApiClients from './useApiClients';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import { data } from './__mocks__/useApiClients';
+import useApiClients from './useApiClients';
 
 const apiPath = '*api_clients';
 

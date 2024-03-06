@@ -1,8 +1,10 @@
 import React from 'react';
-import ProgressBar from 'components/UI/ProgressBar';
+
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 import { isNil } from 'lodash-es';
+import styled from 'styled-components';
+
+import ProgressBar from 'components/UI/ProgressBar';
 
 const StyledProgressBar = styled(ProgressBar)<{ width: number }>`
   height: 5px;

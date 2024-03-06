@@ -1,5 +1,7 @@
 import React from 'react';
+
 import reactStringReplace from 'react-string-replace';
+
 import ReferenceLink from './ReferenceLink';
 
 export const refRegex =

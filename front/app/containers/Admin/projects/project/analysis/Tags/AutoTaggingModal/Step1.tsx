@@ -1,7 +1,4 @@
 import React, { ReactNode } from 'react';
-import styled from 'styled-components';
-
-import { TagType } from 'api/analysis_tags/types';
 
 import {
   Box,
@@ -13,18 +10,25 @@ import {
   Icon,
   Label,
   Radio,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import Tag from '../Tag';
+import Tippy from '@tippyjs/react';
+import { isEmpty } from 'lodash-es';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import useAnalysis from 'api/analyses/useAnalysis';
 import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
-import { isEmpty } from 'lodash-es';
-import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
-import { useParams } from 'react-router-dom';
-import useAnalysis from 'api/analyses/useAnalysis';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
+import { TagType } from 'api/analysis_tags/types';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import Tippy from '@tippyjs/react';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+import Tag from '../Tag';
 
 const AutoTagMethodContainer = styled.div<{ isDisabled: boolean }>`
   background-color: ${colors.grey100};
@@ -73,6 +77,7 @@ const AutoTagOption = ({
   isDisabled,
   isLoading,
   tooltip,
+  isRecommended,
 }: {
   children: ReactNode;
   tagType: TagType;
@@ -81,6 +86,7 @@ const AutoTagOption = ({
   isDisabled: boolean;
   isLoading: boolean;
   tooltip?: string;
+  isRecommended?: boolean;
 }) => {
   const { formatMessage } = useIntl();
   return (
@@ -104,6 +110,27 @@ const AutoTagOption = ({
           <Box w="32px">
             <Tag tagType={tagType} name="&nbsp;" />
           </Box>
+          {isRecommended && (
+            <Box
+              bgColor={colors.success}
+              py="4px"
+              px="8px"
+              borderRadius={stylingConsts.borderRadius}
+              display="flex"
+              gap="4px"
+              alignItems="center"
+            >
+              <Icon
+                name="flash"
+                fill={colors.white}
+                width="16px"
+                height="16px"
+              />
+              <Text color="white" m="0px" fontSize="s">
+                {formatMessage(messages.recommended)}
+              </Text>
+            </Box>
+          )}
           {isDisabled && <Icon name="lock" />}
         </Box>
         <Box
@@ -238,6 +265,7 @@ const Step1 = ({
           isDisabled={advancedAutotaggingOptionDisabled}
           isLoading={isLoading && loadingMethod === 'nlp_topic'}
           tooltip={formatMessage(messages.fullyAutomatedTooltip)}
+          isRecommended
         >
           {formatMessage(messages.fullyAutomatedDescription)}
         </AutoTagOption>

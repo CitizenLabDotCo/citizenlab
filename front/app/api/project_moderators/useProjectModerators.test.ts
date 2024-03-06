@@ -1,11 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useProjectModerators from './useProjectModerators';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useProjectModerators from './useProjectModerators';
 
 const apiPath = '*projects/:projectId/moderators';
 

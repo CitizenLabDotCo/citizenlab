@@ -1,4 +1,5 @@
 import { object } from 'yup';
+
 import validateMultilocForEveryLocale from './validateMultilocForEveryLocale';
 
 describe('validateMultilocForEveryLocale', () => {

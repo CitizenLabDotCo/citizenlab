@@ -1,5 +1,4 @@
 import React from 'react';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   Icon,
@@ -9,15 +8,20 @@ import {
   Box,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 import { useParams } from 'react-router-dom';
-import clHistory from 'utils/cl-router/history';
-import useAnalyses from 'api/analyses/useAnalyses';
+
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
+import useAnalyses from 'api/analyses/useAnalyses';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
+
 import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
+import messages from './messages';
 
 const AnalysisBanner = () => {
   const { projectId, phaseId } = useParams() as {

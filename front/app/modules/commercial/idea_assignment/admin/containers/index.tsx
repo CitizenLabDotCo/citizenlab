@@ -1,10 +1,16 @@
 import React from 'react';
+
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { Section, SubSectionTitle } from 'components/admin/Section';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
+
 import AssigneeSelector from '../components/AssigneeSelector';
+
+import messages from './messages';
 
 const InputAssignmentSection = styled(Section)`
   margin-bottom: 30px;
@@ -15,10 +21,6 @@ const StyledLink = styled(Link)`
     text-decoration: underline;
   }
 `;
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
   projectId: string;

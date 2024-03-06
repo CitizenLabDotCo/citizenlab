@@ -1,14 +1,12 @@
 import React, { memo } from 'react';
 
-// components
 import { StatusLabel, colors } from '@citizenlab/cl2-component-library';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// types
 import { PublicationStatus } from 'api/projects/types';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface Props {
   publicationStatus: PublicationStatus;

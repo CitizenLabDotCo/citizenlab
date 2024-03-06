@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
-
-import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';
-import { IInsightData } from 'api/analysis_insights/types';
 
 import {
   Box,
@@ -10,20 +6,26 @@ import {
   colors,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
+import { useParams, useSearchParams } from 'react-router-dom';
 
-import { useIntl } from 'utils/cl-intl';
+import { IInsightData } from 'api/analysis_insights/types';
+import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import Rate from './Rate';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
+
+import Divider from 'components/admin/Divider';
+
 import { trackEventByName } from 'utils/analytics';
-import messages from './messages';
-import { removeRefs } from './util';
+import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
 import InsightBody from './InsightBody';
 import InsightFooter from './InsightFooter';
-import Divider from 'components/admin/Divider';
+import messages from './messages';
 import QuestionHeader from './QuestionHeader';
+import Rate from './Rate';
+import { removeRefs } from './util';
 
 type Props = {
   insight: IInsightData;

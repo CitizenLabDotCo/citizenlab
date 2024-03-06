@@ -1,13 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useCauses from './useCauses';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { causesData } from './__mocks__/useCauses';
 import { ICauseParameters } from './types';
+import useCauses from './useCauses';
 
 const apiPath = '*/:type/:id/causes';
 

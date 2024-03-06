@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// components
-import Modal from 'components/UI/Modal';
 import {
   Box,
   Icon,
@@ -9,17 +7,15 @@ import {
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
-import BinInputs from './BinInputs';
-import Warning from 'components/UI/Warning';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// styling
+import { isEqual } from 'lodash-es';
 import styled from 'styled-components';
 
-// utils
+import Modal from 'components/UI/Modal';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import { Bins } from '../../../api/reference_distribution/types';
 import {
   getExampleBins,
   isExampleBins,
@@ -29,10 +25,9 @@ import {
   removeBin,
   addBin,
 } from '../../../utils/bins';
-import { isEqual } from 'lodash-es';
 
-// typings
-import { Bins } from '../../../api/reference_distribution/types';
+import BinInputs from './BinInputs';
+import messages from './messages';
 
 const ClearAllButton = styled.button`
   cursor: pointer;

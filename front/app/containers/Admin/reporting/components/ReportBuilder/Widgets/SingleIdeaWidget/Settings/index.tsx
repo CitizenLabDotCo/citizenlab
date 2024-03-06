@@ -1,33 +1,29 @@
 import React, { useCallback } from 'react';
 
-// hooks
+import { Box, Toggle, colors } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+import { IOption } from 'typings';
+
+import { IIdeaData } from 'api/ideas/types';
 import usePhases from 'api/phases/usePhases';
 
-// components
-import { Box, Toggle, colors } from '@citizenlab/cl2-component-library';
-import ProjectFilter from '../../_shared/ProjectFilter';
+import IdeaSelect from 'components/UI/IdeaSelect';
 import PhaseFilter from 'components/UI/PhaseFilter';
-import CollapseLongTextToggle from './CollapseLongTextToggle';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-// i18n
-import messages from '../messages';
-import widgetMessages from '../../messages';
 import { useIntl } from 'utils/cl-intl';
 
-// typings
+import ProjectFilter from '../../_shared/ProjectFilter';
+import widgetMessages from '../../messages';
+import messages from '../messages';
 import { Props } from '../typings';
-import { IOption, Multiloc } from 'typings';
-import IdeaSelect from 'components/UI/IdeaSelect';
-import { IIdeaData } from 'api/ideas/types';
+
+import CollapseLongTextToggle from './CollapseLongTextToggle';
 
 const Settings = () => {
   const { formatMessage } = useIntl();
 
   const {
     actions: { setProp },
-    title,
     showAuthor,
     showContent,
     showReactions,
@@ -37,7 +33,6 @@ const Settings = () => {
     phaseId,
     ideaId,
   } = useNode<Props>((node) => ({
-    title: node.data.props.title,
     showAuthor: node.data.props.showAuthor,
     showContent: node.data.props.showContent,
     showReactions: node.data.props.showReactions,
@@ -49,15 +44,6 @@ const Settings = () => {
   }));
 
   const { data: phases } = usePhases(projectId);
-
-  const setTitle = useCallback(
-    (value: Multiloc) => {
-      setProp((props: Props) => {
-        props.title = value;
-      });
-    },
-    [setProp]
-  );
 
   const handleChangeShowAuthor = useCallback(
     (showAuthor: boolean) => {
@@ -149,15 +135,6 @@ const Settings = () => {
 
   return (
     <Box>
-      <Box mb="20px">
-        <InputMultilocWithLocaleSwitcher
-          label={formatMessage(messages.title)}
-          type="text"
-          valueMultiloc={title}
-          onChange={setTitle}
-        />
-      </Box>
-
       <ProjectFilter
         projectId={projectId}
         emptyOptionMessage={widgetMessages.noProject}

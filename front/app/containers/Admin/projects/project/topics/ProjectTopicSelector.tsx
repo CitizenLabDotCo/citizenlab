@@ -1,29 +1,22 @@
-// Libraries
 import React, { memo, useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
-// Hooks
-import useTopics from 'api/topics/useTopics';
-import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
-
-// i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import styled from 'styled-components';
+import { IOption } from 'typings';
 
-// Components
+import useAddProjectAllowedInputTopic from 'api/project_allowed_input_topics/useAddProjectAllowedInputTopic';
+import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
+import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
+import useTopics from 'api/topics/useTopics';
+
 import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
-// Style
-import styled from 'styled-components';
+import { injectIntl } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
-// Typings
-import { IOption } from 'typings';
-
-import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
-import useAddProjectAllowedInputTopic from 'api/project_allowed_input_topics/useAddProjectAllowedInputTopic';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

@@ -2,23 +2,26 @@ import React, { useEffect, useState } from 'react';
 
 import {
   Box,
-  Button,
   IconButton,
   colors,
   Dropdown,
   DropdownListItem,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-
-import useAnalyses from 'api/analyses/useAnalyses';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import useAddAnalysis from 'api/analyses/useAddAnalysis';
+import useAnalyses from 'api/analyses/useAnalyses';
+import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
+
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../../../messages';
 
 import AnalysisInsights from './AnalysisInsights';
-import useAddAnalysis from 'api/analyses/useAddAnalysis';
-import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
-import messages from '../../../messages';
-import { useIntl } from 'utils/cl-intl';
-import styled from 'styled-components';
 
 const StyledDropdownListItem = styled(DropdownListItem)`
   text-align: left;

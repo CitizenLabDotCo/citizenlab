@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Box,
   Icon,
@@ -7,9 +8,11 @@ import {
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
 import Tippy from '@tippyjs/react';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const AnalysisUpsell = () => {
   const { formatMessage } = useIntl();

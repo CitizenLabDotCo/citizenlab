@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
-import { VerificationMethodsKeys, IVerificationMethods } from './types';
+
 import verificationMethodsKeys from './keys';
+import { VerificationMethodsKeys, IVerificationMethods } from './types';
 
 const fetchVerificationMethods = () =>
   fetcher<IVerificationMethods>({

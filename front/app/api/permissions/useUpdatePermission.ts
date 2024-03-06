@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
-import permissionKeys from './keys';
 
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import permissionKeys from './keys';
 import { IPhasePermission, IPermissionUpdate } from './types';
 
 const updatePermission = async ({

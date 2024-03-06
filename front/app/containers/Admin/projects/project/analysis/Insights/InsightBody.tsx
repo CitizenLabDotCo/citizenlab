@@ -1,22 +1,23 @@
 import React from 'react';
-import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 
+import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
+import { IInputsFilterParams } from 'api/analysis_inputs/types';
+
+import FilterItems from 'containers/Admin/projects/project/analysis/FilterItems';
 import {
   deleteTrailingIncompleteIDs,
   replaceIdRefsWithLinks,
 } from 'containers/Admin/projects/project/analysis/Insights/util';
-import styled from 'styled-components';
 
 const StyledInsightsText = styled(Text)`
   white-space: pre-wrap;
   word-break: break-word;
 `;
-
-import { IInputsFilterParams } from 'api/analysis_inputs/types';
-import FilterItems from 'containers/Admin/projects/project/analysis/FilterItems';
-import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
-import { useSearchParams } from 'react-router-dom';
-import { isEmpty } from 'lodash-es';
 
 const InsightBody = ({
   text,

@@ -1,18 +1,13 @@
 import React, { useMemo } from 'react';
 
-// api
-import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
-
-// i18n
-import useLocalize, { Localize } from 'hooks/useLocalize';
-
-// components
 import { Box, Select } from '@citizenlab/cl2-component-library';
-
-// typings
 import { IOption } from 'typings';
+
 import { ICustomFields, ICustomFieldInputType } from 'api/custom_fields/types';
+import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import usePhase from 'api/phases/usePhase';
+
+import useLocalize, { Localize } from 'hooks/useLocalize';
 
 interface Props {
   phaseId: string;

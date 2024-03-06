@@ -1,17 +1,20 @@
 import React from 'react';
-import { Box, colors, Text, Icon } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import { Box, colors, Text, Icon } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { timeAgo } from 'utils/dateUtils';
-import useLocale from 'hooks/useLocale';
-import Tippy from '@tippyjs/react';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
+import { timeAgo } from 'utils/dateUtils';
+
+import messages from './messages';
 
 const CustomFieldTitle = ({ customFieldId, projectId, phaseId }) => {
   const localize = useLocalize();

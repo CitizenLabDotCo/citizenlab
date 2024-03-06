@@ -1,19 +1,24 @@
-import { Box, Button } from '@citizenlab/cl2-component-library';
 import React, { useEffect, useState } from 'react';
+
+import { Box, Button } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 import { useParams } from 'react-router-dom';
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+
+import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
-import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 import { ISummaryPreCheck } from 'api/analysis_summary_pre_check/types';
+import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
-import { trackEventByName } from 'utils/analytics';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+
 import messages from './messages';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import Tippy from '@tippyjs/react';
-import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 
 const SummarizeButton = () => {
   const largeSummariesEnabled = useFeatureFlag({

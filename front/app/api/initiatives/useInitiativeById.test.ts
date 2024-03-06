@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useInitiativeById from './useInitiativeById';
-import endpoints, { apiPath, initiativesData } from './__mocks__/_mockServer';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import endpoints, { apiPath, initiativesData } from './__mocks__/_mockServer';
+import useInitiativeById from './useInitiativeById';
 
 const server = setupServer(endpoints['GET initiatives/:id']);
 

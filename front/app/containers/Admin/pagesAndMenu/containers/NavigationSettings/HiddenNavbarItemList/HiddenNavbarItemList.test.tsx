@@ -1,8 +1,12 @@
-import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
-import { navbarItemsData as allNavbarItems } from 'api/navbar/__mocks__/useNavbarItems';
 import React from 'react';
+
+import { navbarItemsData as allNavbarItems } from 'api/navbar/__mocks__/useNavbarItems';
+
+import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
+
 import clHistory from 'utils/cl-router/history';
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
+
 import HiddenNavbarItemList from '.';
 
 let mockNavbarItems = allNavbarItems;

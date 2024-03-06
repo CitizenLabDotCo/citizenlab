@@ -1,6 +1,8 @@
-import { definePermissionRule } from 'utils/permissions/permissions';
-import { isAdmin, isProjectModerator } from '../roles';
 import { IUser } from 'api/users/types';
+
+import { definePermissionRule } from 'utils/permissions/permissions';
+
+import { isAdmin, isProjectModerator } from '../roles';
 
 definePermissionRule(
   'automatedCampaign',
