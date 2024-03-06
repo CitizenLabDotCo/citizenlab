@@ -18,9 +18,7 @@ class TimelineService
   def current_phase(project, time = Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
 
-    project.phases.find do |phase|
-      phase.start_at <= date && (phase.end_at.nil? || phase.end_at >= date)
-    end
+    project.phases.find { |phase| phase.start_at <= date && (phase.end_at.nil? || phase.end_at >= date) }
   end
 
   def phase_is_complete?(phase, time = Time.now)
