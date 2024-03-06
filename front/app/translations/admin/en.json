@@ -2490,6 +2490,8 @@
   "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Your navigation bar can display up to five pages in addition to the Home and projects pages. You can rename menu items, re-order and add new pages  with your own content.",
   "app.modules.project_management.admin.components.permissionsTab": "Access rights",
+  "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
+  "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widgets",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noInsights": "No insights available",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Question",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.surveyPhase": "Survey phase",
