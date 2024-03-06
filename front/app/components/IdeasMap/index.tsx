@@ -34,7 +34,6 @@ import {
 import useLocalize from 'hooks/useLocalize';
 import { useSearchParams } from 'react-router-dom';
 import useAuthUser from 'api/me/useAuthUser';
-import useIdeaById from 'api/ideas/useIdeaById';
 
 // utils
 import {
@@ -155,7 +154,7 @@ const IdeasMap = memo<Props>(
 
     const selectedIdea = searchParams.get('idea_map_id');
 
-    const { data: ideaData } = useIdeaById(selectedIdea || undefined);
+    const ideaData = ideaMarkers?.data.find((idea) => idea.id === selectedIdea);
 
     const setSelectedIdea = useCallback((ideaId: string | null) => {
       if (ideaId) {
@@ -539,9 +538,9 @@ const IdeasMap = memo<Props>(
                 timeout={300}
               >
                 <Box>
-                  {ideaData?.data && (
+                  {ideaData && (
                     <StyledIdeaMapCard
-                      idea={ideaData.data}
+                      idea={ideaData}
                       onClose={() => {
                         setSelectedIdea(null);
                       }}

@@ -19,6 +19,7 @@ import Centerer from 'components/UI/Centerer';
 import useLocale from 'hooks/useLocale';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import usePhase from 'api/phases/usePhase';
+import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 
 // router
 import { useSearchParams } from 'react-router-dom';
@@ -38,7 +39,6 @@ import { isFieldEnabled } from 'utils/projectUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
-import useIdeas from 'api/ideas/useIdeas';
 
 const Container = styled.div`
   width: 100%;
@@ -139,11 +139,11 @@ const MapIdeasList = memo<Props>(
     const topicsParam = searchParams.get('topics');
     const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
 
-    const { data: ideaMarkers } = useIdeas({
-      projects: [projectId],
-      phase: phaseId,
+    const { data: ideaMarkers } = useIdeaMarkers({
+      projectIds: [projectId],
+      phaseId,
       sort,
-      search: search || undefined,
+      search,
       topics,
     });
 

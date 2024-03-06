@@ -39,7 +39,7 @@ import { darken } from 'polished';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // typings
-import { IIdeaData } from 'api/ideas/types';
+import { IIdeaMarkerData } from 'api/idea_markers/types';
 
 const Container = styled.div`
   text-align: left;
@@ -125,7 +125,7 @@ const FooterValue = styled.div`
 `;
 
 interface Props {
-  idea: IIdeaData;
+  idea: IIdeaMarkerData;
   onSelectIdea: (ideaId: string | null) => void;
   onClose?: () => void;
   className?: string;
