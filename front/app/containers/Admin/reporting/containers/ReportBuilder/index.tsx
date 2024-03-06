@@ -87,12 +87,6 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
 
     return craftjs_json;
   });
-  const [currentData, setCurrentData] = useState<
-    Record<string, object> | undefined
-  >(initialData);
-  const [savedData, setSavedData] = useState<
-    Record<string, object> | undefined
-  >(initialData);
 
   const emptyReportOnInit = initialData === undefined;
 
@@ -123,7 +117,6 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
 
   const handleSetSaved = () => {
     setSaved(true);
-    setSavedData(currentData);
   };
 
   return (
@@ -135,20 +128,20 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
       >
         <Editor
           isPreview={false}
+          // onNodesChange is called twice on initial load.
           onNodesChange={(query) => {
-            // onNodesChange is called twice on initial load.
-            if (savedData) {
-              // This comparison is still not perfect.
-              // E.g., if you add a node with rich text editor, save the report,
-              // and then modify the default text and revert the change,
-              // areEqual may still return false, because the default text may not have
-              // a wrapping <p> tag, which is added as soon as you start typing.
-              // But it's good enough for now.
-              setSaved(areEqual(query.getSerializedNodes(), savedData));
-            } else {
-              setSaved(false);
-            }
-            setCurrentData(query.getSerializedNodes());
+            // This comparison is still not perfect.
+            // E.g., if you add a node with rich text editor, save the report,
+            // and then modify the default text and revert the change,
+            // areEqual may still return false, because the default text may not have
+            // a wrapping <p> tag, which is added as soon as you start typing.
+            // But it's good enough for now.
+            setSaved(
+              areEqual(
+                query.getSerializedNodes(),
+                reportLayout.attributes.craftjs_json
+              )
+            );
           }}
         >
           <TopBar
