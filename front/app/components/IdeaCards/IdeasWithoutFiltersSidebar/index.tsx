@@ -43,6 +43,7 @@ import usePhase from 'api/phases/usePhase';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { IdeaDefaultSortMethod } from 'api/phases/types';
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 
 const Container = styled.div`
   width: 100%;
@@ -194,6 +195,10 @@ const IdeasWithoutFiltersSidebar = ({
     return data?.pages.map((page) => page.data).flat();
   }, [data?.pages]);
   const { data: phase } = usePhase(phaseId);
+  const { data: ideaMarkers } = useIdeaMarkers({
+    projectIds: projectId ? [projectId] : null,
+    ...ideaQueryParameters,
+  });
 
   const handleSearchOnChange = useCallback(
     (search: string) => {
@@ -326,6 +331,7 @@ const IdeasWithoutFiltersSidebar = ({
           view={selectedView}
           projectId={projectId}
           phaseId={phaseId}
+          ideaMarkers={ideaMarkers}
         />
       </Container>
     );
