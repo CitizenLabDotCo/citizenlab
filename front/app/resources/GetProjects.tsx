@@ -1,5 +1,6 @@
-import useProjects from 'api/projects/useProjects';
 import { Props as InputProps, IProjectData } from 'api/projects/types';
+import useProjects from 'api/projects/useProjects';
+
 import { isNil } from 'utils/helperUtils';
 
 export type GetProjectsChildProps = IProjectData[] | null | undefined;

@@ -1,13 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import {
   Icon,
   Box,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-
 import { rgba } from 'polished';
+import styled from 'styled-components';
+
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 const ContainerInner = styled.div`

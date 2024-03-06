@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useReorderUserCustomFieldsOption from './useReorderUserCustomFieldsOption';
-import { userCustomFieldsOptionsData } from './__mocks__/useUserCustomFieldsOptions';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { userCustomFieldsOptionsData } from './__mocks__/useUserCustomFieldsOptions';
+import useReorderUserCustomFieldsOption from './useReorderUserCustomFieldsOption';
 
 const apiPath =
   '*/users/custom_fields/:customFieldId/custom_field_options/:optionId/reorder';

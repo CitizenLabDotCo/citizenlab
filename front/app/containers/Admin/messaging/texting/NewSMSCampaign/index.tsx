@@ -1,16 +1,14 @@
 import React from 'react';
 
-// components
-import HelmetIntl from 'components/HelmetIntl';
-import TextingHeader from '../components/TextingHeader';
-import SMSCampaignForm from '../components/SMSCampaignForm';
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-// utils
+import HelmetIntl from 'components/HelmetIntl';
+
 import clHistory from 'utils/cl-router/history';
 
-// styling
-import styled from 'styled-components';
+import SMSCampaignForm from '../components/SMSCampaignForm';
+import TextingHeader from '../components/TextingHeader';
 
 const StyledSMSCampaignForm = styled(SMSCampaignForm)`
   width: 500px;

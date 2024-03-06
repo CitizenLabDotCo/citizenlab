@@ -1,4 +1,5 @@
 import { isNumber } from 'lodash-es';
+
 import fetcher from './cl-react-query/fetcher';
 
 type Point = {

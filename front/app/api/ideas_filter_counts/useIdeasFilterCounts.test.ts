@@ -1,11 +1,11 @@
-import { IIdeasFilterCounts } from './types';
-
 import { renderHook } from '@testing-library/react-hooks';
-
-import useIdeasFilterCounts from './useIdeasFilterCounts';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
+import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { IIdeasFilterCounts } from './types';
+import useIdeasFilterCounts from './useIdeasFilterCounts';
 
 export const data: IIdeasFilterCounts = {
   data: {
@@ -30,7 +30,6 @@ export const data: IIdeasFilterCounts = {
     },
   },
 };
-import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 const apiPath = '*ideas/filter_counts';
 const server = setupServer(

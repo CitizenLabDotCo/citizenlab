@@ -1,39 +1,6 @@
 import React from 'react';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
-import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
-import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification';
-import CommentOnYourCommentNotification from '../CommentOnYourCommentNotification';
-import CommentOnIdeaYouFollowNotification from '../CommentOnIdeaYouFollowNotification';
-import CommentOnInitiativeYouFollowNotification from '../CommentOnInitiativeYouFollowNotification';
-import CosponsorOfYourInitiativeNotification from '../CosponsorOfYourInitiativeNotification';
-import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
-import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
-import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotification';
-import InitiativeMarkedAsSpamNotification from '../InitiativeMarkedAsSpamNotification';
-import InitiativeResubmittedForReviewNotification from '../InitiativeResubmittedForReviewNotification';
-import InviteAcceptedNotification from '../InviteAcceptedNotification';
-import InvitationToCosponsorInitiativeNotification from '../InvitationToCosponsorInitiativeNotification';
-import MentionInCommentNotification from '../MentionInCommentNotification';
-import InternalCommentNotification from '../InternalCommentNotification';
-import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
-import OfficialFeedbackOnIdeaYouFollowNotification from '../OfficialFeedbackOnIdeaYouFollowNotification';
-import OfficialFeedbackOnInitiativeYouFollowNotification from '../OfficialFeedbackOnInitiativeYouFollowNotification';
-import ProjectModerationRightsReceivedNotification from '../ProjectModerationRightsReceivedNotification';
-import ProjectPhaseStartedNotification from '../ProjectPhaseStartedNotification';
-import ProjectPhaseUpcomingNotification from '../ProjectPhaseUpcomingNotification';
-import ProjectPublishedNotification from '../ProjectPublishedNotification';
-import StatusChangeOnIdeaYouFollowNotification from '../StatusChangeOnIdeaYouFollowNotification';
-import StatusChangeOnInitiativeYouFollowNotification from '../StatusChangeOnInitiativeYouFollowNotification';
-import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
-import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
-import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';
-import NativeSurveyNotSubmittedNotification from '../NativeSurveyNotSubmittedNotification';
-import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNotification';
-import VotingLastChanceNotification from '../VotingLastChanceNotification';
-import VotingResultsNotification from '../VotingResultsNotification';
+import styled from 'styled-components';
 
 import {
   TNotificationData,
@@ -70,8 +37,43 @@ import {
   IVotingLastChanceNotificationData,
   IVotingResultsNotificationData,
 } from 'api/notifications/types';
-import styled from 'styled-components';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Outlet from 'components/Outlet';
+
+import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
+import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
+import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification';
+import CommentOnIdeaYouFollowNotification from '../CommentOnIdeaYouFollowNotification';
+import CommentOnInitiativeYouFollowNotification from '../CommentOnInitiativeYouFollowNotification';
+import CommentOnYourCommentNotification from '../CommentOnYourCommentNotification';
+import CosponsorOfYourInitiativeNotification from '../CosponsorOfYourInitiativeNotification';
+import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
+import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
+import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotification';
+import InitiativeMarkedAsSpamNotification from '../InitiativeMarkedAsSpamNotification';
+import InitiativeResubmittedForReviewNotification from '../InitiativeResubmittedForReviewNotification';
+import InternalCommentNotification from '../InternalCommentNotification';
+import InvitationToCosponsorInitiativeNotification from '../InvitationToCosponsorInitiativeNotification';
+import InviteAcceptedNotification from '../InviteAcceptedNotification';
+import MentionInCommentNotification from '../MentionInCommentNotification';
+import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
+import NativeSurveyNotSubmittedNotification from '../NativeSurveyNotSubmittedNotification';
+import OfficialFeedbackOnIdeaYouFollowNotification from '../OfficialFeedbackOnIdeaYouFollowNotification';
+import OfficialFeedbackOnInitiativeYouFollowNotification from '../OfficialFeedbackOnInitiativeYouFollowNotification';
+import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
+import ProjectModerationRightsReceivedNotification from '../ProjectModerationRightsReceivedNotification';
+import ProjectPhaseStartedNotification from '../ProjectPhaseStartedNotification';
+import ProjectPhaseUpcomingNotification from '../ProjectPhaseUpcomingNotification';
+import ProjectPublishedNotification from '../ProjectPublishedNotification';
+import StatusChangeOnIdeaYouFollowNotification from '../StatusChangeOnIdeaYouFollowNotification';
+import StatusChangeOnInitiativeYouFollowNotification from '../StatusChangeOnInitiativeYouFollowNotification';
+import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
+import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNotification';
+import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';
+import VotingLastChanceNotification from '../VotingLastChanceNotification';
+import VotingResultsNotification from '../VotingResultsNotification';
 
 export const DeletedUser = styled.span`
   font-style: italic;

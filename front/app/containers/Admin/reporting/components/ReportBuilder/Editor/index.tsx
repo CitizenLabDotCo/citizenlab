@@ -1,19 +1,15 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-
-// craft
 import { Editor as CraftEditor } from '@craftjs/core';
-import RenderNode from './RenderNode';
 
-// widgets
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
+
+import PhaseTemplate from '../Templates/PhaseTemplate';
+import ProjectTemplate from '../Templates/ProjectTemplate';
 import { WIDGETS } from '../Widgets';
 
-// templates
-import ProjectTemplate from '../Templates/ProjectTemplate';
-import PhaseTemplate from '../Templates/PhaseTemplate';
+import RenderNode from './RenderNode';
 
 type EditorProps = {
   children: React.ReactNode;

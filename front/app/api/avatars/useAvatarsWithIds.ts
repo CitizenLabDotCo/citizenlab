@@ -1,5 +1,7 @@
 import { UseQueryOptions, useQueries } from '@tanstack/react-query';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import avatarsKeys from './keys';
 import { IAvatar } from './types';
 

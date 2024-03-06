@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useRemoveInappropriateContentFlag from './useRemoveInappropriateContentFlag';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useRemoveInappropriateContentFlag from './useRemoveInappropriateContentFlag';
 const apiPath = '*inappropriate_content_flags/:id/mark_as_deleted';
 
 const server = setupServer(

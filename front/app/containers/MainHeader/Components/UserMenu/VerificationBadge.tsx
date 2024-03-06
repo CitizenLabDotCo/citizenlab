@@ -1,9 +1,13 @@
 import React from 'react';
-import FeatureFlag from 'components/FeatureFlag';
-import styled from 'styled-components';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+
 import { colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import FeatureFlag from 'components/FeatureFlag';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const Badge = styled.div`
   color: #fff;

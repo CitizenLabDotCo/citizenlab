@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useCommentReaction from './useCommentReaction';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { reactionData } from './__mocks__/useCommentReaction';
+import useCommentReaction from './useCommentReaction';
 
 const apiPath = '*/reactions/:id';
 

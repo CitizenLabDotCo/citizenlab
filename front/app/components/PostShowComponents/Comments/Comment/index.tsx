@@ -1,20 +1,18 @@
-// libraries
 import React, { useState } from 'react';
 
-// components
-import CommentHeader from './CommentHeader';
-import CommentBody from './CommentBody';
-import CommentFooter from './CommentFooter';
 import { Icon, colors, fontSizes } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// style
 import styled from 'styled-components';
+
 import useComment from 'api/comments/useComment';
 import useUserById from 'api/users/useUserById';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
+
+import CommentBody from './CommentBody';
+import CommentFooter from './CommentFooter';
+import CommentHeader from './CommentHeader';
 
 const Container = styled.div``;
 

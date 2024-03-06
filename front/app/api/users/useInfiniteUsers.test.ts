@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import useInfiniteUsers from './useInfiniteUsers';
 
 import { usersData } from './__mocks__/_mockServer';
+import useInfiniteUsers from './useInfiniteUsers';
 
 export const links = {
   last: 'http://localhost:3000/web_api/v1/users?page%5Bnumber%5D=9&page%5Bsize%5D=12&sort=random',

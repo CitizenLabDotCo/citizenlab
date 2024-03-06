@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 
-// components
 import {
   Icon,
   Box,
@@ -10,11 +9,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
-// style
+import messages from './messages';
 import { ItemMenu, StyledBox } from './styles';
 
 export const SupportMenu = () => {

@@ -1,13 +1,17 @@
 import React from 'react';
+
 import moduleConfiguration from 'modules';
-import PageLoading from 'components/UI/PageLoading';
-import messages from './messages';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+
 import HelmetIntl from 'components/HelmetIntl';
-import Tools from './';
-import PublicAPITokens from './PublicAPI/PublicAPITokens';
-import PowerBITemplates from './PowerBI/PowerBITemplates';
+import PageLoading from 'components/UI/PageLoading';
+
 import EsriKeyInput from './Esri/EsriKeyInput';
+import messages from './messages';
+import PowerBITemplates from './PowerBI/PowerBITemplates';
+import PublicAPITokens from './PublicAPI/PublicAPITokens';
+
+import Tools from './';
 
 const toolsRoutes = () => {
   return {

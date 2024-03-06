@@ -1,25 +1,23 @@
 import React, { useState } from 'react';
 
-// Components
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
-import SeatSetSuccess from '../SeatSetSuccess';
-
-// Translation
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
-import messages from './messages';
-
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useExceedsSeats from 'hooks/useExceedsSeats';
-
-// Utils
-import { isRegularUser, isAdmin } from 'utils/permissions/roles';
 
 import { IUserData } from 'api/users/types';
+
+import useExceedsSeats from 'hooks/useExceedsSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
+import Modal from 'components/UI/Modal';
+
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { isRegularUser, isAdmin } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
+
+import SeatSetSuccess from '../SeatSetSuccess';
+
+import messages from './messages';
 
 const getInfoText = (
   isUserAdmin: boolean,

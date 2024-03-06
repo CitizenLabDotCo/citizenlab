@@ -1,4 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import activeUsersByTimeKeys from './keys';
 
 export type ActiveUsersByTimeKeys = Keys<typeof activeUsersByTimeKeys>;
