@@ -595,6 +595,7 @@ describe('Survey builder', () => {
     cy.get('#e2e-field-group-title-multiloc').type(page3Title, { force: true });
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(page3QnTitle, { force: true });
+    cy.get('#e2e-required-toggle').find('input').click({ force: true });
 
     // Add fourth page
     cy.get('[data-cy="e2e-page"]').click();
@@ -622,9 +623,9 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-rule-input-select"]').should('exist');
     // Add rule to go to survey end
     cy.get('[data-cy="e2e-rule-input-select"]').get('select').select(5);
-    // Add rule to go to page 4
+    // Add rule to go to page 3
     cy.get('[data-cy="e2e-add-rule-button"]').first().click();
-    cy.get('[data-cy="e2e-rule-input-select"]').get('select').eq(1).select(4);
+    cy.get('[data-cy="e2e-rule-input-select"]').get('select').eq(1).select(3);
 
     // Check to see that the rules are added to the field row
     cy.get('[data-cy="e2e-field-rule-display"]')
@@ -665,6 +666,8 @@ describe('Survey builder', () => {
 
     // Go back to the previous page to go to page 2
     cy.get('[data-cy="e2e-previous-page"]').click();
+    // Necessary because sometimes cypress moves too fast before the data is cleared when navigating back
+    cy.wait(3000);
     cy.contains(page2Title).should('exist');
 
     // Go back to the previous page to go to page 1
@@ -689,6 +692,15 @@ describe('Survey builder', () => {
 
     // Select the second option to navigate to the other pages
     cy.contains(secondLogicQnOption2).click({ force: true });
+
+    // Go to page 3
+    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.contains(page3Title).should('exist');
+    cy.get(`*[id^="properties${page3QnTitle}"]`).type(answer, { force: true });
+
+    // Go to page 4
+    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.contains(page4Title).should('exist');
 
     cy.get('[data-cy="e2e-next-page"]').click();
 
