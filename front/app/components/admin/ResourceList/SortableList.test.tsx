@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { cloneDeep } from 'lodash-es';
+
 import { render, screen } from 'utils/testUtils/rtl';
+
 import SortableList, { RenderProps } from './SortableList';
 
 const items = [

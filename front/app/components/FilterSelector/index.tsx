@@ -1,17 +1,5 @@
 import React, { useState } from 'react';
-import {
-  isArray,
-  find,
-  isEmpty,
-  isString,
-  cloneDeep,
-  includes,
-  without,
-} from 'lodash-es';
 
-// components
-import Title from './title';
-import ValuesList from './valuesList';
 import {
   Box,
   Button,
@@ -21,9 +9,19 @@ import {
   media,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-
-// style
+import {
+  isArray,
+  find,
+  isEmpty,
+  isString,
+  cloneDeep,
+  includes,
+  without,
+} from 'lodash-es';
 import styled from 'styled-components';
+
+import Title from './title';
+import ValuesList from './valuesList';
 
 const Container = styled(Box)`
   display: inline-block;

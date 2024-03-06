@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 interface Props {

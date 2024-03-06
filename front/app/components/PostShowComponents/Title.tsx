@@ -1,11 +1,9 @@
 import React, { memo } from 'react';
 
-// typings
+import { media, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { Locale } from 'typings';
 
-// styling
-import styled from 'styled-components';
-import { media, fontSizes } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 
 const Container = styled.div<{ align: 'left' | 'center' }>`

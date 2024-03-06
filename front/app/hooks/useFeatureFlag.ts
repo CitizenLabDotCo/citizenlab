@@ -1,5 +1,5 @@
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 export type Parameters = AppConfigSettingProps;
 

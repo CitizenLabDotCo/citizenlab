@@ -1,14 +1,15 @@
 import React from 'react';
 
-// components
-import ProjectInfoSideBar from 'containers/ProjectsShowPage/shared/header/ProjectInfoSideBar';
 import { Box } from '@citizenlab/cl2-component-library';
-
-// i18n
-import messages from './messages';
-import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 import { useParams } from 'react-router-dom';
+
 import useProjectBySlug from 'api/projects/useProjectBySlug';
+
+import ProjectInfoSideBar from 'containers/ProjectsShowPage/shared/header/ProjectInfoSideBar';
+
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
+
+import messages from './messages';
 
 const AboutBox = () => {
   const { projectId, slug } = useParams() as {

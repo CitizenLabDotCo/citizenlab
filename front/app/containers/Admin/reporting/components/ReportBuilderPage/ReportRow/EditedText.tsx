@@ -1,17 +1,13 @@
 import React from 'react';
+
+import { Text } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
-// hooks
 import useUserById from 'api/users/useUserById';
 
-// components
-import { Text } from '@citizenlab/cl2-component-library';
-
-// i18n
-import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
-// utils
+import messages from './messages';
 
 interface Props {
   createdAt: string;

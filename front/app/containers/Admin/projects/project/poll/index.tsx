@@ -1,28 +1,25 @@
-// Libraries
 import React from 'react';
-import styled from 'styled-components';
+
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import { isError } from 'lodash-es';
 import { useParams } from 'react-router-dom';
-
-// Services / Data loading
 import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
+import styled from 'styled-components';
 
-// Components
-import ExportPollButton from './ExportPollButton';
-import PollAdminForm from './PollAdminForm';
-import { SectionDescription } from 'components/admin/Section';
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import usePhase from 'api/phases/usePhase';
 
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
-// hooks
-import usePhase from 'api/phases/usePhase';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { SectionDescription } from 'components/admin/Section';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import ExportPollButton from './ExportPollButton';
+import messages from './messages';
+import PollAdminForm from './PollAdminForm';
 
 const PhaseContainer = styled.div`
   &:not(:last-child) {

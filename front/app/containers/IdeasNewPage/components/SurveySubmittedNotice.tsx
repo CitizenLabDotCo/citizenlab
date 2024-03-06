@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Button,
@@ -8,17 +7,15 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+
+import { IProjectData } from 'api/projects/types';
+
 import PageContainer from 'components/UI/PageContainer';
 
-// intl
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// util
 import clHistory from 'utils/cl-router/history';
 
-// types
-import { IProjectData } from 'api/projects/types';
+import messages from './messages';
 
 type Props = {
   project: IProjectData;

@@ -1,4 +1,5 @@
 import { omitBy, isNil } from 'lodash-es';
+
 import { State, IPhaseParticipationConfig } from '..';
 
 export default ({

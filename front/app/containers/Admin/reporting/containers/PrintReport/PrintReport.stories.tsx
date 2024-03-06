@@ -1,7 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import mockEndpoints from 'utils/storybook/mockEndpoints';
 import { surveyReportHandler } from 'api/report_layout/__mocks__/_mockServer';
+
+import mockEndpoints from 'utils/storybook/mockEndpoints';
+
 import { PrintReport } from '.';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Example/PrintReport',

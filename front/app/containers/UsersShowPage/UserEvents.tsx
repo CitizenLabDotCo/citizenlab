@@ -1,24 +1,19 @@
 import React from 'react';
 
-// components
-import PastEvents from 'containers/EventsPage/PastEvents';
-import CurrentAndUpcomingEvents from 'containers/EventsPage/CurrentAndUpcomingEvents';
 import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-
-// style
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// hooks
 import useEventsByUserId from 'api/events/useEventsByUserId';
-import { useParams } from 'react-router-dom';
 import useUserBySlug from 'api/users/useUserBySlug';
 
-// utils
+import CurrentAndUpcomingEvents from 'containers/EventsPage/CurrentAndUpcomingEvents';
+import PastEvents from 'containers/EventsPage/PastEvents';
+
 import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;

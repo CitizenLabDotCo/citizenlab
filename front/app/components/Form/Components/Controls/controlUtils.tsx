@@ -1,6 +1,8 @@
-import { ControlElement, JsonSchema } from '@jsonforms/core';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 import React from 'react';
+
+import { ControlElement, JsonSchema } from '@jsonforms/core';
+
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 export const getSubtextElement = (description: string) => {
   return (

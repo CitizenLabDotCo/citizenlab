@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+
 import { IUserData } from 'api/users/types';
 
 export const mockAuthUserData: IUserData = {

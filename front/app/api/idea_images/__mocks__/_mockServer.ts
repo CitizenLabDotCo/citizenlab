@@ -1,5 +1,6 @@
-import { IIdeaImageData } from '../types';
 import { rest } from 'msw';
+
+import { IIdeaImageData } from '../types';
 
 export const ideaImagesData: IIdeaImageData[] = [
   {

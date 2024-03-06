@@ -1,15 +1,5 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
-import { ControlProps } from '@jsonforms/core';
 import React, { useState } from 'react';
 
-// utils
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { getOptions, getSubtextElement } from './controlUtils';
-import imageFile from './emptyImage.png';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import VerificationIcon from '../VerificationIcon';
 import {
   Box,
   Checkbox,
@@ -18,17 +8,24 @@ import {
   Image,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from '../ErrorDisplay';
-import FullscreenImage from 'components/FullscreenImage';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// style
+import { ControlProps } from '@jsonforms/core';
+import { withJsonFormsControlProps } from '@jsonforms/react';
 import { darken } from 'polished';
 import styled from 'styled-components';
+
+import FullscreenImage from 'components/FullscreenImage';
+import { FormLabel } from 'components/UI/FormComponents';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
+import VerificationIcon from '../VerificationIcon';
+
+import { getOptions, getSubtextElement } from './controlUtils';
+import imageFile from './emptyImage.png';
+import messages from './messages';
 
 const StyledBox = styled(Box)`
   background-color: ${colors.grey100};
@@ -151,6 +148,7 @@ const ImageMultichoiceControl = ({
                   checkedColor="tenantSecondary"
                   id={`${path}-checkbox-${index}`}
                   label=""
+                  data-cy="e2e-image-multichoice-control-checkbox"
                   checked={dataArray.includes(option.value)}
                   onChange={() => {
                     if (dataArray.includes(option.value)) {

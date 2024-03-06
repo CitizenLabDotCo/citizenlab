@@ -1,7 +1,10 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import ImageDropzone from './';
+
 import { useForm, FormProvider } from 'react-hook-form';
+
+import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
+
+import ImageDropzone from './';
 
 const file = new File(['file'], 'file.png', {
   type: 'image/png',

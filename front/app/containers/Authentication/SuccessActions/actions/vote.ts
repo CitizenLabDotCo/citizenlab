@@ -1,17 +1,16 @@
-// api
-import { fetchPhase } from 'api/phases/usePhase';
-import { voteForIdea } from 'api/baskets_ideas/useVoteForIdea';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import basketsKeys from 'api/baskets/keys';
 import basketsIdeasKeys from 'api/baskets_ideas/keys';
 import { fetchBasketsIdeas } from 'api/baskets_ideas/useBasketsIdeas';
+import { voteForIdea } from 'api/baskets_ideas/useVoteForIdea';
 import phasesKeys from 'api/phases/keys';
-
-// utils
-import { isIdeaInBasket } from 'components/VoteInputs/budgeting/AddToBasketButton/utils';
 import { IPhaseData } from 'api/phases/types';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { fetchPhase } from 'api/phases/usePhase';
+
+import { isIdeaInBasket } from 'components/VoteInputs/budgeting/AddToBasketButton/utils';
+
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 export interface VoteParams {
   ideaId: string;

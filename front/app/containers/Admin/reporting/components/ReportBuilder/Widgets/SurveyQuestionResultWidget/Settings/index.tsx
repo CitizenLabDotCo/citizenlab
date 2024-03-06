@@ -1,9 +1,5 @@
 import React, { useCallback } from 'react';
 
-// craft
-import { useNode } from '@craftjs/core';
-
-// components
 import {
   Box,
   Text,
@@ -11,22 +7,25 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import ProjectFilter from '../../_shared/ProjectFilter';
-import PhaseFilter from 'components/UI/PhaseFilter';
-import QuestionSelect from './QuestionSelect';
-import GroupModeSelect from './GroupModeSelect';
-import UserFieldSelect from './UserFieldSelect';
+import { useNode } from '@craftjs/core';
+import { IOption } from 'typings';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import widgetMessages from '../../messages';
+import { GroupMode } from 'api/graph_data_units/requestTypes';
+
 import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
-// typings
-import { IOption } from 'typings';
+import PhaseFilter from 'components/UI/PhaseFilter';
+
+import { useIntl } from 'utils/cl-intl';
+
+import ProjectFilter from '../../_shared/ProjectFilter';
+import widgetMessages from '../../messages';
 import { Props } from '../typings';
-import { GroupMode } from 'api/graph_data_units/requestTypes';
+
+import GroupModeSelect from './GroupModeSelect';
+import messages from './messages';
+import QuestionSelect from './QuestionSelect';
+import UserFieldSelect from './UserFieldSelect';
 
 const Settings = () => {
   const { formatMessage } = useIntl();

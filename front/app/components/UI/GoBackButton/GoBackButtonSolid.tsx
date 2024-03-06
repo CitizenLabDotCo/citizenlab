@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 
-// components
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
-import { ScreenReaderOnly } from 'utils/a11y';
 
-// intl
+import Button from 'components/UI/Button';
+
+import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
 interface Props {

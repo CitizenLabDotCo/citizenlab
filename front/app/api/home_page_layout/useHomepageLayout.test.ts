@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useHomepageLayout from './useHomepageLayout';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { homepageBuilderLayoutData } from './__mocks__/homepageLayout';
+import useHomepageLayout from './useHomepageLayout';
 
 const apiPath = '*home_pages/content_builder_layouts/homepage';
 

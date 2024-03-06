@@ -1,29 +1,25 @@
-// authentication
-import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
-import signIn from 'api/authentication/sign_in_out/signIn';
+import { Locale } from 'typings';
+
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
+import signIn from 'api/authentication/sign_in_out/signIn';
+import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
 import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 import checkUser from 'api/users/checkUser';
 
-// cache
-import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-
-// tracks
-import tracks from '../../tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// events
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
-// typings
+import { trackEventByName } from 'utils/analytics';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
+
+import tracks from '../../tracks';
 import {
   GetRequirements,
   UpdateState,
   SSOProviderWithoutVienna,
   AuthenticationData,
 } from '../../typings';
+
 import { Step } from './typings';
-import { Locale } from 'typings';
 import { askCustomFields, requiredCustomFields, showOnboarding } from './utils';
 
 export const lightFlow = (

@@ -1,4 +1,5 @@
 import { IIdeaData } from '../types';
+
 import { ideaData } from './_mockServer';
 
 export const getIdea = (id: string, enTitle?: string): IIdeaData => {

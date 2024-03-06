@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAppConfiguration from './useAppConfiguration';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import mockServer, { getAppConfigurationData } from './__mocks__/_mockServer';
+import useAppConfiguration from './useAppConfiguration';
 
 jest.unmock('./useAppConfiguration');
 

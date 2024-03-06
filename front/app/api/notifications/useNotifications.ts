@@ -1,7 +1,9 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
+
 import notificationsKeys from './keys';
 import { INotifications, IQueryParameters, NotificationsKeys } from './types';
 

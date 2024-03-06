@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
