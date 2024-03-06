@@ -1,5 +1,7 @@
-import useAnalyses from 'api/analyses/useAnalyses';
 import React from 'react';
+
+import useAnalyses from 'api/analyses/useAnalyses';
+
 import Insights from './Insights';
 
 const Analyses = ({

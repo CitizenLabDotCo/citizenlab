@@ -1,12 +1,17 @@
+import React from 'react';
+
 import { Box, Icon } from '@citizenlab/cl2-component-library';
+
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
+
 import InsightBody from 'containers/Admin/projects/project/analysis/Insights/InsightBody';
 import InsightFooter from 'containers/Admin/projects/project/analysis/Insights/InsightFooter';
 import QuestionHeader from 'containers/Admin/projects/project/analysis/Insights/QuestionHeader';
-import React from 'react';
-import DraggableInsight from './DraggableInsights';
-import TextMultiloc from '../Widgets/TextMultiloc';
 import { removeRefs } from 'containers/Admin/projects/project/analysis/Insights/util';
+
+import TextMultiloc from '../Widgets/TextMultiloc';
+
+import DraggableInsight from './DraggableInsights';
 
 const Question = ({
   questionId,

@@ -1,13 +1,17 @@
 import React from 'react';
+
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
-import styled from 'styled-components';
-import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
-import useAnalysis from 'api/analyses/useAnalysis';
 import Tippy from '@tippyjs/react';
-import useLocalize from 'hooks/useLocalize';
-import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+
+import useAnalysis from 'api/analyses/useAnalysis';
+import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
+import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
+
+import useLocalize from 'hooks/useLocalize';
+
+import Link from 'utils/cl-router/Link';
 
 const StyledLink = styled(Link)<{ isActive: boolean }>`
   color: ${colors.textPrimary};

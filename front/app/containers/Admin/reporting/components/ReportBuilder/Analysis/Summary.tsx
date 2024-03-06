@@ -1,11 +1,16 @@
+import React from 'react';
+
 import { Box, Icon } from '@citizenlab/cl2-component-library';
+
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
+
 import InsightBody from 'containers/Admin/projects/project/analysis/Insights/InsightBody';
 import InsightFooter from 'containers/Admin/projects/project/analysis/Insights/InsightFooter';
 import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/SummaryHeader';
-import React from 'react';
-import TextMultiloc from '../Widgets/TextMultiloc';
 import { removeRefs } from 'containers/Admin/projects/project/analysis/Insights/util';
+
+import TextMultiloc from '../Widgets/TextMultiloc';
+
 import DraggableInsight from './DraggableInsights';
 
 const Summary = ({

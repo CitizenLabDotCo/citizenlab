@@ -1,17 +1,20 @@
 import React, { useCallback, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { IOption } from 'typings';
+
+import usePhase from 'api/phases/usePhase';
+
 import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';
-import widgetMessages from '../Widgets/messages';
 
-import { IOption } from 'typings';
-import messages from './messages';
 import ProjectFilter from '../Widgets/_shared/ProjectFilter';
 import QuestionSelect from '../Widgets/_shared/QuestionSelect';
-import usePhase from 'api/phases/usePhase';
+import widgetMessages from '../Widgets/messages';
+
 import Analyses from './Analyses';
+import messages from './messages';
 
 const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
   const [projectId, setProjectId] = useState<string | undefined>(undefined);
