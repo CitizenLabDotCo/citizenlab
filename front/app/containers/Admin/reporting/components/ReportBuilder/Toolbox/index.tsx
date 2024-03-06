@@ -102,6 +102,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
 
   // Default end date for charts (today)
   const chartEndDate = moment().format('YYYY-MM-DD');
+  const defaultLocale = appConfigurationLocales[0];
 
   const toMultiloc = (message: MessageDescriptor) => {
     return createMultiloc(appConfigurationLocales, (locale) => {
@@ -162,7 +163,13 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           <DraggableElement
             id="e2e-draggable-text"
             component={
-              <TextMultiloc text={toMultiloc(WIDGET_TITLES.TextMultiloc)} />
+              <TextMultiloc
+                text={{
+                  [defaultLocale]: toMultiloc(WIDGET_TITLES.TextMultiloc)[
+                    defaultLocale
+                  ],
+                }}
+              />
             }
             icon="text"
             label={formatMessage(WIDGET_TITLES.TextMultiloc)}
