@@ -188,7 +188,7 @@ const IdeasWithoutFiltersSidebar = ({
   const { data: phase } = usePhase(phaseId);
   const { data: ideaMarkers } = useIdeaMarkers({
     projectIds: projectId ? [projectId] : null,
-    phaseId: ideaQueryParameters.phase,
+    phaseId,
     ...ideaQueryParameters,
   });
 
