@@ -1,10 +1,9 @@
-// i18n
-import messages from '../messages';
-
-// typings
-import { IResolution } from 'components/admin/ResolutionControl';
-import { FormatMessage } from 'typings';
 import moment from 'moment';
+import { FormatMessage } from 'typings';
+
+import { IResolution } from 'components/admin/ResolutionControl';
+
+import messages from '../messages';
 
 export interface TimePeriodTranslations {
   last30Days: string;

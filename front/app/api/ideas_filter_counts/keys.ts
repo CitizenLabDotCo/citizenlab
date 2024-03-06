@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { IIdeasFilterCountsQueryParameters } from './types';
 
 const itemKey = { type: 'filter_counts' };

@@ -1,16 +1,18 @@
 import React from 'react';
 
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
+import {
+  Container,
+  Header,
+} from 'components/LandingPages/citizen/FixedRatioLayout';
 import {
   HeaderImage,
   HeaderImageBackground,
   HeaderImageOverlay,
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
-import {
-  Container,
-  Header,
-} from 'components/LandingPages/citizen/FixedRatioLayout';
+
 import HeaderContent from './HeaderContent';
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 
 interface Props {
   homepageSettings: Partial<IHomepageBannerSettings>;

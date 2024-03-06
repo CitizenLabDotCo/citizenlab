@@ -1,19 +1,20 @@
 import React from 'react';
 
-// hooks
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-import { trackEventByName } from 'utils/analytics';
-import clHistory from 'utils/cl-router/history';
-import { FormattedMessage } from 'utils/cl-intl';
-import Button from 'components/UI/Button';
-import messages from './messages';
 import { ButtonStyles } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
+
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import Button from 'components/UI/Button';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
+import messages from './messages';
 
 interface Props {
   lat?: number | null;

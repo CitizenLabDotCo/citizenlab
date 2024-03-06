@@ -50,7 +50,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     @template['models']['volunteering/cause']         = yml_volunteering_causes shift_timestamps: shift_timestamps
     @template['models']['custom_maps/map_config']     = yml_maps_map_configs shift_timestamps: shift_timestamps
     @template['models']['custom_maps/layer']          = yml_maps_layers shift_timestamps: shift_timestamps
-    @template['models']['custom_maps/legend_item']    = yml_maps_legend_items shift_timestamps: shift_timestamps
 
     @template['models']['content_builder/layout'], layout_images_mapping = yml_content_builder_layouts shift_timestamps: shift_timestamps
     @template['models']['content_builder/layout_image'] = yml_content_builder_layout_images layout_images_mapping, shift_timestamps: shift_timestamps
@@ -417,19 +416,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'updated_at' => shift_timestamp(layer.updated_at, shift_timestamps)&.iso8601
       }
       yml_layer
-    end
-  end
-
-  def yml_maps_legend_items(shift_timestamps: 0)
-    (@project.map_config&.legend_items || []).map do |legend_item|
-      {
-        'map_config_ref' => lookup_ref(legend_item.map_config_id, :maps_map_config),
-        'title_multiloc' => legend_item.title_multiloc,
-        'color' => legend_item.color,
-        'ordering' => legend_item.ordering,
-        'created_at' => shift_timestamp(legend_item.created_at, shift_timestamps)&.iso8601,
-        'updated_at' => shift_timestamp(legend_item.updated_at, shift_timestamps)&.iso8601
-      }
     end
   end
 

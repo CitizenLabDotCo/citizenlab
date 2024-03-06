@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import campaignsKeys from './keys';
 import { Multiloc, ILinks, IRelationship } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import campaignsKeys from './keys';
 
 export type CampaignsKeys = Keys<typeof campaignsKeys>;
 

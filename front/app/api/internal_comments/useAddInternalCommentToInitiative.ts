@@ -1,10 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import commentKeys from 'api/internal_comments/keys';
-import initiativesKeys from 'api/initiatives/keys';
 import { CLErrorsWrapper } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
-import { IInitiativeNewInternalComment, IInternalComment } from './types';
+
+import initiativesKeys from 'api/initiatives/keys';
+import commentKeys from 'api/internal_comments/keys';
 import userCommentsCount from 'api/user_comments_count/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import { IInitiativeNewInternalComment, IInternalComment } from './types';
 
 const addInternalCommentToInitiative = async ({
   initiativeId,

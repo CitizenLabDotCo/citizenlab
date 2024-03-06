@@ -1,4 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import textingCampaignsKeys from './keys';
 
 export type TextingCampaignsKeys = Keys<typeof textingCampaignsKeys>;

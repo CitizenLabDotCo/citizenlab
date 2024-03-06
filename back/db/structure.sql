@@ -83,7 +83,6 @@ ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXIS
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_80d00e60ae;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP CONSTRAINT IF EXISTS fk_rails_7f284a4f09;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS fk_rails_7e11bb717f;
-ALTER TABLE IF EXISTS ONLY public.maps_legend_items DROP CONSTRAINT IF EXISTS fk_rails_7c44736f5e;
 ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS fk_rails_74e779db86;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_74744744a6;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_73e1dee5fd;
@@ -221,7 +220,6 @@ DROP INDEX IF EXISTS public.index_memberships_on_group_id_and_user_id;
 DROP INDEX IF EXISTS public.index_memberships_on_group_id;
 DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable_id;
 DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable;
-DROP INDEX IF EXISTS public.index_maps_legend_items_on_map_config_id;
 DROP INDEX IF EXISTS public.index_maps_layers_on_map_config_id;
 DROP INDEX IF EXISTS public.index_invites_on_token;
 DROP INDEX IF EXISTS public.index_invites_on_inviter_id;
@@ -426,7 +424,6 @@ ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS nav_ba
 ALTER TABLE IF EXISTS ONLY public.moderation_moderation_statuses DROP CONSTRAINT IF EXISTS moderation_statuses_pkey;
 ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS memberships_pkey;
 ALTER TABLE IF EXISTS ONLY public.maps_map_configs DROP CONSTRAINT IF EXISTS maps_map_configs_pkey;
-ALTER TABLE IF EXISTS ONLY public.maps_legend_items DROP CONSTRAINT IF EXISTS maps_legend_items_pkey;
 ALTER TABLE IF EXISTS ONLY public.maps_layers DROP CONSTRAINT IF EXISTS maps_layers_pkey;
 ALTER TABLE IF EXISTS ONLY public.machine_translations_machine_translations DROP CONSTRAINT IF EXISTS machine_translations_machine_translations_pkey;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS invites_pkey;
@@ -540,7 +537,6 @@ DROP VIEW IF EXISTS public.moderation_moderations;
 DROP TABLE IF EXISTS public.moderation_moderation_statuses;
 DROP TABLE IF EXISTS public.memberships;
 DROP TABLE IF EXISTS public.maps_map_configs;
-DROP TABLE IF EXISTS public.maps_legend_items;
 DROP TABLE IF EXISTS public.maps_layers;
 DROP TABLE IF EXISTS public.machine_translations_machine_translations;
 DROP TABLE IF EXISTS public.internal_comments;
@@ -766,7 +762,7 @@ WITH (fillfactor='90');
 -- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON TABLE public.que_jobs IS '4';
+COMMENT ON TABLE public.que_jobs IS '5';
 
 
 --
@@ -2620,21 +2616,6 @@ CREATE TABLE public.maps_layers (
 
 
 --
--- Name: maps_legend_items; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.maps_legend_items (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    map_config_id uuid NOT NULL,
-    title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    color character varying NOT NULL,
-    ordering integer NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
 -- Name: maps_map_configs; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3930,14 +3911,6 @@ ALTER TABLE ONLY public.machine_translations_machine_translations
 
 ALTER TABLE ONLY public.maps_layers
     ADD CONSTRAINT maps_layers_pkey PRIMARY KEY (id);
-
-
---
--- Name: maps_legend_items maps_legend_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.maps_legend_items
-    ADD CONSTRAINT maps_legend_items_pkey PRIMARY KEY (id);
 
 
 --
@@ -5415,13 +5388,6 @@ CREATE INDEX index_maps_layers_on_map_config_id ON public.maps_layers USING btre
 
 
 --
--- Name: index_maps_legend_items_on_map_config_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_maps_legend_items_on_map_config_id ON public.maps_legend_items USING btree (map_config_id);
-
-
---
 -- Name: index_maps_map_configs_on_mappable; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6423,14 +6389,6 @@ ALTER TABLE ONLY public.analysis_analyses_custom_fields
 
 ALTER TABLE ONLY public.analysis_questions
     ADD CONSTRAINT fk_rails_74e779db86 FOREIGN KEY (background_task_id) REFERENCES public.analysis_background_tasks(id);
-
-
---
--- Name: maps_legend_items fk_rails_7c44736f5e; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.maps_legend_items
-    ADD CONSTRAINT fk_rails_7c44736f5e FOREIGN KEY (map_config_id) REFERENCES public.maps_map_configs(id);
 
 
 --
@@ -7444,4 +7402,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240214125557'),
 ('20240226170510'),
 ('20240227092300'),
-('20240228222336');
+('20240228222336'),
+('20240229195843');
+
+

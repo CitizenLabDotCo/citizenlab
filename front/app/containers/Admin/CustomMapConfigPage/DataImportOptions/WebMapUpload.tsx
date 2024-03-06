@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
 
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// components
-import Error from 'components/UI/Error';
 import {
   Box,
   Title,
@@ -15,18 +9,19 @@ import {
   Button,
   Success,
 } from '@citizenlab/cl2-component-library';
-import tooltipImage from '../TooltipImages/esri_portal_id_example.png';
-
-// types
-import { ViewOptions } from '..';
-
-// utils
 import { request, ErrorTypes, ApiKeyManager } from '@esri/arcgis-rest-request';
+import { useParams } from 'react-router-dom';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
-import { useParams } from 'react-router-dom';
+
+import Error from 'components/UI/Error';
+
+import { useIntl } from 'utils/cl-intl';
+
+import { ViewOptions } from '..';
+import messages from '../messages';
+import tooltipImage from '../TooltipImages/esri_portal_id_example.png';
 
 type Props = {
   setView: (view: ViewOptions) => void;

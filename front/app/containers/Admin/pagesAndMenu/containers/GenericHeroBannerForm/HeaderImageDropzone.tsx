@@ -1,18 +1,18 @@
 import React from 'react';
-import styled from 'styled-components';
 
-// components and theming
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { TBannerError } from './BannerImageFields';
-import { TDevice } from 'components/admin/SelectPreviewDevice';
 import { viewportWidths } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+import { UploadFile } from 'typings';
 
-// types
 import {
   ICustomPageAttributes,
   TCustomPageBannerLayout,
 } from 'api/custom_pages/types';
-import { UploadFile } from 'typings';
+
+import { TDevice } from 'components/admin/SelectPreviewDevice';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+
+import { TBannerError } from './BannerImageFields';
 
 const HeaderImageOverlay = styled.div<{
   overlayColor: string;

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { LabelList } from 'recharts';
+
 import { StackedBarsRow } from '../usePostsFeedback/typings';
 
 export const accumulate = (values: number[]) => {

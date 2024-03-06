@@ -6,14 +6,7 @@ import React, {
   useState,
   useEffect,
 } from 'react';
-import { removeFocusAfterMouseClick } from 'utils/helperUtils';
-import Tippy from '@tippyjs/react';
 
-// tracking
-import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
-
-// components
 import {
   Box,
   Icon,
@@ -22,29 +15,28 @@ import {
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import PhaseDescription from './PhaseDescription';
+import Tippy from '@tippyjs/react';
+import { darken, rgba } from 'polished';
+import styled, { css } from 'styled-components';
 
-// hooks
+import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
-import useLocalize from 'hooks/useLocalize';
+import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
-// services
-import { getCurrentPhase } from 'api/phases/utils';
-import { IPhaseData } from 'api/phases/types';
+import useLocalize from 'hooks/useLocalize';
 
-// i18n
 import messages from 'containers/ProjectsShowPage/messages';
-import { FormattedMessage } from 'utils/cl-intl';
 
-// utils
-import setPhaseURL from './setPhaseURL';
-import clHistory from 'utils/cl-router/history';
-
-// style
-import styled, { css } from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { darken, rgba } from 'polished';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+
+import PhaseDescription from './PhaseDescription';
+import setPhaseURL from './setPhaseURL';
+import tracks from './tracks';
 
 const MIN_PHASE_WIDTH_PX = 44;
 const CONTAINER_PADDING_PX = 20;

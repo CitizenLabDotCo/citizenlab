@@ -1,31 +1,26 @@
 import React, { memo, useState, useEffect } from 'react';
-import { isEmpty, inRange } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
-// services
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-// components
+import MapView from '@arcgis/core/views/MapView';
 import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
+import { isEmpty, inRange } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IMapConfig } from 'api/map_config/types';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
+
+import { SubSectionTitle } from 'components/admin/Section';
+import { goToMapLocation } from 'components/EsriMap/utils';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { SubSectionTitle } from 'components/admin/Section';
-import MapView from '@arcgis/core/views/MapView';
 
-// utils
-import { getCenter, getZoomLevel } from '../../../../utils/mapUtils/map';
-
-// i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
+import { isNilOrError } from 'utils/helperUtils';
 
-// styling
-import styled from 'styled-components';
-import { goToMapLocation } from 'components/EsriMap/utils';
-import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
-import { IMapConfig } from 'api/map_config/types';
-import { useParams } from 'react-router-dom';
+import { getCenter, getZoomLevel } from '../../../../utils/mapUtils/map';
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;

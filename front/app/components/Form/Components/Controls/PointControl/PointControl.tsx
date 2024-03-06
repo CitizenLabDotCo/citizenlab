@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-// components
+import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
+import MapView from '@arcgis/core/views/MapView';
 import {
   Box,
   Icon,
@@ -9,42 +11,37 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from '../../ErrorDisplay';
-import EsriMap from 'components/EsriMap';
-import MapInputOverlay from './MapInputOverlay';
-import LocationInput, { Option } from 'components/UI/LocationInput';
-
-// utils
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { getSubtextElement } from '../controlUtils';
 import { ControlProps } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
+import { useParams } from 'react-router-dom';
+import { useTheme } from 'styled-components';
+
+import useMapConfigById from 'api/map_config/useMapConfigById';
+import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
+
+import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
+
+import EsriMap from 'components/EsriMap';
 import {
   esriPointToGeoJson,
   getMapPinSymbol,
   goToMapLocation,
   parseLayers,
 } from 'components/EsriMap/utils';
+import { FormLabel } from 'components/UI/FormComponents';
+import LocationInput, { Option } from 'components/UI/LocationInput';
+
+import { useIntl } from 'utils/cl-intl';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
-// hooks
-import { useTheme } from 'styled-components';
-import useLocale from 'hooks/useLocale';
-import { useParams } from 'react-router-dom';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
-import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
-import useMapConfigById from 'api/map_config/useMapConfigById';
-
-// intl
-import useLocalize from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
+import ErrorDisplay from '../../ErrorDisplay';
+import { getSubtextElement } from '../controlUtils';
 import messages from '../messages';
 
-// types
-import MapView from '@arcgis/core/views/MapView';
-import Point from '@arcgis/core/geometry/Point';
-import Graphic from '@arcgis/core/Graphic';
+import MapInputOverlay from './MapInputOverlay';
 
 const PointControl = ({
   data,

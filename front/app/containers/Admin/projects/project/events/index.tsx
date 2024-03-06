@@ -1,24 +1,24 @@
-// libraries
 import React from 'react';
-import styled from 'styled-components';
-import { injectIntl, FormattedMessage, useIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import { isNilOrError } from 'utils/helperUtils';
+
+import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 
-// hooks
-import useEvents from 'api/events/useEvents';
 import useDeleteEvent from 'api/events/useDeleteEvent';
+import useEvents from 'api/events/useEvents';
 
-// components
-import T from 'components/T';
-import Button from 'components/UI/Button';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import T from 'components/T';
+import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
-import { Box } from '@citizenlab/cl2-component-library';
+
+import { injectIntl, FormattedMessage, useIntl } from 'utils/cl-intl';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const ListWrapper = styled.div`
   display: flex;

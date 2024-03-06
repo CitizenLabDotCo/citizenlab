@@ -1,14 +1,10 @@
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/translations';
+import { useVisitorsTrafficSources } from 'api/graph_data_units';
 
-// parse
 import { parsePieData } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/parse';
-
-// typings
+import { getTranslations } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/translations';
 import { QueryParameters } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
 
-import { useVisitorsTrafficSources } from 'api/graph_data_units';
+import { useIntl } from 'utils/cl-intl';
 
 export default function useVisitorsReferrerTypes({
   projectId,

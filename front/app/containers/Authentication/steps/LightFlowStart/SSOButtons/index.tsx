@@ -1,20 +1,18 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import SSOButton from './SSOButton';
-import Or from 'components/UI/Or';
-import Error from 'components/UI/Error';
 
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// typings
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
+
+import Error from 'components/UI/Error';
+import Or from 'components/UI/Or';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+import SSOButton from './SSOButton';
 
 interface Props {
   onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;

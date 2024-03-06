@@ -98,9 +98,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
     collect_answers(field, distribution, option_titles)
   end
 
+  # Trigger back workflow
   def visit_file_upload(field)
     file_ids = inputs
-      .select("custom_field_values->'#{field.key}' as value")
+      .select("custom_field_values->'#{field.key}'->'id' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
       .map(&:value)
     files = IdeaFile.where(id: file_ids).map do |file|

@@ -1,9 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import PasswordInput from './';
+
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+
+import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
+
+import PasswordInput from './';
 
 const schema = object({
   password: string().min(8, 'Too short'),

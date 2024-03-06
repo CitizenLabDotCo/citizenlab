@@ -1,28 +1,34 @@
 import React from 'react';
+
 import moment from 'moment';
-import Proposed from './Status/Proposed';
-import Expired from './Status/Expired';
-import ThresholdReached from './Status/ThresholdReached';
-import Answered from './Status/Answered';
-import Ineligible from './Status/Ineligible';
-import ReviewPending from './Status/ReviewPending';
-import ChangesRequested from './Status/ChangesRequested';
-import { IInitiative, IInitiativeData } from 'api/initiatives/types';
+
+import { ProposalsSettings } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAddInitiativeReaction from 'api/initiative_reactions/useAddInitiativeReaction';
+import useDeleteInitiativeReaction from 'api/initiative_reactions/useDeleteInitiativeReaction';
 import {
   InitiativeStatusCode,
   IInitiativeStatusData,
 } from 'api/initiative_statuses/types';
-import { ProposalsSettings } from 'api/app_configuration/types';
+import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
+import { IInitiative, IInitiativeData } from 'api/initiatives/types';
+
 import useInitiativesPermissions, {
   InitiativePermissionsDisabledReason,
 } from 'hooks/useInitiativesPermissions';
-import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
-import { trackEventByName } from 'utils/analytics';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import useAddInitiativeReaction from 'api/initiative_reactions/useAddInitiativeReaction';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import useDeleteInitiativeReaction from 'api/initiative_reactions/useDeleteInitiativeReaction';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
+
+import { trackEventByName } from 'utils/analytics';
+
+import Answered from './Status/Answered';
+import ChangesRequested from './Status/ChangesRequested';
+import Expired from './Status/Expired';
+import Ineligible from './Status/Ineligible';
+import Proposed from './Status/Proposed';
+import ReviewPending from './Status/ReviewPending';
+import ThresholdReached from './Status/ThresholdReached';
 
 export interface StatusComponentProps {
   initiative: IInitiativeData;

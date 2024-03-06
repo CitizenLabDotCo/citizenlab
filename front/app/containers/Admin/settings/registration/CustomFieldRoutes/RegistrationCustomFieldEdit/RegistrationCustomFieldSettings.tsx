@@ -1,13 +1,14 @@
 import React from 'react';
+
 import { useParams } from 'react-router-dom';
 
+import useUpdateUserCustomField from 'api/user_custom_fields/useUpdateUserCustomField';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
+import { isBuiltInField } from 'api/user_custom_fields/util';
 
 import RegistrationCustomFieldForm, {
   FormValues,
 } from '../RegistrationCustomFieldForm';
-import useUpdateUserCustomField from 'api/user_custom_fields/useUpdateUserCustomField';
-import { isBuiltInField } from 'api/user_custom_fields/util';
 
 const RegistrationCustomFieldSettings = () => {
   const { userCustomFieldId } = useParams() as { userCustomFieldId: string };

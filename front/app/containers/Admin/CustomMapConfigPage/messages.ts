@@ -66,7 +66,7 @@ export default defineMessages({
       'https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-view',
   },
   layersTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip2',
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip',
     defaultMessage:
       'We currently support GeoJSON files and importing Feature Layers and Web Maps from ArcGIS Online. Read the {supportArticle} for tips on how to add, convert and style map layers.',
   },

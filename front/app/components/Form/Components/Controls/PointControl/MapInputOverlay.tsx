@@ -1,7 +1,9 @@
 import React from 'react';
-import FullscreenModal from 'components/UI/FullscreenModal';
+
 import { Box } from '@citizenlab/cl2-component-library';
+
 import CloseIconButton from 'components/UI/CloseIconButton';
+import FullscreenModal from 'components/UI/FullscreenModal';
 
 type Props = {
   setShowMapOverlay: (show: boolean) => void;

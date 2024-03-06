@@ -9,10 +9,12 @@ import {
   Box,
   Checkbox,
 } from '@citizenlab/cl2-component-library';
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
 
 import Divider from 'components/admin/Divider';
+
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../../messages';
 
 const ConsentModal = ({
   onClose,

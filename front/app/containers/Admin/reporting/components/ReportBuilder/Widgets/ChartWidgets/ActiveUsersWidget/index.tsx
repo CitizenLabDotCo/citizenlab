@@ -1,19 +1,15 @@
 import React from 'react';
 
-// components
-import Card from '../../_shared/Card';
-import ActiveUsers from './ActiveUsersCard';
-import ChartWidgetSettings from './ChartWidgetSettings';
-
-// utils
 import moment from 'moment';
 
-// settings
-import messages from '../messages';
-
-// types
 import { IResolution } from 'components/admin/ResolutionControl';
+
+import Card from '../../_shared/Card';
+import messages from '../messages';
 import { ChartWidgetProps } from '../typings';
+
+import ActiveUsers from './ActiveUsersCard';
+import ChartWidgetSettings from './ChartWidgetSettings';
 
 const ActiveUsersWidget = ({
   title,

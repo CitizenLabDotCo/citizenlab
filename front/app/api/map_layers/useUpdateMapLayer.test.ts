@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateMapLayer from './useUpdateMapLayer';
-import { mapLayerData } from './__mocks__/mapLayerData';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { mapLayerData } from './__mocks__/mapLayerData';
+import useUpdateMapLayer from './useUpdateMapLayer';
 
 const apiPath = '*projects/:projectId/map_config/layers/:id';
 const server = setupServer(

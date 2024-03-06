@@ -1,34 +1,31 @@
 import React from 'react';
 
-// api
-import usePhase from 'api/phases/usePhase';
-import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// craft
+import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
 
-// shared widgets
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
+import usePhase from 'api/phases/usePhase';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
+import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
+
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+
+import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
+import { withoutSpacing } from 'utils/textUtils';
+
+// shared widgets
 
 // report builder widgets
-import TextMultiloc from '../../Widgets/TextMultiloc';
-import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
 import MostReactedIdeasWidget from '../../Widgets/MostReactedIdeasWidget';
-
-// i18n
-import messages from './messages';
-import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
-import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
-
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-
-// utils
+import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget';
 import { SUPPORTED_INPUT_TYPES } from '../../Widgets/SurveyQuestionResultWidget/constants';
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
-import { withoutSpacing } from 'utils/textUtils';
+import TextMultiloc from '../../Widgets/TextMultiloc';
+
+import messages from './messages';
 
 interface Props {
   phaseId: string;

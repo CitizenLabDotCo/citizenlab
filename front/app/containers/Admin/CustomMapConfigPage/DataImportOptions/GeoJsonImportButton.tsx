@@ -1,31 +1,23 @@
 import React, { memo, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// services
-import useAddMapLayer from 'api/map_layers/useAddMapLayer';
-
-// components
-import Error from 'components/UI/Error';
-
-// hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
-// utils
-import { getUnnamedLayerTitleMultiloc } from '../../../../utils/mapUtils/map';
-
-// i18n
-import messages from '../messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-// styling
-import styled from 'styled-components';
-
-// components
-import Button from 'components/UI/Button';
-import { IMapConfig } from 'api/map_config/types';
-import { getLayerType } from '../utils';
 import Tippy from '@tippyjs/react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { IMapConfig } from 'api/map_config/types';
+import useAddMapLayer from 'api/map_layers/useAddMapLayer';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { getUnnamedLayerTitleMultiloc } from '../../../../utils/mapUtils/map';
+import messages from '../messages';
+import { getLayerType } from '../utils';
 
 const Container = styled.div``;
 

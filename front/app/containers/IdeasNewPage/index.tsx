@@ -1,39 +1,44 @@
 import React from 'react';
-import { parse } from 'qs';
 
-// components
 import { Spinner } from '@citizenlab/cl2-component-library';
-import Unauthorized from 'components/Unauthorized';
-import PageNotFound from 'components/PageNotFound';
-import VerticalCenterer from 'components/VerticalCenterer';
-import SurveySubmittedNotice from './components/SurveySubmittedNotice';
-import IdeasNewForm from './IdeasNewForm';
-
-// hooks
-import useProjectBySlug from 'api/projects/useProjectBySlug';
-import usePhases from 'api/phases/usePhases';
-import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
-
-// utils
-import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { parse } from 'qs';
 import { useParams } from 'react-router-dom';
-import { getIdeaPostingRules } from 'utils/actionTakingRules';
+
 import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import PageNotFound from 'components/PageNotFound';
+import Unauthorized from 'components/Unauthorized';
+import VerticalCenterer from 'components/VerticalCenterer';
+
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { getIdeaPostingRules } from 'utils/actionTakingRules';
+import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+
+import SurveySubmittedNotice from './components/SurveySubmittedNotice';
+import IdeasNewIdeationForm from './IdeasNewIdeationForm';
+import IdeasNewSurveyForm from './IdeasNewSurveyForm';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();
-  const { data: project, status, error } = useProjectBySlug(slug);
+  const {
+    data: project,
+    status: projectStatus,
+    error,
+  } = useProjectBySlug(slug);
   const { data: authUser } = useAuthUser();
-  const { data: phases } = usePhases(project?.data.id);
+  const { data: phases, status: phasesStatus } = usePhases(project?.data.id);
   const { phase_id } = parse(location.search, {
     ignoreQueryPrefix: true,
   }) as { [key: string]: string };
 
-  if (status === 'loading') {
+  if (projectStatus === 'loading' || phasesStatus === 'loading') {
     return (
       <VerticalCenterer>
         <Spinner />
@@ -47,6 +52,10 @@ const NewIdeaPage = () => {
     }
 
     return <PageNotFound />;
+  }
+
+  if (!phases || !project) {
+    return null;
   }
 
   const participationMethod = getParticipationMethod(
@@ -91,7 +100,11 @@ const NewIdeaPage = () => {
     );
   }
 
-  return <IdeasNewForm project={project} />;
+  if (isSurvey) {
+    return <IdeasNewSurveyForm project={project} />;
+  } else {
+    return <IdeasNewIdeationForm project={project} />;
+  }
 };
 
 export default NewIdeaPage;

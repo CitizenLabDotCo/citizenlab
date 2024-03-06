@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Thead,
   Tr,
@@ -9,17 +8,16 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
+import { Sort as InitiativesSortAttribute } from 'api/initiatives/types';
+
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { roundPercentage } from 'utils/math';
+import { SortDirection } from 'utils/paginationUtils';
+
 import messages from '../../../messages';
 
-// utils
-import { roundPercentage } from 'utils/math';
-
-// typings
-import { Sort as InitiativesSortAttribute } from 'api/initiatives/types';
-import { SortDirection } from 'utils/paginationUtils';
-import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import SortableHeaderCell from './SortableHeaderCell';
 
 interface Props {

@@ -1,26 +1,25 @@
 import React from 'react';
 
+import { uuid4 } from '@sentry/utils';
+import { MessageDescriptor } from 'react-intl';
+import { Locale } from 'typings';
+
 import {
   ICustomFieldInputType,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 import { IPhaseData } from 'api/phases/types';
-import { Locale } from 'typings';
-import messages from './components/messages';
-import { MessageDescriptor } from 'react-intl';
 
-// Components
-import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/ConfigSelectWithLocaleSwitcher';
-import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
-import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
-import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
-import SelectSettings from './components/FormBuilderSettings/SelectSettings';
-
-// utils
-import { uuid4 } from '@sentry/utils';
 import { isNilOrError } from 'utils/helperUtils';
+
+import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/ConfigSelectWithLocaleSwitcher';
+import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
+import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
+import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
 import PointSettings from './components/FormBuilderSettings/PointSettings';
+import SelectSettings from './components/FormBuilderSettings/SelectSettings';
+import messages from './components/messages';
 
 export type FormBuilderConfig = {
   formBuilderTitle: MessageDescriptor;
@@ -45,6 +44,11 @@ export type FormBuilderConfig = {
 
   getDeletionNotice?: (projectId: string) => void;
   getWarningNotice?: () => void;
+  getAccessRightsNotice?: (
+    projectId: string | undefined,
+    phaseId: string | undefined,
+    handleClose: () => void
+  ) => void;
 
   goBackUrl?: string;
   groupingType: 'page' | 'section';

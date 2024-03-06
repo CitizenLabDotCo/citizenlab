@@ -1,7 +1,10 @@
 import React from 'react';
-import VisitorsWidget from '.';
-import Editor from '../../../Editor';
+
 import { render, screen } from 'utils/testUtils/rtl';
+
+import Editor from '../../../Editor';
+
+import VisitorsWidget from '.';
 
 let mockVisitors: any = null;
 jest.mock('components/admin/GraphCards/VisitorsCard/useVisitors', () =>

@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { ICampaignExampleParameters } from './types';
 
 const baseKey = { type: 'example' };

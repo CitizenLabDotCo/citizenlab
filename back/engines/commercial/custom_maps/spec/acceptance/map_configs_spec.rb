@@ -46,8 +46,6 @@ resource 'Map Configs' do
         expect(attributes['layers'][0]['geojson']).to eq map_config.layers.first.geojson
         expect(attributes['layers'][0]['default_enabled']).to eq map_config.layers.first.default_enabled
         expect(attributes['layers'][0]['marker_svg_url']).to eq map_config.layers.first.marker_svg_url
-        expect(attributes['legend'][0]['title_multiloc']).to eq map_config.legend_items.first.title_multiloc
-        expect(attributes['legend'][0]['color']).to eq map_config.legend_items.first.color
       end
     end
   end

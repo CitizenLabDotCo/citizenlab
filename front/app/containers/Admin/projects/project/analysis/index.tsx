@@ -1,13 +1,15 @@
-import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import React from 'react';
+
+import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
-import TopBar from './TopBar';
-import Tags from './Tags';
-import InputsList from './InputsList';
+
 import InputPreview from './InputPreview';
+import InputsList from './InputsList';
 import Insights from './Insights';
 import SelectedInputContext from './SelectedInputContext';
+import Tags from './Tags';
+import TopBar from './TopBar';
 
 const Analysis = () => {
   const modalPortalElement = document.getElementById('modal-portal');

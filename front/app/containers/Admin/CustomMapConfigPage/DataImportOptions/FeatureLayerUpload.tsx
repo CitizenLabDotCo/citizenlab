@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
 
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// components
-import Error from 'components/UI/Error';
 import {
   Box,
   Title,
@@ -15,21 +9,23 @@ import {
   Button,
   Success,
 } from '@citizenlab/cl2-component-library';
-import tooltipImage from '../TooltipImages/esri_feature_url_example.png';
-
-// types
-import { ViewOptions } from '..';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
 import { request, ErrorTypes, ApiKeyManager } from '@esri/arcgis-rest-request';
-
-// hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useAddMapLayer from 'api/map_layers/useAddMapLayer';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { getFeatureLayerInitialTitleMultiloc } from '../utils';
 import { useParams } from 'react-router-dom';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAddMapLayer from 'api/map_layers/useAddMapLayer';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import Error from 'components/UI/Error';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import { ViewOptions } from '..';
+import messages from '../messages';
+import tooltipImage from '../TooltipImages/esri_feature_url_example.png';
+import { getFeatureLayerInitialTitleMultiloc } from '../utils';
 
 type Props = {
   setView: (view: ViewOptions) => void;

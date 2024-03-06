@@ -1,13 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useMapConfig from './useProjectMapConfig';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { mapConfigData } from './__mocks__/useMapConfig';
 
+import { mapConfigData } from './__mocks__/useMapConfig';
+import useMapConfig from './useMapConfigById';
 const apiPath = '*/projects/:projectId/map_config';
 
 const server = setupServer(

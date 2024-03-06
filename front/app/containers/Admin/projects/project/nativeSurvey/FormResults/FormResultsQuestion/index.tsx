@@ -1,22 +1,19 @@
 import React from 'react';
 
-// components
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import InputType from './InputType';
-import MultipleChoice from './MultipleChoice';
-import TextQuestion from './TextQuestion';
-import Files from '../Files';
-import PointLocationQuestion from './PointLocationQuestion';
+import { snakeCase } from 'lodash-es';
+import { Locale } from 'typings';
 
-// i18n
+import { Result } from 'api/survey_results/types';
+
 import T from 'components/T';
 
-// utils
-import { snakeCase } from 'lodash-es';
+import Files from '../Files';
 
-// typings
-import { Locale } from 'typings';
-import { Result } from 'api/survey_results/types';
+import InputType from './InputType';
+import MultipleChoice from './MultipleChoice';
+import PointLocationQuestion from './PointLocationQuestion';
+import TextQuestion from './TextQuestion';
 
 type FormResultsQuestionProps = Result & {
   locale: Locale;

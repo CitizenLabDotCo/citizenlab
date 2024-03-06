@@ -1,13 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAnalysisSummary from './useAnalysisSummary';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { summaryData } from './__mocks__/useAnalysisSummary';
 import { ISummaryParams } from './types';
+import useAnalysisSummary from './useAnalysisSummary';
 
 const apiPath = '*/analyses/:analysisId/summaries/:id';
 

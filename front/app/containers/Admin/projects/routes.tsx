@@ -1,10 +1,13 @@
 import React, { lazy } from 'react';
+
 import moduleConfiguration from 'modules';
+import { Navigate } from 'react-router-dom';
+
 import PageLoading from 'components/UI/PageLoading';
+
+import AdminProjectIdeaPreviewIndex from './AdminProjectIdeaPreviewIndex';
 import IdeaFormBuilder from './project/inputForm/IdeaFormBuilder';
 import SurveyFormBuilder from './project/nativeSurvey/SurveyFormBuilder';
-import AdminProjectIdeaPreviewIndex from './AdminProjectIdeaPreviewIndex';
-import { Navigate } from 'react-router-dom';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));

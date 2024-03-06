@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useAddPageFile from './useAddPageFile';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { pageFilesData } from './__mocks__/usePageFiles';
+import useAddPageFile from './useAddPageFile';
 
 const apiPath = '*static_pages/:pageId/files';
 

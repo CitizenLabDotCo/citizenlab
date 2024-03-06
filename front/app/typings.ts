@@ -1,12 +1,16 @@
 import { MouseEvent, FC } from 'react';
-import { TFieldName } from 'components/UI/Error';
+
+import { WrappedComponentProps } from 'react-intl';
+import { TableCellProps } from 'semantic-ui-react';
+
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
+
 import {
   appGraphqlLocalePairs,
   appLocalePairs,
 } from 'containers/App/constants';
-import { TableCellProps } from 'semantic-ui-react';
-import { TAppConfigurationSetting } from 'api/app_configuration/types';
-import { WrappedComponentProps } from 'react-intl';
+
+import { TFieldName } from 'components/UI/Error';
 
 declare global {
   interface Function {

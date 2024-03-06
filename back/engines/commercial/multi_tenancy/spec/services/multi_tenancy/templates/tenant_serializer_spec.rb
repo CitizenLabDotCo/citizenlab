@@ -38,7 +38,6 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(Volunteering::Volunteer.count).to be > 0
         expect(CustomMaps::MapConfig.count).to be 2
         expect(CustomMaps::Layer.count).to be 2
-        expect(CustomMaps::LegendItem.count).to be 7
         expect(StaticPage.count).to be > 0
       end
     end

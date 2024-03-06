@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { Subscription } from 'rxjs';
 import { Locale } from 'typings';
-import { localeStream } from 'utils/locale';
+
+import { localeStream } from 'utils/localeStream';
 
 interface InputProps {}
 

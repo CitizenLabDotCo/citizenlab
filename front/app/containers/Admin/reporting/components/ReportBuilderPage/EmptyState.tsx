@@ -1,9 +1,5 @@
 import React from 'react';
 
-// images
-import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
-
-// components
 import {
   Box,
   Image,
@@ -11,19 +7,19 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
-
-// styling
+import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 import styled from 'styled-components';
 
-// i18n
-import messages from './messages';
-import sharedMessages from '../../messages';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Button from 'components/UI/Button';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import sharedMessages from '../../messages';
+
+import messages from './messages';
 
 const StyledBackgroundImage = styled(Image)`
   opacity: 0.5;

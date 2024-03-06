@@ -1,5 +1,6 @@
 import { get, set, remove, CookieAttributes } from 'js-cookie';
 import jwtDecode from 'jwt-decode';
+
 import { SECURE_COOKIE } from '../cookie';
 
 const COOKIE_NAME = 'cl2_jwt';

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const AdminModerationComponent = React.lazy(() => import('./admin/containers'));

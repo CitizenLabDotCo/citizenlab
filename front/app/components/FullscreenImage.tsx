@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createPortal } from 'react-dom';
+
 import {
   Box,
   IconButton,
@@ -7,6 +7,7 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { createPortal } from 'react-dom';
 
 interface Props {
   src: string;

@@ -1,33 +1,28 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
-// components
+import MapView from '@arcgis/core/views/MapView';
 import { Box, Button, Label } from '@citizenlab/cl2-component-library';
-import EsriMap from 'components/EsriMap';
-import Modal from 'components/UI/Modal';
-import CustomMapConfigPage from 'containers/Admin/CustomMapConfigPage';
-
-// styling
+import { useFormContext } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
+import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
+import useAddMapConfig from 'api/map_config/useAddMapConfig';
+import useMapConfigById from 'api/map_config/useMapConfigById';
+import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
+
 import useLocalize from 'hooks/useLocalize';
 
-// hooks
-import { useFormContext } from 'react-hook-form';
-import useAddMapConfig from 'api/map_config/useAddMapConfig';
-import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
-import { useParams } from 'react-router-dom';
-import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
-import useMapConfigById from 'api/map_config/useMapConfigById';
+import CustomMapConfigPage from 'containers/Admin/CustomMapConfigPage';
 
-// utils
+import EsriMap from 'components/EsriMap';
 import { goToMapLocation, parseLayers } from 'components/EsriMap/utils';
+import Modal from 'components/UI/Modal';
 
-// types
-import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
-import MapView from '@arcgis/core/views/MapView';
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const StyledLabel = styled(Label)`
   height: 100%;

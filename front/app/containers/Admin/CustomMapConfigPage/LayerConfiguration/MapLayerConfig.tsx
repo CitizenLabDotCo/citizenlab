@@ -1,44 +1,41 @@
 import React, { memo, useEffect, useState } from 'react';
-import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
+import {
+  ColorPickerInput,
+  IOption,
+  Select,
+} from '@citizenlab/cl2-component-library';
+import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
+import { WrappedComponentProps } from 'react-intl';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
+
+import { IMapConfig } from 'api/map_config/types';
+import { IMapLayerAttributes } from 'api/map_layers/types';
 import useUpdateMapLayer from 'api/map_layers/useUpdateMapLayer';
 
-// hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-// components
 import {
   Section,
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { ColorPickerInput, Select } from '@citizenlab/cl2-component-library';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-// utils
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 import {
   getLayerColor,
-  getGeojsonLayerType,
   makiIconNames,
   getUnnamedLayerTitleMultiloc,
-} from '../../../../utils/mapUtils/map';
+  getGeojsonLayerType,
+} from 'utils/mapUtils/map';
 
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
-
-// styling
-import styled from 'styled-components';
-
-// typing
-import { Multiloc, IOption } from 'typings';
-import { IMapLayerAttributes } from 'api/map_layers/types';
-import { IMapConfig } from 'api/map_config/types';
-import { useParams } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;

@@ -1,32 +1,27 @@
 import React, { useEffect } from 'react';
 
-// typings
-import { Multiloc, UploadFile } from 'typings';
-
-// form
-import { FormProvider, useForm } from 'react-hook-form';
-import { SectionField } from 'components/admin/Section';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { mixed, object } from 'yup';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import ImagesDropzone from 'components/HookForm/ImagesDropzone';
-
-// components and styles
-import Button from 'components/UI/Button';
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { defaultAdminCardPadding } from 'utils/styleConstants';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { Multiloc, UploadFile } from 'typings';
+import { mixed, object } from 'yup';
 
-// intl
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
-
-// hooks
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+
+import { SectionField } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
+import ImagesDropzone from 'components/HookForm/ImagesDropzone';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { defaultAdminCardPadding } from 'utils/styleConstants';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+
+import messages from './messages';
 
 export interface FormValues {
   title_multiloc: Multiloc;

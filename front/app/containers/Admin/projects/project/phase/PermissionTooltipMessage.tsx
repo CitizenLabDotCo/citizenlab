@@ -1,10 +1,15 @@
 import React from 'react';
+
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import useLocalize from 'hooks/useLocalize';
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { IPCPermissionData } from 'api/phase_permissions/types';
+
 import useGroups from 'api/groups/useGroups';
+import { IPCPermissionData } from 'api/phase_permissions/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 import {
   getGroupMessage,
   getPartipationRequirementMessage,

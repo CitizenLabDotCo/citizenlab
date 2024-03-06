@@ -1,13 +1,14 @@
 import React, { useMemo } from 'react';
 
 // components
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import { getMapPinSymbol } from 'components/EsriMap/utils';
-import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Renderer from '@arcgis/core/renderers/SimpleRenderer';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+
 import EsriMap from 'components/EsriMap';
+import { getMapPinSymbol } from 'components/EsriMap/utils';
 
 type Props = {
   pointResponses: { answer: GeoJSON.Point }[];

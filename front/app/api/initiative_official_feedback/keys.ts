@@ -1,5 +1,6 @@
-import { IParameters } from './types';
 import { QueryKeys } from 'utils/cl-react-query/types';
+
+import { IParameters } from './types';
 
 const baseKey = { type: 'official_feedback', variant: 'initiative' };
 

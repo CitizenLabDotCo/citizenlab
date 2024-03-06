@@ -1,42 +1,34 @@
-import { colors } from '@citizenlab/cl2-component-library';
-
 // ArcGIS
-import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
-import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
-import Layer from '@arcgis/core/layers/Layer';
-import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
-import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
-import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
-import Popup from '@arcgis/core/widgets/Popup';
-import Point from '@arcgis/core/geometry/Point';
-import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
-import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
-import MapView from '@arcgis/core/views/MapView';
-import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
-import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Basemap from '@arcgis/core/Basemap';
 import Collection from '@arcgis/core/core/Collection';
+import Point from '@arcgis/core/geometry/Point';
+import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
+import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
+import Layer from '@arcgis/core/layers/Layer';
+import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
+import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
+import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
+import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
+import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
+import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
+import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
+import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
-import Expand from '@arcgis/core/widgets/Expand';
-import LayerList from '@arcgis/core/widgets/LayerList';
-import Legend from '@arcgis/core/widgets/Legend';
+import Popup from '@arcgis/core/widgets/Popup';
+import { colors } from '@citizenlab/cl2-component-library';
 
-// utils
-import { hexToRGBA, isNil } from 'utils/helperUtils';
-
-// types
-import { Localize } from 'hooks/useLocalize';
+import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';
 
-// constants
+import { Localize } from 'hooks/useLocalize';
+
+import { hexToRGBA } from 'utils/helperUtils';
+
 import {
   BASEMAP_AT_ATTRIBUTION,
   DEFAULT_TILE_PROVIDER,
   MAPTILER_ATTRIBUTION,
 } from './constants';
-import { IMapConfig } from 'api/map_config/types';
-import { InitialData } from '.';
-import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 
 // getDefaultBasemap
 // Description: Gets the correct basemap given a certain tileProvider URL.
@@ -541,55 +533,4 @@ export const handleWebMapReferenceLayers = (
   webMap.basemap = new Basemap({
     baseLayers: newBasemapLayers,
   });
-};
-
-// showLayerVisibilityControls
-// Description: Shows the layer visibility controls on the map
-export const showLayerVisibilityControls = (mapView: MapView) => {
-  const layerList = new Expand({
-    content: new LayerList({
-      view: mapView,
-    }),
-    view: mapView,
-    expanded: false,
-    mode: 'floating',
-  });
-  mapView.ui.add(layerList, {
-    position: 'top-right',
-  });
-};
-
-// addMapLegend
-// Description: Adds a legend to the map
-export const addMapLegend = (mapView: MapView, isMobileOrSmaller: boolean) => {
-  const legend = new Expand({
-    content: new Legend({
-      view: mapView,
-      hideLayersNotInCurrentView: false,
-      style: { type: 'classic', layout: 'stack' },
-    }),
-    view: mapView,
-    expanded: isMobileOrSmaller ? false : true,
-    mode: 'floating',
-  });
-
-  mapView.ui.add(legend, 'bottom-right');
-};
-
-// setMapCenter
-// Description: Set the center of the map
-export const setMapCenter = (
-  mapView: MapView,
-  initialData: InitialData | undefined,
-  globalMapSettings: AppConfigurationMapSettings
-) => {
-  mapView.center = !isNil(initialData?.center)
-    ? new Point({
-        latitude: initialData?.center.coordinates[1],
-        longitude: initialData?.center.coordinates[0],
-      })
-    : new Point({
-        latitude: Number(globalMapSettings.map_center?.lat) || 0,
-        longitude: Number(globalMapSettings.map_center?.long) || 0,
-      });
 };
