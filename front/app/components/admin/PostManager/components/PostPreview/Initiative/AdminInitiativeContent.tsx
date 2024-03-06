@@ -36,7 +36,6 @@ import FeedbackSettings from './FeedbackSettings';
 
 const StyledTitle = styled(Title)`
   margin-bottom: 30px;
-  margin-right: 8px;
 `;
 
 const Row = styled.div`
