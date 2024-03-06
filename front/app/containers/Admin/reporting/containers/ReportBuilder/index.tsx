@@ -36,6 +36,7 @@ import { ReportLayout } from 'api/report_layout/types';
 import { isEmpty, isEqual } from 'lodash-es';
 import { ReportResponse } from 'api/reports/types';
 import { View } from '../../components/ReportBuilder/ViewContainer/typings';
+import { SerializedNodes } from '@craftjs/core';
 
 interface Props {
   report: ReportResponse;
@@ -43,8 +44,8 @@ interface Props {
 }
 
 const areEqual = (
-  prevData: Record<string, object>,
-  nextData: Record<string, object>
+  craftjsCurrentData: SerializedNodes,
+  persistedData: Record<string, any>
 ) => {
   // when we save the data, `undefined` field values are not saved
   // (e.g., `parent` in { ROOT: { parent: undefined, ...}, ...}).
@@ -53,9 +54,17 @@ const areEqual = (
   // JSON.stringify emulates sending the data to the server and getting it back
   // (it removes undefined values).
   // JSON.parse makes sure that the comparison is not affected by the order of keys.
+  if (
+    isEmpty(persistedData) &&
+    (isEmpty(craftjsCurrentData) ||
+      craftjsCurrentData['ROOT']?.nodes.length === 0)
+  ) {
+    return true;
+  }
+
   return isEqual(
-    JSON.parse(JSON.stringify(prevData)),
-    JSON.parse(JSON.stringify(nextData))
+    JSON.parse(JSON.stringify(craftjsCurrentData)),
+    JSON.parse(JSON.stringify(persistedData))
   );
 };
 
