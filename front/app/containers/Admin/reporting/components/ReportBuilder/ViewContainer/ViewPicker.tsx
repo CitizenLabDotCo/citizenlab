@@ -11,13 +11,13 @@ interface Props {
 
 const ViewPicker = ({ view, setView }: Props) => {
   return (
-    <Box display="flex" p="4px" bgColor={colors.grey300} borderRadius="3px">
+    <Box display="flex" p="4px" bgColor={colors.background} borderRadius="3px">
       <Button
         icon="tablet"
         buttonStyle="text"
-        bgColor={view === 'phone' ? colors.white : colors.grey300}
+        bgColor={view === 'phone' ? colors.white : colors.background}
         bgHoverColor={colors.white}
-        iconColor={colors.textSecondary}
+        iconColor={colors.textPrimary}
         iconSize="16px"
         onClick={() => setView('phone')}
         p="4px 8px"
@@ -26,9 +26,9 @@ const ViewPicker = ({ view, setView }: Props) => {
       <Button
         icon="file"
         buttonStyle="text"
-        bgColor={view === 'pdf' ? colors.white : colors.grey300}
+        bgColor={view === 'pdf' ? colors.white : colors.background}
         bgHoverColor={colors.white}
-        iconColor={colors.textSecondary}
+        iconColor={colors.textPrimary}
         iconSize="16px"
         onClick={() => setView('pdf')}
         p="4px 8px"
@@ -37,9 +37,9 @@ const ViewPicker = ({ view, setView }: Props) => {
       <Button
         icon="desktop"
         buttonStyle="text"
-        bgColor={view === 'desktop' ? colors.white : colors.grey300}
+        bgColor={view === 'desktop' ? colors.white : colors.background}
         bgHoverColor={colors.white}
-        iconColor={colors.textSecondary}
+        iconColor={colors.textPrimary}
         iconSize="16px"
         onClick={() => setView('desktop')}
         p="4px 8px"

@@ -12,7 +12,6 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import QuitModal from './QuitModal';
-import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import {
   Box,
@@ -21,6 +20,7 @@ import {
   Title,
   colors,
 } from '@citizenlab/cl2-component-library';
+import LocaleSelect from './LocaleSelect';
 import Button from 'components/UI/Button';
 
 // i18n
@@ -208,22 +208,22 @@ const ContentBuilderTopBar = ({
             </Text>
           )}
         </Box>
-        <Box mr="16px">
+        <Box>
+          <LocaleSelect locale={selectedLocale} setLocale={setSelectedLocale} />
+        </Box>
+        <Box ml="32px">
           {!!phaseId && <ViewPicker view={view} setView={setView} />}
         </Box>
-        <LocaleSwitcher
-          selectedLocale={selectedLocale}
-          onSelectLocale={setSelectedLocale}
-        />
-        <Box mx="20px">
+        <Box ml="32px">
           <Button
             icon="print"
-            onClick={goBack}
             buttonStyle="secondary"
-            iconColor={colors.textSecondary}
-            iconSize="20px"
+            iconColor={colors.textPrimary}
+            iconSize="16px"
             px="12px"
-            py="12px"
+            py="8px"
+            linkTo={`/admin/reporting/report-builder/${reportId}/print`}
+            openLinkInNewTab
           />
         </Box>
         <SaveButton
@@ -232,6 +232,11 @@ const ContentBuilderTopBar = ({
           bgColor={saved ? colors.success : undefined}
           icon={saved ? 'check' : undefined}
           onClick={handleSave}
+          fontSize="14px"
+          ml="8px"
+          px="12px"
+          pb="3px"
+          pt="4px"
         />
       </Box>
     </Container>
