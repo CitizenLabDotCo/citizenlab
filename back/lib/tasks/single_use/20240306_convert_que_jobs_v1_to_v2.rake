@@ -17,20 +17,17 @@ namespace :single_use do
           begin
             job_class = job.args['job_class'].constantize
           rescue NameError
-            job.destroy!
             next
           end
 
           begin
             arguments = ActiveJob::Arguments.deserialize(job.args['arguments'])
           rescue ActiveRecord::RecordNotFound, ActiveJob::DeserializationError
-            job.destroy!
             next
           end
 
           QueJob.transaction do
             job_class.set(priority: job.priority, wait_until: job.run_at, queue: job.queue).perform_later(*arguments)
-            job.destroy!
           end
         rescue StandardError => e
           Rails.logger.error('Failed to convert Que job from v1 to v2', job_id: job.id, exception: e)
