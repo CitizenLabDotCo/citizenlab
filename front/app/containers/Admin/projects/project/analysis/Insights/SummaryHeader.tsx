@@ -1,8 +1,11 @@
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import React from 'react';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+
+import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const SummaryHeader = () => {
   const { formatMessage } = useIntl();

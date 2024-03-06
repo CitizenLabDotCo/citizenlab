@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useRegenerateAnalysisQuestion from './useRegenerateAnalysisQuestion';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { questionData } from './__mocks__/useAnalysisQuestion';
+import useRegenerateAnalysisQuestion from './useRegenerateAnalysisQuestion';
 
 const apiPath = '*analyses/:analysisId/questions/:questionId/regenerate';
 

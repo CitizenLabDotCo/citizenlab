@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useRegenerateAnalysisSummary from './useRegenerateAnalysisSummary';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { summaryData } from './__mocks__/useAnalysisSummary';
+import useRegenerateAnalysisSummary from './useRegenerateAnalysisSummary';
 
 const apiPath = '*analyses/:analysisId/summaries/:summaryId/regenerate';
 

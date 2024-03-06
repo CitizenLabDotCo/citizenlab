@@ -1,9 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrorsWrapper } from 'typings';
+
+import inputsKeys from 'api/analysis_inputs/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
 import analysesKeys from './keys';
 import { IAnalysis } from './types';
-import inputsKeys from 'api/analysis_inputs/keys';
 
 type IAnalysisUpdate = {
   id: string;
