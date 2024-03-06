@@ -1,9 +1,5 @@
 import React, { useCallback } from 'react';
 
-// craft
-import { useNode } from '@craftjs/core';
-
-// styling
 import {
   colors,
   stylingConsts,
@@ -11,25 +7,25 @@ import {
   Icon,
   Text,
 } from '@citizenlab/cl2-component-library';
+import { useNode } from '@craftjs/core';
+import { IOption, Multiloc } from 'typings';
 
-// components
-import Card from '../_shared/Card';
-import SurveyResults from './SurveyResults';
-import NoData from '../_shared/NoData';
-import ProjectFilter from '../_shared/ProjectFilter';
-import PhaseFilter from '../_shared/PhaseFilter';
-import QuestionFilter from './QuestionFilter';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import widgetMessages from '../messages';
 import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
-// types
-import { IOption, Multiloc } from 'typings';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import PhaseFilter from 'components/UI/PhaseFilter';
+
+import { useIntl } from 'utils/cl-intl';
+
+import Card from '../_shared/Card';
+import NoData from '../_shared/NoData';
+import ProjectFilter from '../_shared/ProjectFilter';
+import widgetMessages from '../messages';
 import { getEmptyMessage } from '../utils';
+
+import messages from './messages';
+import QuestionFilter from './QuestionFilter';
+import SurveyResults from './SurveyResults';
 
 export type Props = {
   title?: Multiloc;

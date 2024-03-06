@@ -1,10 +1,14 @@
 import React from 'react';
+
 import { IProjectFolderModerationRightsReceivedNotificationData } from 'api/notifications/types';
+
 import NotificationWrapper from 'containers/MainHeader/Components/NotificationMenu/components/NotificationWrapper';
-import messages from './messages';
+
+import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
+
+import messages from './messages';
 
 interface Props {
   notification: IProjectFolderModerationRightsReceivedNotificationData;

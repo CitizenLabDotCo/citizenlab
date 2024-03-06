@@ -1,5 +1,7 @@
-import { API_PATH } from 'containers/App/constants';
 import { rest } from 'msw';
+
+import { API_PATH } from 'containers/App/constants';
+
 import { Report } from '../types';
 
 export const apiPathReport = `${API_PATH}/reports/:id`;
@@ -30,6 +32,7 @@ export const reportsData: Report[] = [
           disabled_reason: null,
         },
       },
+      visible: false,
     },
     relationships: {
       layout: {
@@ -59,6 +62,7 @@ export const reportsData: Report[] = [
           disabled_reason: null,
         },
       },
+      visible: false,
     },
     relationships: {
       layout: {

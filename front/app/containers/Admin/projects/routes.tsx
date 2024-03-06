@@ -1,10 +1,13 @@
 import React, { lazy } from 'react';
+
 import moduleConfiguration from 'modules';
+import { Navigate } from 'react-router-dom';
+
 import PageLoading from 'components/UI/PageLoading';
+
+import AdminProjectIdeaPreviewIndex from './AdminProjectIdeaPreviewIndex';
 import IdeaFormBuilder from './project/inputForm/IdeaFormBuilder';
 import SurveyFormBuilder from './project/nativeSurvey/SurveyFormBuilder';
-import AdminProjectIdeaPreviewIndex from './AdminProjectIdeaPreviewIndex';
-import { Navigate } from 'react-router-dom';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
@@ -40,6 +43,7 @@ const AdminCustomMapConfigComponent = React.lazy(
 );
 
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
+const ReportTab = lazy(() => import('./project/information/ReportTab'));
 
 export function adminProjectsProjectPath(projectId: string) {
   return `/admin/projects/${projectId}`;
@@ -305,6 +309,14 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <OfflineInputImporter />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'phases/:phaseId/report',
+            element: (
+              <PageLoading>
+                <ReportTab />
               </PageLoading>
             ),
           },

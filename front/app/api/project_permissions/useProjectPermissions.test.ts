@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useProjectPermissions from './useProjectPermissions';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { projectPermissionsData } from './__mocks__/useProjectPermissions';
+import useProjectPermissions from './useProjectPermissions';
 
 const apiPath = '*permissions';
 

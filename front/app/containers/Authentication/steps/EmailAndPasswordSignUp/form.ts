@@ -1,16 +1,13 @@
-// i18n
-import sharedMessages from '../messages';
-import passwordInputMessages from 'components/UI/PasswordInput/messages';
-import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
-
-// form
+import { FormatMessage } from 'typings';
 import { string, object, boolean } from 'yup';
 
-// utils
+import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
+
+import passwordInputMessages from 'components/UI/PasswordInput/messages';
+
 import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
 
-// typings
-import { FormatMessage } from 'typings';
+import sharedMessages from '../messages';
 
 export interface FormValues {
   first_name: string;

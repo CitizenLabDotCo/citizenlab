@@ -1,13 +1,13 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useEventImage from './useEventImage';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
+import { eventData } from 'api/event_images/__mocks__/useEventImage';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { eventImageData } from './__mocks__/useEventImage';
-import { eventData } from 'api/event_images/__mocks__/useEventImage';
+import useEventImage from './useEventImage';
 
 const apiPath = '*/events/:eventId/images/:imageId';
 

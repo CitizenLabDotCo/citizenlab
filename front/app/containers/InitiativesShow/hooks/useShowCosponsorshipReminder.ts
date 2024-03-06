@@ -2,8 +2,9 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAuthUser from 'api/me/useAuthUser';
-import useInitiativeReviewRequired from './useInitiativeReviewRequired';
+
 import useInitiativeCosponsorsRequired from './useInitiativeCosponsorsRequired';
+import useInitiativeReviewRequired from './useInitiativeReviewRequired';
 
 function useShowCosponsorshipReminder(initiativeId: string) {
   const { data: appConfiguration } = useAppConfiguration();

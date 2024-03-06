@@ -1,13 +1,5 @@
 import React, { useMemo } from 'react';
 
-// hooks
-import useProjects from 'api/projects/useProjects';
-import useAuthUser from 'api/me/useAuthUser';
-
-// styling
-import styled from 'styled-components';
-
-// components
 import {
   Select,
   Box,
@@ -15,15 +7,18 @@ import {
   Spinner,
   BoxProps,
 } from '@citizenlab/cl2-component-library';
-
-// i18n
-import useLocalize, { Localize } from 'hooks/useLocalize';
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// typings
+import styled from 'styled-components';
 import { IOption } from 'typings';
+
+import useAuthUser from 'api/me/useAuthUser';
 import { IProjectData, PublicationStatus } from 'api/projects/types';
+import useProjects from 'api/projects/useProjects';
+
+import useLocalize, { Localize } from 'hooks/useLocalize';
+
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const PUBLICATION_STATUSES: PublicationStatus[] = [
   'published',

@@ -1,36 +1,31 @@
 import React, { useState } from 'react';
-import moment from 'moment';
 
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
-import TextArea from 'components/HookForm/TextArea';
-import { FormLabel } from 'components/UI/FormComponents';
-
-// components
-import Modal from 'components/UI/Modal';
 import {
   Button,
   Text,
   Box,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
-import SuccessfulUserBlock from './SuccessfulUserBlock';
+import { yupResolver } from '@hookform/resolvers/yup';
+import moment from 'moment';
+import { useForm, FormProvider } from 'react-hook-form';
+import { string, object } from 'yup';
 
-// i18n
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// services
-import { IUserData } from 'api/users/types';
-import useBlockUser from 'api/blocked_users/useBlockUser';
-
-// utils
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useBlockUser from 'api/blocked_users/useBlockUser';
+import { IUserData } from 'api/users/types';
+
+import TextArea from 'components/HookForm/TextArea';
+import { FormLabel } from 'components/UI/FormComponents';
+import Modal from 'components/UI/Modal';
+import Warning from 'components/UI/Warning';
+
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { getFullName } from 'utils/textUtils';
+
+import messages from './messages';
+import SuccessfulUserBlock from './SuccessfulUserBlock';
 
 type Props = {
   open: boolean;

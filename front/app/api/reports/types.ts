@@ -1,4 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import reportsKeys from './keys';
 
 export type ReportsKeys = Keys<typeof reportsKeys>;
@@ -25,6 +26,7 @@ export interface Report {
     action_descriptor: {
       editing_report: EditingReport;
     };
+    visible: boolean;
   };
   relationships: {
     layout: {

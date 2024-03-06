@@ -1,4 +1,5 @@
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export default function useInitiativeReviewRequired() {

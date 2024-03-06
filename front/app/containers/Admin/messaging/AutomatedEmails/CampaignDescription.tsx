@@ -1,5 +1,5 @@
 import React from 'react';
-import { CampaignData } from './types';
+
 import {
   Box,
   Text,
@@ -7,8 +7,12 @@ import {
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
+
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
+
+import { CampaignData } from './types';
 
 interface Props {
   campaign: CampaignData;

@@ -1,8 +1,11 @@
 import React from 'react';
-import { AuthenticationData } from 'containers/Authentication/typings';
-import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
-import TopicsAndAreas from './TopicsAndAreas';
+
 import { OnboardingType } from 'api/authentication/authentication_requirements/types';
+import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
+
+import { AuthenticationData } from 'containers/Authentication/typings';
+
+import TopicsAndAreas from './TopicsAndAreas';
 
 interface Props {
   authenticationData: AuthenticationData;

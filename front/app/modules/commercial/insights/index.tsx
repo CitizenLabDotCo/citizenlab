@@ -1,7 +1,6 @@
 import React from 'react';
-import { ModuleConfiguration } from 'utils/moduleUtils';
 
-const Tabs = React.lazy(() => import('./admin/components/Tabs'));
+import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const AdminInsightsReportsComponent = React.lazy(
   () => import('./admin/containers/Reports')
@@ -29,11 +28,6 @@ const configuration: ModuleConfiguration = {
         element: <AdminInsightsProjectReportComponent />,
       },
     ],
-  },
-  outlets: {
-    'app.containers.Admin.reporting.components.Tabs': ({ onData }) => (
-      <Tabs onData={onData} />
-    ),
   },
 };
 

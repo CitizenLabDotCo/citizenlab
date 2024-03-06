@@ -1,25 +1,26 @@
 import React from 'react';
-import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
 
 import { Button, Box } from '@citizenlab/cl2-component-library';
-
-import { injectIntl } from 'utils/cl-intl';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
 import { WrappedComponentProps } from 'react-intl';
 import { Multiloc } from 'typings';
-import messages from '../messages';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { object, boolean, string } from 'yup';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
-import Feedback from 'components/HookForm/Feedback';
-import Toggle from 'components/HookForm/Toggle';
-import Select from 'components/HookForm/Select';
+
+import { IUserCustomFieldInputType } from 'api/user_custom_fields/types';
+
 import { Section, SectionField } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import Select from 'components/HookForm/Select';
+import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
+import Toggle from 'components/HookForm/Toggle';
+
+import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+
+import messages from '../messages';
 
 export interface FormValues {
   enabled: boolean;

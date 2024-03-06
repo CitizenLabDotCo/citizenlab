@@ -1,27 +1,24 @@
 import React, { memo } from 'react';
 
-// api
+import { Box, Title } from '@citizenlab/cl2-component-library';
+
+import { PublicationStatus } from 'api/projects/types';
 import useProjects from 'api/projects/useProjects';
 
-// components
-import { Title } from '@citizenlab/cl2-component-library';
-import { List, Row } from 'components/admin/ResourceList';
 import {
   RowButton,
   RowContent,
   RowTitle,
 } from 'containers/Admin/projects/components/StyledComponents';
+
 import PageWrapper from 'components/admin/PageWrapper';
+import { List, Row } from 'components/admin/ResourceList';
+import Warning from 'components/UI/Warning';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import { PublicationStatus } from 'api/projects/types';
+import messages from './messages';
 
 const publicationStatuses: PublicationStatus[] = ['published', 'archived'];
 
@@ -35,6 +32,11 @@ const ReportTab = memo(() => {
 
   return (
     <>
+      <Box mb="20px">
+        <Warning>
+          <FormattedMessage {...messages.deprecatedMessage} />
+        </Warning>
+      </Box>
       <Title variant="h1" color="primary" mt="0px" mb="32px">
         <FormattedMessage {...messages.selectAProject} />
       </Title>

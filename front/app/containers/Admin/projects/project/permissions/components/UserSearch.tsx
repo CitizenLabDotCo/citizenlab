@@ -1,30 +1,25 @@
 import React, { Suspense, memo, useState, lazy } from 'react';
 
-// Services
+import { Box, Label } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
+import { IUserData } from 'api/users/types';
+
+import useExceedsSeats from 'hooks/useExceedsSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Button from 'components/UI/Button';
+import UserSelect from 'components/UI/UserSelect';
+
+import { useIntl } from 'utils/cl-intl';
 import { isRegularUser } from 'utils/permissions/roles';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useExceedsSeats from 'hooks/useExceedsSeats';
-import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// Components
-import Button from 'components/UI/Button';
 const AddModeratorsModal = lazy(
   () => import('components/admin/SeatBasedBilling/AddModeratorsModal')
 );
-import { Box, Label } from '@citizenlab/cl2-component-library';
-import UserSelect from 'components/UI/UserSelect';
-
-// Style
-import styled from 'styled-components';
-
-// typings
-import { IUserData } from 'api/users/types';
 
 const AddButton = styled(Button)`
   flex-grow: 0;

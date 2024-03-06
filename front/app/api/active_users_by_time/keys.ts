@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { IActiveUsersByTimeParams } from './types';
 
 const baseKey = { type: 'active_users_by_time' };

@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 import { isNilOrError } from 'utils/helperUtils';
-import { IEventAttendances, EventAttendanceKeys } from './types';
+
 import eventsAttendancesKeys from './keys';
+import { IEventAttendances, EventAttendanceKeys } from './types';
 
 const fetchEventAttendances = (eventId: string) => {
   return fetcher<IEventAttendances>({

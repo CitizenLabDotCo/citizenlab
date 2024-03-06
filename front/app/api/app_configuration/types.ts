@@ -1,12 +1,15 @@
-import { Keys } from 'utils/cl-react-query/types';
-import appConfigurationKeys from './keys';
-
-export type AppConfigurationKeys = Keys<typeof appConfigurationKeys>;
+import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
 
 import { API_PATH } from 'containers/App/constants';
-import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
+
 import { TCategory } from 'components/ConsentManager/destinations';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import appConfigurationKeys from './keys';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
+
+export type AppConfigurationKeys = Keys<typeof appConfigurationKeys>;
 
 interface AppConfigurationFeature {
   allowed: boolean;
@@ -226,6 +229,7 @@ export interface IAppConfigurationSettings {
   permissions_custom_fields?: AppConfigurationFeature;
   input_form_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
+  report_data_grouping?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
   user_blocking?: AppConfigurationFeature & {
     duration: boolean;

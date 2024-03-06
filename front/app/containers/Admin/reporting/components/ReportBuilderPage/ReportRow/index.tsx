@@ -1,19 +1,15 @@
 import React from 'react';
 
-// components
 import { ListItem, Box, Title } from '@citizenlab/cl2-component-library';
-import EditedText from './EditedText';
-import Buttons from './Buttons';
 
-// i18n
-import messages from './messages';
+import { Report } from 'api/reports/types';
+import useDeleteReport from 'api/reports/useDeleteReport';
+
 import { useIntl } from 'utils/cl-intl';
 
-// utils
-import clHistory from 'utils/cl-router/history';
-
-import useDeleteReport from 'api/reports/useDeleteReport';
-import { Report } from 'api/reports/types';
+import Buttons from './Buttons';
+import EditedText from './EditedText';
+import messages from './messages';
 
 interface Props {
   report: Report;
@@ -38,12 +34,6 @@ const ReportRow = ({ report }: Props) => {
     }
   };
 
-  const reportPath = `/admin/reporting/report-builder/${report.id}`;
-
-  const handleEditReport = () => {
-    clHistory.push(`${reportPath}/editor`);
-  };
-
   return (
     <ListItem>
       <Box
@@ -63,12 +53,13 @@ const ReportRow = ({ report }: Props) => {
             userId={report.relationships.owner.data.id}
           />
         </Box>
-        <Buttons
-          reportId={report.id}
-          isLoading={isLoading}
-          onDelete={handleDeleteReport}
-          onEdit={handleEditReport}
-        />
+        <Box display="flex">
+          <Buttons
+            reportId={report.id}
+            isLoading={isLoading}
+            onDelete={handleDeleteReport}
+          />
+        </Box>
       </Box>
     </ListItem>
   );

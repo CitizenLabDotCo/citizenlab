@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { MessageDescriptor } from 'react-intl';
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import styled from 'styled-components';
+
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
 const Anchor = styled.a``;
 

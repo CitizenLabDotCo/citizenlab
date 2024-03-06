@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteEventImage from './useDeleteEventImage';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteEventImage from './useDeleteEventImage';
 const apiPath = '*/events/:eventId/images/:imageId';
 
 const server = setupServer(

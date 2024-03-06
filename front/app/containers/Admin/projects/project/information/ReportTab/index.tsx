@@ -1,0 +1,93 @@
+import React from 'react';
+
+import { Box, Title, Toggle } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+
+import usePhase from 'api/phases/usePhase';
+import useDeleteReport from 'api/reports/useDeleteReport';
+import useReport from 'api/reports/useReport';
+import useUpdateReport from 'api/reports/useUpdateReport';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Buttons from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/Buttons';
+
+import { useIntl } from 'utils/cl-intl';
+
+import EmptyState from './EmptyState';
+import messages from './messages';
+import ReportPreview from './ReportPreview';
+
+const ReportTab = () => {
+  const { phaseId } = useParams();
+  const { data: phase } = usePhase(phaseId);
+  const { data: report } = useReport(
+    phase?.data.relationships.report?.data?.id
+  );
+
+  const phaseReportsEnabled = useFeatureFlag({ name: 'phase_reports' });
+  const { formatMessage } = useIntl();
+
+  const { mutate: deleteReport, isLoading } = useDeleteReport();
+  const { mutate: updateReport } = useUpdateReport();
+
+  if (!phaseReportsEnabled || !phase) return null;
+
+  const handleDeleteReport = async () => {
+    if (!report) return;
+    if (window.confirm(formatMessage(messages.areYouSureYouWantToDelete))) {
+      deleteReport(report.data.id);
+    }
+  };
+
+  const reportId = phase.data.relationships.report?.data?.id;
+  const hasReport = !!reportId;
+
+  return (
+    <Box w="100%">
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Title variant="h3" color="primary">
+          {formatMessage(messages.report)}
+        </Title>
+        {hasReport && report && (
+          <Box display="flex" h="100%" alignItems="center">
+            <Box mr="16px">
+              <Toggle
+                checked={report.data.attributes.visible}
+                onChange={() => {
+                  updateReport({
+                    id: report.data.id,
+                    visible: !report.data.attributes.visible,
+                  });
+                }}
+                label={formatMessage(messages.reportVisible)}
+              />
+            </Box>
+            <Buttons
+              reportId={reportId}
+              isLoading={isLoading}
+              onDelete={handleDeleteReport}
+            />
+          </Box>
+        )}
+      </Box>
+      {hasReport ? (
+        <Box mt="32px">
+          <ReportPreview reportId={reportId} phaseId={phase.data.id} />
+        </Box>
+      ) : (
+        <EmptyState
+          projectId={phase.data.relationships.project.data.id}
+          phaseId={phase.data.id}
+        />
+      )}
+    </Box>
+  );
+};
+
+export default ReportTab;

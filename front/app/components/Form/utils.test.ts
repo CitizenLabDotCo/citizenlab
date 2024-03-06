@@ -1,5 +1,7 @@
-import { getFormSchemaAndData } from './utils';
 import { RuleEffect } from '@jsonforms/core';
+
+import { getFormSchemaAndData } from './utils';
+
 import { customAjv } from '.';
 
 describe('getFormSchemaAndData', () => {

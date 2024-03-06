@@ -10,7 +10,7 @@ class IdeaCustomFieldsService
     if @custom_form.custom_field_ids.empty?
       @participation_method.default_fields @custom_form
     else
-      @custom_form.custom_fields
+      @custom_form.custom_fields.includes(%i[options])
     end
   end
 
@@ -69,7 +69,7 @@ class IdeaCustomFieldsService
       when 'multiselect', 'multiselect_image'
         fields_with_array_keys[field.key.to_sym] = []
       when 'file_upload'
-        fields_with_array_keys[field.key.to_sym] = %i[content name]
+        fields_with_array_keys[field.key.to_sym] = %i[id content name]
       else
         fields_with_simple_keys << field.key.to_sym
       end

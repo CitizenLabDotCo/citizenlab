@@ -1,13 +1,14 @@
-// libraries
 import React, { useRef } from 'react';
+
 import { isEmpty } from 'lodash-es';
 
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from '../../../containers/Admin/dashboard/messages';
+import { IUsersByCustomField } from 'api/users_by_custom_field/types';
+import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
 
-// components
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+import useLocalize from 'hooks/useLocalize';
+
+import BarChart from 'components/admin/Graphs/BarChart';
+import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
 import {
   IGraphUnit,
   GraphCardHeader,
@@ -15,18 +16,12 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import BarChart from 'components/admin/Graphs/BarChart';
-import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/styling';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
-// resources
-
-// utils
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// types
-import { IUsersByCustomField } from 'api/users_by_custom_field/types';
-import useUsersByCustomField from 'api/users_by_custom_field/useUsersByCustomField';
-import useLocalize from 'hooks/useLocalize';
+import messages from '../../../containers/Admin/dashboard/messages';
 
 interface Props {
   startAt: string | null | undefined;
@@ -125,6 +120,7 @@ const BarChartByCategory = ({
               currentGroupFilter={currentGroupFilter}
               startAt={startAt}
               endAt={endAt}
+              currentProjectFilter={project}
             />
           )}
         </GraphCardHeader>

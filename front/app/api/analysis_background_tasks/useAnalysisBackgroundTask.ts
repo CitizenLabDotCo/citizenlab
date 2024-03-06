@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
-import { IBackgroundTask, BackgroundTasksKeys } from './types';
+
 import backgroundTasksKeys from './keys';
+import { IBackgroundTask, BackgroundTasksKeys } from './types';
 
 const fetchBackgroundTask = (analysisId: string, id?: string) =>
   fetcher<IBackgroundTask>({

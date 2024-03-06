@@ -1,7 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import fetcher from 'utils/cl-react-query/fetcher';
-import reportsKeys from './keys';
+
 import phasesKeys from 'api/phases/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import reportsKeys from './keys';
 
 const deleteReport = (id: string) =>
   fetcher({
@@ -9,7 +12,7 @@ const deleteReport = (id: string) =>
     action: 'delete',
   });
 
-const useDeletereport = () => {
+const useDeleteReport = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -30,4 +33,4 @@ const useDeletereport = () => {
   });
 };
 
-export default useDeletereport;
+export default useDeleteReport;
