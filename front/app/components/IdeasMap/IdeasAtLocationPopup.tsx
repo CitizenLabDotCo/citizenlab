@@ -7,7 +7,6 @@ import { createPortal } from 'react-dom';
 import { IIdeaMarkerData } from 'api/idea_markers/types';
 
 import useLocalize from 'hooks/useLocalize';
-import useLocalize from 'hooks/useLocalize';
 
 import { Spacer } from 'components/UI/FormComponents';
 
