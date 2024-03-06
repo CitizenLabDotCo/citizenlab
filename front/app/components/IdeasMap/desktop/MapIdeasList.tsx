@@ -10,7 +10,7 @@ import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
-import useIdeas from 'api/ideas/useIdeas';
+import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import usePhase from 'api/phases/usePhase';
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
@@ -131,11 +131,11 @@ const MapIdeasList = memo<Props>(
     const topicsParam = searchParams.get('topics');
     const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
 
-    const { data: ideaMarkers } = useIdeas({
-      projects: [projectId],
-      phase: phaseId,
+    const { data: ideaMarkers } = useIdeaMarkers({
+      projectIds: [projectId],
+      phaseId,
       sort,
-      search: search || undefined,
+      search,
       topics,
     });
 
