@@ -33,7 +33,7 @@ import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplat
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { Locale } from 'typings';
 import { ReportLayout } from 'api/report_layout/types';
-import { isEmpty, isEqual } from 'lodash-es';
+import { isEmpty, isEqual, isUndefined, omitBy } from 'lodash-es';
 import { ReportResponse } from 'api/reports/types';
 import { View } from '../../components/ReportBuilder/ViewContainer/typings';
 import { SerializedNodes } from '@craftjs/core';
@@ -45,27 +45,42 @@ interface Props {
 
 const areEqual = (
   craftjsCurrentData: SerializedNodes,
-  persistedData: Record<string, any>
+  persistedData: SerializedNodes
 ) => {
-  // when we save the data, `undefined` field values are not saved
-  // (e.g., `parent` in { ROOT: { parent: undefined, ...}, ...}).
-  // So, they are never present in reportLayout.attributes.craftjs_json,
-  // but they are present in the editor state `query.getSerializedNodes()`.
-  // JSON.stringify emulates sending the data to the server and getting it back
-  // (it removes undefined values).
-  // JSON.parse makes sure that the comparison is not affected by the order of keys.
   if (
     isEmpty(persistedData) &&
     (isEmpty(craftjsCurrentData) ||
-      craftjsCurrentData['ROOT']?.nodes.length === 0)
+      craftjsCurrentData['ROOT'].nodes.length === 0)
   ) {
     return true;
   }
 
-  return isEqual(
-    JSON.parse(JSON.stringify(craftjsCurrentData)),
-    JSON.parse(JSON.stringify(persistedData))
-  );
+  // When the layout is saved, `undefined` fields are not saved
+  // (e.g., `parent` in { ROOT: { parent: undefined, ...}, ...} will be omitted).
+  // So, they are never present in reportLayout.attributes.craftjs_json,
+  // but they are present in the editor state `query.getSerializedNodes()`.
+  //
+  // The "for" loop does the same thing as this alternative version with JSON.stringify,
+  // but it's more performant.
+  //
+  // JSON.stringify emulates sending the data to the server and getting it back
+  // (it removes undefined values).
+  // JSON.parse makes sure that the comparison is not affected by the order of keys.
+  // return isEqual(
+  //   JSON.parse(JSON.stringify(craftjsCurrentData)),
+  //   JSON.parse(JSON.stringify(persistedData))
+  // );
+  for (const key in craftjsCurrentData) {
+    if (
+      !isEqual(
+        omitBy(craftjsCurrentData[key], isUndefined),
+        omitBy(persistedData[key], isUndefined)
+      )
+    ) {
+      return false;
+    }
+  }
+  return true;
 };
 
 const ReportBuilder = ({ report, reportLayout }: Props) => {
