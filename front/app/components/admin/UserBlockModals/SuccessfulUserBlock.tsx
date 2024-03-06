@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-// components
-import Modal from 'components/UI/Modal';
 import {
   Title,
   Text,
@@ -10,8 +8,10 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-// i18n
+import Modal from 'components/UI/Modal';
+
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
 
 type Props = {

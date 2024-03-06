@@ -1,8 +1,10 @@
+import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+
 import mentionsKeys from './keys';
 import { IMentions, IQueryParameters, MentionsKeys } from './types';
-import { queryClient } from 'utils/cl-react-query/queryClient';
-import { CLErrors } from 'typings';
 
 export const fetchMentions = (queryParams: IQueryParameters) =>
   fetcher<IMentions>({

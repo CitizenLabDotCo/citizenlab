@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useAdminPublication from './useAdminPublication';
-import { mockFolderChildAdminPublicationsList } from './__mocks__/useAdminPublications';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { mockFolderChildAdminPublicationsList } from './__mocks__/useAdminPublications';
+import useAdminPublication from './useAdminPublication';
 
 const apiPath = '*admin_publications/:id';
 

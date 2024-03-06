@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeletePermissionsCustomField from './useDeletePermissionsCustomField';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeletePermissionsCustomField from './useDeletePermissionsCustomField';
 const apiPath = '*permissions_custom_fields/:id';
 
 const server = setupServer(

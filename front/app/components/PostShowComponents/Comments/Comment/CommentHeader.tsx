@@ -1,18 +1,23 @@
 import React from 'react';
-import Author from 'components/Author';
-import { lighten } from 'polished';
-import styled from 'styled-components';
+
 import {
   media,
   colors,
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import { lighten } from 'polished';
+import styled from 'styled-components';
+
 import { IPresentComment } from 'api/comments/types';
 import useUserById from 'api/users/useUserById';
+
+import Author from 'components/Author';
+
+import { useIntl } from 'utils/cl-intl';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;

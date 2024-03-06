@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import reportLayoutKeys from './keys';
 import { CraftJson } from 'components/admin/ContentBuilder/typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import reportLayoutKeys from './keys';
 
 export type ReportLayoutKeys = Keys<typeof reportLayoutKeys>;
 

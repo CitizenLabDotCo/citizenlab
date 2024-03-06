@@ -1,6 +1,8 @@
 import React from 'react';
-import HeaderImage from './HeaderImage';
+
 import { render, screen } from 'utils/testUtils/rtl';
+
+import HeaderImage from './HeaderImage';
 
 const mockHomepageSettings = {
   header_bg: {

@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteAnalysisInsight from './useDeleteAnalysisInsight';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteAnalysisInsight from './useDeleteAnalysisInsight';
 const apiPath = '*analyses/:analysisId/insights/:id';
 
 const server = setupServer(

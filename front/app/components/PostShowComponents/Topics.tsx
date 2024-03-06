@@ -1,23 +1,20 @@
 import React, { memo } from 'react';
 
-// styling
-import styled, { useTheme } from 'styled-components';
-import { transparentize } from 'polished';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
-import useTopic from 'api/topics/useTopic';
-import { useIntl } from 'utils/cl-intl';
-
-// components
 import {
   Box,
   Title,
   fontSizes,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import { transparentize } from 'polished';
+import styled, { useTheme } from 'styled-components';
 
-// i18n
+import useTopic from 'api/topics/useTopic';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
 const Topic = styled.div`

@@ -1,12 +1,5 @@
 import React from 'react';
-import EventCard from 'components/EventCard';
-import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
-import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
-import VerticalCenterer from 'components/VerticalCenterer';
-import Link from 'utils/cl-router/Link';
-import useEvents from 'api/events/useEvents';
-import { useIntl } from 'utils/cl-intl';
-import styled from 'styled-components';
+
 import {
   colors,
   fontSizes,
@@ -14,10 +7,23 @@ import {
   isRtl,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { isNilOrError, isNil, isError } from 'utils/helperUtils';
-import messages from './messages';
-import eventsPageMessages from 'containers/EventsPage/messages';
 import { darken } from 'polished';
+import styled from 'styled-components';
+
+import useEvents from 'api/events/useEvents';
+
+import EventsMessage from 'containers/EventsPage/EventsViewer/EventsMessage';
+import EventsSpinner from 'containers/EventsPage/EventsViewer/EventsSpinner';
+import eventsPageMessages from 'containers/EventsPage/messages';
+
+import EventCard from 'components/EventCard';
+import VerticalCenterer from 'components/VerticalCenterer';
+
+import { useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { isNilOrError, isNil, isError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const NoEventsText = styled.div`
   margin: auto 0px;

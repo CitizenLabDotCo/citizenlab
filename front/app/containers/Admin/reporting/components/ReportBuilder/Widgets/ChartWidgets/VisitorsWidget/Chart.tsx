@@ -1,26 +1,19 @@
 import React, { useMemo } from 'react';
 
-// styling
+import { Dates, Layout, Resolution } from 'components/admin/GraphCards/typings';
+import { generateEmptyData } from 'components/admin/GraphCards/VisitorsCard/Chart/generateEmptyData';
+import renderTooltip from 'components/admin/GraphCards/VisitorsCard/Chart/renderTooltip';
+import messages from 'components/admin/GraphCards/VisitorsCard/messages';
+import { TimeSeries } from 'components/admin/GraphCards/VisitorsCard/useVisitors/typings';
+import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import LineChart from 'components/admin/Graphs/LineChart';
 import { colors } from 'components/admin/Graphs/styling';
 
-// components
-import LineChart from 'components/admin/Graphs/LineChart';
-import renderTooltip from 'components/admin/GraphCards/VisitorsCard/Chart/renderTooltip';
-
-// i18n
-import messages from 'components/admin/GraphCards/VisitorsCard/messages';
 import { useIntl } from 'utils/cl-intl';
-
-// utils
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { toThreeLetterMonth } from 'utils/dateUtils';
-import { formatLargeNumber } from '../utils';
-import { generateEmptyData } from 'components/admin/GraphCards/VisitorsCard/Chart/generateEmptyData';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-// typings
-import { Dates, Layout, Resolution } from 'components/admin/GraphCards/typings';
-import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
-import { TimeSeries } from 'components/admin/GraphCards/VisitorsCard/useVisitors/typings';
+import { formatLargeNumber } from '../utils';
 
 type Props = Dates &
   Resolution & {

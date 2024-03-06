@@ -1,4 +1,5 @@
 import moment from 'moment';
+
 import { parseTimeSeries, parseStats } from './parse';
 import { Response } from './typings';
 

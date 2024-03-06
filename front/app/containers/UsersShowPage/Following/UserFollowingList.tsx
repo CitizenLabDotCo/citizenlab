@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Box,
   Text,
@@ -6,16 +7,20 @@ import {
   useBreakpoint,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import useFollowers from 'api/follow_unfollow/useFollowers';
-import IdeaCard from 'components/IdeaCard';
-import { FollowableObject } from 'api/follow_unfollow/types';
-import InitiativeCard from 'components/InitiativeCard';
-import ProjectCard from 'components/ProjectCard';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import ProjectFolderCard from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
-import Button from 'components/UI/Button';
 import { useTheme } from 'styled-components';
+
+import { FollowableObject } from 'api/follow_unfollow/types';
+import useFollowers from 'api/follow_unfollow/useFollowers';
+
+import IdeaCard from 'components/IdeaCard';
+import InitiativeCard from 'components/InitiativeCard';
+import ProjectFolderCard from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
+import ProjectCard from 'components/ProjectCard';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 interface Props {
   value: FollowableObject;

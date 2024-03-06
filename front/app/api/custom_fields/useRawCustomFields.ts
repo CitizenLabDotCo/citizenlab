@@ -1,14 +1,14 @@
-import fetcher from 'utils/cl-react-query/fetcher';
 import { useQuery } from '@tanstack/react-query';
-import customFieldsKeys from './keys';
+import { CLErrors } from 'typings';
 
-// typings
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import customFieldsKeys from './keys';
 import {
   ICustomFields,
   ICustomFieldInputType,
   CustomFieldsKeys,
 } from './types';
-import { CLErrors } from 'typings';
 
 type Params = {
   projectId?: string;

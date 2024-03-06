@@ -1,13 +1,12 @@
-import projectsKeys from './keys';
+import { ILinks, IRelationship, Multiloc } from 'typings';
 
-// typings
 import {
   PermissionsDisabledReason,
   ActionDescriptor,
   ActionDescriptorFutureEnabled,
 } from 'utils/actionDescriptors';
-import { ILinks, IRelationship, Multiloc } from 'typings';
 import { Keys } from 'utils/cl-react-query/types';
+
 import {
   IdeaDefaultSortMethod,
   InputTerm,
@@ -15,7 +14,8 @@ import {
   TSurveyService,
 } from '../phases/types';
 
-// Keys
+import projectsKeys from './keys';
+
 export type ProjectsKeys = Keys<typeof projectsKeys>;
 
 // Misc

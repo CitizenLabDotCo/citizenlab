@@ -1,11 +1,13 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
+
+import messages from './messages';
 import UserManager from './UserManager';
 import UsersHeader from './UsersHeader';
-import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
-import { Box } from '@citizenlab/cl2-component-library';
-import messages from './messages';
-import styled from 'styled-components';
 
 const StyledBox = styled(Box)`
   display: grid;

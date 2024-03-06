@@ -1,16 +1,24 @@
 import React from 'react';
-import styled from 'styled-components';
-import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
-import { Left, Right } from './';
-import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import T from 'components/T';
-import useAuthUser from 'api/me/useAuthUser';
+
 import { media, isRtl, fontSizes } from '@citizenlab/cl2-component-library';
-import OnboardingStep from './OnboardingStep';
-import CTA from './CTA';
+import styled from 'styled-components';
+
+import useAuthUser from 'api/me/useAuthUser';
+import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
+
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
+import T from 'components/T';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+
+import CTA from './CTA';
+import OnboardingStep from './OnboardingStep';
+
+import { Left, Right } from './';
 
 const HeaderContent = styled.div`
   position: absolute;

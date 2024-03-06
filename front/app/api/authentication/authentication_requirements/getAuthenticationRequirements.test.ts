@@ -1,5 +1,3 @@
-import getAuthenticationRequirements from './getAuthenticationRequirements';
-
 import { setupServer } from 'msw/node';
 
 import endpoints, {
@@ -7,6 +5,7 @@ import endpoints, {
   phaseResponse,
   ideaResponse,
 } from './__mocks__/_mockServer';
+import getAuthenticationRequirements from './getAuthenticationRequirements';
 
 const server = setupServer(
   endpoints['GET permissions/posting_initiative/requirements'],

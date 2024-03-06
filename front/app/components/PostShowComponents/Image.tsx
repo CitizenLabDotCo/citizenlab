@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
+
 import { colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 const Image = styled.img`
   width: 100%;

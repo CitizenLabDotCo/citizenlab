@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-// components
 import {
   Box,
   Image as ImageComponent,
@@ -9,32 +8,28 @@ import {
   Label,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import PageBreakBox from '../PageBreakBox';
-
-// image upload
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { useEditor, useNode } from '@craftjs/core';
 import { Multiloc, UploadFile } from 'typings';
 
-// craft
-import { useEditor, useNode } from '@craftjs/core';
-import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
+import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 
-// i18n
-import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
 
-// events
-import eventEmitter from 'utils/eventEmitter';
 import {
   IMAGE_UPLOADING_EVENT,
   IMAGE_LOADED_EVENT,
 } from 'components/admin/ContentBuilder/constants';
-
-// hooks
-import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
-import useLocalize from 'hooks/useLocalize';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+
+import { injectIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
+import PageBreakBox from '../PageBreakBox';
+
+import messages from './messages';
 
 interface Props {
   image?: {

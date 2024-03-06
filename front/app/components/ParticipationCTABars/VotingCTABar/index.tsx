@@ -1,26 +1,24 @@
 import React, { useMemo } from 'react';
 
-// components
 import { Text } from '@citizenlab/cl2-component-library';
-import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-import ErrorToast from 'components/ErrorToast';
-import CTAButton from './CTAButton';
 
-// hooks
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
 
-// utils
+import ErrorToast from 'components/ErrorToast';
+import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+
+import { useIntl } from 'utils/cl-intl';
+
+import CTAButton from './CTAButton';
 import { getVotesCounter } from './utils';
 
 const VotingCTABar = ({ phases, project }: CTABarProps) => {

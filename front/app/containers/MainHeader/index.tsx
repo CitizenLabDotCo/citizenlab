@@ -1,16 +1,14 @@
-// libraries
 import React, { useRef, useEffect, useState } from 'react';
 
-// components
-import DesktopNavItems from './Components/DesktopNavItems';
-import MobileNavbarContent from './Components/NavbarContent/MobileNavbarContent';
-import DesktopNavbarContent from './Components/NavbarContent/DesktopNavbarContent';
-import Fragment from 'components/Fragment';
-import TenantLogo from './Components/TenantLogo';
-
-// style
-import styled from 'styled-components';
 import { media, isRtl, useBreakpoint } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import Fragment from 'components/Fragment';
+
+import DesktopNavItems from './Components/DesktopNavItems';
+import DesktopNavbarContent from './Components/NavbarContent/DesktopNavbarContent';
+import MobileNavbarContent from './Components/NavbarContent/MobileNavbarContent';
+import TenantLogo from './Components/TenantLogo';
 
 const Container = styled.header`
   width: 100vw;
