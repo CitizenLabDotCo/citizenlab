@@ -119,8 +119,9 @@ describe LocalProjectCopyService do
         .to match_array(open_ended_project.allowed_input_topics.map(&:as_json))
     end
 
-    it 'copies associated maps configs, layers and legend items' do
+    it 'copies associated maps configs and layers' do
       map_config = create(:map_config, mappable: open_ended_project, tile_provider: 'https://groovy_map_tiles')
+
       create_list(:layer, 2, map_config_id: map_config.id)
       copied_project = service.copy(open_ended_project)
 

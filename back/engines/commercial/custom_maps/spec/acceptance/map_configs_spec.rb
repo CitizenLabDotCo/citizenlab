@@ -27,8 +27,7 @@ resource 'Map Configs' do
           :with_tile_provider,
           :with_esri_web_map_id,
           :with_esri_base_map_id,
-          :with_geojson_layers,
-          :with_legend
+          :with_geojson_layers
         )
       end
       let(:map_config_id) { map_config.id }

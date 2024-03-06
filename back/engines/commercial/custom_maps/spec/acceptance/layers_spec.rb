@@ -11,7 +11,6 @@ resource 'Map Layers' do
       :with_positioning,
       :with_tile_provider,
       :with_geojson_layers,
-      :with_legend,
       mappable: nil)
   end
 
@@ -20,7 +19,6 @@ resource 'Map Layers' do
       :with_positioning,
       :with_tile_provider,
       :with_esri_feature_layers,
-      :with_legend,
       mappable: nil)
   end
 
