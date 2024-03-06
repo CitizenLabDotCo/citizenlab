@@ -10,6 +10,7 @@ import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import { IQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import { IdeaDefaultSortMethod } from 'api/phases/types';
@@ -185,6 +186,10 @@ const IdeasWithoutFiltersSidebar = ({
     return data?.pages.map((page) => page.data).flat();
   }, [data?.pages]);
   const { data: phase } = usePhase(phaseId);
+  const { data: ideaMarkers } = useIdeaMarkers({
+    projectIds: projectId ? [projectId] : null,
+    ...ideaQueryParameters,
+  });
 
   const handleSearchOnChange = useCallback(
     (search: string) => {
@@ -317,6 +322,7 @@ const IdeasWithoutFiltersSidebar = ({
           view={selectedView}
           projectId={projectId}
           phaseId={phaseId}
+          ideaMarkers={ideaMarkers}
         />
       </Container>
     );

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
+import { IIdeaMarkers } from 'api/idea_markers/types';
 import { IIdeaData } from 'api/ideas/types';
 import useMapConfig from 'api/map_config/useMapConfig';
 import { IdeaDefaultSortMethod } from 'api/phases/types';
@@ -22,6 +23,7 @@ interface Props {
   querying: boolean;
   hasMore: boolean;
   loadingMore: boolean;
+  ideaMarkers?: IIdeaMarkers;
   onLoadMore(): void;
 }
 
@@ -36,6 +38,7 @@ const IdeasView = ({
   querying,
   hasMore,
   loadingMore,
+  ideaMarkers,
   onLoadMore,
 }: Props) => {
   const { data: mapConfig, isLoading } = useMapConfig(projectId || undefined);
@@ -68,8 +71,8 @@ const IdeasView = ({
           <IdeasMap
             projectId={projectId}
             phaseId={phaseId}
-            ideasList={list}
             mapConfig={mapConfig}
+            ideaMarkers={ideaMarkers}
           />
         </Box>
       )}

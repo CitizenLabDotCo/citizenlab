@@ -13,7 +13,7 @@ export interface QueryParameters {
   projectIds: string[] | null;
   sort?: Sort;
   search?: string | null;
-  topics: string[] | null;
+  topics?: string[] | null;
 }
 
 export interface IIdeaMarkerData {
