@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+
 import {
   Box,
   Label,
@@ -8,14 +7,20 @@ import {
   Button,
   Text,
 } from '@citizenlab/cl2-component-library';
-import useLocalize from 'hooks/useLocalize';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearchParams } from 'react-router-dom';
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import { handleArraySearchParam } from '../../util';
+
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
+import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+
+import useLocalize from 'hooks/useLocalize';
+
 import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
 import tracks from '../../tracks';
+import { handleArraySearchParam } from '../../util';
+import messages from '../messages';
 
 const AuthorFilters = () => {
   const localize = useLocalize();

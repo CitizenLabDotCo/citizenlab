@@ -1,12 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
-import commentKeys from './keys';
-import { DeleteReason, IComment } from './types';
-import userCommentsCount from 'api/user_comments_count/keys';
+
+import commentsKeys from 'api/comments/keys';
 import ideasKeys from 'api/ideas/keys';
 import initiativesKeys from 'api/initiatives/keys';
-import commentsKeys from 'api/comments/keys';
+import userCommentsCount from 'api/user_comments_count/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import commentKeys from './keys';
+import { DeleteReason, IComment } from './types';
 
 interface MarkForDeletion {
   commentId: string;

@@ -1,11 +1,16 @@
 import React from 'react';
-import ContentContainer from 'components/ContentContainer';
-import styled, { useTheme } from 'styled-components';
-import { FormattedMessage } from 'utils/cl-intl';
-import Button from 'components/UI/Button';
+
 import { media } from '@citizenlab/cl2-component-library';
-import messages from './messages';
+import styled, { useTheme } from 'styled-components';
+
 import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
+
+import ContentContainer from 'components/ContentContainer';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const StyledButton = styled(Button)`
   margin-right: 10px;

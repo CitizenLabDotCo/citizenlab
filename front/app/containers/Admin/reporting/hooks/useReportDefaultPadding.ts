@@ -1,6 +1,8 @@
-import { useReportContext } from '../context/ReportContext';
 import { ROOT_NODE, useNode, useEditor } from '@craftjs/core';
+
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+
+import { useReportContext } from '../context/ReportContext';
 
 // Based on useCraftComponentDefaultPadding hook in
 // app/components/admin/ContentBuilder/useCraftComponentDefaultPadding.ts

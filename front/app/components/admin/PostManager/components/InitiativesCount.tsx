@@ -1,19 +1,16 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+
 import { isFunction } from 'lodash-es';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// styles
-import styled from 'styled-components';
-
-// resources
+import { adopt } from 'react-adopt';
 import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
+import styled from 'styled-components';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
 
 const Container = styled.div`
   height: 100%;

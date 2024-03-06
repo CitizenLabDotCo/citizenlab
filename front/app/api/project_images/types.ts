@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import ideaImagesKeys from './keys';
 import { ImageSizes } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import ideaImagesKeys from './keys';
 
 export type ProjectImagesKeys = Keys<typeof ideaImagesKeys>;
 

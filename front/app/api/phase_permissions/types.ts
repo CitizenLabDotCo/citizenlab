@@ -1,7 +1,10 @@
 import { IRelationship } from 'typings';
-import { Keys } from 'utils/cl-react-query/types';
-import phasePermissionKeys from './keys';
+
 import { IPhasePermissionAction } from 'api/permissions/types';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import phasePermissionKeys from './keys';
 
 export type PhasePermissionKeys = Keys<typeof phasePermissionKeys>;
 

@@ -1,26 +1,22 @@
 import React, { memo, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 
-// components
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import Centerer from 'components/UI/Centerer';
-import MapConfigOverview from './MapConfiguration/MapConfigOverview';
 import MapView from '@arcgis/core/views/MapView';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAddMapConfig from 'api/map_config/useAddMapConfig';
 import useMapConfig from 'api/map_config/useMapConfig';
 
-import useAddMapConfig from 'api/map_config/useAddMapConfig';
+import Centerer from 'components/UI/Centerer';
 
-// utils
+import IdeationConfigurationMap from '../../../components/IdeationConfigurationMap/IdeationConfigurationMap';
 import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
 
-// styling
-import styled from 'styled-components';
-import IdeationConfigurationMap from '../../../components/IdeationConfigurationMap/IdeationConfigurationMap';
 import FeatureLayerUpload from './DataImportOptions/FeatureLayerUpload';
 import WebMapUpload from './DataImportOptions/WebMapUpload';
+import MapConfigOverview from './MapConfiguration/MapConfigOverview';
 
 const Container = styled.div`
   display: flex;

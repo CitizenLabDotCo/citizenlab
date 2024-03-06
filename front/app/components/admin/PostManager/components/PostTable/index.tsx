@@ -1,7 +1,5 @@
 import React from 'react';
-import { every, isEmpty, isFunction } from 'lodash-es';
 
-// components
 import {
   Table,
   Tbody,
@@ -11,31 +9,29 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import Row from './Row';
-import Pagination from 'components/admin/Pagination';
-import NoPost from './NoPost';
-import IdeaHeaderRow from './header/IdeaHeaderRow';
-import InitiativesHeaderRow from './header/InitiativesHeaderRow';
+import { every, isEmpty, isFunction } from 'lodash-es';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-
-// services
-import { IPhaseData } from 'api/phases/types';
-import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-
-// styling
 import styled from 'styled-components';
 
-// i18n
-import { ManagerType, TFilterMenu } from '../..';
-
-// typings
+import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { Sort as IdeasSort, IIdeaData } from 'api/ideas/types';
+import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import {
   IInitiativeData,
   Sort as InitiativesSort,
 } from 'api/initiatives/types';
+import { IPhaseData } from 'api/phases/types';
+
+import Pagination from 'components/admin/Pagination';
+
 import { SortDirection } from 'utils/paginationUtils';
+
+import { ManagerType, TFilterMenu } from '../..';
+
+import IdeaHeaderRow from './header/IdeaHeaderRow';
+import InitiativesHeaderRow from './header/InitiativesHeaderRow';
+import NoPost from './NoPost';
+import Row from './Row';
 
 const Container = styled.div`
   .ui.table {

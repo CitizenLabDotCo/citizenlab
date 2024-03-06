@@ -1,7 +1,5 @@
 import React, { memo } from 'react';
 
-// components
-import Button from 'components/UI/Button';
 import {
   Box,
   Icon,
@@ -10,33 +8,32 @@ import {
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-import { SubSectionTitle } from 'components/admin/Section';
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import GeoJsonImportButton from '../DataImportOptions/GeoJsonImportButton';
-import EsriImportOptions from '../DataImportOptions/EsriImportOptions';
+import { WrappedComponentProps } from 'react-intl';
+import styled from 'styled-components';
 
-// hooks
+import useMapConfig from 'api/map_config/useMapConfig';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 import useDeleteMapLayer from 'api/map_layers/useDeleteMapLayer';
 import useReorderMapLayer from 'api/map_layers/useReorderMapLayer';
 
-// utils
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import { SubSectionTitle } from 'components/admin/Section';
+import Button from 'components/UI/Button';
+
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+
+import { ViewOptions } from '..';
 import { getLayerColor, getLayerIcon } from '../../../../utils/mapUtils/map';
+import EsriImportOptions from '../DataImportOptions/EsriImportOptions';
+import GeoJsonImportButton from '../DataImportOptions/GeoJsonImportButton';
+import messages from '../messages';
+
 import addOrderingToLayers, {
   IMapLayerAttributesWithOrdering,
 } from './addOrderingToLayers';
-import { ViewOptions } from '..';
-
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
-
-// styling
-import styled from 'styled-components';
-import useMapConfig from 'api/map_config/useMapConfig';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
 const Container = styled.div``;
 

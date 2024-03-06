@@ -1,19 +1,17 @@
 import React, { memo, useCallback, useMemo } from 'react';
 
-// components
-import EsriMap from 'components/EsriMap';
 import MapView from '@arcgis/core/views/MapView';
-import LayerHoverLabel from './components/LayerHoverLabel';
-import MapHelperOptions from './components/MapHelperOptions';
 
-// hooks
+import { IMapConfig } from 'api/map_config/types';
+
 import useLocalize from 'hooks/useLocalize';
 
 // utils
+import EsriMap from 'components/EsriMap';
 import { changeCursorOnHover, parseLayers } from 'components/EsriMap/utils';
 
-// types
-import { IMapConfig } from 'api/map_config/types';
+import LayerHoverLabel from './components/LayerHoverLabel';
+import MapHelperOptions from './components/MapHelperOptions';
 
 export interface Props {
   mapConfig: IMapConfig;

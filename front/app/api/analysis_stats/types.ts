@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import { authorsByDomicileKeys, authorsByAgeKeys } from './keys';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import { authorsByDomicileKeys, authorsByAgeKeys } from './keys';
 
 // Authors by Domicile
 export type AuthorsByDomicileKeys = Keys<typeof authorsByDomicileKeys>;

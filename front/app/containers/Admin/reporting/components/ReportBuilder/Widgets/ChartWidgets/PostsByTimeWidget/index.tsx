@@ -1,19 +1,16 @@
 import React from 'react';
 
-// components
-import Card from '../../_shared/Card';
-import PostsByTimeCard from './PostsByTimeCard';
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
-
-// utils
 import moment from 'moment';
 
-// settings
 import messages from 'containers/Admin/dashboard/messages';
 
-// types
 import { IResolution } from 'components/admin/ResolutionControl';
+
+import Card from '../../_shared/Card';
+import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 import { ChartWidgetProps } from '../typings';
+
+import PostsByTimeCard from './PostsByTimeCard';
 
 const PostsByTimeWidget = ({
   title,

@@ -1,37 +1,34 @@
-import { colors } from '@citizenlab/cl2-component-library';
-
 // ArcGIS
-import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
-import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
-import Layer from '@arcgis/core/layers/Layer';
-import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
-import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
-import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
-import Popup from '@arcgis/core/widgets/Popup';
-import Point from '@arcgis/core/geometry/Point';
-import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
-import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
-import MapView from '@arcgis/core/views/MapView';
-import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
-import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Basemap from '@arcgis/core/Basemap';
 import Collection from '@arcgis/core/core/Collection';
+import Point from '@arcgis/core/geometry/Point';
+import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
+import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
+import Layer from '@arcgis/core/layers/Layer';
+import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
+import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
+import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
+import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
+import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
+import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
+import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
+import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
+import Popup from '@arcgis/core/widgets/Popup';
+import { colors } from '@citizenlab/cl2-component-library';
 
-// utils
-import { hexToRGBA } from 'utils/helperUtils';
-
-// types
-import { Localize } from 'hooks/useLocalize';
+import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';
 
-// constants
+import { Localize } from 'hooks/useLocalize';
+
+import { hexToRGBA } from 'utils/helperUtils';
+
 import {
   BASEMAP_AT_ATTRIBUTION,
   DEFAULT_TILE_PROVIDER,
   MAPTILER_ATTRIBUTION,
 } from './constants';
-import { IMapConfig } from 'api/map_config/types';
 
 // getDefaultBasemap
 // Description: Gets the correct basemap given a certain tileProvider URL.

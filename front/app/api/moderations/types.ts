@@ -1,6 +1,7 @@
 import { Multiloc, ILinks, IRelationship } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
+
 import moderationsKeys from './keys';
 
 export type ModerationsKeys = Keys<typeof moderationsKeys>;

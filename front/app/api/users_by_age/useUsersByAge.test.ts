@@ -1,10 +1,11 @@
-import useUsersByAge from './useUsersByAge';
-
 import { renderHook } from '@testing-library/react-hooks';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { IUsersByAge } from './types';
+import useUsersByAge from './useUsersByAge';
 
 const apiPath = `*stats/users_by_age`;
 

@@ -7,19 +7,23 @@ import {
   Box,
   Checkbox,
 } from '@citizenlab/cl2-component-library';
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
-import { isNilOrError } from 'utils/helperUtils';
+
 import useLocalize from 'hooks/useLocalize';
-import clHistory from 'utils/cl-router/history';
-import Divider from 'components/admin/Divider';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
+
+import Divider from 'components/admin/Divider';
+
 import { trackEventByName } from 'utils/analytics';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../../../messages';
 
 const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
   const [search] = useSearchParams();

@@ -1,13 +1,15 @@
-import Fullscreen from '@arcgis/core/widgets/Fullscreen';
 import Point from '@arcgis/core/geometry/Point';
-import Legend from '@arcgis/core/widgets/Legend';
+import MapView from '@arcgis/core/views/MapView';
 import Expand from '@arcgis/core/widgets/Expand';
+import Fullscreen from '@arcgis/core/widgets/Fullscreen';
 import LayerList from '@arcgis/core/widgets/LayerList';
+import Legend from '@arcgis/core/widgets/Legend';
 
 // typings
-import MapView from '@arcgis/core/views/MapView';
-import { InitialData } from './types';
+
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
+
+import { InitialData } from './types';
 
 export const configureMapView = (
   mapView: MapView,

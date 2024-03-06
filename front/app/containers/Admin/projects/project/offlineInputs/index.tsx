@@ -1,26 +1,21 @@
 import React, { useState } from 'react';
-import { createPortal } from 'react-dom';
-import { FocusOn } from 'react-focus-on';
 
-// routing
-import { useParams } from 'react-router-dom';
-
-// api
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInputSchema from 'hooks/useInputSchema';
-
-// components
 import {
   Box,
   Spinner,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import TopBar from './TopBar';
+import { createPortal } from 'react-dom';
+import { FocusOn } from 'react-focus-on';
+import { useParams } from 'react-router-dom';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useInputSchema from 'hooks/useInputSchema';
+
 import ImportModal from './ImportModal';
 import ReviewSection from './ReviewSection';
-
-// styling
+import TopBar from './TopBar';
 
 const OfflineInputImporter = () => {
   const { projectId, phaseId } = useParams() as {

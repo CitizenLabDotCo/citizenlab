@@ -1,31 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
+
 import '@arcgis/core/assets/esri/themes/light/main.css';
-
-// hooks
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useLocale from 'hooks/useLocale';
-
-// components
+import Basemap from '@arcgis/core/Basemap';
+import esriConfig from '@arcgis/core/config';
+import Collection from '@arcgis/core/core/Collection';
+import Graphic from '@arcgis/core/Graphic';
+import * as intl from '@arcgis/core/intl.js';
+import Layer from '@arcgis/core/layers/Layer';
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
-import Basemap from '@arcgis/core/Basemap';
-import Layer from '@arcgis/core/layers/Layer';
-import Graphic from '@arcgis/core/Graphic';
-import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
 import WebMap from '@arcgis/core/WebMap';
-import Collection from '@arcgis/core/core/Collection';
-
-// utils
-import { getDefaultBasemap, handleWebMapReferenceLayers } from './utils';
-import { configureMapView } from './config';
+import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
-import * as intl from '@arcgis/core/intl.js';
-import esriConfig from '@arcgis/core/config';
 
-// typings
-import { InitialData } from './types';
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useLocale from 'hooks/useLocale';
+
+import { configureMapView } from './config';
+import { InitialData } from './types';
+import { getDefaultBasemap, handleWebMapReferenceLayers } from './utils';
 
 // Custom Esri styles
 const MapContainer = styled(Box)`

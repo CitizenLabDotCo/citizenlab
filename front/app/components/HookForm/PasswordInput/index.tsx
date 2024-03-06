@@ -1,15 +1,13 @@
 import React from 'react';
 
-// components
-import Error, { TFieldName } from 'components/UI/Error';
 import { Label } from '@citizenlab/cl2-component-library';
+import { Controller, useFormContext } from 'react-hook-form';
+import { CLError, RHFErrors } from 'typings';
+
+import Error, { TFieldName } from 'components/UI/Error';
 import PasswordInputComponent, {
   Props as PasswordInputComponentProps,
 } from 'components/UI/PasswordInput';
-import { Controller, useFormContext } from 'react-hook-form';
-
-// typings
-import { CLError, RHFErrors } from 'typings';
 
 interface Props
   extends Omit<

@@ -365,8 +365,6 @@
   "app.containers.AdminPage.DashboardPage.helmetTitle": "Admin dashboard page",
   "app.containers.AdminPage.DashboardPage.hiddenLabelPickResourceByProject": "Pick resource to show by project",
   "app.containers.AdminPage.DashboardPage.hiddenLabelPickResourceByTopic": "Pick a resource to show by tag",
-  "app.containers.AdminPage.DashboardPage.inputs": "Posts",
-  "app.containers.AdminPage.DashboardPage.inputsByStatusTitle": "Posts by status",
   "app.containers.AdminPage.DashboardPage.male": "male",
   "app.containers.AdminPage.DashboardPage.month": "month",
   "app.containers.AdminPage.DashboardPage.noData": "There is no data to be shown.",

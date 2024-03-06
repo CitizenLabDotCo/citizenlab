@@ -1,14 +1,8 @@
-// libraries
 import React, { memo } from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet';
-
-// i18n
-import messages from './messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-
-// components
-import Fragment from 'components/Fragment';
 
 import {
   Container,
@@ -16,8 +10,13 @@ import {
   PageContent,
   PageTitle,
 } from 'containers/PagesShowPage';
+
+import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { Box } from '@citizenlab/cl2-component-library';
+
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const CookiePolicy = memo((props: WrappedComponentProps) => {
   const { formatMessage } = props.intl;

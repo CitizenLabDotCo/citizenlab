@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :setup_and_support do # rubocop:disable Metrics/BlockLength
+namespace :setup_and_support do
   desc 'Mass official feedback'
   task :mass_official_feedback, %i[url host locale] => [:environment] do |_t, args|
     # ID, Feedback, Feedback Author Name, Feedback Email, New Status
@@ -212,27 +212,6 @@ namespace :setup_and_support do # rubocop:disable Metrics/BlockLength
       else
         puts 'Success!'
       end
-    end
-  end
-
-  desc 'Add one map legend to a project'
-  task :add_map_legend, %i[host project_slug legend_title color] => [:environment] do |_t, args|
-    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-      project = Project.find_by slug: args[:project_slug]
-      config = project.map_config || CustomMaps::MapConfig.create!(project: project)
-      config.legend_items.create!(
-        title_multiloc: { AppConfiguration.instance.settings('core', 'locales').first => args[:legend_title] },
-        color: args[:color]
-      )
-    end
-  end
-
-  desc 'Delete map legends of a project'
-  task :delete_map_legends, %i[host project_slug] => [:environment] do |_t, args|
-    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-      project = Project.find_by slug: args[:project_slug]
-      config = project.map_config || CustomMaps::MapConfig.create!(project: project)
-      config.legend_items.each(&:destroy!)
     end
   end
 
