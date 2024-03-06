@@ -408,7 +408,6 @@ const IdeasMap = memo<Props>(
         });
       },
       [
-        graphics,
         setSelectedIdea,
         theme.colors.tenantSecondary,
         authUser,
