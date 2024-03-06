@@ -1,28 +1,20 @@
 import React from 'react';
+
 import { useParams } from 'react-router-dom';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// hooks
-import useTopic from 'api/topics/useTopic';
-
-// services
-
-// components
-import GoBackButton from 'components/UI/GoBackButton';
-import { Section, SectionTitle } from 'components/admin/Section';
-import TopicForm from '../TopicForm';
-
-import useUpdateTopic from 'api/topics/useUpdateTopic';
 import { ITopicUpdate } from 'api/topics/types';
+import useTopic from 'api/topics/useTopic';
+import useUpdateTopic from 'api/topics/useUpdateTopic';
 
-// typings
+import { Section, SectionTitle } from 'components/admin/Section';
+import GoBackButton from 'components/UI/GoBackButton';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+import TopicForm from '../TopicForm';
 
 const Edit = () => {
   const { topicId } = useParams() as { topicId: string };

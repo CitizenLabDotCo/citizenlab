@@ -1,38 +1,30 @@
 import React from 'react';
-import { useTheme } from 'styled-components';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-import Button from 'components/UI/Button';
-import ShownOnPageBadge from '../../components/ShownOnPageBadge';
-import SectionFormWrapper from '../../components/SectionFormWrapper';
-import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
-
-// form
 import { yupResolver } from '@hookform/resolvers/yup';
-import Feedback from 'components/HookForm/Feedback';
-import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
 import { object } from 'yup';
 
-// i18n
-import HelmetIntl from 'components/HelmetIntl';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// typings
-import { Multiloc } from 'typings';
-
-// constants
-import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
-
-// services and hooks
 import { ICustomPageData } from 'api/custom_pages/types';
 
-// utils
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+import HelmetIntl from 'components/HelmetIntl';
+import Feedback from 'components/HookForm/Feedback';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
+import Button from 'components/UI/Button';
+
+import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+
+import { pagesAndMenuBreadcrumb } from '../../breadcrumbs';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
+import ShownOnPageBadge from '../../components/ShownOnPageBadge';
+import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
+
+import messages from './messages';
 
 interface Props {
   pageData: ICustomPageData;

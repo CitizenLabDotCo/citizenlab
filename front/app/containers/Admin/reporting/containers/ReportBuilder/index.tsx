@@ -1,40 +1,33 @@
 import React, { useState } from 'react';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useReport from 'api/reports/useReport';
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import { isEmpty } from 'lodash-es';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { Locale } from 'typings';
+
+import { ReportLayout } from 'api/report_layout/types';
 import useReportLayout from 'api/report_layout/useReportLayout';
+import { ReportResponse } from 'api/reports/types';
+import useReport from 'api/reports/useReport';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-// context
-import { ReportContextProvider } from '../../context/ReportContext';
-import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-
-// components
-import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
-
-// craft
-import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
-import Editor from '../../components/ReportBuilder/Editor';
-import TopBar from '../../components/ReportBuilder/TopBar';
-import Toolbox from '../../components/ReportBuilder/Toolbox';
-import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
-import Settings from '../../components/ReportBuilder/Settings';
-import ViewContainer from '../../components/ReportBuilder/ViewContainer';
-
-// templates
-import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
-import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
-
-// typings
+import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
-import { Locale } from 'typings';
-import { ReportLayout } from 'api/report_layout/types';
-import { isEmpty } from 'lodash-es';
-import { ReportResponse } from 'api/reports/types';
+
+import Editor from '../../components/ReportBuilder/Editor';
+import Settings from '../../components/ReportBuilder/Settings';
+import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
+import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
+import Toolbox from '../../components/ReportBuilder/Toolbox';
+import TopBar from '../../components/ReportBuilder/TopBar';
+import ViewContainer from '../../components/ReportBuilder/ViewContainer';
 import { View } from '../../components/ReportBuilder/ViewContainer/typings';
+import { ReportContextProvider } from '../../context/ReportContext';
 
 interface Props {
   report: ReportResponse;

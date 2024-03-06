@@ -1,6 +1,8 @@
-import { useReportContext } from '../context/ReportContext';
 import { useNode, useEditor } from '@craftjs/core';
+
 import { Layout } from 'components/admin/GraphCards/typings';
+
+import { useReportContext } from '../context/ReportContext';
 
 export default function useLayout(): Layout {
   const narrowLayout = useNarrowLayout();

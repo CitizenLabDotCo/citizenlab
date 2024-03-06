@@ -1,34 +1,28 @@
 import React, { useState } from 'react';
 
-// types
-import { IPollQuestionData } from 'api/poll_questions/types';
-
-// components
-import Button from 'components/UI/Button';
-import PollSingleChoice from './PollSingleChoice';
-import PollMultipleChoice from './PollMultipleChoice';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import Tippy from '@tippyjs/react';
-import Warning from 'components/UI/Warning';
 import {
   Box,
   fontSizes,
   defaultCardStyle,
 } from '@citizenlab/cl2-component-library';
-
-// style
+import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
-// hooks
-import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
 import useAuthUser from 'api/me/useAuthUser';
+import { IPollQuestionData } from 'api/poll_questions/types';
+import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
 
-// i18n
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import Button from 'components/UI/Button';
+import Warning from 'components/UI/Warning';
+
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// utils
 import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
+
+import messages from './messages';
+import PollMultipleChoice from './PollMultipleChoice';
+import PollSingleChoice from './PollSingleChoice';
 
 const PollContainer = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};

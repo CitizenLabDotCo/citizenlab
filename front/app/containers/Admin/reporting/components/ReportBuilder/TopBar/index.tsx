@@ -1,41 +1,37 @@
 import React, { useState, useEffect } from 'react';
 
-// hooks
-import { useEditor } from '@craftjs/core';
-import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
-import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
-
-// context
-import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
-
-// components
-import Container from 'components/admin/ContentBuilder/TopBar/Container';
-import QuitModal from './QuitModal';
-import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import {
   Box,
-  IconButton,
   Text,
   Title,
   colors,
+  IconButton,
 } from '@citizenlab/cl2-component-library';
-import LocaleSelect from './LocaleSelect';
-import Button from 'components/UI/Button';
+import { useEditor } from '@craftjs/core';
+import { Locale } from 'typings';
 
-// i18n
-import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
+import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
+
 import useLocalize from 'hooks/useLocalize';
 
-// routing
-import clHistory from 'utils/cl-router/history';
+import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
-// types
-import { Locale } from 'typings';
-import { View } from '../ViewContainer/typings';
+import Container from 'components/admin/ContentBuilder/TopBar/Container';
+import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+
+import { View } from '../ViewContainer/typings';
 import ViewPicker from '../ViewContainer/ViewPicker';
+
+import LocaleSelect from './LocaleSelect';
+import messages from './messages';
+import QuitModal from './QuitModal';
 
 type ContentBuilderTopBarProps = {
   hasError: boolean;

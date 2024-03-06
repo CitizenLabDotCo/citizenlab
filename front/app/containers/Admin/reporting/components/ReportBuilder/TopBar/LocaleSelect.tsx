@@ -1,8 +1,10 @@
 import React from 'react';
+
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { Locale } from 'typings';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 const StyledSelect = styled.select`
   background: ${colors.background};

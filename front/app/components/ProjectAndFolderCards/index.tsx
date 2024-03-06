@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
+
 import { omitBy } from 'lodash-es';
-
-// hooks
-import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
-
-// components
-import ProjectAndFolderCardsInner from './ProjectAndFolderCardsInner';
-
-// utils
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
-// typings
-import { PublicationStatus } from 'api/projects/types';
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
 import { Multiloc } from 'typings';
+
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
+import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
+import { PublicationStatus } from 'api/projects/types';
+
+import { trackEventByName } from 'utils/analytics';
 import { isNil } from 'utils/helperUtils';
+
+import ProjectAndFolderCardsInner from './ProjectAndFolderCardsInner';
+import tracks from './tracks';
 
 export type PublicationTab = PublicationStatus | 'all';
 
@@ -112,7 +108,7 @@ const ProjectAndFolderCards = ({
     setSearch(search);
     // pass search term to useAdminPublicationsStatusCount hook
 
-    // analytics event for the updated search term
+    // event for the updated search term
     trackEventByName(tracks.searchTermChanged, { searchTerm: search });
   }, []);
 

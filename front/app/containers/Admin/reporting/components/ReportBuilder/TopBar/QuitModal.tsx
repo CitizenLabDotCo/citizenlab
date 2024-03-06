@@ -2,11 +2,13 @@ import React from 'react';
 
 // components
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
+
 import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
 
 interface Props {

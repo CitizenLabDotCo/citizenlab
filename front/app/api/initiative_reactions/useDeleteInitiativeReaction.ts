@@ -1,7 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import fetcher from 'utils/cl-react-query/fetcher';
-import { IInitiativeReaction } from './types';
+
 import initiativesKeys from 'api/initiatives/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import { IInitiativeReaction } from './types';
 
 const deleteInitiativeReaction = async ({
   reactionId,

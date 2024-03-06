@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+
 import {
   Container,
   Header,
@@ -6,8 +9,8 @@ import {
   HeaderImageBackground,
   HeaderImageOverlay,
 } from 'components/LandingPages/citizen/FullWidthBannerLayout';
+
 import HeaderContent from './HeaderContent';
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 
 interface Props {
   className?: string;

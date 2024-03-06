@@ -1,16 +1,16 @@
-// libraries
 import React from 'react';
+
 import { Helmet } from 'react-helmet';
 
-// i18n
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
+import useAuthUser from 'api/me/useAuthUser';
 
-// utils
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import useAuthUser from 'api/me/useAuthUser';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import messages from './messages';
 
 const InitiativesNewMeta = () => {
   const { data: authUser } = useAuthUser();

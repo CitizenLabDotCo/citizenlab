@@ -1,22 +1,15 @@
-// services
+import { useMemo, useState } from 'react';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
+import useAnalytics from 'api/analytics/useAnalytics';
 
-// query
-import { query } from './query';
-
-// parse
-import { parseTimeSeries, parseExcelData } from './parse';
-
-// utils
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
-// typings
+import { useIntl } from 'utils/cl-intl';
+
+import { parseTimeSeries, parseExcelData } from './parse';
+import { query } from './query';
+import { getTranslations } from './translations';
 import { QueryParameters, Response } from './typings';
-import useAnalytics from 'api/analytics/useAnalytics';
-import { useMemo, useState } from 'react';
 
 export default function useRegistrationsByTime({
   startAtMoment,

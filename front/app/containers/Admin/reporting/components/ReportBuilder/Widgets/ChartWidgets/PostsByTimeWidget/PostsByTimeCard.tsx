@@ -1,25 +1,20 @@
 import React from 'react';
 
-// hooks
-import usePostsByTime from './usePostsByTime';
-
-// components
 import { Box } from '@citizenlab/cl2-component-library';
-import NoData from '../../_shared/NoData';
+
 import Chart from 'components/admin/GraphCards/PostsByTimeCard/Chart';
-
-// i18n
-import messages from '../messages';
-
-// typings
 import {
   ProjectId,
   Dates,
   Resolution,
 } from 'components/admin/GraphCards/typings';
 
-// utils
 import { isNilOrError } from 'utils/helperUtils';
+
+import NoData from '../../_shared/NoData';
+import messages from '../messages';
+
+import usePostsByTime from './usePostsByTime';
 
 type Props = ProjectId & Dates & Resolution;
 

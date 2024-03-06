@@ -1,6 +1,5 @@
 import { get } from 'lodash-es';
 
-// services
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 

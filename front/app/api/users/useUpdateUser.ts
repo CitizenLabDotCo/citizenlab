@@ -4,14 +4,17 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { CLErrorsWrapper } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
-import { IUser, IUserUpdate } from './types';
-import usersKeys from './keys';
-import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
+
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 import groupsKeys from 'api/groups/keys';
-import userCountKeys from 'api/users_count/keys';
 import meKeys from 'api/me/keys';
+import invalidateSeatsCache from 'api/seats/invalidateSeatsCache';
+import userCountKeys from 'api/users_count/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import usersKeys from './keys';
+import { IUser, IUserUpdate } from './types';
 
 export const updateUser = async ({ userId, ...requestBody }: IUserUpdate) =>
   fetcher<IUser>({

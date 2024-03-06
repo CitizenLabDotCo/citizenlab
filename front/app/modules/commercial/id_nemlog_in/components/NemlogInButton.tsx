@@ -1,16 +1,15 @@
 import React from 'react';
-import { AUTH_PATH } from 'containers/App/constants';
-import { removeUrlLocale } from 'utils/locale';
-import { getJwt } from 'utils/auth/jwt';
 
-// typings
 import { TVerificationMethod } from 'api/verification_methods/types';
 
-// components
+import { AUTH_PATH } from 'containers/App/constants';
+
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
-// i18n
+import { getJwt } from 'utils/auth/jwt';
 import { FormattedMessage } from 'utils/cl-intl';
+import { removeUrlLocale } from 'utils/removeUrlLocale';
+
 import messages from '../messages';
 
 interface Props {

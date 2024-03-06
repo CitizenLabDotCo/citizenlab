@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
 
-// utils
-import Link from 'utils/cl-router/Link';
-import eventEmitter from 'utils/eventEmitter';
-
-// components
 import {
   Icon,
   useBreakpoint,
@@ -14,21 +7,21 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isEmpty } from 'lodash-es';
 import { MessageDescriptor } from 'react-intl';
-import messages from './messages';
-
-// services
-import { TPolicyPage } from 'api/custom_pages/types';
-
-// style
 import styled, { css } from 'styled-components';
 
-// hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { TPolicyPage } from 'api/custom_pages/types';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const Container = styled.footer`
   display: flex;

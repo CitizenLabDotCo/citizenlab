@@ -1,26 +1,23 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-// components
-import EsriMap from 'components/EsriMap';
-import MapView from '@arcgis/core/views/MapView';
-import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
-import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
+import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Renderer from '@arcgis/core/renderers/SimpleRenderer';
-import StartInitiativeButton from './components/StartInitiativeButton';
-import InitiativeInformationOverlay from './components/InitiativeInformationOverlay';
+import MapView from '@arcgis/core/views/MapView';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { stringify } from 'qs';
+import { useSearchParams } from 'react-router-dom';
+import styled, { useTheme } from 'styled-components';
 
-// hooks
+import { IInitiativeData } from 'api/initiatives/types';
+
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
-// auth
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
-// utils
-import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
+import EsriMap from 'components/EsriMap';
 import {
   changeCursorOnHover,
   esriPointToGeoJson,
@@ -29,16 +26,14 @@ import {
   goToMapLocation,
   showAddInputPopup,
 } from 'components/EsriMap/utils';
-import { useSearchParams } from 'react-router-dom';
+
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { IInitiativeData } from 'api/initiatives/types';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
-// style
-import styled, { useTheme } from 'styled-components';
-
-// intl
-import { useIntl } from 'utils/cl-intl';
+import InitiativeInformationOverlay from './components/InitiativeInformationOverlay';
+import StartInitiativeButton from './components/StartInitiativeButton';
 import messages from './messages';
 
 export interface Props {

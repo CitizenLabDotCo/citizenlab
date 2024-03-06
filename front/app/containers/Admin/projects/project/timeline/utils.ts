@@ -1,5 +1,6 @@
-import { IPhase, IPhaseData, IPhases } from 'api/phases/types';
 import moment from 'moment';
+
+import { IPhase, IPhaseData, IPhases } from 'api/phases/types';
 
 export const getPreviousPhase = (
   phases: IPhases | undefined,

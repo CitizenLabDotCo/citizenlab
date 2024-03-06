@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteReport from './useDeleteReport';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
-import { apiPathReport } from './__mocks__/_mockServer';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { apiPathReport } from './__mocks__/_mockServer';
+import useDeleteReport from './useDeleteReport';
 
 const server = setupServer(
   rest.delete(apiPathReport, (_req, res, ctx) => {

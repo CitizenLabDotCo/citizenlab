@@ -1,8 +1,14 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 
-import useAuthorsByDomicile from 'api/analysis_stats/useAuthorsByDomicile';
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+import {
+  Box,
+  colors,
+  defaultStyles,
+  Title,
+  Text,
+} from '@citizenlab/cl2-component-library';
+import { xor } from 'lodash-es';
+import { useParams } from 'react-router-dom';
 import {
   BarChart,
   Bar,
@@ -13,18 +19,16 @@ import {
   LabelList,
 } from 'recharts';
 
-import {
-  Box,
-  colors,
-  defaultStyles,
-  Title,
-  Text,
-} from '@citizenlab/cl2-component-library';
-import useLocalize from 'hooks/useLocalize';
+import useAuthorsByDomicile from 'api/analysis_stats/useAuthorsByDomicile';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import { xor } from 'lodash-es';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import useLocalize from 'hooks/useLocalize';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+
 import messages from './messages';
 
 // Custom tooltip is rendered when the user hovers over a bar

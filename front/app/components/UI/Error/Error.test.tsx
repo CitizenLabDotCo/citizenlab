@@ -1,7 +1,10 @@
 import React from 'react';
-import { screen, render } from 'utils/testUtils/rtl';
-import Error from './';
+
 import translationMessages from 'i18n/en';
+
+import { screen, render } from 'utils/testUtils/rtl';
+
+import Error from './';
 
 jest.mock('react-transition-group/CSSTransition', () => ({ children }) => (
   <>{children}</>

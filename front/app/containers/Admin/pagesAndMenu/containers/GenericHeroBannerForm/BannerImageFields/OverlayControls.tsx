@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import styled, { useTheme } from 'styled-components';
+
 import {
   Box,
   Text,
@@ -9,9 +9,14 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import styled, { useTheme } from 'styled-components';
+
 import RangeInput from 'components/UI/RangeInput';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
 import { Props as BannerImageFieldsProps } from '.';
 
 const StyledBox = styled(Box)`

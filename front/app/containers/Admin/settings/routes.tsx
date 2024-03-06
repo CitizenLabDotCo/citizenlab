@@ -1,7 +1,10 @@
 import React, { lazy } from 'react';
-import { Navigate } from 'react-router-dom';
+
 import moduleConfiguration from 'modules';
+import { Navigate } from 'react-router-dom';
+
 import PageLoading from 'components/UI/PageLoading';
+
 import registrationRoutes from './registration/routes';
 
 const AdminSettingsIndex = lazy(() => import('containers/Admin/settings'));

@@ -1,5 +1,7 @@
-import { IPhase, IPhaseData, IPhases } from 'api/phases/types';
 import moment from 'moment';
+
+import { IPhase, IPhaseData, IPhases } from 'api/phases/types';
+
 import 'moment-timezone';
 import { getPreviousPhase, getExcludedDates } from './utils';
 

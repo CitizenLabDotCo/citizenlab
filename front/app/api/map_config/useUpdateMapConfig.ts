@@ -1,8 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
-import { IMapConfig, IMapConfigAttributes } from './types';
+
 import mapConfigKeys from './keys';
+import { IMapConfig, IMapConfigAttributes } from './types';
 
 type IMapConfigUpdate = {
   projectId: string;
