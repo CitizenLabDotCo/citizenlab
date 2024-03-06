@@ -51,6 +51,8 @@ import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
 import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 
+import messages from './messages';
+
 type ReportBuilderToolboxProps = {
   reportId: string;
   selectedLocale: Locale;
@@ -131,8 +133,7 @@ const ReportBuilderToolbox = ({
             onClick={() => setSelectedTab('widgets')}
             buttonStyle={selectedTab === 'widgets' ? 'text' : 'secondary'}
           >
-            Widgets
-            {/* <FormattedMessage {...reportBuilderMessages.toolbox} /> */}
+            {formatMessage(messages.widgets)}
           </Button>
         </Box>
         <Box flex="1">
@@ -140,8 +141,7 @@ const ReportBuilderToolbox = ({
             onClick={() => setSelectedTab('ai')}
             buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
           >
-            AI
-            {/* <FormattedMessage {...reportBuilderMessages.ai} /> */}
+            {formatMessage(messages.ai)}
           </Button>
         </Box>
       </Box>
