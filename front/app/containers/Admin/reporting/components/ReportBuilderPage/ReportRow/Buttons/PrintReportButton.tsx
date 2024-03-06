@@ -4,12 +4,12 @@ import {
   TooltipContentWrapper,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
+import Tippy from '@tippyjs/react';
 
 import useReport from 'api/reports/useReport';
 
+import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
 import Button from 'components/UI/Button';
-import Tippy from '@tippyjs/react';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

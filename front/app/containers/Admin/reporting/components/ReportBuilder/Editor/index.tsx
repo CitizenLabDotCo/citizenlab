@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { QueryCallbacksFor } from '@craftjs/utils';
 import { Editor as CraftEditor, QueryMethods } from '@craftjs/core';
+import { QueryCallbacksFor } from '@craftjs/utils';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import { SerializedNodes } from '@craftjs/core';
 import { isEmpty, isEqual, isUndefined, omitBy } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { Locale } from 'typings';
@@ -18,7 +19,6 @@ import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWr
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
-import { SerializedNodes } from '@craftjs/core';
 
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
