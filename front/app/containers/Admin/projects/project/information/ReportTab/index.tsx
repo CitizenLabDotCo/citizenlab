@@ -12,11 +12,15 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Buttons from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/Buttons';
 
+import Warning from 'components/UI/Warning';
+
 import { useIntl } from 'utils/cl-intl';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import EmptyState from './EmptyState';
 import messages from './messages';
 import ReportPreview from './ReportPreview';
+import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 
 const ReportTab = () => {
   const { phaseId } = useParams();
@@ -42,6 +46,28 @@ const ReportTab = () => {
 
   const reportId = phase.data.relationships.report?.data?.id;
   const hasReport = !!reportId;
+
+  const getWarningMessage = () => {
+    if (!report) return '';
+
+    const reportVisible = report.data.attributes.visible;
+    const phaseStarted =
+      pastPresentOrFuture(phase.data.attributes.start_at) !== 'future';
+
+    if (!reportVisible && !phaseStarted) {
+      return formatMessage(messages.notVisibleNotStarted);
+    }
+
+    if (reportVisible && !phaseStarted) {
+      return formatMessage(messages.visibleNotStarted);
+    }
+
+    if (!reportVisible && phaseStarted) {
+      return formatMessage(messages.notVisibleStarted);
+    }
+
+    return formatMessage(messages.visibleStarted);
+  };
 
   return (
     <Box w="100%">
@@ -77,9 +103,14 @@ const ReportTab = () => {
         )}
       </Box>
       {hasReport ? (
-        <Box mt="32px">
-          <ReportPreview reportId={reportId} phaseId={phase.data.id} />
-        </Box>
+        <>
+          <Box maxWidth={MAX_REPORT_WIDTH}>
+            <Warning>{getWarningMessage()}</Warning>
+          </Box>
+          <Box mt="32px">
+            <ReportPreview reportId={reportId} phaseId={phase.data.id} />
+          </Box>
+        </>
       ) : (
         <EmptyState
           projectId={phase.data.relationships.project.data.id}
