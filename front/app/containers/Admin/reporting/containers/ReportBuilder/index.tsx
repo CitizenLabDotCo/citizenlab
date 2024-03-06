@@ -33,7 +33,7 @@ import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplat
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { Locale } from 'typings';
 import { ReportLayout } from 'api/report_layout/types';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, isEqual } from 'lodash-es';
 import { ReportResponse } from 'api/reports/types';
 import { View } from '../../components/ReportBuilder/ViewContainer/typings';
 
@@ -41,6 +41,23 @@ interface Props {
   report: ReportResponse;
   reportLayout: ReportLayout;
 }
+
+const areEqual = (
+  prevData: Record<string, object>,
+  nextData: Record<string, object>
+) => {
+  // when we save the data, `undefined` field values are not saved
+  // (e.g., `parent` in { ROOT: { parent: undefined, ...}, ...}).
+  // So, they are never present in reportLayout.attributes.craftjs_json,
+  // but they are present in the editor state `query.getSerializedNodes()`.
+  // JSON.stringify emulates sending the data to the server and getting it back
+  // (it removes undefined values).
+  // JSON.parse makes sure that the comparison is not affected by the order of keys.
+  return isEqual(
+    JSON.parse(JSON.stringify(prevData)),
+    JSON.parse(JSON.stringify(nextData))
+  );
+};
 
 const ReportBuilder = ({ report, reportLayout }: Props) => {
   const reportId = report.data.id;
@@ -61,6 +78,12 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
 
     return craftjs_json;
   });
+  const [currentData, setCurrentData] = useState<
+    Record<string, object> | undefined
+  >(initialData);
+  const [savedData, setSavedData] = useState<
+    Record<string, object> | undefined
+  >(initialData);
 
   const emptyReportOnInit = initialData === undefined;
 
@@ -68,7 +91,6 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
   const [selectedLocale, setSelectedLocale] = useState<Locale>(platformLocale);
 
   const [saved, setSaved] = useState(true);
-  const [initialDataLoadedCounter, setInitialDataLoadedCounter] = useState(0);
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
 
@@ -90,6 +112,11 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
     0;
 
+  const handleSetSaved = () => {
+    setSaved(true);
+    setSavedData(currentData);
+  };
+
   return (
     <ReportContextProvider width="pdf" reportId={reportId} phaseId={phaseId}>
       <FullscreenContentBuilder
@@ -99,12 +126,20 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
       >
         <Editor
           isPreview={false}
-          onNodesChange={() => {
-            // onNodesChange is called twice on initial load
-            if (initialDataLoadedCounter >= 2) {
+          onNodesChange={(query) => {
+            // onNodesChange is called twice on initial load.
+            if (savedData) {
+              // This comparison is still not perfect.
+              // E.g., if you add a node with rich text editor, save the report,
+              // and then modify the default text and revert the change,
+              // areEqual may still return false, because the default text may not have
+              // a wrapping <p> tag, which is added as soon as you start typing.
+              // But it's good enough for now.
+              setSaved(areEqual(query.getSerializedNodes(), savedData));
+            } else {
               setSaved(false);
             }
-            setInitialDataLoadedCounter((counter) => counter + 1);
+            setCurrentData(query.getSerializedNodes());
           }}
         >
           <TopBar
@@ -114,7 +149,7 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
             reportId={reportId}
             isTemplate={!!templateProjectId || !!templatePhaseId}
             saved={saved}
-            setSaved={setSaved}
+            setSaved={handleSetSaved}
             setSelectedLocale={setSelectedLocale}
           />
           <Box mt={`${stylingConsts.menuHeight}px`}>

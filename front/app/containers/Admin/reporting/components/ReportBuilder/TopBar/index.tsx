@@ -38,7 +38,7 @@ type ContentBuilderTopBarProps = {
   reportId: string;
   isTemplate: boolean;
   saved: boolean;
-  setSaved: React.Dispatch<React.SetStateAction<boolean>>;
+  setSaved: () => void;
   setSelectedLocale: React.Dispatch<React.SetStateAction<Locale>>;
 };
 
@@ -96,7 +96,7 @@ const ContentBuilderTopBar = ({
       },
       {
         onSuccess: () => {
-          setSaved(true);
+          setSaved();
 
           removeSearchParams(['templateProjectId', 'templatePhaseId']);
         },
@@ -145,7 +145,7 @@ const ContentBuilderTopBar = ({
           },
           {
             onSuccess: () => {
-              setSaved(true);
+              setSaved();
 
               removeSearchParams(['templateProjectId', 'templatePhaseId']);
             },
