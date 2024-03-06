@@ -47,6 +47,7 @@ namespace :migrate_analysis do
             errors[tenant.host][analysis.id] = 'Could not remove main field from additional fields'
             next
           end
+          analysis.reload
 
           if !analysis.update(main_custom_field: main_field)
             errors[tenant.host] ||= {}
