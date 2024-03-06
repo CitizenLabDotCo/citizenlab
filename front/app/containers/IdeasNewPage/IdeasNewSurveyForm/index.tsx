@@ -23,6 +23,7 @@ import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import PageContainer from 'components/UI/PageContainer';
 import Warning from 'components/UI/Warning';
+import SurveyNotActiveNotice from '../components/SurveyNotActiveNotice';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -81,10 +82,16 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const [ideaId, setIdeaId] = useState<string | undefined>();
 
   const [initialFormData, setInitialFormData] = useState({});
-  const participationContext = getCurrentPhase(phases?.data);
+  const currentPhase = getCurrentPhase(phases?.data);
   const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
   const allowAnonymousPosting =
-    participationContext?.attributes.allow_anonymous_participation;
+    phaseFromUrl?.data.attributes.allow_anonymous_participation;
+
+  const canUserEditProject =
+    !isNilOrError(authUser) &&
+    canModerateProject(project.data.id, { data: authUser.data });
+
+  const canUserViewForm = canUserEditProject || phaseId === currentPhase?.id;
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
@@ -156,7 +163,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     const requestBody = {
       ...data,
       project_id: project.data.id,
-      // phase_ids: [phaseId], // TODO: JS - should only be added if moderator
+      phase_ids: [phaseId], // Note: Backend only uses if moderator
       publication_status: data.publication_status || 'published',
     };
 
@@ -207,9 +214,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   };
 
-  const canUserEditProject =
-    !isNilOrError(authUser) &&
-    canModerateProject(project.data.id, { data: authUser.data });
+  if (!canUserViewForm) return <SurveyNotActiveNotice project={project.data} />;
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
