@@ -1,7 +1,10 @@
 import { createContext } from 'react';
+
 import { CLErrors, Locale } from 'typings';
-import { ApiErrorGetter, FormData } from './typings';
+
 import { MessageDescriptor } from 'utils/cl-intl';
+
+import { ApiErrorGetter, FormData } from './typings';
 
 export const APIErrorsContext = createContext<CLErrors | undefined>(undefined);
 

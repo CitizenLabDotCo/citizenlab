@@ -1,10 +1,14 @@
-import { Box, fontSizes } from '@citizenlab/cl2-component-library';
 import React from 'react';
+
+import { Box, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import messages from '../../messages';
+
 import { FormattedMessage } from 'utils/cl-intl';
-import ProposalProgressBar from './ProposalProgressBar';
+
+import messages from '../../messages';
 import { StatusComponentProps } from '../../StatusWrapper';
+
+import ProposalProgressBar from './ProposalProgressBar';
 
 const ReactionText = styled.div`
   display: flex;

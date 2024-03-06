@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useBulkInviteCountNewSeatsXLSX from './useBulkInviteCountNewSeatsXLSX';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useBulkInviteCountNewSeatsXLSX from './useBulkInviteCountNewSeatsXLSX';
 
 const apiPath = '*/invites/count_new_seats_xlsx';
 

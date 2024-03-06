@@ -1,5 +1,7 @@
 import React, { useEffect, memo } from 'react';
+
 import { Frame, Element, useEditor, SerializedNode } from '@craftjs/core';
+
 import { getImagesToBeLoaded, allImagesLoaded } from './imageLoading';
 
 type ContentBuilderFrame = {

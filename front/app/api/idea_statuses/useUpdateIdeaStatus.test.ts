@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateIdeaStatus from './useUpdateIdeaStatus';
-import { ideaStatusesData } from './__mocks__/_mockServer';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { ideaStatusesData } from './__mocks__/_mockServer';
+import useUpdateIdeaStatus from './useUpdateIdeaStatus';
 
 const apiPath = '*idea_statuses/:id';
 const server = setupServer(

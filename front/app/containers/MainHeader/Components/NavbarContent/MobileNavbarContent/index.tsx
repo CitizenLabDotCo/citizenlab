@@ -1,30 +1,27 @@
 import React, { Suspense, useRef, useState } from 'react';
 
-// components
+import { Box, Button, media, isRtl } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocale from 'hooks/useLocale';
+
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError, isPage } from 'utils/helperUtils';
+
+import messages from '../../../messages';
+import tracks from '../../../tracks';
 import LanguageSelector from '../../LanguageSelector';
 import NotificationMenu from '../../NotificationMenu';
-import ShowFullMenuButton from './ShowFullMenuButton';
-import { Box, Button, media, isRtl } from '@citizenlab/cl2-component-library';
-import FullMobileNavMenu from './FullMobileNavMenu';
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
 import UserMenu from '../../UserMenu';
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
 
-// utils
-import { isNilOrError, isPage } from 'utils/helperUtils';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { trackEventByName } from 'utils/analytics';
-
-// tracking
-import tracks from '../../../tracks';
-
-// style
-import styled from 'styled-components';
+import FullMobileNavMenu from './FullMobileNavMenu';
+import ShowFullMenuButton from './ShowFullMenuButton';
 
 const RightContainer = styled(Box)`
   display: flex;

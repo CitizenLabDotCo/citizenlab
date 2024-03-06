@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useProjectAllowedInputTopics from './useProjectAllowedInputTopics';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { projectAllowedInputTopics } from './__mocks__/useProjectAllowedInputTopics';
+import useProjectAllowedInputTopics from './useProjectAllowedInputTopics';
 
 const apiPath = '*/projects/:projectId/projects_allowed_input_topics';
 

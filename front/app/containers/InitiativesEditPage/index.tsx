@@ -1,33 +1,27 @@
 import React, { useEffect } from 'react';
 
-// libraries
-import clHistory from 'utils/cl-router/history';
-
-// services
-import { isAdmin, isSuperAdmin, isRegularUser } from 'utils/permissions/roles';
-
-// resources
-import HasPermission from 'components/HasPermission';
+import { media } from '@citizenlab/cl2-component-library';
 import { PreviousPathnameContext } from 'context';
-
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-
-// components
-import PageNotFound from 'components/PageNotFound';
-import InitiativesEditMeta from './InitiativesEditMeta';
-import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
-import PageLayout from 'components/InitiativeForm/PageLayout';
-
-// style
-import { media } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 import useAuthUser from 'api/me/useAuthUser';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
+
+import HasPermission from 'components/HasPermission';
+import PageLayout from 'components/InitiativeForm/PageLayout';
+import PageNotFound from 'components/PageNotFound';
+
+import clHistory from 'utils/cl-router/history';
+import { isAdmin, isSuperAdmin, isRegularUser } from 'utils/permissions/roles';
+
+import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
+import InitiativesEditMeta from './InitiativesEditMeta';
 
 const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
   width: 100%;

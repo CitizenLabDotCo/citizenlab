@@ -1,7 +1,10 @@
 import React, { lazy } from 'react';
-import PageLoading from 'components/UI/PageLoading';
-import customFieldRoutes from './CustomFieldRoutes/routes';
+
 import { Outlet } from 'react-router-dom';
+
+import PageLoading from 'components/UI/PageLoading';
+
+import customFieldRoutes from './CustomFieldRoutes/routes';
 
 const AdminSettingsRegistration = lazy(() => import('.'));
 

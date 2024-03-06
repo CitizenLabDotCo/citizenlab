@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteProjectFolderModerator from './useDeleteProjectFolderModerator';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteProjectFolderModerator from './useDeleteProjectFolderModerator';
 const apiPath = '*project_folders/:projectFolderId/moderators/:id';
 
 const server = setupServer(

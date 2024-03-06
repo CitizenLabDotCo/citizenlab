@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import summariesKeys from './keys';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import summariesKeys from './keys';
 
 export type SummariesKeys = Keys<typeof summariesKeys>;
 

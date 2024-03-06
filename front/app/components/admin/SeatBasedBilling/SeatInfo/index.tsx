@@ -1,9 +1,13 @@
 import React from 'react';
+
+import { TSeatNumber } from 'api/app_configuration/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { MessageDescriptor } from 'utils/cl-intl';
+
 import BillingInfo from './BillingInfo';
 import TrackerInfo from './TrackerInfo';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { TSeatNumber } from 'api/app_configuration/types';
-import { MessageDescriptor } from 'utils/cl-intl';
 
 export type TSeatType = 'moderator' | 'admin';
 

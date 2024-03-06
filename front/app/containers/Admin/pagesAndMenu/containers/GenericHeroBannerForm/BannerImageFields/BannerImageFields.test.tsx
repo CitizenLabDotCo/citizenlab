@@ -1,6 +1,8 @@
 import React from 'react';
-import BannerImageFields from '.';
+
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
+
+import BannerImageFields from '.';
 
 const props = {
   bannerOverlayColor: '#fff',

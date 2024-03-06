@@ -1,24 +1,22 @@
 import React from 'react';
 
-// routing
+import { Box, Title, Toggle } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import usePhase from 'api/phases/usePhase';
-import useReport from 'api/reports/useReport';
 import useDeleteReport from 'api/reports/useDeleteReport';
+import useReport from 'api/reports/useReport';
 import useUpdateReport from 'api/reports/useUpdateReport';
 
-// i18n
-import messages from './messages';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Buttons from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/Buttons';
+
 import { useIntl } from 'utils/cl-intl';
 
-// components
-import { Box, Title, Toggle } from '@citizenlab/cl2-component-library';
 import EmptyState from './EmptyState';
+import messages from './messages';
 import ReportPreview from './ReportPreview';
-import Buttons from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/Buttons';
 
 const ReportTab = () => {
   const { phaseId } = useParams();

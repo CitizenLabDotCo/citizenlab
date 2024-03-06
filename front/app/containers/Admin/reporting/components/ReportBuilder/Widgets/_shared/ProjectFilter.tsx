@@ -2,14 +2,11 @@ import React, { useCallback } from 'react';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-// components
-import BaseProjectFilter from 'components/UI/ProjectFilter';
-
-// i18n
-import { MessageDescriptor } from 'utils/cl-intl';
 import dashboardFilterMessages from 'containers/Admin/dashboard/components/filters/messages';
 
-// utils
+import BaseProjectFilter from 'components/UI/ProjectFilter';
+
+import { MessageDescriptor } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
 interface Option {

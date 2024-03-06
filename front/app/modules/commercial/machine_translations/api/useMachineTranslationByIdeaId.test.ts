@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useMachineTranslationByIdeaId from './useMachineTranslationByIdeaId';
-import { machineTranslationData } from './__mocks__/useMachineTranslationByCommentId';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { machineTranslationData } from './__mocks__/useMachineTranslationByCommentId';
+import useMachineTranslationByIdeaId from './useMachineTranslationByIdeaId';
 
 const apiPath = '*ideas/:ideaId/machine_translation';
 

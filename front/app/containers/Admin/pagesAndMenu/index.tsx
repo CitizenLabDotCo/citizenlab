@@ -1,7 +1,9 @@
 import React from 'react';
-import messages from './messages';
+
 import HelmetIntl from 'components/HelmetIntl';
+
 import PagesMenu from './containers/PagesMenu';
+import messages from './messages';
 
 const PagesAndMenuIndex = () => {
   return (

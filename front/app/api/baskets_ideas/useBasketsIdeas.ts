@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
-import { BasketsIdeasKeys, IBasketsIdeas } from './types';
+
 import basketsIdeasKeys from './keys';
+import { BasketsIdeasKeys, IBasketsIdeas } from './types';
 
 export const fetchBasketsIdeas = ({ basketId }: { basketId?: string }) =>
   fetcher<IBasketsIdeas>({

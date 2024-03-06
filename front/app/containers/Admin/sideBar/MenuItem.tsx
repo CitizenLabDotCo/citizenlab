@@ -1,7 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import Link from 'utils/cl-router/Link';
-import { NavItem } from './navItems';
+
 import {
   media,
   colors,
@@ -9,11 +7,18 @@ import {
   Icon,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import CountBadge from 'components/UI/CountBadge';
-import { usePermission } from 'utils/permissions';
+import styled from 'styled-components';
+
 import useFeatureFlags from 'hooks/useFeatureFlags';
+
+import CountBadge from 'components/UI/CountBadge';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
+import { usePermission } from 'utils/permissions';
+
+import messages from './messages';
+import { NavItem } from './navItems';
 
 const Text = styled.div`
   flex: 1;

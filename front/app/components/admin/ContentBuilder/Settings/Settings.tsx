@@ -1,23 +1,20 @@
 import React from 'react';
 
-// styles
-import styled from 'styled-components';
-
-// components
 import {
   Title,
   Box,
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import Button from 'components/UI/Button';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
-// intl
-import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// typings
+import messages from '../messages';
+
 import { SelectedNode } from './typings';
 
 const StyledBox = styled(Box)`

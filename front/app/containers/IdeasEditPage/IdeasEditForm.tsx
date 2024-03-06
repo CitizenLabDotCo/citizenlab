@@ -1,44 +1,39 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
-// components
-import PageContainer from 'components/UI/PageContainer';
-import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { Box } from '@citizenlab/cl2-component-library';
-import ideaFormMessages from 'containers/IdeasNewPage/messages';
-import Form from 'components/Form';
-import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
-import IdeasEditMeta from './IdeasEditMeta';
-import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
+import { PreviousPathnameContext } from 'context';
+import { omit } from 'lodash-es';
+import { Multiloc } from 'typings';
 
-// services
-import { usePermission } from 'utils/permissions';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
-
-// hooks
+import useIdeaImages from 'api/idea_images/useIdeaImages';
+import { IIdeaUpdate } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
+
 import useInputSchema from 'hooks/useInputSchema';
-import useIdeaImages from 'api/idea_images/useIdeaImages';
-import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
+import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
-// utils
-import { getLocationGeojson, getFormValues } from './utils';
-import { omit } from 'lodash-es';
-import { isError, isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
-import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { PreviousPathnameContext } from 'context';
-
-// typings
-import { IIdeaUpdate } from 'api/ideas/types';
-import { Multiloc } from 'typings';
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
+import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
+import PageContainer from 'components/UI/PageContainer';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isError, isNilOrError } from 'utils/helperUtils';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+import { usePermission } from 'utils/permissions';
+
+import IdeasEditMeta from './IdeasEditMeta';
+import messages from './messages';
+import { getLocationGeojson, getFormValues } from './utils';
 
 interface FormValues {
   title_multiloc: Multiloc;

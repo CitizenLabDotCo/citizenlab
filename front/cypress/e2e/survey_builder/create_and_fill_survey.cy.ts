@@ -2,7 +2,7 @@ import { snakeCase } from 'lodash-es';
 import { randomString, randomEmail } from '../../support/commands';
 import moment = require('moment');
 
-describe.skip('Survey builder', () => {
+describe('Survey builder', () => {
   const projectTitle = randomString();
   const phaseTitle = randomString();
   const projectDescription = randomString();
@@ -268,7 +268,7 @@ describe.skip('Survey builder', () => {
   });
 
   it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
-    const projectUrl = `/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}?phase_id=${phaseId}`;
+    const projectUrl = `/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`;
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
@@ -276,18 +276,19 @@ describe.skip('Survey builder', () => {
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('form').submit();
 
+    cy.get('[data-cy="e2e-preview-form-button"] > a').should('exist');
     cy.get('[data-cy="e2e-preview-form-button"] > a')
       .should(($a) => {
         expect($a.attr('href'), 'href').to.equal(projectUrl);
         expect($a.attr('target'), 'target').to.equal('_blank');
         $a.attr('target', '_self');
       })
-      .click();
+      .click({ force: true });
     cy.url().should(
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}?phase_id=${phaseId}`
+      }/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`
     );
   });
 
@@ -552,7 +553,7 @@ describe.skip('Survey builder', () => {
     cy.get('#e2e-modal-container').should('have.length', 0);
   });
 
-  it('creates survey with logic and the user can navigate back and forth without previous logic options chnaging the order of pages', () => {
+  it('creates survey with logic and the user can navigate back and forth without previous logic options changing the order of pages', () => {
     const firstLogicQnOption1 = randomString();
     const firstLogicQnOption2 = randomString();
     const secondLogicQnOption1 = randomString();
@@ -595,6 +596,7 @@ describe.skip('Survey builder', () => {
     cy.get('#e2e-field-group-title-multiloc').type(page3Title, { force: true });
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(page3QnTitle, { force: true });
+    cy.get('#e2e-required-toggle').find('input').click({ force: true });
 
     // Add fourth page
     cy.get('[data-cy="e2e-page"]').click();
@@ -622,9 +624,9 @@ describe.skip('Survey builder', () => {
     cy.get('[data-cy="e2e-rule-input-select"]').should('exist');
     // Add rule to go to survey end
     cy.get('[data-cy="e2e-rule-input-select"]').get('select').select(5);
-    // Add rule to go to page 4
+    // Add rule to go to page 3
     cy.get('[data-cy="e2e-add-rule-button"]').first().click();
-    cy.get('[data-cy="e2e-rule-input-select"]').get('select').eq(1).select(4);
+    cy.get('[data-cy="e2e-rule-input-select"]').get('select').eq(1).select(3);
 
     // Check to see that the rules are added to the field row
     cy.get('[data-cy="e2e-field-rule-display"]')
@@ -665,6 +667,8 @@ describe.skip('Survey builder', () => {
 
     // Go back to the previous page to go to page 2
     cy.get('[data-cy="e2e-previous-page"]').click();
+    // Necessary because sometimes cypress moves too fast before the data is cleared when navigating back
+    cy.wait(3000);
     cy.contains(page2Title).should('exist');
 
     // Go back to the previous page to go to page 1
@@ -692,8 +696,13 @@ describe.skip('Survey builder', () => {
 
     // Go to page 3
     cy.get('[data-cy="e2e-next-page"]').click();
+    cy.contains(page3Title).should('exist');
+    cy.get(`*[id^="properties${page3QnTitle}"]`).type(answer, { force: true });
 
     // Go to page 4
+    cy.get('[data-cy="e2e-next-page"]').click();
+    cy.contains(page4Title).should('exist');
+
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Save survey response

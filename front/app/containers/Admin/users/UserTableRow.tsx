@@ -1,42 +1,35 @@
-// Libraries
 import React, { useState, lazy, Suspense } from 'react';
-import { isAdmin, isRegularUser } from 'utils/permissions/roles';
-import moment from 'moment';
 
-// Utils
-import clHistory from 'utils/cl-router/history';
-
-// Components
 import { Tr, Td, Box, colors } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
+import styled from 'styled-components';
+
+import { IUserData } from 'api/users/types';
+import useDeleteUser from 'api/users/useDeleteUser';
+
+import useExceedsSeats from 'hooks/useExceedsSeats';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import BlockUser from 'components/admin/UserBlockModals/BlockUser';
+import blockUserMessages from 'components/admin/UserBlockModals/messages';
+import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import BlockUser from 'components/admin/UserBlockModals/BlockUser';
-import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
+
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+import eventEmitter from 'utils/eventEmitter';
+import { isAdmin, isRegularUser } from 'utils/permissions/roles';
+import { getFullName } from 'utils/textUtils';
+
+import events from './events';
+import messages from './messages';
 
 const ChangeSeatModal = lazy(
   () => import('components/admin/SeatBasedBilling/ChangeSeatModal')
 );
-
-// Translation
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import blockUserMessages from 'components/admin/UserBlockModals/messages';
-
-// Events --- For error handling
-import eventEmitter from 'utils/eventEmitter';
-import events from './events';
-
-// Styling
-import styled from 'styled-components';
-
-// Hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useExceedsSeats from 'hooks/useExceedsSeats';
-import useDeleteUser from 'api/users/useDeleteUser';
-import { IUserData } from 'api/users/types';
-import { getFullName } from 'utils/textUtils';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;

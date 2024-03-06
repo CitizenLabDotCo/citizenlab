@@ -1,5 +1,7 @@
 import { rest } from 'msw';
+
 import { API_PATH } from 'containers/App/constants';
+
 import { IAvatarData } from '../types';
 
 export const avatarsData: IAvatarData[] = [

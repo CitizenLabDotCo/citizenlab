@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeletePollOption from './useDeletePollOption';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeletePollOption from './useDeletePollOption';
 
 const apiPath = '*/poll_options/:optionId';
 

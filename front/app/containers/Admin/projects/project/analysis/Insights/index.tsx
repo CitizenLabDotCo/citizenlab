@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-
-import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
-
 import { useParams } from 'react-router-dom';
 
-import Summary from './Summary';
-import SummarizeButton from './SummarizeButton';
+import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
+import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
+
+import { useIntl } from 'utils/cl-intl';
+
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+
+import messages from './messages';
+import Question from './Question';
 import QuestionButton from './QuestionButton';
 import QuestionInput from './QuestionInput';
-import Question from './Question';
-import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
-import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
+import SummarizeButton from './SummarizeButton';
+import Summary from './Summary';
 
 const Insights = () => {
   const { formatMessage } = useIntl();
