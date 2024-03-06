@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { Locale } from 'typings';
@@ -19,7 +19,6 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 
-import Analysis from '../../components/ReportBuilder/Analysis';
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
 import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
@@ -102,10 +101,7 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
             setSelectedLocale={setSelectedLocale}
           />
           <Box mt={`${stylingConsts.menuHeight}px`}>
-            <Box w="330px" bg={colors.white} h="300px" overflowY="auto">
-              <Analysis selectedLocale={selectedLocale} />
-            </Box>
-            <Toolbox reportId={reportId} />
+            <Toolbox reportId={reportId} selectedLocale={selectedLocale} />
             <LanguageProvider
               contentBuilderLocale={selectedLocale}
               platformLocale={platformLocale}

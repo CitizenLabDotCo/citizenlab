@@ -21,7 +21,7 @@ const Analyses = ({
   selectedLocale: string;
 }) => {
   const { formatMessage } = useIntl();
-  const { data: analyses } = useAnalyses({
+  const { data: analyses, isLoading } = useAnalyses({
     projectId: phaseId ? undefined : projectId,
     phaseId,
   });
@@ -33,7 +33,7 @@ const Analyses = ({
       )
     : analyses?.data;
 
-  if (relevantAnalyses?.length === 0) {
+  if (relevantAnalyses?.length === 0 && !isLoading) {
     return <Text>{formatMessage(messages.noInsights)}</Text>;
   }
 

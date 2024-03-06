@@ -22,11 +22,11 @@ const Insights = ({
   selectedLocale: string;
 }) => {
   const { formatMessage } = useIntl();
-  const { data: insights } = useAnalysisInsights({
+  const { data: insights, isLoading } = useAnalysisInsights({
     analysisId,
   });
 
-  if (!insights?.data.length) {
+  if (!insights?.data.length && !isLoading) {
     return <Text>{formatMessage(messages.noInsights)}</Text>;
   }
 

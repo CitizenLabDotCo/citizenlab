@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -6,8 +6,10 @@ import {
   Accordion,
   Spinner,
   stylingConsts,
+  Button,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
+import { Locale } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjects from 'api/projects/useProjects';
@@ -31,6 +33,7 @@ import {
 import { isModerator } from 'utils/permissions/roles';
 
 import reportBuilderMessages from '../../../messages';
+import Analysis from '../Analysis';
 import { WIDGET_TITLES } from '../Widgets';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
@@ -50,6 +53,7 @@ import TwoColumn from '../Widgets/TwoColumn';
 
 type ReportBuilderToolboxProps = {
   reportId: string;
+  selectedLocale: Locale;
 };
 
 const SectionTitle = ({ children }) => (
@@ -66,7 +70,11 @@ const SectionTitle = ({ children }) => (
   </Title>
 );
 
-const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
+const ReportBuilderToolbox = ({
+  reportId,
+  selectedLocale,
+}: ReportBuilderToolboxProps) => {
+  const [selectedTab, setSelectedTab] = useState<'widgets' | 'ai'>('widgets');
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const { projectId } = useReportContext();
@@ -117,7 +125,30 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
 
   return (
     <Container>
-      <Box>
+      <Box display="flex" alignItems="center" justifyContent="center">
+        <Box flex="1">
+          <Button
+            onClick={() => setSelectedTab('widgets')}
+            buttonStyle={selectedTab === 'widgets' ? 'text' : 'secondary'}
+          >
+            Widgets
+            {/* <FormattedMessage {...reportBuilderMessages.toolbox} /> */}
+          </Button>
+        </Box>
+        <Box flex="1">
+          <Button
+            onClick={() => setSelectedTab('ai')}
+            buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
+          >
+            AI
+            {/* <FormattedMessage {...reportBuilderMessages.ai} /> */}
+          </Button>
+        </Box>
+      </Box>
+      <Box p="8px" display={selectedTab === 'ai' ? 'block' : 'none'}>
+        <Analysis selectedLocale={selectedLocale} />
+      </Box>
+      <Box display={selectedTab === 'widgets' ? 'block' : 'none'}>
         <Accordion
           isOpenByDefault={true}
           title={
