@@ -7,7 +7,11 @@ import { useUsersByAge } from 'api/graph_data_units';
 import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/AgeChart/convertToGraphFormat';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-import { ProjectId, Dates, Layout } from 'components/admin/GraphCards/typings';
+import {
+  ProjectId,
+  DatesStrings,
+  Layout,
+} from 'components/admin/GraphCards/typings';
 import BarChart from 'components/admin/Graphs/BarChart';
 import { Margin } from 'components/admin/Graphs/typings';
 
@@ -27,13 +31,13 @@ const MARGINS: Record<Layout, Margin | undefined> = {
   },
 };
 
-type Props = ProjectId & Dates;
+type Props = ProjectId & DatesStrings;
 
-const AgeCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
+const AgeCard = ({ startAt, endAt, projectId }: Props) => {
   const usersByBirthyear = useUsersByAge({
     project_id: projectId,
-    startAtMoment,
-    endAtMoment,
+    start_at: startAt,
+    end_at: endAt,
   });
   const { formatMessage } = useIntl();
 

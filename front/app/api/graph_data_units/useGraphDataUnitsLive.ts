@@ -8,21 +8,13 @@ import fetcher, { BaseResponseData } from 'utils/cl-react-query/fetcher';
 import graphDataUnitKeys from './keys';
 import { ParametersLive, Options } from './requestTypes';
 
-const fetchGraphDataUnitsLive = <Response extends BaseResponseData>({
-  resolved_name,
-  props,
-}: ParametersLive) => {
+const fetchGraphDataUnitsLive = <Response extends BaseResponseData>(
+  queryParams: ParametersLive
+) => {
   return fetcher<Response>({
     path: `/reports/graph_data_units/live`,
     action: 'get',
-    queryParams: {
-      resolved_name,
-      props: {
-        ...props,
-        start_at: (props as any).startAtMoment?.format('yyyy-MM-DD'),
-        end_at: (props as any).endAtMoment?.format('yyyy-MM-DD'),
-      },
-    },
+    queryParams,
   });
 };
 

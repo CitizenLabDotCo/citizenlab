@@ -1,22 +1,30 @@
 import { useMemo, useState } from 'react';
 
-import { useReactionsByTime } from 'api/graph_data_units';
+import moment from 'moment';
+
+import { useReactionsByTime as useReactionsByTimeData } from 'api/graph_data_units';
 
 import { parseTimeSeries } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/parse';
-import { QueryParameters } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
+import {
+  ProjectId,
+  DatesStrings,
+  Resolution,
+} from 'components/admin/GraphCards/typings';
 
-export default function useReactionsByTime123({
+type QueryParameters = ProjectId & DatesStrings & Resolution;
+
+export default function useReactionsByTime({
   projectId,
-  startAtMoment,
-  endAtMoment,
+  startAt,
+  endAt,
   resolution,
 }: QueryParameters) {
   const [currentResolution] = useState(resolution);
 
-  const analytics = useReactionsByTime({
+  const analytics = useReactionsByTimeData({
     project_id: projectId,
-    startAtMoment,
-    endAtMoment,
+    start_at: startAt,
+    end_at: endAt,
     resolution,
   });
 
@@ -25,13 +33,13 @@ export default function useReactionsByTime123({
       analytics?.data
         ? parseTimeSeries(
             analytics.data.attributes[0],
-            startAtMoment,
-            endAtMoment,
+            moment(startAt),
+            moment(endAt),
             currentResolution,
             analytics.data.attributes[1]
           )
         : null,
-    [analytics?.data, startAtMoment, endAtMoment, currentResolution]
+    [analytics?.data, startAt, endAt, currentResolution]
   );
 
   return { currentResolution, timeSeries };

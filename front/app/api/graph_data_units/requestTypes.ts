@@ -1,5 +1,3 @@
-import { Moment } from 'moment';
-
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // live
@@ -60,8 +58,8 @@ export interface SurveyQuestionResultParams extends BaseParams {
 
 export interface AnalyticsProps {
   project_id?: string | undefined;
-  startAtMoment?: Moment | null | undefined;
-  endAtMoment?: Moment | null;
+  start_at?: string | null | undefined;
+  end_at?: string | null;
   resolution?: IResolution;
 }
 
@@ -90,8 +88,8 @@ export interface VisitorsParams extends BaseParams {
 
 export interface VisitorsTrafficSourcesProps {
   project_id?: string;
-  startAtMoment?: Moment | null | undefined;
-  endAtMoment?: Moment | null;
+  start_at?: string | null | undefined;
+  end_at?: string | null;
 }
 export interface VisitorsTrafficSourcesParams extends BaseParams {
   resolved_name: 'VisitorsTrafficSourcesWidget';
@@ -100,8 +98,8 @@ export interface VisitorsTrafficSourcesParams extends BaseParams {
 
 export interface GenderProps {
   project_id?: string;
-  startAtMoment?: Moment | null | undefined;
-  endAtMoment?: Moment | null;
+  start_at?: string | null | undefined;
+  end_at?: string | null;
   group_id?: string | null;
 }
 export interface GenderParams extends BaseParams {
@@ -111,8 +109,8 @@ export interface GenderParams extends BaseParams {
 
 export interface AgeProps {
   project_id?: string;
-  startAtMoment?: Moment | null | undefined;
-  endAtMoment?: Moment | null;
+  start_at?: string | null | undefined;
+  end_at?: string | null;
   group_id?: string | null;
 }
 export interface AgeParams extends BaseParams {
