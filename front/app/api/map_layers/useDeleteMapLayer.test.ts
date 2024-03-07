@@ -5,7 +5,7 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import useDeleteMapLayer from './useDeleteMapLayer';
-const apiPath = '*/projects/:projectId/map_config/layers/:id';
+const apiPath = '*/map_configs/:mapConfigId/layers/:id';
 
 const server = setupServer(
   rest.delete(apiPath, (_req, res, ctx) => {

@@ -7,7 +7,8 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { mapLayerData } from './__mocks__/mapLayerData';
 import useReorderMapLayer from './useReorderMapLayer';
 
-const apiPath = '*projects/:projectId/map_config/layers/:id/reorder';
+const apiPath = '*/map_configs/:mapConfigId/layers/:id/reorder';
+
 const server = setupServer(
   rest.patch(apiPath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: mapLayerData }));

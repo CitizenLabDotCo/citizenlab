@@ -7,7 +7,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { mapLayerData } from './__mocks__/mapLayerData';
 import useAddMapLayer from './useAddMapLayer';
 
-const apiPath = '*/projects/:projectId/map_config/layers';
+const apiPath = `*/map_configs/:mapConfigId/layers`;
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
