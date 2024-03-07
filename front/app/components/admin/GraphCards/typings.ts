@@ -12,6 +12,11 @@ export interface Dates {
   endAtMoment: Moment | null;
 }
 
+export interface DatesStrings {
+  startAt?: string | null;
+  endAt?: string | null;
+}
+
 export interface Resolution {
   resolution: IResolution;
 }

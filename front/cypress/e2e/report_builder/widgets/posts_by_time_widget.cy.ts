@@ -125,7 +125,16 @@ describe('Report builder Posts By Time widget', () => {
     cy.get('#e2e-draggable-posts-by-time-widget')
       .parent()
       .click({ force: true });
+
+    cy.wait(1000);
+
     cy.get('#e2e-delete-button').click();
+
+    cy.wait(1000);
+
+    cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+      'saveReportLayout'
+    );
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
 

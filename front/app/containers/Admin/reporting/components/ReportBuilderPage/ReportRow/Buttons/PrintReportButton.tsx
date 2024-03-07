@@ -24,19 +24,17 @@ const PrintReportButton = ({ reportId }: Props) => {
     report.data.attributes.action_descriptor.editing_report.enabled;
 
   return (
-    <>
-      <Button
-        icon="blank-paper"
-        buttonStyle="primary"
-        bgColor={colors.primary}
-        iconSize="18px"
-        linkTo={printReportPath}
-        disabled={!canEdit}
-        openLinkInNewTab
-      >
-        <FormattedMessage {...messages.print} />
-      </Button>
-    </>
+    <Button
+      icon="blank-paper"
+      buttonStyle="primary"
+      bgColor={colors.primary}
+      iconSize="18px"
+      linkTo={printReportPath}
+      disabled={!canEdit}
+      openLinkInNewTab
+    >
+      <FormattedMessage {...messages.print} />
+    </Button>
   );
 };
 
