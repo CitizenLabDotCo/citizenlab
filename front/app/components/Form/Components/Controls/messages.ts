@@ -46,7 +46,7 @@ export default defineMessages({
     defaultMessage: 'Address input',
   },
   addressInputPlaceholder: {
-    id: 'app.components.form.controls.addressInputPlaceholder3',
-    defaultMessage: 'Select on the map or type an address here',
+    id: 'app.components.form.controls.addressInputPlaceholder5',
+    defaultMessage: 'Type an address',
   },
 });

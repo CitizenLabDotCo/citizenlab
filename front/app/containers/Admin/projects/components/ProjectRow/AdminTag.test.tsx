@@ -1,7 +1,5 @@
 import * as React from 'react';
-
 import { render, screen } from 'utils/testUtils/rtl';
-
 import AdminTag from './AdminTag';
 
 const projectId = '1';

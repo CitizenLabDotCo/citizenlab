@@ -102,6 +102,9 @@ const PointControl = ({
     },
     [handleChange, path]
   );
+  const onMobileClickShowOverlay = useCallback(() => {
+    setShowMapOverlay(true);
+  }, []);
 
   // When the data (point) changes, update the address and add a pin to the map
   useEffect(() => {
@@ -144,10 +147,6 @@ const PointControl = ({
       mapView?.graphics.removeAll();
     }
   }, [data, locale, mapView, theme.colors.tenantPrimary]);
-
-  const onMobileClickShowOverlay = useCallback(() => {
-    setShowMapOverlay(true);
-  }, []);
 
   const onDesktopMapClick = useCallback(
     (event: any, mapView: MapView) => {
@@ -222,9 +221,7 @@ const PointControl = ({
                 onInit: onMapInit,
               }}
               webMapId={mapConfig?.data.attributes.esri_web_map_id}
-              onClick={
-                isMobileOrSmaller ? onMobileClickShowOverlay : onDesktopMapClick
-              }
+              onClick={onDesktopMapClick}
             />
           </>
         )}
