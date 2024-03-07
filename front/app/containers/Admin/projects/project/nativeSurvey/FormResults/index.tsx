@@ -49,39 +49,41 @@ const FormResults = () => {
           {surveyResponseMessage}
         </Text>
       </Box>
-
       <Box>
-        {results.map(
-          (
-            {
-              question,
-              inputType,
-              answers,
-              totalResponses,
-              required,
-              customFieldId,
-              textResponses,
-              files,
-            },
-            index
-          ) => {
-            return (
-              <FormResultsQuestion
-                key={index}
-                locale={locale}
-                question={question}
-                inputType={inputType}
-                answers={answers}
-                totalResponses={totalResponses}
-                totalSubmissions={totalSubmissions}
-                required={required}
-                customFieldId={customFieldId}
-                textResponses={textResponses}
-                files={files}
-              />
-            );
-          }
-        )}
+        {totalSubmissions > 0 &&
+          results.map(
+            (
+              {
+                question,
+                inputType,
+                answers,
+                questionResponseCount,
+                required,
+                customFieldId,
+                textResponses,
+                files,
+                multilocs,
+              },
+              index
+            ) => {
+              return (
+                <FormResultsQuestion
+                  questionNumber={index + 1}
+                  locale={locale}
+                  question={question}
+                  inputType={inputType}
+                  answers={answers}
+                  questionResponseCount={questionResponseCount}
+                  totalSubmissions={totalSubmissions}
+                  required={required}
+                  customFieldId={customFieldId}
+                  textResponses={textResponses}
+                  files={files}
+                  multilocs={multilocs}
+                />
+              );
+            }
+          )}
       </Box>
     </Box>
   );

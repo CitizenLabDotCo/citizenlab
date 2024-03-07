@@ -3,8 +3,8 @@
 class SurveyResultsGeneratorService < FieldVisitorService
   def initialize(phase)
     super()
-    form = phase.custom_form || CustomForm.new(participation_context: phase)
-    @fields = IdeaCustomFieldsService.new(form).enabled_fields # It would be nice if we could use reportable_fields instead
+    @form = phase.custom_form || CustomForm.new(participation_context: phase)
+    @fields = IdeaCustomFieldsService.new(@form).enabled_fields # It would be nice if we could use reportable_fields instead
     @inputs = phase.ideas.published
     @locales = AppConfiguration.instance.settings('core', 'locales')
   end
@@ -13,30 +13,41 @@ class SurveyResultsGeneratorService < FieldVisitorService
     { totalSubmissions: inputs.size }
   end
 
-  def generate_results
-    results = fields.filter_map do |field|
+  def generate_results(field_id: nil, group_mode: nil, group_field_id: nil)
+    if !field_id
+      # Return all results
+      results = fields.filter_map do |field|
+        visit field
+      end
+      {
+        results: results,
+        totalSubmissions: inputs.size
+      }
+    elsif group_field_id
+      # Return grouped results
+      field = find_question(field_id)
+      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect multiselect_image].include?(field.input_type)
+
+      visit_select_base field, group_mode: group_mode, group_field_id: group_field_id
+    else
+      # Return single ungrouped result
+      field = find_question(field_id)
+      # TODO: Test this works for non-select fields
+
       visit field
     end
-    {
-      results: results,
-      totalSubmissions: inputs.size
-    }
   end
 
   def visit_select(field)
-    values = inputs
-      .select("custom_field_values->'#{field.key}' as value")
-      .where("custom_field_values->'#{field.key}' IS NOT NULL")
-    visit_select_base(field, values)
+    visit_select_base(field)
   end
 
   def visit_multiselect(field)
-    flattened_values = inputs.select(:id, "jsonb_array_elements(custom_field_values->'#{field.key}') as value")
-    visit_select_base(field, flattened_values)
+    visit_select_base(field)
   end
 
   def visit_multiselect_image(field)
-    visit_multiselect(field)
+    visit_select_base(field)
   end
 
   def visit_multiline_text(field)
@@ -46,15 +57,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
       .map do |answer|
         { answer: answer.value }
       end
-    answer_count = answers.size
-    {
-      inputType: field.input_type,
-      question: field.title_multiloc,
-      required: field.required,
-      totalResponses: answer_count,
-      customFieldId: field.id,
+    response_count = answers.size
+    core_field_attributes(field, response_count).merge({
       textResponses: answers
-    }
+    })
   end
 
   def visit_text(field)
@@ -64,41 +70,31 @@ class SurveyResultsGeneratorService < FieldVisitorService
       .map do |answer|
         { answer: answer.value }
       end
-    answer_count = answers.size
-    {
-      inputType: field.input_type,
-      question: field.title_multiloc,
-      required: field.required,
-      totalResponses: answer_count,
-      customFieldId: field.id,
+    response_count = answers.size
+    core_field_attributes(field, response_count).merge({
       textResponses: answers
-    }
+    })
   end
 
   def visit_linear_scale(field)
-    values = inputs
-      .select("custom_field_values->'#{field.key}' as value")
-      .where("custom_field_values->'#{field.key}' IS NOT NULL")
-    distribution_from_db = Idea.select(:value).from(values).group(:value).order(value: :desc).count.to_h
-    distribution = []
-    (1..field.maximum).reverse_each do |value|
-      distribution << [value, distribution_from_db[value] || 0]
-    end
-    option_titles = (1..field.maximum).index_with do |value|
-      locales.index_with { |_locale| value.to_s }
+    # Construct the multiloc values
+    answer_titles = (1..field.maximum).index_with do |value|
+      { title_multiloc: locales.index_with { |_locale| value.to_s } }
     end
     minimum_labels = field.minimum_label_multiloc.transform_values do |label|
       label.present? ? "1 - #{label}" : '1'
     end
-    option_titles[1].merge! minimum_labels
+    answer_titles[1][:title_multiloc].merge! minimum_labels
     maximum_labels = field.maximum_label_multiloc.transform_values do |label|
       label.present? ? "#{field.maximum} - #{label}" : field.maximum.to_s
     end
-    option_titles[field.maximum].merge! maximum_labels
-    collect_answers(field, distribution, option_titles)
+    answer_titles[field.maximum][:title_multiloc].merge! maximum_labels
+
+    field_attributes = visit_select_base field
+    field_attributes[:multilocs] = { answers: answer_titles }
+    field_attributes
   end
 
-  # Trigger back workflow
   def visit_file_upload(field)
     file_ids = inputs
       .select("custom_field_values->'#{field.key}'->'id' as value")
@@ -107,62 +103,116 @@ class SurveyResultsGeneratorService < FieldVisitorService
     files = IdeaFile.where(id: file_ids).map do |file|
       { name: file.name, url: file.file.url }
     end
-    {
-      inputType: field.input_type,
-      question: field.title_multiloc,
-      required: field.required,
-      totalResponses: files.size,
-      customFieldId: field.id,
+    response_count = files.size
+    core_field_attributes(field, response_count).merge({
       files: files
-    }
+    })
   end
 
   private
 
-  attr_reader :fields, :inputs, :locales
+  attr_reader :fields, :form, :inputs, :locales
 
-  def visit_select_base(field, values)
-    option_keys = field.options.pluck(:key)
-    distribution = Idea
-      .select(:value)
-      .from(values)
-      .group(:value)
-      .order(Arel.sql('COUNT(value) DESC'))
-      .count.to_a
-    (option_keys - distribution.pluck(0)).each do |key|
-      distribution << [key, 0] # add missing options with 0 responses
-    end
-    sorted_distribution = distribution.sort_by { |k, _v| k == 'other' ? 1 : 0 } # other should always be last
-    filtered_distribution = sorted_distribution.select { |(value, _count)| option_keys.include? value }
-    option_titles = field.options.each_with_object({}) do |option, accu|
-      accu[option.key] = option.title_multiloc
-    end
-    option_images = []
-    if field.support_option_images?
-      option_images = field.options.each_with_object({}) do |option, accu|
-        accu[option.key] = option.image&.image&.versions&.transform_values(&:url)
-      end
-    end
-    collect_answers(field, filtered_distribution, option_titles, option_images)
-  end
-
-  def collect_answers(field, distribution, option_titles, option_images = [])
-    answers = distribution.map do |(value, count)|
-      option = { answer: option_titles[value], responses: count }
-      option[:image] = option_images[value] if option_images.present?
-      option
-    end
-    answer_count = distribution.sum { |(_value, count)| count }
-    answers = {
+  def core_field_attributes(field, response_count)
+    {
       inputType: field.input_type,
       question: field.title_multiloc,
+      customFieldId: field.id,
       required: field.required,
-      totalResponses: answer_count,
-      answers: answers,
-      customFieldId: field.id
+      grouped: false,
+      totalResponseCount: @inputs.count, # TODO: JS - Should we only send this on the root?
+      questionResponseCount: response_count
     }
-    answers[:textResponses] = collect_other_text_responses(field) if field.other_option_text_field
-    answers
+  end
+
+  def visit_select_base(field, group_mode: nil, group_field_id: nil)
+    query = inputs
+    if group_field_id
+      if group_mode == 'user_field'
+        # Single user field grouped result
+        group_field = CustomField.find(group_field_id)
+        query = query.joins(:author)
+      else
+        # Single form field grouped result
+        group_field = find_question(group_field_id)
+      end
+      raise "Unsupported group field type: #{group_field.input_type}" unless group_field.input_type == 'select'
+
+      query = query.select(
+        select_query(field, as: 'answer'),
+        select_query(group_field, as: 'group')
+      )
+      answers = construct_grouped_answers(query, field, group_field)
+    else
+      query = query.select(
+        select_query(field, as: 'answer')
+      )
+      answers = construct_not_grouped_answers(query, field)
+    end
+
+    # Sort correctly
+    answers = answers.sort_by { |a| -a[:count] } unless field.input_type == 'linear_scale'
+    answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
+
+    # Build response
+    build_select_response(answers, field, group_field)
+
+    # binding.pry
+    # option_keys = field.options.pluck(:key)
+    #
+    # distribution = Idea
+    #   .select(:value)
+    #   .from(values)
+    #   .group(:value)
+    #   .order(Arel.sql('COUNT(value) DESC'))
+    #   .count.to_a
+    #
+    # (option_keys - distribution.pluck(0)).each do |key|
+    #   distribution << [key, 0] # add missing options with 0 responses
+    # end
+    # sorted_distribution = distribution.sort_by { |k, _v| k == 'other' ? 1 : 0 } # other should always be last
+    # filtered_distribution = sorted_distribution.select { |(value, _count)| option_keys.include? value }
+    # option_keys = field.options.each_with_object({}) do |option, accu|
+    #   accu[option.key] = option.key
+    # end
+    # option_images = []
+    # if field.support_option_images?
+    #   option_images = field.options.each_with_object({}) do |option, accu|
+    #     accu[option.key] = option.image&.image&.versions&.transform_values(&:url)
+    #   end
+    # end
+    # collect_answers(field, filtered_distribution, option_keys, option_images)
+  end
+
+  def build_select_response(answers, field, group_field)
+    # TODO: JS - This is an additional query so potential performance issue here
+    question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
+    attributes = core_field_attributes(field, question_response_count).merge({
+      grouped: !!group_field,
+      totalPicks: answers.pluck(:count).sum,
+      answers: answers,
+      multilocs: get_multilocs(field, group_field)
+    })
+
+    attributes[:textResponses] = collect_other_text_responses(field) if field.other_option_text_field
+
+    attributes[:legend] = group_field.options.map(&:key) + [nil] if group_field.present?
+
+    attributes
+  end
+
+  def get_multilocs(field, group_field)
+    multilocs = { answer: get_option_details(field) }
+    multilocs[:group] = get_option_details(group_field) if group_field
+    multilocs
+  end
+
+  def get_option_details(field)
+    field.options.each_with_object({}) do |option, accu|
+      option_detail = { title_multiloc: option.title_multiloc }
+      option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.support_option_images?
+      accu[option.key] = option_detail
+    end
   end
 
   def collect_other_text_responses(field)
@@ -172,5 +222,92 @@ class SurveyResultsGeneratorService < FieldVisitorService
       .map do |answer|
         { answer: answer.value }
       end
+  end
+
+  # Grouper methods
+  def find_question(question_field_id)
+    question = form.custom_fields.find_by(id: question_field_id)
+    raise 'Question not found' unless question
+
+    question
+  end
+
+  def select_query(field, as: 'answer')
+    table = field.resource_type == 'User' ? 'users' : 'ideas'
+
+    if %w[select linear_scale].include? field.input_type
+      "#{table}.custom_field_values->'#{field.key}' as #{as}"
+    else
+      %{
+          jsonb_array_elements(
+            CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@.#{field.key}))')
+              THEN #{table}.custom_field_values->'#{field.key}'
+              ELSE '[null]'::jsonb END
+          ) as #{as}
+      }
+    end
+  end
+
+  def construct_not_grouped_answers(query, field)
+    answer_keys = (field.input_type == 'linear_scale' ? (1..field.maximum).reverse_each.to_a : field.options.map(&:key)) + [nil]
+
+    grouped_answers_hash = apply_grouping(query)
+      .each_with_object({}) do |(answer, count), accu|
+      valid_answer = answer_keys.include?(answer) ? answer : nil
+
+      accu[valid_answer] ||= { answer: valid_answer, count: 0 }
+      accu[valid_answer][:count] += count
+    end
+
+    answer_keys.map do |key|
+      grouped_answers_hash[key] || { answer: key, count: 0 }
+    end
+  end
+
+  def construct_grouped_answers(query, question_field, group_field)
+    answer_keys = question_field.options.map(&:key) + [nil]
+    group_field_keys = group_field.options.map(&:key) + [nil]
+
+    # Create hash of grouped answers
+    grouped_answers_hash = apply_grouping(query, group: true)
+      .each_with_object({}) do |((answer, group), count), accu|
+      # We treat 'faulty' values (i.e. that don't exist in options) as nil
+      valid_answer = answer_keys.include?(answer) ? answer : nil
+
+      accu[valid_answer] ||= { answer: valid_answer, count: 0, groups: {} }
+      accu[valid_answer][:count] += count
+
+      # Same for group
+      valid_group = group_field_keys.include?(group) ? group : nil
+
+      accu[valid_answer][:groups][valid_group] ||= { group: valid_group, count: 0 }
+      accu[valid_answer][:groups][valid_group][:count] += count
+    end
+
+    # Construct answers array using order of custom field options
+    answers = answer_keys.map do |answer|
+      grouped_answer = grouped_answers_hash[answer] || { answer: answer, count: 0, groups: {} }
+
+      answers_row = {
+        answer: answer,
+        count: grouped_answer[:count],
+        groups: group_field_keys.map do |group|
+          grouped_answer[:groups][group] || { group: group, count: 0 }
+        end
+      }
+
+      answers_row
+    end
+
+    answers.sort_by { |a| -a[:count] }
+  end
+
+  # TODO: What does this do? An additional query
+  def apply_grouping(query, group: false)
+    Idea
+      .select(:answer)
+      .from(query)
+      .group(:answer, group ? :group : nil)
+      .count
   end
 end

@@ -5,7 +5,7 @@ import { Box, colors, Image } from '@citizenlab/cl2-component-library';
 import ProgressBars2 from 'components/admin/Graphs/ProgressBars2';
 
 // typings
-import { Answer } from 'api/survey_results/types';
+import { Answer, AnswerMultilocs } from 'api/survey_results/types';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -13,16 +13,26 @@ import useLocalize from 'hooks/useLocalize';
 interface Props {
   multipleChoiceAnswers: Answer[];
   totalResponses: number;
+  multilocs?: AnswerMultilocs;
 }
 
 const COLOR_SCHEME = [colors.primary];
 
-const MultipleChoice = ({ multipleChoiceAnswers, totalResponses }: Props) => {
+const MultipleChoice = ({
+  multipleChoiceAnswers,
+  totalResponses,
+  multilocs,
+}: Props) => {
   const localize = useLocalize();
 
   return (
     <>
-      {multipleChoiceAnswers.map(({ answer, responses, image }, index) => {
+      {multipleChoiceAnswers.map(({ answer, count }, index) => {
+        if (!multilocs || answer === null) return null;
+
+        const label = localize(multilocs.answer[answer].title_multiloc);
+        const image = multilocs.answer[answer].image;
+
         return (
           <Box
             key={index}
@@ -37,15 +47,15 @@ const MultipleChoice = ({ multipleChoiceAnswers, totalResponses }: Props) => {
                   width="48px"
                   height="48px"
                   src={image.small}
-                  alt={localize(answer)}
+                  alt={label}
                 />
               </Box>
             )}
             <ProgressBars2
-              values={[responses]}
+              values={[count]}
               total={totalResponses}
               colorScheme={COLOR_SCHEME}
-              label={localize(answer)}
+              label={label}
             />
           </Box>
         );

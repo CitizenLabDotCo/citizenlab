@@ -120,7 +120,7 @@ RSpec.describe ReportBuilder::SurveyResponseGrouper do
   end
 
   def city_survey_response(index)
-    # We add one faulthy value that is not in the options.
+    # We add one faulty value that is not in the options.
     # This will be treated as a nil value
     if index == 1
       return 'faulthy'
