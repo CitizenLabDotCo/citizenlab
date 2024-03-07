@@ -1,23 +1,31 @@
 import { useMemo, useState } from 'react';
 
+import moment from 'moment';
+
 import { useCommentsByTime as useCommentsByTimeData } from 'api/graph_data_units';
 
 import { parseTimeSeries } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/parse';
-import { QueryParameters } from 'components/admin/GraphCards/CommentsByTimeCard/useCommentsByTime/typings';
+import {
+  ProjectId,
+  DatesStrings,
+  Resolution,
+} from 'components/admin/GraphCards/typings';
+
+type QueryParameters = ProjectId & DatesStrings & Resolution;
 
 export default function useCommentsByTime({
   projectId,
-  startAtMoment,
-  endAtMoment,
+  startAt,
+  endAt,
   resolution,
 }: QueryParameters) {
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
   const dataUnits = useCommentsByTimeData(
     {
-      projectId,
-      startAtMoment,
-      endAtMoment,
+      project_id: projectId,
+      start_at: startAt,
+      end_at: endAt,
       resolution,
     },
     {
@@ -30,13 +38,13 @@ export default function useCommentsByTime({
       dataUnits?.data
         ? parseTimeSeries(
             dataUnits.data.attributes[0],
-            startAtMoment,
-            endAtMoment,
+            moment(startAt),
+            moment(endAt),
             currentResolution,
             dataUnits.data.attributes[1]
           )
         : null,
-    [dataUnits?.data, startAtMoment, endAtMoment, currentResolution]
+    [dataUnits?.data, startAt, endAt, currentResolution]
   );
 
   return { currentResolution, timeSeries };

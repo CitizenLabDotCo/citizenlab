@@ -4,6 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 import { useUsersByAgeLive } from 'api/graph_data_units';
+import { momentToIsoDate } from 'utils/dateUtils';
 import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
 
 import messages from 'containers/Admin/dashboard/messages';
@@ -31,9 +32,9 @@ const AgeChart = ({
   const graphRef = useRef();
 
   const { data: usersByBirthyear } = useUsersByAgeLive({
-    startAtMoment: startAt ? moment(startAt) : null,
-    endAtMoment: endAt ? moment(endAt) : null,
-    groupId: currentGroupFilter,
+    start_at: startAt ? momentToIsoDate(moment(startAt)) : null,
+    end_at: endAt ? momentToIsoDate(moment(endAt)) : null,
+    group_id: currentGroupFilter,
   });
   const ageSerie = convertToGraphFormat(usersByBirthyear, formatMessage);
 

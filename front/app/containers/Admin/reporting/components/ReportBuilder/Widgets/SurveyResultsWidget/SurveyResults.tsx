@@ -37,7 +37,7 @@ const SurveyResults = ({ phaseId, shownQuestions }: Props) => {
   );
 
   const formResults = useSurveyResults({
-    phaseId,
+    phase_id: phaseId,
   });
 
   const resultRows = useMemo(() => {
