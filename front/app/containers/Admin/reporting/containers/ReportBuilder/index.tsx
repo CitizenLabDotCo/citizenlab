@@ -27,7 +27,6 @@ import Toolbox from '../../components/ReportBuilder/Toolbox';
 import TopBar from '../../components/ReportBuilder/TopBar';
 import ViewContainer from '../../components/ReportBuilder/ViewContainer';
 import { View } from '../../components/ReportBuilder/ViewContainer/typings';
-import ViewPicker from '../../components/ReportBuilder/ViewContainer/ViewPicker';
 import { ReportContextProvider } from '../../context/ReportContext';
 import areCraftjsObjectsEqual from '../../utils/areCraftjsObjectsEqual';
 
@@ -119,6 +118,8 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
             reportId={reportId}
             isTemplate={!!templateProjectId || !!templatePhaseId}
             saved={saved}
+            view={view}
+            setView={setView}
             setSaved={handleSetSaved}
             setSelectedLocale={setSelectedLocale}
           />
@@ -129,7 +130,6 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
               platformLocale={platformLocale}
             >
               <StyledRightColumn>
-                {!!phaseId && <ViewPicker view={view} setView={setView} />}
                 <ViewContainer view={view}>
                   <Frame editorData={initialData}>
                     {emptyReportOnInit && templateProjectId ? (
