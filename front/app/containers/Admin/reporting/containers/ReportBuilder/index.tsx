@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
@@ -19,6 +19,8 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
 import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
@@ -32,16 +34,20 @@ import { ReportContextProvider } from '../../context/ReportContext';
 interface Props {
   report: ReportResponse;
   reportLayout: ReportLayout;
+  templateProjectId: string | null;
+  templatePhaseId: string | null;
 }
 
-const ReportBuilder = ({ report, reportLayout }: Props) => {
+const ReportBuilder = ({
+  report,
+  reportLayout,
+  templateProjectId,
+  templatePhaseId,
+}: Props) => {
   const reportId = report.data.id;
   const phaseId = report.data.relationships.phase?.data?.id;
 
   const platformLocale = useLocale();
-  const [search] = useSearchParams();
-  const templateProjectId = search.get('templateProjectId');
-  const templatePhaseId = search.get('templatePhaseId');
   const [view, setView] = useState<View>('pdf');
 
   const [initialData] = useState(() => {
@@ -137,6 +143,14 @@ const ReportBuilderWrapper = () => {
   const { data: report } = useReport(reportId);
   const { data: reportLayout } = useReportLayout(reportId);
 
+  const [search] = useSearchParams();
+  const [templateProjectId] = useState(search.get('templateProjectId'));
+  const [templatePhaseId] = useState(search.get('templatePhaseId'));
+
+  useEffect(() => {
+    removeSearchParams(['templateProjectId', 'templatePhaseId']);
+  }, []);
+
   const renderReportBuilder =
     reportBuilderEnabled &&
     pathname.includes('admin/reporting/report-builder') &&
@@ -146,7 +160,14 @@ const ReportBuilderWrapper = () => {
 
   if (!renderReportBuilder) return null;
 
-  return <ReportBuilder report={report} reportLayout={reportLayout.data} />;
+  return (
+    <ReportBuilder
+      report={report}
+      reportLayout={reportLayout.data}
+      templateProjectId={templateProjectId}
+      templatePhaseId={templatePhaseId}
+    />
+  );
 };
 
 export default ReportBuilderWrapper;
