@@ -2,11 +2,9 @@ import React, { memo, useState, useEffect, useContext, useRef } from 'react';
 
 import {
   Box,
-  Button,
   Title,
   useBreakpoint,
   media,
-  defaultStyles,
 } from '@citizenlab/cl2-component-library';
 import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
 import {
@@ -29,7 +27,6 @@ import { FormContext } from 'components/Form/contexts';
 import { FormSection } from 'components/UI/FormComponents';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
@@ -37,6 +34,8 @@ import {
   extractElementsByOtherOptionLogic,
   isVisible,
 } from '../Controls/visibilityUtils';
+
+import PageControlButtons from './PageControlButtons';
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
@@ -195,106 +194,93 @@ const CLPageLayout = memo(
 
         <Box
           width="100%"
+          height="100%"
           maxWidth="700px"
           display="flex"
           flexDirection="column"
           padding="12px 20px 30px 20px"
           margin="auto"
+          position="relative"
         >
-          {uiPages.map((page, index) => {
-            const pageElements = extractElementsByOtherOptionLogic(page, data);
-            return (
-              currentStep === index && (
-                <StyledFormSection key={index}>
-                  {page.options.title && (
-                    <Title variant="h2" mt="0" mb="24px" color="tenantPrimary">
-                      {page.options.title}
-                    </Title>
-                  )}
-                  {page.options.description && (
-                    <Box mb={pageElements.length >= 1 ? '48px' : '28px'}>
-                      <QuillEditedContent
-                        fontWeight={400}
-                        textColor={theme.colors.tenantText}
-                      >
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: page.options.description,
-                          }}
-                        />
-                      </QuillEditedContent>
-                    </Box>
-                  )}
-                  {pageElements.map((elementUiSchema, index) => {
-                    const key = elementUiSchema.scope.split('/').pop();
-                    const hasOtherFieldBelow =
-                      key &&
-                      (Array.isArray(data[key])
-                        ? data[key].includes('other')
-                        : data[key] === 'other');
-
-                    return (
-                      <Box
-                        width="100%"
-                        mb={hasOtherFieldBelow ? undefined : '28px'}
-                        key={index}
-                      >
-                        <JsonFormsDispatch
-                          renderers={renderers}
-                          cells={cells}
-                          uischema={elementUiSchema}
-                          schema={schema}
-                          path={path}
-                          enabled={enabled}
-                        />
-                      </Box>
-                    );
-                  })}
-                </StyledFormSection>
-              )
-            );
-          })}
           <Box
             display="flex"
-            flexDirection={isSmallerThanPhone ? 'column' : 'row-reverse'}
-            justifyContent="space-between"
-            width="100%"
-            mb="60px"
+            flex="1"
+            height="100%"
+            mb="160px"
+            overflowY="auto"
           >
-            <Button
-              onClick={handleNextAndSubmit}
-              data-cy={dataCyValue}
-              mb="20px"
-              icon={showSubmit ? undefined : 'chevron-right'}
-              iconPos="right"
-              key={currentStep.toString()}
-              bgColor={
-                showSubmit
-                  ? theme.colors.tenantSecondary
-                  : theme.colors.tenantPrimary
-              }
-              width="100%"
-              boxShadow={defaultStyles.boxShadow}
-              processing={isLoading}
-            >
-              <FormattedMessage
-                {...(showSubmit ? submitText : messages.next)}
-              />
-            </Button>
-            {hasPreviousPage && (
-              <Button
-                onClick={handlePrevious}
-                data-cy="e2e-previous-page"
-                mb="20px"
-                icon="chevron-left"
-                buttonStyle="white"
-                width="100%"
-                marginRight={isSmallerThanPhone ? '0px' : '16px'}
-              >
-                <FormattedMessage {...messages.previous} />
-              </Button>
-            )}
+            {uiPages.map((page, index) => {
+              const pageElements = extractElementsByOtherOptionLogic(
+                page,
+                data
+              );
+              return (
+                currentStep === index && (
+                  <StyledFormSection key={index}>
+                    {page.options.title && (
+                      <Title
+                        variant="h2"
+                        mt="0"
+                        mb="24px"
+                        color="tenantPrimary"
+                      >
+                        {page.options.title}
+                      </Title>
+                    )}
+                    {page.options.description && (
+                      <Box mb={pageElements.length >= 1 ? '48px' : '28px'}>
+                        <QuillEditedContent
+                          fontWeight={400}
+                          textColor={theme.colors.tenantText}
+                        >
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: page.options.description,
+                            }}
+                          />
+                        </QuillEditedContent>
+                      </Box>
+                    )}
+                    {pageElements.map((elementUiSchema, index) => {
+                      const key = elementUiSchema.scope.split('/').pop();
+                      const hasOtherFieldBelow =
+                        key &&
+                        (Array.isArray(data[key])
+                          ? data[key].includes('other')
+                          : data[key] === 'other');
+
+                      return (
+                        <Box
+                          width="100%"
+                          mb={hasOtherFieldBelow ? undefined : '28px'}
+                          key={index}
+                        >
+                          <JsonFormsDispatch
+                            renderers={renderers}
+                            cells={cells}
+                            uischema={elementUiSchema}
+                            schema={schema}
+                            path={path}
+                            enabled={enabled}
+                          />
+                        </Box>
+                      );
+                    })}
+                  </StyledFormSection>
+                )
+              );
+            })}
           </Box>
+          <PageControlButtons
+            handleNextAndSubmit={handleNextAndSubmit}
+            handlePrevious={handlePrevious}
+            hasPreviousPage={hasPreviousPage}
+            currentStep={currentStep}
+            isLoading={isLoading}
+            showSubmit={showSubmit}
+            dataCyValue={dataCyValue}
+            submitText={submitText}
+          />
         </Box>
       </>
     );
