@@ -6,8 +6,10 @@ import {
   Title,
   colors,
   IconButton,
+  TooltipContentWrapper,
 } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
+import Tippy from '@tippyjs/react';
 import { Locale } from 'typings';
 
 import usePhase from 'api/phases/usePhase';
@@ -18,6 +20,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
+import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
@@ -42,7 +45,7 @@ type ContentBuilderTopBarProps = {
   saved: boolean;
   view: View;
   setView: (view: View) => void;
-  setSaved: React.Dispatch<React.SetStateAction<boolean>>;
+  setSaved: () => void;
   setSelectedLocale: React.Dispatch<React.SetStateAction<Locale>>;
 };
 
@@ -58,8 +61,6 @@ const ContentBuilderTopBar = ({
   setSaved,
   setSelectedLocale,
 }: ContentBuilderTopBarProps) => {
-  const { formatMessage } = useIntl();
-
   const [initialized, setInitialized] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
   const { query } = useEditor();
@@ -67,9 +68,12 @@ const ContentBuilderTopBar = ({
   const { projectId, phaseId } = useReportContext();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   const disableSave = !!hasError || !!hasPendingState || saved;
+  const disablePrint = !!hasError || !!hasPendingState || !saved;
 
   const closeModal = () => {
     setShowQuitModal(false);
@@ -102,7 +106,7 @@ const ContentBuilderTopBar = ({
       },
       {
         onSuccess: () => {
-          setSaved(true);
+          setSaved();
 
           removeSearchParams(['templateProjectId', 'templatePhaseId']);
         },
@@ -151,7 +155,7 @@ const ContentBuilderTopBar = ({
           },
           {
             onSuccess: () => {
-              setSaved(true);
+              setSaved();
 
               removeSearchParams(['templateProjectId', 'templatePhaseId']);
             },
@@ -213,16 +217,31 @@ const ContentBuilderTopBar = ({
           </Box>
         )}
         <Box ml="32px">
-          <Button
-            icon="print"
-            buttonStyle="secondary"
-            iconColor={colors.textPrimary}
-            iconSize="16px"
-            px="12px"
-            py="8px"
-            linkTo={`/admin/reporting/report-builder/${reportId}/print`}
-            openLinkInNewTab
-          />
+          <Tippy
+            interactive={false}
+            placement="bottom"
+            disabled={!disablePrint}
+            zIndex={CONTENT_BUILDER_Z_INDEX.tooltip}
+            content={
+              <TooltipContentWrapper tippytheme="light">
+                {formatMessage(messages.cannotPrint)}
+              </TooltipContentWrapper>
+            }
+          >
+            <div>
+              <Button
+                icon="print"
+                buttonStyle="secondary"
+                iconColor={colors.textPrimary}
+                iconSize="16px"
+                px="12px"
+                py="8px"
+                linkTo={`/admin/reporting/report-builder/${reportId}/print`}
+                openLinkInNewTab
+                disabled={disablePrint}
+              />
+            </div>
+          </Tippy>
         </Box>
         <SaveButton
           disabled={disableSave}
