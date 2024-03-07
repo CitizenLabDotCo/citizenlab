@@ -21,7 +21,6 @@ import useLocale from 'hooks/useLocale';
 import { configureMapView } from './config';
 import { InitialData } from './types';
 import { getDefaultBasemap, handleWebMapReferenceLayers } from './utils';
-import '@arcgis/core/assets/esri/css/main.css';
 
 // Custom Esri styles
 const MapContainer = styled(Box)`
