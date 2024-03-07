@@ -2495,7 +2495,7 @@
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widgets",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noInsights": "No insights available",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Question",
-  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.surveyPhase": "Survey phase",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.selectPhase": "Select phase",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.featureLockedReason1": "This is not included in your current plan. Reach out to your Government Success Manager or admin to unlock it.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupBySurveyQuestion": "Group by survey question",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupByUserField": "Group by user field",
