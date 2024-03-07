@@ -84,9 +84,10 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
       {showAnalyses && (
         <Analyses
           projectId={projectId}
-          phaseId={isNativeSurveyPhase ? phaseId : undefined}
+          phaseId={phaseId}
           questionId={questionId}
           selectedLocale={selectedLocale}
+          participationMethod={phase?.data.attributes.participation_method}
         />
       )}
     </Box>

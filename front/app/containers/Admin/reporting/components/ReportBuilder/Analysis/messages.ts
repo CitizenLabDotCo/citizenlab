@@ -10,7 +10,12 @@ export default defineMessages({
     defaultMessage: 'Question',
   },
   noInsights: {
-    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noInsights',
-    defaultMessage: 'No insights available',
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights',
+    defaultMessage:
+      'There are no available AI insights. You can create them in your project.',
+  },
+  openProject: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject',
+    defaultMessage: 'Go to project',
   },
 });

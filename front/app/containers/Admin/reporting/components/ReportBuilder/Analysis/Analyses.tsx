@@ -1,8 +1,12 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useAnalyses from 'api/analyses/useAnalyses';
+import { ParticipationMethod } from 'api/phases/types';
+
+import Divider from 'components/admin/Divider';
+import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -14,16 +18,18 @@ const Analyses = ({
   phaseId,
   questionId,
   selectedLocale,
+  participationMethod,
 }: {
   projectId?: string;
   phaseId?: string;
   questionId?: string;
   selectedLocale: string;
+  participationMethod?: ParticipationMethod;
 }) => {
   const { formatMessage } = useIntl();
   const { data: analyses, isLoading } = useAnalyses({
-    projectId: phaseId ? undefined : projectId,
-    phaseId,
+    projectId: participationMethod === 'ideation' ? projectId : undefined,
+    phaseId: participationMethod === 'native_survey' ? phaseId : undefined,
   });
 
   const relevantAnalyses = questionId
@@ -33,8 +39,23 @@ const Analyses = ({
       )
     : analyses?.data;
 
+  const projectLink =
+    participationMethod === 'ideation'
+      ? `/admin/projects/${projectId}/phases/${phaseId}/ideas`
+      : `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
+
   if (relevantAnalyses?.length === 0 && !isLoading) {
-    return <Text>{formatMessage(messages.noInsights)}</Text>;
+    return (
+      <Box>
+        <Divider />
+        <Text>{formatMessage(messages.noInsights)}</Text>
+        <Box display="flex">
+          <Button linkTo={projectLink} buttonStyle="secondary" openLinkInNewTab>
+            {formatMessage(messages.openProject)}
+          </Button>
+        </Box>
+      </Box>
+    );
   }
 
   return (
