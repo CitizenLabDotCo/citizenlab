@@ -148,6 +148,7 @@ const ImageMultichoiceControl = ({
                   checkedColor="tenantSecondary"
                   id={`${path}-checkbox-${index}`}
                   label=""
+                  data-cy="e2e-image-multichoice-control-checkbox"
                   checked={dataArray.includes(option.value)}
                   onChange={() => {
                     if (dataArray.includes(option.value)) {

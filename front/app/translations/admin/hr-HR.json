@@ -72,7 +72,6 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Nije odabrano nijedno pitanje. Prvo odaberite pitanje.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Nema odgovora",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} odgovora",
-  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.sourceAndReference": "Podaci od {phase} tijekom {period}",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.surveyQuestion": "Anketno pitanje",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} do sada",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Naslov",

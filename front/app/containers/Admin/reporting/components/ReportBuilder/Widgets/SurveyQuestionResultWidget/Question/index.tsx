@@ -14,12 +14,10 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import GroupedBars from './GroupedBars';
-import Source from './Source';
 import UngroupedBars from './UngroupedBars';
 import { getColorScheme, getLegendLabels } from './utils';
 
 interface Props {
-  projectId: string;
   phaseId: string;
   questionId: string;
   groupMode?: GroupMode;
@@ -27,7 +25,6 @@ interface Props {
 }
 
 const SurveyQuestionResult = ({
-  projectId,
   phaseId,
   questionId,
   groupMode,
@@ -52,7 +49,7 @@ const SurveyQuestionResult = ({
     : undefined;
 
   return (
-    <>
+    <Box mb="8px">
       <Title
         variant="h4"
         mt="0px"
@@ -79,8 +76,7 @@ const SurveyQuestionResult = ({
       )}
 
       {!attributes.grouped && <UngroupedBars attributes={attributes} />}
-      <Source projectId={projectId} phaseId={phaseId} />
-    </>
+    </Box>
   );
 };
 

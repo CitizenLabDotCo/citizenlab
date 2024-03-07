@@ -19,7 +19,7 @@ import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
@@ -34,7 +34,7 @@ type ContentBuilderTopBarProps = {
   reportId: string;
   isTemplate: boolean;
   saved: boolean;
-  setSaved: React.Dispatch<React.SetStateAction<boolean>>;
+  setSaved: () => void;
   setSelectedLocale: React.Dispatch<React.SetStateAction<Locale>>;
 };
 
@@ -56,8 +56,10 @@ const ContentBuilderTopBar = ({
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   const disableSave = !!hasError || !!hasPendingState || saved;
+  const disablePrint = !!hasError || !!hasPendingState || !saved;
 
   const closeModal = () => {
     setShowQuitModal(false);
@@ -90,7 +92,7 @@ const ContentBuilderTopBar = ({
       },
       {
         onSuccess: () => {
-          setSaved(true);
+          setSaved();
 
           removeSearchParams(['templateProjectId', 'templatePhaseId']);
         },
@@ -139,7 +141,7 @@ const ContentBuilderTopBar = ({
           },
           {
             onSuccess: () => {
-              setSaved(true);
+              setSaved();
 
               removeSearchParams(['templateProjectId', 'templatePhaseId']);
             },
@@ -217,7 +219,12 @@ const ContentBuilderTopBar = ({
           onSelectLocale={setSelectedLocale}
         />
         <Box mx="20px">
-          <PrintReportButton reportId={reportId} />
+          <PrintReportButton
+            reportId={reportId}
+            disabledTooltipText={
+              disablePrint ? formatMessage(messages.cannotPrint) : undefined
+            }
+          />
         </Box>
         <SaveButton
           disabled={disableSave}

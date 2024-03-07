@@ -21,4 +21,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.cancelQuitButtonText',
     defaultMessage: 'Cancel',
   },
+  cannotPrint: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint',
+    defaultMessage:
+      'This report contains unsaved changes. Please save before printing.',
+  },
 });

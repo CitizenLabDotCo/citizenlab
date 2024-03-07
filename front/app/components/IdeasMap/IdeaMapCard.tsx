@@ -13,7 +13,7 @@ import { darken } from 'polished';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IIdeaData } from 'api/ideas/types';
+import { IIdeaMarkerData } from 'api/idea_markers/types';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -28,8 +28,6 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
-
-// config
 
 const Container = styled.div`
   text-align: left;
@@ -115,7 +113,7 @@ const FooterValue = styled.div`
 `;
 
 interface Props {
-  idea: IIdeaData;
+  idea: IIdeaMarkerData;
   onSelectIdea: (ideaId: string | null) => void;
   onClose?: () => void;
   className?: string;

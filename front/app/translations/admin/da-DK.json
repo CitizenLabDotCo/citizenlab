@@ -72,7 +72,6 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Intet spørgsmål valgt. Vælg venligst et spørgsmål først.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Intet svar",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} svar",
-  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.sourceAndReference": "Data fra {phase} under {period}",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.surveyQuestion": "Spørgsmål til undersøgelsen",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} indtil nu",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Titel",

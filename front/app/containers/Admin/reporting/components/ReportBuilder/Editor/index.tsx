@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Editor as CraftEditor } from '@craftjs/core';
+import { Editor as CraftEditor, QueryMethods } from '@craftjs/core';
+import { QueryCallbacksFor } from '@craftjs/utils';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
@@ -14,7 +15,7 @@ import RenderNode from './RenderNode';
 type EditorProps = {
   children: React.ReactNode;
   isPreview: boolean;
-  onNodesChange?: () => void;
+  onNodesChange?: (query: QueryCallbacksFor<typeof QueryMethods>) => void;
 };
 
 const resolver = {
@@ -46,8 +47,8 @@ const Editor: React.FC<EditorProps> = ({
       }}
       onRender={isPreview ? PlainDiv : RenderNode}
       enabled={isPreview ? false : true}
-      onNodesChange={() => {
-        onNodesChange?.();
+      onNodesChange={(query) => {
+        onNodesChange?.(query);
       }}
     >
       {children}

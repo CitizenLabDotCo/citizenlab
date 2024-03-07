@@ -1,9 +1,14 @@
 import React from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
+import {
+  TooltipContentWrapper,
+  colors,
+} from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 
 import useReport from 'api/reports/useReport';
 
+import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -12,9 +17,10 @@ import messages from '../messages';
 
 interface Props {
   reportId: string;
+  disabledTooltipText?: string;
 }
 
-const PrintReportButton = ({ reportId }: Props) => {
+const PrintReportButton = ({ reportId, disabledTooltipText }: Props) => {
   const { data: report } = useReport(reportId);
   const printReportPath = `/admin/reporting/report-builder/${reportId}/print`;
 
@@ -24,19 +30,31 @@ const PrintReportButton = ({ reportId }: Props) => {
     report.data.attributes.action_descriptor.editing_report.enabled;
 
   return (
-    <>
-      <Button
-        icon="blank-paper"
-        buttonStyle="primary"
-        bgColor={colors.primary}
-        iconSize="18px"
-        linkTo={printReportPath}
-        disabled={!canEdit}
-        openLinkInNewTab
-      >
-        <FormattedMessage {...messages.print} />
-      </Button>
-    </>
+    <Tippy
+      interactive={false}
+      placement="bottom"
+      disabled={!disabledTooltipText}
+      zIndex={CONTENT_BUILDER_Z_INDEX.tooltip}
+      content={
+        <TooltipContentWrapper tippytheme="light">
+          {disabledTooltipText}
+        </TooltipContentWrapper>
+      }
+    >
+      <div>
+        <Button
+          icon="blank-paper"
+          buttonStyle="primary"
+          bgColor={colors.primary}
+          iconSize="18px"
+          linkTo={printReportPath}
+          disabled={!canEdit || !!disabledTooltipText}
+          openLinkInNewTab
+        >
+          <FormattedMessage {...messages.print} />
+        </Button>
+      </div>
+    </Tippy>
   );
 };
 
