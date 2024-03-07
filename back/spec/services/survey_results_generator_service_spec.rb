@@ -667,11 +667,11 @@ RSpec.describe SurveyResultsGeneratorService do
           grouped: false,
           totalResponseCount: 22,
           questionResponseCount: 6,
-          totalPicks: 6,
+          totalPicks: 22,
           answers: [
+            { answer: nil, count: 16 },
             { answer: 'la', count: 2 },
             { answer: 'ny', count: 1 },
-            { answer: nil, count: 16 },
             { answer: 'other', count: 3 }
           ],
           multilocs: {
@@ -696,8 +696,8 @@ RSpec.describe SurveyResultsGeneratorService do
 
         it 'returns select answers in order of the number of responses, with other always last' do
           answers = generator.generate_results.dig(:results, 4, :answers)
-          expect(answers.pluck(:answer)).to eq ['la', 'ny', nil, 'other']
-          expect(answers.pluck(:count)).to eq [2, 1, 0, 3]
+          expect(answers.pluck(:answer)).to eq [nil, 'la', 'ny', 'other']
+          expect(answers.pluck(:count)).to eq [16, 2, 1, 3]
         end
 
         it '#get_result returns the correct results for a select field' do

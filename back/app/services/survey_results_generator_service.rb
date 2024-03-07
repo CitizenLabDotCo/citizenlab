@@ -236,7 +236,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     table = field.resource_type == 'User' ? 'users' : 'ideas'
 
     if %w[select linear_scale].include? field.input_type
-      "#{table}.custom_field_values->'#{field.key}' as #{as}"
+      "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
     else
       %{
           jsonb_array_elements(
