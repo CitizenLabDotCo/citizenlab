@@ -228,6 +228,8 @@ RSpec.describe SurveyResultsGeneratorService do
     )
   end
 
+  let!(:map_config) { create(:map_config, mappable: point_field) }
+
   let(:expected_result) do
     {
       results: [
@@ -372,6 +374,7 @@ RSpec.describe SurveyResultsGeneratorService do
           required: false,
           totalResponses: 2,
           customFieldId: point_field.id,
+          mapConfigId: map_config.id,
           pointResponses: a_collection_containing_exactly(
             { answer: { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } },
             { answer: { 'coordinates' => [11.22, 33.44], 'type' => 'Point' } }
