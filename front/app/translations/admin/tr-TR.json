@@ -783,7 +783,6 @@
   "app.containers.Admin.projects.project.information.ReportTab.modalDescription": "Geçmiş bir aşama için rapor oluşturun veya sıfırdan başlayın.",
   "app.containers.Admin.projects.project.information.ReportTab.phaseTemplate": "Bir faz şablonu ile başlayın",
   "app.containers.Admin.projects.project.information.ReportTab.report": "Rapor",
-  "app.containers.Admin.projects.project.information.ReportTab.reportVisible": "Kamuoyu tarafından görülebilen rapor",
   "app.containers.Admin.projects.project.information.ReportTab.shareResults": "Geçmiş bir anketin veya fikir aşamasının sonuçlarını paylaşın",
   "app.containers.Admin.projects.project.information.areYouSureYouWantToDelete": "Bu raporu silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Faza ekle",

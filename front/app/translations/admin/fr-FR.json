@@ -783,7 +783,6 @@
   "app.containers.Admin.projects.project.information.ReportTab.modalDescription": "Générez un rapport basé sur une phase précédente ou commencez avec une page blanche.",
   "app.containers.Admin.projects.project.information.ReportTab.phaseTemplate": "Commencez à partir d'un modèle",
   "app.containers.Admin.projects.project.information.ReportTab.report": "Rapport",
-  "app.containers.Admin.projects.project.information.ReportTab.reportVisible": "Rapport visible publiquement",
   "app.containers.Admin.projects.project.information.ReportTab.shareResults": "partager les résultats d'une enquête ou d'une phase de vote passée ;",
   "app.containers.Admin.projects.project.information.areYouSureYouWantToDelete": "Êtes-vous sûr de vouloir supprimer ce rapport ? Cette action ne peut pas être annulée.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Ajouter à la phase",
