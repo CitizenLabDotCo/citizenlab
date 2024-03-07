@@ -238,6 +238,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               getAjvErrorMessage={getAjvErrorMessage}
               getApiErrorMessage={getApiErrorMessage}
               inputId={ideaId}
+              hideOverflowContent
               title={
                 <>
                   <SurveyHeading
