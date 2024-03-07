@@ -81,6 +81,7 @@ interface Props {
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
   footer?: React.ReactNode;
+  hideOverflowContent?: boolean;
 }
 
 interface InnerProps extends Props {
@@ -104,6 +105,7 @@ const Form = memo(
     footer,
     onChange,
     onSubmit,
+    hideOverflowContent,
   }: InnerProps) => {
     const { formatMessage } = useIntl();
 
@@ -175,6 +177,7 @@ const Form = memo(
       >
         <Box
           overflow={layoutType === 'inline' ? 'visible' : 'auto'}
+          overflowY={hideOverflowContent ? 'hidden' : undefined}
           flex="1"
           marginBottom={
             layoutType === 'fullpage' && showSubmitButton ? '32px' : 'auto'
