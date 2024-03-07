@@ -52,7 +52,7 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
 
   const showAnalyses = isNativeSurveyPhase
     ? projectId && phaseId && questionId
-    : projectId;
+    : projectId && phaseId;
 
   return (
     <Box>
@@ -64,11 +64,10 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
 
       {projectId !== undefined && (
         <PhaseFilter
-          hideIfNoAppropriatePhases
-          label={formatMessage(messages.surveyPhase)}
+          label={formatMessage(messages.selectPhase)}
           projectId={projectId}
           phaseId={phaseId}
-          participationMethods={['native_survey']}
+          participationMethods={['native_survey', 'ideation']}
           onPhaseFilter={handlePhaseFilter}
         />
       )}

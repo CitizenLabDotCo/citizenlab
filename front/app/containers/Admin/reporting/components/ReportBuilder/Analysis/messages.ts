@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  surveyPhase: {
-    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.surveyPhase',
-    defaultMessage: 'Survey phase',
+  selectPhase: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.selectPhase',
+    defaultMessage: 'Select phase',
   },
   question: {
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question',
