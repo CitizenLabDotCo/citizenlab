@@ -331,9 +331,23 @@ class User < ApplicationRecord
     token_lifetime = AppConfiguration.instance.settings('core', 'authentication_token_lifetime_in_days').days
     {
       sub: id,
-      roles: roles,
+      roles: compacted_roles,
       exp: token_lifetime.from_now.to_i
     }
+  end
+
+  # Returns roles excluding the `project_moderator` roles that are redundant with
+  # `project_folder_moderator` roles (i.e. the user is a project moderator for a
+  # project that is in a folder that they moderate).
+  def compacted_roles
+    redundant_project_ids = AdminPublication
+      .joins(:parent)
+      .where(parent: { publication_id: moderated_project_folder_ids })
+      .pluck(:publication_id)
+
+    roles.reject do |role|
+      role['type'] == 'project_moderator' && role['project_id'].in?(redundant_project_ids)
+    end
   end
 
   def avatar_blank?
