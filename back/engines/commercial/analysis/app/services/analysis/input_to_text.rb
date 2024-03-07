@@ -81,7 +81,7 @@ module Analysis
       # input to a plaintext representation suitable for a LLM), so we are
       # reusing this. Probably this should be changed to its own implementation
       # once we optimize further for the LLM use case.
-      vv = XlsxExport::ValueVisitor.new(input, {}, app_configuration: @app_configuration)
+      vv = XlsxExport::ValueVisitor.new(input, custom_field.options.index_by(&:key), app_configuration: @app_configuration)
       @memoized_field_values[input.id][custom_field.id] = custom_field.accept(vv)
     end
 
