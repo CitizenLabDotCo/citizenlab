@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 
@@ -37,39 +42,55 @@ const Summary = ({
   }
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-between"
-      gap="16px"
-    >
-      <DraggableInsight
-        id="e2e-draggable-insight"
-        component={
-          <TextMultiloc text={{ [selectedLocale]: removeRefs(summary) }} />
-        }
+    <Box display="flex" flexDirection="column" justifyContent="space-between">
+      <Box
+        border={`1px solid ${colors.borderLight}`}
+        padding="8px"
+        borderBottom={`1px solid ${colors.white}`}
+        borderRadius={stylingConsts.borderRadius}
+        w="fit-content"
+        zIndex={'1'}
+        style={{
+          cursor: 'grab',
+        }}
       >
-        <Icon name="menu" />
-      </DraggableInsight>
-      <SummaryHeader />
-      <InsightBody
-        text={summary}
-        filters={filters}
-        analysisId={analysisId}
-        projectId={projectId}
-        phaseId={phaseId}
-        generatedAt={generatedAt}
-        backgroundTaskId={data?.data.relationships.background_task.data.id}
-      />
+        <DraggableInsight
+          id="e2e-draggable-insight"
+          component={
+            <TextMultiloc text={{ [selectedLocale]: removeRefs(summary) }} />
+          }
+        >
+          <Icon name="menu" fill={colors.textSecondary} />
+        </DraggableInsight>
+      </Box>
 
-      <InsightFooter
-        filters={filters}
-        generatedAt={generatedAt}
-        analysisId={analysisId}
-        projectId={projectId}
-        phaseId={phaseId}
-        customFieldIds={data?.data.attributes.custom_field_ids}
-      />
+      <Box
+        border={`1px solid ${colors.borderLight}`}
+        borderRadius={stylingConsts.borderRadius}
+        px="12px"
+        py="8px"
+        mt="-1px"
+      >
+        <SummaryHeader />
+        <InsightBody
+          text={summary}
+          filters={filters}
+          analysisId={analysisId}
+          projectId={projectId}
+          phaseId={phaseId}
+          generatedAt={generatedAt}
+          backgroundTaskId={data?.data.relationships.background_task.data.id}
+        />
+
+        <InsightFooter
+          filters={filters}
+          generatedAt={generatedAt}
+          analysisId={analysisId}
+          projectId={projectId}
+          phaseId={phaseId}
+          customFieldIds={data?.data.attributes.custom_field_ids}
+        />
+      </Box>
     </Box>
   );
 };
