@@ -49,7 +49,7 @@ resource 'Map Configs' do
     end
   end
 
-  shared_examples 'unauthorized POST, PATCH and DELETE map config' do
+  shared_examples 'unauthorized POST, PATCH, DELETE map config, and POST duplicate_map_config_and_layers' do
     post 'web_api/v1/map_configs', document: false do
       example_request 'Cannot create a map config for a project' do
         expect(status).to eq 401
@@ -68,6 +68,14 @@ resource 'Map Configs' do
       let(:id) { create(:map_config, mappable: nil).id }
 
       example_request 'Cannot delete the map config for a project' do
+        expect(status).to eq 401
+      end
+    end
+
+    post 'web_api/v1/map_configs/:id/duplicate_map_config_and_layers', document: false do
+      let(:id) { create(:map_config, mappable: nil).id }
+
+      example_request 'Cannot duplicate a map config for a project' do
         expect(status).to eq 401
       end
     end
@@ -238,16 +246,83 @@ resource 'Map Configs' do
     end
   end
 
+  shared_examples 'authorized POST duplicate_map_config_and_layers' do
+    post 'web_api/v1/map_configs/:id/duplicate_map_config_and_layers' do
+      let(:custom_field_point) { create(:custom_field_point) }
+
+      context 'when the map config has GeoJSON layers' do
+        let!(:map_config) do
+          create(
+            :map_config,
+            :with_positioning,
+            :with_tile_provider,
+            :with_esri_web_map_id,
+            :with_esri_base_map_id,
+            :with_geojson_layers,
+            mappable: custom_field_point
+          )
+        end
+        let(:id) { map_config.id }
+
+        example_request 'Duplicates a map config and its layers successfully' do
+          expect(status).to eq 201
+          expect(attributes['center_geojson']).to eq map_config.center_geojson
+          expect(attributes['tile_provider']).to eq map_config.tile_provider
+          expect(attributes['esri_web_map_id']).to eq map_config.esri_web_map_id
+          expect(attributes['esri_base_map_id']).to eq map_config.esri_base_map_id
+          expect(json_response['data']['relationships']['mappable']['data']).to be_nil
+
+          original_layers = map_config.layers
+          duplicated_layers = CustomMaps::MapConfig.find(json_response['data']['id']).layers
+
+          expect(duplicated_layers.size).to eq original_layers.size
+          expect(duplicated_layers.map(&:title_multiloc)).to match_array original_layers.map(&:title_multiloc)
+          expect(duplicated_layers.map(&:type)).to match_array original_layers.map(&:type)
+          expect(duplicated_layers.map(&:ordering)).to match_array original_layers.map(&:ordering)
+          expect(duplicated_layers.map(&:geojson)).to match_array original_layers.map(&:geojson)
+        end
+      end
+
+      context 'when the map config has Esri Feature layers' do
+        let!(:map_config) do
+          create(
+            :map_config,
+            :with_positioning,
+            :with_tile_provider,
+            :with_esri_web_map_id,
+            :with_esri_base_map_id,
+            :with_esri_feature_layers,
+            mappable: custom_field_point
+          )
+        end
+        let(:id) { map_config.id }
+
+        example_request 'Duplicates a map config and its layers successfully' do
+          expect(status).to eq 201
+
+          original_layers = map_config.layers
+          duplicated_layers = CustomMaps::MapConfig.find(json_response['data']['id']).layers
+
+          expect(duplicated_layers.size).to eq original_layers.size
+          expect(duplicated_layers.map(&:title_multiloc)).to match_array original_layers.map(&:title_multiloc)
+          expect(duplicated_layers.map(&:type)).to match_array original_layers.map(&:type)
+          expect(duplicated_layers.map(&:ordering)).to match_array original_layers.map(&:ordering)
+          expect(duplicated_layers.map(&:layer_url)).to match_array original_layers.map(&:layer_url)
+        end
+      end
+    end
+  end
+
   context 'when not logged in' do
     include_examples 'GET map_config'
-    include_examples 'unauthorized POST, PATCH and DELETE map config'
+    include_examples 'unauthorized POST, PATCH, DELETE map config, and POST duplicate_map_config_and_layers'
   end
 
   context 'when resident' do
     before { resident_header_token }
 
     include_examples 'GET map_config'
-    include_examples 'unauthorized POST, PATCH and DELETE map config'
+    include_examples 'unauthorized POST, PATCH, DELETE map config, and POST duplicate_map_config_and_layers'
   end
 
   context 'when logged in as an admin' do
@@ -259,6 +334,7 @@ resource 'Map Configs' do
     include_examples 'authorized POST map config'
     include_examples 'authorized PATCH map config'
     include_examples 'authorized DELETE map config'
+    include_examples 'authorized POST duplicate_map_config_and_layers'
   end
 
   context 'when logged in as a project moderator' do
@@ -271,5 +347,6 @@ resource 'Map Configs' do
     include_examples 'authorized POST map config'
     include_examples 'authorized PATCH map config'
     include_examples 'authorized DELETE map config'
+    include_examples 'authorized POST duplicate_map_config_and_layers'
   end
 end
