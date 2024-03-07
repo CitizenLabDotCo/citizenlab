@@ -145,8 +145,6 @@ const RenderNode = ({ render }) => {
           ? colors.red600
           : solidBorderIsVisible
           ? colors.primary
-          : isSelectable
-          ? 'transparent'
           : 'transparent'
       }
       isRoot={id === ROOT_NODE}
