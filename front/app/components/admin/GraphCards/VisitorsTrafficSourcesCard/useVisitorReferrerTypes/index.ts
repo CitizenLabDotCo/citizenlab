@@ -1,5 +1,5 @@
 import { useVisitorsTrafficSourcesLive } from 'api/graph_data_units';
-import { formatMoment } from 'api/graph_data_units/utils';
+import { momentToIsoDate } from 'utils/dateUtils';
 
 import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
 
@@ -17,8 +17,8 @@ export default function useVisitorsReferrerTypes({
 }: QueryParameters) {
   const { data: analytics } = useVisitorsTrafficSourcesLive({
     project_id: projectId,
-    start_at: formatMoment(startAtMoment),
-    end_at: formatMoment(endAtMoment),
+    start_at: momentToIsoDate(startAtMoment),
+    end_at: momentToIsoDate(endAtMoment),
   });
 
   const { formatMessage } = useIntl();

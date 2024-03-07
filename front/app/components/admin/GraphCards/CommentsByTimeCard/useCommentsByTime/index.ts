@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import { useCommentsByTimeLive } from 'api/graph_data_units';
-import { formatMoment } from 'api/graph_data_units/utils';
+import { momentToIsoDate } from 'utils/dateUtils';
 
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
@@ -21,8 +21,8 @@ export default function useCommentsByTime({
   const { data: analytics } = useCommentsByTimeLive(
     {
       project_id: projectId,
-      start_at: formatMoment(startAtMoment),
-      end_at: formatMoment(endAtMoment),
+      start_at: momentToIsoDate(startAtMoment),
+      end_at: momentToIsoDate(endAtMoment),
       resolution,
     },
     {

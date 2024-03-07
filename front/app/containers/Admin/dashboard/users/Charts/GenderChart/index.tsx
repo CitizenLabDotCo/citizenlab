@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import moment from 'moment';
 
 import { useUsersByGenderLive } from 'api/graph_data_units';
-import { formatMoment } from 'api/graph_data_units/utils';
+import { momentToIsoDate } from 'utils/dateUtils';
 import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
 
 import messages from 'containers/Admin/dashboard/messages';
@@ -31,8 +31,8 @@ const GenderChart = ({
   const { formatMessage } = useIntl();
 
   const { data: usersByGender } = useUsersByGenderLive({
-    start_at: startAt ? formatMoment(moment(startAt)) : null,
-    end_at: endAt ? formatMoment(moment(endAt)) : null,
+    start_at: startAt ? momentToIsoDate(moment(startAt)) : null,
+    end_at: endAt ? momentToIsoDate(moment(endAt)) : null,
     group_id: currentGroupFilter,
   });
   const serie = convertToGraphFormat(usersByGender, formatMessage);
