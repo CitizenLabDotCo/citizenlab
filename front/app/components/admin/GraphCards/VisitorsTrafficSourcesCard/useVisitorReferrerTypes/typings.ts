@@ -1,7 +1,3 @@
-import { ProjectId, Dates } from '../../typings';
-
-export type QueryParameters = ProjectId & Dates;
-
 export interface TrafficSourcesRow {
   count: number;
   'dimension_referrer_type.id': string;
