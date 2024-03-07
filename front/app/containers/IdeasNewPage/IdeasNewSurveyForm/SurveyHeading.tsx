@@ -13,7 +13,6 @@ import { useSearchParams } from 'react-router-dom';
 import { IProjectData } from 'api/projects/types';
 
 import Button from 'components/UI/Button';
-import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -45,7 +44,6 @@ const SurveyHeading = ({
   const isSmallerThanPhone = useBreakpoint('phone');
   const showEditSurveyButton = !isSmallerThanPhone && canEditSurvey;
   const [showLeaveModal, setShowLeaveModal] = useState(false);
-  const shouldCenterTopBarContent = !isSmallerThanPhone;
   const openModal = () => {
     setShowLeaveModal(true);
   };
@@ -55,18 +53,6 @@ const SurveyHeading = ({
 
   return (
     <>
-      {isSmallerThanPhone && (
-        <>
-          <Box
-            padding="20px"
-            display="flex"
-            justifyContent="flex-start"
-            width="100%"
-          >
-            <GoBackButton onClick={openModal} />
-          </Box>
-        </>
-      )}
       <Box
         width="100%"
         display="flex"
@@ -78,52 +64,49 @@ const SurveyHeading = ({
       >
         <Box
           display="flex"
-          width={shouldCenterTopBarContent ? '100%' : undefined}
+          width="100%"
           flexDirection="row"
           justifyContent={showEditSurveyButton ? 'flex-end' : 'space-between'}
-          //   mb="14px"
           alignItems="center"
           maxWidth="700px"
           px="20px"
         >
-          {!isSmallerThanPhone && (
-            <Box
-              display="flex"
-              flexDirection="row"
-              width="100%"
-              alignItems="center"
-              justifyContent="space-between"
-              p="14px 24px"
-              borderBottom={`1px solid ${colors.divider}`}
-            >
-              <Text color={'tenantPrimary'} variant="bodyS" fontSize="m">
-                {titleText}
-              </Text>
-              <Box display="flex">
-                {showEditSurveyButton && (
-                  <Button
-                    data-cy="e2e-edit-survey-link"
-                    icon="edit"
-                    linkTo={linkToSurveyBuilder}
-                    buttonStyle="text"
-                    textDecorationHover="underline"
-                    hidden={!canUserEditProject}
-                    mr="12px"
-                  />
-                )}
-                <IconButton
-                  iconName="close"
-                  onClick={(event) => {
-                    event?.preventDefault();
-                    openModal();
-                  }}
-                  iconColor={colors.textSecondary}
-                  iconColorOnHover={colors.black}
-                  a11y_buttonActionMessage={formatMessage(messages.leaveSurvey)}
+          <Box
+            display="flex"
+            flexDirection="row"
+            width="100%"
+            alignItems="center"
+            justifyContent="space-between"
+            p="14px 24px"
+            borderBottom={`1px solid ${colors.divider}`}
+          >
+            <Text color={'tenantPrimary'} variant="bodyS" fontSize="m">
+              {titleText}
+            </Text>
+            <Box display="flex">
+              {showEditSurveyButton && (
+                <Button
+                  data-cy="e2e-edit-survey-link"
+                  icon="edit"
+                  linkTo={linkToSurveyBuilder}
+                  buttonStyle="text"
+                  textDecorationHover="underline"
+                  hidden={!canUserEditProject}
+                  mr="12px"
                 />
-              </Box>
+              )}
+              <IconButton
+                iconName="close"
+                onClick={(event) => {
+                  event?.preventDefault();
+                  openModal();
+                }}
+                iconColor={colors.textSecondary}
+                iconColorOnHover={colors.black}
+                a11y_buttonActionMessage={formatMessage(messages.leaveSurvey)}
+              />
             </Box>
-          )}
+          </Box>
         </Box>
 
         <Modal opened={showLeaveModal} close={closeModal}>

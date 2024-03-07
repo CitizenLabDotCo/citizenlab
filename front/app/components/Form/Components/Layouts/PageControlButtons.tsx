@@ -52,14 +52,14 @@ const PageControlButtons = ({
         >
           <Box
             position="fixed"
-            bottom="40px"
+            bottom={isSmallerThanPhone ? '0px' : '40px'}
             maxWidth="700px"
             width="100%"
             display="flex"
             justifyContent="flex-end"
             bgColor={colors.white}
             borderTop={`1px solid ${colors.borderLight}`}
-            padding="16px 24px"
+            padding={isSmallerThanPhone ? '16px' : '16px 24px'}
           >
             <Box display="flex" justifyContent="center" alignItems="center">
               {hasPreviousPage && (
