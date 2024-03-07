@@ -1,4 +1,3 @@
-// ArcGIS
 import Basemap from '@arcgis/core/Basemap';
 import Collection from '@arcgis/core/core/Collection';
 import Point from '@arcgis/core/geometry/Point';
@@ -9,6 +8,7 @@ import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductio
 import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
 import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
+import * as heatmapRendererCreator from '@arcgis/core/smartMapping/renderers/heatmap.js';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
@@ -533,4 +533,24 @@ export const handleWebMapReferenceLayers = (
   webMap.basemap = new Basemap({
     baseLayers: newBasemapLayers,
   });
+};
+
+// applyHeatMapRenderer
+// Description: Apply a heat map renderer to a point Feature layer
+export const applyHeatMapRenderer = (layer: FeatureLayer, mapView: MapView) => {
+  if (layer && mapView) {
+    // Set up the parameters for the heatmapRendererCreator
+    const heatmapParams = {
+      layer,
+      view: mapView,
+    };
+
+    // Esri heatmapRendererCreator creates a statistical heatmap configuration based on the data
+    heatmapRendererCreator
+      .createRenderer(heatmapParams)
+      .then(function (response) {
+        // Apply generated heatmap renderer to the layer
+        layer.renderer = response.renderer;
+      });
+  }
 };

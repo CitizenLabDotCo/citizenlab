@@ -210,21 +210,23 @@ const PointControl = ({
         </Box>
         {isLoadingMapConfig && uischema.options?.map_config_id && <Spinner />}
         {mapConfig && (
-          <EsriMap
-            height="400px"
-            layers={mapLayers}
-            initialData={{
-              zoom: Number(mapConfig?.data.attributes.zoom_level),
-              center: data || mapConfig?.data.attributes.center_geojson,
-              showLegend: true,
-              showLayerVisibilityControl: true,
-              onInit: onMapInit,
-            }}
-            webMapId={mapConfig?.data.attributes.esri_web_map_id}
-            onClick={
-              isMobileOrSmaller ? onMobileClickShowOverlay : onDesktopMapClick
-            }
-          />
+          <>
+            <EsriMap
+              height="400px"
+              layers={mapLayers}
+              initialData={{
+                zoom: Number(mapConfig?.data.attributes.zoom_level),
+                center: data || mapConfig?.data.attributes.center_geojson,
+                showLegend: true,
+                showLayerVisibilityControl: true,
+                onInit: onMapInit,
+              }}
+              webMapId={mapConfig?.data.attributes.esri_web_map_id}
+              onClick={
+                isMobileOrSmaller ? onMobileClickShowOverlay : onDesktopMapClick
+              }
+            />
+          </>
         )}
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />

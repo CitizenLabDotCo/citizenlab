@@ -47,6 +47,7 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
         <Tippy
           maxWidth="250px"
           placement="top"
+          zIndex={9999999}
           content={
             isEsriIntegrationEnabled
               ? formatMessage(messages.featureLayerRemoveGeojsonTooltip)
@@ -77,6 +78,7 @@ const EsriImportOptions = memo<Props>(({ setView, mapConfig }) => {
         <Tippy
           maxWidth="250px"
           placement="top"
+          zIndex={9999999}
           content={getWebMapDisabledMessage()}
           hideOnClick={true}
           disabled={!webMapUploadDisabled}

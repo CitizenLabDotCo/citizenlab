@@ -66,10 +66,12 @@ const MapConfigOverview = memo<Props>(
       setEditedMapLayerId(null);
     };
 
+    const isProjectMapPage = window.location.pathname.endsWith('/map');
+
     return (
       <Container className={className || ''}>
         <Header>
-          {!mapConfig && ( // Show only on project map configuration
+          {isProjectMapPage && ( // Show only on project map configuration
             <TitleContainer>
               <StyledSectionTitle>
                 <FormattedMessage {...messages.mapConfigurationTitle} />
@@ -79,7 +81,7 @@ const MapConfigOverview = memo<Props>(
           <Text color="textSecondary">
             <FormattedMessage {...messages.mapConfigurationDescription} />
           </Text>
-          {!mapConfig && ( // Show only on project map configuration
+          {isProjectMapPage && ( // Show only on project map configuration
             <Warning>
               <FormattedMessage {...messages.mapLocationWarning} />
             </Warning>

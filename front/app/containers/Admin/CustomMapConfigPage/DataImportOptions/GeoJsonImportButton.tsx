@@ -121,6 +121,7 @@ const GeoJsonImportButton = memo<Props>(({ mapConfig, className }) => {
           maxWidth="250px"
           placement="top"
           content={formatMessage(messages.geojsonRemoveEsriTooltip)}
+          zIndex={9999999}
           hideOnClick={true}
           disabled={!geoJsonImportDisabled}
         >

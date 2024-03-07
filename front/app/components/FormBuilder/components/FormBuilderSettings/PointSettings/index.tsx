@@ -138,7 +138,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
             initialData={{
               zoom: Number(mapConfig?.data?.attributes?.zoom_level),
               center: mapConfig?.data?.attributes?.center_geojson,
-              showLayerVisibilityControl: false,
+              showLayerVisibilityControl: true,
               showLegend: true,
               onInit: onMapInit,
             }}

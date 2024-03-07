@@ -30,6 +30,7 @@ const FormResultsQuestion = ({
   pointResponses = [],
   required,
   customFieldId,
+  mapConfigId,
   textResponses = [],
   files = [],
 }: FormResultsQuestionProps) => {
@@ -64,7 +65,11 @@ const FormResultsQuestion = ({
           />
         )}
         {isPointAndHasAnswers && (
-          <PointLocationQuestion pointResponses={pointResponses} />
+          <PointLocationQuestion
+            pointResponses={pointResponses}
+            mapConfigId={mapConfigId}
+            customFieldId={customFieldId}
+          />
         )}
         {files && files.length > 0 && (
           <Box display="flex" gap="24px" mt={answers ? '20px' : '0'} w="50%">
