@@ -19,7 +19,7 @@ export default function useCommentsByTime({
   const [currentResolution, setCurrentResolution] = useState(resolution);
   const { data: analytics } = useCommentsByTimeLive(
     {
-      projectId,
+      project_id: projectId,
       startAtMoment,
       endAtMoment,
       resolution,

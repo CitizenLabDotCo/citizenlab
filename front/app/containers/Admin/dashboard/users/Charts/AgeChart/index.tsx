@@ -33,7 +33,7 @@ const AgeChart = ({
   const { data: usersByBirthyear } = useUsersByAgeLive({
     startAtMoment: startAt ? moment(startAt) : null,
     endAtMoment: endAt ? moment(endAt) : null,
-    groupId: currentGroupFilter,
+    group_id: currentGroupFilter,
   });
   const ageSerie = convertToGraphFormat(usersByBirthyear, formatMessage);
 

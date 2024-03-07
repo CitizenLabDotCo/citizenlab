@@ -31,9 +31,9 @@ type Props = ProjectId & Dates;
 
 const AgeCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
   const usersByBirthyear = useUsersByAge({
+    project_id: projectId,
     startAtMoment,
     endAtMoment,
-    projectId,
   });
   const { formatMessage } = useIntl();
 

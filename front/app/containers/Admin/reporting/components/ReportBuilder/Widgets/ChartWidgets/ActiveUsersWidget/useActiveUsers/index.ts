@@ -15,7 +15,7 @@ export default function useActiveUsers({
 
   const analytics = useActiveUsersData(
     {
-      projectId,
+      project_id: projectId,
       startAtMoment,
       endAtMoment,
       resolution,

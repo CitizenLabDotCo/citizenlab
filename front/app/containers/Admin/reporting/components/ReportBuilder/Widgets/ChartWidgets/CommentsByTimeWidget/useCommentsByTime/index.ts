@@ -15,7 +15,7 @@ export default function useCommentsByTime({
 
   const dataUnits = useCommentsByTimeData(
     {
-      projectId,
+      project_id: projectId,
       startAtMoment,
       endAtMoment,
       resolution,

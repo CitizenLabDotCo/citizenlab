@@ -21,7 +21,7 @@ export default function useReactionsByTime({
 
   const { data: analytics } = useReactionsByTimeLive(
     {
-      projectId,
+      project_id: projectId,
       startAtMoment,
       endAtMoment,
       resolution,

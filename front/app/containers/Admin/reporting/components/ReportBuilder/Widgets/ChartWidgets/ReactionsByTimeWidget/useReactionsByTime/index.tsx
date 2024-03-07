@@ -14,7 +14,7 @@ export default function useReactionsByTime123({
   const [currentResolution] = useState(resolution);
 
   const analytics = useReactionsByTime({
-    projectId,
+    project_id: projectId,
     startAtMoment,
     endAtMoment,
     resolution,

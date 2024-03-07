@@ -32,7 +32,7 @@ const GenderChart = ({
   const { data: usersByGender } = useUsersByGenderLive({
     startAtMoment: startAt ? moment(startAt) : null,
     endAtMoment: endAt ? moment(endAt) : null,
-    groupId: currentGroupFilter,
+    group_id: currentGroupFilter,
   });
   const serie = convertToGraphFormat(usersByGender, formatMessage);
   const graphRef = useRef();

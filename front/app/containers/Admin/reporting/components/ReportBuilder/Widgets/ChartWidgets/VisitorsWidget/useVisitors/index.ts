@@ -18,7 +18,7 @@ export default function useVisitors({
 
   const analytics = useVisitorsData(
     {
-      projectId,
+      project_id: projectId,
       startAtMoment,
       endAtMoment,
       resolution,

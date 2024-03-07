@@ -12,7 +12,7 @@ export default function useVisitorsReferrerTypes({
   endAtMoment,
 }: QueryParameters) {
   const analytics = useVisitorsTrafficSources({
-    projectId,
+    project_id: projectId,
     startAtMoment,
     endAtMoment,
   });

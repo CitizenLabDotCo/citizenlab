@@ -34,10 +34,10 @@ const SurveyQuestionResult = ({
   groupFieldId,
 }: Props) => {
   const response = useSurveyQuestionResult({
-    phaseId,
-    questionId,
-    groupMode,
-    groupFieldId,
+    phase_id: phaseId,
+    question_id: questionId,
+    group_mode: groupMode,
+    group_field_id: groupFieldId,
   });
 
   const localize = useLocalize();

@@ -20,7 +20,7 @@ export default function usePostsByTime({
   const [currentResolution, setCurrentResolution] = useState(resolution);
   const { data: analytics } = usePostsByTimeLive(
     {
-      projectId,
+      project_id: projectId,
       startAtMoment,
       endAtMoment,
       resolution,

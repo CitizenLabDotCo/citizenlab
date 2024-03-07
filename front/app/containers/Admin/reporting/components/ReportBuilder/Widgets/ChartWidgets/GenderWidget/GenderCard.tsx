@@ -22,9 +22,9 @@ type Props = ProjectId & Dates;
 
 const GenderCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
   const usersByGender = useUsersByGender({
+    project_id: projectId,
     startAtMoment,
     endAtMoment,
-    projectId,
   });
   const { formatMessage } = useIntl();
 
