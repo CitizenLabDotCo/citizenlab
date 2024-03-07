@@ -783,7 +783,6 @@
   "app.containers.Admin.projects.project.information.ReportTab.modalDescription": "Lag en rapport for en tidligere fase, eller start fra bunnen av.",
   "app.containers.Admin.projects.project.information.ReportTab.phaseTemplate": "Start med en fasemal",
   "app.containers.Admin.projects.project.information.ReportTab.report": "Rapportere",
-  "app.containers.Admin.projects.project.information.ReportTab.reportVisible": "Rapporten er synlig for publikum",
   "app.containers.Admin.projects.project.information.ReportTab.shareResults": "Del resultater fra en tidligere undersøkelse eller idéfase",
   "app.containers.Admin.projects.project.information.areYouSureYouWantToDelete": "Er du sikker på at du vil slette denne rapporten? Denne handlingen kan ikke angres.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Legg til fase",

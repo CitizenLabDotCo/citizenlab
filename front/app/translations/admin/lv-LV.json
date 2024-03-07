@@ -783,7 +783,6 @@
   "app.containers.Admin.projects.project.information.ReportTab.modalDescription": "Izveidojiet pārskatu par iepriekšējo posmu vai sāciet no jauna.",
   "app.containers.Admin.projects.project.information.ReportTab.phaseTemplate": "Sāciet ar fāzes veidni",
   "app.containers.Admin.projects.project.information.ReportTab.report": "Ziņojums",
-  "app.containers.Admin.projects.project.information.ReportTab.reportVisible": "Publiski redzams ziņojums",
   "app.containers.Admin.projects.project.information.ReportTab.shareResults": "Kopīgojiet iepriekš veiktas aptaujas vai ideju izstrādes posma rezultātus.",
   "app.containers.Admin.projects.project.information.areYouSureYouWantToDelete": "Vai esat pārliecināts, ka vēlaties dzēst šo ziņojumu? Šo darbību nevar atcelt.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Pievienot fāzei",
