@@ -72,7 +72,6 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "Nav izvēlēts neviens jautājums. Lūdzu, vispirms izvēlieties jautājumu.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer": "Nav atbildes",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.numberOfResponses": "{count} atbildes",
-  "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.sourceAndReference": "Dati no {phase} {period}laikā",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.surveyQuestion": "Aptaujas jautājums",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} līdz šim",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Nosaukums",
