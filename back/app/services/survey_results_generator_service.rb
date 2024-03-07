@@ -156,32 +156,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
     # Build response
     build_select_response(answers, field, group_field)
-
-    # binding.pry
-    # option_keys = field.options.pluck(:key)
-    #
-    # distribution = Idea
-    #   .select(:value)
-    #   .from(values)
-    #   .group(:value)
-    #   .order(Arel.sql('COUNT(value) DESC'))
-    #   .count.to_a
-    #
-    # (option_keys - distribution.pluck(0)).each do |key|
-    #   distribution << [key, 0] # add missing options with 0 responses
-    # end
-    # sorted_distribution = distribution.sort_by { |k, _v| k == 'other' ? 1 : 0 } # other should always be last
-    # filtered_distribution = sorted_distribution.select { |(value, _count)| option_keys.include? value }
-    # option_keys = field.options.each_with_object({}) do |option, accu|
-    #   accu[option.key] = option.key
-    # end
-    # option_images = []
-    # if field.support_option_images?
-    #   option_images = field.options.each_with_object({}) do |option, accu|
-    #     accu[option.key] = option.image&.image&.versions&.transform_values(&:url)
-    #   end
-    # end
-    # collect_answers(field, filtered_distribution, option_keys, option_images)
   end
 
   def build_select_response(answers, field, group_field)
@@ -193,9 +167,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       answers: answers,
       multilocs: get_multilocs(field, group_field)
     })
-
     attributes[:textResponses] = collect_other_text_responses(field) if field.other_option_text_field
-
     attributes[:legend] = group_field.options.map(&:key) + [nil] if group_field.present?
 
     attributes
@@ -302,7 +274,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
     answers.sort_by { |a| -a[:count] }
   end
 
-  # TODO: What does this do? An additional query
   def apply_grouping(query, group: false)
     Idea
       .select(:answer)
