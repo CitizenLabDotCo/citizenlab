@@ -102,7 +102,6 @@ const PointControl = ({ ...props }: ControlProps) => {
           mapView={mapView}
           handlePointChange={handlePointChange}
           didBlur={didBlur}
-          setDidBlur={setDidBlur}
           {...props}
         />
       ) : (

@@ -29,7 +29,6 @@ type Props = {
   mapConfig: IMapConfig;
   data: any;
   mapLayers: Layer[] | undefined;
-  setDidBlur: (didBlur: boolean) => void;
   handlePointChange: (point: GeoJSON.Point | undefined) => void;
 };
 
@@ -38,7 +37,6 @@ const FullscreenMapInput = memo<Props>(
     setShowFullscreenMap,
     mapConfig,
     mapLayers,
-    setDidBlur,
     data,
     handlePointChange,
     ...props

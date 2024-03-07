@@ -24,7 +24,6 @@ type Props = {
   mapView?: MapView | null;
   handlePointChange: (point: GeoJSON.Point | undefined) => void;
   didBlur: boolean;
-  setDidBlur: (didBlur: boolean) => void;
 };
 
 const MobileView = ({
@@ -33,7 +32,6 @@ const MobileView = ({
   onMapInit,
   mapView,
   handlePointChange,
-  setDidBlur,
   didBlur,
   ...props
 }: Props & ControlProps) => {
@@ -106,7 +104,6 @@ const MobileView = ({
           setShowFullscreenMap={setShowFullscreenMap}
           mapConfig={mapConfig}
           mapLayers={mapLayers}
-          setDidBlur={setDidBlur}
           handlePointChange={handlePointChange}
           {...props}
         />
