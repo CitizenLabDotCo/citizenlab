@@ -18,7 +18,9 @@ import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWr
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
+import Warning from 'components/UI/Warning';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import Editor from '../../components/ReportBuilder/Editor';
@@ -29,7 +31,10 @@ import Toolbox from '../../components/ReportBuilder/Toolbox';
 import TopBar from '../../components/ReportBuilder/TopBar';
 import ViewContainer from '../../components/ReportBuilder/ViewContainer';
 import { View } from '../../components/ReportBuilder/ViewContainer/typings';
+import { A4_WIDTH } from '../../constants';
 import { ReportContextProvider } from '../../context/ReportContext';
+import messages from '../../messages';
+import areCraftjsObjectsEqual from '../../utils/areCraftjsObjectsEqual';
 
 interface Props {
   report: ReportResponse;
@@ -65,7 +70,7 @@ const ReportBuilder = ({
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale>(platformLocale);
 
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState(true);
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
 
@@ -87,6 +92,10 @@ const ReportBuilder = ({
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
     0;
 
+  const handleSetSaved = () => {
+    setSaved(true);
+  };
+
   return (
     <ReportContextProvider width="pdf" reportId={reportId} phaseId={phaseId}>
       <FullscreenContentBuilder
@@ -94,7 +103,24 @@ const ReportBuilder = ({
         onDeleteElement={handleDeleteElement}
         onUploadImage={setImageUploading}
       >
-        <Editor isPreview={false} onNodesChange={() => setSaved(false)}>
+        <Editor
+          isPreview={false}
+          // onNodesChange is called twice on initial load.
+          onNodesChange={(query) => {
+            // This comparison is still not perfect.
+            // E.g., if you add a node with rich text editor, save the report,
+            // and then modify the default text and revert the change,
+            // areCraftjsObjectsEqual may still return false, because the default text may not have
+            // a wrapping <p> tag, which is added as soon as you start typing.
+            // But it's good enough for now.
+            setSaved(
+              areCraftjsObjectsEqual(
+                query.getSerializedNodes(),
+                reportLayout.attributes.craftjs_json
+              )
+            );
+          }}
+        >
           <TopBar
             hasError={hasError}
             hasPendingState={imageUploading}
@@ -103,8 +129,8 @@ const ReportBuilder = ({
             isTemplate={!!templateProjectId || !!templatePhaseId}
             saved={saved}
             view={view}
-            setSaved={setSaved}
             setView={setView}
+            setSaved={handleSetSaved}
             setSelectedLocale={setSelectedLocale}
           />
           <Box mt={`${stylingConsts.menuHeight}px`}>
@@ -114,6 +140,13 @@ const ReportBuilder = ({
               platformLocale={platformLocale}
             >
               <StyledRightColumn>
+                {!!phaseId && (
+                  <Box maxWidth={A4_WIDTH} mb="20px">
+                    <Warning>
+                      <FormattedMessage {...messages.warningBanner} />
+                    </Warning>
+                  </Box>
+                )}
                 <ViewContainer view={view}>
                   <Frame editorData={initialData}>
                     {emptyReportOnInit && templateProjectId ? (
