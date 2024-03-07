@@ -854,6 +854,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummary": "Резиме извештаја",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.reportSummaryDescription": "Додајте циљ пројекта, коришћене методе учешћа и исход",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Посетиоци",
+  "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "This report contains unsaved changes. Please save before printing.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "No appropriate phases found in this project",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "No phase selected. Please select a phase first.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noProject": "Нема пројекта",
