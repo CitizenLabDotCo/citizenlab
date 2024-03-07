@@ -1,15 +1,18 @@
 import React from 'react';
+
 import { Box } from '@citizenlab/cl2-component-library';
-import HeaderImageDropzone from '../HeaderImageDropzone';
+import { UploadFile } from 'typings';
+
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
+import { TDevice } from 'components/admin/SelectPreviewDevice';
+
+import HeaderImageDropzone from '../HeaderImageDropzone';
+
 import {
   TLocalHeaderImage,
   Props as BannerImageFieldsProps,
   TBannerError,
 } from '.';
-import { TDevice } from 'components/admin/SelectPreviewDevice';
-
-import { UploadFile } from 'typings';
 
 interface Props {
   headerLocalDisplayImage: TLocalHeaderImage;

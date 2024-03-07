@@ -1,35 +1,31 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
 
-// components
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
-import ProjectDescriptionBuilderEditModePreview from '../components/ProjectDescriptionBuilderEditModePreview';
-
-// craft
-import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
-import Editor from '../components/Editor';
-import ProjectDescriptionBuilderToolbox from '../components/ProjectDescriptionBuilderToolbox';
-import ProjectDescriptionBuilderTopBar from '../components/ProjectDescriptionBuilderTopBar';
-import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
-import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
-
-// hooks
-import useLocale from 'hooks/useLocale';
+import { SerializedNodes } from '@craftjs/core';
+import { isEmpty } from 'lodash-es';
 import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import { useParams, useLocation } from 'react-router-dom';
+import { Locale } from 'typings';
+
 import useProjectById from 'api/projects/useProjectById';
 
-// utils
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
+
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
+import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
+import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
+
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import { SerializedNodes } from '@craftjs/core';
-import { Locale } from 'typings';
-import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
-import { isEmpty } from 'lodash-es';
-import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
+import Editor from '../components/Editor';
+import ProjectDescriptionBuilderEditModePreview from '../components/ProjectDescriptionBuilderEditModePreview';
+import ProjectDescriptionBuilderToolbox from '../components/ProjectDescriptionBuilderToolbox';
+import ProjectDescriptionBuilderTopBar from '../components/ProjectDescriptionBuilderTopBar';
 
 const ProjectDescriptionBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);

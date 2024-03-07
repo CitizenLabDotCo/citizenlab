@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+
 import { API_PATH } from 'containers/App/constants';
 
 export const projectImagesData = [

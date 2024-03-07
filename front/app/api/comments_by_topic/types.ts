@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import commentsByTopicKeys from './keys';
 import { Multiloc } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import commentsByTopicKeys from './keys';
 
 export type CommentsByTopicKeys = Keys<typeof commentsByTopicKeys>;
 

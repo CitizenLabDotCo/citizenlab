@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { render, screen } from 'utils/testUtils/rtl';
-
 import Button from 'components/UI/Button';
+
+import { render, screen } from 'utils/testUtils/rtl';
 
 describe('Button', () => {
   it('should render correctly as button', () => {

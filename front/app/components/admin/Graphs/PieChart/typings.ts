@@ -1,6 +1,7 @@
 import { Percentage } from 'typings';
-import { BaseProps, KeyOfType, Cell, BaseMapping } from '../typings';
+
 import { Payload } from '../BarChart/typings';
+import { BaseProps, KeyOfType, Cell, BaseMapping } from '../typings';
 
 // PROPS
 export interface Props<Row> extends BaseProps<Row, Payload<Row>> {

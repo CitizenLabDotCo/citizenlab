@@ -1,11 +1,24 @@
 import React, { ChangeEvent, Suspense, lazy, useEffect, useState } from 'react';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+
 import { DndProvider } from 'react-dnd';
-import { IQueryParameters, Sort } from 'api/initiatives/types';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
 import useInitiativeStatuses from 'api/initiative_statuses/useInitiativeStatuses';
-import useTopics from 'api/topics/useTopics';
-import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
+import { IQueryParameters, Sort } from 'api/initiatives/types';
 import useInitiatives from 'api/initiatives/useInitiatives';
+import useTopics from 'api/topics/useTopics';
+
+import Outlet from 'components/Outlet';
+
+import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
+
+import ActionBar from './components/ActionBar';
+import FilterSidebar from './components/FilterSidebar';
+import InitiativesCount from './components/InitiativesCount';
+import PostTable from './components/PostTable';
+import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
+import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+
 import {
   LeftColumn,
   MiddleColumn,
@@ -17,17 +30,10 @@ import {
   ThreeColumns,
   TopActionBar,
 } from '.';
-import ActionBar from './components/ActionBar';
-import FilterSidebar from './components/FilterSidebar';
-import PostTable from './components/PostTable';
-import InitiativesCount from './components/InitiativesCount';
-import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+
 const LazyPostPreview = lazy(
   () => import('components/admin/PostManager/components/PostPreview')
 );
-import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
-import Outlet from 'components/Outlet';
-
 type TFilterMenu = 'topics' | 'statuses';
 
 interface Props {

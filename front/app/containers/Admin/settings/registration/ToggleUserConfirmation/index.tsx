@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   fontSizes,
   Toggle,
@@ -6,11 +7,15 @@ import {
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import styled from 'styled-components';
-import { SubSectionTitle } from 'components/admin/Section';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { SubSectionTitle } from 'components/admin/Section';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const StyledToggle = styled(Toggle)`
   flex-direction: row-reverse;

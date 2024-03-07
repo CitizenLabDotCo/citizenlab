@@ -1,8 +1,11 @@
 import { useEffect } from 'react';
-import { InsertConfigurationOptions, ITab } from 'typings';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+
 import { useParams } from 'react-router-dom';
+import { InsertConfigurationOptions, ITab } from 'typings';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 type Props = {
   onData: (data: InsertConfigurationOptions<ITab>) => void;

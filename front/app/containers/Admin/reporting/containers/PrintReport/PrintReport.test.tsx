@@ -1,7 +1,10 @@
 import React from 'react';
-import PrintReport from './';
-import { render } from 'utils/testUtils/rtl';
+
 import { reportLayout } from 'api/report_layout/__mocks__/_mockServer';
+
+import { render } from 'utils/testUtils/rtl';
+
+import PrintReport from './';
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 

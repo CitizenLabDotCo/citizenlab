@@ -1,9 +1,11 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
+
 import followUnfollowKeys from './keys';
 import { FollowUnfollowKeys, IFollowers, IParameters } from './types';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 const defaultPageSize = 12;
 

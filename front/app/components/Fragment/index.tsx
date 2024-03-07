@@ -1,16 +1,14 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { adopt } from 'react-adopt';
+
 import qs from 'qs';
-
-// styling
-import styled from 'styled-components';
-
-// resources
+import { adopt } from 'react-adopt';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
+import styled from 'styled-components';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledIframe = styled.iframe`
   border: 0;

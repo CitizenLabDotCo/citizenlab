@@ -1,5 +1,7 @@
 import { IRelationship } from 'typings';
+
 import { Keys } from 'utils/cl-react-query/types';
+
 import inappropriateContentFlagsKeys from './keys';
 
 export type InappropriateContentFlagsKeys = Keys<

@@ -1,10 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useUserIdeasCount from './useUserIdeasCount';
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useUserIdeasCount from './useUserIdeasCount';
 
 const apiPath = '*/users/:userId/ideas_count';
 

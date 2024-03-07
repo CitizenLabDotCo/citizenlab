@@ -1,14 +1,10 @@
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
-
-// parse
-import { parsePieData, parseExcelData } from './parse';
-
-// typings
-import { QueryParameters } from './typings';
-
 import { useVisitorsTrafficSourcesLive } from 'api/graph_data_units';
+
+import { useIntl } from 'utils/cl-intl';
+
+import { parsePieData, parseExcelData } from './parse';
+import { getTranslations } from './translations';
+import { QueryParameters } from './typings';
 
 export default function useVisitorsReferrerTypes({
   projectId,

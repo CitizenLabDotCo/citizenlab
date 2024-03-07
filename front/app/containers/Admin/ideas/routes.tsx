@@ -1,10 +1,12 @@
 import React, { lazy } from 'react';
-import PageLoading from 'components/UI/PageLoading';
+
 import moduleConfiguration from 'modules';
+
+import IdeaPreviewIndex from 'components/admin/PostManager/components/IdeaPreviewIndex';
+import PageLoading from 'components/UI/PageLoading';
 
 const AdminIdeasContainer = lazy(() => import('./index'));
 const AdminIdeasAll = lazy(() => import('./all'));
-import IdeaPreviewIndex from 'components/admin/PostManager/components/IdeaPreviewIndex';
 
 export default () => ({
   path: 'ideas',

@@ -1,4 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import avatarsKeys from './keys';
 
 export type AvatarsKeys = Keys<typeof avatarsKeys>;

@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import {
   Box,
   Text,
@@ -8,10 +7,8 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
-// types
 import { IMapLayerAttributes } from 'api/map_layers/types';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
 
 type Props = {
