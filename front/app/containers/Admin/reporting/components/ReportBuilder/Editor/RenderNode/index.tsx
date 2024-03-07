@@ -14,8 +14,8 @@ import messages from 'components/admin/ContentBuilder/Editor/RenderNode/messages
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-const StyledBox = styled(Box)`
-  ${({ isRoot }: { isRoot: boolean }) =>
+const StyledBox = styled(Box)<{ isRoot: boolean; outlineColor?: string }>`
+  ${({ isRoot }) =>
     isRoot
       ? `
         cursor: auto;
@@ -26,6 +26,15 @@ const StyledBox = styled(Box)`
         box-sizing: content-box;
       `
       : 'cursor: move;'}
+
+  ${({ outlineColor }) =>
+    outlineColor
+      ? `
+      outline: 1px solid ${outlineColor};
+    `
+      : 'outline: none;'}
+
+  margin-bottom: 1px;
 `;
 
 const CONTAINER = 'Container';
@@ -128,11 +137,10 @@ const RenderNode = ({ render }) => {
       ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
-      borderStyle="solid"
       minHeight={id === ROOT_NODE ? '160px' : '0px'}
       background="#fff"
       borderWidth={invisible ? '0px' : '1px'}
-      borderColor={
+      outlineColor={
         hasError
           ? colors.red600
           : solidBorderIsVisible
@@ -142,10 +150,12 @@ const RenderNode = ({ render }) => {
           : 'transparent'
       }
       isRoot={id === ROOT_NODE}
-      onMouseOver={() => {
+      onMouseOver={(e) => {
+        e.stopPropagation();
         setIsHover(true);
       }}
-      onMouseOut={() => {
+      onMouseOut={(e) => {
+        e.stopPropagation();
         setIsHover(false);
       }}
     >

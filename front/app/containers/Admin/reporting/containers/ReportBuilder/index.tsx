@@ -18,6 +18,9 @@ import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWr
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
@@ -27,7 +30,9 @@ import Toolbox from '../../components/ReportBuilder/Toolbox';
 import TopBar from '../../components/ReportBuilder/TopBar';
 import ViewContainer from '../../components/ReportBuilder/ViewContainer';
 import { View } from '../../components/ReportBuilder/ViewContainer/typings';
+import { A4_WIDTH } from '../../constants';
 import { ReportContextProvider } from '../../context/ReportContext';
+import messages from '../../messages';
 import areCraftjsObjectsEqual from '../../utils/areCraftjsObjectsEqual';
 
 interface Props {
@@ -130,6 +135,13 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
               platformLocale={platformLocale}
             >
               <StyledRightColumn>
+                {!!phaseId && (
+                  <Box maxWidth={A4_WIDTH} mb="20px">
+                    <Warning>
+                      <FormattedMessage {...messages.warningBanner} />
+                    </Warning>
+                  </Box>
+                )}
                 <ViewContainer view={view}>
                   <Frame editorData={initialData}>
                     {emptyReportOnInit && templateProjectId ? (
