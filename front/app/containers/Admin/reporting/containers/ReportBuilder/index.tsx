@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
-import { SerializedNodes } from '@craftjs/core';
-import { isEmpty, isEqual, isUndefined, omitBy } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { Locale } from 'typings';
 
@@ -30,51 +29,12 @@ import ViewContainer from '../../components/ReportBuilder/ViewContainer';
 import { View } from '../../components/ReportBuilder/ViewContainer/typings';
 import ViewPicker from '../../components/ReportBuilder/ViewContainer/ViewPicker';
 import { ReportContextProvider } from '../../context/ReportContext';
+import areCraftjsObjectsEqual from '../../utils/areCraftjsObjectsEqual';
 
 interface Props {
   report: ReportResponse;
   reportLayout: ReportLayout;
 }
-
-const areEqual = (
-  craftjsCurrentData: SerializedNodes,
-  persistedData: SerializedNodes
-) => {
-  if (
-    isEmpty(persistedData) &&
-    (isEmpty(craftjsCurrentData) ||
-      craftjsCurrentData['ROOT'].nodes.length === 0)
-  ) {
-    return true;
-  }
-
-  // When the layout is saved, `undefined` fields are not saved
-  // (e.g., `parent` in { ROOT: { parent: undefined, ...}, ...} will be omitted).
-  // So, they are never present in reportLayout.attributes.craftjs_json,
-  // but they are present in the editor state `query.getSerializedNodes()`.
-  //
-  // The "for" loop does the same thing as this alternative version with JSON.stringify,
-  // but it's more performant.
-  //
-  // JSON.stringify emulates sending the data to the server and getting it back
-  // (it removes undefined values).
-  // JSON.parse makes sure that the comparison is not affected by the order of keys.
-  // return isEqual(
-  //   JSON.parse(JSON.stringify(craftjsCurrentData)),
-  //   JSON.parse(JSON.stringify(persistedData))
-  // );
-  for (const key in craftjsCurrentData) {
-    if (
-      !isEqual(
-        omitBy(craftjsCurrentData[key], isUndefined),
-        omitBy(persistedData[key], isUndefined)
-      )
-    ) {
-      return false;
-    }
-  }
-  return true;
-};
 
 const ReportBuilder = ({ report, reportLayout }: Props) => {
   const reportId = report.data.id;
@@ -141,11 +101,11 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
             // This comparison is still not perfect.
             // E.g., if you add a node with rich text editor, save the report,
             // and then modify the default text and revert the change,
-            // areEqual may still return false, because the default text may not have
+            // areCraftjsObjectsEqual may still return false, because the default text may not have
             // a wrapping <p> tag, which is added as soon as you start typing.
             // But it's good enough for now.
             setSaved(
-              areEqual(
+              areCraftjsObjectsEqual(
                 query.getSerializedNodes(),
                 reportLayout.attributes.craftjs_json
               )
