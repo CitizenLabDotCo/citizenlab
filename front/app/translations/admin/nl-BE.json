@@ -783,7 +783,6 @@
   "app.containers.Admin.projects.project.information.ReportTab.modalDescription": "Maak een rapport voor een eerdere fase of begin helemaal opnieuw.",
   "app.containers.Admin.projects.project.information.ReportTab.phaseTemplate": "Begin met een fasesjabloon",
   "app.containers.Admin.projects.project.information.ReportTab.report": "Rapport",
-  "app.containers.Admin.projects.project.information.ReportTab.reportVisible": "Rapport zichtbaar voor publiek",
   "app.containers.Admin.projects.project.information.ReportTab.shareResults": "De resultaten van een eerdere vragenlijst of fase waarin ideeën zijn verzameld te delen",
   "app.containers.Admin.projects.project.information.areYouSureYouWantToDelete": "Weet je zeker dat je dit rapport wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Toevoegen aan fase",

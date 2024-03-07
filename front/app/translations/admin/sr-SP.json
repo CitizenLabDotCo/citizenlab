@@ -783,7 +783,6 @@
   "app.containers.Admin.projects.project.information.ReportTab.modalDescription": "Create a report for a past phase, or start from scratch.",
   "app.containers.Admin.projects.project.information.ReportTab.phaseTemplate": "Start with a phase template",
   "app.containers.Admin.projects.project.information.ReportTab.report": "Report",
-  "app.containers.Admin.projects.project.information.ReportTab.reportVisible": "Report visible to public",
   "app.containers.Admin.projects.project.information.ReportTab.shareResults": "Share results of a past survey or ideation phase",
   "app.containers.Admin.projects.project.information.areYouSureYouWantToDelete": "Да ли сте сигурни да желите да избришете овај извештај? Ова радња се не може опозвати.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Додајте у фазу",
