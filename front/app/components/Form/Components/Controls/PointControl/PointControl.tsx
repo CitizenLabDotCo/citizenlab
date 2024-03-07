@@ -1,4 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
+
+import MapView from '@arcgis/core/views/MapView';
 import {
   Box,
   Icon,
@@ -9,20 +11,25 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import DesktopTabletView from './Desktop/DesktopTabletView';
-import { FormLabel } from 'components/UI/FormComponents';
-import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import { getSubtextElement } from '../controlUtils';
-import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
-import MobileView from './Mobile/MobileView';
-import useMapConfigById from 'api/map_config/useMapConfigById';
 import { useParams } from 'react-router-dom';
+
+import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
-import MapView from '@arcgis/core/views/MapView';
-import { parseLayers } from 'components/EsriMap/utils';
+
 import useLocalize from 'hooks/useLocalize';
+
+import { parseLayers } from 'components/EsriMap/utils';
+import { FormLabel } from 'components/UI/FormComponents';
+
+import { useIntl } from 'utils/cl-intl';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import { getSubtextElement } from '../controlUtils';
+import messages from '../messages';
+
+import DesktopTabletView from './Desktop/DesktopTabletView';
+import MobileView from './Mobile/MobileView';
 
 const PointControl = ({ ...props }: ControlProps) => {
   const { uischema, path, id, schema, required, handleChange } = props;

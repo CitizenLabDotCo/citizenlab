@@ -1,8 +1,11 @@
 import React from 'react';
-import { useIntl } from 'utils/cl-intl';
+
 import LocationInput, { Option } from 'components/UI/LocationInput';
-import { geocodeAndSaveLocation } from '../utils';
+
+import { useIntl } from 'utils/cl-intl';
+
 import messages from '../../messages';
+import { geocodeAndSaveLocation } from '../utils';
 
 type Props = {
   address: Option;

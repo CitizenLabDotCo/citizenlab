@@ -1,9 +1,11 @@
-import Graphic from '@arcgis/core/Graphic';
-import { getMapPinSymbol, goToMapLocation } from 'components/EsriMap/utils';
 import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
 import MapView from '@arcgis/core/views/MapView';
-import { geocode, reverseGeocode } from 'utils/locationTools';
+
+import { getMapPinSymbol, goToMapLocation } from 'components/EsriMap/utils';
 import { Option } from 'components/UI/LocationInput';
+
+import { geocode, reverseGeocode } from 'utils/locationTools';
 
 // newPointGraphic
 // Description: Creates a new point graphic
@@ -14,7 +16,7 @@ export const newPointGraphic = (point: GeoJSON.Point, color: string) => {
       latitude: point.coordinates[1],
     }),
     symbol: getMapPinSymbol({
-      color: color,
+      color,
       sizeInPx: 44,
     }),
   });

@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
+import Layer from '@arcgis/core/layers/Layer';
 import MapView from '@arcgis/core/views/MapView';
 import { Box } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
 import { useTheme } from 'styled-components';
-import { Option } from 'components/UI/LocationInput';
 
-import Layer from '@arcgis/core/layers/Layer';
+import { IMapConfig } from 'api/map_config/types';
+
 import useLocale from 'hooks/useLocale';
 
 import EsriMap from 'components/EsriMap';
+import { Option } from 'components/UI/LocationInput';
+
 import ErrorDisplay from '../../../ErrorDisplay';
-import FullscreenMapInput from './FullscreenMapInput';
-import { IMapConfig } from 'api/map_config/types';
-import { clearPointData, handleDataPointChange } from '../utils';
 import LocationTextInput from '../components/LocationTextInput';
 import MapOverlay from '../components/MapOverlay';
+import { clearPointData, handleDataPointChange } from '../utils';
+
+import FullscreenMapInput from './FullscreenMapInput';
 
 type Props = {
   mapConfig?: IMapConfig;
