@@ -396,4 +396,8 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.cancelLeaveSurveyButtonText',
     defaultMessage: 'Cancel',
   },
+  leaveSurvey: {
+    id: 'app.containers.IdeasNewPage.leaveSurvey',
+    defaultMessage: 'Leave survey',
+  },
 });
