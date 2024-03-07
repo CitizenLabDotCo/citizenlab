@@ -27,7 +27,6 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import { View } from '../ViewContainer/typings';
 import ViewPicker from '../ViewContainer/ViewPicker';
@@ -107,8 +106,6 @@ const ContentBuilderTopBar = ({
       {
         onSuccess: () => {
           setSaved();
-
-          removeSearchParams(['templateProjectId', 'templatePhaseId']);
         },
       }
     );
@@ -134,39 +131,42 @@ const ContentBuilderTopBar = ({
       return;
     }
 
-    const nodes = query.getSerializedNodes();
-    const firstNode = nodes.ROOT?.nodes[0];
+    const interval = setInterval(() => {
+      const nodes = query.getSerializedNodes();
+      const firstNode = nodes.ROOT?.nodes[0];
+      if (!firstNode) return;
 
-    if (!firstNode) return;
+      const displayName = nodes?.[firstNode].displayName;
 
-    const displayName = nodes?.[firstNode].displayName;
+      if (!['ProjectTemplate', 'PhaseTemplate'].includes(displayName)) {
+        // In theory this should not be possible, but handling
+        // it gracefully just in case
+        setInitialized(true);
+        clearInterval(interval);
+        return;
+      }
 
-    if (['ProjectTemplate', 'PhaseTemplate'].includes(displayName)) {
       const numberOfNodes = Object.keys(nodes).length;
-
       if (displayName === 'ProjectTemplate' && numberOfNodes < 5) return;
 
-      setTimeout(() => {
-        updateReportLayout(
-          {
-            id: reportId,
-            craftjs_json: query.getSerializedNodes(),
-            projectId,
+      updateReportLayout(
+        {
+          id: reportId,
+          craftjs_json: nodes,
+          projectId,
+        },
+        {
+          onSuccess: () => {
+            setSaved();
           },
-          {
-            onSuccess: () => {
-              setSaved();
-
-              removeSearchParams(['templateProjectId', 'templatePhaseId']);
-            },
-          }
-        );
-      }, 5000);
+        }
+      );
 
       setInitialized(true);
-    } else {
-      setInitialized(true);
-    }
+      clearInterval(interval);
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, [
     isTemplate,
     query,
