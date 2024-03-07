@@ -39,28 +39,28 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.information.ReportTab.modalDescription',
     defaultMessage: 'Create a report for a past phase, or start from scratch.',
   },
-  reportVisible: {
-    id: 'app.containers.Admin.projects.project.information.ReportTab.reportVisible',
-    defaultMessage: 'Report visible to public',
+  visible: {
+    id: 'app.containers.Admin.projects.project.information.ReportTab.visible',
+    defaultMessage: 'Visible',
   },
   notVisibleNotStarted: {
-    id: 'app.containers.Admin.projects.project.information.ReportTab.notVisibleNotStarted',
+    id: 'app.containers.Admin.projects.project.information.ReportTab.notVisibleNotStarted1',
     defaultMessage:
-      'This report is not visible to the public. To make it publicly visible once the phase starts, enable the "Report visible to public" toggle.',
+      'This report is not public. To make it public, enable the "Visible" toggle.',
   },
   visibleNotStarted: {
-    id: 'app.containers.Admin.projects.project.information.ReportTab.visibleNotStarted',
+    id: 'app.containers.Admin.projects.project.information.ReportTab.visibleNotStarted1',
     defaultMessage:
-      'This report will be publicly available as soon as the phase starts. To make it not publicly visible, disable the "Report visible to public" toggle.',
+      'This report will be public as soon as the phase starts. To make it not public, disable the "Visible" toggle.',
   },
   notVisibleStarted: {
-    id: 'app.containers.Admin.projects.project.information.ReportTab.notVisibleStarted',
+    id: 'app.containers.Admin.projects.project.information.ReportTab.notVisibleStarted1',
     defaultMessage:
-      'This phase has started, but the report is not visible yet to the public. To make it publicly visible, enable the "Report visible to public" toggle.',
+      'This phase has started, but the report is not public yet. To make it public, enable the "Visible" toggle.',
   },
   visibleStarted: {
-    id: 'app.containers.Admin.projects.project.information.ReportTab.visibleStarted',
+    id: 'app.containers.Admin.projects.project.information.ReportTab.visibleStarted1',
     defaultMessage:
-      'This report is currently publicly visible. To make it not publicly visible, disable the "Report visible to public" toggle.',
+      'This report is currently public. To make it not public, disable the "Visible" toggle.',
   },
 });

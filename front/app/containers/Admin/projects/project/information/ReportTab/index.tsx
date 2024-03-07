@@ -11,6 +11,7 @@ import useUpdateReport from 'api/reports/useUpdateReport';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Buttons from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/Buttons';
+import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 
 import Warning from 'components/UI/Warning';
 
@@ -20,7 +21,6 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import EmptyState from './EmptyState';
 import messages from './messages';
 import ReportPreview from './ReportPreview';
-import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
 
 const ReportTab = () => {
   const { phaseId } = useParams();
@@ -91,7 +91,7 @@ const ReportTab = () => {
                     visible: !report.data.attributes.visible,
                   });
                 }}
-                label={formatMessage(messages.reportVisible)}
+                label={formatMessage(messages.visible)}
               />
             </Box>
             <Buttons
