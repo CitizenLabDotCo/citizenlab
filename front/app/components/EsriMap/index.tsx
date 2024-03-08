@@ -4,7 +4,7 @@ import Basemap from '@arcgis/core/Basemap';
 import esriConfig from '@arcgis/core/config';
 import Collection from '@arcgis/core/core/Collection';
 import Graphic from '@arcgis/core/Graphic';
-import * as intl from '@arcgis/core/intl.js';
+import { setLocale as setEsriLocale } from '@arcgis/core/intl/locale.js';
 import Layer from '@arcgis/core/layers/Layer';
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
@@ -232,7 +232,7 @@ const EsriMap = ({
 
   useEffect(() => {
     // Sets the locale of the map
-    intl.setLocale(locale);
+    setEsriLocale(locale);
   }, [locale]);
 
   useEffect(() => {

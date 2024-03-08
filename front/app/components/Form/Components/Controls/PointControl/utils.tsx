@@ -41,14 +41,15 @@ export const addPointGraphicToMap = (
 export const reverseGeocodeAndSave = (
   point: GeoJSON.Point,
   locale: string,
-  setAddress: (address: Option) => void
+  setAddress?: (address: Option) => void
 ) => {
   reverseGeocode(point.coordinates[1], point.coordinates[0], locale).then(
     (location) => {
-      setAddress({
-        value: location || '',
-        label: location || '',
-      });
+      setAddress &&
+        setAddress({
+          value: location || '',
+          label: location || '',
+        });
     }
   );
 };
@@ -72,8 +73,8 @@ export const handleDataPointChange = ({
   data,
   locale,
   mapView,
-  setAddress,
   tenantPrimaryColor,
+  setAddress,
 }: HandleDataPointChangeProps) => {
   const point = data as GeoJSON.Point;
   // Set the address to the geocoded location
@@ -90,7 +91,7 @@ type HandleDataPointChangeProps = {
   data: GeoJSON.Point;
   locale: string;
   mapView: MapView | null | undefined;
-  setAddress: (address: Option) => void;
+  setAddress?: (address: Option) => void;
   tenantPrimaryColor: string;
 };
 
@@ -98,11 +99,12 @@ type HandleDataPointChangeProps = {
 // Description: Clears the point data
 export const clearPointData = (
   mapView: MapView | null | undefined,
-  setAddress: (value: React.SetStateAction<Option>) => void
+  setAddress?: (value: React.SetStateAction<Option>) => void
 ) => {
-  setAddress({
-    value: '',
-    label: '',
-  });
+  setAddress &&
+    setAddress({
+      value: '',
+      label: '',
+    });
   mapView?.graphics.removeAll();
 };

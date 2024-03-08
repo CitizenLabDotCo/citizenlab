@@ -20,13 +20,11 @@ import useLocale from 'hooks/useLocale';
 import EsriMap from 'components/EsriMap';
 import { esriPointToGeoJson, goToMapLocation } from 'components/EsriMap/utils';
 import { FormLabel } from 'components/UI/FormComponents';
-import { Option } from 'components/UI/LocationInput';
 
 import { useIntl } from 'utils/cl-intl';
 import { sanitizeForClassname, getLabel } from 'utils/JSONFormUtils';
 
 import messages from '../../messages';
-import LocationTextInput from '../components/LocationTextInput';
 import { clearPointData, handleDataPointChange } from '../utils';
 
 type Props = {
@@ -57,10 +55,6 @@ const FullscreenMapInput = memo<Props>(
     // State variables
     const bottomSectionRef = useRef<HTMLDivElement>(null);
     const [mapView, setMapView] = useState<MapView | null>(null);
-    const [address, setAddress] = useState<Option>({
-      value: '',
-      label: '',
-    });
 
     // On mapInit, persist the mapView in state
     const onMapInit = useCallback((mapView: MapView) => {
@@ -89,10 +83,9 @@ const FullscreenMapInput = memo<Props>(
           mapView,
           locale,
           tenantPrimaryColor: theme.colors.tenantPrimary,
-          setAddress,
         });
       } else {
-        clearPointData(mapView, setAddress);
+        clearPointData(mapView);
       }
     }, [data, locale, mapView, theme.colors.tenantPrimary]);
 
@@ -163,10 +156,6 @@ const FullscreenMapInput = memo<Props>(
                   </Box>
                 </Box>
               </Label>
-              <LocationTextInput
-                address={address}
-                handlePointChange={handlePointChange}
-              />
             </Box>
             <Box
               borderTop={`1px solid ${colors.grey400}`}

@@ -8,7 +8,7 @@ import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductio
 import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
 import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
-import * as heatmapRendererCreator from '@arcgis/core/smartMapping/renderers/heatmap.js';
+import { createRenderer } from '@arcgis/core/smartMapping/renderers/heatmap.js';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
@@ -546,11 +546,9 @@ export const applyHeatMapRenderer = (layer: FeatureLayer, mapView: MapView) => {
     };
 
     // Esri heatmapRendererCreator creates a statistical heatmap configuration based on the data
-    heatmapRendererCreator
-      .createRenderer(heatmapParams)
-      .then(function (response) {
-        // Apply generated heatmap renderer to the layer
-        layer.renderer = response.renderer;
-      });
+    createRenderer(heatmapParams).then(function (response) {
+      // Apply generated heatmap renderer to the layer
+      layer.renderer = response.renderer;
+    });
   }
 };

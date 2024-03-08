@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
-import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
+import { when as reactiveUtilsWhen } from '@arcgis/core/core/reactiveUtils.js';
 import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
@@ -130,7 +130,7 @@ const PointLocationQuestion = ({
       setMapView(mapView);
 
       // Watch for map extent change. On change, re-calculate the heat map for the current data points in the extent.
-      reactiveUtils.when(
+      reactiveUtilsWhen(
         () => mapView?.stationary === true,
         () => {
           if (mapView?.extent && responsesLayer?.renderer.type === 'heatmap') {
