@@ -9,8 +9,10 @@ import { useTheme } from 'styled-components';
 import { IMapConfig } from 'api/map_config/types';
 
 import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 
 import EsriMap from 'components/EsriMap';
+import { parseLayers } from 'components/EsriMap/utils';
 import { Option } from 'components/UI/LocationInput';
 
 import ErrorDisplay from '../../../ErrorDisplay';
@@ -42,6 +44,7 @@ const MobileView = ({
 
   const theme = useTheme();
   const locale = useLocale();
+  const localize = useLocalize();
 
   // state variables
   const [showFullscreenMapInput, setShowFullscreenMap] = useState(false);
@@ -84,23 +87,26 @@ const MobileView = ({
               setShowFullscreenMap(true);
             }}
           />
-          <EsriMap
-            height="180px"
-            layers={mapLayers}
-            initialData={{
-              zoom: Number(mapConfig?.data.attributes.zoom_level),
-              center: data || mapConfig?.data.attributes.center_geojson,
-              showLegend: false,
-              showLayerVisibilityControl: false,
-              showZoomControls: false,
-              onInit: onMapInit,
-            }}
-            webMapId={mapConfig?.data.attributes.esri_web_map_id}
-          />
+          {!showFullscreenMapInput && (
+            <EsriMap
+              id="mobilePreviewMap"
+              height="180px"
+              layers={parseLayers(mapConfig, localize)}
+              initialData={{
+                zoom: Number(mapConfig?.data.attributes.zoom_level),
+                center: data || mapConfig?.data.attributes.center_geojson,
+                showLegend: false,
+                showLayerVisibilityControl: false,
+                showZoomControls: false,
+                onInit: onMapInit,
+              }}
+              webMapId={mapConfig?.data.attributes.esri_web_map_id}
+            />
+          )}
         </Box>
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
-      {showFullscreenMapInput && mapView && (
+      {showFullscreenMapInput && (
         <FullscreenMapInput
           setShowFullscreenMap={setShowFullscreenMap}
           mapConfig={mapConfig}

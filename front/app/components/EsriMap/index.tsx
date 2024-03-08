@@ -10,6 +10,7 @@ import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
 import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { uuid4 } from '@sentry/utils';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 
@@ -171,7 +172,11 @@ const EsriMap = ({
 
     // If we're not using a Web Map, add the layers to the default Map object
     if (isRegularMap) {
-      map.removeAll();
+      // Remove all layers
+      map?.layers.forEach((layer) => {
+        map.remove(layer);
+      });
+      // Add layers back if passed in
       layers.forEach((layer) => {
         map.add(layer);
       });
@@ -194,7 +199,7 @@ const EsriMap = ({
 
         // Now, add any additional layers that passed in as props to the Web Map
         layers.forEach((layer) => {
-          layer.id = `${layer.id}_internal`;
+          layer.id = `${layer.id}_${uuid4()}_internal`;
           map.add(layer);
         });
 
