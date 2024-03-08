@@ -5,7 +5,7 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import { mapConfigData } from './__mocks__/useMapConfig';
-import useAddMapConfig from './useAddMapConfig';
+import useAddProjectMapConfig from './useAddProjectMapConfig';
 
 const apiPath = '*/projects/:projectId/map_config';
 
@@ -15,12 +15,12 @@ const server = setupServer(
   })
 );
 
-describe('useAddMapConfig', () => {
+describe('useAddProjectMapConfig', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddMapConfig(), {
+    const { result, waitFor } = renderHook(() => useAddProjectMapConfig(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -41,7 +41,7 @@ describe('useAddMapConfig', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddMapConfig(), {
+    const { result, waitFor } = renderHook(() => useAddProjectMapConfig(), {
       wrapper: createQueryClientWrapper(),
     });
 

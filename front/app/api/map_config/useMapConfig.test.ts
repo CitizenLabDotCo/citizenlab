@@ -5,8 +5,7 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import { mapConfigData } from './__mocks__/useMapConfig';
-import useMapConfig from './useMapConfig';
-
+import useMapConfig from './useMapConfigById';
 const apiPath = '*/projects/:projectId/map_config';
 
 const server = setupServer(

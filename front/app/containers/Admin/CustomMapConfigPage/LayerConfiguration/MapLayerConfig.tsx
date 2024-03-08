@@ -1,12 +1,17 @@
 import React, { memo, useEffect, useState } from 'react';
 
-import { ColorPickerInput, Select } from '@citizenlab/cl2-component-library';
+import {
+  ColorPickerInput,
+  IOption,
+  Select,
+} from '@citizenlab/cl2-component-library';
 import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Multiloc, IOption } from 'typings';
+import { Multiloc } from 'typings';
 
-import useMapConfig from 'api/map_config/useMapConfig';
+import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';
 import useUpdateMapLayer from 'api/map_layers/useUpdateMapLayer';
 
@@ -23,19 +28,19 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
 import {
   getLayerColor,
-  getLayerType,
   makiIconNames,
   getUnnamedLayerTitleMultiloc,
-} from '../../../utils/mapUtils/map';
+  getGeojsonLayerType,
+} from 'utils/mapUtils/map';
 
-import messages from './messages';
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 60px;
 `;
 
 const StyledSection = styled(Section)`
@@ -67,8 +72,8 @@ const CancelButton = styled(Button)`
 `;
 
 interface Props {
-  projectId: string;
   mapLayerId: string;
+  mapConfig: IMapConfig;
   className?: string;
   onClose: () => void;
 }
@@ -104,16 +109,16 @@ const getEditableTitleMultiloc = (
 };
 
 const MapLayerConfig = memo<Props & WrappedComponentProps>(
-  ({ projectId, mapLayerId, className, onClose, intl: { formatMessage } }) => {
-    const { mutateAsync: updateProjectMapLayer } = useUpdateMapLayer();
+  ({ mapConfig, mapLayerId, className, onClose, intl: { formatMessage } }) => {
+    const { projectId } = useParams() as { projectId: string };
+    const { mutateAsync: updateProjectMapLayer } = useUpdateMapLayer(projectId);
     const tenantLocales = useAppConfigurationLocales();
-    const { data: mapConfig } = useMapConfig(projectId);
 
     const mapLayer =
       mapConfig?.data?.attributes?.layers?.find(
         (layer) => layer.id === mapLayerId
       ) || undefined;
-    const type = getLayerType(mapLayer);
+    const geojsonDataType = getGeojsonLayerType(mapLayer);
 
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
@@ -235,8 +240,8 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
 
         try {
           await updateProjectMapLayer({
-            projectId,
             id: mapLayer.id,
+            mapConfigId: mapConfig?.data?.id,
             title_multiloc,
             geojson,
           });
@@ -274,7 +279,7 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
             />
           </SectionField>
 
-          {type === 'Point' && (
+          {geojsonDataType === 'Point' && (
             <SectionField>
               <Select
                 onChange={handleMarkerSymbolOnChange}

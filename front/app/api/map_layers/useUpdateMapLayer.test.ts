@@ -7,7 +7,8 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { mapLayerData } from './__mocks__/mapLayerData';
 import useUpdateMapLayer from './useUpdateMapLayer';
 
-const apiPath = '*projects/:projectId/map_config/layers/:id';
+const apiPath = '*/map_configs/:mapConfigId/layers/:id';
+
 const server = setupServer(
   rest.patch(apiPath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: mapLayerData }));
@@ -26,7 +27,7 @@ describe('useUpdateMapLayer', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        projectId: 'projectId',
+        mapConfigId: 'mapConfigId',
         title_multiloc: { en: 'name' },
         geojson: { type: 'FeatureCollection', features: [] },
       });
@@ -50,7 +51,7 @@ describe('useUpdateMapLayer', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        projectId: 'projectId',
+        mapConfigId: 'mapConfigId',
         title_multiloc: { en: 'name' },
         geojson: { type: 'FeatureCollection', features: [] },
       });

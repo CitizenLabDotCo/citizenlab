@@ -763,6 +763,7 @@ WITH (fillfactor='90');
 -- Name: TABLE que_jobs; Type: COMMENT; Schema: public; Owner: -
 --
 
+
 COMMENT ON TABLE public.que_jobs IS '6';
 
 

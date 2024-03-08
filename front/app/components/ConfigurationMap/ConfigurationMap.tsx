@@ -6,35 +6,29 @@ import { IMapConfig } from 'api/map_config/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+// utils
 import EsriMap from 'components/EsriMap';
-import {
-  changeCursorOnHover,
-  createEsriGeoJsonLayers,
-} from 'components/EsriMap/utils';
+import { changeCursorOnHover, parseLayers } from 'components/EsriMap/utils';
 
 import LayerHoverLabel from './components/LayerHoverLabel';
 import MapHelperOptions from './components/MapHelperOptions';
 
 export interface Props {
   mapConfig: IMapConfig;
-  projectId: string;
   setParentMapView: (mapView: MapView) => void;
 }
 
-const IdeationConfigurationMap = memo<Props>(
-  ({ mapConfig, projectId, setParentMapView }: Props) => {
+const ConfigurationMap = memo<Props>(
+  ({ mapConfig, setParentMapView }: Props) => {
     const localize = useLocalize();
     const [mapView, setMapView] = React.useState<MapView | null>(null);
     const [hoveredLayerId, setHoveredLayerId] = React.useState<string | null>(
       null
     );
 
-    // Create GeoJSON layers to add to Esri map
-    const geoJsonLayers = useMemo(() => {
-      return createEsriGeoJsonLayers(
-        mapConfig.data.attributes.layers,
-        localize
-      );
+    // Create layers from map config to add to Esri map
+    const mapLayers = useMemo(() => {
+      return parseLayers(mapConfig, localize);
     }, [mapConfig, localize]);
 
     const onMapInit = useCallback(
@@ -74,8 +68,9 @@ const IdeationConfigurationMap = memo<Props>(
             showLegend: true,
             onInit: onMapInit,
           }}
+          webMapId={mapConfig.data.attributes.esri_web_map_id}
           height={'700px'}
-          layers={geoJsonLayers}
+          layers={mapLayers}
           onHover={onHover}
         />
         <LayerHoverLabel
@@ -83,14 +78,10 @@ const IdeationConfigurationMap = memo<Props>(
             (layer) => layer?.id === hoveredLayerId
           )}
         />
-        <MapHelperOptions
-          mapView={mapView}
-          mapConfig={mapConfig}
-          projectId={projectId}
-        />
+        <MapHelperOptions mapView={mapView} mapConfig={mapConfig} />
       </>
     );
   }
 );
 
-export default IdeationConfigurationMap;
+export default ConfigurationMap;

@@ -31,17 +31,17 @@ import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
+import LayerHoverLabel from 'components/ConfigurationMap/components/LayerHoverLabel';
 import EsriMap from 'components/EsriMap';
 import {
-  createEsriGeoJsonLayers,
   getMapPinSymbol,
   getClusterConfiguration,
   showAddInputPopup,
   goToMapLocation,
   esriPointToGeoJson,
   changeCursorOnHover,
+  parseLayers,
 } from 'components/EsriMap/utils';
-import LayerHoverLabel from 'components/IdeationConfigurationMap/components/LayerHoverLabel';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -191,13 +191,9 @@ const IdeasMap = memo<Props>(
       );
     }, [windowWidth, containerWidth, tablet]);
 
-    // Create Esri GeoJSON layers from mapConfig layers
-    const geoJsonLayers = useMemo(() => {
-      const layers = mapConfig?.data?.attributes?.layers;
-      if (layers) {
-        return createEsriGeoJsonLayers(layers, localize);
-      }
-      return [];
+    // Create Esri layers from mapConfig layers
+    const mapLayers = useMemo(() => {
+      return parseLayers(mapConfig, localize);
     }, [mapConfig, localize]);
 
     // Create a point graphics layer for idea pins
@@ -227,6 +223,7 @@ const IdeasMap = memo<Props>(
           source: graphics, // Array of idea graphics
           title: formatMessage(messages.userInputs),
           id: 'ideasLayer',
+          outFields: ['*'],
           objectIdField: 'ID',
           fields: [
             {
@@ -266,8 +263,8 @@ const IdeasMap = memo<Props>(
     ]);
 
     const layers = useMemo(() => {
-      return ideasLayer ? [...geoJsonLayers, ideasLayer] : geoJsonLayers;
-    }, [ideasLayer, geoJsonLayers]);
+      return ideasLayer ? [...mapLayers, ideasLayer] : mapLayers;
+    }, [ideasLayer, mapLayers]);
 
     const onMapInit = useCallback(
       (mapView: MapView) => {
@@ -323,10 +320,7 @@ const IdeasMap = memo<Props>(
                 );
               } else if (graphicId) {
                 // User clicked an idea pin or layer.
-                const ideaId =
-                  topElement.layer.id === 'ideasLayer'
-                    ? graphics?.at(graphicId - 1)?.attributes.ideaId
-                    : undefined;
+                const ideaId = topElement?.graphic?.attributes?.ideaId;
 
                 const ideasAtClickCount = elements.filter(
                   (element) =>
@@ -343,10 +337,8 @@ const IdeasMap = memo<Props>(
                     const ideaIds = elements.map((element) => {
                       // Get list of idea ids at this location
                       if (element.type === 'graphic') {
-                        const graphicId = element?.graphic?.attributes?.ID;
                         const layerId = element?.graphic?.layer?.id;
-                        const ideaId = graphics?.at(graphicId - 1)?.attributes
-                          .ideaId;
+                        const ideaId = element?.graphic?.attributes?.ideaId;
                         if (ideaId && layerId === 'ideasLayer') {
                           return ideaId;
                         }
@@ -416,7 +408,6 @@ const IdeasMap = memo<Props>(
         });
       },
       [
-        graphics,
         setSelectedIdea,
         theme.colors.tenantSecondary,
         authUser,
@@ -500,6 +491,7 @@ const IdeasMap = memo<Props>(
                 zoomWidgetLocation: 'right',
                 onInit: onMapInit,
               }}
+              webMapId={mapConfig?.data?.attributes?.esri_web_map_id}
               height={isMobileOrSmaller ? '68vh' : '80vh'}
               layers={layers}
               onHover={onMapHover}

@@ -12,6 +12,7 @@ import Files from '../Files';
 
 import InputType from './InputType';
 import MultipleChoice from './MultipleChoice';
+import PointLocationQuestion from './PointLocationQuestion';
 import TextQuestion from './TextQuestion';
 
 type FormResultsQuestionProps = Result & {
@@ -26,13 +27,17 @@ const FormResultsQuestion = ({
   answers,
   totalResponses,
   totalSubmissions,
+  pointResponses = [],
   required,
   customFieldId,
+  mapConfigId,
   textResponses = [],
   files = [],
 }: FormResultsQuestionProps) => {
   const isMultipleChoiceAndHasAnswers = !!answers;
   const hasTextResponses = textResponses && textResponses.length > 0;
+  const isPointAndHasAnswers =
+    inputType === 'point' && pointResponses?.length > 0;
 
   return (
     <>
@@ -57,6 +62,13 @@ const FormResultsQuestion = ({
             textResponses={textResponses}
             customFieldId={customFieldId}
             hasOtherResponses={isMultipleChoiceAndHasAnswers}
+          />
+        )}
+        {isPointAndHasAnswers && (
+          <PointLocationQuestion
+            pointResponses={pointResponses}
+            mapConfigId={mapConfigId}
+            customFieldId={customFieldId}
           />
         )}
         {files && files.length > 0 && (

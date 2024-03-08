@@ -24,9 +24,11 @@ export interface Result {
   totalResponses: number;
   answers?: Answer[];
   required: boolean;
+  mapConfigId?: string;
   customFieldId: string;
   textResponses?: { answer: string }[];
   files?: { name: string; url: string }[];
+  pointResponses?: { answer: GeoJSON.Point }[];
 }
 
 export interface SurveyResultAttributes {

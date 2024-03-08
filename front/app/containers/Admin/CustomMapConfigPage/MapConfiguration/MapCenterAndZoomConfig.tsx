@@ -4,10 +4,11 @@ import MapView from '@arcgis/core/views/MapView';
 import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
 import { isEmpty, inRange } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useMapConfig from 'api/map_config/useMapConfig';
+import { IMapConfig } from 'api/map_config/types';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
 import { SubSectionTitle } from 'components/admin/Section';
@@ -18,9 +19,8 @@ import Error from 'components/UI/Error';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
-
-import messages from './messages';
+import { getCenter, getZoomLevel } from '../../../../utils/mapUtils/map';
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;
@@ -71,9 +71,9 @@ const SaveButton = styled(Button)`
 `;
 
 interface Props {
-  projectId: string;
   className?: string;
   mapView?: MapView | null;
+  mapConfig: IMapConfig;
 }
 
 interface IFormValues {
@@ -83,10 +83,13 @@ interface IFormValues {
 }
 
 const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
-  ({ projectId, className, mapView, intl: { formatMessage } }) => {
+  ({ className, mapConfig, mapView, intl: { formatMessage } }) => {
+    const { projectId } = useParams() as {
+      projectId: string;
+    };
+
     const { data: appConfig } = useAppConfiguration();
-    const { mutateAsync: updateProjectMapConfig } = useUpdateMapConfig();
-    const { data: mapConfig } = useMapConfig(projectId);
+    const { mutateAsync: updateMapConfig } = useUpdateMapConfig(projectId);
 
     const defaultLatLng = getCenter(
       undefined,
@@ -221,9 +224,8 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
           const defaultLng = parseFloat(formValues.defaultLng as any);
           const defaultZoom = formValues.defaultZoom?.toString() as string;
 
-          await updateProjectMapConfig({
-            projectId,
-            id: mapConfig.data.id,
+          await updateMapConfig({
+            mapConfigId: mapConfig.data.id,
             center_geojson: {
               type: 'Point',
               coordinates: [defaultLng, defaultLat],

@@ -26,8 +26,7 @@ describe('useUpdateMapConfig', () => {
 
     act(() => {
       result.current.mutate({
-        id: 'id',
-        projectId: '1',
+        mapConfigId: '1',
       });
     });
 
@@ -47,8 +46,7 @@ describe('useUpdateMapConfig', () => {
     });
     act(() => {
       result.current.mutate({
-        id: 'id',
-        projectId: '1',
+        mapConfigId: '1',
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

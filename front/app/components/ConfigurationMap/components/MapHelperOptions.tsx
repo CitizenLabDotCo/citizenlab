@@ -1,22 +1,23 @@
 import React from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IMapConfig } from 'api/map_config/types';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
+import messages from 'containers/Admin/CustomMapConfigPage/messages';
+
 import { goToMapLocation } from 'components/EsriMap/utils';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../containers/Admin/ProjectCustomMapConfigPage/messages';
-
 const GoToDefaultViewportButtonWrapper = styled.div`
   position: absolute;
-  top: 84px;
+  bottom: 30px;
   left: 11px;
   z-index: 1000;
   background: #fff;
@@ -25,8 +26,8 @@ const GoToDefaultViewportButtonWrapper = styled.div`
 
 const SetAsDefaultViewportButtonWrapper = styled.div`
   position: absolute;
-  top: 128px;
-  left: 11px;
+  bottom: 30px;
+  left: 64px;
   z-index: 1000;
   background: #fff;
   border-radius: ${(props) => props.theme.borderRadius};
@@ -35,12 +36,15 @@ const SetAsDefaultViewportButtonWrapper = styled.div`
 type Props = {
   mapView: MapView | null;
   mapConfig: IMapConfig;
-  projectId: string;
 };
 
-const MapHelperOptions = ({ mapView, mapConfig, projectId }: Props) => {
+const MapHelperOptions = ({ mapView, mapConfig }: Props) => {
+  const { projectId } = useParams() as {
+    projectId: string;
+  };
+
   const { formatMessage } = useIntl();
-  const { mutateAsync: updateProjectMapConfig } = useUpdateMapConfig();
+  const { mutateAsync: updateMapConfig } = useUpdateMapConfig(projectId);
 
   const goToDefaultMapView = () => {
     const centerPoint = mapConfig?.data.attributes.center_geojson;
@@ -55,9 +59,8 @@ const MapHelperOptions = ({ mapView, mapConfig, projectId }: Props) => {
 
   const setAsDefaultMapView = () => {
     if ((mapView?.center.longitude, mapView?.center.latitude)) {
-      updateProjectMapConfig({
-        projectId,
-        id: mapConfig?.data.id,
+      updateMapConfig({
+        mapConfigId: mapConfig?.data.id,
         center_geojson: {
           type: 'Point',
           coordinates: [mapView.center.longitude, mapView.center.latitude],
@@ -101,6 +104,8 @@ const MapHelperOptions = ({ mapView, mapConfig, projectId }: Props) => {
               padding="7px"
               boxShadow="0px 2px 2px rgba(0, 0, 0, 0.2)"
               onClick={setAsDefaultMapView}
+              text={formatMessage(messages.saveZoom)}
+              textColor={colors.coolGrey600}
             />
           </div>
         </Tippy>
