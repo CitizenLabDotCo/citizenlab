@@ -203,6 +203,7 @@
   "app.components.admin.PostManager.title": "Titel",
   "app.components.admin.PostManager.topicsTab": "Ämnen",
   "app.components.admin.PostManager.topicsTabTooltipText": "Lägg till ämnen till indata genom att dra och släppa.",
+  "app.components.admin.PostManager.view": "Utsikt",
   "app.components.admin.PostManager.votes": "Röster",
   "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Mindre än en dag} one {En dag} other {# dagar}} vänster",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "från",
