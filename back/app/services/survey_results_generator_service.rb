@@ -205,9 +205,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
     inputs
       .select("custom_field_values->'#{field.key}_other' as value")
       .where("custom_field_values->'#{field.key}_other' IS NOT NULL")
-      .map do |answer|
-        { answer: answer.value }
-      end
+      .map { |answer| { answer: answer.value } }
+      .sort_by { |a| a[:answer] }
   end
 
   def find_question(question_field_id)
