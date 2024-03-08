@@ -1,5 +1,6 @@
-import { Margin } from './typings';
 import { colors as mainColors } from '@citizenlab/cl2-component-library';
+
+import { Margin } from './typings';
 
 // MARGIN
 export const DEFAULT_BAR_CHART_MARGIN: Margin = {

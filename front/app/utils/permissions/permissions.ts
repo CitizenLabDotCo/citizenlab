@@ -1,16 +1,17 @@
-import authUserStream from 'api/me/authUserStream';
-import { IUser } from 'api/users/types';
 import { isObject } from 'lodash-es';
 import { map } from 'rxjs/operators';
-import useAuthUser from 'api/me/useAuthUser';
-import { isNilOrError } from 'utils/helperUtils';
 
+import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import {
   IAppConfiguration,
   IAppConfigurationData,
 } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
+import authUserStream from 'api/me/authUserStream';
+import useAuthUser from 'api/me/useAuthUser';
+import { IUser } from 'api/users/types';
+
+import { isNilOrError } from 'utils/helperUtils';
 export interface IRouteItem {
   type: 'route';
   path: string;
@@ -22,18 +23,16 @@ interface IResourceData {
   [key: string]: any;
 }
 
-interface IPermissionRule {
-  (
-    resource: TPermissionItem | null,
-    user: IUser,
-    tenant: IAppConfigurationData,
-    context?: any
-  ): boolean;
-}
+type PermissionRule = (
+  resource: TPermissionItem | null,
+  user: IUser | undefined,
+  tenant: IAppConfigurationData,
+  context?: any
+) => boolean;
 
 interface IPermissionRules {
   [key: string]: {
-    [key: string]: IPermissionRule;
+    [key: string]: PermissionRule;
   };
 }
 
@@ -49,7 +48,7 @@ const isResource = (object: any): object is IResourceData => {
 const definePermissionRule = (
   resourceType: TResourceType,
   action: TAction,
-  rule: IPermissionRule
+  rule: PermissionRule
 ) => {
   permissionRules[resourceType] = {
     ...(permissionRules[resourceType] || {}),
@@ -83,13 +82,12 @@ const hasPermission = ({
 }) => {
   return authUserStream.pipe(
     map((user) => {
-      if (!item || !user) {
+      if (!item) {
         return false;
       }
 
       const resourceType = isResource(item) ? item.type : item;
       const rule = getPermissionRule(resourceType, action);
-
       if (rule && appConfiguration) {
         return rule(item, user, appConfiguration.data, context);
       } else {

@@ -1,11 +1,5 @@
 import React from 'react';
 
-// hooks
-import useLocale from 'hooks/useLocale';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
-
-// components
 import {
   IconButton,
   colors,
@@ -14,22 +8,24 @@ import {
   isRtl,
   Button,
 } from '@citizenlab/cl2-component-library';
-import NotificationMenu from '../../NotificationMenu';
-import LanguageSelector from '../../LanguageSelector';
-import UserMenu from '../../UserMenu';
+import { darken } from 'polished';
+import styled, { useTheme } from 'styled-components';
 
-// utils
-import clHistory from 'utils/cl-router/history';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+
+import useLocale from 'hooks/useLocale';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 
-// style
-import styled, { useTheme } from 'styled-components';
-import { darken } from 'polished';
-
-// intl
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
+import LanguageSelector from '../../LanguageSelector';
+import NotificationMenu from '../../NotificationMenu';
+import UserMenu from '../../UserMenu';
 
 const Right = styled.div`
   display: flex;

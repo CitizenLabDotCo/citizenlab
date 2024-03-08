@@ -1,17 +1,14 @@
 import React, { memo } from 'react';
 
-// hooks
+import styled from 'styled-components';
+
 import useProjectById from 'api/projects/useProjectById';
 
-// components
 import Warning from 'components/UI/Warning';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
-// style
-import styled from 'styled-components';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

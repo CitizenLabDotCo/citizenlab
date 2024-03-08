@@ -1,10 +1,13 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import MultiSelect from '.';
-import { useForm, FormProvider } from 'react-hook-form';
-import { array, object } from 'yup';
+
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
 import selectEvent from 'react-select-event';
+import { array, object } from 'yup';
+
+import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
+
+import MultiSelect from '.';
 
 const schema = object({
   multiSelect: array().required('Error message'),

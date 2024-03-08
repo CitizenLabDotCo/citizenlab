@@ -1,6 +1,8 @@
 import React from 'react';
-import Notifications from './components/Notifications';
+
 import { Dropdown, Box } from '@citizenlab/cl2-component-library';
+
+import Notifications from './components/Notifications';
 
 interface Props {
   dropdownOpened: boolean;

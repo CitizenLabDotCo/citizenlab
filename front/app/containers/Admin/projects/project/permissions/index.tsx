@@ -1,26 +1,24 @@
 import React from 'react';
+
+import { Title, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
 
-// components
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { Section, SectionTitle } from 'components/admin/Section';
+import Outlet from 'components/Outlet';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
 import ProjectManagement from './containers/ProjectManagement';
 import ProjectVisibility from './containers/ProjectVisibility';
-import { Title, Text } from '@citizenlab/cl2-component-library';
-
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import usePhase from 'api/phases/usePhase';
-
-// style
-import styled from 'styled-components';
-import Outlet from 'components/Outlet';
 import Granular from './granular_permissions/containers/Granular';
 import PhasePermissions from './granular_permissions/containers/Granular/PhasePermissions';
+import messages from './messages';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;

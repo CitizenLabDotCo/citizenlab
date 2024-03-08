@@ -1,16 +1,16 @@
 import React from 'react';
 
-// components
 import { Box, useBreakpoint, Text } from '@citizenlab/cl2-component-library';
-import Warning from 'components/UI/Warning';
 
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 import useAuthUser from 'api/me/useAuthUser';
 
 // utils
+import Warning from 'components/UI/Warning';
+
+import { useIntl } from 'utils/cl-intl';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+
+import messages from './messages';
 
 type Props = {
   projectId: string;

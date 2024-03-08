@@ -1,28 +1,23 @@
 import React from 'react';
 
-// api
-import { useSurveyQuestionResult } from 'api/graph_data_units';
-
-// components
 import { Title, Text, Box } from '@citizenlab/cl2-component-library';
-import GroupedBars from './GroupedBars';
-import UngroupedBars from './UngroupedBars';
-import Source from './Source';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import useLocalize from 'hooks/useLocalize';
-import messages from '../messages';
-
-// utils
-import { getColorScheme, getLegendLabels } from './utils';
-
-// typings
+import { useSurveyQuestionResult } from 'api/graph_data_units';
 import { GroupMode } from 'api/graph_data_units/requestTypes';
+
+import useLocalize from 'hooks/useLocalize';
+
 import Legend from 'components/admin/Graphs/Legend';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
+import GroupedBars from './GroupedBars';
+import UngroupedBars from './UngroupedBars';
+import { getColorScheme, getLegendLabels } from './utils';
+
 interface Props {
-  projectId: string;
   phaseId: string;
   questionId: string;
   groupMode?: GroupMode;
@@ -30,17 +25,16 @@ interface Props {
 }
 
 const SurveyQuestionResult = ({
-  projectId,
   phaseId,
   questionId,
   groupMode,
   groupFieldId,
 }: Props) => {
   const response = useSurveyQuestionResult({
-    phaseId,
-    questionId,
-    groupMode,
-    groupFieldId,
+    phase_id: phaseId,
+    question_id: questionId,
+    group_mode: groupMode,
+    group_field_id: groupFieldId,
   });
 
   const localize = useLocalize();
@@ -55,7 +49,7 @@ const SurveyQuestionResult = ({
     : undefined;
 
   return (
-    <>
+    <Box mb="8px">
       <Title
         variant="h4"
         mt="0px"
@@ -82,8 +76,7 @@ const SurveyQuestionResult = ({
       )}
 
       {!attributes.grouped && <UngroupedBars attributes={attributes} />}
-      <Source projectId={projectId} phaseId={phaseId} />
-    </>
+    </Box>
   );
 };
 

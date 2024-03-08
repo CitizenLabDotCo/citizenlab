@@ -1,20 +1,15 @@
-// services
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
-
-// query
-import { query } from './query';
-
-// parse
-import { parseStats, parseTimeSeries, parseExcelData } from './parse';
-
-// typings
-import { QueryParameters, Response } from './typings';
-import useAnalytics from 'api/analytics/useAnalytics';
 import { useMemo, useState } from 'react';
+
+import useAnalytics from 'api/analytics/useAnalytics';
+
 import { IResolution } from 'components/admin/ResolutionControl';
+
+import { useIntl } from 'utils/cl-intl';
+
+import { parseStats, parseTimeSeries, parseExcelData } from './parse';
+import { query } from './query';
+import { getTranslations } from './translations';
+import { QueryParameters, Response } from './typings';
 
 export default function useVisitorsData({
   projectId,

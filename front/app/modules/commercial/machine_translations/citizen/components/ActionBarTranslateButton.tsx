@@ -1,12 +1,15 @@
 import React from 'react';
 
-import FeatureFlag from 'components/FeatureFlag';
-import { isNilOrError } from 'utils/helperUtils';
 import { media } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-import TranslateButton from 'components/UI/TranslateButton';
 import { GetLocaleChildProps } from 'resources/GetLocale';
+import styled from 'styled-components';
+
 import { IInitiativeData } from 'api/initiatives/types';
+
+import FeatureFlag from 'components/FeatureFlag';
+import TranslateButton from 'components/UI/TranslateButton';
+
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledTranslateButton = styled(TranslateButton)`
   ${media.phone`

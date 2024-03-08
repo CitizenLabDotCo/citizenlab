@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdatePollOption from './useUpdatePollOption';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { pollOptionsData } from './__mocks__/usePollOptions';
+import useUpdatePollOption from './useUpdatePollOption';
 
 const apiPath = '*/poll_options/:optionId';
 

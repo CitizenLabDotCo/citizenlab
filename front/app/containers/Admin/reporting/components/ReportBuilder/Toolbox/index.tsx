@@ -1,8 +1,5 @@
 import React from 'react';
-import moment from 'moment';
 
-// components
-import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import {
   Box,
   Title,
@@ -10,48 +7,46 @@ import {
   Spinner,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 
-// shared widgets
+import useAuthUser from 'api/me/useAuthUser';
+import useProjects from 'api/projects/useProjects';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
+
+import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
+import Container from 'components/admin/ContentBuilder/Toolbox/Container';
+import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
-// widgets
-import TextMultiloc from '../Widgets/TextMultiloc';
-import TwoColumn from '../Widgets/TwoColumn';
-import ImageMultiloc from '../Widgets/ImageMultiloc';
-import AboutReportWidget from '../Widgets/AboutReportWidget';
-import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
-import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
-import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
-import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
-import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
-import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
-import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
-import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
-import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
-import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
-import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
-import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
-
-// i18n
-import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
-import reportBuilderMessages from '../../../messages';
-import { WIDGET_TITLES } from '../Widgets';
 import {
   FormattedMessage,
   useIntl,
   useFormatMessageWithLocale,
   MessageDescriptor,
 } from 'utils/cl-intl';
-
-// hooks
-import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useAuthUser from 'api/me/useAuthUser';
-import useProjects from 'api/projects/useProjects';
-
-// utils
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 import { isModerator } from 'utils/permissions/roles';
+
+import reportBuilderMessages from '../../../messages';
+import { WIDGET_TITLES } from '../Widgets';
+import AboutReportWidget from '../Widgets/AboutReportWidget';
+import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
+import AgeWidget from '../Widgets/ChartWidgets/AgeWidget';
+import CommentsByTimeWidget from '../Widgets/ChartWidgets/CommentsByTimeWidget';
+import GenderWidget from '../Widgets/ChartWidgets/GenderWidget';
+import PostsByTimeWidget from '../Widgets/ChartWidgets/PostsByTimeWidget';
+import ReactionsByTimeWidget from '../Widgets/ChartWidgets/ReactionsByTimeWidget';
+import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
+import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
+import ImageMultiloc from '../Widgets/ImageMultiloc';
+import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
+import SingleIdeaWidget from '../Widgets/SingleIdeaWidget';
+import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
+import TextMultiloc from '../Widgets/TextMultiloc';
+import TwoColumn from '../Widgets/TwoColumn';
 
 type ReportBuilderToolboxProps = {
   reportId: string;
@@ -166,9 +161,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           />
           <DraggableElement
             id="e2e-draggable-text"
-            component={
-              <TextMultiloc text={toMultiloc(WIDGET_TITLES.TextMultiloc)} />
-            }
+            component={<TextMultiloc />}
             icon="text"
             label={formatMessage(WIDGET_TITLES.TextMultiloc)}
           />

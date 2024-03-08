@@ -1,12 +1,14 @@
-import { definePermissionRule } from 'utils/permissions/permissions';
-import { isAdmin, isProjectModerator } from '../roles';
-import { IUser } from 'api/users/types';
 import { IProjectData } from 'api/projects/types';
+import { IUser } from 'api/users/types';
+
+import { definePermissionRule } from 'utils/permissions/permissions';
+
+import { isAdmin, isProjectModerator } from '../roles';
 
 definePermissionRule(
   'project',
   'create',
-  (_project: IProjectData, user: IUser) => {
+  (_project: IProjectData, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
@@ -14,7 +16,7 @@ definePermissionRule(
 definePermissionRule(
   'project',
   'delete',
-  (_project: IProjectData, user: IUser) => {
+  (_project: IProjectData, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
@@ -22,7 +24,7 @@ definePermissionRule(
 definePermissionRule(
   'project',
   'reorder',
-  (_project: IProjectData, user: IUser) => {
+  (_project: IProjectData, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
@@ -34,7 +36,7 @@ export function canModerateProject(projectId: string, user: IUser) {
 definePermissionRule(
   'project',
   'moderate',
-  (project: IProjectData, user: IUser) => {
-    return canModerateProject(project.id, user);
+  (project: IProjectData, user: IUser | undefined) => {
+    return user ? canModerateProject(project.id, user) : false;
   }
 );

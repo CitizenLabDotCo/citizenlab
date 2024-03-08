@@ -1,26 +1,22 @@
 import React, { useState } from 'react';
+
 import styled from 'styled-components';
 
-// components
-import HasPermission from 'components/HasPermission';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
-import SpamReportForm from 'containers/SpamReport';
-import WarningModal from 'components/WarningModal';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import warningMessages from 'components/WarningModal/messages';
-
-// router
-import clHistory from 'utils/cl-router/history';
-
-// hooks
+import { IInitiativeData } from 'api/initiatives/types';
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
-// types
-import { IInitiativeData } from 'api/initiatives/types';
+import SpamReportForm from 'containers/SpamReport';
+
+import HasPermission from 'components/HasPermission';
+import Modal from 'components/UI/Modal';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
+import WarningModal from 'components/WarningModal';
+import warningMessages from 'components/WarningModal/messages';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
+import messages from '../messages';
 
 const Container = styled.div``;
 

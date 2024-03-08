@@ -8,6 +8,7 @@ import {
 } from '@jsonforms/core';
 import Ajv from 'ajv';
 import { forOwn, isEmpty } from 'lodash-es';
+
 import {
   ExtendedRule,
   ExtendedUISchema,

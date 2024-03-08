@@ -1,40 +1,19 @@
 import React from 'react';
 
-// components
 import Card from '../../_shared/Card';
-import VisitorsTrafficSourcesCard from './VisitorTrafficSourcesCard';
-
-// utils
-import moment from 'moment';
-
-// messages
-import messages from '../messages';
-
-// settings
 import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
-
-// types
-import { IResolution } from 'components/admin/ResolutionControl';
+import messages from '../messages';
 import { ChartWidgetProps } from '../typings';
+
+import VisitorsTrafficSourcesCard from './VisitorTrafficSourcesCard';
 
 const VisitorsTrafficSourcesWidget = ({
   title,
-  projectId,
-  startAt,
-  endAt,
+  ...props
 }: ChartWidgetProps) => {
-  const resolution: IResolution = 'month';
-  const analyticsChartProps = {
-    startAtMoment: startAt ? moment(startAt) : null,
-    endAtMoment: endAt ? moment(endAt) : null,
-    projectId,
-    resolution,
-    title,
-  };
-
   return (
     <Card title={title} pagebreak>
-      <VisitorsTrafficSourcesCard {...analyticsChartProps} />
+      <VisitorsTrafficSourcesCard {...props} />
     </Card>
   );
 };

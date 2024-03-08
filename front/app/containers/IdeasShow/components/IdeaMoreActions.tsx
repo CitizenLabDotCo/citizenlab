@@ -1,35 +1,27 @@
 import React, { memo, useState } from 'react';
-import clHistory from 'utils/cl-router/history';
 
-// components
-import HasPermission from 'components/HasPermission';
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
-import SpamReportForm from 'containers/SpamReport';
-import WarningModal from 'components/WarningModal';
-
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
-
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import warningMessages from 'components/WarningModal/messages';
-
-// services
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
-
-// styling
 import styled from 'styled-components';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getCurrentPhase } from 'api/phases/utils';
-
-// typings
 import { IIdeaData } from 'api/ideas/types';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
+
+import SpamReportForm from 'containers/SpamReport';
+
+import HasPermission from 'components/HasPermission';
+import Modal from 'components/UI/Modal';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
+import WarningModal from 'components/WarningModal';
+import warningMessages from 'components/WarningModal/messages';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
 
 const Container = styled.div``;
 

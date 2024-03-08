@@ -1,22 +1,19 @@
 import React from 'react';
 
-// components
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import PageBreakBox from '../PageBreakBox';
 import { Box } from '@citizenlab/cl2-component-library';
-
-// craft
 import { useNode } from '@craftjs/core';
-import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
-
-// i18n
-import messages from './messages';
-
-// hooks
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
+
 import useLocalize from 'hooks/useLocalize';
+
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
+import PageBreakBox from '../PageBreakBox';
+
+import messages from './messages';
 
 interface Props {
   text?: Multiloc;

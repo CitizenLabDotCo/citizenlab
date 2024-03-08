@@ -1,15 +1,17 @@
+import { IAppConfigurationData } from 'api/app_configuration/types';
+import { IUser } from 'api/users/types';
+
 import {
   definePermissionRule,
   IRouteItem,
 } from 'utils/permissions/permissions';
+
 import {
   isAdmin,
   isRegularUser,
   isProjectModerator,
   isSuperAdmin,
 } from '../roles';
-import { IUser } from 'api/users/types';
-import { IAppConfigurationData } from 'api/app_configuration/types';
 
 const MODERATOR_ROUTES = [
   '/admin/projects',
@@ -45,11 +47,16 @@ export const isAdminRoute = (path: string) => {
   return /^\/admin/.test(path);
 };
 
-const isModeratedProjectRoute = (item: IRouteItem, user: IUser) => {
+const isModeratedProjectRoute = (item: IRouteItem, user: IUser | undefined) => {
   const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\/?/;
   const matches = idRegexp.exec(item.path);
   const pathProjectId = matches && matches[1];
-  return (pathProjectId && isProjectModerator(user, pathProjectId)) || false;
+  return (
+    (pathProjectId &&
+      user !== undefined &&
+      isProjectModerator(user, pathProjectId)) ||
+    false
+  );
 };
 
 const tenantIsChurned = (tenant: IAppConfigurationData) => {
@@ -58,7 +65,8 @@ const tenantIsChurned = (tenant: IAppConfigurationData) => {
 
 export const canAccessRoute = (
   item: IRouteItem,
-  user: IUser,
+  // See IPermissionRule for types
+  user: IUser | undefined,
   tenant: IAppConfigurationData
 ) => {
   if (isAdminRoute(item.path)) {

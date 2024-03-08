@@ -1,7 +1,9 @@
-import { definePermissionRule } from 'utils/permissions/permissions';
-import { isAdmin } from '../roles';
-import { IUser } from 'api/users/types';
 import { IInitiativeData } from 'api/initiatives/types';
+import { IUser } from 'api/users/types';
+
+import { definePermissionRule } from 'utils/permissions/permissions';
+
+import { isAdmin } from '../roles';
 
 const isAuthor = (initiative: IInitiativeData, user?: IUser) => {
   return (
@@ -22,7 +24,7 @@ export const canModerateInitiative = (user: IUser) => {
 definePermissionRule(
   'initiative',
   'edit',
-  (initiative: IInitiativeData, user: IUser) => {
+  (initiative: IInitiativeData, user: IUser | undefined) => {
     return !!(isAuthor(initiative, user) || isAdmin(user));
   }
 );
@@ -34,7 +36,7 @@ definePermissionRule('initiative', 'markAsSpam', () => {
 definePermissionRule(
   'initiative',
   'moderate',
-  (_initiative: IInitiativeData, user: IUser) => {
+  (_initiative: IInitiativeData, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );

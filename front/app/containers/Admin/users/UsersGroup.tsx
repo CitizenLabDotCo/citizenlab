@@ -1,39 +1,33 @@
-// Libraries
 import React, { useState } from 'react';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
+import { useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
-// Components
-import UsersGroupHeader from './UsersGroupHeader';
-import Modal from 'components/UI/Modal';
-import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
-import UserManager from './UserManager';
+import useDeleteMembership from 'api/group_memberships/useDeleteMembership';
+import { MembershipType } from 'api/groups/types';
+import useDeleteGroup from 'api/groups/useDeleteGroup';
+import useGroup from 'api/groups/useGroup';
+import useUpdateGroup from 'api/groups/useUpdateGroup';
+import usersKeys from 'api/users/keys';
 
-// Events
-import eventEmitter from 'utils/eventEmitter';
-import events from './events';
-
-// i18n
-import FormattedMessage from 'utils/cl-intl/FormattedMessage';
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Outlet from 'components/Outlet';
-import { useParams } from 'react-router-dom';
-import useGroup from 'api/groups/useGroup';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { MembershipType } from 'api/groups/types';
-import useUpdateGroup from 'api/groups/useUpdateGroup';
-import useDeleteGroup from 'api/groups/useDeleteGroup';
-import useDeleteMembership from 'api/group_memberships/useDeleteMembership';
-import { useQueryClient } from '@tanstack/react-query';
-import usersKeys from 'api/users/keys';
+import Modal from 'components/UI/Modal';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
+import { isNilOrError } from 'utils/helperUtils';
+
+import events from './events';
+import messages from './messages';
+import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
+import tracks from './tracks';
+import UserManager from './UserManager';
+import UsersGroupHeader from './UsersGroupHeader';
 
 const UsersGroup = () => {
   const queryClient = useQueryClient();

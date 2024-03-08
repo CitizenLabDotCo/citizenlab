@@ -1,3 +1,5 @@
+import React, { useEffect, useRef } from 'react';
+
 import {
   Box,
   Icon,
@@ -7,14 +9,16 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import { darken } from 'polished';
-import React, { useEffect, useRef } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { IInviteError } from 'api/invites/types';
 import styled from 'styled-components';
 import { CLError } from 'typings';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import messages from './messages';
+
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IInviteError } from 'api/invites/types';
+
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const timeout = 350;
 
