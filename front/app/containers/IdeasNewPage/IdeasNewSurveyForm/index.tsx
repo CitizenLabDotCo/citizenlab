@@ -159,7 +159,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     const requestBody = {
       ...data,
       project_id: project.data.id,
-      phase_ids: userIsModerator ? [phaseId] : [],
+      ...(userIsModerator ? { phase_ids: [phaseId] } : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
       publication_status: data.publication_status || 'published',
     };
 
