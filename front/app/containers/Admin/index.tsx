@@ -105,7 +105,10 @@ const AdminPage = memo<Props & WithRouterProps>(
         clHistory.push('/');
       }
 
-      if (pathname.endsWith('/admin') || pathname.endsWith('/admin/')) {
+      if (
+        authUser &&
+        (pathname.endsWith('/admin') || pathname.endsWith('/admin/'))
+      ) {
         if (isAdmin(authUser)) {
           clHistory.push('/admin/dashboard/overview');
         }

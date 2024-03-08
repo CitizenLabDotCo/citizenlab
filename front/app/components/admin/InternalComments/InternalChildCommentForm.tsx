@@ -276,7 +276,7 @@ const InternalChildCommentForm = ({
           userId={authUser?.data.id}
           size={30}
           isLinkToProfile={!!authUser?.data.id}
-          moderator
+          showModeratorStyles
         />
         <FormContainer
           onClickOutside={onCancel}

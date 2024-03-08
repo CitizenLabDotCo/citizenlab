@@ -1,9 +1,14 @@
 import React from 'react';
 
 import { Box, Button, isRtl } from '@citizenlab/cl2-component-library';
+
+// typings
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
+// intl
+
+// api
 import { IEventData } from 'api/events/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IProjectData } from 'api/projects/types';
@@ -12,7 +17,7 @@ import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../messages';
 
@@ -27,15 +32,13 @@ const Bar = styled.div`
 `;
 interface Props {
   project: IProjectData;
-  event?: IEventData;
+  event: IEventData;
 }
 
 const TopBar = ({ project, event }: Props) => {
   const location = useLocation();
-  const { data: user } = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
-  const isAdminUser = isAdmin(user);
-  const isModerator = user ? isProjectModerator(user, project.id) : false;
 
   return (
     <Bar>
@@ -49,7 +52,7 @@ const TopBar = ({ project, event }: Props) => {
               : clHistory.push(`/projects/${project.attributes.slug}`);
           }}
         />
-        {(isAdminUser || isModerator) && event && (
+        {authUser && canModerateProject(project.id, authUser) && (
           <Button
             buttonStyle="secondary"
             m="0px"

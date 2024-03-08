@@ -29,15 +29,8 @@ definePermissionRule(
   }
 );
 
-export function canModerateProject(
-  projectId: string | null | undefined,
-  user: IUser
-) {
-  if (projectId) {
-    return isAdmin(user) || isProjectModerator(user, projectId);
-  }
-
-  return isAdmin(user);
+export function canModerateProject(projectId: string, user: IUser) {
+  return isAdmin(user) || isProjectModerator(user, projectId);
 }
 
 definePermissionRule(

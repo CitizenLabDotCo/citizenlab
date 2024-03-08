@@ -112,7 +112,7 @@ export interface Props {
   borderColor?: string;
   bgColor?: string;
   className?: string;
-  moderator?: boolean | null;
+  showModeratorStyles?: boolean | null;
   addVerificationBadge?: boolean | null;
   padding?: number;
   hideIfNoAvatar?: boolean;
@@ -161,7 +161,7 @@ const Avatar = memo(
 
 const AvatarInner = ({
   isLinkToProfile,
-  moderator,
+  showModeratorStyles,
   className,
   addVerificationBadge,
   userId,
@@ -227,7 +227,9 @@ const AvatarInner = ({
           size={containerSize}
           borderThickness={borderThickness}
           borderColor={borderColor}
-          borderHoverColor={moderator ? colors.red600 : borderHoverColor}
+          borderHoverColor={
+            showModeratorStyles ? colors.red600 : borderHoverColor
+          }
           bgColor={bgColor}
           padding={paddingValue}
         />
@@ -242,13 +244,15 @@ const AvatarInner = ({
           fillHoverColor={fillHoverColor}
           borderThickness={borderThickness}
           borderColor={borderColor}
-          borderHoverColor={moderator ? colors.red600 : borderHoverColor}
+          borderHoverColor={
+            showModeratorStyles ? colors.red600 : borderHoverColor
+          }
           bgColor={bgColor}
           paddingValue={paddingValue}
         />
       )}
 
-      {moderator && (
+      {showModeratorStyles && (
         <BadgeIcon name="cl-favicon" size={badgeSize} fill={colors.red600} />
       )}
 

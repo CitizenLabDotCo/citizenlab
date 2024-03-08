@@ -4,10 +4,11 @@ import { Box, useBreakpoint, Text } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+// utils
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from './messages';
 
@@ -20,16 +21,13 @@ const InstructionMessage = ({ projectId }: Props) => {
   const { data: authUser } = useAuthUser();
   const isTabletOrSmaller = useBreakpoint('tablet');
 
-  const isAdminOrModerator = authUser
-    ? isAdmin(authUser) || isProjectModerator(authUser, projectId)
-    : false;
-
   const getInstructionMessage = () => {
-    if (isAdminOrModerator) {
+    if (authUser && canModerateProject(projectId, authUser)) {
       return isTabletOrSmaller
         ? formatMessage(messages.tapOnMapToAddAdmin)
         : formatMessage(messages.clickOnMapToAddAdmin);
     }
+
     return isTabletOrSmaller
       ? formatMessage(messages.tapOnMapToAdd)
       : formatMessage(messages.clickOnMapToAdd);

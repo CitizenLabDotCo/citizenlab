@@ -83,7 +83,7 @@ const ProjectRow = ({
     // This means project is in a folder
     (typeof folderId === 'string' &&
       userModeratesFolder(authUser.data, folderId)) ||
-    canModerateProject(publication.relationships.publication.data.id, {
+    canModerateProject(projectId, {
       data: authUser.data,
     });
 

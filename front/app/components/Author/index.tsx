@@ -19,6 +19,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from './messages';
@@ -138,10 +139,14 @@ const Author = memo(
   }: Props) => {
     const locale = useLocale();
     const { data: author } = useUserById(authorId);
-    const authorCanModerate =
-      !isNilOrError(author) &&
+    const showModeratorStyles =
       showModeration &&
-      canModerateProject(projectId, { data: author.data });
+      author &&
+      // Ideally this is managed outside of this component.
+      // If projectId is provided, we assume this component is used in a project context
+      (projectId
+        ? canModerateProject(projectId, { data: author.data })
+        : canModerateInitiative({ data: author.data }));
 
     if (!isNilOrError(locale)) {
       return (
@@ -153,7 +158,7 @@ const Author = memo(
                 authorHash={authorHash}
                 size={size}
                 isLinkToProfile={isLinkToProfile}
-                moderator={authorCanModerate}
+                showModeratorStyles={showModeratorStyles}
                 bgColor={avatarBadgeBgColor}
               />
             )}
@@ -168,7 +173,7 @@ const Author = memo(
                 <UserName
                   userId={authorId}
                   isLinkToProfile={isLinkToProfile}
-                  canModerate={authorCanModerate}
+                  showModeratorStyles={showModeratorStyles}
                   fontWeight={fontWeight}
                   fontSize={fontSize}
                   color={color}

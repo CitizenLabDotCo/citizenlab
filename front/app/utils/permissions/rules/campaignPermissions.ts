@@ -2,13 +2,13 @@ import { IUser } from 'api/users/types';
 
 import { definePermissionRule } from 'utils/permissions/permissions';
 
-import { isAdmin, isProjectModerator } from '../roles';
+import { isAdmin } from '../roles';
 
 definePermissionRule(
   'automatedCampaign',
   'manage',
   (_campaign: string, user: IUser | undefined) => {
-    return isAdmin(user);
+    return user ? isAdmin(user) : false;
   }
 );
 
@@ -16,6 +16,6 @@ definePermissionRule(
   'manualCampaign',
   'manage',
   (_campaign: string, user: IUser | undefined) => {
-    return isAdmin(user) || (user ? isProjectModerator(user) : false);
+    return user ? isAdmin(user) : false;
   }
 );
