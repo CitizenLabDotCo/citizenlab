@@ -172,9 +172,7 @@ const EsriMap = ({
     // If we're not using a Web Map, add the layers to the default Map object
     if (isRegularMap) {
       // Remove all layers
-      map?.layers.forEach((layer) => {
-        map.remove(layer);
-      });
+      map.removeAll();
       // Add layers back if passed in
       layers.forEach((layer) => {
         map.add(layer);
