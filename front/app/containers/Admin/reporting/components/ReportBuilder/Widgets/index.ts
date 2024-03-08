@@ -55,6 +55,7 @@ export const WIDGETS = {
   CommentsByTimeWidget,
   ReactionsByTimeWidget,
 
+  // Deprecated
   TitleMultiloc, // TODO: remove this widget (TAN-1022)
   SurveyResultsWidget, // TODO: remove this widget (TAN-1022)
 };

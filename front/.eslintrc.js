@@ -217,7 +217,6 @@ module.exports = {
         markers: ['/'],
       },
     ],
-    'deprecation/deprecation': 'warn',
   },
   ignorePatterns: [
     '.eslintrc.js',
