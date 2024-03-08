@@ -26,8 +26,8 @@ const SingleIdeaWidget = ({
 }: Props) => {
   const response = useSingleIdea(
     {
-      phaseId,
-      ideaId,
+      phase_id: phaseId,
+      idea_id: ideaId,
     },
     {
       enabled: !!phaseId && !!ideaId,

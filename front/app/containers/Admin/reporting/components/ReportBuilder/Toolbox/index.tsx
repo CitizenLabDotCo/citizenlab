@@ -161,9 +161,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           />
           <DraggableElement
             id="e2e-draggable-text"
-            component={
-              <TextMultiloc text={toMultiloc(WIDGET_TITLES.TextMultiloc)} />
-            }
+            component={<TextMultiloc />}
             icon="text"
             label={formatMessage(WIDGET_TITLES.TextMultiloc)}
           />
