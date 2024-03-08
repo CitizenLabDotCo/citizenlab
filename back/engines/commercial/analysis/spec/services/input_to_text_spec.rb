@@ -99,9 +99,9 @@ describe Analysis::InputToText do
           "#{custom_field.key}_other" => 'Because none of the above'
         }
       )
-      expect(service.execute(input)).to eq({ 
+      expect(service.execute(input)).to eq({
         'What\'s your favourite option?' => 'Other',
-        "Type your answer" => 'Because none of the above'
+        'Type your answer' => 'Because none of the above'
       })
     end
   end
