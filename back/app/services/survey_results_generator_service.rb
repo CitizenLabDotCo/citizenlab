@@ -157,12 +157,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def build_select_response(answers, field, group_field)
-    question_response_count = if %w[select linear_scale].include? field.input_type
-      answers.pluck(:count).sum
-    else
-      # TODO: This is an additional query for multiselects so potential performance issue here
-      inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
-    end
+    # TODO: This is an additional query for selects so performance issue here
+    question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
     attributes = core_field_attributes(field, question_response_count).merge({
       grouped: !!group_field,
       totalPicks: answers.pluck(:count).sum,
