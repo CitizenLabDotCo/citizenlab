@@ -134,6 +134,7 @@ describe('Report builder Reactions By Time widget', () => {
     // still has the initial value before save (empty).
     // After the delete, the actual state is also empty.
     // And so, the `saved` state is not properly updated.
+    // Also, see posts_by_time_widget.cy.ts
     cy.wait('@getReportLayout');
     cy.wait(500);
 
@@ -141,6 +142,7 @@ describe('Report builder Reactions By Time widget', () => {
     cy.get('#e2e-draggable-reactions-by-time-widget')
       .parent()
       .click({ force: true });
+
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');

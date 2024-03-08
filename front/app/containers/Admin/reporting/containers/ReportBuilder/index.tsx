@@ -113,6 +113,8 @@ const ReportBuilder = ({
             // areCraftjsObjectsEqual may still return false, because the default text may not have
             // a wrapping <p> tag, which is added as soon as you start typing.
             // But it's good enough for now.
+            // Also, see reactions_by_time_widget.cy.ts#getReportLayout
+            // for the current pitfalls of the `saved` state.
             setSaved(
               areCraftjsObjectsEqual(
                 query.getSerializedNodes(),
