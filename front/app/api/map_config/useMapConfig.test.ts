@@ -6,7 +6,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import { mapConfigData } from './__mocks__/useMapConfig';
 import useMapConfig from './useMapConfigById';
-const apiPath = '*/projects/:projectId/map_config';
+const apiPath = '*/map_configs/:mapConfigId';
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
