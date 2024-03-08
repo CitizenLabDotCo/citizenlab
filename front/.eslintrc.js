@@ -25,6 +25,7 @@ module.exports = {
     '@typescript-eslint',
     'unused-imports',
     'import',
+    'deprecation',
   ],
   rules: {
     '@typescript-eslint/member-delimiter-style': ['warn'],
@@ -216,6 +217,7 @@ module.exports = {
         markers: ['/'],
       },
     ],
+    'deprecation/deprecation': 'warn',
   },
   ignorePatterns: [
     '.eslintrc.js',
