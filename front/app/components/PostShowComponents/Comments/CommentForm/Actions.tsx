@@ -1,10 +1,5 @@
 import React from 'react';
 
-// routing
-import { useLocation } from 'react-router-dom';
-
-// components
-import Button from 'components/UI/Button';
 import {
   Checkbox,
   useBreakpoint,
@@ -12,13 +7,14 @@ import {
   IconTooltip,
   Box,
 } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
 
-// i18n
+import Button from 'components/UI/Button';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// utils
 import { isPage } from 'utils/helperUtils';
+
+import messages from '../messages';
 
 interface Props {
   processing: boolean;

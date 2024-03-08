@@ -1,10 +1,11 @@
-import { formatTranslationMessages } from './';
-import { registerLocale } from 'react-datepicker';
 import fi from 'date-fns/locale/fi';
+import { registerLocale } from 'react-datepicker';
+
+import { formatTranslationMessages } from './';
 
 registerLocale('fi-FI', fi);
-const fiFITranslationMessages = require('translations/fi-FI.json');
 const fiFIAdminTranslationMessages = require('translations/admin/fi-FI.json');
+const fiFITranslationMessages = require('translations/fi-FI.json');
 const translationMessages = formatTranslationMessages('fi-FI', {
   ...fiFITranslationMessages,
   ...fiFIAdminTranslationMessages,

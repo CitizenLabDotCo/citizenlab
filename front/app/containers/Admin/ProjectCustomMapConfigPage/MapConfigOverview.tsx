@@ -1,20 +1,18 @@
 import React, { memo, useState } from 'react';
 
-// components
-import MapLayersList from './MapLayersList';
-import MapLayerConfig from './MapLayerConfig';
-import MapCenterAndZoomConfig from './MapCenterAndZoomConfig';
+import MapView from '@arcgis/core/views/MapView';
+import { Text } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
 import { SectionTitle } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
-import { Text } from '@citizenlab/cl2-component-library';
-import MapView from '@arcgis/core/views/MapView';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
-// styling
-import styled from 'styled-components';
+import MapCenterAndZoomConfig from './MapCenterAndZoomConfig';
+import MapLayerConfig from './MapLayerConfig';
+import MapLayersList from './MapLayersList';
+import messages from './messages';
 
 const Container = styled.div``;
 

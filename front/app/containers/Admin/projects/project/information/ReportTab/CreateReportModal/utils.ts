@@ -1,5 +1,6 @@
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
+
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 export const PARTICIPATION_METHODS: ParticipationMethod[] = [
   'ideation',

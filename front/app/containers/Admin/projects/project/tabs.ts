@@ -1,7 +1,10 @@
-import messages from './messages';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { IPhaseData } from 'api/phases/types';
 import { ITab, FormatMessage } from 'typings';
+
+import { IPhaseData } from 'api/phases/types';
+
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+
+import messages from './messages';
 
 export type IPhaseTab = ITab & {
   disabledTooltipText?: string;

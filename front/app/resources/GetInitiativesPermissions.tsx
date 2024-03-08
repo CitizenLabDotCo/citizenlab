@@ -1,8 +1,10 @@
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { ActionPermission } from 'utils/actionTakingRules';
+
 import useInitiativesPermissions, {
   InitiativePermissionsDisabledReason,
 } from 'hooks/useInitiativesPermissions';
+
+import { ActionPermission } from 'utils/actionTakingRules';
 
 type children = (
   renderProps: GetInitiativesPermissionsChildProps

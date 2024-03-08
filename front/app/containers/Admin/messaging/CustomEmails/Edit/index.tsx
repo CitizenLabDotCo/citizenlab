@@ -1,17 +1,20 @@
 import * as React from 'react';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import GetCampaign from 'resources/GetCampaign';
+
 import { ICampaignData } from 'api/campaigns/types';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
-import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
-import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
-import { Box, colors } from '@citizenlab/cl2-component-library';
+
+import messages from '../../messages';
+import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 
 interface Props {
   campaign: ICampaignData;

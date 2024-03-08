@@ -1,11 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useInitiativeActionDescriptors from './useInitiativeActionDescriptors';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useInitiativeActionDescriptors from './useInitiativeActionDescriptors';
 
 const apiPath = '*action_descriptors/initiatives';
 

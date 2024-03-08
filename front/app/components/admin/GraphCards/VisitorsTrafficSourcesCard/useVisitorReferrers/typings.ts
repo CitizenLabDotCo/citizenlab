@@ -1,6 +1,7 @@
+import { ILinks } from 'typings';
+
 import { ProjectId, Dates, Pagination } from '../../typings';
 import { ReferrerTypeName } from '../useVisitorReferrerTypes/typings';
-import { ILinks } from 'typings';
 
 export type QueryParameters = ProjectId & Dates & Pagination;
 

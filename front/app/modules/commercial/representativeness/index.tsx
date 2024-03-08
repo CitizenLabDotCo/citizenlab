@@ -1,6 +1,5 @@
 import React from 'react';
 
-// typings
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const DashboardContainer = React.lazy(

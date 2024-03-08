@@ -1,6 +1,5 @@
 import React from 'react';
 
-// components
 import PoliciesForm from './PoliciesForm';
 
 interface Props {

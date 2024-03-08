@@ -1,3 +1,5 @@
+import { makeUser } from 'api/users/__mocks__/useUsers';
+
 import {
   isAdmin,
   isRegularUser,
@@ -5,7 +7,18 @@ import {
   isSuperAdmin,
   userHasRole,
 } from './roles';
-import { makeUser } from 'api/users/__mocks__/useUsers';
+
+describe('userHasRole', () => {
+  it('returns true when a user has a role', () => {
+    const user = makeUser({ roles: [{ type: 'admin' }] });
+    expect(userHasRole(user, 'admin')).toBe(true);
+  });
+
+  it('returns false when a user has a different role', () => {
+    const user = makeUser({ roles: [{ type: 'project_moderator' }] });
+    expect(userHasRole(user, 'admin')).toBe(false);
+  });
+});
 
 describe('userHasRole', () => {
   it('returns true when a user has a role', () => {

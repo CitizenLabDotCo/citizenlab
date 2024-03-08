@@ -1,6 +1,8 @@
 import React from 'react';
-import ActiveUsersWidget from '.';
+
 import { render, screen } from 'utils/testUtils/rtl';
+
+import ActiveUsersWidget from '.';
 
 let mockActiveUsers: any = null;
 jest.mock('components/admin/GraphCards/ActiveUsersCard/useActiveUsers', () =>

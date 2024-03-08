@@ -1,6 +1,8 @@
-import { API_PATH } from 'containers/App/constants';
-import { requestBlob } from 'utils/requestBlob';
 import { saveAs } from 'file-saver';
+
+import { API_PATH } from 'containers/App/constants';
+
+import { requestBlob } from 'utils/requestBlob';
 
 export async function exportVolunteers(phaseId: string) {
   const blob = await requestBlob(

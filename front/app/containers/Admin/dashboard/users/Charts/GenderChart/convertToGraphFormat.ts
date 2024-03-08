@@ -1,13 +1,12 @@
-// i18n
+import { FormatMessage } from 'typings';
+
+import { genderOptions } from 'api/users_by_gender/types';
+
 import messages from 'containers/Admin/dashboard/messages';
 
-// utils
 import { roundPercentages } from 'utils/math';
 
-// typings
 import { GenderSerie } from './typings';
-import { genderOptions } from 'api/users_by_gender/types';
-import { FormatMessage } from 'typings';
 
 interface GraphData {
   data: {

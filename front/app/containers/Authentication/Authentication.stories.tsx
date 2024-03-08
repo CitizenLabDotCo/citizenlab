@@ -1,13 +1,16 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
 
 // mocking
-import mockEndpoints from 'utils/storybook/mockEndpoints';
 import { loggedOutHandler } from 'api/me/__mocks__/_mockServer';
 
+import mockEndpoints from 'utils/storybook/mockEndpoints';
+
 // component
-import Authentication from '.';
 import { triggerAuthenticationFlow } from './events';
+
+import Authentication from '.';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const noop = () => {};
 

@@ -1,11 +1,10 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useDeleteProjectAllowedInputTopic from './useDeleteProjectAllowedInputTopic';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import useDeleteProjectAllowedInputTopic from './useDeleteProjectAllowedInputTopic';
 const apiPath = '*projects_allowed_input_topics/:id';
 
 const server = setupServer(

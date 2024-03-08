@@ -1,14 +1,14 @@
 import React from 'react';
 
-// components
+import { IPhaseData } from 'api/phases/types';
+
 import FilterSelector from 'components/FilterSelector';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
-import { IPhaseData } from 'api/phases/types';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../../messages';
 
 export type Sort = 'trending' | 'random' | 'popular' | 'new' | '-new';
 
