@@ -1,6 +1,12 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
-import Layer from '@arcgis/core/layers/Layer';
 import MapView from '@arcgis/core/views/MapView';
 import {
   Box,
@@ -15,9 +21,14 @@ import { useTheme } from 'styled-components';
 import { IMapConfig } from 'api/map_config/types';
 
 import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 
 import EsriMap from 'components/EsriMap';
-import { esriPointToGeoJson, goToMapLocation } from 'components/EsriMap/utils';
+import {
+  esriPointToGeoJson,
+  goToMapLocation,
+  parseLayers,
+} from 'components/EsriMap/utils';
 import { FormLabel } from 'components/UI/FormComponents';
 
 import { useIntl } from 'utils/cl-intl';
@@ -30,7 +41,6 @@ type Props = {
   setShowFullscreenMap: (show: boolean) => void;
   mapConfig?: IMapConfig;
   data: any;
-  mapLayers: Layer[] | undefined;
   handlePointChange: (point: GeoJSON.Point | undefined) => void;
 };
 
@@ -38,7 +48,6 @@ const FullscreenMapInput = memo<Props>(
   ({
     setShowFullscreenMap,
     mapConfig,
-    mapLayers,
     data,
     handlePointChange,
     ...props
@@ -49,6 +58,12 @@ const FullscreenMapInput = memo<Props>(
     const locale = useLocale();
     const { formatMessage } = useIntl();
     const clientHeight = window.innerHeight;
+    const localize = useLocalize();
+
+    // Create map layers from map configuration to load in
+    const mapLayers = useMemo(() => {
+      return parseLayers(mapConfig, localize);
+    }, [localize, mapConfig]);
 
     // State variables
     const bottomSectionRef = useRef<HTMLDivElement>(null);

@@ -10,7 +10,6 @@ import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
 import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { uuid4 } from '@sentry/utils';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
 
@@ -199,7 +198,9 @@ const EsriMap = ({
 
         // Now, add any additional layers that passed in as props to the Web Map
         layers.forEach((layer) => {
-          layer.id = `${layer.id}_${uuid4()}_internal`;
+          layer.id = layer.id.includes('internal')
+            ? layer.id
+            : `${layer.id}_internal`;
           map.add(layer);
         });
 

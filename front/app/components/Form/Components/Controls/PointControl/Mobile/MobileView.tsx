@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
-import Layer from '@arcgis/core/layers/Layer';
 import MapView from '@arcgis/core/views/MapView';
 import { Box } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
@@ -24,7 +23,6 @@ import FullscreenMapInput from './FullscreenMapInput';
 
 type Props = {
   mapConfig?: IMapConfig;
-  mapLayers?: Layer[];
   onMapInit?: (mapView: MapView) => void;
   mapView?: MapView | null;
   handlePointChange: (point: GeoJSON.Point | undefined) => void;
@@ -33,7 +31,6 @@ type Props = {
 
 const MobileView = ({
   mapConfig,
-  mapLayers,
   onMapInit,
   mapView,
   handlePointChange,
@@ -53,6 +50,11 @@ const MobileView = ({
     value: '',
     label: '',
   });
+
+  // Create map layers from map configuration to load in
+  const mapLayers = useMemo(() => {
+    return parseLayers(mapConfig, localize);
+  }, [localize, mapConfig]);
 
   // When the data (point) changes, update the address and add a pin to the map
   useEffect(() => {
@@ -87,22 +89,20 @@ const MobileView = ({
               setShowFullscreenMap(true);
             }}
           />
-          {!showFullscreenMapInput && (
-            <EsriMap
-              id="mobilePreviewMap"
-              height="180px"
-              layers={parseLayers(mapConfig, localize)}
-              initialData={{
-                zoom: Number(mapConfig?.data.attributes.zoom_level),
-                center: data || mapConfig?.data.attributes.center_geojson,
-                showLegend: false,
-                showLayerVisibilityControl: false,
-                showZoomControls: false,
-                onInit: onMapInit,
-              }}
-              webMapId={mapConfig?.data.attributes.esri_web_map_id}
-            />
-          )}
+          <EsriMap
+            id="mobilePreviewMap"
+            height="180px"
+            layers={mapLayers}
+            initialData={{
+              zoom: Number(mapConfig?.data.attributes.zoom_level),
+              center: data || mapConfig?.data.attributes.center_geojson,
+              showLegend: false,
+              showLayerVisibilityControl: false,
+              showZoomControls: false,
+              onInit: onMapInit,
+            }}
+            webMapId={mapConfig?.data.attributes.esri_web_map_id}
+          />
         </Box>
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
@@ -110,7 +110,6 @@ const MobileView = ({
         <FullscreenMapInput
           setShowFullscreenMap={setShowFullscreenMap}
           mapConfig={mapConfig}
-          mapLayers={mapLayers}
           handlePointChange={handlePointChange}
           {...props}
         />

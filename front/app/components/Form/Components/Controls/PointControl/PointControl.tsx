@@ -104,7 +104,6 @@ const PointControl = ({ ...props }: ControlProps) => {
       {isMobileOrSmaller ? (
         <MobileView
           mapConfig={mapConfig}
-          mapLayers={mapLayers}
           onMapInit={onMapInit}
           mapView={mapView}
           handlePointChange={handlePointChange}
