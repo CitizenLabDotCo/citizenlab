@@ -134,7 +134,7 @@ describe('Report builder Reactions By Time widget', () => {
     // still has the initial value before save (empty).
     // After the delete, the actual state is also empty.
     // And so, the `saved` state is not properly updated.
-    // Also, see posts_by_time_widget.cy.ts
+    // Also, see posts_by_time_widget.cy.ts and comments_by_time_widget.cy.ts
     cy.wait('@getReportLayout');
     cy.wait(500);
 
