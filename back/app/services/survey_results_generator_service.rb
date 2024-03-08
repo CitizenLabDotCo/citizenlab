@@ -48,30 +48,16 @@ class SurveyResultsGeneratorService < FieldVisitorService
     visit_select_base(field)
   end
 
-  def visit_multiline_text(field)
-    answers = inputs
-      .select("custom_field_values->'#{field.key}' as value")
-      .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map do |answer|
-        { answer: answer.value }
-      end
+  def visit_text(field)
+    answers = get_text_responses(field.key)
     response_count = answers.size
     core_field_attributes(field, response_count).merge({
       textResponses: answers
     })
   end
 
-  def visit_text(field)
-    answers = inputs
-      .select("custom_field_values->'#{field.key}' as value")
-      .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map do |answer|
-        { answer: answer.value }
-      end
-    response_count = answers.size
-    core_field_attributes(field, response_count).merge({
-      textResponses: answers
-    })
+  def visit_multiline_text(field)
+    visit_text(field)
   end
 
   def visit_linear_scale(field)
@@ -181,7 +167,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       answers: answers,
       multilocs: get_multilocs(field, group_field)
     })
-    attributes[:textResponses] = collect_other_text_responses(field) if field.other_option_text_field
+    attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
     attributes[:legend] = group_field.options.map(&:key) + [nil] if group_field.present?
 
     attributes
@@ -201,17 +187,16 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
   end
 
-  def collect_other_text_responses(field)
+  def get_text_responses(field_key)
     inputs
-      .select("custom_field_values->'#{field.key}_other' as value")
-      .where("custom_field_values->'#{field.key}_other' IS NOT NULL")
+      .select("custom_field_values->'#{field_key}' as value")
+      .where("custom_field_values->'#{field_key}' IS NOT NULL")
       .map { |answer| { answer: answer.value } }
       .sort_by { |a| a[:answer] }
   end
 
   def find_question(question_field_id)
     question = fields.find { |f| f[:id] == question_field_id }
-
     raise 'Question not found' unless question
 
     question

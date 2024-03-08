@@ -290,10 +290,10 @@ RSpec.describe SurveyResultsGeneratorService do
           totalResponseCount: 22,
           questionResponseCount: 4,
           textResponses: [
-            { answer: 'Red' },
             { answer: 'Blue' },
             { answer: 'Green' },
-            { answer: 'Pink' }
+            { answer: 'Pink' },
+            { answer: 'Red' }
           ]
         }
       end
