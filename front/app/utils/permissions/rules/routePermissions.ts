@@ -70,7 +70,7 @@ export const canAccessRoute = (
   tenant: IAppConfigurationData
 ) => {
   if (isAdminRoute(item.path)) {
-    if (isSuperAdmin(user)) {
+    if (user && isSuperAdmin(user)) {
       return true;
     }
 
@@ -78,11 +78,11 @@ export const canAccessRoute = (
       return false;
     }
 
-    if (isAdmin(user)) {
+    if (user && isAdmin(user)) {
       return true;
     }
 
-    if (!isRegularUser(user) && isModeratorRoute(item)) {
+    if (user && !isRegularUser(user) && isModeratorRoute(item)) {
       return true;
     }
 

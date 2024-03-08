@@ -5,12 +5,8 @@ import { definePermissionRule } from 'utils/permissions/permissions';
 
 import { isAdmin } from '../roles';
 
-const isAuthor = (initiative: IInitiativeData, user?: IUser) => {
-  return (
-    user &&
-    initiative.relationships.author.data &&
-    initiative.relationships.author.data.id === user.data.id
-  );
+const isAuthor = (initiative: IInitiativeData, user: IUser) => {
+  return initiative.relationships.author.data?.id === user.data.id;
 };
 
 export const canCommentOnInitiative = (user: IUser) => {
@@ -25,7 +21,11 @@ definePermissionRule(
   'initiative',
   'edit',
   (initiative: IInitiativeData, user: IUser | undefined) => {
-    return !!(isAuthor(initiative, user) || isAdmin(user));
+    if (user) {
+      return isAuthor(initiative, user) || isAdmin(user);
+    }
+
+    return false;
   }
 );
 
@@ -37,6 +37,6 @@ definePermissionRule(
   'initiative',
   'moderate',
   (_initiative: IInitiativeData, user: IUser | undefined) => {
-    return isAdmin(user);
+    return user ? isAdmin(user) : false;
   }
 );

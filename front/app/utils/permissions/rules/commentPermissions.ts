@@ -5,12 +5,8 @@ import { definePermissionRule } from 'utils/permissions/permissions';
 
 import { isAdmin, isProjectModerator } from '../roles';
 
-const isAuthor = (comment: ICommentData, user?: IUser) => {
-  return (
-    user &&
-    comment.relationships.author.data &&
-    comment.relationships.author.data.id === user.data.id
-  );
+const isAuthor = (comment: ICommentData, user: IUser) => {
+  return comment.relationships.author.data?.id === user.data.id;
 };
 
 definePermissionRule(
@@ -25,7 +21,7 @@ definePermissionRule(
   'comment',
   'edit',
   (comment: ICommentData, user: IUser | undefined) => {
-    return !!isAuthor(comment, user);
+    return user ? isAuthor(comment, user) : false;
   }
 );
 
@@ -33,11 +29,15 @@ definePermissionRule(
   'comment',
   'delete',
   (comment: ICommentData, user: IUser | undefined, _tenant, { projectId }) => {
-    return !!(
-      isAuthor(comment, user) ||
-      isAdmin(user) ||
-      (user ? isProjectModerator(user, projectId) : false)
-    );
+    if (user) {
+      return (
+        isAuthor(comment, user) ||
+        isAdmin(user) ||
+        isProjectModerator(user, projectId)
+      );
+    }
+
+    return false;
   }
 );
 
@@ -45,10 +45,14 @@ definePermissionRule(
   'comment',
   'justifyDeletion',
   (comment: ICommentData, user: IUser | undefined, _tenant, { projectId }) => {
-    return (
-      !isAuthor(comment, user) &&
-      (isAdmin(user) || (user ? isProjectModerator(user, projectId) : false))
-    );
+    if (user) {
+      return (
+        !isAuthor(comment, user) &&
+        (isAdmin(user) || isProjectModerator(user, projectId))
+      );
+    }
+
+    return false;
   }
 );
 
@@ -56,10 +60,14 @@ definePermissionRule(
   'comment',
   'markAsSpam',
   (comment: ICommentData, user: IUser | undefined, _tenant, { projectId }) => {
-    return !(
-      isAuthor(comment, user) ||
-      isAdmin(user) ||
-      (user ? isProjectModerator(user, projectId) : false)
-    );
+    if (user) {
+      return !(
+        isAuthor(comment, user) ||
+        isAdmin(user) ||
+        isProjectModerator(user, projectId)
+      );
+    }
+
+    return false;
   }
 );

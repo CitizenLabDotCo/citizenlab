@@ -5,16 +5,12 @@ import { definePermissionRule } from 'utils/permissions/permissions';
 
 import { isAdmin, isProjectModerator } from '../roles';
 
-const isAuthor = (idea: IIdeaData, user?: IUser) => {
-  return (
-    user &&
-    idea.relationships.author?.data &&
-    idea.relationships.author?.data.id === user.data.id
-  );
+const isAuthor = (idea: IIdeaData, user: IUser) => {
+  return idea.relationships.author?.data?.id === user.data.id;
 };
 
-const isIdeaProjectModerator = (idea: IIdeaData, user?: IUser) => {
-  return user && isProjectModerator(user, idea.relationships.project.data.id);
+const isIdeaProjectModerator = (idea: IIdeaData, user: IUser) => {
+  return isProjectModerator(user, idea.relationships.project.data.id);
 };
 
 definePermissionRule(
@@ -24,7 +20,7 @@ definePermissionRule(
     if (project) {
       return (
         project.attributes.action_descriptor.posting_idea.enabled ||
-        isAdmin(user)
+        (user && isAdmin(user))
       );
     }
 
@@ -36,11 +32,15 @@ definePermissionRule(
   'idea',
   'edit',
   (idea: IIdeaData, user: IUser | undefined) => {
-    return !!(
-      isAuthor(idea, user) ||
-      isAdmin(user) ||
-      isIdeaProjectModerator(idea, user)
-    );
+    if (user) {
+      return (
+        isAuthor(idea, user) ||
+        isAdmin(user) ||
+        isIdeaProjectModerator(idea, user)
+      );
+    }
+
+    return false;
   }
 );
 
@@ -52,9 +52,10 @@ definePermissionRule(
   'idea',
   'assignBudget',
   (idea: IIdeaData | null, user: IUser | undefined, _tenant, { projectId }) => {
-    return (
-      isAdmin(user) ||
-      (!!idea && (user ? isProjectModerator(user, projectId) : false))
-    );
+    if (user) {
+      return isAdmin(user) || (!!idea && isProjectModerator(user, projectId));
+    }
+
+    return false;
   }
 );
