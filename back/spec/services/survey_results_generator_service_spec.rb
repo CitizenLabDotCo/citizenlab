@@ -222,7 +222,7 @@ RSpec.describe SurveyResultsGeneratorService do
       :custom_field_point,
       resource: form,
       title_multiloc: {
-        'en' => 'Where should the transmogrification unit be located?'
+        'en' => 'Where should the new nursery be located?'
       },
       description_multiloc: {}
     )
@@ -370,7 +370,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'point',
-          question: { 'en' => 'Where should the transmogrification unit be located?' },
+          question: { 'en' => 'Where should the new nursery be located?' },
           required: false,
           totalResponses: 2,
           customFieldId: point_field.id,

@@ -160,6 +160,28 @@ describe MultiTenancy::Templates::TenantSerializer do
       )
     end
 
+    it 'successfully exports map config & layers related to a custom field' do
+      field = create(:custom_field_point, :for_custom_form)
+      map_config = create(:map_config, :with_positioning, :with_geojson_layers, mappable: field)
+      layer = map_config.layers.first
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      expect(template['models']['custom_field'].size).to eq 1
+      expect(template['models']['custom_maps/map_config'].first).to match hash_including(
+        'created_at' => an_instance_of(String),
+        'updated_at' => an_instance_of(String),
+        'mappable_ref' => hash_including('resource_ref' => an_instance_of(Hash)),
+        'center_geojson' => map_config.center_geojson
+      )
+      expect(template['models']['custom_maps/layer'].first).to match hash_including(
+        'created_at' => an_instance_of(String),
+        'updated_at' => an_instance_of(String),
+        'map_config_ref' => hash_including('mappable_ref' => an_instance_of(Hash)),
+        'geojson' => layer.geojson
+      )
+    end
+
     it 'successfully exports custom field option images' do
       field = create(:custom_field_select, :for_custom_form)
       option = create(:custom_field_option, custom_field: field, image: create(:custom_field_option_image))
