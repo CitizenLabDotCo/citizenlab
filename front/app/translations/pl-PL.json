@@ -626,6 +626,7 @@
   "app.components.form.controls.selectBetween": "*Wybierz pomiędzy opcjami {minItems} i {maxItems} .",
   "app.components.form.controls.selectExactly2": "*Wybierz dokładnie {selectExactly, plural, one {# option} other {# opcje}}",
   "app.components.form.controls.selectMany": "*Wybierz, ile chcesz",
+  "app.components.form.controls.tapOnFullscreenMapToAdd": "Dotknij mapy, aby dodać odpowiedź.",
   "app.components.form.controls.tapOnMapToAdd2": "Dotknij mapy lub wpisz adres poniżej, aby dodać odpowiedź.",
   "app.components.form.controls.tapToAddAPoint": "Stuknij, aby dodać punkt",
   "app.components.form.controls.validCordinatesTooltip": "Jeśli lokalizacja nie jest wyświetlana wśród opcji podczas wpisywania, możesz dodać prawidłowe współrzędne w formacie \"szerokość, długość geograficzna\", aby określić dokładną lokalizację.",
