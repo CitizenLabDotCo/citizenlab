@@ -1,4 +1,4 @@
-import { Multiloc } from 'typings';
+import { ImageSizes, Multiloc } from 'typings';
 
 import { ICustomFieldInputType } from 'api/custom_fields/types';
 import { IIdeaImageData } from 'api/idea_images/types';
