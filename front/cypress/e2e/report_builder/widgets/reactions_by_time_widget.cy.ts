@@ -71,6 +71,9 @@ describe('Report builder Reactions By Time widget', () => {
       cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
         'saveReportLayout'
       );
+      cy.intercept('GET', `/web_api/v1/reports/${reportId}`).as(
+        'getReportLayout'
+      );
       cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
     });
   });
@@ -124,6 +127,15 @@ describe('Report builder Reactions By Time widget', () => {
     cy.wait(1000);
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
+    // Wait for reportLayout.attributes.craftjs_json update.
+    //
+    // The delete happens so quickly after save, that at the time
+    // `onNodesChange` is called, reportLayout.attributes.craftjs_json
+    // still has the initial value before save (empty).
+    // After the delete, the actual state is also empty.
+    // And so, the `saved` state is not properly updated.
+    cy.wait('@getReportLayout');
+    cy.wait(500);
 
     cy.get('#e2e-draggable-reactions-by-time-widget').should('exist');
     cy.get('#e2e-draggable-reactions-by-time-widget')
