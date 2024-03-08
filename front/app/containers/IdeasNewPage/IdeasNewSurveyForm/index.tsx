@@ -153,10 +153,11 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   };
 
   const onSubmit = async (data: FormValues, published?: boolean) => {
+    const projectId = project.data.id;
     const requestBody = {
       ...data,
-      project_id: project.data.id,
-      // phase_ids: [phaseId], // TODO: JS - should only be added if moderator
+      project_id: projectId,
+      ...(authUser && canModerateProject(projectId, authUser) ? { phase_ids: [phaseId] } : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
       publication_status: data.publication_status || 'published',
     };
 
