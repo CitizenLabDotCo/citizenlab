@@ -11,6 +11,7 @@ import {
   CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
+  CONTENT_BUILDER_Z_INDEX,
 } from '../constants';
 
 type ContentBuilderErrors = Record<
@@ -71,7 +72,7 @@ export const ContentBuilder = ({
       display="flex"
       flexDirection="column"
       w="100%"
-      zIndex="10000"
+      zIndex={String(CONTENT_BUILDER_Z_INDEX.main)}
       position="fixed"
       bgColor={colors.background}
       h="100vh"

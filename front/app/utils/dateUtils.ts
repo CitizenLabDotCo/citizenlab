@@ -1,5 +1,5 @@
 import { isString } from 'lodash-es';
-import moment, { unitOfTime } from 'moment';
+import moment, { unitOfTime, Moment } from 'moment';
 import { Locale } from 'typings';
 
 import { IEventData } from 'api/events/types';
@@ -135,6 +135,10 @@ export function getIsoDateUtc(date: string) {
   // by using moment.utc, we ignore timezone offsets which could cause bugs
   return moment.utc(new Date(date)).format('YYYY-MM-DD');
 }
+
+export const momentToIsoDate = (moment: Moment | null | undefined) => {
+  return moment?.format('yyyy-MM-DD');
+};
 
 export function getPeriodRemainingUntil(
   date: string,
