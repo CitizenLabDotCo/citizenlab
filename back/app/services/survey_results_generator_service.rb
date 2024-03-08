@@ -3,8 +3,8 @@
 class SurveyResultsGeneratorService < FieldVisitorService
   def initialize(phase)
     super()
-    @form = phase.custom_form || CustomForm.new(participation_context: phase)
-    @fields = IdeaCustomFieldsService.new(@form).enabled_fields # It would be nice if we could use reportable_fields instead
+    form = phase.custom_form || CustomForm.new(participation_context: phase)
+    @fields = IdeaCustomFieldsService.new(form).enabled_fields # It would be nice if we could use reportable_fields instead
     @inputs = phase.ideas.published
     @locales = AppConfiguration.instance.settings('core', 'locales')
   end
@@ -15,7 +15,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   def generate_results(field_id: nil, group_mode: nil, group_field_id: nil)
     if !field_id
-      # Return all results
+      # Return all results (ungrouped)
       results = fields.filter_map do |field|
         visit field
       end
@@ -24,7 +24,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
         totalSubmissions: inputs.size
       }
     elsif group_field_id
-      # Return grouped results
+      # Return single grouped result - select, multiselect & linearscale only
       field = find_question(field_id)
       raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect multiselect_image].include?(field.input_type)
 
@@ -109,7 +109,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   private
 
-  attr_reader :fields, :form, :inputs, :locales
+  attr_reader :fields, :inputs, :locales
 
   def core_field_attributes(field, response_count)
     {
@@ -137,13 +137,13 @@ class SurveyResultsGeneratorService < FieldVisitorService
       raise "Unsupported group field type: #{group_field.input_type}" unless group_field.input_type == 'select'
 
       query = query.select(
-        select_query(field, as: 'answer'),
-        select_query(group_field, as: 'group')
+        select_field_query(field, as: 'answer'),
+        select_field_query(group_field, as: 'group')
       )
       answers = construct_grouped_answers(query, field, group_field)
     else
       query = query.select(
-        select_query(field, as: 'answer')
+        select_field_query(field, as: 'answer')
       )
       answers = construct_not_grouped_answers(query, field)
     end
@@ -154,6 +154,22 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
     # Build response
     build_select_response(answers, field, group_field)
+  end
+
+  def select_field_query(field, as: 'answer')
+    table = field.resource_type == 'User' ? 'users' : 'ideas'
+
+    if %w[select linear_scale].include? field.input_type
+      "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
+    else
+      %{
+          jsonb_array_elements(
+            CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@.#{field.key}))')
+              THEN #{table}.custom_field_values->'#{field.key}'
+              ELSE '[null]'::jsonb END
+          ) as #{as}
+      }
+    end
   end
 
   def build_select_response(answers, field, group_field)
@@ -194,34 +210,18 @@ class SurveyResultsGeneratorService < FieldVisitorService
       end
   end
 
-  # Grouper methods
   def find_question(question_field_id)
-    question = form.custom_fields.find_by(id: question_field_id)
+    question = fields.find { |f| f[:id] == question_field_id }
+
     raise 'Question not found' unless question
 
     question
   end
 
-  def select_query(field, as: 'answer')
-    table = field.resource_type == 'User' ? 'users' : 'ideas'
-
-    if %w[select linear_scale].include? field.input_type
-      "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
-    else
-      %{
-          jsonb_array_elements(
-            CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@.#{field.key}))')
-              THEN #{table}.custom_field_values->'#{field.key}'
-              ELSE '[null]'::jsonb END
-          ) as #{as}
-      }
-    end
-  end
-
   def construct_not_grouped_answers(query, field)
     answer_keys = (field.input_type == 'linear_scale' ? (1..field.maximum).reverse_each.to_a : field.options.map(&:key)) + [nil]
 
-    grouped_answers_hash = apply_grouping(query)
+    grouped_answers_hash = group_query(query)
       .each_with_object({}) do |(answer, count), accu|
       valid_answer = answer_keys.include?(answer) ? answer : nil
 
@@ -239,7 +239,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     group_field_keys = group_field.options.map(&:key) + [nil]
 
     # Create hash of grouped answers
-    grouped_answers_hash = apply_grouping(query, group: true)
+    grouped_answers_hash = group_query(query, group: true)
       .each_with_object({}) do |((answer, group), count), accu|
       # We treat 'faulty' values (i.e. that don't exist in options) as nil
       valid_answer = answer_keys.include?(answer) ? answer : nil
@@ -255,7 +255,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
 
     # Construct answers array using order of custom field options
-    answers = answer_keys.map do |answer|
+    answer_keys.map do |answer|
       grouped_answer = grouped_answers_hash[answer] || { answer: answer, count: 0, groups: {} }
 
       answers_row = {
@@ -268,11 +268,9 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
       answers_row
     end
-
-    answers.sort_by { |a| -a[:count] }
   end
 
-  def apply_grouping(query, group: false)
+  def group_query(query, group: false)
     Idea
       .select(:answer)
       .from(query)
