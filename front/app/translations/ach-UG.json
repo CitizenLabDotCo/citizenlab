@@ -626,6 +626,7 @@
   "app.components.form.controls.selectBetween": "crwdns1835974:0{minItems}crwdnd1835974:0{maxItems}crwdne1835974:0",
   "app.components.form.controls.selectExactly2": "crwdns1835976:0selectExactly={selectExactly}crwdne1835976:0",
   "app.components.form.controls.selectMany": "crwdns1835978:0crwdne1835978:0",
+  "app.components.form.controls.tapOnFullscreenMapToAdd": "crwdns1919658:0crwdne1919658:0",
   "app.components.form.controls.tapOnMapToAdd2": "crwdns1919632:0crwdne1919632:0",
   "app.components.form.controls.tapToAddAPoint": "crwdns1919634:0crwdne1919634:0",
   "app.components.form.controls.validCordinatesTooltip": "crwdns1835980:0crwdne1835980:0",
