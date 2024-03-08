@@ -17,4 +17,13 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject',
     defaultMessage: 'Return to project',
   },
+  surveyNotActiveTitle: {
+    id: 'app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle',
+    defaultMessage: 'This survey is not currently active.',
+  },
+  surveyNotActiveDescription: {
+    id: 'app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription',
+    defaultMessage:
+      'This survey is not currently open for responses. Please return to the project for more information.',
+  },
 });
