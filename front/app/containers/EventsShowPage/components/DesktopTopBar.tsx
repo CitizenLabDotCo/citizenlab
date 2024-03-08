@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { Box, Button, isRtl } from '@citizenlab/cl2-component-library';
-
-// typings
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
