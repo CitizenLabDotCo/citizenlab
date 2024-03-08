@@ -21,4 +21,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.cancelQuitButtonText',
     defaultMessage: 'Cancel',
   },
+  goBackButtonMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage',
+    defaultMessage: 'Go back',
+  },
+  cannotPrint: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint',
+    defaultMessage:
+      'This report contains unsaved changes. Please save before printing.',
+  },
 });

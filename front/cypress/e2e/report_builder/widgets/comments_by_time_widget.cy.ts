@@ -123,10 +123,17 @@ describe('Report builder Comments By Time widget', () => {
     cy.get('.e2e-comments-by-time-widget').should('exist');
     cy.get('.e2e-comments-by-time-widget').parent().click({ force: true });
 
+    cy.wait(1000);
+
     cy.get('#e2e-delete-button').click();
 
     cy.get('.e2e-comments-by-time-widget').should('not.exist');
 
+    cy.wait(1000);
+
+    cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
+      'saveReportLayout'
+    );
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
 
