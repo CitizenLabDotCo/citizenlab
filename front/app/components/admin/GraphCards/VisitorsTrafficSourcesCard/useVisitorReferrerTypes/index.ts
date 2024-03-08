@@ -1,9 +1,9 @@
 import { useVisitorsTrafficSourcesLive } from 'api/graph_data_units';
-import { momentToIsoDate } from 'utils/dateUtils';
 
 import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
 
 import { useIntl } from 'utils/cl-intl';
+import { momentToIsoDate } from 'utils/dateUtils';
 
 import { parsePieData, parseExcelData } from './parse';
 import { getTranslations } from './translations';

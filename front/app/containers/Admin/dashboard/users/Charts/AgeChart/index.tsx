@@ -4,7 +4,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 import { useUsersByAgeLive } from 'api/graph_data_units';
-import { momentToIsoDate } from 'utils/dateUtils';
 import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
 
 import messages from 'containers/Admin/dashboard/messages';
@@ -12,6 +11,7 @@ import messages from 'containers/Admin/dashboard/messages';
 import GraphCard from 'components/admin/GraphCard';
 
 import { useIntl } from 'utils/cl-intl';
+import { momentToIsoDate } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 import Chart from './Chart';
