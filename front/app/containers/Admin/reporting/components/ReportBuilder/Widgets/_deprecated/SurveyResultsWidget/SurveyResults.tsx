@@ -14,8 +14,8 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import NoData from '../_shared/NoData';
-import { BORDER } from '../constants';
+import NoData from '../../_shared/NoData';
+import { BORDER } from '../../constants';
 
 import Dot from './Dot';
 import FormResultsQuestion from './FormResultsQuestion';
