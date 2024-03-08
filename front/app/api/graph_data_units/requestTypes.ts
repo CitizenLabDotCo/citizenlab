@@ -1,5 +1,3 @@
-import { Moment } from 'moment';
-
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // live
@@ -18,7 +16,7 @@ export type ResolvedName =
   | 'ReactionsByTimeWidget';
 
 export interface BaseParams {
-  resolvedName: ResolvedName;
+  resolved_name: ResolvedName;
   props: Record<string, any>;
 }
 
@@ -37,106 +35,106 @@ export type ParametersLive =
   | ReactionsByTimeParams;
 
 export interface SurveyResultsProps {
-  phaseId?: string | null;
+  phase_id?: string | null;
 }
 export interface SurveyResultsParams extends BaseParams {
-  resolvedName: 'SurveyResultsWidget';
+  resolved_name: 'SurveyResultsWidget';
   props: SurveyResultsProps;
 }
 
 export type GroupMode = 'user_field' | 'survey_question';
 
 export interface SurveyQuestionResultProps {
-  phaseId: string;
-  questionId: string;
-  groupMode?: GroupMode;
-  groupFieldId?: string;
+  phase_id: string;
+  question_id: string;
+  group_mode?: GroupMode;
+  group_field_id?: string;
 }
 
 export interface SurveyQuestionResultParams extends BaseParams {
-  resolvedName: 'SurveyQuestionResultWidget';
+  resolved_name: 'SurveyQuestionResultWidget';
   props: SurveyQuestionResultProps;
 }
 
 export interface AnalyticsProps {
-  projectId?: string | undefined;
-  startAtMoment?: Moment | null | undefined;
-  endAtMoment?: Moment | null;
+  project_id?: string | undefined;
+  start_at?: string | null | undefined;
+  end_at?: string | null;
   resolution?: IResolution;
 }
 
 export interface MostReactedIdeasProps {
-  phaseId?: string | null;
-  numberOfIdeas?: number;
+  phase_id?: string | null;
+  number_of_ideas?: number;
 }
 export interface MostReactedIdeasParams extends BaseParams {
-  resolvedName: 'MostReactedIdeasWidget';
+  resolved_name: 'MostReactedIdeasWidget';
   props: MostReactedIdeasProps;
 }
 
 export interface SingleIdeaProps {
-  phaseId?: string | null;
-  ideaId?: string;
+  phase_id?: string | null;
+  idea_id?: string;
 }
 export interface SingleIdeaParams extends BaseParams {
-  resolvedName: 'SingleIdeaWidget';
+  resolved_name: 'SingleIdeaWidget';
   props: SingleIdeaProps;
 }
 
 export interface VisitorsParams extends BaseParams {
-  resolvedName: 'VisitorsWidget';
+  resolved_name: 'VisitorsWidget';
   props: AnalyticsProps;
 }
 
 export interface VisitorsTrafficSourcesProps {
-  projectId?: string | undefined;
-  startAtMoment?: Moment | null | undefined;
-  endAtMoment?: Moment | null;
+  project_id?: string;
+  start_at?: string | null | undefined;
+  end_at?: string | null;
 }
 export interface VisitorsTrafficSourcesParams extends BaseParams {
-  resolvedName: 'VisitorsTrafficSourcesWidget';
+  resolved_name: 'VisitorsTrafficSourcesWidget';
   props: VisitorsTrafficSourcesProps;
 }
 
 export interface GenderProps {
-  projectId?: string | undefined;
-  startAtMoment?: Moment | null | undefined;
-  endAtMoment?: Moment | null;
-  groupId?: string | null;
+  project_id?: string;
+  start_at?: string | null | undefined;
+  end_at?: string | null;
+  group_id?: string | null;
 }
 export interface GenderParams extends BaseParams {
-  resolvedName: 'GenderWidget';
+  resolved_name: 'GenderWidget';
   props: GenderProps;
 }
 
 export interface AgeProps {
-  projectId?: string | undefined;
-  startAtMoment?: Moment | null | undefined;
-  endAtMoment?: Moment | null;
-  groupId?: string | null;
+  project_id?: string;
+  start_at?: string | null | undefined;
+  end_at?: string | null;
+  group_id?: string | null;
 }
 export interface AgeParams extends BaseParams {
-  resolvedName: 'AgeWidget';
+  resolved_name: 'AgeWidget';
   props: AgeProps;
 }
 
 export interface ActiveUsersParams extends BaseParams {
-  resolvedName: 'ActiveUsersWidget';
+  resolved_name: 'ActiveUsersWidget';
   props: AnalyticsProps;
 }
 
 export interface PostsByTimeParams extends BaseParams {
-  resolvedName: 'PostsByTimeWidget';
+  resolved_name: 'PostsByTimeWidget';
   props: AnalyticsProps;
 }
 
 export interface CommentsByTimeParams extends BaseParams {
-  resolvedName: 'CommentsByTimeWidget';
+  resolved_name: 'CommentsByTimeWidget';
   props: AnalyticsProps;
 }
 
 export interface ReactionsByTimeParams extends BaseParams {
-  resolvedName: 'ReactionsByTimeWidget';
+  resolved_name: 'ReactionsByTimeWidget';
   props: AnalyticsProps;
 }
 

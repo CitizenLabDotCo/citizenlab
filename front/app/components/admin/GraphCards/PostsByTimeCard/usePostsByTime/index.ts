@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import { usePostsByTimeLive } from 'api/graph_data_units';
+import { momentToIsoDate } from 'utils/dateUtils';
 
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
@@ -20,9 +21,9 @@ export default function usePostsByTime({
   const [currentResolution, setCurrentResolution] = useState(resolution);
   const { data: analytics } = usePostsByTimeLive(
     {
-      projectId,
-      startAtMoment,
-      endAtMoment,
+      project_id: projectId,
+      start_at: momentToIsoDate(startAtMoment),
+      end_at: momentToIsoDate(endAtMoment),
       resolution,
     },
     {

@@ -57,7 +57,7 @@ const PhaseReport = ({ reportId, phaseId }: Props) => {
           <Box
             w="100%"
             display="flex"
-            alignItems="center"
+            alignItems="flex-start"
             flexDirection="column"
           >
             <Box maxWidth={MAX_REPORT_WIDTH} w="100%">

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import { useReactionsByTimeLive } from 'api/graph_data_units';
+import { momentToIsoDate } from 'utils/dateUtils';
 
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
@@ -21,9 +22,9 @@ export default function useReactionsByTime({
 
   const { data: analytics } = useReactionsByTimeLive(
     {
-      projectId,
-      startAtMoment,
-      endAtMoment,
+      project_id: projectId,
+      start_at: momentToIsoDate(startAtMoment),
+      end_at: momentToIsoDate(endAtMoment),
       resolution,
     },
     {

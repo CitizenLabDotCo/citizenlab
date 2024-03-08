@@ -4,12 +4,10 @@ require 'rails_helper'
 
 RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsReceivedMailer do
   describe 'campaign_mail' do
-    let(:project_folder) { create(:project_folder) }
-    let!(:recipient) { create(:project_folder_moderator, locale: 'en', project_folders: [project_folder]) }
-    let!(:campaign) { EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived.create! }
-    let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
-
-    let(:command) do
+    let_it_be(:project_folder) { create(:project_folder) }
+    let_it_be(:recipient) { create(:project_folder_moderator, locale: 'en', project_folders: [project_folder]) }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived.create! }
+    let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
@@ -20,6 +18,8 @@ RSpec.describe ProjectFolders::EmailCampaigns::ProjectFolderModerationRightsRece
         }
       }
     end
+
+    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     before do
       EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id)

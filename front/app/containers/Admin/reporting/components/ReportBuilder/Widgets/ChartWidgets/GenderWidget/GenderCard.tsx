@@ -7,7 +7,7 @@ import { useUsersByGender } from 'api/graph_data_units';
 import convertToGraphFormat from 'containers/Admin/dashboard/users/Charts/GenderChart/convertToGraphFormat';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
+import { ProjectId, DatesStrings } from 'components/admin/GraphCards/typings';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -18,13 +18,13 @@ import { serieHasValues } from '../utils';
 
 import Chart from './Chart';
 
-type Props = ProjectId & Dates;
+type Props = ProjectId & DatesStrings;
 
-const GenderCard = ({ startAtMoment, endAtMoment, projectId }: Props) => {
+const GenderCard = ({ startAt, endAt, projectId }: Props) => {
   const usersByGender = useUsersByGender({
-    startAtMoment,
-    endAtMoment,
-    projectId,
+    project_id: projectId,
+    start_at: startAt,
+    end_at: endAt,
   });
   const { formatMessage } = useIntl();
 
