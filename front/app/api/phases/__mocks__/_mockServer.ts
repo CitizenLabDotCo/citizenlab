@@ -382,6 +382,7 @@ const votingPhase: IPhaseData = {
       'da-DK': 'afstemninger',
     },
     votes_count: 0,
+    report_public: false,
   },
   relationships: {
     permissions: {
