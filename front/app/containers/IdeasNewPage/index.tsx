@@ -20,12 +20,12 @@ import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
-import SurveySubmittedNotice from './components/SurveySubmittedNotice';
 import SurveyNotActiveNotice from './components/SurveyNotActiveNotice';
+import SurveySubmittedNotice from './components/SurveySubmittedNotice';
 import IdeasNewIdeationForm from './IdeasNewIdeationForm';
 import IdeasNewSurveyForm from './IdeasNewSurveyForm';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();
