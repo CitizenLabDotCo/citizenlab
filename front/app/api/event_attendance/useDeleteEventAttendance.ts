@@ -1,8 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import fetcher from 'utils/cl-react-query/fetcher';
-import { IDeleteEventAttendanceProperties } from './types';
-import eventsAttendancesKeys from './keys';
+
 import eventsKeys from 'api/events/keys';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import eventsAttendancesKeys from './keys';
+import { IDeleteEventAttendanceProperties } from './types';
 
 const deleteEventAttendance = (properties: IDeleteEventAttendanceProperties) =>
   fetcher({

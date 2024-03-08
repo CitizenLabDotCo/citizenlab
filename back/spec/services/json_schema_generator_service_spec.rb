@@ -495,6 +495,9 @@ RSpec.describe JsonSchemaGeneratorService do
       expect(generator.visit_file_upload(field)).to eq({
         type: 'object',
         properties: {
+          id: {
+            type: 'string'
+          },
           content: {
             type: 'string'
           },

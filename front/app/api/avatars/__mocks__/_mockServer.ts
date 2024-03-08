@@ -1,6 +1,9 @@
 import { rest } from 'msw';
+
 import { API_PATH } from 'containers/App/constants';
+
 import { getOrigin } from 'utils/storybook/getOrigin';
+
 import { IAvatarData } from '../types';
 
 const image = `${getOrigin()}/images/female_avatar_5`;

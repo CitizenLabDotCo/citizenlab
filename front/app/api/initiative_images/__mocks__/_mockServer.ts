@@ -1,5 +1,7 @@
 import { rest } from 'msw';
+
 import { getOrigin } from 'utils/storybook/getOrigin';
+
 import { IInitiativeImageData } from '../types';
 
 const image = `${getOrigin()}/images/image16.png`;

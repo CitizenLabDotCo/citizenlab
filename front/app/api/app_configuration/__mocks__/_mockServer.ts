@@ -1,5 +1,7 @@
 import { rest } from 'msw';
+
 import { getOrigin } from 'utils/storybook/getOrigin';
+
 import { IAppConfigurationData } from '../types';
 
 const image = `${getOrigin()}/images/logo.png`;

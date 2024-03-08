@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import Error, { findErrorMessage, TFieldName } from 'components/UI/Error';
-import { useIntl } from 'utils/cl-intl';
+
 import { Text, Title, Box } from '@citizenlab/cl2-component-library';
-import { scrollToElement } from 'utils/scroll';
-import SuccessFeedback from './SuccessFeedback';
-import messages from './messages';
 import { get } from 'lodash-es';
+import { useFormContext } from 'react-hook-form';
 import { RHFErrors } from 'typings';
+
+import Error, { findErrorMessage, TFieldName } from 'components/UI/Error';
+
+import { useIntl } from 'utils/cl-intl';
+import { scrollToElement } from 'utils/scroll';
+
+import messages from './messages';
+import SuccessFeedback from './SuccessFeedback';
 
 type FeedbackProps = {
   successMessage?: string;

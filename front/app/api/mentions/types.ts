@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import mentionsKeys from './keys';
 import { ImageSizes } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import mentionsKeys from './keys';
 
 export type MentionsKeys = Keys<typeof mentionsKeys>;
 

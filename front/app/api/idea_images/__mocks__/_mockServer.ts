@@ -1,6 +1,8 @@
-import { IIdeaImageData } from '../types';
-import { getOrigin } from 'utils/storybook/getOrigin';
 import { rest } from 'msw';
+
+import { getOrigin } from 'utils/storybook/getOrigin';
+
+import { IIdeaImageData } from '../types';
 
 const image = `${getOrigin()}/images/image16.png`;
 

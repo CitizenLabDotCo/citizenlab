@@ -1,8 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
-import { IVolunteer } from './types';
+
 import causeKeys from './keys';
+import { IVolunteer } from './types';
 
 interface IDeleteVolunteer {
   causeId: string;

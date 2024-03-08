@@ -1,22 +1,17 @@
 import React from 'react';
 
-// components
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-import { Box } from '@citizenlab/cl2-component-library';
-
-// craft
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+import { Multiloc } from 'typings';
+
+import useLocalize from 'hooks/useLocalize';
+
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
-// i18n
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import messages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
-
-// hooks
-import { useTheme } from 'styled-components';
-import { Multiloc } from 'typings';
-import useLocalize from 'hooks/useLocalize';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 export interface Props {
   text?: Multiloc;
@@ -24,7 +19,6 @@ export interface Props {
 
 const TextMultiloc = ({ text }: Props) => {
   const craftComponentDefaultPadding = useReportDefaultPadding();
-  const theme = useTheme();
   const localize = useLocalize();
 
   const value = localize(text);
@@ -37,7 +31,7 @@ const TextMultiloc = ({ text }: Props) => {
       margin="0 auto"
       px={craftComponentDefaultPadding}
     >
-      <QuillEditedContent textColor={theme.colors.tenantText}>
+      <QuillEditedContent textColor={colors.textPrimary}>
         <div dangerouslySetInnerHTML={{ __html: value }} />
       </QuillEditedContent>
     </PageBreakBox>

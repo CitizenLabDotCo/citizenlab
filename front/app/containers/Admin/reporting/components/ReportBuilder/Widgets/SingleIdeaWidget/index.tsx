@@ -1,27 +1,20 @@
 import React from 'react';
 
-// components
-import Card from '../_shared/Card';
-import NoData from '../_shared/NoData';
-import Settings from './Settings';
-import IdeaCard from './IdeaCard';
-
-// i18n
-import messages from './messages';
-
-// typings
-import { Props } from './typings';
-
-// hooks
-import { getEmptyMessage } from '../utils';
 import { useSingleIdea } from 'api/graph_data_units';
 import usePhase from 'api/phases/usePhase';
 
-// utils
 import { isNil } from 'utils/helperUtils';
 
+import Card from '../_shared/Card';
+import NoData from '../_shared/NoData';
+import { getEmptyMessage } from '../utils';
+
+import IdeaCard from './IdeaCard';
+import messages from './messages';
+import Settings from './Settings';
+import { Props } from './typings';
+
 const SingleIdeaWidget = ({
-  title,
   projectId,
   phaseId,
   ideaId,
@@ -33,8 +26,8 @@ const SingleIdeaWidget = ({
 }: Props) => {
   const response = useSingleIdea(
     {
-      phaseId,
-      ideaId,
+      phase_id: phaseId,
+      idea_id: ideaId,
     },
     {
       enabled: !!phaseId && !!ideaId,
@@ -49,7 +42,7 @@ const SingleIdeaWidget = ({
   const ideaImages = response?.data.attributes.idea_images;
 
   return (
-    <Card title={title}>
+    <Card>
       {emptyMessage ? (
         <NoData message={emptyMessage} />
       ) : isNil(ideaId) || isNil(idea) || isNil(ideaImages) || isNil(phase) ? (
@@ -72,7 +65,6 @@ const SingleIdeaWidget = ({
 
 SingleIdeaWidget.craft = {
   props: {
-    title: {},
     projectId: undefined,
     phaseId: undefined,
     collapseLongText: false,

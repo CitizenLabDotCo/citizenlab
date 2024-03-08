@@ -1,19 +1,15 @@
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
-
-// parse
-import { parseTimeSeries, parseExcelData } from './parse';
-
-// utils
-import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
-
-// typings
-import { QueryParameters } from './typings';
 import { useMemo, useState } from 'react';
 
-// hooks
 import { useCommentsByTimeLive } from 'api/graph_data_units';
+
+import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
+
+import { useIntl } from 'utils/cl-intl';
+import { momentToIsoDate } from 'utils/dateUtils';
+
+import { parseTimeSeries, parseExcelData } from './parse';
+import { getTranslations } from './translations';
+import { QueryParameters } from './typings';
 
 export default function useCommentsByTime({
   projectId,
@@ -24,9 +20,9 @@ export default function useCommentsByTime({
   const [currentResolution, setCurrentResolution] = useState(resolution);
   const { data: analytics } = useCommentsByTimeLive(
     {
-      projectId,
-      startAtMoment,
-      endAtMoment,
+      project_id: projectId,
+      start_at: momentToIsoDate(startAtMoment),
+      end_at: momentToIsoDate(endAtMoment),
       resolution,
     },
     {

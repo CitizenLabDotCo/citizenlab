@@ -17,13 +17,4 @@ class CustomMaps::WebApi::V1::MapConfigSerializer < WebApi::V1::BaseSerializer
       }
     end
   end
-
-  attribute :legend do |map_config|
-    map_config.legend_items.map do |legend_item|
-      {
-        title_multiloc: legend_item.title_multiloc,
-        color: legend_item.color
-      }
-    end
-  end
 end

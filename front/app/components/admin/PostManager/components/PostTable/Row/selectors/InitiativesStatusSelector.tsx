@@ -1,9 +1,12 @@
 import React, { MouseEvent } from 'react';
+
 import { Popup } from 'semantic-ui-react';
+import styled from 'styled-components';
+
 import { IInitiativeAllowedTransitions } from 'api/initiative_allowed_transitions/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
+
 import T from 'components/T';
-import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;

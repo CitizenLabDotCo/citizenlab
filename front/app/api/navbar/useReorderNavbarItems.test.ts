@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useReorderNavbarItems from './useReorderNavbarItems';
-import { navbarItemsData } from './__mocks__/useNavbarItems';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { navbarItemsData } from './__mocks__/useNavbarItems';
+import useReorderNavbarItems from './useReorderNavbarItems';
 
 const apiPath = '*nav_bar_items/:id/reorder';
 const server = setupServer(

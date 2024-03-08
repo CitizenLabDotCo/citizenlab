@@ -13,16 +13,28 @@ RSpec.describe ReportBuilder::ReportPolicy do
   let_it_be(:current_phase) { create(:phase, project: project, start_at: 1.day.ago, end_at: 1.day.from_now) }
   let_it_be(:future_phase) { create(:phase, project: project, start_at: 2.days.from_now) }
 
-  context 'when user has admin rights' do
-    let_it_be(:all_reports) { create_list(:report, 3) }
-    let_it_be(:report) { all_reports.first }
-    let_it_be(:user) { build(:admin) }
-
+  shared_examples 'permitted everything' do
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:layout) }
     it { is_expected.to permit(:create) }
     it { is_expected.to permit(:destroy) }
     it { is_expected.to permit(:update) }
+  end
+
+  shared_examples 'not permitted anything' do
+    it { is_expected.not_to permit(:show) }
+    it { is_expected.not_to permit(:layout) }
+    it { is_expected.not_to permit(:create) }
+    it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:update) }
+  end
+
+  context 'when user has admin rights' do
+    let_it_be(:all_reports) { create_list(:report, 3) }
+    let_it_be(:report) { all_reports.first }
+    let_it_be(:user) { build(:admin) }
+
+    it_behaves_like 'permitted everything'
     it { expect(scope.resolve.count).to eq(3) }
   end
 
@@ -33,11 +45,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
 
     context 'when report does not belong to a phase' do
       context 'when user did not create report' do
-        it { is_expected.not_to permit(:show) }
-        it { is_expected.not_to permit(:layout) }
-        it { is_expected.not_to permit(:create) }
-        it { is_expected.not_to permit(:destroy) }
-        it { is_expected.not_to permit(:update) }
+        it_behaves_like 'not permitted anything'
         it { expect(scope.resolve.count).to eq(0) }
       end
 
@@ -96,11 +104,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
           let_it_be(:user) { create(:project_moderator, projects: [project, project2]) }
           let_it_be(:report) { create(:report, owner: user, layout: layout) }
 
-          it { is_expected.to permit(:show) }
-          it { is_expected.to permit(:layout) }
-          it { is_expected.to permit(:create) }
-          it { is_expected.to permit(:destroy) }
-          it { is_expected.to permit(:update) }
+          it_behaves_like 'permitted everything'
           it { expect(scope.resolve.count).to eq(1) }
         end
       end
@@ -129,11 +133,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
           let_it_be(:user) { create(:project_moderator, projects: [project, another_project]) }
           let_it_be(:report) { create(:report, phase: future_phase, layout: layout) }
 
-          it { is_expected.to permit(:show) }
-          it { is_expected.to permit(:layout) }
-          it { is_expected.to permit(:create) }
-          it { is_expected.to permit(:destroy) }
-          it { is_expected.to permit(:update) }
+          it_behaves_like 'permitted everything'
         end
 
         context 'when user can moderate phase, but does not have access to all data in report' do
@@ -151,11 +151,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
           let_it_be(:user) { create(:project_moderator) }
           let_it_be(:report) { create(:report, phase: future_phase, layout: layout) }
 
-          it { is_expected.not_to permit(:show) }
-          it { is_expected.not_to permit(:layout) }
-          it { is_expected.not_to permit(:create) }
-          it { is_expected.not_to permit(:destroy) }
-          it { is_expected.not_to permit(:update) }
+          it_behaves_like 'not permitted anything'
         end
       end
 
@@ -196,11 +192,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
             )
           end
 
-          it { is_expected.not_to permit(:show) }
-          it { is_expected.not_to permit(:layout) }
-          it { is_expected.not_to permit(:create) }
-          it { is_expected.not_to permit(:destroy) }
-          it { is_expected.not_to permit(:update) }
+          it_behaves_like 'not permitted anything'
           it { expect(scope.resolve.count).to eq(0) }
         end
       end
@@ -213,11 +205,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
     context 'when report does not belong to phase' do
       let_it_be(:report) { create(:report) }
 
-      it { is_expected.not_to permit(:show) }
-      it { is_expected.not_to permit(:layout) }
-      it { is_expected.not_to permit(:create) }
-      it { is_expected.not_to permit(:destroy) }
-      it { is_expected.not_to permit(:update) }
+      it_behaves_like 'not permitted anything'
       it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
     end
 
@@ -226,11 +214,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
       let_it_be(:phase) { create(:phase, project: project) }
       let_it_be(:report) { create(:report, phase: phase) }
 
-      it { is_expected.not_to permit(:show) }
-      it { is_expected.not_to permit(:layout) }
-      it { is_expected.not_to permit(:create) }
-      it { is_expected.not_to permit(:destroy) }
-      it { is_expected.not_to permit(:update) }
+      it_behaves_like 'not permitted anything'
       it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
     end
 
@@ -260,11 +244,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
       context 'phase started and report not visible' do
         let_it_be(:report) { create(:report, phase: current_phase, visible: false) }
 
-        it { is_expected.not_to permit(:show) }
-        it { is_expected.not_to permit(:layout) }
-        it { is_expected.not_to permit(:create) }
-        it { is_expected.not_to permit(:destroy) }
-        it { is_expected.not_to permit(:update) }
+        it_behaves_like 'not permitted anything'
         it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
       end
     end
@@ -276,11 +256,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
     context 'when report does not belong to phase' do
       let_it_be(:report) { create(:report) }
 
-      it { is_expected.not_to permit(:show) }
-      it { is_expected.not_to permit(:layout) }
-      it { is_expected.not_to permit(:create) }
-      it { is_expected.not_to permit(:destroy) }
-      it { is_expected.not_to permit(:update) }
+      it_behaves_like 'not permitted anything'
       it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
     end
 
@@ -288,11 +264,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
       context 'phase not started' do
         let_it_be(:report) { create(:report, phase: future_phase) }
 
-        it { is_expected.not_to permit(:show) }
-        it { is_expected.not_to permit(:layout) }
-        it { is_expected.not_to permit(:create) }
-        it { is_expected.not_to permit(:destroy) }
-        it { is_expected.not_to permit(:update) }
+        it_behaves_like 'not permitted anything'
         it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
       end
 
@@ -310,11 +282,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
       context 'phase started and report not visible' do
         let_it_be(:report) { create(:report, phase: current_phase, visible: false) }
 
-        it { is_expected.not_to permit(:show) }
-        it { is_expected.not_to permit(:layout) }
-        it { is_expected.not_to permit(:create) }
-        it { is_expected.not_to permit(:destroy) }
-        it { is_expected.not_to permit(:update) }
+        it_behaves_like 'not permitted anything'
         it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
       end
     end

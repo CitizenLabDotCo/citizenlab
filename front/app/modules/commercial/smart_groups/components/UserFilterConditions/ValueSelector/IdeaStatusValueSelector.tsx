@@ -1,8 +1,11 @@
 import React, { memo } from 'react';
-import { IOption } from 'typings';
-import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
-import useLocalize from 'hooks/useLocalize';
+
 import { Select } from '@citizenlab/cl2-component-library';
+import { IOption } from 'typings';
+
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
+
+import useLocalize from 'hooks/useLocalize';
 
 export interface Props {
   value: string;

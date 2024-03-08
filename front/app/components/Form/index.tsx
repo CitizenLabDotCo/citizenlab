@@ -2,42 +2,33 @@ import React, { memo, ReactElement, useEffect, useState } from 'react';
 
 // jsonforms
 import {
-  createAjv,
-  JsonSchema7,
-  isCategorization,
-  Layout,
-} from '@jsonforms/core';
-
-// styling
-import styled from 'styled-components';
-
-// components
-import {
   Box,
   fontSizes,
   media,
   Button,
 } from '@citizenlab/cl2-component-library';
-import Wrapper from './Components/Wrapper';
-import Fields from './Components/Fields';
-import ButtonBar from './Components/ButtonBar';
+import {
+  createAjv,
+  JsonSchema7,
+  isCategorization,
+  Layout,
+} from '@jsonforms/core';
+import styled from 'styled-components';
+import { CLErrors, Locale } from 'typings';
 
-// hooks
+import useLocale from 'hooks/useLocale';
 import useObserveEvent from 'hooks/useObserveEvent';
 
-// i18n
-import messages from './messages';
-import useLocale from 'hooks/useLocale';
 import { useIntl, MessageDescriptor } from 'utils/cl-intl';
-
-// utils
 import { isNilOrError } from 'utils/helperUtils';
-import { sanitizeFormData, isValidData } from './utils';
-import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 
-// typings
-import { CLErrors, Locale } from 'typings';
+import ButtonBar from './Components/ButtonBar';
+import Fields from './Components/Fields';
+import Wrapper from './Components/Wrapper';
+import messages from './messages';
+import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
+import { sanitizeFormData, isValidData } from './utils';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -85,7 +76,7 @@ interface Props {
   /**
    * Idea id for update form, used to load and udpate image and files.
    */
-  inputId?: string;
+  inputId?: string | undefined;
   formSubmitText?: MessageDescriptor;
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
@@ -119,7 +110,6 @@ const Form = memo(
     const [data, setData] = useState<FormData>(() => {
       return parseRequiredMultilocsData(schema, locale, initialFormData);
     });
-
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
     const [scrollToError, setScrollToError] = useState(false);
@@ -137,6 +127,10 @@ const Form = memo(
         setScrollToError(false);
       }
     }, [scrollToError]);
+
+    useEffect(() => {
+      setData(parseRequiredMultilocsData(schema, locale, initialFormData));
+    }, [schema, locale, initialFormData]);
 
     const layoutType = layout
       ? layout

@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useCustomPages from './useCustomPages';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { customPagesData } from './__mocks__/useCustomPages';
+import useCustomPages from './useCustomPages';
 
 const apiPath = '*/static_pages';
 

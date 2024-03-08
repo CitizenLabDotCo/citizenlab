@@ -1,23 +1,19 @@
 import React from 'react';
-// tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 
-// components
-import InitiativeCard from 'components/InitiativeCard';
 import { Spinner, Button, media } from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
+import styled, { useTheme } from 'styled-components';
+
+import { IInitiativeData } from 'api/initiatives/types';
+
+import InitiativeCard from 'components/InitiativeCard';
 import Centerer from 'components/UI/Centerer';
 
-// i18n
-import messages from './messages';
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// style
-import styled, { useTheme } from 'styled-components';
-import { rgba } from 'polished';
-
-// Types
-import { IInitiativeData } from 'api/initiatives/types';
+import messages from './messages';
+import tracks from './tracks';
 
 const Loading = styled(Centerer)`
   ${media.desktop`

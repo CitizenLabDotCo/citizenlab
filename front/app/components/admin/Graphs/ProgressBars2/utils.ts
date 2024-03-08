@@ -1,4 +1,5 @@
 import { roundPercentages, sum } from 'utils/math';
+
 import { BarType } from './typings';
 
 export const getType = (index: number, length: number) => {

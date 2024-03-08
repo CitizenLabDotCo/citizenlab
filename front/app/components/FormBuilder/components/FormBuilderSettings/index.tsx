@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// components
 import {
   Box,
   Title,
@@ -8,32 +7,30 @@ import {
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
-import CloseIconButton from 'components/UI/CloseIconButton';
-import { LogicSettings } from './LogicSettings';
-import { ContentSettings } from './ContentSettings';
+import { useFormContext } from 'react-hook-form';
 
-// intl
-import messages from '../messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-// types
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-// hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { useFormContext } from 'react-hook-form';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { getFieldNumbers } from '../utils';
 import {
   formEndOption,
   getTranslatedStringKey,
   FormBuilderConfig,
 } from 'components/FormBuilder/utils';
+import CloseIconButton from 'components/UI/CloseIconButton';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+import { getFieldNumbers } from '../utils';
+
+import { ContentSettings } from './ContentSettings';
+import { LogicSettings } from './LogicSettings';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;

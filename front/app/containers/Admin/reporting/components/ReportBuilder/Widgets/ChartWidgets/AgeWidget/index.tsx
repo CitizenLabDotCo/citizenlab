@@ -1,28 +1,13 @@
 import React from 'react';
 
-// components
 import Card from '../../_shared/Card';
-import AgeCard from './AgeCard';
-
-// messages
-import messages from '../messages';
-
-// settings
 import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
-
-// types
+import messages from '../messages';
 import { ChartWidgetProps } from '../typings';
 
-// utils
-import moment from 'moment';
+import AgeCard from './AgeCard';
 
-const AgeWidget = ({ title, projectId, startAt, endAt }: ChartWidgetProps) => {
-  const props = {
-    startAtMoment: startAt ? moment(startAt) : null,
-    endAtMoment: endAt ? moment(endAt) : null,
-    projectId,
-  };
-
+const AgeWidget = ({ title, ...props }: ChartWidgetProps) => {
   return (
     <Card title={title} pagebreak>
       <AgeCard {...props} />

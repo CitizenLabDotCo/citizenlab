@@ -1,26 +1,20 @@
 import React from 'react';
 
-// hooks
-import useReportLayout from 'api/report_layout/useReportLayout';
-
-// components
 import {
   Box,
   useBreakpoint,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+
+import useReportLayout from 'api/report_layout/useReportLayout';
+
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
-import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-
-// context
-import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
-
-// constants
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
-
-// utils
+import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 import { getReportWidth } from 'containers/Admin/reporting/utils/getReportWidth';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
 interface Props {
   reportId: string;
@@ -63,7 +57,7 @@ const PhaseReport = ({ reportId, phaseId }: Props) => {
           <Box
             w="100%"
             display="flex"
-            alignItems="center"
+            alignItems="flex-start"
             flexDirection="column"
           >
             <Box maxWidth={MAX_REPORT_WIDTH} w="100%">

@@ -1,23 +1,20 @@
-// Libraries
 import React, { useState } from 'react';
 
-// Components
-import Button from 'components/UI/Button';
-import { Row } from 'components/admin/ResourceList';
 import { Select, Input, Box } from '@citizenlab/cl2-component-library';
-import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
-
-// Typings
+import styled from 'styled-components';
 import { IOption } from 'typings';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// Style
-import styled from 'styled-components';
 import { IPollQuestionData } from 'api/poll_questions/types';
 import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
+
+import { Row } from 'components/admin/ResourceList';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
+import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 
 const FormContainer = styled.div`
   display: flex;

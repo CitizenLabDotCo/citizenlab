@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import commentsByTopicKeys from './keys';
 import {
   ICommentsByTopic,
   CommentsByTopicKeys,
   ICommentsByTopicParams,
 } from './types';
-import commentsByTopicKeys from './keys';
 
 const fetchCommentsByTopic = (params: ICommentsByTopicParams) =>
   fetcher<ICommentsByTopic>({

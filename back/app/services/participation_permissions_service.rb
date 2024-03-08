@@ -319,7 +319,8 @@ class ParticipationPermissionsService < PermissionsService
   end
 
   def posting_limit_reached?(phase, user)
-    return true if phase.posting_limited? && phase.ideas.where(author: user).size >= phase.posting_limited_max
+    return true if phase.posting_limited? &&
+                   phase.ideas.where(author: user, publication_status: 'published').size >= phase.posting_limited_max
 
     if phase.posting_limited? && phase.allow_anonymous_participation?
       author_hash = Idea.create_author_hash user.id, phase.project.id, true

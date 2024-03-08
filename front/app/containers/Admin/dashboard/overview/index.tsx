@@ -1,44 +1,34 @@
 import React, { useState, useCallback, useMemo } from 'react';
+
+import { Title } from '@citizenlab/cl2-component-library';
 import moment, { Moment } from 'moment';
-
-// services
-
-// resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
-// hooks
+import { activeUsersByTimeXlsxEndpoint } from 'api/active_users_by_time/util';
 import useAuthUser from 'api/me/useAuthUser';
+import { PublicationStatus } from 'api/projects/types';
 
-// components
-import { Title } from '@citizenlab/cl2-component-library';
+import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
+import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
+import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
+import RegistrationsByTimeCard from 'components/admin/GraphCards/RegistrationsByTimeCard';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
+import { IResolution } from 'components/admin/ResolutionControl';
 import Outlet from 'components/Outlet';
+
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from '../messages';
+import tracks from '../tracks';
+
 import ChartFilters from './ChartFilters';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
-import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
-import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
-import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
-import RegistrationsByTimeCard from 'components/admin/GraphCards/RegistrationsByTimeCard';
-
-// i18n
-import messages from '../messages';
-import overviewMessages from './messages';
-import { useIntl } from 'utils/cl-intl';
-
-// utils
 import { getSensibleResolution } from './getSensibleResolution';
-
-// tracks
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../tracks';
-
-// typings
-import { PublicationStatus } from 'api/projects/types';
-import { IResolution } from 'components/admin/ResolutionControl';
-import { isNilOrError } from 'utils/helperUtils';
-import { activeUsersByTimeXlsxEndpoint } from 'api/active_users_by_time/util';
+import overviewMessages from './messages';
 
 interface DataProps {
   projects: GetProjectsChildProps;

@@ -1,16 +1,17 @@
 import React from 'react';
+
+import { colors } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
-// api
 import useReport from 'api/reports/useReport';
 
-// components
 import Button from 'components/UI/Button';
-import PrintReportButton from './PrintReportButton';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
+
 import messages from '../messages';
+
+import PrintReportButton from './PrintReportButton';
 
 interface Props {
   reportId: string;
@@ -34,6 +35,7 @@ const Buttons = ({ reportId, isLoading, onDelete }: Props) => {
         mr="8px"
         icon="delete"
         buttonStyle="white"
+        textColor={colors.textSecondary}
         onClick={onDelete}
         processing={isLoading}
         disabled={isLoading || !canEdit}

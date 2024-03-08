@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { AuthorsByDomicileQueryParams, AuthorsByAgeQueryParams } from './types';
 
 const authorsByDomicileBaseKey = { type: 'authors_by_domicile' };
