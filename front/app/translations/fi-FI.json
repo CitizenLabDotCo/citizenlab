@@ -626,6 +626,7 @@
   "app.components.form.controls.selectBetween": "*Valitse vaihtoehdoista {minItems} ja {maxItems}",
   "app.components.form.controls.selectExactly2": "*Valitse täsmälleen {selectExactly, plural, one {# vaihtoehto} other {# vaihtoehtoa}}",
   "app.components.form.controls.selectMany": "*Valitse niin monta kuin haluat",
+  "app.components.form.controls.tapOnFullscreenMapToAdd": "Napauta karttaa lisätäksesi vastauksesi.",
   "app.components.form.controls.tapOnMapToAdd2": "Napauta karttaa tai kirjoita osoite alle lisätäksesi vastauksesi.",
   "app.components.form.controls.tapToAddAPoint": "Lisää piste napauttamalla",
   "app.components.form.controls.validCordinatesTooltip": "Jos sijainti ei näy vaihtoehtojen joukossa kirjoittaessasi, voit määrittää tarkan sijainnin lisäämällä kelvollisia koordinaatteja muodossa \"leveysaste, pituusaste\".",
