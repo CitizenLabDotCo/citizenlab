@@ -1,6 +1,7 @@
 import { rest } from 'msw';
 
 import { API_PATH } from 'containers/App/constants';
+
 import { getOrigin } from 'utils/storybook/getOrigin';
 
 const image = `${getOrigin()}/images/image16.png`;
