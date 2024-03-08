@@ -203,6 +203,7 @@
   "app.components.admin.PostManager.title": "Naslov",
   "app.components.admin.PostManager.topicsTab": "Oznake",
   "app.components.admin.PostManager.topicsTabTooltipText": "Povucite i ispustite kako biste dodali oznake ovom unosu.",
+  "app.components.admin.PostManager.view": "Pogled",
   "app.components.admin.PostManager.votes": "Glasovi",
   "app.components.admin.PostManager.xDaysLeft": "{x, plural, =0 {Manje od jednog dana} one {Jednog dana} other {# dana}} lijevo",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "od",
