@@ -3,7 +3,6 @@ import React, { useRef } from 'react';
 import moment from 'moment';
 
 import { useUsersByGenderLive } from 'api/graph_data_units';
-import { momentToIsoDate } from 'utils/dateUtils';
 import { usersByGenderXlsxEndpoint } from 'api/users_by_gender/util';
 
 import messages from 'containers/Admin/dashboard/messages';
@@ -12,6 +11,7 @@ import GraphCard from 'components/admin/GraphCard';
 import { NoDataContainer } from 'components/admin/GraphWrappers';
 
 import { useIntl } from 'utils/cl-intl';
+import { momentToIsoDate } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 import Chart from './Chart';

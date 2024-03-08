@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import customFieldsKeys from 'api/custom_fields/keys';
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import useAddMapConfig from 'api/map_config/useAddMapConfig';
@@ -21,6 +22,7 @@ import { goToMapLocation, parseLayers } from 'components/EsriMap/utils';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import messages from './messages';
 
@@ -100,6 +102,13 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   ]);
 
   const onModalClose = useCallback(() => {
+    queryClient.invalidateQueries({
+      queryKey: customFieldsKeys.list({
+        projectId,
+        phaseId,
+      }),
+    });
+
     // Get attributes from the map config
     const centerPoint = mapConfig?.data?.attributes?.center_geojson;
     const zoom = Number(mapConfig?.data?.attributes?.zoom_level);
@@ -110,9 +119,11 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
     }
     setShowModal(false);
   }, [
-    mapView,
+    projectId,
+    phaseId,
     mapConfig?.data?.attributes?.center_geojson,
     mapConfig?.data?.attributes?.zoom_level,
+    mapView,
   ]);
 
   const onMapInit = useCallback((mapView: MapView) => {
