@@ -68,6 +68,7 @@ const FormResults = () => {
             ) => {
               return (
                 <FormResultsQuestion
+                  key={index}
                   questionNumber={index + 1}
                   locale={locale}
                   question={question}
