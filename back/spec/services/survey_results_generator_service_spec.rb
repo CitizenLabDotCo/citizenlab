@@ -6,42 +6,37 @@ require 'rails_helper'
 #   * Unsupported fields are not considered. Unsupported means that we do
 #     not have a visit_xxx method on the described class.
 #   * Results are generated only for reportable fields (i.e. enabled).
-#   * Missing values for fields are not counted.
 #   * The order of the results is the same as the field order in the form.
 #   * Results for one field are ordered in descending order.
 #   * Result generation is supported for phases only.
 
 RSpec.describe SurveyResultsGeneratorService do
-  subject(:generator) { described_class.new participation_context }
+  subject(:generator) { described_class.new survey_phase }
 
-  let(:project) { create(:project_with_active_native_survey_phase) }
-  let(:active_phase) { project.phases.first }
-  let(:participation_context) { active_phase }
-  let(:phases_of_inputs) { [active_phase] }
+  let_it_be(:project) { create(:single_phase_native_survey_project) }
+  let_it_be(:survey_phase) { project.phases.first }
+  let_it_be(:phases_of_inputs) { [survey_phase] }
 
-  let(:form) { create(:custom_form, participation_context: active_phase) }
-  let!(:page_field) { create(:custom_field_page, resource: form) } # Should not appear in results
-  let!(:text_field) do
+  # Set-up custom form
+  let_it_be(:form) { create(:custom_form, participation_context: survey_phase) }
+  let_it_be(:page_field) { create(:custom_field_page, resource: form) } # Should not appear in results
+  let_it_be(:text_field) do
     create(
       :custom_field,
       resource: form,
-      title_multiloc: {
-        'en' => 'What is your favourite colour?'
-      },
+      title_multiloc: { 'en' => 'What is your favourite colour?' },
       description_multiloc: {}
     )
   end
-  let!(:multiline_text_field) do
+  let_it_be(:multiline_text_field) do
     create(
       :custom_field_multiline_text,
       resource: form,
-      title_multiloc: {
-        'en' => 'What is your favourite recipe?'
-      },
+      title_multiloc: { 'en' => 'What is your favourite recipe?' },
       description_multiloc: {}
     )
   end
-  let!(:disabled_multiselect_field) do
+  let_it_be(:disabled_multiselect_field) do # Should not appear in results
     create(
       :custom_field_multiselect,
       resource: form,
@@ -50,7 +45,7 @@ RSpec.describe SurveyResultsGeneratorService do
       enabled: false
     )
   end
-  let!(:multiselect_field) do
+  let_it_be(:multiselect_field) do
     create(
       :custom_field_multiselect,
       resource: form,
@@ -60,64 +55,17 @@ RSpec.describe SurveyResultsGeneratorService do
         'nl-NL' => 'Wat zijn je favoriete huisdieren?'
       },
       description_multiloc: {},
-      required: false
+      required: false,
+      options: [
+        create(:custom_field_option, key: 'cat', title_multiloc: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' }),
+        create(:custom_field_option, key: 'dog', title_multiloc: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' }),
+        create(:custom_field_option, key: 'cow', title_multiloc: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' }),
+        create(:custom_field_option, key: 'pig', title_multiloc: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }),
+        create(:custom_field_option, key: 'no_response', title_multiloc: { 'en' => 'Nothing', 'fr-FR' => 'Rien', 'nl-NL' => 'Niets' })
+      ]
     )
   end
-  let!(:cat_option) do
-    create(
-      :custom_field_option,
-      custom_field: multiselect_field,
-      key: 'cat',
-      title_multiloc: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' }
-    )
-  end
-  let!(:dog_option) do
-    create(
-      :custom_field_option,
-      custom_field: multiselect_field,
-      key: 'dog',
-      title_multiloc: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' }
-    )
-  end
-  let!(:cow_option) do
-    create(
-      :custom_field_option,
-      custom_field: multiselect_field,
-      key: 'cow',
-      title_multiloc: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' }
-    )
-  end
-  let!(:pig_option) do
-    create(
-      :custom_field_option,
-      custom_field: multiselect_field,
-      key: 'pig',
-      title_multiloc: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }
-    )
-  end
-  let!(:no_response_option) do
-    create(
-      :custom_field_option,
-      custom_field: multiselect_field,
-      key: 'no_response',
-      title_multiloc: { 'en' => 'Nothing', 'fr-FR' => 'Rien', 'nl-NL' => 'Niets' }
-    )
-  end
-  let(:minimum_label_multiloc) do
-    {
-      'en' => 'Strongly disagree',
-      'fr-FR' => "Pas du tout d'accord",
-      'nl-NL' => 'Helemaal niet mee eens'
-    }
-  end
-  let(:maximum_label_multiloc) do
-    {
-      'en' => 'Strongly agree',
-      'fr-FR' => "Tout à fait d'accord",
-      'nl-NL' => 'Strerk mee eens'
-    }
-  end
-  let!(:linear_scale_field) do
+  let_it_be(:linear_scale_field) do
     create(
       :custom_field_linear_scale,
       resource: form,
@@ -127,12 +75,20 @@ RSpec.describe SurveyResultsGeneratorService do
         'nl-NL' => 'Ben je het eens met de visie?'
       },
       maximum: 5,
-      minimum_label_multiloc: minimum_label_multiloc,
-      maximum_label_multiloc: maximum_label_multiloc,
+      minimum_label_multiloc: {
+        'en' => 'Strongly disagree',
+        'fr-FR' => "Pas du tout d'accord",
+        'nl-NL' => 'Helemaal niet mee eens'
+      },
+      maximum_label_multiloc: {
+        'en' => 'Strongly agree',
+        'fr-FR' => "Tout à fait d'accord",
+        'nl-NL' => 'Strerk mee eens'
+      },
       required: true
     )
   end
-  let!(:select_field) do
+  let_it_be(:select_field) do
     create(
       :custom_field_select,
       resource: form,
@@ -142,66 +98,40 @@ RSpec.describe SurveyResultsGeneratorService do
         'nl-NL' => 'Welke stad vind jij het leukst?'
       },
       description_multiloc: {},
-      required: true
+      required: true,
+      options: [
+        create(:custom_field_option, key: 'la', title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }),
+        create(:custom_field_option, key: 'ny', title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }),
+        create(:custom_field_option, other: true, key: 'other', title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' })
+      ]
     )
   end
-  let!(:la_option) do
-    create(
-      :custom_field_option,
-      custom_field: select_field,
-      key: 'la',
-      title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }
-    )
-  end
-  let!(:ny_option) do
-    create(
-      :custom_field_option,
-      custom_field: select_field,
-      key: 'ny',
-      title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }
-    )
-  end
-  let!(:other_option) do
-    create(
-      :custom_field_option,
-      custom_field: select_field,
-      other: true,
-      key: 'other',
-      title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' }
-    )
-  end
-  let!(:multiselect_image_field) do
+  let_it_be(:multiselect_image_field) do
     create(
       :custom_field_multiselect_image,
       resource: form,
       title_multiloc: {
-        'en' => 'Choose an image',
-        'fr-FR' => 'Choisissez une image',
-        'nl-NL' => 'Kies een afbeelding'
+        'en' => 'Choose an image', 'fr-FR' => 'Choisissez une image', 'nl-NL' => 'Kies een afbeelding'
       },
       description_multiloc: {},
-      required: false
+      required: false,
+      options: [
+        create(
+          :custom_field_option,
+          key: 'house',
+          title_multiloc: { 'en' => 'House', 'fr-FR' => 'Maison', 'nl-NL' => 'Huis' },
+          image: create(:custom_field_option_image)
+        ),
+        create(
+          :custom_field_option,
+          key: 'school',
+          title_multiloc: { 'en' => 'School', 'fr-FR' => 'Ecole', 'nl-NL' => 'School' },
+          image: create(:custom_field_option_image)
+        )
+      ]
     )
   end
-  let!(:house_option) do
-    create(
-      :custom_field_option,
-      custom_field: multiselect_image_field,
-      key: 'house',
-      title_multiloc: { 'en' => 'House', 'fr-FR' => 'Maison', 'nl-NL' => 'Huis' },
-      image: create(:custom_field_option_image)
-    )
-  end
-  let!(:school_option) do
-    create(
-      :custom_field_option,
-      custom_field: multiselect_image_field,
-      key: 'school',
-      title_multiloc: { 'en' => 'School', 'fr-FR' => 'Ecole', 'nl-NL' => 'School' },
-      image: create(:custom_field_option_image)
-    )
-  end
-  let!(:unanswered_text_field) do
+  let_it_be(:unanswered_text_field) do
     create(
       :custom_field,
       resource: form,
@@ -211,7 +141,7 @@ RSpec.describe SurveyResultsGeneratorService do
       description_multiloc: {}
     )
   end
-  let!(:file_upload_field) do
+  let_it_be(:file_upload_field) do
     create(
       :custom_field,
       input_type: 'file_upload',
@@ -222,17 +152,19 @@ RSpec.describe SurveyResultsGeneratorService do
       required: false
     )
   end
-
-  let_it_be(:user_custom_field) { create(:custom_field_gender, :with_options) }
+  let_it_be(:user_custom_field) do
+    create(:custom_field_gender, :with_options)
+  end
 
   # Create responses
-  before do
+  let_it_be(:responses) do
     create(:idea_status_proposed)
     male_user = create(:user, custom_field_values: { gender: 'male' })
     female_user = create(:user, custom_field_values: { gender: 'female' })
+    no_gender_user = create(:user, custom_field_values: {})
     idea_file = create(:idea_file)
     create(
-      :idea,
+      :native_survey_response,
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
@@ -245,7 +177,7 @@ RSpec.describe SurveyResultsGeneratorService do
       author: female_user
     )
     create(
-      :idea,
+      :native_survey_response,
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
@@ -256,7 +188,7 @@ RSpec.describe SurveyResultsGeneratorService do
       author: male_user
     )
     create(
-      :idea,
+      :native_survey_response,
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
@@ -269,7 +201,7 @@ RSpec.describe SurveyResultsGeneratorService do
       author: female_user
     )
     create(
-      :idea,
+      :native_survey_response,
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
@@ -282,7 +214,7 @@ RSpec.describe SurveyResultsGeneratorService do
       author: male_user
     )
     create(
-      :idea,
+      :native_survey_response,
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
@@ -292,7 +224,7 @@ RSpec.describe SurveyResultsGeneratorService do
       author: female_user
     )
     create(
-      :idea,
+      :native_survey_response,
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {
@@ -301,15 +233,21 @@ RSpec.describe SurveyResultsGeneratorService do
       },
       author: male_user
     )
-    create(:idea, author: female_user, project: project, phases: phases_of_inputs, custom_field_values: {})
-
+    create(
+      :native_survey_response,
+      project: project,
+      phases: phases_of_inputs,
+      custom_field_values: {},
+      author: female_user
+    )
     { 1 => 2, 2 => 5, 3 => 7, 4 => 0, 5 => 1 }.each do |value, count|
       count.times do
         create(
-          :idea,
+          :native_survey_response,
           project: project,
           phases: phases_of_inputs,
-          custom_field_values: { linear_scale_field.key => value }
+          custom_field_values: { linear_scale_field.key => value },
+          author: no_gender_user
         )
       end
     end
@@ -324,17 +262,21 @@ RSpec.describe SurveyResultsGeneratorService do
   describe 'generate_results' do
     let(:generated_results) { generator.generate_results }
 
-    it 'returns the correct locales' do
-      # These locales are a prerequisite for the test.
-      expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
-    end
+    describe 'structure' do
+      it 'returns the correct locales' do
+        # These locales are a prerequisite for the test.
+        expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
+      end
 
-    it 'returns the correct totals' do
-      expect(generated_results[:totalSubmissions]).to eq 22
-    end
+      it 'returns the correct totals' do
+        expect(generated_results[:totalSubmissions]).to eq 22
+      end
 
-    it 'returns the correct structure' do
-      expect(generated_results[:results].count).to eq 8
+      it 'returns the correct fields and structure' do
+        expect(generated_results[:results].count).to eq 8
+        expect(generated_results[:results].pluck(:customFieldId)).not_to include page_field.id
+        expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
+      end
     end
 
     describe 'text fields' do
@@ -642,9 +584,6 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       context 'when not all minimum and maximum labels are configured for linear scale fields' do
-        let(:minimum_label_multiloc) { { 'fr-FR' => "Pas du tout d'accord" } }
-        let(:maximum_label_multiloc) { { 'en' => 'Strongly agree' } }
-
         let(:expected_result_linear_scale_without_min_and_max_labels) do
           expected_result_linear_scale.tap do |result|
             result[:multilocs][:answers][5][:title_multiloc] = {
@@ -658,6 +597,13 @@ RSpec.describe SurveyResultsGeneratorService do
               'nl-NL' => '1'
             }
           end
+        end
+
+        before do
+          linear_scale_field.update!(
+            minimum_label_multiloc: { 'fr-FR' => "Pas du tout d'accord" },
+            maximum_label_multiloc: { 'en' => 'Strongly agree' }
+          )
         end
 
         it 'returns minimum and maximum labels as numbers' do
