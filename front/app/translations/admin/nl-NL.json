@@ -899,7 +899,7 @@
   "app.containers.Admin.reporting.reportBuilder": "Rapport vormgever",
   "app.containers.Admin.reporting.reportHeader": "Koptekst rapport",
   "app.containers.Admin.reporting.resultsSection": "RESULTATEN",
-  "app.containers.Admin.reporting.warningBanner": "Op deze pagina toont het rapport de laatste platformgegevens. Op andere pagina's wordt een momentopname van het rapport getoond. Snapshots worden gemaakt wanneer je het rapport op deze pagina opslaat.",
+  "app.containers.Admin.reporting.warningBanner": "Op deze pagina toont het rapport de laatste platformgegevens. Op andere pagina's wordt een momentopname van het rapport getoond. Momentopnames worden gemaakt wanneer je het rapport op deze pagina opslaat.",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Nieuw token aanmaken",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Annuleren",
   "app.containers.Admin.tools.apiTokens.createTokenCreatedDescription": "Je token is aangemaakt. Kopieer het {secret} hieronder en bewaar het veilig.",
