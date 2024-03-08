@@ -353,7 +353,7 @@ RSpec.describe SurveyResultsGeneratorService do
           grouped: false,
           totalResponseCount: 22,
           questionResponseCount: 4,
-          totalPicks: 28,
+          totalPickCount: 28,
           answers: [
             { answer: nil, count: 18 },
             { answer: 'cat', count: 4 },
@@ -554,7 +554,7 @@ RSpec.describe SurveyResultsGeneratorService do
           grouped: false,
           totalResponseCount: 22,
           questionResponseCount: 15,
-          totalPicks: 22,
+          totalPickCount: 22,
           answers: [
             { answer: 5, count: 1 },
             { answer: 4, count: 0 },
@@ -626,7 +626,7 @@ RSpec.describe SurveyResultsGeneratorService do
           grouped: false,
           totalResponseCount: 22,
           questionResponseCount: 6,
-          totalPicks: 22,
+          totalPickCount: 22,
           answers: [
             { answer: nil, count: 16 },
             { answer: 'la', count: 2 },
@@ -748,7 +748,7 @@ RSpec.describe SurveyResultsGeneratorService do
           grouped: false,
           totalResponseCount: 22,
           questionResponseCount: 3,
-          totalPicks: 22,
+          totalPickCount: 22,
           answers: [
             { answer: nil, count: 19 },
             { answer: 'house', count: 2 },

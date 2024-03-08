@@ -569,7 +569,7 @@ resource 'Phases' do
             grouped: false,
             totalResponseCount: 2,
             questionResponseCount: 2,
-            totalPicks: 3,
+            totalPickCount: 3,
             answers: [
               { answer: 'cat', count: 2 },
               { answer: 'dog', count: 1 },

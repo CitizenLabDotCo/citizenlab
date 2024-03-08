@@ -26,7 +26,7 @@ import {
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/VisitorsWidget/useVisitors/typings';
 import { TrafficSourcesRow } from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes/typings';
 import { ICustomFieldInputType } from 'api/custom_fields/types';
-import { Multiloc } from 'typings';
+import { ImageSizes, Multiloc } from 'typings';
 
 // Survey results (whole survey, deprecated)
 export type SurveyResultsResponse = {
@@ -46,12 +46,17 @@ export type GroupedAnswer = Answer & {
   groups: { group: string | null; count: number }[];
 };
 
+export type SurveyQuestionMultilocAnswer = {
+  title_multiloc: Multiloc;
+  image?: ImageSizes;
+};
+
 export type SurveyQuestionMultilocs = {
-  answer: Record<string, Multiloc>;
+  answer: Record<string, SurveyQuestionMultilocAnswer>;
 };
 
 export type SurveyQuestionMultilocsGrouped = SurveyQuestionMultilocs & {
-  group: Record<string, Multiloc>;
+  group: Record<string, SurveyQuestionMultilocAnswer>;
 };
 
 type BaseAttributes = {
@@ -59,8 +64,8 @@ type BaseAttributes = {
   question: Multiloc;
   customFieldId: string;
   required: boolean;
-  totalResponses: number;
-  totalPicks: number;
+  totalResponseCount: number;
+  totalPickCount: number;
 };
 
 export type AttributesGrouped = BaseAttributes & {

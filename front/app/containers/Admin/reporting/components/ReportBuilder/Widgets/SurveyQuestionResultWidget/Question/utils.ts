@@ -68,6 +68,6 @@ export const getLegendLabels = (
       return formatMessage(messages.noAnswer);
     }
 
-    return localize(attributes.multilocs.group[key]);
+    return localize(attributes.multilocs.group[key].title_multiloc);
   });
 };

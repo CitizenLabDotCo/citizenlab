@@ -36,12 +36,12 @@ const GroupedBars = ({ attributes, colorScheme }: Props) => {
           >
             <ProgressBars2
               values={groups.map((group) => group.count)}
-              total={attributes.totalPicks}
+              total={attributes.totalPickCount}
               colorScheme={colorScheme}
               label={
                 answer === null
                   ? formatMessage(messages.noAnswer)
-                  : localize(attributes.multilocs.answer[answer])
+                  : localize(attributes.multilocs.answer[answer].title_multiloc)
               }
             />
           </Box>

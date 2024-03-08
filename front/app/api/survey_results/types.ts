@@ -1,4 +1,4 @@
-import { Multiloc } from 'typings';
+import { ImageSizes, Multiloc } from 'typings';
 import surveyResultsKeys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
 import { ICustomFieldInputType } from 'api/custom_fields/types';
@@ -14,10 +14,13 @@ export interface Answer {
   count: number;
 }
 
-// TODO: JS - complete this typing
+export type MultilocAnswer = {
+  title_multiloc: Multiloc;
+  image?: ImageSizes;
+};
+
 export interface AnswerMultilocs {
-  answer: any;
-  group?: any;
+  answer: Record<string, MultilocAnswer>;
 }
 
 export interface Result {
@@ -25,7 +28,9 @@ export interface Result {
   question: Multiloc;
   required: boolean;
   customFieldId: string;
+  totalResponseCount: number;
   questionResponseCount: number;
+  totalPickCount?: number;
   answers?: Answer[];
   textResponses?: { answer: string }[];
   files?: { name: string; url: string }[];

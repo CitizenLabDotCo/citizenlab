@@ -57,6 +57,7 @@ const FormResults = () => {
                 question,
                 inputType,
                 answers,
+                totalResponseCount,
                 questionResponseCount,
                 required,
                 customFieldId,
@@ -74,6 +75,7 @@ const FormResults = () => {
                   question={question}
                   inputType={inputType}
                   answers={answers}
+                  totalResponseCount={totalResponseCount}
                   questionResponseCount={questionResponseCount}
                   totalSubmissions={totalSubmissions}
                   required={required}

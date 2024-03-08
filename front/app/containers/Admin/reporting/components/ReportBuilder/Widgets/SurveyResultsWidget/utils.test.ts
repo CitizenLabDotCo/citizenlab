@@ -5,6 +5,7 @@ const results: Result[] = [
   {
     inputType: 'text',
     question: { en: 'q0' },
+    totalResponseCount: 5,
     questionResponseCount: 5,
     answers: [],
     required: true,
@@ -13,6 +14,7 @@ const results: Result[] = [
   {
     inputType: 'text',
     question: { en: 'q1' },
+    totalResponseCount: 5,
     questionResponseCount: 5,
     answers: [],
     required: true,
@@ -21,6 +23,7 @@ const results: Result[] = [
   {
     inputType: 'text',
     question: { en: 'q2' },
+    totalResponseCount: 5,
     questionResponseCount: 5,
     answers: [],
     required: true,
@@ -29,6 +32,7 @@ const results: Result[] = [
   {
     inputType: 'text',
     question: { en: 'q3' },
+    totalResponseCount: 5,
     questionResponseCount: 5,
     answers: [],
     required: true,
@@ -37,6 +41,7 @@ const results: Result[] = [
   {
     inputType: 'text',
     question: { en: 'q4' },
+    totalResponseCount: 5,
     questionResponseCount: 5,
     answers: [],
     required: true,
