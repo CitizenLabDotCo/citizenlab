@@ -60,7 +60,7 @@ parameters:
     type: boolean
     default: false
 
-  storybook:
+  chromatic:
     type: boolean
     default: false
 
@@ -672,7 +672,7 @@ jobs:
           path: /tmp/report.html
           destination: lighthouse
 
-  front-storybook:
+  front-chromatic:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
     resource_class: medium
@@ -1322,15 +1322,15 @@ workflows:
             - "US West"
       #     - "UK"
 
-  manual-storybook:
-    when: << pipeline.parameters.storybook >>
+  manual-chromatic:
+    when: << pipeline.parameters.chromatic >>
     jobs:
-      - front-storybook:
+      - front-chromatic:
           context:
             - docker-hub-access
             - chromatic
 
-  weekly-storybook:
+  weekly-chromatic:
     triggers:
       - schedule:
           cron: 0 5 * * 1 # Every Monday at 5am: https://crontab.guru/
@@ -1339,7 +1339,7 @@ workflows:
               only:
                 - master
     jobs:
-      - front-storybook:
+      - front-chromatic:
           context:
             - docker-hub-access
             - chromatic
