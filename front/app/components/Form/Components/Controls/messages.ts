@@ -37,6 +37,10 @@ export default defineMessages({
     defaultMessage:
       'Tap on the map or type an address below to add your answer.',
   },
+  tapOnFullscreenMapToAdd: {
+    id: 'app.components.form.controls.tapOnFullscreenMapToAdd',
+    defaultMessage: 'Tap on the map to add your answer.',
+  },
   clickOnMapToAdd: {
     id: 'app.components.form.controls.clickOnMapToAdd',
     defaultMessage:

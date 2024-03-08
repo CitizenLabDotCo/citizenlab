@@ -8,7 +8,6 @@ import {
   Icon,
   Label,
   colors,
-  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
 import { useTheme } from 'styled-components';
@@ -29,7 +28,7 @@ import { clearPointData, handleDataPointChange } from '../utils';
 
 type Props = {
   setShowFullscreenMap: (show: boolean) => void;
-  mapConfig: IMapConfig;
+  mapConfig?: IMapConfig;
   data: any;
   mapLayers: Layer[] | undefined;
   handlePointChange: (point: GeoJSON.Point | undefined) => void;
@@ -49,7 +48,6 @@ const FullscreenMapInput = memo<Props>(
     const theme = useTheme();
     const locale = useLocale();
     const { formatMessage } = useIntl();
-    const isTabletOrSmaller = useBreakpoint('tablet');
     const clientHeight = window.innerHeight;
 
     // State variables
@@ -120,6 +118,7 @@ const FullscreenMapInput = memo<Props>(
               zoom: Number(mapConfig?.data.attributes.zoom_level),
               center: data || mapConfig?.data.attributes.center_geojson,
               showLegend: true,
+              showLegendExpanded: true,
               showLayerVisibilityControl: true,
               showZoomControls: true,
               onInit: onMapInit,
@@ -150,9 +149,7 @@ const FullscreenMapInput = memo<Props>(
                     mr="4px"
                   />
                   <Box my="auto">
-                    {isTabletOrSmaller
-                      ? formatMessage(messages.tapOnMapToAdd)
-                      : formatMessage(messages.clickOnMapToAdd)}
+                    {formatMessage(messages.tapOnFullscreenMapToAdd)}
                   </Box>
                 </Box>
               </Label>

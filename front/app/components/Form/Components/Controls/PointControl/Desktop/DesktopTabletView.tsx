@@ -80,23 +80,21 @@ const DesktopView = ({
             handlePointChange={handlePointChange}
           />
         </Box>
-        {mapConfig && (
-          <>
-            <EsriMap
-              height="400px"
-              layers={mapLayers}
-              initialData={{
-                zoom: Number(mapConfig?.data.attributes.zoom_level),
-                center: data || mapConfig?.data.attributes.center_geojson,
-                showLegend: true,
-                showLayerVisibilityControl: true,
-                onInit: onMapInit,
-              }}
-              webMapId={mapConfig?.data.attributes.esri_web_map_id}
-              onClick={onMapClick}
-            />
-          </>
-        )}
+        <>
+          <EsriMap
+            height="400px"
+            layers={mapLayers}
+            initialData={{
+              zoom: Number(mapConfig?.data.attributes.zoom_level),
+              center: data || mapConfig?.data.attributes.center_geojson,
+              showLegend: true,
+              showLayerVisibilityControl: true,
+              onInit: onMapInit,
+            }}
+            webMapId={mapConfig?.data.attributes.esri_web_map_id}
+            onClick={onMapClick}
+          />
+        </>
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>

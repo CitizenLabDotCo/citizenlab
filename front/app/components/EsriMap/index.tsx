@@ -122,6 +122,11 @@ const EsriMap = ({
     };
   }, [mapRefAvailable, webMapId, globalMapSettings.tile_provider]);
 
+  // If the webMapId changes, reset the initialized state
+  useEffect(() => {
+    setInitialized(false);
+  }, [webMapId]);
+
   // Load initial map configuration data that was passed in.
   // This will run on initial render and whenever the
   // webMapId changes

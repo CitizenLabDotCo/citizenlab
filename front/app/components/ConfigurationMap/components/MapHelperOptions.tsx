@@ -38,7 +38,7 @@ type Props = {
   mapConfig: IMapConfig;
 };
 
-const MapHelperOptions = ({ mapView, mapConfig }: Props) => {
+const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
@@ -58,7 +58,7 @@ const MapHelperOptions = ({ mapView, mapConfig }: Props) => {
   };
 
   const setAsDefaultMapView = () => {
-    if ((mapView?.center.longitude, mapView?.center.latitude)) {
+    if (mapView?.center.longitude && mapView?.center.latitude) {
       updateMapConfig({
         mapConfigId: mapConfig?.data.id,
         center_geojson: {

@@ -77,32 +77,30 @@ const MobileView = ({
             handlePointChange={handlePointChange}
           />
         </Box>
-        {mapConfig && (
-          <Box position="relative">
-            <MapOverlay
-              showMapOverlay={showMapOverlay}
-              handleShowFullscreenMap={() => {
-                setShowFullscreenMap(true);
-              }}
-            />
-            <EsriMap
-              height="180px"
-              layers={mapLayers}
-              initialData={{
-                zoom: Number(mapConfig?.data.attributes.zoom_level),
-                center: data || mapConfig?.data.attributes.center_geojson,
-                showLegend: false,
-                showLayerVisibilityControl: false,
-                showZoomControls: false,
-                onInit: onMapInit,
-              }}
-              webMapId={mapConfig?.data.attributes.esri_web_map_id}
-            />
-          </Box>
-        )}
+        <Box position="relative">
+          <MapOverlay
+            showMapOverlay={showMapOverlay}
+            handleShowFullscreenMap={() => {
+              setShowFullscreenMap(true);
+            }}
+          />
+          <EsriMap
+            height="180px"
+            layers={mapLayers}
+            initialData={{
+              zoom: Number(mapConfig?.data.attributes.zoom_level),
+              center: data || mapConfig?.data.attributes.center_geojson,
+              showLegend: false,
+              showLayerVisibilityControl: false,
+              showZoomControls: false,
+              onInit: onMapInit,
+            }}
+            webMapId={mapConfig?.data.attributes.esri_web_map_id}
+          />
+        </Box>
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
-      {showFullscreenMapInput && mapView && mapConfig && (
+      {showFullscreenMapInput && mapView && (
         <FullscreenMapInput
           setShowFullscreenMap={setShowFullscreenMap}
           mapConfig={mapConfig}
