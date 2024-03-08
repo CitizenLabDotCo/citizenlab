@@ -1,13 +1,14 @@
 import React, { useMemo } from 'react';
 
-import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
-import useAnalysisTaggings from 'api/analysis_taggings/useAnalysisTaggings';
-import useAddAnalysisTagging from 'api/analysis_taggings/useAddAnalysisTagging';
-import useDeleteAnalysisTagging from 'api/analysis_taggings/useDeleteAnalysisTagging';
-
-import { useParams } from 'react-router-dom';
-import Tag from '../Tags/Tag';
 import { Box } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+
+import useAddAnalysisTagging from 'api/analysis_taggings/useAddAnalysisTagging';
+import useAnalysisTaggings from 'api/analysis_taggings/useAnalysisTaggings';
+import useDeleteAnalysisTagging from 'api/analysis_taggings/useDeleteAnalysisTagging';
+import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+
+import Tag from '../Tags/Tag';
 
 const Taggings = ({
   inputId,

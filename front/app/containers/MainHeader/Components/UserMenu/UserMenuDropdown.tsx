@@ -1,33 +1,23 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import Button from 'components/UI/Button';
 import { Dropdown, colors } from '@citizenlab/cl2-component-library';
-import HasPermission from 'components/HasPermission';
-
-// services
-import signOut from 'api/authentication/sign_in_out/signOut';
-
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
-import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
-
-// events
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-
-// style
 import styled from 'styled-components';
 
-// constants
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
+import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
+import signOut from 'api/authentication/sign_in_out/signOut';
+import useAuthUser from 'api/me/useAuthUser';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// utils
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { showOnboarding } from 'containers/Authentication/useSteps/stepConfig/utils';
+
+import HasPermission from 'components/HasPermission';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const DropdownListItem = styled(Button)``;
 

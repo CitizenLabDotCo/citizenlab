@@ -1,21 +1,22 @@
 import React from 'react';
 
-// components
-import PageNotFound from 'components/PageNotFound';
+import { Spinner, media } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+import useInitiativeBySlug from 'api/initiatives/useInitiativeBySlug';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import InitiativesShow from 'containers/InitiativesShow';
-import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
+
+import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
-import { Spinner, media } from '@citizenlab/cl2-component-library';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInitiativeBySlug from 'api/initiatives/useInitiativeBySlug';
-import { useParams } from 'react-router-dom';
-
-// style
-import styled from 'styled-components';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
+
+import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 
 const Container = styled.div`
   background: #fff;

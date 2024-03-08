@@ -1,17 +1,16 @@
 import React, { memo, MouseEvent } from 'react';
 
-// components
-import Link from 'utils/cl-router/Link';
-import Image from 'components/UI/Image';
-
-// styling
-import styled from 'styled-components';
 import {
   useBreakpoint,
   fontSizes,
   defaultCardStyle,
   defaultCardHoverStyle,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import Image from 'components/UI/Image';
+
+import Link from 'utils/cl-router/Link';
 
 const Container = styled(Link)`
   width: 100%;

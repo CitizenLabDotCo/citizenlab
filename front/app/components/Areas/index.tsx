@@ -1,8 +1,11 @@
 import React from 'react';
+
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
+
+import useAreas from 'api/areas/useAreas';
+
 import UpdateFollowArea from './UpdateFollowArea';
 import UpdateOnboardingArea from './UpdateOnboardingArea';
-import useAreas from 'api/areas/useAreas';
 
 interface Props {
   showOnboardingAreas?: boolean;

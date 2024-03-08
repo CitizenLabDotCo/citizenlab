@@ -1,7 +1,9 @@
-import sharedMessages from '../messages';
-import { string, object } from 'yup';
-import { isValidEmail } from 'utils/validate';
 import { FormatMessage } from 'typings';
+import { string, object } from 'yup';
+
+import { isValidEmail } from 'utils/validate';
+
+import sharedMessages from '../messages';
 
 export interface FormValues {
   email: string;

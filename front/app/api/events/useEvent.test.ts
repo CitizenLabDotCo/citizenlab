@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-
-import useEvent from './useEvent';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
 import { eventData } from './__mocks__/useEvent';
+import useEvent from './useEvent';
 
 const apiPath = '*events/:id';
 

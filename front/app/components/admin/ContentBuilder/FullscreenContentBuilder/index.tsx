@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
-
-// components
-import { Box, colors } from '@citizenlab/cl2-component-library';
-
-// utils
 import { Locale } from 'typings';
+
 import eventEmitter from 'utils/eventEmitter';
+
 import {
   CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
+  CONTENT_BUILDER_Z_INDEX,
 } from '../constants';
 
 type ContentBuilderErrors = Record<
@@ -72,7 +72,7 @@ export const ContentBuilder = ({
       display="flex"
       flexDirection="column"
       w="100%"
-      zIndex="10000"
+      zIndex={String(CONTENT_BUILDER_Z_INDEX.main)}
       position="fixed"
       bgColor={colors.background}
       h="100vh"

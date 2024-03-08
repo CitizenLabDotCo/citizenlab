@@ -1,38 +1,28 @@
-// Libraries
 import React from 'react';
 
-// Services
+import { Box } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { MessageDescriptor } from 'react-intl';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import styled from 'styled-components';
+import { string, object } from 'yup';
+
 import { DeleteReason, DeleteReasonCode } from 'api/comments/types';
 
-// Components
-import Button from 'components/UI/Button';
 import { SectionField } from 'components/admin/Section';
-import { Box } from '@citizenlab/cl2-component-library';
-
-// form
-import { useForm, FormProvider } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { string, object } from 'yup';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import TextArea from 'components/HookForm/TextArea';
 import Feedback from 'components/HookForm/Feedback';
 import RadioGroup from 'components/HookForm/RadioGroup';
 import Radio from 'components/HookForm/RadioGroup/Radio';
+import TextArea from 'components/HookForm/TextArea';
+import Button from 'components/UI/Button';
 
-// i18n
-import { MessageDescriptor } from 'react-intl';
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// animation
-import CSSTransition from 'react-transition-group/CSSTransition';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
-
-// Styling
-import styled from 'styled-components';
-
-// utils
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { keys } from 'utils/helperUtils';
+
+import messages from '../messages';
 
 const ButtonsWrapper = styled.div`
   display: flex;

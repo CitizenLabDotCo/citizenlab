@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 
-// intl
-import messages from './messages';
+import { Box, Success } from '@citizenlab/cl2-component-library';
+import { FormProvider, UseFormReturn } from 'react-hook-form';
 
-// services & hooks
-
-import { useIntl } from 'utils/cl-intl';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
+import { IUserData } from 'api/users/types';
+import useUpdateUser from 'api/users/useUpdateUser';
 
-// components
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Input from 'components/HookForm/Input';
 import {
   Title,
   StyledButton,
@@ -17,19 +18,14 @@ import {
 } from 'components/smallForm';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
-import { Box, Success } from '@citizenlab/cl2-component-library';
 
-// hook form
-import { FormProvider, UseFormReturn } from 'react-hook-form';
-import { FormValues } from '.';
+import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import Input from 'components/HookForm/Input';
-
-// utils
 import { isNilOrError } from 'utils/helperUtils';
-import useUpdateUser from 'api/users/useUpdateUser';
-import { IUserData } from 'api/users/types';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import messages from './messages';
+
+import { FormValues } from '.';
 
 type UpdateEmailFormProps = {
   updateSuccessful: boolean;

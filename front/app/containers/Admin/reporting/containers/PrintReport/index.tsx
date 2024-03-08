@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react';
+
+import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-// routing
-import { useParams } from 'react-router-dom';
-
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// components
-import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
-import Report from './Report';
-
-// i18n
-import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../messages';
+
+import Report from './Report';
 
 const PreparingBox = styled(Box)`
   position: fixed;

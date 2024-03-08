@@ -1,6 +1,8 @@
-import { Keys } from 'utils/cl-react-query/types';
-import navbarKeys from './keys';
 import { IRelationship, Multiloc } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import navbarKeys from './keys';
 
 export type NavbarKeys = Keys<typeof navbarKeys>;
 

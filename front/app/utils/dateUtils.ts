@@ -1,8 +1,10 @@
-import moment, { unitOfTime } from 'moment';
 import { isString } from 'lodash-es';
+import moment, { unitOfTime, Moment } from 'moment';
 import { Locale } from 'typings';
-import { IResolution } from 'components/admin/ResolutionControl';
+
 import { IEventData } from 'api/events/types';
+
+import { IResolution } from 'components/admin/ResolutionControl';
 
 export function getIsoDateForToday(): string {
   // this is based on the user's timezone in moment, so
@@ -133,6 +135,10 @@ export function getIsoDateUtc(date: string) {
   // by using moment.utc, we ignore timezone offsets which could cause bugs
   return moment.utc(new Date(date)).format('YYYY-MM-DD');
 }
+
+export const momentToIsoDate = (moment: Moment | null | undefined) => {
+  return moment?.format('yyyy-MM-DD');
+};
 
 export function getPeriodRemainingUntil(
   date: string,

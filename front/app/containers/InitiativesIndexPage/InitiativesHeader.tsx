@@ -1,28 +1,23 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
-// components
-import AvatarBubbles from 'components/AvatarBubbles';
-import InitiativeInfoContent from './InitiativeInfoContent';
-import Warning from 'components/UI/Warning';
-
-// resources
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-
-// style
-import styled from 'styled-components';
 import { media, fontSizes } from '@citizenlab/cl2-component-library';
-import { ScreenReaderOnly } from 'utils/a11y';
-import T from 'components/T';
-
-// images
-import InitiativeButton from 'components/InitiativeButton';
+import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+
+import AvatarBubbles from 'components/AvatarBubbles';
+import InitiativeButton from 'components/InitiativeButton';
+import T from 'components/T';
+import Warning from 'components/UI/Warning';
+
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+
+import InitiativeInfoContent from './InitiativeInfoContent';
+import messages from './messages';
 
 const Container = styled.div`
   width: 100%;

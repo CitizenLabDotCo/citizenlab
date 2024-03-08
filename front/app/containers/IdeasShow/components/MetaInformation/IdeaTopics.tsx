@@ -1,14 +1,17 @@
 import React from 'react';
+
+import useIdeaById from 'api/ideas/useIdeaById';
+
 import {
   Header,
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
+
 import Topics from 'components/PostShowComponents/Topics';
-import useIdeaById from 'api/ideas/useIdeaById';
+
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {

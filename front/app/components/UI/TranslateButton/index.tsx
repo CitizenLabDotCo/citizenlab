@@ -1,10 +1,9 @@
 import React from 'react';
 
-// components
 import Button from 'components/UI/Button';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
+
 import messages from './messages';
 
 interface Props {

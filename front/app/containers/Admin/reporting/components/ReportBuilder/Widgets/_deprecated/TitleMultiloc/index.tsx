@@ -1,26 +1,19 @@
 import React from 'react';
 
-// styling
-import styled from 'styled-components';
 import { colors, Box } from '@citizenlab/cl2-component-library';
-
-// craft
 import { useNode } from '@craftjs/core';
+import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
-// components
+import useLocalize from 'hooks/useLocalize';
+
+import messages from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_deprecated/TitleMultiloc/messages';
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
+
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-// i18n
-import messages from 'containers/Admin/reporting/components/ReportBuilder/Widgets/TitleMultiloc/messages';
 import { useIntl } from 'utils/cl-intl';
-import useLocalize from 'hooks/useLocalize';
-
-// hooks
-import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
-
-// typings
-import { Multiloc } from 'typings';
 
 const H3 = styled.h3<{ color: string }>`
   color: ${({ color }) => color};
@@ -33,6 +26,9 @@ export interface Props {
   text?: Multiloc;
 }
 
+/**
+ * @deprecated
+ */
 const Title = ({ text }: Props) => {
   const px = useReportDefaultPadding();
   const localize = useLocalize();

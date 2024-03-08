@@ -1,8 +1,12 @@
-import { getAndSetToken } from '../sign_in_out/signIn';
 import { Locale } from 'typings';
-import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-import fetcher from 'utils/cl-react-query/fetcher';
+
 import { IUser } from 'api/users/types';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
+
+import { getAndSetToken } from '../sign_in_out/signIn';
+
 import { CreateEmailOnlyAccountProperties } from './types';
 
 const triggerCreateEmailOnlyAccount = (

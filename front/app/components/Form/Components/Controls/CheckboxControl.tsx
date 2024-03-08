@@ -1,5 +1,5 @@
 import React from 'react';
-import { withJsonFormsControlProps } from '@jsonforms/react';
+
 import { Box, Checkbox } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
@@ -7,10 +7,15 @@ import {
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import ErrorDisplay from '../ErrorDisplay';
+import { withJsonFormsControlProps } from '@jsonforms/react';
+
 import { FormLabel } from 'components/UI/FormComponents';
+
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
+
 import { getSubtextElement } from './controlUtils';
 
 const CheckboxControl = ({

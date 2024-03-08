@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 
-// components
 import { Text, Box, Button, colors } from '@citizenlab/cl2-component-library';
-import CreateReportModal from './CreateReportModal';
 
-// i18n
 import { useIntl } from 'utils/cl-intl';
+
+import CreateReportModal from './CreateReportModal';
 import messages from './messages';
 
 interface Props {
@@ -34,7 +33,7 @@ const EmptyState = ({ projectId, phaseId }: Props) => {
           </Text>
         </li>
       </ul>
-      <Text color="textSecondary">{formatMessage(messages.thisWillBe)}</Text>
+      <Text color="textSecondary">{formatMessage(messages.afterCreating)}</Text>
       <Box w="100%" mt="32px" display="flex">
         <Button
           id="e2e-create-report-button"

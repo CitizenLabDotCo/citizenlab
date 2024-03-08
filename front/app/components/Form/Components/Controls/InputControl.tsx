@@ -1,4 +1,5 @@
-import { withJsonFormsControlProps } from '@jsonforms/react';
+import React, { useCallback, useState, KeyboardEvent } from 'react';
+
 import {
   Box,
   colors,
@@ -12,16 +13,20 @@ import {
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
-import React, { useCallback, useState, KeyboardEvent } from 'react';
-import ErrorDisplay from '../ErrorDisplay';
-import { FormLabel } from 'components/UI/FormComponents';
-import { sanitizeForClassname } from 'utils/JSONFormUtils';
-import { isString } from 'utils/helperUtils';
-import VerificationIcon from '../VerificationIcon';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { getSubtextElement } from './controlUtils';
+import { withJsonFormsControlProps } from '@jsonforms/react';
+
 import { getOtherControlKey } from 'components/Form/utils';
+import { FormLabel } from 'components/UI/FormComponents';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { isString } from 'utils/helperUtils';
+import { sanitizeForClassname } from 'utils/JSONFormUtils';
+
+import ErrorDisplay from '../ErrorDisplay';
+import VerificationIcon from '../VerificationIcon';
+
+import { getSubtextElement } from './controlUtils';
+import messages from './messages';
 
 export const InputControl = ({
   data,

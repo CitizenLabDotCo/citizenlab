@@ -8,20 +8,11 @@ import React, {
   useState,
 } from 'react';
 
-// components
-import EsriMap from 'components/EsriMap';
-import MapView from '@arcgis/core/views/MapView';
-import LayerHoverLabel from 'components/IdeationConfigurationMap/components/LayerHoverLabel';
-import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
-import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Renderer from '@arcgis/core/renderers/SimpleRenderer';
-import InstructionMessage from './InstructionMessage';
-import StartIdeaButton from './StartIdeaButton';
-import IdeaMapCard from './IdeaMapCard';
-import IdeasAtLocationPopup from './IdeasAtLocationPopup';
-
+import MapView from '@arcgis/core/views/MapView';
 import {
   Box,
   media,
@@ -29,13 +20,18 @@ import {
   useWindowSize,
   viewportWidths,
 } from '@citizenlab/cl2-component-library';
-
-// hooks
-import useLocalize from 'hooks/useLocalize';
 import { useSearchParams } from 'react-router-dom';
-import useAuthUser from 'api/me/useAuthUser';
+import { CSSTransition } from 'react-transition-group';
+import styled, { useTheme } from 'styled-components';
 
-// utils
+import { IIdeaMarkers } from 'api/idea_markers/types';
+import { IMapConfig } from 'api/map_config/types';
+import useAuthUser from 'api/me/useAuthUser';
+import usePhase from 'api/phases/usePhase';
+
+import useLocalize from 'hooks/useLocalize';
+
+import EsriMap from 'components/EsriMap';
 import {
   createEsriGeoJsonLayers,
   getMapPinSymbol,
@@ -45,6 +41,19 @@ import {
   esriPointToGeoJson,
   changeCursorOnHover,
 } from 'components/EsriMap/utils';
+import LayerHoverLabel from 'components/IdeationConfigurationMap/components/LayerHoverLabel';
+
+import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { isAdmin } from 'utils/permissions/roles';
+
+import DesktopIdeaMapOverlay from './desktop/IdeaMapOverlay';
+import IdeaMapCard from './IdeaMapCard';
+import IdeasAtLocationPopup from './IdeasAtLocationPopup';
+import InstructionMessage from './InstructionMessage';
+import messages from './messages';
+import StartIdeaButton from './StartIdeaButton';
 import {
   InnerContainer,
   getInnerContainerLeftMargin,
@@ -53,20 +62,6 @@ import {
   mapHeightDesktop,
   mapHeightMobile,
 } from './utils';
-import styled, { useTheme } from 'styled-components';
-import { CSSTransition } from 'react-transition-group';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-
-// types
-import { IIdeaData } from 'api/ideas/types';
-import { IMapConfig } from 'api/map_config/types';
-
-// intl
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import usePhase from 'api/phases/usePhase';
-import { isAdmin } from 'utils/permissions/roles';
 
 // Note: Existing custom styling
 const StyledDesktopIdeaMapOverlay = styled(DesktopIdeaMapOverlay)`
@@ -122,12 +117,12 @@ const StyledMapContainer = styled(Box)`
 export interface Props {
   projectId: string;
   phaseId?: string;
-  ideasList: IIdeaData[];
   mapConfig?: IMapConfig | null;
+  ideaMarkers?: IIdeaMarkers;
 }
 
 const IdeasMap = memo<Props>(
-  ({ projectId, phaseId, ideasList, mapConfig }: Props) => {
+  ({ projectId, phaseId, mapConfig, ideaMarkers }: Props) => {
     const theme = useTheme();
     const localize = useLocalize();
     const { formatMessage } = useIntl();
@@ -153,6 +148,8 @@ const IdeasMap = memo<Props>(
       useState<GeoJSON.Point | null>(null);
 
     const selectedIdea = searchParams.get('idea_map_id');
+
+    const ideaData = ideaMarkers?.data.find((idea) => idea.id === selectedIdea);
 
     const setSelectedIdea = useCallback((ideaId: string | null) => {
       if (ideaId) {
@@ -205,7 +202,7 @@ const IdeasMap = memo<Props>(
 
     // Create a point graphics layer for idea pins
     const graphics = useMemo(() => {
-      const ideasWithLocations = ideasList?.filter(
+      const ideasWithLocations = ideaMarkers?.data?.filter(
         (idea) => idea?.attributes?.location_point_geojson
       );
       return ideasWithLocations?.map((idea) => {
@@ -221,7 +218,7 @@ const IdeasMap = memo<Props>(
           },
         });
       });
-    }, [ideasList]);
+    }, [ideaMarkers]);
 
     // Create an Esri feature layer from the idea pin graphics so we can add a cluster display
     const ideasLayer = useMemo(() => {
@@ -280,8 +277,9 @@ const IdeasMap = memo<Props>(
 
           // If an idea was selected in the URL params, move map to that idea
           if (selectedIdea) {
-            const point = ideasList.find((idea) => idea.id === selectedIdea)
-              ?.attributes.location_point_geojson;
+            const point = ideaMarkers?.data?.find(
+              (idea) => idea.id === selectedIdea
+            )?.attributes.location_point_geojson;
 
             if (!point) return;
 
@@ -291,7 +289,7 @@ const IdeasMap = memo<Props>(
           }
         }
       },
-      [esriMapView, selectedIdea, ideasList]
+      [esriMapView, selectedIdea, ideaMarkers]
     );
 
     const onMapClick = useCallback(
@@ -452,8 +450,9 @@ const IdeasMap = memo<Props>(
 
     const onSelectIdeaFromList = useCallback(
       (selectedIdeaId: string | null) => {
-        const ideaPoint = ideasList.find((idea) => idea.id === selectedIdeaId)
-          ?.attributes?.location_point_geojson;
+        const ideaPoint = ideaMarkers?.data?.find(
+          (idea) => idea.id === selectedIdeaId
+        )?.attributes?.location_point_geojson;
 
         if (selectedIdeaId && ideaPoint && esriMapView) {
           goToMapLocation(ideaPoint, esriMapView).then(() => {
@@ -481,10 +480,8 @@ const IdeasMap = memo<Props>(
         }
         setSelectedIdea(selectedIdeaId);
       },
-      [ideasList, esriMapView, theme.colors.tenantSecondary, setSelectedIdea]
+      [ideaMarkers, esriMapView, theme.colors.tenantSecondary, setSelectedIdea]
     );
-
-    const selectedIdeaData = ideasList?.find(({ id }) => id === selectedIdea);
 
     return (
       <>
@@ -524,7 +521,7 @@ const IdeasMap = memo<Props>(
             <IdeasAtLocationPopup
               setSelectedIdea={setSelectedIdea}
               portalElement={ideasAtLocationNode}
-              ideas={ideasList.filter((idea) =>
+              ideas={ideaMarkers?.data?.filter((idea) =>
                 ideasSharingLocation?.includes(idea.id)
               )}
               mapView={esriMapView}
@@ -536,9 +533,9 @@ const IdeasMap = memo<Props>(
                 timeout={300}
               >
                 <Box>
-                  {selectedIdeaData && (
+                  {ideaData && (
                     <StyledIdeaMapCard
-                      idea={selectedIdeaData}
+                      idea={ideaData}
                       onClose={() => {
                         setSelectedIdea(null);
                       }}

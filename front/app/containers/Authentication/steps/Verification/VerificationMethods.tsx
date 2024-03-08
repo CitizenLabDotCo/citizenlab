@@ -1,24 +1,20 @@
 import React, { memo } from 'react';
 
-// components
 import {
   Spinner,
   Text,
   colors,
   media,
 } from '@citizenlab/cl2-component-library';
-import Centerer from 'components/UI/Centerer';
-
-// hooks
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
-import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
-
-// style
 import styled from 'styled-components';
 
-// typings
 import { TVerificationMethod } from 'api/verification_methods/types';
+import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+
+import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
+
 import Outlet from 'components/Outlet';
+import Centerer from 'components/UI/Centerer';
 
 const Container = styled.div`
   display: flex;

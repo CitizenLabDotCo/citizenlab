@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
-import FormattedBudget from 'utils/currency/FormattedBudget';
 
-// styling
-import styled from 'styled-components';
 import { media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import FormattedBudget from 'utils/currency/FormattedBudget';
 
 const Container = styled.div`
   color: ${(props) => props.theme.colors.tenantText};

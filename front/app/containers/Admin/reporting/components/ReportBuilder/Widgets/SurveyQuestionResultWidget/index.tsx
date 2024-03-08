@@ -1,21 +1,15 @@
 import React from 'react';
 
-// hooks
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
-// components
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+
 import NoData from '../_shared/NoData';
-import Question from './Question';
-import Settings from './Settings';
-
-// i18n
-import messages from './messages';
-
-// utils
 import { getEmptyMessage } from '../utils';
 
-//  typings
+import messages from './messages';
+import Question from './Question';
+import Settings from './Settings';
 import { Props } from './typings';
 
 const SurveyQuestionResultWidget = ({
@@ -33,7 +27,6 @@ const SurveyQuestionResultWidget = ({
     <PageBreakBox px={px}>
       {hasEverything ? (
         <Question
-          projectId={projectId}
           phaseId={phaseId}
           questionId={questionId}
           groupMode={groupFieldId ? groupMode : undefined}

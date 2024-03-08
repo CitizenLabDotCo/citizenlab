@@ -1,10 +1,11 @@
 import React from 'react';
 
-import PollAdminForm from './PollAdminForm';
-
 import { pollQuestionsData } from 'api/poll_questions/__mocks__/usePollQuestions';
-import { render, screen, userEvent } from 'utils/testUtils/rtl';
+
 import dragAndDrop from 'utils/testUtils/dragAndDrop';
+import { render, screen, userEvent } from 'utils/testUtils/rtl';
+
+import PollAdminForm from './PollAdminForm';
 
 describe('<PollAdminForm/>', () => {
   it('Shows the right number of question rows', () => {

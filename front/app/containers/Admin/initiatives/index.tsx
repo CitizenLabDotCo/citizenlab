@@ -1,22 +1,18 @@
 import React from 'react';
-import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 
-// components
-import HelmetIntl from 'components/HelmetIntl';
+import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
+import { ITab } from 'typings';
+
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
 } from 'components/admin/NavigationTabs';
+import HelmetIntl from 'components/HelmetIntl';
 
-// i18n
-import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
-
-// styles
-import { ITab } from 'typings';
-
-// utils
 import { isTopBarNavActive } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const InitiativesPage = () => {
   const { formatMessage } = useIntl();

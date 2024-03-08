@@ -1,12 +1,11 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-
-import useUpdateComment from './useUpdateComment';
-import { commentsData } from './__mocks__/useComments';
-
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+
+import { commentsData } from './__mocks__/useComments';
+import useUpdateComment from './useUpdateComment';
 
 const apiPath = '*comments/:id';
 const server = setupServer(

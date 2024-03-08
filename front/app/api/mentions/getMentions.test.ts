@@ -1,10 +1,11 @@
-import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
-import { IMentionData } from './types';
-import getMentions from './getMentions';
-import { waitFor } from 'utils/testUtils/rtl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import { waitFor } from 'utils/testUtils/rtl';
+
+import getMentions from './getMentions';
+import { IMentionData } from './types';
 
 const mentionsData: IMentionData[] = [
   {

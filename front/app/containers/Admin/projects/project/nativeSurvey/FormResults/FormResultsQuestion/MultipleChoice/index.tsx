@@ -1,14 +1,12 @@
 import React from 'react';
 
-// components
 import { Box, colors, Image } from '@citizenlab/cl2-component-library';
-import ProgressBars2 from 'components/admin/Graphs/ProgressBars2';
 
-// typings
 import { Answer, AnswerMultilocs } from 'api/survey_results/types';
 
-// hooks
 import useLocalize from 'hooks/useLocalize';
+
+import ProgressBars2 from 'components/admin/Graphs/ProgressBars2';
 
 interface Props {
   multipleChoiceAnswers: Answer[];
