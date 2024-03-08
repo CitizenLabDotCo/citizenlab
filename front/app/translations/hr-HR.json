@@ -626,6 +626,7 @@
   "app.components.form.controls.selectBetween": "*Odaberite između {minItems} i {maxItems} opcije",
   "app.components.form.controls.selectExactly2": "*Odaberi točno {selectExactly, plural, one {#opcija} other {# opcija}}",
   "app.components.form.controls.selectMany": "*Odaberite koliko god želite",
+  "app.components.form.controls.tapOnFullscreenMapToAdd": "Dodirnite kartu da dodate svoj odgovor.",
   "app.components.form.controls.tapOnMapToAdd2": "Dodirnite kartu ili upišite adresu ispod kako biste dodali svoj odgovor.",
   "app.components.form.controls.tapToAddAPoint": "Dodirnite za dodavanje točke",
   "app.components.form.controls.validCordinatesTooltip": "Ako lokacija nije prikazana među opcijama dok upisujete, možete dodati važeće koordinate u formatu 'geografska širina, dužina' kako biste odredili točnu lokaciju.",
