@@ -206,7 +206,6 @@
     "dependency-cruiser": "^12.12.1",
     "esbuild-loader": "^4.0.2",
     "eslint": "^8.35.0",
-    "eslint-plugin-deprecation": "^2.0.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-prettier": "^4.2.1",
