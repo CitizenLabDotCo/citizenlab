@@ -229,7 +229,7 @@ RSpec.describe SurveyResultsGeneratorService do
   before do
     create(:idea_status_proposed)
     male_user = create(:user, custom_field_values: { gender: 'male' })
-    female_user = create(:user, custom_field_values: { gender: 'male' })
+    female_user = create(:user, custom_field_values: { gender: 'female' })
     idea_file = create(:idea_file)
     create(
       :idea,
@@ -338,8 +338,8 @@ RSpec.describe SurveyResultsGeneratorService do
     end
 
     describe 'text fields' do
-      it 'returns the results for a text field' do
-        expect(generated_results[:results][0]).to match({
+      let(:expected_result_text_field) do
+        {
           customFieldId: text_field.id,
           inputType: 'text',
           question: { 'en' => 'What is your favourite colour?' },
@@ -353,22 +353,15 @@ RSpec.describe SurveyResultsGeneratorService do
             { answer: 'Green' },
             { answer: 'Pink' }
           ]
-        })
+        }
       end
 
-      it 'returns the results for a multiline text field' do
-        expect(generated_results[:results][1]).to match(
-          {
-            customFieldId: multiline_text_field.id,
-            inputType: 'multiline_text',
-            question: { 'en' => 'What is your favourite recipe?' },
-            required: false,
-            grouped: false,
-            totalResponseCount: 22,
-            questionResponseCount: 0,
-            textResponses: []
-          }
-        )
+      it 'returns the results for a text field' do
+        expect(generated_results[:results][0]).to match expected_result_text_field
+      end
+
+      it 'returns a single result for a text field' do
+        expect(generator.generate_results(field_id: text_field.id)).to match expected_result_text_field
       end
 
       it 'returns the results for an unanswered field' do
@@ -377,6 +370,23 @@ RSpec.describe SurveyResultsGeneratorService do
             customFieldId: unanswered_text_field.id,
             inputType: 'text',
             question: { 'en' => 'Nobody wants to answer me' },
+            required: false,
+            grouped: false,
+            totalResponseCount: 22,
+            questionResponseCount: 0,
+            textResponses: []
+          }
+        )
+      end
+    end
+
+    describe 'multiline text fields' do
+      it 'returns the results for a multiline text field' do
+        expect(generated_results[:results][1]).to match(
+          {
+            customFieldId: multiline_text_field.id,
+            inputType: 'multiline_text',
+            question: { 'en' => 'What is your favourite recipe?' },
             required: false,
             grouped: false,
             totalResponseCount: 22,
@@ -437,30 +447,31 @@ RSpec.describe SurveyResultsGeneratorService do
           expected_result_multiselect.tap do |result|
             result[:grouped] = true
             result[:legend] = ['male', 'female', 'unspecified', nil]
-            # TODO: These numbers don't seem right
             result[:answers] = [
               {
                 answer: nil,
                 count: 18,
                 groups: [
-                  { count: 2, group: 'male' },
-                  { count: 0, group: 'female' },
+                  { count: 1, group: 'male' },
+                  { count: 2, group: 'female' },
                   { count: 0, group: 'unspecified' },
-                  { count: 16, group: nil }
+                  { count: 15, group: nil }
                 ]
               }, {
                 answer: 'cat',
                 count: 4,
                 groups: [
-                  { count: 4, group: 'male' },
-                  { count: 0, group: 'female' },
+                  { count: 2, group: 'male' },
+                  { count: 2, group: 'female' },
                   { count: 0, group: 'unspecified' },
                   { count: 0, group: nil }
                 ]
               }, {
-                answer: 'dog', count: 3, groups: [
-                  { count: 3, group: 'male' },
-                  { count: 0, group: 'female' },
+                answer: 'dog',
+                count: 3,
+                groups: [
+                  { count: 1, group: 'male' },
+                  { count: 2, group: 'female' },
                   { count: 0, group: 'unspecified' },
                   { count: 0, group: nil }
                 ]
@@ -474,7 +485,9 @@ RSpec.describe SurveyResultsGeneratorService do
                   { count: 0, group: nil }
                 ]
               }, {
-                answer: 'pig', count: 1, groups: [
+                answer: 'pig',
+                count: 1,
+                groups: [
                   { count: 1, group: 'male' },
                   { count: 0, group: 'female' },
                   { count: 0, group: 'unspecified' },
@@ -690,7 +703,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       context 'without grouping' do
-        it '#generate_results returns the correct results for a select field' do
+        it 'returns the correct results for a select field' do
           expect(generated_results[:results][4]).to match expected_result_select
         end
 
@@ -700,7 +713,7 @@ RSpec.describe SurveyResultsGeneratorService do
           expect(answers.pluck(:count)).to eq [16, 2, 1, 3]
         end
 
-        it '#get_result returns the correct results for a select field' do
+        it 'returns a single result for a select field' do
           expect(generator.generate_results(field_id: select_field.id)).to match expected_result_select
         end
       end
@@ -710,59 +723,40 @@ RSpec.describe SurveyResultsGeneratorService do
           expected_result_select.tap do |result|
             result[:grouped] = true
             result[:legend] = ['male', 'female', 'unspecified', nil]
-            # TODO: JS - These numbers don't seem right
             result[:answers] = [
               {
                 answer: nil,
-                count: 18,
-                groups: [
-                  { count: 2, group: 'male' },
-                  { count: 0, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 16, group: nil }
-                ]
-              }, {
-                answer: 'cat',
-                count: 4,
-                groups: [
-                  { count: 4, group: 'male' },
-                  { count: 0, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
-                ]
-              }, {
-                answer: 'dog',
-                count: 3,
-                groups: [
-                  { count: 3, group: 'male' },
-                  { count: 0, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
-                ]
-              }, {
-                answer: 'cow',
-                count: 2,
-                groups: [
-                  { count: 2, group: 'male' },
-                  { count: 0, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
-                ]
-              }, {
-                answer: 'pig',
-                count: 1,
-                groups: [
-                  { count: 1, group: 'male' },
-                  { count: 0, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
-                ]
-              }, {
-                answer: 'no_response',
-                count: 0,
+                count: 16,
                 groups: [
                   { count: 0, group: 'male' },
-                  { count: 0, group: 'female' },
+                  { count: 1, group: 'female' },
+                  { count: 0, group: 'unspecified' },
+                  { count: 15, group: nil }
+                ]
+              }, {
+                answer: 'la',
+                count: 2,
+                groups: [
+                  { count: 1, group: 'male' },
+                  { count: 1, group: 'female' },
+                  { count: 0, group: 'unspecified' },
+                  { count: 0, group: nil }
+                ]
+              }, {
+                answer: 'ny',
+                count: 1,
+                groups: [
+                  { count: 0, group: 'male' },
+                  { count: 1, group: 'female' },
+                  { count: 0, group: 'unspecified' },
+                  { count: 0, group: nil }
+                ]
+              }, {
+                answer: 'other',
+                count: 3,
+                groups: [
+                  { count: 2, group: 'male' },
+                  { count: 1, group: 'female' },
                   { count: 0, group: 'unspecified' },
                   { count: 0, group: nil }
                 ]
