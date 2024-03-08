@@ -1,5 +1,7 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 
+import Layer from '@arcgis/core/layers/Layer';
+import MapView from '@arcgis/core/views/MapView';
 import {
   Box,
   Button,
@@ -8,19 +10,22 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import EsriMap from 'components/EsriMap';
-import { IMapConfig } from 'api/map_config/types';
-import MapView from '@arcgis/core/views/MapView';
-import Layer from '@arcgis/core/layers/Layer';
 import { ControlProps } from '@jsonforms/core';
-import { FormLabel } from 'components/UI/FormComponents';
-import { sanitizeForClassname, getLabel } from 'utils/JSONFormUtils';
-import messages from '../../messages';
-import { useIntl } from 'utils/cl-intl';
-import { esriPointToGeoJson, goToMapLocation } from 'components/EsriMap/utils';
-import { Option } from 'components/UI/LocationInput';
-import useLocale from 'hooks/useLocale';
 import { useTheme } from 'styled-components';
+
+import { IMapConfig } from 'api/map_config/types';
+
+import useLocale from 'hooks/useLocale';
+
+import EsriMap from 'components/EsriMap';
+import { esriPointToGeoJson, goToMapLocation } from 'components/EsriMap/utils';
+import { FormLabel } from 'components/UI/FormComponents';
+import { Option } from 'components/UI/LocationInput';
+
+import { useIntl } from 'utils/cl-intl';
+import { sanitizeForClassname, getLabel } from 'utils/JSONFormUtils';
+
+import messages from '../../messages';
 import LocationTextInput from '../components/LocationTextInput';
 import { clearPointData, handleDataPointChange } from '../utils';
 
@@ -46,10 +51,11 @@ const FullscreenMapInput = memo<Props>(
     const theme = useTheme();
     const locale = useLocale();
     const { formatMessage } = useIntl();
-    const screenHeight = window.innerHeight;
     const isTabletOrSmaller = useBreakpoint('tablet');
+    const clientHeight = window.innerHeight;
 
     // State variables
+    const bottomSectionRef = useRef<HTMLDivElement>(null);
     const [mapView, setMapView] = useState<MapView | null>(null);
     const [address, setAddress] = useState<Option>({
       value: '',
@@ -90,10 +96,21 @@ const FullscreenMapInput = memo<Props>(
       }
     }, [data, locale, mapView, theme.colors.tenantPrimary]);
 
+    // Get map height by calculating the height of the bottom section
+    const getMapHeight = () => {
+      return bottomSectionRef?.current?.clientHeight
+        ? clientHeight - bottomSectionRef?.current?.clientHeight
+        : clientHeight;
+    };
+
+    const handleBack = () => {
+      setShowFullscreenMap(false);
+    };
+
     return (
       <Box
         width="100vw"
-        height="100vh"
+        height="100%"
         position="fixed"
         top="0"
         left="0"
@@ -104,7 +121,7 @@ const FullscreenMapInput = memo<Props>(
         <Box display="flex" flexDirection="column">
           <EsriMap
             id="fullscreenMap"
-            height={`${screenHeight * 0.65}px`}
+            height={`${getMapHeight()}px`}
             layers={mapLayers}
             initialData={{
               zoom: Number(mapConfig?.data.attributes.zoom_level),
@@ -117,7 +134,15 @@ const FullscreenMapInput = memo<Props>(
             onClick={onMapClick}
             webMapId={mapConfig?.data.attributes.esri_web_map_id}
           />
-          <Box m="16px" height="100%" background="white">
+          <Box
+            p="16px"
+            pb="0px"
+            background="white"
+            width="100vw"
+            zIndex="99999"
+            ref={bottomSectionRef}
+            position="sticky"
+          >
             <Box>
               <FormLabel
                 htmlFor={sanitizeForClassname(id)}
@@ -145,20 +170,17 @@ const FullscreenMapInput = memo<Props>(
             </Box>
             <Box
               borderTop={`1px solid ${colors.grey400}`}
+              mt="20px"
               p="20px"
               gap="16px"
               display="flex"
-              position="absolute"
-              bottom="0"
               width="100vw"
               justifyContent="flex-end"
             >
               <Button
                 icon="arrow-left"
                 buttonStyle="secondary"
-                onClick={() => {
-                  setShowFullscreenMap(false);
-                }}
+                onClick={handleBack}
               >
                 {formatMessage(messages.back)}
               </Button>
