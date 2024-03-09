@@ -3,6 +3,7 @@ import { IRelationship, Multiloc } from 'typings';
 import { Keys } from 'utils/cl-react-query/types';
 
 import customFieldsKeys from './keys';
+import { IMapConfig } from 'api/map_config/types';
 
 export type CustomFieldsKeys = Keys<typeof customFieldsKeys>;
 
@@ -101,6 +102,7 @@ export type IFlatCustomField = Omit<
 > &
   IAttributes & {
     isLocalOnly?: boolean;
+    mapConfig?: IMapConfig;
     options?: IOptionsType[];
   };
 

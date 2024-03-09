@@ -31,6 +31,7 @@ const useCustomFields = ({
       return {
         ...customField,
         ...customField.attributes,
+        map_config: customField.relationships?.map_config,
         options:
           optionsForCustomField.length > 0
             ? optionsForCustomField.map((option) => ({

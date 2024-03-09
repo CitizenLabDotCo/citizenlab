@@ -49,6 +49,9 @@ const SurveyFormBuilder = () => {
   const surveyFormPersisted =
     phase.data.attributes.custom_form_persisted || false;
 
+  // Where are the relationships
+  console.log(customFields);
+
   const formCustomFields = copyFrom
     ? resetCopiedForm(customFields)
     : resetOptionsIfNotPersisted(customFields, surveyFormPersisted);

@@ -120,6 +120,10 @@ export const resetCopiedForm = (customFields: IFlatCustomField[]) => {
         return newOption;
       });
     }
+
+    // Duplicate any map configs
+    console.log(newField?.mapConfig);
+
     return newField;
   });
 

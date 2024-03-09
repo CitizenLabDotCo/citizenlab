@@ -76,6 +76,9 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
         ? projectMapConfig.data.attributes
         : {};
 
+      // Needs to duplicate it here
+      console.log(projectMapConfig);
+
       createProjectMapConfig(
         {
           ...initialData,
