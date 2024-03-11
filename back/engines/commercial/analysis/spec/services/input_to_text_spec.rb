@@ -87,6 +87,23 @@ describe Analysis::InputToText do
       input = build(:idea, body_multiloc: { en: 'This is a way too long sentence!' })
       expect(service.execute(input, truncate_values: 20)).to include({ 'Description' => 'This is a way too...' })
     end
+
+    it 'includes the other field' do
+      custom_field = create(:custom_field_select, title_multiloc: { en: 'What\'s your favourite option?' })
+      create(:custom_field_option, custom_field: custom_field, key: 'other', title_multiloc: { 'en' => 'Other' }, other: true)
+      service = described_class.new([custom_field])
+      input = build(
+        :idea,
+        custom_field_values: {
+          custom_field.key => 'other',
+          "#{custom_field.key}_other" => 'Because none of the above'
+        }
+      )
+      expect(service.execute(input)).to eq({
+        'What\'s your favourite option?' => 'Other',
+        "Since you picked 'other', what are you thinking of?" => 'Because none of the above'
+      })
+    end
   end
 
   describe '#formatted' do
