@@ -2026,7 +2026,7 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Etiqueta automàtica",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Les etiquetes automàtiques són derivades automàticament per l'ordinador. Podeu canviar-los o eliminar-los en tot moment.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Etiqueta automàtica",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Seleccioneu un màxim de 9 etiquetes entre les quals voleu que es distribueixin les entrades. Les entrades ja associades amb aquestes etiquetes no es tornaran a classificar.",
+  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle": "Les entrades ja associades amb aquestes etiquetes no es tornaran a classificar.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "La classificació es basa únicament en el nom de l'etiqueta. Trieu paraules clau rellevants per obtenir els millors resultats.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Etiquetes: Per etiqueta",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Creeu les etiquetes i assigneu manualment algunes entrades com a exemple, l'ordinador assigna la resta",
