@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
-import { IUsersByAge, UsersByAgeKeys } from './types';
-import usersByAgeKeys from './keys';
+
 import { ICustomFieldParams } from 'api/users_by_custom_field/types';
+
+import fetcher from 'utils/cl-react-query/fetcher';
+
+import usersByAgeKeys from './keys';
+import { IUsersByAge, UsersByAgeKeys } from './types';
 
 const fetchUsersByAge = (params: ICustomFieldParams) =>
   fetcher<IUsersByAge>({

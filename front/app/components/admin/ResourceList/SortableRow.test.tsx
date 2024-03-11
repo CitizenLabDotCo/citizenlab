@@ -1,10 +1,13 @@
 import React from 'react';
+
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import SortableRow from './SortableRow';
-import SortableList from './SortableList';
+
 import dragAndDrop from 'utils/testUtils/dragAndDrop';
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+
+import SortableList from './SortableList';
+import SortableRow from './SortableRow';
 
 const items = [
   { id: '_1', attributes: { ordering: 0 } },

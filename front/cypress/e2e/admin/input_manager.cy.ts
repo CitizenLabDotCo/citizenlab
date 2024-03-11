@@ -172,6 +172,64 @@ describe('Input manager', () => {
           cy.get('#e2e-modal-container').should('have.length', 0);
         });
     });
+    it('Closes when you delete the idea', () => {
+      cy.getAuthUser().then((user) => {
+        const projectTitle = randomString();
+        const projectDescriptionPreview = randomString();
+        const projectDescription = randomString();
+        const userId = user.body.data.id;
+        let projectId: string;
+
+        // create project with signed-in admin/user as default assignee
+        cy.apiCreateProject({
+          title: projectTitle,
+          descriptionPreview: projectDescriptionPreview,
+          description: projectDescription,
+          publicationStatus: 'published',
+          assigneeId: userId,
+        })
+          .then((project) => {
+            projectId = project.body.data.id;
+            return cy.apiCreatePhase({
+              projectId,
+              title: 'phaseTitle',
+              startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+              participationMethod: 'ideation',
+              canPost: true,
+              canComment: true,
+              canReact: true,
+              allow_anonymous_participation: true,
+            });
+          })
+          .then((phase) => {
+            const ideaTitle = randomString();
+            const ideaContent = randomString();
+
+            cy.apiCreateIdea({
+              projectId,
+              ideaTitle,
+              ideaContent,
+              phaseIds: [phase.body.data.id],
+            }).then((_idea) => {
+              cy.visit('/admin/ideas/');
+              // click on title of first idea
+              cy.get('.e2e-idea-manager-idea-title')
+                .first()
+                .click()
+                .then(() => {
+                  // check if the modal popped out and has the idea in it
+                  cy.get('#e2e-modal-container').should('exist');
+                  // delete the idea
+                  cy.get('#e2e-input-manager-side-modal-delete-button').click();
+                  // click the browser's confirm button
+                  cy.on('window:confirm', () => true);
+                  // check if the modal is no longer on the page
+                  cy.get('#e2e-modal-container').should('not.exist');
+                });
+            });
+          });
+      });
+    });
   });
 
   describe('Assignee select', () => {

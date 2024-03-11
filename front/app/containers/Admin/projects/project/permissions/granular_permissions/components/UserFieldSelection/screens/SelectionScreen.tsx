@@ -1,16 +1,14 @@
 import React from 'react';
 
-// components
 import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 
-// api
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-
-// intl
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../containers/Granular/messages';
 import { isBuiltInField } from 'api/user_custom_fields/util';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from '../../../containers/Granular/messages';
 
 type SelectionScreenProps = {
   selectedFields: Array<IPermissionsCustomFieldData> | undefined;

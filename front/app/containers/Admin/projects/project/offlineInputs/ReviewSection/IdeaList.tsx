@@ -1,24 +1,16 @@
 import React from 'react';
-import moment from 'moment';
 
-// api
-import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
-
-// components
 import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-
-// styling
+import moment from 'moment';
 import styled from 'styled-components';
 
-// utils
+import { IIdeaData, IIdeas } from 'api/ideas/types';
+import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
+
+import { useIntl } from 'utils/cl-intl';
 import { truncate } from 'utils/textUtils';
 
-// typings
-import { IIdeaData, IIdeas } from 'api/ideas/types';
+import messages from './messages';
 
 const StyledButton = styled(Button)``;
 

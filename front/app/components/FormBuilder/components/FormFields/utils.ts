@@ -1,18 +1,15 @@
-// services
+import { colors } from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
+
 import {
   ICustomFieldInputType,
   IFlatCustomField,
 } from 'api/custom_fields/types';
 
-// styling
-import { colors } from '@citizenlab/cl2-component-library';
-import { rgba } from 'polished';
-
-// utils
 import { builtInFieldKeys } from 'components/FormBuilder/utils';
+
 import { MessageDescriptor } from 'utils/cl-intl';
 
-// intl
 import messages from '../messages';
 
 export const isFieldSelected = (

@@ -1,9 +1,11 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
+
 import fetcher from 'utils/cl-react-query/fetcher';
-import { IQueryParameters, IUsers, UsersKeys } from './types';
-import projectsKeys from './keys';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
+
+import projectsKeys from './keys';
+import { IQueryParameters, IUsers, UsersKeys } from './types';
 
 const fetchUsers = ({ pageNumber, pageSize, ...rest }: IQueryParameters) =>
   fetcher<IUsers>({

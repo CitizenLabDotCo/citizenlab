@@ -162,6 +162,11 @@ class Idea < ApplicationRecord
   scope :native_survey, -> { where.not creation_phase_id: nil }
   scope :ideation, -> { where creation_phase_id: nil }
 
+  scope :draft_surveys, lambda {
+    where(publication_status: 'draft')
+      .where.not(creation_phase_id: nil)
+  }
+
   def just_published?
     publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']
   end

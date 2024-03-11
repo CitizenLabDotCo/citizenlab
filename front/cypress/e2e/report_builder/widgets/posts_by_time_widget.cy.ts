@@ -3,7 +3,9 @@ import moment = require('moment');
 
 describe('Report builder Posts By Time widget', () => {
   let projectId: string;
+  let projectSlug: string;
   let reportId: string;
+  let phaseId: string;
 
   before(() => {
     cy.setAdminLoginCookie();
@@ -23,6 +25,8 @@ describe('Report builder Posts By Time widget', () => {
     })
       .then((project) => {
         projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+
         return cy.apiCreatePhase({
           projectId,
           title: phaseTitle,
@@ -41,16 +45,30 @@ describe('Report builder Posts By Time widget', () => {
           ideaContent,
           phaseIds: [phase.body.data.id],
         });
+      })
+      .then(() => {
+        return cy.apiCreatePhase({
+          projectId,
+          title: randomString(),
+          startAt: moment().subtract(29, 'day').format('DD/MM/YYYY'),
+          participationMethod: 'information',
+        });
+      })
+      .then((phase) => {
+        phaseId = phase.body.data.id;
       });
   });
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
 
-    cy.apiCreateReportBuilder().then((report) => {
+    cy.apiCreateReportBuilder(phaseId).then((report) => {
       reportId = report.body.data.id;
       cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
         'saveReportLayout'
+      );
+      cy.intercept('GET', `/web_api/v1/reports/${reportId}`).as(
+        'getReportLayout'
       );
       cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
     });
@@ -87,7 +105,8 @@ describe('Report builder Posts By Time widget', () => {
     // Confirms that the widget displays correctly on live report
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
-    cy.visit(`/admin/reporting/report-builder/${reportId}/editor?preview=true`);
+
+    cy.visit(`projects/${projectSlug}`);
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
@@ -104,16 +123,28 @@ describe('Report builder Posts By Time widget', () => {
     cy.wait(1000);
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
+    // Wait for reportLayout.attributes.craftjs_json update.
+    //
+    // The delete happens so quickly after save, that at the time
+    // `onNodesChange` is called, reportLayout.attributes.craftjs_json
+    // still has the initial value before save (empty).
+    // After the delete, the actual state is also empty.
+    // And so, the `saved` state is not properly updated.
+    // Also, see reactions_by_time_widget.cy.ts
+    cy.wait('@getReportLayout');
+    cy.wait(500);
 
     cy.get('#e2e-draggable-posts-by-time-widget').should('exist');
     cy.get('#e2e-draggable-posts-by-time-widget')
       .parent()
       .click({ force: true });
+
     cy.get('#e2e-delete-button').click();
+
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
 
-    cy.visit(`/admin/reporting/report-builder/${reportId}/editor?preview=true`);
+    cy.visit(`projects/${projectSlug}`);
     cy.get('#e2e-posts-by-time-widget').should('not.exist');
   });
 });

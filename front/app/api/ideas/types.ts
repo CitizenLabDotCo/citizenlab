@@ -1,13 +1,16 @@
 import { ILinks, Multiloc, IRelationship } from 'typings';
-import {
-  PermissionsDisabledReason,
-  ActionDescriptorFutureEnabled,
-} from 'utils/actionDescriptors';
+
 import {
   CommentingDisabledReason,
   PublicationStatus as ProjectPublicationStatus,
 } from 'api/projects/types';
+
+import {
+  PermissionsDisabledReason,
+  ActionDescriptorFutureEnabled,
+} from 'utils/actionDescriptors';
 import { Keys } from 'utils/cl-react-query/types';
+
 import ideasKeys from './keys';
 
 export type IdeasKeys = Keys<typeof ideasKeys>;
@@ -161,8 +164,8 @@ export interface IIdeaAdd {
   // Required
   project_id: string;
   publication_status: IdeaPublicationStatus;
-  title_multiloc: Multiloc;
   // Optional
+  title_multiloc?: Multiloc;
   author_id?: string | null;
   assignee_id?: string | null;
   idea_status_id?: string | null;

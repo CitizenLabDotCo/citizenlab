@@ -1,10 +1,13 @@
 import React from 'react';
 
-import TranslateButton from 'components/UI/TranslateButton';
 import styled from 'styled-components';
-import { IIdeaData } from 'api/ideas/types';
 import { Locale } from 'typings';
+
+import { IIdeaData } from 'api/ideas/types';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import TranslateButton from 'components/UI/TranslateButton';
 
 const StyledTranslateButton = styled(TranslateButton)`
   margin-bottom: 20px;

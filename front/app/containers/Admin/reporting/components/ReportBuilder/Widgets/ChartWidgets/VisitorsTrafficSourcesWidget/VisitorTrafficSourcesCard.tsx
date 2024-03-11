@@ -1,34 +1,26 @@
 import React from 'react';
 
-// hooks
-import useVisitorReferrerTypes from './useVisitorReferrerTypes';
+import { Box } from '@citizenlab/cl2-component-library';
+
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-import Chart from './Chart';
-import NoData from '../../_shared/NoData';
+import { ProjectId, DatesStrings } from 'components/admin/GraphCards/typings';
 
-// i18n
-import messages from '../messages';
-
-// utils
 import { isNilOrError } from 'utils/helperUtils';
 
-// typings
-import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
+import NoData from '../../_shared/NoData';
+import messages from '../messages';
 
-type Props = ProjectId & Dates;
+import Chart from './Chart';
+import useVisitorReferrerTypes from './useVisitorReferrerTypes';
 
-const VisitorsTrafficSourcesCard = ({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-}: Props) => {
+type Props = ProjectId & DatesStrings;
+
+const VisitorsTrafficSourcesCard = ({ projectId, startAt, endAt }: Props) => {
   const { pieData } = useVisitorReferrerTypes({
     projectId,
-    startAtMoment,
-    endAtMoment,
+    startAt,
+    endAt,
   });
   const layout = useLayout();
 

@@ -1,5 +1,7 @@
 import React, { lazy } from 'react';
+
 import moduleConfiguration from 'modules';
+
 import PageLoading from 'components/UI/PageLoading';
 
 const ReportingWrapper = lazy(() => import('.'));

@@ -1,7 +1,5 @@
 import React from 'react';
 
-// components
-import Button from 'components/UI/Button';
 import {
   Icon,
   Text,
@@ -9,22 +7,20 @@ import {
   Title,
   Box,
 } from '@citizenlab/cl2-component-library';
-import Body from 'components/PostShowComponents/Body';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
-// style
 import styled from 'styled-components';
 
-// hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+
 import useLocalize from 'hooks/useLocalize';
 
-// utils
+import Body from 'components/PostShowComponents/Body';
+import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import messages from '../messages';
 
 const Container = styled.div`
   flex: 1;

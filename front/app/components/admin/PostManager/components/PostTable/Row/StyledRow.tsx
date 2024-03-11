@@ -1,8 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 
-// components
 import { Tr, TrProps } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 const StyledRow = styled(Tr)<{ undraggable: boolean }>`
   height: 5.7rem;

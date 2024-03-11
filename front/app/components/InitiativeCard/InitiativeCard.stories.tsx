@@ -1,12 +1,13 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
 
 import InitiativeCard from '.';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Example/InitiativeCard',
   render: (props) => (
-    <div style={{ maxWidth: '500px' }}>
+    <div style={{ width: '400px', height: '300px' }}>
       <InitiativeCard {...props} />
     </div>
   ),

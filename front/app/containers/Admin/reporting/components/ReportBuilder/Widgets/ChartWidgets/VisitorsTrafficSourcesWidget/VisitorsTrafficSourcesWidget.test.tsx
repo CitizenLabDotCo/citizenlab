@@ -1,6 +1,8 @@
 import React from 'react';
-import VisitorsTrafficSourcesWidget from '.';
+
 import { render } from 'utils/testUtils/rtl';
+
+import VisitorsTrafficSourcesWidget from '.';
 
 let mockVisitorReferrerTypes: any = { pieData: null };
 jest.mock(

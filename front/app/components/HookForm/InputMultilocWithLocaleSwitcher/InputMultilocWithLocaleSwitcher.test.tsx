@@ -1,10 +1,13 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import InputMultilocWithLocaleSwitcher from './';
+
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+
+import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+
+import InputMultilocWithLocaleSwitcher from './';
 
 const schema = object({
   title: validateMultilocForEveryLocale('Error message'),

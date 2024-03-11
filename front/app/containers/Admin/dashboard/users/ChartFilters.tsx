@@ -1,13 +1,11 @@
 import React from 'react';
 
-// components
 import { Box } from '@citizenlab/cl2-component-library';
+import { Moment } from 'moment';
+import { IOption } from 'typings';
+
 import GroupFilter from '../components/filters/GroupFilter';
 import TimeControl from '../components/TimeControl';
-
-// typings
-import { IOption } from 'typings';
-import { Moment } from 'moment';
 
 interface Props {
   startAtMoment: Moment | null | undefined;

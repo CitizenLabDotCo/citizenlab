@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { AuthenticationContext } from './types';
 
 const baseKey = {

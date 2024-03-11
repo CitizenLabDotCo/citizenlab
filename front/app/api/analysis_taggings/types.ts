@@ -1,4 +1,5 @@
 import { Keys } from 'utils/cl-react-query/types';
+
 import taggingsKeys from './keys';
 
 export type TaggingsKeys = Keys<typeof taggingsKeys>;

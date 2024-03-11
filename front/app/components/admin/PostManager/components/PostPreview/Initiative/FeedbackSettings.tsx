@@ -1,46 +1,38 @@
 import React from 'react';
-import { memoize } from 'lodash-es';
 
-// i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
-
-// typings
-import { IOption } from 'typings';
-import { IInitiativeData } from 'api/initiatives/types';
-
-// styles
-import styled from 'styled-components';
-
-// components
 import { Select, Label } from '@citizenlab/cl2-component-library';
+import { memoize } from 'lodash-es';
+import styled from 'styled-components';
+import { IOption } from 'typings';
 
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
-
-// events
-import eventEmitter from 'utils/eventEmitter';
-import events, {
-  StatusChangeModalOpen,
-} from 'components/admin/PostManager/events';
-
-// hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
-import { getFullName } from 'utils/textUtils';
-import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useUsers from 'api/users/useUsers';
+import { IInitiativeAllowedTransitions } from 'api/initiative_allowed_transitions/types';
 import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
-import useInitiativeStatuses from 'api/initiative_statuses/useInitiativeStatuses';
 import {
   IInitiativeStatusData,
   IInitiativeStatuses,
 } from 'api/initiative_statuses/types';
-import { IInitiativeAllowedTransitions } from 'api/initiative_allowed_transitions/types';
-import useLocalize from 'hooks/useLocalize';
+import useInitiativeStatuses from 'api/initiative_statuses/useInitiativeStatuses';
+import { IInitiativeData } from 'api/initiatives/types';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
+import useAuthUser from 'api/me/useAuthUser';
 import { IUsers } from 'api/users/types';
+import useUsers from 'api/users/useUsers';
+
+import useLocalize from 'hooks/useLocalize';
+
+import events, {
+  StatusChangeModalOpen,
+} from 'components/admin/PostManager/events';
+
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+import { getFullName } from 'utils/textUtils';
+
+import tracks from '../../../tracks';
+import messages from '../messages';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;

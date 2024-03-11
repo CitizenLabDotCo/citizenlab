@@ -1,11 +1,15 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import mockEndpoints from 'utils/storybook/mockEndpoints';
-import { votingProjectHandler } from 'api/projects/__mocks__/_mockServer';
-import { votingIdeaHandler } from 'api/ideas/__mocks__/_mockServer';
+
 import { VotingContext } from 'api/baskets_ideas/useVoting';
+import { votingIdeaHandler } from 'api/ideas/__mocks__/_mockServer';
+import { votingPhaseHandler } from 'api/phases/__mocks__/_mockServer';
+import { votingProjectHandler } from 'api/projects/__mocks__/_mockServer';
+
+import mockEndpoints from 'utils/storybook/mockEndpoints';
 
 import IdeaCard from '.';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Example/IdeaCard',
@@ -42,6 +46,7 @@ export const Voting: Story = {
   ),
   args: {
     ideaId: '1',
+    phaseId: 'ph1',
     hideImage: false,
     hideImagePlaceholder: false,
   },
@@ -49,6 +54,7 @@ export const Voting: Story = {
     msw: mockEndpoints({
       'GET projects/:id': votingProjectHandler,
       'GET ideas/:id': votingIdeaHandler,
+      'GET phases/:id': votingPhaseHandler,
     }),
   },
 };

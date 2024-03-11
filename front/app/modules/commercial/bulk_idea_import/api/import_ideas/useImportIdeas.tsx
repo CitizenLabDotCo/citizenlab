@@ -1,6 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
-import { IIdeaFile } from 'api/idea_files/types';
 import { CLErrors } from 'typings';
+
+import { IIdeaFile } from 'api/idea_files/types';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 const importIdeas = async (base64: string) =>

@@ -1,15 +1,5 @@
 import React, { useState } from 'react';
 
-import { isEmpty, forOwn } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
-import moment from 'moment';
-import { isAdmin } from 'utils/permissions/roles';
-
-// components
-import Avatar from 'components/Avatar';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import Button from 'components/UI/Button';
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import {
   Badge,
   useBreakpoint,
@@ -19,23 +9,28 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import T from 'components/T';
-import messages from './messages';
-import blockUserMessages from 'components/admin/UserBlockModals/messages';
-
-// style
+import { isEmpty, forOwn } from 'lodash-es';
+import moment from 'moment';
 import styled from 'styled-components';
 
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'api/me/useAuthUser';
 import useUserBySlug from 'api/users/useUserBySlug';
 
-// utils
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import blockUserMessages from 'components/admin/UserBlockModals/messages';
+import Avatar from 'components/Avatar';
+import T from 'components/T';
+import Button from 'components/UI/Button';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { useIntl } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
+import { isAdmin } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
+
+import messages from './messages';
 
 const BlockUser = React.lazy(
   () => import('components/admin/UserBlockModals/BlockUser')

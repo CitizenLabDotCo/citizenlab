@@ -1,16 +1,14 @@
-// style
-import styled, { css } from 'styled-components';
-import { tabBorderSize } from './tabsStyleConstants';
 import {
   BoxPositionProps,
   BoxPaddingProps,
   colors,
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
+import styled, { css } from 'styled-components';
 
-// components
 import Tab from './Tab';
 import TabsPageLayout from './TabsPageLayout';
+import { tabBorderSize } from './tabsStyleConstants';
 
 const NavigationTabs = styled.nav<{
   position?: BoxPositionProps['position'];

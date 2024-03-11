@@ -1,32 +1,26 @@
 import React, { useState } from 'react';
-import { isEmpty } from 'lodash-es';
 
-// Styling
-import styled from 'styled-components';
 import { colors, fontSizes } from '@citizenlab/cl2-component-library';
-
-// components
-import StatusChangeForm from './StatusChangeForm';
-
-// resources
-import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
-
-// services
-import useUpdateInitiativeStatus from 'api/initiative_statuses/useUpdateInitiativeStatus';
-// intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isEmpty } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../../messages';
-import T from 'components/T';
-
-// Typings
+import styled from 'styled-components';
 import { Multiloc, MultilocFormValues } from 'typings';
 
-// hooks
-import useInitiativeById from 'api/initiatives/useInitiativeById';
-import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
+import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
+import useUpdateInitiativeStatus from 'api/initiative_statuses/useUpdateInitiativeStatus';
+import useInitiativeById from 'api/initiatives/useInitiativeById';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+import T from 'components/T';
+
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
+
+import messages from '../../messages';
+
+import StatusChangeForm from './StatusChangeForm';
 
 const Container = styled.div`
   background: ${colors.background};

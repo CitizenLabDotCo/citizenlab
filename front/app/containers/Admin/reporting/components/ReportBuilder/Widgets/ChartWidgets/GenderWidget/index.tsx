@@ -1,33 +1,13 @@
 import React from 'react';
 
-// components
 import Card from '../../_shared/Card';
-import GenderCard from './GenderCard';
-
-// messages
-import messages from '../messages';
-
-// settings
 import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
-
-// types
+import messages from '../messages';
 import { ChartWidgetProps } from '../typings';
 
-// utils
-import moment from 'moment';
+import GenderCard from './GenderCard';
 
-const GenderWidget = ({
-  title,
-  projectId,
-  startAt,
-  endAt,
-}: ChartWidgetProps) => {
-  const props = {
-    startAtMoment: startAt ? moment(startAt) : null,
-    endAtMoment: endAt ? moment(endAt) : null,
-    projectId,
-  };
-
+const GenderWidget = ({ title, ...props }: ChartWidgetProps) => {
   return (
     <Card title={title} pagebreak>
       <GenderCard {...props} />

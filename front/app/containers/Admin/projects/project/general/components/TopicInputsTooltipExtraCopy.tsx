@@ -1,10 +1,8 @@
 import React from 'react';
 
-// components
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 const TopicInputsCopyProvider = () => {

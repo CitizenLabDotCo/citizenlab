@@ -1,8 +1,10 @@
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import keys from './keys';
-import { Keys } from 'utils/cl-react-query/types';
-import { GLOBAL_CONTEXT } from './constants';
 import { IPhasePermissionAction } from 'api/permissions/types';
+
+import { Keys } from 'utils/cl-react-query/types';
+
+import { GLOBAL_CONTEXT } from './constants';
+import keys from './keys';
 
 interface InitiativeContext {
   type: 'initiative';
