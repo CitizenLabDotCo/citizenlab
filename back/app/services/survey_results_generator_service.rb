@@ -5,8 +5,13 @@ class SurveyResultsGeneratorService < FieldVisitorService
     super()
     form = phase.custom_form || CustomForm.new(participation_context: phase)
     @fields = IdeaCustomFieldsService.new(form).enabled_fields # It would be nice if we could use reportable_fields instead
-    @inputs = phase.ideas.published
+    @inputs = phase.ideas.published.joins(:user)
     @locales = AppConfiguration.instance.settings('core', 'locales')
+    @values = get_custom_field_values(@inputs)
+  end
+
+  def get_custom_field_values(inputs)
+    binding.pry
   end
 
   def generate_submission_count
