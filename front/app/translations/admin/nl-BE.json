@@ -1263,7 +1263,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltip": "Laag tooltip",
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltipTooltip": "Deze tekst wordt weergegeven als een tooltip wanneer je met de muis over de onderdelen in de laag op de kaart gaat",
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Lagen",
-  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "Op dit moment ondersteunen we GeoJSON bestanden en het importeren van functielagen en webkaarten uit ArcGIS Online. Lees het {supportArticle} voor tips over het toevoegen, converteren en stylen van kaartlagen.",
+  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "We ondersteunen momenteel GeoJSON-bestanden. Lees het {supportArticle} voor tips over het converteren en stijlen van kaartlagen.",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Standaard lengtegraad",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Middelpunt en zoom-niveau van de kaart",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Het standaard middelpunt en zoom-niveau van de kaart. Pas de waarden hieronder handmatig aan, of klik op de {button} knop in de linkerbovenhoek van de kaart om het huidige middelpunt en zoom-niveau van de kaart op te slaan als de standaardwaarden.",
