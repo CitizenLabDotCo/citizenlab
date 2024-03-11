@@ -8,6 +8,7 @@ import {
   DropdownListItem,
   Spinner,
 } from '@citizenlab/cl2-component-library';
+import { stringify } from 'qs';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -18,6 +19,7 @@ import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import messages from '../../../messages';
 
@@ -36,7 +38,8 @@ const Analysis = ({
 }) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const { formatMessage } = useIntl();
-  const { mutate: addAnalysis } = useAddAnalysis();
+  const { mutate: addAnalysis, isLoading: isAddAnalysisLoading } =
+    useAddAnalysis();
   const { mutate: updateAnalysis, isLoading } = useUpdateAnalysis();
 
   const { projectId, phaseId } = useParams() as {
@@ -84,9 +87,44 @@ const Analysis = ({
     setDropdownOpened(!dropdownOpened);
   };
 
+  const showAnalysisInsights =
+    relevantAnalysis && relevantAnalysis.attributes.show_insights;
+  const hideAnalysisInsights =
+    relevantAnalysis && !relevantAnalysis.attributes.show_insights;
+
   return (
     <Box position="relative">
-      {relevantAnalysis && relevantAnalysis.attributes.show_insights && (
+      {!relevantAnalysis && (
+        <Box display="flex">
+          <Button
+            processing={isAddAnalysisLoading}
+            onClick={() =>
+              addAnalysis(
+                {
+                  projectId: phaseId ? undefined : projectId,
+                  phaseId,
+                  mainCustomField: customFieldId,
+                },
+                {
+                  onSuccess: (response) => {
+                    clHistory.push(
+                      `/admin/projects/${projectId}/analysis/${
+                        response.data.id
+                      }?${stringify({ phase_id: phaseId })}`
+                    );
+                  },
+                }
+              )
+            }
+            buttonStyle="secondary"
+            icon="flash"
+          >
+            {formatMessage(messages.createAIAnalysis)}
+          </Button>
+        </Box>
+      )}
+
+      {showAnalysisInsights && (
         <>
           <Box
             display="flex"
@@ -140,7 +178,7 @@ const Analysis = ({
           <AnalysisInsights analysis={relevantAnalysis} />
         </>
       )}
-      {relevantAnalysis && !relevantAnalysis.attributes.show_insights && (
+      {hideAnalysisInsights && (
         <Box display="flex">
           <Button
             processing={isLoading}

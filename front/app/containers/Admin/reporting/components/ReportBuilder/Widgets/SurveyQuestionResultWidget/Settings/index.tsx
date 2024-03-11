@@ -19,12 +19,12 @@ import PhaseFilter from 'components/UI/PhaseFilter';
 import { useIntl } from 'utils/cl-intl';
 
 import ProjectFilter from '../../_shared/ProjectFilter';
+import QuestionSelect from '../../_shared/QuestionSelect';
 import widgetMessages from '../../messages';
 import { Props } from '../typings';
 
 import GroupModeSelect from './GroupModeSelect';
 import messages from './messages';
-import QuestionSelect from './QuestionSelect';
 import UserFieldSelect from './UserFieldSelect';
 
 const Settings = () => {

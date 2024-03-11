@@ -5,6 +5,7 @@ import { IOption } from 'typings';
 
 import { ICustomFields, ICustomFieldInputType } from 'api/custom_fields/types';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
+import usePhase from 'api/phases/usePhase';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
 
@@ -40,6 +41,7 @@ const QuestionSelect = ({
   label,
   onChange,
 }: Props) => {
+  const { data: phase } = usePhase(phaseId);
   const { data: questions } = useRawCustomFields({ phaseId });
   const localize = useLocalize();
 
@@ -54,6 +56,10 @@ const QuestionSelect = ({
     const inputTypes: ICustomFieldInputType[] = JSON.parse(inputTypesStr);
     return generateOptions(questions, inputTypes, localize);
   }, [questions, inputTypesStr, localize]);
+
+  if (phase?.data.attributes.participation_method !== 'native_survey') {
+    return null;
+  }
 
   return (
     <Box width="100%" mb="20px">
