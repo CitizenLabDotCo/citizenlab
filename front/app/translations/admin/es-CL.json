@@ -1269,7 +1269,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltip": "Información sobre la capa",
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltipTooltip": "Este texto se muestra como información sobre la herramienta cuando se desliza sobre las características de la capa en el mapa",
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Capas",
-  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "Actualmente admitimos archivos GeoJSON y la importación de Capas de Características y Mapas Web desde ArcGIS Online. Lee {supportArticle} para obtener consejos sobre cómo añadir, convertir y dar estilo a las capas de mapas.",
+  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "Actualmente soportamos archivos GeoJSON. Lea el {supportArticle} para obtener consejos sobre cómo convertir y ajustar el estilo de las capas del mapa.",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Longitud por defecto",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Centro del mapa y zoom por defecto",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip2": "Punto central y nivel de zoom por defecto del mapa. Ajuste manualmente los valores que aparecen a continuación, o haga clic en el botón {button} de la esquina superior derecha del mapa para guardar el punto central y el nivel de zoom actuales como valores predeterminados.",
