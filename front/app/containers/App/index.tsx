@@ -44,10 +44,10 @@ import {
   isPage,
 } from 'utils/helperUtils';
 import { localeStream } from 'utils/localeStream';
+import { usePermission } from 'utils/permissions';
 
 import Meta from './Meta';
 import UserSessionRecordingModal from './UserSessionRecordingModal';
-import { usePermission } from 'utils/permissions';
 
 const ConsentManager = lazy(() => import('components/ConsentManager'));
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));

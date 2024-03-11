@@ -7,26 +7,25 @@ import styled from 'styled-components';
 
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
+import { IInitiative } from 'api/initiatives/types';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import HasPermission from 'components/HasPermission';
 import PageLayout from 'components/InitiativeForm/PageLayout';
 import PageNotFound from 'components/PageNotFound';
+import Unauthorized from 'components/Unauthorized';
+import VerticalCenterer from 'components/VerticalCenterer';
 
 import clHistory from 'utils/cl-router/history';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
+import { usePermission } from 'utils/permissions';
 import { isAdmin, isSuperAdmin, isRegularUser } from 'utils/permissions/roles';
 
 import InitiativesEditFormWrapper from './InitiativesEditFormWrapper';
 import InitiativesEditMeta from './InitiativesEditMeta';
-import { usePermission } from 'utils/permissions';
-import { IInitiative } from 'api/initiatives/types';
-import VerticalCenterer from 'components/VerticalCenterer';
-import { isUnauthorizedRQ } from 'utils/errorUtils';
-import Unauthorized from 'components/Unauthorized';
 
 const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
   width: 100%;
