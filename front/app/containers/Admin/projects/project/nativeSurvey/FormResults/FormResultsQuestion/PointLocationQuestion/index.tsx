@@ -21,6 +21,7 @@ import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import useLocalize from 'hooks/useLocalize';
 
 import EsriMap from 'components/EsriMap';
+import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton';
 import { applyHeatMapRenderer, parseLayers } from 'components/EsriMap/utils';
 
 import { useIntl } from 'utils/cl-intl';
@@ -66,10 +67,10 @@ const PointLocationQuestion = ({
     return new SimpleMarkerSymbol({
       color: colors.primary,
       style: 'circle',
-      size: '12px',
+      size: '18px',
       outline: {
         color: colors.white,
-        width: 1.1,
+        width: 2,
       },
     });
   }, []);
@@ -168,22 +169,25 @@ const PointLocationQuestion = ({
       {isLoading ? (
         <Spinner />
       ) : (
-        <EsriMap
-          initialData={{
-            onInit,
-            showLegend: true,
-            showLayerVisibilityControl: true,
-            zoom: Number(mapConfig?.data.attributes.zoom_level),
-            center: mapConfig?.data.attributes.center_geojson,
-          }}
-          webMapId={mapConfig?.data.attributes.esri_web_map_id}
-          height="440px"
-          layers={
-            responsesLayer && mapConfigLayers
-              ? [...mapConfigLayers, responsesLayer]
-              : []
-          }
-        />
+        <>
+          <EsriMap
+            initialData={{
+              onInit,
+              showLegend: true,
+              showLayerVisibilityControl: true,
+              zoom: Number(mapConfig?.data.attributes.zoom_level),
+              center: mapConfig?.data.attributes.center_geojson,
+            }}
+            webMapId={mapConfig?.data.attributes.esri_web_map_id}
+            height="440px"
+            layers={
+              responsesLayer && mapConfigLayers
+                ? [...mapConfigLayers, responsesLayer]
+                : []
+            }
+          />
+          <ResetMapViewButton mapView={mapView} mapConfig={mapConfig} />
+        </>
       )}
     </Box>
   );

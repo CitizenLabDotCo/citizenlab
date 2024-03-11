@@ -11,6 +11,7 @@ import { IMapConfig } from 'api/map_config/types';
 import useLocale from 'hooks/useLocale';
 
 import EsriMap from 'components/EsriMap';
+import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton';
 import { esriPointToGeoJson, goToMapLocation } from 'components/EsriMap/utils';
 import { Option } from 'components/UI/LocationInput';
 
@@ -94,6 +95,7 @@ const DesktopView = ({
             webMapId={mapConfig?.data.attributes.esri_web_map_id}
             onClick={onMapClick}
           />
+          <ResetMapViewButton mapConfig={mapConfig} mapView={mapView} />
         </>
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />

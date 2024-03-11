@@ -224,16 +224,27 @@ type MakiIconName =
 // getShapeSymbol
 // Description: Get a simple shape symbol (with an optional outline width & color value)
 type SimpleShape = 'circle' | 'square' | 'cross' | 'diamond' | 'triangle' | 'x';
-export const getShapeSymbol = (
-  shape: SimpleShape,
-  color?: string,
-  outlineWidth?: number
-) => {
+type SimpleShapeProps = {
+  shape: SimpleShape;
+  color?: string;
+  outlineColor?: string;
+  outlineWidth?: number;
+  sizeInPx?: number;
+};
+
+export const getShapeSymbol = ({
+  shape,
+  color,
+  outlineColor,
+  outlineWidth,
+  sizeInPx,
+}: SimpleShapeProps) => {
   return new SimpleMarkerSymbol({
     style: shape,
     color: color || colors.white,
+    size: sizeInPx,
     outline: {
-      color: hexToRGBA(colors.white, 0.2),
+      color: outlineColor || hexToRGBA(colors.white, 0.2),
       width: outlineWidth || 1,
     },
   });
@@ -294,11 +305,11 @@ export const getClusterConfiguration = (clusterSymbolColor?: string) => {
   return new FeatureReductionCluster({
     maxScale: 600, // Stop clustering once fully zoomed in
     clusterMinSize: '20',
-    symbol: getShapeSymbol(
-      'circle',
-      clusterSymbolColor || colors.coolGrey700,
-      3
-    ),
+    symbol: getShapeSymbol({
+      shape: 'circle',
+      color: clusterSymbolColor || colors.coolGrey700,
+      outlineWidth: 3,
+    }),
     labelingInfo: [
       // Cluster configuration from Esri sample
       // src: https://developers.arcgis.com/javascript/latest/sample-code/featurereduction-cluster-filter/
