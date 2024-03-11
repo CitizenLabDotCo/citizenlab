@@ -1269,7 +1269,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltip": "Quleriaami nassuiaat",
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltipTooltip": "Una allataq, nunap assingani quleriaat atuuffiisa qulaanni tikkuut inissikkaangakku nassuiaatitut nuisassaaq",
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Nunap assingani quleriiaat",
-  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "We currently support GeoJSON files and importing Feature Layers and Web Maps from ArcGIS Online. Read the {supportArticle} for tips on how to add, convert and style map layers.",
+  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "Massakkut GeoJSON-fiilit atorneqarsinnaapput. Nunap assingi qanoq konverteerissanerlugit ilusilersussanerlugillu ilitsersortikkusukkuit {supportArticle} atuaruk.",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Allorniusaq tukimukartoq nalinginnaasoq",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Nunap assingata qeqqa qanillisaallu (zoom)",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip2": "The default center point and zoom level of the map. Manually adjust the values below, or click on the {button} button in the bottom left corner of the map to save the current center point and zoom level of the map as the default values.",
