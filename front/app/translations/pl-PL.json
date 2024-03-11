@@ -1038,6 +1038,7 @@
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "Dodaj nowy pomysł | {projectName}",
   "app.containers.IdeasNewPage.issueFormTitle": "Dodaj nową sprawę",
   "app.containers.IdeasNewPage.issueMetaTitle": "Dodaj nową sprawę | {projectName}",
+  "app.containers.IdeasNewPage.leaveSurvey": "Zostaw ankietę",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Czy na pewno chcesz opuścić ankietę?",
   "app.containers.IdeasNewPage.leaveSurveyText": "Twoje odpowiedzi nie zostaną zapisane.",
   "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Twoje wstępne odpowiedzi zostały zapisane prywatnie i możesz wrócić do wypełniania tej ankiety później.",
