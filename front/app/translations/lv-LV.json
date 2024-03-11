@@ -1038,6 +1038,7 @@
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "Pievienot jaunu ideju | {projectName}",
   "app.containers.IdeasNewPage.issueFormTitle": "Pievienot jaunu komentāru",
   "app.containers.IdeasNewPage.issueMetaTitle": "Pievienot jaunu komentāru | {projectName}",
+  "app.containers.IdeasNewPage.leaveSurvey": "Atvaļinājuma apsekojums",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Vai esat pārliecināts, ka vēlaties atstāt šo aptauju?",
   "app.containers.IdeasNewPage.leaveSurveyText": "Jūsu atbildes netiks saglabātas.",
   "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Jūsu atbilžu projekti ir saglabāti privāti, un jūs varat atgriezties, lai pabeigtu šo aptauju vēlāk.",
