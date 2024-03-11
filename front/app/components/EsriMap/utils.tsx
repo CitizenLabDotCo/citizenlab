@@ -16,6 +16,7 @@ import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
 import Popup from '@arcgis/core/widgets/Popup';
 import { colors } from '@citizenlab/cl2-component-library';
+import { uuid4 } from '@sentry/utils';
 
 import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';
@@ -386,10 +387,10 @@ export const createEsriFeatureLayers = (
 
       // Extract number of sublayers if present
       const titleSplit = title.indexOf('(');
-      const subLayerCount = parseInt(
-        title.substring(titleSplit + 1, title.length - 1),
-        10
-      );
+      const subLayerCount =
+        titleSplit >= 0
+          ? parseInt(title.substring(titleSplit + 1, title.length - 1), 10)
+          : 0;
 
       // If we have sublayers, add a feature layer for each
       if (subLayerCount > 1) {
@@ -452,6 +453,7 @@ export const createEsriGeoJsonLayers = (
 
     // create new geojson layer using the created url
     const geoJsonLayer = new GeoJSONLayer({
+      id: `${uuid4()}`,
       url,
       customParameters: {
         layerId: layer.id,

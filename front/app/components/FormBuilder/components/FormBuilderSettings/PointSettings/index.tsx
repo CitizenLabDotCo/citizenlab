@@ -49,6 +49,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const { data: projectMapConfig } = useProjectMapConfig(projectId);
   const { data: rawCustomFields } = useRawCustomFields({ phaseId });
+
   const { mutateAsync: createProjectMapConfig } = useAddMapConfig();
   const [mapView, setMapView] = useState<MapView | null>(null);
 
@@ -145,20 +146,18 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
           htmlFor="maximumInput"
           value={<>{formatMessage(messages.mapConfiguration)}</>}
         />
-        {!showModal && (
-          <EsriMap
-            height="400px"
-            layers={mapLayers}
-            initialData={{
-              zoom: Number(mapConfig?.data?.attributes?.zoom_level),
-              center: mapConfig?.data?.attributes?.center_geojson,
-              showLayerVisibilityControl: true,
-              showLegend: true,
-              onInit: onMapInit,
-            }}
-            webMapId={mapConfig?.data.attributes.esri_web_map_id}
-          />
-        )}
+        <EsriMap
+          height="400px"
+          layers={mapLayers}
+          initialData={{
+            zoom: Number(mapConfig?.data?.attributes?.zoom_level),
+            center: mapConfig?.data?.attributes?.center_geojson,
+            showLayerVisibilityControl: true,
+            showLegend: true,
+            onInit: onMapInit,
+          }}
+          webMapId={mapConfig?.data.attributes.esri_web_map_id}
+        />
         <Button
           mt="16px"
           iconPos="left"
@@ -176,7 +175,9 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
         header={formatMessage(messages.mapConfiguration)}
       >
         <Box p="20px">
-          <CustomMapConfigPage passedMapConfig={mapConfig} />
+          <CustomMapConfigPage
+            passedMapConfig={mapConfigId ? fieldMapConfig : projectMapConfig}
+          />
         </Box>
       </Modal>
     </>

@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
-import Layer from '@arcgis/core/layers/Layer';
 import MapView from '@arcgis/core/views/MapView';
 import { Box } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
@@ -9,8 +8,10 @@ import { useTheme } from 'styled-components';
 import { IMapConfig } from 'api/map_config/types';
 
 import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 
 import EsriMap from 'components/EsriMap';
+import { parseLayers } from 'components/EsriMap/utils';
 import { Option } from 'components/UI/LocationInput';
 
 import ErrorDisplay from '../../../ErrorDisplay';
@@ -22,7 +23,6 @@ import FullscreenMapInput from './FullscreenMapInput';
 
 type Props = {
   mapConfig?: IMapConfig;
-  mapLayers?: Layer[];
   onMapInit?: (mapView: MapView) => void;
   mapView?: MapView | null;
   handlePointChange: (point: GeoJSON.Point | undefined) => void;
@@ -31,7 +31,6 @@ type Props = {
 
 const MobileView = ({
   mapConfig,
-  mapLayers,
   onMapInit,
   mapView,
   handlePointChange,
@@ -42,6 +41,7 @@ const MobileView = ({
 
   const theme = useTheme();
   const locale = useLocale();
+  const localize = useLocalize();
 
   // state variables
   const [showFullscreenMapInput, setShowFullscreenMap] = useState(false);
@@ -50,6 +50,11 @@ const MobileView = ({
     value: '',
     label: '',
   });
+
+  // Create map layers from map configuration to load in
+  const mapLayers = useMemo(() => {
+    return parseLayers(mapConfig, localize);
+  }, [localize, mapConfig]);
 
   // When the data (point) changes, update the address and add a pin to the map
   useEffect(() => {
@@ -85,6 +90,7 @@ const MobileView = ({
             }}
           />
           <EsriMap
+            id="mobilePreviewMap"
             height="180px"
             layers={mapLayers}
             initialData={{
@@ -100,11 +106,10 @@ const MobileView = ({
         </Box>
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
-      {showFullscreenMapInput && mapView && (
+      {showFullscreenMapInput && (
         <FullscreenMapInput
           setShowFullscreenMap={setShowFullscreenMap}
           mapConfig={mapConfig}
-          mapLayers={mapLayers}
           handlePointChange={handlePointChange}
           {...props}
         />

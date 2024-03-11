@@ -157,16 +157,18 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
       <Container className={className || ''}>
         <SubSectionTitle>
           <FormattedMessage {...messages.mapData} />
-          <StyledIconTooltip
-            content={
-              <FormattedMessage
-                {...messages.layersTooltip}
-                values={{
-                  supportArticle: supportArticleLink,
-                }}
-              />
-            }
-          />
+          {isEsriIntegrationEnabled && ( // TODO: Remove once Esri integration is released
+            <StyledIconTooltip
+              content={
+                <FormattedMessage
+                  {...messages.layersTooltip}
+                  values={{
+                    supportArticle: supportArticleLink,
+                  }}
+                />
+              }
+            />
+          )}
         </SubSectionTitle>
         {layersWithOrdering && (
           <StyledSortableList
