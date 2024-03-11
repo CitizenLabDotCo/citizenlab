@@ -1,7 +1,5 @@
 import React from 'react';
 
-import moment from 'moment';
-
 import Card from '../../_shared/Card';
 import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
 import messages from '../messages';
@@ -9,13 +7,7 @@ import { ChartWidgetProps } from '../typings';
 
 import AgeCard from './AgeCard';
 
-const AgeWidget = ({ title, projectId, startAt, endAt }: ChartWidgetProps) => {
-  const props = {
-    startAtMoment: startAt ? moment(startAt) : null,
-    endAtMoment: endAt ? moment(endAt) : null,
-    projectId,
-  };
-
+const AgeWidget = ({ title, ...props }: ChartWidgetProps) => {
   return (
     <Card title={title} pagebreak>
       <AgeCard {...props} />

@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
+import { ProjectId, DatesStrings } from 'components/admin/GraphCards/typings';
 
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -14,17 +14,13 @@ import messages from '../messages';
 import Chart from './Chart';
 import useVisitorReferrerTypes from './useVisitorReferrerTypes';
 
-type Props = ProjectId & Dates;
+type Props = ProjectId & DatesStrings;
 
-const VisitorsTrafficSourcesCard = ({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-}: Props) => {
+const VisitorsTrafficSourcesCard = ({ projectId, startAt, endAt }: Props) => {
   const { pieData } = useVisitorReferrerTypes({
     projectId,
-    startAtMoment,
-    endAtMoment,
+    startAt,
+    endAt,
   });
   const layout = useLayout();
 

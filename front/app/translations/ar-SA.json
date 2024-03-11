@@ -963,6 +963,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "بشكل افتراضي ، سيتم ربط عمليات الإرسال الخاصة بك بملف التعريف الخاص بك ، ما لم تحدد هذا الخيار.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "انشر بشكل مجهول",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "رؤية الملف الشخصي",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "هذا الاستطلاع غير مفتوح حاليا للردود. يرجى العودة إلى المشروع لمزيد من المعلومات.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "هذا الاستطلاع غير نشط حاليا.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "العودة إلى المشروع",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "لقد أنجزت بالفعل هذا الاستطلاع.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "تم إرسال الاستطلاع",

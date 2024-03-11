@@ -963,6 +963,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Από προεπιλογή, οι υποβολές σας θα συσχετίζονται με το προφίλ σας, εκτός αν επιλέξετε αυτή την επιλογή.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Δημοσιεύστε ανώνυμα",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Ορατότητα προφίλ",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "Αυτή η έρευνα δεν είναι επί του παρόντος ανοικτή για απαντήσεις. Παρακαλείστε να επιστρέψετε στο έργο για περισσότερες πληροφορίες.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "Αυτή η έρευνα δεν είναι επί του παρόντος ενεργή.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Επιστροφή στο έργο",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Έχετε ήδη ολοκληρώσει αυτή την έρευνα.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Υποβληθείσα έρευνα",

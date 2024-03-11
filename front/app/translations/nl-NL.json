@@ -963,6 +963,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Je inzendingen worden standaard aan je profiel gekoppeld, tenzij je deze optie selecteert.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Anoniem plaatsen",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Zichtbaarheid van het profiel",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "Deze vragenlijst is momenteel niet open voor reacties. Ga terug naar het project voor meer informatie.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "Deze vragenlijst is momenteel niet actief.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Terug naar project",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Je hebt deze vragenlijst al ingevuld.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Vragenlijst ingediend",

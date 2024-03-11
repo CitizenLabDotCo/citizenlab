@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 import {
   ProjectId,
-  Dates,
+  DatesStrings,
   Resolution,
 } from 'components/admin/GraphCards/typings';
 import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
@@ -21,21 +22,16 @@ import messages from '../messages';
 import Chart from './Chart';
 import useVisitors from './useVisitors';
 
-type Props = ProjectId & Dates & Resolution;
+type Props = ProjectId & DatesStrings & Resolution;
 
 // Report specific version of <VisitorsCard/>
-const VisitorsCard = ({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-  resolution,
-}: Props) => {
+const VisitorsCard = ({ projectId, startAt, endAt, resolution }: Props) => {
   const { formatMessage } = useIntl();
 
   const { currentResolution, stats, timeSeries } = useVisitors({
     projectId,
-    startAtMoment,
-    endAtMoment,
+    startAt,
+    endAt,
     resolution,
   });
 
@@ -88,8 +84,8 @@ const VisitorsCard = ({
           >
             <Chart
               timeSeries={timeSeries}
-              startAtMoment={startAtMoment}
-              endAtMoment={endAtMoment}
+              startAtMoment={moment(startAt)}
+              endAtMoment={moment(endAt)}
               resolution={currentResolution}
               layout={layout}
             />

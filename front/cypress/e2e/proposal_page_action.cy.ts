@@ -19,6 +19,8 @@ describe('Initiative show page actions', () => {
           cy.get('#e2e-initiative-show');
           cy.acceptCookies();
 
+          cy.get('#e2e-proposal-vote-button').should('exist');
+          cy.wait(2000);
           cy.get('#e2e-proposal-vote-button').click();
           cy.get('#e2e-authentication-modal').should('exist');
 
