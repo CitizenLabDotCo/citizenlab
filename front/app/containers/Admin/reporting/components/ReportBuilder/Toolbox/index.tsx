@@ -27,7 +27,6 @@ import {
 } from 'utils/cl-intl';
 import { isModerator } from 'utils/permissions/roles';
 
-import reportBuilderMessages from '../../../messages';
 import { WIDGET_TITLES } from '../Widgets';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
