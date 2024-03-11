@@ -966,6 +966,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Por padrão, seus envios serão associados ao seu perfil, a menos que você selecione esta opção.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Publicar anonimamente",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Visibilidade do perfil",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "Esta pesquisa não está aberta para respostas no momento. Volte ao projeto para obter mais informações.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "Essa pesquisa não está ativa no momento.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Retornar ao projeto",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Você já concluiu esta pesquisa.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Pesquisa enviada",
