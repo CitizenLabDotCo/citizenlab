@@ -74,7 +74,7 @@ module Analysis
           raise
         end
 
-        # Sleep between 20 and 60 seconds
+        # Retry after waiting between 20 and 60 seconds
         sleep_time = rand(20..60)
         sleep(sleep_time)
         chat_with_retry(retries: retries - 1, **params)

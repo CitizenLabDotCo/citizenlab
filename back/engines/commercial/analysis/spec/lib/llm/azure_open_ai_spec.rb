@@ -18,7 +18,7 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
     before { allow(service).to receive(:sleep) } # Don't sleep while testing
 
     it 'reports error when response is 429 and retries = 0' do
-      allow(service.instance_variable_get('@client')).to(
+      allow(service.instance_variable_get(:@client)).to(
         receive(:chat).and_raise(Faraday::ServerError.new(status: 429))
       )
       expect { service.chat('fake prompt', retries: 0) }.to raise_error(Faraday::ServerError)
@@ -27,7 +27,7 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
 
     it 'retries when response is 429 and retries > 0' do
       allow(service).to receive(:chat_with_retry).with(retries: 3, parameters: anything).and_call_original
-      allow(service.instance_variable_get('@client')).to(
+      allow(service.instance_variable_get(:@client)).to(
         receive(:chat).and_raise(Faraday::ServerError.new(status: 429))
       )
       fake_response = { 'choices' => [{ 'message' => { 'content' => 'fake response' } }] }
@@ -38,7 +38,7 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
     end
 
     it 'reports error when response is not 429 and retries > 0' do
-      allow(service.instance_variable_get('@client')).to(
+      allow(service.instance_variable_get(:@client)).to(
         receive(:chat).and_raise(Faraday::ServerError.new(status: 400))
       )
       expect { service.chat('fake prompt', retries: 3) }.to raise_error(Faraday::ServerError)
@@ -47,7 +47,7 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
 
     it 'returns when response is ok and retries > 0' do
       fake_response = { 'choices' => [{ 'message' => { 'content' => 'fake response' } }] }
-      allow(service.instance_variable_get('@client')).to(
+      allow(service.instance_variable_get(:@client)).to(
         receive(:chat).and_return(fake_response)
       )
       expect(service.chat('fake prompt', retries: 3)).to eq 'fake response'
