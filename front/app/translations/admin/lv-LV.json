@@ -1997,7 +1997,6 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Automātiskā marķēšana",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Automātiskos marķējumus automātiski nosaka dators. Tos jebkurā laikā varat mainīt vai dzēst.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Automātiskā marķēšana",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Izvēlieties maksimāli 9 tagus, starp kuriem vēlaties sadalīt ievades. Ievadi, kas jau ir saistīti ar šiem tagiem, netiks atkārtoti klasificēti.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "Klasifikācija ir balstīta tikai uz birkas nosaukumu. Lai iegūtu labākos rezultātus, izvēlieties atbilstošus atslēgvārdus.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Tags: Pēc etiķetes",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Jūs izveidojat tagus un, piemēram, manuāli piešķirat dažus ievades datus, pārējos datus piešķir dators.",

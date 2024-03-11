@@ -1997,7 +1997,6 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Etiqueta automática",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Las etiquetas automáticas son derivadas automáticamente por el ordenador. Puedes cambiarlas o eliminarlas en todo momento.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Etiqueta automática",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Selecciona un máximo de 9 etiquetas entre las que quieras que se distribuyan las entradas. Las entradas ya asociadas a estas etiquetas no se clasificarán de nuevo.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "La clasificación se basa únicamente en el nombre de la etiqueta. Elige palabras clave relevantes para obtener los mejores resultados.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Etiquetas: Por etiqueta",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Tú creas las etiquetas y asignas manualmente algunas entradas a modo de ejemplo, el ordenador asigna el resto",

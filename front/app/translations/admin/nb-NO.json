@@ -1997,7 +1997,6 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Automatisk merking",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Auto-tags utledes automatisk av datamaskinen. Du kan endre eller fjerne dem til enhver tid.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Automatisk merking",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Velg maksimalt 9 tagger du vil at inngangene skal fordeles mellom. Inndata som allerede er knyttet til disse taggene vil ikke bli klassifisert igjen.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "Klassifiseringen er utelukkende basert på navnet på merkelappen. Velg relevante søkeord for de beste resultatene.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Tags: Etter etikett",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Du lager taggene og tildeler manuelt noen få innganger som eksempel, datamaskinen tildeler resten",

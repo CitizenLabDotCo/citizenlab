@@ -200,10 +200,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle',
     defaultMessage: 'Tags: By label',
   },
-  byLabelSubtitle1: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1',
+  byLabelSubtitle: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle',
     defaultMessage:
-      'Select maximum 9 tags you would like the inputs to be distributed between. Inputs already associated with these tags will not be classified again.',
+      'Select the tags you would like the inputs to be distributed between. Inputs already associated with these tags will not be classified again.',
   },
   byLabelSubtitle2: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2',
