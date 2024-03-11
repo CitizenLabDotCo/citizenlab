@@ -85,7 +85,7 @@ const PageControlButtons = ({
               <Button
                 onClick={handleNextAndSubmit}
                 data-cy={dataCyValue}
-                icon={showSubmit ? undefined : 'chevron-right'}
+                icon={showSubmit ? 'send' : 'chevron-right'}
                 iconPos="right"
                 key={currentStep.toString()}
                 bgColor={
