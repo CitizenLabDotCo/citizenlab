@@ -2026,7 +2026,7 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Αυτόματη ετικέτα",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Οι αυτόματες ετικέτες προκύπτουν αυτόματα από τον υπολογιστή. Μπορείτε να τις αλλάξετε ή να τις αφαιρέσετε ανά πάσα στιγμή.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Αυτόματη ετικέτα",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Επιλέξτε το πολύ 9 ετικέτες μεταξύ των οποίων θέλετε να κατανεμηθούν οι είσοδοι. Οι είσοδοι που έχουν ήδη συσχετιστεί με αυτές τις ετικέτες δεν θα ταξινομηθούν ξανά.",
+  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle": "Οι είσοδοι που έχουν ήδη συσχετιστεί με αυτές τις ετικέτες δεν θα ταξινομηθούν ξανά.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "Η ταξινόμηση βασίζεται αποκλειστικά στο όνομα της ετικέτας. Επιλέξτε σχετικές λέξεις-κλειδιά για τα καλύτερα αποτελέσματα.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Ετικέτες: Με ετικέτα",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Εσείς δημιουργείτε τις ετικέτες και αναθέτετε χειροκίνητα μερικές εισόδους ως παράδειγμα, ο υπολογιστής αναθέτει τα υπόλοιπα.",
