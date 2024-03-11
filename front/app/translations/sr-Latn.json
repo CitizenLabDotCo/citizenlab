@@ -1038,6 +1038,7 @@
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "Dodajte novu ideju | {projectName}",
   "app.containers.IdeasNewPage.issueFormTitle": "Dodajte novi problem",
   "app.containers.IdeasNewPage.issueMetaTitle": "Dodajte novi problem | {projectName}",
+  "app.containers.IdeasNewPage.leaveSurvey": "Leave survey",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Da li ste sigurni da želite da napustite ovu anketu?",
   "app.containers.IdeasNewPage.leaveSurveyText": "Vaši odgovori neće biti sačuvani.",
   "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Your draft answers have been saved privately and you can return to complete this survey later.",
