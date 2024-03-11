@@ -171,7 +171,8 @@ RSpec.describe SurveyResultsGeneratorService do
         text_field.key => 'Red',
         multiselect_field.key => %w[cat dog],
         select_field.key => 'ny',
-        file_upload_field.key => { 'id' => idea_file.id, 'name' => idea_file.name }
+        file_upload_field.key => { 'id' => idea_file.id, 'name' => idea_file.name },
+        linear_scale_field.key => 3
       },
       idea_files: [idea_file],
       author: female_user
@@ -183,7 +184,8 @@ RSpec.describe SurveyResultsGeneratorService do
       custom_field_values: {
         text_field.key => 'Blue',
         multiselect_field.key => %w[cow pig cat],
-        select_field.key => 'la'
+        select_field.key => 'la',
+        linear_scale_field.key => 4
       },
       author: male_user
     )
@@ -553,15 +555,15 @@ RSpec.describe SurveyResultsGeneratorService do
           required: true,
           grouped: false,
           totalResponseCount: 22,
-          questionResponseCount: 15,
+          questionResponseCount: 17,
           totalPickCount: 22,
           answers: [
             { answer: 5, count: 1 },
-            { answer: 4, count: 0 },
-            { answer: 3, count: 7 },
+            { answer: 4, count: 1 },
+            { answer: 3, count: 8 },
             { answer: 2, count: 5 },
             { answer: 1, count: 2 },
-            { answer: nil, count: 7 }
+            { answer: nil, count: 5 }
           ],
           multilocs: {
             answers: {
@@ -620,15 +622,15 @@ RSpec.describe SurveyResultsGeneratorService do
               { count: 0, group: 'other' },
               { count: 1, group: nil }
             ] },
-            { answer: 4, count: 0, groups: [
-              { count: 0, group: 'la' },
+            { answer: 4, count: 1, groups: [
+              { count: 1, group: 'la' },
               { count: 0, group: 'ny' },
               { count: 0, group: 'other' },
               { count: 0, group: nil }
             ] },
-            { answer: 3, count: 7, groups: [
+            { answer: 3, count: 8, groups: [
               { count: 0, group: 'la' },
-              { count: 0, group: 'ny' },
+              { count: 1, group: 'ny' },
               { count: 0, group: 'other' },
               { count: 7, group: nil }
             ] },
@@ -644,9 +646,9 @@ RSpec.describe SurveyResultsGeneratorService do
               { count: 0, group: 'other' },
               { count: 2, group: nil }
             ] },
-            { answer: nil, count: 7, groups: [
-              { count: 2, group: 'la' },
-              { count: 1, group: 'ny' },
+            { answer: nil, count: 5, groups: [
+              { count: 1, group: 'la' },
+              { count: 0, group: 'ny' },
               { count: 3, group: 'other' },
               { count: 1, group: nil }
             ] }
@@ -809,11 +811,11 @@ RSpec.describe SurveyResultsGeneratorService do
               count: 2,
               groups: [
                 { count: 0, group: 5 },
-                { count: 0, group: 4 },
+                { count: 1, group: 4 },
                 { count: 0, group: 3 },
                 { count: 0, group: 2 },
                 { count: 0, group: 1 },
-                { count: 2, group: nil }
+                { count: 1, group: nil }
               ]
             },
             { 
@@ -822,10 +824,10 @@ RSpec.describe SurveyResultsGeneratorService do
               groups: [
                 { count: 0, group: 5 },
                 { count: 0, group: 4 },
-                { count: 0, group: 3 },
+                { count: 1, group: 3 },
                 { count: 0, group: 2 },
                 { count: 0, group: 1 },
-                { count: 1, group: nil }
+                { count: 0, group: nil }
               ]
             },
             {
