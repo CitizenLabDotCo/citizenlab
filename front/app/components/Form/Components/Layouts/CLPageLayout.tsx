@@ -29,7 +29,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-import messages from '../../messages';
 import {
   extractElementsByOtherOptionLogic,
   isVisible,

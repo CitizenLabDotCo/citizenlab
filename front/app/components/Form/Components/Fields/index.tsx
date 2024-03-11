@@ -13,7 +13,7 @@ import { CLErrors, Locale } from 'typings';
 
 import { parseRequiredMultilocsSchema } from 'components/Form/parseRequiredMultilocs';
 
-import { useIntl, MessageDescriptor } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 
 import { APIErrorsContext, FormContext } from '../../contexts';

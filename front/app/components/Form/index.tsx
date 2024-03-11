@@ -19,7 +19,7 @@ import { CLErrors, Locale } from 'typings';
 import useLocale from 'hooks/useLocale';
 import useObserveEvent from 'hooks/useObserveEvent';
 
-import { useIntl, MessageDescriptor } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import ButtonBar from './Components/ButtonBar';
