@@ -60,6 +60,10 @@ parameters:
     type: boolean
     default: false
 
+  chromatic:
+    type: boolean
+    default: false
+
 executors:
   cl2-back:
     parameters:
@@ -667,6 +671,30 @@ jobs:
       - store_artifacts:
           path: /tmp/report.html
           destination: lighthouse
+
+  front-chromatic:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: medium
+    working_directory: ~/citizenlab/front
+    steps:
+      # Non-shallow clone (required for chromatic)
+      - run: mkdir -p ~/.ssh
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run: |
+          cd ~
+          rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
+          git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL"
+
+      - restore_cache:
+          keys:
+            - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - <<: *install-front-dependencies
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run: npm run chromatic
 
   # E2E TESTS
   e2e-tests:
@@ -1293,3 +1321,25 @@ workflows:
             - "Canada"
             - "US West"
       #     - "UK"
+
+  manual-chromatic:
+    when: << pipeline.parameters.chromatic >>
+    jobs:
+      - front-chromatic:
+          context:
+            - docker-hub-access
+            - chromatic
+
+  weekly-chromatic:
+    triggers:
+      - schedule:
+          cron: 0 5 * * 1 # Every Monday at 5am: https://crontab.guru/
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - front-chromatic:
+          context:
+            - docker-hub-access
+            - chromatic

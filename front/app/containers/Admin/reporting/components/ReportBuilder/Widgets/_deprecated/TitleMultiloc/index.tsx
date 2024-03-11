@@ -7,7 +7,7 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
-import messages from 'containers/Admin/reporting/components/ReportBuilder/Widgets/TitleMultiloc/messages';
+import messages from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_deprecated/TitleMultiloc/messages';
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
@@ -26,6 +26,9 @@ export interface Props {
   text?: Multiloc;
 }
 
+/**
+ * @deprecated
+ */
 const Title = ({ text }: Props) => {
   const px = useReportDefaultPadding();
   const localize = useLocalize();
