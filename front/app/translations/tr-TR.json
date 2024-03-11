@@ -1038,6 +1038,7 @@
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "Yeni fikir ekleyin | {projectName}",
   "app.containers.IdeasNewPage.issueFormTitle": "Yeni yorum ekleyin",
   "app.containers.IdeasNewPage.issueMetaTitle": "Yeni yorum ekleyin | {projectName}",
+  "app.containers.IdeasNewPage.leaveSurvey": "Anketten ayrılın",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Bu anketten ayrılmak istediğinizden emin misiniz?",
   "app.containers.IdeasNewPage.leaveSurveyText": "Cevaplarınız kaydedilmeyecek.",
   "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Taslak cevaplarınız özel olarak kaydedilmiştir ve bu anketi tamamlamak için daha sonra geri dönebilirsiniz.",
