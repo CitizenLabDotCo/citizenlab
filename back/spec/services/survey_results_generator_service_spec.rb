@@ -198,7 +198,7 @@ RSpec.describe SurveyResultsGeneratorService do
         multiselect_field.key => %w[cat dog],
         select_field.key => 'other',
         "#{select_field.key}_other" => 'Austin',
-        multiselect_image_field.key => ['house'],
+        multiselect_image_field.key => ['house']
       },
       author: female_user
     )
@@ -460,7 +460,7 @@ RSpec.describe SurveyResultsGeneratorService do
                 groups: [
                   { count: 1, group: 'la' },
                   { count: 1, group: 'ny' },
-                  { count: 2, group: 'other' },
+                  { count: 2, group: 'other' }
                 ]
               }, {
                 answer: 'dog',
@@ -474,13 +474,13 @@ RSpec.describe SurveyResultsGeneratorService do
                 count: 2,
                 groups: [
                   { count: 1, group: 'la' },
-                  { count: 1, group: 'other' },
+                  { count: 1, group: 'other' }
                 ]
               }, {
                 answer: 'pig',
                 count: 1,
                 groups: [
-                  { count: 1, group: 'la' },
+                  { count: 1, group: 'la' }
                 ]
               }, {
                 answer: 'no_response',
@@ -692,7 +692,7 @@ RSpec.describe SurveyResultsGeneratorService do
                 count: 2,
                 groups: [
                   { count: 1, group: 'male' },
-                  { count: 1, group: 'female' },
+                  { count: 1, group: 'female' }
                 ]
               }, {
                 answer: 'ny',
@@ -760,7 +760,7 @@ RSpec.describe SurveyResultsGeneratorService do
                 { count: 1, group: nil }
               ]
             },
-            { 
+            {
               answer: 'ny',
               count: 1,
               groups: [
