@@ -226,9 +226,9 @@ ach:
       title: 'crwdns1929020:0crwdne1929020:0'
       option1: 'crwdns1929022:0crwdne1929022:0'
       option2: 'crwdns1929024:0crwdne1929024:0'
-    survey_end_page:
-      title: 'crwdns1929026:0crwdne1929026:0'
-      description: "crwdns1929028:0crwdne1929028:0"
+    form_end_page:
+      title: 'crwdns1930334:0crwdne1930334:0'
+      description: 'crwdns1930336:0crwdne1930336:0'
     pdf_export:
       personal_data: 'crwdns1929030:0crwdne1929030:0'
       personal_data_explanation_ideation: "crwdns1929032:0%{organizationName}crwdnd1929032:0%{organizationName}crwdne1929032:0"
