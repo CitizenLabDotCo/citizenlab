@@ -198,7 +198,7 @@ RSpec.describe SurveyResultsGeneratorService do
         multiselect_field.key => %w[cat dog],
         select_field.key => 'other',
         "#{select_field.key}_other" => 'Austin',
-        multiselect_image_field.key => ['house']
+        multiselect_image_field.key => ['house'],
       },
       author: female_user
     )
@@ -221,6 +221,7 @@ RSpec.describe SurveyResultsGeneratorService do
       phases: phases_of_inputs,
       custom_field_values: {
         select_field.key => 'la',
+        multiselect_field.key => ['gibberish'], # This should be ignored in the results
         multiselect_image_field.key => ['school']
       },
       author: female_user
