@@ -10,6 +10,8 @@ import {
 import { createPortal } from 'react-dom';
 import { useTheme } from 'styled-components';
 
+import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
+
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import messages from '../../messages';
@@ -56,11 +58,18 @@ const PageControlButtons = ({
             maxWidth="700px"
             width="100%"
             display="flex"
-            justifyContent="flex-end"
+            justifyContent="space-between"
+            alignItems="center"
             bgColor={colors.white}
             borderTop={`1px solid ${colors.borderLight}`}
             padding={isSmallerThanPhone ? '16px' : '16px 24px'}
           >
+            <LanguageSelector
+              top="-200px"
+              mobileRight="auto"
+              mobileLeft="auto"
+              right="auto"
+            />
             <Box display="flex" justifyContent="center" alignItems="center">
               {hasPreviousPage && (
                 <Button
