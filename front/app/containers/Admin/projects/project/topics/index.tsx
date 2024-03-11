@@ -7,15 +7,20 @@ import {
   SectionDescription,
   StyledLink,
 } from 'components/admin/Section';
-import HasPermission from 'components/HasPermission';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { usePermission } from 'utils/permissions';
 
 import messages from './messages';
 import ProjectTopicSelector from './ProjectTopicSelector';
 import SortableProjectTopicList from './SortableProjectTopicList';
 
 const ProjectAllowedInputTopics = memo(() => {
+  const canAccessPlatformTopicsSettingsRoute = usePermission({
+    item: { type: 'route', path: '/admin/settings/topics' },
+    action: 'access',
+  });
+
   return (
     <Box minHeight="80vh" mb="40px">
       <SectionTitle>
@@ -23,11 +28,8 @@ const ProjectAllowedInputTopics = memo(() => {
       </SectionTitle>
       <SectionDescription>
         <FormattedMessage {...messages.projectTopicsDescription} />
-        <span>
-          <HasPermission
-            item={{ type: 'route', path: '/admin/settings/topics' }}
-            action="access"
-          >
+        {canAccessPlatformTopicsSettingsRoute && (
+          <span>
             &nbsp;
             <FormattedMessage
               {...messages.topicManagerInfo}
@@ -39,8 +41,8 @@ const ProjectAllowedInputTopics = memo(() => {
                 ),
               }}
             />
-          </HasPermission>
-        </span>
+          </span>
+        )}
       </SectionDescription>
       <ProjectTopicSelector />
       <SortableProjectTopicList />
