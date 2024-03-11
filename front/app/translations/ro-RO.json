@@ -448,7 +448,6 @@
   "app.components.form.ErrorDisplay.guidelinesLinkText": "orientările noastre",
   "app.components.form.ErrorDisplay.next": "Următorul",
   "app.components.form.ErrorDisplay.previous": "Anterior",
-  "app.components.form.ErrorDisplay.submitSurvey": "Trimiteți sondajul",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Începeți să tastați pentru a căuta după adresa de e-mail sau numele utilizatorului...",
   "app.components.form.blockedVerified": "Nu puteți edita acest câmp deoarece conține informații verificate.",
   "app.components.form.controls.adminFieldTooltip": "Câmp vizibil doar pentru administratori",

@@ -611,7 +611,6 @@
   "app.components.form.ErrorDisplay.next": "Seuraava",
   "app.components.form.ErrorDisplay.previous": "Edellinen",
   "app.components.form.ErrorDisplay.save": "Tallentaa",
-  "app.components.form.ErrorDisplay.submitSurvey": "Lähetä kysely",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Aloita kirjoittaminen etsiäksesi käyttäjän sähköpostiosoitteen tai nimen perusteella...",
   "app.components.form.anonymousSurveyMessage": "Kaikki tämän kyselyn vastaukset ovat anonyymejä",
   "app.components.form.blockedVerified": "Et voi muokata tätä kenttää, koska se sisältää vahvistettuja tietoja",
