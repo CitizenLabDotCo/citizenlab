@@ -2026,7 +2026,7 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Auto-tag",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Auto-Tags ginn automatesch vum Computer ofgeleet. Dir kënnt se zu all Moment änneren oder ewechhuelen.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Auto-tag",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Wielt maximal 9 Tags, déi Dir wëllt datt d'Inputen verdeelt sinn. Input scho mat dësen Tags assoziéiert ginn net erëm klasséiert.",
+  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle": "Input scho mat dësen Tags assoziéiert ginn net erëm klasséiert.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "D'Klassifikatioun baséiert eleng op den Numm vum Tag. Wielt relevant Schlësselwieder fir déi bescht Resultater.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Tags: vum Label",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Dir erstellt d'Tags a gitt manuell e puer Inputen als Beispill zou, de Computer gëtt de Rescht zou",
