@@ -73,7 +73,6 @@ const CLPageLayout = memo(
     const theme = useTheme();
     const formState = useJsonForms();
     const isSmallerThanPhone = useBreakpoint('phone');
-    const submitText = messages.submit;
     const showSubmit = currentStep === uiPages.length - 1;
     const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
@@ -278,7 +277,6 @@ const CLPageLayout = memo(
             isLoading={isLoading}
             showSubmit={showSubmit}
             dataCyValue={dataCyValue}
-            submitText={submitText}
           />
         </Box>
       </>

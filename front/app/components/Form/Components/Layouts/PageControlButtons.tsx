@@ -12,7 +12,7 @@ import { useTheme } from 'styled-components';
 
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
@@ -24,7 +24,6 @@ interface Props {
   isLoading: boolean;
   showSubmit: boolean;
   dataCyValue: string;
-  submitText: MessageDescriptor;
 }
 
 const PageControlButtons = ({
@@ -35,7 +34,6 @@ const PageControlButtons = ({
   isLoading,
   showSubmit,
   dataCyValue,
-  submitText,
 }: Props) => {
   const modalPortalElement = document.getElementById('modal-portal');
   const theme = useTheme();
@@ -97,7 +95,7 @@ const PageControlButtons = ({
                 processing={isLoading}
               >
                 <FormattedMessage
-                  {...(showSubmit ? submitText : messages.next)}
+                  {...(showSubmit ? messages.submit : messages.next)}
                 />
               </Button>
             </Box>
