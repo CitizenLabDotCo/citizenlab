@@ -21,8 +21,8 @@ const MostReactedIdeasWidget = ({
 }: Props) => {
   const response = useMostReactedIdeas(
     {
-      phaseId,
-      numberOfIdeas,
+      phase_id: phaseId,
+      number_of_ideas: numberOfIdeas,
     },
     {
       enabled: !!phaseId,

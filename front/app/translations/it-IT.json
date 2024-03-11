@@ -963,6 +963,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Per impostazione predefinita i tuoi invii saranno associati al tuo profilo, a meno che tu non selezioni questa opzione.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Pubblica in forma anonima",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Visibilità del profilo",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "Questo sondaggio non è attualmente aperto alle risposte. Ti invitiamo a tornare al progetto per maggiori informazioni.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "Questo sondaggio non è attualmente attivo.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Torna al progetto",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Hai già completato questo sondaggio.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Sondaggio inviato",

@@ -33,7 +33,7 @@ const EmptyState = ({ projectId, phaseId }: Props) => {
           </Text>
         </li>
       </ul>
-      <Text color="textSecondary">{formatMessage(messages.thisWillBe)}</Text>
+      <Text color="textSecondary">{formatMessage(messages.afterCreating)}</Text>
       <Box w="100%" mt="32px" display="flex">
         <Button
           id="e2e-create-report-button"

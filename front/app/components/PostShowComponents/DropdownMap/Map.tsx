@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 
 import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
@@ -9,10 +9,7 @@ import useMapConfig from 'api/map_config/useMapConfig';
 import useLocalize from 'hooks/useLocalize';
 
 import EsriMap from 'components/EsriMap';
-import {
-  createEsriGeoJsonLayers,
-  getMapPinSymbol,
-} from 'components/EsriMap/utils';
+import { getMapPinSymbol, parseLayers } from 'components/EsriMap/utils';
 
 export interface Props {
   position: GeoJSON.Point;
@@ -26,10 +23,10 @@ const MapComponent = memo<Props>(({ position, projectId }) => {
   const center = position.coordinates;
 
   // Load layers from project
-  const layers = createEsriGeoJsonLayers(
-    mapConfig?.data?.attributes?.layers || [],
-    localize
-  );
+  // Create Esri layers to add to map
+  const layers = useMemo(() => {
+    return parseLayers(mapConfig, localize);
+  }, [mapConfig, localize]);
 
   // Create point graphic for idea location
   const pointGraphic = new Graphic({

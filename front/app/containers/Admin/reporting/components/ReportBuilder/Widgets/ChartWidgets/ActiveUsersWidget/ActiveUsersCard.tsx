@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 import {
   ProjectId,
-  Dates,
+  DatesStrings,
   Resolution,
 } from 'components/admin/GraphCards/typings';
 import Statistic from 'components/admin/Graphs/Statistic';
@@ -19,20 +20,15 @@ import messages from '../messages';
 import Chart from './Chart';
 import useActiveUsers from './useActiveUsers';
 
-type Props = ProjectId & Dates & Resolution;
+type Props = ProjectId & DatesStrings & Resolution;
 
-const ActiveUsers = ({
-  projectId,
-  startAtMoment,
-  endAtMoment,
-  resolution,
-}: Props) => {
+const ActiveUsers = ({ projectId, startAt, endAt, resolution }: Props) => {
   const { formatMessage } = useIntl();
 
   const { currentResolution, stats, timeSeries } = useActiveUsers({
     projectId,
-    startAtMoment,
-    endAtMoment,
+    startAt,
+    endAt,
     resolution,
   });
 
@@ -67,8 +63,8 @@ const ActiveUsers = ({
           <Box pt="8px" width="100%" maxWidth="800px">
             <Chart
               timeSeries={timeSeries}
-              startAtMoment={startAtMoment}
-              endAtMoment={endAtMoment}
+              startAtMoment={moment(startAt)}
+              endAtMoment={moment(endAt)}
               resolution={currentResolution}
               layout={layout}
             />

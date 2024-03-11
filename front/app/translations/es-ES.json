@@ -963,6 +963,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Por defecto, tus aportes se asociarán a tu perfil, a menos que selecciones esta opción.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Publicar anónimamente",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Visibilidad del perfil",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "Esta encuesta no está actualmente abierta a respuestas. Por favor, vuelve al proyecto para obtener más información.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "Esta encuesta no está activa actualmente.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Volver al proyecto",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Ya has completado esta encuesta.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Encuesta enviada",

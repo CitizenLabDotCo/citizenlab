@@ -5,6 +5,7 @@ import { useReactionsByTimeLive } from 'api/graph_data_units';
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
 import { useIntl } from 'utils/cl-intl';
+import { momentToIsoDate } from 'utils/dateUtils';
 
 import { parseTimeSeries, parseExcelData } from './parse';
 import { getTranslations } from './translations';
@@ -21,9 +22,9 @@ export default function useReactionsByTime({
 
   const { data: analytics } = useReactionsByTimeLive(
     {
-      projectId,
-      startAtMoment,
-      endAtMoment,
+      project_id: projectId,
+      start_at: momentToIsoDate(startAtMoment),
+      end_at: momentToIsoDate(endAtMoment),
       resolution,
     },
     {

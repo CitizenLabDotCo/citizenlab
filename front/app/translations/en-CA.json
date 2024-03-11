@@ -963,6 +963,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "By default your submissions will be associated with your profile, unless you select this option.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Post anonymously",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Profile visibility",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "This survey is not currently open for responses. Please return to the project for more information.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "This survey is not currently active.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Return to project",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "You have already completed this survey.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Survey submitted",

@@ -84,10 +84,13 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   const [ideaId, setIdeaId] = useState<string | undefined>();
 
   const [initialFormData, setInitialFormData] = useState({});
-  const participationContext = getCurrentPhase(phases?.data);
   const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
   const allowAnonymousPosting =
-    participationContext?.attributes.allow_anonymous_participation;
+    phaseFromUrl?.data.attributes.allow_anonymous_participation;
+
+  const userIsModerator =
+    !isNilOrError(authUser) &&
+    canModerateProject(project.data.id, { data: authUser.data });
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
@@ -159,7 +162,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     const requestBody = {
       ...data,
       project_id: project.data.id,
-      // phase_ids: [phaseId], // TODO: JS - should only be added if moderator
+      ...(userIsModerator ? { phase_ids: [phaseId] } : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
       publication_status: data.publication_status || 'published',
     };
 
@@ -210,10 +213,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   };
 
-  const canUserEditProject =
-    !isNilOrError(authUser) &&
-    canModerateProject(project.data.id, { data: authUser.data });
-
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
       {!loadingDraftIdea && schema && uiSchema && participationMethodConfig ? (
@@ -254,7 +253,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
                         <></>
                       )
                     }
-                    canUserEditProject={canUserEditProject}
+                    canUserEditProject={userIsModerator}
                     loggedIn={!isNilOrError(authUser)}
                   />
                   {allowAnonymousPosting && (

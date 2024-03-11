@@ -963,6 +963,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "De manera predeterminada, els vostres enviaments s'associaran al vostre perfil, tret que seleccioneu aquesta opció.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Publica de manera anònima",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Visibilitat del perfil",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "Aquesta enquesta no està oberta a respostes actualment. Si us plau, torneu al projecte per obtenir més informació.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "Aquesta enquesta no està activa actualment.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Tornar al projecte",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Ja heu completat aquesta enquesta.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Enquesta enviada",
