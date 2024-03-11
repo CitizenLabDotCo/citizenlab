@@ -1997,7 +1997,6 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Auto-tag",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Auto-tags udledes automatisk af computeren. Du kan til enhver tid ændre eller fjerne dem.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Auto-tag",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Vælg maksimalt 9 tags, som du vil have inputtene fordelt på. Inputs, der allerede er forbundet med disse tags, vil ikke blive klassificeret igen.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "Klassificeringen er udelukkende baseret på navnet på tagget. Vælg relevante søgeord for at få de bedste resultater.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Tags: Efter mærke",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Du opretter tags og tildeler manuelt nogle få inputs som et eksempel, computeren tildeler resten",
