@@ -1038,7 +1038,7 @@
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "Nieuw idee toevoegen | {projectName}",
   "app.containers.IdeasNewPage.issueFormTitle": "{tenantName, select, gent {Nieuw verhaal toevoegen} other {Nieuw reactie toevoegen}} ",
   "app.containers.IdeasNewPage.issueMetaTitle": "{tenantName, select, gent {Nieuw verhaal toevoegen | {projectName}} other {Nieuwe reactie toevoegen | {projectName}}} ",
-  "app.containers.IdeasNewPage.leaveSurvey": "Verlof enquête",
+  "app.containers.IdeasNewPage.leaveSurvey": "Verlaat vragenlijst",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Weet je zeker dat je deze enquête wilt verlaten?",
   "app.containers.IdeasNewPage.leaveSurveyText": "Je antwoorden worden niet opgeslagen.",
   "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Je antwoorden zijn als privé concept opgeslagen en je kunt later terugkomen om deze vragenlijst af te ronden.",
