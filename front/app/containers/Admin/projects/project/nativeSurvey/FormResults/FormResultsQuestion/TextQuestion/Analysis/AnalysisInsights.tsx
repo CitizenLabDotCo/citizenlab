@@ -88,66 +88,66 @@ const Summary = ({
     missingInputsCount === 0 ||
     (largeSummariesEnabled && filteredInputCount > 30);
 
-  if (!summary) {
-    return <Spinner />;
-  }
-
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-between"
-      h="460px"
-      gap="16px"
-    >
-      <Box overflowY="auto" h="100%">
-        <SummaryHeader />
-        <InsightBody
-          text={summary}
+    <>
+      {!summary && <Spinner />}
+
+      <Box
+        flexDirection="column"
+        justifyContent="space-between"
+        h="460px"
+        gap="16px"
+        display={!summary ? 'none' : 'flex'}
+      >
+        <Box overflowY="auto" h="100%">
+          <SummaryHeader />
+          <InsightBody
+            text={summary || ''}
+            filters={filters}
+            analysisId={analysisId}
+            projectId={projectId}
+            phaseId={phaseId}
+            generatedAt={generatedAt}
+            backgroundTaskId={data?.data.relationships.background_task.data.id}
+          />
+        </Box>
+
+        <InsightFooter
           filters={filters}
+          generatedAt={generatedAt}
           analysisId={analysisId}
           projectId={projectId}
           phaseId={phaseId}
-          generatedAt={generatedAt}
-          backgroundTaskId={data?.data.relationships.background_task.data.id}
+          customFieldIds={data?.data.attributes.custom_field_ids}
         />
-      </Box>
 
-      <InsightFooter
-        filters={filters}
-        generatedAt={generatedAt}
-        analysisId={analysisId}
-        projectId={projectId}
-        phaseId={phaseId}
-        customFieldIds={data?.data.attributes.custom_field_ids}
-      />
-
-      <Box display="flex" gap="16px">
-        <Button
-          disabled={refreshDisabled}
-          buttonStyle="secondary-outlined"
-          icon="refresh"
-          onClick={() => {
-            regenerateSummary({ analysisId, summaryId });
-          }}
-          processing={isLoadingRegenerateSummary}
-        >
-          <FormattedMessage
-            {...messages.refresh}
-            values={{ count: missingInputsCount }}
-          />
-        </Button>
-        <Button
-          buttonStyle="secondary"
-          icon="eye"
-          linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
-            { ...convertFilterValuesToString(filters), phase_id: phaseId }
-          )}`}
-        >
-          {formatMessage(messages.explore)}
-        </Button>
+        <Box display="flex" gap="16px">
+          <Button
+            disabled={refreshDisabled}
+            buttonStyle="secondary-outlined"
+            icon="refresh"
+            onClick={() => {
+              regenerateSummary({ analysisId, summaryId });
+            }}
+            processing={isLoadingRegenerateSummary}
+          >
+            <FormattedMessage
+              {...messages.refresh}
+              values={{ count: missingInputsCount }}
+            />
+          </Button>
+          <Button
+            buttonStyle="secondary"
+            icon="eye"
+            linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
+              { ...convertFilterValuesToString(filters), phase_id: phaseId }
+            )}`}
+          >
+            {formatMessage(messages.explore)}
+          </Button>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
