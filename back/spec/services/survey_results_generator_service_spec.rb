@@ -826,6 +826,43 @@ RSpec.describe SurveyResultsGeneratorService do
       it 'returns the results for a multi-select image field' do
         expect(generated_results[:results][5]).to match expected_result_multiselect_image
       end
+
+      context 'with grouping' do
+        it 'groups multiselect image by survey question' do
+          result = generator.generate_results(
+            field_id: multiselect_image_field.id,
+            group_mode: 'survey_question',
+            group_field_id: select_field.id
+          )
+
+          expect(result[:answers]).to match [
+            {
+              answer: nil,
+              count: 19,
+              groups: [
+                { count: 1, group: 'la' },
+                { count: 1, group: 'ny' },
+                { count: 1, group: 'other' },
+                { count: 16, group: nil }
+              ]
+            },
+            {
+              answer: 'house',
+              count: 2,
+              groups: [
+                { count: 2, group: 'other' }
+              ]
+            },
+            {
+              answer: 'school',
+              count: 1,
+              groups: [
+                { count: 1, group: 'la' }
+              ]
+            }
+          ]
+        end
+      end
     end
 
     describe 'file upload fields' do
