@@ -5,7 +5,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUser } from 'api/users/types';
 
-import { isNilOrError } from 'utils/helperUtils';
 export interface IRouteItem {
   type: 'route';
   path: string;
@@ -74,12 +73,9 @@ const usePermission = ({
 
   const resourceType = isResource(item) ? item.type : item;
   const rule = getPermissionRule(resourceType, action);
-  if (rule) {
-    return (
-      !isNilOrError(user) &&
-      !isNilOrError(appConfig) &&
-      rule(item, user, appConfig?.data, context)
-    );
+
+  if (rule && appConfig) {
+    return rule(item, user || null, appConfig.data, context);
   } else {
     throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;
   }
