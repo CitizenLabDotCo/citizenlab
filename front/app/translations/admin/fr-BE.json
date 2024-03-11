@@ -1263,7 +1263,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltip": "Information de la couche",
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltipTooltip": "Ce texte s'affiche comme bulle d'information lors du survol des éléments de la couche sur la carte",
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Couches",
-  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "Nous prenons actuellement en charge les fichiers GeoJSON ainsi que l'import de couches d'entités et de Web Maps depuis ArcGIS Online. Consultez l'{supportArticle} pour obtenir des conseils sur l'ajout, la conversion et la stylisation des couches cartographiques.",
+  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "Nous supportons actuellement les fichiers GeoJSON. Lisez cet {supportArticle} pour obtenir des conseils sur la manière de convertir et de paramétrer des couches cartographiques.",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Longitude par défaut",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Centralisation et niveau de zoom par défaut de la carte",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "La centralisation et le niveau de zoom par défaut de la carte. Ajustez manuellement les valeurs ci-dessous, ou cliquez sur le bouton {button} dans le coin supérieur gauche de la carte pour enregistrer la centralisation et le niveau de zoom actuels de la carte comme valeurs par défaut.",
