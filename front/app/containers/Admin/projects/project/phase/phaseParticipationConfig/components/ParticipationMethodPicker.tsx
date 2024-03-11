@@ -22,8 +22,6 @@ import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { isNilOrError } from 'utils/helperUtils';
 
 import { ApiErrors } from '..';
 import messages from '../../../messages';
@@ -88,17 +86,6 @@ const ParticipationMethodPicker = ({
     name: 'phase_reports',
   });
 
-  const chooseParticipationMethod = () => {
-    if (!isNilOrError(phase) && phase.data) {
-      return phase.data.attributes.participation_method;
-    }
-    // Before a new phase is saved, use ideation as a default
-    // fallback config to control the radio behaviour.
-    return 'ideation';
-  };
-
-  const config = getMethodConfig(chooseParticipationMethod());
-
   const changeMethod = (newMethod?: ParticipationMethod) => {
     const method = newMethod || methodToChangeTo;
 
@@ -130,204 +117,190 @@ const ParticipationMethodPicker = ({
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.participationMethodTitleText} />
-          {!config.isMethodLocked && (
-            <IconTooltip
-              content={
-                <FormattedMessage {...messages.participationMethodTooltip} />
-              }
-            />
-          )}
+          <IconTooltip
+            content={
+              <FormattedMessage {...messages.participationMethodTooltip} />
+            }
+          />
         </SubSectionTitle>
-        {!config.isMethodLocked ? (
-          <>
-            <Box
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(3, 1fr)',
-                gap: '16px',
-              }}
-            >
-              <ParticipationMethodChoice
-                key="ideation"
-                title={formatMessage(messages2.ideationTitle)}
-                subtitle={formatMessage(messages2.ideationDescription)}
-                onClick={(event) => handleMethodSelect(event, 'ideation')}
-                image={ideationImage}
-                selected={selectedMethod === 'ideation'}
-              />
+        <>
+          <Box
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '16px',
+            }}
+          >
+            <ParticipationMethodChoice
+              key="ideation"
+              title={formatMessage(messages2.ideationTitle)}
+              subtitle={formatMessage(messages2.ideationDescription)}
+              onClick={(event) => handleMethodSelect(event, 'ideation')}
+              image={ideationImage}
+              selected={selectedMethod === 'ideation'}
+            />
 
-              <ParticipationMethodChoice
-                key="survey"
-                title={formatMessage(messages2.surveyTitle)}
-                subtitle={formatMessage(messages2.surveyDescription)}
-                onClick={(event) => handleMethodSelect(event, 'native_survey')}
-                image={surveyImage}
-                selected={showSurveyOptions}
-              />
+            <ParticipationMethodChoice
+              key="survey"
+              title={formatMessage(messages2.surveyTitle)}
+              subtitle={formatMessage(messages2.surveyDescription)}
+              onClick={(event) => handleMethodSelect(event, 'native_survey')}
+              image={surveyImage}
+              selected={showSurveyOptions}
+            />
 
-              <ParticipationMethodChoice
-                key="voting"
-                title={formatMessage(messages2.votingTitle)}
-                subtitle={formatMessage(messages2.votingDescription1)}
-                onClick={(event) => handleMethodSelect(event, 'voting')}
-                image={votingImage}
-                selected={selectedMethod === 'voting'}
-              />
+            <ParticipationMethodChoice
+              key="voting"
+              title={formatMessage(messages2.votingTitle)}
+              subtitle={formatMessage(messages2.votingDescription1)}
+              onClick={(event) => handleMethodSelect(event, 'voting')}
+              image={votingImage}
+              selected={selectedMethod === 'voting'}
+            />
 
-              <ParticipationMethodChoice
-                key="information"
-                title={formatMessage(messages2.informationTitle)}
-                subtitle={formatMessage(
-                  phaseReportsEnabled
-                    ? messages2.reportingDescription
-                    : messages.shareInformationDescription
-                )}
-                onClick={(event) => handleMethodSelect(event, 'information')}
-                image={informationImage}
-                selected={selectedMethod === 'information'}
-              />
+            <ParticipationMethodChoice
+              key="information"
+              title={formatMessage(messages2.informationTitle)}
+              subtitle={formatMessage(
+                phaseReportsEnabled
+                  ? messages2.reportingDescription
+                  : messages.shareInformationDescription
+              )}
+              onClick={(event) => handleMethodSelect(event, 'information')}
+              image={informationImage}
+              selected={selectedMethod === 'information'}
+            />
 
-              {volunteeringEnabled && (
+            {volunteeringEnabled && (
+              <ParticipationMethodChoice
+                key="volunteering"
+                title={formatMessage(messages2.volunteeringTitle)}
+                subtitle={formatMessage(messages2.volunteeringDescription)}
+                onClick={(event) => handleMethodSelect(event, 'volunteering')}
+                image={volunteeringImage}
+                selected={selectedMethod === 'volunteering'}
+              />
+            )}
+
+            {documentAnnotationAllowed && (
+              <Box position="relative">
                 <ParticipationMethodChoice
-                  key="volunteering"
-                  title={formatMessage(messages2.volunteeringTitle)}
-                  subtitle={formatMessage(messages2.volunteeringDescription)}
-                  onClick={(event) => handleMethodSelect(event, 'volunteering')}
-                  image={volunteeringImage}
-                  selected={selectedMethod === 'volunteering'}
+                  key="document"
+                  title={formatMessage(messages2.documentTitle)}
+                  subtitle={formatMessage(messages2.documentDescription)}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    if (documentAnnotationEnabled) {
+                      handleMethodSelect(event, 'document_annotation');
+                    }
+                  }}
+                  image={documentImage}
+                  selected={selectedMethod === 'document_annotation'}
                 />
-              )}
-
-              {documentAnnotationAllowed && (
-                <Box position="relative">
-                  <ParticipationMethodChoice
-                    key="document"
-                    title={formatMessage(messages2.documentTitle)}
-                    subtitle={formatMessage(messages2.documentDescription)}
-                    onClick={(event) => {
-                      event.preventDefault();
-                      if (documentAnnotationEnabled) {
-                        handleMethodSelect(event, 'document_annotation');
-                      }
-                    }}
-                    image={documentImage}
-                    selected={selectedMethod === 'document_annotation'}
-                  />
-                  {/* Don't show tooltip and locked badge if the feature is enabled */}
-                  {!documentAnnotationEnabled && (
-                    <Box
-                      style={{ transform: 'translateX(-50%)' }}
-                      position="absolute"
-                      top="20%"
-                      left="50%"
+                {/* Don't show tooltip and locked badge if the feature is enabled */}
+                {!documentAnnotationEnabled && (
+                  <Box
+                    style={{ transform: 'translateX(-50%)' }}
+                    position="absolute"
+                    top="20%"
+                    left="50%"
+                  >
+                    <Tippy
+                      maxWidth="250px"
+                      placement="bottom"
+                      content={formatMessage(
+                        messages.contactGovSuccessToAccess
+                      )}
+                      hideOnClick={false}
                     >
-                      <Tippy
-                        maxWidth="250px"
-                        placement="bottom"
-                        content={formatMessage(
-                          messages.contactGovSuccessToAccess
-                        )}
-                        hideOnClick={false}
-                      >
-                        <Badge color={colors.coolGrey600} className="inverse">
-                          <Box
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            gap="6px"
-                          >
-                            <Icon name="lock" fill="white" width="13px" />
-                            {formatMessage(messages2.addOn)}
-                          </Box>
-                        </Badge>
-                      </Tippy>
-                    </Box>
-                  )}
-                </Box>
-              )}
-
-              {showSurveyOptions && (
-                <>
-                  <Box style={{ gridColumn: '1 / span 3' }}>
-                    <SubSectionTitle>
-                      {formatMessage(messages2.surveyOptions)}
-                    </SubSectionTitle>
+                      <Badge color={colors.coolGrey600} className="inverse">
+                        <Box
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          gap="6px"
+                        >
+                          <Icon name="lock" fill="white" width="13px" />
+                          {formatMessage(messages2.addOn)}
+                        </Box>
+                      </Badge>
+                    </Tippy>
                   </Box>
+                )}
+              </Box>
+            )}
 
-                  {nativeSurveysEnabled && (
-                    <ParticipationMethodChoice
-                      onClick={(event) =>
-                        handleMethodSelect(event, 'native_survey')
-                      }
-                      title={formatMessage(messages2.survey)}
-                      selected={selectedMethod === 'native_survey'}
-                    >
-                      <>
-                        <LeftAlignedList>
-                          <li>
-                            <FormattedMessage
-                              {...messages2.aiPoweredInsights}
-                            />
-                          </li>
-                          <li>
-                            <FormattedMessage
-                              {...messages2.manyQuestionTypes}
-                            />
-                          </li>
-                          <li>
-                            <FormattedMessage {...messages2.logic} />
-                          </li>
-                          <li>
-                            <FormattedMessage
-                              {...messages2.linkWithReportBuilder}
-                            />
-                          </li>
-                        </LeftAlignedList>
-                      </>
-                    </ParticipationMethodChoice>
-                  )}
+            {showSurveyOptions && (
+              <>
+                <Box style={{ gridColumn: '1 / span 3' }}>
+                  <SubSectionTitle>
+                    {formatMessage(messages2.surveyOptions)}
+                  </SubSectionTitle>
+                </Box>
 
-                  {pollsEnabled && (
-                    <ParticipationMethodChoice
-                      onClick={(event) => handleMethodSelect(event, 'poll')}
-                      title={formatMessage(messages2.quickPoll)}
-                      selected={selectedMethod === 'poll'}
-                    >
-                      <>{formatMessage(messages2.quickPollDescription)}</>
-                    </ParticipationMethodChoice>
-                  )}
+                {nativeSurveysEnabled && (
+                  <ParticipationMethodChoice
+                    onClick={(event) =>
+                      handleMethodSelect(event, 'native_survey')
+                    }
+                    title={formatMessage(messages2.survey)}
+                    selected={selectedMethod === 'native_survey'}
+                  >
+                    <>
+                      <LeftAlignedList>
+                        <li>
+                          <FormattedMessage {...messages2.aiPoweredInsights} />
+                        </li>
+                        <li>
+                          <FormattedMessage {...messages2.manyQuestionTypes} />
+                        </li>
+                        <li>
+                          <FormattedMessage {...messages2.logic} />
+                        </li>
+                        <li>
+                          <FormattedMessage
+                            {...messages2.linkWithReportBuilder}
+                          />
+                        </li>
+                      </LeftAlignedList>
+                    </>
+                  </ParticipationMethodChoice>
+                )}
 
-                  {showSurveys && (
-                    <ParticipationMethodChoice
-                      onClick={(event) => handleMethodSelect(event, 'survey')}
-                      title={formatMessage(messages2.externalSurvey)}
-                      selected={selectedMethod === 'survey'}
-                    >
-                      <>
-                        <FormattedMessage {...messages2.embedSurvey} />
-                        <LeftAlignedList>
-                          <li>
-                            <FormattedMessage {...messages2.lacksAIText} />
-                          </li>
-                          <li>
-                            <FormattedMessage
-                              {...messages2.lacksReportingText}
-                            />
-                          </li>
-                        </LeftAlignedList>
-                      </>
-                    </ParticipationMethodChoice>
-                  )}
-                </>
-              )}
-            </Box>
-            <Error apiErrors={apiErrors && apiErrors.participation_method} />
-          </>
-        ) : (
-          <Text margin="0" color="teal700">
-            {config.getMethodPickerMessage()}
-          </Text>
-        )}
+                {pollsEnabled && (
+                  <ParticipationMethodChoice
+                    onClick={(event) => handleMethodSelect(event, 'poll')}
+                    title={formatMessage(messages2.quickPoll)}
+                    selected={selectedMethod === 'poll'}
+                  >
+                    <>{formatMessage(messages2.quickPollDescription)}</>
+                  </ParticipationMethodChoice>
+                )}
+
+                {showSurveys && (
+                  <ParticipationMethodChoice
+                    onClick={(event) => handleMethodSelect(event, 'survey')}
+                    title={formatMessage(messages2.externalSurvey)}
+                    selected={selectedMethod === 'survey'}
+                  >
+                    <>
+                      <FormattedMessage {...messages2.embedSurvey} />
+                      <LeftAlignedList>
+                        <li>
+                          <FormattedMessage {...messages2.lacksAIText} />
+                        </li>
+                        <li>
+                          <FormattedMessage {...messages2.lacksReportingText} />
+                        </li>
+                      </LeftAlignedList>
+                    </>
+                  </ParticipationMethodChoice>
+                )}
+              </>
+            )}
+          </Box>
+          <Error apiErrors={apiErrors && apiErrors.participation_method} />
+        </>
       </SectionField>
       <Modal opened={showChangeMethodModal} close={closeModal}>
         <Box display="flex" flexDirection="column" width="100%" p="20px">
