@@ -1269,7 +1269,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltip": "Opis sloja",
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltipTooltip": "Ovaj tekst se prikazuje kao savet pri prelasku kursorom preko sloja na mapi",
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Slojevi mape",
-  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "We currently support GeoJSON files and importing Feature Layers and Web Maps from ArcGIS Online. Read the {supportArticle} for tips on how to add, convert and style map layers.",
+  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "Trenutno podržavamo GeoJSON datoteke. Pročitajte {supportArticle} za savete o tome kako da konvertujete i stilizujete slojeve mape.",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Podrazumevana geografska dužina",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Podrazumevani centar mape i zumiranje",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip2": "The default center point and zoom level of the map. Manually adjust the values below, or click on the {button} button in the bottom left corner of the map to save the current center point and zoom level of the map as the default values.",
