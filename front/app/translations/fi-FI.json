@@ -1038,6 +1038,7 @@
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "Lisää uusi idea | {projectName}",
   "app.containers.IdeasNewPage.issueFormTitle": "Lisää uusi kommentti",
   "app.containers.IdeasNewPage.issueMetaTitle": "Lisää uusi kommentti | {projectName}",
+  "app.containers.IdeasNewPage.leaveSurvey": "Jätä kysely",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Haluatko varmasti poistua tästä kyselystä?",
   "app.containers.IdeasNewPage.leaveSurveyText": "Vastauksiasi ei tallenneta.",
   "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Vastausluonnos on tallennettu yksityisesti, ja voit palata vastaamaan tähän kyselyyn myöhemmin.",
