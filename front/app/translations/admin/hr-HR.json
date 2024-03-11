@@ -2026,7 +2026,7 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Automatsko označavanje",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Računalo automatski izvodi automatske oznake. Možete ih promijeniti ili ukloniti u svakom trenutku.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Automatsko označavanje",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Odaberite maksimalno 9 oznaka između kojih želite da se raspodijele unosi. Unosi koji su već povezani s ovim oznakama neće se ponovno klasificirati.",
+  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle": "Unosi koji su već povezani s ovim oznakama neće se ponovno klasificirati.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "Klasifikacija se temelji isključivo na nazivu oznake. Odaberite relevantne ključne riječi za najbolje rezultate.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Oznake: Po etiketi",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Vi kreirate oznake i ručno dodijelite nekoliko ulaza kao primjer, računalo dodjeljuje ostatak",
