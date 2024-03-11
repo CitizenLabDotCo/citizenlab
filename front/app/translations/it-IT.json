@@ -1038,6 +1038,7 @@
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "Aggiungi una nuova idea | {projectName}",
   "app.containers.IdeasNewPage.issueFormTitle": "Aggiungere un nuovo numero",
   "app.containers.IdeasNewPage.issueMetaTitle": "Aggiungi un nuovo numero | {projectName}",
+  "app.containers.IdeasNewPage.leaveSurvey": "Sondaggio sul congedo",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Abbandonare questo sondaggio?",
   "app.containers.IdeasNewPage.leaveSurveyText": "Le tue risposte non verranno salvate.",
   "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Le tue risposte in bozza sono state salvate privatamente e potrai tornare a completare il sondaggio in un secondo momento.",
