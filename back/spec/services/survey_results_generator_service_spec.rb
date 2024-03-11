@@ -783,6 +783,65 @@ RSpec.describe SurveyResultsGeneratorService do
         #     group_field: food_survey_question.id
         #   )).to match {}
         # end
+
+        it 'groups by linear scale' do
+          result = generator.generate_results(
+            field_id: select_field.id,
+            group_mode: 'survey_question',
+            group_field_id: linear_scale_field.id
+          )
+
+          expect(result[:answers]).to match [
+            {
+              answer: nil,
+              count: 16,
+              groups: [
+                { count: 1, group: 5 },
+                { count: 0, group: 4 },
+                { count: 7, group: 3 },
+                { count: 5, group: 2 },
+                { count: 2, group: 1 },
+                { count: 1, group: nil }
+              ]
+            },
+            {
+              answer: 'la',
+              count: 2,
+              groups: [
+                { count: 0, group: 5 },
+                { count: 0, group: 4 },
+                { count: 0, group: 3 },
+                { count: 0, group: 2 },
+                { count: 0, group: 1 },
+                { count: 2, group: nil }
+              ]
+            },
+            { 
+              answer: 'ny',
+              count: 1,
+              groups: [
+                { count: 0, group: 5 },
+                { count: 0, group: 4 },
+                { count: 0, group: 3 },
+                { count: 0, group: 2 },
+                { count: 0, group: 1 },
+                { count: 1, group: nil }
+              ]
+            },
+            {
+              answer: 'other',
+              count: 3,
+              groups: [
+                { count: 0, group: 5 },
+                { count: 0, group: 4 },
+                { count: 0, group: 3 },
+                { count: 0, group: 2 },
+                { count: 0, group: 1 },
+                { count: 3, group: nil }
+              ]
+            }
+          ]
+        end
       end
     end
 

@@ -120,7 +120,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
         # Single form field grouped result
         group_field = find_question(group_field_id)
       end
-      raise "Unsupported group field type: #{group_field.input_type}" unless group_field.input_type == 'select'
+      raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale].include?(group_field.input_type)
 
       query = query.select(
         select_field_query(field, as: 'answer'),
