@@ -966,6 +966,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Par défaut, vos soumissions seront associées à votre profil, sauf si vous sélectionnez cette option.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Publier anonymement",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Visibilité du profil",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "Cette enquête n'est actuellement pas ouverte aux réponses. Veuillez vous référer au projet pour davantage d'informations.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "Cette enquête n'est pas actuellement active.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Retour au projet",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Vous avez déjà répondu à cette enquête.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Enquête soumise",
