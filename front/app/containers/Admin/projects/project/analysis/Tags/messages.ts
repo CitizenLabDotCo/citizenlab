@@ -203,7 +203,7 @@ export default defineMessages({
   byLabelSubtitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle',
     defaultMessage:
-      'Inputs already associated with these tags will not be classified again.',
+      'Select the tags you would like the inputs to be distributed between. Inputs already associated with these tags will not be classified again.',
   },
   byLabelSubtitle2: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2',

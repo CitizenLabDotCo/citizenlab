@@ -13,6 +13,7 @@ PATH
   remote: engines/commercial/analysis
   specs:
     analysis (0.1.0)
+      concurrent-ruby (~> 1.2.3)
       nlpcloud (~> 1.0)
       rails (~> 7.0)
       ruby-openai (~> 6.3)
@@ -1233,7 +1234,6 @@ DEPENDENCIES
   carrierwave-base64 (~> 2.10)
   cloudfront-rails (~> 0.4)
   combine_pdf
-  concurrent-ruby (~> 1.2.3)
   content_builder!
   counter_culture (~> 3.3)
   custom_idea_statuses!
