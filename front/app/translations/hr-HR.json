@@ -1038,6 +1038,7 @@
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "Dodaj novu ideju | {projectName}",
   "app.containers.IdeasNewPage.issueFormTitle": "Dodaj novi komentar",
   "app.containers.IdeasNewPage.issueMetaTitle": "Dodaj novi komentar | {projectName}",
+  "app.containers.IdeasNewPage.leaveSurvey": "Napusti anketu",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Jeste li sigurni da želite napustiti ovaj upitnik?",
   "app.containers.IdeasNewPage.leaveSurveyText": "Vaši odgovori neće biti spremljeni.",
   "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Vaši nacrti odgovora su privatno spremljeni i možete se vratiti da biste ispunili ovu anketu kasnije.",
