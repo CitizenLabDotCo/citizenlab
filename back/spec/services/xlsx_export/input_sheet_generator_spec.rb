@@ -390,7 +390,7 @@ describe XlsxExport::InputSheetGenerator do
               column_headers: [
                 'ID',
                 'What are your favourite pets?',
-                'Type your answer',
+                "Since you picked 'other', what are you thinking of?",
                 'Submitted at',
                 'Project'
               ],
