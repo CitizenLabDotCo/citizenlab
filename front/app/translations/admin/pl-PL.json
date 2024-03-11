@@ -2026,7 +2026,7 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Automatyczne oznaczanie",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Tagi automatyczne są automatycznie tworzone przez komputer. Możesz je zmienić lub usunąć w dowolnym momencie.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Automatyczne oznaczanie",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Wybierz maksymalnie 9 tagów, według których mają być rozdzielane wejścia. Wejścia już powiązane z tymi tagami nie zostaną ponownie sklasyfikowane.",
+  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle": "Wejścia już powiązane z tymi tagami nie będą ponownie klasyfikowane.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "Klasyfikacja opiera się wyłącznie na nazwie tagu. Wybierz odpowiednie słowa kluczowe, aby uzyskać najlepsze wyniki.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Tagi: Według etykiety",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Tworzysz tagi i ręcznie przypisujesz kilka wejść jako przykład, komputer przypisuje resztę",
