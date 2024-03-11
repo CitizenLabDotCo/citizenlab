@@ -613,7 +613,7 @@ RSpec.describe SurveyResultsGeneratorService do
         end
       end
 
-      describe 'with grouping' do
+      context 'with grouping' do
         let(:grouped_linear_scale_answers) do
           [
             { answer: 5, count: 1, groups: [

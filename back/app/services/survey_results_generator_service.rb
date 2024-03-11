@@ -245,9 +245,9 @@ class SurveyResultsGeneratorService < FieldVisitorService
       answers_row = {
         answer: answer,
         count: grouped_answer[:count],
-        groups: group_field_keys.map do |group|
-          grouped_answer[:groups][group] || { group: group, count: 0 }
-        end
+        groups: group_field_keys
+          .filter { |group| grouped_answer[:groups][group] }
+          .map { |group| grouped_answer[:groups][group] }
       }
 
       answers_row
