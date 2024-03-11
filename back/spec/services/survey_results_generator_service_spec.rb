@@ -610,6 +610,58 @@ RSpec.describe SurveyResultsGeneratorService do
           expect(generator.generate_results(field_id: linear_scale_field.id)).to match expected_result_linear_scale_without_min_and_max_labels
         end
       end
+
+      describe 'with grouping' do
+        let(:grouped_linear_scale_answers) do
+          [
+            { answer: 5, count: 1, groups: [
+              { count: 0, group: 'la' },
+              { count: 0, group: 'ny' },
+              { count: 0, group: 'other' },
+              { count: 1, group: nil }
+            ] },
+            { answer: 4, count: 0, groups: [
+              { count: 0, group: 'la' },
+              { count: 0, group: 'ny' },
+              { count: 0, group: 'other' },
+              { count: 0, group: nil }
+            ] },
+            { answer: 3, count: 7, groups: [
+              { count: 0, group: 'la' },
+              { count: 0, group: 'ny' },
+              { count: 0, group: 'other' },
+              { count: 7, group: nil }
+            ] },
+            { answer: 2, count: 5, groups: [
+              { count: 0, group: 'la' },
+              { count: 0, group: 'ny' },
+              { count: 0, group: 'other' },
+              { count: 5, group: nil }
+            ] },
+            { answer: 1, count: 2, groups: [
+              { count: 0, group: 'la' },
+              { count: 0, group: 'ny' },
+              { count: 0, group: 'other' },
+              { count: 2, group: nil }
+            ] },
+            { answer: nil, count: 7, groups: [
+              { count: 2, group: 'la' },
+              { count: 1, group: 'ny' },
+              { count: 3, group: 'other' },
+              { count: 1, group: nil }
+            ] }
+          ]
+        end
+
+        it 'returns a grouped result for a linear scale field' do
+          result = generator.generate_results(
+            field_id: linear_scale_field.id,
+            group_mode: 'survey_question',
+            group_field_id: select_field.id
+          )
+          expect(result[:answers]).to match grouped_linear_scale_answers
+        end
+      end
     end
 
     describe 'select field' do
