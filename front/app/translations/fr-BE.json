@@ -1038,6 +1038,7 @@
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "Ajoutez une nouvelle idée | {projectName}",
   "app.containers.IdeasNewPage.issueFormTitle": "Ajoutez un nouveau problème",
   "app.containers.IdeasNewPage.issueMetaTitle": "Ajoutez un nouveau problème | {projectName}",
+  "app.containers.IdeasNewPage.leaveSurvey": "Enquête sur les congés",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Êtes-vous sûr de vouloir quitter cette enquête ?",
   "app.containers.IdeasNewPage.leaveSurveyText": "Vos réponses ne seront pas enregistrées.",
   "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Vos réponses ont été enregistrées en tant que brouillon. Vous pouvez revenir plus tard pour terminer cette enquête.",
