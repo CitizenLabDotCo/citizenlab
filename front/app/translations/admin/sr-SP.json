@@ -2026,7 +2026,7 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Ауто-таг",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Рачунар аутоматски изводи аутоматске ознаке. Можете их променити или уклонити у сваком тренутку.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Ауто-таг",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Изаберите највише 9 ознака између којих желите да се подаци расподељују. Уноси који су већ повезани са овим ознакама неће бити поново класификовани.",
+  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle": "Inputs already associated with these tags will not be classified again.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "Класификација се заснива искључиво на називу ознаке. Изаберите релевантне кључне речи за најбоље резултате.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Тагови: По етикети",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Ви креирате ознаке и ручно доделите неколико улаза као пример, рачунар додељује остале",
