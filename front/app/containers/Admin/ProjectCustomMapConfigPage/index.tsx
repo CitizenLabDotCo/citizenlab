@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -14,15 +14,17 @@ import Centerer from 'components/UI/Centerer';
 import IdeationConfigurationMap from '../../../components/IdeationConfigurationMap/IdeationConfigurationMap';
 import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
 
-import MapConfigOverview from './MapConfigOverview';
+import FeatureLayerUpload from './DataImportOptions/FeatureLayerUpload';
+import WebMapUpload from './DataImportOptions/WebMapUpload';
+import MapConfigOverview from './MapConfiguration/MapConfigOverview';
 
 const Container = styled.div`
   display: flex;
 `;
 
 const StyledMapConfigOverview = styled(MapConfigOverview)`
-  flex: 0 0 400px;
-  width: 400px;
+  flex: 0 0 520px;
+  width: 520px;
 `;
 
 const MapWrapper = styled.div`
@@ -31,6 +33,8 @@ const MapWrapper = styled.div`
   position: relative;
   height: 700px;
 `;
+
+export type ViewOptions = 'main' | 'featureLayerUpload' | 'webMapUpload';
 
 interface Props {
   className?: string;
@@ -43,6 +47,7 @@ const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
   const { data: appConfig } = useAppConfiguration();
   const { mutate: createProjectMapConfig } = useAddMapConfig();
   const { data: mapConfig, isFetching } = useMapConfig(projectId);
+  const [view, setView] = useState<ViewOptions>('main');
   const [mapView, setMapView] = useState<MapView | null>(null);
 
   const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig?.data);
@@ -82,7 +87,34 @@ const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
   if (projectId && mapConfig?.data?.id) {
     return (
       <Container className={className || ''}>
-        <StyledMapConfigOverview projectId={projectId} mapView={mapView} />
+        {view === 'main' && (
+          <StyledMapConfigOverview
+            projectId={projectId}
+            setView={setView}
+            mapView={mapView}
+          />
+        )}
+
+        {view === 'featureLayerUpload' && (
+          <Box flex="0 0 520px" width="520px">
+            <FeatureLayerUpload
+              projectId={projectId}
+              setView={setView}
+              mapConfigId={mapConfig?.data.id}
+            />
+          </Box>
+        )}
+
+        {view === 'webMapUpload' && (
+          <Box flex="0 0 520px" width="520px">
+            <WebMapUpload
+              projectId={projectId}
+              setView={setView}
+              mapConfigId={mapConfig?.data.id}
+            />
+          </Box>
+        )}
+
         <MapWrapper>
           <IdeationConfigurationMap
             mapConfig={mapConfig}

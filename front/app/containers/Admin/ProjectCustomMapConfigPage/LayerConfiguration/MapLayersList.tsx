@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 
 import {
+  Box,
   Icon,
   IconTooltip,
   colors,
@@ -11,8 +12,11 @@ import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
 import useMapConfig from 'api/map_config/useMapConfig';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 import useDeleteMapLayer from 'api/map_layers/useDeleteMapLayer';
 import useReorderMapLayer from 'api/map_layers/useReorderMapLayer';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import { SubSectionTitle } from 'components/admin/Section';
@@ -21,13 +25,15 @@ import Button from 'components/UI/Button';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
-import { getLayerColor, getLayerIcon } from '../../../utils/mapUtils/map';
+import { ViewOptions } from '..';
+import { getLayerColor, getLayerIcon } from '../../../../utils/mapUtils/map';
+import EsriImportOptions from '../DataImportOptions/EsriImportOptions';
+import GeoJsonImportButton from '../DataImportOptions/GeoJsonImportButton';
+import messages from '../messages';
 
 import addOrderingToLayers, {
   IMapLayerAttributesWithOrdering,
 } from './addOrderingToLayers';
-import GeoJsonImportButton from './GeoJsonImportButton';
-import messages from './messages';
 
 const Container = styled.div``;
 
@@ -79,6 +85,7 @@ interface Props {
   projectId: string;
   onEditLayer: (layerId: string) => void;
   className?: string;
+  setView: (view: ViewOptions) => void;
 }
 
 const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
@@ -87,11 +94,16 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     onEditLayer,
     className,
     intl: { formatMessage },
+    setView,
     localize,
   }) => {
     const { data: mapConfig } = useMapConfig(projectId);
     const { mutate: deleteProjectMapLayer } = useDeleteMapLayer();
     const { mutate: reorderProjectMapLayer } = useReorderMapLayer();
+    const { mutateAsync: updateProjectMapConfig } = useUpdateMapConfig();
+    const isEsriIntegrationEnabled = useFeatureFlag({
+      name: 'esri_integration',
+    });
 
     const handleReorderLayers = (mapLayerId: string, newOrder: number) => {
       reorderProjectMapLayer({ projectId, id: mapLayerId, ordering: newOrder });
@@ -104,6 +116,16 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
 
       if (window.confirm(message)) {
         deleteProjectMapLayer({ projectId, id: layerId });
+      }
+    };
+
+    const removeWebMap = () => {
+      if (mapConfig?.data.id) {
+        updateProjectMapConfig({
+          projectId,
+          id: mapConfig?.data.id,
+          esri_web_map_id: null,
+        });
       }
     };
 
@@ -121,24 +143,25 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     );
 
     const layers = mapConfig?.data.attributes?.layers;
-
     const layersWithOrdering =
       layers && layers.length > 0 ? addOrderingToLayers(layers) : null;
 
     return (
       <Container className={className || ''}>
         <SubSectionTitle>
-          <FormattedMessage {...messages.layers} />
-          <StyledIconTooltip
-            content={
-              <FormattedMessage
-                {...messages.layersTooltip}
-                values={{
-                  supportArticle: supportArticleLink,
-                }}
-              />
-            }
-          />
+          <FormattedMessage {...messages.mapData} />
+          {isEsriIntegrationEnabled && ( // TODO: Remove once Esri integration is released
+            <StyledIconTooltip
+              content={
+                <FormattedMessage
+                  {...messages.layersTooltip}
+                  values={{
+                    supportArticle: supportArticleLink,
+                  }}
+                />
+              }
+            />
+          )}
         </SubSectionTitle>
         {layersWithOrdering && (
           <StyledSortableList
@@ -166,25 +189,40 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                         dropRow={handleDropRow}
                       >
                         <ListItem>
-                          <LayerIcon name={layerIconName} color={layerColor} />
+                          <LayerIcon
+                            name={
+                              mapLayer.type === 'CustomMaps::EsriFeatureLayer'
+                                ? 'timeline'
+                                : layerIconName
+                            }
+                            color={
+                              mapLayer.type === 'CustomMaps::EsriFeatureLayer'
+                                ? colors.coolGrey600
+                                : layerColor
+                            }
+                          />
                           <LayerName>{layerTitle}</LayerName>
                           <Buttons>
-                            <Tippy
-                              placement="bottom"
-                              content={<FormattedMessage {...messages.edit} />}
-                              hideOnClick={false}
-                              arrow={false}
-                            >
-                              <div>
-                                <EditButton
-                                  icon="edit"
-                                  iconSize="16px"
-                                  buttonStyle="text"
-                                  padding="0px"
-                                  onClick={toggleLayerConfig(mapLayer.id)}
-                                />
-                              </div>
-                            </Tippy>
+                            {mapLayer.type === 'CustomMaps::GeojsonLayer' && (
+                              <Tippy
+                                placement="bottom"
+                                content={
+                                  <FormattedMessage {...messages.edit} />
+                                }
+                                hideOnClick={false}
+                                arrow={false}
+                              >
+                                <div>
+                                  <EditButton
+                                    icon="edit"
+                                    iconSize="16px"
+                                    buttonStyle="text"
+                                    padding="0px"
+                                    onClick={toggleLayerConfig(mapLayer.id)}
+                                  />
+                                </div>
+                              </Tippy>
+                            )}
 
                             <Spacer />
 
@@ -216,12 +254,50 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
             )}
           </StyledSortableList>
         )}
+        {mapConfig?.data.attributes.esri_web_map_id && (
+          <Box borderBottom={`1px solid ${colors.divider}`} mb="36px">
+            <Box mb="24px" ml="32px">
+              <ListItem>
+                <LayerIcon name="map" color={colors.coolGrey600} />
+                <LayerName>
+                  {formatMessage(messages.esriWebMap)}:{' '}
+                  {mapConfig?.data.attributes.esri_web_map_id}
+                </LayerName>
+                <Buttons>
+                  <Spacer />
+                  <Tippy
+                    placement="bottom"
+                    content={<FormattedMessage {...messages.remove} />}
+                    hideOnClick={false}
+                    arrow={false}
+                  >
+                    <div>
+                      <RemoveButton
+                        icon="delete"
+                        iconSize="16px"
+                        buttonStyle="text"
+                        padding="0px"
+                        onClick={removeWebMap}
+                      />
+                    </div>
+                  </Tippy>
+                </Buttons>
+              </ListItem>
+            </Box>
+          </Box>
+        )}
 
         {mapConfig?.data?.id && (
-          <GeoJsonImportButton
-            projectId={projectId}
-            mapConfigId={mapConfig.data.id}
-          />
+          <>
+            {isEsriIntegrationEnabled && ( // TODO: Remove hiding of buttons once Esri integration is released + internal training done
+              <EsriImportOptions
+                projectId={projectId}
+                setView={setView}
+                mapConfig={mapConfig}
+              />
+            )}
+            <GeoJsonImportButton projectId={projectId} mapConfig={mapConfig} />
+          </>
         )}
       </Container>
     );
