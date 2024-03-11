@@ -1038,6 +1038,7 @@
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "Tilføy ny ide | {projectName}",
   "app.containers.IdeasNewPage.issueFormTitle": "Tilføy nytt emne",
   "app.containers.IdeasNewPage.issueMetaTitle": "Tilføy nytt emne | {projectName}",
+  "app.containers.IdeasNewPage.leaveSurvey": "Forlat undersøkelsen",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Er du sikker på at du vil forlate denne spørreundersøkelsen?",
   "app.containers.IdeasNewPage.leaveSurveyText": "Svarene dine blir ikke lagret.",
   "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Svarutkastet ditt er lagret privat, og du kan komme tilbake for å fullføre denne undersøkelsen senere.",
