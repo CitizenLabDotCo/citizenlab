@@ -867,7 +867,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 options: {
                   id: 'survey_end',
                   title: 'Thanks for participating',
-                  description: "Please submit your answers by selecting 'Submit' below.
+                  description: "Please submit your answers by selecting 'Submit' below."
                 },
                 elements: []
               }
