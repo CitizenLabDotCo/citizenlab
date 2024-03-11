@@ -27,8 +27,6 @@ import messages from './messages';
 import TippyContent from './TippyContent';
 import tracks from './tracks';
 
-// Hooks
-
 const Container = styled.div``;
 
 const ButtonWrapper = styled.div``;
