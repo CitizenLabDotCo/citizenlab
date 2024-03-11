@@ -147,7 +147,7 @@ fi:
         title: Yksityiskohdat
         description:
       other:
-        title: Kirjoita vastauksesi
+        title: Koska valitsit "muu", mitä ajattelet?
   custom_forms:
     categories:
       main_content:
