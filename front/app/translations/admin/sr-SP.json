@@ -1263,7 +1263,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltip": "Опис слоја",
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltipTooltip": "Овај текст се приказује као алатка када пређете мишем преко карактеристика слоја на мапи",
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Слојеви карте",
-  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "We currently support GeoJSON files and importing Feature Layers and Web Maps from ArcGIS Online. Read the {supportArticle} for tips on how to add, convert and style map layers.",
+  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "Тренутно подржавамо ГеоЈСОН датотеке. Прочитајте {supportArticle} за савете о томе како да конвертујете и стилизујете слојеве карте.",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Подразумевана дужина",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Подразумевани центар мапе и зумирање",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Подразумевана централна тачка и ниво зумирања мапе. Ручно подесите вредности испод или кликните на дугме {button} у горњем десном углу карте да бисте сачували тренутну централну тачку и ниво зумирања мапе као подразумеване вредности.",
