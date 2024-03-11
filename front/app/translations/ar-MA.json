@@ -1038,6 +1038,7 @@
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "أضف فكرة جديدة | {projectName}",
   "app.containers.IdeasNewPage.issueFormTitle": "أضف مشكلة جديدة",
   "app.containers.IdeasNewPage.issueMetaTitle": "أضف مشكلة جديدة | {projectName}",
+  "app.containers.IdeasNewPage.leaveSurvey": "ترك الاستطلاع",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "هل تريد بالتأكيد مغادرة هذا الاستبيان؟",
   "app.containers.IdeasNewPage.leaveSurveyText": "لن يتم حفظ إجاباتك.",
   "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "تم حفظ مسودة إجاباتك بشكل خاص ويمكنك العودة لإكمال هذا الاستطلاع لاحقًا.",
