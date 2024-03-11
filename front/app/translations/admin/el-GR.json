@@ -951,7 +951,6 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Λίστα έργων στην πλατφόρμα",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Πίνακας εργαλείων έργων",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Δημιουργήστε νέα έργα ή διαχειριστείτε υπάρχοντα έργα.",
-  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Εδώ εμφανίζονται τα έργα που διαχειρίζεστε στην πλατφόρμα.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projects",
   "app.containers.AdminPage.ProjectDashboard.published": "Published",
   "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Κλείσιμο του πίνακα ρυθμίσεων",

@@ -1180,7 +1180,6 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Luettelo alustalla olevista projekteista",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Projektien hallintapaneeli",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Luo uusia projekteja tai hallinnoi olemassa olevia projekteja.",
-  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Tässä ovat projektit, joita hallinnoit alustalla.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projektit",
   "app.containers.AdminPage.ProjectDashboard.published": "Julkaistu",
   "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Sulje asetuspaneeli",

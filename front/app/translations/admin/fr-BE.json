@@ -1180,7 +1180,6 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Liste des {tenantName, select, frw {communes} other {projets}} sur la plateforme",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Gestion des {tenantName, select, frw {communes} other {projets}}",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Créez de nouveaux projets ou gérez des projets existants.",
-  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Voici les projets sur la plateforme que vous modérez",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "{tenantName, select, frw {Communes} other {Projets}}",
   "app.containers.AdminPage.ProjectDashboard.published": "Publié",
   "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Fermer le panneau des paramètres",

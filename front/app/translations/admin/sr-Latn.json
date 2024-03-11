@@ -1180,7 +1180,6 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Lista projekata na ovoj platformi",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Komandna tabla sa projektima",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Kreirajte novi projekat ili upravljajte sa postojećim.",
-  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Ovde se nalaze projekti sa vaše platforme.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projekti",
   "app.containers.AdminPage.ProjectDashboard.published": "Objavljeno",
   "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Zatvori tablu sa postavkama",

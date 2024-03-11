@@ -1180,7 +1180,6 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Liste over projekter på platformen",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Dashboard for projekter",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Opret nye projekter eller administrer eksisterende projekter.",
-  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Her er de projekter, du administrerer på platformen.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projekter",
   "app.containers.AdminPage.ProjectDashboard.published": "Offentliggjort",
   "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Luk indstillingspanelet",
