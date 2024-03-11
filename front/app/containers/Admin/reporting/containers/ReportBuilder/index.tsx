@@ -113,6 +113,17 @@ const ReportBuilder = ({
             // areCraftjsObjectsEqual may still return false, because the default text may not have
             // a wrapping <p> tag, which is added as soon as you start typing.
             // But it's good enough for now.
+            // Also, see reactions_by_time_widget.cy.ts#getReportLayout
+            // for the current pitfalls of the `saved` state.
+            //
+            // Ideally, we should detected this `saved` state in only one way.
+            // Either always via areCraftjsObjectsEqual (probably,
+            // storing `currentNodes` state instead or `saved` state)
+            // or always via setSaved(true) (and then without detecting
+            // when nodes were changed and then changed back w/o saving).
+            // Also, we could move the states from ContentBuilderTopBar
+            // here to manage the entire state in one place and get rid of
+            // `setInterval`.
             setSaved(
               areCraftjsObjectsEqual(
                 query.getSerializedNodes(),
