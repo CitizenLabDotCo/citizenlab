@@ -386,10 +386,10 @@ export const createEsriFeatureLayers = (
 
       // Extract number of sublayers if present
       const titleSplit = title.indexOf('(');
-      const subLayerCount = parseInt(
-        title.substring(titleSplit + 1, title.length - 1),
-        10
-      );
+      const subLayerCount =
+        titleSplit >= 0
+          ? parseInt(title.substring(titleSplit + 1, title.length - 1), 10)
+          : 0;
 
       // If we have sublayers, add a feature layer for each
       if (subLayerCount > 1) {
