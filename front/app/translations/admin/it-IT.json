@@ -1244,7 +1244,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltip": "Layer tooltip",
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltipTooltip": "This text is displayed as a tooltip when hovering over the layer features on the map",
   "app.containers.AdminPage.ProjectEdit.MapTab.layers": "Map layers",
-  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "We currently support GeoJSON files. Read the {supportArticle} for tips on how to convert and style map layers.",
+  "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "Attualmente supportiamo i file GeoJSON. Leggi il sito {supportArticle} per avere suggerimenti su come convertire e stilizzare i livelli delle mappe.",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Default longitude",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Map default center and zoom",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "The default center point and zoom level of the map. Manually adjust the values below, or click on the {button} button in the top right corner of the map to save the current center point and zoom level of the map as the default values.",
