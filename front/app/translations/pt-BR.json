@@ -1038,6 +1038,7 @@
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "Adicionar uma nova ideia | {projectName}",
   "app.containers.IdeasNewPage.issueFormTitle": "Adicionar um novo problema",
   "app.containers.IdeasNewPage.issueMetaTitle": "Adicionar um novo problema | {projectName}",
+  "app.containers.IdeasNewPage.leaveSurvey": "Pesquisa de licença",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Tem a certeza de que quer sair desta pesquisa?",
   "app.containers.IdeasNewPage.leaveSurveyText": "As suas respostas não serão salvas.",
   "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Suas respostas de rascunho foram salvas de forma privada e você pode retornar para concluir esta pesquisa mais tarde.",
