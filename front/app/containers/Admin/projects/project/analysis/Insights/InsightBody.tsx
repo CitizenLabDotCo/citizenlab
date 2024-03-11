@@ -33,7 +33,7 @@ const InsightBody = ({
   projectId: string;
   phaseId?: string;
   generatedAt?: string;
-  backgroundTaskId: string;
+  backgroundTaskId?: string;
 }) => {
   const [search] = useSearchParams();
   const { data: task } = useAnalysisBackgroundTask(

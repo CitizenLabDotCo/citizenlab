@@ -35,18 +35,15 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
     setSelectedTagIds((tagIds) => xor(tagIds, [tagId]));
   };
 
-  const listFull = selectedTagIds.length >= 9;
-
   return (
     <Box>
       <Title>{formatMessage(messages.byLabelTitle)}</Title>
-      <Text>{formatMessage(messages.byLabelSubtitle1)}</Text>
+      <Text>{formatMessage(messages.byLabelSubtitle)}</Text>
       <Text>{formatMessage(messages.byLabelSubtitle2)}</Text>
       <Box>
         {customTags?.map((tag) => (
           <Box key={tag.id} display="flex" justifyContent="flex-start" mb="8px">
             <Checkbox
-              disabled={listFull && !selectedTagIds.includes(tag.id)}
               checked={selectedTagIds.includes(tag.id)}
               onChange={() => handleTagSelect(tag.id)}
               label={

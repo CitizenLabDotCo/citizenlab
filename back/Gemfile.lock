@@ -13,6 +13,7 @@ PATH
   remote: engines/commercial/analysis
   specs:
     analysis (0.1.0)
+      concurrent-ruby (~> 1.2.3)
       nlpcloud (~> 1.0)
       rails (~> 7.0)
       ruby-openai (~> 6.3)

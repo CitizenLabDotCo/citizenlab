@@ -19,30 +19,17 @@ module Analysis
       end
 
       def chat(prompt, **params)
-        default_params = {
-          parameters: {
-            model: gpt_model,
-            messages: [{ role: 'user', content: prompt }],
-            temperature: 0.1
-          }
-        }
-        response = @client.chat(**default_params.deep_merge(params))
+        response = @client.chat(**default_prompt_params(prompt).deep_merge(params))
         response.dig('choices', 0, 'message', 'content')
       end
 
       def chat_async(prompt, **params)
-        default_params = {
-          parameters: {
-            model: gpt_model,
-            messages: [{ role: 'user', content: prompt }],
-            temperature: 0.1,
-            stream: proc do |chunk, _bytesize|
-              new_text = chunk.dig('choices', 0, 'delta', 'content')
-              yield new_text
-            end
-          }
-        }
-        @client.chat(**default_params.deep_merge(params))
+        params_with_stream = default_prompt_params(prompt)
+        params_with_stream[:parameters][:stream] = proc do |chunk, _bytesize|
+          new_text = chunk.dig('choices', 0, 'delta', 'content')
+          yield new_text
+        end
+        @client.chat(**params_with_stream.deep_merge(params))
       end
 
       def gpt_model
@@ -61,6 +48,18 @@ module Analysis
       def self.token_count(str)
         enc = Tiktoken.encoding_for_model('gpt-4') # same as gpt-3
         enc.encode(str).size
+      end
+
+      def default_prompt_params(prompt)
+        {
+          parameters: {
+            model: gpt_model,
+            messages: [{ role: 'user', content: prompt }],
+            temperature: 0.2,
+            top_p: 0.5,
+            frequency_penalty: 0.1
+          }
+        }
       end
     end
   end

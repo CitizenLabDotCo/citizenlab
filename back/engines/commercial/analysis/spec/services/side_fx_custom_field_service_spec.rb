@@ -27,6 +27,26 @@ describe SideFxCustomFieldService do
       end
     end
 
+    it 'deletes the analysis with the field as additional field if there are no other fields' do
+      analysis_with_multilple_additional_fields = analysis
+      analysis_with_main_field = create(:analysis, main_custom_field: custom_field2, additional_custom_fields: [custom_field1])
+      analysis_with_one_field = create(:analysis, main_custom_field: nil, additional_custom_fields: [custom_field1])
+
+      service.before_destroy(custom_field1, user)
+
+      expect { Analysis::Analysis.find(analysis_with_multilple_additional_fields.id) }.not_to raise_error(ActiveRecord::RecordNotFound)
+      expect { Analysis::Analysis.find(analysis_with_main_field.id) }.not_to raise_error(ActiveRecord::RecordNotFound)
+      expect { Analysis::Analysis.find(analysis_with_one_field.id) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it 'deletes the insights with the field as main or additional field' do
+      service.before_destroy(custom_field4, user)
+
+      expect { Analysis::Insight.find(insight1.id) }.not_to raise_error(ActiveRecord::RecordNotFound)
+      expect { Analysis::Insight.find(insight2.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Analysis::Insight.find(insight3.id) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
     it 'deletes the custom field reference from the insight filters', document: false do
       service.before_destroy(custom_field1, user)
 
@@ -39,14 +59,6 @@ describe SideFxCustomFieldService do
       service.before_destroy(custom_field2, user)
 
       expect(auto_tagging_task.reload.filters).to eq({})
-    end
-
-    it 'deletes the insights with the field as main or additional field' do
-      service.before_destroy(custom_field4, user)
-
-      expect { Analysis::Insight.find(insight1.id) }.not_to raise_error(ActiveRecord::RecordNotFound)
-      expect { Analysis::Insight.find(insight2.id) }.to raise_error(ActiveRecord::RecordNotFound)
-      expect { Analysis::Insight.find(insight3.id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

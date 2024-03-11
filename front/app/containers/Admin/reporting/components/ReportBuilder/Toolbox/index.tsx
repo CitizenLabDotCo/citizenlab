@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -6,13 +6,17 @@ import {
   Accordion,
   Spinner,
   stylingConsts,
+  Button,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
+import Transition from 'react-transition-group/Transition';
+import { Locale } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjects from 'api/projects/useProjects';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
@@ -31,6 +35,7 @@ import {
 import { isModerator } from 'utils/permissions/roles';
 
 import reportBuilderMessages from '../../../messages';
+import Analysis from '../Analysis';
 import { WIDGET_TITLES } from '../Widgets';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import ActiveUsersWidget from '../Widgets/ChartWidgets/ActiveUsersWidget';
@@ -48,8 +53,11 @@ import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
 import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 
+import messages from './messages';
+
 type ReportBuilderToolboxProps = {
   reportId: string;
+  selectedLocale: Locale;
 };
 
 const SectionTitle = ({ children }) => (
@@ -66,12 +74,18 @@ const SectionTitle = ({ children }) => (
   </Title>
 );
 
-const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
+const ReportBuilderToolbox = ({
+  reportId,
+  selectedLocale,
+}: ReportBuilderToolboxProps) => {
+  const [selectedTab, setSelectedTab] = useState<'widgets' | 'ai'>('widgets');
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const { projectId } = useReportContext();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: authUser } = useAuthUser();
+  const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
+
   const userIsModerator = !!authUser && isModerator(authUser);
 
   const { data: projects } = useProjects(
@@ -116,230 +130,263 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
     projectId ?? (userIsModerator ? projects?.data[0]?.id : undefined);
 
   return (
-    <Container>
-      <Box>
-        <Accordion
-          isOpenByDefault={true}
-          title={
-            <SectionTitle>
-              <FormattedMessage {...contentBuilderMessages.layout} />
-            </SectionTitle>
-          }
-        >
-          <DraggableElement
-            id="e2e-draggable-two-column"
-            component={<TwoColumn columnLayout="1-1" />}
-            icon="layout-2column-1"
-            label={formatMessage(WIDGET_TITLES.TwoColumn)}
-          />
-          <DraggableElement
-            id="e2e-draggable-white-space"
-            component={<WhiteSpace size="small" />}
-            icon="layout-white-space"
-            label={formatMessage(WIDGET_TITLES.WhiteSpace)}
-          />
-        </Accordion>
+    <Transition in={selectedTab === 'ai'} timeout={1000}>
+      <Container
+        w={selectedTab === 'ai' ? '330px' : '220px'}
+        style={{
+          transition: 'all 0.5s ease',
+        }}
+      >
+        {isAnalysisEnabled && (
+          <Box display="flex" alignItems="center" justifyContent="center">
+            <Box flex="1">
+              <Button
+                onClick={() => setSelectedTab('widgets')}
+                buttonStyle={selectedTab === 'widgets' ? 'text' : 'secondary'}
+              >
+                {formatMessage(messages.widgets)}
+              </Button>
+            </Box>
 
-        <Accordion
-          isOpenByDefault={true}
-          title={
-            <SectionTitle>
-              <FormattedMessage {...contentBuilderMessages.content} />
-            </SectionTitle>
-          }
-        >
-          <DraggableElement
-            id="e2e-draggable-about-report"
-            component={
-              <AboutReportWidget
-                reportId={reportId}
-                projectId={selectedProjectId}
-              />
-            }
-            icon="section-image-text"
-            label={formatMessage(WIDGET_TITLES.AboutReportWidget)}
-          />
-          <DraggableElement
-            id="e2e-draggable-text"
-            component={
-              <TextMultiloc text={toMultiloc(WIDGET_TITLES.TextMultiloc)} />
-            }
-            icon="text"
-            label={formatMessage(WIDGET_TITLES.TextMultiloc)}
-          />
-          <DraggableElement
-            id="e2e-draggable-image"
-            component={<ImageMultiloc />}
-            icon="image"
-            label={formatMessage(WIDGET_TITLES.ImageMultiloc)}
-          />
-        </Accordion>
+            <Box flex="1">
+              <Button
+                onClick={() => setSelectedTab('ai')}
+                buttonStyle={selectedTab === 'ai' ? 'text' : 'secondary'}
+                icon="flash"
+              >
+                {formatMessage(messages.ai)}
+              </Button>
+            </Box>
+          </Box>
+        )}
+        <Box p="8px" display={selectedTab === 'ai' ? 'block' : 'none'}>
+          <Analysis selectedLocale={selectedLocale} />
+        </Box>
 
-        <Accordion
-          isOpenByDefault={true}
-          title={
-            <SectionTitle>
-              <FormattedMessage {...reportBuilderMessages.resultsSection} />
-            </SectionTitle>
-          }
-        >
-          {
-            // TODO: CL-2307 Only show this if there are surveys in the platform
-            // TODO: Add in the default project / phase
-          }
-          <DraggableElement
-            id="e2e-draggable-survey-question-result-widget"
-            component={
-              <SurveyQuestionResultWidget projectId={selectedProjectId} />
+        <Box display={selectedTab === 'widgets' ? 'block' : 'none'}>
+          <Accordion
+            isOpenByDefault={true}
+            title={
+              <SectionTitle>
+                <FormattedMessage {...contentBuilderMessages.layout} />
+              </SectionTitle>
             }
-            icon="survey"
-            label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
-          />
-          <DraggableElement
-            id="e2e-draggable-most-reacted-ideas-widget"
-            component={
-              <MostReactedIdeasWidget
-                title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
-                numberOfIdeas={5}
-                collapseLongText={false}
-                projectId={selectedProjectId}
-              />
-            }
-            icon="vote-up"
-            label={formatMessage(WIDGET_TITLES.MostReactedIdeasWidget)}
-          />
-          <DraggableElement
-            id="e2e-single-idea-widget"
-            component={
-              <SingleIdeaWidget
-                collapseLongText={false}
-                showAuthor={true}
-                showContent={true}
-                showReactions={true}
-                showVotes={true}
-                projectId={selectedProjectId}
-              />
-            }
-            icon="idea"
-            label={formatMessage(WIDGET_TITLES.SingleIdeaWidget)}
-          />
-        </Accordion>
+          >
+            <DraggableElement
+              id="e2e-draggable-two-column"
+              component={<TwoColumn columnLayout="1-1" />}
+              icon="layout-2column-1"
+              label={formatMessage(WIDGET_TITLES.TwoColumn)}
+            />
+            <DraggableElement
+              id="e2e-draggable-white-space"
+              component={<WhiteSpace size="small" />}
+              icon="layout-white-space"
+              label={formatMessage(WIDGET_TITLES.WhiteSpace)}
+            />
+          </Accordion>
 
-        <Accordion
-          isOpenByDefault={true}
-          title={
-            <SectionTitle>
-              <FormattedMessage {...reportBuilderMessages.chartsSection} />
-            </SectionTitle>
-          }
-        >
-          <DraggableElement
-            id="e2e-draggable-visitors-timeline-widget"
-            component={
-              <VisitorsWidget
-                title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
-                projectId={selectedProjectId}
-                startAt={undefined}
-                endAt={chartEndDate}
-              />
+          <Accordion
+            isOpenByDefault={true}
+            title={
+              <SectionTitle>
+                <FormattedMessage {...contentBuilderMessages.content} />
+              </SectionTitle>
             }
-            icon="chart-bar"
-            label={formatMessage(WIDGET_TITLES.VisitorsWidget)}
-          />
-          <DraggableElement
-            id="e2e-draggable-visitors-traffic-sources-widget"
-            component={
-              <VisitorsTrafficSourcesWidget
-                title={toMultiloc(WIDGET_TITLES.VisitorsTrafficSourcesWidget)}
-                projectId={selectedProjectId}
-                startAt={undefined}
-                endAt={chartEndDate}
-              />
+          >
+            <DraggableElement
+              id="e2e-draggable-about-report"
+              component={
+                <AboutReportWidget
+                  reportId={reportId}
+                  projectId={selectedProjectId}
+                />
+              }
+              icon="section-image-text"
+              label={formatMessage(WIDGET_TITLES.AboutReportWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-text"
+              component={
+                <TextMultiloc text={toMultiloc(WIDGET_TITLES.TextMultiloc)} />
+              }
+              icon="text"
+              label={formatMessage(WIDGET_TITLES.TextMultiloc)}
+            />
+            <DraggableElement
+              id="e2e-draggable-image"
+              component={<ImageMultiloc />}
+              icon="image"
+              label={formatMessage(WIDGET_TITLES.ImageMultiloc)}
+            />
+          </Accordion>
+
+          <Accordion
+            isOpenByDefault={true}
+            title={
+              <SectionTitle>
+                <FormattedMessage {...reportBuilderMessages.resultsSection} />
+              </SectionTitle>
             }
-            icon="chart-bar"
-            label={formatMessage(WIDGET_TITLES.VisitorsTrafficSourcesWidget)}
-          />
-          <DraggableElement
-            id="e2e-draggable-users-by-gender-widget"
-            component={
-              <GenderWidget
-                title={toMultiloc(WIDGET_TITLES.GenderWidget)}
-                projectId={selectedProjectId}
-                startAt={undefined}
-                endAt={chartEndDate}
-              />
+          >
+            {
+              // TODO: CL-2307 Only show this if there are surveys in the platform
+              // TODO: Add in the default project / phase
             }
-            icon="chart-bar"
-            label={formatMessage(WIDGET_TITLES.GenderWidget)}
-          />
-          <DraggableElement
-            id="e2e-draggable-users-by-age-widget"
-            component={
-              <AgeWidget
-                title={toMultiloc(WIDGET_TITLES.AgeWidget)}
-                projectId={selectedProjectId}
-                startAt={undefined}
-                endAt={chartEndDate}
-              />
+            <DraggableElement
+              id="e2e-draggable-survey-question-result-widget"
+              component={
+                <SurveyQuestionResultWidget projectId={selectedProjectId} />
+              }
+              icon="survey"
+              label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-most-reacted-ideas-widget"
+              component={
+                <MostReactedIdeasWidget
+                  title={toMultiloc(WIDGET_TITLES.MostReactedIdeasWidget)}
+                  numberOfIdeas={5}
+                  collapseLongText={false}
+                  projectId={selectedProjectId}
+                />
+              }
+              icon="vote-up"
+              label={formatMessage(WIDGET_TITLES.MostReactedIdeasWidget)}
+            />
+            <DraggableElement
+              id="e2e-single-idea-widget"
+              component={
+                <SingleIdeaWidget
+                  collapseLongText={false}
+                  showAuthor={true}
+                  showContent={true}
+                  showReactions={true}
+                  showVotes={true}
+                  projectId={selectedProjectId}
+                />
+              }
+              icon="idea"
+              label={formatMessage(WIDGET_TITLES.SingleIdeaWidget)}
+            />
+          </Accordion>
+
+          <Accordion
+            isOpenByDefault={true}
+            title={
+              <SectionTitle>
+                <FormattedMessage {...reportBuilderMessages.chartsSection} />
+              </SectionTitle>
             }
-            icon="chart-bar"
-            label={formatMessage(WIDGET_TITLES.AgeWidget)}
-          />
-          <DraggableElement
-            id="e2e-draggable-active-users-widget"
-            component={
-              <ActiveUsersWidget
-                title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
-                projectId={selectedProjectId}
-                startAt={undefined}
-                endAt={chartEndDate}
-              />
-            }
-            icon="chart-bar"
-            label={formatMessage(WIDGET_TITLES.ActiveUsersWidget)}
-          />
-          <DraggableElement
-            id="e2e-draggable-posts-by-time-widget"
-            component={
-              <PostsByTimeWidget
-                title={toMultiloc(WIDGET_TITLES.PostsByTimeWidget)}
-                projectId={selectedProjectId}
-                startAt={undefined}
-                endAt={chartEndDate}
-              />
-            }
-            icon="chart-bar"
-            label={formatMessage(WIDGET_TITLES.PostsByTimeWidget)}
-          />
-          <DraggableElement
-            id="e2e-draggable-comments-by-time-widget"
-            component={
-              <CommentsByTimeWidget
-                title={toMultiloc(WIDGET_TITLES.CommentsByTimeWidget)}
-                projectId={selectedProjectId}
-                startAt={undefined}
-                endAt={chartEndDate}
-              />
-            }
-            icon="chart-bar"
-            label={formatMessage(WIDGET_TITLES.CommentsByTimeWidget)}
-          />
-          <DraggableElement
-            id="e2e-draggable-reactions-by-time-widget"
-            component={
-              <ReactionsByTimeWidget
-                title={toMultiloc(WIDGET_TITLES.ReactionsByTimeWidget)}
-                projectId={selectedProjectId}
-                startAt={undefined}
-                endAt={chartEndDate}
-              />
-            }
-            icon="chart-bar"
-            label={formatMessage(WIDGET_TITLES.ReactionsByTimeWidget)}
-          />
-        </Accordion>
-      </Box>
-    </Container>
+          >
+            <DraggableElement
+              id="e2e-draggable-visitors-timeline-widget"
+              component={
+                <VisitorsWidget
+                  title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
+                  projectId={selectedProjectId}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.VisitorsWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-visitors-traffic-sources-widget"
+              component={
+                <VisitorsTrafficSourcesWidget
+                  title={toMultiloc(WIDGET_TITLES.VisitorsTrafficSourcesWidget)}
+                  projectId={selectedProjectId}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.VisitorsTrafficSourcesWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-users-by-gender-widget"
+              component={
+                <GenderWidget
+                  title={toMultiloc(WIDGET_TITLES.GenderWidget)}
+                  projectId={selectedProjectId}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.GenderWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-users-by-age-widget"
+              component={
+                <AgeWidget
+                  title={toMultiloc(WIDGET_TITLES.AgeWidget)}
+                  projectId={selectedProjectId}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.AgeWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-active-users-widget"
+              component={
+                <ActiveUsersWidget
+                  title={toMultiloc(WIDGET_TITLES.ActiveUsersWidget)}
+                  projectId={selectedProjectId}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.ActiveUsersWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-posts-by-time-widget"
+              component={
+                <PostsByTimeWidget
+                  title={toMultiloc(WIDGET_TITLES.PostsByTimeWidget)}
+                  projectId={selectedProjectId}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.PostsByTimeWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-comments-by-time-widget"
+              component={
+                <CommentsByTimeWidget
+                  title={toMultiloc(WIDGET_TITLES.CommentsByTimeWidget)}
+                  projectId={selectedProjectId}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.CommentsByTimeWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-reactions-by-time-widget"
+              component={
+                <ReactionsByTimeWidget
+                  title={toMultiloc(WIDGET_TITLES.ReactionsByTimeWidget)}
+                  projectId={selectedProjectId}
+                  startAt={undefined}
+                  endAt={chartEndDate}
+                />
+              }
+              icon="chart-bar"
+              label={formatMessage(WIDGET_TITLES.ReactionsByTimeWidget)}
+            />
+          </Accordion>
+        </Box>
+      </Container>
+    </Transition>
   );
 };
 

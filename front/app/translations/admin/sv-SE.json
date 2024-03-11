@@ -1997,7 +1997,6 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Automatisk märkning",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Autotaggar skapas automatiskt av datorn. Du kan när som helst ändra eller ta bort dem.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Automatisk märkning",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Välj högst 9 taggar som du vill att inmatningarna ska fördelas mellan. Inmatningar som redan är kopplade till dessa taggar kommer inte att klassificeras igen.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "Klassificeringen baseras enbart på namnet på taggen. Välj relevanta nyckelord för bästa resultat.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Etiketter: Efter etikett",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Du skapar taggarna och tilldelar manuellt några ingångar som ett exempel, datorn tilldelar resten",

@@ -109,12 +109,16 @@ export default defineMessages({
     defaultMessage: '{ count } new responses',
   },
   showSummaries: {
-    id: 'app.containers.Admin.projects.project.survey.analysis.showSummaries',
-    defaultMessage: 'Show AI summaries',
+    id: 'app.containers.Admin.projects.project.survey.analysis.showInsights',
+    defaultMessage: 'Show AI insights',
   },
   hideSummaries: {
     id: 'app.containers.Admin.projects.project.survey.analysis.hideSummaries',
     defaultMessage: 'Hide summaries for this question',
+  },
+  createAIAnalysis: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.createAIAnalysis',
+    defaultMessage: 'Open AI analysis',
   },
   openAnalysisActions: {
     id: 'app.containers.Admin.projects.project.survey.analysis.openAnalysisActions',

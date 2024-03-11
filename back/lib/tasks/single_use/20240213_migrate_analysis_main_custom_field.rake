@@ -19,9 +19,11 @@ namespace :migrate_analysis do
           next if analysis.main_custom_field.present? # Make idempotent
           next if analysis.participation_method == 'ideation'
 
-          if analysis.analyses_additional_custom_fields.count < 1 || analysis.additional_custom_fields.count < 1
-            errors[tenant.host] ||= {}
-            errors[tenant.host][analysis.id] = 'No associated custom fields'
+          if analysis.associated_custom_fields.count < 1
+            if !analysis.destroy
+              errors[tenant.host] ||= {}
+              errors[tenant.host][analysis.id] = analysis.errors.full_messages
+            end
             next
           end
 
@@ -45,6 +47,7 @@ namespace :migrate_analysis do
             errors[tenant.host][analysis.id] = 'Could not remove main field from additional fields'
             next
           end
+          analysis.reload
 
           if !analysis.update(main_custom_field: main_field)
             errors[tenant.host] ||= {}
