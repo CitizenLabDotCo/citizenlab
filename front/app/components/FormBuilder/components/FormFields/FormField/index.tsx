@@ -35,6 +35,7 @@ import FieldTitle from './FieldTitle';
 import IconsAndBadges from './IconsAndBadges';
 import Logic from './Logic';
 import messages from './messages';
+import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
@@ -76,6 +77,7 @@ export const FormField = ({
   });
   const { formEndPageLogicOption, displayBuiltInFields, groupingType } =
     builderConfig;
+  const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
 
   const hasErrors = !!errors.customFields?.[index];
 
@@ -109,7 +111,7 @@ export const FormField = ({
     return copiedTitle_multiloc;
   }
 
-  function duplicateField(originalField: IFlatCustomField) {
+  const duplicateField = async (originalField: IFlatCustomField) => {
     const {
       id: _id,
       temp_id: _temp_id,
@@ -146,8 +148,20 @@ export const FormField = ({
       ...rest,
     };
 
+    if (
+      originalField.input_type === 'point' &&
+      originalField.map_config?.data?.id
+    ) {
+      const newMapConfig = await duplicateMapConfig(
+        originalField.map_config.data.id
+      );
+
+      duplicatedField.mapConfig = newMapConfig;
+      duplicatedField.map_config_id = newMapConfig.data.id;
+    }
+
     return duplicatedField;
-  }
+  };
 
   const onDelete = (fieldIndex: number) => {
     if (builtInFieldKeys.includes(field.key)) {
@@ -230,9 +244,9 @@ export const FormField = ({
     ...(field.input_type !== groupingType
       ? [
           {
-            handler: (event: React.MouseEvent) => {
+            handler: async (event: React.MouseEvent) => {
               event.stopPropagation();
-              const duplicatedField = duplicateField(field);
+              const duplicatedField = await duplicateField(field);
               insert(index + 1, duplicatedField);
               trigger();
             },

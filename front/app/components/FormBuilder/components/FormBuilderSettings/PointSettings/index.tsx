@@ -77,9 +77,6 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
         ? projectMapConfig.data.attributes
         : {};
 
-      // Needs to duplicate it here
-      console.log(projectMapConfig);
-
       createProjectMapConfig(
         {
           ...initialData,
@@ -94,7 +91,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
         }
       );
     } else {
-      // Otherwise we aready have a map config, so we open the modal
+      // Otherwise we already have a map config, so we open the modal
       setShowModal(true);
     }
   }, [

@@ -104,6 +104,7 @@ export type IFlatCustomField = Omit<
     isLocalOnly?: boolean;
     mapConfig?: IMapConfig;
     options?: IOptionsType[];
+    map_config?: { data: IRelationship }; // TODO: JS - This is odd
   };
 
 export type IFlatCustomFieldWithIndex = IFlatCustomField & {
