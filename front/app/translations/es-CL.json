@@ -1038,6 +1038,7 @@
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "Agregar nueva idea | {projectName}",
   "app.containers.IdeasNewPage.issueFormTitle": "Agregar nueva respuesta",
   "app.containers.IdeasNewPage.issueMetaTitle": "Agregar nueva respuesta | {projectName}",
+  "app.containers.IdeasNewPage.leaveSurvey": "Deja la encuesta",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "¿Estás seguro de que quieres dejar esta encuesta?",
   "app.containers.IdeasNewPage.leaveSurveyText": "Tus respuestas no se guardarán.",
   "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "El borrador de tus respuestas se ha guardado de forma privada y puedes volver a completar esta encuesta más tarde.",
