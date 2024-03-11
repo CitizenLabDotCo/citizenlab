@@ -19,6 +19,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from './messages';
@@ -139,9 +140,13 @@ const Author = memo(
     const locale = useLocale();
     const { data: author } = useUserById(authorId);
     const authorCanModerate =
-      !isNilOrError(author) &&
+      author &&
       showModeration &&
-      canModerateProject(projectId, { data: author.data });
+      // Ideally this is managed outside of this component.
+      // If projectId is provided, we assume this component is used in a project context
+      (projectId
+        ? canModerateProject(projectId, { data: author.data })
+        : canModerateInitiative({ data: author.data }));
 
     if (!isNilOrError(locale)) {
       return (

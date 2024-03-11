@@ -15,6 +15,7 @@ import useUserById from 'api/users/useUserById';
 import Author from 'components/Author';
 
 import { useIntl } from 'utils/cl-intl';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../messages';
@@ -83,7 +84,11 @@ const CommentHeader = ({
   const { data: author } = useUserById(authorId);
 
   const isModerator = author
-    ? canModerateProject(projectId, { data: author.data })
+    ? // Ideally this is managed outside of this component.
+      // If projectId is provided, we assume this component is used in a project context
+      projectId
+      ? canModerateProject(projectId, { data: author.data })
+      : canModerateInitiative({ data: author.data })
     : false;
 
   // With the current implementation, this needs to always render,

@@ -23,6 +23,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError, isPage } from 'utils/helperUtils';
+import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import Actions from '../../CommentForm/Actions';
@@ -277,7 +278,11 @@ const ParentCommentForm = ({
     textareaElement.current = element;
   };
 
-  const isModerator = canModerateProject(projectId, authUser);
+  // Ideally this is managed outside of this component.
+  // If projectId is provided, we assume this component is used in a project context
+  const isModerator = projectId
+    ? canModerateProject(projectId, authUser)
+    : canModerateInitiative(authUser);
 
   const placeholderMessage: MessageDescriptor = isAdminPage
     ? messages.visibleToUsersPlaceholder
@@ -290,7 +295,7 @@ const ParentCommentForm = ({
         userId={authUser.data.id}
         size={30}
         isLinkToProfile={!!authUser.data.id}
-        moderator={isModerator}
+        showModeratorStyles={isModerator}
       />
       <FormContainer
         className="ideaCommentForm"
