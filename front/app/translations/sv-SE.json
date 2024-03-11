@@ -973,6 +973,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Som standard kommer dina inlägg att kopplas till din profil, om du inte väljer det här alternativet.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Skicka anonymt",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Profilens synlighet",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "Denna undersökning är för närvarande inte öppen för svar. Vänligen återkom till projektet för mer information.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "Denna undersökning är för närvarande inte aktiv.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Återgå till projektet",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Du har redan besvarat denna enkät.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Undersökning inlämnad",
