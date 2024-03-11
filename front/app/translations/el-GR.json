@@ -1038,6 +1038,7 @@
   "app.containers.IdeasNewPage.ideaNewMetaTitle": "Προσθήκη νέας ιδέας | {projectName}",
   "app.containers.IdeasNewPage.issueFormTitle": "Προσθήκη νέου σχολίου",
   "app.containers.IdeasNewPage.issueMetaTitle": "Προσθήκη νέου σχολίου | {projectName}",
+  "app.containers.IdeasNewPage.leaveSurvey": "Έρευνα άδειας",
   "app.containers.IdeasNewPage.leaveSurveyConfirmationQuestion": "Είστε σίγουροι ότι θέλετε να εγκαταλείψετε αυτή την έρευνα;",
   "app.containers.IdeasNewPage.leaveSurveyText": "Οι απαντήσεις σας δεν θα αποθηκευτούν.",
   "app.containers.IdeasNewPage.leaveSurveyTextLoggedIn": "Το προσχέδιο των απαντήσεών σας έχει αποθηκευτεί ιδιωτικά και μπορείτε να επιστρέψετε για να συμπληρώσετε την έρευνα αργότερα.",
