@@ -398,7 +398,6 @@ RSpec.describe SurveyResultsGeneratorService do
                 groups: [
                   { count: 1, group: 'male' },
                   { count: 2, group: 'female' },
-                  { count: 0, group: 'unspecified' },
                   { count: 15, group: nil }
                 ]
               }, {
@@ -406,46 +405,31 @@ RSpec.describe SurveyResultsGeneratorService do
                 count: 4,
                 groups: [
                   { count: 2, group: 'male' },
-                  { count: 2, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
+                  { count: 2, group: 'female' }
                 ]
               }, {
                 answer: 'dog',
                 count: 3,
                 groups: [
                   { count: 1, group: 'male' },
-                  { count: 2, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
+                  { count: 2, group: 'female' }
                 ]
               }, {
                 answer: 'cow',
                 count: 2,
                 groups: [
-                  { count: 2, group: 'male' },
-                  { count: 0, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
+                  { count: 2, group: 'male' }
                 ]
               }, {
                 answer: 'pig',
                 count: 1,
                 groups: [
-                  { count: 1, group: 'male' },
-                  { count: 0, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
+                  { count: 1, group: 'male' }
                 ]
               }, {
                 answer: 'no_response',
                 count: 0,
-                groups: [
-                  { count: 0, group: 'male' },
-                  { count: 0, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
-                ]
+                groups: []
               }
             ]
             result[:multilocs][:group] = {
@@ -466,7 +450,6 @@ RSpec.describe SurveyResultsGeneratorService do
                 count: 18,
                 groups: [
                   { count: 1, group: 'la' },
-                  { count: 0, group: 'ny' },
                   { count: 1, group: 'other' },
                   { count: 16, group: nil }
                 ]
@@ -477,44 +460,31 @@ RSpec.describe SurveyResultsGeneratorService do
                   { count: 1, group: 'la' },
                   { count: 1, group: 'ny' },
                   { count: 2, group: 'other' },
-                  { count: 0, group: nil }
                 ]
               }, {
                 answer: 'dog',
                 count: 3,
                 groups: [
-                  { count: 0, group: 'la' },
                   { count: 1, group: 'ny' },
-                  { count: 2, group: 'other' },
-                  { count: 0, group: nil }
+                  { count: 2, group: 'other' }
                 ]
               }, {
                 answer: 'cow',
                 count: 2,
                 groups: [
                   { count: 1, group: 'la' },
-                  { count: 0, group: 'ny' },
                   { count: 1, group: 'other' },
-                  { count: 0, group: nil }
                 ]
               }, {
                 answer: 'pig',
                 count: 1,
                 groups: [
                   { count: 1, group: 'la' },
-                  { count: 0, group: 'ny' },
-                  { count: 0, group: 'other' },
-                  { count: 0, group: nil }
                 ]
               }, {
                 answer: 'no_response',
                 count: 0,
-                groups: [
-                  { count: 0, group: 'la' },
-                  { count: 0, group: 'ny' },
-                  { count: 0, group: 'other' },
-                  { count: 0, group: nil }
-                ]
+                groups: []
               }
             ]
             result[:multilocs][:group] = {
@@ -617,38 +587,23 @@ RSpec.describe SurveyResultsGeneratorService do
         let(:grouped_linear_scale_answers) do
           [
             { answer: 5, count: 1, groups: [
-              { count: 0, group: 'la' },
-              { count: 0, group: 'ny' },
-              { count: 0, group: 'other' },
               { count: 1, group: nil }
             ] },
             { answer: 4, count: 1, groups: [
-              { count: 1, group: 'la' },
-              { count: 0, group: 'ny' },
-              { count: 0, group: 'other' },
-              { count: 0, group: nil }
+              { count: 1, group: 'la' }
             ] },
             { answer: 3, count: 8, groups: [
-              { count: 0, group: 'la' },
               { count: 1, group: 'ny' },
-              { count: 0, group: 'other' },
               { count: 7, group: nil }
             ] },
             { answer: 2, count: 5, groups: [
-              { count: 0, group: 'la' },
-              { count: 0, group: 'ny' },
-              { count: 0, group: 'other' },
               { count: 5, group: nil }
             ] },
             { answer: 1, count: 2, groups: [
-              { count: 0, group: 'la' },
-              { count: 0, group: 'ny' },
-              { count: 0, group: 'other' },
               { count: 2, group: nil }
             ] },
             { answer: nil, count: 5, groups: [
               { count: 1, group: 'la' },
-              { count: 0, group: 'ny' },
               { count: 3, group: 'other' },
               { count: 1, group: nil }
             ] }
@@ -728,9 +683,7 @@ RSpec.describe SurveyResultsGeneratorService do
                 answer: nil,
                 count: 16,
                 groups: [
-                  { count: 0, group: 'male' },
                   { count: 1, group: 'female' },
-                  { count: 0, group: 'unspecified' },
                   { count: 15, group: nil }
                 ]
               }, {
@@ -739,26 +692,19 @@ RSpec.describe SurveyResultsGeneratorService do
                 groups: [
                   { count: 1, group: 'male' },
                   { count: 1, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
                 ]
               }, {
                 answer: 'ny',
                 count: 1,
                 groups: [
-                  { count: 0, group: 'male' },
-                  { count: 1, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
+                  { count: 1, group: 'female' }
                 ]
               }, {
                 answer: 'other',
                 count: 3,
                 groups: [
                   { count: 2, group: 'male' },
-                  { count: 1, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
+                  { count: 1, group: 'female' }
                 ]
               }
             ]
@@ -799,7 +745,6 @@ RSpec.describe SurveyResultsGeneratorService do
               count: 16,
               groups: [
                 { count: 1, group: 5 },
-                { count: 0, group: 4 },
                 { count: 7, group: 3 },
                 { count: 5, group: 2 },
                 { count: 2, group: 1 },
@@ -810,11 +755,7 @@ RSpec.describe SurveyResultsGeneratorService do
               answer: 'la',
               count: 2,
               groups: [
-                { count: 0, group: 5 },
                 { count: 1, group: 4 },
-                { count: 0, group: 3 },
-                { count: 0, group: 2 },
-                { count: 0, group: 1 },
                 { count: 1, group: nil }
               ]
             },
@@ -822,23 +763,13 @@ RSpec.describe SurveyResultsGeneratorService do
               answer: 'ny',
               count: 1,
               groups: [
-                { count: 0, group: 5 },
-                { count: 0, group: 4 },
-                { count: 1, group: 3 },
-                { count: 0, group: 2 },
-                { count: 0, group: 1 },
-                { count: 0, group: nil }
+                { count: 1, group: 3 }
               ]
             },
             {
               answer: 'other',
               count: 3,
               groups: [
-                { count: 0, group: 5 },
-                { count: 0, group: 4 },
-                { count: 0, group: 3 },
-                { count: 0, group: 2 },
-                { count: 0, group: 1 },
                 { count: 3, group: nil }
               ]
             }
