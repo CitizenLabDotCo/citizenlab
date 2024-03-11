@@ -973,6 +973,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Oletuksena lähetyksesi liitetään profiiliisi, ellet valitse tätä vaihtoehtoa.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Postaa nimettömänä",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Profiilin näkyvyys",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "Tämä kysely ei ole tällä hetkellä avoin vastausta varten. Palaa projektiin saadaksesi lisätietoja.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "Tämä kysely ei ole tällä hetkellä aktiivinen.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Paluu projektiin",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Olet jo suorittanut tämän kyselyn.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Kysely lähetetty",
