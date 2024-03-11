@@ -973,6 +973,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Domyślnie Twoje zgłoszenia będą powiązane z Twoim profilem, chyba że wybierzesz tę opcję.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Publikuj anonimowo",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Widoczność profilu",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "Ta ankieta nie jest obecnie otwarta dla odpowiedzi. Wróć do projektu, aby uzyskać więcej informacji.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "Ta ankieta nie jest obecnie aktywna.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Wróć do projektu",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Wypełniłeś już tę ankietę.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Przesłana ankieta",
