@@ -2026,7 +2026,7 @@
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTag": "Etichettatura automatica",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagDescription": "Le etichette automatiche sono derivate automaticamente dal computer. Puoi modificarli o rimuoverli in qualsiasi momento.",
   "app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle": "Etichettatura automatica",
-  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1": "Seleziona un massimo di 9 tag tra cui vuoi che siano distribuiti gli ingressi. Gli ingressi già associati a questi tag non verranno classificati nuovamente.",
+  "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle": "Gli ingressi già associati a questi tag non verranno classificati nuovamente.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2": "La classificazione si basa esclusivamente sul nome del tag. Scegli parole chiave pertinenti per ottenere i migliori risultati.",
   "app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle": "Tag: Per etichetta",
   "app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription": "Tu crei i tag e assegni manualmente alcuni ingressi, ad esempio, mentre il computer assegna il resto.",
