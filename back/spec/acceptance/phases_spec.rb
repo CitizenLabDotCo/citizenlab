@@ -448,7 +448,8 @@ resource 'Phases' do
         let(:phase) { create(:phase, project: @project, participation_method: 'ideation', ideas: ideas) }
         let(:participation_method) { 'information' }
 
-        example 'Make a phase with ideas an information phase' do
+        example 'Change a phase with ideas into an information phase' do
+          expect_any_instance_of(PermissionsService).to receive(:update_permissions_for_scope).with(phase)
           do_request
           assert_status 200
         end
