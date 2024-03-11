@@ -267,7 +267,6 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
                 </>
               }
               config={'survey'}
-              formSubmitText={messages.submitSurvey}
             />
           </Box>
         </Box>

@@ -77,7 +77,6 @@ interface Props {
    * Idea id for update form, used to load and udpate image and files.
    */
   inputId?: string | undefined;
-  formSubmitText?: MessageDescriptor;
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
   footer?: React.ReactNode;
@@ -96,7 +95,6 @@ const Form = memo(
     initialFormData,
     title,
     inputId,
-    formSubmitText,
     submitOnEvent,
     getAjvErrorMessage,
     getApiErrorMessage,
@@ -195,7 +193,6 @@ const Form = memo(
             getApiErrorMessage={getApiErrorMessage}
             getAjvErrorMessage={getAjvErrorMessage}
             inputId={inputId}
-            formSubmitText={formSubmitText}
             config={config}
             locale={locale}
             setFormData={setData}

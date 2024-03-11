@@ -34,10 +34,6 @@ export default defineMessages({
     defaultMessage:
       'There was an issue submitting the form. Please check for any errors and try again.',
   },
-  submitSurvey: {
-    id: 'app.components.form.ErrorDisplay.submitSurvey',
-    defaultMessage: 'Submit survey',
-  },
   anonymousSurveyMessage: {
     id: 'app.components.form.anonymousSurveyMessage',
     defaultMessage: 'All responses to this survey are anonymized',

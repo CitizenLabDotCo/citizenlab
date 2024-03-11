@@ -59,8 +59,7 @@ const CLPageLayout = memo(
     enabled,
     data,
   }: LayoutProps) => {
-    const { onSubmit, setShowAllErrors, formSubmitText, setFormData } =
-      useContext(FormContext);
+    const { onSubmit, setShowAllErrors, setFormData } = useContext(FormContext);
     const topAnchorRef = useRef<HTMLInputElement>(null);
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
@@ -74,7 +73,7 @@ const CLPageLayout = memo(
     const theme = useTheme();
     const formState = useJsonForms();
     const isSmallerThanPhone = useBreakpoint('phone');
-    const submitText = formSubmitText || messages.submit;
+    const submitText = messages.submit;
     const showSubmit = currentStep === uiPages.length - 1;
     const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
