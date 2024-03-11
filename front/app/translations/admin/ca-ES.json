@@ -951,7 +951,6 @@
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Llistat de projectes a la plataforma",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Tauler de control de projectes",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Crear nous projectes o gestiona projectes existents.",
-  "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Aquests són els projectes que esteu gestionant a la plataforma.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projects",
   "app.containers.AdminPage.ProjectDashboard.published": "Published",
   "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Tanqueu el tauler de configuració",
