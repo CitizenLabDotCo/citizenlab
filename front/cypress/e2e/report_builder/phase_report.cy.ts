@@ -193,7 +193,7 @@ describe('Phase report', () => {
       // Make sure it does exist in current phase
       cy.visit(`/projects/${projectSlug}/2`);
       cy.get('.e2e-phase-description').contains(currentInfoPhaseTitle);
-      cy.get('#e2e-phase-report').should('exist').contains('TextEdited text.');
+      cy.get('#e2e-phase-report').should('exist').contains('Edited text.');
 
       // Make sure widget is also there
       cy.get('.recharts-surface:first').trigger('mouseover');

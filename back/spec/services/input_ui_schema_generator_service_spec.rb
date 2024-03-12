@@ -1019,7 +1019,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 }, {
                   type: 'Control',
                   scope: "#/properties/#{field_in_page2.key}_other",
-                  label: 'Type your answer',
+                  label: "Since you picked 'other', what are you thinking of?",
                   options: {
                     description: '',
                     hasRule: false,

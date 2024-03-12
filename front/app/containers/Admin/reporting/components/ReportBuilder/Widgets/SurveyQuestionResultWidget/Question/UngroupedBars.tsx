@@ -36,12 +36,12 @@ const UngroupedBars = ({ attributes }: Props) => {
           >
             <ProgressBars2
               values={[count]}
-              total={attributes.totalPicks}
+              total={attributes.totalPickCount}
               colorScheme={COLOR_SCHEME}
               label={
                 answer === null
                   ? formatMessage(messages.noAnswer)
-                  : localize(attributes.multilocs.answer[answer])
+                  : localize(attributes.multilocs.answer[answer].title_multiloc)
               }
             />
           </Box>

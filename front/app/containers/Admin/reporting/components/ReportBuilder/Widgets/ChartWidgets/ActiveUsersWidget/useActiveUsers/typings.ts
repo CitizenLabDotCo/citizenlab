@@ -1,10 +1,10 @@
 import {
   ProjectId,
-  Dates,
+  DatesStrings,
   Resolution,
 } from 'components/admin/GraphCards/typings';
 
-export type QueryParameters = ProjectId & Dates & Resolution;
+export type QueryParameters = ProjectId & DatesStrings & Resolution;
 
 export interface TimeSeriesResponseRow extends ActiveUsersRow {
   first_dimension_date_created_date: string;

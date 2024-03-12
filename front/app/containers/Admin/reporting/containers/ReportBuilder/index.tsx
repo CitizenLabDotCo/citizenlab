@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
@@ -18,6 +18,10 @@ import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWr
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
+import Warning from 'components/UI/Warning';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
@@ -27,23 +31,28 @@ import Toolbox from '../../components/ReportBuilder/Toolbox';
 import TopBar from '../../components/ReportBuilder/TopBar';
 import ViewContainer from '../../components/ReportBuilder/ViewContainer';
 import { View } from '../../components/ReportBuilder/ViewContainer/typings';
-import ViewPicker from '../../components/ReportBuilder/ViewContainer/ViewPicker';
+import { A4_WIDTH } from '../../constants';
 import { ReportContextProvider } from '../../context/ReportContext';
+import messages from '../../messages';
 import areCraftjsObjectsEqual from '../../utils/areCraftjsObjectsEqual';
 
 interface Props {
   report: ReportResponse;
   reportLayout: ReportLayout;
+  templateProjectId: string | null;
+  templatePhaseId: string | null;
 }
 
-const ReportBuilder = ({ report, reportLayout }: Props) => {
+const ReportBuilder = ({
+  report,
+  reportLayout,
+  templateProjectId,
+  templatePhaseId,
+}: Props) => {
   const reportId = report.data.id;
   const phaseId = report.data.relationships.phase?.data?.id;
 
   const platformLocale = useLocale();
-  const [search] = useSearchParams();
-  const templateProjectId = search.get('templateProjectId');
-  const templatePhaseId = search.get('templatePhaseId');
   const [view, setView] = useState<View>('pdf');
 
   const [initialData] = useState(() => {
@@ -104,6 +113,17 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
             // areCraftjsObjectsEqual may still return false, because the default text may not have
             // a wrapping <p> tag, which is added as soon as you start typing.
             // But it's good enough for now.
+            // Also, see reactions_by_time_widget.cy.ts#getReportLayout
+            // for the current pitfalls of the `saved` state.
+            //
+            // Ideally, we should detected this `saved` state in only one way.
+            // Either always via areCraftjsObjectsEqual (probably,
+            // storing `currentNodes` state instead or `saved` state)
+            // or always via setSaved(true) (and then without detecting
+            // when nodes were changed and then changed back w/o saving).
+            // Also, we could move the states from ContentBuilderTopBar
+            // here to manage the entire state in one place and get rid of
+            // `setInterval`.
             setSaved(
               areCraftjsObjectsEqual(
                 query.getSerializedNodes(),
@@ -119,6 +139,8 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
             reportId={reportId}
             isTemplate={!!templateProjectId || !!templatePhaseId}
             saved={saved}
+            view={view}
+            setView={setView}
             setSaved={handleSetSaved}
             setSelectedLocale={setSelectedLocale}
           />
@@ -129,7 +151,13 @@ const ReportBuilder = ({ report, reportLayout }: Props) => {
               platformLocale={platformLocale}
             >
               <StyledRightColumn>
-                {!!phaseId && <ViewPicker view={view} setView={setView} />}
+                {!!phaseId && (
+                  <Box maxWidth={A4_WIDTH} mb="20px">
+                    <Warning>
+                      <FormattedMessage {...messages.warningBanner} />
+                    </Warning>
+                  </Box>
+                )}
                 <ViewContainer view={view}>
                   <Frame editorData={initialData}>
                     {emptyReportOnInit && templateProjectId ? (
@@ -159,6 +187,14 @@ const ReportBuilderWrapper = () => {
   const { data: report } = useReport(reportId);
   const { data: reportLayout } = useReportLayout(reportId);
 
+  const [search] = useSearchParams();
+  const [templateProjectId] = useState(search.get('templateProjectId'));
+  const [templatePhaseId] = useState(search.get('templatePhaseId'));
+
+  useEffect(() => {
+    removeSearchParams(['templateProjectId', 'templatePhaseId']);
+  }, []);
+
   const renderReportBuilder =
     reportBuilderEnabled &&
     pathname.includes('admin/reporting/report-builder') &&
@@ -168,7 +204,14 @@ const ReportBuilderWrapper = () => {
 
   if (!renderReportBuilder) return null;
 
-  return <ReportBuilder report={report} reportLayout={reportLayout.data} />;
+  return (
+    <ReportBuilder
+      report={report}
+      reportLayout={reportLayout.data}
+      templateProjectId={templateProjectId}
+      templatePhaseId={templatePhaseId}
+    />
+  );
 };
 
 export default ReportBuilderWrapper;

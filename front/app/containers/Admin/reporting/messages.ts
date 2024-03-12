@@ -13,14 +13,6 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.helmetDescription',
     defaultMessage: 'Admin reporting page',
   },
-  chartsSection: {
-    id: 'app.containers.Admin.reporting.chartsSection',
-    defaultMessage: 'CHARTS',
-  },
-  resultsSection: {
-    id: 'app.containers.Admin.reporting.resultsSection',
-    defaultMessage: 'RESULTS',
-  },
   reportHeader: {
     id: 'app.containers.Admin.reporting.reportHeader',
     defaultMessage: 'Report header',
@@ -41,5 +33,10 @@ export default defineMessages({
   deprecated: {
     id: 'app.containers.Admin.reporting.deprecated',
     defaultMessage: 'DEPRECATED',
+  },
+  warningBanner: {
+    id: 'app.containers.Admin.reporting.warningBanner',
+    defaultMessage:
+      'On this page, the report shows the latest platform data. On other pages, a snapshot of the report is shown. Snapshots are taken when you save the report on this page.',
   },
 });

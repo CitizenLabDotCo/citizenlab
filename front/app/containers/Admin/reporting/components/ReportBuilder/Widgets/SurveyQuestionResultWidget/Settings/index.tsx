@@ -142,7 +142,9 @@ const Settings = () => {
         <QuestionSelect
           phaseId={phaseId}
           questionId={questionId}
-          inputTypes={['select', 'multiselect']}
+          filterQuestion={({ attributes }) => {
+            return ['select', 'multiselect'].includes(attributes.input_type);
+          }}
           label={formatMessage(messages.question)}
           onChange={handleQuestion}
         />
@@ -163,7 +165,9 @@ const Settings = () => {
         <QuestionSelect
           phaseId={phaseId}
           questionId={groupFieldId}
-          inputTypes={['select']}
+          filterQuestion={({ attributes, id }) => {
+            return attributes.input_type === 'select' && id !== questionId;
+          }}
           label={formatMessage(messages.groupBySurveyQuestion)}
           onChange={handleGroupField}
         />
