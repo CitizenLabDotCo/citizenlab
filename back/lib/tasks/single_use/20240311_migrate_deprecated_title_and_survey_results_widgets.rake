@@ -73,6 +73,7 @@ namespace :single_use do
               layout.craftjs_json[node['parent']]['nodes'].map! do |child_node_id|
                 child_node_id == node_id ? new_node_ids : child_node_id
               end.flatten!
+              layout.craftjs_json.delete(node_id)
             end
           end
 
