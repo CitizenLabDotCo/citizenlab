@@ -1,11 +1,16 @@
-import { ImageSizes, Multiloc } from 'typings';
+import { Multiloc } from 'typings';
 
 import { ICustomFieldInputType } from 'api/custom_fields/types';
 import { IIdeaImageData } from 'api/idea_images/types';
 import { IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-import { SurveyResultAttributes } from 'api/survey_results/types';
+import {
+  SurveyResultAttributes,
+  Answer,
+  AnswerMultilocs,
+  MultilocAnswer,
+} from 'api/survey_results/types';
 import { GenderOption } from 'api/users_by_gender/types';
 
 import {
@@ -40,26 +45,12 @@ export type SurveyResultsResponse = {
 };
 
 // Survey question results
-export type Answer = {
-  answer: string | null;
-  count: number;
-};
-
 export type GroupedAnswer = Answer & {
   groups: { group: string | null; count: number }[];
 };
 
-export type SurveyQuestionMultilocAnswer = {
-  title_multiloc: Multiloc;
-  image?: ImageSizes;
-};
-
-export type SurveyQuestionMultilocs = {
-  answer: Record<string, SurveyQuestionMultilocAnswer>;
-};
-
-export type SurveyQuestionMultilocsGrouped = SurveyQuestionMultilocs & {
-  group: Record<string, SurveyQuestionMultilocAnswer>;
+export type SurveyQuestionMultilocsGrouped = AnswerMultilocs & {
+  group: Record<string, MultilocAnswer>;
 };
 
 type BaseAttributes = {
@@ -81,7 +72,7 @@ export type AttributesGrouped = BaseAttributes & {
 export type AttributesUngrouped = BaseAttributes & {
   grouped: false;
   answers: Answer[];
-  multilocs: SurveyQuestionMultilocs;
+  multilocs: AnswerMultilocs;
 };
 
 export type SurveyQuestionResultAttributes =
