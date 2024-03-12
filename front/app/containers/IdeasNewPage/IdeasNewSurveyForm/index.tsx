@@ -19,8 +19,13 @@ import { IProject } from 'api/projects/types';
 
 import useInputSchema from 'hooks/useInputSchema';
 
-import Form from 'components/Form';
-import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
+import Form, { customAjv } from 'components/Form';
+import {
+  AjvErrorGetter,
+  ApiErrorGetter,
+  FormData,
+} from 'components/Form/typings';
+import { getFormSchemaAndData } from 'components/Form/utils';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import PageContainer from 'components/UI/PageContainer';
 import Warning from 'components/UI/Warning';
@@ -82,6 +87,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     useDraftIdeaByPhaseId(phaseId);
   const [loadingDraftIdea, setLoadingDraftIdea] = useState(true);
   const [ideaId, setIdeaId] = useState<string | undefined>();
+  const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
 
   const [initialFormData, setInitialFormData] = useState({});
   const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
@@ -213,6 +219,25 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   };
 
+  function onChange(data: FormData) {
+    if (!schema || !uiSchema) {
+      return;
+    }
+
+    const [, dataWithoutHiddenFields] = getFormSchemaAndData(
+      schema,
+      uiSchema,
+      data,
+      customAjv
+    );
+
+    const totalKeys = Object.keys(dataWithoutHiddenFields).length;
+    const keysWithValues = Object.values(dataWithoutHiddenFields).filter(
+      (value) => value !== undefined
+    ).length;
+    setPercentageAnswered((keysWithValues / totalKeys) * 100);
+  }
+
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
       {!loadingDraftIdea && schema && uiSchema && participationMethodConfig ? (
@@ -237,6 +262,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               getAjvErrorMessage={getAjvErrorMessage}
               getApiErrorMessage={getApiErrorMessage}
               inputId={ideaId}
+              onChange={onChange}
               hideOverflowContent
               title={
                 <>
@@ -255,6 +281,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
                     }
                     canUserEditProject={userIsModerator}
                     loggedIn={!isNilOrError(authUser)}
+                    percentageAnswered={percentageAnswered}
                   />
                   {allowAnonymousPosting && (
                     <Box mx="auto" p="20px" maxWidth="700px">
