@@ -52,6 +52,8 @@ describe('Native survey permissions', () => {
                         startAt: twoDaysAgo,
                         endAt: inTwoMonths,
                         participationMethod: 'native_survey',
+                        nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+                        nativeSurveyTitleMultiloc: { en: 'Survey' },
                         canComment: true,
                         canPost: true,
                         canReact: true,
