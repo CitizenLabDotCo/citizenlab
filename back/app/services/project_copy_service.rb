@@ -30,6 +30,7 @@ class ProjectCopyService < TemplateService
     new_publication_status: nil
   )
     include_ideas = false if local_copy
+    @include_ideas = include_ideas
     @local_copy = local_copy
     @project = project
     @template = { 'models' => {} }
@@ -297,8 +298,8 @@ class ProjectCopyService < TemplateService
         'poll_anonymous' => phase.poll_anonymous,
         'ideas_order' => phase.ideas_order,
         'input_term' => phase.input_term,
-        'baskets_count' => phase.baskets_count,
-        'votes_count' => phase.votes_count
+        'baskets_count' => @local_copy || !@include_ideas ? 0 : phase.baskets_count,
+        'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count
       }
       if yml_phase['participation_method'] == 'voting'
         yml_phase['voting_method'] = phase.voting_method
