@@ -557,25 +557,28 @@ resource 'Phases' do
         do_request
         expect(status).to eq 200
 
-        expect(json_response).to eq(
+        expect(response_data[:type]).to eq 'survey_results'
+        expect(response_data.dig(:attributes, :totalSubmissions)).to eq 2
+        expect(response_data.dig(:attributes, :results).count).to eq 1
+        expect(response_data.dig(:attributes, :results, 0)).to match(
           {
-            data: {
-              type: 'survey_results',
-              attributes: {
-                results: [
-                  {
-                    inputType: 'multiselect',
-                    question: { en: 'What are your favourite pets?' },
-                    required: true,
-                    totalResponses: 3,
-                    answers: [
-                      { answer: { en: 'Cat' }, responses: 2 },
-                      { answer: { en: 'Dog' }, responses: 1 }
-                    ],
-                    customFieldId: multiselect_field.id
-                  }
-                ],
-                totalSubmissions: 2
+            customFieldId: multiselect_field.id,
+            inputType: 'multiselect',
+            question: { en: 'What are your favourite pets?' },
+            required: true,
+            grouped: false,
+            totalResponseCount: 2,
+            questionResponseCount: 2,
+            totalPickCount: 3,
+            answers: [
+              { answer: 'cat', count: 2 },
+              { answer: 'dog', count: 1 },
+              { answer: nil, count: 0 }
+            ],
+            multilocs: {
+              answer: {
+                cat: { title_multiloc: { en: 'Cat' } },
+                dog: { title_multiloc: { en: 'Dog' } }
               }
             }
           }
