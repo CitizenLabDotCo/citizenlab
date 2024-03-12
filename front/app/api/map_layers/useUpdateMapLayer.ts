@@ -24,13 +24,11 @@ const useUpdateMapLayer = (projectId?: string) => {
     mutationFn: updateMapLayer,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: mapConfigKeys.item({ mapConfigId: variables.mapConfigId }),
+        queryKey: mapConfigKeys.item({
+          mapConfigId: variables.mapConfigId,
+          projectId,
+        }),
       });
-      if (projectId) {
-        queryClient.invalidateQueries({
-          queryKey: mapConfigKeys.item({ projectId }),
-        });
-      }
     },
   });
 };
