@@ -964,6 +964,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Standardmäßig werden Ihre Beiträge mit Ihrem Profil verknüpft, es sei denn, Sie wählen diese Option.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Anonym teilnehmen",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Sichtbarkeit des Profils",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "Diese Umfrage ist derzeit nicht für Antworten geöffnet. Bitte kehren Sie zum Projekt zurück, um weitere Informationen zu erhalten.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "Diese Umfrage ist derzeit nicht aktiv.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Zurück zum Projekt",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Sie haben diese Umfrage bereits ausgefüllt.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Umfrage eingereicht",
