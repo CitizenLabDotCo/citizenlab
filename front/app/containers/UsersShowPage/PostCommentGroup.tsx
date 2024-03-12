@@ -177,6 +177,7 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
                 authorId={userId}
                 commentType="parent"
                 commentAttributes={comment.attributes}
+                postType={postType}
               />
               <CommentBody
                 commentId={comment.id}

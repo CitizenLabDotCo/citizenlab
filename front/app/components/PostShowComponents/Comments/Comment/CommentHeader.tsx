@@ -71,6 +71,7 @@ interface Props {
   commentType: 'parent' | 'child';
   commentAttributes: IPresentComment;
   authorId: string | null;
+  postType: 'idea' | 'initiative';
 }
 
 const CommentHeader = ({
@@ -79,16 +80,19 @@ const CommentHeader = ({
   className,
   commentAttributes,
   authorId,
+  postType,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: author } = useUserById(authorId);
 
+  // Ideally this is managed outside of this component.
+  // If projectId is provided, we assume this component is used in a project context
+  // projectId
   const isModerator = author
-    ? // Ideally this is managed outside of this component.
-      // If projectId is provided, we assume this component is used in a project context
-      projectId
-      ? canModerateProject(projectId, { data: author.data })
-      : canModerateInitiative({ data: author.data })
+    ? {
+        idea: projectId ? canModerateProject(projectId, author) : false,
+        initiative: canModerateInitiative(author),
+      }[postType]
     : false;
 
   // With the current implementation, this needs to always render,

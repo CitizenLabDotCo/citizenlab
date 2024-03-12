@@ -118,6 +118,7 @@ const Comment = ({
                 commentType={commentType}
                 className={commentType === 'parent' ? 'marginBottom' : ''}
                 authorId={authorId}
+                postType={postType}
               />
 
               <Content>

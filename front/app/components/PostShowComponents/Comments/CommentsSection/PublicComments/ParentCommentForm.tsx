@@ -280,9 +280,10 @@ const ParentCommentForm = ({
 
   // Ideally this is managed outside of this component.
   // If projectId is provided, we assume this component is used in a project context
-  const isModerator = projectId
-    ? canModerateProject(projectId, authUser)
-    : canModerateInitiative(authUser);
+  const isModerator = {
+    idea: projectId ? canModerateProject(projectId, authUser) : false,
+    initiative: canModerateInitiative(authUser),
+  }[postType];
 
   const placeholderMessage: MessageDescriptor = isAdminPage
     ? messages.visibleToUsersPlaceholder
