@@ -88,7 +88,7 @@ const CommentHeader = ({
   // Ideally this is managed outside of this component.
   const isModerator = author
     ? {
-        idea: projectId ? canModerateProject(projectId, author) : false,
+        idea: canModerateProject(projectId, author),
         initiative: canModerateInitiative(author),
       }[postType]
     : false;

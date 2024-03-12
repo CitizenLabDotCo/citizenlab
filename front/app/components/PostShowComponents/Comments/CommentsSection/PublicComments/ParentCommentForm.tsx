@@ -280,7 +280,7 @@ const ParentCommentForm = ({
 
   // Ideally this is managed outside of this component.
   const isModerator = {
-    idea: projectId ? canModerateProject(projectId, authUser) : false,
+    idea: canModerateProject(projectId, authUser),
     initiative: canModerateInitiative(authUser),
   }[postType];
 
