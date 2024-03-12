@@ -58,7 +58,7 @@ const SurveyHeading = ({
       <Box
         width="100%"
         display="flex"
-        flexDirection={isSmallerThanPhone ? 'row-reverse' : 'column'}
+        flexDirection="column"
         justifyContent="center"
         alignItems="center"
         top={isSmallerThanPhone ? '0px' : undefined}
