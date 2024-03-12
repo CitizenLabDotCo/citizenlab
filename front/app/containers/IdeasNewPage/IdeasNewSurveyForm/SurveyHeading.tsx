@@ -69,7 +69,6 @@ const SurveyHeading = ({
           justifyContent={showEditSurveyButton ? 'flex-end' : 'space-between'}
           alignItems="center"
           maxWidth="700px"
-          px="20px"
         >
           <Box
             display="flex"
