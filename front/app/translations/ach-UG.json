@@ -628,6 +628,8 @@
   "app.components.form.submitApiError": "crwdns1605146:0crwdne1605146:0",
   "app.components.formBuilder.Page": "crwdns1605148:0crwdne1605148:0",
   "app.components.formBuilder.addAnswer": "crwdns1605150:0crwdne1605150:0",
+  "app.components.formBuilder.ai": "crwdns1951986:0crwdne1951986:0",
+  "app.components.formBuilder.aiUpsellText": "crwdns1951988:0crwdne1951988:0",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "crwdns1834692:0crwdne1834692:0",
   "app.components.formBuilder.chooseMany": "crwdns1605154:0crwdne1605154:0",
   "app.components.formBuilder.chooseOne": "crwdns1605156:0crwdne1605156:0",
