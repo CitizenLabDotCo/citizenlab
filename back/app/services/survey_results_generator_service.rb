@@ -7,11 +7,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     @fields = IdeaCustomFieldsService.new(form).enabled_fields # It would be nice if we could use reportable_fields instead
     @inputs = phase.ideas.native_survey.published
     @locales = AppConfiguration.instance.settings('core', 'locales')
-    @values = get_custom_field_values(@inputs)
-  end
-
-  def get_custom_field_values(inputs)
-    binding.pry
+    @field_values = get_flat_field_values(@inputs)
   end
 
   def generate_submission_count
@@ -85,10 +81,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def visit_file_upload(field)
-    file_ids = inputs
-      .select("custom_field_values->'#{field.key}'->'id' as value")
-      .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map(&:value)
+    values = field_values.select { |value| value[:key] == field.key && !value[:value].nil? }
+    file_ids = values.pluck(:value)
     files = IdeaFile.where(id: file_ids).map do |file|
       { name: file.name, url: file.file.url }
     end
@@ -100,7 +94,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   private
 
-  attr_reader :fields, :inputs, :locales
+  attr_reader :fields, :inputs, :locales, :field_values
 
   def core_field_attributes(field, response_count)
     {
@@ -112,6 +106,35 @@ class SurveyResultsGeneratorService < FieldVisitorService
       totalResponseCount: @inputs.count,
       questionResponseCount: response_count
     }
+  end
+
+  # Creates a flat response per response/field/value
+  def get_flat_field_values(inputs)
+    responses = inputs.select(:id, :custom_field_values)
+    flat_field_values = []
+    responses.each do |response|
+      fields.each do |field|
+        key = field[:key]
+        raw_value = response[:custom_field_values][key]
+        values = if raw_value && %w[multiselect multiselect_image].include?(field[:input_type])
+          raw_value
+        elsif raw_value && field[:input_type] == 'file_upload'
+          [raw_value['id']]
+        else
+          [raw_value]
+        end
+        values.each do |value|
+          value = nil if field.support_fixed_values? && generate_answer_keys(field).exclude?(value)
+          flat_field_values << { id: response[:id], key: key, value: value }
+        end
+        if field.other_option_text_field
+          other_key = "#{key}_other"
+          other_value = response[:custom_field_values][other_key]
+          flat_field_values << { id: response[:id], key: other_key, value: other_value }
+        end
+      end
+    end
+    flat_field_values
   end
 
   def visit_select_base(field, group_mode: nil, group_field_id: nil)
@@ -133,10 +156,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       )
       answers = construct_grouped_answers(query, field, group_field)
     else
-      query = query.select(
-        select_field_query(field, as: 'answer')
-      )
-      answers = construct_not_grouped_answers(query, field)
+      answers = construct_not_grouped_answers(field)
     end
 
     # Sort correctly
@@ -165,9 +185,15 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
   end
 
+  def question_response_count(field)
+    field_values
+      .select { |value| value[:key] == field.key && !value[:value].nil? }
+      .pluck(:id).uniq.count
+  end
+
   def build_select_response(answers, field, group_field)
     # TODO: This is an additional query for selects so performance issue here
-    question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
+    question_response_count = question_response_count(field)
 
     attributes = core_field_attributes(field, question_response_count).merge({
       grouped: !!group_field,
@@ -196,10 +222,9 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def get_text_responses(field_key)
-    inputs
-      .select("custom_field_values->'#{field_key}' as value")
-      .where("custom_field_values->'#{field_key}' IS NOT NULL")
-      .map { |answer| { answer: answer.value } }
+    field_values
+      .select { |value| value[:key] == field_key && !value[:value].nil? }
+      .map { |answer| { answer: answer[:value] } }
       .sort_by { |a| a[:answer] }
   end
 
@@ -210,20 +235,20 @@ class SurveyResultsGeneratorService < FieldVisitorService
     question
   end
 
-  def construct_not_grouped_answers(query, field)
+  def construct_not_grouped_answers(field)
+    answers = field_values
+      .select { |value| value[:key] == field.key }
+      .group_by { |value| value[:value] }
+      .transform_values(&:count)
+      .map { |k, v| { answer: k, count: v } }
+
+    # Add in any missing answers
     answer_keys = generate_answer_keys(field)
-
-    grouped_answers_hash = group_query(query)
-      .each_with_object({}) do |(answer, count), accu|
-      valid_answer = answer_keys.include?(answer) ? answer : nil
-
-      accu[valid_answer] ||= { answer: valid_answer, count: 0 }
-      accu[valid_answer][:count] += count
+    answer_keys.each do |key|
+      answers << { answer: key, count: 0 } unless answers.pluck(:answer).include? key
     end
 
-    answer_keys.map do |key|
-      grouped_answers_hash[key] || { answer: key, count: 0 }
-    end
+    answers
   end
 
   def construct_grouped_answers(query, question_field, group_field)

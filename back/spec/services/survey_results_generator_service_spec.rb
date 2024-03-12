@@ -279,6 +279,12 @@ RSpec.describe SurveyResultsGeneratorService do
         expect(generated_results[:results].pluck(:customFieldId)).not_to include page_field.id
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
       end
+
+      it 'does not run loads of sql queries' do
+        num_queries = count_queries { generated_results }
+        pp num_queries
+        expect(num_queries).to be 1
+      end
     end
 
     describe 'text fields' do
