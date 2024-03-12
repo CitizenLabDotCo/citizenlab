@@ -24,6 +24,7 @@ import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import EsriMap from 'components/EsriMap';
+import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton';
 import {
   esriPointToGeoJson,
   goToMapLocation,
@@ -141,6 +142,7 @@ const FullscreenMapInput = memo<Props>(
             onClick={onMapClick}
             webMapId={mapConfig?.data.attributes.esri_web_map_id}
           />
+          <ResetMapViewButton mapConfig={mapConfig} mapView={mapView} />
           <Box
             p="16px"
             pb="0px"
