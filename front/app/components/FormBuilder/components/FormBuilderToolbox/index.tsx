@@ -152,6 +152,7 @@ const FormBuilderToolbox = ({
           fieldsToExclude={builderConfig.toolboxFieldsToExclude}
           inputType="text"
           disabled={isCustomFieldsDisabled}
+          showAIUpsell
         />
         <ToolboxItem
           icon="survey-long-answer-2"
@@ -161,6 +162,7 @@ const FormBuilderToolbox = ({
           fieldsToExclude={builderConfig.toolboxFieldsToExclude}
           inputType="multiline_text"
           disabled={isCustomFieldsDisabled}
+          showAIUpsell
         />
         <ToolboxItem
           icon="survey-single-choice"
