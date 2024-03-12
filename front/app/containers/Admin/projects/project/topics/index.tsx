@@ -9,17 +9,19 @@ import {
 } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { usePermission } from 'utils/permissions';
 
 import messages from './messages';
 import ProjectTopicSelector from './ProjectTopicSelector';
 import SortableProjectTopicList from './SortableProjectTopicList';
+import { isAdmin } from 'utils/permissions/roles';
+import useAuthUser from 'api/me/useAuthUser';
 
 const ProjectAllowedInputTopics = memo(() => {
-  const canAccessPlatformTopicsSettingsRoute = usePermission({
-    item: { type: 'route', path: '/admin/settings/topics' },
-    action: 'access',
-  });
+  const { data: authUser } = useAuthUser();
+
+  if (!authUser) return null;
+
+  const canAccessPlatformTopicsSettingsRoute = isAdmin(authUser);
 
   return (
     <Box minHeight="80vh" mb="40px">
