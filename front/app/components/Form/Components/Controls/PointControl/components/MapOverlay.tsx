@@ -25,7 +25,7 @@ const MapOverlay = ({ showMapOverlay, handleShowFullscreenMap }: Props) => {
         zIndex="1"
         position="absolute"
         height="180px"
-        width="100"
+        width="100%"
         display="flex"
         flexDirection="column"
         justifyContent="center"
@@ -33,15 +33,15 @@ const MapOverlay = ({ showMapOverlay, handleShowFullscreenMap }: Props) => {
       />
       {showMapOverlay && (
         <Box
+          onClick={handleShowFullscreenMap}
           zIndex="1"
           position="absolute"
           height="180px"
-          width="100"
+          width="100%"
           display="flex"
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
-          onClick={handleShowFullscreenMap}
         >
           <img src={TapHere} alt="Tap to access the map" />
           <Text m="0px" pt="8px" color="white" style={{ fontWeight: 600 }}>
