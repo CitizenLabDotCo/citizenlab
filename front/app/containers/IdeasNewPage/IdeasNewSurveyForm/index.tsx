@@ -230,8 +230,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
                 <Heading
                   project={project.data}
                   titleText={localize(
-                    participationContext?.attributes
-                      .native_survey_title_multiloc
+                    phaseFromUrl?.data.attributes.native_survey_title_multiloc
                   )}
                   isSurvey={true}
                   canUserEditProject={userIsModerator}
