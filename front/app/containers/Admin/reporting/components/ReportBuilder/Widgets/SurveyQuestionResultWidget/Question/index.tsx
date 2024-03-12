@@ -31,10 +31,10 @@ const SurveyQuestionResult = ({
   groupFieldId,
 }: Props) => {
   const response = useSurveyQuestionResult({
-    phaseId,
-    questionId,
-    groupMode,
-    groupFieldId,
+    phase_id: phaseId,
+    question_id: questionId,
+    group_mode: groupMode,
+    group_field_id: groupFieldId,
   });
 
   const localize = useLocalize();
@@ -60,7 +60,7 @@ const SurveyQuestionResult = ({
       </Title>
       <Text mt="0px" mb="8px" color="textSecondary" variant="bodyS">
         {formatMessage(messages.numberOfResponses, {
-          count: attributes.totalResponses,
+          count: attributes.totalResponseCount,
         })}
       </Text>
       {attributes.grouped && colorScheme && (

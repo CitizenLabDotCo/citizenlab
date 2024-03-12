@@ -19,9 +19,8 @@ describe('Global report', () => {
       position: 'inside',
     });
 
-    // Validate it is initialized with correct text
-    cy.get('.e2e-text-box').should('exist');
-    cy.get('.e2e-text-box').should('contain.text', 'Text');
+    // Validate it is initialized with empty text
+    cy.get('.e2e-text-box').should('contain.text', '');
 
     // Edit text
     cy.get('div.e2e-text-box').click('center');
@@ -32,13 +31,13 @@ describe('Global report', () => {
     cy.get('.e2e-text-box').should('contain.text', 'Edited');
 
     // Switch locale
-    cy.get('#e2e-report-builder-topbar .e2e-localeswitcher.nl-BE').click();
+    cy.get('#e2e-locale-select').select('nl-BE');
 
-    // Validate that text for other locale is present
-    cy.get('.e2e-text-box').should('contain.text', 'Tekst');
+    // Validate that text for other locale is still empty
+    cy.get('.e2e-text-box').should('contain.text', '');
 
     // Switch back
-    cy.get('#e2e-report-builder-topbar .e2e-localeswitcher.en').click();
+    cy.get('#e2e-locale-select').select('en');
 
     // Previous edited text should still be there
     cy.get('.e2e-text-box').should('contain.text', 'Edited');

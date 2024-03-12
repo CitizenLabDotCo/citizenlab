@@ -18,9 +18,8 @@ import Error from 'components/UI/Error';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { getCenter, getZoomLevel } from '../../../utils/mapUtils/map';
-
-import messages from './messages';
+import { getCenter, getZoomLevel } from '../../../../utils/mapUtils/map';
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;

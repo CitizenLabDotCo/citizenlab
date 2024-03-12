@@ -964,6 +964,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "crwdns604469:0crwdne604469:0",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "crwdns604471:0crwdne604471:0",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "crwdns604473:0crwdne604473:0",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "crwdns1919660:0crwdne1919660:0",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "crwdns1919662:0crwdne1919662:0",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "crwdns1326154:0crwdne1326154:0",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "crwdns1326156:0crwdne1326156:0",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "crwdns1326158:0crwdne1326158:0",

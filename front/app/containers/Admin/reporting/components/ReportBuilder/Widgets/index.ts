@@ -1,11 +1,12 @@
-// report builder widgets
-
-// shared widgets
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpace/messages';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
+import SurveyResultsWidget, {
+  surveyResultsTitle,
+} from './_deprecated/SurveyResultsWidget';
+import TitleMultiloc, { titleMultilocTitle } from './_deprecated/TitleMultiloc';
 import AboutReportWidget, { aboutReportTitle } from './AboutReportWidget';
 import ActiveUsersWidget, {
   activeUsersTitle,
@@ -33,19 +34,15 @@ import SingleIdeaWidget, { singleIdeaTitle } from './SingleIdeaWidget';
 import SurveyQuestionResultWidget, {
   surveyQuestionResultTitle,
 } from './SurveyQuestionResultWidget';
-import SurveyResultsWidget, { surveyResultsTitle } from './SurveyResultsWidget';
 import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
-import TitleMultiloc, { titleMultilocTitle } from './TitleMultiloc';
 import TwoColumn, { twoColumnTitle } from './TwoColumn';
 
 export const WIDGETS = {
   TwoColumn,
-  TitleMultiloc, // TODO: remove this widget (TAN-1022)
   TextMultiloc,
   ImageMultiloc,
   WhiteSpace,
   AboutReportWidget,
-  SurveyResultsWidget, // TODO: remove this widget (TAN-1022)
   SurveyQuestionResultWidget,
   VisitorsWidget,
   VisitorsTrafficSourcesWidget,
@@ -57,6 +54,10 @@ export const WIDGETS = {
   PostsByTimeWidget,
   CommentsByTimeWidget,
   ReactionsByTimeWidget,
+
+  // Deprecated
+  TitleMultiloc, // TODO: remove this widget (TAN-1022)
+  SurveyResultsWidget, // TODO: remove this widget (TAN-1022)
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -65,10 +66,8 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   WhiteSpace: whiteSpaceMessages.whiteSpace,
   TextMultiloc: textMultilocTitle,
   TwoColumn: twoColumnTitle,
-  TitleMultiloc: titleMultilocTitle,
   ImageMultiloc: imageMultilocTitle,
   AboutReportWidget: aboutReportTitle,
-  SurveyResultsWidget: surveyResultsTitle,
   SurveyQuestionResultWidget: surveyQuestionResultTitle,
   MostReactedIdeasWidget: mostReactedIdeasTitle,
   SingleIdeaWidget: singleIdeaTitle,
@@ -80,6 +79,10 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   PostsByTimeWidget: postsByTimeTitle,
   CommentsByTimeWidget: commentsByTimeTitle,
   ReactionsByTimeWidget: reactionsByTimeTitle,
+
+  // Deprecated
+  TitleMultiloc: titleMultilocTitle,
+  SurveyResultsWidget: surveyResultsTitle,
 };
 
 const WIDGETS_WITH_CHILDREN = new Set<string>([
@@ -99,8 +102,10 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'ReactionsByTimeWidget',
   'VisitorsTrafficSourcesWidget',
   'VisitorsWidget',
-  'SurveyResultsWidget',
   'SurveyQuestionResultWidget',
+
+  // Deprecated
+  'SurveyResultsWidget',
 ] satisfies WidgetName[]);
 
 export const hasNoPointerEvents = (nodeName: string) => {

@@ -17,11 +17,11 @@ import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';
 
-import Card from '../_shared/Card';
-import NoData from '../_shared/NoData';
-import ProjectFilter from '../_shared/ProjectFilter';
-import widgetMessages from '../messages';
-import { getEmptyMessage } from '../utils';
+import Card from '../../_shared/Card';
+import NoData from '../../_shared/NoData';
+import ProjectFilter from '../../_shared/ProjectFilter';
+import widgetMessages from '../../messages';
+import { getEmptyMessage } from '../../utils';
 
 import messages from './messages';
 import QuestionFilter from './QuestionFilter';
@@ -34,6 +34,9 @@ export type Props = {
   shownQuestions?: boolean[];
 };
 
+/**
+ * @deprecated
+ */
 const SurveyResultsWidget = ({
   title,
   projectId,

@@ -6,7 +6,8 @@ const results: Result[] = [
   {
     inputType: 'text',
     question: { en: 'q0' },
-    totalResponses: 5,
+    totalResponseCount: 5,
+    questionResponseCount: 5,
     answers: [],
     required: true,
     customFieldId: '1',
@@ -14,7 +15,8 @@ const results: Result[] = [
   {
     inputType: 'text',
     question: { en: 'q1' },
-    totalResponses: 5,
+    totalResponseCount: 5,
+    questionResponseCount: 5,
     answers: [],
     required: true,
     customFieldId: '2',
@@ -22,7 +24,8 @@ const results: Result[] = [
   {
     inputType: 'text',
     question: { en: 'q2' },
-    totalResponses: 5,
+    totalResponseCount: 5,
+    questionResponseCount: 5,
     answers: [],
     required: true,
     customFieldId: '3',
@@ -30,7 +33,8 @@ const results: Result[] = [
   {
     inputType: 'text',
     question: { en: 'q3' },
-    totalResponses: 5,
+    totalResponseCount: 5,
+    questionResponseCount: 5,
     answers: [],
     required: true,
     customFieldId: '4',
@@ -38,7 +42,8 @@ const results: Result[] = [
   {
     inputType: 'text',
     question: { en: 'q4' },
-    totalResponses: 5,
+    totalResponseCount: 5,
+    questionResponseCount: 5,
     answers: [],
     required: true,
     customFieldId: '5',

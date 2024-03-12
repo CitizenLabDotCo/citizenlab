@@ -76,7 +76,9 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
         <QuestionSelect
           phaseId={phaseId}
           questionId={questionId}
-          inputTypes={['text', 'multiline_text']}
+          filterQuestion={({ attributes }) => {
+            return ['text', 'multiline_text'].includes(attributes.input_type);
+          }}
           label={formatMessage(messages.question)}
           onChange={handleQuestion}
         />
