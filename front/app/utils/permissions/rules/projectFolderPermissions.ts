@@ -60,7 +60,7 @@ definePermissionRule('route', 'access', canUserAccessAdminFolderRoute);
 definePermissionRule(
   'project_folder',
   'create',
-  (_folder: IProjectFolderData, user: IUser | undefined) => {
+  (_folder: IProjectFolderData, user) => {
     return isAdmin(user);
   }
 );
@@ -68,7 +68,7 @@ definePermissionRule(
 definePermissionRule(
   'project_folder',
   'delete',
-  (_folder: IProjectFolderData, user: IUser | undefined) => {
+  (_folder: IProjectFolderData, user) => {
     return isAdmin(user);
   }
 );
@@ -76,7 +76,7 @@ definePermissionRule(
 definePermissionRule(
   'project_folder',
   'reorder',
-  (_folder: IProjectFolderData, user: IUser | undefined) => {
+  (_folder: IProjectFolderData, user) => {
     return isAdmin(user);
   }
 );
@@ -84,7 +84,7 @@ definePermissionRule(
 definePermissionRule(
   'project_folder',
   'moderate',
-  (folder: IProjectFolderData, user: IUser | undefined) => {
+  (folder: IProjectFolderData, user) => {
     return user ? userModeratesFolder(user.data, folder.id) : false;
   }
 );
@@ -92,7 +92,7 @@ definePermissionRule(
 definePermissionRule(
   'project_folder',
   'create_project_in_folder_only',
-  (_folder, user: IUser | undefined) => {
+  (_folder, user) => {
     return user ? !isAdmin(user) && isProjectFolderModerator(user.data) : false;
   }
 );

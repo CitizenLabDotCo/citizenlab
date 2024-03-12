@@ -23,16 +23,13 @@ type PermissionRule = (
   context?: any
 ) => boolean;
 
-interface IPermissionRules {
-  [key: string]: {
-    [key: string]: PermissionRule;
-  };
-}
-
 type TResourceType = string;
 type TAction = string;
 
-const permissionRules: IPermissionRules = {};
+const permissionRules: Record<
+  TResourceType,
+  Record<TAction, PermissionRule>
+> = {};
 
 const isResource = (object: any): object is IResourceData => {
   return isObject(object) && 'type' in object;
