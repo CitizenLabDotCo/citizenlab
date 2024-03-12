@@ -905,7 +905,7 @@
   "app.containers.Admin.reporting.printPrepare": "Drécke gëtt preparéiert...",
   "app.containers.Admin.reporting.reportBuilder": "Report Builder",
   "app.containers.Admin.reporting.reportHeader": "Header vum Rapport",
-  "app.containers.Admin.reporting.resultsSection": "RESULTS",
+  "app.containers.Admin.reporting.resultsSection": "RESULTATER",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Erstellt neien Token",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Ofbriechen",
   "app.containers.Admin.tools.apiTokens.createTokenCreatedDescription": "Ären Token gouf erstallt. Kopéiert w.e.g. d' {secret} hei ënnen a späichere se sécher.",
