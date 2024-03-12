@@ -23,7 +23,7 @@ namespace :single_use do
 
             elt['type']['resolvedName'] = 'TextMultiloc'
             elt['custom'] = {}
-            elt['props']['text'].transform_values! { |text| "<h2>#{text}</h2>" }
+            elt['props']['text'].transform_values! { |text| "<h3>#{text}</h3>" }
           end
 
           if layout.changed?
