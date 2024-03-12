@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import {
   SectionTitle,
   SectionDescription,
@@ -9,12 +11,11 @@ import {
 } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 import ProjectTopicSelector from './ProjectTopicSelector';
 import SortableProjectTopicList from './SortableProjectTopicList';
-import { isAdmin } from 'utils/permissions/roles';
-import useAuthUser from 'api/me/useAuthUser';
 
 const ProjectAllowedInputTopics = () => {
   const { data: authUser } = useAuthUser();
