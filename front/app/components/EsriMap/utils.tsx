@@ -86,7 +86,9 @@ export const getMapPinSymbol = ({ color, sizeInPx }: MapPinSymbolProps) => {
 export const getEsriMakiSymbol = (iconName: MakiIconName, color: string) => {
   return fetch(
     // Fetch the SVG from the maki icons endpoint
-    `https://unpkg.com/@icon/maki-icons/icons/${iconName.toLowerCase()}.svg`
+    `https://unpkg.com/@icon/maki-icons/icons/${
+      iconName === 'toilets' ? 'toilet' : iconName.toLowerCase() // Specific handling for a backwards compatibility issue
+    }.svg`
   )
     .then((response) => response.text())
     .then((svg) => {
