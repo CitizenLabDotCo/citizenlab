@@ -147,7 +147,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
     if %w[select linear_scale].include? field.input_type
       "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
-    else
+    elsif %w[multiselect multiselect_image].include? field.input_type
       %{
           jsonb_array_elements(
             CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@.#{field.key}))')
@@ -155,6 +155,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
               ELSE '[null]'::jsonb END
           ) as #{as}
       }
+    else
+      raise "Unsupported field type: #{field.input_type}"
     end
   end
 
