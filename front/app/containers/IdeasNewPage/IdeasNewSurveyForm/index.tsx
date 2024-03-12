@@ -17,6 +17,7 @@ import { getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 
 import useInputSchema from 'hooks/useInputSchema';
+import useLocalize from 'hooks/useLocalize';
 
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
@@ -74,6 +75,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     projectId: project.data.id,
     phaseId,
   });
+  const localize = useLocalize();
 
   const { data: draftIdea, status: draftIdeaStatus } =
     useDraftIdeaByPhaseId(phaseId);
@@ -228,17 +230,10 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
               <>
                 <Heading
                   project={project.data}
-                  titleText={
-                    participationMethodConfig.getFormTitle ? (
-                      participationMethodConfig.getFormTitle({
-                        project: project.data,
-                        phases: phases?.data,
-                        phaseFromUrl: phaseFromUrl?.data,
-                      })
-                    ) : (
-                      <></>
-                    )
-                  }
+                  titleText={localize(
+                    participationContext?.attributes
+                      .native_survey_title_multiloc
+                  )}
                   isSurvey={true}
                   canUserEditProject={canUserEditProject}
                   loggedIn={!isNilOrError(authUser)}
