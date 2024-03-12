@@ -905,7 +905,7 @@
   "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
   "app.containers.Admin.reporting.reportBuilder": "Εργαλείο κατασκευής αναφορών",
   "app.containers.Admin.reporting.reportHeader": "Κεφαλίδα αναφοράς",
-  "app.containers.Admin.reporting.resultsSection": "RESULTS",
+  "app.containers.Admin.reporting.resultsSection": "ΑΠΟΤΕΛΕΣΜΑΤΑ",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Δημιουργία νέου token",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Ακύρωση",
   "app.containers.Admin.tools.apiTokens.createTokenCreatedDescription": "Το διακριτικό σας έχει δημιουργηθεί. Αντιγράψτε το παρακάτω {secret} και αποθηκεύστε το με ασφάλεια.",
