@@ -200,7 +200,7 @@ const CLPageLayout = memo(
           margin="auto"
           position="relative"
         >
-          <Box display="flex" flex="1" height="100%" overflowY="auto">
+          <Box display="flex" flex="1" height="100%" overflowY="auto" w="100%">
             {uiPages.map((page, index) => {
               const pageElements = extractElementsByOtherOptionLogic(
                 page,
