@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -16,7 +16,7 @@ import SortableProjectTopicList from './SortableProjectTopicList';
 import { isAdmin } from 'utils/permissions/roles';
 import useAuthUser from 'api/me/useAuthUser';
 
-const ProjectAllowedInputTopics = memo(() => {
+const ProjectAllowedInputTopics = () => {
   const { data: authUser } = useAuthUser();
 
   if (!authUser) return null;
@@ -50,6 +50,6 @@ const ProjectAllowedInputTopics = memo(() => {
       <SortableProjectTopicList />
     </Box>
   );
-});
+};
 
 export default ProjectAllowedInputTopics;
