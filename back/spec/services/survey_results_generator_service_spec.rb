@@ -536,7 +536,7 @@ RSpec.describe SurveyResultsGeneratorService do
             { answer: nil, count: 5 }
           ],
           multilocs: {
-            answers: {
+            answer: {
               1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
               2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
               3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
@@ -558,12 +558,12 @@ RSpec.describe SurveyResultsGeneratorService do
       context 'when not all minimum and maximum labels are configured for linear scale fields' do
         let(:expected_result_linear_scale_without_min_and_max_labels) do
           expected_result_linear_scale.tap do |result|
-            result[:multilocs][:answers][5][:title_multiloc] = {
+            result[:multilocs][:answer][5][:title_multiloc] = {
               'en' => '5 - Strongly agree',
               'fr-FR' => '5',
               'nl-NL' => '5'
             }
-            result[:multilocs][:answers][1][:title_multiloc] = {
+            result[:multilocs][:answer][1][:title_multiloc] = {
               'en' => '1',
               'fr-FR' => "1 - Pas du tout d'accord",
               'nl-NL' => '1'
@@ -584,30 +584,59 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       context 'with grouping' do
-        let(:grouped_linear_scale_answers) do
-          [
-            { answer: 5, count: 1, groups: [
-              { count: 1, group: nil }
-            ] },
-            { answer: 4, count: 1, groups: [
-              { count: 1, group: 'la' }
-            ] },
-            { answer: 3, count: 8, groups: [
-              { count: 1, group: 'ny' },
-              { count: 7, group: nil }
-            ] },
-            { answer: 2, count: 5, groups: [
-              { count: 5, group: nil }
-            ] },
-            { answer: 1, count: 2, groups: [
-              { count: 2, group: nil }
-            ] },
-            { answer: nil, count: 5, groups: [
-              { count: 1, group: 'la' },
-              { count: 3, group: 'other' },
-              { count: 1, group: nil }
-            ] }
-          ]
+        let(:grouped_linear_scale_results) do
+          {
+            customFieldId: linear_scale_field.id,
+            inputType: 'linear_scale',
+            question: {
+              'en' => 'Do you agree with the vision?',
+              'fr-FR' => "Êtes-vous d'accord avec la vision ?",
+              'nl-NL' => 'Ben je het eens met de visie?'
+            },
+            required: true,
+            grouped: true,
+            totalResponseCount: 22,
+            questionResponseCount: 17,
+            totalPickCount: 22,
+            answers: [
+              { answer: 5, count: 1, groups: [
+                { count: 1, group: nil }
+              ] },
+              { answer: 4, count: 1, groups: [
+                { count: 1, group: 'la' }
+              ] },
+              { answer: 3, count: 8, groups: [
+                { count: 1, group: 'ny' },
+                { count: 7, group: nil }
+              ] },
+              { answer: 2, count: 5, groups: [
+                { count: 5, group: nil }
+              ] },
+              { answer: 1, count: 2, groups: [
+                { count: 2, group: nil }
+              ] },
+              { answer: nil, count: 5, groups: [
+                { count: 1, group: 'la' },
+                { count: 3, group: 'other' },
+                { count: 1, group: nil }
+              ] }
+            ],
+            multilocs: {
+              answer: {
+                1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
+                2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
+                3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
+                4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
+                5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => "5 - Tout à fait d'accord", 'nl-NL' => '5 - Strerk mee eens' } }
+              },
+              group: {
+                'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
+                'ny' => { title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' } },
+                'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } }
+              }
+            },
+            legend: ['la', 'ny', 'other', nil]
+          }
         end
 
         it 'returns a grouped result for a linear scale field' do
@@ -616,7 +645,7 @@ RSpec.describe SurveyResultsGeneratorService do
             group_mode: 'survey_question',
             group_field_id: select_field.id
           )
-          expect(result[:answers]).to match grouped_linear_scale_answers
+          expect(result).to match grouped_linear_scale_results
         end
       end
     end

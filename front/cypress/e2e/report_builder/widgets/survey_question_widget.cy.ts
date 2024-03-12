@@ -57,7 +57,7 @@ describe('Survey question widget', () => {
         surveyIncluded = response.body.included;
         surveyFields = response.body.data;
 
-        users.forEach(({ firstName, lastName, email, password, gender }) => {
+        users.forEach(({ firstName, lastName, email, password, gender }, i) => {
           let jwt: any;
 
           cy.apiSignup(firstName, lastName, email, password)
@@ -86,6 +86,7 @@ describe('Survey question widget', () => {
                     surveyIncluded[2].attributes.key,
                     surveyIncluded[3].attributes.key,
                   ],
+                  [surveyFields[3].attributes.key]: i > 1 ? 3 : 2,
                 },
                 jwt
               );
