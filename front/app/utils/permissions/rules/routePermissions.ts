@@ -51,7 +51,7 @@ const isModeratedProjectRoute = (item: IRouteItem, user: IUser | null) => {
   const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\/?/;
   const matches = idRegexp.exec(item.path);
   const pathProjectId = matches && matches[1];
-  return (pathProjectId && isProjectModerator(user, pathProjectId)) || false;
+  return (pathProjectId && isProjectModerator(pathProjectId, user)) || false;
 };
 
 const tenantIsChurned = (tenant: IAppConfigurationData) => {

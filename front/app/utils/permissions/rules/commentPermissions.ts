@@ -36,7 +36,7 @@ definePermissionRule(
     return !!(
       isAuthor(comment, user) ||
       isAdmin(user) ||
-      isProjectModerator(user, projectId)
+      isProjectModerator(projectId, user)
     );
   }
 );
@@ -47,7 +47,7 @@ definePermissionRule(
   (comment: ICommentData, user: IUser, _tenant, { projectId }) => {
     return (
       !isAuthor(comment, user) &&
-      (isAdmin(user) || isProjectModerator(user, projectId))
+      (isAdmin(user) || isProjectModerator(projectId, user))
     );
   }
 );
@@ -61,7 +61,7 @@ definePermissionRule(
       !(
         isAuthor(comment, user) ||
         isAdmin(user) ||
-        isProjectModerator(user, projectId)
+        isProjectModerator(projectId, user)
       )
     );
   }

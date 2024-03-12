@@ -34,7 +34,7 @@ export function canModerateProject(
   user: IUser
 ) {
   if (projectId) {
-    return isAdmin(user) || isProjectModerator(user, projectId);
+    return isAdmin(user) || isProjectModerator(projectId, user);
   }
 
   return isAdmin(user);

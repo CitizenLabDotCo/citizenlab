@@ -14,7 +14,7 @@ const isAuthor = (idea: IIdeaData, user?: IUser) => {
 };
 
 const isIdeaProjectModerator = (idea: IIdeaData, user?: IUser) => {
-  return user && isProjectModerator(user, idea.relationships.project.data.id);
+  return user && isProjectModerator(idea.relationships.project.data.id, user);
 };
 
 definePermissionRule(
@@ -48,6 +48,6 @@ definePermissionRule(
   'idea',
   'assignBudget',
   (idea: IIdeaData | null, user: IUser, _tenant, { projectId }) => {
-    return !!isAdmin(user) || (!!idea && !!isProjectModerator(user, projectId));
+    return !!isAdmin(user) || (!!idea && !!isProjectModerator(projectId, user));
   }
 );

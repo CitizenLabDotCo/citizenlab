@@ -69,7 +69,7 @@ describe('isProjectModerator', () => {
       highest_role: 'project_moderator',
       roles: [{ type: 'project_moderator', project_id: projectId }],
     });
-    expect(isProjectModerator(moderator, projectId)).toBe(true);
+    expect(isProjectModerator(projectId, moderator)).toBe(true);
   });
 
   it('returns false when a user is a moderator for a different project', () => {
@@ -78,14 +78,14 @@ describe('isProjectModerator', () => {
       roles: [{ type: 'project_moderator', project_id: projectId }],
     });
     expect(
-      isProjectModerator(moderator, '444add65-e122-51db-a1b9-80fcd2e3f635')
+      isProjectModerator('444add65-e122-51db-a1b9-80fcd2e3f635', moderator)
     ).toBe(false);
   });
 
   it('returns false when a user is not a moderator', () => {
     const regularUser = makeUser();
     expect(
-      isProjectModerator(regularUser, 'df534d5b-ec63-5adf-8713-9cc247957175')
+      isProjectModerator('df534d5b-ec63-5adf-8713-9cc247957175', regularUser)
     ).toBe(false);
   });
 });
