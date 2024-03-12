@@ -171,7 +171,8 @@ RSpec.describe SurveyResultsGeneratorService do
         text_field.key => 'Red',
         multiselect_field.key => %w[cat dog],
         select_field.key => 'ny',
-        file_upload_field.key => { 'id' => idea_file.id, 'name' => idea_file.name }
+        file_upload_field.key => { 'id' => idea_file.id, 'name' => idea_file.name },
+        linear_scale_field.key => 3
       },
       idea_files: [idea_file],
       author: female_user
@@ -183,7 +184,8 @@ RSpec.describe SurveyResultsGeneratorService do
       custom_field_values: {
         text_field.key => 'Blue',
         multiselect_field.key => %w[cow pig cat],
-        select_field.key => 'la'
+        select_field.key => 'la',
+        linear_scale_field.key => 4
       },
       author: male_user
     )
@@ -396,7 +398,6 @@ RSpec.describe SurveyResultsGeneratorService do
                 groups: [
                   { count: 1, group: 'male' },
                   { count: 2, group: 'female' },
-                  { count: 0, group: 'unspecified' },
                   { count: 15, group: nil }
                 ]
               }, {
@@ -404,46 +405,31 @@ RSpec.describe SurveyResultsGeneratorService do
                 count: 4,
                 groups: [
                   { count: 2, group: 'male' },
-                  { count: 2, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
+                  { count: 2, group: 'female' }
                 ]
               }, {
                 answer: 'dog',
                 count: 3,
                 groups: [
                   { count: 1, group: 'male' },
-                  { count: 2, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
+                  { count: 2, group: 'female' }
                 ]
               }, {
                 answer: 'cow',
                 count: 2,
                 groups: [
-                  { count: 2, group: 'male' },
-                  { count: 0, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
+                  { count: 2, group: 'male' }
                 ]
               }, {
                 answer: 'pig',
                 count: 1,
                 groups: [
-                  { count: 1, group: 'male' },
-                  { count: 0, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
+                  { count: 1, group: 'male' }
                 ]
               }, {
                 answer: 'no_response',
                 count: 0,
-                groups: [
-                  { count: 0, group: 'male' },
-                  { count: 0, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
-                ]
+                groups: []
               }
             ]
             result[:multilocs][:group] = {
@@ -464,7 +450,6 @@ RSpec.describe SurveyResultsGeneratorService do
                 count: 18,
                 groups: [
                   { count: 1, group: 'la' },
-                  { count: 0, group: 'ny' },
                   { count: 1, group: 'other' },
                   { count: 16, group: nil }
                 ]
@@ -474,45 +459,32 @@ RSpec.describe SurveyResultsGeneratorService do
                 groups: [
                   { count: 1, group: 'la' },
                   { count: 1, group: 'ny' },
-                  { count: 2, group: 'other' },
-                  { count: 0, group: nil }
+                  { count: 2, group: 'other' }
                 ]
               }, {
                 answer: 'dog',
                 count: 3,
                 groups: [
-                  { count: 0, group: 'la' },
                   { count: 1, group: 'ny' },
-                  { count: 2, group: 'other' },
-                  { count: 0, group: nil }
+                  { count: 2, group: 'other' }
                 ]
               }, {
                 answer: 'cow',
                 count: 2,
                 groups: [
                   { count: 1, group: 'la' },
-                  { count: 0, group: 'ny' },
-                  { count: 1, group: 'other' },
-                  { count: 0, group: nil }
+                  { count: 1, group: 'other' }
                 ]
               }, {
                 answer: 'pig',
                 count: 1,
                 groups: [
-                  { count: 1, group: 'la' },
-                  { count: 0, group: 'ny' },
-                  { count: 0, group: 'other' },
-                  { count: 0, group: nil }
+                  { count: 1, group: 'la' }
                 ]
               }, {
                 answer: 'no_response',
                 count: 0,
-                groups: [
-                  { count: 0, group: 'la' },
-                  { count: 0, group: 'ny' },
-                  { count: 0, group: 'other' },
-                  { count: 0, group: nil }
-                ]
+                groups: []
               }
             ]
             result[:multilocs][:group] = {
@@ -553,15 +525,15 @@ RSpec.describe SurveyResultsGeneratorService do
           required: true,
           grouped: false,
           totalResponseCount: 22,
-          questionResponseCount: 15,
+          questionResponseCount: 17,
           totalPickCount: 22,
           answers: [
             { answer: 5, count: 1 },
-            { answer: 4, count: 0 },
-            { answer: 3, count: 7 },
+            { answer: 4, count: 1 },
+            { answer: 3, count: 8 },
             { answer: 2, count: 5 },
             { answer: 1, count: 2 },
-            { answer: nil, count: 7 }
+            { answer: nil, count: 5 }
           ],
           multilocs: {
             answers: {
@@ -608,6 +580,43 @@ RSpec.describe SurveyResultsGeneratorService do
 
         it 'returns minimum and maximum labels as numbers' do
           expect(generator.generate_results(field_id: linear_scale_field.id)).to match expected_result_linear_scale_without_min_and_max_labels
+        end
+      end
+
+      context 'with grouping' do
+        let(:grouped_linear_scale_answers) do
+          [
+            { answer: 5, count: 1, groups: [
+              { count: 1, group: nil }
+            ] },
+            { answer: 4, count: 1, groups: [
+              { count: 1, group: 'la' }
+            ] },
+            { answer: 3, count: 8, groups: [
+              { count: 1, group: 'ny' },
+              { count: 7, group: nil }
+            ] },
+            { answer: 2, count: 5, groups: [
+              { count: 5, group: nil }
+            ] },
+            { answer: 1, count: 2, groups: [
+              { count: 2, group: nil }
+            ] },
+            { answer: nil, count: 5, groups: [
+              { count: 1, group: 'la' },
+              { count: 3, group: 'other' },
+              { count: 1, group: nil }
+            ] }
+          ]
+        end
+
+        it 'returns a grouped result for a linear scale field' do
+          result = generator.generate_results(
+            field_id: linear_scale_field.id,
+            group_mode: 'survey_question',
+            group_field_id: select_field.id
+          )
+          expect(result[:answers]).to match grouped_linear_scale_answers
         end
       end
     end
@@ -674,9 +683,7 @@ RSpec.describe SurveyResultsGeneratorService do
                 answer: nil,
                 count: 16,
                 groups: [
-                  { count: 0, group: 'male' },
                   { count: 1, group: 'female' },
-                  { count: 0, group: 'unspecified' },
                   { count: 15, group: nil }
                 ]
               }, {
@@ -684,27 +691,20 @@ RSpec.describe SurveyResultsGeneratorService do
                 count: 2,
                 groups: [
                   { count: 1, group: 'male' },
-                  { count: 1, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
+                  { count: 1, group: 'female' }
                 ]
               }, {
                 answer: 'ny',
                 count: 1,
                 groups: [
-                  { count: 0, group: 'male' },
-                  { count: 1, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
+                  { count: 1, group: 'female' }
                 ]
               }, {
                 answer: 'other',
                 count: 3,
                 groups: [
                   { count: 2, group: 'male' },
-                  { count: 1, group: 'female' },
-                  { count: 0, group: 'unspecified' },
-                  { count: 0, group: nil }
+                  { count: 1, group: 'female' }
                 ]
               }
             ]
@@ -731,6 +731,50 @@ RSpec.describe SurveyResultsGeneratorService do
         #     group_field: food_survey_question.id
         #   )).to match {}
         # end
+
+        it 'groups by linear scale' do
+          result = generator.generate_results(
+            field_id: select_field.id,
+            group_mode: 'survey_question',
+            group_field_id: linear_scale_field.id
+          )
+
+          expect(result[:answers]).to match [
+            {
+              answer: nil,
+              count: 16,
+              groups: [
+                { count: 1, group: 5 },
+                { count: 7, group: 3 },
+                { count: 5, group: 2 },
+                { count: 2, group: 1 },
+                { count: 1, group: nil }
+              ]
+            },
+            {
+              answer: 'la',
+              count: 2,
+              groups: [
+                { count: 1, group: 4 },
+                { count: 1, group: nil }
+              ]
+            },
+            {
+              answer: 'ny',
+              count: 1,
+              groups: [
+                { count: 1, group: 3 }
+              ]
+            },
+            {
+              answer: 'other',
+              count: 3,
+              groups: [
+                { count: 3, group: nil }
+              ]
+            }
+          ]
+        end
       end
     end
 
@@ -781,6 +825,43 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'returns the results for a multi-select image field' do
         expect(generated_results[:results][5]).to match expected_result_multiselect_image
+      end
+
+      context 'with grouping' do
+        it 'groups multiselect image by survey question' do
+          result = generator.generate_results(
+            field_id: multiselect_image_field.id,
+            group_mode: 'survey_question',
+            group_field_id: select_field.id
+          )
+
+          expect(result[:answers]).to match [
+            {
+              answer: nil,
+              count: 19,
+              groups: [
+                { count: 1, group: 'la' },
+                { count: 1, group: 'ny' },
+                { count: 1, group: 'other' },
+                { count: 16, group: nil }
+              ]
+            },
+            {
+              answer: 'house',
+              count: 2,
+              groups: [
+                { count: 2, group: 'other' }
+              ]
+            },
+            {
+              answer: 'school',
+              count: 1,
+              groups: [
+                { count: 1, group: 'la' }
+              ]
+            }
+          ]
+        end
       end
     end
 
