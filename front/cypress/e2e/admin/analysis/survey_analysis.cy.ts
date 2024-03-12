@@ -18,7 +18,7 @@ const surveyQuestionResponses = [
 
 let projectId = '';
 let phaseId: string;
-describe('Admin: ideation analysis', () => {
+describe('Admin: survey analysis', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
@@ -72,7 +72,9 @@ describe('Admin: ideation analysis', () => {
 
   it('shows and hides summaries on the survey results page', () => {
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/native-survey`);
-    cy.intercept('GET', '**/insights', { fixture: 'analysis_insights.json' });
+    cy.intercept('GET', '**/insights', {
+      fixture: 'analysis_insights_survey.json',
+    });
 
     cy.get('#e2e-analysis-summary').should('exist');
     cy.get('#e2e-analysis-actions').click();
@@ -84,7 +86,9 @@ describe('Admin: ideation analysis', () => {
 
   it('adds and removes questions from the analysis', () => {
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/native-survey`);
-    cy.intercept('GET', '**/insights', { fixture: 'analysis_insights.json' });
+    cy.intercept('GET', '**/insights', {
+      fixture: 'analysis_insights_survey.json',
+    });
 
     cy.get('#e2e-explore-summary').click();
 
@@ -123,6 +127,7 @@ describe('Admin: ideation analysis', () => {
       .should('contain', 'Question: select');
 
     // Remove question from analysis
+
     cy.get(
       '[data-cy="e2e-analysis-add-remove-additional-custom-field"]'
     ).click();
