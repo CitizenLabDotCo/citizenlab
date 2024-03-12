@@ -8,7 +8,7 @@ import { sum } from 'utils/math';
 
 import Bar from './Bar';
 import messages from './messages';
-import { getRoundedPercentages, getType, filterZeroes } from './utils';
+import { getRoundedPercentages, getType } from './utils';
 
 interface Props {
   values: number[];
@@ -22,11 +22,6 @@ const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
   const percentages = getRoundedPercentages(values, total);
   const valueSum = sum(values);
   const percentage = round(sum(percentages), 1);
-
-  const { nonZeroPercentages, nonZeroColorScheme } = filterZeroes({
-    percentages,
-    colorScheme,
-  });
 
   return (
     <Box width="100%">
@@ -47,17 +42,17 @@ const ProgressBars2 = ({ values, total, label, colorScheme }: Props) => {
           })}
         </Text>
       </Box>
-      {nonZeroPercentages.length === 0 && <Bar percentage={0} />}
+      {percentages.length === 0 && <Bar percentage={0} />}
 
-      {nonZeroPercentages.map((percentage, index) => {
-        const type = getType(index, nonZeroPercentages.length);
+      {percentages.map((percentage, index) => {
+        const type = getType(index, percentages.length);
 
         return (
           <Bar
             key={index}
             type={type}
             percentage={percentage}
-            color={nonZeroColorScheme[index]}
+            color={colorScheme[index]}
           />
         );
       })}
