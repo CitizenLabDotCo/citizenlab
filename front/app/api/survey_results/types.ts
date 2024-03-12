@@ -13,7 +13,7 @@ export type IParameters = {
 };
 
 export interface Answer {
-  answer: string | null;
+  answer: string | number | null;
   count: number;
 }
 
