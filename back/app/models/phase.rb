@@ -32,15 +32,17 @@
 #  reacting_dislike_limited_max  :integer          default(10)
 #  posting_method                :string           default("unlimited"), not null
 #  posting_limited_max           :integer          default(1)
-#  document_annotation_embed_url :string
 #  allow_anonymous_participation :boolean          default(FALSE), not null
-#  campaigns_settings            :jsonb
+#  document_annotation_embed_url :string
 #  voting_method                 :string
 #  voting_max_votes_per_idea     :integer
 #  voting_term_singular_multiloc :jsonb
 #  voting_term_plural_multiloc   :jsonb
 #  baskets_count                 :integer          default(0), not null
 #  votes_count                   :integer          default(0), not null
+#  campaigns_settings            :jsonb
+#  native_survey_title_multiloc  :jsonb
+#  native_survey_button_multiloc :jsonb
 #
 # Indexes
 #
@@ -160,6 +162,12 @@ class Phase < ApplicationRecord
   scope :starting_on, lambda { |date|
     where(start_at: date)
   }
+
+  # native_survey?
+  with_options if: :native_survey? do
+    validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
+    validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
+  end
 
   scope :published, lambda {
     joined = includes(project: { admin_publication: :parent })

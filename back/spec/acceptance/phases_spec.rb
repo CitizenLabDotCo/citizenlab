@@ -123,6 +123,8 @@ resource 'Phases' do
         parameter :ideas_order, 'The default order of ideas.'
         parameter :input_term, 'The input term for something.'
         parameter :campaigns_settings, "A hash, only including keys in #{Phase::CAMPAIGNS} and with only boolean values", required: true
+        parameter :native_survey_title_multiloc, 'A title for the native survey.'
+        parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
       end
 
       ValidationErrorHelper.new.error_fields(self, Phase)
@@ -244,6 +246,8 @@ resource 'Phases' do
 
       context 'native survey' do
         let(:phase) { build(:native_survey_phase) }
+        let(:native_survey_title_multiloc) { { 'en' => 'Planning survey' } }
+        let(:native_survey_button_multiloc) { { 'en' => 'Fill in the form' } }
 
         example 'Create a native survey phase', document: false do
           do_request
@@ -259,6 +263,10 @@ resource 'Phases' do
           expect(phase_in_db.description_multiloc).to match description_multiloc
           expect(phase_in_db.start_at).to eq start_at
           expect(phase_in_db.end_at).to eq end_at
+          expect(phase_in_db.native_survey_title_multiloc['en']).to eq 'Planning survey'
+          expect(phase_in_db.native_survey_button_multiloc['en']).to eq 'Fill in the form'
+          expect(json_response.dig(:data, :attributes, :native_survey_title_multiloc, :en)).to eq 'Planning survey'
+          expect(json_response.dig(:data, :attributes, :native_survey_button_multiloc, :en)).to eq 'Fill in the form'
 
           # A native survey phase still has some ideation-related state, all column defaults.
           expect(phase_in_db.input_term).to eq 'idea'
@@ -486,7 +494,7 @@ resource 'Phases' do
       end
 
       context 'on a native survey phase' do
-        let(:phase) { create(:phase, participation_method: 'native_survey', project: @project) }
+        let(:phase) { create(:native_survey_phase, project: @project) }
 
         example 'Deleting a phase deletes all survey responses', document: false do
           ideation_phase = create(:phase, participation_method: 'ideation', project: @project, start_at: (phase.start_at - 7.days), end_at: (phase.start_at - 1.day))
@@ -558,25 +566,28 @@ resource 'Phases' do
         do_request
         expect(status).to eq 200
 
-        expect(json_response).to eq(
+        expect(response_data[:type]).to eq 'survey_results'
+        expect(response_data.dig(:attributes, :totalSubmissions)).to eq 2
+        expect(response_data.dig(:attributes, :results).count).to eq 1
+        expect(response_data.dig(:attributes, :results, 0)).to match(
           {
-            data: {
-              type: 'survey_results',
-              attributes: {
-                results: [
-                  {
-                    inputType: 'multiselect',
-                    question: { en: 'What are your favourite pets?' },
-                    required: true,
-                    totalResponses: 3,
-                    answers: [
-                      { answer: { en: 'Cat' }, responses: 2 },
-                      { answer: { en: 'Dog' }, responses: 1 }
-                    ],
-                    customFieldId: multiselect_field.id
-                  }
-                ],
-                totalSubmissions: 2
+            customFieldId: multiselect_field.id,
+            inputType: 'multiselect',
+            question: { en: 'What are your favourite pets?' },
+            required: true,
+            grouped: false,
+            totalResponseCount: 2,
+            questionResponseCount: 2,
+            totalPickCount: 3,
+            answers: [
+              { answer: 'cat', count: 2 },
+              { answer: 'dog', count: 1 },
+              { answer: nil, count: 0 }
+            ],
+            multilocs: {
+              answer: {
+                cat: { title_multiloc: { en: 'Cat' } },
+                dog: { title_multiloc: { en: 'Dog' } }
               }
             }
           }

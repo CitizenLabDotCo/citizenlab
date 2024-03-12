@@ -161,9 +161,6 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
       />
     );
   },
-  getFormTitle: (props: FormTitleMethodProps) => {
-    return <FormattedMessage {...messages.surveyTitle} {...props} />;
-  },
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
     return <NativeSurveyCTABar project={props.project} phases={props.phases} />;

@@ -1,7 +1,9 @@
 import React, { memo, useState } from 'react';
 
+import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
+import { IMapConfig } from 'api/map_config/types';
 import useAddMapLayer from 'api/map_layers/useAddMapLayer';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -9,12 +11,12 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { getUnnamedLayerTitleMultiloc } from '../../../utils/mapUtils/map';
-
-import messages from './messages';
+import { getUnnamedLayerTitleMultiloc } from '../../../../utils/mapUtils/map';
+import messages from '../messages';
+import { getLayerType } from '../utils';
 
 const Container = styled.div``;
 
@@ -55,16 +57,23 @@ const fileAccept = [
 
 interface Props {
   projectId: string;
-  mapConfigId: string;
+  mapConfig: IMapConfig;
   className?: string;
 }
 
 const GeoJsonImportButton = memo<Props>(
-  ({ projectId, mapConfigId, className }) => {
+  ({ projectId, mapConfig, className }) => {
     const { mutate: createProjectMapLayer } = useAddMapLayer();
+    const { formatMessage } = useIntl();
     const tenantLocales = useAppConfigurationLocales();
 
     const [importError, setImportError] = useState(false);
+
+    const layerType = getLayerType(mapConfig);
+    const hasExistingWebMap = !!mapConfig.data.attributes.esri_web_map_id;
+
+    const geoJsonImportDisabled =
+      layerType === 'CustomMaps::EsriFeatureLayer' || hasExistingWebMap;
 
     const handleGeoJsonImport = (event: any) => {
       const fileReader = new FileReader();
@@ -75,13 +84,13 @@ const GeoJsonImportButton = memo<Props>(
 
         setImportError(false);
 
-        if (mapConfigId && !isNilOrError(tenantLocales)) {
+        if (mapConfig.data.id && !isNilOrError(tenantLocales)) {
           createProjectMapLayer(
             {
               type: 'CustomMaps::GeojsonLayer',
               projectId,
               geojson,
-              id: mapConfigId,
+              id: mapConfig.data.id,
               title_multiloc: getUnnamedLayerTitleMultiloc(tenantLocales),
               default_enabled: true,
             },
@@ -106,10 +115,24 @@ const GeoJsonImportButton = memo<Props>(
         />
 
         <ButtonContainer>
-          <StyledButton icon="upload-file" buttonStyle="secondary">
-            <StyledLabel aria-hidden htmlFor="file-attachment-uploader" />
-            <FormattedMessage {...messages.import} />
-          </StyledButton>
+          <Tippy
+            maxWidth="250px"
+            placement="top"
+            content={formatMessage(messages.geojsonRemoveEsriTooltip)}
+            hideOnClick={true}
+            disabled={!geoJsonImportDisabled}
+          >
+            <div>
+              <StyledButton
+                icon="upload-file"
+                buttonStyle="secondary"
+                disabled={geoJsonImportDisabled}
+              >
+                <StyledLabel aria-hidden htmlFor="file-attachment-uploader" />
+                <FormattedMessage {...messages.import} />
+              </StyledButton>
+            </div>
+          </Tippy>
         </ButtonContainer>
 
         {importError && (
