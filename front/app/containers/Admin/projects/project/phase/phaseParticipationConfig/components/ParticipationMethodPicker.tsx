@@ -61,7 +61,9 @@ const ParticipationMethodPicker = ({
     useState<ParticipationMethod | null>(participation_method);
   const [methodToChangeTo, setMethodToChangeTo] =
     useState<ParticipationMethod | null>(null);
-  const [showSurveyOptions, setShowSurveyOptions] = useState(false);
+  const [showSurveyOptions, setShowSurveyOptions] = useState(
+    selectedMethod === 'native_survey'
+  );
   const [showChangeMethodModal, setShowChangeMethodModal] = useState(false);
   const closeModal = () => {
     setShowChangeMethodModal(false);
