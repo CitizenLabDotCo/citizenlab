@@ -9,6 +9,7 @@ import {
 import moment from 'moment';
 
 import useAuthUser from 'api/me/useAuthUser';
+import usePhases from 'api/phases/usePhases';
 import useProjects from 'api/projects/useProjects';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -44,6 +45,8 @@ import SurveyQuestionResultWidget from '../Widgets/SurveyQuestionResultWidget';
 import TextMultiloc from '../Widgets/TextMultiloc';
 import TwoColumn from '../Widgets/TwoColumn';
 
+import { findSurveyPhaseId, findIdeationPhaseId } from './utils';
+
 type ReportBuilderToolboxProps = {
   reportId: string;
 };
@@ -71,6 +74,8 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
       enabled: userIsModerator,
     }
   );
+
+  const { data: phases } = usePhases(projectId);
 
   if (!appConfigurationLocales || !authUser || (userIsModerator && !projects)) {
     return (
@@ -103,6 +108,9 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const selectedProjectId =
     projectId ?? (userIsModerator ? projects?.data[0]?.id : undefined);
 
+  const surveyPhaseId = phases ? findSurveyPhaseId(phases) : undefined;
+  const ideationPhaseId = phases ? findIdeationPhaseId(phases) : undefined;
+
   return (
     <Container>
       <Box>
@@ -133,14 +141,13 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
           />
         </Section>
         <Section>
-          {
-            // TODO: CL-2307 Only show this if there are surveys in the platform
-            // TODO: Add in the default project / phase
-          }
           <DraggableElement
             id="e2e-draggable-survey-question-result-widget"
             component={
-              <SurveyQuestionResultWidget projectId={selectedProjectId} />
+              <SurveyQuestionResultWidget
+                projectId={selectedProjectId}
+                phaseId={surveyPhaseId}
+              />
             }
             icon="survey"
             label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
@@ -153,6 +160,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
                 numberOfIdeas={5}
                 collapseLongText={false}
                 projectId={selectedProjectId}
+                phaseId={ideationPhaseId}
               />
             }
             icon="vote-up"
@@ -168,6 +176,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
                 showReactions={true}
                 showVotes={true}
                 projectId={selectedProjectId}
+                phaseId={ideationPhaseId}
               />
             }
             icon="idea"
