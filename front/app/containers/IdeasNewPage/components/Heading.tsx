@@ -113,7 +113,6 @@ export const Heading = ({
               <GoBackButton onClick={openModal} />
               {showEditSurveyButton && (
                 <Button
-                  data-cy="e2e-edit-survey-link"
                   icon="edit"
                   linkTo={linkToSurveyBuilder}
                   buttonStyle="primary-inverse"
