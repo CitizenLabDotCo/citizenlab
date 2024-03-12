@@ -93,6 +93,7 @@ const Summary = ({
       {!summary && <Spinner />}
 
       <Box
+        id="e2e-analysis-summary"
         flexDirection="column"
         justifyContent="space-between"
         h="460px"
@@ -137,6 +138,7 @@ const Summary = ({
             />
           </Button>
           <Button
+            id="e2e-explore-summary"
             buttonStyle="secondary"
             icon="eye"
             linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(

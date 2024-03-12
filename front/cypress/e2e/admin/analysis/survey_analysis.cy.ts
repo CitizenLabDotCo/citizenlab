@@ -1,4 +1,4 @@
-import { randomEmail, randomString } from '../../../support/commands';
+import { randomString } from '../../../support/commands';
 import moment = require('moment');
 
 const surveyQuestionResponses = [
@@ -48,7 +48,12 @@ describe('Admin: ideation analysis', () => {
           phaseId = phase.body.data.id;
 
           return cy
-            .apiCreateSurveyQuestions(phaseId, ['page', 'text'])
+            .apiCreateSurveyQuestions(phaseId, [
+              'page',
+              'text',
+              'select',
+              'number',
+            ])
             .then((survey) => {
               const surveyFields = survey.body.data;
 
@@ -65,10 +70,65 @@ describe('Admin: ideation analysis', () => {
     });
   });
 
-  it('shows the survey results page', () => {
+  it('shows and hides summaries on the survey results page', () => {
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/native-survey`);
-    cy.intercept('**/insights', { fixture: 'analysis_insights.json' });
-    // cy.get('.e2e-survey-results');
+    cy.intercept('GET', '**/insights', { fixture: 'analysis_insights.json' });
+
+    cy.get('#e2e-analysis-summary').should('exist');
+    cy.get('#e2e-analysis-actions').click();
+    cy.get('#e2e-hide-summaries').click();
+    cy.get('#e2e-analysis-summary').should('not.exist');
+    cy.get('#e2e-show-summaries').click();
+    cy.get('#e2e-analysis-summary').should('exist');
+  });
+
+  it('adds and removes questions from the analysis', () => {
+    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/native-survey`);
+    cy.intercept('GET', '**/insights', { fixture: 'analysis_insights.json' });
+
+    cy.get('#e2e-explore-summary').click();
+
+    // Launch modal
+    cy.get('#e2e-analysis-launch-modal').should('exist');
+    cy.get('#e2e-analysis-launch-modal-agree-button').click();
+
+    cy.get('[data-cy="analysis-summary"]').should('exist');
+    cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 12);
+    cy.get('[data-cy="e2e-analysis-custom-field-item"]').should(
+      'have.length',
+      1
+    );
+    cy.get('[data-cy="e2e-analysis-custom-field-item"]').should(
+      'contain',
+      'Question: text'
+    );
+
+    // Add question to analysis
+
+    cy.get('#e2e-analysis-toggle-show-all-questions-button').click();
+    cy.get('[data-cy="e2e-analysis-add-remove-additional-custom-field"]')
+      .first()
+      .click();
+    cy.get('#e2e-analysis-toggle-show-all-questions-button').click();
+    cy.get('[data-cy="e2e-analysis-custom-field-item"]').should(
+      'have.length',
+      2
+    );
+    cy.get('[data-cy="e2e-analysis-custom-field-item"]')
+      .first()
+      .should('contain', 'Question: text');
+    cy.get('[data-cy="e2e-analysis-custom-field-item"]')
+      .last()
+      .should('contain', 'Question: select');
+
+    // Remove question from analysis
+    cy.get(
+      '[data-cy="e2e-analysis-add-remove-additional-custom-field"]'
+    ).click();
+    cy.get('[data-cy="e2e-analysis-custom-field-item"]').should(
+      'have.length',
+      1
+    );
   });
 
   // after(() => {

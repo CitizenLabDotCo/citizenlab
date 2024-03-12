@@ -89,7 +89,12 @@ const Summary = ({ insight }: Props) => {
   const summaryText = summary.data.attributes.summary;
 
   return (
-    <Box key={summary.data.id} mb="24px" position="relative">
+    <Box
+      key={summary.data.id}
+      mb="24px"
+      position="relative"
+      data-cy="analysis-summary"
+    >
       <Divider />
 
       <Box>
