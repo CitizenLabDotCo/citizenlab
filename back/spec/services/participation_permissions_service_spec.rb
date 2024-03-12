@@ -38,7 +38,11 @@ describe ParticipationPermissionsService do
     end
 
     it "returns `nil` when we're in an native_survey context" do
-      project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'native_survey' })
+      project = create(:project_with_current_phase, current_phase_attrs: {
+        participation_method: 'native_survey',
+        native_survey_title_multiloc: { 'en' => 'Survey', 'nl-BE' => 'Vragenlijst' },
+        native_survey_button_multiloc: { 'en' => 'Take the survey', 'nl-BE' => 'De enquete invullen' }
+      })
       expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to be_nil
     end
 

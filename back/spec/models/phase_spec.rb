@@ -82,13 +82,15 @@ RSpec.describe Phase do
     it 'cannot be changed from a transitive method to a non-transitive one' do
       phase = create(:phase, participation_method: 'ideation')
       phase.participation_method = 'native_survey'
+      phase.native_survey_title_multiloc = { en: 'Survey' }
+      phase.native_survey_button_multiloc = { en: 'Take the survey' }
       phase.ideas_order = nil
       expect(phase.save).to be false
       expect(phase.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
     end
 
     it 'cannot be changed from a non-transitive method to a transitive one' do
-      phase = create(:phase, participation_method: 'native_survey')
+      phase = create(:native_survey_phase)
       phase.participation_method = 'voting'
       phase.voting_method = 'budgeting'
       phase.voting_max_total = 200
@@ -243,6 +245,46 @@ RSpec.describe Phase do
     it 'returns false otherwise' do
       phase = create(:poll_phase)
       expect(phase.native_survey?).to be false
+    end
+  end
+
+  describe 'native_survey_title_multiloc' do
+    it 'must contain a survey title if a native survey phase' do
+      phase = build(:native_survey_phase)
+
+      phase.native_survey_title_multiloc = { en: 'Survey' }
+      expect(phase).to be_valid
+
+      phase.native_survey_title_multiloc = {}
+      expect(phase).not_to be_valid
+
+      phase.native_survey_title_multiloc = nil
+      expect(phase).not_to be_valid
+    end
+
+    it 'does not need a survey title if not native survey' do
+      phase = build(:phase, native_survey_title_multiloc: {})
+      expect(phase).to be_valid
+    end
+  end
+
+  describe 'native_survey_button_multiloc' do
+    it 'must contain survey button text if a native survey phase' do
+      phase = build(:native_survey_phase)
+
+      phase.native_survey_button_multiloc = { en: 'Take the survey' }
+      expect(phase).to be_valid
+
+      phase.native_survey_button_multiloc = {}
+      expect(phase).not_to be_valid
+
+      phase.native_survey_button_multiloc = nil
+      expect(phase).not_to be_valid
+    end
+
+    it 'does not need a survey title if not native survey' do
+      phase = build(:phase, native_survey_button_multiloc: {})
+      expect(phase).to be_valid
     end
   end
 

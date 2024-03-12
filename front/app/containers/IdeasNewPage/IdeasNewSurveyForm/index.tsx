@@ -18,6 +18,7 @@ import { getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 
 import useInputSchema from 'hooks/useInputSchema';
+import useLocalize from 'hooks/useLocalize';
 
 import Form, { customAjv } from 'components/Form';
 import {
@@ -82,6 +83,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     phaseId,
   });
   const isSmallerThanPhone = useBreakpoint('phone');
+  const localize = useLocalize();
 
   const { data: draftIdea, status: draftIdeaStatus } =
     useDraftIdeaByPhaseId(phaseId);
@@ -91,8 +93,10 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
 
   const [initialFormData, setInitialFormData] = useState({});
   const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
-  const allowAnonymousPosting =
-    phaseFromUrl?.data.attributes.allow_anonymous_participation;
+  const phase = phaseFromUrl
+    ? phaseFromUrl.data
+    : getCurrentPhase(phases?.data);
+  const allowAnonymousPosting = phase?.attributes.allow_anonymous_participation;
 
   const userIsModerator =
     !isNilOrError(authUser) &&
@@ -268,17 +272,9 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
                 <>
                   <SurveyHeading
                     project={project.data}
-                    titleText={
-                      participationMethodConfig.getFormTitle ? (
-                        participationMethodConfig.getFormTitle({
-                          project: project.data,
-                          phases: phases?.data,
-                          phaseFromUrl: phaseFromUrl?.data,
-                        })
-                      ) : (
-                        <></>
-                      )
-                    }
+                    titleText={localize(
+                      phase?.attributes.native_survey_title_multiloc
+                    )}
                     canUserEditProject={userIsModerator}
                     loggedIn={!isNilOrError(authUser)}
                     percentageAnswered={percentageAnswered}
