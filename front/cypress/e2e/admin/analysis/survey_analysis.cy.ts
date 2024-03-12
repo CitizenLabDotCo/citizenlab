@@ -92,7 +92,8 @@ describe('Admin: ideation analysis', () => {
     cy.get('#e2e-analysis-launch-modal').should('exist');
     cy.get('#e2e-analysis-launch-modal-agree-button').click();
 
-    cy.get('[data-cy="analysis-summary"]').should('exist');
+    cy.get('[data-cy="e2e-analysis-summary"]').should('exist');
+    cy.get('[data-cy="e2e-analysis-question"]').should('exist');
     cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 12);
     cy.get('[data-cy="e2e-analysis-custom-field-item"]').should(
       'have.length',

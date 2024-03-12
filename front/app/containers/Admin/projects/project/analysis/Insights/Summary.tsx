@@ -93,7 +93,7 @@ const Summary = ({ insight }: Props) => {
       key={summary.data.id}
       mb="24px"
       position="relative"
-      data-cy="analysis-summary"
+      data-cy="e2e-analysis-summary"
     >
       <Divider />
 
