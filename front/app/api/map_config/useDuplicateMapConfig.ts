@@ -5,7 +5,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import { IMapConfig } from './types';
 
-const duplicateConfig = async (id: string) =>
+export const duplicateConfig = async (id: string) =>
   fetcher<IMapConfig>({
     path: `/map_configs/${id}/duplicate_map_config_and_layers`,
     action: 'post',

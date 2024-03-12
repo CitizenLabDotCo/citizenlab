@@ -3,6 +3,7 @@ import React, { useState, lazy } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
+import useDuplicateMapConfigs from 'api/map_config/useDuplicateMapConfigs';
 import usePhase from 'api/phases/usePhase';
 
 import useLocale from 'hooks/useLocale';
@@ -21,7 +22,6 @@ import {
   resetOptionsIfNotPersisted,
 } from '../utils';
 
-
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
 const SurveyFormBuilder = () => {
@@ -39,19 +39,21 @@ const SurveyFormBuilder = () => {
     projectId,
     phaseId: copyFrom ? copyFrom : phaseId,
   });
+  const mapConfigIds = customFields?.map((field) => field.map_config?.data?.id);
+  const customFieldsNewMapConfigs = useDuplicateMapConfigs(mapConfigIds || []);
 
   const goBackUrl = `/admin/projects/${projectId}/phases/${phaseId}/native-survey`;
   const downloadPdfLink = `${API_PATH}/phases/${phaseId}/custom_fields/to_pdf`;
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 
-  if (!phase || !customFields) return null;
+  if (!phase || !customFields || !customFieldsNewMapConfigs) return null;
 
   const surveyFormPersisted =
     phase.data.attributes.custom_form_persisted || false;
 
   const formCustomFields = copyFrom
-    ? await resetCopiedForm(customFields)
+    ? resetCopiedForm(customFields, customFieldsNewMapConfigs)
     : resetOptionsIfNotPersisted(customFields, surveyFormPersisted);
 
   const handleExportPDF = async ({ personal_data }: FormValues) => {
