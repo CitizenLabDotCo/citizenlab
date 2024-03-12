@@ -15,12 +15,14 @@ interface Option {
 }
 
 interface Props {
+  id?: string;
   projectId?: string;
   emptyOptionMessage?: MessageDescriptor;
   onProjectFilter: (filter: Option) => void;
 }
 
 const ProjectFilter = ({
+  id,
   projectId,
   emptyOptionMessage,
   onProjectFilter,
@@ -48,7 +50,7 @@ const ProjectFilter = ({
 
   return (
     <BaseProjectFilter
-      id="e2e-report-builder-project-filter-box"
+      id={id || 'e2e-report-builder-project-filter-box'}
       width="100%"
       mb="20px"
       projectId={projectId}

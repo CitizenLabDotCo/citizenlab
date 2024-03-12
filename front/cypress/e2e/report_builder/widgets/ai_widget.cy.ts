@@ -120,7 +120,9 @@ describe('Report builder: AI widget', () => {
     cy.get('#e2e-report-builder-ai-tab').click();
 
     // Select project, phase and question
-    cy.get('#e2e-report-builder-project-filter-box select').select(projectId);
+    cy.get('#e2e-report-builder-analysis-project-filter-box select').select(
+      projectId
+    );
     cy.get('#e2e-phase-filter').select(surveyPhaseId);
     cy.get('.e2e-question-select select').first().select(surveyFields[1].id);
 
@@ -138,7 +140,9 @@ describe('Report builder: AI widget', () => {
     cy.get('#e2e-report-builder-ai-tab').click();
 
     // Select project, phase and question
-    cy.get('#e2e-report-builder-project-filter-box select').select(projectId);
+    cy.get('#e2e-report-builder-analysis-project-filter-box select').select(
+      projectId
+    );
     cy.get('#e2e-phase-filter').select(surveyPhaseId);
     cy.get('.e2e-question-select select').first().select(surveyFields[1].id);
 
@@ -171,7 +175,9 @@ describe('Report builder: AI widget', () => {
     cy.get('#e2e-report-builder-ai-tab').click();
 
     // Select project, phase and question
-    cy.get('#e2e-report-builder-project-filter-box select').select(projectId);
+    cy.get('#e2e-report-builder-analysis-project-filter-box select').select(
+      projectId
+    );
     cy.get('#e2e-phase-filter').select(ideationPhaseId);
 
     // Expect empty state at first
@@ -187,7 +193,9 @@ describe('Report builder: AI widget', () => {
     cy.get('#e2e-report-builder-ai-tab').click();
 
     // Select project, phase and question
-    cy.get('#e2e-report-builder-project-filter-box select').select(projectId);
+    cy.get('#e2e-report-builder-analysis-project-filter-box select').select(
+      projectId
+    );
     cy.get('#e2e-phase-filter').select(ideationPhaseId);
 
     // Expect the insights to be shown
