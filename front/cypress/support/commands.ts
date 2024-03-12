@@ -260,7 +260,10 @@ function apiSignup(
       const jwt = response.body.jwt;
 
       return emailConfirmation(jwt).then(() => {
-        return originalResponse;
+        return {
+          ...originalResponse,
+          _jwt: jwt,
+        };
       });
     });
   });
@@ -333,10 +336,10 @@ function apiUpdateCurrentUser(attrs: IUserUpdate) {
 function apiUpdateUserCustomFields(
   email: string,
   password: string,
-  custom_field_values: Record<string, any>
+  custom_field_values: Record<string, any>,
+  jwt?: any
 ) {
-  return cy.apiLogin(email, password).then((response) => {
-    const jwt = response.body.jwt;
+  const makeRequest = (jwt: any) => {
     const userId = jwtDecode<{ sub: string }>(jwt).sub;
 
     return cy.request({
@@ -352,7 +355,17 @@ function apiUpdateUserCustomFields(
         },
       },
     });
-  });
+  };
+
+  if (jwt) {
+    return makeRequest(jwt);
+  } else {
+    return cy.apiLogin(email, password).then((response) => {
+      const jwt = response.body.jwt;
+
+      return makeRequest(jwt);
+    });
+  }
 }
 
 function apiRemoveUser(userId: string) {
@@ -1686,11 +1699,10 @@ function apiCreateSurveyResponse(
   email: string,
   password: string,
   project_id: string,
-  fields: Record<string, any>
+  fields: Record<string, any>,
+  jwt?: any
 ) {
-  return cy.apiLogin(email, password).then((response) => {
-    const jwt = response.body.jwt;
-
+  const makeRequest = (jwt: any) => {
     return cy.request({
       headers: {
         'Content-Type': 'application/json',
@@ -1706,7 +1718,16 @@ function apiCreateSurveyResponse(
         },
       },
     });
-  });
+  };
+
+  if (jwt) {
+    return makeRequest(jwt);
+  } else {
+    return cy.apiLogin(email, password).then((response) => {
+      const jwt = response.body.jwt;
+      return makeRequest(jwt);
+    });
+  }
 }
 
 // https://stackoverflow.com/a/16012490
