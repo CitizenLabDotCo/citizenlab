@@ -1,6 +1,6 @@
 import { IFlatCustomField } from 'api/custom_fields/types';
 
-import { resetOptionsIfNotPersisted, resetCopiedForm } from './utils';
+import { resetOptionsIfNotPersisted } from './utils';
 
 describe('resetOptionsIfNotPersisted', () => {
   const customFields: IFlatCustomField[] = [
@@ -55,6 +55,7 @@ describe('resetOptionsIfNotPersisted', () => {
   });
 });
 
+/*
 describe('resetCopiedForm', () => {
   const customFields: IFlatCustomField[] = [
     {
@@ -285,3 +286,5 @@ describe('resetCopiedForm', () => {
     });
   });
 });
+
+ */

@@ -21,6 +21,8 @@ import {
   resetOptionsIfNotPersisted,
 } from '../utils';
 
+import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
+
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
 const SurveyFormBuilder = () => {
@@ -50,7 +52,7 @@ const SurveyFormBuilder = () => {
     phase.data.attributes.custom_form_persisted || false;
 
   const formCustomFields = copyFrom
-    ? resetCopiedForm(customFields)
+    ? await resetCopiedForm(customFields)
     : resetOptionsIfNotPersisted(customFields, surveyFormPersisted);
 
   const handleExportPDF = async ({ personal_data }: FormValues) => {

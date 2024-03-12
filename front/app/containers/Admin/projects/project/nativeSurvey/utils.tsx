@@ -23,7 +23,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import AccessRightsNotice from './AccessRightsNotice';
 import messages from './messages';
-// import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
+import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
   formBuilderTitle: messages.survey,
@@ -100,44 +100,42 @@ export const getFormActionsConfig = (
 };
 
 // If copying another form, reset IDs for fields and add temp-ids to options
-export const resetCopiedForm = (customFields: IFlatCustomField[]) => {
-  // const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
+export const resetCopiedForm = async (customFields: IFlatCustomField[]) => {
+  const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
 
   // Set the field IDs
   const logicIdMap = { survey_end: 'survey_end' };
-  const newFields = // await Promise.all(
-    customFields?.map(
-      (field: IFlatCustomField) => {
-        const sourceFieldId = field.id;
-        const { ...newField } = field;
-        newField.id = `${Math.floor(Date.now() * Math.random())}`;
-        if (newField.input_type === 'page') {
-          newField.temp_id = generateTempId();
-          logicIdMap[sourceFieldId] = newField.temp_id;
-        }
-        if (newField.options && newField.options.length > 0) {
-          newField.options = newField.options?.map((option: IOptionsType) => {
-            const sourceOptionId = option.id;
-            const { ...newOption } = option;
-            delete newOption.id;
-            newOption.temp_id = generateTempId();
-            if (sourceOptionId) logicIdMap[sourceOptionId] = newOption.temp_id;
-            return newOption;
-          });
-        }
-
-        // Duplicate the map config if this is a mapping question
-        // if (field.input_type === 'point' && field.map_config?.data?.id) {
-        //   const newMapConfig = await duplicateMapConfig(field.map_config.data.id);
-        //
-        //   newField.mapConfig = newMapConfig;
-        //   newField.map_config_id = newMapConfig.data.id;
-        // }
-
-        return newField;
+  const newFields = await Promise.all(
+    customFields?.map((field: IFlatCustomField) => {
+      const sourceFieldId = field.id;
+      const { ...newField } = field;
+      newField.id = `${Math.floor(Date.now() * Math.random())}`;
+      if (newField.input_type === 'page') {
+        newField.temp_id = generateTempId();
+        logicIdMap[sourceFieldId] = newField.temp_id;
       }
-      // )
-    );
+      if (newField.options && newField.options.length > 0) {
+        newField.options = newField.options?.map((option: IOptionsType) => {
+          const sourceOptionId = option.id;
+          const { ...newOption } = option;
+          delete newOption.id;
+          newOption.temp_id = generateTempId();
+          if (sourceOptionId) logicIdMap[sourceOptionId] = newOption.temp_id;
+          return newOption;
+        });
+      }
+
+      // Duplicate the map config if this is a mapping question
+      // TODO: This causes async errors
+      if (field.input_type === 'point' && field.map_config?.data?.id) {
+        duplicateMapConfig(field.map_config.data.id).then((data) => {
+          newField.mapConfig = data;
+          newField.map_config_id = data.data.id;
+        });
+      }
+      return newField;
+    })
+  );
 
   // Update the logic
   return newFields?.map((field: IFlatCustomField) => {
