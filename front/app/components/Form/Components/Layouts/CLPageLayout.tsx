@@ -39,13 +39,11 @@ import PageControlButtons from './PageControlButtons';
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
   width: 100%;
-  padding: 32px 32px 0 32px;
+  padding: 24px;
+  flex-direction: column;
   ${media.phone`
-    padding: 24px 16px 0 16px;
+    padding: 16px;
   `}
-  &:last-child {
-    margin-bottom: 0;
-  }
 `;
 
 const CLPageLayout = memo(
@@ -192,20 +190,17 @@ const CLPageLayout = memo(
         <Box
           width="100%"
           height="100%"
+          pt="24px"
+          pb="190px"
           maxWidth="700px"
           display="flex"
           flexDirection="column"
-          padding="12px 20px 30px 20px"
+          justifyContent="center"
+          alignItems="center"
           margin="auto"
           position="relative"
         >
-          <Box
-            display="flex"
-            flex="1"
-            height="100%"
-            mb="160px"
-            overflowY="auto"
-          >
+          <Box display="flex" flex="1" height="100%" overflowY="auto">
             {uiPages.map((page, index) => {
               const pageElements = extractElementsByOtherOptionLogic(
                 page,
