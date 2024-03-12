@@ -17,6 +17,7 @@ import {
   IFlatCustomFieldWithIndex,
   IOptionsType,
 } from 'api/custom_fields/types';
+import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
 import {
   FormBuilderConfig,
@@ -35,7 +36,6 @@ import FieldTitle from './FieldTitle';
 import IconsAndBadges from './IconsAndBadges';
 import Logic from './Logic';
 import messages from './messages';
-import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {

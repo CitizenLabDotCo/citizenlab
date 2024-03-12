@@ -8,6 +8,7 @@ import {
   IOptionsType,
   QuestionRuleType,
 } from 'api/custom_fields/types';
+import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 import { IPhaseData, UpdatePhaseObject } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
@@ -23,7 +24,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import AccessRightsNotice from './AccessRightsNotice';
 import messages from './messages';
-import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
   formBuilderTitle: messages.survey,

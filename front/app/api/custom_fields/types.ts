@@ -1,9 +1,10 @@
 import { IRelationship, Multiloc } from 'typings';
 
+import { IMapConfig } from 'api/map_config/types';
+
 import { Keys } from 'utils/cl-react-query/types';
 
 import customFieldsKeys from './keys';
-import { IMapConfig } from 'api/map_config/types';
 
 export type CustomFieldsKeys = Keys<typeof customFieldsKeys>;
 

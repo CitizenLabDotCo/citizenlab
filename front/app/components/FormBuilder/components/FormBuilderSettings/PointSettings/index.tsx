@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import customFieldsKeys from 'api/custom_fields/keys';
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
+import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 
@@ -24,7 +25,6 @@ import { useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import messages from './messages';
-import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
 const StyledLabel = styled(Label)`
   height: 100%;
@@ -94,7 +94,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
     duplicateMapConfig,
     mapConfigId,
     mapConfigIdName,
-    projectMapConfig?.data?.attributes,
+    projectMapConfig?.data?.id,
     setValue,
   ]);
 

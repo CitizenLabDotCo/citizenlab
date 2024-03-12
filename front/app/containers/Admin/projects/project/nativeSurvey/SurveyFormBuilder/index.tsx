@@ -21,7 +21,6 @@ import {
   resetOptionsIfNotPersisted,
 } from '../utils';
 
-import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
