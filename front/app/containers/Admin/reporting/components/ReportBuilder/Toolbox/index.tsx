@@ -14,6 +14,8 @@ import useProjects from 'api/projects/useProjects';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
+import SurveyResultsWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_deprecated/SurveyResultsWidget/index';
+import TitleWidget from 'containers/Admin/reporting/components/ReportBuilder/Widgets/_deprecated/TitleMultiloc/index';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
@@ -164,6 +166,18 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={<TextMultiloc />}
             icon="text"
             label={formatMessage(WIDGET_TITLES.TextMultiloc)}
+          />
+          <DraggableElement
+            id="e2e-draggable-text"
+            component={<TitleWidget />}
+            icon="text"
+            label={'Title (deprecated)'}
+          />
+          <DraggableElement
+            id="e2e-draggable-text"
+            component={<SurveyResultsWidget />}
+            icon="text"
+            label={'Survey Results (deprecated)'}
           />
           <DraggableElement
             id="e2e-draggable-image"
