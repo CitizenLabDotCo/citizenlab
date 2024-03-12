@@ -8,6 +8,7 @@ import {
   Box,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import Tippy from '@tippyjs/react';
 import { useParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
@@ -36,7 +37,7 @@ const AnalysisBanner = () => {
   const { mutate: createAnalysis, isLoading } = useAddAnalysis();
   const { formatMessage } = useIntl();
 
-  const analysisEnabled = useFeatureFlag({ name: 'analysis' });
+  const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
 
   const handleGoToAnalysis = () => {
     if (analyses?.data.length) {
@@ -60,7 +61,7 @@ const AnalysisBanner = () => {
     }
   };
 
-  if (!analysisEnabled || isLoadingAnalyses) return null;
+  if (isLoadingAnalyses) return null;
 
   return (
     <Box
@@ -78,18 +79,24 @@ const AnalysisBanner = () => {
           {formatMessage(messages.analysisSubtitle)}
         </Text>
       </Box>
-      <Button
-        buttonStyle="text"
-        textColor={colors.orange}
-        onClick={handleGoToAnalysis}
-        fontWeight="bold"
-        icon="flash"
-        iconColor={colors.orange}
-        id="e2e-analysis-banner-button"
-        processing={isLoading}
+      <Tippy
+        content={<p>{formatMessage(messages.analysisUpsellTooltip)}</p>}
+        disabled={!isAnalysisEnabled}
       >
-        {formatMessage(messages.analysisButton)}
-      </Button>
+        <Button
+          buttonStyle="text"
+          textColor={colors.orange}
+          onClick={handleGoToAnalysis}
+          fontWeight="bold"
+          icon={isAnalysisEnabled ? 'flash' : 'lock'}
+          iconColor={colors.orange}
+          id="e2e-analysis-banner-button"
+          processing={isLoading}
+          disabled={!isAnalysisEnabled}
+        >
+          {formatMessage(messages.analysisButton)}
+        </Button>
+      </Tippy>
     </Box>
   );
 };
