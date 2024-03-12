@@ -50,6 +50,7 @@ describe('Survey question widget', () => {
           'page',
           'select',
           'multiselect',
+          'linear_scale',
         ]);
       })
       .then((response) => {

@@ -1659,20 +1659,33 @@ const createBaseCustomField = (
   logic: {},
   required: false,
   input_type,
-  options:
-    ['select', 'multiselect'].indexOf(input_type) > -1
-      ? [
-          {
-            temp_id: `TEMP-ID-${randomString()}`,
-            title_multiloc: { en: `${input_type}: Option 1` },
-          },
-          {
-            temp_id: `TEMP-ID-${randomString()}`,
-            title_multiloc: { en: `${input_type}: Option 2` },
-          },
-        ]
-      : undefined,
+  options: getOptions(input_type),
+  ordering: i,
+  ...(input_type === 'linear_scale'
+    ? {
+        maximum: 5,
+        minimum_label_multiloc: { en: 'Min label' },
+        maximum_label_multiloc: { en: 'Max label' },
+      }
+    : {}),
 });
+
+const getOptions = (input_type: string) => {
+  if (['select', 'multiselect'].indexOf(input_type) > -1) {
+    return [
+      {
+        temp_id: `TEMP-ID-${randomString()}`,
+        title_multiloc: { en: `${input_type}: Option 1` },
+      },
+      {
+        temp_id: `TEMP-ID-${randomString()}`,
+        title_multiloc: { en: `${input_type}: Option 2` },
+      },
+    ];
+  }
+
+  return undefined;
+};
 
 function apiCreateSurveyQuestions(
   phaseId: string,
