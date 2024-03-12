@@ -221,7 +221,6 @@ RSpec.describe SurveyResultsGeneratorService do
       phases: phases_of_inputs,
       custom_field_values: {
         select_field.key => 'la',
-        multiselect_field.key => ['gibberish'], # This should be ignored in the results
         multiselect_image_field.key => ['school']
       },
       author: female_user

@@ -159,8 +159,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def build_select_response(answers, field, group_field)
-    nil_answer_count = answers.detect { |answer| answer[:answer].nil? }[:count]
-    question_response_count = @inputs.count - nil_answer_count
+    # TODO: This is an additional query for selects so performance issue here
+    question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
 
     attributes = core_field_attributes(field, question_response_count).merge({
       grouped: !!group_field,
