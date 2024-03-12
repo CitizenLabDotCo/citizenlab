@@ -97,11 +97,13 @@ const SurveyHeading = ({
                   data-cy="e2e-edit-survey-link"
                   icon="edit"
                   linkTo={linkToSurveyBuilder}
-                  buttonStyle="text"
+                  buttonStyle="primary-inverse"
                   textDecorationHover="underline"
                   hidden={!canUserEditProject}
                   mr="12px"
-                />
+                >
+                  <FormattedMessage {...messages.editSurvey} />
+                </Button>
               )}
               <IconButton
                 iconName="close"
