@@ -88,7 +88,7 @@ const SurveyHeading = ({
             p="14px 24px"
             borderBottom={`1px solid ${colors.divider}`}
           >
-            <Text color={'tenantPrimary'} variant="bodyS" fontSize="m">
+            <Text color={'tenantPrimary'} variant="bodyS" fontSize="m" my="0px">
               {titleText}
             </Text>
             <Box display="flex">
