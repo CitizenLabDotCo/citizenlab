@@ -7,7 +7,7 @@ import { isAdmin, isProjectModerator } from '../roles';
 definePermissionRule(
   'automatedCampaign',
   'manage',
-  (_campaign: string, user: IUser) => {
+  (_campaign: string, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
@@ -15,7 +15,7 @@ definePermissionRule(
 definePermissionRule(
   'manualCampaign',
   'manage',
-  (_campaign: string, user: IUser) => {
+  (_campaign: string, user: IUser | undefined) => {
     return isAdmin(user) || isProjectModerator(user);
   }
 );

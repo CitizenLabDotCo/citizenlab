@@ -8,7 +8,7 @@ import { isAdmin, isProjectModerator } from '../roles';
 definePermissionRule(
   'project',
   'create',
-  (_project: IProjectData, user: IUser) => {
+  (_project: IProjectData, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
@@ -16,7 +16,7 @@ definePermissionRule(
 definePermissionRule(
   'project',
   'delete',
-  (_project: IProjectData, user: IUser) => {
+  (_project: IProjectData, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
@@ -24,14 +24,14 @@ definePermissionRule(
 definePermissionRule(
   'project',
   'reorder',
-  (_project: IProjectData, user: IUser) => {
+  (_project: IProjectData, user: IUser | undefined) => {
     return isAdmin(user);
   }
 );
 
 export function canModerateProject(
   projectId: string | null | undefined,
-  user: IUser
+  user: IUser | undefined
 ) {
   if (projectId) {
     return isAdmin(user) || isProjectModerator(user, projectId);
@@ -43,7 +43,7 @@ export function canModerateProject(
 definePermissionRule(
   'project',
   'moderate',
-  (project: IProjectData, user: IUser) => {
+  (project: IProjectData, user: IUser | undefined) => {
     return canModerateProject(project.id, user);
   }
 );

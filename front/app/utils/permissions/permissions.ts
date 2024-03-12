@@ -16,14 +16,12 @@ interface IResourceData {
   [key: string]: any;
 }
 
-interface IPermissionRule {
-  (
-    resource: TPermissionItem | null,
-    user: IUser | null,
-    tenant: IAppConfigurationData,
-    context?: any
-  ): boolean;
-}
+type IPermissionRule = (
+  resource: TPermissionItem | null,
+  user: IUser | undefined,
+  tenant: IAppConfigurationData,
+  context?: any
+) => boolean;
 
 interface IPermissionRules {
   [key: string]: {
@@ -75,7 +73,7 @@ const usePermission = ({
   const rule = getPermissionRule(resourceType, action);
 
   if (rule && appConfig) {
-    return rule(item, user || null, appConfig.data, context);
+    return rule(item, user, appConfig.data, context);
   } else {
     throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;
   }
