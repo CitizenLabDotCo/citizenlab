@@ -35,8 +35,8 @@ export default defineMessages({
     defaultMessage: 'DEPRECATED',
   },
   warningBanner: {
-    id: 'app.containers.Admin.reporting.warningBanner',
+    id: 'app.containers.Admin.reporting.warningBanner2',
     defaultMessage:
-      'On this page, the report shows the latest platform data. On other pages, a snapshot of the report is shown. Snapshots are taken when you save the report on this page.',
+      "Graphs and numbers in this report don't automatically update for end users. Save the report to update the numbers.",
   },
 });
