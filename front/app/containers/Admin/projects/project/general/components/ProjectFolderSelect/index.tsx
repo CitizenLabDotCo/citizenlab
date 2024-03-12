@@ -6,7 +6,6 @@ import {
   IconTooltip,
   Error,
 } from '@citizenlab/cl2-component-library';
-import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { IOption } from 'typings';
 
@@ -20,7 +19,7 @@ import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/project
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError, isNil } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
@@ -41,8 +40,8 @@ const ProjectFolderSelect = ({
   projectAttrs: { folder_id },
   onProjectAttributesDiffChange,
   isNewProject,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
   const { data: projectFolders } = useProjectFolders({});
   const { data: authUser } = useAuthUser();
 
@@ -197,4 +196,4 @@ const ProjectFolderSelect = ({
   return null;
 };
 
-export default injectIntl(ProjectFolderSelect);
+export default ProjectFolderSelect;

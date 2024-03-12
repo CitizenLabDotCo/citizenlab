@@ -11,6 +11,7 @@ import GraphCard from 'components/admin/GraphCard';
 import { NoDataContainer } from 'components/admin/GraphWrappers';
 
 import { useIntl } from 'utils/cl-intl';
+import { momentToIsoDate } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 import Chart from './Chart';
@@ -30,9 +31,9 @@ const GenderChart = ({
   const { formatMessage } = useIntl();
 
   const { data: usersByGender } = useUsersByGenderLive({
-    startAtMoment: startAt ? moment(startAt) : null,
-    endAtMoment: endAt ? moment(endAt) : null,
-    groupId: currentGroupFilter,
+    start_at: startAt ? momentToIsoDate(moment(startAt)) : null,
+    end_at: endAt ? momentToIsoDate(moment(endAt)) : null,
+    group_id: currentGroupFilter,
   });
   const serie = convertToGraphFormat(usersByGender, formatMessage);
   const graphRef = useRef();

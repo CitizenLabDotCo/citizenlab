@@ -1,10 +1,14 @@
 import { useVisitorsTrafficSourcesLive } from 'api/graph_data_units';
 
+import { ProjectId, Dates } from 'components/admin/GraphCards/typings';
+
 import { useIntl } from 'utils/cl-intl';
+import { momentToIsoDate } from 'utils/dateUtils';
 
 import { parsePieData, parseExcelData } from './parse';
 import { getTranslations } from './translations';
-import { QueryParameters } from './typings';
+
+type QueryParameters = ProjectId & Dates;
 
 export default function useVisitorsReferrerTypes({
   projectId,
@@ -12,9 +16,9 @@ export default function useVisitorsReferrerTypes({
   endAtMoment,
 }: QueryParameters) {
   const { data: analytics } = useVisitorsTrafficSourcesLive({
-    projectId,
-    startAtMoment,
-    endAtMoment,
+    project_id: projectId,
+    start_at: momentToIsoDate(startAtMoment),
+    end_at: momentToIsoDate(endAtMoment),
   });
 
   const { formatMessage } = useIntl();
