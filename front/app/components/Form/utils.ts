@@ -27,7 +27,7 @@ const iterateSchema = (
 export const getFormSchemaAndData = (
   schema: JsonSchema7,
   uiSchema: Layout | PageCategorization,
-  data: Record<string, any>,
+  data: FormData,
   ajv: Ajv
 ) => {
   const dataWithoutHiddenElements = {};
@@ -48,7 +48,7 @@ export const getFormSchemaAndData = (
         ? isPageVisible && isElementVisible
         : isElementVisible;
 
-    if (showInData) {
+    if (showInData && data) {
       dataWithoutHiddenElements[key] = data[key];
       visibleElements.push(key);
     }
