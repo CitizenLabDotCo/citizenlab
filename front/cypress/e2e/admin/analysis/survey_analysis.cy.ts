@@ -43,6 +43,8 @@ describe('Admin: survey analysis', () => {
           canPost: true,
           canComment: true,
           canReact: true,
+          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+          nativeSurveyTitleMultiloc: { en: 'Survey' },
         })
         .then((phase) => {
           phaseId = phase.body.data.id;

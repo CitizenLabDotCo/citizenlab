@@ -45,6 +45,8 @@ describe('Report builder: AI widget', () => {
         canPost: true,
         canComment: true,
         canReact: true,
+        nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+        nativeSurveyTitleMultiloc: { en: 'Survey' },
       }).then((phase) => {
         surveyPhaseId = phase.body.data.id;
 
