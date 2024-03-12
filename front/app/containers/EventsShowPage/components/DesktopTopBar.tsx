@@ -12,7 +12,7 @@ import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../messages';
 
@@ -34,8 +34,8 @@ const TopBar = ({ project, event }: Props) => {
   const location = useLocation();
   const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();
-  const isAdminUser = isAdmin(user);
-  const isModerator = user ? isProjectModerator(user, project.id) : false;
+  const projectId = project.id;
+  const canModerate = user ? canModerateProject(projectId, user) : false;
 
   return (
     <Bar>
@@ -49,7 +49,7 @@ const TopBar = ({ project, event }: Props) => {
               : clHistory.push(`/projects/${project.attributes.slug}`);
           }}
         />
-        {(isAdminUser || isModerator) && event && (
+        {canModerate && event && (
           <Button
             buttonStyle="secondary"
             m="0px"
@@ -59,7 +59,7 @@ const TopBar = ({ project, event }: Props) => {
             text={formatMessage(messages.editEvent)}
             onClick={() => {
               clHistory.push(
-                `/admin/projects/${project.id}/settings/events/${event.id}`
+                `/admin/projects/${projectId}/settings/events/${event.id}`
               );
             }}
           />
