@@ -279,7 +279,6 @@ const ParentCommentForm = ({
   };
 
   // Ideally this is managed outside of this component.
-  // If projectId is provided, we assume this component is used in a project context
   const isModerator = {
     idea: projectId ? canModerateProject(projectId, authUser) : false,
     initiative: canModerateInitiative(authUser),

@@ -86,8 +86,6 @@ const CommentHeader = ({
   const { data: author } = useUserById(authorId);
 
   // Ideally this is managed outside of this component.
-  // If projectId is provided, we assume this component is used in a project context
-  // projectId
   const isModerator = author
     ? {
         idea: projectId ? canModerateProject(projectId, author) : false,
@@ -117,6 +115,7 @@ const CommentHeader = ({
           fontWeight={400}
           underline={true}
           anonymous={commentAttributes.anonymous}
+          postType={postType}
         />
       </Left>
       <Right>

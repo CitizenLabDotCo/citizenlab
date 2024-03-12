@@ -116,6 +116,7 @@ export interface Props {
   color?: string;
   authorHash?: string;
   anonymous?: boolean;
+  postType: 'idea' | 'initiative';
 }
 
 const Author = memo(
@@ -136,17 +137,18 @@ const Author = memo(
     color,
     underline,
     anonymous,
+    postType,
   }: Props) => {
     const locale = useLocale();
     const { data: author } = useUserById(authorId);
-    const authorCanModerate =
-      author &&
-      showModeration &&
-      // Ideally this is managed outside of this component.
-      // If projectId is provided, we assume this component is used in a project context
-      (projectId
-        ? canModerateProject(projectId, { data: author.data })
-        : canModerateInitiative({ data: author.data }));
+    // Ideally this is managed outside of this component.
+    const canModerate = author
+      ? {
+          idea: projectId ? canModerateProject(projectId, author) : false,
+          initiative: canModerateInitiative(author),
+        }[postType]
+      : false;
+    const showModerationStyles = showModeration && canModerate;
 
     if (!isNilOrError(locale)) {
       return (
@@ -158,7 +160,7 @@ const Author = memo(
                 authorHash={authorHash}
                 size={size}
                 isLinkToProfile={isLinkToProfile}
-                moderator={authorCanModerate}
+                moderator={showModerationStyles}
                 bgColor={avatarBadgeBgColor}
               />
             )}
@@ -173,7 +175,7 @@ const Author = memo(
                 <UserName
                   userId={authorId}
                   isLinkToProfile={isLinkToProfile}
-                  canModerate={authorCanModerate}
+                  canModerate={showModerationStyles}
                   fontWeight={fontWeight}
                   fontSize={fontSize}
                   color={color}

@@ -67,6 +67,7 @@ interface Props {
   commentType: 'parent' | 'child';
   commentAttributes: IPresentInternalComment;
   authorId: string | null;
+  postType: 'initiative' | 'idea';
 }
 
 const InternalCommentHeader = ({
@@ -75,6 +76,7 @@ const InternalCommentHeader = ({
   className,
   commentAttributes,
   authorId,
+  postType,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -98,6 +100,7 @@ const InternalCommentHeader = ({
           fontSize={fontSizes.base}
           fontWeight={400}
           underline={true}
+          postType={postType}
         />
       </Left>
       <Right>

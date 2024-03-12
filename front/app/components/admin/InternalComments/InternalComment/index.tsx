@@ -82,6 +82,7 @@ interface Props {
   hasChildComments?: boolean;
   last?: boolean;
   className?: string;
+  postType: 'idea' | 'initiative';
 }
 
 const InternalComment = ({
@@ -93,6 +94,7 @@ const InternalComment = ({
   hasChildComments,
   last,
   className,
+  postType,
 }: Props) => {
   const { data: comment } = useInternalComment(commentId);
   const { hash } = useLocation();
@@ -175,6 +177,7 @@ const InternalComment = ({
                 commentType={commentType}
                 className={commentType === 'parent' ? 'marginBottom' : ''}
                 authorId={authorId}
+                postType={postType}
               />
 
               <Content>
