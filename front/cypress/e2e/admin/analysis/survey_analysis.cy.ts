@@ -67,6 +67,7 @@ describe('Admin: ideation analysis', () => {
 
   it('shows the survey results page', () => {
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/native-survey`);
+    cy.intercept('**/insights', { fixture: 'analysis_insights.json' });
     // cy.get('.e2e-survey-results');
   });
 

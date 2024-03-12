@@ -1,0 +1,60 @@
+{
+  "data": [
+    {
+      "id": "e4e8aa0c-ff8e-49d0-8faf-d23bdfdb3214",
+      "type": "insight",
+      "relationships": {
+        "insightable": {
+          "data": {
+            "id": "3d081806-bcee-494f-a040-cb78eaaef8d5",
+            "type": "summary"
+          }
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "id": "f8b78769-293d-45f4-b4ef-df09ea361a17",
+      "type": "background_task",
+      "attributes": {
+        "progress": null,
+        "state": "succeeded",
+        "started_at": "2024-03-12T08:11:21.897Z",
+        "ended_at": "2024-03-12T08:11:32.650Z",
+        "updated_at": "2024-03-12T08:11:32.653Z",
+        "created_at": "2024-03-12T08:11:21.674Z",
+        "type": "summarization_task",
+        "auto_tagging_method": null
+      }
+    },
+    {
+      "id": "3d081806-bcee-494f-a040-cb78eaaef8d5",
+      "type": "summary",
+      "attributes": {
+        "summary": "Respondents provided a series of survey responses, ranging from the first to the twelfth. However, without actual content in the responses, it is impossible to identify trends or common themes. Each response is simply labeled with a sequential identifier indicating its position in the series.",
+        "filters": {
+          "input_custom_field_no_empty_values": true
+        },
+        "custom_field_ids": {
+          "main_custom_field_id": "f48b6eb2-3f68-4e77-ba73-38cd9a7d6647",
+          "additional_custom_field_ids": []
+        },
+        "accuracy": 0.8,
+        "created_at": "2024-03-12T08:11:21.682Z",
+        "updated_at": "2024-03-12T08:11:32.755Z",
+        "missing_inputs_count": 0,
+        "generated_at": "2024-03-12T08:11:32.676Z",
+        "inputs_count": 12
+      },
+      "relationships": {
+        "background_task": {
+          "data": {
+            "id": "f8b78769-293d-45f4-b4ef-df09ea361a17",
+            "type": "background_task"
+          }
+        }
+      }
+    }
+  ]
+}
