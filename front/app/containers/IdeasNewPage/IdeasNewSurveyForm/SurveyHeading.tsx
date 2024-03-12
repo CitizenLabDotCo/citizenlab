@@ -24,6 +24,7 @@ type Props = {
   titleText: string | React.ReactNode;
   canUserEditProject: boolean;
   loggedIn?: boolean;
+  percentageAnswered: number;
 };
 
 const SurveyHeading = ({
@@ -31,6 +32,7 @@ const SurveyHeading = ({
   titleText,
   canUserEditProject,
   loggedIn,
+  percentageAnswered,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
@@ -62,6 +64,13 @@ const SurveyHeading = ({
         top={isSmallerThanPhone ? '0px' : undefined}
         zIndex="3"
       >
+        <Box w="100%" background={colors.background}>
+          <Box
+            w={`${percentageAnswered}%`}
+            h="4px"
+            background={colors.textSecondary}
+          />
+        </Box>
         <Box
           display="flex"
           width="100%"
