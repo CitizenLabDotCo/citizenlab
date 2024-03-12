@@ -12,7 +12,7 @@ RSpec.describe CustomField do
 
     it 'removes it from the analysis (main field)' do
       field = create(:custom_field)
-      analysis = create(:analysis, main_custom_field: field)
+      create(:analysis, main_custom_field: field)
       expect(field.destroy).to be_truthy
     end
   end
