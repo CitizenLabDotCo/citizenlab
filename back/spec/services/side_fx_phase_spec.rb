@@ -38,7 +38,14 @@ describe SideFxPhaseService do
     end
 
     describe 'changing attributes' do
-      before { phase.update!(ideas_order: nil) }
+      before do
+        phase.update!(
+          # Required to avoid errors when switching to native survey below
+          ideas_order: nil,
+          native_survey_title_multiloc: { en: 'Survey' },
+          native_survey_button_multiloc: { en: 'Take the survey' }
+        )
+      end
 
       {
         description_multiloc: { 'en' => 'changed' },
