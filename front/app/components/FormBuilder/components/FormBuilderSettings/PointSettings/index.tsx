@@ -9,7 +9,6 @@ import styled from 'styled-components';
 import customFieldsKeys from 'api/custom_fields/keys';
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
-import useAddMapConfig from 'api/map_config/useAddMapConfig';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 
@@ -25,6 +24,7 @@ import { useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
 import messages from './messages';
+import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
 const StyledLabel = styled(Label)`
   height: 100%;
@@ -50,7 +50,8 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   const { data: projectMapConfig } = useProjectMapConfig(projectId);
   const { data: rawCustomFields } = useRawCustomFields({ phaseId });
 
-  const { mutateAsync: createProjectMapConfig } = useAddMapConfig();
+  // const { mutateAsync: createProjectMapConfig } = useAddMapConfig();
+  const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
   const [mapView, setMapView] = useState<MapView | null>(null);
 
   // Get current map config ID for this field
@@ -73,29 +74,34 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
     // Create a new map config if we don't have one for this field
     if (!mapConfigId) {
       // Initial data is from existing project map config
-      const initialData = projectMapConfig?.data?.attributes
-        ? projectMapConfig.data.attributes
-        : {};
+      // const initialData = projectMapConfig?.data?.attributes
+      //   ? projectMapConfig.data.attributes
+      //   : {};
 
-      createProjectMapConfig(
-        {
-          ...initialData,
-        },
-        {
+      const projectMapConfigId = projectMapConfig?.data?.id;
+
+      // TODO: JS - Worked for the first one but not for the second one - why not?
+      // const newMapConfig = await duplicateMapConfig(
+      //   originalField.map_config.data.id
+      // );
+
+      if (projectMapConfigId) {
+        duplicateMapConfig(projectMapConfigId, {
           onSuccess: (data) => {
+            console.log(data);
             // Set the form value to the map config ID
             setValue(mapConfigIdName, data.data.id);
             // Open the modal
             setShowModal(true);
           },
-        }
-      );
+        });
+      }
     } else {
       // Otherwise we already have a map config, so we open the modal
       setShowModal(true);
     }
   }, [
-    createProjectMapConfig,
+    duplicateMapConfig,
     mapConfigId,
     mapConfigIdName,
     projectMapConfig?.data?.attributes,

@@ -148,6 +148,7 @@ export const FormField = ({
       ...rest,
     };
 
+    // Duplicate the map config if this is a mapping question
     if (
       originalField.input_type === 'point' &&
       originalField.map_config?.data?.id
