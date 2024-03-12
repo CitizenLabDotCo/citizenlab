@@ -45,7 +45,7 @@ const UserFieldSelect = ({ userFieldId, onChange }: Props) => {
     <Box width="100%" mb="20px">
       <Select
         id="e2e-user-field-select"
-        label={formatMessage(messages.groupByUserField)}
+        label={formatMessage(messages.groupByRegistrationField)}
         value={userFieldId}
         options={userFieldOptions}
         onChange={handleChange}
