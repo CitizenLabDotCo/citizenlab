@@ -5,6 +5,15 @@ export default defineMessages({
     id: 'app.components.formBuilder.save',
     defaultMessage: 'Save',
   },
+  ai: {
+    id: 'app.components.formBuilder.ai',
+    defaultMessage: 'AI',
+  },
+  aiUpsellText: {
+    id: 'app.components.formBuilder.aiUpsellText',
+    defaultMessage:
+      'If you have access to our AI package, you will be able to summarise and categorise text responses with AI',
+  },
   shortAnswer: {
     id: 'app.components.formBuilder.shortAnswer',
     defaultMessage: 'Short answer',

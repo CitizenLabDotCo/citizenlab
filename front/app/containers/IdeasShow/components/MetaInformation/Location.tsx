@@ -101,11 +101,13 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
                 </Button>
               </Box>
 
-              <Box width="100%" mt="8px" id="e2e-location-map">
-                <IdeaLocationMap
-                  location={idea?.data.attributes?.location_point_geojson}
-                />
-              </Box>
+              {!compact && (
+                <Box width="100%" mt="8px" id="e2e-location-map">
+                  <IdeaLocationMap
+                    location={idea?.data.attributes?.location_point_geojson}
+                  />
+                </Box>
+              )}
             </Box>
           )}
 

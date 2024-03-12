@@ -265,7 +265,6 @@ describe('Seat based billing', () => {
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'native_survey',
       })
         .then((project) => {
           projectId = project.body.data.id;

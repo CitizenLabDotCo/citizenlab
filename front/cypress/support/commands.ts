@@ -1170,6 +1170,8 @@ function apiCreatePhase({
   votingMethod,
   votingMaxVotesPerIdea,
   votingMinTotal,
+  nativeSurveyButtonMultiloc,
+  nativeSurveyTitleMultiloc,
 }: {
   projectId: string;
   title: string;
@@ -1187,6 +1189,8 @@ function apiCreatePhase({
   votingMethod?: VotingMethod;
   votingMaxVotesPerIdea?: number;
   votingMinTotal?: number;
+  nativeSurveyButtonMultiloc?: Multiloc;
+  nativeSurveyTitleMultiloc?: Multiloc;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1219,6 +1223,8 @@ function apiCreatePhase({
           campaigns_settings: { project_phase_started: true },
           voting_max_votes_per_idea: votingMaxVotesPerIdea,
           voting_min_total: votingMinTotal,
+          native_survey_button_multiloc: nativeSurveyButtonMultiloc,
+          native_survey_title_multiloc: nativeSurveyTitleMultiloc,
         },
       },
     });

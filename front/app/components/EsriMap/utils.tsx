@@ -1,5 +1,8 @@
 // ArcGIS
+import Basemap from '@arcgis/core/Basemap';
+import Collection from '@arcgis/core/core/Collection';
 import Point from '@arcgis/core/geometry/Point';
+import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
 import Layer from '@arcgis/core/layers/Layer';
 import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
@@ -10,9 +13,11 @@ import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
 import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 import MapView from '@arcgis/core/views/MapView';
+import WebMap from '@arcgis/core/WebMap';
 import Popup from '@arcgis/core/widgets/Popup';
 import { colors } from '@citizenlab/cl2-component-library';
 
+import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';
 
 import { Localize } from 'hooks/useLocalize';
@@ -266,7 +271,6 @@ export const goToMapLocation = async (
       },
       {
         duration: 1000,
-        easing: 'ease-in-out',
       }
     )
     .catch(() => {
@@ -368,6 +372,69 @@ export const showAddInputPopup = ({
   });
 };
 
+// createEsriFeatureLayers
+// Description: Create list of Esri Feature layers from a list of IMapLayerAttributes
+export const createEsriFeatureLayers = (
+  layers: IMapLayerAttributes[],
+  localize: Localize
+) => {
+  // create new Feature Layers from the Map Config layers
+  const esriLayers: Layer[] = [];
+  layers.forEach((layer) => {
+    if (localize(layer.title_multiloc)) {
+      const title = localize(layer.title_multiloc);
+
+      // Extract number of sublayers if present
+      const titleSplit = title.indexOf('(');
+      const subLayerCount =
+        titleSplit >= 0
+          ? parseInt(title.substring(titleSplit + 1, title.length - 1), 10)
+          : 0;
+
+      // If we have sublayers, add a feature layer for each
+      if (subLayerCount > 1) {
+        for (let i = 0; i < subLayerCount; i++) {
+          esriLayers.push(
+            new FeatureLayer({
+              url: `${layer.layer_url}/${i + 1}`,
+            })
+          );
+        }
+      } else {
+        // Otherwise, just add the single feature layer
+        esriLayers.push(
+          new FeatureLayer({
+            url: layer.layer_url,
+          })
+        );
+      }
+    }
+  });
+  return esriLayers;
+};
+
+// parseLayers
+// Description: Parse the layers from the map config and create Esri layers
+export const parseLayers = (
+  mapConfig: IMapConfig | null | undefined,
+  localize: Localize
+) => {
+  const mapConfigLayers = mapConfig?.data.attributes.layers;
+  // All layers are either of type Esri or GeoJSON, so we can check just the first layer
+  if (
+    mapConfigLayers &&
+    mapConfigLayers[0]?.type === 'CustomMaps::GeojsonLayer'
+  ) {
+    return createEsriGeoJsonLayers(mapConfig?.data.attributes.layers, localize);
+  } else if (
+    mapConfigLayers &&
+    mapConfigLayers[0]?.type === 'CustomMaps::EsriFeatureLayer'
+  ) {
+    return createEsriFeatureLayers(mapConfig?.data.attributes.layers, localize);
+  }
+  return [];
+};
+
 // createEsriGeoJsonLayers
 // Description: Create list of Esri GeoJSON layers from a list of IMapLayerAttributes
 export const createEsriGeoJsonLayers = (
@@ -447,5 +514,23 @@ export const createEsriGeoJsonLayers = (
     geoJsonLayer.title = localize(layer.title_multiloc);
 
     return geoJsonLayer;
+  });
+};
+
+// handleWebMapReferenceLayers
+// Description: Re-order any reference layers which are part of the WebMap's basemap
+// These need to be re-ordered so they appear underneath any additional layers we create (E.g. Idea pins)
+// API doc: https://developers.arcgis.com/javascript/latest/api-reference/esri-Basemap.html#referenceLayers
+export const handleWebMapReferenceLayers = (
+  webMap: WebMap,
+  referenceLayers: Collection<Layer>
+) => {
+  // Add current basemap layers to new variable
+  const newBasemapLayers = webMap.basemap?.baseLayers;
+  // Append the reference layers to the new basemap layers list
+  webMap.addMany(referenceLayers.toArray());
+  // Set the WebMap basemap to this new list of layers
+  webMap.basemap = new Basemap({
+    baseLayers: newBasemapLayers,
   });
 };

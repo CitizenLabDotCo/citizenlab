@@ -964,6 +964,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Подразумевано, ваши поднесци ће бити повезани са вашим профилом, осим ако не изаберете ову опцију.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Објавите анонимно",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Видљивост профила",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "This survey is not currently open for responses. Please return to the project for more information.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "This survey is not currently active.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Вратите се на пројекат",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Већ сте попунили ову анкету.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Анкета је послата",

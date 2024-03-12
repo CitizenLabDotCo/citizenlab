@@ -10,6 +10,8 @@ import usePhases from 'api/phases/usePhases';
 import { getInputTerm } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
+import useLocalize from 'hooks/useLocalize';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
@@ -56,6 +58,7 @@ const IdeaButton = memo<Props>(
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
     const { data: authUser } = useAuthUser();
+    const localize = useLocalize();
 
     if (!project || !phase) return null;
 
@@ -184,18 +187,20 @@ const IdeaButton = memo<Props>(
               ariaDisabled={false}
               id="e2e-idea-button"
             >
-              <FormattedMessage
-                {...(participationMethod === 'native_survey'
-                  ? messages.takeTheSurvey
-                  : getInputTermMessage(getInputTerm(phases?.data), {
-                      idea: messages.submitYourIdea,
-                      option: messages.addAnOption,
-                      project: messages.addAProject,
-                      question: messages.addAQuestion,
-                      issue: messages.submitAnIssue,
-                      contribution: messages.addAContribution,
-                    }))}
-              />
+              {participationMethod === 'native_survey' ? (
+                <>{localize(phase.attributes.native_survey_button_multiloc)}</>
+              ) : (
+                <FormattedMessage
+                  {...getInputTermMessage(getInputTerm(phases?.data), {
+                    idea: messages.submitYourIdea,
+                    option: messages.addAnOption,
+                    project: messages.addAProject,
+                    question: messages.addAQuestion,
+                    issue: messages.submitAnIssue,
+                    contribution: messages.addAContribution,
+                  })}
+                />
+              )}
             </Button>
           </ButtonWrapper>
         </Tippy>

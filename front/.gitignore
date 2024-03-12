@@ -25,6 +25,7 @@ browserstack.err
 .babel-cache/*
 .cache-loader/*
 app/tsconfig.tsbuildinfo
+build-storybook.log
 
 cypress/videos/
 cypress/screenshots/

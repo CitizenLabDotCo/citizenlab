@@ -14,7 +14,7 @@ class IdeasFinder < ApplicationFinder
   private
 
   def only_idea_inputs_scope(scope)
-    scope.where(creation_phase: nil)
+    scope.ideation
   end
 
   def ideas_condition(ids)

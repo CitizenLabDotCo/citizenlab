@@ -964,6 +964,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Som standard vil bidragene dine være knyttet til profilen din, med mindre du velger dette alternativet.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Post anonymt",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Profilsynlighet",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "Denne undersøkelsen er foreløpig ikke åpen for svar. Gå tilbake til prosjektet for mer informasjon.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "Denne undersøkelsen er ikke aktiv for øyeblikket.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Gå tilbake til prosjektet",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Du har allerede fullført denne undersøkelsen.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Undersøkelse sendt inn",

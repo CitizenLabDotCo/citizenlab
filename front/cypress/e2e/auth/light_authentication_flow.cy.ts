@@ -22,6 +22,8 @@ describe('Light authentication flow', () => {
           title: 'firstPhaseTitle',
           startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
           participationMethod: 'native_survey',
+          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+          nativeSurveyTitleMultiloc: { en: 'Survey' },
           canPost: true,
           canComment: true,
           canReact: true,

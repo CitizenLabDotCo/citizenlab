@@ -964,6 +964,8 @@
   "app.containers.IdeasNewPage.IdeasNewForm.inputsAssociatedWithProfile1": "Pēc noklusējuma jūsu iesniegumi tiks saistīti ar jūsu profilu, ja vien neizvēlaties šo opciju.",
   "app.containers.IdeasNewPage.IdeasNewForm.postAnonymously": "Sūtīt anonīmi",
   "app.containers.IdeasNewPage.IdeasNewForm.profileVisibility": "Profila redzamība",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveDescription": "Pašlaik atbildes uz šo apsekojumu nav pieejamas. Lūdzu, atgriezieties pie projekta, lai iegūtu vairāk informācijas.",
+  "app.containers.IdeasNewPage.SurveyNotActiveNotice.surveyNotActiveTitle": "Šis apsekojums pašlaik nav aktīvs.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.returnToProject": "Atgriezties pie projekta",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedDescription": "Jūs jau esat aizpildījis šo aptauju.",
   "app.containers.IdeasNewPage.SurveySubmittedNotice.surveySubmittedTitle": "Iesniegtais apsekojums",

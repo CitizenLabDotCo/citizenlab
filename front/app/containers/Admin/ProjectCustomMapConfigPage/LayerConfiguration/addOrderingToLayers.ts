@@ -17,16 +17,17 @@ export default (mapLayers: IMapLayerAttributes[]) => {
       default_enabled,
       geojson_file,
       marker_svg_url,
+      type,
     } = mapLayers[i];
 
     mapLayersWithOrdering.push({
-      type: 'CustomMaps::GeojsonLayer',
       id,
       title_multiloc,
       geojson,
       default_enabled,
       geojson_file,
       marker_svg_url,
+      type,
       attributes: {
         ordering: i,
       },

@@ -23,19 +23,19 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
 import {
   getLayerColor,
-  getLayerType,
   makiIconNames,
   getUnnamedLayerTitleMultiloc,
-} from '../../../utils/mapUtils/map';
+  getGeojsonLayerType,
+} from 'utils/mapUtils/map';
 
-import messages from './messages';
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 60px;
 `;
 
 const StyledSection = styled(Section)`
@@ -113,7 +113,7 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
       mapConfig?.data?.attributes?.layers?.find(
         (layer) => layer.id === mapLayerId
       ) || undefined;
-    const type = getLayerType(mapLayer);
+    const geojsonDataType = getGeojsonLayerType(mapLayer);
 
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
@@ -274,7 +274,7 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
             />
           </SectionField>
 
-          {type === 'Point' && (
+          {geojsonDataType === 'Point' && (
             <SectionField>
               <Select
                 onChange={handleMarkerSymbolOnChange}

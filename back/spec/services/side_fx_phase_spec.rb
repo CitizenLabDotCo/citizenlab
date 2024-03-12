@@ -20,31 +20,6 @@ describe SideFxPhaseService do
     end
 
     it { expect { service.after_create(phase, user) }.to have_enqueued_job(Surveys::WebhookManagerJob) }
-
-    {
-      description_multiloc: { 'en' => 'changed' },
-      voting_method: 'multiple_voting',
-      voting_max_votes_per_idea: 9,
-      voting_max_total: 11,
-      voting_min_total: 2,
-      posting_enabled: false,
-      posting_method: 'limited',
-      posting_limited_max: 3,
-      commenting_enabled: false,
-      reacting_enabled: false,
-      reacting_like_method: 'limited',
-      reacting_like_limited_max: 9,
-      reacting_dislike_enabled: false,
-      presentation_mode: 'map'
-    }.each do |attribute, new_value|
-      it "logs a '#{attribute}_changed' action job when the project has changed" do
-        old_value = phase[attribute]
-        phase.update!(attribute => new_value)
-        expect { service.after_update(phase, user) }
-          .to have_enqueued_job(LogActivityJob)
-          .with(phase, "changed_#{attribute}", user, phase.updated_at.to_i, project_id: phase.project.id, payload: { change: [old_value, new_value] })
-      end
-    end
   end
 
   describe 'before_update' do
@@ -60,6 +35,43 @@ describe SideFxPhaseService do
       expect { service.after_update(phase, user) }
         .to have_enqueued_job(LogActivityJob)
         .with(phase, 'changed', user, phase.updated_at.to_i, project_id: phase.project_id)
+    end
+
+    describe 'changing attributes' do
+      before do
+        phase.update!(
+          # Required to avoid errors when switching to native survey below
+          ideas_order: nil,
+          native_survey_title_multiloc: { en: 'Survey' },
+          native_survey_button_multiloc: { en: 'Take the survey' }
+        )
+      end
+
+      {
+        description_multiloc: { 'en' => 'changed' },
+        participation_method: 'native_survey',
+        voting_method: 'multiple_voting',
+        voting_max_votes_per_idea: 9,
+        voting_max_total: 11,
+        voting_min_total: 2,
+        posting_enabled: false,
+        posting_method: 'limited',
+        posting_limited_max: 3,
+        commenting_enabled: false,
+        reacting_enabled: false,
+        reacting_like_method: 'limited',
+        reacting_like_limited_max: 9,
+        reacting_dislike_enabled: false,
+        presentation_mode: 'map'
+      }.each do |attribute, new_value|
+        it "logs a '#{attribute}_changed' action job when the phase attribute has changed" do
+          old_value = phase[attribute]
+          phase.update!(attribute => new_value)
+          expect { service.after_update(phase, user) }
+            .to have_enqueued_job(LogActivityJob)
+            .with(phase, "changed_#{attribute}", user, phase.updated_at.to_i, project_id: phase.project.id, payload: { change: [old_value, new_value] })
+        end
+      end
     end
 
     it { expect { service.after_update(phase, user) }.to have_enqueued_job(Surveys::WebhookManagerJob) }

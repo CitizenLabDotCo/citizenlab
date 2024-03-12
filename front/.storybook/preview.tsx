@@ -5,6 +5,7 @@ import { initialize, mswDecorator } from 'msw-storybook-addon';
 import mockServer from './mockServer';
 import { reactIntl } from './reactIntl';
 import { MemoryRouter } from 'react-router-dom';
+import { allModes } from './modes';
 
 initialize();
 
@@ -17,6 +18,7 @@ const routerDecorator = (Story) => (
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
+
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -25,7 +27,14 @@ const preview: Preview = {
     },
 
     msw: Object.values(mockServer),
+
     reactIntl,
+
+    chromatic: {
+      modes: {
+        ...allModes
+      }
+    }
   },
 
   decorators: [mswDecorator, routerDecorator, contexts],

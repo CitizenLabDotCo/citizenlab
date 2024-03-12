@@ -32,8 +32,9 @@ const IdeasAtLocationPopup = ({
     <Box maxHeight="100px">
       {ideas?.map((idea) => (
         <Button
+          fontSize="s"
           key={idea.id}
-          width="100%"
+          width="fit-content"
           mb="12px"
           onClick={() => {
             setSelectedIdea(idea.id);

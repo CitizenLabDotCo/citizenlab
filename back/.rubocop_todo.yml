@@ -80,6 +80,8 @@ Metrics/BlockNesting:
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ClassLength:
   Max: 694
+  Exclude:
+    - 'app/services/project_copy_service.rb'
 
 # Offense count: 1
 # Configuration parameters: LengthThreshold.

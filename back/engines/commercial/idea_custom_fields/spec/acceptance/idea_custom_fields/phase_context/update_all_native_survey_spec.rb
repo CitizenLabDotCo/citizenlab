@@ -25,7 +25,7 @@ resource 'Idea Custom Fields' do
       parameter :image_id, 'If the option has an image, the ID of the image', required: false
     end
 
-    let(:context) { create(:phase, participation_method: 'native_survey') }
+    let(:context) { create(:native_survey_phase) }
     let(:custom_form) { create(:custom_form, participation_context: context) }
     let(:phase_id) { context.id }
 

@@ -317,6 +317,11 @@ class ProjectCopyService < TemplateService
         yml_phase['document_annotation_embed_url'] = phase.document_annotation_embed_url
       end
 
+      if yml_phase['participation_method'] == 'native_survey'
+        yml_phase['native_survey_title_multiloc'] = phase.native_survey_title_multiloc
+        yml_phase['native_survey_button_multiloc'] = phase.native_survey_button_multiloc
+      end
+
       store_ref yml_phase, phase.id, :phase
       yml_phase
     end

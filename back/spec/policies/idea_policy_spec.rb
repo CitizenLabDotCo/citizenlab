@@ -464,7 +464,13 @@ describe IdeaPolicy do
     let(:participation_method) { 'ideation' }
     let(:posting_enabled) { true }
     let(:project) do
-      create(:single_phase_ideation_project, phase_attrs: { with_permissions: true, posting_enabled: posting_enabled, participation_method: participation_method }).tap do |project|
+      create(:single_phase_ideation_project, phase_attrs: {
+        with_permissions: true,
+        posting_enabled: posting_enabled,
+        participation_method: participation_method,
+        native_survey_title_multiloc: { 'en' => 'Survey' },
+        native_survey_button_multiloc: { 'en' => 'Take the survey' }
+      }).tap do |project|
         project.phases.first.permissions.find_by(action: 'posting_idea').update!(permitted_by: permitted_by)
       end
     end
