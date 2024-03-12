@@ -71,24 +71,14 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   }, [localize, mapConfig]);
 
   const onConfigureMapClick = useCallback(() => {
-    // Create a new map config if we don't have one for this field
+    // Create a new map config by duplicating the project config if we don't have one for this field
     if (!mapConfigId) {
-      // Initial data is from existing project map config
-      // const initialData = projectMapConfig?.data?.attributes
-      //   ? projectMapConfig.data.attributes
-      //   : {};
-
       const projectMapConfigId = projectMapConfig?.data?.id;
 
-      // TODO: JS - Worked for the first one but not for the second one - why not?
-      // const newMapConfig = await duplicateMapConfig(
-      //   originalField.map_config.data.id
-      // );
-
+      // TODO: What should happen if we don't have a project map config? Should this ever happen?
       if (projectMapConfigId) {
         duplicateMapConfig(projectMapConfigId, {
           onSuccess: (data) => {
-            console.log(data);
             // Set the form value to the map config ID
             setValue(mapConfigIdName, data.data.id);
             // Open the modal
@@ -97,7 +87,7 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
         });
       }
     } else {
-      // Otherwise we already have a map config, so we open the modal
+      // Otherwise we already have a map config, so we just open the modal
       setShowModal(true);
     }
   }, [
