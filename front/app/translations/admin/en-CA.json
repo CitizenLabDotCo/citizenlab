@@ -921,7 +921,6 @@
   "app.containers.Admin.reporting.printPrepare": "Preparing to print...",
   "app.containers.Admin.reporting.reportBuilder": "Report builder",
   "app.containers.Admin.reporting.reportHeader": "Report header",
-  "app.containers.Admin.reporting.warningBanner": "On this page, the report shows the latest platform data. On other pages, a snapshot of the report is shown. Snapshots are taken when you save the report on this page.",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Create new token",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Cancel",
   "app.containers.Admin.tools.apiTokens.createTokenCreatedDescription": "Your token has been created. Please copy the {secret} below and store it safely.",

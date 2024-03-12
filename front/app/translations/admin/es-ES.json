@@ -921,7 +921,6 @@
   "app.containers.Admin.reporting.printPrepare": "Preparando para imprimir...",
   "app.containers.Admin.reporting.reportBuilder": "Constructor de informes",
   "app.containers.Admin.reporting.reportHeader": "Encabezado del informe",
-  "app.containers.Admin.reporting.warningBanner": "En esta página, el informe muestra los últimos datos de la plataforma. En otras páginas, se muestra una instantánea del informe. Las instantáneas se toman cuando guardas el informe en esta página.",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Crear nuevo token",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Cancelar",
   "app.containers.Admin.tools.apiTokens.createTokenCreatedDescription": "Se ha creado tu ficha. Por favor, copia el siguiente {secret} y guárdalo de forma segura.",

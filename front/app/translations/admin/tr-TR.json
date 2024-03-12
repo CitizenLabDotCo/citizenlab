@@ -921,7 +921,6 @@
   "app.containers.Admin.reporting.printPrepare": "Baskıya hazırlanıyor...",
   "app.containers.Admin.reporting.reportBuilder": "Rapor oluşturucu",
   "app.containers.Admin.reporting.reportHeader": "Rapor başlığı",
-  "app.containers.Admin.reporting.warningBanner": "Bu sayfada, rapor en son platform verilerini gösterir. Diğer sayfalarda raporun bir anlık görüntüsü gösterilir. Anlık görüntüler, raporu bu sayfada kaydettiğinizde alınır.",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Yeni belirteç oluşturun",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "İptal",
   "app.containers.Admin.tools.apiTokens.createTokenCreatedDescription": "Jetonunuz oluşturulmuştur. Lütfen aşağıdaki {secret} adresini kopyalayın ve güvenli bir şekilde saklayın.",

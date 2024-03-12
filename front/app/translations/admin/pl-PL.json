@@ -921,7 +921,6 @@
   "app.containers.Admin.reporting.printPrepare": "Przygotowanie do druku...",
   "app.containers.Admin.reporting.reportBuilder": "Kreator raportu",
   "app.containers.Admin.reporting.reportHeader": "Nagłówek raportu",
-  "app.containers.Admin.reporting.warningBanner": "Na tej stronie raport przedstawia najnowsze dane platformy. Na innych stronach wyświetlana jest migawka raportu. Migawki są tworzone, gdy zapisujesz raport na tej stronie.",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Utwórz nowy token",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Anuluj",
   "app.containers.Admin.tools.apiTokens.createTokenCreatedDescription": "Twój token został utworzony. Skopiuj poniższy adres {secret} i przechowuj go w bezpiecznym miejscu.",

@@ -921,7 +921,6 @@
   "app.containers.Admin.reporting.printPrepare": "Forbereder utskrift …",
   "app.containers.Admin.reporting.reportBuilder": "Rapportbygger",
   "app.containers.Admin.reporting.reportHeader": "Rapport overskrift",
-  "app.containers.Admin.reporting.warningBanner": "På denne siden viser rapporten de nyeste plattformdataene. På andre sider vises et øyeblikksbilde av rapporten. Øyeblikksbilder tas når du lagrer rapporten på denne siden.",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Opprett nytt token",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Avbryt",
   "app.containers.Admin.tools.apiTokens.createTokenCreatedDescription": "Tokenet ditt er opprettet. Vennligst kopier {secret} en nedenfor og oppbevar den trygt.",

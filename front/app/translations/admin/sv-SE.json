@@ -921,7 +921,6 @@
   "app.containers.Admin.reporting.printPrepare": "Förbereder utskrift...",
   "app.containers.Admin.reporting.reportBuilder": "Rapportbyggare",
   "app.containers.Admin.reporting.reportHeader": "Rapportrubrik",
-  "app.containers.Admin.reporting.warningBanner": "På den här sidan visar rapporten de senaste plattformsdata. På andra sidor visas en ögonblicksbild av rapporten. Ögonblicksbilder tas när du sparar rapporten på den här sidan.",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Skapa ny token",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Avbryt",
   "app.containers.Admin.tools.apiTokens.createTokenCreatedDescription": "Din token har skapats. Kopiera {secret} nedan och spara den på ett säkert sätt.",

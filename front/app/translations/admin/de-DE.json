@@ -921,7 +921,6 @@
   "app.containers.Admin.reporting.printPrepare": "Vorbereitung auf den Druck...",
   "app.containers.Admin.reporting.reportBuilder": "Report Builder",
   "app.containers.Admin.reporting.reportHeader": "Berichtskopf",
-  "app.containers.Admin.reporting.warningBanner": "Auf dieser Seite zeigt der Bericht die neuesten Plattformdaten an. Auf anderen Seiten wird ein Schnappschuss des Berichts angezeigt. Schnappschüsse werden erstellt, wenn Sie den Bericht auf dieser Seite speichern.",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Neues Token erstellen",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Abbrechen",
   "app.containers.Admin.tools.apiTokens.createTokenCreatedDescription": "Ihr Token wurde erstellt. Bitte kopieren Sie das {secret} unten und bewahren Sie es sicher auf.",

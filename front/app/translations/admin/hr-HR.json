@@ -921,7 +921,6 @@
   "app.containers.Admin.reporting.printPrepare": "Priprema za tisak...",
   "app.containers.Admin.reporting.reportBuilder": "Alat za izgradnju izvješća",
   "app.containers.Admin.reporting.reportHeader": "Zaglavlje izvješća",
-  "app.containers.Admin.reporting.warningBanner": "Na ovoj stranici izvješće prikazuje najnovije podatke o platformi. Na ostalim stranicama prikazuje se snimka izvješća. Snimke se prave kada spremite izvješće na ovu stranicu.",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Stvorite novi token",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Otkazati",
   "app.containers.Admin.tools.apiTokens.createTokenCreatedDescription": "Vaš token je stvoren. Kopirajte {secret} ispod i pohranite je na sigurno.",

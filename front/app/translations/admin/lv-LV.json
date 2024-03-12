@@ -921,7 +921,6 @@
   "app.containers.Admin.reporting.printPrepare": "Gatavošanās drukāšanai...",
   "app.containers.Admin.reporting.reportBuilder": "Ziņojuma veidotājs",
   "app.containers.Admin.reporting.reportHeader": "Ziņojuma galvene",
-  "app.containers.Admin.reporting.warningBanner": "Šajā lapā pārskatā ir norādīti jaunākie platformas dati. Citās lapās tiek parādīts ziņojuma momentuzņēmums. Kad saglabājat ziņojumu šajā lapā, tiek veikti momentuzņēmumi.",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Izveidot jaunu žetonu",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Atcelt",
   "app.containers.Admin.tools.apiTokens.createTokenCreatedDescription": "Jūsu žetons ir izveidots. Lūdzu, nokopējiet zemāk redzamo {secret} un droši uzglabājiet to.",

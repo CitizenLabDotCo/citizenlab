@@ -921,7 +921,6 @@
   "app.containers.Admin.reporting.printPrepare": "Priprema za štampu...",
   "app.containers.Admin.reporting.reportBuilder": "Prijavi alatku za izradu",
   "app.containers.Admin.reporting.reportHeader": "Zaglavlje izveštaja",
-  "app.containers.Admin.reporting.warningBanner": "On this page, the report shows the latest platform data. On other pages, a snapshot of the report is shown. Snapshots are taken when you save the report on this page.",
   "app.containers.Admin.tools.apiTokens.createTokenButton": "Креирајте нови токен",
   "app.containers.Admin.tools.apiTokens.createTokenCancel": "Поништити, отказати",
   "app.containers.Admin.tools.apiTokens.createTokenCreatedDescription": "Your token has been created. Please copy the {secret} below and store it safely.",
