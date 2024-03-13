@@ -16,25 +16,20 @@ interface IResourceData {
   [key: string]: any;
 }
 
-interface IPermissionRule {
-  (
-    resource: TPermissionItem | null,
-    user: IUser | null,
-    tenant: IAppConfigurationData,
-    context?: any
-  ): boolean;
-}
-
-interface IPermissionRules {
-  [key: string]: {
-    [key: string]: IPermissionRule;
-  };
-}
+type PermissionRule = (
+  resource: TPermissionItem | null,
+  user: IUser | undefined,
+  tenant: IAppConfigurationData,
+  context?: any
+) => boolean;
 
 type TResourceType = string;
 type TAction = string;
 
-const permissionRules: IPermissionRules = {};
+const permissionRules: Record<
+  TResourceType,
+  Record<TAction, PermissionRule>
+> = {};
 
 const isResource = (object: any): object is IResourceData => {
   return isObject(object) && 'type' in object;
@@ -43,7 +38,7 @@ const isResource = (object: any): object is IResourceData => {
 const definePermissionRule = (
   resourceType: TResourceType,
   action: TAction,
-  rule: IPermissionRule
+  rule: PermissionRule
 ) => {
   permissionRules[resourceType] = {
     ...(permissionRules[resourceType] || {}),
@@ -75,7 +70,7 @@ const usePermission = ({
   const rule = getPermissionRule(resourceType, action);
 
   if (rule && appConfig) {
-    return rule(item, user || null, appConfig.data, context);
+    return rule(item, user, appConfig.data, context);
   } else {
     throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;
   }
