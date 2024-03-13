@@ -100,7 +100,6 @@ export interface Props {
   createdAt: string;
   size: number;
   isLinkToProfile?: boolean;
-  showAvatar?: boolean;
   avatarBadgeBgColor?: string;
   fontWeight?: number;
   fontSize?: number;
@@ -120,7 +119,6 @@ const Author = memo(
     createdAt,
     size,
     isLinkToProfile,
-    showAvatar = true,
     className,
     avatarBadgeBgColor,
     fontWeight,
@@ -137,16 +135,14 @@ const Author = memo(
       return (
         <Container className={className}>
           <AuthorContainer>
-            {showAvatar && (
-              <StyledAvatar
-                userId={authorId}
-                authorHash={authorHash}
-                size={size}
-                isLinkToProfile={isLinkToProfile}
-                moderator={userCanModerate}
-                bgColor={avatarBadgeBgColor}
-              />
-            )}
+            <StyledAvatar
+              userId={authorId}
+              authorHash={authorHash}
+              size={size}
+              isLinkToProfile={isLinkToProfile}
+              moderator={userCanModerate}
+              bgColor={avatarBadgeBgColor}
+            />
 
             <AuthorMeta className={horizontalLayout ? 'horizontalLayout' : ''}>
               <AuthorNameContainer
