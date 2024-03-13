@@ -87,7 +87,7 @@ const ProjectFolderRow = memo<Props>(
               <FolderRowContent
                 className="e2e-admin-adminPublications-list-item"
                 hasProjects={hasProjects}
-                role="button"
+                as="button"
                 onClick={handleClick}
               >
                 <RowContentInner className="expand primary">

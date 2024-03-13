@@ -32,4 +32,38 @@ export default defineMessages({
     defaultMessage:
       "If the location is not displayed among the options as you type, you can add valid coordinates in the format 'latitude, longitude' to specify a precise location.",
   },
+  tapOnMapToAdd: {
+    id: 'app.components.form.controls.tapOnMapToAdd2',
+    defaultMessage:
+      'Tap on the map or type an address below to add your answer.',
+  },
+  tapOnFullscreenMapToAdd: {
+    id: 'app.components.form.controls.tapOnFullscreenMapToAdd',
+    defaultMessage: 'Tap on the map to add your answer.',
+  },
+  clickOnMapToAdd: {
+    id: 'app.components.form.controls.clickOnMapToAdd',
+    defaultMessage:
+      'Click on the map or type an address below to add your answer.',
+  },
+  addressInputAriaLabel: {
+    id: 'app.components.form.controls.addressInputAriaLabel',
+    defaultMessage: 'Address input',
+  },
+  addressInputPlaceholder: {
+    id: 'app.components.form.controls.addressInputPlaceholder6',
+    defaultMessage: 'Enter an address...',
+  },
+  tapToAddAPoint: {
+    id: 'app.components.form.controls.tapToAddAPoint',
+    defaultMessage: 'Tap to add a point',
+  },
+  back: {
+    id: 'app.components.form.controls.back',
+    defaultMessage: 'Back',
+  },
+  confirm: {
+    id: 'app.components.form.controls.confirm',
+    defaultMessage: 'Confirm',
+  },
 });

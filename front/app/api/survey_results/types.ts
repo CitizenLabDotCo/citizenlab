@@ -30,6 +30,7 @@ export interface Result {
   inputType: ICustomFieldInputType;
   question: Multiloc;
   required: boolean;
+  mapConfigId?: string;
   customFieldId: string;
   totalResponseCount: number;
   questionResponseCount: number;
@@ -37,6 +38,7 @@ export interface Result {
   answers?: Answer[];
   textResponses?: { answer: string }[];
   files?: { name: string; url: string }[];
+  pointResponses?: { response: GeoJSON.Point }[];
   multilocs?: AnswerMultilocs;
 }
 

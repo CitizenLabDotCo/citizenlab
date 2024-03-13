@@ -28,7 +28,10 @@ export const configureMapView = (
   };
 
   // Change location of zoom widget if specified
-  if (initialData?.zoomWidgetLocation === 'right') {
+  if (initialData?.showZoomControls === false) {
+    const zoom = mapView.ui.find('zoom');
+    mapView.ui.remove(zoom);
+  } else if (initialData?.zoomWidgetLocation === 'right') {
     const zoom = mapView.ui.find('zoom');
     mapView.ui.add(zoom, 'top-right');
   }
@@ -43,7 +46,10 @@ export const configureMapView = (
 
   // Add map legend if set
   if (initialData?.showLegend) {
-    addMapLegend(mapView, isMobileOrSmaller);
+    addMapLegend(
+      mapView,
+      initialData?.showLegendExpanded ? false : isMobileOrSmaller
+    );
   }
 
   // Show layer visibility controls if set

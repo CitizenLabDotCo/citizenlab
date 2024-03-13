@@ -36,7 +36,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
         expect(Volunteering::Cause.count).to be 5
         expect(Volunteering::Volunteer.count).to be > 0
-        expect(CustomMaps::MapConfig.count).to be 1
+        expect(CustomMaps::MapConfig.count).to be 2
         expect(CustomMaps::Layer.count).to be 2
         expect(StaticPage.count).to be > 0
       end
@@ -157,6 +157,28 @@ describe MultiTenancy::Templates::TenantSerializer do
         'title_multiloc' => field.title_multiloc,
         'random_option_ordering' => field.random_option_ordering,
         'description_multiloc' => field.description_multiloc
+      )
+    end
+
+    it 'successfully exports map config & layers related to a custom field' do
+      field = create(:custom_field_point, :for_custom_form)
+      map_config = create(:map_config, :with_positioning, :with_geojson_layers, mappable: field)
+      layer = map_config.layers.first
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      expect(template['models']['custom_field'].size).to eq 1
+      expect(template['models']['custom_maps/map_config'].first).to match hash_including(
+        'created_at' => an_instance_of(String),
+        'updated_at' => an_instance_of(String),
+        'mappable_ref' => hash_including('resource_ref' => an_instance_of(Hash)),
+        'center_geojson' => map_config.center_geojson
+      )
+      expect(template['models']['custom_maps/layer'].first).to match hash_including(
+        'created_at' => an_instance_of(String),
+        'updated_at' => an_instance_of(String),
+        'map_config_ref' => hash_including('mappable_ref' => an_instance_of(Hash)),
+        'geojson' => layer.geojson
       )
     end
 

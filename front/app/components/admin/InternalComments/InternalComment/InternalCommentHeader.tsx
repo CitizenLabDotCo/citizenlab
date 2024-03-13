@@ -63,14 +63,12 @@ const AdminBadge = styled.span`
 
 interface Props {
   className?: string;
-  projectId?: string | null;
   commentType: 'parent' | 'child';
   commentAttributes: IPresentInternalComment;
   authorId: string | null;
 }
 
 const InternalCommentHeader = ({
-  projectId,
   commentType,
   className,
   commentAttributes,
@@ -89,8 +87,6 @@ const InternalCommentHeader = ({
           authorId={authorId}
           isLinkToProfile={typeof authorId === 'string'}
           size={30}
-          projectId={projectId}
-          showModeration
           createdAt={commentAttributes.created_at}
           avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
           horizontalLayout={true}
@@ -98,6 +94,8 @@ const InternalCommentHeader = ({
           fontSize={fontSizes.base}
           fontWeight={400}
           underline={true}
+          // We assume that if you can see an internal comment, you can moderate the idea or initiative that contains it
+          showModeratorStyles
         />
       </Left>
       <Right>
