@@ -21,8 +21,6 @@ const GroupedBars = ({ attributes, colorScheme }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  console.log(attributes);
-
   return (
     <>
       {attributes.answers.map(({ answer, groups }, index) => {
