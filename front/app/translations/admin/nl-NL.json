@@ -314,7 +314,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Vraag",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Rapport",
   "app.components.formBuilder.cancelMethodChange": "Annuleer",
-  "app.components.formBuilder.changeMethodWarning": "Het veranderen van methode kan leiden tot het verbergen van input gegevens die zijn gegenereerd of ontvangen tijdens het gebruik van de vorige methode.",
+  "app.components.formBuilder.changeMethodWarning": "Het veranderen van methode kan leiden tot het verbergen van input die is gegenereerd of ontvangen tijdens het gebruik van de vorige methode.",
   "app.components.formBuilder.changingMethod": "Methode wijzigen",
   "app.components.formBuilder.confirmMethodChange": "Ja, doorgaan",
   "app.components.formBuilder.copySurveyModal.cancel": "Annuleer",
