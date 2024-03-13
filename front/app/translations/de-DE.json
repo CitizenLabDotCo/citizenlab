@@ -1041,7 +1041,7 @@
   "app.containers.IdeasNewPage.issueFormTitle": "Ein neues Vorhaben hinzufügen",
   "app.containers.IdeasNewPage.issueMetaTitle": "Ein neues Vorhaben hinzufügen | {projectName}",
   "app.containers.IdeasNewPage.leaveFormConfirmationQuestion": "Sind Sie sicher, dass Sie das Fenster schließen möchten ohne zu speichern?",
-  "app.containers.IdeasNewPage.leaveFormTextLoggedIn": "Ihre Antwortentwürfe wurden privat gespeichert und Sie können später zurückkehren, um sie zu vervollständigen.",
+  "app.containers.IdeasNewPage.leaveFormTextLoggedIn": "Ihre Antwortentwürfe wurden privat gespeichert. Sie können später zurückkehren, um sie zu vervollständigen.",
   "app.containers.IdeasNewPage.leaveSurvey": "Umfrage verlassen",
   "app.containers.IdeasNewPage.leaveSurveyText": "Ihre Antworten werden nicht gespeichert.",
   "app.containers.IdeasNewPage.optionFormTitle": "Eine neue Option hinzufügen",
