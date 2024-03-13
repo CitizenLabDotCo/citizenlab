@@ -95,7 +95,7 @@ const InternalCommentHeader = ({
           fontWeight={400}
           underline={true}
           // We assume that if you can see an internal comment, you can moderate the idea or initiative that contains it
-          userCanModerate
+          showModeratorStyles
         />
       </Left>
       <Right>

@@ -20,7 +20,6 @@ import Card from 'components/UI/Card';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
-import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 
 import messages from './messages';
 import ReactionIndicator from './ReactionIndicator';
@@ -80,10 +79,6 @@ const InitiativeCard = ({
 
   if (!initiative) return null;
 
-  const userCanModerate = initiativeAuthor
-    ? canModerateInitiative(initiativeAuthor)
-    : false;
-
   const initiativeTitle = localize(initiative.data.attributes.title_multiloc);
   const initiativeAuthorId = initiativeAuthor ? initiativeAuthor.data.id : null;
   const initiativeImageUrl = initiativeImage?.data.attributes.versions.medium;
@@ -110,7 +105,7 @@ const InitiativeCard = ({
             createdAt={initiative.data.attributes.proposed_at}
             size={34}
             anonymous={initiative.data.attributes.anonymous}
-            userCanModerate={userCanModerate}
+            showModeratorStyles={false}
           />
         </Box>
       }

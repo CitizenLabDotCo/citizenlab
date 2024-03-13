@@ -95,7 +95,7 @@ const TimeAgo = styled.div`
   }
 `;
 
-export interface Props {
+interface Props {
   authorId: string | null;
   createdAt: string;
   size: number;
@@ -109,7 +109,7 @@ export interface Props {
   color?: string;
   authorHash?: string;
   anonymous?: boolean;
-  userCanModerate: boolean;
+  showModeratorStyles: boolean;
 }
 
 const Author = memo(
@@ -127,7 +127,7 @@ const Author = memo(
     color,
     underline,
     anonymous,
-    userCanModerate,
+    showModeratorStyles,
   }: Props) => {
     const locale = useLocale();
 
@@ -140,7 +140,7 @@ const Author = memo(
               authorHash={authorHash}
               size={size}
               isLinkToProfile={isLinkToProfile}
-              moderator={userCanModerate}
+              moderator={showModeratorStyles}
               bgColor={avatarBadgeBgColor}
             />
 
@@ -154,7 +154,7 @@ const Author = memo(
                 <UserName
                   userId={authorId}
                   isLinkToProfile={isLinkToProfile}
-                  canModerate={userCanModerate}
+                  canModerate={showModeratorStyles}
                   fontWeight={fontWeight}
                   fontSize={fontSize}
                   color={color}

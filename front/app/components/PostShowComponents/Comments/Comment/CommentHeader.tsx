@@ -98,7 +98,7 @@ const CommentHeader = ({
           fontWeight={400}
           underline={true}
           anonymous={commentAttributes.anonymous}
-          userCanModerate={userCanModerate}
+          showModeratorStyles={userCanModerate}
         />
       </Left>
       <Right>
