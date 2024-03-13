@@ -61,6 +61,9 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
     ? projectId && phaseId && questionId
     : projectId && phaseId;
 
+  const isIdeationPhase =
+    phase?.data.attributes.participation_method === 'ideation';
+
   return (
     <>
       {!isAnalysisEnabled && (
@@ -110,7 +113,9 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
           {showAnalyses && (
             <Analyses
               projectId={projectId}
-              phaseId={phaseId}
+              phaseId={
+                isNativeSurveyPhase || isIdeationPhase ? phaseId : undefined
+              }
               questionId={questionId}
               selectedLocale={selectedLocale}
               participationMethod={phase?.data.attributes.participation_method}
