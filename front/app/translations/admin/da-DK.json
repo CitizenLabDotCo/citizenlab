@@ -1267,7 +1267,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip": "Vi understøtter i øjeblikket GeoJSON-filer. Læs {supportArticle} for at få tips om, hvordan du konverterer og stiliserer kortlag.",
   "app.containers.AdminPage.ProjectEdit.MapTab.lngLabel": "Standardlængde",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoom": "Kortets standardcenter og -zoom",
-  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "Kortets standardcenterpunkt og zoomniveau. Juster værdierne nedenfor manuelt, eller klik på knappen {button} toppen til højre på kortet for at gemme kortets aktuelle centerpunkt og zoomniveau som standardværdier.",
+  "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "The default center point and zoom level of the map. Manually adjust the values below, or click on the {button} button in the top right corner of the map to save the current center point and zoom level of the map as the default values.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Tilpas kortvisningen, herunder upload og styling af kortlag og indstilling af kortets centrum og zoomniveau.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Konfiguration af kortet",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "Kortkonfigurationen deles i øjeblikket på tværs af faser, og du kan ikke oprette forskellige kortkonfigurationer pr. fase.",
