@@ -1,4 +1,4 @@
-import { UseQueryResult, useQueries } from '@tanstack/react-query';
+import { useQueries } from '@tanstack/react-query';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
