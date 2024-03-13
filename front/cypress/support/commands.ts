@@ -1671,7 +1671,7 @@ const createBaseCustomField = (
 });
 
 const getOptions = (input_type: string) => {
-  if (['select', 'multiselect'].indexOf(input_type) > -1) {
+  if (['select', 'multiselect', 'multiselect_image'].indexOf(input_type) > -1) {
     return [
       {
         temp_id: `TEMP-ID-${randomString()}`,
