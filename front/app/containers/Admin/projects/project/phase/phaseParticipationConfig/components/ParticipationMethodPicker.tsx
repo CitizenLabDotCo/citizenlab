@@ -154,7 +154,7 @@ const ParticipationMethodPicker = ({
             <ParticipationMethodChoice
               key="voting"
               title={formatMessage(messages2.votingTitle)}
-              subtitle={formatMessage(messages2.votingDescription1)}
+              subtitle={formatMessage(messages2.votingDescription)}
               onClick={(event) => handleMethodSelect(event, 'voting')}
               image={votingImage}
               selected={selectedMethod === 'voting'}

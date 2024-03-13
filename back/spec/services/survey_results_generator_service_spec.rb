@@ -536,7 +536,7 @@ RSpec.describe SurveyResultsGeneratorService do
             { answer: nil, count: 5 }
           ],
           multilocs: {
-            answers: {
+            answer: {
               1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
               2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
               3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
@@ -558,12 +558,12 @@ RSpec.describe SurveyResultsGeneratorService do
       context 'when not all minimum and maximum labels are configured for linear scale fields' do
         let(:expected_result_linear_scale_without_min_and_max_labels) do
           expected_result_linear_scale.tap do |result|
-            result[:multilocs][:answers][5][:title_multiloc] = {
+            result[:multilocs][:answer][5][:title_multiloc] = {
               'en' => '5 - Strongly agree',
               'fr-FR' => '5',
               'nl-NL' => '5'
             }
-            result[:multilocs][:answers][1][:title_multiloc] = {
+            result[:multilocs][:answer][1][:title_multiloc] = {
               'en' => '1',
               'fr-FR' => "1 - Pas du tout d'accord",
               'nl-NL' => '1'

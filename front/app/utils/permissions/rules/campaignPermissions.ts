@@ -19,5 +19,3 @@ definePermissionRule(
     return isAdmin(user) || isProjectModerator(user);
   }
 );
-
-// Create diff with master
